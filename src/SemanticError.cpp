@@ -40,7 +40,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
             if (identifierRef->typeInfo)
             {
                 const auto msg = formNte(Nte0111, Naming::kindName(overload).c_str(), node->token.c_str(), identifierRef->typeInfo->getDisplayNameC(),
-                                     overload->node->ownerStructScope->owner->token.c_str());
+                                         overload->node->ownerStructScope->owner->token.c_str());
                 err->remarks.push_back(msg);
             }
 

@@ -294,12 +294,12 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 for (int i = 0; i < indent + 1; i++)
                     str += "   ";
                 str += form("(%s%s%s) %s%s%s = ",
-                           Log::colorToVTS(LogColor::Type).c_str(),
-                           p->typeInfo->getDisplayNameC(),
-                           Log::colorToVTS(LogColor::Default).c_str(),
-                           Log::colorToVTS(LogColor::Name).c_str(),
-                           p->name.c_str(),
-                           Log::colorToVTS(LogColor::Default).c_str());
+                            Log::colorToVTS(LogColor::Type).c_str(),
+                            p->typeInfo->getDisplayNameC(),
+                            Log::colorToVTS(LogColor::Default).c_str(),
+                            Log::colorToVTS(LogColor::Name).c_str(),
+                            p->name.c_str(),
+                            Log::colorToVTS(LogColor::Default).c_str());
                 EvaluateResult res1;
                 res1.type = p->typeInfo;
                 res1.addr = static_cast<uint8_t*>(addr) + p->offset;
@@ -511,12 +511,12 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8&
         return;
 
     Utf8 str = form("(%s%s%s) %s%s%s = ",
-                   Log::colorToVTS(LogColor::Type).c_str(),
-                   over->typeInfo->getDisplayNameC(),
-                   Log::colorToVTS(LogColor::Default).c_str(),
-                   Log::colorToVTS(LogColor::Name).c_str(),
-                   over->symbol->name.c_str(),
-                   Log::colorToVTS(LogColor::Default).c_str());
+                    Log::colorToVTS(LogColor::Type).c_str(),
+                    over->typeInfo->getDisplayNameC(),
+                    Log::colorToVTS(LogColor::Default).c_str(),
+                    Log::colorToVTS(LogColor::Name).c_str(),
+                    over->symbol->name.c_str(),
+                    Log::colorToVTS(LogColor::Default).c_str());
 
     EvaluateResult res;
     res.type = over->typeInfo;

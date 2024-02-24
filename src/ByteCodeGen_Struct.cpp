@@ -53,7 +53,7 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl*
     if (pushParam)
     {
         SWAG_ASSERT(numParams == 1);
-        auto inst          = EMIT_INST0(context, ByteCodeOp::GetParam64);
+        auto inst               = EMIT_INST0(context, ByteCodeOp::GetParam64);
         inst->b.mergeU64U32.low = 24;
         if (offset)
         {
@@ -444,7 +444,7 @@ void ByteCodeGen::emitOpCallUserArrayOfStruct(const ByteCodeGenContext* context,
         // Reference to the field
         if (pushParam)
         {
-            auto inst          = EMIT_INST0(context, ByteCodeOp::GetParam64);
+            auto inst               = EMIT_INST0(context, ByteCodeOp::GetParam64);
             inst->b.mergeU64U32.low = 24;
             if (offset)
             {
@@ -619,7 +619,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     // No special value, so we can just clear the struct
     if (!typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
-        auto inst          = EMIT_INST0(&cxt, ByteCodeOp::GetParam64);
+        auto inst               = EMIT_INST0(&cxt, ByteCodeOp::GetParam64);
         inst->b.mergeU64U32.low = 24;
         emitSetZeroAtPointer(&cxt, typeInfoStruct->sizeOf, 0);
         EMIT_INST0(&cxt, ByteCodeOp::Ret);
@@ -644,7 +644,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         auto typeVar = TypeManager::concreteType(param->typeInfo);
 
         // Reference to the field
-        auto inst          = EMIT_INST0(&cxt, ByteCodeOp::GetParam64);
+        auto inst               = EMIT_INST0(&cxt, ByteCodeOp::GetParam64);
         inst->b.mergeU64U32.low = 24;
         if (param->offset)
         {

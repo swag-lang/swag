@@ -1014,7 +1014,7 @@ Utf8 form(const char* format, va_list args)
     va_copy(argsCopy, args);
     const size_t len = vsnprintf(nullptr, 0, format, argsCopy);
     va_end(argsCopy);
-    
+
     Utf8 vec;
     vec.resize(static_cast<uint32_t>(len));
 

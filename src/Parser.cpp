@@ -264,8 +264,12 @@ bool Parser::saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path&
             countEol++;
     }
 
-    const Utf8 sourceCode = form("// %s:%d:%d:%d:%d\n", fromNode->token.sourceFile->path.c_str(), fromNode->token.startLocation.line + 1,
-                                fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
+    const Utf8 sourceCode = form("// %s:%d:%d:%d:%d\n",
+                                 fromNode->token.sourceFile->path.c_str(),
+                                 fromNode->token.startLocation.line + 1,
+                                 fromNode->token.startLocation.column + 1,
+                                 fromNode->token.endLocation.line + 1,
+                                 fromNode->token.endLocation.column + 1);
     modl->contentJobGeneratedFile[g_ThreadIndex] += sourceCode;
     modl->countLinesGeneratedFile[g_ThreadIndex] += 1;
     previousLogLine = modl->countLinesGeneratedFile[g_ThreadIndex];

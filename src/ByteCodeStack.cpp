@@ -114,11 +114,11 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
                 str += "      ";
                 str += Log::colorToVTS(LogColor::Location);
                 str += form(" %s:%d:%d:%d:%d",
-                           owner->token.sourceFile->path.c_str(),
-                           owner->token.startLocation.line + 1,
-                           owner->token.startLocation.column + 1,
-                           owner->token.endLocation.line + 1,
-                           owner->token.endLocation.column + 1);
+                            owner->token.sourceFile->path.c_str(),
+                            owner->token.startLocation.line + 1,
+                            owner->token.startLocation.column + 1,
+                            owner->token.endLocation.line + 1,
+                            owner->token.endLocation.column + 1);
                 str += "\n";
                 str += sourceLine(owner->token.sourceFile, owner->token.startLocation.line);
             }
@@ -141,11 +141,11 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
             str += "      ";
             str += Log::colorToVTS(LogColor::Location);
             str += form(" %s:%d:%d:%d:%d",
-                       parent->token.sourceFile->path.c_str(),
-                       parent->token.startLocation.line + 1,
-                       parent->token.startLocation.column + 1,
-                       parent->token.endLocation.line + 1,
-                       parent->token.endLocation.column + 1);
+                        parent->token.sourceFile->path.c_str(),
+                        parent->token.startLocation.line + 1,
+                        parent->token.startLocation.column + 1,
+                        parent->token.endLocation.line + 1,
+                        parent->token.endLocation.column + 1);
             str += "\n";
             str += sourceLine(parent->token.sourceFile, parent->token.startLocation.line);
         }

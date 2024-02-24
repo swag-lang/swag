@@ -1616,10 +1616,10 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                     OPT_JMP_AC(==, u64);
                     break;
                 case ByteCodeOp::JumpIfEqualF32:
-                    OPT_JMP_AC(==, f32);  
+                    OPT_JMP_AC(==, f32);
                     break;
                 case ByteCodeOp::JumpIfEqualF64:
-                    OPT_JMP_AC(==, f64);  
+                    OPT_JMP_AC(==, f64);
                     break;
 
                 case ByteCodeOp::JumpIfNotEqual8:
@@ -1635,10 +1635,10 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                     OPT_JMP_AC(!=, u64);
                     break;
                 case ByteCodeOp::JumpIfNotEqualF32:
-                    OPT_JMP_AC(!=, f32);  
+                    OPT_JMP_AC(!=, f32);
                     break;
                 case ByteCodeOp::JumpIfNotEqualF64:
-                    OPT_JMP_AC(!=, f64);  
+                    OPT_JMP_AC(!=, f64);
                     break;
 
                 case ByteCodeOp::JumpIfGreaterS8:

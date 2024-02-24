@@ -72,7 +72,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         node->parent->resultRegisterRc                = node->resultRegisterRc;
 
         // Get capture block pointer (first parameter)
-        const auto inst    = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
+        const auto inst         = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
         inst->b.mergeU64U32.low = node->ownerFct->parameters->children.front()->resolvedSymbolOverload()->computedValue.storageOffset;
 
         // :VariadicAndClosure
@@ -251,7 +251,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (node->hasSemFlag(SEMFLAG_FROM_REF))
         {
-            const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
+            const auto inst          = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
             inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset;
             inst->b.mergeU64U32.high = resolved->storageIndex;
             if (!node->isForceTakeAddress())
@@ -265,7 +265,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         {
             if (node->parent->hasAstFlag(AST_ARRAY_POINTER_REF))
             {
-                const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
+                const auto inst          = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
                 inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset;
                 inst->b.mergeU64U32.high = resolved->storageIndex;
             }
@@ -273,11 +273,11 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             {
                 reserveLinearRegisterRC2(context, node->resultRegisterRc);
 
-                auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc[0]);
+                auto inst                = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc[0]);
                 inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset;
                 inst->b.mergeU64U32.high = resolved->storageIndex;
 
-                inst                = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc[1]);
+                inst                     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc[1]);
                 inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset;
                 inst->b.mergeU64U32.high = resolved->storageIndex + 1;
             }
@@ -289,7 +289,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && node->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) && !node->hasAstFlag(AST_UFCS_FCT))
         {
-            const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
+            const auto inst          = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
             inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset;
             inst->b.mergeU64U32.high = resolved->storageIndex;
             if (node->hasAstFlag(AST_FROM_UFCS)) // Get the ITable pointer
@@ -302,38 +302,38 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             // Get the ITable pointer
             if (node->hasAstFlag(AST_FROM_UFCS))
             {
-                const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
+                const auto inst          = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
                 inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset + 8;
                 inst->b.mergeU64U32.high = resolved->storageIndex + 1;
             }
             // Get the structure pointer
             else
             {
-                const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
+                const auto inst          = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
                 inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset;
                 inst->b.mergeU64U32.high = resolved->storageIndex;
             }
         }
         else if (typeInfo->isClosure())
         {
-            const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
+            const auto inst          = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
             inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset;
             inst->b.mergeU64U32.high = resolved->storageIndex;
         }
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRc);
-            auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc[0]);
+            auto inst                = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc[0]);
             inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset;
             inst->b.mergeU64U32.high = resolved->storageIndex;
-            inst                = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc[1]);
+            inst                     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc[1]);
             inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset + 8;
             inst->b.mergeU64U32.high = resolved->storageIndex + 1;
         }
         else
         {
             SWAG_ASSERT(typeInfo->numRegisters() == 1);
-            const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
+            const auto inst          = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
             inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset;
             inst->b.mergeU64U32.high = resolved->storageIndex;
             SWAG_CHECK(emitSafetyValue(context, node->resultRegisterRc, node->typeInfo));

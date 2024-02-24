@@ -610,9 +610,9 @@ bool ModuleDepManager::execute()
                 msg += " [swag]";
             else if (module->mustFetchDep)
                 msg += form(" => version %d.%d.%d is available",
-                           module->buildCfg.moduleVersion,
-                           module->buildCfg.moduleRevision,
-                           module->buildCfg.moduleBuildNum);
+                            module->buildCfg.moduleVersion,
+                            module->buildCfg.moduleRevision,
+                            module->buildCfg.moduleBuildNum);
             g_Log.messageHeaderDot(module->name, msg);
         }
     }
