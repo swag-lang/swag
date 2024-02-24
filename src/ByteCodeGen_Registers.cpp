@@ -4,7 +4,7 @@
 #include "ByteCodeGenContext.h"
 #include "Symbol.h"
 
-void ByteCodeGen::reserveRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, int num)
+void ByteCodeGen::reserveRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, uint32_t num)
 {
     rc.clear();
     rc.cannotFree = false;

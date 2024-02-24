@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "ByteCodeDebugger.h"
 #include "AstFlags.h"
 #include "ByteCode.h"
+#include "ByteCodeDebugger.h"
 #include "ByteCodeStack.h"
 #include "Log.h"
 #include "Module.h"
@@ -190,9 +190,9 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
     context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
     uint32_t ns                    = 0;
 
-    for (int i = static_cast<int>(maxLevel); i >= 0; i--)
+    for (uint32_t i = maxLevel; i > UINT32_MAX; i--)
     {
-        if (i >= static_cast<int>(steps.size()))
+        if (i >= steps.size())
             continue;
 
         const auto& step = steps[i];
@@ -859,9 +859,9 @@ void ByteCodeDebugger::tokenizeCommand(const Utf8& line, BcDbgCommandArg& arg)
             c.trim();
         arg.cmd = arg.split[0];
 
-        for (int i = 1; i < static_cast<int>(arg.split.size()); i++)
+        for (const auto& cmd : arg.split)
         {
-            arg.cmdExpr += arg.split[i];
+            arg.cmdExpr += cmd;
             arg.cmdExpr += " ";
         }
 

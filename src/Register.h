@@ -54,7 +54,7 @@ struct RegisterList
         return countResults;
     }
 
-    uint32_t operator[](int index) const
+    uint32_t operator[](uint32_t index) const
     {
         SWAG_ASSERT(index < countResults);
         return oneResult[index];

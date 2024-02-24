@@ -137,7 +137,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
                 for (const auto& child : identifier->callParameters->children)
                 {
                     const auto callParam = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-                    if (callParam->indexParam != static_cast<int>(i))
+                    if (callParam->indexParam != i)
                         continue;
                     orgCallParam = callParam;
                     if (!callParam->hasFlagComputedValue())
@@ -203,6 +203,7 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveForBefore(SemanticContext* context)
 {
     const auto node                  = castAst<AstFor>(context->node, AstNodeKind::For);
@@ -210,6 +211,7 @@ bool Semantic::resolveForBefore(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveLoopBefore(SemanticContext* context)
 {
     const auto node                  = castAst<AstLoop>(context->node, AstNodeKind::Loop);
@@ -1020,6 +1022,7 @@ bool Semantic::resolveIndex(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveSubstBreakContinue(SemanticContext* context)
 {
     const auto node = castAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
@@ -1074,11 +1077,11 @@ bool Semantic::resolveFallThrough(SemanticContext* context)
         parent = parent->parent;
     SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, Err(Err0462)}));
     node->switchCase = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
-    SWAG_VERIFY(node->switchCase->caseIndex != -1, context->report({node, Err(Err0462)}));
+    SWAG_VERIFY(node->switchCase->caseIndex != UINT32_MAX, context->report({node, Err(Err0462)}));
 
     // 'fallthrough' cannot be used on the last case, this has no sens
     const auto switchBlock = castAst<AstSwitch>(node->ownerBreakable(), AstNodeKind::Switch);
-    SWAG_VERIFY(node->switchCase->caseIndex < static_cast<int>(switchBlock->cases.size()) - 1, context->report({node, Err(Err0461)}));
+    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, Err(Err0461)}));
 
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitFallThrough;
@@ -1103,6 +1106,7 @@ bool Semantic::resolveContinue(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveScopeBreakable(SemanticContext* context)
 {
     const auto node = castAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);

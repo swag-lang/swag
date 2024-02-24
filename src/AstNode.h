@@ -743,7 +743,7 @@ struct AstBreakContinue : AstNode
 
     Token          label;
     AstSwitchCase* switchCase;
-    int            jumpInstruction;
+    uint32_t       jumpInstruction;
 };
 
 constexpr BreakableFlags BREAKABLE_CAN_HAVE_INDEX          = 0x00000001;
@@ -842,7 +842,7 @@ struct AstSwitchCase : AstNode
     VectorNative<AstNode*> expressions;
     AstNode*               block;
     AstSwitch*             ownerSwitch;
-    int                    caseIndex;
+    uint32_t               caseIndex;
 };
 
 struct AstSwitchCaseBlock : AstNode

@@ -39,7 +39,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     }
 
     AstNode* allParams        = nullptr;
-    size_t   numCallParams    = 0;
+    uint32_t numCallParams    = 0;
     bool     canFreeRegParams = true;
     parent                    = node->parent;
 
@@ -50,8 +50,9 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 
     if (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
     {
-        allParams     = parent;
-        numCallParams = static_cast<int>(allParams->children.size()) - 1; // Remove the inline block
+        allParams = parent;
+        SWAG_ASSERT(!allParams->children.empty());
+        numCallParams = allParams->children.size() - 1; // Remove the inline block
         while (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
             parent = parent->parent;
         parent->resultRegisterRc = node->resultRegisterRc;
@@ -166,7 +167,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                 for (uint32_t j = 0; j < numCallParams; j++)
                 {
                     auto callParam = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);
-                    if (callParam->indexParam == static_cast<int>(i))
+                    if (callParam->indexParam == i)
                     {
                         if (callParam->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
                         {
@@ -236,7 +237,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
 
     // Update all returns to jump at the end of the inline block
     for (const auto r : node->returnList)
-        context->bc->out[r->seekJump].b.s32 = context->bc->numInstructions - r->seekJump - 1;
+        context->bc->out[r->seekJump].b.s32 = static_cast<int>(context->bc->numInstructions - r->seekJump - 1);
 
     // If the inlined function returns a reference, and we want a value, we need to unref
     if (node->parent->hasSemFlag(SEMFLAG_FROM_REF) && !node->parent->isForceTakeAddress())
@@ -281,6 +282,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIf(ByteCodeGenContext* context)
 {
     const auto ifNode = castAst<AstIf>(context->node, AstNodeKind::If);
@@ -292,14 +294,14 @@ bool ByteCodeGen::emitIf(ByteCodeGenContext* context)
     // Resolve ByteCodeOp::Jump expression, after the if block
     if (ifNode->elseBlock)
     {
-        instruction->b.s32 = diff;
+        instruction->b.s32 = static_cast<int>(diff);
 
         instruction        = context->bc->out + ifNode->seekJumpAfterIf;
         diff               = context->bc->numInstructions - ifNode->seekJumpAfterIf;
-        instruction->b.s32 = diff - 1;
+        instruction->b.s32 = static_cast<int>(diff - 1);
     }
     else
-        instruction->b.s32 = diff - 1;
+        instruction->b.s32 = static_cast<int>(diff - 1);
 
     return true;
 }
@@ -335,6 +337,7 @@ bool ByteCodeGen::emitIfAfterIf(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstBreakable>(context->node);
@@ -353,7 +356,7 @@ bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
     {
         const auto instruction = context->bc->out + node->seekJumpExpression;
         const auto diff        = node->seekJumpAfterBlock - node->seekJumpExpression;
-        instruction->b.s32     = diff - 1;
+        instruction->b.s32     = static_cast<int>(diff - 1);
     }
 
     if (!node->hasSpecialFuncCall())
@@ -403,6 +406,7 @@ bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitLoopBeforeBlock(ByteCodeGenContext* context)
 {
     const auto node         = context->node;
@@ -581,6 +585,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitLabelBeforeBlock(ByteCodeGenContext* context)
 {
     const auto node                  = context->node;
@@ -603,7 +608,7 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         const auto inst = EMIT_INST0(context, ByteCodeOp::Jump);
         const auto diff = loopNode->seekJumpBeforeContinue - context->bc->numInstructions;
-        inst->b.s32     = diff;
+        inst->b.s32     = static_cast<int>(diff);
     }
 
     loopNode->seekJumpAfterBlock = context->bc->numInstructions;
@@ -613,7 +618,7 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         const auto inst = context->bc->out + continueNode->jumpInstruction;
         const auto diff = loopNode->seekJumpBeforeContinue - continueNode->jumpInstruction - 1;
-        inst->b.s32     = diff;
+        inst->b.s32     = static_cast<int>(diff);
     }
 
     // Resolve all break instructions
@@ -621,12 +626,13 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         const auto inst = context->bc->out + breakNode->jumpInstruction;
         const auto diff = context->bc->numInstructions - breakNode->jumpInstruction - 1;
-        inst->b.s32     = diff;
+        inst->b.s32     = static_cast<int>(diff);
     }
 
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitWhileBeforeExpr(ByteCodeGenContext* context)
 {
     const auto node      = context->node;
@@ -662,6 +668,7 @@ bool ByteCodeGen::emitWhileAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitForBeforeExpr(ByteCodeGenContext* context)
 {
     const auto node    = context->node;
@@ -670,11 +677,12 @@ bool ByteCodeGen::emitForBeforeExpr(ByteCodeGenContext* context)
     // Set the jump to the start of the expression
     const auto inst = context->bc->out + forNode->seekJumpToExpression;
     const auto diff = context->bc->numInstructions - forNode->seekJumpToExpression - 1;
-    inst->b.s32     = diff;
+    inst->b.s32     = static_cast<int>(diff);
 
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitForAfterExpr(ByteCodeGenContext* context)
 {
     const auto node    = context->node;
@@ -686,6 +694,7 @@ bool ByteCodeGen::emitForAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitForBeforePost(ByteCodeGenContext* context)
 {
     const auto node    = context->node;
@@ -713,6 +722,7 @@ bool ByteCodeGen::emitForBeforePost(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
 {
     const auto node       = context->node;
@@ -724,33 +734,34 @@ bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
     // Resolve the jump to go outside the switch
     auto inst   = context->bc->out + switchNode->seekJumpExpression;
     auto diff   = context->bc->numInstructions - switchNode->seekJumpExpression - 1;
-    inst->b.s32 = diff;
+    inst->b.s32 = static_cast<int>(diff);
 
     // Resolve all break instructions
     for (const auto breakNode : switchNode->breakList)
     {
         inst        = context->bc->out + breakNode->jumpInstruction;
         diff        = context->bc->numInstructions - breakNode->jumpInstruction - 1;
-        inst->b.s32 = diff;
+        inst->b.s32 = static_cast<int>(diff);
     }
 
     // Resolve all fallthrough instructions
     for (const auto fallNode : switchNode->fallThroughList)
     {
         SWAG_ASSERT(fallNode->switchCase);
-        SWAG_ASSERT(fallNode->switchCase->caseIndex < static_cast<int>(switchNode->cases.size()) - 1);
+        SWAG_ASSERT(fallNode->switchCase->caseIndex < switchNode->cases.size() - 1);
 
         const auto nextCase      = switchNode->cases[fallNode->switchCase->caseIndex + 1];
         const auto nextCaseBlock = castAst<AstSwitchCaseBlock>(nextCase->block, AstNodeKind::SwitchCaseBlock);
 
         inst        = context->bc->out + fallNode->jumpInstruction;
         diff        = nextCaseBlock->seekStart - fallNode->jumpInstruction - 1;
-        inst->b.s32 = diff;
+        inst->b.s32 = static_cast<int>(diff);
     }
 
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitBeforeSwitch(ByteCodeGenContext* context)
 {
     const auto node       = context->node;
@@ -765,6 +776,7 @@ bool ByteCodeGen::emitBeforeSwitch(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
 {
     const auto node       = context->node;
@@ -885,7 +897,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         for (const auto jumpIdx : allJumps)
         {
             ByteCodeInstruction* jump = context->bc->out + jumpIdx;
-            jump->b.s32               = context->bc->numInstructions - jump->b.u32;
+            jump->b.s32               = static_cast<int>(context->bc->numInstructions - jump->b.u32);
         }
 
         // Pop the location from emitSwitchCaseBeforeCase
@@ -910,12 +922,12 @@ bool ByteCodeGen::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     // Jump to exit the switch
     context->setNoLocation();
     auto inst   = EMIT_INST0(context, ByteCodeOp::Jump);
-    inst->b.s32 = blockNode->ownerCase->ownerSwitch->seekJumpExpression - context->bc->numInstructions;
+    inst->b.s32 = static_cast<int>(blockNode->ownerCase->ownerSwitch->seekJumpExpression - context->bc->numInstructions);
     context->restoreNoLocation();
 
     // Resolve jump from case to case
     inst        = context->bc->out + blockNode->seekJumpNextCase;
-    inst->b.s32 = context->bc->numInstructions - blockNode->seekJumpNextCase - 1;
+    inst->b.s32 = static_cast<int>(context->bc->numInstructions - blockNode->seekJumpNextCase - 1);
     return true;
 }
 
@@ -973,6 +985,7 @@ bool ByteCodeGen::emitContinue(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIndex(ByteCodeGenContext* context)
 {
     const auto node        = context->node;
@@ -1057,7 +1070,7 @@ bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* s
                 inst->addFlag(BCI_IMM_B);
 
                 EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0[0]);
-                EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+                EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = static_cast<int>(seekJump - context->bc->numInstructions - 1);
 
                 freeRegisterRC(context, r0);
                 freeRegisterRC(context, r1);

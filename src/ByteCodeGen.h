@@ -316,7 +316,7 @@ namespace ByteCodeGen
 
     void     transformResultToLinear2(const ByteCodeGenContext* context, RegisterList& resultRegisterRC);
     uint32_t reserveRegisterRC(const ByteCodeGenContext* context, const SymbolOverload* overload = nullptr);
-    void     reserveRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, int num);
+    void     reserveRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, uint32_t num);
     void     reserveLinearRegisterRC2(const ByteCodeGenContext* context, RegisterList& rc);
     void     freeRegisterRC(const ByteCodeGenContext* context, RegisterList& rc);
     void     freeRegisterRC(const ByteCodeGenContext* context, uint32_t rc);
