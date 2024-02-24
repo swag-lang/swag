@@ -1008,17 +1008,25 @@ int Utf8::toInt(uint32_t offset) const
     return strtol(buffer + offset, &end, 10);
 }
 
+Utf8 form(const char* format, va_list args)
+{
+    va_list argsCopy;
+    va_copy(argsCopy, args);
+    const size_t len = vsnprintf(nullptr, 0, format, argsCopy);
+    va_end(argsCopy);
+    
+    Utf8 vec;
+    vec.resize(static_cast<uint32_t>(len));
+
+    (void) vsnprintf(vec.buffer, len + 1, format, args);
+    return vec;
+}
+
 Utf8 form(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
-    const size_t len = vsnprintf(nullptr, 0, format, args);
+    auto result = form(format, args);
     va_end(args);
-
-    Utf8 vec;
-    vec.resize(static_cast<int>(len));
-    va_start(args, format);
-    (void) vsnprintf(vec.buffer, len + 1, format, args);
-    va_end(args);
-    return vec;
+    return result;
 }

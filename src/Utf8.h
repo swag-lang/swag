@@ -122,4 +122,5 @@ struct HashUtf8
     }
 };
 
+Utf8 form(const char* format, va_list args);
 Utf8 form(const char* format, ...);
