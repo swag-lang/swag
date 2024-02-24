@@ -1255,8 +1255,8 @@ void Module::logPass(ModuleBuildPass pass)
                 str = "Running ByteCode";
             break;
         case ModuleBuildPass::Output:
-            if (backend->mustCompile && !g_CommandLine.genDoc)
-                str = "Generating";
+            // if (backend->mustCompile && !g_CommandLine.genDoc)
+            //    str = "Generating";
             break;
         case ModuleBuildPass::RunNative:
             if (mustGenerateTestExe() && g_CommandLine.runBackendTests)
