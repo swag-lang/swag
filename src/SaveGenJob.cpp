@@ -25,7 +25,7 @@ bool SaveGenJob::flush(Module* mdl)
 
         auto publicPath  = mdl->publicPath;
         auto tmpFilePath = publicPath;
-        auto tmpFileName = FMT("%s%d.gwg", mdl->name.c_str(), idx);
+        auto tmpFileName = form("%s%d.gwg", mdl->name.c_str(), idx);
 
         publicPath.append(tmpFileName.c_str());
 
@@ -33,7 +33,7 @@ bool SaveGenJob::flush(Module* mdl)
         if (fopen_s(&h, publicPath, "wN"))
         {
             ++mdl->numErrors;
-            Report::errorOS(FMT(Err(Err0096), publicPath.c_str()));
+            Report::errorOS(form(Err(Err0096), publicPath.c_str()));
             return false;
         }
 

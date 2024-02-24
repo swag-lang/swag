@@ -17,14 +17,14 @@ void Workspace::setScriptWorkspace(const Utf8& name)
     error_code err;
     if (!filesystem::exists(cacheWorkspace, err) && !filesystem::create_directories(cacheWorkspace, err))
     {
-        Report::errorOS(FMT(Err(Fat0016), cacheWorkspace.c_str()));
+        Report::errorOS(form(Err(Fat0016), cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 
     cacheWorkspace.append(name);
     if (!filesystem::exists(cacheWorkspace, err) && !filesystem::create_directories(cacheWorkspace, err))
     {
-        Report::errorOS(FMT(Err(Fat0016), cacheWorkspace.c_str()));
+        Report::errorOS(form(Err(Fat0016), cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 
@@ -41,7 +41,7 @@ void Workspace::scriptCommand()
 {
     if (g_CommandLine.scriptName.empty())
     {
-        Report::error(FMT(Err(Fat0031), g_CommandLine.scriptName.c_str()));
+        Report::error(form(Err(Fat0031), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
     }
 
@@ -52,7 +52,7 @@ void Workspace::scriptCommand()
     error_code err;
     if (!filesystem::exists(g_CommandLine.scriptName.c_str(), err))
     {
-        Report::error(FMT(Err(Fat0030), g_CommandLine.scriptName.c_str()));
+        Report::error(form(Err(Fat0030), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
     }
 
@@ -63,7 +63,7 @@ void Workspace::scriptCommand()
     g_Workspace->setupCachePath();
     if (!filesystem::exists(g_Workspace->cachePath, err))
     {
-        Report::error(FMT(Err(Fat0010), g_Workspace->cachePath.c_str()));
+        Report::error(form(Err(Fat0010), g_Workspace->cachePath.c_str()));
         OS::exit(-1);
     }
 

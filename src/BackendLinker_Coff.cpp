@@ -80,7 +80,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
     switch (outputKind)
     {
         case BuildCfgOutputKind::Executable:
-            arguments.push_back(FMT("/STACK:%d,%d", g_CommandLine.limitStackRT, g_CommandLine.limitStackRT));
+            arguments.push_back(form("/STACK:%d,%d", g_CommandLine.limitStackRT, g_CommandLine.limitStackRT));
             break;
         case BuildCfgOutputKind::DynamicLib:
             arguments.push_back("/DLL");

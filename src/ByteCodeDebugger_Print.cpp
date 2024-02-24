@@ -51,8 +51,8 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
             }
 
             // Erase the message
-            (void) fputs(FMT("\x1B[%dD", strlen(MSG)), stdout);
-            (void) fputs(FMT("\x1B[%dX", strlen(MSG)), stdout);
+            (void) fputs(form("\x1B[%dD", strlen(MSG)), stdout);
+            (void) fputs(form("\x1B[%dX", strlen(MSG)), stdout);
         }
 
         cpt++;
@@ -214,7 +214,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     g_ByteCodeDebugger.printTitleNameType("bytecode", bc->getPrintName(), bc->typeInfoFunc->getDisplayNameC());
     if (bc->sourceFile && bc->node)
     {
-        const auto loc = FMT("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1);
+        const auto loc = form("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1);
         g_ByteCodeDebugger.printTitleNameType("bytecode location", loc, "");
     }
     else if (bc->sourceFile)
@@ -226,11 +226,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
 
     if (ipNode && ipNode->token.sourceFile)
     {
-        const auto loc = FMT("%s:%u:%u", ipNode->token.sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1);
+        const auto loc = form("%s:%u:%u", ipNode->token.sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1);
         g_ByteCodeDebugger.printTitleNameType("instruction location", loc, "");
     }
 
-    g_ByteCodeDebugger.printTitleNameType("stack level", FMT("%u", context->debugStackFrameOffset), "");
+    g_ByteCodeDebugger.printTitleNameType("stack level", form("%u", context->debugStackFrameOffset), "");
     return BcDbgCommandResult::Continue;
 }
 
@@ -262,7 +262,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         }
 
         // Line
-        oneLine += FMT("%-5u ", startLine + lineIdx + 1);
+        oneLine += form("%-5u ", startLine + lineIdx + 1);
         oneLine += Log::colorToVTS(LogColor::Default);
 
         // Line breakpoint
@@ -437,7 +437,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     {
         const auto addrLine = addrB;
 
-        g_Log.print(FMT("0x%016llx ", addrLine), LogColor::DarkYellow);
+        g_Log.print(form("0x%016llx ", addrLine), LogColor::DarkYellow);
         g_Log.setColor(LogColor::Gray);
 
         for (int i = 0; i < min(count, perLine); i++)
@@ -469,7 +469,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
                 auto c = getAddrValue<uint8_t>(addrB);
                 if (c < 32 || c > 127)
                     c = '.';
-                g_Log.print(FMT("%c", c));
+                g_Log.print(form("%c", c));
                 addrB += 1;
             }
         }

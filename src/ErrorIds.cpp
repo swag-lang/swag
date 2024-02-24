@@ -1090,7 +1090,7 @@ void initErrors()
 
 Utf8 Err(ErrorID idx)
 {
-    return FMT("[%s] %s", g_EI[idx], g_E[idx].c_str());
+    return form("[%s] %s", g_EI[idx], g_E[idx].c_str());
 }
 
 Utf8 ErrNte(ErrorID idx, bool forNote)

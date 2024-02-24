@@ -85,7 +85,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
             SWAG_ASSERT(identifierRef->previousResolvedNode);
             if (!node->callParameters)
             {
-                Diagnostic err{node, FMT(Err(Err0540), Naming::kindName(overload).c_str())};
+                Diagnostic err{node, form(Err(Err0540), Naming::kindName(overload).c_str())};
                 err.addNote(Diagnostic::hereIs(overload));
                 return context->report(err);
             }
@@ -124,7 +124,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
             if (identifierRef->resolvedSymbolName() && identifierRef->resolvedSymbolName()->kind != SymbolKind::Variable)
             {
                 const auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
-                Diagnostic err{subNode, subNode->token, FMT(Err(Err0317), identifierRef->resolvedSymbolName()->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName()->kind).c_str())};
+                Diagnostic err{subNode, subNode->token, form(Err(Err0317), identifierRef->resolvedSymbolName()->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName()->kind).c_str())};
                 err.addNote(node->token, Nte(Nte0159));
                 return context->report(err);
             }
@@ -179,7 +179,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
             // :SpecUfcsNode
             identifierRef->previousResolvedNode->addAstFlag(AST_TO_UFCS);
             fctCallParam->specUfcsNode = identifierRef->previousResolvedNode;
-            const auto id              = Ast::newIdentifier(idRef, FMT("__8tmp_%d", g_UniqueID.fetch_add(1)), nullptr, idRef);
+            const auto id              = Ast::newIdentifier(idRef, form("__8tmp_%d", g_UniqueID.fetch_add(1)), nullptr, idRef);
             id->addAstFlag(AST_NO_BYTECODE);
         }
         else

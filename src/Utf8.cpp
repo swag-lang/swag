@@ -747,21 +747,6 @@ const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)
     return pz;
 }
 
-Utf8 Utf8::format(const char* format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    const size_t len = vsnprintf(nullptr, 0, format, args);
-    va_end(args);
-
-    Utf8 vec;
-    vec.resize(static_cast<int>(len));
-    va_start(args, format);
-    (void) vsnprintf(vec.buffer, len + 1, format, args);
-    va_end(args);
-    return vec;
-}
-
 void Utf8::tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty, bool trim)
 {
     tokens.clear();
@@ -904,7 +889,7 @@ void Utf8::tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens)
 
 Utf8 Utf8::toStringF64(double v)
 {
-    Utf8 s = FMT("%.35lf", v);
+    Utf8 s = form("%.35lf", v);
     while (s.buffer[s.count - 1] == '0')
     {
         s.buffer[s.count - 1] = 0;
@@ -918,14 +903,14 @@ Utf8 Utf8::toStringF64(double v)
 Utf8 Utf8::toNiceSize(size_t size)
 {
     if (size <= 1)
-        return FMT("%u byte", size);
+        return form("%u byte", size);
     if (size < 1024)
-        return FMT("%u bytes", size);
+        return form("%u bytes", size);
     if (size < static_cast<size_t>(1024) * 1024)
-        return FMT("%.1f Kb", static_cast<float>(size) / 1024.0f);
+        return form("%.1f Kb", static_cast<float>(size) / 1024.0f);
     if (size < static_cast<size_t>(1024) * 1024 * 1024)
-        return FMT("%.1f Mb", static_cast<float>(size) / (1024.0f * 1024.0f));
-    return FMT("%.1f Gb", static_cast<float>(size) / (1024.0f * 1024.0f * 1024.0f));
+        return form("%.1f Mb", static_cast<float>(size) / (1024.0f * 1024.0f));
+    return form("%.1f Gb", static_cast<float>(size) / (1024.0f * 1024.0f * 1024.0f));
 }
 
 uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
@@ -1021,4 +1006,19 @@ int Utf8::toInt(uint32_t offset) const
     SWAG_ASSERT(offset < length());
     char* end;
     return strtol(buffer + offset, &end, 10);
+}
+
+Utf8 form(const char* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    const size_t len = vsnprintf(nullptr, 0, format, args);
+    va_end(args);
+
+    Utf8 vec;
+    vec.resize(static_cast<int>(len));
+    va_start(args, format);
+    (void) vsnprintf(vec.buffer, len + 1, format, args);
+    va_end(args);
+    return vec;
 }

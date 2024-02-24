@@ -110,7 +110,7 @@ void Diagnostic::printSourceLine() const
         g_Log.setColor(sourceFileColor);
     g_Log.print(path);
     if (hasLocation)
-        g_Log.print(FMT(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
+        g_Log.print(form(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
     else
         g_Log.print(": ");
 }
@@ -123,7 +123,7 @@ void Diagnostic::printMarginLineNo(int lineNo) const
     while (m++ < lineCodeMaxDigits + 1)
         g_Log.print(" ");
     if (lineNo)
-        g_Log.print(FMT("%d", lineNo));
+        g_Log.print(form("%d", lineNo));
     g_Log.print(" ");
 }
 
@@ -716,13 +716,13 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     if (!typeInfo)
         return "";
 
-    auto str = FMT(Nte(Nte0177), typeInfo->getDisplayNameC());
+    auto str = form(Nte(Nte0177), typeInfo->getDisplayNameC());
 
     if (typeInfo->isAlias())
     {
         const auto typeAlias = castTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
         if (typeAlias->rawType)
-            str += FMT(" (aka [[%s]])", typeAlias->rawType->getConcreteAlias()->getDisplayNameC());
+            str += form(" (aka [[%s]])", typeAlias->rawType->getConcreteAlias()->getDisplayNameC());
     }
 
     return str;
@@ -732,7 +732,7 @@ Utf8 Diagnostic::isType(const SymbolOverload* overload)
 {
     if (!overload || !overload->typeInfo)
         return "";
-    return FMT(Nte(Nte0148), Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
+    return form(Nte(Nte0148), Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
 }
 
 Utf8 Diagnostic::isType(const AstNode* node)
@@ -761,7 +761,7 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, const char* msg)
         return nullptr;
 
     const Utf8 txt  = msg ? Utf8{msg} : Nte(Nte0062);
-    const Utf8 txt1 = FMT(txt, Naming::kindName(node).c_str(), node->token.c_str());
+    const Utf8 txt1 = form(txt, Naming::kindName(node).c_str(), node->token.c_str());
     return note(node, node->getTokenName(), txt1);
 }
 

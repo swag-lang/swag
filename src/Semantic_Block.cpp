@@ -193,8 +193,8 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
             if (!node->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
             {
                 if (node->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
-                    return context->report({fct->returnType, FMT(Err(Err0578), fct->getDisplayNameC())});
-                return context->report({fct->returnType, FMT(Err(Err0579), fct->getDisplayNameC(), fct->returnType->typeInfo->getDisplayNameC())});
+                    return context->report({fct->returnType, form(Err(Err0578), fct->getDisplayNameC())});
+                return context->report({fct->returnType, form(Err(Err0579), fct->getDisplayNameC(), fct->returnType->typeInfo->getDisplayNameC())});
             }
         }
     }
@@ -278,7 +278,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     {
         Diagnostic err{node, node->token, Err(Err0483)};
         const auto attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-        err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
+        err.addNote(attr, form(Nte(Nte0063), "attribute"));
         return context->report(err);
     }
 
@@ -303,7 +303,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         case TypeInfoKind::Slice:
         case TypeInfoKind::Array:
         case TypeInfoKind::Interface:
-            return context->report({node->expression, FMT(Err(Err0169), typeSwitch->getDisplayNameC())});
+            return context->report({node->expression, form(Err(Err0169), typeSwitch->getDisplayNameC())});
         default:
             break;
     }
@@ -326,7 +326,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = valText.find(expr->computedValue()->text);
                     if (idx != -1)
                     {
-                        Diagnostic err{expr, FMT(Err(Err0011), expr->computedValue()->text.c_str())};
+                        Diagnostic err{expr, form(Err(Err0011), expr->computedValue()->text.c_str())};
                         err.addNote(valDef[idx], Nte(Nte0071));
                         return context->report(err);
                     }
@@ -345,12 +345,12 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     {
                         const auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
                         if (expr->isConstantGenTypeInfo())
-                            return context->report({expr, FMT(Err(Err0011), expr->token.c_str())}, note);
+                            return context->report({expr, form(Err(Err0011), expr->token.c_str())}, note);
                         if (expr->typeInfo->isEnum())
-                            return context->report({expr, FMT(Err(Err0011), expr->token.c_str())}, note);
+                            return context->report({expr, form(Err(Err0011), expr->token.c_str())}, note);
                         if (typeExpr->isNativeInteger())
-                            return context->report({expr, FMT(Err(Err0009), expr->computedValue()->reg.u64)}, note);
-                        return context->report({expr, FMT(Err(Err0010), expr->computedValue()->reg.f64)}, note);
+                            return context->report({expr, form(Err(Err0009), expr->computedValue()->reg.u64)}, note);
+                        return context->report({expr, form(Err(Err0010), expr->computedValue()->reg.f64)}, note);
                     }
 
                     val64.push_back(expr->computedValue()->reg.u64);
@@ -371,7 +371,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         if (back->expressions.empty())
         {
             const auto attr = back->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-            const auto note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+            const auto note = Diagnostic::note(attr, form(Nte(Nte0063), "attribute"));
             return context->report({back, back->token, Err(Err0663)}, note);
         }
 
@@ -391,7 +391,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                             continue;
                         if (!valText.contains(one->value->text))
                         {
-                            Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
+                            Diagnostic err{node, node->token, form(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
                             err.addNote(one->declNode, one->declNode->token, Nte(Nte0126));
                             return context->report(err);
                         }
@@ -405,7 +405,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                             continue;
                         if (!val64.contains(one->value->reg.u64))
                         {
-                            Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
+                            Diagnostic err{node, node->token, form(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
                             err.addNote(one->declNode, one->declNode->token, Nte(Nte0126));
                             return context->report(err);
                         }
@@ -479,7 +479,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                 }
                 else
                 {
-                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return FMT(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression"); });
+                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return form(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression"); });
                     const auto     typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
                     SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
                 }
@@ -609,7 +609,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         if (node->expression->kind != AstNodeKind::IdentifierRef)
         {
-            varNode = Ast::newVarDecl(FMT("__9tmp_%d", g_UniqueID.fetch_add(1)), nullptr, node);
+            varNode = Ast::newVarDecl(form(R"(__9tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, node);
             varNode->addAstFlag(AST_GENERATED);
             newExpression       = Ast::clone(node->expression, varNode);
             varNode->assignment = newExpression;
@@ -624,7 +624,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
             newExpression = identifierRef;
         }
 
-        callVisit = Ast::newIdentifier(identifierRef, FMT("opVisit%s", node->extraNameToken.c_str()), nullptr, identifierRef);
+        callVisit = Ast::newIdentifier(identifierRef, form(R"(opVisit%s)", node->extraNameToken.c_str()), nullptr, identifierRef);
         callVisit->allocateIdentifierExtension();
         callVisit->identifierExtension->aliasNames = node->aliasNames;
         callVisit->inheritTokenLocation(node->token);
@@ -663,14 +663,14 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
     if (!node->extraNameToken.text.empty())
     {
-        Diagnostic err{node, node->extraNameToken, FMT(Err(Err0704), typeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->extraNameToken, form(Err(Err0704), typeInfo->getDisplayNameC())};
         err.addNote(node->expression, Diagnostic::isType(typeInfo));
         return context->report(err);
     }
 
     if (node->aliasNames.size() > 2)
     {
-        Diagnostic err{node, node->aliasNames[2], FMT(Err(Err0693), node->aliasNames.size())};
+        Diagnostic err{node, node->aliasNames[2], form(Err(Err0693), node->aliasNames.size())};
         return context->report(err);
     }
 
@@ -703,7 +703,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->finalType;
 
-        auto varDecl = Ast::newVarDecl(Utf8::format("__tmp%u", id), nullptr, node);
+        auto varDecl = Ast::newVarDecl(form("__tmp%u", id), nullptr, node);
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
         varDecl->assignment = Ast::newIntrinsicProp(TokenId::IntrinsicDataOf, nullptr, varDecl);
         Ast::clone(node->expression, varDecl->assignment);
@@ -712,30 +712,30 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         firstAliasVar = 2;
         content += "{ ";
-        content += FMT("let __addr%u = cast(%s ^%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
-        content += FMT("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
+        content += form(R"(let __addr%u = cast(%s ^%s) __tmp%u; )", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
+        content += form(R"(loop%s %u { )", visitBack.c_str(), typeArray->totalCount);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
-            content += "let ";
+            content += R"(let )";
             content += alias0Name;
-            content += FMT(" = __addr%u + #index; ", id);
+            content += form(R"( = __addr%u + #index; )", id);
         }
         else if (pointedType->isStruct())
         {
-            content += "let ";
+            content += R"(let )";
             content += alias0Name;
-            content += FMT(" = ref &__addr%u[#index]; ", id);
+            content += form(R"( = ref &__addr%u[#index]; )", id);
         }
         else
         {
-            content += "let ";
+            content += R"(let )";
             content += alias0Name;
-            content += FMT(" = __addr%u[#index]; ", id);
+            content += form(R"( = __addr%u[#index]; )", id);
         }
 
-        content += "let ";
+        content += R"(let )";
         content += alias1Name;
-        content += " = #index;}}";
+        content += R"( = #index;}})";
     }
 
     // One dimensional array
@@ -744,7 +744,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->pointedType;
 
-        auto varDecl        = Ast::newVarDecl(Utf8::format("__addr%u", id), nullptr, node);
+        auto varDecl        = Ast::newVarDecl(form("__addr%u", id), nullptr, node);
         varDecl->assignment = Ast::newIntrinsicProp(TokenId::IntrinsicDataOf, nullptr, varDecl);
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
         Ast::clone(node->expression, varDecl->assignment);
@@ -753,29 +753,29 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         firstAliasVar = 1;
         content += "{ ";
-        content += FMT("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
+        content += form(R"(loop%s %u { )", visitBack.c_str(), typeArray->totalCount);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
-            content += "let ";
+            content += R"(let )";
             content += alias0Name;
-            content += FMT(" = __addr%u + #index; ", id);
+            content += form(R"( = __addr%u + #index; )", id);
         }
         else if (pointedType->isStruct())
         {
-            content += "let ";
+            content += R"(let )";
             content += alias0Name;
-            content += FMT(" = ref &__addr%u[#index]; ", id);
+            content += form(R"( = ref &__addr%u[#index]; )", id);
         }
         else
         {
-            content += "let ";
+            content += R"(let )";
             content += alias0Name;
-            content += FMT(" = __addr%u[#index]; ", id);
+            content += form(R"( = __addr%u[#index]; )", id);
         }
 
-        content += "let ";
+        content += R"(let )";
         content += alias1Name;
-        content += " = #index;}}";
+        content += R"( = #index;}})";
     }
 
     // Slice
@@ -784,67 +784,67 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto typeSlice   = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto pointedType = typeSlice->pointedType;
 
-        auto varDecl = Ast::newVarDecl(Utf8::format("__tmp%u", id), nullptr, node);
+        auto varDecl = Ast::newVarDecl(form("__tmp%u", id), nullptr, node);
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 
         firstAliasVar = 1;
         content += "{ ";
-        content += FMT("let __addr%u = @dataof(__tmp%u); ", id, id);
-        content += FMT("loop%s __tmp%u { ", visitBack.c_str(), id);
+        content += form(R"(let __addr%u = @dataof(__tmp%u); )", id, id);
+        content += form(R"(loop%s __tmp%u { )", visitBack.c_str(), id);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             content += "let ";
             content += alias0Name;
-            content += FMT(" = __addr%u + #index; ", id);
+            content += form(R"( = __addr%u + #index; )", id);
         }
         else if (pointedType->isStruct())
         {
-            content += "let ";
+            content += R"(let )";
             content += alias0Name;
-            content += FMT(" = ref &__addr%u[#index]; ", id);
+            content += form(R"( = ref &__addr%u[#index]; )", id);
         }
         else
         {
-            content += "let ";
+            content += R"(let )";
             content += alias0Name;
-            content += FMT(" = __addr%u[#index]; ", id);
+            content += form(R"( = __addr%u[#index]; )", id);
         }
 
-        content += "let ";
+        content += R"(let )";
         content += alias1Name;
-        content += " = #index;}}";
+        content += R"( = #index;}})";
     }
 
     // String
     else if (typeInfo->isString())
     {
-        auto varDecl = Ast::newVarDecl(Utf8::format("__tmp%u", id), nullptr, node);
+        auto varDecl = Ast::newVarDecl(form("__tmp%u", id), nullptr, node);
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 
         firstAliasVar = 1;
         content += "{ ";
-        content += FMT("let __addr%u = @dataof(__tmp%u); ", id, id);
-        content += FMT("loop%s __tmp%u { ", visitBack.c_str(), id);
+        content += form(R"(let __addr%u = @dataof(__tmp%u); )", id, id);
+        content += form(R"(loop%s __tmp%u { )", visitBack.c_str(), id);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
-            content += "let ";
+            content += R"(let )";
             content += alias0Name;
-            content += FMT(" = __addr%u + #index; ", id);
+            content += form(R"( = __addr%u + #index; )", id);
         }
         else
         {
-            content += "let ";
+            content += R"(let )";
             content += alias0Name;
-            content += FMT(" = __addr%u[#index]; ", id);
+            content += form(R"( = __addr%u[#index]; )", id);
         }
 
-        content += "let ";
+        content += R"(let )";
         content += alias1Name;
-        content += " = #index;}}";
+        content += R"( = #index;}})";
     }
 
     // Variadic
@@ -857,15 +857,15 @@ bool Semantic::resolveVisit(SemanticContext* context)
             return context->report(err);
         }
 
-        content += FMT("{ loop%s %s { ", visitBack.c_str(), reinterpret_cast<const char*>(concat.firstBucket->data));
+        content += form(R"({ loop%s %s { )", visitBack.c_str(), reinterpret_cast<const char*>(concat.firstBucket->data));
         firstAliasVar = 0;
-        content += "let ";
+        content += R"(let )";
         content += alias0Name;
-        content += FMT(" = %s[#index]; ", reinterpret_cast<const char*>(concat.firstBucket->data));
+        content += form(R"( = %s[#index]; )", reinterpret_cast<const char*>(concat.firstBucket->data));
 
-        content += "let ";
+        content += R"(let )";
         content += alias1Name;
-        content += " = #index;}}";
+        content += R"( = #index;}})";
     }
 
     // Enum
@@ -879,18 +879,18 @@ bool Semantic::resolveVisit(SemanticContext* context)
         }
 
         auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        content += FMT("{ let __addr%u = @typeof(%s); ", id, reinterpret_cast<const char*>(concat.firstBucket->data));
-        content += FMT("loop%s %d { ", visitBack.c_str(), typeEnum->values.size());
+        content += form(R"({ let __addr%u = @typeof(%s); )", id, reinterpret_cast<const char*>(concat.firstBucket->data));
+        content += form(R"(loop%s %d { )", visitBack.c_str(), typeEnum->values.size());
         firstAliasVar = 1;
-        content += "let ";
+        content += R"(let )";
         content += alias0Name;
-        content += " = dref cast(const* ";
+        content += R"( = dref cast(const* )";
         content += typeInfo->name;
-        content += FMT(") __addr%u.values[#index].value; ", id);
+        content += form(R"() __addr%u.values[#index].value; )", id);
 
-        content += "let ";
+        content += R"(let )";
         content += alias1Name;
-        content += " = #index;}}";
+        content += R"( = #index;}})";
     }
 
     else
@@ -907,13 +907,13 @@ bool Semantic::resolveVisit(SemanticContext* context)
                 typePtr->pointedType->isStruct() ||
                 typePtr->pointedType->isString())
             {
-                return context->report({node->expression, FMT(Err(Err0415), typeInfo->getDisplayNameC())});
+                return context->report({node->expression, form(Err(Err0415), typeInfo->getDisplayNameC())});
             }
 
-            return context->report({node->expression, FMT(Err(Err0415), typeInfo->getDisplayNameC())});
+            return context->report({node->expression, form(Err(Err0415), typeInfo->getDisplayNameC())});
         }
 
-        return context->report({node->expression, FMT(Err(Err0418), typeInfo->getDisplayNameC())});
+        return context->report({node->expression, form(Err(Err0418), typeInfo->getDisplayNameC())});
     }
 
     node->expression->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
@@ -1036,7 +1036,7 @@ bool Semantic::resolveBreak(SemanticContext* context)
         auto breakable = node->safeOwnerBreakable();
         while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label.text))
             breakable = breakable->safeOwnerBreakable();
-        SWAG_VERIFY(breakable, context->report({node->token.sourceFile, node->label, FMT(Err(Err0722), node->label.text.c_str())}));
+        SWAG_VERIFY(breakable, context->report({node->token.sourceFile, node->label, form(Err(Err0722), node->label.text.c_str())}));
         node->setOwnerBreakable(breakable);
     }
 

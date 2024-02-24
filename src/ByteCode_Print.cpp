@@ -49,7 +49,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
             if (forDbg)
                 g_Log.print("   ");
             g_Log.setColor(LogColor::Location);
-            g_Log.print(FMT("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
+            g_Log.print(form("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
             g_Log.eol();
         }
     }
@@ -62,79 +62,79 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (ip->hasFlag(BCI_IMM_A) || flags.has(OPFLAG_READ_VAL32_A) || flags.has(OPFLAG_READ_VAL64_A))
     {
-        str.replace("_rau8_", FMT("%u", ip->a.u8));
-        str.replace("_rau16_", FMT("%u", ip->a.u16));
-        str.replace("_rau32_", FMT("%u", ip->a.u32));
-        str.replace("_rau64_", FMT("%llu", ip->a.u64));
-        str.replace("_ras8_", FMT("%d", ip->a.s8));
-        str.replace("_ras16_", FMT("%d", ip->a.s16));
-        str.replace("_ras32_", FMT("%d", ip->a.s32));
-        str.replace("_ras64_", FMT("%lld", ip->a.s64));
-        str.replace("_raf32_", FMT("%f", ip->a.f32));
-        str.replace("_raf64_", FMT("%lf", ip->a.f64));
-        str.replace("_rax32_", FMT("0x%x", ip->a.u32));
-        str.replace("_rax64_", FMT("0x%llx", ip->a.u64));
-        str.replace("_rah32_", FMT("%u", ip->a.mergeU64U32.high));
-        str.replace("_ral32_", FMT("%u", ip->a.mergeU64U32.low));
+        str.replace("_rau8_", form("%u", ip->a.u8));
+        str.replace("_rau16_", form("%u", ip->a.u16));
+        str.replace("_rau32_", form("%u", ip->a.u32));
+        str.replace("_rau64_", form("%llu", ip->a.u64));
+        str.replace("_ras8_", form("%d", ip->a.s8));
+        str.replace("_ras16_", form("%d", ip->a.s16));
+        str.replace("_ras32_", form("%d", ip->a.s32));
+        str.replace("_ras64_", form("%lld", ip->a.s64));
+        str.replace("_raf32_", form("%f", ip->a.f32));
+        str.replace("_raf64_", form("%lf", ip->a.f64));
+        str.replace("_rax32_", form("0x%x", ip->a.u32));
+        str.replace("_rax64_", form("0x%llx", ip->a.u64));
+        str.replace("_rah32_", form("%u", ip->a.mergeU64U32.high));
+        str.replace("_ral32_", form("%u", ip->a.mergeU64U32.low));
     }
 
     if (ip->hasFlag(BCI_IMM_B) || flags.has(OPFLAG_READ_VAL32_B) || flags.has(OPFLAG_READ_VAL64_B))
     {
-        str.replace("_rbu8_", FMT("%u", ip->b.u8));
-        str.replace("_rbu16_", FMT("%u", ip->b.u16));
-        str.replace("_rbu32_", FMT("%u", ip->b.u32));
-        str.replace("_rbu64_", FMT("%llu", ip->b.u64));
-        str.replace("_rbs8_", FMT("%d", ip->b.s8));
-        str.replace("_rbs16_", FMT("%d", ip->b.s16));
-        str.replace("_rbs32_", FMT("%d", ip->b.s32));
-        str.replace("_rbs64_", FMT("%lld", ip->b.s64));
-        str.replace("_rbf32_", FMT("%f", ip->b.f32));
-        str.replace("_rbf64_", FMT("%lf", ip->b.f64));
-        str.replace("_rbx32_", FMT("0x%x", ip->b.u32));
-        str.replace("_rbx64_", FMT("0x%llx", ip->b.u64));
-        str.replace("_rbh32_", FMT("%u", ip->b.mergeU64U32.high));
-        str.replace("_rbl32_", FMT("%u", ip->b.mergeU64U32.low));
+        str.replace("_rbu8_", form("%u", ip->b.u8));
+        str.replace("_rbu16_", form("%u", ip->b.u16));
+        str.replace("_rbu32_", form("%u", ip->b.u32));
+        str.replace("_rbu64_", form("%llu", ip->b.u64));
+        str.replace("_rbs8_", form("%d", ip->b.s8));
+        str.replace("_rbs16_", form("%d", ip->b.s16));
+        str.replace("_rbs32_", form("%d", ip->b.s32));
+        str.replace("_rbs64_", form("%lld", ip->b.s64));
+        str.replace("_rbf32_", form("%f", ip->b.f32));
+        str.replace("_rbf64_", form("%lf", ip->b.f64));
+        str.replace("_rbx32_", form("0x%x", ip->b.u32));
+        str.replace("_rbx64_", form("0x%llx", ip->b.u64));
+        str.replace("_rbh32_", form("%u", ip->b.mergeU64U32.high));
+        str.replace("_rbl32_", form("%u", ip->b.mergeU64U32.low));
     }
 
     if (ip->hasFlag(BCI_IMM_C) || flags.has(OPFLAG_READ_VAL32_C) || flags.has(OPFLAG_READ_VAL64_C))
     {
-        str.replace("_rcu8_", FMT("%u", ip->c.u8));
-        str.replace("_rcu16_", FMT("%u", ip->c.u16));
-        str.replace("_rcu32_", FMT("%u", ip->c.u32));
-        str.replace("_rcu64_", FMT("%llu", ip->c.u64));
-        str.replace("_rcs8_", FMT("%d", ip->c.s8));
-        str.replace("_rcs16_", FMT("%d", ip->c.s16));
-        str.replace("_rcs32_", FMT("%d", ip->c.s32));
-        str.replace("_rcs64_", FMT("%lld", ip->c.s64));
-        str.replace("_rcf32_", FMT("%f", ip->c.f32));
-        str.replace("_rcf64_", FMT("%lf", ip->c.f64));
-        str.replace("_rcx32_", FMT("0x%x", ip->c.u32));
-        str.replace("_rcx64_", FMT("0x%llx", ip->c.u64));
-        str.replace("_rch32_", FMT("%u", ip->c.mergeU64U32.high));
-        str.replace("_rcl32_", FMT("%u", ip->c.mergeU64U32.low));
+        str.replace("_rcu8_", form("%u", ip->c.u8));
+        str.replace("_rcu16_", form("%u", ip->c.u16));
+        str.replace("_rcu32_", form("%u", ip->c.u32));
+        str.replace("_rcu64_", form("%llu", ip->c.u64));
+        str.replace("_rcs8_", form("%d", ip->c.s8));
+        str.replace("_rcs16_", form("%d", ip->c.s16));
+        str.replace("_rcs32_", form("%d", ip->c.s32));
+        str.replace("_rcs64_", form("%lld", ip->c.s64));
+        str.replace("_rcf32_", form("%f", ip->c.f32));
+        str.replace("_rcf64_", form("%lf", ip->c.f64));
+        str.replace("_rcx32_", form("0x%x", ip->c.u32));
+        str.replace("_rcx64_", form("0x%llx", ip->c.u64));
+        str.replace("_rch32_", form("%u", ip->c.mergeU64U32.high));
+        str.replace("_rcl32_", form("%u", ip->c.mergeU64U32.low));
     }
 
     if (ip->hasFlag(BCI_IMM_D) || flags.has(OPFLAG_READ_VAL32_D) || flags.has(OPFLAG_READ_VAL64_D))
     {
-        str.replace("_rdu8_", FMT("%u", ip->d.u8));
-        str.replace("_rdu16_", FMT("%u", ip->d.u16));
-        str.replace("_rdu32_", FMT("%u", ip->d.u32));
-        str.replace("_rdu64_", FMT("%llu", ip->d.u64));
-        str.replace("_rds8_", FMT("%d", ip->d.s8));
-        str.replace("_rds16_", FMT("%d", ip->d.s16));
-        str.replace("_rds32_", FMT("%d", ip->d.s32));
-        str.replace("_rds64_", FMT("%lld", ip->d.s64));
-        str.replace("_rdf32_", FMT("%f", ip->d.f32));
-        str.replace("_rdf64_", FMT("%lf", ip->d.f64));
-        str.replace("_rdx32_", FMT("0x%x", ip->d.u32));
-        str.replace("_rdx64_", FMT("0x%llx", ip->d.u64));
-        str.replace("_rdh32_", FMT("%u", ip->d.mergeU64U32.high));
-        str.replace("_rdl32_", FMT("%u", ip->d.mergeU64U32.low));
+        str.replace("_rdu8_", form("%u", ip->d.u8));
+        str.replace("_rdu16_", form("%u", ip->d.u16));
+        str.replace("_rdu32_", form("%u", ip->d.u32));
+        str.replace("_rdu64_", form("%llu", ip->d.u64));
+        str.replace("_rds8_", form("%d", ip->d.s8));
+        str.replace("_rds16_", form("%d", ip->d.s16));
+        str.replace("_rds32_", form("%d", ip->d.s32));
+        str.replace("_rds64_", form("%lld", ip->d.s64));
+        str.replace("_rdf32_", form("%f", ip->d.f32));
+        str.replace("_rdf64_", form("%lf", ip->d.f64));
+        str.replace("_rdx32_", form("0x%x", ip->d.u32));
+        str.replace("_rdx64_", form("0x%llx", ip->d.u64));
+        str.replace("_rdh32_", form("%u", ip->d.mergeU64U32.high));
+        str.replace("_rdl32_", form("%u", ip->d.mergeU64U32.low));
     }
 
     if (flags.has(OPFLAG_READ_A | OPFLAG_WRITE_A))
     {
-        const auto ra = FMT("r%u", ip->a.u32);
+        const auto ra = form("r%u", ip->a.u32);
         str.replace("_ra_", ra);
         str.replace("_rau8_", ra);
         str.replace("_rau16_", ra);
@@ -150,7 +150,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags.has(OPFLAG_READ_B | OPFLAG_WRITE_B))
     {
-        const auto rb = FMT("r%u", ip->b.u32);
+        const auto rb = form("r%u", ip->b.u32);
         str.replace("_rb_", rb);
         str.replace("_rbu8_", rb);
         str.replace("_rbu16_", rb);
@@ -166,7 +166,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags.has(OPFLAG_READ_C | OPFLAG_WRITE_C))
     {
-        const auto rc = FMT("r%u", ip->c.u32);
+        const auto rc = form("r%u", ip->c.u32);
         str.replace("_rc_", rc);
         str.replace("_rcu8_", rc);
         str.replace("_rcu16_", rc);
@@ -182,7 +182,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags.has(OPFLAG_READ_D | OPFLAG_WRITE_D))
     {
-        const auto rd = FMT("r%u", ip->d.u32);
+        const auto rd = form("r%u", ip->d.u32);
         str.replace("_rd_", rd);
         str.replace("_rdu8_", rd);
         str.replace("_rdu16_", rd);
@@ -228,11 +228,11 @@ Utf8 ByteCode::getInstructionReg(const char* name, const Register& reg, bool reg
 {
     Utf8 str;
     if (regW)
-        str += FMT("%s[%u] ", name, reg.u32);
+        str += form("%s[%u] ", name, reg.u32);
     if (regR && !regImm)
-        str += FMT("%s(%u) ", name, reg.u32);
+        str += form("%s(%u) ", name, reg.u32);
     if (regImm)
-        str += FMT("%s{0x%llX} ", name, reg.u64);
+        str += form("%s{0x%llX} ", name, reg.u64);
     return str;
 }
 
@@ -249,7 +249,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
         else
             line.rank += "   ";
     }
-    line.rank += FMT("%08d", i);
+    line.rank += form("%08d", i);
 
     // Instruction name
     line.name += g_ByteCodeOpDesc[static_cast<int>(ip->op)].name;
@@ -280,7 +280,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     line.pretty += " ";
 
     if (isJump(ip))
-        line.pretty += FMT("%08d ", ip->b.s32 + i + 1);
+        line.pretty += form("%08d ", ip->b.s32 + i + 1);
 
     switch (ip->op)
     {
@@ -336,11 +336,11 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
 #ifdef SWAG_DEV_MODE
     if (!forDbg && g_CommandLine.dbgPrintBcExt)
     {
-        // line.devMode = FMT("%08d %08X %08d ", ip->treeNode, ip->crc, ip->serial);
+        // line.devMode = form("%08d %08X %08d ", ip->treeNode, ip->crc, ip->serial);
         if (ip->sourceFile)
         {
             const Path sf = ip->sourceFile;
-            line.devMode += FMT("%s:%d", sf.filename().c_str(), ip->sourceLine);
+            line.devMode += form("%s:%d", sf.filename().c_str(), ip->sourceLine);
         }
     }
 #endif

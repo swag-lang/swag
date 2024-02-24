@@ -48,7 +48,7 @@ Utf8 Log::colorToVTS(LogColor color)
         case LogColor::LegitGray:
             return "\x1b[37m";
         case LogColor::Gray:
-            return FMT("\x1b[38;2;%d;%d;%dm", 0x8F, 0x8F, 0x8F);
+            return form("\x1b[38;2;%d;%d;%dm", 0x8F, 0x8F, 0x8F);
 
         case LogColor::Red:
             return "\x1b[91m";

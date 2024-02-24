@@ -119,10 +119,10 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 // More than one match : ambiguous
                 if (typeEnum.size() > 1)
                 {
-                    Diagnostic err{identifierRef, FMT(Err(Err0018), node->token.c_str())};
+                    Diagnostic err{identifierRef, form(Err(Err0018), node->token.c_str())};
                     for (const auto t : typeEnum)
                     {
-                        auto msg = FMT(Nte(Nte0197), t->getDisplayNameC());
+                        auto msg = form(Nte(Nte0197), t->getDisplayNameC());
                         err.addNote(t->declNode, t->declNode->getTokenName(), msg);
                     }
 
@@ -145,7 +145,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     {
                         if (!hasEnum.empty())
                         {
-                            Diagnostic err{identifierRef, FMT(Err(Err0708), node->token.c_str(), hasEnum[0].second->getDisplayNameC())};
+                            Diagnostic err{identifierRef, form(Err(Err0708), node->token.c_str(), hasEnum[0].second->getDisplayNameC())};
                             const auto closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                             if (!closest.empty())
                                 err.addNote(closest);
@@ -155,7 +155,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                             return context->report(err);
                         }
 
-                        Diagnostic err{identifierRef, FMT(Err(Err0718), node->token.c_str())};
+                        Diagnostic err{identifierRef, form(Err(Err0718), node->token.c_str())};
 
                         // Call to a function ?
                         if (testedOver.size() == 1)
@@ -591,7 +591,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
 
                 if (!startScope && i)
                 {
-                    const Diagnostic err{context->node, scopeUpValue->token, FMT(Err(Err0148), scopeUpValue->literalValue.u8)};
+                    const Diagnostic err{context->node, scopeUpValue->token, form(Err(Err0148), scopeUpValue->literalValue.u8)};
                     return context->report(err);
                 }
 

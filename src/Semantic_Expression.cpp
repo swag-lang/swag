@@ -17,16 +17,16 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
 
     if (expression->hasSpecialFuncCall())
     {
-        Diagnostic err{expression, expression->token, FMT(Err(Err0042), expression->typeInfo->getDisplayNameC())};
+        Diagnostic err{expression, expression->token, form(Err(Err0042), expression->typeInfo->getDisplayNameC())};
         const auto userOp = expression->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-        err.hint          = FMT(Nte(Nte0144), userOp->symbol->name.c_str());
+        err.hint          = form(Nte(Nte0144), userOp->symbol->name.c_str());
         err.addNote(note);
         return context->report(err);
     }
 
     Utf8 message;
     if (errMsg.length() && errParam.length())
-        message = FMT(errMsg.c_str(), errParam.c_str());
+        message = form(errMsg.c_str(), errParam.c_str());
     else if (errMsg.length())
         message = errMsg;
     else
@@ -323,7 +323,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
         !typeInfo->isNativeFloat() &&
         !typeInfo->isLambdaClosure())
     {
-        Diagnostic err{node->token.sourceFile, node->token, FMT(Err(Err0165), typeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, form(Err(Err0165), typeInfo->getDisplayNameC())};
         err.addNote(expression, Diagnostic::isType(typeInfo));
         return context->report(err);
     }
@@ -411,7 +411,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     const auto leftTypeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
     {
-        Diagnostic err{node->expressionLow, FMT(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())};
+        Diagnostic err{node->expressionLow, form(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())};
         err.addNote(Nte(Nte0200));
         return context->report(err);
     }

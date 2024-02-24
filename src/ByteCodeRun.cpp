@@ -58,7 +58,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
 {
     if (++context->curRC > context->maxRecurse)
     {
-        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, FMT(Err(Err0604), context->maxRecurse));
+        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, form(Err(Err0604), context->maxRecurse));
         return;
     }
 
@@ -1505,7 +1505,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         auto over                    = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                         context->internalPanicSymbol = over;
                         context->internalPanicHint   = Nte(Nte0081);
-                        callInternalPanic(context, ip, FMT(Err(Err0117), over->node->token.c_str()));
+                        callInternalPanic(context, ip, form(Err(Err0117), over->node->token.c_str()));
                     }
                 }
                 registersRC[ip->a.u32].pointer = ptr;
@@ -1527,7 +1527,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         {
                             context->internalPanicSymbol = over;
                             context->internalPanicHint   = Nte(Nte0081);
-                            callInternalPanic(context, ip, FMT(Err(Err0117), over->node->token.c_str()));
+                            callInternalPanic(context, ip, form(Err(Err0117), over->node->token.c_str()));
                         }
                     }
                 }
@@ -4281,21 +4281,21 @@ namespace
                 default:
                     level = DiagnosticLevel::Error;
                     if (!Diagnostic::hastErrorId(txt))
-                        userMsg = FMT(Err(Err0002), txt.c_str());
+                        userMsg = form(Err(Err0002), txt.c_str());
                     else
                         userMsg = txt;
                     break;
                 case SwagExceptionKind::Warning:
                     level = DiagnosticLevel::Warning;
                     if (!Diagnostic::hastErrorId(txt))
-                        userMsg = FMT(Err(Wrn0001), txt.c_str());
+                        userMsg = form(Err(Wrn0001), txt.c_str());
                     else
                         userMsg = txt;
                     break;
                 case SwagExceptionKind::Panic:
                     level = DiagnosticLevel::Panic;
                     if (!Diagnostic::hastErrorId(txt))
-                        userMsg = FMT(Err(Err0003), txt.c_str());
+                        userMsg = form(Err(Err0003), txt.c_str());
                     else
                         userMsg = txt;
 

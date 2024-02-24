@@ -20,7 +20,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext*, const 
         if (g_ByteCodeDebugger.display.empty())
             printCmdError("no expression to remove");
         else
-            printCmdResult(FMT("%d expression(s) have been removed", g_ByteCodeDebugger.display.size()));
+            printCmdResult(form("%d expression(s) have been removed", g_ByteCodeDebugger.display.size()));
         g_ByteCodeDebugger.display.clear();
         return BcDbgCommandResult::Continue;
     }
@@ -36,7 +36,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext*, const 
     else
     {
         g_ByteCodeDebugger.display.erase(g_ByteCodeDebugger.display.begin() + numB - 1);
-        printCmdResult(FMT("expression #%d has been removed", numB));
+        printCmdResult(form("expression #%d has been removed", numB));
     }
 
     return BcDbgCommandResult::Continue;
@@ -53,7 +53,7 @@ void ByteCodeDebugger::printDisplayList() const
     g_Log.setColor(LogColor::Gray);
     for (uint32_t i = 0; i < display.size(); i++)
     {
-        g_Log.print(FMT("#%d: %s", i + 1, display[i].c_str()));
+        g_Log.print(form("#%d: %s", i + 1, display[i].c_str()));
         g_Log.eol();
     }
 }

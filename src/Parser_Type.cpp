@@ -71,7 +71,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         }
         else
         {
-            nameVar = FMT("__%d", g_UniqueID.fetch_add(1));
+            nameVar = form("__%d", g_UniqueID.fetch_add(1));
         }
 
         auto param = Ast::newVarDecl(nameVar, this, params, AstNodeKind::FuncDeclParam);
@@ -112,7 +112,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 thisIsAType = true;
                 curIsAlone  = false;
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0527), tokenParse.token.c_str())));
+                SWAG_CHECK(checkIsIdentifier(tokenParse, form(Err(Err0527), tokenParse.token.c_str())));
             }
 
             if (tokenParse.token.id == TokenId::KwdConst)
@@ -232,7 +232,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             // If we are in a type declaration, generate a variable and not just a type
             if (inTypeVarDecl)
             {
-                auto nameVar = namedParam ? namedParam->token.text : FMT("__%d", g_UniqueID.fetch_add(1));
+                auto nameVar = namedParam ? namedParam->token.text : form("__%d", g_UniqueID.fetch_add(1));
                 auto param   = Ast::newVarDecl(nameVar, this, params, AstNodeKind::FuncDeclParam);
                 if (!namedParam)
                     param->addSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED);
@@ -280,8 +280,8 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
                     Diagnostic err{sourceFile, tokenAmb, Err(Err0022)};
 
-                    auto note  = Diagnostic::note(lastParameter, FMT(Nte(Nte0008), lastParameter->type->token.c_str()));
-                    note->hint = FMT(Nte(Nte0189), lastParameter->type->token.c_str());
+                    auto note  = Diagnostic::note(lastParameter, form(Nte(Nte0008), lastParameter->type->token.c_str()));
+                    note->hint = form(Nte(Nte0189), lastParameter->type->token.c_str());
                     err.addNote(note);
                     return context->report(err);
                 }
@@ -333,7 +333,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
 
     // Name
     Utf8 name = sourceFile->scopeFile->name + "_tpl3_";
-    name += FMT("%d", g_UniqueID.fetch_add(1));
+    name += form("%d", g_UniqueID.fetch_add(1));
     structNode->token.text = std::move(name);
 
     // :SubDeclParent
@@ -445,18 +445,18 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* /*parent*/
     // Specific error messages
     if (node->parent && node->parent->kind == AstNodeKind::TupleContent)
     {
-        const Diagnostic err{sourceFile, tokenParse.token, FMT(Err(Err0401), tokenParse.token.c_str())};
+        const Diagnostic err{sourceFile, tokenParse.token, form(Err(Err0401), tokenParse.token.c_str())};
         return context->report(err);
     }
 
-    Diagnostic err{sourceFile, tokenParse.token, FMT(Err(Err0400), tokenParse.token.c_str())};
+    Diagnostic err{sourceFile, tokenParse.token, form(Err(Err0400), tokenParse.token.c_str())};
 
     if (tokenParse.token.id == TokenId::SymLeftParen)
         err.addNote(Nte(Nte0084));
     else if (tokenParse.token.id == TokenId::SymDotDotDot)
         err.addNote(Nte(Nte0138));
     else if (Tokenizer::isKeyword(tokenParse.token.id))
-        err.addNote(FMT(Nte(Nte0125), tokenParse.token.c_str()));
+        err.addNote(form(Nte(Nte0125), tokenParse.token.c_str()));
     else if (tokenParse.token.id == TokenId::IntrinsicTypeOf || tokenParse.token.id == TokenId::IntrinsicKindOf)
         err.addNote(Nte(Nte0085));
 
@@ -557,7 +557,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
         if (tokenParse.token.id == TokenId::SymComma)
         {
-            const Diagnostic err{sourceFile, tokenParse.token, FMT(Err(Err0402), tokenParse.token.c_str())};
+            const Diagnostic err{sourceFile, tokenParse.token, form(Err(Err0402), tokenParse.token.c_str())};
             return context->report(err);
         }
 
@@ -659,7 +659,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
     if (mdfFlags.has(MODIFIER_BIT) && mdfFlags.has(MODIFIER_OVERFLOW))
     {
-        return error(node, FMT(Err(Err0053), "bit", "over"));
+        return error(node, form(Err(Err0053), "bit", "over"));
     }
 
     if (mdfFlags.has(MODIFIER_UN_CONST))

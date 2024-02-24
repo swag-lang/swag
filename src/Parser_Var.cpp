@@ -17,9 +17,9 @@ bool Parser::checkIsValidVarName(AstNode* node) const
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return error(identifier->genericParameters, FMT(Err(Err0410), identifier->token.c_str()));
+            return error(identifier->genericParameters, form(Err(Err0410), identifier->token.c_str()));
         if (identifier->callParameters)
-            return error(identifier->callParameters, FMT(Err(Err0411), identifier->token.c_str()));
+            return error(identifier->callParameters, form(Err(Err0411), identifier->token.c_str()));
     }
 
     if (node->token.text[0] != '#')
@@ -39,14 +39,14 @@ bool Parser::checkIsValidVarName(AstNode* node) const
             while (pz != endpz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, FMT(Err(Err0142), node->token.c_str() + 6));
+                    return error(node->token, form(Err(Err0142), node->token.c_str() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
             }
 
             if (num >= 10)
-                return error(node->token, FMT(Err(Err0601), num));
+                return error(node->token, form(Err(Err0601), num));
             if (node->ownerFct)
                 node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_SPEC_MIXIN);
 
@@ -65,14 +65,14 @@ bool Parser::checkIsValidVarName(AstNode* node) const
             while (pz != endpz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, FMT(Err(Err0138), node->token.c_str() + 6));
+                    return error(node->token, form(Err(Err0138), node->token.c_str() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
             }
 
             if (num >= 32)
-                return error(node->token, FMT(Err(Err0600), num));
+                return error(node->token, form(Err(Err0600), num));
             if (node->ownerFct)
                 node->ownerFct->aliasMask |= 1 << num;
 
@@ -80,7 +80,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
         }
     }
 
-    return error(node->token, FMT(Err(Err0407), node->token.c_str()));
+    return error(node->token, form(Err(Err0407), node->token.c_str()));
 }
 
 bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet)
@@ -155,13 +155,13 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
     // Tuple dereference
     else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
     {
-        SWAG_VERIFY(acceptDeref, error(leftNode, FMT(Err(Err0511), Naming::aKindName(currentScope->kind).c_str())));
+        SWAG_VERIFY(acceptDeref, error(leftNode, form(Err(Err0511), Naming::aKindName(currentScope->kind).c_str())));
 
         const auto parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent);
         *result               = parentNode;
 
         // Generate an expression of the form "var __tmp_0 = assignment"
-        const auto  tmpVarName  = FMT("__5tmp_%d", g_UniqueID.fetch_add(1));
+        const auto  tmpVarName  = form("__5tmp_%d", g_UniqueID.fetch_add(1));
         AstVarDecl* orgVarNode  = Ast::newVarDecl(tmpVarName, this, parentNode);
         orgVarNode->kind        = kind;
         orgVarNode->assignToken = assignToken.token;
@@ -226,7 +226,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->addSpecFlag(AstVarDecl::SPEC_FLAG_TUPLE_AFFECT);
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
-            identifier          = Ast::newMultiIdentifierRef(FMT("%s.item%u", tmpVarName.c_str(), idx++), this, varNode);
+            identifier          = Ast::newMultiIdentifierRef(form("%s.item%u", tmpVarName.c_str(), idx++), this, varNode);
             varNode->assignment = identifier;
             Semantic::setVarDeclResolve(varNode);
             varNode->assignment->addAstFlag(AST_TUPLE_UNPACK);
@@ -272,7 +272,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         kind = AstNodeKind::ConstDecl;
         SWAG_CHECK(eatToken());
         if (tokenParse.token.id != TokenId::SymLeftParen)
-            SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0249), tokenParse.token.c_str())));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, form(Err(Err0249), tokenParse.token.c_str())));
     }
     else
     {
@@ -280,7 +280,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         kind  = AstNodeKind::VarDecl;
         SWAG_CHECK(eatToken());
         if (tokenParse.token.id != TokenId::SymLeftParen)
-            SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0409), isLet ? "let" : "var", tokenParse.token.c_str())));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, form(Err(Err0409), isLet ? "let" : "var", tokenParse.token.c_str())));
     }
 
     SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
@@ -299,9 +299,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         {
             Utf8 msg;
             if (kind == AstNodeKind::ConstDecl)
-                msg = FMT(Err(Err0546), tokenParse.token.c_str());
+                msg = form(Err(Err0546), tokenParse.token.c_str());
             else
-                msg = FMT(Err(Err0584), tokenParse.token.c_str());
+                msg = form(Err(Err0584), tokenParse.token.c_str());
 
             Diagnostic err{sourceFile, tokenParse.token, msg};
             if (tokenParse.token.id == TokenId::SymEqualEqual)
@@ -326,8 +326,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 const auto typeExpr = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
                 if (typeExpr->identifier)
                 {
-                    Diagnostic err{sourceFile, tokenParse.token, FMT(Err(Err0021), typeExpr->identifier->token.c_str())};
-                    err.addNote(FMT(Nte(Nte0183), typeExpr->identifier->token.c_str(), typeExpr->identifier->token.c_str()));
+                    Diagnostic err{sourceFile, tokenParse.token, form(Err(Err0021), typeExpr->identifier->token.c_str())};
+                    err.addNote(form(Nte(Nte0183), typeExpr->identifier->token.c_str(), typeExpr->identifier->token.c_str()));
                     err.addNote(Nte(Nte0179));
                     return context->report(err);
                 }

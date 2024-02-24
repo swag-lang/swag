@@ -126,50 +126,50 @@ void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* /*context
         case 8:
         default:
             if (fmt.isSigned)
-                result = FMT("%4d ", getAddrValue<int8_t>(addr));
+                result = form("%4d ", getAddrValue<int8_t>(addr));
             else if (!fmt.isHexa)
-                result = FMT("%3u ", getAddrValue<uint8_t>(addr));
+                result = form("%3u ", getAddrValue<uint8_t>(addr));
             else if (fmt.print0X)
-                result = FMT("0x%02llx ", getAddrValue<uint8_t>(addr));
+                result = form("0x%02llx ", getAddrValue<uint8_t>(addr));
             else
-                result = FMT("%02llx ", getAddrValue<uint8_t>(addr));
+                result = form("%02llx ", getAddrValue<uint8_t>(addr));
             break;
 
         case 16:
             if (fmt.isSigned)
-                result = FMT("%6d ", getAddrValue<int16_t>(addr));
+                result = form("%6d ", getAddrValue<int16_t>(addr));
             else if (!fmt.isHexa)
-                result = FMT("%5u ", getAddrValue<uint16_t>(addr));
+                result = form("%5u ", getAddrValue<uint16_t>(addr));
             else if (fmt.print0X)
-                result = FMT("0x%04llx ", getAddrValue<uint16_t>(addr));
+                result = form("0x%04llx ", getAddrValue<uint16_t>(addr));
             else
-                result = FMT("%04llx ", getAddrValue<uint16_t>(addr));
+                result = form("%04llx ", getAddrValue<uint16_t>(addr));
             break;
 
         case 32:
             if (fmt.isFloat)
-                result = FMT("%16.5g ", getAddrValue<float>(addr));
+                result = form("%16.5g ", getAddrValue<float>(addr));
             else if (fmt.isSigned)
-                result = FMT("%11d ", getAddrValue<int32_t>(addr));
+                result = form("%11d ", getAddrValue<int32_t>(addr));
             else if (!fmt.isHexa)
-                result = FMT("%10u ", getAddrValue<uint32_t>(addr));
+                result = form("%10u ", getAddrValue<uint32_t>(addr));
             else if (fmt.print0X)
-                result = FMT("0x%08llx ", getAddrValue<uint32_t>(addr));
+                result = form("0x%08llx ", getAddrValue<uint32_t>(addr));
             else
-                result = FMT("%08llx ", getAddrValue<uint32_t>(addr));
+                result = form("%08llx ", getAddrValue<uint32_t>(addr));
             break;
 
         case 64:
             if (fmt.isFloat)
-                result = FMT("%16.5g ", getAddrValue<double>(addr));
+                result = form("%16.5g ", getAddrValue<double>(addr));
             else if (fmt.isSigned)
-                result = FMT("%21lld ", getAddrValue<int64_t>(addr));
+                result = form("%21lld ", getAddrValue<int64_t>(addr));
             else if (!fmt.isHexa)
-                result = FMT("%20llu ", getAddrValue<uint64_t>(addr));
+                result = form("%20llu ", getAddrValue<uint64_t>(addr));
             else if (fmt.print0X)
-                result = FMT("0x%016llx ", getAddrValue<uint64_t>(addr));
+                result = form("0x%016llx ", getAddrValue<uint64_t>(addr));
             else
-                result = FMT("%016llx ", getAddrValue<uint64_t>(addr));
+                result = form("%016llx ", getAddrValue<uint64_t>(addr));
             break;
     }
 }
@@ -201,7 +201,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += "null";
         else
         {
-            str += FMT("0x%016llx ", ptr);
+            str += form("0x%016llx ", ptr);
             auto res1 = res;
             res1.type = TypeManager::concretePtrRef(typeInfo);
             res1.addr = *static_cast<void**>(res1.addr);
@@ -227,7 +227,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += "null";
         else
         {
-            str += FMT("0x%016llx", ptr);
+            str += form("0x%016llx", ptr);
             str += " ";
             Utf8 str1;
             str1.setView(static_cast<const char*>(ptr->name.buffer), static_cast<int>(ptr->name.count));
@@ -245,7 +245,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         if (ptr == nullptr)
             str += "null";
         else
-            str += FMT("0x%016llx", ptr);
+            str += form("0x%016llx", ptr);
         return;
     }
 
@@ -256,7 +256,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += "null";
         else
         {
-            str += FMT("0x%016llx ", ptr);
+            str += form("0x%016llx ", ptr);
             if (ByteCode::isByteCodeLambda(ptr))
             {
                 str += "(bytecode) ";
@@ -293,7 +293,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             {
                 for (int i = 0; i < indent + 1; i++)
                     str += "   ";
-                str += FMT("(%s%s%s) %s%s%s = ",
+                str += form("(%s%s%s) %s%s%s = ",
                            Log::colorToVTS(LogColor::Type).c_str(),
                            p->typeInfo->getDisplayNameC(),
                            Log::colorToVTS(LogColor::Default).c_str(),
@@ -315,7 +315,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     if (typeInfo->isArray())
     {
         auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        str += FMT("0x%016llx ", addr);
+        str += form("0x%016llx ", addr);
         if (!printArray)
         {
             str += "<hidden>";
@@ -327,7 +327,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             {
                 for (int i = 0; i < indent; i++)
                     str += "   ";
-                str += FMT(" [%d] ", idx);
+                str += form(" [%d] ", idx);
                 EvaluateResult res1;
                 res1.type = typeArray->pointedType;
                 res1.addr = static_cast<uint8_t*>(addr) + static_cast<size_t>(idx * typeArray->pointedType->sizeOf);
@@ -349,8 +349,8 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += "null";
         else
         {
-            str += FMT("(0x%016llx ", ptr);
-            str += FMT("%llu) ", count);
+            str += form("(0x%016llx ", ptr);
+            str += form("%llu) ", count);
             if (!printArray)
             {
                 str += "<hidden>";
@@ -362,7 +362,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 {
                     for (int i = 0; i < indent; i++)
                         str += "   ";
-                    str += FMT(" [%d] ", idx);
+                    str += form(" [%d] ", idx);
                     EvaluateResult res1;
                     res1.type = typeSlice->pointedType;
                     res1.addr = ptr + idx * typeSlice->pointedType->sizeOf;
@@ -383,8 +383,8 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += "null";
         else
         {
-            str += FMT("(0x%016llx ", ptr);
-            str += FMT("0x%016llx)", static_cast<void**>(addr)[1]);
+            str += form("(0x%016llx ", ptr);
+            str += form("0x%016llx)", static_cast<void**>(addr)[1]);
         }
         return;
     }
@@ -400,8 +400,8 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                     str += "null";
                 else
                 {
-                    str += FMT("(0x%016llx ", static_cast<void**>(addr)[0]);
-                    str += FMT("0x%016llx)", static_cast<void**>(addr)[1]);
+                    str += form("(0x%016llx ", static_cast<void**>(addr)[0]);
+                    str += form("0x%016llx)", static_cast<void**>(addr)[1]);
                     EvaluateResult res1;
                     res1.type = g_Workspace->swagScope.regTypeInfo;
                     res1.addr = static_cast<void**>(addr)[1];
@@ -444,41 +444,41 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             }
 
             case NativeTypeKind::Bool:
-                str += FMT("%s", *static_cast<bool*>(addr) ? "true" : "false");
+                str += form("%s", *static_cast<bool*>(addr) ? "true" : "false");
                 return;
 
             case NativeTypeKind::S8:
-                str += FMT("%d", *static_cast<int8_t*>(addr));
+                str += form("%d", *static_cast<int8_t*>(addr));
                 return;
             case NativeTypeKind::S16:
-                str += FMT("%d", *static_cast<int16_t*>(addr));
+                str += form("%d", *static_cast<int16_t*>(addr));
                 return;
             case NativeTypeKind::S32:
-                str += FMT("%d", *static_cast<int32_t*>(addr));
+                str += form("%d", *static_cast<int32_t*>(addr));
                 return;
             case NativeTypeKind::S64:
-                str += FMT("%lld", *static_cast<int64_t*>(addr));
+                str += form("%lld", *static_cast<int64_t*>(addr));
                 return;
 
             case NativeTypeKind::U8:
-                str += FMT("%u (0x%x)", *static_cast<uint8_t*>(addr), *static_cast<uint8_t*>(addr));
+                str += form("%u (0x%x)", *static_cast<uint8_t*>(addr), *static_cast<uint8_t*>(addr));
                 return;
             case NativeTypeKind::U16:
-                str += FMT("%u (0x%x)", *static_cast<uint16_t*>(addr), *static_cast<uint16_t*>(addr));
+                str += form("%u (0x%x)", *static_cast<uint16_t*>(addr), *static_cast<uint16_t*>(addr));
                 return;
             case NativeTypeKind::U32:
             case NativeTypeKind::Rune:
-                str += FMT("%u (0x%x)", *static_cast<uint32_t*>(addr), *static_cast<uint32_t*>(addr));
+                str += form("%u (0x%x)", *static_cast<uint32_t*>(addr), *static_cast<uint32_t*>(addr));
                 return;
             case NativeTypeKind::U64:
-                str += FMT("%llu (0x%llx)", *static_cast<uint64_t*>(addr), *static_cast<uint64_t*>(addr));
+                str += form("%llu (0x%llx)", *static_cast<uint64_t*>(addr), *static_cast<uint64_t*>(addr));
                 return;
 
             case NativeTypeKind::F32:
-                str += FMT("%f", *static_cast<float*>(addr));
+                str += form("%f", *static_cast<float*>(addr));
                 return;
             case NativeTypeKind::F64:
-                str += FMT("%lf", *static_cast<double*>(addr));
+                str += form("%lf", *static_cast<double*>(addr));
                 return;
             default:
                 break;
@@ -510,7 +510,7 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8&
     if (!testNameFilter(over->symbol->name, filter))
         return;
 
-    Utf8 str = FMT("(%s%s%s) %s%s%s = ",
+    Utf8 str = form("(%s%s%s) %s%s%s = ",
                    Log::colorToVTS(LogColor::Type).c_str(),
                    over->typeInfo->getDisplayNameC(),
                    Log::colorToVTS(LogColor::Default).c_str(),

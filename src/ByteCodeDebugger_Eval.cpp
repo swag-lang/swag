@@ -46,7 +46,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         else
         {
             g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-            printCmdError(FMT("%s", g_SilentErrorMsg.c_str()));
+            printCmdError(form("%s", g_SilentErrorMsg.c_str()));
         }
         return false;
     }
@@ -65,7 +65,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-        printCmdError(FMT("%s", g_SilentErrorMsg.c_str()));
+        printCmdError(form("%s", g_SilentErrorMsg.c_str()));
         return false;
     }
 
@@ -104,7 +104,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-        printCmdError(FMT("%s", g_SilentErrorMsg.c_str()));
+        printCmdError(form("%s", g_SilentErrorMsg.c_str()));
         return false;
     }
 
@@ -139,7 +139,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         else
         {
             g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-            printCmdError(FMT("%s", g_SilentErrorMsg.c_str()));
+            printCmdError(form("%s", g_SilentErrorMsg.c_str()));
         }
         return false;
     }
@@ -207,7 +207,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     {
         if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
         {
-            printCmdError(FMT("cannot apply print format to type [[%s]]", concrete->getDisplayNameC()));
+            printCmdError(form("cannot apply print format to type [[%s]]", concrete->getDisplayNameC()));
             return BcDbgCommandResult::Continue;
         }
 
@@ -217,7 +217,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     }
     else
     {
-        str = FMT("(%s%s%s) ", Log::colorToVTS(LogColor::Type).c_str(), res.type->getDisplayNameC(), Log::colorToVTS(LogColor::Default).c_str());
+        str = form("(%s%s%s) ", Log::colorToVTS(LogColor::Type).c_str(), res.type->getDisplayNameC(), Log::colorToVTS(LogColor::Default).c_str());
         g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
     }
 

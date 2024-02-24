@@ -247,17 +247,17 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
     else
     {
         if (count == 0)
-            resName += FMT("[?", count);
+            resName += form("[?", count);
         else
-            resName += FMT("[%d", count);
+            resName += form("[%d", count);
         auto pType = pointedType;
         while (pType->isArray() && pType != finalType)
         {
             const auto subType = castTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
             if (subType->count == 0)
-                resName += FMT(",?", subType->count);
+                resName += form(",?", subType->count);
             else
-                resName += FMT(",%d", subType->count);
+                resName += form(",%d", subType->count);
             pType = subType->pointedType;
         }
 
@@ -301,7 +301,7 @@ void TypeInfoList::computeWhateverName(Utf8& resName, uint32_t nameType)
     {
         if (isConst())
             resName += "const ";
-        resName += FMT("[%u] ", subTypes.size());
+        resName += form("[%u] ", subTypes.size());
         if (!subTypes.empty())
         {
             subTypes[0]->typeInfo->computeWhateverName(nameType);
@@ -426,7 +426,7 @@ Utf8 TypeInfoEnum::getDisplayName()
 {
     Utf8 str;
     computeWhateverName(str, COMPUTE_DISPLAY_NAME);
-    return FMT("enum %s", str.c_str());
+    return form("enum %s", str.c_str());
 }
 
 bool TypeInfoEnum::contains(const Utf8& valueName)
@@ -1190,15 +1190,15 @@ bool TypeInfoStruct::isPlainOldData() const
 Utf8 TypeInfoStruct::getDisplayName()
 {
     if (declNode && declNode->kind == AstNodeKind::InterfaceDecl)
-        return FMT("interface %s", name.c_str());
+        return form("interface %s", name.c_str());
     if (declNode && declNode->kind == AstNodeKind::StructDecl && declNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
-        return FMT("union %s", name.c_str());
+        return form("union %s", name.c_str());
 
     Utf8 str;
     computeWhateverName(str, COMPUTE_DISPLAY_NAME);
     if (isTuple())
-        return FMT("%s", str.c_str());
-    return FMT("struct %s", str.c_str());
+        return form("%s", str.c_str());
+    return form("struct %s", str.c_str());
 }
 
 Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, uint32_t nameType)

@@ -99,7 +99,6 @@ struct Utf8
     void replace(const char* src, const char* dst);
 
     static const char* decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset);
-    static Utf8        format(const char* format, ...);
     static void        tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty = false, bool trim = false);
     static void        wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength);
     static void        tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens);
@@ -123,4 +122,4 @@ struct HashUtf8
     }
 };
 
-#define FMT(__format, ...) Utf8::format(__format, __VA_ARGS__)
+Utf8 form(const char* format, ...);

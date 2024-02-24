@@ -100,7 +100,7 @@ namespace OS
 
         g_WinSdkFolder.append(bestName);
         if (g_CommandLine.verbosePath)
-            g_Log.messageVerbose(FMT("winsdk path is [[%s]]", g_WinSdkFolder.c_str()));
+            g_Log.messageVerbose(form("winsdk path is [[%s]]", g_WinSdkFolder.c_str()));
 
         return true;
     }
@@ -185,7 +185,7 @@ namespace OS
         saAttr.lpSecurityDescriptor = nullptr;
         if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
         {
-            Report::error(FMT(Err(Err0628), cmdline.c_str()));
+            Report::error(form(Err(Err0628), cmdline.c_str()));
             return false;
         }
 
@@ -209,7 +209,7 @@ namespace OS
                                 &si,
                                 &pi))
             {
-                Report::errorOS(FMT(Err(Err0629), cmdline.c_str()));
+                Report::errorOS(form(Err(Err0629), cmdline.c_str()));
                 return false;
             }
         }
@@ -607,7 +607,7 @@ namespace OS
                     if (hasLine)
                     {
                         str += Log::colorToVTS(LogColor::Location);
-                        str += FMT(" %s:%d", line.FileName, line.LineNumber);
+                        str += form(" %s:%d", line.FileName, line.LineNumber);
                     }
 
                     str += "\n";

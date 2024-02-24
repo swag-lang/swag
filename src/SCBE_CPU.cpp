@@ -65,7 +65,7 @@ CPUSymbol* SCBE_CPU::getOrCreateGlobalString(const Utf8& str)
     if (it != globalStrings.end())
         return &allSymbols[it->second];
 
-    const Utf8 symName = FMT("__str%u", static_cast<uint32_t>(globalStrings.size()));
+    const Utf8 symName = form("__str%u", static_cast<uint32_t>(globalStrings.size()));
     const auto sym     = getOrAddSymbol(symName, CPUSymbolKind::GlobalString);
     globalStrings[str] = sym->index;
     sym->value         = stringSegment.addStringNoLock(str);

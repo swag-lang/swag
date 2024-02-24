@@ -28,21 +28,21 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
         {
-            Diagnostic err{node, node->token, FMT(Err(Err0331), typeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, form(Err(Err0331), typeInfo->getDisplayNameC())};
             err.addNote(child, Diagnostic::isType(typeInfo));
             return context->report(err);
         }
 
         case NativeTypeKind::Any:
         {
-            Diagnostic err{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, form(Err(Err0332), typeInfo->getDisplayNameC())};
             err.addNote(child, Nte(Nte0032));
             return context->report(err);
         }
 
         default:
         {
-            Diagnostic err{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, form(Err(Err0332), typeInfo->getDisplayNameC())};
             err.addNote(child, Diagnostic::isType(typeInfo));
             return context->report(err);
         }
@@ -55,17 +55,17 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
         {
             case NativeTypeKind::S8:
                 if (child->computedValue()->reg.s8 <= INT8_MIN)
-                    return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s8, -child->computedValue()->reg.s8, "s8")});
+                    return context->report({child, form(Err(Err0424), child->computedValue()->reg.s8, -child->computedValue()->reg.s8, "s8")});
                 child->computedValue()->reg.s64 = -child->computedValue()->reg.s8;
                 break;
             case NativeTypeKind::S16:
                 if (child->computedValue()->reg.s16 <= INT16_MIN)
-                    return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s16, -child->computedValue()->reg.s16, "s16")});
+                    return context->report({child, form(Err(Err0424), child->computedValue()->reg.s16, -child->computedValue()->reg.s16, "s16")});
                 child->computedValue()->reg.s64 = -child->computedValue()->reg.s16;
                 break;
             case NativeTypeKind::S32:
                 if (child->computedValue()->reg.s32 <= INT32_MIN)
-                    return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s32, -child->computedValue()->reg.s32, "s32")});
+                    return context->report({child, form(Err(Err0424), child->computedValue()->reg.s32, -child->computedValue()->reg.s32, "s32")});
                 child->computedValue()->reg.s64 = -child->computedValue()->reg.s32;
                 if (typeInfo->isUntypedInteger())
                 {
@@ -78,7 +78,7 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
                 break;
             case NativeTypeKind::S64:
                 if (child->computedValue()->reg.s64 <= INT64_MIN)
-                    return context->report({child, FMT(Err(Err0423), child->computedValue()->reg.s64, -child->computedValue()->reg.s64)});
+                    return context->report({child, form(Err(Err0423), child->computedValue()->reg.s64, -child->computedValue()->reg.s64)});
                 child->computedValue()->reg.s64 = -child->computedValue()->reg.s64;
                 break;
 
@@ -169,14 +169,14 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 
         case NativeTypeKind::Any:
         {
-            Diagnostic err{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, form(Err(Err0345), typeInfo->getDisplayNameC())};
             err.addNote(child, Nte(Nte0032));
             return context->report(err);
         }
 
         default:
         {
-            Diagnostic err{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, form(Err(Err0345), typeInfo->getDisplayNameC())};
             err.addNote(child, Diagnostic::isType(child));
             return context->report(err);
         }

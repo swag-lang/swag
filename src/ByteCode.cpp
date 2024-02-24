@@ -77,7 +77,7 @@ Utf8 ByteCode::getPrintRefName()
     if (loc.location)
     {
         str += Log::colorToVTS(LogColor::Location);
-        str += FMT(":%d", loc.location->line - 1);
+        str += form(":%d", loc.location->line - 1);
     }
 
     return str;
@@ -133,7 +133,7 @@ Utf8 ByteCode::getCallName()
     else
         callName = name;
 
-    callName += FMT("_%lX", reinterpret_cast<uint64_t>(this));
+    callName += form("_%lX", reinterpret_cast<uint64_t>(this));
     return callName;
 }
 

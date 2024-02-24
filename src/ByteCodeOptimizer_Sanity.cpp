@@ -422,7 +422,7 @@ namespace
     {
         if (isValid)
             return true;
-        return raiseError(cxt, FMT(Err(San0010), msgKind, type->getDisplayNameC()));
+        return raiseError(cxt, form(Err(San0010), msgKind, type->getDisplayNameC()));
     }
 
     bool checkDivZero(const Context& cxt, const Value& value, bool isZero, const SymbolOverload* overload = nullptr)
@@ -432,7 +432,7 @@ namespace
         if (!isZero)
             return true;
         if (overload)
-            return raiseError(cxt, FMT(Err(San0002), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+            return raiseError(cxt, form(Err(San0002), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
         return raiseError(cxt, Err(San0001));
     }
 
@@ -440,14 +440,14 @@ namespace
     {
         SWAG_ASSERT(stackOffset < UINT32_MAX);
         if (overload)
-            return raiseError(cxt, FMT(Err(San0004), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+            return raiseError(cxt, form(Err(San0004), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
         return raiseError(cxt, Err(San0003));
     }
 
     bool checkStackOffset(const Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
     {
         if (stackOffset + sizeOf > static_cast<size_t>(STATE()->stack.count))
-            return raiseError(cxt, FMT(Err(San0007), stackOffset + sizeOf, STATE()->stack.count));
+            return raiseError(cxt, form(Err(San0007), stackOffset + sizeOf, STATE()->stack.count));
         return true;
     }
 
@@ -458,7 +458,7 @@ namespace
         if (value->reg.u64)
             return true;
         if (value->overload)
-            return raiseError(cxt, FMT(Err(San0006), Naming::kindName(value->overload).c_str(), value->overload->symbol->name.c_str()), value->overload);
+            return raiseError(cxt, form(Err(San0006), Naming::kindName(value->overload).c_str(), value->overload->symbol->name.c_str()), value->overload);
         return raiseError(cxt, Err(San0005));
     }
 
@@ -469,7 +469,7 @@ namespace
         if (value.kind == ValueKind::Invalid)
         {
             if (overload)
-                return raiseError(cxt, FMT(Err(San0008), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+                return raiseError(cxt, form(Err(San0008), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
             return raiseError(cxt, Err(San0009));
         }
 
@@ -2364,7 +2364,7 @@ namespace
                     break;
 
                 default:
-                    Report::internalError(cxt.bc->sourceFile->module, FMT("unknown instruction [[%s]] during sanity check", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                    Report::internalError(cxt.bc->sourceFile->module, form("unknown instruction [[%s]] during sanity check", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                     return false;
             }
 

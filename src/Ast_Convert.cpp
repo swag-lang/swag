@@ -32,7 +32,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         parentForRef = fromNode->parent;
 
     // Declare a variable
-    const auto varNode = newVarDecl(FMT("__6tmp_%d", g_UniqueID.fetch_add(1)), nullptr, fromNode->parent);
+    const auto varNode = newVarDecl(form("__6tmp_%d", g_UniqueID.fetch_add(1)), nullptr, fromNode->parent);
 
     // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
     // Seems a little bit like a hack. Not sure if this will always work.
@@ -102,13 +102,13 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         const int maxCount = static_cast<int>(typeStruct->fields.size());
         if (countParams > maxCount)
         {
-            const Diagnostic err{fromNode->children[maxCount], FMT(Err(Err0636), maxCount, countParams)};
+            const Diagnostic err{fromNode->children[maxCount], form(Err(Err0636), maxCount, countParams)};
             return context->report(err);
         }
 
         if (countParams < maxCount)
         {
-            const Diagnostic err{fromNode->children.back(), FMT(Err(Err0596), maxCount, countParams)};
+            const Diagnostic err{fromNode->children.back(), form(Err(Err0596), maxCount, countParams)};
             return context->report(err);
         }
     }
@@ -164,7 +164,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
 
     Utf8 name = sourceFile->scopeFile->name + "_tpl1_";
-    name += FMT("%d", g_UniqueID.fetch_add(1));
+    name += form("%d", g_UniqueID.fetch_add(1));
     structNode->token.text = std::move(name);
 
     // Add struct type and scope
@@ -192,9 +192,9 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     const auto countParams = typeList->subTypes.size();
     const auto maxCount    = toType->fields.size();
     if (countParams > maxCount)
-        return context->report({fromNode->children.front()->children[maxCount], FMT(Err(Err0636), maxCount, countParams)});
+        return context->report({fromNode->children.front()->children[maxCount], form(Err(Err0636), maxCount, countParams)});
     if (countParams < maxCount)
-        return context->report({fromNode->children.front()->children.back(), FMT(Err(Err0596), maxCount, countParams)});
+        return context->report({fromNode->children.front()->children.back(), form(Err(Err0596), maxCount, countParams)});
 
     // Each field of the toType struct must have a type given by the tuple.
     // But as that tuple can have named parameters, we need to find the correct type depending
@@ -217,7 +217,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             }
 
             if (nameVar.empty())
-                nameVar = FMT("item%u", i);
+                nameVar = form("item%u", i);
             i++;
 
             if (typeField->isListArray())
@@ -299,7 +299,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
         else
         {
             autoName = true;
-            varName  = FMT("item%u", idx);
+            varName  = form("item%u", idx);
         }
 
         const auto paramNode = newVarDecl(varName, nullptr, contentNode);
@@ -333,7 +333,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
 
     // Compute structure name
     Utf8 name = sourceFile->scopeFile->name + "_tpl2_";
-    name += FMT("%d", g_UniqueID.fetch_add(1));
+    name += form("%d", g_UniqueID.fetch_add(1));
     structNode->token.text = name;
 
     // Add struct type and scope
@@ -409,7 +409,7 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
 
         if (!(f->flags & TYPEINFOPARAM_AUTO_NAME))
         {
-            toAdd.aliasName = FMT("item%d", idx);
+            toAdd.aliasName = form("item%d", idx);
             f->declNode->setResolvedSymbolOverload(typeStruct->scope->symTable.addSymbolTypeInfo(context, toAdd));
         }
 
@@ -426,14 +426,14 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
     // Be sure it's the NAME{} syntax
     if (!identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-        return context->report({callP, FMT(Err(Err0377), identifier->typeInfo->name.c_str())});
+        return context->report({callP, form(Err(Err0377), identifier->typeInfo->name.c_str())});
 
     auto varParent = identifier->identifierRef()->parent;
     while (varParent->kind == AstNodeKind::ExpressionList)
         varParent = varParent->parent;
 
     // Declare a variable
-    const auto varNode = newVarDecl(FMT("__1tmp_%d", g_UniqueID.fetch_add(1)), nullptr, varParent);
+    const auto varNode = newVarDecl(form("__1tmp_%d", g_UniqueID.fetch_add(1)), nullptr, varParent);
 
     // Inherit alternative scopes.
     if (identifier->parent->hasExtMisc())

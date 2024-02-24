@@ -69,10 +69,10 @@ namespace
                 if (tryResult[0]->ufcs && paramIdx == 0)
                     note = Diagnostic::note(node, node->token, "the UFCS argument does not match");
                 else
-                    note = Diagnostic::note(node, node->token, FMT("the %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
+                    note = Diagnostic::note(node, node->token, form("the %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
                 break;
             case MatchResult::BadGenericSignature:
-                note = Diagnostic::note(node, node->token, FMT("the generic %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
+                note = Diagnostic::note(node, node->token, form("the generic %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
                 break;
             default:
                 SWAG_ASSERT(false);
@@ -142,7 +142,7 @@ namespace
             SyntaxColorContext cxt;
             n = syntaxColor(n, cxt);
 
-            note->preRemarks.push_back(FMT("overload %d: %s", overloadIndex++, n.c_str()));
+            note->preRemarks.push_back(form("overload %d: %s", overloadIndex++, n.c_str()));
 
             // Additional (more precise) information in case of bad signature
             if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
@@ -187,7 +187,7 @@ namespace
     bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
     {
         // Multiple tryMatches
-        Diagnostic                err{node, node->token, FMT(Err(Err0613), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
+        Diagnostic                err{node, node->token, form(Err(Err0613), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
         Vector<const Diagnostic*> notes;
         SemanticError::commonErrorNotes(context, tryMatches, node, &err, notes);
 

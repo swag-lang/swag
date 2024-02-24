@@ -17,7 +17,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     attrNode->semanticFct                      = Semantic::resolveAttrDecl;
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0219), tokenParse.token.c_str())));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, form(Err(Err0219), tokenParse.token.c_str())));
 
     attrNode->inheritTokenName(tokenParse.token);
     attrNode->tokenName = tokenParse.token;
@@ -80,13 +80,13 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
             SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
             params->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-            SWAG_VERIFY(tokenParse.token.id == TokenId::SymRightSquare || tokenParse.token.id == TokenId::SymComma, error(tokenParse.token, FMT(Err(Err0220), tokenParse.token.c_str())));
+            SWAG_VERIFY(tokenParse.token.id == TokenId::SymRightSquare || tokenParse.token.id == TokenId::SymComma, error(tokenParse.token, form(Err(Err0220), tokenParse.token.c_str())));
 
             if (tokenParse.token.id != TokenId::SymRightSquare)
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma, "to use another attribute, or ']' to end"));
                 SWAG_VERIFY(tokenParse.token.id != TokenId::SymLeftParen, error(tokenParse.token, Err(Err0543)));
-                SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0219), tokenParse.token.c_str())));
+                SWAG_CHECK(checkIsIdentifier(tokenParse, form(Err(Err0219), tokenParse.token.c_str())));
             }
         }
 

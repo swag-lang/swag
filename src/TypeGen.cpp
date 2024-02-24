@@ -82,7 +82,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     if (storageSegment->kind != SegmentKind::Compiler)
     {
         if (context && g_CommandLine.verboseConcreteTypes)
-            g_Log.messageVerbose(FMT("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
+            g_Log.messageVerbose(form("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
 #ifdef SWAG_STATS
         ++g_Stats.totalConcreteTypes;
 #endif
@@ -132,7 +132,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
             typeStruct = swagScope.regTypeInfoNamespace;
             break;
         default:
-            return context->report({context->node, FMT(Err(Err0372), typeInfo->getDisplayNameC())});
+            return context->report({context->node, form(Err(Err0372), typeInfo->getDisplayNameC())});
     }
 
     // Build concrete structure content

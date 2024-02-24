@@ -178,7 +178,7 @@ void Module::computePublicPath()
         {
             if (!filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(FMT(Err(Fat0019), publicPath.c_str()));
+                Report::errorOS(form(Err(Fat0019), publicPath.c_str()));
                 OS::exit(-1);
             }
         }
@@ -193,7 +193,7 @@ void Module::computePublicPath()
         {
             if (!filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(FMT(Err(Fat0019), publicPath.c_str()));
+                Report::errorOS(form(Err(Fat0019), publicPath.c_str()));
                 OS::exit(-1);
             }
         }
@@ -234,7 +234,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
             if (!isalnum(i) && i != '_')
             {
                 error  = true;
-                reason = FMT("forbidden character [[%c]]", i);
+                reason = form("forbidden character [[%c]]", i);
                 break;
             }
         }
@@ -242,7 +242,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
 
     if (error)
     {
-        errorStr = FMT("invalid module name [[%s]], ", name.c_str());
+        errorStr = form("invalid module name [[%s]], ", name.c_str());
         errorStr += reason;
         return false;
     }
@@ -685,14 +685,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic err{importNode, tokenLocation, FMT(Err(Err0066), dep->name.c_str(), dep->location.c_str())};
+                Diagnostic err{importNode, tokenLocation, form(Err(Err0066), dep->name.c_str(), dep->location.c_str())};
                 err.addNote(dep->node, Nte(Nte0073));
                 return Report::report(err);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic err{importNode, tokenVersion, FMT(Err(Err0067), dep->name.c_str(), dep->version.c_str())};
+                Diagnostic err{importNode, tokenVersion, form(Err(Err0067), dep->name.c_str(), dep->version.c_str())};
                 err.addNote(dep->node, Nte(Nte0073));
                 return Report::report(err);
             }
@@ -757,10 +757,10 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         switch (i)
         {
             case 1:
-                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, FMT(Err(Err0127), dep->revNum)}));
+                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, form(Err(Err0127), dep->revNum)}));
                 break;
             case 2:
-                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, FMT(Err(Err0126), dep->buildNum)}));
+                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, form(Err(Err0126), dep->buildNum)}));
                 break;
             default:
                 break;
@@ -1157,7 +1157,7 @@ void Module::callPreMain()
 
 Utf8 Module::getGlobalPrivFct(const Utf8& nameFct) const
 {
-    return FMT(nameFct.c_str(), nameNormalized.c_str());
+    return form(nameFct.c_str(), nameNormalized.c_str());
 }
 
 bool Module::filterFunctionsToEmit()
@@ -1189,7 +1189,7 @@ void Module::logStage(const char* msg) const
 {
     if (!g_CommandLine.verboseStages)
         return;
-    g_Log.messageVerbose(FMT("[%s] -- %s", name.c_str(), msg));
+    g_Log.messageVerbose(form("[%s] -- %s", name.c_str(), msg));
 }
 
 void Module::logPass(ModuleBuildPass pass)

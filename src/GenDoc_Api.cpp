@@ -132,7 +132,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
     {
         if (first)
         {
-            helpContent += FMT("<h3>%s</h3>\n", title);
+            helpContent += form("<h3>%s</h3>\n", title);
             helpContent += "<table class=\"table-enumeration\">\n";
             first = false;
         }
@@ -172,7 +172,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
                 parameters += ")";
             }
 
-            helpContent += FMT("<span class=\"%s\"><a href=\"#%s\">%s</a></span>", SYN_FUNCTION, toRef(n1->getScopedName()).c_str(), n1->token.text.c_str());
+            helpContent += form("<span class=\"%s\"><a href=\"#%s\">%s</a></span>", SYN_FUNCTION, toRef(n1->getScopedName()).c_str(), n1->token.text.c_str());
             SyntaxColorContext cxt;
             cxt.mode = SyntaxColorMode::ForDoc;
             helpContent += syntaxColor(parameters, cxt);
@@ -182,7 +182,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
             SyntaxColorContext cxt;
             cxt.mode  = SyntaxColorMode::ForDoc;
             auto name = syntaxColor(n1->token.text, cxt);
-            helpContent += FMT("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).c_str(), name.c_str());
+            helpContent += form("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).c_str(), name.c_str());
         }
 
         helpContent += "</td>\n";
@@ -244,12 +244,12 @@ void GenDoc::outputTitle(OneRef& c)
     helpContent += "<table class=\"api-item\">\n";
     helpContent += "<tr>\n";
     helpContent += "<td class=\"api-item\">\n";
-    helpContent += FMT("<span id=\"%s\">", toRef(c.fullName).c_str());
+    helpContent += form("<span id=\"%s\">", toRef(c.fullName).c_str());
 
     Vector<Utf8> tkn;
     Utf8::tokenize(c.displayName, '.', tkn);
 
-    helpContent += FMT("<span class=\"api-item-title-kind\">%s</span> ", name.c_str());
+    helpContent += form("<span class=\"api-item-title-kind\">%s</span> ", name.c_str());
 
     helpContent += "<span class=\"api-item-title-light\">";
     for (int i = 0; i < static_cast<int>(tkn.size()) - 1; i++)
@@ -289,7 +289,7 @@ void GenDoc::outputTitle(OneRef& c)
                 str.append(c.nodes[0]->token.sourceFile->name.c_str());
             }
 
-            helpContent += FMT("<a href=\"%s#L%d\" class=\"src\">[src]</a>", str.c_str(), c.nodes[0]->token.startLocation.line + 1);
+            helpContent += form("<a href=\"%s#L%d\" class=\"src\">[src]</a>", str.c_str(), c.nodes[0]->token.startLocation.line + 1);
         }
 
         helpContent += "</td>\n";
@@ -449,14 +449,14 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
 
     if (first)
     {
-        helpToc += FMT("<h3>%s</h3>\n", sectionName);
+        helpToc += form("<h3>%s</h3>\n", sectionName);
         first = false;
     }
 
-    helpToc += FMT("<h4>%s</h4>\n", categName);
+    helpToc += form("<h4>%s</h4>\n", categName);
     helpToc += "<ul>\n";
     for (const auto& t : pendingNodes)
-        helpToc += FMT("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).c_str(), t->tocName.c_str());
+        helpToc += form("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).c_str(), t->tocName.c_str());
     helpToc += "</ul>\n";
 
     pendingNodes.clear();
@@ -579,7 +579,7 @@ void GenDoc::generateContent()
 
                     helpContent += "<tr>\n";
 
-                    helpContent += FMT("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
+                    helpContent += form("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
                     helpContent += n->token.text;
                     helpContent += "</td>\n";
 
@@ -620,7 +620,7 @@ void GenDoc::generateContent()
 
                     helpContent += "<tr>\n";
 
-                    helpContent += FMT("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
+                    helpContent += form("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
                     helpContent += n->token.text;
                     helpContent += "</td>\n";
 

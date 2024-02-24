@@ -67,7 +67,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     SWAG_ASSERT(oneAttribute->typeInfo);
     if (!oneAttribute->typeInfo->isFuncAttr())
-        return context->report({oneAttribute, FMT(Err(Err0218), oneAttribute->typeInfo->getDisplayNameC(), Naming::aKindName(oneAttribute->typeInfo).c_str())});
+        return context->report({oneAttribute, form(Err(Err0218), oneAttribute->typeInfo->getDisplayNameC(), Naming::aKindName(oneAttribute->typeInfo).c_str())});
 
     const auto kind     = checkNode->kind;
     const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
@@ -187,8 +187,8 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     if (specificMsg)
     {
         const auto nakedName = Naming::kindName(checkNode);
-        Diagnostic err{oneAttribute, FMT(Err(Err0491), oneAttribute->token.c_str(), specificMsg)};
-        err.addNote(checkNode, checkNode->token, FMT(Nte(Nte0024), nakedName.c_str()));
+        Diagnostic err{oneAttribute, form(Err(Err0491), oneAttribute->token.c_str(), specificMsg)};
+        err.addNote(checkNode, checkNode->token, form(Nte(Nte0024), nakedName.c_str()));
         err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
         return context->report(err);
     }
@@ -196,13 +196,13 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     const auto nakedName = Naming::aKindName(checkNode);
     if (nakedName == "<node>")
     {
-        Diagnostic err{oneAttribute, FMT(Err(Err0495), oneAttribute->token.c_str())};
+        Diagnostic err{oneAttribute, form(Err(Err0495), oneAttribute->token.c_str())};
         err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
         return context->report(err);
     }
 
-    Diagnostic err{oneAttribute, FMT(Err(Err0492), oneAttribute->token.c_str(), nakedName.c_str())};
-    err.addNote(checkNode, checkNode->token, FMT(Nte(Nte0063), Naming::kindName(checkNode).c_str()));
+    Diagnostic err{oneAttribute, form(Err(Err0492), oneAttribute->token.c_str(), nakedName.c_str())};
+    err.addNote(checkNode, checkNode->token, form(Nte(Nte0063), Naming::kindName(checkNode).c_str()));
     err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
     return context->report(err);
 }
@@ -303,7 +303,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             {
                 if (isHereTmp.contains(typeInfo))
                 {
-                    Diagnostic err{child, FMT(Err(Err0068), child->token.c_str())};
+                    Diagnostic err{child, form(Err(Err0068), child->token.c_str())};
                     return context->report(err);
                 }
 
@@ -405,7 +405,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                             break;
                         }
                         default:
-                            return context->report({c, FMT(Err(Err0472), typeChild->getDisplayNameC())});
+                            return context->report({c, form(Err(Err0472), typeChild->getDisplayNameC())});
                     }
 
                     forNode->addAlternativeScope(scope);
@@ -432,7 +432,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         flags.add(ATTRIBUTE_EXPORT_TYPE_NO_ZERO);
                     else
                     {
-                        return context->report({child, attrParam->token, FMT(Err(Err0280), w.c_str())});
+                        return context->report({child, attrParam->token, form(Err(Err0280), w.c_str())});
                     }
                 }
             }
@@ -482,7 +482,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
                         if (!done)
                         {
-                            return context->report({child, attrParam->token, FMT(Err(Err0373), w.c_str())});
+                            return context->report({child, attrParam->token, form(Err(Err0373), w.c_str())});
                         }
                     }
                 }
@@ -529,7 +529,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         }
                         else
                         {
-                            return context->report({child, attrParam->token, FMT(Err(Err0353), w.c_str())});
+                            return context->report({child, attrParam->token, form(Err(Err0353), w.c_str())});
                         }
                     }
                 }
@@ -580,7 +580,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         }
                         else
                         {
-                            return context->report({child, attrParam->token, FMT(Err(Err0324), w.c_str())});
+                            return context->report({child, attrParam->token, form(Err(Err0324), w.c_str())});
                         }
                     }
                 }
@@ -592,7 +592,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
                 SWAG_ASSERT(attrParam);
                 auto attrValue = &attrParam->value;
-                SWAG_VERIFY(!attrValue->reg.u8 || Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, FMT(Err(Err0354), attrValue->reg.u8)}));
+                SWAG_VERIFY(!attrValue->reg.u8 || Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, form(Err(Err0354), attrValue->reg.u8)}));
             }
 
             //////
@@ -601,7 +601,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
                 SWAG_ASSERT(attrParam);
                 auto attrValue = &attrParam->value;
-                SWAG_VERIFY(Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, FMT(Err(Err0190), attrValue->reg.u8)}));
+                SWAG_VERIFY(Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, form(Err(Err0190), attrValue->reg.u8)}));
             }
 
             //////
@@ -691,7 +691,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         auto resolved     = identifier->resolvedSymbolOverload();
         if (resolvedName->kind != SymbolKind::Attribute)
         {
-            Diagnostic err{identifier, identifier->token, FMT(Err(Err0217), resolvedName->name.c_str(), Naming::aKindName(resolvedName->kind).c_str())};
+            Diagnostic err{identifier, identifier->token, form(Err(Err0217), resolvedName->name.c_str(), Naming::aKindName(resolvedName->kind).c_str())};
             context->report(err, Diagnostic::hereIs(resolved));
             return false;
         }
@@ -702,7 +702,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeInfo->attributeUsage & File))
             {
-                Diagnostic err{identifier, identifier->token, FMT(Err(Err0493), resolvedName->name.c_str())};
+                Diagnostic err{identifier, identifier->token, form(Err(Err0493), resolvedName->name.c_str())};
                 context->report(err, Diagnostic::hereIs(resolved));
                 return false;
             }

@@ -223,7 +223,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     {
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
-        pp.filename = FMT("%s%d", buildParameters.module->name.c_str(), precompileIndex);
+        pp.filename = form("%s%d", buildParameters.module->name.c_str(), precompileIndex);
         pp.filename += getObjectFileExtension(g_CommandLine.target);
 
         pp.llvmContext = new llvm::LLVMContext();
@@ -328,7 +328,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
             break;
     }
 
-    Utf8 targetTriple = FMT("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
+    Utf8 targetTriple = form("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
     bool isDebug      = buildParameters.isDebug();
 
     // Setup target
@@ -336,7 +336,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     std::string error;
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple.c_str(), error);
     if (!target)
-        Report::internalError(buildParameters.module, FMT("the LLVM backend failed to create the target [[%s]]", targetTriple.c_str()));
+        Report::internalError(buildParameters.module, form("the LLVM backend failed to create the target [[%s]]", targetTriple.c_str()));
 
     // Create target machine
     Utf8 cpu = "generic";
@@ -480,7 +480,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
         modu.print(destFileIR, nullptr);
         destFileIR.flush();
         destFileIR.close();
-        g_Log.messageVerbose(FMT("generating llvm %s", irName.c_str()));
+        g_Log.messageVerbose(form("generating llvm %s", irName.c_str()));
     }
 
     delete targetMachine;

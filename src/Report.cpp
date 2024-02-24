@@ -631,7 +631,7 @@ namespace
                             str += Log::colorToVTS(LogColor::DarkYellow);
                             str += "error";
                             str += Log::colorToVTS(LogColor::Gray);
-                            str += FMT(" --> %s:%d:%d", sourceFile1->path.c_str(), context->traces[i]->lineStart + 1, context->traces[i]->colStart + 1);
+                            str += form(" --> %s:%d:%d", sourceFile1->path.c_str(), context->traces[i]->lineStart + 1, context->traces[i]->colStart + 1);
                             str += "\n";
                         }
                     }
@@ -708,7 +708,7 @@ bool Report::error(Module* module, const Utf8& msg)
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
     g_Log.print("error: ");
-    g_Log.print(FMT("module %s: ", module->name.c_str()));
+    g_Log.print(form("module %s: ", module->name.c_str()));
     g_Log.print(Diagnostic::oneLiner(msg));
     g_Log.eol();
     g_Log.setDefaultColor();
@@ -749,7 +749,7 @@ void Report::errorOS(const Utf8& msg)
 
 bool Report::internalError(AstNode* node, const char* msg)
 {
-    const Diagnostic err{node, FMT("[compiler internal] %s", msg)};
+    const Diagnostic err{node, form("[compiler internal] %s", msg)};
     report(err);
     return false;
 }
@@ -759,7 +759,7 @@ bool Report::internalError(Module* module, const char* msg)
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
     g_Log.print("error: ");
-    g_Log.print(FMT("module %s: [compiler internal] ", module->name.c_str()));
+    g_Log.print(form("module %s: [compiler internal] ", module->name.c_str()));
     g_Log.print(msg);
     g_Log.eol();
     g_Log.setDefaultColor();

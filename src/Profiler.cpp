@@ -19,20 +19,20 @@ namespace
     {
         Utf8 line;
         line += Log::colorToVTS(LogColor::Index);
-        line += FMT("%d", bc->profileCallCount);
+        line += form("%d", bc->profileCallCount);
 
         line += Log::colorToVTS(LogColor::Value);
         while (Log::removeFormat(line).count < COL1)
             line += " ";
-        line += FMT("%0.6f", OS::timerToSeconds(bc->profileCumTime));
+        line += form("%0.6f", OS::timerToSeconds(bc->profileCumTime));
 
         while (Log::removeFormat(line).count < COL2)
             line += " ";
-        line += FMT("%0.6f", OS::timerToSeconds(bc->profileFFI));
+        line += form("%0.6f", OS::timerToSeconds(bc->profileFFI));
 
         while (Log::removeFormat(line).count < COL3)
             line += " ";
-        line += FMT("%0.6f", bc->profilePerCall);
+        line += form("%0.6f", bc->profilePerCall);
 
         while (Log::removeFormat(line).count < COL4)
             line += " ";
@@ -57,13 +57,13 @@ namespace
     {
         Utf8 line;
         line += Log::colorToVTS(LogColor::Index);
-        line += FMT("%d", ffi.count);
+        line += form("%d", ffi.count);
 
         while (Log::removeFormat(line).count < COL1)
             line += " ";
 
         line += Log::colorToVTS(LogColor::Value);
-        line += FMT("%0.6f", OS::timerToSeconds(ffi.cum));
+        line += form("%0.6f", OS::timerToSeconds(ffi.cum));
 
         while (Log::removeFormat(line).count < COL2)
             line += " ";

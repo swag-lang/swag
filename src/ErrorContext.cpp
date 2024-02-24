@@ -90,7 +90,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
             if (exp.node)
             {
                 if (exp.node->resolvedSymbolOverload() && exp.node->resolvedSymbolOverload()->node->ownerStructScope)
-                    name = FMT("%s.%s", exp.node->resolvedSymbolOverload()->node->ownerStructScope->name.c_str(), exp.node->resolvedSymbolOverload()->symbol->name.c_str());
+                    name = form("%s.%s", exp.node->resolvedSymbolOverload()->node->ownerStructScope->name.c_str(), exp.node->resolvedSymbolOverload()->symbol->name.c_str());
                 else if (exp.node->resolvedSymbolName())
                     name = exp.node->resolvedSymbolName()->name;
                 else
@@ -103,29 +103,29 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 case ErrCxtStepKind::Note:
                     break;
                 case ErrCxtStepKind::Export:
-                    msg = FMT(Nte(Nte0097), name.c_str());
+                    msg = form(Nte(Nte0097), name.c_str());
                     break;
                 case ErrCxtStepKind::Generic:
-                    msg            = FMT(Nte(Nte0095), name.c_str());
+                    msg            = form(Nte(Nte0095), name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::Inline:
-                    msg            = FMT(Nte(Nte0096), name.c_str());
+                    msg            = form(Nte(Nte0096), name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::CompileTime:
-                    msg            = FMT(Nte(Nte0091), name.c_str());
+                    msg            = form(Nte(Nte0091), name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::ValidIf:
                     if (exp.node->kind == AstNodeKind::StructDecl)
-                        msg = FMT(Nte(Nte0092), name.c_str());
+                        msg = form(Nte(Nte0092), name.c_str());
                     else
-                        msg = FMT(Nte(Nte0093), name.c_str());
+                        msg = form(Nte(Nte0093), name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::ValidIfx:
-                    msg            = FMT(Nte(Nte0094), name.c_str());
+                    msg            = form(Nte(Nte0094), name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::HereIs:
@@ -196,5 +196,5 @@ bool ErrorContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, u
 {
     if (value <= maxValue)
         return true;
-    return report({node, FMT(Err(Err0046), typeOverflow, maxValue)});
+    return report({node, form(Err(Err0046), typeOverflow, maxValue)});
 }

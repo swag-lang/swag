@@ -39,7 +39,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
         else
         {
             tokenParse.token.endLocation = location;
-            Diagnostic err{sourceFile, tokenParse.token, FMT(Err(Err0245), tokenParse.token.c_str())};
+            Diagnostic err{sourceFile, tokenParse.token, form(Err(Err0245), tokenParse.token.c_str())};
 
             Vector<Utf8> searchList{};
             for (int i = 0; i < static_cast<int>(g_LangSpec->keywords.allocated); i++)
@@ -60,7 +60,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
     else if (tokenParse.token.text[0] == '@')
     {
         tokenParse.token.endLocation = location;
-        Diagnostic err{sourceFile, tokenParse.token, FMT(Err(Err0316), tokenParse.token.c_str())};
+        Diagnostic err{sourceFile, tokenParse.token, form(Err(Err0316), tokenParse.token.c_str())};
 
         Vector<Utf8> searchList{};
         for (int i = 0; i < static_cast<int>(g_LangSpec->keywords.allocated); i++)

@@ -47,13 +47,13 @@ public:
                         {
                             Utf8 l2 = pze + 8;
                             l2.trim();
-                            l = FMT("module [[%s]]: linker error: %s", module->name.c_str(), l2.c_str());
+                            l = form("module [[%s]]: linker error: %s", module->name.c_str(), l2.c_str());
                         }
                         else
                         {
                             Utf8 l2 = pzw + 10;
                             l2.trim();
-                            l = FMT("module [[%s]]: linker warning: %s", module->name.c_str(), l2.c_str());
+                            l = form("module [[%s]]: linker warning: %s", module->name.c_str(), l2.c_str());
                         }
                     }
 
@@ -152,7 +152,7 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
     // Log linker parameters
     if (g_CommandLine.verboseLink)
     {
-        g_Log.messageVerbose(FMT("linker arguments for module [[%s]]:\n", buildParameters.module->name.c_str()));
+        g_Log.messageVerbose(form("linker arguments for module [[%s]]:\n", buildParameters.module->name.c_str()));
         for (const auto& one : linkArguments)
             g_Log.messageVerbose(one);
     }

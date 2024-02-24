@@ -6,11 +6,11 @@
 
 void GenDoc::addTitle(const Utf8& title, int level)
 {
-    helpContent += FMT("<h%d id=\"%s\">", level, title.c_str());
+    helpContent += form("<h%d id=\"%s\">", level, title.c_str());
     helpContent += title;
-    helpContent += FMT("</h%d>", level);
+    helpContent += form("</h%d>", level);
 
-    helpToc += FMT("<li><a href=\"#%s\">%s</a></li>\n", title.c_str(), title.c_str());
+    helpToc += form("<li><a href=\"#%s\">%s</a></li>\n", title.c_str(), title.c_str());
 }
 
 bool GenDoc::processMarkDownFile(const Path& fileName, int titleLevel)
@@ -19,7 +19,7 @@ bool GenDoc::processMarkDownFile(const Path& fileName, int titleLevel)
 
     if (!ifs)
     {
-        Report::errorOS(FMT(Err(Err0096), fileName.c_str()));
+        Report::errorOS(form(Err(Err0096), fileName.c_str()));
         return false;
     }
 
@@ -41,7 +41,7 @@ bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
 
     if (!ifs)
     {
-        Report::errorOS(FMT(Err(Err0096), fileName.c_str()));
+        Report::errorOS(form(Err(Err0096), fileName.c_str()));
         return false;
     }
 
@@ -115,9 +115,9 @@ bool GenDoc::generateExamples()
         addTocTitle(name, title, titleLevel);
 
         helpContent += "\n";
-        helpContent += FMT("<h%d id=\"%s\">", titleLevel + 1, getTocTitleRef().c_str());
+        helpContent += form("<h%d id=\"%s\">", titleLevel + 1, getTocTitleRef().c_str());
         helpContent += title;
-        helpContent += FMT("</h%d>", titleLevel + 1);
+        helpContent += form("</h%d>", titleLevel + 1);
 
         if (file->hasFlag(FILE_MARK_DOWN))
         {

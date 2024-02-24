@@ -110,19 +110,19 @@ void GenDoc::outputStyles()
 
     const float    lum        = module->buildCfg.genDoc.syntaxColorLum;
     const uint32_t defaultCol = module->buildCfg.genDoc.syntaxDefaultColor;
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_CODE, defaultCol);
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_COMMENT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxComment, lum));
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_COMPILER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxCompiler, lum));
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_FUNCTION, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxFunction, lum));
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_CONSTANT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxConstant, lum));
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_INTRINSIC, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxIntrinsic, lum));
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_TYPE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxType, lum));
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_KEYWORD, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxKeyword, lum));
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_LOGIC, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxLogic, lum));
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_NUMBER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxNumber, lum));
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_STRING, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxString, lum));
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_ATTRIBUTE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxAttribute, lum));
-    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_INVALID, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxInvalid, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_CODE, defaultCol);
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_COMMENT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxComment, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_COMPILER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxCompiler, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_FUNCTION, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxFunction, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_CONSTANT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxConstant, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_INTRINSIC, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxIntrinsic, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_TYPE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxType, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_KEYWORD, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxKeyword, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_LOGIC, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxLogic, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_NUMBER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxNumber, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_STRING, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxString, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_ATTRIBUTE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxAttribute, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_INVALID, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxInvalid, lum));
 
     helpOutput += "</style>\n";
 }
@@ -169,7 +169,7 @@ Utf8 GenDoc::findReference(const Utf8& name)
 {
     const auto it = collectInvert.find(name);
     if (it != collectInvert.end())
-        return FMT("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
+        return form("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
 
     Vector<Utf8> tkns;
     Utf8::tokenize(name, '.', tkns);
@@ -178,7 +178,7 @@ Utf8 GenDoc::findReference(const Utf8& name)
 
     if (tkns[0] == "Swag")
     {
-        return FMT("<a href=\"swag.runtime.php#%s\">%s</a>", toRef(name).c_str(), name.c_str());
+        return form("<a href=\"swag.runtime.php#%s\">%s</a>", toRef(name).c_str(), name.c_str());
     }
 
     return "";
@@ -227,7 +227,7 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
     }
     else
     {
-        codeText = FMT("<span class=\"%s\">", SYN_CODE);
+        codeText = form("<span class=\"%s\">", SYN_CODE);
         codeText += repl;
         codeText += "</span>";
     }
@@ -697,7 +697,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             auto ppz = tokenizeReference(pz + 1, name, link);
             if (ppz && !link.empty())
             {
-                result += FMT("<img src=\"%s\" alt=\"%s\">", link.c_str(), name.c_str());
+                result += form("<img src=\"%s\" alt=\"%s\">", link.c_str(), name.c_str());
                 pz = ppz;
                 continue;
             }
@@ -734,7 +734,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             auto ppz = tokenizeReference(pz, name, link);
             if (ppz && !link.empty())
             {
-                result += FMT("<a href=\"%s\">%s</a>", link.c_str(), name.c_str());
+                result += form("<a href=\"%s\">%s</a>", link.c_str(), name.c_str());
                 pz = ppz;
                 continue;
             }
@@ -907,9 +907,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             helpContent += "<div class=\"blockquote blockquote-note\">\n";
             helpContent += "<div class=\"blockquote-title-block\">";
             Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconNote};
-            helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-info-circle\"></i> " : quoteIcon.c_str());
+            helpContent += form("%s ", quoteIcon.empty() ? "<i class=\"fa fa-info-circle\"></i> " : quoteIcon.c_str());
             Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleNote};
-            helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Note" : quoteTitle.c_str());
+            helpContent += form("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Note" : quoteTitle.c_str());
             helpContent += "</div>";
             for (auto sub : user.subBlocks)
                 outputUserBlock(*sub, titleLevel, false);
@@ -920,9 +920,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             helpContent += "<div class=\"blockquote blockquote-tip\">\n";
             helpContent += "<div class=\"blockquote-title-block\">";
             Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconTip};
-            helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-lightbulb-o\"></i> " : quoteIcon.c_str());
+            helpContent += form("%s ", quoteIcon.empty() ? "<i class=\"fa fa-lightbulb-o\"></i> " : quoteIcon.c_str());
             Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleTip};
-            helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Tip" : quoteTitle.c_str());
+            helpContent += form("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Tip" : quoteTitle.c_str());
             helpContent += "</div>";
             for (auto sub : user.subBlocks)
                 outputUserBlock(*sub, titleLevel, false);
@@ -933,9 +933,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             helpContent += "<div class=\"blockquote blockquote-warning\">\n";
             helpContent += "<div class=\"blockquote-title-block\">";
             Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconWarning};
-            helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-exclamation-triangle\"></i> " : quoteIcon.c_str());
+            helpContent += form("%s ", quoteIcon.empty() ? "<i class=\"fa fa-exclamation-triangle\"></i> " : quoteIcon.c_str());
             Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleWarning};
-            helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Warning" : quoteTitle.c_str());
+            helpContent += form("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Warning" : quoteTitle.c_str());
             helpContent += "</div>";
             for (auto sub : user.subBlocks)
                 outputUserBlock(*sub, titleLevel, false);
@@ -946,9 +946,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             helpContent += "<div class=\"blockquote blockquote-attention\">\n";
             helpContent += "<div class=\"blockquote-title-block\">";
             Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconAttention};
-            helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-ban\"></i> " : quoteIcon.c_str());
+            helpContent += form("%s ", quoteIcon.empty() ? "<i class=\"fa fa-ban\"></i> " : quoteIcon.c_str());
             Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleAttention};
-            helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Attention" : quoteTitle.c_str());
+            helpContent += form("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Attention" : quoteTitle.c_str());
             helpContent += "</div>";
             for (auto sub : user.subBlocks)
                 outputUserBlock(*sub, titleLevel, false);
@@ -959,9 +959,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             helpContent += "<div class=\"blockquote blockquote-example\">\n";
             helpContent += "<div class=\"blockquote-title-block\">";
             Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconExample};
-            helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-magnifying-glass\"></i> " : quoteIcon.c_str());
+            helpContent += form("%s ", quoteIcon.empty() ? "<i class=\"fa fa-magnifying-glass\"></i> " : quoteIcon.c_str());
             Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleExample};
-            helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Example" : quoteTitle.c_str());
+            helpContent += form("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Example" : quoteTitle.c_str());
             helpContent += "</div>";
             for (auto sub : user.subBlocks)
                 outputUserBlock(*sub, titleLevel, false);
@@ -1063,13 +1063,13 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                         switch (tableAlignCols[it])
                         {
                             case 0:
-                                helpContent += FMT("<th style=\"text-align: left;\">");
+                                helpContent += form("<th style=\"text-align: left;\">");
                                 break;
                             case 1:
-                                helpContent += FMT("<th style=\"text-align: center;\">");
+                                helpContent += form("<th style=\"text-align: center;\">");
                                 break;
                             case 2:
-                                helpContent += FMT("<th style=\"text-align: right;\">");
+                                helpContent += form("<th style=\"text-align: right;\">");
                                 break;
                             default:
                                 break;
@@ -1102,7 +1102,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
             int  level = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
             auto ref   = getTocTitleRef();
-            helpContent += FMT("<h%d id=\"%s\">", titleLevel + level + 1, ref.c_str());
+            helpContent += form("<h%d id=\"%s\">", titleLevel + level + 1, ref.c_str());
             break;
         }
     }
@@ -1134,13 +1134,13 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                     switch (tableAlignCols[it])
                     {
                         case 0:
-                            helpContent += FMT("<td style=\"text-align: left;\">");
+                            helpContent += form("<td style=\"text-align: left;\">");
                             break;
                         case 1:
-                            helpContent += FMT("<td style=\"text-align: center;\">");
+                            helpContent += form("<td style=\"text-align: center;\">");
                             break;
                         case 2:
-                            helpContent += FMT("<td style=\"text-align: right;\">");
+                            helpContent += form("<td style=\"text-align: right;\">");
                             break;
                         default:
                             break;
@@ -1232,7 +1232,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         case UserBlockKind::Title6:
         {
             int level = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
-            helpContent += FMT("</h%d>\n", titleLevel + level + 1);
+            helpContent += form("</h%d>\n", titleLevel + level + 1);
             break;
         }
         default:
@@ -1265,17 +1265,17 @@ void GenDoc::constructPage()
 
     // Page title
     if (!titleContent.empty())
-        helpOutput += FMT("<title>%s</title>\n", titleContent.c_str());
+        helpOutput += form("<title>%s</title>\n", titleContent.c_str());
 
     // User icon
     const auto icon = Utf8{module->buildCfg.genDoc.icon};
     if (!icon.empty())
-        helpOutput += FMT("<link rel=\"icon\" type=\"image/x-icon\" href=\"%s\">\n", icon.c_str());
+        helpOutput += form("<link rel=\"icon\" type=\"image/x-icon\" href=\"%s\">\n", icon.c_str());
 
     // User css ref
     const Utf8 css{module->buildCfg.genDoc.css};
     if (!css.empty())
-        helpOutput += FMT("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n", css.c_str());
+        helpOutput += form("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n", css.c_str());
 
     // Font awesome reference
     if (module->buildCfg.genDoc.hasFontAwesome)
@@ -1325,7 +1325,7 @@ void GenDoc::constructPage()
         std::ostringstream oss;
         oss << std::put_time(&nt, "%d-%m-%Y");
         const string dateTime = oss.str();
-        helpOutput += FMT("Generated on %s with <a href=\"https://swag-lang.org/index.php\">swag</a> %d.%d.%d", dateTime.c_str(), SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+        helpOutput += form("Generated on %s with <a href=\"https://swag-lang.org/index.php\">swag</a> %d.%d.%d", dateTime.c_str(), SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
         helpOutput += "</div>\n";
     }
 
@@ -1417,7 +1417,7 @@ void GenDoc::addTocTitle(const Utf8& name, const Utf8& title, int titleLevel)
 
     titleRefStack.push_back(toRef(name));
     const auto ref = getTocTitleRef();
-    helpToc += FMT("<li><a href=\"#%s\">%s</a></li>\n", ref.c_str(), title.c_str());
+    helpToc += form("<li><a href=\"#%s\">%s</a></li>\n", ref.c_str(), title.c_str());
 }
 
 Utf8 GenDoc::getFileExtension(const Module* module)
@@ -1455,7 +1455,7 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
         titleToc = "Table of Contents";
     titleContent = Utf8{module->buildCfg.genDoc.titleContent};
     if (titleContent.empty())
-        titleContent = FMT("Module %s", module->name.c_str());
+        titleContent = form("Module %s", module->name.c_str());
 
     if (docKind == BuildCfgDocKind::Pages)
     {
@@ -1488,13 +1488,13 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     FILE* f = nullptr;
     if (fopen_s(&f, fullFileName, "wb"))
     {
-        Report::errorOS(FMT(Err(Err0096), fullFileName.c_str()));
+        Report::errorOS(form(Err(Err0096), fullFileName.c_str()));
         return false;
     }
 
     // Titles
-    helpToc += FMT("<h2>%s</h2>\n", titleToc.c_str());
-    helpContent += FMT("<h1>%s</h1>\n", titleContent.c_str());
+    helpToc += form("<h2>%s</h2>\n", titleToc.c_str());
+    helpContent += form("<h1>%s</h1>\n", titleContent.c_str());
 
     switch (docKind)
     {
@@ -1515,7 +1515,7 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     // Write file
     if (fwrite(helpOutput, 1, helpOutput.length(), f) != helpOutput.length())
     {
-        Report::errorOS(FMT(Err(Err0099), fullFileName.c_str()));
+        Report::errorOS(form(Err(Err0099), fullFileName.c_str()));
         (void) fclose(f);
         return false;
     }

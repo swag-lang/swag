@@ -47,9 +47,9 @@ void Stats::printFreq()
         if (countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)].load())
         {
             g_Log.setColor(LogColor::Index);
-            g_Log.print(FMT("%5d ", countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)].load()));
+            g_Log.print(form("%5d ", countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)].load()));
             g_Log.setColor(LogColor::Name);
-            g_Log.print(FMT("%s\n", g_ByteCodeOpDesc[bestI].name));
+            g_Log.print(form("%s\n", g_ByteCodeOpDesc[bestI].name));
             countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)] = 0;
         }
     }
@@ -95,11 +95,11 @@ void Stats::printFreq()
         if (countOpFreq[bestI][bestJ].load())
         {
             g_Log.setColor(LogColor::Index);
-            g_Log.print(FMT("%5d ", countOpFreq[bestI][bestJ].load()));
+            g_Log.print(form("%5d ", countOpFreq[bestI][bestJ].load()));
             g_Log.setColor(LogColor::Name);
-            g_Log.print(FMT("%s ", g_ByteCodeOpDesc[bestI].name));
+            g_Log.print(form("%s ", g_ByteCodeOpDesc[bestI].name));
             g_Log.setColor(LogColor::Location);
-            g_Log.print(FMT("%s\n", g_ByteCodeOpDesc[bestJ].name));
+            g_Log.print(form("%s\n", g_ByteCodeOpDesc[bestJ].name));
             countOpFreq[bestI][bestJ] = 0;
         }
     }
@@ -116,80 +116,80 @@ void Stats::print() const
     g_Log.eol();
 
     /////////////////////////
-    g_Log.messageHeaderDot("workers", FMT("%u", g_ThreadMgr.numWorkers), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("modules", FMT("%u", numModules.load()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("files", FMT("%u", numFiles.load()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("source lines", FMT("%u", numLines.load()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("lines/s", FMT("%u", static_cast<int>(numLines.load() / OS::timerToSeconds(g_Workspace->totalTime.load()))), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("tokens", FMT("%u", numTokens.load()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("ast nodes", FMT("%u", numNodes.load()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("ast released nodes", FMT("%u", releaseNodes.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("workers", form("%u", g_ThreadMgr.numWorkers), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("modules", form("%u", numModules.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("files", form("%u", numFiles.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("source lines", form("%u", numLines.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("lines/s", form("%u", static_cast<int>(numLines.load() / OS::timerToSeconds(g_Workspace->totalTime.load()))), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("tokens", form("%u", numTokens.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("ast nodes", form("%u", numNodes.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("ast released nodes", form("%u", releaseNodes.load()), LogColor::Header, LogColor::Value);
     if (g_CommandLine.output)
-        g_Log.messageHeaderDot("output modules", FMT("%u", numGenModules.load()), LogColor::Header, LogColor::Value);
+        g_Log.messageHeaderDot("output modules", form("%u", numGenModules.load()), LogColor::Header, LogColor::Value);
     if (g_CommandLine.test)
-        g_Log.messageHeaderDot("executed #test", FMT("%u", testFunctions.load()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("executed #run", FMT("%u", runFunctions.load()), LogColor::Header, LogColor::Value);
+        g_Log.messageHeaderDot("executed #test", form("%u", testFunctions.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("executed #run", form("%u", runFunctions.load()), LogColor::Header, LogColor::Value);
 
     if (g_Workspace->numErrors)
-        g_Log.messageHeaderDot("errors", FMT("%u", g_Workspace->numErrors.load()), LogColor::Red);
+        g_Log.messageHeaderDot("errors", form("%u", g_Workspace->numErrors.load()), LogColor::Red);
     if (g_Workspace->numWarnings)
-        g_Log.messageHeaderDot("warnings", FMT("%u", g_Workspace->numWarnings.load()), LogColor::Magenta);
+        g_Log.messageHeaderDot("warnings", form("%u", g_Workspace->numWarnings.load()), LogColor::Magenta);
     g_Log.eol();
 
-    g_Log.messageHeaderDot("instructions", FMT("%u", numInstructions.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("instructions", form("%u", numInstructions.load()), LogColor::Header, LogColor::Value);
     const float pc1 = static_cast<float>(totalOptimBC.load()) * 100.0f / static_cast<float>(numInstructions.load());
-    g_Log.messageHeaderDot("kicked", FMT("%d %.1f%%", totalOptimBC.load(), pc1), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("total", FMT("%u", numInstructions.load() - totalOptimBC.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("kicked", form("%d %.1f%%", totalOptimBC.load(), pc1), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("total", form("%u", numInstructions.load() - totalOptimBC.load()), LogColor::Header, LogColor::Value);
     g_Log.eol();
 
-    g_Log.messageHeaderDot("concrete types", FMT("%u", totalConcreteTypes.load()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("concrete struct types", FMT("%u", totalConcreteStructTypes.load()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("init ptr", FMT("%u", numInitPtr.load()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("init func ptr", FMT("%u", numInitFuncPtr.load()), LogColor::Header, LogColor::Value);
-    g_Log.eol();
-
-    /////////////////////////
-    g_Log.messageHeaderDot("cfg time", FMT("%.3fs", OS::timerToSeconds(cfgTime.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("tokenizer time", FMT("%.3fs", OS::timerToSeconds(tokenizerTime.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("syntax time", FMT("%.3fs", OS::timerToSeconds(syntaxTime.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("read files", FMT("%.3fs", OS::timerToSeconds(readFilesTime.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("semantic time", FMT("%.3fs", OS::timerToSeconds(semanticTime.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("run time", FMT("%.3fs", OS::timerToSeconds(runTime.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("run test time", FMT("%.3fs", OS::timerToSeconds(runTestTime.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("prep out 1 time", FMT("%.3fs (genfunc: %.3fs)", OS::timerToSeconds(prepOutputStage1TimeJob.load()), OS::timerToSeconds(prepOutputTimeJobGenFunc.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("prep out 2 time", FMT("%.3fs (saveobj: %.3fs)", OS::timerToSeconds(prepOutputStage2TimeJob.load()), OS::timerToSeconds(prepOutputTimeJobSaveObj.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("gen out time", FMT("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("optim bc time", FMT("%.3fs", OS::timerToSeconds(optimBCTime.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("total time", FMT("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("concrete types", form("%u", totalConcreteTypes.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("concrete struct types", form("%u", totalConcreteStructTypes.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("init ptr", form("%u", numInitPtr.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("init func ptr", form("%u", numInitFuncPtr.load()), LogColor::Header, LogColor::Value);
     g_Log.eol();
 
     /////////////////////////
-    g_Log.messageHeaderDot("mem max", FMT("%s", Utf8::toNiceSize(maxAllocatedMemory.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem allocated", FMT("%s", Utf8::toNiceSize(allocatedMemory.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("cfg time", form("%.3fs", OS::timerToSeconds(cfgTime.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("tokenizer time", form("%.3fs", OS::timerToSeconds(tokenizerTime.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("syntax time", form("%.3fs", OS::timerToSeconds(syntaxTime.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("read files", form("%.3fs", OS::timerToSeconds(readFilesTime.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("semantic time", form("%.3fs", OS::timerToSeconds(semanticTime.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("run time", form("%.3fs", OS::timerToSeconds(runTime.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("run test time", form("%.3fs", OS::timerToSeconds(runTestTime.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("prep out 1 time", form("%.3fs (genfunc: %.3fs)", OS::timerToSeconds(prepOutputStage1TimeJob.load()), OS::timerToSeconds(prepOutputTimeJobGenFunc.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("prep out 2 time", form("%.3fs (saveobj: %.3fs)", OS::timerToSeconds(prepOutputStage2TimeJob.load()), OS::timerToSeconds(prepOutputTimeJobSaveObj.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("gen out time", form("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("optim bc time", form("%.3fs", OS::timerToSeconds(optimBCTime.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("total time", form("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())), LogColor::Header, LogColor::Value);
     g_Log.eol();
-    g_Log.messageHeaderDot("mem utf8", FMT("%s", Utf8::toNiceSize(memUtf8.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem c str", FMT("%s", Utf8::toNiceSize(memUtf8CStr.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem new", FMT("%s", Utf8::toNiceSize(memNew.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem std", FMT("%s", Utf8::toNiceSize(memStd.load()).c_str()), LogColor::Header, LogColor::Value);
+
+    /////////////////////////
+    g_Log.messageHeaderDot("mem max", form("%s", Utf8::toNiceSize(maxAllocatedMemory.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem allocated", form("%s", Utf8::toNiceSize(allocatedMemory.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.eol();
-    g_Log.messageHeaderDot("mem ast nodes", FMT("%s", Utf8::toNiceSize(memNodes.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem ast nodes ext", FMT("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem ast nodes literal", FMT("%s", Utf8::toNiceSize(memNodesLiteral.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem ast identifiers ext", FMT("%s", Utf8::toNiceSize(memIdentifiersExt.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem utf8", form("%s", Utf8::toNiceSize(memUtf8.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem c str", form("%s", Utf8::toNiceSize(memUtf8CStr.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem new", form("%s", Utf8::toNiceSize(memNew.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem std", form("%s", Utf8::toNiceSize(memStd.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.eol();
-    g_Log.messageHeaderDot("mem concat", FMT("%s", Utf8::toNiceSize(memConcat.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem types", FMT("%s", Utf8::toNiceSize(memTypes.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem params", FMT("%s", Utf8::toNiceSize(memParams.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem files", FMT("%s", Utf8::toNiceSize(memFileBuffer.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem scopes", FMT("%s", Utf8::toNiceSize(memScopes.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem seg", FMT("%s", Utf8::toNiceSize(memSeg.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem bc instr", FMT("%s", Utf8::toNiceSize(memInstructions.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem bc stack", FMT("%s", Utf8::toNiceSize(memBcStack.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem sym table", FMT("%s", Utf8::toNiceSize(memSymTable.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem sym name", FMT("%s", Utf8::toNiceSize(memSymName.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem sym over", FMT("%s", Utf8::toNiceSize(memSymOver.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem ast nodes", form("%s", Utf8::toNiceSize(memNodes.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem ast nodes ext", form("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem ast nodes literal", form("%s", Utf8::toNiceSize(memNodesLiteral.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem ast identifiers ext", form("%s", Utf8::toNiceSize(memIdentifiersExt.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.eol();
+    g_Log.messageHeaderDot("mem concat", form("%s", Utf8::toNiceSize(memConcat.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem types", form("%s", Utf8::toNiceSize(memTypes.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem params", form("%s", Utf8::toNiceSize(memParams.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem files", form("%s", Utf8::toNiceSize(memFileBuffer.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem scopes", form("%s", Utf8::toNiceSize(memScopes.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem seg", form("%s", Utf8::toNiceSize(memSeg.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem bc instr", form("%s", Utf8::toNiceSize(memInstructions.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem bc stack", form("%s", Utf8::toNiceSize(memBcStack.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem sym table", form("%s", Utf8::toNiceSize(memSymTable.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem sym name", form("%s", Utf8::toNiceSize(memSymName.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem sym over", form("%s", Utf8::toNiceSize(memSymOver.load()).c_str()), LogColor::Header, LogColor::Value);
     if (g_CommandLine.backendGenType == BackendGenType::SCBE)
-        g_Log.messageHeaderDot("mem x64 dbg", FMT("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()), LogColor::Header, LogColor::Value);
+        g_Log.messageHeaderDot("mem x64 dbg", form("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()), LogColor::Header, LogColor::Value);
 
     /////////////////////////
     g_Log.eol();
@@ -205,13 +205,13 @@ void Stats::print() const
             !m->tlsSegment.totalCount)
             continue;
 
-        g_Log.messageHeaderDot(FMT("%s", m->name.c_str()), "", LogColor::Header);
+        g_Log.messageHeaderDot(form("%s", m->name.c_str()), "", LogColor::Header);
 
         Utf8 mdlStr;
         g_Log.print("func total: ", LogColor::Header);
-        g_Log.print(FMT("%u", m->byteCodeFunc.size()), LogColor::Value);
+        g_Log.print(form("%u", m->byteCodeFunc.size()), LogColor::Value);
         g_Log.print(" func emit: ", LogColor::Header);
-        g_Log.print(FMT("%u", m->byteCodeFuncToGen.size()), LogColor::Value);
+        g_Log.print(form("%u", m->byteCodeFuncToGen.size()), LogColor::Value);
 
         g_Log.print(" seg constant: ", LogColor::Header);
         g_Log.print(Utf8::toNiceSize(m->constantSegment.totalCount), LogColor::Value);

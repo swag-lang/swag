@@ -5324,7 +5324,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5352,7 +5352,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5380,7 +5380,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5408,7 +5408,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5429,7 +5429,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5449,7 +5449,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5469,7 +5469,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5489,7 +5489,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5516,7 +5516,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5542,7 +5542,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5568,7 +5568,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5594,7 +5594,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5621,7 +5621,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5647,7 +5647,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5721,7 +5721,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5795,7 +5795,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     default:
                         ok = false;
-                        Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                         break;
                 }
                 break;
@@ -5803,7 +5803,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown instruction [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                Report::internalError(buildParameters.module, form("unknown instruction [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
         }
     }
@@ -5892,7 +5892,7 @@ llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMEncoder& pp, llvm::Function* func, 
     const auto it = pp.labels.find(ip);
     if (it == pp.labels.end())
     {
-        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, FMT("%lld", ip).c_str(), func);
+        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, form("%lld", ip).c_str(), func);
         pp.labels[ip]           = label;
         return label;
     }
