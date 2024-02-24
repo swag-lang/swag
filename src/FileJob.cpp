@@ -19,28 +19,28 @@ JobResult CopyFileJob::execute()
 {
     // Copy only if source is more recent than destination
     error_code err;
-    if (exists(destPath, err))
+    if (filesystem::exists(destPath, err))
     {
-        const auto tsrc  = OS::getFileWriteTime(sourcePath.string().c_str());
-        const auto tdest = OS::getFileWriteTime(destPath.string().c_str());
+        const auto tsrc  = OS::getFileWriteTime(sourcePath);
+        const auto tdest = OS::getFileWriteTime(destPath);
         if (tdest > tsrc)
             return JobResult::ReleaseJob;
     }
 
     FILE* fsrc  = nullptr;
     FILE* fdest = nullptr;
-    if (fopen_s(&fsrc, sourcePath.string().c_str(), "rbN"))
+    if (fopen_s(&fsrc, sourcePath, "rbN"))
     {
         ++module->numErrors;
-        Report::errorOS(FMT(Err(Err0095), sourcePath.string().c_str()));
+        Report::errorOS(FMT(Err(Err0095), sourcePath.c_str()));
         return JobResult::ReleaseJob;
     }
 
-    if (fopen_s(&fdest, destPath.string().c_str(), "wbN"))
+    if (fopen_s(&fdest, destPath, "wbN"))
     {
         ++module->numErrors;
         (void) fclose(fsrc);
-        Report::errorOS(FMT(Err(Err0095), destPath.string().c_str()));
+        Report::errorOS(FMT(Err(Err0095), destPath.c_str()));
         return JobResult::ReleaseJob;
     }
 
@@ -69,9 +69,9 @@ LoadFileJob::LoadFileJob()
 JobResult LoadFileJob::execute()
 {
     FILE* fsrc = nullptr;
-    if (fopen_s(&fsrc, sourcePath.string().c_str(), "rbN"))
+    if (fopen_s(&fsrc, sourcePath, "rbN"))
     {
-        Report::errorOS(FMT(Err(Err0095), sourcePath.string().c_str()));
+        Report::errorOS(FMT(Err(Err0095), sourcePath.c_str()));
         return JobResult::ReleaseJob;
     }
 

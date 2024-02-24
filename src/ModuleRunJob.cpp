@@ -11,28 +11,28 @@ JobResult ModuleRunJob::execute()
     path.append(buildParameters.module->name);
     path += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgOutputKind::Executable).c_str();
     error_code err;
-    if (!exists(path, err))
+    if (!filesystem::exists(path, err))
         return JobResult::ReleaseJob;
 
 #ifdef SWAG_STATS
     Timer timer(&g_Stats.runTestTime);
 #endif
 
-    Utf8 cmdLine = path.string();
+    Utf8 cmdLine = path;
     cmdLine += " ";
     cmdLine += g_CommandLine.userArguments;
 
     if (buildParameters.compileType == Test)
     {
         uint32_t numErrors = 0;
-        OS::doProcess(module, cmdLine, path.parent_path().parent_path().string(), numErrors);
+        OS::doProcess(module, cmdLine, path.parent_path().parent_path(), numErrors);
         g_Workspace->numErrors += numErrors;
         module->numErrors += numErrors;
     }
     else
     {
         uint32_t numErrors = 0;
-        OS::doProcess(module, cmdLine, path.parent_path().parent_path().string(), numErrors);
+        OS::doProcess(module, cmdLine, path.parent_path().parent_path(), numErrors);
     }
 
     return JobResult::ReleaseJob;

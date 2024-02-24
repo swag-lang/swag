@@ -87,23 +87,23 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
         // Is this a simple file ?
         auto       filePath = orgFilePath;
         error_code err;
-        if (!exists(filePath, err))
+        if (!filesystem::exists(filePath, err))
         {
             filePath = theModule->path;
             filePath.append(orgFilePath);
-            filePath             = absolute(filePath);
-            const auto filePath1 = canonical(filePath, err);
+            filePath             = filesystem::absolute(filePath);
+            const auto filePath1 = filesystem::canonical(filePath, err);
             if (!err)
                 filePath = filePath1;
-            if (!exists(filePath, err))
+            if (!filesystem::exists(filePath, err))
             {
                 Report::report({n->token.sourceFile, n->token, FMT(Err(Err0709), n->token.c_str())});
                 return false;
             }
         }
 
-        auto       fileName  = filePath.filename().string();
-        const auto writeTime = OS::getFileWriteTime(filePath.string().c_str());
+        auto       fileName  = filePath.filename();
+        const auto writeTime = OS::getFileWriteTime(filePath);
         addFileToModule(theModule, allFiles, filePath.parent_path(), fileName, writeTime, nullptr, nullptr, true);
     }
 
@@ -167,7 +167,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
         Path tmp = std::move(directories.back());
         directories.pop_back();
 
-        OS::visitFilesFolders(tmp.string().c_str(), [&](uint64_t writeTime, const char* cFileName, bool isFolder) {
+        OS::visitFilesFolders(tmp, [&](uint64_t writeTime, const char* cFileName, bool isFolder) {
             if (isFolder)
             {
                 tmp1 = tmp;
@@ -206,7 +206,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
         auto cfgFile = theModule->path;
         cfgFile      = ModuleDepManager::getAliasPath(cfgFile);
         cfgFile.append(SWAG_CFG_FILE);
-        const auto writeTime = OS::getFileWriteTime(cfgFile.string().c_str());
+        const auto writeTime = OS::getFileWriteTime(cfgFile);
         const auto file      = addFileToModule(theModule, allFiles, cfgFile.parent_path(), SWAG_CFG_FILE, writeTime, nullptr, nullptr, false);
         file->addFlag(FILE_IS_CFG_FILE);
     }
@@ -223,7 +223,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
 void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
 {
     // Scan source folder
-    OS::visitFolders(basePath.string().c_str(), [&](const char* fileName) {
+    OS::visitFolders(basePath, [&](const char* fileName) {
         auto path = basePath;
         path.append(fileName);
         path = ModuleDepManager::getAliasPath(path);
@@ -242,7 +242,7 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
             Path tmp = std::move(directories.back());
             directories.pop_back();
 
-            OS::visitFilesFolders(tmp.string().c_str(), [&](uint64_t writeTime, const char* subFileName, bool isFolder) {
+            OS::visitFilesFolders(tmp, [&](uint64_t writeTime, const char* subFileName, bool isFolder) {
                 if (isFolder)
                 {
                     tmp1 = tmp;
@@ -296,7 +296,7 @@ void EnumerateModuleJob::enumerateModules(const Path& path)
     Vector<string> allModules;
 
     // Scan source folder
-    OS::visitFolders(path.string().c_str(), [&](const char* cFolderName) {
+    OS::visitFolders(path.c_str(), [&](const char* cFolderName) {
         // If we have only one core, then we will sort modules in alphabetical order to always
         // treat them in a reliable order. That way, --randomize and --seed can work.
         if (g_ThreadMgr.numWorkers == 1)
@@ -350,7 +350,7 @@ JobResult EnumerateModuleJob::execute()
         // If we are in script mode, then we add one single module with the script file
         const auto parentFolder = Path(g_CommandLine.scriptName.c_str()).parent_path();
         const auto file         = Allocator::alloc<SourceFile>();
-        file->name              = Path(g_CommandLine.scriptName).filename().replace_extension().string();
+        file->name              = Path(g_CommandLine.scriptName).filename().replace_extension();
         const auto scriptModule = g_Workspace->createOrUseModule(file->name, parentFolder, ModuleKind::Script);
         file->path              = g_CommandLine.scriptName;
         file->module            = scriptModule;

@@ -429,7 +429,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
         case TokenId::CompilerFile:
             node->token.id    = TokenId::LiteralString;
             node->literalType = LiteralType::TypeString;
-            node->token.text  = sourceFile->path.string();
+            node->token.text  = sourceFile->path;
             break;
         case TokenId::CompilerModule:
             node->token.id    = TokenId::LiteralString;

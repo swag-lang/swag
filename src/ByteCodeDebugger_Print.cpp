@@ -214,19 +214,19 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     g_ByteCodeDebugger.printTitleNameType("bytecode", bc->getPrintName(), bc->typeInfoFunc->getDisplayNameC());
     if (bc->sourceFile && bc->node)
     {
-        const auto loc = FMT("%s:%u:%u", bc->sourceFile->path.string().c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1);
+        const auto loc = FMT("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1);
         g_ByteCodeDebugger.printTitleNameType("bytecode location", loc, "");
     }
     else if (bc->sourceFile)
     {
         g_Log.print("bytecode source file: ", LogColor::Gray);
-        g_Log.print(bc->sourceFile->path.string().c_str(), LogColor::DarkYellow);
+        g_Log.print(bc->sourceFile->path.c_str(), LogColor::DarkYellow);
         g_Log.eol();
     }
 
     if (ipNode && ipNode->token.sourceFile)
     {
-        const auto loc = FMT("%s:%u:%u", ipNode->token.sourceFile->path.string().c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1);
+        const auto loc = FMT("%s:%u:%u", ipNode->token.sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1);
         g_ByteCodeDebugger.printTitleNameType("instruction location", loc, "");
     }
 

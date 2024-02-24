@@ -27,7 +27,7 @@ void LLVMDebug::setup(LLVM* m, llvm::Module* module)
     llvmContext         = &module->getContext();
     mainFile            = dbgBuilder->createFile("<stdin>", "c:/");
     const Path expPath  = m->exportFilePath;
-    exportFile          = dbgBuilder->createFile(m->exportFileName.string(), expPath.parent_path().string());
+    exportFile          = dbgBuilder->createFile(m->exportFileName.c_str(), expPath.parent_path().c_str());
     const Utf8 compiler = FMT("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     compileUnit         = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
                                                         mainFile,
@@ -91,7 +91,7 @@ llvm::DIFile* LLVMDebug::getOrCreateFile(const SourceFile* file)
         return it->second;
 
     const Path    filePath = file->path;
-    llvm::DIFile* dbgfile  = dbgBuilder->createFile(filePath.filename().string(), filePath.parent_path().string());
+    llvm::DIFile* dbgfile  = dbgBuilder->createFile(filePath.filename().c_str(), filePath.parent_path().c_str());
     mapFiles[file->path]   = dbgfile;
     return dbgfile;
 }

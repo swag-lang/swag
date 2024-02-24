@@ -37,7 +37,7 @@ void ModuleBuildJob::publishFilesToPublic(const Module* moduleToPublish)
         publicFiles.insert(name);
     }
 
-    OS::visitFiles(publicPath.string().c_str(), [&](const char* filename) {
+    OS::visitFiles(publicPath, [&](const char* filename) {
         // Keep the generated file untouched !
         if (moduleToPublish->backend->exportFileName == filename)
             return;
@@ -74,12 +74,12 @@ void ModuleBuildJob::publishFilesToTarget(const Module* moduleToPublish)
     Path publishPath = moduleToPublish->path;
     publishPath.append(SWAG_PUBLISH_FOLDER);
     error_code err;
-    if (!exists(publishPath, err))
+    if (!filesystem::exists(publishPath, err))
         return;
 
     // Everything at the root of the /publish folder will be copied "as is" in the output directory, whatever the
     // current target is
-    OS::visitFiles(publishPath.string().c_str(), [&](const char* cFileName) {
+    OS::visitFiles(publishPath, [&](const char* cFileName) {
         const auto job  = Allocator::alloc<CopyFileJob>();
         job->module     = module;
         job->sourcePath = publishPath;
@@ -95,9 +95,9 @@ void ModuleBuildJob::publishFilesToTarget(const Module* moduleToPublish)
     osArchPath.append(Backend::getOsName(g_CommandLine.target));
     osArchPath += "-";
     osArchPath += Backend::getArchName(g_CommandLine.target);
-    if (exists(osArchPath, err))
+    if (filesystem::exists(osArchPath, err))
     {
-        OS::visitFiles(osArchPath.string().c_str(), [&](const char* cFileName) {
+        OS::visitFiles(osArchPath, [&](const char* cFileName) {
             const auto job  = Allocator::alloc<CopyFileJob>();
             job->module     = module;
             job->sourcePath = osArchPath;
@@ -157,7 +157,7 @@ bool ModuleBuildJob::loadDependency(Module* depModule)
     error_code                err;
     if (filesystem::exists(publicPath.c_str(), err))
     {
-        OS::visitFiles(publicPath.string().c_str(), [&](const char* filename) {
+        OS::visitFiles(publicPath, [&](const char* filename) {
             const auto pz = strrchr(filename, '.');
             if (pz && !_strcmpi(pz, ".swg"))
             {

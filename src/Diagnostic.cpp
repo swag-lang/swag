@@ -108,7 +108,7 @@ void Diagnostic::printSourceLine() const
 
     if (!g_CommandLine.errorOneLine)
         g_Log.setColor(sourceFileColor);
-    g_Log.print(path.string().c_str());
+    g_Log.print(path);
     if (hasLocation)
         g_Log.print(FMT(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
     else

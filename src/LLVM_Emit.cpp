@@ -124,7 +124,7 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::Alloc
     auto&      builder         = *pp.builder;
 
     // Filename
-    llvm::Value* r1 = builder.CreateGlobalString(node->token.sourceFile->path.string());
+    llvm::Value* r1 = builder.CreateGlobalString(node->token.sourceFile->path.c_str());
     r1              = builder.CreateInBoundsGEP(I8_TY(), r1, {pp.cst0_i32});
 
     // Line & column

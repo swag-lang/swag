@@ -401,7 +401,7 @@ namespace
             checkSymIndex = arrFileNames.size();
             arrFileNames.push_back(stringTable.length());
             iter.first->second = checkSymIndex;
-            stringTable += sourceFile->path.string();
+            stringTable += sourceFile->path;
             stringTable.append(static_cast<char>(0));
         }
         else

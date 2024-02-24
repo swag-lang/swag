@@ -22,14 +22,14 @@
 void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)
 {
     const auto parent    = path.parent_path().filename();
-    const auto cFileName = path.filename().string();
+    const auto cFileName = path.filename();
 
     // Be sure module name is valid
     Utf8 errorStr;
     if (!Module::isValidName(cFileName, errorStr))
     {
         errorStr = "fatal error: " + errorStr;
-        errorStr += FMT(" (path is [[%s]])", path.string().c_str());
+        errorStr += FMT(" (path is [[%s]])", path.c_str());
         Report::error(errorStr);
         OS::exit(-1);
     }
@@ -195,40 +195,40 @@ void Workspace::setupTarget()
     // Target directory
     targetPath = getTargetPath();
     if (g_CommandLine.verbosePath)
-        g_Log.messageVerbose(FMT("target path is [[%s]]", targetPath.string().c_str()));
+        g_Log.messageVerbose(FMT("target path is [[%s]]", targetPath.c_str()));
 
     error_code err;
-    if (!exists(targetPath, err) && !create_directories(targetPath, err))
+    if (!filesystem::exists(targetPath, err) && !filesystem::create_directories(targetPath, err))
     {
-        Report::errorOS(FMT(Err(Fat0021), targetPath.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0021), targetPath.c_str()));
         OS::exit(-1);
     }
 
     // Cache directory
     setupCachePath();
-    if (!exists(cachePath, err))
+    if (!filesystem::exists(cachePath, err))
     {
-        Report::errorOS(FMT(Err(Fat0010), cachePath.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0010), cachePath.c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
-    if (!exists(cachePath, err) && !create_directories(cachePath, err))
+    if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
     {
-        Report::errorOS(FMT(Err(Fat0016), cachePath.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0016), cachePath.c_str()));
         OS::exit(-1);
     }
 
     const auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
-    cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
-    if (!exists(cachePath, err) && !create_directories(cachePath, err))
+    cachePath.append(workspacePath.filename() + "-" + targetFullName.c_str());
+    if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
     {
-        Report::errorOS(FMT(Err(Fat0016), cachePath.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0016), cachePath.c_str()));
         OS::exit(-1);
     }
 
     if (g_CommandLine.verbosePath)
-        g_Log.messageVerbose(FMT("cache path is [[%s]]", cachePath.string().c_str()));
+        g_Log.messageVerbose(FMT("cache path is [[%s]]", cachePath.c_str()));
 }
 
 Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
@@ -775,7 +775,7 @@ bool Workspace::build()
 
     // User arguments that can be retrieved with '@args'
     SwagSlice oneArg;
-    g_CommandLine.exePathStr = g_CommandLine.exePath.string();
+    g_CommandLine.exePathStr = g_CommandLine.exePath;
     oneArg.buffer            = g_CommandLine.exePathStr.buffer;
     oneArg.count             = g_CommandLine.exePathStr.length();
     g_CommandLine.userArgumentsStr.push_back(oneArg);
@@ -802,20 +802,20 @@ bool Workspace::build()
         if (!g_CommandLine.scriptCommand)
         {
             if (g_CommandLine.verbosePath)
-                g_Log.messageVerbose(FMT("workspace path is [[%s]]", workspacePath.string().c_str()));
+                g_Log.messageVerbose(FMT("workspace path is [[%s]]", workspacePath.c_str()));
             if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
-                g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
+                g_Log.messageHeaderCentered("Workspace", workspacePath.filename());
             else
             {
                 const auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
-                g_Log.messageHeaderCentered("Workspace", FMT("%s [%s]", workspacePath.filename().string().c_str(), targetFullName.c_str()));
+                g_Log.messageHeaderCentered("Workspace", FMT("%s [%s]", workspacePath.filename().c_str(), targetFullName.c_str()));
             }
         }
         else
         {
             const auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
             const Path p              = g_CommandLine.scriptName;
-            g_Log.messageHeaderCentered("Script", FMT("%s [%s]", p.filename().string().c_str(), targetFullName.c_str()));
+            g_Log.messageHeaderCentered("Script", FMT("%s [%s]", p.filename().c_str(), targetFullName.c_str()));
         }
 
         addBootstrap();

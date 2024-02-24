@@ -125,7 +125,7 @@ namespace
                 break;
             case CommandLineType::StringPath:
                 value        = "<path>";
-                defaultValue = static_cast<Path*>(oneArg->buffer)->string();
+                defaultValue = *static_cast<Path*>(oneArg->buffer);
                 break;
             case CommandLineType::StringSet:
                 value = "<string>";
@@ -484,7 +484,7 @@ Utf8 CommandLineParser::buildString() const
             case CommandLineType::StringPath:
                 result += oneArg->longName + ":";
                 result += Log::colorToVTS(LogColor::Value);
-                result += static_cast<Path*>(oneArg->buffer)->string();
+                result += *static_cast<Path*>(oneArg->buffer);
                 break;
 
             case CommandLineType::EnumInt:

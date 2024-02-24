@@ -49,18 +49,18 @@ bool CommandLine::check()
     // Make some paths canonical
     if (!workspacePath.empty())
     {
-        workspacePath = absolute(workspacePath);
+        workspacePath = filesystem::absolute(workspacePath);
         error_code err;
-        const auto workspacePath1 = canonical(workspacePath, err);
+        const auto workspacePath1 = filesystem::canonical(workspacePath, err);
         if (!err)
             workspacePath = workspacePath1;
     }
 
     if (!cachePath.empty())
     {
-        cachePath = absolute(cachePath);
+        cachePath = filesystem::absolute(cachePath);
         error_code err;
-        const auto cachePath1 = canonical(cachePath, err);
+        const auto cachePath1 = filesystem::canonical(cachePath, err);
         if (!err)
             cachePath = cachePath1;
     }
@@ -69,13 +69,13 @@ bool CommandLine::check()
     if (!g_CommandLine.scriptName.empty())
     {
         const Path p = g_CommandLine.scriptName;
-        if (p.extension().string().empty())
+        if (p.extension().empty())
         {
             g_CommandLine.scriptName += ".swgs";
         }
-        else if (p.extension().string() != ".swgs")
+        else if (p.extension() != ".swgs")
         {
-            Report::error(FMT(Err(Fat0025), p.extension().string().c_str()));
+            Report::error(FMT(Err(Fat0025), p.extension().c_str()));
             return false;
         }
     }

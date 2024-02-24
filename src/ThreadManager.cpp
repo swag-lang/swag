@@ -259,7 +259,7 @@ namespace
             const auto node = job->nodes.back();
             g_Log.printHeaderDot("current node", node->token.text, LogColor::White, LogColor::White, " ");
             if (node->token.sourceFile)
-                g_Log.printHeaderDot("current location", FMT("%s:%d:%d", node->token.sourceFile->path.string().c_str(), node->token.startLocation.line + 1, node->token.startLocation.column + 1), LogColor::White, LogColor::White, " ");
+                g_Log.printHeaderDot("current location", FMT("%s:%d:%d", node->token.sourceFile->path.c_str(), node->token.startLocation.line + 1, node->token.startLocation.column + 1), LogColor::White, LogColor::White, " ");
         }
 
         g_Log.setDefaultColor();

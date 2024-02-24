@@ -151,12 +151,12 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
         auto nameLib = getOutputFileName(g_CommandLine.target, dep->module->name, BuildCfgOutputKind::DynamicLib);
 
         error_code err;
-        if (exists(nameLib, err))
+        if (filesystem::exists(nameLib, err))
         {
             nameLib = nameLib.filename();
             pp.pushParams.clear();
             pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(nameLib.c_str())});
-            pp.pushParams.push_back({CPUPushParamType::Imm, (nameLib.string().length())});
+            pp.pushParams.push_back({CPUPushParamType::Imm, nameLib.length()});
             emitInternalCallExt(pp, g_LangSpec->name_priv_loaddll, pp.pushParams);
         }
     }

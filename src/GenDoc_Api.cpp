@@ -280,8 +280,8 @@ void GenDoc::outputTitle(OneRef& c)
         {
             if (module != g_Workspace->runtimeModule)
             {
-                Utf8 pathFile = c.nodes[0]->token.sourceFile->path.string();
-                pathFile.remove(0, static_cast<uint32_t>(module->path.string().size()) + 1);
+                Utf8 pathFile = c.nodes[0]->token.sourceFile->path;
+                pathFile.remove(0, module->path.length() + 1);
                 str.append(pathFile.c_str());
             }
             else
@@ -289,7 +289,7 @@ void GenDoc::outputTitle(OneRef& c)
                 str.append(c.nodes[0]->token.sourceFile->name.c_str());
             }
 
-            helpContent += FMT("<a href=\"%s#L%d\" class=\"src\">[src]</a>", str.string().c_str(), c.nodes[0]->token.startLocation.line + 1);
+            helpContent += FMT("<a href=\"%s#L%d\" class=\"src\">[src]</a>", str.c_str(), c.nodes[0]->token.startLocation.line + 1);
         }
 
         helpContent += "</td>\n";
@@ -926,8 +926,8 @@ bool GenDoc::generateApi()
             // as sourceFile can be irrelevant
             if (c.second[0]->kind != AstNodeKind::Namespace)
             {
-                oneRef.category = c.second[0]->token.sourceFile->path.parent_path().string();
-                const auto len  = static_cast<uint32_t>(c.second[0]->token.sourceFile->module->path.string().size());
+                oneRef.category = c.second[0]->token.sourceFile->path.parent_path();
+                const auto len  = static_cast<uint32_t>(c.second[0]->token.sourceFile->module->path.length());
                 if (oneRef.category.length() <= len + 5) // +5 because of /src/
                     oneRef.category.clear();
                 else

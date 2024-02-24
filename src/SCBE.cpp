@@ -255,9 +255,9 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
     const auto filename = path;
 
     FILE* f = nullptr;
-    if (fopen_s(&f, filename.string().c_str(), "wb"))
+    if (fopen_s(&f, filename, "wb"))
     {
-        Report::errorOS(FMT(Err(Err0096), filename.string().c_str()));
+        Report::errorOS(FMT(Err(Err0096), filename.c_str()));
         return;
     }
 
@@ -274,7 +274,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
 
     (void) fflush(f);
     (void) fclose(f);
-    OS::ensureFileIsWritten(filename.string().c_str());
+    OS::ensureFileIsWritten(filename);
 
     pp.concat.release();
     pp.postConcat.release();

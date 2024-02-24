@@ -99,72 +99,72 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     builder.SetInsertPoint(BB);
 
     // Reserve room to pass parameters to embedded intrinsics
-    auto allocT = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
+    const auto allocT = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
     allocT->setAlignment(llvm::Align{16});
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
-    auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
+    const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
     auto allocFct = modu.getOrInsertFunction(bcAlloc->getCallName().c_str(), pp.allocatorTy);
     builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);
 
     // mainContext.allocator.itable = &defaultAllocTable
     {
-        auto toTable   = builder.CreateInBoundsGEP(pp.contextTy, pp.mainContext, {pp.cst0_i32, pp.cst0_i32, pp.cst1_i32});
-        auto fromTable = builder.CreatePointerCast(pp.defaultAllocTable, PTR_I8_TY());
+        const auto toTable   = builder.CreateInBoundsGEP(pp.contextTy, pp.mainContext, {pp.cst0_i32, pp.cst0_i32, pp.cst1_i32});
+        const auto fromTable = builder.CreatePointerCast(pp.defaultAllocTable, PTR_I8_TY());
         builder.CreateStore(fromTable, toTable);
     }
 
     // mainContext.flags = 0
     {
-        auto     toFlags      = builder.CreateInBoundsGEP(pp.contextTy, pp.mainContext, {pp.cst0_i32, pp.cst1_i32});
-        uint64_t contextFlags = getDefaultContextFlags(module);
+        const auto     toFlags      = builder.CreateInBoundsGEP(pp.contextTy, pp.mainContext, {pp.cst0_i32, pp.cst1_i32});
+        const uint64_t contextFlags = getDefaultContextFlags(module);
         builder.CreateStore(builder.getInt64(contextFlags), toFlags);
     }
 
     // __process_infos.modules
     {
-        auto v0 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt32(module->modulesSliceOffset));
-        auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, builder.getInt32(0)));
+        const auto v0 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt32(module->modulesSliceOffset));
+        const auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, builder.getInt32(0)));
         builder.CreateStore(v0, r0);
 
-        auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), pp.processInfos, builder.getInt32(8)));
+        const auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), pp.processInfos, builder.getInt32(8)));
         builder.CreateStore(builder.getInt64(module->moduleDependencies.count + 1), r1);
     }
 
     // __process_infos.args
     {
-        auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), pp.processInfos, builder.getInt32(16)));
+        const auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), pp.processInfos, builder.getInt32(16)));
         builder.CreateStore(pp.cst0_i64, r0);
-        auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), pp.processInfos, builder.getInt32(24)));
+        const auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), pp.processInfos, builder.getInt32(24)));
         builder.CreateStore(pp.cst0_i64, r1);
     }
 
     // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
     {
-        auto result  = emitCall(buildParameters, g_LangSpec->name_priv_tlsAlloc, nullptr, allocT, {}, {});
-        auto toTlsId = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
+        const auto result  = emitCall(buildParameters, g_LangSpec->name_priv_tlsAlloc, nullptr, allocT, {}, {});
+        const auto toTlsId = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
         builder.CreateStore(result, TO_PTR_I64(toTlsId));
     }
 
     // Set main context
     {
-        auto toContext = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst3_i32});
+        const auto toContext = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst3_i32});
         builder.CreateStore(pp.mainContext, toContext);
     }
 
     // Set current backend as LLVM
     {
-        auto toBackendKind = TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst6_i32}));
+        const auto toBackendKind = TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst6_i32}));
         builder.CreateStore(builder.getInt32(static_cast<uint32_t>(SwagBackendGenType::LLVM)), toBackendKind);
     }
 
     // Set default context in TLS
     {
-        auto v0        = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
-        auto toTlsId   = builder.CreateLoad(I64_TY(), v0);
-        auto toContext = builder.CreatePointerCast(pp.mainContext, PTR_I8_TY());
+        const auto v0        = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
+        auto       toTlsId   = builder.CreateLoad(I64_TY(), v0);
+        auto       toContext = builder.CreatePointerCast(pp.mainContext, PTR_I8_TY());
         emitCall(buildParameters, g_LangSpec->name_priv_tlsSetValue, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
     }
 
@@ -181,66 +181,66 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     // Load all dependencies
     VectorNative<ModuleDependency*> moduleDependencies;
     module->sortDependenciesByInitOrder(moduleDependencies);
-    for (auto dep : moduleDependencies)
+    for (const auto dep : moduleDependencies)
     {
         auto nameLib = getOutputFileName(g_CommandLine.target, dep->module->name, BuildCfgOutputKind::DynamicLib);
 
         error_code err;
-        if (exists(nameLib, err))
+        if (filesystem::exists(nameLib, err))
         {
             nameLib     = nameLib.filename();
-            auto ptrStr = builder.CreateGlobalStringPtr(nameLib.string());
-            emitCall(buildParameters, g_LangSpec->name_priv_loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.string().length())});
+            auto ptrStr = builder.CreateGlobalStringPtr(nameLib.c_str());
+            emitCall(buildParameters, g_LangSpec->name_priv_loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
         }
     }
 
     // Call to global init of all dependencies
-    auto funcType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
-    for (auto dep : moduleDependencies)
+    const auto funcType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
+    for (const auto dep : moduleDependencies)
     {
         if (!dep->module->isSwag)
             continue;
-        auto nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalInit);
-        auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
+        auto       nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+        const auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
     // Call to global init of this module
     {
-        auto nameFct  = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
-        auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
+        const auto nameFct  = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+        const auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
     // Call to global premain of all dependencies
-    for (auto dep : moduleDependencies)
+    for (const auto dep : moduleDependencies)
     {
         if (!dep->module->isSwag)
             continue;
-        auto nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-        auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
+        auto       nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+        const auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
     // Call to global premain of this module
     {
-        auto nameFct  = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-        auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
+        const auto nameFct  = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+        const auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
-    auto funcTypeVoid = llvm::FunctionType::get(VOID_TY(), false);
+    const auto funcTypeVoid = llvm::FunctionType::get(VOID_TY(), false);
 
     // Call to test functions
     if (buildParameters.compileType == Test)
     {
-        for (auto bc : module->byteCodeTestFunc)
+        for (const auto bc : module->byteCodeTestFunc)
         {
-            auto node = bc->node;
+            const auto node = bc->node;
             if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
                 continue;
 
-            auto fcc = modu.getOrInsertFunction(bc->getCallName().c_str(), funcTypeVoid);
+            const auto fcc = modu.getOrInsertFunction(bc->getCallName().c_str(), funcTypeVoid);
             builder.CreateCall(fcc);
         }
     }
@@ -248,7 +248,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     // Call to main
     if (module->byteCodeMainFunc)
     {
-        auto fncMain = modu.getOrInsertFunction(module->byteCodeMainFunc->getCallName().c_str(), funcTypeVoid);
+        const auto fncMain = modu.getOrInsertFunction(module->byteCodeMainFunc->getCallName().c_str(), funcTypeVoid);
         builder.CreateCall(fncMain);
     }
 
@@ -260,7 +260,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     // Call to global drop of all dependencies
     for (int i = static_cast<int>(moduleDependencies.size()) - 1; i >= 0; i--)
     {
-        auto dep = moduleDependencies[i];
+        const auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
             continue;
         nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalDrop);

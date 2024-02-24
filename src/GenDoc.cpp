@@ -1469,7 +1469,7 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     const Utf8 fileName{module->buildCfg.genDoc.outputName};
     if (fileName.empty())
     {
-        filePath.append(g_Workspace->workspacePath.filename().string().c_str());
+        filePath.append(g_Workspace->workspacePath.filename());
         filePath += ".";
         filePath += module->name.c_str();
     }
@@ -1481,7 +1481,7 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     const auto extName = getFileExtension(module);
     filePath += extName.c_str();
 
-    fullFileName = filePath.string();
+    fullFileName = filePath;
     fullFileName.makeLower();
 
     // Write for output

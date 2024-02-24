@@ -730,22 +730,22 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
         Path fullFileName = node->token.sourceFile->path.parent_path();
         fullFileName.append(filename.c_str());
         error_code err;
-        if (!exists(fullFileName, err))
+        if (!filesystem::exists(fullFileName, err))
         {
             // Search relative to the module path
             fullFileName = node->token.sourceFile->module->path;
             fullFileName.append(filename.c_str());
-            if (!exists(fullFileName, err))
+            if (!filesystem::exists(fullFileName, err))
             {
                 // Search the file itself, without any special path
                 fullFileName = filename;
-                if (!exists(fullFileName, err))
+                if (!filesystem::exists(fullFileName, err))
                     return context->report({back, FMT(Err(Err0710), filename.c_str())});
             }
         }
 
         struct stat stat_buf;
-        const int   rc = stat(fullFileName.string().c_str(), &stat_buf);
+        const int   rc = stat(fullFileName, &stat_buf);
         SWAG_VERIFY(rc == 0, context->report({back, FMT(Err(Err0097), back->computedValue()->text.c_str())}));
         SWAG_CHECK(context->checkSizeOverflow("[[#load]]", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 

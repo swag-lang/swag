@@ -30,10 +30,10 @@ bool SaveGenJob::flush(Module* mdl)
         publicPath.append(tmpFileName.c_str());
 
         FILE* h = nullptr;
-        if (fopen_s(&h, publicPath.string().c_str(), "wN"))
+        if (fopen_s(&h, publicPath, "wN"))
         {
             ++mdl->numErrors;
-            Report::errorOS(FMT(Err(Err0096), publicPath.string().c_str()));
+            Report::errorOS(FMT(Err(Err0096), publicPath.c_str()));
             return false;
         }
 

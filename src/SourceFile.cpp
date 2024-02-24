@@ -75,11 +75,11 @@ bool SourceFile::load()
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
     FILE* handle = nullptr;
-    if (fopen_s(&handle, path.string().c_str(), "rbN"))
+    if (fopen_s(&handle, path.c_str(), "rbN"))
     {
         numErrors++;
         ++module->numErrors;
-        Report::errorOS(FMT(Err(Err0095), path.string().c_str()));
+        Report::errorOS(FMT(Err(Err0095), path.c_str()));
         return false;
     }
 
@@ -106,7 +106,7 @@ bool SourceFile::load()
         Allocator::free(buffer, allocBufferSize);
         buffer = nullptr;
 
-        Report::errorOS(FMT(Err(Err0098), path.string().c_str()));
+        Report::errorOS(FMT(Err(Err0098), path.c_str()));
         return false;
     }
 
@@ -146,7 +146,7 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
         else
         {
             const auto fileToRead = fileForSourceLocation ? fileForSourceLocation : this;
-            ifstream   fle(fileToRead->path, ios::binary);
+            ifstream   fle(fileToRead->path.c_str(), ios::binary);
             if (!fle.is_open())
                 return "?";
 

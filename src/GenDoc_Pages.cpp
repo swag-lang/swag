@@ -20,14 +20,14 @@ bool GenDoc::generatePages()
         Path path = module->path;
         path.append(addPage.c_str());
 
-        path = absolute(path);
+        path = filesystem::absolute(path);
         error_code err;
-        const auto path1 = canonical(path, err);
+        const auto path1 = filesystem::canonical(path, err);
         if (!err)
             path = path1;
 
-        if (!exists(path, err))
-            Report::errorOS(FMT(Err(Err0092), path.string().c_str()));
+        if (!filesystem::exists(path, err))
+            Report::errorOS(FMT(Err(Err0092), path.c_str()));
         else
             files.push_back(path);
     }
@@ -36,12 +36,10 @@ bool GenDoc::generatePages()
     for (const auto& path : files)
     {
         auto filePath = g_Workspace->targetPath;
-        filePath.append(path.filename().string());
+        filePath.append(path.filename());
 
         Utf8 extName = getFileExtension(module);
-        filePath.replace_extension(extName.c_str());
-
-        fullFileName = filePath.string();
+        fullFileName = filePath;
 
         // Write for output
         FILE* f = nullptr;

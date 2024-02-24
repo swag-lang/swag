@@ -340,7 +340,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
         if (ip->sourceFile)
         {
             const Path sf = ip->sourceFile;
-            line.devMode += FMT("%s:%d", sf.filename().string().c_str(), ip->sourceLine);
+            line.devMode += FMT("%s:%d", sf.filename().c_str(), ip->sourceLine);
         }
     }
 #endif

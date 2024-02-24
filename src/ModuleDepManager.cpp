@@ -43,7 +43,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
     const auto parentFolder = file->path.parent_path();
     if (file->hasFlag(FILE_IS_SCRIPT_FILE))
     {
-        moduleName   = file->path.filename().replace_extension().string();
+        moduleName   = file->path.filename().replace_extension();
         moduleFolder = parentFolder;
     }
     else
@@ -64,7 +64,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
     // Register it
     if (getCfgModule(moduleName))
     {
-        Report::error(FMT(Err(Fat0012), moduleName.c_str(), moduleFolder.string().c_str()));
+        Report::error(FMT(Err(Fat0012), moduleName.c_str(), moduleFolder.c_str()));
         OS::exit(-1);
     }
 
@@ -99,10 +99,10 @@ Path ModuleDepManager::getAliasPath(const Path& srcPath)
     auto p = srcPath;
     p.append(SWAG_ALIAS_FILENAME);
     error_code err;
-    if (exists(p, err))
+    if (filesystem::exists(p, err))
     {
         FILE* f = nullptr;
-        if (!fopen_s(&f, p.string().c_str(), "rt"))
+        if (!fopen_s(&f, p, "rt"))
         {
             char in[MAX_PATH];
             (void) fgets(in, MAX_PATH, f);
@@ -118,7 +118,7 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
 {
     Vector<SourceFile*> allFiles;
 
-    OS::visitFolders(path.string().c_str(), [&](const char* cFileName) {
+    OS::visitFolders(path.c_str(), [&](const char* cFileName) {
         auto cfgPath = path;
         cfgPath.append(cFileName);
         cfgPath = getAliasPath(cfgPath);
@@ -128,8 +128,8 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
 
         // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
         error_code err;
-        if (exists(cfgName, err))
-            newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
+        if (filesystem::exists(cfgName, err))
+            newCfgFile(allFiles, cfgPath, SWAG_CFG_FILE);
     });
 
     // Sort files, and register them in a constant order
@@ -148,15 +148,15 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFileP
 
     // No cfg file, we are done, we need one !
     error_code err;
-    if (!exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0093), SWAG_CFG_FILE, remotePath.string().c_str())});
+    if (!filesystem::exists(remotePath, err))
+        return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0093), SWAG_CFG_FILE, remotePath.c_str())});
 
     // Otherwise we copy the config file to the cache path, with a unique name.
     // Then later we will parse that file to get information from the module
     FILE* fsrc = nullptr;
-    if (fopen_s(&fsrc, remotePath.string().c_str(), "rbN"))
+    if (fopen_s(&fsrc, remotePath, "rbN"))
     {
-        return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0094), remotePath.string().c_str())});
+        return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0094), remotePath.c_str())});
     }
 
     // Remove source configuration file
@@ -168,7 +168,7 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFileP
     static int cacheNum = 0;
     cfgFileName         = FMT("module%u.swg", cacheNum++).c_str();
     destPath.append(cfgFileName);
-    if (fopen_s(&fdest, destPath.string().c_str(), "wbN"))
+    if (fopen_s(&fdest, destPath, "wbN"))
     {
         (void) fclose(fsrc);
         return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0089), SWAG_CFG_FILE, dep->name.c_str())});
@@ -199,13 +199,13 @@ bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Path& cfgFilePa
     remotePath.append(SWAG_MODULES_FOLDER);
     remotePath.append(dep->name);
 
-    remotePath = absolute(remotePath);
+    remotePath = filesystem::absolute(remotePath);
     error_code err;
-    const auto remotePath1 = canonical(remotePath, err);
+    const auto remotePath1 = filesystem::canonical(remotePath, err);
     if (!err)
         remotePath = remotePath1;
-    if (!exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0255), remotePath.string().c_str())});
+    if (!filesystem::exists(remotePath, err))
+        return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0255), remotePath.c_str())});
     if (!fetch)
         return true;
     dep->resolvedLocation = remotePath;
@@ -218,13 +218,13 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Path& cfgFilePa
     remotePath.append(SWAG_MODULES_FOLDER);
     remotePath.append(dep->name);
 
-    remotePath = absolute(remotePath);
+    remotePath = filesystem::absolute(remotePath);
     error_code err;
-    const auto remotePath1 = canonical(remotePath, err);
+    const auto remotePath1 = filesystem::canonical(remotePath, err);
     if (!err)
         remotePath = remotePath1;
-    if (!exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0255), remotePath.string().c_str())});
+    if (!filesystem::exists(remotePath, err))
+        return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0255), remotePath.c_str())});
     if (!fetch)
         return true;
 
@@ -279,7 +279,7 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
     if (dep->location.empty())
     {
         dep->isLocalToWorkspace   = srcModule->isLocalToWorkspace;
-        dep->location             = srcModule->remoteLocationDep.string();
+        dep->location             = srcModule->remoteLocationDep;
         dep->locationAutoResolved = true;
     }
 
@@ -436,7 +436,7 @@ bool ModuleDepManager::execute()
     {
         const auto file = Allocator::alloc<SourceFile>();
         file->path      = g_CommandLine.scriptName;
-        file->name      = file->path.filename().string();
+        file->name      = file->path.filename();
         file->addFlag(FILE_IS_CFG_FILE | FILE_IS_SCRIPT_FILE);
         registerCfgFile(file);
     }
@@ -648,9 +648,9 @@ bool ModuleDepManager::execute()
                     error_code err;
                     auto       pathSrc = g_Workspace->dependenciesPath;
                     pathSrc.append(val->name.c_str());
-                    if (!exists(pathSrc, err) && !create_directories(pathSrc, err))
+                    if (!filesystem::exists(pathSrc, err) && !filesystem::create_directories(pathSrc, err))
                     {
-                        Report::errorOS(FMT(Err(Err0100), pathSrc.string().c_str()));
+                        Report::errorOS(FMT(Err(Err0100), pathSrc.c_str()));
                         ok = false;
                         continue;
                     }
@@ -658,10 +658,10 @@ bool ModuleDepManager::execute()
                     pathSrc.append(SWAG_ALIAS_FILENAME);
 
                     FILE* f = nullptr;
-                    if (!fopen_s(&f, pathSrc.string().c_str(), "wt"))
+                    if (!fopen_s(&f, pathSrc, "wt"))
                     {
                         auto pathDst = val->fetchDep->resolvedLocation;
-                        (void) fwrite(pathDst.string().c_str(), pathDst.string().length(), 1, f);
+                        (void) fwrite(pathDst, pathDst.length(), 1, f);
                         (void) fflush(f);
                         (void) fclose(f);
                     }

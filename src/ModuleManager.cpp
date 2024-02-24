@@ -41,7 +41,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 
     // First try in the target folder (local modules)
     auto path = Backend::getOutputFileName(OS::getNativeTarget(), name, BuildCfgOutputKind::DynamicLib);
-    auto h    = OS::loadLibrary(path.string().c_str());
+    auto h    = OS::loadLibrary(path);
     if (h == nullptr)
     {
         // Try on system folders
@@ -49,7 +49,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         {
             path = name;
             path += Backend::getOutputFileExtension(OS::getNativeTarget(), BuildCfgOutputKind::DynamicLib).c_str();
-            h = OS::loadLibrary(path.string().c_str());
+            h = OS::loadLibrary(path);
         }
 
         if (h == nullptr)

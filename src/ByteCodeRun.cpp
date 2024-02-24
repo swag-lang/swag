@@ -134,7 +134,7 @@ void ByteCodeRun::callInternalCompilerError(ByteCodeRunContext* context, const B
     context->push(msg);
     context->push<uint64_t>(loc.location->column);
     context->push<uint64_t>(loc.location->line);
-    context->push(_strdup(loc.file->path.string().c_str()));
+    context->push(_strdup(loc.file->path));
     localCall(context, bc, 4);
 }
 
@@ -146,7 +146,7 @@ void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, const ByteCodeI
     context->push(msg);
     context->push<uint64_t>(loc.location->column);
     context->push<uint64_t>(loc.location->line);
-    context->push(_strdup(loc.file->path.string().c_str()));
+    context->push(_strdup(loc.file->path));
     localCall(context, bc, 4);
 }
 
@@ -2406,7 +2406,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->push(ip->d.pointer);
             context->push<uint64_t>(loc.location->column);
             context->push<uint64_t>(loc.location->line);
-            context->push(_strdup(loc.file->path.string().c_str()));
+            context->push(_strdup(loc.file->path));
             localCall(context, bc, 4);
             break;
         }
@@ -2430,7 +2430,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->push(reinterpret_cast<const uint8_t*>("executing unreachable code"));
             context->push<uint64_t>(loc.location->column);
             context->push<uint64_t>(loc.location->line);
-            context->push(_strdup(loc.file->path.string().c_str()));
+            context->push(_strdup(loc.file->path));
             localCall(context, bc, 4);
             break;
         }
@@ -4256,8 +4256,8 @@ namespace
         if (runContext->ip != runContext->bc->out)
             runContext->ip++;
 
-        tmpLoc.fileName.buffer = static_cast<void*>(_strdup(loc.file->path.string().c_str()));
-        tmpLoc.fileName.count  = loc.file->path.string().length();
+        tmpLoc.fileName.buffer = static_cast<void*>(_strdup(loc.file->path.c_str()));
+        tmpLoc.fileName.count  = loc.file->path.length();
         tmpLoc.lineStart = tmpLoc.lineEnd = loc.location->line;
         tmpLoc.colStart = tmpLoc.colEnd = loc.location->column;
         location                        = &tmpLoc;

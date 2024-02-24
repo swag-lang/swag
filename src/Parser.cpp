@@ -264,7 +264,7 @@ bool Parser::saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path&
             countEol++;
     }
 
-    const Utf8 sourceCode = FMT("// %s:%d:%d:%d:%d\n", fromNode->token.sourceFile->path.string().c_str(), fromNode->token.startLocation.line + 1,
+    const Utf8 sourceCode = FMT("// %s:%d:%d:%d:%d\n", fromNode->token.sourceFile->path.c_str(), fromNode->token.startLocation.line + 1,
                                 fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
     modl->contentJobGeneratedFile[g_ThreadIndex] += sourceCode;
     modl->countLinesGeneratedFile[g_ThreadIndex] += 1;
@@ -449,7 +449,7 @@ bool Parser::generateAst()
     // One scope per file. We do NOT register the scope in the list of children
     // of the module scope, to avoid contention in // (and this is useless). That way,
     // no need to lock the module scope each time a file is encountered.
-    const Utf8 scopeName = "__" + Path(sourceFile->name).replace_extension().string();
+    const Utf8 scopeName = "__" + Path(sourceFile->name).replace_extension();
     Ast::normalizeIdentifierName(scopeName);
     sourceFile->scopeFile              = Ast::newScope(sourceFile->astRoot, scopeName, ScopeKind::File, nullptr);
     sourceFile->scopeFile->parentScope = parentScope;

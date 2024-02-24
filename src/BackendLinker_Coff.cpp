@@ -16,7 +16,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
     libPaths.push_back(g_CommandLine.exePath.parent_path());
 
     for (const auto& oneLibPath : libPaths)
-        arguments.push_back("/LIBPATH:" + oneLibPath.string());
+        arguments.push_back("/LIBPATH:" + oneLibPath);
 
     // Register #foreignlib
     // As this is defined by the user, we consider the library must exists
@@ -33,8 +33,8 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
     {
         auto       libName = Backend::getOutputFileName(g_CommandLine.target, dep->module->name, BuildCfgOutputKind::ImportLib);
         error_code err;
-        if (exists(libName, err))
-            arguments.push_back(libName.string());
+        if (filesystem::exists(libName, err))
+            arguments.push_back(libName);
     }
 
     for (const auto& dep : buildParameters.module->moduleEmbedded)
@@ -43,8 +43,8 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
         {
             auto       libName = Backend::getOutputFileName(g_CommandLine.target, dep->name, BuildCfgOutputKind::ImportLib);
             error_code err;
-            if (exists(libName, err))
-                arguments.push_back(libName.string());
+            if (filesystem::exists(libName, err))
+                arguments.push_back(libName);
         }
     }
 
@@ -93,11 +93,11 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
     }
 
     const auto outFileName = Backend::getOutputFileName(g_CommandLine.target, buildParameters.module->name, outputKind);
-    arguments.push_back("/OUT:" + outFileName.string());
+    arguments.push_back("/OUT:" + outFileName);
 
     // Add all object files
     for (auto& file : buildParameters.module->objFiles)
     {
-        arguments.push_back(file.string());
+        arguments.push_back(file);
     }
 }

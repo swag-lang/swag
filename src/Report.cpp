@@ -631,7 +631,7 @@ namespace
                             str += Log::colorToVTS(LogColor::DarkYellow);
                             str += "error";
                             str += Log::colorToVTS(LogColor::Gray);
-                            str += FMT(" --> %s:%d:%d", sourceFile1->path.string().c_str(), context->traces[i]->lineStart + 1, context->traces[i]->colStart + 1);
+                            str += FMT(" --> %s:%d:%d", sourceFile1->path.c_str(), context->traces[i]->lineStart + 1, context->traces[i]->colStart + 1);
                             str += "\n";
                         }
                     }

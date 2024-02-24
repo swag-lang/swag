@@ -95,8 +95,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
 
         if (g_CommandLine.moduleName.empty())
         {
-            const Utf8 modulePath = module->path.string();
-            const Utf8 srcPath    = g_Workspace->dependenciesPath.string();
+            const Utf8 modulePath = module->path;
+            const Utf8 srcPath    = g_Workspace->dependenciesPath;
             if (modulePath.find(srcPath) != 0)
                 return false;
         }
@@ -115,9 +115,9 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     {
         const auto outFileFame = getOutputFileName(g_CommandLine.target, module->name, BuildCfgOutputKind::DynamicLib);
         error_code err;
-        if (!exists(outFileFame, err))
+        if (!filesystem::exists(outFileFame, err))
             return false;
-        const auto timeOut = OS::getFileWriteTime(outFileFame.string().c_str());
+        const auto timeOut = OS::getFileWriteTime(outFileFame.c_str());
         if (!invert && timeOut < moreRecentSourceFile)
             return false;
         if (invert && timeOut > moreRecentSourceFile)
@@ -272,7 +272,7 @@ bool Backend::setupExportFile(bool force)
     exportFileName = exportName;
     exportFilePath = publicPath;
     if (!force)
-        timeExportFile = OS::getFileWriteTime(publicPath.string().c_str());
+        timeExportFile = OS::getFileWriteTime(publicPath);
 
     return true;
 }
@@ -332,7 +332,7 @@ bool Backend::saveExportFile()
         const auto result = bufferSwg.flushToFile(exportFilePath);
         if (!result)
             return false;
-        timeExportFile = OS::getFileWriteTime(exportFilePath.string().c_str());
+        timeExportFile = OS::getFileWriteTime(exportFilePath);
         SWAG_ASSERT(timeExportFile);
     }
 

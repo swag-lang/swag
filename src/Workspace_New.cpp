@@ -44,25 +44,25 @@ void Workspace::newModule(const Utf8& moduleName) const
     auto modulePath = g_CommandLine.test ? testsPath : modulesPath;
     modulePath.append(moduleName.c_str());
 
-    if (exists(modulePath, err))
+    if (filesystem::exists(modulePath, err))
     {
         Report::errorOS(FMT(Err(Fat0028), moduleName.c_str()));
         OS::exit(-1);
     }
 
-    if (!create_directories(modulePath, err))
+    if (!filesystem::create_directories(modulePath, err))
     {
-        Report::errorOS(FMT(Err(Fat0017), modulePath.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0017), modulePath.c_str()));
         OS::exit(-1);
     }
 
     // Create a configuration file
     auto cfgFileName = modulePath;
     cfgFileName.append(SWAG_CFG_FILE);
-    ofstream fileCfg(cfgFileName);
+    ofstream fileCfg(cfgFileName.c_str());
     if (!fileCfg.is_open())
     {
-        Report::errorOS(FMT(Err(Fat0018), cfgFileName.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0018), cfgFileName.c_str()));
         OS::exit(-1);
     }
 
@@ -89,9 +89,9 @@ void Workspace::newModule(const Utf8& moduleName) const
 
     // Create an hello world file
     modulePath.append(SWAG_SRC_FOLDER);
-    if (!create_directories(modulePath, err))
+    if (!filesystem::create_directories(modulePath, err))
     {
-        Report::errorOS(FMT(Err(Fat0017), modulePath.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0017), modulePath.c_str()));
         OS::exit(-1);
     }
 
@@ -102,7 +102,7 @@ void Workspace::newModule(const Utf8& moduleName) const
 }
 )";
 
-    auto contentTest = R"(
+    const auto contentTest = R"(
 #test
 {
 	const X = (2 * 5) + 3
@@ -114,10 +114,10 @@ void Workspace::newModule(const Utf8& moduleName) const
         modulePath.append("test1.swg");
     else
         modulePath.append("main.swg");
-    ofstream file(modulePath);
+    ofstream file(modulePath.c_str());
     if (!file.is_open())
     {
-        Report::errorOS(FMT(Err(Fat0018), modulePath.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0018), modulePath.c_str()));
         OS::exit(-1);
     }
     if (g_CommandLine.test)
@@ -148,47 +148,47 @@ void Workspace::newCommand()
     Utf8       moduleName;
     if (g_CommandLine.moduleName.empty())
     {
-        if (exists(workspacePath, err))
+        if (filesystem::exists(workspacePath, err))
         {
-            Report::error(FMT(Err(Fat0034), workspacePath.string().c_str()));
+            Report::error(FMT(Err(Fat0034), workspacePath.c_str()));
             OS::exit(-1);
         }
 
         // Create workspace folders
-        if (!create_directories(workspacePath, err))
+        if (!filesystem::create_directories(workspacePath, err))
         {
-            Report::errorOS(FMT(Err(Fat0017), workspacePath.string().c_str()));
+            Report::errorOS(FMT(Err(Fat0017), workspacePath.c_str()));
             OS::exit(-1);
         }
 
-        if (!create_directories(testsPath, err))
+        if (!filesystem::create_directories(testsPath, err))
         {
-            Report::errorOS(FMT(Err(Fat0017), testsPath.string().c_str()));
+            Report::errorOS(FMT(Err(Fat0017), testsPath.c_str()));
             OS::exit(-1);
         }
 
-        if (!create_directories(modulesPath, err))
+        if (!filesystem::create_directories(modulesPath, err))
         {
-            Report::errorOS(FMT(Err(Fat0017), modulesPath.string().c_str()));
+            Report::errorOS(FMT(Err(Fat0017), modulesPath.c_str()));
             OS::exit(-1);
         }
 
-        if (!create_directories(dependenciesPath, err))
+        if (!filesystem::create_directories(dependenciesPath, err))
         {
-            Report::errorOS(FMT(Err(Fat0017), dependenciesPath.string().c_str()));
+            Report::errorOS(FMT(Err(Fat0017), dependenciesPath.c_str()));
             OS::exit(-1);
         }
 
-        g_Log.messageInfo(FMT("=> workspace [[%s]] has been created", workspacePath.string().c_str()));
-        moduleName = workspacePath.filename().string();
+        g_Log.messageInfo(FMT("=> workspace [[%s]] has been created", workspacePath.c_str()));
+        moduleName = workspacePath.filename();
     }
 
     // Use an existing workspace to create a new module
     else
     {
-        if (!exists(workspacePath, err))
+        if (!filesystem::exists(workspacePath, err))
         {
-            Report::error(FMT(Err(Fat0035), workspacePath.string().c_str()));
+            Report::error(FMT(Err(Fat0035), workspacePath.c_str()));
             OS::exit(-1);
         }
 
@@ -201,13 +201,13 @@ void Workspace::newCommand()
     if (g_CommandLine.test)
     {
         g_Log.messageInfo(FMT("=> test module [[%s]] has been created", moduleName.c_str()));
-        g_Log.messageInfo(FMT("=> type [[swag test -w:%s -m:%s]] to test that module only", workspacePath.string().c_str(), moduleName.c_str()));
-        g_Log.messageInfo(FMT("=> type [[swag test -w:%s]] to test all modules", workspacePath.string().c_str(), moduleName.c_str()));
+        g_Log.messageInfo(FMT("=> type [[swag test -w:%s -m:%s]] to test that module only", workspacePath.c_str(), moduleName.c_str()));
+        g_Log.messageInfo(FMT("=> type [[swag test -w:%s]] to test all modules", workspacePath.c_str(), moduleName.c_str()));
     }
     else
     {
         g_Log.messageInfo(FMT("=> module [[%s]] has been created", moduleName.c_str()));
-        g_Log.messageInfo(FMT("=> type [[swag run -w:%s -m:%s]] to build and run that module", workspacePath.string().c_str(), moduleName.c_str()));
+        g_Log.messageInfo(FMT("=> type [[swag run -w:%s -m:%s]] to build and run that module", workspacePath.c_str(), moduleName.c_str()));
     }
 
     OS::exit(0);

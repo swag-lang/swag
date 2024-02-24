@@ -31,9 +31,9 @@ JobResult FetchModuleFileSystemJob::execute()
     // Collect list of source files
     // Collect the module config file, and everything in src/ and publish/
     SetUtf8 srcFiles;
-    OS::visitFilesRec(dep->resolvedLocation.string().c_str(), [&](const char* fileName) {
+    OS::visitFilesRec(dep->resolvedLocation, [&](const char* fileName) {
         const Path n    = fileName;
-        const Utf8 subN = fileName + dep->resolvedLocation.string().length() + 1;
+        const Utf8 subN = fileName + dep->resolvedLocation.length() + 1;
 
         if (collectSourceFiles)
         {
@@ -47,7 +47,7 @@ JobResult FetchModuleFileSystemJob::execute()
 
             Path srcFolder = dep->resolvedLocation;
             srcFolder.append(SWAG_SRC_FOLDER);
-            if (n.string().find(srcFolder.string()) == 0)
+            if (n.find(srcFolder) == 0)
             {
                 srcFiles.insert(subN);
                 return;
@@ -56,7 +56,7 @@ JobResult FetchModuleFileSystemJob::execute()
 
         Path publishFolder = dep->resolvedLocation;
         publishFolder.append(SWAG_PUBLISH_FOLDER);
-        if (n.string().find(publishFolder.string()) == 0)
+        if (n.find(publishFolder) == 0)
         {
             srcFiles.insert(subN);
             return;
@@ -68,14 +68,14 @@ JobResult FetchModuleFileSystemJob::execute()
 
     // Collect list of already existing files in the dependency folder, in order to remove old ones if necessary
     Vector<Utf8> dstFiles;
-    OS::visitFilesRec(destPath.string().c_str(), [&](const char* fileName) {
+    OS::visitFilesRec(destPath, [&](const char* fileName) {
         const Path n    = fileName;
-        const Utf8 subN = fileName + destPath.string().length() + 1;
+        const Utf8 subN = fileName + destPath.length() + 1;
 
         // Do not collect public folder
         Path publicFolder = dep->resolvedLocation;
         publicFolder.append(SWAG_PUBLIC_FOLDER);
-        if (n.string().find(publicFolder.string()) == 0)
+        if (n.find(publicFolder) == 0)
             return;
 
         dstFiles.push_back(subN);
@@ -94,7 +94,7 @@ JobResult FetchModuleFileSystemJob::execute()
 
             if (!filesystem::remove(n))
             {
-                Report::errorOS(FMT(Err(Err0090), n.string().c_str()));
+                Report::errorOS(FMT(Err(Err0090), n.c_str()));
                 return JobResult::ReleaseJob;
             }
         }
@@ -110,9 +110,9 @@ JobResult FetchModuleFileSystemJob::execute()
 
         auto       folder = destFileName.parent_path();
         error_code err;
-        if (!exists(folder, err) && !create_directories(folder, err))
+        if (!filesystem::exists(folder, err) && !filesystem::create_directories(folder, err))
         {
-            Report::errorOS(FMT(Err(Err0100), folder.string().c_str()));
+            Report::errorOS(FMT(Err(Err0100), folder.c_str()));
             return JobResult::ReleaseJob;
         }
 

@@ -15,7 +15,7 @@ void GenDoc::addTitle(const Utf8& title, int level)
 
 bool GenDoc::processMarkDownFile(const Path& fileName, int titleLevel)
 {
-    ifstream ifs(fileName);
+    ifstream ifs(fileName.c_str());
 
     if (!ifs)
     {
@@ -37,7 +37,7 @@ bool GenDoc::processMarkDownFile(const Path& fileName, int titleLevel)
 
 bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
 {
-    ifstream ifs(fileName);
+    ifstream ifs(fileName.c_str());
 
     if (!ifs)
     {
@@ -99,7 +99,7 @@ bool GenDoc::generateExamples()
         Path path = file->name;
         path.replace_extension("");
 
-        Utf8 name  = path.string();
+        Utf8 name  = path;
         Utf8 title = name;
 
         int titleLevel = 0;

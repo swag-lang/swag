@@ -64,7 +64,7 @@ namespace OS
 
         int  bestVersion[4] = {0};
         Utf8 bestName;
-        visitFolders(g_WinSdkFolder.string().c_str(), [&](const char* cFileName) {
+        visitFolders(g_WinSdkFolder, [&](const char* cFileName) {
             int        i0, i1, i2, i3;
             const auto success = sscanf_s(cFileName, "%d.%d.%d.%d", &i0, &i1, &i2, &i3);
             if (success < 4)
@@ -100,7 +100,7 @@ namespace OS
 
         g_WinSdkFolder.append(bestName);
         if (g_CommandLine.verbosePath)
-            g_Log.messageVerbose(FMT("winsdk path is [[%s]]", g_WinSdkFolder.string().c_str()));
+            g_Log.messageVerbose(FMT("winsdk path is [[%s]]", g_WinSdkFolder.c_str()));
 
         return true;
     }
@@ -477,7 +477,7 @@ namespace OS
         searchPath += "\\*";
 
         Path         path = folder;
-        const HANDLE h    = FindFirstFileA(searchPath.string().c_str(), &findFile);
+        const HANDLE h    = FindFirstFileA(searchPath, &findFile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -489,11 +489,11 @@ namespace OS
                 {
                     if (findFile.cFileName[0] == '.' && (!findFile.cFileName[1] || (findFile.cFileName[1] == '.' && !findFile.cFileName[2])))
                         continue;
-                    visitFilesRec(path.string().c_str(), user);
+                    visitFilesRec(path.c_str(), user);
                 }
                 else
                 {
-                    user(path.string().c_str());
+                    user(path);
                 }
             } while (FindNextFileA(h, &findFile));
 

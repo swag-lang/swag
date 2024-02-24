@@ -174,11 +174,11 @@ void Module::computePublicPath()
     if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
     {
         error_code err;
-        if (!exists(publicPath, err))
+        if (!filesystem::exists(publicPath, err))
         {
-            if (!create_directories(publicPath, err))
+            if (!filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(FMT(Err(Fat0019), publicPath.string().c_str()));
+                Report::errorOS(FMT(Err(Fat0019), publicPath.c_str()));
                 OS::exit(-1);
             }
         }
@@ -189,11 +189,11 @@ void Module::computePublicPath()
     if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
     {
         error_code err;
-        if (!exists(publicPath, err))
+        if (!filesystem::exists(publicPath, err))
         {
-            if (!create_directories(publicPath, err))
+            if (!filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(FMT(Err(Fat0019), publicPath.string().c_str()));
+                Report::errorOS(FMT(Err(Fat0019), publicPath.c_str()));
                 OS::exit(-1);
             }
         }
@@ -511,7 +511,7 @@ void Module::addFileNoLock(SourceFile* file)
 
     // Keep track of the most recent file
     if (!file->writeTime)
-        file->writeTime = OS::getFileWriteTime(file->path.string().c_str());
+        file->writeTime = OS::getFileWriteTime(file->path);
     moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
 
     // If the file is flagged as '#global export', register it
