@@ -110,10 +110,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b)
-                     {
-                         return strcmp(a->name.c_str(), b->name.c_str()) < 0;
-                     });
+        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name.c_str(), b->name.c_str()) < 0; });
         for (const auto file : allFiles)
             theModule->addFile(file);
     }
@@ -170,39 +167,37 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
         Path tmp = std::move(directories.back());
         directories.pop_back();
 
-        OS::visitFilesFolders(tmp.string().c_str(),
-                              [&](uint64_t writeTime, const char* cFileName, bool isFolder)
-                              {
-                                  if (isFolder)
-                                  {
-                                      tmp1 = tmp;
-                                      tmp1.append(cFileName);
-                                      directories.emplace_back(std::move(tmp1));
-                                  }
-                                  else
-                                  {
-                                      const Utf8 fileN = cFileName;
-                                      if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || fileN.containsNoCase(g_CommandLine.testFilter))
-                                      {
-                                          const auto pz = strrchr(cFileName, '.');
-                                          if (pz && !_strcmpi(pz, ".swg"))
-                                          {
-                                              addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, false);
-                                          }
-                                          else if (g_CommandLine.genDoc && pz && !_strcmpi(pz, ".md"))
-                                          {
-                                              addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, true);
-                                          }
+        OS::visitFilesFolders(tmp.string().c_str(), [&](uint64_t writeTime, const char* cFileName, bool isFolder) {
+            if (isFolder)
+            {
+                tmp1 = tmp;
+                tmp1.append(cFileName);
+                directories.emplace_back(std::move(tmp1));
+            }
+            else
+            {
+                const Utf8 fileN = cFileName;
+                if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || fileN.containsNoCase(g_CommandLine.testFilter))
+                {
+                    const auto pz = strrchr(cFileName, '.');
+                    if (pz && !_strcmpi(pz, ".swg"))
+                    {
+                        addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, false);
+                    }
+                    else if (g_CommandLine.genDoc && pz && !_strcmpi(pz, ".md"))
+                    {
+                        addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, true);
+                    }
 
-                                          // Even if this is not a .swg file, as this is in the src directory, the file time contribute
-                                          // to the rebuild detection (in case file is #load by another for example)
-                                          else
-                                          {
-                                              theModule->moreRecentSourceFile = max(theModule->moreRecentSourceFile, writeTime);
-                                          }
-                                      }
-                                  }
-                              });
+                    // Even if this is not a .swg file, as this is in the src directory, the file time contribute
+                    // to the rebuild detection (in case file is #load by another for example)
+                    else
+                    {
+                        theModule->moreRecentSourceFile = max(theModule->moreRecentSourceFile, writeTime);
+                    }
+                }
+            }
+        });
     }
 
     // Add the config file, second pass
@@ -219,10 +214,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b)
-                     {
-                         return strcmp(a->name.c_str(), b->name.c_str()) < 0;
-                     });
+        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name.c_str(), b->name.c_str()) < 0; });
         for (const auto file : allFiles)
             theModule->addFile(file);
     }
@@ -231,59 +223,55 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
 void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
 {
     // Scan source folder
-    OS::visitFolders(basePath.string().c_str(),
-                     [&](const char* fileName)
-                     {
-                         auto path = basePath;
-                         path.append(fileName);
-                         path = ModuleDepManager::getAliasPath(path);
-                         path.append(SWAG_SRC_FOLDER);
+    OS::visitFolders(basePath.string().c_str(), [&](const char* fileName) {
+        auto path = basePath;
+        path.append(fileName);
+        path = ModuleDepManager::getAliasPath(path);
+        path.append(SWAG_SRC_FOLDER);
 
-                         const auto module                           = Allocator::alloc<Module>();
-                         g_Workspace->mapFirstPassModulesNames[path] = module;
+        const auto module                           = Allocator::alloc<Module>();
+        g_Workspace->mapFirstPassModulesNames[path] = module;
 
-                         // Scan source folder
-                         Vector<Path> directories;
-                         directories.push_back(path);
+        // Scan source folder
+        Vector<Path> directories;
+        directories.push_back(path);
 
-                         Path tmp1;
-                         while (!directories.empty())
-                         {
-                             Path tmp = std::move(directories.back());
-                             directories.pop_back();
+        Path tmp1;
+        while (!directories.empty())
+        {
+            Path tmp = std::move(directories.back());
+            directories.pop_back();
 
-                             OS::visitFilesFolders(tmp.string().c_str(),
-                                                   [&](uint64_t writeTime, const char* subFileName, bool isFolder)
-                                                   {
-                                                       if (isFolder)
-                                                       {
-                                                           tmp1 = tmp;
-                                                           tmp1.append(subFileName);
-                                                           directories.emplace_back(std::move(tmp1));
-                                                       }
-                                                       else
-                                                       {
-                                                           const auto file = Allocator::alloc<SourceFile>();
-                                                           file->module    = module;
-                                                           file->name      = subFileName;
-                                                           Path pathFile   = tmp;
-                                                           pathFile.append(subFileName);
-                                                           file->path      = pathFile;
-                                                           file->writeTime = writeTime;
-                                                           module->files.push_back(file);
+            OS::visitFilesFolders(tmp.string().c_str(), [&](uint64_t writeTime, const char* subFileName, bool isFolder) {
+                if (isFolder)
+                {
+                    tmp1 = tmp;
+                    tmp1.append(subFileName);
+                    directories.emplace_back(std::move(tmp1));
+                }
+                else
+                {
+                    const auto file = Allocator::alloc<SourceFile>();
+                    file->module    = module;
+                    file->name      = subFileName;
+                    Path pathFile   = tmp;
+                    pathFile.append(subFileName);
+                    file->path      = pathFile;
+                    file->writeTime = writeTime;
+                    module->files.push_back(file);
 
-                                                           const auto pz = strrchr(subFileName, '.');
-                                                           if (pz && !_strcmpi(pz, ".swg"))
-                                                           {
-                                                               const auto readFileJob  = Allocator::alloc<LoadSourceFileJob>();
-                                                               readFileJob->flags      = JOB_IS_OPT;
-                                                               readFileJob->sourceFile = file;
-                                                               g_ThreadMgr.addJob(readFileJob);
-                                                           }
-                                                       }
-                                                   });
-                         }
-                     });
+                    const auto pz = strrchr(subFileName, '.');
+                    if (pz && !_strcmpi(pz, ".swg"))
+                    {
+                        const auto readFileJob  = Allocator::alloc<LoadSourceFileJob>();
+                        readFileJob->flags      = JOB_IS_OPT;
+                        readFileJob->sourceFile = file;
+                        g_ThreadMgr.addJob(readFileJob);
+                    }
+                }
+            });
+        }
+    });
 }
 
 Module* EnumerateModuleJob::addModule(const Path& path)
@@ -308,20 +296,18 @@ void EnumerateModuleJob::enumerateModules(const Path& path)
     Vector<string> allModules;
 
     // Scan source folder
-    OS::visitFolders(path.string().c_str(),
-                     [&](const char* cFolderName)
-                     {
-                         // If we have only one core, then we will sort modules in alphabetical order to always
-                         // treat them in a reliable order. That way, --randomize and --seed can work.
-                         if (g_ThreadMgr.numWorkers == 1)
-                             allModules.push_back(cFolderName);
-                         else
-                         {
-                             auto toAdd = path;
-                             toAdd.append(cFolderName);
-                             addModule(toAdd);
-                         }
-                     });
+    OS::visitFolders(path.string().c_str(), [&](const char* cFolderName) {
+        // If we have only one core, then we will sort modules in alphabetical order to always
+        // treat them in a reliable order. That way, --randomize and --seed can work.
+        if (g_ThreadMgr.numWorkers == 1)
+            allModules.push_back(cFolderName);
+        else
+        {
+            auto toAdd = path;
+            toAdd.append(cFolderName);
+            addModule(toAdd);
+        }
+    });
 
     // Sort modules, and register them in a constant order
     if (!allModules.empty())
@@ -430,10 +416,7 @@ JobResult EnumerateModuleJob::execute()
         // Sort files, and register them in a constant order
         if (!allFiles.empty())
         {
-            ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b)
-                         {
-                             return strcmp(a->name.c_str(), b->name.c_str()) < 0;
-                         });
+            ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name.c_str(), b->name.c_str()) < 0; });
             for (const auto file : allFiles)
                 m->addFile(file);
         }

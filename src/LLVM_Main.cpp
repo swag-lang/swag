@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "ByteCode.h"
 #include "Context.h"
-#include "LanguageSpec.h"
 #include "LLVM.h"
 #include "LLVM_Macros.h"
+#include "LanguageSpec.h"
 #include "Module.h"
 
 void LLVM::emitOS(const BuildParameters& buildParameters) const

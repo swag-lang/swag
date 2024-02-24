@@ -1,7 +1,7 @@
 #pragma once
 #include "Mutex.h"
-#include "Symbol.h"
 #include "SymTableHash.h"
+#include "Symbol.h"
 
 struct AstNode;
 struct ComputedValue;

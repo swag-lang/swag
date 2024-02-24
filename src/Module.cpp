@@ -5,14 +5,14 @@
 #include "Context.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
-#include "LanguageSpec.h"
 #include "LLVM.h"
+#include "LanguageSpec.h"
 #include "Log.h"
 #include "ModuleManager.h"
 #include "Parser.h"
 #include "Report.h"
-#include "SaveGenJob.h"
 #include "SCBE.h"
+#include "SaveGenJob.h"
 #include "SemanticError.h"
 #include "SemanticJob.h"
 #include "ThreadManager.h"
@@ -855,10 +855,9 @@ bool Module::waitForDependenciesDone(Job* job)
 void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result) const
 {
     result = moduleDependencies;
-    ranges::sort(result, [](const ModuleDependency* n1, const ModuleDependency* n2)
-                 {
-                     return n2->module->hasDependencyTo(n1->module);
-                 });
+    ranges::sort(result, [](const ModuleDependency* n1, const ModuleDependency* n2) {
+        return n2->module->hasDependencyTo(n1->module);
+    });
 }
 
 void Module::setBuildPass(BuildPass buildP)
@@ -1172,10 +1171,9 @@ bool Module::filterFunctionsToEmit()
         byteCodeFuncToGen.push_back(bc);
     }
 
-    ranges::sort(byteCodeFuncToGen, [](ByteCode* bc1, ByteCode* bc2)
-                 {
-                     return reinterpret_cast<size_t>(bc1->sourceFile) < reinterpret_cast<size_t>(bc2->sourceFile);
-                 });
+    ranges::sort(byteCodeFuncToGen, [](ByteCode* bc1, ByteCode* bc2) {
+        return reinterpret_cast<size_t>(bc1->sourceFile) < reinterpret_cast<size_t>(bc2->sourceFile);
+    });
 
     return true;
 }

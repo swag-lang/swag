@@ -175,18 +175,17 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
 bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
 {
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
-    const auto res = Ast::visit(context, node, [](ErrorContext* cxt, const AstNode* n)
-                                {
-                                    if (n->kind != AstNodeKind::Literal)
-                                        return Ast::VisitResult::Continue;
-                                    if (n->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
-                                    {
-                                        cxt->report({n->children.front(), FMT(Err(Err0403), n->children.front()->token.c_str())});
-                                        return Ast::VisitResult::Stop;
-                                    }
+    const auto res = Ast::visit(context, node, [](ErrorContext* cxt, const AstNode* n) {
+        if (n->kind != AstNodeKind::Literal)
+            return Ast::VisitResult::Continue;
+        if (n->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
+        {
+            cxt->report({n->children.front(), FMT(Err(Err0403), n->children.front()->token.c_str())});
+            return Ast::VisitResult::Stop;
+        }
 
-                                    return Ast::VisitResult::Continue;
-                                });
+        return Ast::VisitResult::Continue;
+    });
 
     return res != Ast::VisitResult::Stop;
 }

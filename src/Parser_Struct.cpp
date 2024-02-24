@@ -308,17 +308,16 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
     // Dispatch owners
     if (structNode->genericParameters)
     {
-        Ast::visit(structNode->genericParameters, [&](AstNode* n)
-                   {
-                       n->ownerStructScope = newScope;
-                       n->ownerScope       = newScope;
-                       n->addAstFlag(AST_IS_GENERIC);
-                       if (n->kind == AstNodeKind::FuncDeclParam)
-                       {
-                           const auto param = castAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
-                           newScope->symTable.registerSymbolName(context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
-                       }
-                   });
+        Ast::visit(structNode->genericParameters, [&](AstNode* n) {
+            n->ownerStructScope = newScope;
+            n->ownerScope       = newScope;
+            n->addAstFlag(AST_IS_GENERIC);
+            if (n->kind == AstNodeKind::FuncDeclParam)
+            {
+                const auto param = castAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
+                newScope->symTable.registerSymbolName(context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
+            }
+        });
     }
 
     SWAG_CHECK(eatToken());

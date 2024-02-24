@@ -87,10 +87,10 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
                 node->computedValue()->reg.b = left->computedValue()->reg.b == right->computedValue()->reg.b;
                 break;
             case NativeTypeKind::F32:
-                node->computedValue()->reg.b = left->computedValue()->reg.f32 == right->computedValue()->reg.f32;  // NOLINT(clang-diagnostic-float-equal)
+                node->computedValue()->reg.b = left->computedValue()->reg.f32 == right->computedValue()->reg.f32; // NOLINT(clang-diagnostic-float-equal)
                 break;
             case NativeTypeKind::F64:
-                node->computedValue()->reg.b = left->computedValue()->reg.f64 == right->computedValue()->reg.f64;  // NOLINT(clang-diagnostic-float-equal)
+                node->computedValue()->reg.b = left->computedValue()->reg.f64 == right->computedValue()->reg.f64; // NOLINT(clang-diagnostic-float-equal)
                 break;
             case NativeTypeKind::S8:
             case NativeTypeKind::U8:

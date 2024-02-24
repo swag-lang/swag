@@ -6,7 +6,7 @@ AlignConsecutiveDeclarations: true
 AlignConsecutiveMacros: true
 AlignOperands: true
 AllowShortIfStatementsOnASingleLine: false
-AllowShortLambdasOnASingleLine: None
+AllowShortLambdasOnASingleLine: Inline
 AllowShortFunctionsOnASingleLine: InlineOnly
 AlwaysBreakAfterDefinitionReturnType: false
 AlwaysBreakTemplateDeclarations: Yes
@@ -23,7 +23,6 @@ BraceWrapping:
   AfterExternBlock: false
   BeforeCatch: true
   BeforeElse: true
-  BeforeLambdaBody: true
   BeforeWhile: false
   IndentBraces: false
   SplitEmptyFunction: true
@@ -53,10 +52,6 @@ SpacesInAngles: false
 TabWidth: 4
 IncludeCategories: 
   - Regex: 'pch.*'
-    Priority: 0
-    SortPriority: 1
-  - Regex: '.*'
-    Priority: 1
-    SortPriority: 2
-IncludeIsMainRegex: '([-_](test|unittest))?$'
+    Priority: -1
+    SortPriority: -1
 

@@ -1,10 +1,10 @@
 #include "pch.h"
 
 #ifdef SWAG_STATS
-#include "Statistics.h"
 #include "Log.h"
 #include "Module.h"
 #include "Os.h"
+#include "Statistics.h"
 #include "ThreadManager.h"
 #include "Workspace.h"
 

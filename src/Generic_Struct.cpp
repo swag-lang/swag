@@ -49,10 +49,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                     // Force the reevaluation of the variable and its children
                     context->result     = ContextResult::NewChildren;
                     node->semanticState = AstNodeResolveState::Enter;
-                    Ast::visit(node, [](AstNode* n)
-                               {
-                                   n->removeSemFlag(SEMFLAG_ONCE);
-                               });
+                    Ast::visit(node, [](AstNode* n) { n->removeSemFlag(SEMFLAG_ONCE); });
                     return true;
                 }
             }

@@ -268,10 +268,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                 // Force the reevaluation of the identifier and its children
                 context->result     = ContextResult::NewChildren1;
                 node->semanticState = AstNodeResolveState::Enter;
-                Ast::visit(node, [](AstNode* n)
-                           {
-                               n->removeSemFlag(SEMFLAG_ONCE);
-                           });
+                Ast::visit(node, [](AstNode* n) { n->removeSemFlag(SEMFLAG_ONCE); });
                 return true;
             }
         }

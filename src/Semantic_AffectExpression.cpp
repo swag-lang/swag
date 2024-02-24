@@ -272,10 +272,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // Be sure modifiers are relevant
     if (right->kind == AstNodeKind::NoDrop || right->kind == AstNodeKind::Move)
     {
-        PushErrCxtStep ec(context, right, ErrCxtStepKind::Note, [rightTypeInfo]
-                          {
-                              return Diagnostic::isType(rightTypeInfo);
-                          });
+        PushErrCxtStep ec(context, right, ErrCxtStepKind::Note, [rightTypeInfo] { return Diagnostic::isType(rightTypeInfo); });
 
         const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->hasAstFlag(AST_NO_LEFT_DROP))

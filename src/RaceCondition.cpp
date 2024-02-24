@@ -1,8 +1,8 @@
 #include "pch.h"
 #ifdef SWAG_HAS_ASSERT
-#include "RaceCondition.h"
 #include "Assert.h"
 #include "Mutex.h"
+#include "RaceCondition.h"
 
 RaceCondition::RaceCondition(Instance* inst, bool read)
 {

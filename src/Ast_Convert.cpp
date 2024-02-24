@@ -349,11 +349,10 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
     typeInfo->addFlag(TYPEINFO_STRUCT_IS_TUPLE);
     structNode->typeInfo = typeInfo;
     structNode->scope    = newScope;
-    visit(structNode->content, [&](AstNode* n)
-          {
-              n->ownerStructScope = newScope;
-              n->ownerScope       = newScope;
-          });
+    visit(structNode->content, [&](AstNode* n) {
+        n->ownerStructScope = newScope;
+        n->ownerScope       = newScope;
+    });
 
     rootScope->symTable.registerSymbolName(context, structNode, SymbolKind::Struct);
     addChildBack(sourceFile->astRoot, structNode);

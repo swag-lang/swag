@@ -1672,12 +1672,11 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // Sort children by parameter index
     if (allParams && allParams->hasAstFlag(AST_MUST_SORT_CHILDREN))
     {
-        ranges::sort(allParams->children, [](AstNode* n1, AstNode* n2)
-                     {
-                         const AstFuncCallParam* p1 = castAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
-                         const AstFuncCallParam* p2 = castAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-                         return p1->indexParam < p2->indexParam;
-                     });
+        ranges::sort(allParams->children, [](AstNode* n1, AstNode* n2) {
+            const AstFuncCallParam* p1 = castAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
+            const AstFuncCallParam* p2 = castAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
+            return p1->indexParam < p2->indexParam;
+        });
     }
     else if (allParams && allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS))
     {

@@ -121,12 +121,11 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
     VectorNative<AstNode*> symbols;
     for (auto& val : symbolsMap | views::values)
         symbols.append(val);
-    ranges::sort(symbols, [](const AstNode* a, const AstNode* b)
-                 {
-                     const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
-                     const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
-                     return strcmp(a0.c_str(), b0.c_str()) < 0;
-                 });
+    ranges::sort(symbols, [](const AstNode* a, const AstNode* b) {
+        const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+        const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+        return strcmp(a0.c_str(), b0.c_str()) < 0;
+    });
 
     bool first = true;
     for (const auto n1 : symbols)
@@ -444,10 +443,9 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
         collectInvert[n->fullName] = n->fullName;
     }
 
-    ranges::sort(pendingNodes, [](const OneRef* a, const OneRef* b)
-                 {
-                     return strcmp(a->tocName.c_str(), b->tocName.c_str()) < 0;
-                 });
+    ranges::sort(pendingNodes, [](const OneRef* a, const OneRef* b) {
+        return strcmp(a->tocName.c_str(), b->tocName.c_str()) < 0;
+    });
 
     if (first)
     {
@@ -489,16 +487,15 @@ void GenDoc::generateTocSection(AstNodeKind kind, const char* sectionName)
 
 void GenDoc::generateToc()
 {
-    ranges::sort(allNodes, [](OneRef& a, OneRef& b)
-                 {
-                     const int s0 = sortOrder(a.nodes[0]->kind);
-                     const int s1 = sortOrder(b.nodes[0]->kind);
-                     if (s0 != s1)
-                         return s0 < s1;
-                     if (a.category == b.category)
-                         return strcmp(a.fullName.buffer, b.fullName.buffer) < 0;
-                     return strcmp(a.category.c_str(), b.category.c_str()) < 0;
-                 });
+    ranges::sort(allNodes, [](OneRef& a, OneRef& b) {
+        const int s0 = sortOrder(a.nodes[0]->kind);
+        const int s1 = sortOrder(b.nodes[0]->kind);
+        if (s0 != s1)
+            return s0 < s1;
+        if (a.category == b.category)
+            return strcmp(a.fullName.buffer, b.fullName.buffer) < 0;
+        return strcmp(a.category.c_str(), b.category.c_str()) < 0;
+    });
 
     generateTocSection(AstNodeKind::Namespace, "Namespaces");
     generateTocSection(AstNodeKind::StructDecl, "Structs");
@@ -517,18 +514,17 @@ void GenDoc::generateContent()
     computeUserComments(moduleComment, module->docComment, false);
     outputUserComment(moduleComment);
 
-    ranges::sort(allNodes, [](OneRef& a, OneRef& b)
-                 {
-                     if (a.nodes[0]->kind == AstNodeKind::ConstDecl && b.nodes[0]->kind != AstNodeKind::ConstDecl)
-                         return true;
-                     if (a.nodes[0]->kind != AstNodeKind::ConstDecl && b.nodes[0]->kind == AstNodeKind::ConstDecl)
-                         return false;
-                     if (a.nodes[0]->kind == AstNodeKind::TypeAlias && b.nodes[0]->kind != AstNodeKind::TypeAlias)
-                         return true;
-                     if (a.nodes[0]->kind != AstNodeKind::TypeAlias && b.nodes[0]->kind == AstNodeKind::TypeAlias)
-                         return false;
-                     return strcmp(a.fullName.buffer, b.fullName.buffer) < 0;
-                 });
+    ranges::sort(allNodes, [](OneRef& a, OneRef& b) {
+        if (a.nodes[0]->kind == AstNodeKind::ConstDecl && b.nodes[0]->kind != AstNodeKind::ConstDecl)
+            return true;
+        if (a.nodes[0]->kind != AstNodeKind::ConstDecl && b.nodes[0]->kind == AstNodeKind::ConstDecl)
+            return false;
+        if (a.nodes[0]->kind == AstNodeKind::TypeAlias && b.nodes[0]->kind != AstNodeKind::TypeAlias)
+            return true;
+        if (a.nodes[0]->kind != AstNodeKind::TypeAlias && b.nodes[0]->kind == AstNodeKind::TypeAlias)
+            return false;
+        return strcmp(a.fullName.buffer, b.fullName.buffer) < 0;
+    });
 
     // Output content
     helpContent += "<h1>Content</h1>\n";
@@ -957,12 +953,11 @@ bool GenDoc::generateApi()
             oneRef.displayName += tkn[tkn.size() - 1];
         }
 
-        ranges::sort(oneRef.nodes, [](const AstNode* a, const AstNode* b)
-                     {
-                         const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
-                         const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
-                         return strcmp(a0.c_str(), b0.c_str()) < 0;
-                     });
+        ranges::sort(oneRef.nodes, [](const AstNode* a, const AstNode* b) {
+            const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+            const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+            return strcmp(a0.c_str(), b0.c_str()) < 0;
+        });
         allNodes.push_back(oneRef);
     }
 

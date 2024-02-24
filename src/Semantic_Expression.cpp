@@ -251,10 +251,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
 
     // Make the cast
     {
-        PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, []
-                          {
-                              return Nte(Nte0185);
-                          });
+        PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, [] { return Nte(Nte0185); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CAST_FLAG_COMMUTATIVE | CAST_FLAG_STRICT));
     }
 
@@ -378,10 +375,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
     }
     else
     {
-        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, []
-                           {
-                               return Nte(Nte0023);
-                           });
+        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [] { return Nte(Nte0023); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CAST_FLAG_COMMUTATIVE | CAST_FLAG_STRICT));
 
         node->typeInfo    = expression->typeInfo;

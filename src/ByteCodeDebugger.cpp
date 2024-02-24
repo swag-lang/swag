@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "ByteCodeDebugger.h"
 #include "AstFlags.h"
 #include "ByteCode.h"
-#include "ByteCodeDebugger.h"
 #include "ByteCodeStack.h"
 #include "Log.h"
 #include "Module.h"

@@ -479,10 +479,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                 }
                 else
                 {
-                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]
-                                      {
-                                          return FMT(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression");
-                                      });
+                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return FMT(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression"); });
                     const auto     typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
                     SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
                 }
@@ -534,11 +531,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
                 SWAG_CHECK(checkIsConcrete(context, node->expression));
 
             {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, []
-                                  {
-                                      return Nte(Nte0021);
-                                  },
-                                  true);
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return Nte(Nte0021); }, true);
                 SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
                 YIELD();
             }
@@ -941,23 +934,22 @@ bool Semantic::resolveVisit(SemanticContext* context)
     // variables
     size_t countVar   = 0;
     size_t countAlias = 0;
-    Ast::visit(newExpression, [&](AstNode* x)
-               {
-                   if (countAlias >= node->aliasNames.size())
-                       return;
-                   if (x->kind == AstNodeKind::VarDecl)
-                   {
-                       if (countVar == firstAliasVar)
-                       {
-                           x->token.startLocation = node->aliasNames[countAlias].startLocation;
-                           x->token.endLocation   = node->aliasNames[countAlias].endLocation;
-                           countAlias++;
-                           firstAliasVar++;
-                       }
+    Ast::visit(newExpression, [&](AstNode* x) {
+        if (countAlias >= node->aliasNames.size())
+            return;
+        if (x->kind == AstNodeKind::VarDecl)
+        {
+            if (countVar == firstAliasVar)
+            {
+                x->token.startLocation = node->aliasNames[countAlias].startLocation;
+                x->token.endLocation   = node->aliasNames[countAlias].endLocation;
+                countAlias++;
+                firstAliasVar++;
+            }
 
-                       countVar++;
-                   }
-               });
+            countVar++;
+        }
+    });
 
     // First child is the let in the statement, and first child of this is the loop node
     auto loopNode = castAst<AstLoop>(node->children.back()->children.back(), AstNodeKind::Loop);
@@ -965,22 +957,21 @@ bool Semantic::resolveVisit(SemanticContext* context)
     Ast::removeFromParent(node->block);
     Ast::addChildBack(loopNode->block, node->block);
     SWAG_ASSERT(node->block);
-    Ast::visit(context, node->block, [&](ErrorContext*, AstNode* x)
-               {
-                   if (!x->hasOwnerBreakable())
-                       x->setOwnerBreakable(loopNode);
-                   else if (x->ownerBreakable()->isParentOf(loopNode))
-                   {
-                       if (x->token.id == TokenId::KwdBreak)
-                           x->ownerBreakable()->breakList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
-                       else if (x->token.id == TokenId::KwdContinue)
-                           x->ownerBreakable()->continueList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
-                       x->setOwnerBreakable(loopNode);
-                   }
-                   if (x->kind == AstNodeKind::Visit)
-                       return Ast::VisitResult::Stop;
-                   return Ast::VisitResult::Continue;
-               });
+    Ast::visit(context, node->block, [&](ErrorContext*, AstNode* x) {
+        if (!x->hasOwnerBreakable())
+            x->setOwnerBreakable(loopNode);
+        else if (x->ownerBreakable()->isParentOf(loopNode))
+        {
+            if (x->token.id == TokenId::KwdBreak)
+                x->ownerBreakable()->breakList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
+            else if (x->token.id == TokenId::KwdContinue)
+                x->ownerBreakable()->continueList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
+            x->setOwnerBreakable(loopNode);
+        }
+        if (x->kind == AstNodeKind::Visit)
+            return Ast::VisitResult::Stop;
+        return Ast::VisitResult::Continue;
+    });
     node->block->removeAstFlag(AST_NO_SEMANTIC);
     loopNode->block->token.endLocation = node->block->token.endLocation;
 

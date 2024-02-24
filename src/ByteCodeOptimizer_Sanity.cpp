@@ -397,14 +397,13 @@ namespace
         const auto ip      = cxt.states[cxt.state]->ip;
         if (overload && ip->node)
         {
-            Ast::visit(ip->node, [&](AstNode* n)
-                       {
-                           if (n->resolvedSymbolOverload() == overload && !nodeLoc)
-                           {
-                               nodeLoc = n;
-                               return;
-                           }
-                       });
+            Ast::visit(ip->node, [&](AstNode* n) {
+                if (n->resolvedSymbolOverload() == overload && !nodeLoc)
+                {
+                    nodeLoc = n;
+                    return;
+                }
+            });
         }
 
         if (nodeLoc)

@@ -441,10 +441,7 @@ bool Semantic::filterMatchesCoerceCast(SemanticContext*, VectorNative<OneMatch*>
     if (matches.size() <= 1)
         return true;
 
-    ranges::sort(matches, [](const OneMatch* x, const OneMatch* y)
-                 {
-                     return x->coerceCast < y->coerceCast;
-                 });
+    ranges::sort(matches, [](const OneMatch* x, const OneMatch* y) { return x->coerceCast < y->coerceCast; });
 
     const auto prio = matches[0]->coerceCast;
     for (const auto m : matches)
