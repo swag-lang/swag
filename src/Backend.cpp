@@ -340,22 +340,22 @@ bool Backend::saveExportFile()
     return true;
 }
 
-void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job, int start, int end)
+void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job, uint32_t start, uint32_t end)
 {
-    for (int i = start; i < end; i++)
+    for (uint32_t i = start; i < end; i++)
     {
         auto one = moduleToGen->byteCodeFuncToGen[i];
         job->byteCodeFunc.push_back(one);
     }
 }
 
-void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, int& start, int& end) const
+void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, uint32_t& start, uint32_t& end) const
 {
     const auto size            = buildParameters.module->byteCodeFuncToGen.size();
     const auto precompileIndex = buildParameters.precompileIndex;
 
     SWAG_ASSERT(numPreCompileBuffers > 1);
-    const int range = size / (numPreCompileBuffers - 1);
+    const uint32_t range = size / (numPreCompileBuffers - 1);
 
     // First precompileIndex is dedicated to data and main
     // :SegZeroIsData
@@ -376,8 +376,8 @@ void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters
 bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Job* ownerJob)
 {
     // Batch functions between files
-    int start = 0;
-    int end   = 0;
+    uint32_t start = 0;
+    uint32_t end   = 0;
     getRangeFunctionIndexForJob(buildParameters, start, end);
 
     BackendFunctionBodyJob* job = Allocator::alloc<BackendFunctionBodyJob>();

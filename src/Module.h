@@ -297,19 +297,19 @@ struct Module
 
     uint64_t moreRecentSourceFile = 0;
 
-    ModuleKind      kind;
-    BuildPass       buildPass                   = BuildPass::Full;
-    uint32_t        hasBeenBuilt                = BUILDRES_NONE;
-    uint32_t        modulesSliceOffset          = UINT32_MAX;
-    uint32_t        typesSliceOffset            = UINT32_MAX;
-    uint32_t        globalVarsToDropSliceOffset = UINT32_MAX;
-    int             optimPass                   = 0;
-    atomic<int>     optimNeedRestart            = 0;
-    atomic<int>     numCompilerFunctions        = 0;
-    atomic<int>     numErrors                   = 0;
-    atomic<int>     numWarnings                 = 0;
-    atomic<int>     criticalErrors              = 0;
-    ModuleBuildPass curPass                     = ModuleBuildPass::Invalid;
+    ModuleKind       kind;
+    BuildPass        buildPass                   = BuildPass::Full;
+    uint32_t         hasBeenBuilt                = BUILDRES_NONE;
+    uint32_t         modulesSliceOffset          = UINT32_MAX;
+    uint32_t         typesSliceOffset            = UINT32_MAX;
+    uint32_t         globalVarsToDropSliceOffset = UINT32_MAX;
+    uint32_t         optimPass                   = 0;
+    atomic<uint32_t> optimNeedRestart            = 0;
+    atomic<uint32_t> numCompilerFunctions        = 0;
+    atomic<uint32_t> numErrors                   = 0;
+    atomic<uint32_t> numWarnings                 = 0;
+    atomic<uint32_t> criticalErrors              = 0;
+    ModuleBuildPass  curPass                     = ModuleBuildPass::Invalid;
 
     bool shouldHaveError   = false;
     bool shouldHaveWarning = false;

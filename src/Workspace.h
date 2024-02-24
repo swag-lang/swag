@@ -85,8 +85,8 @@ struct Workspace
     Path                  modulesPath;
     Path                  dependenciesPath;
     SharedMutex           mutexModules;
-    atomic<int>           numErrors   = 0;
-    atomic<int>           numWarnings = 0;
+    atomic<uint32_t>      numErrors   = 0;
+    atomic<uint32_t>      numWarnings = 0;
     VectorNative<Module*> modules;
     Module*               runModule = nullptr;
 
@@ -94,12 +94,12 @@ struct Workspace
 
     MapPath<Module*> mapFirstPassModulesNames;
     MapUtf8<Module*> mapModulesNames;
-    Module*          filteredModule = nullptr;
-    Module*          bootstrapModule;
-    Module*          runtimeModule;
+    Module*          filteredModule  = nullptr;
+    Module*          bootstrapModule = nullptr;
+    Module*          runtimeModule   = nullptr;
     ScopeSwag        swagScope;
 
-    atomic<int>      skippedModules = 0;
+    atomic<uint32_t> skippedModules = 0;
     atomic<uint64_t> totalTime      = 0;
 };
 

@@ -51,8 +51,8 @@ struct Backend
 
     void        setMustCompile();
     bool        isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
-    static void addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job, int start, int end);
-    void        getRangeFunctionIndexForJob(const BuildParameters& buildParameters, int& start, int& end) const;
+    static void addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job, uint32_t start, uint32_t end);
+    void        getRangeFunctionIndexForJob(const BuildParameters& buildParameters, uint32_t& start, uint32_t& end) const;
     bool        emitAllFunctionBodies(const BuildParameters& buildParameters, Job* ownerJob);
     JobResult   generateExportFile(Job* ownerJob);
     bool        saveExportFile();

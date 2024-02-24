@@ -3569,11 +3569,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                     // We need to flatten all variadic registers, in order, in the stack, and emit the address of that array
                     // We compute the number of variadic registers by removing registers of normal parameters (ip->b.u32)
-                    int      idxParam          = static_cast<int>(pushRAParams.size()) - sizeB / sizeof(Register) - 1;
+                    uint32_t idxParam          = pushRAParams.size() - sizeB / sizeof(Register) - 1;
                     uint32_t variadicStackSize = (idxParam + 1) * sizeof(Register);
                     MK_ALIGN16(variadicStackSize);
                     uint32_t offset = sizeParamsStack - variadicStackSize;
-                    while (idxParam >= 0)
+                    while (idxParam != UINT32_MAX)
                     {
                         pp.emitLoad64Indirect(REG_OFFSET(pushRAParams[idxParam]), RAX);
                         pp.emitStore64Indirect(offset, RAX, RSP);
