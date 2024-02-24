@@ -72,7 +72,7 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
                     auto native          = castTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
                     native               = castTypeInfo<TypeInfoNative>(native->clone());
                     native->valueInteger = -native->valueInteger;
-                    child->typeInfo      = TypeManager::resolveUntypedType(native, *reinterpret_cast<uint32_t*>(&native->valueInteger));
+                    child->typeInfo      = TypeManager::resolveUntypedType(native, std::bit_cast<uint32_t>(native->valueInteger));
                     op->typeInfo         = child->typeInfo;
                 }
                 break;
@@ -89,7 +89,7 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
                     auto native        = castTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
                     native             = castTypeInfo<TypeInfoNative>(native->clone());
                     native->valueFloat = -native->valueFloat;
-                    child->typeInfo    = TypeManager::resolveUntypedType(typeInfo, *reinterpret_cast<uint32_t*>(&native->valueFloat));
+                    child->typeInfo    = TypeManager::resolveUntypedType(typeInfo, std::bit_cast<uint32_t>(native->valueFloat));
                     op->typeInfo       = child->typeInfo;
                 }
 

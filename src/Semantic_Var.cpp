@@ -233,6 +233,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::sendCompilerMsgGlobalVar(SemanticContext* context)
 {
     const auto sourceFile = context->sourceFile;
