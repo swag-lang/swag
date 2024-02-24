@@ -53,7 +53,7 @@ int main(int argc, const char* argv[])
         command != "version" &&
         command != "script")
     {
-        Report::error(form(Err(Fat0026), argv[1]));
+        Report::error(formErr(Fat0026, argv[1]));
         OS::exit(-1);
     }
 

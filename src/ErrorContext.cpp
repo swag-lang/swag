@@ -103,29 +103,29 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 case ErrCxtStepKind::Note:
                     break;
                 case ErrCxtStepKind::Export:
-                    msg = form(Nte(Nte0097), name.c_str());
+                    msg = formNte(Nte0097, name.c_str());
                     break;
                 case ErrCxtStepKind::Generic:
-                    msg            = form(Nte(Nte0095), name.c_str());
+                    msg            = formNte(Nte0095, name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::Inline:
-                    msg            = form(Nte(Nte0096), name.c_str());
+                    msg            = formNte(Nte0096, name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::CompileTime:
-                    msg            = form(Nte(Nte0091), name.c_str());
+                    msg            = formNte(Nte0091, name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::ValidIf:
                     if (exp.node->kind == AstNodeKind::StructDecl)
-                        msg = form(Nte(Nte0092), name.c_str());
+                        msg = formNte(Nte0092, name.c_str());
                     else
-                        msg = form(Nte(Nte0093), name.c_str());
+                        msg = formNte(Nte0093, name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::ValidIfx:
-                    msg            = form(Nte(Nte0094), name.c_str());
+                    msg            = formNte(Nte0094, name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::HereIs:
@@ -161,12 +161,12 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
         sourceNode = exportNode;
     if (sourceNode && sourceNode->token.sourceFile && sourceNode->token.sourceFile->fromNode && !sourceNode->token.sourceFile->fileForSourceLocation)
     {
-        const auto note = Diagnostic::note(sourceNode->token.sourceFile->fromNode, Nte(Nte0098));
+        const auto note = Diagnostic::note(sourceNode->token.sourceFile->fromNode, toNte(Nte0098));
         notes.push_back(note);
     }
     else if (diagnostic.sourceFile && diagnostic.sourceFile->hasFlag(FILE_IS_EXTERNAL) && diagnostic.sourceFile->hasFlag(FILE_IS_FROM_AST) && sourceNode)
     {
-        const auto note = Diagnostic::note(sourceNode, Nte(Nte0098));
+        const auto note = Diagnostic::note(sourceNode, toNte(Nte0098));
         notes.push_back(note);
     }
 }
@@ -196,5 +196,5 @@ bool ErrorContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, u
 {
     if (value <= maxValue)
         return true;
-    return report({node, form(Err(Err0046), typeOverflow, maxValue)});
+    return report({node, formErr(Err0046, typeOverflow, maxValue)});
 }

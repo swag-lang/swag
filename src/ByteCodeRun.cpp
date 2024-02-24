@@ -58,7 +58,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
 {
     if (++context->curRC > context->maxRecurse)
     {
-        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, form(Err(Err0604), context->maxRecurse));
+        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, formErr(Err0604, context->maxRecurse));
         return;
     }
 
@@ -1504,8 +1504,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     {
                         auto over                    = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                         context->internalPanicSymbol = over;
-                        context->internalPanicHint   = Nte(Nte0081);
-                        callInternalPanic(context, ip, form(Err(Err0117), over->node->token.c_str()));
+                        context->internalPanicHint   = toNte(Nte0081);
+                        callInternalPanic(context, ip, formErr(Err0117, over->node->token.c_str()));
                     }
                 }
                 registersRC[ip->a.u32].pointer = ptr;
@@ -1526,8 +1526,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         else if (module->bssCannotChange)
                         {
                             context->internalPanicSymbol = over;
-                            context->internalPanicHint   = Nte(Nte0081);
-                            callInternalPanic(context, ip, form(Err(Err0117), over->node->token.c_str()));
+                            context->internalPanicHint   = toNte(Nte0081);
+                            callInternalPanic(context, ip, formErr(Err0117, over->node->token.c_str()));
                         }
                     }
                 }
@@ -4281,21 +4281,21 @@ namespace
                 default:
                     level = DiagnosticLevel::Error;
                     if (!Diagnostic::hastErrorId(txt))
-                        userMsg = form(Err(Err0002), txt.c_str());
+                        userMsg = formErr(Err0002, txt.c_str());
                     else
                         userMsg = txt;
                     break;
                 case SwagExceptionKind::Warning:
                     level = DiagnosticLevel::Warning;
                     if (!Diagnostic::hastErrorId(txt))
-                        userMsg = form(Err(Wrn0001), txt.c_str());
+                        userMsg = formErr(Wrn0001, txt.c_str());
                     else
                         userMsg = txt;
                     break;
                 case SwagExceptionKind::Panic:
                     level = DiagnosticLevel::Panic;
                     if (!Diagnostic::hastErrorId(txt))
-                        userMsg = form(Err(Err0003), txt.c_str());
+                        userMsg = formErr(Err0003, txt.c_str());
                     else
                         userMsg = txt;
 
@@ -4320,9 +4320,9 @@ namespace
 #endif
 
             level   = DiagnosticLevel::Exception;
-            userMsg = Err(Err0082);
-            notes.push_back(Diagnostic::note(Nte(Nte0105)));
-            notes.push_back(Diagnostic::note(Nte(Nte0193)));
+            userMsg = toErr(Err0082);
+            notes.push_back(Diagnostic::note(toNte(Nte0105)));
+            notes.push_back(Diagnostic::note(toNte(Nte0193)));
         }
 
         // Message
@@ -4369,7 +4369,7 @@ namespace
             runContext->ip--;
 
         if (!g_CommandLine.dbgCallStack)
-            notes.push_back(Diagnostic::note(Nte(Nte0192)));
+            notes.push_back(Diagnostic::note(toNte(Nte0192)));
 
         Report::report(*err, notes, runContext);
 

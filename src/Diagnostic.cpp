@@ -146,26 +146,6 @@ void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo) const
         g_Log.eol();
 }
 
-bool Diagnostic::hastErrorId(const Utf8& textMsg)
-{
-    if (textMsg.length() > 9 &&
-        textMsg[0] == '[' &&
-        SWAG_IS_ALPHA(textMsg[1]) &&
-        SWAG_IS_ALPHA(textMsg[2]) &&
-        SWAG_IS_ALPHA(textMsg[3]) &&
-        SWAG_IS_DIGIT(textMsg[4]) &&
-        SWAG_IS_DIGIT(textMsg[5]) &&
-        SWAG_IS_DIGIT(textMsg[6]) &&
-        SWAG_IS_DIGIT(textMsg[7]) &&
-        textMsg[8] == ']' &&
-        SWAG_IS_BLANK(textMsg[9]))
-    {
-        return true;
-    }
-
-    return false;
-}
-
 void Diagnostic::printErrorLevel()
 {
     // Put the error ID right after the error level, instead at the beginning of the message
@@ -716,7 +696,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     if (!typeInfo)
         return "";
 
-    auto str = form(Nte(Nte0177), typeInfo->getDisplayNameC());
+    auto str = formNte(Nte0177, typeInfo->getDisplayNameC());
 
     if (typeInfo->isAlias())
     {
@@ -732,7 +712,7 @@ Utf8 Diagnostic::isType(const SymbolOverload* overload)
 {
     if (!overload || !overload->typeInfo)
         return "";
-    return form(Nte(Nte0148), Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
+    return formNte(Nte0148, Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
 }
 
 Utf8 Diagnostic::isType(const AstNode* node)
@@ -760,9 +740,38 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, const char* msg)
         node->token.id != TokenId::KwdPublic)
         return nullptr;
 
-    const Utf8 txt  = msg ? Utf8{msg} : Nte(Nte0062);
+    const Utf8 txt  = msg ? Utf8{msg} : toNte(Nte0062);
     const Utf8 txt1 = form(txt, Naming::kindName(node).c_str(), node->token.c_str());
     return note(node, node->getTokenName(), txt1);
+}
+
+bool Diagnostic::hastErrorId(const Utf8& textMsg)
+{
+    if (textMsg.length() > 9 &&
+        textMsg[0] == '[' &&
+        SWAG_IS_ALPHA(textMsg[1]) &&
+        SWAG_IS_ALPHA(textMsg[2]) &&
+        SWAG_IS_ALPHA(textMsg[3]) &&
+        SWAG_IS_DIGIT(textMsg[4]) &&
+        SWAG_IS_DIGIT(textMsg[5]) &&
+        SWAG_IS_DIGIT(textMsg[6]) &&
+        SWAG_IS_DIGIT(textMsg[7]) &&
+        textMsg[8] == ']' &&
+        SWAG_IS_BLANK(textMsg[9]))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+void Diagnostic::removeErrorId(Utf8& err)
+{
+    if (hastErrorId(err))
+    {
+        err.remove(0, 10);
+        err.trim();
+    }
 }
 
 void Diagnostic::tokenizeError(const Utf8& err, Vector<Utf8>& tokens)

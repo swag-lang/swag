@@ -15,7 +15,7 @@ bool Tokenizer::doMultiLineComment(TokenParse& tokenParse)
         {
             location = tokenParse.token.startLocation;
             location.column += 2;
-            return error(tokenParse, Err(Err0681));
+            return error(tokenParse, toErr(Err0681));
         }
 
         if (c == '*')

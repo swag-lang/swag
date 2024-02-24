@@ -163,6 +163,7 @@ struct Diagnostic
     void reportCompact();
     void report();
 
+    static void        removeErrorId(Utf8& err);
     static void        tokenizeError(const Utf8& err, Vector<Utf8>& tokens);
     static Utf8        oneLiner(const Utf8& err);
     static bool        hastErrorId(const Utf8& textMsg);

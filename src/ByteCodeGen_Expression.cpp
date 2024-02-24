@@ -312,7 +312,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context)
 {
     const auto node = context->node;
     if (node->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
-        return context->report({node->children.front(), form(Err(Err0403), node->children.front()->token.c_str())});
+        return context->report({node->children.front(), formErr(Err0403, node->children.front()->token.c_str())});
     SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRc));
     return true;
 }
@@ -392,7 +392,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
             case NativeTypeKind::Bool:
                 EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.b = node->computedValue()->reg.b;
                 if (mustEmitSafety(context, SAFETY_BOOL) && node->computedValue()->reg.u8 & 0xFE)
-                    return context->report({node, Err(Saf0003)});
+                    return context->report({node, toErr(Saf0003)});
                 return true;
             case NativeTypeKind::U8:
                 EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u8 = node->computedValue()->reg.u8;
@@ -421,12 +421,12 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
             case NativeTypeKind::F32:
                 EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.f32 = node->computedValue()->reg.f32;
                 if (mustEmitSafety(context, SAFETY_NAN) && isnan(node->computedValue()->reg.f32))
-                    return context->report({node, Err(Saf0016)});
+                    return context->report({node, toErr(Saf0016)});
                 return true;
             case NativeTypeKind::F64:
                 EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList)->b.f64 = node->computedValue()->reg.f64;
                 if (mustEmitSafety(context, SAFETY_NAN) && isnan(node->computedValue()->reg.f64))
-                    return context->report({node, Err(Saf0016)});
+                    return context->report({node, toErr(Saf0016)});
                 return true;
             case NativeTypeKind::Rune:
                 EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u64 = node->computedValue()->reg.u32;

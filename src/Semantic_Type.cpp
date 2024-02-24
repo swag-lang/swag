@@ -55,12 +55,12 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
 
     if (!leftTypeInfo->isNative())
     {
-        Diagnostic err{node->token.sourceFile, node->token, form(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0351, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
 
-    Diagnostic err{node->token.sourceFile, node->token, form(Err(Err0351), node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+    Diagnostic err{node->token.sourceFile, node->token, formErr(Err0351, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
     err.addNote(right, Diagnostic::isType(rightTypeInfo));
     return context->report(err);
 }
@@ -117,9 +117,9 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         return true;
 
     if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
-        return context->report({node, Err(Err0284)});
+        return context->report({node, toErr(Err0284)});
     if (node->hasAstFlag(AST_FROM_GENERIC_REPLACE))
-        return context->report({node, Err(Err0284)});
+        return context->report({node, toErr(Err0284)});
 
     if (!node->resolvedSymbolName())
         return true;
@@ -139,7 +139,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     // Reference to a static struct member
     if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_STRUCT))
     {
-        Diagnostic err{node, form(Err(Err0590), node->resolvedSymbolOverload()->symbol->ownerTable->scope->name.c_str())};
+        Diagnostic err{node, formErr(Err0590, node->resolvedSymbolOverload()->symbol->ownerTable->scope->name.c_str())};
 
         // Missing self ?
         if (node->children.size() <= 1 &&
@@ -152,22 +152,22 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
                 const auto nodeFct = castAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
                 const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isSelf())
-                    err.addNote(node->ownerFct, node->ownerFct->token, Nte(Nte0041));
+                    err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0041));
                 else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING))
-                    err.addNote(nodeFct->parameters->children.front(), Nte(Nte0027));
+                    err.addNote(nodeFct->parameters->children.front(), toNte(Nte0027));
                 else
-                    err.addNote(Nte(Nte0045));
+                    err.addNote(toNte(Nte0045));
             }
         }
 
         return context->report(err);
     }
 
-    Diagnostic err{node, form(Err(Err0589), Naming::kindName(node->resolvedSymbolName()->kind).c_str(), node->resolvedSymbolName()->name.c_str())};
+    Diagnostic err{node, formErr(Err0589, Naming::kindName(node->resolvedSymbolName()->kind).c_str(), node->resolvedSymbolName()->name.c_str())};
 
     // struct.field
     if (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Struct)
-        err.addNote(form(Nte(Nte0088), node->resolvedSymbolName()->name.c_str(), node->resolvedSymbolName()->name.c_str()));
+        err.addNote(formNte(Nte0088, node->resolvedSymbolName()->name.c_str(), node->resolvedSymbolName()->name.c_str()));
 
     return context->report(err);
 }
@@ -241,19 +241,19 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
             {
                 typeInfo->addFlag(TYPEINFO_VARIADIC);
                 if (index != node->parameters->children.size() - 1)
-                    return context->report({param, Err(Err0513)});
+                    return context->report({param, toErr(Err0513)});
             }
             else if (typeParam->typeInfo->isTypedVariadic())
             {
                 typeInfo->addFlag(TYPEINFO_TYPED_VARIADIC);
                 if (index != node->parameters->children.size() - 1)
-                    return context->report({param, Err(Err0513)});
+                    return context->report({param, toErr(Err0513)});
             }
             else if (typeParam->typeInfo->isCVariadic())
             {
                 typeInfo->addFlag(TYPEINFO_C_VARIADIC);
                 if (index != node->parameters->children.size() - 1)
-                    return context->report({param, Err(Err0513)});
+                    return context->report({param, toErr(Err0513)});
             }
 
             typeInfo->parameters.push_back(typeParam);
@@ -345,7 +345,7 @@ bool Semantic::resolveType(SemanticContext* context)
     if (typeNode->typeFlags.has(TYPEFLAG_IS_CODE))
     {
         const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, form(Err(Err0512), "code")}));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0512, "code")}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCode;
         return true;
     }
@@ -354,7 +354,7 @@ bool Semantic::resolveType(SemanticContext* context)
     if (typeNode->typeFromLiteral && typeNode->typeFromLiteral->hasFlag(TYPEINFO_C_VARIADIC))
     {
         const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, form(Err(Err0512), "cvarargs")}));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0512, "cvarargs")}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCVariadic;
         return true;
     }
@@ -415,18 +415,18 @@ bool Semantic::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Struct &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic err{child->token.sourceFile, child->token, form(Err(Err0399), child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
+                    Diagnostic err{child->token.sourceFile, child->token, formErr(Err0399, child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
                     if (typeNode->typeFlags.has(TYPEFLAG_IS_PTR) && symName->kind == SymbolKind::Variable)
                     {
                         if (symOver->typeInfo->isPointer())
                         {
-                            err.hint = Nte(Nte0160);
-                            err.addNote(form(Nte(Nte0182), symName->name.c_str(), symName->name.c_str()));
+                            err.hint = toNte(Nte0160);
+                            err.addNote(formNte(Nte0182, symName->name.c_str(), symName->name.c_str()));
                             err.addNote(Diagnostic::hereIs(symOver));
                             return context->report(err);
                         }
 
-                        err.hint = Nte(Nte0160);
+                        err.hint = toNte(Nte0160);
                     }
 
                     err.addNote(Diagnostic::hereIs(symOver));
@@ -481,7 +481,7 @@ bool Semantic::resolveType(SemanticContext* context)
         if (typeNode->typeFlags.has(TYPEFLAG_IS_MOVE_REF))
         {
             const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, form(Err(Err0512), "&&")}));
+            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0512, "&&")}));
             ptrFlags.add(TYPEINFO_POINTER_MOVE_REF);
         }
 
@@ -513,7 +513,7 @@ bool Semantic::resolveType(SemanticContext* context)
         }
 
         const auto rawType = typeNode->typeInfo;
-        SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->children.back(), Err(Err0736)}));
+        SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->children.back(), toErr(Err0736)}));
 
         uint32_t totalCount = 1;
         for (int i = typeNode->arrayDim - 1; i >= 0; i--)
@@ -538,14 +538,14 @@ bool Semantic::resolveType(SemanticContext* context)
             }
             else
             {
-                SWAG_CHECK(checkIsConstExpr(context, child->hasFlagComputedValue(), child, Err(Err0036)));
+                SWAG_CHECK(checkIsConstExpr(context, child->hasFlagComputedValue(), child, toErr(Err0036)));
                 count = child->computedValue()->reg.u32;
             }
 
             const auto childType = TypeManager::concreteType(child->typeInfo);
-            SWAG_VERIFY(childType->isNativeInteger(), context->report({child, form(Err(Err0211), child->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(childType->isNativeInteger(), context->report({child, formErr(Err0211, child->typeInfo->getDisplayNameC())}));
             SWAG_CHECK(context->checkSizeOverflow("array", static_cast<uint64_t>(count) * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
-            SWAG_VERIFY(!child->isConstant0(), context->report({child, Err(Err0210)}));
+            SWAG_VERIFY(!child->isConstant0(), context->report({child, toErr(Err0210)}));
 
             const auto ptrArray = makeType<TypeInfoArray>();
             ptrArray->count     = count;
@@ -579,7 +579,7 @@ bool Semantic::resolveType(SemanticContext* context)
         !typeC->isArray() &&
         !typeC->isStruct())
     {
-        const Diagnostic err{typeNode->token.sourceFile, typeNode->locConst, form(Err(Err0395), typeNode->typeInfo->getDisplayNameC())};
+        const Diagnostic err{typeNode->token.sourceFile, typeNode->locConst, formErr(Err0395, typeNode->typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
@@ -654,7 +654,7 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
         !typeInfo->isNativeFloat() &&
         !typeInfo->isRune())
     {
-        const Diagnostic err{typeNode, form(Err(Err0230), typeInfo->getDisplayNameC())};
+        const Diagnostic err{typeNode, formErr(Err0230, typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
@@ -663,13 +663,13 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
         !exprTypeInfo->isRune() &&
         !exprTypeInfo->isPointer())
     {
-        const Diagnostic err{exprNode, form(Err(Err0228), exprTypeInfo->getDisplayNameC())};
+        const Diagnostic err{exprNode, formErr(Err0228, exprTypeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
     if (typeInfo->sizeOf > exprTypeInfo->sizeOf)
     {
-        const Diagnostic err{exprNode, form(Err(Err0229), exprTypeInfo->getDisplayNameC(), typeInfo->getDisplayNameC())};
+        const Diagnostic err{exprNode, formErr(Err0229, exprTypeInfo->getDisplayNameC(), typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 

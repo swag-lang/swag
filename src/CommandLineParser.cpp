@@ -295,7 +295,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             {
                 if (!g_CommandLine.ignoreBadParams)
                 {
-                    Report::error(form(Err(Fat0007), command.c_str()));
+                    Report::error(formErr(Fat0007, command.c_str()));
                     result = false;
                 }
                 continue;
@@ -309,7 +309,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
         {
             if (!g_CommandLine.ignoreBadParams)
             {
-                Report::error(form(Err(Fat0007), command.c_str()));
+                Report::error(formErr(Fat0007, command.c_str()));
                 result = false;
             }
 
@@ -337,7 +337,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
 
                 if (index == static_cast<int>(tokens.size()))
                 {
-                    Report::error(form(Err(Fat0005), it->first.c_str(), arg->param));
+                    Report::error(formErr(Fat0005, it->first.c_str(), arg->param));
                     result = false;
                     continue;
                 }
@@ -363,7 +363,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
 
                 if (index == static_cast<int>(tokens.size()))
                 {
-                    Report::error(form(Err(Fat0005), it->first.c_str(), arg->param));
+                    Report::error(formErr(Fat0005, it->first.c_str(), arg->param));
                     result = false;
                     continue;
                 }
@@ -377,7 +377,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                     *static_cast<bool*>(arg->buffer) = false;
                 else
                 {
-                    Report::error(form(Err(Fat0001), it->first.c_str(), argument.c_str()));
+                    Report::error(formErr(Fat0001, it->first.c_str(), argument.c_str()));
                     result = false;
                     continue;
                 }
@@ -387,7 +387,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             {
                 if (argument.empty())
                 {
-                    Report::error(form(Err(Fat0002), it->first.c_str(), argument.c_str()));
+                    Report::error(formErr(Fat0002, it->first.c_str(), argument.c_str()));
                     result = false;
                     continue;
                 }
@@ -400,7 +400,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             {
                 if (argument.empty())
                 {
-                    Report::error(form(Err(Fat0002), it->first.c_str(), argument.c_str()));
+                    Report::error(formErr(Fat0002, it->first.c_str(), argument.c_str()));
                     result = false;
                     continue;
                 }
@@ -413,7 +413,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             {
                 if (argument.empty())
                 {
-                    Report::error(form(Err(Fat0002), it->first.c_str(), argument.c_str()));
+                    Report::error(formErr(Fat0002, it->first.c_str(), argument.c_str()));
                     result = false;
                     continue;
                 }
@@ -441,9 +441,9 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                 if (!thisIsAnInt)
                 {
                     if (argument.empty())
-                        Report::error(form(Err(Fat0004), it->first.c_str()));
+                        Report::error(formErr(Fat0004, it->first.c_str()));
                     else
-                        Report::error(form(Err(Fat0003), it->first.c_str(), argument.c_str()));
+                        Report::error(formErr(Fat0003, it->first.c_str(), argument.c_str()));
                     result = false;
                     continue;
                 }

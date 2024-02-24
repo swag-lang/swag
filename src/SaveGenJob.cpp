@@ -33,7 +33,7 @@ bool SaveGenJob::flush(Module* mdl)
         if (fopen_s(&h, publicPath, "wN"))
         {
             ++mdl->numErrors;
-            Report::errorOS(form(Err(Err0096), publicPath.c_str()));
+            Report::errorOS(formErr(Err0096, publicPath.c_str()));
             return false;
         }
 

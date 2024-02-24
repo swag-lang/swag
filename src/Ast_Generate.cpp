@@ -119,7 +119,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         const auto missingNode = typeInterface->fields[idx];
         if (!itfRef.itf)
         {
-            Diagnostic err{node, node->getTokenName(), form(Err(Err0129), typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->getTokenName(), formErr(Err0129, typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
             err.addNote(missingNode->declNode, missingNode->declNode->getTokenName(), form("missing [[%s]]", missingNode->name.c_str()));
             return context->report(err);
         }

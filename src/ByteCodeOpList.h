@@ -69,7 +69,7 @@ BYTECODE_OP(InternalSetErr, OPFLAG_READ_A | OPFLAG_READ_B, "push my_result; SetE
 BYTECODE_OP(InternalPushErr, 0, "PushErr")
 BYTECODE_OP(InternalPopErr, 0, "PopErr")
 BYTECODE_OP(InternalCatchErr, 0, "CatchErr")
-BYTECODE_OP(InternalHasErr, OPFLAG_WRITE_A | OPFLAG_READ_B, "_ra_ = HasErr(_rb_)")
+BYTECODE_OP(InternalHasErr, OPFLAG_WRITE_A | OPFLAG_READ_B, "_ra_ = HastoErr(_rb_)")
 BYTECODE_OP(JumpIfError, OPFLAG_IS_JUMP | OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "Jump IfError(_ra_)")
 BYTECODE_OP(JumpIfNoError, OPFLAG_IS_JUMP | OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "Jump IfNoError(_ra_)")
 BYTECODE_OP(InternalGetTlsPtr, OPFLAG_WRITE_A, "_ra_ = GetTlsPtr")

@@ -3159,7 +3159,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             case ByteCodeOp::MakeCompilerSegPointer:
-                return Report::report({ip->node, ip->node->token, Err(Err0177)});
+                return Report::report({ip->node, ip->node->token, toErr(Err0177)});
 
                 /////////////////////////////////////
 

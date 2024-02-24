@@ -422,7 +422,7 @@ namespace
     {
         if (isValid)
             return true;
-        return raiseError(cxt, form(Err(San0010), msgKind, type->getDisplayNameC()));
+        return raiseError(cxt, formErr(San0010, msgKind, type->getDisplayNameC()));
     }
 
     bool checkDivZero(const Context& cxt, const Value& value, bool isZero, const SymbolOverload* overload = nullptr)
@@ -432,22 +432,22 @@ namespace
         if (!isZero)
             return true;
         if (overload)
-            return raiseError(cxt, form(Err(San0002), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
-        return raiseError(cxt, Err(San0001));
+            return raiseError(cxt, formErr(San0002, Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+        return raiseError(cxt, toErr(San0001));
     }
 
     bool checkEscapeFrame(const Context& cxt, uint64_t stackOffset, const SymbolOverload* overload = nullptr)
     {
         SWAG_ASSERT(stackOffset < UINT32_MAX);
         if (overload)
-            return raiseError(cxt, form(Err(San0004), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
-        return raiseError(cxt, Err(San0003));
+            return raiseError(cxt, formErr(San0004, Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+        return raiseError(cxt, toErr(San0003));
     }
 
     bool checkStackOffset(const Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
     {
         if (stackOffset + sizeOf > static_cast<size_t>(STATE()->stack.count))
-            return raiseError(cxt, form(Err(San0007), stackOffset + sizeOf, STATE()->stack.count));
+            return raiseError(cxt, formErr(San0007, stackOffset + sizeOf, STATE()->stack.count));
         return true;
     }
 
@@ -458,8 +458,8 @@ namespace
         if (value->reg.u64)
             return true;
         if (value->overload)
-            return raiseError(cxt, form(Err(San0006), Naming::kindName(value->overload).c_str(), value->overload->symbol->name.c_str()), value->overload);
-        return raiseError(cxt, Err(San0005));
+            return raiseError(cxt, formErr(San0006, Naming::kindName(value->overload).c_str(), value->overload->symbol->name.c_str()), value->overload);
+        return raiseError(cxt, toErr(San0005));
     }
 
     bool checkStackInitialized(const Context& cxt, void* addr, uint32_t sizeOf, const SymbolOverload* overload = nullptr)
@@ -469,8 +469,8 @@ namespace
         if (value.kind == ValueKind::Invalid)
         {
             if (overload)
-                return raiseError(cxt, form(Err(San0008), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
-            return raiseError(cxt, Err(San0009));
+                return raiseError(cxt, formErr(San0008, Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+            return raiseError(cxt, toErr(San0009));
         }
 
         return true;

@@ -102,13 +102,13 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         const int maxCount = static_cast<int>(typeStruct->fields.size());
         if (countParams > maxCount)
         {
-            const Diagnostic err{fromNode->children[maxCount], form(Err(Err0636), maxCount, countParams)};
+            const Diagnostic err{fromNode->children[maxCount], formErr(Err0636, maxCount, countParams)};
             return context->report(err);
         }
 
         if (countParams < maxCount)
         {
-            const Diagnostic err{fromNode->children.back(), form(Err(Err0596), maxCount, countParams)};
+            const Diagnostic err{fromNode->children.back(), formErr(Err0596, maxCount, countParams)};
             return context->report(err);
         }
     }
@@ -192,9 +192,9 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     const auto countParams = typeList->subTypes.size();
     const auto maxCount    = toType->fields.size();
     if (countParams > maxCount)
-        return context->report({fromNode->children.front()->children[maxCount], form(Err(Err0636), maxCount, countParams)});
+        return context->report({fromNode->children.front()->children[maxCount], formErr(Err0636, maxCount, countParams)});
     if (countParams < maxCount)
-        return context->report({fromNode->children.front()->children.back(), form(Err(Err0596), maxCount, countParams)});
+        return context->report({fromNode->children.front()->children.back(), formErr(Err0596, maxCount, countParams)});
 
     // Each field of the toType struct must have a type given by the tuple.
     // But as that tuple can have named parameters, we need to find the correct type depending
@@ -223,7 +223,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             if (typeField->isListArray())
                 typeField = TypeManager::convertTypeListToArray(context, castTypeInfo<TypeInfoList>(typeField), false);
             if (typeField->isListTuple())
-                return context->report({fromNode, Err(Err0739)});
+                return context->report({fromNode, toErr(Err0739)});
 
             // This is used for generic automatic deduction. We can use typeInfo->genericParameters, or we would
             // have to construct a struct AST with generic parameters too, and this is not possible as the struct
@@ -426,7 +426,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
     // Be sure it's the NAME{} syntax
     if (!identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-        return context->report({callP, form(Err(Err0377), identifier->typeInfo->name.c_str())});
+        return context->report({callP, formErr(Err0377, identifier->typeInfo->name.c_str())});
 
     auto varParent = identifier->identifierRef()->parent;
     while (varParent->kind == AstNodeKind::ExpressionList)

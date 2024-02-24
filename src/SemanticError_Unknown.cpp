@@ -20,10 +20,10 @@ namespace
         // Error inside a tuple
         if (typeRef && typeRef->isTuple())
         {
-            const auto err        = new Diagnostic{node, form(Err(Err0716), node->token.c_str())};
+            const auto err        = new Diagnostic{node, formErr(Err0716, node->token.c_str())};
             const auto structNode = castAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
             const auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->startScope->owner;
-            const auto note       = Diagnostic::note(errNode, Nte(Nte0078));
+            const auto note       = Diagnostic::note(errNode, toNte(Nte0078));
             notes.push_back(note);
             return err;
         }
@@ -51,40 +51,40 @@ namespace
         const auto idRef   = node->identifierRef();
         if (idRef && varDecl && idRef->hasAstFlag(AST_TUPLE_UNPACK))
         {
-            err = new Diagnostic{node, form(Err(Err0719), varDecl->token.c_str(), displayName.c_str())};
+            err = new Diagnostic{node, formErr(Err0719, varDecl->token.c_str(), displayName.c_str())};
         }
         else if (prevIdentifier && prevIdentifier->identifierExtension && prevIdentifier->identifierExtension->alternateEnum)
         {
             const auto altEnum = prevIdentifier->identifierExtension->alternateEnum;
-            const auto msg     = form(Err(Err0714), node->token.c_str(), altEnum->getDisplayNameC(), whereScopeName.c_str(), displayName.c_str());
+            const auto msg     = formErr(Err0714, node->token.c_str(), altEnum->getDisplayNameC(), whereScopeName.c_str(), displayName.c_str());
             err                = new Diagnostic{node, node->token, msg};
             notes.push_back(Diagnostic::hereIs(altEnum->declNode));
         }
         else if (!typeWhere)
         {
-            err = new Diagnostic{node, node->token, form(Err(Err0713), node->token.c_str(), whereScopeName.c_str(), displayName.c_str())};
+            err = new Diagnostic{node, node->token, formErr(Err0713, node->token.c_str(), whereScopeName.c_str(), displayName.c_str())};
         }
         else if (typeWhere->kind == TypeInfoKind::Enum)
         {
-            err = new Diagnostic{node, node->token, form(Err(Err0708), node->token.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{node, node->token, formErr(Err0708, node->token.c_str(), typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->kind == TypeInfoKind::Struct && node->token.text == g_LangSpec->name_opVisit)
         {
-            err = new Diagnostic{node, node->token, form(Err(Err0420), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{node, node->token, formErr(Err0420, typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->kind == TypeInfoKind::Struct && node->token.text.startsWith(g_LangSpec->name_opVisit))
         {
             const auto visitNode = castAst<AstVisit>(node->findParent(AstNodeKind::Visit), AstNodeKind::Visit);
             const Utf8 variant{node->token.text.buffer + g_LangSpec->name_opVisit.length()};
-            err = new Diagnostic{visitNode, visitNode->extraNameToken, form(Err(Err0419), variant.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{visitNode, visitNode->extraNameToken, formErr(Err0419, variant.c_str(), typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->kind == TypeInfoKind::Struct && node->callParameters)
         {
-            err = new Diagnostic{node, node->token, form(Err(Err0723), node->token.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{node, node->token, formErr(Err0723, node->token.c_str(), typeWhere->getDisplayNameC())};
         }
         else
         {
-            err = new Diagnostic{node, node->token, form(Err(Err0715), node->token.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{node, node->token, formErr(Err0715, node->token.c_str(), typeWhere->getDisplayNameC())};
         }
 
         // Variable before
@@ -126,7 +126,7 @@ namespace
         {
             const auto userOp   = prev->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
             const auto typeInfo = TypeManager::concreteType(userOp->typeInfo);
-            const auto msg      = form(Nte(Nte0114), userOp->symbol->name.c_str(), typeInfo->getDisplayNameC());
+            const auto msg      = formNte(Nte0114, userOp->symbol->name.c_str(), typeInfo->getDisplayNameC());
             const auto note     = Diagnostic::note(prev, msg);
             notes.push_back(note);
         }
@@ -134,7 +134,7 @@ namespace
         {
             const auto api       = castAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
             const auto typeArray = castTypeInfo<TypeInfoArray>(api->array->typeInfo, TypeInfoKind::Array);
-            const auto note      = Diagnostic::note(api->array, form(Nte(Nte0006), api->array->token.c_str(), typeArray->finalType->getDisplayNameC()));
+            const auto note      = Diagnostic::note(api->array, formNte(Nte0006, api->array->token.c_str(), typeArray->finalType->getDisplayNameC()));
             notes.push_back(note);
         }
         else
@@ -142,9 +142,9 @@ namespace
             const Diagnostic* note;
             const auto        kindName = Naming::aKindName(prev->resolvedSymbolName()->kind);
             if (prev->typeInfo)
-                note = Diagnostic::note(prev, form(Nte(Nte0004), prev->token.c_str(), kindName.c_str(), prev->typeInfo->getDisplayNameC()));
+                note = Diagnostic::note(prev, formNte(Nte0004, prev->token.c_str(), kindName.c_str(), prev->typeInfo->getDisplayNameC()));
             else
-                note = Diagnostic::note(prev, form(Nte(Nte0003), prev->token.c_str(), kindName.c_str()));
+                note = Diagnostic::note(prev, formNte(Nte0003, prev->token.c_str(), kindName.c_str()));
             notes.push_back(note);
         }
 
@@ -171,23 +171,23 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     {
         case IdentifierSearchFor::Function:
             if (node->token.text[0] == '#')
-                err = new Diagnostic{node->token.sourceFile, node->token, form(Err(Err0706), node->token.c_str())};
+                err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0706, node->token.c_str())};
             else if (node->token.text[0] == '@')
-                err = new Diagnostic{node->token.sourceFile, node->token, form(Err(Err0721), node->token.c_str())};
+                err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0721, node->token.c_str())};
             else
-                err = new Diagnostic{node->token.sourceFile, node->token, form(Err(Err0712), node->token.c_str())};
+                err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0712, node->token.c_str())};
             break;
         case IdentifierSearchFor::Attribute:
-            err = new Diagnostic{node->token.sourceFile, node->token, form(Err(Err0705), node->token.c_str())};
+            err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0705, node->token.c_str())};
             break;
         case IdentifierSearchFor::Type:
-            err = new Diagnostic{node->token.sourceFile, node->token, form(Err(Err0727), node->token.c_str())};
+            err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0727, node->token.c_str())};
             break;
         case IdentifierSearchFor::Struct:
-            err = new Diagnostic{node->token.sourceFile, node->token, form(Err(Err0726), node->token.c_str())};
+            err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0726, node->token.c_str())};
             break;
         default:
-            err = new Diagnostic{node->token.sourceFile, node->token, form(Err(Err0717), node->token.c_str())};
+            err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0717, node->token.c_str())};
             break;
     }
 

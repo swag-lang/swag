@@ -1471,8 +1471,8 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
-        const Diagnostic err{callNode->token.sourceFile, callNode->token, form(Err(Err0544), funcNode->token.c_str())};
-        return context->report(err, Diagnostic::hereIs(srcNode, Nte(Nte0130)));
+        const Diagnostic err{callNode->token.sourceFile, callNode->token, formErr(Err0544, funcNode->token.c_str())};
+        return context->report(err, Diagnostic::hereIs(srcNode, toNte(Nte0130)));
     }
 
     if (!raiseErrors)
@@ -1484,7 +1484,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
         {
             if (!srcNode)
                 srcNode = typeInfoFunc->declNode;
-            const Diagnostic err{parent, parent->token, form(Err(Err0502), parent->token.c_str(), srcNode->token.c_str())};
+            const Diagnostic err{parent, parent->token, formErr(Err0502, parent->token.c_str(), srcNode->token.c_str())};
             return context->report(err, Diagnostic::hereIs(srcNode));
         }
     }
@@ -1953,7 +1953,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // Pass a variadic parameter to another function
     auto numVariadic = (numCallParams - numTypeParams) + 1;
     if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
-        SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, form(Err(Err0639), SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
+        SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, formErr(Err0639, SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
 
     auto lastParam = allParams && !allParams->children.empty() ? allParams->children.back() : nullptr;
 
@@ -2272,7 +2272,7 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     SWAG_ASSERT(!(funcNode->stackSize & 7));
 
     if (funcNode->stackSize > g_CommandLine.limitStackRT)
-        Report::report({funcNode, form(Err(Err0024), Utf8::toNiceSize(g_CommandLine.limitStackRT).c_str())});
+        Report::report({funcNode, formErr(Err0024, Utf8::toNiceSize(g_CommandLine.limitStackRT).c_str())});
 
     context->bc->stackSize    = funcNode->stackSize;
     context->bc->dynStackSize = funcNode->stackSize;

@@ -178,7 +178,7 @@ void Module::computePublicPath()
         {
             if (!filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(form(Err(Fat0019), publicPath.c_str()));
+                Report::errorOS(formErr(Fat0019, publicPath.c_str()));
                 OS::exit(-1);
             }
         }
@@ -193,7 +193,7 @@ void Module::computePublicPath()
         {
             if (!filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(form(Err(Fat0019), publicPath.c_str()));
+                Report::errorOS(formErr(Fat0019, publicPath.c_str()));
                 OS::exit(-1);
             }
         }
@@ -685,15 +685,15 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic err{importNode, tokenLocation, form(Err(Err0066), dep->name.c_str(), dep->location.c_str())};
-                err.addNote(dep->node, Nte(Nte0073));
+                Diagnostic err{importNode, tokenLocation, formErr(Err0066, dep->name.c_str(), dep->location.c_str())};
+                err.addNote(dep->node, toNte(Nte0073));
                 return Report::report(err);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic err{importNode, tokenVersion, form(Err(Err0067), dep->name.c_str(), dep->version.c_str())};
-                err.addNote(dep->node, Nte(Nte0073));
+                Diagnostic err{importNode, tokenVersion, formErr(Err0067, dep->name.c_str(), dep->version.c_str())};
+                err.addNote(dep->node, toNte(Nte0073));
                 return Report::report(err);
             }
 
@@ -716,8 +716,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
-        Diagnostic err{importNode, tokenVersion, Err(Err0312)};
-        err.addNote(Nte(Nte0142));
+        Diagnostic err{importNode, tokenVersion, toErr(Err0312)};
+        err.addNote(toNte(Nte0142));
         return Report::report(err);
     }
 
@@ -747,8 +747,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
         if (!Utf8::isNumber(splits[i]))
         {
-            Diagnostic err{importNode, tokenVersion, Err(Err0312)};
-            err.addNote(Err(Nte0142));
+            Diagnostic err{importNode, tokenVersion, toErr(Err0312)};
+            err.addNote(toErr(Nte0142));
             return Report::report(err);
         }
 
@@ -757,10 +757,10 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         switch (i)
         {
             case 1:
-                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, form(Err(Err0127), dep->revNum)}));
+                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0127, dep->revNum)}));
                 break;
             case 2:
-                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, form(Err(Err0126), dep->buildNum)}));
+                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0126, dep->buildNum)}));
                 break;
             default:
                 break;
@@ -1046,7 +1046,7 @@ bool Module::compileString(const Utf8& text)
     // Is it still possible to generate some code ?
     if (!acceptsCompileString)
     {
-        Report::report({ip->node, ip->node->token, Err(Err0112)});
+        Report::report({ip->node, ip->node->token, toErr(Err0112)});
         return false;
     }
 

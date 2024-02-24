@@ -132,7 +132,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
             typeStruct = swagScope.regTypeInfoNamespace;
             break;
         default:
-            return context->report({context->node, form(Err(Err0372), typeInfo->getDisplayNameC())});
+            return context->report({context->node, formErr(Err0372, typeInfo->getDisplayNameC())});
     }
 
     // Build concrete structure content

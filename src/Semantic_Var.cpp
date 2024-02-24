@@ -52,7 +52,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 
     if (!typeVar->isStruct())
     {
-        Diagnostic err{varDecl, varDecl->token, form(Err(Err0384), typeVar->getDisplayNameC())};
+        Diagnostic err{varDecl, varDecl->token, formErr(Err0384, typeVar->getDisplayNameC())};
         if (varDecl->assignment)
             err.addNote(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
         else if (varDecl->type)
@@ -65,22 +65,22 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 
     if (typeStruct->fields.empty())
     {
-        const Diagnostic err{varDecl, varDecl->token, Err(Err0383)};
+        const Diagnostic err{varDecl, varDecl->token, toErr(Err0383)};
         return context->report(err);
     }
 
     if (numUnpack < typeStruct->fields.size())
     {
-        Diagnostic err{varDecl, varDecl->token, form(Err(Err0728), numUnpack, typeStruct->fields.size())};
-        err.addNote(varDecl->assignment, form(Nte(Nte0175), typeStruct->fields.size()));
-        err.addNote(Nte(Nte0038));
+        Diagnostic err{varDecl, varDecl->token, formErr(Err0728, numUnpack, typeStruct->fields.size())};
+        err.addNote(varDecl->assignment, formNte(Nte0175, typeStruct->fields.size()));
+        err.addNote(toNte(Nte0038));
         return context->report(err);
     }
 
     if (numUnpack > typeStruct->fields.size())
     {
-        Diagnostic err{varDecl, varDecl->token, form(Err(Err0729), typeStruct->fields.size(), numUnpack)};
-        err.addNote(varDecl->assignment, form(Nte(Nte0175), typeStruct->fields.size()));
+        Diagnostic err{varDecl, varDecl->token, formErr(Err0729, typeStruct->fields.size(), numUnpack)};
+        err.addNote(varDecl->assignment, formNte(Nte0175, typeStruct->fields.size()));
         return context->report(err);
     }
 
@@ -125,7 +125,7 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
             varDecl->type->typeInfo->isVariadic() ||
             varDecl->type->typeInfo->isCVariadic())
         {
-            const Diagnostic err{varDecl, varDecl->assignToken, Err(Err0678)};
+            const Diagnostic err{varDecl, varDecl->assignToken, toErr(Err0678)};
             return context->report(err);
         }
     }
@@ -325,8 +325,8 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->children.back(), AstNodeKind::Identifier);
     if (identifier->callParameters)
     {
-        Diagnostic err{assign, Err(Err0063)};
-        err.addNote(identifier->callParameters, Nte(Nte0164));
+        Diagnostic err{assign, toErr(Err0063)};
+        err.addNote(identifier->callParameters, toNte(Nte0164));
         return context->report(err);
     }
 
@@ -522,7 +522,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
 
     if (paramIdx >= typeLambda->parameters.count)
     {
-        const Diagnostic err{nodeParam, form(Err(Err0630), typeLambda->parameters.count, nodeParam->parent->children.count)};
+        const Diagnostic err{nodeParam, formErr(Err0630, typeLambda->parameters.count, nodeParam->parent->children.count)};
         return context->report(err);
     }
 
@@ -556,8 +556,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         if (!ownerFct)
         {
-            Diagnostic err{node, form(Err(Err0356), node->token.c_str())};
-            err.addNote(Nte(Nte0002));
+            Diagnostic err{node, formErr(Err0356, node->token.c_str())};
+            err.addNote(toNte(Nte0002));
             return context->report(err);
         }
     }
@@ -575,8 +575,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         if (!ownerFct)
         {
-            Diagnostic err{node, node->token, form(Err(Err0356), node->token.c_str())};
-            err.addNote(Nte(Nte0001));
+            Diagnostic err{node, node->token, formErr(Err0356, node->token.c_str())};
+            err.addNote(toNte(Nte0001));
             return context->report(err);
         }
     }
@@ -584,7 +584,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     if (node->assignment && node->assignment->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
     {
         if (!node->type || !node->type->typeInfo->isStruct())
-            return context->report({node->assignment->children.front(), form(Err(Err0403), node->assignment->children.front()->token.c_str())});
+            return context->report({node->assignment->children.front(), formErr(Err0403, node->assignment->children.front()->token.c_str())});
     }
 
     OverloadFlags overFlags = 0;
@@ -640,9 +640,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
     if (node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !concreteNodeType->isLambdaClosure())
     {
-        Diagnostic err{node, node->token, form(Err(Err0489), concreteNodeType->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0489, concreteNodeType->getDisplayNameC())};
         auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
-        err.addNote(attr, form(Nte(Nte0063), "attribute"));
+        err.addNote(attr, formNte(Nte0063, "attribute"));
         return context->report(err);
     }
 
@@ -652,14 +652,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         // A constant must be initialized
         if (isCompilerConstant && !node->hasFlagComputedValue())
-            return context->report({node, Err(Err0562)});
+            return context->report({node, toErr(Err0562)});
 
         // A constant variable must be initialized
         if (overFlags.has(OVERLOAD_CONST_ASSIGN) && node->kind != AstNodeKind::FuncDeclParam)
         {
             if (overFlags.has(OVERLOAD_IS_LET))
-                return context->report({node, Err(Err0564)});
-            return context->report({node, Err(Err0565)});
+                return context->report({node, toErr(Err0564)});
+            return context->report({node, toErr(Err0565)});
         }
 
         // A reference must be initialized
@@ -667,7 +667,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             concreteNodeType->isPointerRef() &&
             node->kind != AstNodeKind::FuncDeclParam &&
             !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
-            return context->report({node, Err(Err0563)});
+            return context->report({node, toErr(Err0563)});
 
         // Check an enum variable without initialization
         if (concreteNodeType &&
@@ -735,7 +735,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
             if (!ok)
             {
-                Diagnostic err{node, form(Err(Err0566), node->token.c_str(), concreteTypeEnum->getDisplayNameC())};
+                Diagnostic err{node, formErr(Err0566, node->token.c_str(), concreteTypeEnum->getDisplayNameC())};
                 err.addNote(Diagnostic::hereIs(concreteNodeType->declNode));
                 return context->report(err);
             }
@@ -759,26 +759,26 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         auto typeRet = TypeManager::concreteType(node->typeConstraint->typeInfo, CONCRETE_ALL | CONCRETE_FUNC);
         if (!typeRet->isBool())
         {
-            Diagnostic err{node->typeConstraint, form(Err(Err0398), typeRet->getDisplayNameC())};
+            Diagnostic err{node->typeConstraint, formErr(Err0398, typeRet->getDisplayNameC())};
             return context->report(err);
         }
 
-        SWAG_CHECK(checkIsConstExpr(context, node->typeConstraint, Err(Err0044)));
+        SWAG_CHECK(checkIsConstExpr(context, node->typeConstraint, toErr(Err0044)));
         SWAG_CHECK(evaluateConstExpression(context, node->typeConstraint));
         YIELD();
         SWAG_ASSERT(node->typeConstraint->hasFlagComputedValue());
         if (!node->typeConstraint->computedValue()->reg.b)
         {
-            Diagnostic err(node->typeConstraint, form(Err(Err0088), node->typeInfo->getDisplayNameC()));
+            Diagnostic err(node->typeConstraint, formErr(Err0088, node->typeInfo->getDisplayNameC()));
             if (node->genTypeComesFrom && node->typeConstraint->kind == AstNodeKind::IdentifierRef)
             {
-                err.addNote(node->genTypeComesFrom, form(Nte(Nte0139), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.c_str()));
+                err.addNote(node->genTypeComesFrom, formNte(Nte0139, node->typeInfo->getDisplayNameC(), node->typeConstraint->token.c_str()));
                 return context->report(err);
             }
 
             if (node->genTypeComesFrom)
             {
-                err.addNote(node->genTypeComesFrom, form(Nte(Nte0140), node->typeInfo->getDisplayNameC()));
+                err.addNote(node->genTypeComesFrom, formNte(Nte0140, node->typeInfo->getDisplayNameC()));
                 return context->report(err);
             }
 
@@ -822,13 +822,13 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         {
             if (node->assignment->typeInfo->isLambdaClosure())
             {
-                SWAG_VERIFY(!isCompilerConstant, context->report({node->assignment, Err(Err0213)}));
+                SWAG_VERIFY(!isCompilerConstant, context->report({node->assignment, toErr(Err0213)}));
                 auto funcNode = castAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
                 SWAG_CHECK(checkCanMakeFuncPointer(context, funcNode, node->assignment));
             }
             else
             {
-                SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, Err(Err0041)));
+                SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0041)));
             }
         }
     }
@@ -838,7 +838,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         auto typeArray = castTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         if (typeArray->count == UINT32_MAX && !node->assignment)
-            return context->report({node->type, Err(Err0212)});
+            return context->report({node->type, toErr(Err0212)});
 
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)
@@ -856,15 +856,15 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         if (isCompilerConstant)
         {
-            Diagnostic err{node->assignment, Err(Err0562)};
-            err.addNote(Nte(Nte0036));
+            Diagnostic err{node->assignment, toErr(Err0562)};
+            err.addNote(toNte(Nte0036));
             return context->report(err);
         }
 
         if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
         {
-            Diagnostic err{node->assignment, Err(Err0564)};
-            err.addNote(Nte(Nte0036));
+            Diagnostic err{node->assignment, toErr(Err0564)};
+            err.addNote(toNte(Nte0036));
             return context->report(err);
         }
     }
@@ -915,9 +915,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                     const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
                     if (!userOp->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
-                        Diagnostic err{node->assignment, Err(Err0040)};
-                        err.hint = form(Nte(Nte0178), leftConcreteType->getDisplayNameC());
-                        err.addNote(node->assignToken, form(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
+                        Diagnostic err{node->assignment, toErr(Err0040)};
+                        err.hint = formNte(Nte0178, leftConcreteType->getDisplayNameC());
+                        err.addNote(node->assignToken, formNte(Nte0144, g_LangSpec->name_opAffect.c_str()));
                         return context->report(err);
                     }
                 }
@@ -952,11 +952,11 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 auto over      = nodeWhere->resolvedSymbolOverload();
                 if (nodeWhere->kind == AstNodeKind::IdentifierRef)
                     nodeWhere = nodeWhere->children.back();
-                Diagnostic err{nodeWhere, nodeWhere->token, Err(Err0371)};
+                Diagnostic err{nodeWhere, nodeWhere->token, toErr(Err0371)};
                 return context->report(err, Diagnostic::hereIs(over));
             }
 
-            Diagnostic err{node->assignment, Err(Err0386)};
+            Diagnostic err{node->assignment, toErr(Err0386)};
             return context->report(err);
         }
 
@@ -1030,11 +1030,11 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // We should have a type here !
-    SWAG_VERIFY(node->typeInfo, context->report({node, form(Err(Err0413), Naming::kindName(node).c_str(), node->token.c_str())}));
+    SWAG_VERIFY(node->typeInfo, context->report({node, formErr(Err0413, Naming::kindName(node).c_str(), node->token.c_str())}));
 
     // Type should be a correct one
-    SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node->assignment ? node->assignment : node, Err(Err0414)}));
-    SWAG_VERIFY(!node->typeInfo->isVoid(), context->report({node->type ? node->type : node, Err(Err0412)}));
+    SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node->assignment ? node->assignment : node, toErr(Err0414)}));
+    SWAG_VERIFY(!node->typeInfo->isVoid(), context->report({node->type ? node->type : node, toErr(Err0412)}));
 
     // A 'let' for a struct make the type const
     if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET) && node->typeInfo->isStruct())
@@ -1145,7 +1145,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         if (node->hasAttribute(ATTRIBUTE_PUBLIC))
         {
-            Diagnostic err{node, node->getTokenName(), Err(Err0479)};
+            Diagnostic err{node, node->getTokenName(), toErr(Err0479)};
             err.addNote(Diagnostic::hereIs(node->findParent(TokenId::KwdPublic)));
             return context->report(err);
         }

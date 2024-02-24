@@ -200,7 +200,7 @@ void Workspace::setupTarget()
     error_code err;
     if (!filesystem::exists(targetPath, err) && !filesystem::create_directories(targetPath, err))
     {
-        Report::errorOS(form(Err(Fat0021), targetPath.c_str()));
+        Report::errorOS(formErr(Fat0021, targetPath.c_str()));
         OS::exit(-1);
     }
 
@@ -208,14 +208,14 @@ void Workspace::setupTarget()
     setupCachePath();
     if (!filesystem::exists(cachePath, err))
     {
-        Report::errorOS(form(Err(Fat0010), cachePath.c_str()));
+        Report::errorOS(formErr(Fat0010, cachePath.c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
     {
-        Report::errorOS(form(Err(Fat0016), cachePath.c_str()));
+        Report::errorOS(formErr(Fat0016, cachePath.c_str()));
         OS::exit(-1);
     }
 
@@ -223,7 +223,7 @@ void Workspace::setupTarget()
     cachePath.append(workspacePath.filename() + "-" + targetFullName.c_str());
     if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
     {
-        Report::errorOS(form(Err(Fat0016), cachePath.c_str()));
+        Report::errorOS(formErr(Fat0016, cachePath.c_str()));
         OS::exit(-1);
     }
 
@@ -264,24 +264,24 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 
     if (depNode)
     {
-        msg = form(Nte(Nte0110), Naming::kindName(prevNode).c_str(), prevNode->token.c_str(), Naming::kindName(depNode).c_str(), depNode->token.c_str());
+        msg = formNte(Nte0110, Naming::kindName(prevNode).c_str(), prevNode->token.c_str(), Naming::kindName(depNode).c_str(), depNode->token.c_str());
     }
     else if (prevNode && prevJob->waitingType)
     {
-        msg  = form(Nte(Nte0055), Naming::kindName(prevNode).c_str(), prevNode->token.c_str(), prevJob->waitingType->getDisplayNameC());
+        msg  = formNte(Nte0055, Naming::kindName(prevNode).c_str(), prevNode->token.c_str(), prevJob->waitingType->getDisplayNameC());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
     else if (prevJob->waitingType && dynamic_cast<TypeGenStructJob*>(prevJob))
     {
-        msg = form(Nte(Nte0187), prevJob->waitingType->getDisplayNameC());
+        msg = formNte(Nte0187, prevJob->waitingType->getDisplayNameC());
     }
     else if (prevJob->waitingType)
     {
-        msg = form(Nte(Nte0187), prevJob->waitingType->getDisplayNameC());
+        msg = formNte(Nte0187, prevJob->waitingType->getDisplayNameC());
     }
     else
     {
-        msg  = form(Nte(Nte0186), Naming::kindName(prevNode).c_str(), prevNode->token.c_str());
+        msg  = formNte(Nte0186, Naming::kindName(prevNode).c_str(), prevNode->token.c_str());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
 
@@ -386,7 +386,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
                 {
                     const auto front  = prevJob->nodes.front();
                     const auto back   = prevJob->nodes.back();
-                    auto       msg    = form(Nte(Nte0110), Naming::kindName(front).c_str(), front->token.c_str(), Naming::kindName(back).c_str(), back->token.c_str());
+                    auto       msg    = formNte(Nte0110, Naming::kindName(front).c_str(), front->token.c_str(), Naming::kindName(back).c_str(), back->token.c_str());
                     const auto note   = Diagnostic::note(back, back->token, msg);
                     note->canBeMerged = false;
                     note->hint        = Diagnostic::isType(back->typeInfo);
@@ -404,7 +404,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
                 notes.push_back(note);
 
             const auto prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
-            Diagnostic err{prevNodeLocal, prevNodeLocal->token, form(Err(Err0624), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.c_str())};
+            Diagnostic err{prevNodeLocal, prevNodeLocal->token, formErr(Err0624, Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.c_str())};
             Report::report(err, notes);
             const auto sourceFile             = Report::getDiagFile(err);
             sourceFile->module->hasCycleError = true;
@@ -417,7 +417,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
             const auto note = errorPendingJob(pendingJob, nullptr);
             if (!note)
                 continue;
-            Diagnostic err{note->sourceFile, note->startLocation, note->endLocation, Err(Err0087)};
+            Diagnostic err{note->sourceFile, note->startLocation, note->endLocation, toErr(Err0087)};
             err.addNote(note);
             Report::report(err);
         }
@@ -557,7 +557,7 @@ bool Workspace::buildRTModule(Module* module)
 
     if (module->numErrors)
     {
-        Report::error(module->kind == ModuleKind::BootStrap ? Err(Fat0014) : Err(Fat0015));
+        Report::error(module->kind == ModuleKind::BootStrap ? toErr(Fat0014) : toErr(Fat0015));
         return false;
     }
 
@@ -574,7 +574,7 @@ bool Workspace::buildRTModule(Module* module)
     // Errors !!!
     if (module->numErrors)
     {
-        Report::error(module->kind == ModuleKind::BootStrap ? Err(Fat0014) : Err(Fat0015));
+        Report::error(module->kind == ModuleKind::BootStrap ? toErr(Fat0014) : toErr(Fat0015));
         return false;
     }
 
@@ -654,7 +654,7 @@ bool Workspace::buildTarget()
     {
         if (!filteredModule)
         {
-            Report::error(form(Err(Fat0029), g_CommandLine.moduleName.c_str()));
+            Report::error(formErr(Fat0029, g_CommandLine.moduleName.c_str()));
             return false;
         }
 
@@ -669,7 +669,7 @@ bool Workspace::buildTarget()
                 auto       it = g_Workspace->mapModulesNames.find(dep->name);
                 if (it == g_Workspace->mapModulesNames.end())
                 {
-                    Report::error(form(Err(Fat0011), dep->name.c_str()));
+                    Report::error(formErr(Fat0011, dep->name.c_str()));
                     return false;
                 }
 

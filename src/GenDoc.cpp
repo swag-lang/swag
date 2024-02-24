@@ -1488,7 +1488,7 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     FILE* f = nullptr;
     if (fopen_s(&f, fullFileName, "wb"))
     {
-        Report::errorOS(form(Err(Err0096), fullFileName.c_str()));
+        Report::errorOS(formErr(Err0096, fullFileName.c_str()));
         return false;
     }
 
@@ -1515,7 +1515,7 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     // Write file
     if (fwrite(helpOutput, 1, helpOutput.length(), f) != helpOutput.length())
     {
-        Report::errorOS(form(Err(Err0099), fullFileName.c_str()));
+        Report::errorOS(formErr(Err0099, fullFileName.c_str()));
         (void) fclose(f);
         return false;
     }

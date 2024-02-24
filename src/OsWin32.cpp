@@ -112,7 +112,7 @@ namespace OS
 
         if (!getWinSdk())
         {
-            Report::error(Err(Fat0036));
+            Report::error(toErr(Fat0036));
             g_Log.lock();
             g_Log.setColor(LogColor::Cyan);
             g_Log.print("=> in order to build a windows executable or dll, you must install the latest version of the windows 10/11 sdk!\n");
@@ -185,7 +185,7 @@ namespace OS
         saAttr.lpSecurityDescriptor = nullptr;
         if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
         {
-            Report::error(form(Err(Err0628), cmdline.c_str()));
+            Report::error(formErr(Err0628, cmdline.c_str()));
             return false;
         }
 
@@ -209,7 +209,7 @@ namespace OS
                                 &si,
                                 &pi))
             {
-                Report::errorOS(form(Err(Err0629), cmdline.c_str()));
+                Report::errorOS(formErr(Err0629, cmdline.c_str()));
                 return false;
             }
         }

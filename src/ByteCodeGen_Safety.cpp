@@ -20,105 +20,105 @@ const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fr
         {
             case SafetyMsg::CastAnyNull:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0002), toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0002, toType->name.c_str());
                 break;
             case SafetyMsg::CastAny:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0001), toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0001, toType->name.c_str());
                 break;
             case SafetyMsg::NullCheck:
-                g_TypedMsg[m][0][0] = Err(Saf0017);
+                g_TypedMsg[m][0][0] = toErr(Saf0017);
                 break;
             case SafetyMsg::ErrCheck:
-                g_TypedMsg[m][0][0] = Err(Saf0018);
+                g_TypedMsg[m][0][0] = toErr(Saf0018);
                 break;
             case SafetyMsg::InvalidBool:
-                g_TypedMsg[m][0][0] = Err(Saf0003);
+                g_TypedMsg[m][0][0] = toErr(Saf0003);
                 break;
             case SafetyMsg::InvalidFloat:
-                g_TypedMsg[m][0][0] = Err(Saf0016);
+                g_TypedMsg[m][0][0] = toErr(Saf0016);
                 break;
             case SafetyMsg::NotZero:
-                g_TypedMsg[m][0][0] = Err(Saf0015);
+                g_TypedMsg[m][0][0] = toErr(Saf0015);
                 break;
             case SafetyMsg::BadSlicingDown:
-                g_TypedMsg[m][0][0] = Err(Saf0006);
+                g_TypedMsg[m][0][0] = toErr(Saf0006);
                 break;
             case SafetyMsg::BadSlicingUp:
-                g_TypedMsg[m][0][0] = Err(Saf0007);
+                g_TypedMsg[m][0][0] = toErr(Saf0007);
                 break;
             case SafetyMsg::BadRangeDown:
-                g_TypedMsg[m][0][0] = Err(Saf0005);
+                g_TypedMsg[m][0][0] = toErr(Saf0005);
                 break;
             case SafetyMsg::IndexRange:
-                g_TypedMsg[m][0][0] = Err(Saf0004);
+                g_TypedMsg[m][0][0] = toErr(Saf0004);
                 break;
             case SafetyMsg::SwitchComplete:
-                g_TypedMsg[m][0][0] = Err(Saf0028);
+                g_TypedMsg[m][0][0] = toErr(Saf0028);
                 break;
             case SafetyMsg::CastTruncated:
                 SWAG_ASSERT(toType && fromType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0027), fromType->name.c_str(), toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0027, fromType->name.c_str(), toType->name.c_str());
                 break;
             case SafetyMsg::CastNeg:
                 SWAG_ASSERT(toType && fromType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0020), fromType->name.c_str(), toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0020, fromType->name.c_str(), toType->name.c_str());
                 break;
             case SafetyMsg::Plus:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0026), "+", toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0026, "+", toType->name.c_str());
                 break;
             case SafetyMsg::Minus:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0026), "-", toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0026, "-", toType->name.c_str());
                 break;
             case SafetyMsg::Mul:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0026), "*", toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0026, "*", toType->name.c_str());
                 break;
             case SafetyMsg::PlusEq:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0026), "+=", toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0026, "+=", toType->name.c_str());
                 break;
             case SafetyMsg::MinusEq:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0026), "-=", toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0026, "-=", toType->name.c_str());
                 break;
             case SafetyMsg::MulEq:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0026), "*=", toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0026, "*=", toType->name.c_str());
                 break;
             case SafetyMsg::Neg:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0026), "-", toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0026, "-", toType->name.c_str());
                 break;
             case SafetyMsg::IntrinsicAbs:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0008), toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0008, toType->name.c_str());
                 break;
             case SafetyMsg::IntrinsicSqrt:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0014), toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0014, toType->name.c_str());
                 break;
             case SafetyMsg::IntrinsicLog:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0011), toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0011, toType->name.c_str());
                 break;
             case SafetyMsg::IntrinsicLog2:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0013), toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0013, toType->name.c_str());
                 break;
             case SafetyMsg::IntrinsicLog10:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0012), toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0012, toType->name.c_str());
                 break;
             case SafetyMsg::IntrinsicASin:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0010), toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0010, toType->name.c_str());
                 break;
             case SafetyMsg::IntrinsicACos:
                 SWAG_ASSERT(toType);
-                g_TypedMsg[m][i][j] = form(Err(Saf0009), toType->name.c_str());
+                g_TypedMsg[m][i][j] = formErr(Saf0009, toType->name.c_str());
                 break;
             default:
                 break;

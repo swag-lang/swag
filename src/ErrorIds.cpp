@@ -7,7 +7,7 @@ const char* g_EI[] = {
 #include "ErrorList.h"
 };
 
-Utf8 g_E[MAX_ERRORS];
+Utf8 g_E[MaxErrors];
 #undef SWAG_ERROR
 #define SWAG_ERROR(__n, __msg)                 \
     do                                         \
@@ -1088,19 +1088,32 @@ void initErrors()
     SWAG_ERROR(Nte0200, "expected an integer, a rune or a float value");
 }
 
-Utf8 Err(ErrorID idx)
+Utf8 formErr(ErrorID idx, ...)
+{
+    va_list args;
+    va_start(args, static_cast<uint64_t>(idx));
+    auto result = form("[%s] %s", g_EI[idx], g_E[idx].c_str());
+    result      = form(result.c_str(), args);
+    va_end(args);
+    return result;
+}
+
+Utf8 formNte(ErrorID idx, ...)
+{
+    va_list args;
+    va_start(args, idx);
+    auto result = g_E[idx];
+    result      = form(result.c_str(), args);
+    va_end(args);
+    return result;
+}
+
+Utf8 toErr(ErrorID idx)
 {
     return form("[%s] %s", g_EI[idx], g_E[idx].c_str());
 }
 
-Utf8 ErrNte(ErrorID idx, bool forNote)
-{
-    if (forNote)
-        return Nte(idx);
-    return Err(idx);
-}
-
-Utf8 Nte(ErrorID idx)
+Utf8 toNte(ErrorID idx)
 {
     return g_E[idx];
 }

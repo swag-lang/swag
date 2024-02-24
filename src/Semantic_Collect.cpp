@@ -413,8 +413,8 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
             const auto overload = assign->resolvedSymbolOverload();
             if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
             {
-                Diagnostic err{assign, Err(Err0063)};
-                err.addNote(node->type, Nte(Nte0164));
+                Diagnostic err{assign, toErr(Err0063)};
+                err.addNote(node->type, toNte(Nte0164));
                 return context->report(err);
             }
 
@@ -467,7 +467,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
     DataSegment* storageSegment = nullptr;
     uint32_t     storageOffset  = UINT32_MAX;
 
-    SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, form(Err(Err0248), node->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, formErr(Err0248, node->typeInfo->getDisplayNameC())}));
 
     // A constant array cannot be initialized with just one value (this is for variables)
     if (node->assignment && typeInfo->isArray())
@@ -475,8 +475,8 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         const auto typeAssign = TypeManager::concreteType(node->assignment->typeInfo);
         if (!typeAssign->isArray() && !typeAssign->isListArray())
         {
-            Diagnostic err{node->assignment, form(Err(Err0313), typeInfo->getDisplayNameC())};
-            err.addNote(Nte(Nte0101));
+            Diagnostic err{node->assignment, formErr(Err0313, typeInfo->getDisplayNameC())};
+            err.addNote(toNte(Nte0101));
             return context->report(err);
         }
     }

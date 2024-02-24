@@ -24,11 +24,11 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, c
         switch (fromType->nativeType)
         {
             case NativeTypeKind::F32:
-                return context->report({fromNode, form(Err(Saf0021), fromNode->computedValue()->reg.f32, toType->getDisplayNameC())});
+                return context->report({fromNode, formErr(Saf0021, fromNode->computedValue()->reg.f32, toType->getDisplayNameC())});
             case NativeTypeKind::F64:
-                return context->report({fromNode, form(Err(Saf0021), fromNode->computedValue()->reg.f64, toType->getDisplayNameC())});
+                return context->report({fromNode, formErr(Saf0021, fromNode->computedValue()->reg.f64, toType->getDisplayNameC())});
             default:
-                return context->report({fromNode, form(Err(Saf0019), fromNode->computedValue()->reg.s64, toType->getDisplayNameC())});
+                return context->report({fromNode, formErr(Saf0019, fromNode->computedValue()->reg.s64, toType->getDisplayNameC())});
         }
     }
 
@@ -36,20 +36,20 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, c
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
         {
-            return context->report({fromNode, form(Err(Saf0022), fromNode->token.c_str(), fromNode->computedValue()->reg.u64, toType->getDisplayNameC())});
+            return context->report({fromNode, formErr(Saf0022, fromNode->token.c_str(), fromNode->computedValue()->reg.u64, toType->getDisplayNameC())});
         }
     }
 
     switch (fromType->nativeType)
     {
         case NativeTypeKind::F32:
-            return context->report({fromNode, form(Err(Saf0025), fromNode->computedValue()->reg.f32, toType->getDisplayNameC())});
+            return context->report({fromNode, formErr(Saf0025, fromNode->computedValue()->reg.f32, toType->getDisplayNameC())});
         case NativeTypeKind::F64:
-            return context->report({fromNode, form(Err(Saf0025), fromNode->computedValue()->reg.f64, toType->getDisplayNameC())});
+            return context->report({fromNode, formErr(Saf0025, fromNode->computedValue()->reg.f64, toType->getDisplayNameC())});
         default:
             if (fromType->isNativeIntegerSigned())
-                return context->report({fromNode, form(Err(Saf0024), fromNode->computedValue()->reg.s64, toType->getDisplayNameC())});
-            return context->report({fromNode, form(Err(Saf0023), fromNode->computedValue()->reg.u64, toType->getDisplayNameC())});
+                return context->report({fromNode, formErr(Saf0024, fromNode->computedValue()->reg.s64, toType->getDisplayNameC())});
+            return context->report({fromNode, formErr(Saf0023, fromNode->computedValue()->reg.u64, toType->getDisplayNameC())});
     }
 }
 
@@ -127,8 +127,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
                                   TypeInfo*     fromType,
                                   AstNode* /*fromNode*/,
                                   CastFlags /*castFlags*/,
-                                  CastErrorType castError,
-                                  bool          forNote)
+                                  CastErrorType castError)
 {
     msg.clear();
     hint.clear();
@@ -137,21 +136,21 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
 
     if (castError == CastErrorType::SafetyCastAny)
     {
-        msg = form(Err(Saf0001), toType->getDisplayNameC());
+        msg = formErr(Saf0001, toType->getDisplayNameC());
     }
     else if (castError == CastErrorType::Const)
     {
-        msg = form(ErrNte(Err0054, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0054, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (castError == CastErrorType::SliceArray)
     {
         const auto to   = castTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
         const auto from = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        hint            = form(Nte(Nte0113), from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
+        hint            = formNte(Nte0113, from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
     {
-        msg = form(ErrNte(Err0646, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0646, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (toType->isInterface() && (fromType->isStruct() || fromType->isPointerTo(TypeInfoKind::Struct)))
     {
@@ -161,32 +160,32 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
             fromType = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         }
 
-        msg = form(ErrNte(Err0314, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0314, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
-        msg = form(ErrNte(Err0644, forNote), fromType->getDisplayNameC());
+        msg = formErr(Err0644, fromType->getDisplayNameC());
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
-        hint = form(Nte(Nte0161), fromType->getDisplayNameC());
-        msg  = form(ErrNte(Err0645, forNote), toType->getDisplayNameC());
+        hint = formNte(Nte0161, fromType->getDisplayNameC());
+        msg  = formErr(Err0645, toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
-        msg = form(ErrNte(Err0647, forNote));
+        msg = toErr(Err0647);
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
         const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
-            msg = form(ErrNte(Err0251, forNote));
+            msg = toErr(Err0251);
     }
     else if (!fromType->isPointer() && toType->isPointerRef())
     {
         const auto toPtrRef = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
         if (fromType->isSame(toPtrRef->pointedType, CAST_FLAG_CAST))
-            hint = Nte(Nte0196);
+            hint = toNte(Nte0196);
     }
     else if (toType->isTuple() && fromType->isTuple())
     {
@@ -196,7 +195,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         remarks.push_back(form("source type is %s", fromName.c_str()));
         remarks.push_back(form("requested type is %s", toName.c_str()));
 
-        msg = ErrNte(Err0640, forNote);
+        msg = toErr(Err0640);
     }
 }
 
@@ -227,7 +226,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         SWAG_ASSERT(fromNode);
 
         if (msg.empty())
-            msg = form(Err(Err0643), fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg = formErr(Err0643, fromType->getDisplayNameC(), toType->getDisplayNameC());
         if (!hint.empty())
             notes.push_back(Diagnostic::note(fromNode, hint));
 
@@ -235,7 +234,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         if (!castFlags.has(CAST_FLAG_EXPLICIT) || castFlags.has(CAST_FLAG_COERCE))
         {
             if (makeCompatibles(context, toType, fromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
-                notes.push_back(Diagnostic::note(fromNode, form(Nte(Nte0030), toType->getDisplayNameC())));
+                notes.push_back(Diagnostic::note(fromNode, formNte(Nte0030, toType->getDisplayNameC())));
         }
 
         Diagnostic err{fromNode, msg};

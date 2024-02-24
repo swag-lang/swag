@@ -15,7 +15,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     *result               = implNode;
     implNode->semanticFct = Semantic::resolveImpl;
 
-    SWAG_VERIFY(module->acceptsCompileImpl, context->report({implNode, Err(Err0296)}));
+    SWAG_VERIFY(module->acceptsCompileImpl, context->report({implNode, toErr(Err0296)}));
 
     auto scopeKind = ScopeKind::Struct;
     SWAG_CHECK(eatToken());
@@ -44,8 +44,8 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     {
         if (scopeKind == ScopeKind::Enum)
         {
-            Diagnostic err{implNode, tokenParse.token, Err(Err0666)};
-            err.addNote(kindLoc.token, Nte(Nte0052));
+            Diagnostic err{implNode, tokenParse.token, toErr(Err0666)};
+            err.addNote(kindLoc.token, toNte(Nte0052));
             return context->report(err);
         }
 
@@ -60,7 +60,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         implInterface                             = true;
 
         const auto last = castAst<AstIdentifier>(identifierStruct->children.back(), AstNodeKind::Identifier);
-        SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, Err(Err0686)}));
+        SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, toErr(Err0686)}));
     }
     else
     {
@@ -78,12 +78,12 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     const auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        Diagnostic err{implNode, form(Err(Err0008), Naming::kindName(scopeKind).c_str(), implNode->token.c_str(), Naming::kindName(newScope->kind).c_str())};
+        Diagnostic err{implNode, formErr(Err0008, Naming::kindName(scopeKind).c_str(), implNode->token.c_str(), Naming::kindName(newScope->kind).c_str())};
         err.addNote(Diagnostic::hereIs(newScope->owner));
         if (newScope->kind == ScopeKind::Enum)
-            err.addNote(form(Nte(Nte0043), implNode->token.c_str()));
+            err.addNote(formNte(Nte0043, implNode->token.c_str()));
         else if (newScope->kind == ScopeKind::Struct)
-            err.addNote(form(Nte(Nte0042), implNode->token.c_str()));
+            err.addNote(formNte(Nte0042, implNode->token.c_str()));
         return context->report(err);
     }
 
@@ -237,8 +237,8 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
 
 bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
-    SWAG_VERIFY(tokenParse.token.id != TokenId::SymLeftCurly, error(tokenParse.token, Err(Err0581)));
-    SWAG_CHECK(checkIsIdentifier(tokenParse, form(Err(Err0378), tokenParse.token.c_str())));
+    SWAG_VERIFY(tokenParse.token.id != TokenId::SymLeftCurly, error(tokenParse.token, toErr(Err0581)));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0378, tokenParse.token.c_str())));
     structNode->inheritTokenName(tokenParse.token);
     structNode->tokenName = tokenParse.token;
     SWAG_CHECK(checkIsValidUserName(structNode, &tokenParse.token));
@@ -258,14 +258,14 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic err{implNode->identifier, form(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::kindName(ScopeKind::Struct).c_str())};
+                Diagnostic err{implNode->identifier, formErr(Err0008, Naming::kindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::kindName(ScopeKind::Struct).c_str())};
                 err.addNote(Diagnostic::hereIs(structNode));
                 return context->report(err);
             }
 
             const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).c_str());
-            Diagnostic err{structNode->token.sourceFile, tokenParse.token, form(Err(Err0626), "struct", structNode->token.c_str(), asA.c_str())};
-            err.addNote(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
+            Diagnostic err{structNode->token.sourceFile, tokenParse.token, formErr(Err0626, "struct", structNode->token.c_str(), asA.c_str())};
+            err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0071));
             return context->report(err);
         }
 
@@ -324,7 +324,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
     // '#validif' block
     if (tokenParse.token.id == TokenId::CompilerValidIfx)
-        return error(tokenParse.token, Err(Err0659));
+        return error(tokenParse.token, toErr(Err0659));
     if (tokenParse.token.id == TokenId::CompilerValidIf)
     {
         Scoped       scoped(this, newScope);
@@ -435,7 +435,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         case TokenId::KwdUsing:
         {
             ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
-            SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, tokenParse.token, Err(Err0478)}));
+            SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, tokenParse.token, toErr(Err0478)}));
             SWAG_CHECK(eatToken());
             const auto structNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
             structNode->addSpecFlag(AstStruct::SPEC_FLAG_HAS_USING);
@@ -456,26 +456,26 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
         case TokenId::KwdVar:
         {
-            const Diagnostic err{parent, tokenParse.token, Err(Err0672)};
+            const Diagnostic err{parent, tokenParse.token, toErr(Err0672)};
             return context->report(err);
         }
 
         case TokenId::KwdMethod:
         case TokenId::KwdFunc:
         {
-            SWAG_VERIFY(structType == SyntaxStructType::Interface, error(tokenParse.token, Err(Err0503)));
+            SWAG_VERIFY(structType == SyntaxStructType::Interface, error(tokenParse.token, toErr(Err0503)));
 
             const auto kind = tokenParse.token.id;
             SWAG_CHECK(eatToken());
 
-            SWAG_VERIFY(tokenParse.token.id != TokenId::SymLeftParen, error(tokenParse.token, Err(Err0685)));
+            SWAG_VERIFY(tokenParse.token.id != TokenId::SymLeftParen, error(tokenParse.token, toErr(Err0685)));
 
             const bool isMethod      = kind == TokenId::KwdMethod;
             bool       isConstMethod = false;
 
             if (tokenParse.token.id == TokenId::KwdConst)
             {
-                SWAG_VERIFY(isMethod, error(tokenParse.token, Err(Err0458)));
+                SWAG_VERIFY(isMethod, error(tokenParse.token, toErr(Err0458)));
                 isConstMethod = true;
                 SWAG_CHECK(eatToken());
             }
@@ -483,7 +483,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             const auto funcNode = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, nullptr);
 
             SWAG_CHECK(checkIsValidUserName(funcNode));
-            SWAG_CHECK(checkIsIdentifier(tokenParse, form(Err(Err0295), tokenParse.token.c_str())));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0295, tokenParse.token.c_str())));
             SWAG_CHECK(eatToken());
 
             const auto scope = Ast::newScope(funcNode, "", ScopeKind::Function, parent->ownerStructScope);
@@ -547,7 +547,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         // A normal declaration
         default:
         {
-            SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse.token, form(Err(Err0293), tokenParse.token.c_str())));
+            SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse.token, formErr(Err0293, tokenParse.token.c_str())));
             ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
             SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
             break;

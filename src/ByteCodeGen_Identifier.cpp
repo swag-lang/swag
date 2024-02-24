@@ -24,13 +24,13 @@ bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, const SymbolOverlo
     if (context->node->isSameStackFrame(overload))
         return true;
 
-    Diagnostic err{context->node, form(Err(Err0081), Naming::kindName(overload).c_str(), overload->symbol->name.c_str())};
+    Diagnostic err{context->node, formErr(Err0081, Naming::kindName(overload).c_str(), overload->symbol->name.c_str())};
 
     err.addNote(Diagnostic::hereIs(overload));
     if (context->node->ownerFct && context->node->ownerFct->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
-        err.addNote(form(Nte(Nte0194), Naming::kindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str()));
+        err.addNote(formNte(Nte0194, Naming::kindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str()));
     if (overload->fromInlineParam)
-        err.addNote(overload->fromInlineParam, form(Nte(Nte0077), overload->symbol->name.c_str()));
+        err.addNote(overload->fromInlineParam, formNte(Nte0077, overload->symbol->name.c_str()));
 
     return context->report(err);
 }
@@ -283,7 +283,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             }
             else
             {
-                const Diagnostic err{node, node->token, form(Err(Err0181), typeInfo->getDisplayNameC())};
+                const Diagnostic err{node, node->token, formErr(Err0181, typeInfo->getDisplayNameC())};
                 return context->report(err);
             }
         }

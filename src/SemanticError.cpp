@@ -17,7 +17,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
         tryMatches[0]->dependentVar &&
         !tryMatches[0]->dependentVar->isGeneratedSelf())
     {
-        const auto msg  = form(Nte(Nte0137), tryMatches[0]->overload->symbol->getFullName().c_str());
+        const auto msg  = formNte(Nte0137, tryMatches[0]->overload->symbol->getFullName().c_str());
         const auto note = Diagnostic::note(tryMatches[0]->dependentVar, tryMatches[0]->dependentVar->token, msg);
         notes.push_back(note);
     }
@@ -39,7 +39,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
         {
             if (identifierRef->typeInfo)
             {
-                const auto msg = form(Nte(Nte0111), Naming::kindName(overload).c_str(), node->token.c_str(), identifierRef->typeInfo->getDisplayNameC(),
+                const auto msg = formNte(Nte0111, Naming::kindName(overload).c_str(), node->token.c_str(), identifierRef->typeInfo->getDisplayNameC(),
                                      overload->node->ownerStructScope->owner->token.c_str());
                 err->remarks.push_back(msg);
             }
@@ -48,7 +48,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
             {
                 if (s->kind == ScopeKind::Impl && s->symTable.find(node->token.text))
                 {
-                    auto msg = form(Nte(Nte0136), node->token.c_str(), s->getFullName().c_str());
+                    auto msg = formNte(Nte0136, node->token.c_str(), s->getFullName().c_str());
                     err->remarks.push_back(msg);
                 }
             }
@@ -58,7 +58,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
 
 bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
 {
-    Utf8 text = form(Err(Err0351), node->token.c_str(), typeInfo->getDisplayNameC());
+    Utf8 text = formErr(Err0351, node->token.c_str(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";
@@ -83,8 +83,8 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
     if (thisKind != otherKind)
         as = form("as %s", Naming::aKindName(otherKind).c_str());
 
-    Diagnostic err{sourceFile, token, form(Err(Err0626), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
-    err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), Nte(Nte0071));
+    Diagnostic err{sourceFile, token, formErr(Err0626, Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
+    err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0071));
     return context->report(err);
 }
 
