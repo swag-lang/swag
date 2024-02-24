@@ -11,6 +11,7 @@
 #include "Symbol.h"
 #include "TypeManager.h"
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIdentifierRef(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;

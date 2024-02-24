@@ -1810,10 +1810,10 @@ namespace
                     CMP_OP(==, u64);
                     break;
                 case ByteCodeOp::CompareOpEqualF32:
-                    CMP_OP(==, f32); // NOLINT(clang-diagnostic-float-equal)
+                    CMP_OP(==, f32); 
                     break;
                 case ByteCodeOp::CompareOpEqualF64:
-                    CMP_OP(==, f64); // NOLINT(clang-diagnostic-float-equal)
+                    CMP_OP(==, f64); 
                     break;
 
                 case ByteCodeOp::CompareOpNotEqual8:
@@ -1829,10 +1829,10 @@ namespace
                     CMP_OP(!=, u64);
                     break;
                 case ByteCodeOp::CompareOpNotEqualF32:
-                    CMP_OP(!=, f32); // NOLINT(clang-diagnostic-float-equal)
+                    CMP_OP(!=, f32); 
                     break;
                 case ByteCodeOp::CompareOpNotEqualF64:
-                    CMP_OP(!=, f64); // NOLINT(clang-diagnostic-float-equal)
+                    CMP_OP(!=, f64); 
                     break;
 
                 case ByteCodeOp::CompareOpGreaterEqS8:

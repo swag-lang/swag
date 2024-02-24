@@ -311,12 +311,12 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
         if (it != g_MapUntypedValuesI.end())
         {
             SWAG_ASSERT(it->second->isUntypedInteger());
-            SWAG_ASSERT(it->second->valueInteger == *reinterpret_cast<int32_t*>(&value));
+            SWAG_ASSERT(it->second->valueInteger == std::bit_cast<int32_t>(value));
             return it->second;
         }
 
         const auto newType         = castTypeInfo<TypeInfoNative>(typeInfo->clone());
-        newType->valueInteger      = *reinterpret_cast<int32_t*>(&value);
+        newType->valueInteger      = std::bit_cast<int32_t>(value);
         typeInfo                   = newType;
         g_MapUntypedValuesI[value] = newType;
     }
@@ -326,12 +326,12 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
         if (it != g_MapUntypedValuesB.end())
         {
             SWAG_ASSERT(it->second->isUntypedBinHex());
-            SWAG_ASSERT(it->second->valueInteger == *reinterpret_cast<int32_t*>(&value));
+            SWAG_ASSERT(it->second->valueInteger == std::bit_cast<int32_t>(value));
             return it->second;
         }
 
         const auto newType         = castTypeInfo<TypeInfoNative>(typeInfo->clone());
-        newType->valueInteger      = *reinterpret_cast<int32_t*>(&value);
+        newType->valueInteger      = std::bit_cast<int32_t>(value);
         typeInfo                   = newType;
         g_MapUntypedValuesB[value] = newType;
     }
@@ -341,12 +341,12 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
         if (it != g_MapUntypedValuesF.end())
         {
             SWAG_ASSERT(it->second->isUntypedFloat());
-            SWAG_ASSERT(it->second->valueFloat == *reinterpret_cast<float*>(&value));
+            SWAG_ASSERT(it->second->valueFloat == std::bit_cast<float>(value));
             return it->second;
         }
 
         const auto newType         = castTypeInfo<TypeInfoNative>(typeInfo->clone());
-        newType->valueFloat        = *reinterpret_cast<float*>(&value);
+        newType->valueFloat        = std::bit_cast<float>(value);
         typeInfo                   = newType;
         g_MapUntypedValuesF[value] = newType;
     }

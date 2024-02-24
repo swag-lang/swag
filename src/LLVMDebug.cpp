@@ -126,7 +126,7 @@ llvm::DIType* LLVMDebug::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
         const auto rawType = getType(typeInfoEnum->rawType, file);
         const auto content = dbgBuilder->getOrCreateArray({subscripts.begin(), subscripts.end()});
         typeInfo->computeScopedName();
-        const auto result  = dbgBuilder->createEnumerationType(scope, typeInfo->scopedName.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, content, rawType);
+        const auto result  = dbgBuilder->createEnumerationType(scope, typeInfo->scopedName.c_str(), file, lineNo, static_cast<size_t>(typeInfo->sizeOf) * 8, 0, content, rawType);
         mapTypes[typeInfo] = result;
         return result;
     }
@@ -164,7 +164,17 @@ llvm::DIType* LLVMDebug::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
     constexpr auto noFlag = llvm::DINode::DIFlags::FlagZero;
     const auto     lineNo = typeInfo->declNode->token.startLocation.line + 1;
     typeInfo->computeScopedName();
-    auto result = dbgBuilder->createStructType(scope, typeInfo->scopedName.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray(), 0, nullptr,
+    auto result = dbgBuilder->createStructType(scope,
+                                               typeInfo->scopedName.c_str(),
+                                               file,
+                                               lineNo,
+                                               static_cast<size_t>(typeInfo->sizeOf) * 8,
+                                               0,
+                                               noFlag,
+                                               nullptr,
+                                               llvm::DINodeArray(),
+                                               0,
+                                               nullptr,
                                                typeInfo->scopedName.c_str());
 
     // Register it right away, so that even if a struct is referencing itself, this will work
@@ -178,7 +188,15 @@ llvm::DIType* LLVMDebug::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
     {
         const auto fieldLine = field->declNode->token.startLocation.line + 1;
         const auto fieldType = getType(field->typeInfo, file);
-        const auto typeField = dbgBuilder->createMemberType(result, field->name.c_str(), file, fieldLine, field->typeInfo->sizeOf * 8, 0, field->offset * 8, noFlag, fieldType);
+        const auto typeField = dbgBuilder->createMemberType(result,
+                                                            field->name.c_str(),
+                                                            file,
+                                                            fieldLine,
+                                                            static_cast<size_t>(field->typeInfo->sizeOf) * 8,
+                                                            0,
+                                                            static_cast<size_t>(field->offset) * 8,
+                                                            noFlag,
+                                                            fieldType);
         subscripts.push_back(typeField);
     }
 

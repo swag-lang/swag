@@ -921,9 +921,9 @@ Utf8 Utf8::toNiceSize(size_t size)
         return FMT("%u byte", size);
     if (size < 1024)
         return FMT("%u bytes", size);
-    if (size < 1024 * 1024)
+    if (size < static_cast<size_t>(1024) * 1024)
         return FMT("%.1f Kb", static_cast<float>(size) / 1024.0f);
-    if (size < 1024 * 1024 * 1024)
+    if (size < static_cast<size_t>(1024) * 1024 * 1024)
         return FMT("%.1f Mb", static_cast<float>(size) / (1024.0f * 1024.0f));
     return FMT("%.1f Gb", static_cast<float>(size) / (1024.0f * 1024.0f * 1024.0f));
 }

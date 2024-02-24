@@ -72,7 +72,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
     }
 #endif
 
-    SWAG_ASSERT(context->curRC == static_cast<int>(context->registersRC.size()));
+    SWAG_ASSERT(context->curRC == context->registersRC.size());
     context->registersRC.push_back(context->registers.count);
     context->registers.reserve(context->registers.count + bc->maxReservedRegisterRC);
     context->curRegistersRC = context->registers.buffer + context->registers.count;
@@ -338,7 +338,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 context->ip += ip->b.s32;
             break;
         case ByteCodeOp::JumpIfNotEqualF32:
-            if (IMMA_F32(ip) != IMMC_F32(ip))
+            if (IMMA_F32(ip) != IMMC_F32(ip))  
                 context->ip += ip->b.s32;
             break;
         case ByteCodeOp::JumpIfNotEqualF64:
@@ -4186,7 +4186,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 context->debugRaiseStart    = true;
                 context->debugEntry         = true;
                 g_ByteCodeDebugger.stepMode = ByteCodeDebugger::DebugStepMode::None;
-                throw "start debug";
+                throw std::exception("start debug");
             }
             break;
 

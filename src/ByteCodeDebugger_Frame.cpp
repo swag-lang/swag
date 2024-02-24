@@ -2,6 +2,7 @@
 #include "ByteCodeDebugger.h"
 #include "ByteCodeStack.h"
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() != 1)

@@ -451,6 +451,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
@@ -493,6 +494,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitMakePointer(ByteCodeGenContext* context)
 {
     const auto node        = context->node;

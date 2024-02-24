@@ -4194,7 +4194,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_B), ip->b, allocR, allocResult);
                 [[fallthrough]];
             case ByteCodeOp::Ret:
-            {
                 // :OptimizedAwayDebugCrap
                 // Hack thanks to llvm in debug mode : we need to force the usage of function parameters until the very end of the function (i.e. each return),
                 // otherwise :
@@ -4204,25 +4203,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 // RIDICULOUS !!
                 //
                 // If we request an optimized code, do not do that crap.
-#if 0
-            bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
-            if (isDebug && buildParameters.buildCfg->backendDebugInformations)
-            {
-                auto r1        = GEP64(allocT, 0);
-                auto numParams = typeFunc->parameters.size();
-                if (typeFunc->hasFlag(TYPEINFO_C_VARIADIC))
-                    numParams--;
-                for (int iparam = 0; iparam < numParams; iparam++)
-                {
-                    SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, iparam, r1));
-                }
-            }
-#endif
-
                 createRet(buildParameters, typeFunc, returnType, allocResult);
                 blockIsClosed = true;
                 break;
-            }
 
                 /////////////////////////////////////
 
@@ -5075,9 +5058,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     // used to pass the normal parameters.
                     //
                     // The number of normal parameters is deduced from the 'offset' of the CopySPVaargs instruction (ip->b.u32)
-                    int idx      = 0;
-                    int idxParam = static_cast<int>(pushRAParams.size()) - sizeB / static_cast<int>(sizeof(Register)) - 1;
-                    while (idxParam >= 0)
+                    uint32_t idx      = 0;
+                    uint32_t idxParam = pushRAParams.size() - sizeB / static_cast<int>(sizeof(Register)) - 1;
+                    while (idxParam != UINT32_MAX)
                     {
                         SWAG_ASSERT(static_cast<uint32_t>(idx) < bc->maxSpVaargs);
                         auto r0 = GEP64(allocVA, idx);
@@ -5946,23 +5929,4 @@ void LLVM::setFuncAttributes(const BuildParameters& buildParameters, const AstFu
     {
         func->setLinkage(llvm::GlobalValue::InternalLinkage);
     }
-
-#if 0
-    for (int i = 0; i < func->arg_size(); i++)
-    {
-        auto arg = func->getArg(i);
-
-        if (arg->getType()->isPointerTy())
-        {
-            arg->addAttr(llvm::Attribute::NoCapture);
-
-            // No pointer aliasing, on all pointers. Is this correct ??
-            // Note that without the NoAlias flag, some optim will not trigger (like vectorisation)
-            // arg->addAttr(llvm::Attribute::NoAlias);
-        }
-
-        arg->addAttr(llvm::Attribute::NoUndef);
-        arg->addAttr(llvm::Attribute::ReadOnly);
-    }
-#endif
 }

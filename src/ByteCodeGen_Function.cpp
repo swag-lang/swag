@@ -309,6 +309,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicCVaStart(ByteCodeGenContext* context)
 {
     const auto node      = context->node;
@@ -329,6 +330,7 @@ bool ByteCodeGen::emitIntrinsicCVaStart(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicCVaEnd(ByteCodeGenContext* context)
 {
     const auto node      = context->node;
@@ -339,6 +341,7 @@ bool ByteCodeGen::emitIntrinsicCVaEnd(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicCVaArg(ByteCodeGenContext* context)
 {
     const auto node      = context->node;
@@ -1231,6 +1234,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 void ByteCodeGen::emitPostCallUfcs(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
@@ -1614,20 +1618,20 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     askForByteCode(context->baseJob, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
     YIELD();
 
-    int numCallParams = allParams ? static_cast<int>(allParams->children.size()) : 0;
+    uint32_t numCallParams = allParams ? allParams->children.size() : 0;
 
     // For a untyped variadic, we need to store all parameters as 'any'
     // So we must generate one type per parameter
     Vector<uint32_t> storageOffsetsVariadicTypes;
     if (allParams && typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
-        auto  numFuncParams  = static_cast<int>(typeInfoFunc->parameters.size());
+        auto  numFuncParams  = typeInfoFunc->parameters.size();
         auto  module         = context->sourceFile->module;
         auto& typeGen        = module->typeGen;
         auto  storageSegment = Semantic::getConstantSegFromContext(allParams);
 
         // We must export one type per parameter
-        for (int i = numCallParams - 1; i >= numFuncParams - 1; i--)
+        for (int i = static_cast<int>(numCallParams - 1); i >= static_cast<int>(numFuncParams - 1); i--)
         {
             auto     child        = allParams->children[i];
             auto     concreteType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
@@ -1648,7 +1652,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // In a defer block, the RR registers (result of the function) are set before the block.
     // So we need to be sure that no defer statement will change them, to keep the return
     // values intact
-    bool RRsaved = false;
+    bool savedRR = false;
     if (node->ownerFct && node->hasAstFlag(AST_IN_DEFER))
     {
         auto ownerTypeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
@@ -1656,7 +1660,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         if (!ownerReturnType->isVoid())
         {
             EMIT_INST0(context, ByteCodeOp::PushRR);
-            RRsaved = true;
+            savedRR = true;
         }
     }
 
@@ -1672,8 +1676,8 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     if (allParams && allParams->hasAstFlag(AST_MUST_SORT_CHILDREN))
     {
         ranges::sort(allParams->children, [](AstNode* n1, AstNode* n2) {
-            const AstFuncCallParam* p1 = castAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
-            const AstFuncCallParam* p2 = castAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
+            const auto p1 = castAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
+            const auto p2 = castAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
             return p1->indexParam < p2->indexParam;
         });
     }
@@ -1684,16 +1688,16 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
 
     // For a untyped variadic, we need to store all parameters as 'any'
-    int                    precallStack = 0;
+    uint32_t               precallStack = 0;
     VectorNative<uint32_t> toFree;
     if (allParams && typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
-        auto numFuncParams  = static_cast<int>(typeInfoFunc->parameters.size());
-        auto numVariadic    = static_cast<uint32_t>(numCallParams - numFuncParams) + 1;
-        int  offset         = numVariadic * 2 * sizeof(Register);
-        auto storageSegment = Semantic::getConstantSegFromContext(allParams);
+        auto     numFuncParams  = typeInfoFunc->parameters.size();
+        auto     numVariadic    = (numCallParams - numFuncParams) + 1;
+        uint32_t offset         = numVariadic * (2 * sizeof(Register));
+        auto     storageSegment = Semantic::getConstantSegFromContext(allParams);
 
-        for (int i = numCallParams - 1; i >= numFuncParams - 1; i--)
+        for (int i = static_cast<int>(numCallParams - 1); i >= static_cast<int>(numFuncParams - 1); i--)
         {
             auto child     = allParams->children[i];
             auto typeParam = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
@@ -1740,20 +1744,20 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
 
     // Push missing default parameters
-    uint64_t numPushParams = 0;
-    int      numTypeParams = static_cast<int>(typeInfoFunc->parameters.size());
+    uint32_t numPushParams = 0;
+    uint32_t numTypeParams = typeInfoFunc->parameters.size();
     if (numCallParams < numTypeParams)
     {
         // Push all parameters, from end to start
         VectorNative<uint32_t> accParams;
-        for (int i = numTypeParams - 1; i >= 0; i--)
+        for (uint32_t i = numTypeParams - 1; i != UINT32_MAX; i--)
         {
             // Determine if this parameter has been covered by the call
             bool covered = false;
-            for (int j = 0; j < numCallParams; j++)
+            for (uint32_t j = 0; j < numCallParams; j++)
             {
                 auto param = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);
-                if (param->indexParam == static_cast<uint32_t>(i))
+                if (param->indexParam == i)
                 {
                     if (param->hasExtMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
                     {
@@ -1764,7 +1768,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                     if (param->typeInfo->isArray() || param->typeInfo->hasFlag(TYPEINFO_LIST_ARRAY_ARRAY))
                         truncRegisterRC(context, param->resultRegisterRc, 1);
 
-                    for (int r = param->resultRegisterRc.size() - 1; r >= 0; r--)
+                    for (uint32_t r = param->resultRegisterRc.size() - 1; r != UINT32_MAX; r--)
                     {
                         if (freeRegistersParams && !param->resultRegisterRc.cannotFree)
                             toFree.push_back(param->resultRegisterRc[r]);
@@ -1812,7 +1816,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                     RegisterList regList;
                     SWAG_CHECK(emitDefaultParamValue(context, defaultParam, regList));
 
-                    for (int r = regList.size() - 1; r >= 0;)
+                    for (uint32_t r = regList.size() - 1; r != UINT32_MAX;)
                     {
                         if (!regList.cannotFree)
                             toFree.push_back(regList[r]);
@@ -1850,7 +1854,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         }
 
         VectorNative<uint32_t> accParams;
-        for (int i = numCallParams - 1; i >= 0; i--)
+        for (uint32_t i = numCallParams - 1; i != UINT32_MAX; i--)
         {
             auto param = allParams->children[i];
             if (param->resultRegisterRc.size() == 0)
@@ -1909,7 +1913,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                                 toFree.push_back(param->extMisc()->additionalRegisterRC[r]);
                         }
 
-                        for (int r = param->resultRegisterRc.size() - 1; r >= 0;)
+                        for (uint32_t r = param->resultRegisterRc.size() - 1; r != UINT32_MAX;)
                         {
                             if (freeRegistersParams && !param->resultRegisterRc.cannotFree)
                                 toFree.push_back(param->resultRegisterRc[r]);
@@ -1930,7 +1934,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                             toFree.push_back(param->extMisc()->additionalRegisterRC[r]);
                     }
 
-                    for (int r = param->resultRegisterRc.size() - 1; r >= 0;)
+                    for (uint32_t r = param->resultRegisterRc.size() - 1; r != UINT32_MAX;)
                     {
                         if (freeRegistersParams && !param->resultRegisterRc.cannotFree)
                             toFree.push_back(param->resultRegisterRc[r]);
@@ -1947,7 +1951,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
 
     // Pass a variadic parameter to another function
-    auto numVariadic = static_cast<uint32_t>(numCallParams - numTypeParams) + 1;
+    auto numVariadic = (numCallParams - numTypeParams) + 1;
     if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
         SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, FMT(Err(Err0639), SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
 
@@ -2156,7 +2160,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
 
     // If we are in a function that need to keep the RR0 register alive, we need to restore it
-    if (RRsaved)
+    if (savedRR)
     {
         EMIT_INST0(context, ByteCodeOp::PopRR);
     }
@@ -2179,6 +2183,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
 {
     const auto node     = context->node;
@@ -2186,7 +2191,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
     SWAG_ASSERT(funcNode);
 
     // 3 pointers are already on that stack after BP : saved BP, BC and IP.
-    int offset = 3 * sizeof(void*);
+    uint32_t offset = 3 * sizeof(void*);
 
     // Then add the full stack size of the function
     offset += funcNode->stackSize;
@@ -2213,8 +2218,8 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
         resolved->computedValue.storageOffset = offset;
         SWAG_ASSERT(resolved->storageIndex == storageIndex);
 
-        const auto typeInfo     = TypeManager::concreteType(resolved->typeInfo);
-        const int  numRegisters = typeInfo->numRegisters();
+        const auto     typeInfo     = TypeManager::concreteType(resolved->typeInfo);
+        const uint32_t numRegisters = typeInfo->numRegisters();
         offset += numRegisters * sizeof(Register);
         SWAG_IF_ASSERT(storageIndex += numRegisters);
     }

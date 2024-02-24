@@ -544,13 +544,13 @@ bool Semantic::resolveType(SemanticContext* context)
 
             const auto childType = TypeManager::concreteType(child->typeInfo);
             SWAG_VERIFY(childType->isNativeInteger(), context->report({child, FMT(Err(Err0211), child->typeInfo->getDisplayNameC())}));
-            SWAG_CHECK(context->checkSizeOverflow("array", count * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
+            SWAG_CHECK(context->checkSizeOverflow("array", static_cast<uint64_t>(count) * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
             SWAG_VERIFY(!child->isConstant0(), context->report({child, Err(Err0210)}));
 
             const auto ptrArray = makeType<TypeInfoArray>();
             ptrArray->count     = count;
             totalCount *= ptrArray->count;
-            SWAG_CHECK(context->checkSizeOverflow("array", totalCount * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
+            SWAG_CHECK(context->checkSizeOverflow("array", static_cast<uint64_t>(totalCount) * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
             ptrArray->totalCount  = totalCount;
             ptrArray->pointedType = typeNode->typeInfo;
             ptrArray->finalType   = rawType;
@@ -786,6 +786,7 @@ bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveTypeList(SemanticContext* context)
 {
     const auto node = context->node;

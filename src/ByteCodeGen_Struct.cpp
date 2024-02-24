@@ -1362,6 +1362,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
     }
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 void ByteCodeGen::freeStructParametersRegisters(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
