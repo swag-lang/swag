@@ -227,7 +227,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
 
         if (typeStruct->isFromGeneric())
         {
-            auto pz = strchr(typeStruct->name.c_str(), '\'');
+            auto pz = strchr(typeStruct->name, '\'');
             if (pz)
                 sname += pz;
         }

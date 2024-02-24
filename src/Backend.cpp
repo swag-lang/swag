@@ -164,7 +164,7 @@ Path Backend::getOutputFileName(const BackendTarget& target, const Utf8& name, B
             break;
     }
 
-    destFile += getOutputFileExtension(target, type).c_str();
+    destFile += getOutputFileExtension(target, type);
     return destFile;
 }
 

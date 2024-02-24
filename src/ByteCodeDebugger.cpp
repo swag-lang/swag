@@ -803,7 +803,7 @@ void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
     Utf8 result;
     result.reserve(cmdExpr.length());
 
-    const char* pz = cmdExpr.c_str();
+    auto pz = cmdExpr.c_str();
     while (*pz)
     {
         if (*pz != '$')

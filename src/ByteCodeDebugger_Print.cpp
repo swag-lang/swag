@@ -69,27 +69,27 @@ void ByteCodeDebugger::printSeparator()
 
 void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type)
 {
-    g_Log.print(title.c_str(), LogColor::Gray);
+    g_Log.print(title, LogColor::Gray);
     g_Log.print(" ");
     int len = title.length();
     while (len++ < 25)
         g_Log.print(".");
     g_Log.print(" ");
-    g_Log.print(name.c_str(), LogColor::Name);
+    g_Log.print(name, LogColor::Name);
     g_Log.print(" ");
-    g_Log.print(type.c_str(), LogColor::Type);
+    g_Log.print(type, LogColor::Type);
     g_Log.eol();
 }
 
 void ByteCodeDebugger::printCmdError(const Utf8& msg)
 {
-    g_Log.print(msg.c_str(), LogColor::Red);
+    g_Log.print(msg, LogColor::Red);
     g_Log.eol();
 }
 
 void ByteCodeDebugger::printCmdResult(const Utf8& msg)
 {
-    g_Log.print(msg.c_str(), LogColor::Gray);
+    g_Log.print(msg, LogColor::Gray);
     g_Log.eol();
 }
 
@@ -97,7 +97,7 @@ void ByteCodeDebugger::printMsgBkp(const Utf8& msg)
 {
     g_Log.eol();
     g_Log.print("#### ", LogColor::Green);
-    g_Log.print(msg.c_str(), LogColor::Green);
+    g_Log.print(msg, LogColor::Green);
     g_Log.print(" ####", LogColor::Green);
     g_Log.eol();
     g_Log.eol();
@@ -220,7 +220,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     else if (bc->sourceFile)
     {
         g_Log.print("bytecode source file: ", LogColor::Gray);
-        g_Log.print(bc->sourceFile->path.c_str(), LogColor::DarkYellow);
+        g_Log.print(bc->sourceFile->path, LogColor::DarkYellow);
         g_Log.eol();
     }
 
@@ -309,7 +309,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         }
         else if (g_CommandLine.logColors)
         {
-            oneLine += syntaxColor(l, cxt).c_str();
+            oneLine += syntaxColor(l, cxt);
         }
         else
         {

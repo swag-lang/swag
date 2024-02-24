@@ -85,7 +85,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     if (name.empty())
         name = bc->getPrintName();
 
-    Utf8 str = ip->node->hasOwnerInline() ? inl.c_str() : header.c_str();
+    Utf8 str = ip->node->hasOwnerInline() ? inl : header;
     str += name;
     str += "\n";
     str += "      ";
@@ -104,7 +104,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
             owner = owner->parent;
         if (owner)
         {
-            str += owner->hasOwnerInline() ? inl.c_str() : header.c_str();
+            str += owner->hasOwnerInline() ? inl : header;
             str += Log::colorToVTS(LogColor::Name);
             str += getStepName(owner, ip);
 

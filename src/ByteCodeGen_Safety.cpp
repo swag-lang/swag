@@ -125,7 +125,7 @@ const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fr
         }
     }
 
-    return g_TypedMsg[m][i][j].c_str();
+    return g_TypedMsg[m][i][j];
 }
 
 void ByteCodeGen::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* message)

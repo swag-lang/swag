@@ -417,7 +417,7 @@ void Diagnostic::collectSourceCode()
     minBlanks   = 0;
 
     // Remove blanks on the left, but keep indentation
-    const char* pz = lineCode.c_str();
+    auto pz = lineCode.c_str();
     if (*pz && *pz != '\n' && *pz != '\r')
     {
         uint32_t countBlanks = 0;
@@ -444,7 +444,7 @@ void Diagnostic::printSourceCode() const
     SyntaxColorContext cxt;
     cxt.mode = SyntaxColorMode::ForLog;
 
-    const char* pz = lineCode.c_str();
+    auto pz = lineCode.c_str();
     if (*pz == 0 || *pz == '\n' || *pz == '\r')
         return;
     printMargin(false, true, lineCodeNum);

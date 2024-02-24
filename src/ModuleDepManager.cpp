@@ -118,7 +118,7 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
 {
     Vector<SourceFile*> allFiles;
 
-    OS::visitFolders(path.c_str(), [&](const char* cFileName) {
+    OS::visitFolders(path, [&](const char* cFileName) {
         auto cfgPath = path;
         cfgPath.append(cFileName);
         cfgPath = getAliasPath(cfgPath);
@@ -135,7 +135,7 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name.c_str(), b->name.c_str()) < 0; });
+        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
         for (const auto file : allFiles)
             registerCfgFile(file);
     }

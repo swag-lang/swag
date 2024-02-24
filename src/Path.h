@@ -1,3 +1,4 @@
+// ReSharper disable CppInconsistentNaming
 #pragma once
 #include "Utf8.h"
 
@@ -39,26 +40,26 @@ struct Path : Utf8
 
     Utf8 extension() const
     {
-        filesystem::path p = c_str();
+        const filesystem::path p = c_str();
         return p.extension().string();
     }
 
     Path parent_path() const
     {
-        filesystem::path p = c_str();
+        const filesystem::path p = c_str();
         return p.parent_path().string().c_str();
     }
 
     Path filename() const
     {
-        filesystem::path p = c_str();
+        const filesystem::path p = c_str();
         return p.filename().string().c_str();
     }
 
     Path replace_extension(const char* ext = nullptr) const
     {
         filesystem::path p = c_str();
-        if(!ext)
+        if (!ext)
             return p.replace_extension().string().c_str();
         return p.replace_extension(ext).string().c_str();
     }

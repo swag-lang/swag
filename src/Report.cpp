@@ -481,7 +481,7 @@ namespace
     {
         if (g_SilentError > 0 && inDiag.errorLevel != DiagnosticLevel::Exception)
         {
-            g_SilentErrorMsg = inDiag.textMsg.c_str();
+            g_SilentErrorMsg = inDiag.textMsg;
             return false;
         }
 

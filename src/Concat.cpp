@@ -342,7 +342,7 @@ void Concat::addS32Str8(int value)
 bool Concat::flushToFile(const Path& path)
 {
     FILE* f = nullptr;
-    if (fopen_s(&f, path.c_str(), "wb"))
+    if (fopen_s(&f, path, "wb"))
     {
         Report::errorOS(FMT(Err(Err0096), path.c_str()));
         return false;

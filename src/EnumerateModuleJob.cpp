@@ -82,7 +82,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
     // Treat #load
     for (const auto n : theModule->compilerLoads)
     {
-        Path orgFilePath = n->token.c_str();
+        Path orgFilePath = n->token.text;
 
         // Is this a simple file ?
         auto       filePath = orgFilePath;
@@ -110,7 +110,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name.c_str(), b->name.c_str()) < 0; });
+        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
         for (const auto file : allFiles)
             theModule->addFile(file);
     }
@@ -140,11 +140,11 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
                 const auto pz = strrchr(f->name, '.');
                 if (pz && !_strcmpi(pz, ".swg"))
                 {
-                    addFileToModule(theModule, allFiles, f->path, f->name.c_str(), f->writeTime, f, nullptr, false);
+                    addFileToModule(theModule, allFiles, f->path, f->name, f->writeTime, f, nullptr, false);
                 }
                 else if (pz && !_strcmpi(pz, ".md"))
                 {
-                    addFileToModule(theModule, allFiles, f->path, f->name.c_str(), f->writeTime, f, nullptr, true);
+                    addFileToModule(theModule, allFiles, f->path, f->name, f->writeTime, f, nullptr, true);
                 }
                 else
                 {
@@ -214,7 +214,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name.c_str(), b->name.c_str()) < 0; });
+        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
         for (const auto file : allFiles)
             theModule->addFile(file);
     }
@@ -296,7 +296,7 @@ void EnumerateModuleJob::enumerateModules(const Path& path)
     Vector<string> allModules;
 
     // Scan source folder
-    OS::visitFolders(path.c_str(), [&](const char* cFolderName) {
+    OS::visitFolders(path, [&](const char* cFolderName) {
         // If we have only one core, then we will sort modules in alphabetical order to always
         // treat them in a reliable order. That way, --randomize and --seed can work.
         if (g_ThreadMgr.numWorkers == 1)
@@ -416,7 +416,7 @@ JobResult EnumerateModuleJob::execute()
         // Sort files, and register them in a constant order
         if (!allFiles.empty())
         {
-            ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name.c_str(), b->name.c_str()) < 0; });
+            ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
             for (const auto file : allFiles)
                 m->addFile(file);
         }

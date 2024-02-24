@@ -283,7 +283,7 @@ void AstFuncDecl::computeFullNameForeignExport()
             nameForeign += "@@";
             const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
             typeFunc->computeScopedName();
-            const auto pz = strstr(typeFunc->scopedName.c_str(), "(");
+            const auto pz = strstr(typeFunc->scopedName, "(");
             SWAG_ASSERT(pz);
             nameForeign += pz;
         }

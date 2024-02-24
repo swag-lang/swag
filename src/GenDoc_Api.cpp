@@ -124,7 +124,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
     ranges::sort(symbols, [](const AstNode* a, const AstNode* b) {
         const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
         const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
-        return strcmp(a0.c_str(), b0.c_str()) < 0;
+        return strcmp(a0, b0) < 0;
     });
 
     bool first = true;
@@ -444,7 +444,7 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
     }
 
     ranges::sort(pendingNodes, [](const OneRef* a, const OneRef* b) {
-        return strcmp(a->tocName.c_str(), b->tocName.c_str()) < 0;
+        return strcmp(a->tocName, b->tocName) < 0;
     });
 
     if (first)
@@ -494,7 +494,7 @@ void GenDoc::generateToc()
             return s0 < s1;
         if (a.category == b.category)
             return strcmp(a.fullName.buffer, b.fullName.buffer) < 0;
-        return strcmp(a.category.c_str(), b.category.c_str()) < 0;
+        return strcmp(a.category, b.category) < 0;
     });
 
     generateTocSection(AstNodeKind::Namespace, "Namespaces");
@@ -956,7 +956,7 @@ bool GenDoc::generateApi()
         ranges::sort(oneRef.nodes, [](const AstNode* a, const AstNode* b) {
             const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
             const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
-            return strcmp(a0.c_str(), b0.c_str()) < 0;
+            return strcmp(a0, b0) < 0;
         });
         allNodes.push_back(oneRef);
     }

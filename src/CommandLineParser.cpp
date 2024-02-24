@@ -467,7 +467,7 @@ Utf8 CommandLineParser::buildString() const
     for (const auto& oneArg : longNameArgs | views::values)
         list.push_back(oneArg);
 
-    ranges::sort(list, [](const CommandLineArgument* a, const CommandLineArgument* b) { return strcmp(a->longName.c_str(), b->longName.c_str()) < 0; });
+    ranges::sort(list, [](const CommandLineArgument* a, const CommandLineArgument* b) { return strcmp(a->longName, b->longName) < 0; });
 
     Utf8 result;
     for (const auto& oneArg : list)

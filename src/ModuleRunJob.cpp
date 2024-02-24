@@ -9,7 +9,7 @@ JobResult ModuleRunJob::execute()
 {
     Path path = g_Workspace->targetPath;
     path.append(buildParameters.module->name);
-    path += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgOutputKind::Executable).c_str();
+    path += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgOutputKind::Executable);
     error_code err;
     if (!filesystem::exists(path, err))
         return JobResult::ReleaseJob;

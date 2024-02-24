@@ -32,7 +32,7 @@ namespace
         if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier)
             prevIdentifier = castAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
 
-        const Utf8 whereScopeName = Naming::kindName(identifierRef->startScope->kind).c_str();
+        const Utf8 whereScopeName = Naming::kindName(identifierRef->startScope->kind);
 
         Utf8 displayName;
         if (!identifierRef->startScope->flags.has(SCOPE_FILE))

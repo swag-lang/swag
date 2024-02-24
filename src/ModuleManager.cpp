@@ -48,7 +48,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         if (canBeSystem)
         {
             path = name;
-            path += Backend::getOutputFileExtension(OS::getNativeTarget(), BuildCfgOutputKind::DynamicLib).c_str();
+            path += Backend::getOutputFileExtension(OS::getNativeTarget(), BuildCfgOutputKind::DynamicLib);
             h = OS::loadLibrary(path);
         }
 

@@ -37,7 +37,7 @@ bool SaveGenJob::flush(Module* mdl)
             return false;
         }
 
-        (void) fwrite(mdl->contentJobGeneratedFile[idx].c_str(), mdl->contentJobGeneratedFile[idx].length(), 1, h);
+        (void) fwrite(mdl->contentJobGeneratedFile[idx], mdl->contentJobGeneratedFile[idx].length(), 1, h);
         (void) fflush(h);
         (void) fclose(h);
         mdl->contentJobGeneratedFile[idx].clear();

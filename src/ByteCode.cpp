@@ -71,7 +71,7 @@ Utf8 ByteCode::getPrintRefName()
     if (loc.file)
     {
         str += Log::colorToVTS(LogColor::Location);
-        str += loc.file->path.c_str();
+        str += loc.file->path;
     }
 
     if (loc.location)

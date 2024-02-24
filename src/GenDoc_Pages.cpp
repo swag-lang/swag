@@ -43,7 +43,7 @@ bool GenDoc::generatePages()
 
         // Write for output
         FILE* f = nullptr;
-        if (fopen_s(&f, fullFileName.c_str(), "wb"))
+        if (fopen_s(&f, fullFileName, "wb"))
         {
             Report::errorOS(FMT(Err(Err0096), fullFileName.c_str()));
             return false;
@@ -64,7 +64,7 @@ bool GenDoc::generatePages()
         constructPage();
 
         // Write and close file
-        if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())
+        if (fwrite(helpOutput, 1, helpOutput.length(), f) != helpOutput.length())
         {
             Report::errorOS(FMT(Err(Err0099), fullFileName.c_str()));
             (void) fclose(f);

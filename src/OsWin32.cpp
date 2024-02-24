@@ -260,8 +260,8 @@ namespace OS
                         oneLine.removeBack();
 
                     // Error
-                    const auto pz0 = strstr(oneLine.c_str(), "error:");
-                    const auto pz1 = strstr(oneLine.c_str(), "panic:");
+                    const auto pz0 = strstr(oneLine, "error:");
+                    const auto pz1 = strstr(oneLine, "panic:");
                     if (pz0 || pz1)
                     {
                         numErrors++;
@@ -407,7 +407,7 @@ namespace OS
         WIN32_FIND_DATAA findFile;
         Utf8             searchPath = folder;
         searchPath += "\\*";
-        const HANDLE h = FindFirstFileA(searchPath.c_str(), &findFile);
+        const HANDLE h = FindFirstFileA(searchPath, &findFile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -427,7 +427,7 @@ namespace OS
         Utf8             searchPath = folder;
         searchPath += "\\";
         searchPath += match;
-        const HANDLE h = FindFirstFileA(searchPath.c_str(), &findFile);
+        const HANDLE h = FindFirstFileA(searchPath, &findFile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -448,7 +448,7 @@ namespace OS
         WIN32_FIND_DATAA findFile;
         Utf8             searchPath = folder;
         searchPath += "\\*";
-        const HANDLE h = FindFirstFileA(searchPath.c_str(), &findFile);
+        const HANDLE h = FindFirstFileA(searchPath, &findFile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -489,7 +489,7 @@ namespace OS
                 {
                     if (findFile.cFileName[0] == '.' && (!findFile.cFileName[1] || (findFile.cFileName[1] == '.' && !findFile.cFileName[2])))
                         continue;
-                    visitFilesRec(path.c_str(), user);
+                    visitFilesRec(path, user);
                 }
                 else
                 {

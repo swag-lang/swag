@@ -61,7 +61,7 @@ namespace
 
         // Compiler version
         const Utf8 version = FMT("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-        concat.addString(version.c_str(), version.length() + 1);
+        concat.addString(version, version.length() + 1);
         concat.align(4);
         *patchRecordCount = static_cast<uint16_t>(concat.totalCount() - patchRecordOffset);
 

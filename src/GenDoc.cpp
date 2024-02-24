@@ -238,7 +238,7 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
     else
     {
         repl.clear();
-        const char* pz = codeText.c_str();
+        auto pz = codeText.c_str();
         while (*pz)
         {
             if (SWAG_IS_ALPHA(*pz) || *pz == '_')
@@ -1471,22 +1471,22 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     {
         filePath.append(g_Workspace->workspacePath.filename());
         filePath += ".";
-        filePath += module->name.c_str();
+        filePath += module->name;
     }
     else
     {
-        filePath.append(fileName.c_str());
+        filePath.append(fileName);
     }
 
     const auto extName = getFileExtension(module);
-    filePath += extName.c_str();
+    filePath += extName;
 
     fullFileName = filePath;
     fullFileName.makeLower();
 
     // Write for output
     FILE* f = nullptr;
-    if (fopen_s(&f, fullFileName.c_str(), "wb"))
+    if (fopen_s(&f, fullFileName, "wb"))
     {
         Report::errorOS(FMT(Err(Err0096), fullFileName.c_str()));
         return false;
@@ -1513,7 +1513,7 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     constructPage();
 
     // Write file
-    if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())
+    if (fwrite(helpOutput, 1, helpOutput.length(), f) != helpOutput.length())
     {
         Report::errorOS(FMT(Err(Err0099), fullFileName.c_str()));
         (void) fclose(f);

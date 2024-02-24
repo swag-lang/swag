@@ -155,7 +155,7 @@ bool ModuleBuildJob::loadDependency(Module* depModule)
     VectorNative<SourceFile*> files;
     const auto                publicPath = depModule->publicPath;
     error_code                err;
-    if (filesystem::exists(publicPath.c_str(), err))
+    if (filesystem::exists(publicPath, err))
     {
         OS::visitFiles(publicPath, [&](const char* filename) {
             const auto pz = strrchr(filename, '.');

@@ -35,8 +35,8 @@ public:
             g_Log.lock();
             for (auto& l : subNames)
             {
-                const auto pze = strstr(l.c_str(), ": error:");
-                const auto pzw = strstr(l.c_str(), ": warning:");
+                const auto pze = strstr(l, ": error:");
+                const auto pzw = strstr(l, ": warning:");
                 if (pze || pzw)
                 {
                     errCount++;

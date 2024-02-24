@@ -224,10 +224,10 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
     if (!g_CommandLine.logColors)
         return line;
 
-    auto        mode = context.mode;
-    const char* pz   = line.c_str();
-    uint32_t    c, offset;
-    Utf8        result;
+    auto     mode = context.mode;
+    auto     pz   = line.c_str();
+    uint32_t c, offset;
+    Utf8     result;
 
     bool hasCode = false;
     pz           = Utf8::decodeUtf8(pz, c, offset);

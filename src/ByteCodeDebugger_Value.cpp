@@ -262,7 +262,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 str += "(bytecode) ";
                 auto bc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(ptr));
                 str += Log::colorToVTS(LogColor::Name);
-                str += bc->name.c_str();
+                str += bc->name;
                 str += " ";
                 str += Log::colorToVTS(LogColor::Type);
                 str += bc->getCallType()->getDisplayNameC();
