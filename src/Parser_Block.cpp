@@ -357,9 +357,9 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
             Ast::addChildBack(node, node->expression);
 
             // Missing ':' ?
-            if (node->expression->kind == AstNodeKind::IdentifierRef &&
+            if (node->expression->is(AstNodeKind::IdentifierRef) &&
                 node->expression->children.size() == 1 &&
-                node->expression->children.back()->kind == AstNodeKind::Identifier &&
+                node->expression->children.back()->is(AstNodeKind::Identifier) &&
                 tokenParse.token.id == TokenId::LiteralNumber)
             {
                 return error(tokenParse.token, formErr(Err0530, node->expression->children.back()->token.c_str()));
@@ -402,7 +402,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
     if (tokenParse.token.id == TokenId::KwdVar || tokenParse.token.id == TokenId::KwdLet)
     {
         SWAG_CHECK(doVarDecl(node, &id));
-        if (id->kind != AstNodeKind::VarDecl)
+        if (id->isNot(AstNodeKind::VarDecl))
         {
             Diagnostic err{id->token.sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, toErr(Err0311)};
             err.addNote(toNte(Nte0014));
@@ -417,33 +417,33 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doAffectExpression(node, &id));
 
-        if (id->kind == AstNodeKind::StatementNoScope)
+        if (id->is(AstNodeKind::StatementNoScope))
         {
             Diagnostic err{node->token.sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, toErr(Err0311)};
             err.addNote(toNte(Nte0014));
             return context->report(err);
         }
 
-        if (id->kind != AstNodeKind::IdentifierRef &&
-            id->kind != AstNodeKind::VarDecl &&
-            id->kind != AstNodeKind::AffectOp)
+        if (id->isNot(AstNodeKind::IdentifierRef) &&
+            id->isNot(AstNodeKind::VarDecl) &&
+            id->isNot(AstNodeKind::AffectOp))
             return error(node->token, toErr(Err0174));
 
         id->allocateExtension(ExtensionKind::Semantic);
-        if (id->kind == AstNodeKind::IdentifierRef)
+        if (id->is(AstNodeKind::IdentifierRef))
         {
             SWAG_ASSERT(!id->extSemantic()->semanticAfterFct);
             id->extSemantic()->semanticAfterFct = Semantic::resolveWith;
             for (const auto& child : id->children)
                 node->id.push_back(child->token.text);
         }
-        else if (id->kind == AstNodeKind::VarDecl)
+        else if (id->is(AstNodeKind::VarDecl))
         {
             SWAG_ASSERT(id->extSemantic()->semanticAfterFct == Semantic::resolveVarDeclAfter);
             id->extSemantic()->semanticAfterFct = Semantic::resolveWithVarDeclAfter;
             node->id.push_back(id->token.text);
         }
-        else if (id->kind == AstNodeKind::AffectOp)
+        else if (id->is(AstNodeKind::AffectOp))
         {
             id = id->children.front();
             if (id->extSemantic()->semanticAfterFct == Semantic::resolveAfterKnownType)

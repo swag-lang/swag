@@ -221,7 +221,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     }
 
     // If a struct is declared inside a generic struct, force the sub struct to have generic parameters
-    else if (currentScope && currentScope->is(ScopeKind::Struct) && currentScope->owner->kind == AstNodeKind::StructDecl)
+    else if (currentScope && currentScope->is(ScopeKind::Struct) && currentScope->owner->is(AstNodeKind::StructDecl))
     {
         const auto parentStruct = castAst<AstStruct>(currentScope->owner, AstNodeKind::StructDecl);
         if (parentStruct->genericParameters)
@@ -255,7 +255,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         newScope = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, currentScope, true);
         if (newScope->isNot(ScopeKind::Struct))
         {
-            if (newScope->owner->kind == AstNodeKind::Impl)
+            if (newScope->owner->is(AstNodeKind::Impl))
             {
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic err{implNode->identifier, formErr(Err0008, Naming::kindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::kindName(ScopeKind::Struct).c_str())};
@@ -312,7 +312,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
             n->addAstFlag(AST_IS_GENERIC);
-            if (n->kind == AstNodeKind::FuncDeclParam)
+            if (n->is(AstNodeKind::FuncDeclParam))
             {
                 const auto param = castAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
                 newScope->symTable.registerSymbolName(context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);

@@ -12,9 +12,9 @@
 
 bool Parser::testIsSingleIdentifier(AstNode* node)
 {
-    if (node->kind != AstNodeKind::IdentifierRef ||
+    if (node->isNot(AstNodeKind::IdentifierRef) ||
         node->children.size() > 1 ||
-        node->children.back()->kind != AstNodeKind::Identifier)
+        node->children.back()->isNot(AstNodeKind::Identifier))
     {
         return false;
     }
@@ -194,7 +194,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             Ast::removeFromParent(identifier);
             SWAG_CHECK(doArrayPointerIndex(reinterpret_cast<AstNode**>(&identifier)));
             Ast::addChildBack(parent, identifier);
-            if (identifier->kind != AstNodeKind::ArrayPointerIndex)
+            if (identifier->isNot(AstNodeKind::ArrayPointerIndex))
                 break;
 
             identifier->addSpecFlag(serial);
@@ -314,14 +314,14 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
     idRef->addAstFlag(AST_DISCARD);
 
     // Mark the identifier with AST_DISCARD
-    while (idRef && idRef->kind != AstNodeKind::IdentifierRef)
+    while (idRef && idRef->isNot(AstNodeKind::IdentifierRef))
         idRef = idRef->children.front();
     SWAG_ASSERT(idRef);
 
     // This is where AST_DISCARD will be really used
     for (const auto c : idRef->children)
     {
-        if (c->kind != AstNodeKind::Identifier)
+        if (c->isNot(AstNodeKind::Identifier))
             break;
         c->addAstFlag(AST_DISCARD);
     }

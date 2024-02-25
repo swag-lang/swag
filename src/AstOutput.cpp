@@ -11,17 +11,17 @@
 
 void AstOutput::incIndentStatement(const AstNode* node, int& indent)
 {
-    if (node->kind == AstNodeKind::CompilerIfBlock && node->children.front()->kind == AstNodeKind::Statement)
+    if (node->is(AstNodeKind::CompilerIfBlock) && node->children.front()->is(AstNodeKind::Statement))
         return;
-    if (node->kind != AstNodeKind::Statement)
+    if (node->isNot(AstNodeKind::Statement))
         indent++;
 }
 
 void AstOutput::decIndentStatement(const AstNode* node, int& indent)
 {
-    if (node->kind == AstNodeKind::CompilerIfBlock && node->children.front()->kind == AstNodeKind::Statement)
+    if (node->is(AstNodeKind::CompilerIfBlock) && node->children.front()->is(AstNodeKind::Statement))
         return;
-    if (node->kind != AstNodeKind::Statement)
+    if (node->isNot(AstNodeKind::Statement))
         indent--;
 }
 
@@ -68,7 +68,7 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
     // other empty blocks)
     hasSomething  = true;
     auto scanAttr = nodeAttr;
-    while (scanAttr->content && scanAttr->content->kind == AstNodeKind::Statement)
+    while (scanAttr->content && scanAttr->content->is(AstNodeKind::Statement))
     {
         if (scanAttr->content->children.empty())
         {
@@ -77,7 +77,7 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
         }
         if (scanAttr->content->children.size() > 1)
             break;
-        if (scanAttr->content->children[0]->kind != AstNodeKind::AttrUse)
+        if (scanAttr->content->children[0]->isNot(AstNodeKind::AttrUse))
             break;
         scanAttr = castAst<AstAttrUse>(scanAttr->content->children[0]);
     }
@@ -90,7 +90,7 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
     {
         if (s == nodeAttr->content)
             continue;
-        if (s->kind == AstNodeKind::AttrUse)
+        if (s->is(AstNodeKind::AttrUse))
             continue;
 
         if (!first)
@@ -119,7 +119,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
 {
     ScopeExportNode sen(context, node);
 
-    if (node->kind == AstNodeKind::AttrDecl)
+    if (node->is(AstNodeKind::AttrDecl))
         CONCAT_FIXED_STR(concat, "attr");
     else
         CONCAT_FIXED_STR(concat, "func");
@@ -132,10 +132,10 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
 
     concat.addChar(' ');
 
-    if (node->kind == AstNodeKind::FuncDecl && node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
+    if (node->is(AstNodeKind::FuncDecl) && node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
         CONCAT_FIXED_STR(concat, "impl ");
 
-    if (node->kind == AstNodeKind::FuncDecl)
+    if (node->is(AstNodeKind::FuncDecl))
     {
         const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         outputFuncName(context, concat, funcNode);
@@ -150,7 +150,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
         CONCAT_FIXED_STR(concat, "()");
 
     // Return type, in case of function (not attr)
-    if (node->kind == AstNodeKind::FuncDecl)
+    if (node->is(AstNodeKind::FuncDecl))
     {
         const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
@@ -269,7 +269,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
     {
         CONCAT_FIXED_STR(concat, " => ");
-        SWAG_ASSERT(node->content->kind == AstNodeKind::Return || node->content->kind == AstNodeKind::Try);
+        SWAG_ASSERT(node->content->is(AstNodeKind::Return) || node->content->is(AstNodeKind::Try));
         SWAG_CHECK(outputNode(context, concat, node->content->children.front()));
         concat.addEol();
         return true;
@@ -296,7 +296,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     context.indent++;
     concat.addEol();
 
-    if (node->content->kind != AstNodeKind::Statement)
+    if (node->content->isNot(AstNodeKind::Statement))
     {
         concat.addIndent(context.indent);
         context.indent--;
@@ -309,7 +309,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         for (auto c : node->subDecl)
         {
             concat.addIndent(context.indent);
-            if (c->parent && c->parent->kind == AstNodeKind::AttrUse)
+            if (c->parent && c->parent->is(AstNodeKind::AttrUse))
                 c = c->parent;
             SWAG_CHECK(outputNode(context, concat, c));
             concat.addEol();
@@ -342,7 +342,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
     if (!node->children.front()->children.empty())
     {
         CONCAT_FIXED_STR(concat, " : ");
-        SWAG_ASSERT(node->children[0]->kind == AstNodeKind::EnumType);
+        SWAG_ASSERT(node->children[0]->is(AstNodeKind::EnumType));
         SWAG_CHECK(outputNode(context, concat, node->children[0]));
     }
 
@@ -352,7 +352,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
 
     for (const auto c : node->children)
     {
-        if (c->kind == AstNodeKind::EnumValue)
+        if (c->is(AstNodeKind::EnumValue))
         {
             concat.addIndent(context.indent + 1);
 
@@ -636,7 +636,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
                 CONCAT_FIXED_STR(concat, ", ");
             first = false;
 
-            if (p->kind == AstNodeKind::MakePointer)
+            if (p->is(AstNodeKind::MakePointer))
             {
                 concat.addChar('&');
                 concat.addString(p->children.front()->token.text);
@@ -693,7 +693,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
     if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
     {
         CONCAT_FIXED_STR(concat, " => ");
-        SWAG_ASSERT(funcDecl->content->kind == AstNodeKind::Return);
+        SWAG_ASSERT(funcDecl->content->is(AstNodeKind::Return));
         SWAG_CHECK(outputNode(context, concat, funcDecl->content->children.front()));
     }
     else
@@ -754,11 +754,11 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, const AstVarDe
     if (varNode->hasAstFlag(AST_DECL_USING))
         CONCAT_FIXED_STR(concat, "using ");
 
-    if (varNode->kind == AstNodeKind::ConstDecl)
+    if (varNode->is(AstNodeKind::ConstDecl))
     {
         CONCAT_FIXED_STR(concat, "const ");
     }
-    else if (varNode->kind != AstNodeKind::FuncDeclParam && !varNode->hasAstFlag(AST_STRUCT_MEMBER))
+    else if (varNode->isNot(AstNodeKind::FuncDeclParam) && !varNode->hasAstFlag(AST_STRUCT_MEMBER))
     {
         if (varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
             CONCAT_FIXED_STR(concat, "let ");
@@ -793,11 +793,11 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
 
     PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export, nullptr);
 
-    if (node->kind == AstNodeKind::InterfaceDecl)
+    if (node->is(AstNodeKind::InterfaceDecl))
         CONCAT_FIXED_STR(concat, "interface");
     else
     {
-        SWAG_ASSERT(node->kind == AstNodeKind::StructDecl);
+        SWAG_ASSERT(node->is(AstNodeKind::StructDecl));
         if (const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl); structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
             CONCAT_FIXED_STR(concat, "union");
         else
@@ -980,7 +980,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
     /////////////////////////////////
     if (typeInfo->isLambdaClosure())
     {
-        SWAG_ASSERT(typeInfo->declNode && typeInfo->declNode->kind == AstNodeKind::TypeLambda);
+        SWAG_ASSERT(typeInfo->declNode && typeInfo->declNode->is(AstNodeKind::TypeLambda));
         SWAG_CHECK(outputNode(context, concat, typeInfo->declNode));
         return true;
     }
@@ -1364,17 +1364,17 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         case AstNodeKind::CompilerValidIf:
         case AstNodeKind::CompilerValidIfx:
         {
-            if (node->kind == AstNodeKind::CompilerRun || node->kind == AstNodeKind::CompilerRunExpression)
+            if (node->is(AstNodeKind::CompilerRun) || node->is(AstNodeKind::CompilerRunExpression))
                 CONCAT_FIXED_STR(concat, "#run ");
-            else if (node->kind == AstNodeKind::CompilerAst)
+            else if (node->is(AstNodeKind::CompilerAst))
                 CONCAT_FIXED_STR(concat, "#ast ");
-            else if (node->kind == AstNodeKind::CompilerValidIf)
+            else if (node->is(AstNodeKind::CompilerValidIf))
                 CONCAT_FIXED_STR(concat, "#validif ");
-            else if (node->kind == AstNodeKind::CompilerValidIfx)
+            else if (node->is(AstNodeKind::CompilerValidIfx))
                 CONCAT_FIXED_STR(concat, "#validifx ");
 
             const auto front = node->children.front();
-            if (front->kind == AstNodeKind::FuncDecl)
+            if (front->is(AstNodeKind::FuncDecl))
             {
                 const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(front, AstNodeKind::FuncDecl);
                 incIndentStatement(funcDecl->content, context.indent);
@@ -1392,7 +1392,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         }
 
         case AstNodeKind::CompilerIfBlock:
-            if (node->children.front()->kind != AstNodeKind::Statement)
+            if (node->children.front()->isNot(AstNodeKind::Statement))
                 CONCAT_FIXED_STR(concat, "#do ");
             SWAG_CHECK(outputNode(context, concat, node->children.front()));
             break;
@@ -1478,14 +1478,14 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                 concat.addEolIndent(context.indent);
                 CONCAT_FIXED_STR(concat, "#else ");
 
-                if (compilerIf->elseBlock->children.front()->kind != AstNodeKind::CompilerIf)
+                if (compilerIf->elseBlock->children.front()->isNot(AstNodeKind::CompilerIf))
                 {
                     incIndentStatement(compilerIf->elseBlock, context.indent);
                     concat.addEolIndent(context.indent);
                 }
 
                 SWAG_CHECK(outputNode(context, concat, compilerIf->elseBlock));
-                if (compilerIf->elseBlock->children.front()->kind != AstNodeKind::CompilerIf)
+                if (compilerIf->elseBlock->children.front()->isNot(AstNodeKind::CompilerIf))
                 {
                     decIndentStatement(compilerIf->elseBlock, context.indent);
                 }
@@ -1794,7 +1794,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                     concat.addChar('}');
                 else if (identifier->callParameters->children.empty())
                     concat.addChar(')');
-                else if (identifier->callParameters->children.back()->children.back()->kind != AstNodeKind::CompilerCode)
+                else if (identifier->callParameters->children.back()->children.back()->isNot(AstNodeKind::CompilerCode))
                     concat.addChar(')');
             }
 
@@ -2039,7 +2039,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             const auto typeNode = castAst<AstTypeLambda>(node);
             if (typeNode->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
                 concat.addString("#type ");
-            if (node->kind == AstNodeKind::TypeLambda)
+            if (node->is(AstNodeKind::TypeLambda))
                 CONCAT_FIXED_STR(concat, "func");
             else
                 CONCAT_FIXED_STR(concat, "closure");

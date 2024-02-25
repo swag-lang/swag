@@ -35,7 +35,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         const auto nodeParam = castAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
         if (!nodeParam->assignment)
             continue;
-        if (nodeParam->assignment->kind != AstNodeKind::ExpressionList)
+        if (nodeParam->assignment->isNot(AstNodeKind::ExpressionList))
             continue;
 
         const auto nodeExpr = castAst<AstExpressionList>(nodeParam->assignment, AstNodeKind::ExpressionList);
@@ -150,7 +150,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
                 firstParamWithDef              = nodeParam;
             }
 
-            if (nodeParam->assignment->kind == AstNodeKind::CompilerSpecialValue)
+            if (nodeParam->assignment->is(AstNodeKind::CompilerSpecialValue))
             {
                 switch (nodeParam->assignment->token.id)
                 {
@@ -232,7 +232,7 @@ bool Semantic::sendCompilerMsgFuncDecl(SemanticContext* context)
 bool Semantic::resolveFuncDeclAfterSI(SemanticContext* context)
 {
     const auto saveNode = context->node;
-    if (context->node->parent->kind == AstNodeKind::Inline)
+    if (context->node->parent->is(AstNodeKind::Inline))
     {
         const auto node = castAst<AstInline>(context->node->parent, AstNodeKind::Inline);
         context->node   = node->func;
@@ -849,7 +849,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         for (const auto c : funcNode->captureParameters->children)
         {
             Utf8 name = c->token.text;
-            if (c->kind == AstNodeKind::MakePointer)
+            if (c->is(AstNodeKind::MakePointer))
                 name = c->children.front()->token.text;
 
             AddSymbolTypeInfo toAdd;
@@ -959,7 +959,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
             AstFuncDecl* other = nullptr;
             for (const auto n : symbolName->nodes)
             {
-                if (n != funcNode && n->kind == AstNodeKind::FuncDecl)
+                if (n != funcNode && n->is(AstNodeKind::FuncDecl))
                 {
                     if (!n->hasAstFlag(AST_FROM_GENERIC))
                     {
@@ -1014,11 +1014,11 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
 bool Semantic::isMethod(const AstFuncDecl* funcNode)
 {
     if (funcNode->ownerStructScope &&
-        funcNode->parent->kind != AstNodeKind::CompilerAst &&
-        funcNode->parent->kind != AstNodeKind::CompilerRun &&
-        funcNode->parent->kind != AstNodeKind::CompilerRunExpression &&
-        funcNode->parent->kind != AstNodeKind::CompilerValidIf &&
-        funcNode->parent->kind != AstNodeKind::CompilerValidIfx &&
+        funcNode->parent->isNot(AstNodeKind::CompilerAst) &&
+        funcNode->parent->isNot(AstNodeKind::CompilerRun) &&
+        funcNode->parent->isNot(AstNodeKind::CompilerRunExpression) &&
+        funcNode->parent->isNot(AstNodeKind::CompilerValidIf) &&
+        funcNode->parent->isNot(AstNodeKind::CompilerValidIfx) &&
         !funcNode->hasAstFlag(AST_FROM_GENERIC) &&
         !funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
         funcNode->ownerScope->is(ScopeKind::Struct) &&
@@ -1181,7 +1181,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
 
     // Force const if necessary
     // func([.., ...]) must be const
-    if (child->kind == AstNodeKind::ExpressionList)
+    if (child->is(AstNodeKind::ExpressionList))
     {
         const auto typeList = castTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
         if (typeList->isListArray())
@@ -1262,7 +1262,7 @@ bool Semantic::resolveRetVal(SemanticContext* context)
     if (!CallConv::returnByStackAddress(typeFct))
     {
         auto parentNode = node;
-        if (parentNode->kind == AstNodeKind::Identifier)
+        if (parentNode->is(AstNodeKind::Identifier))
             parentNode = parentNode->findParent(AstNodeKind::TypeExpression);
         const auto typeExpr = castAst<AstTypeExpression>(parentNode, AstNodeKind::TypeExpression);
         typeExpr->typeFlags.remove(TYPEFLAG_IS_RETVAL);
@@ -1285,7 +1285,7 @@ void Semantic::propagateReturn(AstNode* node)
     auto breakable = node->safeOwnerBreakable();
     while (breakable)
     {
-        if (breakable->kind == AstNodeKind::Loop)
+        if (breakable->is(AstNodeKind::Loop))
         {
             const auto loopNode = castAst<AstLoop>(breakable, AstNodeKind::Loop);
             if (!loopNode->expression)
@@ -1293,7 +1293,7 @@ void Semantic::propagateReturn(AstNode* node)
             break;
         }
 
-        if (breakable->kind == AstNodeKind::While)
+        if (breakable->is(AstNodeKind::While))
         {
             const auto whileNode = castAst<AstWhile>(breakable, AstNodeKind::While);
             if (whileNode->boolExpression->hasFlagComputedValue() && whileNode->boolExpression->computedValue()->reg.b)
@@ -1301,7 +1301,7 @@ void Semantic::propagateReturn(AstNode* node)
             break;
         }
 
-        if (breakable->kind == AstNodeKind::For)
+        if (breakable->is(AstNodeKind::For))
         {
             const auto forNode = castAst<AstFor>(breakable, AstNodeKind::For);
             if (forNode->boolExpression->hasFlagComputedValue() && forNode->boolExpression->computedValue()->reg.b)
@@ -1318,7 +1318,7 @@ void Semantic::propagateReturn(AstNode* node)
         if (scanNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN) && !scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN))
             break;
         scanNode->addSemFlag(SEMFLAG_SCOPE_HAS_RETURN);
-        if (scanNode->parent && scanNode->parent->kind == AstNodeKind::If)
+        if (scanNode->parent && scanNode->parent->is(AstNodeKind::If))
         {
             const auto ifNode = castAst<AstIf>(scanNode->parent, AstNodeKind::If);
             if (ifNode->elseBlock != scanNode)
@@ -1326,20 +1326,20 @@ void Semantic::propagateReturn(AstNode* node)
             if (!ifNode->ifBlock->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
                 break;
         }
-        else if (scanNode->kind == AstNodeKind::SwitchCase)
+        else if (scanNode->is(AstNodeKind::SwitchCase))
         {
             const auto sc = castAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
             if (sc->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_DEFAULT))
                 sc->ownerSwitch->addSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN);
         }
-        else if (scanNode->kind == AstNodeKind::Switch)
+        else if (scanNode->is(AstNodeKind::Switch))
         {
             if (!scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN))
                 break;
         }
-        else if (scanNode->kind == AstNodeKind::While ||
-                 scanNode->kind == AstNodeKind::Loop ||
-                 scanNode->kind == AstNodeKind::For)
+        else if (scanNode->is(AstNodeKind::While) ||
+                 scanNode->is(AstNodeKind::Loop) ||
+                 scanNode->is(AstNodeKind::For))
         {
             break;
         }
@@ -1366,7 +1366,7 @@ AstFuncDecl* Semantic::getFunctionForReturn(AstNode* node)
     {
         if (!node->ownerInline()->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !node->hasAstFlag(AST_IN_MIXIN))
         {
-            if (node->kind == AstNodeKind::Return)
+            if (node->is(AstNodeKind::Return))
                 node->addSemFlag(SEMFLAG_EMBEDDED_RETURN);
             funcNode = node->ownerInline()->func;
         }
@@ -1554,7 +1554,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         else
         {
             auto nodeErr = funcNode->returnType;
-            if (nodeErr->kind == AstNodeKind::FuncDeclType && !funcNode->returnType->children.empty())
+            if (nodeErr->is(AstNodeKind::FuncDeclType) && !funcNode->returnType->children.empty())
                 nodeErr = funcNode->returnType->children.front();
             PushErrCxtStep ec{context, nodeErr, ErrCxtStepKind::Note, [returnType] {
                                   return formNte(Nte0007, returnType->getDisplayNameC());
@@ -1564,7 +1564,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         }
     }
 
-    if (child->kind == AstNodeKind::ExpressionList)
+    if (child->is(AstNodeKind::ExpressionList))
     {
         child->addAstFlag(AST_TRANSIENT);
     }
@@ -1829,13 +1829,13 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     if (!cloneContext.ownerFct)
     {
         identifier->addAstFlag(AST_SPEC_STACK_SIZE);
-        if (identifier->kind == AstNodeKind::Identifier)
+        if (identifier->is(AstNodeKind::Identifier))
             identifier->parent->addAstFlag(AST_SPEC_STACK_SIZE);
         cloneContext.forceFlags.add(AST_SPEC_STACK_SIZE);
     }
 
     // Register all aliases
-    if (identifier->kind == AstNodeKind::Identifier)
+    if (identifier->is(AstNodeKind::Identifier))
     {
         // Replace user aliases of the form #alias?
         // Can come from the identifier itself (for visit) or from call parameters (for macros/mixins)
@@ -1891,7 +1891,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
             newContent->extByteCode()->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
     }
 
-    if (newContent->kind == AstNodeKind::Try || newContent->kind == AstNodeKind::TryCatch || newContent->kind == AstNodeKind::Assume)
+    if (newContent->is(AstNodeKind::Try) || newContent->is(AstNodeKind::TryCatch) || newContent->is(AstNodeKind::Assume))
     {
         if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN) && newContent->children.front()->extension)
         {
@@ -1919,7 +1919,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called
     // for something else, like a loop node for example (opCount). In that case, we let the specific node
     // deal with the (re)evaluation.
-    if (identifier->kind == AstNodeKind::Identifier)
+    if (identifier->is(AstNodeKind::Identifier))
     {
         // Do not reevaluate function parameters
         const auto castId = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
@@ -1932,7 +1932,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 
     // Check used aliases
     // Error if an alias has been defined, but not 'eaten' by the function
-    if (identifier->kind == AstNodeKind::Identifier)
+    if (identifier->is(AstNodeKind::Identifier))
     {
         if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
         {

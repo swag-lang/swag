@@ -118,7 +118,7 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
         return;
     if (typeInfoStruct->hasFlag(TYPEINFO_GHOST_TUPLE))
         return;
-    if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
+    if (typeInfoStruct->declNode->is(AstNodeKind::InterfaceDecl))
         return;
 
     const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -149,7 +149,7 @@ void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
         return;
     if (typeInfoStruct->hasFlag(TYPEINFO_GHOST_TUPLE))
         return;
-    if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
+    if (typeInfoStruct->declNode->is(AstNodeKind::InterfaceDecl))
         return;
 
     const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -323,13 +323,13 @@ auto Semantic::needToCompleteSymbolNoLock(SemanticContext*, const AstIdentifier*
         return false;
 
     // If identifier is in a pointer type expression, can incomplete resolve
-    if (identifier->parent->parent && identifier->parent->parent->kind == AstNodeKind::TypeExpression)
+    if (identifier->parent->parent && identifier->parent->parent->is(AstNodeKind::TypeExpression))
     {
         auto typeExprNode = castAst<AstTypeExpression>(identifier->parent->parent, AstNodeKind::TypeExpression);
         if (typeExprNode->typeFlags.has(TYPEFLAG_IS_PTR))
             return false;
 
-        if (typeExprNode->parent && typeExprNode->parent->kind == AstNodeKind::TypeExpression)
+        if (typeExprNode->parent && typeExprNode->parent->is(AstNodeKind::TypeExpression))
         {
             typeExprNode = castAst<AstTypeExpression>(typeExprNode->parent, AstNodeKind::TypeExpression);
             if (typeExprNode->typeFlags.has(TYPEFLAG_IS_PTR))

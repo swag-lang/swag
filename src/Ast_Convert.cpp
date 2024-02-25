@@ -18,17 +18,17 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 
     const auto typeStruct = castTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
 
-    if (fromNode->kind == AstNodeKind::FuncCallParam)
+    if (fromNode->is(AstNodeKind::FuncCallParam))
     {
         fromNode->setPassThrough();
         fromNode = fromNode->children.front();
-        if (fromNode->kind != AstNodeKind::ExpressionList)
+        if (fromNode->isNot(AstNodeKind::ExpressionList))
             return true;
     }
 
     // Parent of the identifier that will reference the new variable
     auto parentForRef = fromNode;
-    if (fromNode->parent->kind == AstNodeKind::FuncCallParam)
+    if (fromNode->parent->is(AstNodeKind::FuncCallParam))
         parentForRef = fromNode->parent;
 
     // Declare a variable
@@ -84,7 +84,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         oneParam->inheritTokenLocation(oneChild->token);
         oneChild->clone(cloneContext);
         oneChild->addAstFlag(AST_NO_BYTECODE | AST_NO_SEMANTIC);
-        if (oneChild->kind == AstNodeKind::Identifier)
+        if (oneChild->is(AstNodeKind::Identifier))
             oneChild->addSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE);
 
         const auto isNamed = oneChild->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
@@ -92,7 +92,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
             oneParam->addExtraPointer(ExtraPointerKind::IsNamed, isNamed);
 
         // If this is for a return, remember it, in order to make a move or a copy
-        if (typeStruct->isTuple() && fromNode->parent->kind == AstNodeKind::Return)
+        if (typeStruct->isTuple() && fromNode->parent->is(AstNodeKind::Return))
             oneParam->autoTupleReturn = castAst<AstReturn>(fromNode->parent, AstNodeKind::Return);
     }
 
@@ -142,7 +142,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 
     // :SubDeclParent
     auto newParent = fromNode->parent;
-    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->kind != AstNodeKind::Namespace)
+    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->isNot(AstNodeKind::Namespace))
     {
         newParent = newParent->parent;
         SWAG_ASSERT(newParent);
@@ -289,7 +289,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
         }
 
         // If this is a single identifier, then we take the identifier name
-        else if (subAffect->kind == AstNodeKind::IdentifierRef && subAffect->children.back()->kind == AstNodeKind::Identifier)
+        else if (subAffect->is(AstNodeKind::IdentifierRef) && subAffect->children.back()->is(AstNodeKind::Identifier))
         {
             varName         = subAffect->children.back()->token.text;
             typeParam->name = varName;
@@ -429,7 +429,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
         return context->report({callP, formErr(Err0377, identifier->typeInfo->name.c_str())});
 
     auto varParent = identifier->identifierRef()->parent;
-    while (varParent->kind == AstNodeKind::ExpressionList)
+    while (varParent->is(AstNodeKind::ExpressionList))
         varParent = varParent->parent;
 
     // Declare a variable
@@ -440,7 +440,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
         varNode->addAlternativeScopes(identifier->parent->extMisc());
 
     // If we are in a const declaration, that temporary variable should be a const too...
-    if (identifier->parent->parent->kind == AstNodeKind::ConstDecl)
+    if (identifier->parent->parent->is(AstNodeKind::ConstDecl))
         varNode->kind = AstNodeKind::ConstDecl;
 
     // At global scope, this should be a constant declaration, not a variable, as we cannot assign a global variable to

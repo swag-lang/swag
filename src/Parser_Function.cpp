@@ -134,7 +134,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
             // Name
             if (tokenParse.token.id == TokenId::SymColon)
             {
-                if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->children.size() != 1)
+                if (paramExpression->isNot(AstNodeKind::IdentifierRef) || paramExpression->children.size() != 1)
                     return context->report({paramExpression, formErr(Err0329, paramExpression->token.c_str())});
                 param->addExtraPointer(ExtraPointerKind::IsNamed, paramExpression->children.front());
                 param->allocateExtension(ExtensionKind::Owner);
@@ -428,7 +428,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     const auto startLoc = tokenParse.token.startLocation;
-    if (tokenParse.token.id != TokenId::SymLeftParen && parent->kind == AstNodeKind::AttrDecl)
+    if (tokenParse.token.id != TokenId::SymLeftParen && parent->is(AstNodeKind::AttrDecl))
         SWAG_CHECK(eatToken(TokenId::SymLeftParen, form("to declare the attribute parameters of [[%s]]", parent->token.c_str())));
     else if (tokenParse.token.id != TokenId::SymLeftParen)
         SWAG_CHECK(eatToken(TokenId::SymLeftParen, form("to declare the function parameters of [[%s]]", parent->token.c_str())));
@@ -1195,7 +1195,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
 
     // We accept missing types if lambda is in an affectation, because we can deduce them from the
     // type on the left
-    else if (parent->kind == AstNodeKind::AffectOp)
+    else if (parent->is(AstNodeKind::AffectOp))
     {
         acceptMissingType = true;
         deduceMissingType = true;

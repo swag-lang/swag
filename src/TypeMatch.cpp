@@ -174,7 +174,7 @@ namespace
                 context.solvedCastFlags[context.cptResolved]      = context.semContext->castFlagsResult;
             }
 
-            if (callParameter->kind == AstNodeKind::FuncCallParam)
+            if (callParameter->is(AstNodeKind::FuncCallParam))
             {
                 const auto param         = castAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
                 param->resolvedParameter = wantedParameter;
@@ -290,7 +290,7 @@ namespace
         {
             callParameter = context.parameters[i];
 
-            if (callParameter->kind != AstNodeKind::FuncCallParam)
+            if (callParameter->isNot(AstNodeKind::FuncCallParam))
             {
                 fakeParam.typeInfo  = callParameter->typeInfo;
                 fakeParam.extension = callParameter->extension;
@@ -451,7 +451,7 @@ namespace
         // be sure that the current contextual types match the contextual types of the concrete function (if they are any)
         else if (!userGenericParams && !myTypeInfo->isGeneric() && !context.genericReplaceTypes.empty())
         {
-            if (myTypeInfo->declNode->kind == AstNodeKind::FuncDecl)
+            if (myTypeInfo->declNode->is(AstNodeKind::FuncDecl))
             {
                 const auto myFunc     = castAst<AstFuncDecl>(myTypeInfo->declNode, AstNodeKind::FuncDecl);
                 const auto typeMyFunc = castTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
@@ -482,10 +482,10 @@ namespace
                 if (firstChild)
                 {
                     bool isValue = false;
-                    if (firstChild->kind == AstNodeKind::Literal)
+                    if (firstChild->is(AstNodeKind::Literal))
                         isValue = true;
 
-                    if (firstChild->kind == AstNodeKind::ExpressionList)
+                    if (firstChild->is(AstNodeKind::ExpressionList))
                     {
                         isValue = true;
                         if (!firstChild->hasFlagComputedValue())
@@ -507,7 +507,7 @@ namespace
                         isValue = true;
                     if (firstChild->resolvedSymbolOverload() &&
                         firstChild->resolvedSymbolOverload()->node &&
-                        firstChild->resolvedSymbolOverload()->node->kind == AstNodeKind::FuncDeclParam &&
+                        firstChild->resolvedSymbolOverload()->node->is(AstNodeKind::FuncDeclParam) &&
                         firstChild->resolvedSymbolOverload()->node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
                         isValue = true;
 
@@ -630,7 +630,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     // We match in priority without an implicit automatic cast. If this does not match, then we
     // try with an implicit cast.
     context.castFlagsResult.remove(CAST_RESULT_GEN_AUTO_OP_CAST);
-    if (typeFunc->declNode && typeFunc->declNode->kind == AstNodeKind::FuncDecl)
+    if (typeFunc->declNode && typeFunc->declNode->is(AstNodeKind::FuncDecl))
     {
         const auto funcNode = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
         if (funcNode->parameters && funcNode->parameters->hasAstFlag(AST_IS_GENERIC))

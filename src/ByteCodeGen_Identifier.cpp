@@ -99,7 +99,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             return true;
         }
 
-        if (node->isForceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        if (node->isForceTakeAddress() && (!typeInfo->isString() || node->parent->isNot(AstNodeKind::ArrayPointerIndex)))
         {
             if (resolved->computedValue.storageOffset)
                 EMIT_INST1(context, ByteCodeOp::Add64byVB64, node->resultRegisterRc[0])->b.u64 = resolved->computedValue.storageOffset;
@@ -173,7 +173,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                 if (!prev->children.empty())
                 {
                     const auto back = prev->children.back();
-                    if (back->kind == AstNodeKind::Inline)
+                    if (back->is(AstNodeKind::Inline))
                     {
                         if (back->typeInfo->isInterface())
                         {
@@ -380,7 +380,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             if (node->isForceTakeAddress())
                 inst->c.pointer = reinterpret_cast<uint8_t*>(resolved);
         }
-        else if (node->isForceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        else if (node->isForceTakeAddress() && (!typeInfo->isString() || node->parent->isNot(AstNodeKind::ArrayPointerIndex)))
         {
             ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRc);
             inst->c.pointer           = reinterpret_cast<uint8_t*>(resolved);
@@ -465,7 +465,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u64            = resolved->computedValue.storageOffset;
             inst->c.pointer        = reinterpret_cast<uint8_t*>(resolved);
         }
-        else if (node->isForceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        else if (node->isForceTakeAddress() && (!typeInfo->isString() || node->parent->isNot(AstNodeKind::ArrayPointerIndex)))
         {
             if (persistentReg)
             {

@@ -82,7 +82,7 @@ Utf8 GenDoc::getDocComment(const AstNode* node)
     if (node->hasExtMisc() && !node->extMisc()->docComment.empty())
         return node->extMisc()->docComment;
 
-    while (node->parent && node->parent->kind == AstNodeKind::AttrUse)
+    while (node->parent && node->parent->is(AstNodeKind::AttrUse))
     {
         if (node->parent->hasExtMisc() && !node->parent->extMisc()->docComment.empty())
             return node->parent->extMisc()->docComment;
@@ -153,7 +153,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
                     bool firstParam = true;
                     for (const auto c : funcNode->parameters->children)
                     {
-                        if (c->kind != AstNodeKind::FuncDeclParam)
+                        if (c->isNot(AstNodeKind::FuncDeclParam))
                             continue;
                         const AstVarDecl* varNode = castAst<AstVarDecl>(c, AstNodeKind::FuncDeclParam);
                         if (!varNode->type && !varNode->typeInfo)
@@ -260,9 +260,9 @@ void GenDoc::outputTitle(OneRef& c)
     helpContent += "</span>";
 
     helpContent += "<span class=\"api-item-title-strong\">";
-    if (c.nodes[0]->kind == AstNodeKind::ConstDecl)
+    if (c.nodes[0]->is(AstNodeKind::ConstDecl))
         helpContent += "Constants";
-    else if (c.nodes[0]->kind == AstNodeKind::TypeAlias)
+    else if (c.nodes[0]->is(AstNodeKind::TypeAlias))
         helpContent += "Type Aliases";
     else
         helpContent += tkn.back();
@@ -272,7 +272,7 @@ void GenDoc::outputTitle(OneRef& c)
     helpContent += "</td>\n";
 
     // Add a reference to the source code
-    if (c.nodes[0]->kind != AstNodeKind::Namespace)
+    if (c.nodes[0]->isNot(AstNodeKind::Namespace))
     {
         helpContent += "<td class=\"api-item-title-src-ref\">\n";
         Path str = Utf8(module->buildCfg.repoPath);
@@ -320,12 +320,12 @@ void GenDoc::outputType(AstNode* node)
         typeInfo->computeScopedNameExport();
         outputCode(typeInfo->scopedNameExport, GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
     }
-    else if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::ConstDecl)
+    else if (node->is(AstNodeKind::VarDecl) || node->is(AstNodeKind::ConstDecl))
     {
         const auto varDecl = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         outputCode(getOutputNode(varDecl->type), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
     }
-    else if (node->kind == AstNodeKind::TypeAlias)
+    else if (node->is(AstNodeKind::TypeAlias))
     {
         const auto typeDecl = castAst<AstAlias>(node, AstNodeKind::TypeAlias);
         outputCode(getOutputNode(typeDecl->children.front()), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
@@ -515,13 +515,13 @@ void GenDoc::generateContent()
     outputUserComment(moduleComment);
 
     ranges::sort(allNodes, [](OneRef& a, OneRef& b) {
-        if (a.nodes[0]->kind == AstNodeKind::ConstDecl && b.nodes[0]->kind != AstNodeKind::ConstDecl)
+        if (a.nodes[0]->is(AstNodeKind::ConstDecl) && b.nodes[0]->isNot(AstNodeKind::ConstDecl))
             return true;
-        if (a.nodes[0]->kind != AstNodeKind::ConstDecl && b.nodes[0]->kind == AstNodeKind::ConstDecl)
+        if (a.nodes[0]->isNot(AstNodeKind::ConstDecl) && b.nodes[0]->is(AstNodeKind::ConstDecl))
             return false;
-        if (a.nodes[0]->kind == AstNodeKind::TypeAlias && b.nodes[0]->kind != AstNodeKind::TypeAlias)
+        if (a.nodes[0]->is(AstNodeKind::TypeAlias) && b.nodes[0]->isNot(AstNodeKind::TypeAlias))
             return true;
-        if (a.nodes[0]->kind != AstNodeKind::TypeAlias && b.nodes[0]->kind == AstNodeKind::TypeAlias)
+        if (a.nodes[0]->isNot(AstNodeKind::TypeAlias) && b.nodes[0]->is(AstNodeKind::TypeAlias))
             return false;
         return strcmp(a.fullName.buffer, b.fullName.buffer) < 0;
     });
@@ -571,7 +571,7 @@ void GenDoc::generateContent()
                 {
                     auto& c1 = allNodes[j];
                     auto  n  = c1.nodes[0];
-                    if (n->kind != AstNodeKind::ConstDecl)
+                    if (n->isNot(AstNodeKind::ConstDecl))
                     {
                         i = j - 1;
                         break;
@@ -612,7 +612,7 @@ void GenDoc::generateContent()
                 {
                     auto& c1 = allNodes[j];
                     auto  n  = c1.nodes[0];
-                    if (n->kind != AstNodeKind::TypeAlias)
+                    if (n->isNot(AstNodeKind::TypeAlias))
                     {
                         i = j - 1;
                         break;
@@ -675,7 +675,7 @@ void GenDoc::generateContent()
                     for (auto structVal : structNode->scope->symTable.allSymbols)
                     {
                         auto n1 = structVal->nodes[0];
-                        if (n1->kind != AstNodeKind::VarDecl && n1->kind != AstNodeKind::ConstDecl)
+                        if (n1->isNot(AstNodeKind::VarDecl) && n1->isNot(AstNodeKind::ConstDecl))
                             continue;
                         if (!n1->hasAstFlag(AST_STRUCT_MEMBER))
                             continue;
@@ -743,7 +743,7 @@ void GenDoc::generateContent()
                 helpContent += "<table class=\"table-enumeration\">\n";
                 for (auto enumVal : enumNode->scope->symTable.allSymbols)
                 {
-                    if (enumVal->nodes[0]->kind != AstNodeKind::EnumValue)
+                    if (enumVal->nodes[0]->isNot(AstNodeKind::EnumValue))
                         continue;
 
                     helpContent += "<tr>\n";
@@ -924,7 +924,7 @@ bool GenDoc::generateApi()
         {
             // A namespace can be defined in multiple places, so do not add a category depending on folder,
             // as sourceFile can be irrelevant
-            if (c.second[0]->kind != AstNodeKind::Namespace)
+            if (c.second[0]->isNot(AstNodeKind::Namespace))
             {
                 oneRef.category = c.second[0]->token.sourceFile->path.parent_path();
                 const auto len  = static_cast<uint32_t>(c.second[0]->token.sourceFile->module->path.length());
@@ -942,7 +942,7 @@ bool GenDoc::generateApi()
         Vector<Utf8> tkn;
         Utf8::tokenize(oneRef.fullName, '.', tkn);
 
-        if (oneRef.nodes[0]->kind == AstNodeKind::Namespace)
+        if (oneRef.nodes[0]->is(AstNodeKind::Namespace))
             oneRef.displayName = oneRef.fullName;
         else if (tkn.size() <= 2)
             oneRef.displayName = oneRef.fullName;

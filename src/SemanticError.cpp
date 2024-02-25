@@ -12,7 +12,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
         return;
 
     // Symbol has been found thanks to a using
-    if ((node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall) &&
+    if ((node->is(AstNodeKind::Identifier) || node->is(AstNodeKind::FuncCall)) &&
         tryMatches.size() == 1 &&
         tryMatches[0]->dependentVar &&
         !tryMatches[0]->dependentVar->isGeneratedSelf())
@@ -24,7 +24,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
 
     // If we have an UFCS call, and the match does not come from its symbol table, then that means that we have not found the
     // symbol in the original struct also.
-    if ((node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall) &&
+    if ((node->is(AstNodeKind::Identifier) || node->is(AstNodeKind::FuncCall)) &&
         tryMatches.size() == 1)
     {
         const auto identifier    = castAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);

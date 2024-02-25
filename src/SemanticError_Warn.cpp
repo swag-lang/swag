@@ -139,7 +139,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         const auto front = sym->nodes.front();
 
         // Remove generated symbol, except when unpacking a tuple.
-        if (front->kind != AstNodeKind::VarDecl || !front->hasSpecFlag(AstVarDecl::SPEC_FLAG_TUPLE_AFFECT))
+        if (front->isNot(AstNodeKind::VarDecl) || !front->hasSpecFlag(AstVarDecl::SPEC_FLAG_TUPLE_AFFECT))
         {
             if (front->hasAstFlag(AST_GENERATED))
                 continue;
@@ -237,7 +237,7 @@ bool SemanticError::warnUnreachableCode(SemanticContext* context)
     // Return must be the last of its block
     if (node->parent->children.back() != node)
     {
-        if (node->parent->kind == AstNodeKind::If)
+        if (node->parent->is(AstNodeKind::If))
         {
             const AstIf* ifNode = castAst<AstIf>(node->parent, AstNodeKind::If);
             if (ifNode->ifBlock == node || ifNode->elseBlock == node)

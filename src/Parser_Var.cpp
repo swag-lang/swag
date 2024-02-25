@@ -13,7 +13,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
     if (!checkIsValidUserName(node))
         return false;
 
-    if (node->kind == AstNodeKind::Identifier)
+    if (node->is(AstNodeKind::Identifier))
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
@@ -90,10 +90,10 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         acceptDeref = false;
 
     // Multiple affectation
-    if (leftNode->kind == AstNodeKind::MultiIdentifier)
+    if (leftNode->is(AstNodeKind::MultiIdentifier))
     {
         auto parentNode = parent;
-        if (acceptDeref || parent->kind == AstNodeKind::AttrUse)
+        if (acceptDeref || parent->is(AstNodeKind::AttrUse))
         {
             parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent);
             *result    = parentNode;
@@ -133,8 +133,8 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             // without the affectation to avoid a useless copy (and a postCopy in case of structs)
             else if (!acceptDeref ||
                      assign == nullptr ||
-                     assign->kind == AstNodeKind::ExplicitNoInit ||
-                     assign->kind == AstNodeKind::Literal)
+                     assign->is(AstNodeKind::ExplicitNoInit) ||
+                     assign->is(AstNodeKind::Literal))
             {
                 varNode->type = Ast::clone(type, varNode);
                 if (assign)
@@ -153,7 +153,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
     }
 
     // Tuple dereference
-    else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
+    else if (leftNode->is(AstNodeKind::MultiIdentifierTuple))
     {
         SWAG_VERIFY(acceptDeref, error(leftNode, formErr(Err0511, Naming::aKindName(currentScope->kind).c_str())));
 
@@ -321,7 +321,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             if (tokenParse.token.id == TokenId::SymLeftCurly &&
                 tokenParse.flags.has(TOKEN_PARSE_LAST_BLANK) &&
                 !tokenParse.flags.has(TOKEN_PARSE_LAST_EOL) &&
-                type->kind == AstNodeKind::TypeExpression)
+                type->is(AstNodeKind::TypeExpression))
             {
                 const auto typeExpr = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
                 if (typeExpr->identifier)
@@ -349,16 +349,16 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         leftNode->release();
 
         // If we have a type, and that type has parameters (struct construction), then we need to evaluate and push the parameters
-        if (type && type->kind == AstNodeKind::TypeExpression)
+        if (type && type->is(AstNodeKind::TypeExpression))
         {
             auto typeExpression = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
             while (typeExpression->typeFlags.has(TYPEFLAG_IS_SUB_TYPE))
                 typeExpression = castAst<AstTypeExpression>(typeExpression->children.back(), AstNodeKind::TypeExpression);
 
-            if (typeExpression->identifier && typeExpression->identifier->kind == AstNodeKind::IdentifierRef)
+            if (typeExpression->identifier && typeExpression->identifier->is(AstNodeKind::IdentifierRef))
             {
                 const auto back = typeExpression->identifier->children.back();
-                if (back->kind == AstNodeKind::Identifier)
+                if (back->is(AstNodeKind::Identifier))
                 {
                     const auto identifier = castAst<AstIdentifier>(back, AstNodeKind::Identifier);
                     if (identifier->callParameters)
@@ -379,7 +379,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 
     if (!forStruct || tokenParse.token.id != TokenId::SymRightCurly)
     {
-        if (!parent || parent->kind != AstNodeKind::If)
+        if (!parent || parent->isNot(AstNodeKind::If))
         {
             SWAG_VERIFY(tokenParse.token.id != TokenId::SymEqualEqual, error(tokenParse.token, toErr(Err0677)));
             SWAG_CHECK(eatSemiCol("variable declaration"));

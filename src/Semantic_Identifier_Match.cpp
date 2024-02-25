@@ -111,7 +111,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
 
     // Wake up semantic lambda job
     SWAG_ASSERT(funcDecl->pendingLambdaJob);
-    SWAG_ASSERT(context->node->kind == AstNodeKind::Identifier);
+    SWAG_ASSERT(context->node->is(AstNodeKind::Identifier));
 
     context->node->addSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING);
     funcDecl->removeSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING);
@@ -237,7 +237,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
                 // We have a value, and we need a reference.
                 // Force to keep the address
-                if (front->kind == AstNodeKind::IdentifierRef)
+                if (front->is(AstNodeKind::IdentifierRef))
                 {
                     front->children.back()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
                 }
@@ -250,7 +250,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
                 // We have a value, and we need a reference.
                 // Force to keep the address
-                if (front->kind == AstNodeKind::IdentifierRef)
+                if (front->is(AstNodeKind::IdentifierRef))
                 {
                     front->children.back()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
                 }
@@ -271,7 +271,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         if (makePtrL && toTypeRef && toTypeRef->isClosure())
         {
             bool convert = false;
-            if (makePtrL->kind == AstNodeKind::MakePointer || makePtrL->kind == AstNodeKind::MakePointerLambda)
+            if (makePtrL->is(AstNodeKind::MakePointer) || makePtrL->is(AstNodeKind::MakePointerLambda))
                 convert = true;
             if (makePtrL->typeInfo && makePtrL->typeInfo->isLambda())
                 convert = true;
@@ -356,7 +356,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 varNode->type = typeExpr;
 
                 auto assign = nodeCall->children.front();
-                if (assign->kind == AstNodeKind::Cast)
+                if (assign->is(AstNodeKind::Cast))
                     assign = assign->children.back();
 
                 CloneContext cloneContext;
@@ -412,7 +412,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
     if (!typeInfoFunc->parameters.empty() && maxParams < typeInfoFunc->parameters.size())
     {
         AstNode* parameters = nullptr;
-        if (typeInfoFunc->declNode->kind == AstNodeKind::FuncDecl)
+        if (typeInfoFunc->declNode->is(AstNodeKind::FuncDecl))
         {
             const auto funcDecl = castAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl);
             parameters          = funcDecl->parameters;
@@ -425,7 +425,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
         for (uint32_t i = 0; i < parameters->children.size(); i++)
         {
-            if (parameters->children[i]->kind != AstNodeKind::FuncDeclParam)
+            if (parameters->children[i]->isNot(AstNodeKind::FuncDeclParam))
                 continue;
             const auto funcParam = castAst<AstVarDecl>(parameters->children[i], AstNodeKind::FuncDeclParam);
             if (!funcParam->assignment)
@@ -486,7 +486,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                     // Need to have the real type for the variable
                     if (funcParam->type->typeInfo->isPointerRef())
                     {
-                        SWAG_ASSERT(varNode->type->kind == AstNodeKind::TypeExpression);
+                        SWAG_ASSERT(varNode->type->is(AstNodeKind::TypeExpression));
                         const auto typeNode = castAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
                         typeNode->typeFlags.remove(TYPEFLAG_IS_REF);
                     }
@@ -535,18 +535,18 @@ namespace
             return false;
 
         auto checkParent = identifier->identifierRef()->parent;
-        if (checkParent->kind == AstNodeKind::Try ||
-            checkParent->kind == AstNodeKind::Catch ||
-            checkParent->kind == AstNodeKind::TryCatch ||
-            checkParent->kind == AstNodeKind::Assume)
+        if (checkParent->is(AstNodeKind::Try) ||
+            checkParent->is(AstNodeKind::Catch) ||
+            checkParent->is(AstNodeKind::TryCatch) ||
+            checkParent->is(AstNodeKind::Assume))
         {
             checkParent = checkParent->parent;
         }
 
-        if (checkParent->kind == AstNodeKind::Statement ||
-            checkParent->kind == AstNodeKind::StatementNoScope ||
-            checkParent->kind == AstNodeKind::Defer ||
-            checkParent->kind == AstNodeKind::SwitchCaseBlock)
+        if (checkParent->is(AstNodeKind::Statement) ||
+            checkParent->is(AstNodeKind::StatementNoScope) ||
+            checkParent->is(AstNodeKind::Defer) ||
+            checkParent->is(AstNodeKind::SwitchCaseBlock))
         {
             // If this is the last identifier
             if (identifier == identifier->identifierRef()->children.back())
@@ -554,7 +554,7 @@ namespace
 
             // If this is not the last identifier, and it's not a function call
             const auto back = identifier->identifierRef()->children.back();
-            if (back->kind == AstNodeKind::Identifier && !castAst<AstIdentifier>(back)->callParameters)
+            if (back->is(AstNodeKind::Identifier) && !castAst<AstIdentifier>(back)->callParameters)
                 return true;
         }
 
@@ -604,7 +604,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         (prevNode->resolvedSymbolName()->is(SymbolKind::Variable) || prevNode->resolvedSymbolName()->is(SymbolKind::Function)) &&
         !prevNode->hasAstFlag(AST_FROM_UFCS))
     {
-        if (prevNode->kind == AstNodeKind::Identifier && prevNode->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH))
+        if (prevNode->is(AstNodeKind::Identifier) && prevNode->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH))
         {
             Diagnostic err{prevNode, formErr(Err0586, prevNode->token.c_str(), symbol->name.c_str())};
             const auto prevIdentifier = castAst<AstIdentifier>(prevNode, AstNodeKind::Identifier);
@@ -635,7 +635,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     if (symbol &&
         symbol->is(SymbolKind::Variable) &&
         identifier->typeInfo->isArray() &&
-        identifier->parent->kind != AstNodeKind::ArrayPointerIndex &&
+        identifier->parent->isNot(AstNodeKind::ArrayPointerIndex) &&
         identifier->parent == identifierRef &&
         identifierRef->children.back() != identifier)
     {
@@ -646,7 +646,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     if (symbol &&
         symbol->is(SymbolKind::Variable) &&
         identifier->typeInfo->isSlice() &&
-        identifier->parent->kind != AstNodeKind::ArrayPointerIndex &&
+        identifier->parent->isNot(AstNodeKind::ArrayPointerIndex) &&
         identifier->parent == identifierRef &&
         identifierRef->children.back() != identifier)
     {
@@ -681,7 +681,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         }
 
         // Direct reference of a struct field inside a const array
-        if (prevNode->kind == AstNodeKind::ArrayPointerIndex && prevNode->typeInfo->isStruct())
+        if (prevNode->is(AstNodeKind::ArrayPointerIndex) && prevNode->typeInfo->isStruct())
         {
             const auto arrayNode = castAst<AstArrayPointerIndex>(prevNode, AstNodeKind::ArrayPointerIndex);
             const auto arrayOver = arrayNode->array->resolvedSymbolOverload();
@@ -737,10 +737,10 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     // Except if symbol is a constant !
     if (!overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
     {
-        if (dependentVar && identifierRef->kind == AstNodeKind::IdentifierRef && symbol->isNot(SymbolKind::Function))
+        if (dependentVar && identifierRef->is(AstNodeKind::IdentifierRef) && symbol->isNot(SymbolKind::Function))
         {
             const auto idRef = castAst<AstIdentifierRef>(identifierRef, AstNodeKind::IdentifierRef);
-            if (dependentVar->kind == AstNodeKind::IdentifierRef)
+            if (dependentVar->is(AstNodeKind::IdentifierRef))
             {
                 for (int i = static_cast<int>(dependentVar->children.size()) - 1; i >= 0; i--)
                 {
@@ -887,7 +887,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 !identifier->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))
             {
                 canConvertStructParams = true;
-                if (identifier->parent->parent->kind == AstNodeKind::VarDecl || identifier->parent->parent->kind == AstNodeKind::ConstDecl)
+                if (identifier->parent->parent->is(AstNodeKind::VarDecl) || identifier->parent->parent->is(AstNodeKind::ConstDecl))
                 {
                     const auto varNode = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
                     if (varNode->assignment == identifier->parent && !varNode->type)
@@ -948,7 +948,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             // A struct with parameters is in fact the creation of a temporary variable
             if (canConvertStructParams)
             {
-                if (identifier->parent->parent->kind != AstNodeKind::TypeExpression ||
+                if (identifier->parent->parent->isNot(AstNodeKind::TypeExpression) ||
                     !identifier->parent->parent->hasSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN))
                 {
                     SWAG_CHECK(Ast::convertStructParamsToTmpVar(context, identifier));
@@ -1004,8 +1004,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 //
                 auto checkParent = identifier->parent;
                 auto child       = castAst<AstNode>(identifier);
-                while (checkParent->kind == AstNodeKind::ArrayPointerIndex ||
-                       checkParent->kind == AstNodeKind::ArrayPointerSlicing)
+                while (checkParent->is(AstNodeKind::ArrayPointerIndex) ||
+                       checkParent->is(AstNodeKind::ArrayPointerSlicing))
                 {
                     child       = checkParent;
                     checkParent = checkParent->parent;
@@ -1013,7 +1013,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
                 // In that case, we should not generate bytecode for everything before the constant,
                 // as we have the scope, and this is enough.
-                SWAG_ASSERT(checkParent->kind == AstNodeKind::IdentifierRef);
+                SWAG_ASSERT(checkParent->is(AstNodeKind::IdentifierRef));
                 const auto childIdx = child->childParentIdx();
                 for (uint32_t i = 0; i < childIdx; i++)
                 {
@@ -1173,9 +1173,9 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
             if (identifier->callParameters)
                 identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
-            else if (identifier->parent->parent->kind == AstNodeKind::MakePointerLambda)
+            else if (identifier->parent->parent->is(AstNodeKind::MakePointerLambda))
                 identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
-            else if (identifier->parent->parent->kind == AstNodeKind::MakePointer)
+            else if (identifier->parent->parent->is(AstNodeKind::MakePointer))
                 identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
 
             // Need to make all types compatible, in case a cast is necessary
@@ -1203,7 +1203,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (identifier->isForceTakeAddress())
             {
                 // This is for a lambda
-                if (identifier->parent->parent->kind == AstNodeKind::MakePointer || identifier->parent->parent->kind == AstNodeKind::MakePointerLambda)
+                if (identifier->parent->parent->is(AstNodeKind::MakePointer) || identifier->parent->parent->is(AstNodeKind::MakePointerLambda))
                 {
                     if (!identifier->callParameters)
                     {
@@ -1583,24 +1583,24 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     auto grandParent = context->node->parent->parent;
 
                     bool isLast = false;
-                    if (node && node->kind == AstNodeKind::Identifier)
+                    if (node && node->is(AstNodeKind::Identifier))
                     {
                         auto id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
                         if (id == id->identifierRef()->children.back())
                             isLast = true;
                     }
 
-                    if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicTypeOf)
+                    if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicTypeOf)
                         asMatch = true;
-                    else if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicKindOf)
+                    else if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicKindOf)
                         asMatch = true;
-                    else if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf)
+                    else if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicNameOf)
                         asMatch = true;
-                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->token.id == TokenId::SymEqualEqual && overload->symbol->is(SymbolKind::Struct))
+                    else if (isLast && grandParent->is(AstNodeKind::BinaryOp) && grandParent->token.id == TokenId::SymEqualEqual && overload->symbol->is(SymbolKind::Struct))
                         asMatch = true;
-                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->token.id == TokenId::SymExclamEqual && overload->symbol->is(SymbolKind::Struct))
+                    else if (isLast && grandParent->is(AstNodeKind::BinaryOp) && grandParent->token.id == TokenId::SymExclamEqual && overload->symbol->is(SymbolKind::Struct))
                         asMatch = true;
-                    else if (grandParent->kind == AstNodeKind::IntrinsicDefined)
+                    else if (grandParent->is(AstNodeKind::IntrinsicDefined))
                         asMatch = true;
                 }
 
@@ -1635,7 +1635,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
                 match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
                 match->ufcs                        = oneOverload.ufcs;
-                if (overload->node->hasAstFlag(AST_HAS_SELECT_IF) && overload->node->kind == AstNodeKind::FuncDecl)
+                if (overload->node->hasAstFlag(AST_HAS_SELECT_IF) && overload->node->is(AstNodeKind::FuncDecl))
                     genericMatchesSI.push_back(match);
                 else
                     genericMatches.push_back(match);
@@ -1647,7 +1647,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 // Be sure that we are not an identifier with generic parameters.
                 // In that case we do not want to have instances.
                 // Weird.
-                if (node && node->kind == AstNodeKind::Identifier)
+                if (node && node->is(AstNodeKind::Identifier))
                 {
                     auto id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
                     if (id->genericParameters)
@@ -1680,7 +1680,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     // with the corresponding match, as they can be overwritten by another match attempt
                     for (auto p : oneOverload.symMatchContext.parameters)
                     {
-                        if (p->kind != AstNodeKind::FuncCallParam)
+                        if (p->isNot(AstNodeKind::FuncCallParam))
                             continue;
 
                         OneMatch::ParamParameter pp;
@@ -1857,7 +1857,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     // We are fine
     if (matches.size() > 1 &&
         node &&
-        node->kind == AstNodeKind::Identifier &&
+        node->is(AstNodeKind::Identifier) &&
         node->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS))
     {
         return true;

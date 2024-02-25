@@ -94,7 +94,7 @@ bool CallConv::returnStructByValue(const TypeInfoFuncAttr* typeFunc)
     if (typeFunc->hasFlag(TYPEINFO_CAN_THROW))
         return false;
 
-    if (typeFunc->declNode->kind == AstNodeKind::FuncDecl)
+    if (typeFunc->declNode->is(AstNodeKind::FuncDecl))
     {
         const auto fctNode = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
         if (fctNode->mustInline())

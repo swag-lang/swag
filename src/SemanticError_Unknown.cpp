@@ -29,7 +29,7 @@ namespace
         }
 
         AstIdentifier* prevIdentifier = nullptr;
-        if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier)
+        if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->is(AstNodeKind::Identifier))
             prevIdentifier = castAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
 
         const Utf8 whereScopeName = Naming::kindName(identifierRef->startScope->kind);
@@ -130,7 +130,7 @@ namespace
             const auto note     = Diagnostic::note(prev, msg);
             notes.push_back(note);
         }
-        else if (prev->kind == AstNodeKind::ArrayPointerIndex)
+        else if (prev->is(AstNodeKind::ArrayPointerIndex))
         {
             const auto api       = castAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
             const auto typeArray = castTypeInfo<TypeInfoArray>(api->array->typeInfo, TypeInfoKind::Array);
@@ -156,9 +156,9 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
 {
     // What kind of thing to we search for ?
     auto searchFor = IdentifierSearchFor::Whatever;
-    if (node->parent->parent && node->parent->parent->kind == AstNodeKind::TypeExpression && node->parent->children.back() == node)
+    if (node->parent->parent && node->parent->parent->is(AstNodeKind::TypeExpression) && node->parent->children.back() == node)
         searchFor = IdentifierSearchFor::Type;
-    else if (node->parent->parent && node->parent->parent->kind == AstNodeKind::AttrUse && node->parent->children.back() == node)
+    else if (node->parent->parent && node->parent->parent->is(AstNodeKind::AttrUse) && node->parent->children.back() == node)
         searchFor = IdentifierSearchFor::Attribute;
     else if (node->callParameters && node->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         searchFor = IdentifierSearchFor::Struct;

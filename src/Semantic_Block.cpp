@@ -119,7 +119,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     if (func->parameters)
     {
         const AstIdentifier* identifier = nullptr;
-        if (node->parent->kind == AstNodeKind::Identifier)
+        if (node->parent->is(AstNodeKind::Identifier))
             identifier = castAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
         for (uint32_t i = 0; i < func->parameters->children.size(); i++)
         {
@@ -434,7 +434,7 @@ bool Semantic::resolveCase(SemanticContext* context)
         oneExpression->typeInfo = getConcreteTypeUnRef(oneExpression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         // Range
-        if (oneExpression->kind == AstNodeKind::Range)
+        if (oneExpression->is(AstNodeKind::Range))
         {
             auto rangeNode = castAst<AstRange>(oneExpression, AstNodeKind::Range);
             if (node->ownerSwitch->expression)
@@ -524,7 +524,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
     if (node->expression)
     {
         // No range
-        if (node->expression->kind != AstNodeKind::Range)
+        if (node->expression->isNot(AstNodeKind::Range))
         {
             const auto typeInfo = TypeManager::concretePtrRef(node->expression->typeInfo);
             if (!typeInfo->isEnum())
@@ -607,7 +607,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         AstIdentifier*    callVisit     = nullptr;
         AstVarDecl*       varNode       = nullptr;
 
-        if (node->expression->kind != AstNodeKind::IdentifierRef)
+        if (node->expression->isNot(AstNodeKind::IdentifierRef))
         {
             varNode = Ast::newVarDecl(form(R"(__9tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, node);
             varNode->addAstFlag(AST_GENERATED);
@@ -937,7 +937,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     Ast::visit(newExpression, [&](AstNode* x) {
         if (countAlias >= node->aliasNames.size())
             return;
-        if (x->kind == AstNodeKind::VarDecl)
+        if (x->is(AstNodeKind::VarDecl))
         {
             if (countVar == firstAliasVar)
             {
@@ -968,7 +968,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
                 x->ownerBreakable()->continueList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
             x->setOwnerBreakable(loopNode);
         }
-        if (x->kind == AstNodeKind::Visit)
+        if (x->is(AstNodeKind::Visit))
             return Ast::VisitResult::Stop;
         return Ast::VisitResult::Continue;
     });
@@ -1000,7 +1000,7 @@ bool Semantic::resolveIndex(SemanticContext* context)
     ownerBreakable->breakableFlags.add(BREAKABLE_NEED_INDEX);
 
     // Take the type from the expression
-    if (ownerBreakable->kind == AstNodeKind::Loop)
+    if (ownerBreakable->is(AstNodeKind::Loop))
     {
         const auto loopNode = castAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
         if (loopNode->expression && loopNode->expression->typeInfo->isNativeInteger())
@@ -1034,7 +1034,7 @@ bool Semantic::resolveBreak(SemanticContext* context)
     if (!node->label.text.empty())
     {
         auto breakable = node->safeOwnerBreakable();
-        while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label.text))
+        while (breakable && (breakable->isNot(AstNodeKind::ScopeBreakable) || breakable->token.text != node->label.text))
             breakable = breakable->safeOwnerBreakable();
         SWAG_VERIFY(breakable, context->report({node->token.sourceFile, node->label, formErr(Err0722, node->label.text.c_str())}));
         node->setOwnerBreakable(breakable);
@@ -1059,14 +1059,14 @@ bool Semantic::resolveUnreachable(SemanticContext* context)
 bool Semantic::resolveFallThrough(SemanticContext* context)
 {
     auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
-    SWAG_VERIFY(node->hasOwnerBreakable() && node->ownerBreakable()->kind == AstNodeKind::Switch, context->report({node, toErr(Err0463)}));
+    SWAG_VERIFY(node->hasOwnerBreakable() && node->ownerBreakable()->is(AstNodeKind::Switch), context->report({node, toErr(Err0463)}));
     node->ownerBreakable()->fallThroughList.push_back(node);
 
     // Be sure we are in a case
     auto parent = node->parent;
-    while (parent && parent->kind != AstNodeKind::SwitchCase && parent != node->safeOwnerBreakable())
+    while (parent && parent->isNot(AstNodeKind::SwitchCase) && parent != node->safeOwnerBreakable())
         parent = parent->parent;
-    SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, toErr(Err0462)}));
+    SWAG_VERIFY(parent && parent->is(AstNodeKind::SwitchCase), context->report({node, toErr(Err0462)}));
     node->switchCase = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
     SWAG_VERIFY(node->switchCase->caseIndex != UINT32_MAX, context->report({node, toErr(Err0462)}));
 

@@ -290,7 +290,7 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
         toCheck.push_back(node->ownerFct);
 
     // With A.B form, we try to get generic parameters from A if they exist
-    if (node->kind == AstNodeKind::Identifier)
+    if (node->is(AstNodeKind::Identifier))
     {
         const auto identifier = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
         if (identifier->identifierRef()->startScope)
@@ -312,7 +312,7 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
     // Collect all
     for (const auto one : toCheck)
     {
-        if (one->kind == AstNodeKind::FuncDecl)
+        if (one->is(AstNodeKind::FuncDecl))
         {
             const auto nodeFunc = castAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
             const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
@@ -325,7 +325,7 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
             for (const auto& oneReplace : typeFunc->replaceValues)
                 oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
         }
-        else if (one->kind == AstNodeKind::StructDecl)
+        else if (one->is(AstNodeKind::StructDecl))
         {
             const auto nodeStruct = castAst<AstStruct>(one, AstNodeKind::StructDecl);
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);

@@ -514,13 +514,13 @@ bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
                 auto parent = node->parent;
                 while (parent)
                 {
-                    if (parent->kind == AstNodeKind::StructDecl)
+                    if (parent->is(AstNodeKind::StructDecl))
                     {
                         node->addAstFlag(AST_IS_GENERIC);
                         break;
                     }
 
-                    if (parent->kind == AstNodeKind::Impl)
+                    if (parent->is(AstNodeKind::Impl))
                         break;
                     parent = parent->parent;
                 }
@@ -806,7 +806,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
             continue;
         }
 
-        if (locNode->kind == AstNodeKind::FuncCallParam && locNode->children.front()->kind == AstNodeKind::IdentifierRef)
+        if (locNode->is(AstNodeKind::FuncCallParam) && locNode->children.front()->is(AstNodeKind::IdentifierRef))
         {
             const auto id = castAst<AstIdentifier>(locNode->children.back()->children.back(), AstNodeKind::Identifier);
             if (id->identifierExtension && id->identifierExtension->fromAlternateVar)
@@ -818,7 +818,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
         }
 
         // :ForLocationInValidIf
-        if (locNode->kind == AstNodeKind::IdentifierRef)
+        if (locNode->is(AstNodeKind::IdentifierRef))
         {
             const auto id = castAst<AstIdentifier>(locNode->children.back(), AstNodeKind::Identifier);
             if (id->identifierExtension && id->identifierExtension->fromAlternateVar)
@@ -955,12 +955,12 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
             return true;
 
         case TokenId::CompilerCallerLocation:
-            SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, toErr(Err0498)}));
+            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0498)}));
             node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
             return true;
 
         case TokenId::CompilerCallerFunction:
-            SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, toErr(Err0497)}));
+            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0497)}));
             node->typeInfo = g_TypeMgr->typeInfoString;
             return true;
 

@@ -481,7 +481,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
     // For a var, trick error system, because we want to point on '='
     AstVarDecl* varDecl = nullptr;
     Token       savedToken;
-    if (context->node->kind == AstNodeKind::VarDecl)
+    if (context->node->is(AstNodeKind::VarDecl))
     {
         varDecl    = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
         savedToken = varDecl->token;
@@ -494,10 +494,10 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
     {
         Utf8 suffix;
 
-        SWAG_ASSERT(right->kind == AstNodeKind::Literal || right->kind == AstNodeKind::SingleOp);
-        if (right->kind == AstNodeKind::Literal)
+        SWAG_ASSERT(right->is(AstNodeKind::Literal) || right->is(AstNodeKind::SingleOp));
+        if (right->is(AstNodeKind::Literal))
             suffix = right->children.front()->token.text;
-        else if (right->kind == AstNodeKind::SingleOp)
+        else if (right->is(AstNodeKind::SingleOp))
             suffix = right->children.front()->children.front()->token.text;
 
         SymbolName* symbol = nullptr;
@@ -699,7 +699,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                 if (makePtrL && toTypeRef && toTypeRef->isClosure())
                 {
                     bool convert = false;
-                    if (makePtrL->kind == AstNodeKind::MakePointer || makePtrL->kind == AstNodeKind::MakePointerLambda)
+                    if (makePtrL->is(AstNodeKind::MakePointer) || makePtrL->is(AstNodeKind::MakePointerLambda))
                         convert = true;
                     if (makePtrL->typeInfo && makePtrL->typeInfo->isLambda())
                         convert = true;

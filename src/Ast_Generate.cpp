@@ -80,8 +80,8 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 
     result->addAlternativeScope(typeRightStruct->declNode->ownerScope);
 
-    SWAG_ASSERT(result->kind == AstNodeKind::Impl);
-    SWAG_ASSERT(result->children.back()->kind == AstNodeKind::FuncDecl);
+    SWAG_ASSERT(result->is(AstNodeKind::Impl));
+    SWAG_ASSERT(result->children.back()->is(AstNodeKind::FuncDecl));
 
     const auto job = context->baseJob;
     job->nodes.push_back(result);

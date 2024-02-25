@@ -476,19 +476,19 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
 
     // An inline block contains a specific scope that contains the parameters.
     // That scope does not have a parent, so the hierarchy scan will stop at it.
-    if (startNode->kind == AstNodeKind::Inline && !flags.has(COLLECT_NO_INLINE_PARAMS))
+    if (startNode->is(AstNodeKind::Inline) && !flags.has(COLLECT_NO_INLINE_PARAMS))
     {
         const auto inlineNode = castAst<AstInline>(startNode, AstNodeKind::Inline);
         SWAG_ASSERT(inlineNode->parametersScope);
         addAlternativeScopeOnce(scopes, inlineNode->parametersScope);
     }
 
-    if (startNode->kind == AstNodeKind::CompilerMacro)
+    if (startNode->is(AstNodeKind::CompilerMacro))
     {
         if (scopeUpMode == IdentifierScopeUpMode::None)
         {
-            while (startNode->parent->kind != AstNodeKind::Inline && // Need to test on parent to be able to add alternative scopes of the inline block
-                   startNode->kind != AstNodeKind::FuncDecl)
+            while (startNode->parent->isNot(AstNodeKind::Inline) && // Need to test on parent to be able to add alternative scopes of the inline block
+                   startNode->isNot(AstNodeKind::FuncDecl))
             {
                 startNode = startNode->parent;
             }
@@ -499,13 +499,13 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
         scopeUpMode = IdentifierScopeUpMode::None;
 
         // Macro in a sub function, stop there
-        if (startNode->kind == AstNodeKind::FuncDecl)
+        if (startNode->is(AstNodeKind::FuncDecl))
             return;
     }
 
     // If we are in an inline block, jump right to the function parent
     // Not that the function parent can be null in case of inlined expression in a global for example (compile time execution)
-    else if (startNode->kind == AstNodeKind::Inline)
+    else if (startNode->is(AstNodeKind::Inline))
     {
         const auto inlineBlock = castAst<AstInline>(startNode, AstNodeKind::Inline);
         if (!inlineBlock->func->hasAttribute(ATTRIBUTE_MIXIN))
@@ -515,7 +515,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
 
             if (scopeUpMode == IdentifierScopeUpMode::None)
             {
-                while (startNode && startNode->kind != AstNodeKind::FuncDecl)
+                while (startNode && startNode->isNot(AstNodeKind::FuncDecl))
                     startNode = startNode->parent;
             }
 
@@ -535,18 +535,18 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     // Mixin block, collect alternative scopes from the original source tree (with the user code, before
     // making the inline)
     if (alternativeNode &&
-        startNode->parent->kind == AstNodeKind::CompilerMixin)
+        startNode->parent->is(AstNodeKind::CompilerMixin))
     {
         // We authorize mixin code to access the parameters of the Swag.mixin function, except if there's a #macro block
         // in the way.
-        while (startNode->kind != AstNodeKind::Inline &&
-               startNode->kind != AstNodeKind::CompilerMacro &&
-               startNode->kind != AstNodeKind::FuncDecl)
+        while (startNode->isNot(AstNodeKind::Inline) &&
+               startNode->isNot(AstNodeKind::CompilerMacro) &&
+               startNode->isNot(AstNodeKind::FuncDecl))
         {
             startNode = startNode->parent;
         }
 
-        if (startNode->kind == AstNodeKind::Inline)
+        if (startNode->is(AstNodeKind::Inline))
         {
             const auto inlineNode = castAst<AstInline>(startNode, AstNodeKind::Inline);
             SWAG_ASSERT(inlineNode->parametersScope);

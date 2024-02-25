@@ -36,7 +36,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
         newScope = Ast::newScope(enumNode, enumNode->token.text, ScopeKind::Enum, currentScope, true);
         if (newScope->isNot(ScopeKind::Enum))
         {
-            if (newScope->owner->kind == AstNodeKind::Impl)
+            if (newScope->owner->is(AstNodeKind::Impl))
             {
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic err{implNode->identifier, formErr(Err0008, Naming::kindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::kindName(ScopeKind::Enum).c_str())};

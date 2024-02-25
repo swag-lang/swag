@@ -112,14 +112,14 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
     resolveAfterKnownType(context);
 
     auto parent = context->node->parent;
-    while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl && parent->kind != AstNodeKind::FuncDeclParam)
+    while (parent && parent->isNot(AstNodeKind::VarDecl) && parent->isNot(AstNodeKind::ConstDecl) && parent->isNot(AstNodeKind::FuncDeclParam))
         parent = parent->parent;
     SWAG_ASSERT(parent);
     const auto varDecl = castAst<AstVarDecl>(parent);
     if (!varDecl->type || !varDecl->assignment)
         return true;
 
-    if (parent->kind == AstNodeKind::FuncDeclParam)
+    if (parent->is(AstNodeKind::FuncDeclParam))
     {
         if (varDecl->type->typeInfo->isTypedVariadic() ||
             varDecl->type->typeInfo->isVariadic() ||
@@ -263,7 +263,7 @@ bool Semantic::resolveVarDeclBefore(SemanticContext* context)
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, &node->attributes));
 
-    if (node->assignment && node->kind == AstNodeKind::ConstDecl)
+    if (node->assignment && node->is(AstNodeKind::ConstDecl))
     {
         bool isGeneric = false;
         if (node->hasAstFlag(AST_STRUCT_MEMBER))
@@ -292,13 +292,13 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     const auto job = context->baseJob;
 
     auto parent = context->node->parent;
-    while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl)
+    while (parent && parent->isNot(AstNodeKind::VarDecl) && parent->isNot(AstNodeKind::ConstDecl))
         parent = parent->parent;
     SWAG_ASSERT(parent);
     const auto varDecl = castAst<AstVarDecl>(parent);
 
     const auto assign = varDecl->assignment;
-    if (!assign || assign->kind != AstNodeKind::ExpressionList)
+    if (!assign || assign->isNot(AstNodeKind::ExpressionList))
         return true;
 
     const auto exprList = castAst<AstExpressionList>(assign, AstNodeKind::ExpressionList);
@@ -428,11 +428,11 @@ TypeInfo* Semantic::getDeducedLambdaType(SemanticContext*, const AstMakePointer*
     if (result)
         return result;
 
-    if (node->parent->kind == AstNodeKind::AffectOp)
+    if (node->parent->is(AstNodeKind::AffectOp))
     {
         result = node->parent->children.front()->typeInfo;
     }
-    else if (node->parent->kind == AstNodeKind::VarDecl)
+    else if (node->parent->is(AstNodeKind::VarDecl))
     {
         const auto varDecl = castAst<AstVarDecl>(node->parent, AstNodeKind::VarDecl);
         SWAG_ASSERT(varDecl->type);
@@ -458,7 +458,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
     {
         const auto op    = mpl->parent;
         const auto front = op->children.front();
-        SWAG_ASSERT(op->kind == AstNodeKind::AffectOp);
+        SWAG_ASSERT(op->is(AstNodeKind::AffectOp));
 
         typeLambda = mpl->deducedLambdaType;
         if (!typeLambda)
@@ -540,7 +540,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     auto module     = sourceFile->module;
     auto node       = castAst<AstVarDecl>(context->node);
 
-    bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl;
+    bool isCompilerConstant = node->is(AstNodeKind::ConstDecl);
     bool isLocalConstant    = false;
 
     // Check #mixin
@@ -610,7 +610,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
     if (isCompilerConstant)
         overFlags.add(OVERLOAD_CONSTANT);
-    if (node->kind == AstNodeKind::FuncDeclParam)
+    if (node->is(AstNodeKind::FuncDeclParam))
         overFlags.add(OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST_ASSIGN);
     else if (node->ownerScope->isGlobal() || node->hasAttribute(ATTRIBUTE_GLOBAL))
         overFlags.add(OVERLOAD_VAR_GLOBAL);
@@ -655,7 +655,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             return context->report({node, toErr(Err0562)});
 
         // A constant variable must be initialized
-        if (overFlags.has(OVERLOAD_CONST_ASSIGN) && node->kind != AstNodeKind::FuncDeclParam)
+        if (overFlags.has(OVERLOAD_CONST_ASSIGN) && node->isNot(AstNodeKind::FuncDeclParam))
         {
             if (overFlags.has(OVERLOAD_IS_LET))
                 return context->report({node, toErr(Err0564)});
@@ -665,14 +665,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         // A reference must be initialized
         if (concreteNodeType &&
             concreteNodeType->isPointerRef() &&
-            node->kind != AstNodeKind::FuncDeclParam &&
+            node->isNot(AstNodeKind::FuncDeclParam) &&
             !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
             return context->report({node, toErr(Err0563)});
 
         // Check an enum variable without initialization
         if (concreteNodeType &&
             concreteNodeType->isEnum() &&
-            node->kind != AstNodeKind::FuncDeclParam &&
+            node->isNot(AstNodeKind::FuncDeclParam) &&
             !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
         {
             auto                        concreteTypeEnum = castTypeInfo<TypeInfoEnum>(concreteNodeType, TypeInfoKind::Enum);
@@ -770,7 +770,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (!node->typeConstraint->computedValue()->reg.b)
         {
             Diagnostic err(node->typeConstraint, formErr(Err0088, node->typeInfo->getDisplayNameC()));
-            if (node->genTypeComesFrom && node->typeConstraint->kind == AstNodeKind::IdentifierRef)
+            if (node->genTypeComesFrom && node->typeConstraint->is(AstNodeKind::IdentifierRef))
             {
                 err.addNote(node->genTypeComesFrom, formNte(Nte0139, node->typeInfo->getDisplayNameC(), node->typeConstraint->token.c_str()));
                 return context->report(err);
@@ -788,8 +788,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
     // Value
     if (node->assignment &&
-        node->assignment->kind != AstNodeKind::ExpressionList &&
-        node->assignment->kind != AstNodeKind::ExplicitNoInit &&
+        node->assignment->isNot(AstNodeKind::ExpressionList) &&
+        node->assignment->isNot(AstNodeKind::ExplicitNoInit) &&
         (!node->assignment->typeInfo->isStruct() || !node->assignment->hasAstFlag(AST_IN_FUNC_DECL_PARAMS)) &&
         !isGeneric)
     {
@@ -938,7 +938,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         SWAG_ASSERT(node->typeInfo);
 
         // When affect is from a const struct/array, remove the const
-        if (node->assignment->kind != AstNodeKind::Cast)
+        if (node->assignment->isNot(AstNodeKind::Cast))
         {
             if (node->typeInfo->isArray() || node->typeInfo->isStruct())
                 node->typeInfo = g_TypeMgr->makeUnConst(node->typeInfo);
@@ -950,7 +950,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             {
                 auto nodeWhere = node->assignment;
                 auto over      = nodeWhere->resolvedSymbolOverload();
-                if (nodeWhere->kind == AstNodeKind::IdentifierRef)
+                if (nodeWhere->is(AstNodeKind::IdentifierRef))
                     nodeWhere = nodeWhere->children.back();
                 Diagnostic err{nodeWhere, nodeWhere->token, toErr(Err0371)};
                 return context->report(err, Diagnostic::hereIs(over));
@@ -1008,7 +1008,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     if (!node->typeInfo || node->typeInfo == g_TypeMgr->typeInfoUndefined)
     {
         bool lambdaExpr = false;
-        if (node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && node->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
+        if (node->ownerFct && node->is(AstNodeKind::FuncDeclParam) && node->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
             lambdaExpr = true;
         if (lambdaExpr)
         {
@@ -1212,7 +1212,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         SWAG_ASSERT(node->ownerScope);
 
         // Do not allocate space on the stack for a 'retval' variable, because it's not really a variable
-        if (node->type && node->type->kind == AstNodeKind::TypeExpression)
+        if (node->type && node->type->is(AstNodeKind::TypeExpression))
         {
             auto typeExpr = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
             if (typeExpr->typeFlags.has(TYPEFLAG_IS_RETVAL))
@@ -1233,7 +1233,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (node->assignment && node->assignment->hasAstFlag(AST_TUPLE_UNPACK))
         {
             node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
-            SWAG_ASSERT(node->assignment->kind == AstNodeKind::IdentifierRef);
+            SWAG_ASSERT(node->assignment->is(AstNodeKind::IdentifierRef));
             overFlags.add(OVERLOAD_TUPLE_UNPACK);
             storageOffset = 0;
             for (auto& c : node->assignment->children)
@@ -1247,15 +1247,15 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         else if (!overFlags.has(OVERLOAD_RETVAL))
         {
             auto assignment = node->assignment;
-            if (assignment && (assignment->kind == AstNodeKind::Catch || assignment->kind == AstNodeKind::Try || assignment->kind == AstNodeKind::Assume))
+            if (assignment && (assignment->is(AstNodeKind::Catch) || assignment->is(AstNodeKind::Try) || assignment->is(AstNodeKind::Assume)))
                 assignment = assignment->children.front();
 
             // :DirectInlineLocalVar
             if (assignment &&
-                assignment->kind == AstNodeKind::IdentifierRef &&
+                assignment->is(AstNodeKind::IdentifierRef) &&
                 !assignment->children.back()->children.empty() &&
                 assignment->typeInfo == node->typeInfo &&
-                assignment->children.back()->children.back()->kind == AstNodeKind::Inline &&
+                assignment->children.back()->children.back()->is(AstNodeKind::Inline) &&
                 assignment->children.back()->children.back()->hasAstFlag(AST_TRANSIENT))
             {
                 SWAG_ASSERT(assignment->children.back()->children.back()->computedValue());

@@ -85,7 +85,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     {
         const auto returnExpression = node->children.front();
         auto       backExpression   = node->children.back();
-        if (backExpression->kind == AstNodeKind::Try || backExpression->kind == AstNodeKind::Catch || backExpression->kind == AstNodeKind::TryCatch)
+        if (backExpression->is(AstNodeKind::Try) || backExpression->is(AstNodeKind::Catch) || backExpression->is(AstNodeKind::TryCatch))
             backExpression = backExpression->children.back();
         const auto exprType = TypeManager::concretePtrRef(returnExpression->typeInfo);
 
@@ -132,7 +132,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             else if (returnType->isClosure())
             {
                 // :ConvertToClosure
-                if (returnExpression->kind == AstNodeKind::MakePointerLambda)
+                if (returnExpression->is(AstNodeKind::MakePointerLambda))
                 {
                     // Copy closure capture buffer
                     // Do it first, because source stack can be shared with node->ownerInline->resultRegisterRC
@@ -246,7 +246,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, r1);
 
                 // :ConvertToClosure
-                if (child->kind == AstNodeKind::MakePointerLambda)
+                if (child->is(AstNodeKind::MakePointerLambda))
                 {
                     EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r1, child->resultRegisterRc[0]);
                     const auto inst = EMIT_INST1(context, ByteCodeOp::SetAtPointer64, r1);
@@ -1196,7 +1196,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
     node->allocateExtension(ExtensionKind::Misc);
     node->extMisc()->additionalRegisterRC = node->resultRegisterRc;
     const auto allParams                  = node->children.empty() ? nullptr : node->children.back();
-    SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
+    SWAG_ASSERT(!allParams || allParams->is(AstNodeKind::FuncCallParams));
 
     auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCE_ALIAS);
 
@@ -1266,7 +1266,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context)
     const auto funcNode = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
 
     const auto allParams = node->children.empty() ? nullptr : node->children.back();
-    SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
+    SWAG_ASSERT(!allParams || allParams->is(AstNodeKind::FuncCallParams));
     SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRc, false, true));
     YIELD();
     emitPostCallUfcs(context);
@@ -1341,7 +1341,7 @@ bool ByteCodeGen::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* pa
     const auto defaultParam = castAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
     SWAG_ASSERT(defaultParam->assignment);
 
-    if (defaultParam->assignment->kind == AstNodeKind::CompilerSpecialValue)
+    if (defaultParam->assignment->is(AstNodeKind::CompilerSpecialValue))
     {
         switch (defaultParam->assignment->token.id)
         {
@@ -1477,10 +1477,10 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
 
     if (!raiseErrors)
     {
-        if (parent->kind == AstNodeKind::Try ||
-            parent->kind == AstNodeKind::Catch ||
-            parent->kind == AstNodeKind::TryCatch ||
-            parent->kind == AstNodeKind::Assume)
+        if (parent->is(AstNodeKind::Try) ||
+            parent->is(AstNodeKind::Catch) ||
+            parent->is(AstNodeKind::TryCatch) ||
+            parent->is(AstNodeKind::Assume))
         {
             if (!srcNode)
                 srcNode = typeInfoFunc->declNode;
@@ -1497,7 +1497,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     node->resultRegisterRc = reserveRegisterRC(context);
 
     auto testReturn = node;
-    if (testReturn->kind == AstNodeKind::Identifier || testReturn->kind == AstNodeKind::FuncCall)
+    if (testReturn->is(AstNodeKind::Identifier) || testReturn->is(AstNodeKind::FuncCall))
     {
         // We need a copy in #ast functions
         if (!node->ownerFct || !node->ownerFct->hasAttribute(ATTRIBUTE_AST_FUNC))
@@ -1509,7 +1509,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     if (parentReturn)
     {
         // Must be the last expression in the return expression (no deref !)
-        if (node->parent->kind != AstNodeKind::IdentifierRef || node == node->parent->children.back())
+        if (node->parent->isNot(AstNodeKind::IdentifierRef) || node == node->parent->children.back())
         {
             if (node->hasOwnerInline())
             {
@@ -1535,14 +1535,14 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     // No need to put the result on the stack and copy the result later, just make a direct reference to
     // the field address
     testReturn = node;
-    if (testReturn->kind == AstNodeKind::Identifier || testReturn->kind == AstNodeKind::FuncCall)
+    if (testReturn->is(AstNodeKind::Identifier) || testReturn->is(AstNodeKind::FuncCall))
         testReturn = testReturn->parent;
 
-    if (testReturn->parent->kind == AstNodeKind::FuncCallParam &&
-        testReturn->parent->parent->parent->kind == AstNodeKind::Identifier &&
-        testReturn->parent->parent->parent->parent->parent->kind == AstNodeKind::TypeExpression &&
+    if (testReturn->parent->is(AstNodeKind::FuncCallParam) &&
+        testReturn->parent->parent->parent->is(AstNodeKind::Identifier) &&
+        testReturn->parent->parent->parent->parent->parent->is(AstNodeKind::TypeExpression) &&
         testReturn->parent->parent->parent->parent->parent->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS) &&
-        testReturn->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::VarDecl &&
+        testReturn->parent->parent->parent->parent->parent->parent->is(AstNodeKind::VarDecl) &&
         testReturn->parent->parent->parent->typeInfo &&
         testReturn->parent->parent->parent->typeInfo->isStruct())
     {
@@ -1644,7 +1644,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
 
     // Error, check validity.
-    if (node->parent->kind == AstNodeKind::IdentifierRef)
+    if (node->parent->is(AstNodeKind::IdentifierRef))
         SWAG_CHECK(checkCatchError(context, varNode, node, node, node->parent->parent, typeInfoFunc));
     else
         SWAG_CHECK(checkCatchError(context, varNode, node, node, node->parent, typeInfoFunc));
@@ -1793,7 +1793,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                 else
                 {
                     SWAG_ASSERT(typeInfoFunc->declNode);
-                    if (typeInfoFunc->declNode->kind == AstNodeKind::FuncDecl)
+                    if (typeInfoFunc->declNode->is(AstNodeKind::FuncDecl))
                     {
                         auto funcDesc = castAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl);
                         parameters    = funcDesc->parameters;
@@ -2291,7 +2291,7 @@ bool ByteCodeGen::emitForeignCall(ByteCodeGenContext* context)
     const auto overload  = node->resolvedSymbolOverload();
     const auto funcNode  = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
     const auto allParams = node->children.empty() ? nullptr : node->children.back();
-    SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
+    SWAG_ASSERT(!allParams || allParams->is(AstNodeKind::FuncCallParams));
     emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRc, true, true);
     return true;
 }
@@ -2303,7 +2303,7 @@ bool ByteCodeGen::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl,
     // Create a semantic job to resolve the inline part, and wait for that to be finished
     context->baseJob->setPending(JobWaitKind::MakeInline, nullptr, funcDecl, nullptr);
     const auto inlineNode = identifier->children.back();
-    SWAG_ASSERT(inlineNode->kind == AstNodeKind::Inline);
+    SWAG_ASSERT(inlineNode->is(AstNodeKind::Inline));
     const auto job = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, inlineNode, false);
     job->addDependentJob(context->baseJob);
     context->baseJob->jobsToAdd.push_back(job);

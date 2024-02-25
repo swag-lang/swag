@@ -32,7 +32,7 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, c
         }
     }
 
-    if (fromNode->kind == AstNodeKind::Literal && fromNode->token.text.length() > 2)
+    if (fromNode->is(AstNodeKind::Literal) && fromNode->token.text.length() > 2)
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
         {
@@ -241,10 +241,10 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         err.remarks = remarks;
 
         // Add a note in case we affect to an identifier.
-        if (context->node->kind == AstNodeKind::AffectOp)
+        if (context->node->is(AstNodeKind::AffectOp))
         {
             const auto left = context->node->children.front();
-            if (left->kind == AstNodeKind::IdentifierRef)
+            if (left->is(AstNodeKind::IdentifierRef))
             {
                 const auto* note = Diagnostic::note(left->children.back(), Diagnostic::isType(left->children.back()));
                 notes.push_back(note);

@@ -618,7 +618,7 @@ bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
 bool Parser::doCompilerDependencies(AstNode* parent)
 {
     SWAG_VERIFY(sourceFile->hasFlag(FILE_IS_CFG_FILE) || sourceFile->hasFlag(FILE_IS_SCRIPT_FILE), context->report({sourceFile, tokenParse.token, toErr(Err0432)}));
-    SWAG_VERIFY(parent->kind == AstNodeKind::File, context->report({sourceFile, tokenParse.token, toErr(Err0433)}));
+    SWAG_VERIFY(parent->is(AstNodeKind::File), context->report({sourceFile, tokenParse.token, toErr(Err0433)}));
 
     const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerDependencies, this, parent);
     SWAG_CHECK(eatToken());
@@ -655,7 +655,7 @@ bool Parser::doCompilerLoad(AstNode* parent)
     auto scan = parent;
     while (scan)
     {
-        if (scan->kind == AstNodeKind::CompilerDependencies)
+        if (scan->is(AstNodeKind::CompilerDependencies))
             break;
         scan = scan->parent;
     }
@@ -689,7 +689,7 @@ bool Parser::doCompilerImport(AstNode* parent)
         auto scan = parent;
         while (scan)
         {
-            if (scan->kind == AstNodeKind::CompilerDependencies)
+            if (scan->is(AstNodeKind::CompilerDependencies))
                 break;
             scan = scan->parent;
         }

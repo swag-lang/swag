@@ -117,12 +117,12 @@ namespace
         {
             // Output the function signature
             concat.clear();
-            if (tryResult[i]->overload->node->kind == AstNodeKind::FuncDecl)
+            if (tryResult[i]->overload->node->is(AstNodeKind::FuncDecl))
             {
                 const auto funcNode = castAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
                 AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
             }
-            else if (tryResult[i]->overload->node->kind == AstNodeKind::VarDecl)
+            else if (tryResult[i]->overload->node->is(AstNodeKind::VarDecl))
             {
                 const auto varNode = castAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
                 const auto lambda  = castAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
@@ -174,7 +174,7 @@ namespace
     bool cannotMatchSingle(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
     {
         // Be sure this is not because of an invalid special function signature
-        if (tryMatches[0]->overload->node->kind == AstNodeKind::FuncDecl)
+        if (tryMatches[0]->overload->node->is(AstNodeKind::FuncDecl))
             SWAG_CHECK(Semantic::checkFuncPrototype(context, castAst<AstFuncDecl>(tryMatches[0]->overload->node, AstNodeKind::FuncDecl)));
 
         Vector<const Diagnostic*> errs0, errs1;
@@ -224,7 +224,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
     const AstNode* genericParameters = nullptr;
 
     // node can be null when we try to resolve a userOp
-    if (node && (node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall))
+    if (node && (node->is(AstNodeKind::Identifier) || node->is(AstNodeKind::FuncCall)))
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
         genericParameters     = identifier->genericParameters;

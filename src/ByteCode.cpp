@@ -397,7 +397,7 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     // Evaluate the first number of instructions for a given function.
     // We take the number of ast nodes in the function as a metric.
     // This is to mitigate the number of re-allocations, without wasting too much memory.
-    if (!maxInstructions && node && node->kind == AstNodeKind::FuncDecl)
+    if (!maxInstructions && node && node->is(AstNodeKind::FuncDecl))
     {
         const auto funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         // 0.8f is kind of magical, based on various measures.

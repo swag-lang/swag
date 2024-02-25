@@ -379,7 +379,7 @@ namespace
         // Check attributes in the ast hierarchy
         while (node)
         {
-            if (node->kind == AstNodeKind::AttrUse)
+            if (node->is(AstNodeKind::AttrUse))
             {
                 const auto attrUse   = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
                 bool       retResult = true;

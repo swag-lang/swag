@@ -112,7 +112,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         return true;
     }
 
-    if (assignment && assignment->kind == AstNodeKind::FuncCallParams)
+    if (assignment && assignment->is(AstNodeKind::FuncCallParams))
     {
         SWAG_CHECK(checkIsConstExpr(context, assignment));
         auto       offset = storageOffset;
@@ -121,7 +121,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         return true;
     }
 
-    if (assignment && assignment->kind == AstNodeKind::ExpressionList)
+    if (assignment && assignment->is(AstNodeKind::ExpressionList))
     {
         SWAG_CHECK(checkIsConstExpr(context, assignment));
         auto       offset = storageOffset;
@@ -263,7 +263,7 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
 
         // In case of a struct to field match
         auto assignment = child;
-        if (child->kind == AstNodeKind::FuncCallParam)
+        if (child->is(AstNodeKind::FuncCallParam))
         {
             const auto param = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
             if (param->resolvedParameter)
@@ -277,9 +277,9 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
             // If we have an expression list in a call parameter, like = {{1}}, then we check if the expression
             // list has been converted to a variable. If that's the case, then we should have type parameters to
             // that var, and we must take them instead of the expression list, because cast has been done
-            if (assignment->kind == AstNodeKind::ExpressionList &&
+            if (assignment->is(AstNodeKind::ExpressionList) &&
                 child->children.count == 3 &&
-                child->children[1]->kind == AstNodeKind::VarDecl)
+                child->children[1]->is(AstNodeKind::VarDecl))
             {
                 const auto varDecl = castAst<AstVarDecl>(child->children[1], AstNodeKind::VarDecl);
                 SWAG_ASSERT(varDecl->type);
@@ -406,7 +406,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
 
     if (typeInfo->isStruct())
     {
-        if (node->assignment && node->assignment->kind == AstNodeKind::IdentifierRef && node->assignment->resolvedSymbolOverload())
+        if (node->assignment && node->assignment->is(AstNodeKind::IdentifierRef) && node->assignment->resolvedSymbolOverload())
         {
             // Do not initialize variable with type arguments, then again with an initialization
             const auto assign   = node->assignment;
@@ -449,7 +449,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
                 SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, value, typeInfo, nullptr));
             }
 
-            SWAG_ASSERT(!node->assignment || node->assignment->kind != AstNodeKind::ExpressionList);
+            SWAG_ASSERT(!node->assignment || node->assignment->isNot(AstNodeKind::ExpressionList));
         }
 
         return true;

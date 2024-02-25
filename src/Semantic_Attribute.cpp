@@ -45,20 +45,20 @@
 
 bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
 {
-    if (!checkNode || checkNode->kind == AstNodeKind::RefSubDecl)
+    if (!checkNode || checkNode->is(AstNodeKind::RefSubDecl))
         return true;
 
-    if (checkNode->kind == AstNodeKind::Statement || checkNode->kind == AstNodeKind::StatementNoScope)
+    if (checkNode->is(AstNodeKind::Statement) || checkNode->is(AstNodeKind::StatementNoScope))
     {
         for (const auto s : checkNode->children)
             SWAG_CHECK(checkAttribute(context, oneAttribute, s));
         return true;
     }
 
-    if (checkNode->kind == AstNodeKind::AttrUse)
+    if (checkNode->is(AstNodeKind::AttrUse))
     {
         const auto attrUse = castAst<AstAttrUse>(checkNode, AstNodeKind::AttrUse);
-        if (checkNode->hasAstFlag(AST_GENERATED) && attrUse->content->kind == AstNodeKind::Namespace && attrUse->content->hasAstFlag(AST_GENERATED))
+        if (checkNode->hasAstFlag(AST_GENERATED) && attrUse->content->is(AstNodeKind::Namespace) && attrUse->content->hasAstFlag(AST_GENERATED))
             SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content->children.front()));
         else
             SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content));
@@ -241,7 +241,7 @@ void Semantic::inheritAttributesFrom(AstNode* child, AttributeFlags attributeFla
 
 void Semantic::inheritAttributesFromOwnerFunc(AstNode* child)
 {
-    SWAG_ASSERT(child->kind == AstNodeKind::FuncDecl);
+    SWAG_ASSERT(child->is(AstNodeKind::FuncDecl));
     SWAG_ASSERT(child->ownerFct);
 
     const auto attributeFlags = child->ownerFct->attributeFlags;
@@ -312,7 +312,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             // Attribute on an attribute : usage
-            if (forNode->kind == AstNodeKind::AttrDecl)
+            if (forNode->is(AstNodeKind::AttrDecl))
             {
                 auto typeAttr = castTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
                 auto value    = curAttr->attributes.getValue(g_LangSpec->name_Swag_AttrUsage, g_LangSpec->name_usage);
@@ -676,7 +676,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
     {
         if (child == node->content)
             continue;
-        if (child->kind != AstNodeKind::IdentifierRef)
+        if (child->isNot(AstNodeKind::IdentifierRef))
             continue;
 
         if (node->content)
@@ -758,7 +758,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
 
     AstNode*       forNode = node;
     AttributeList* list    = nullptr;
-    if (node->content && node->content->kind == AstNodeKind::FuncDeclParam)
+    if (node->content && node->content->is(AstNodeKind::FuncDeclParam))
     {
         auto funcDeclParam = castAst<AstVarDecl>(node->content, AstNodeKind::FuncDeclParam);
         list               = &funcDeclParam->attributes;

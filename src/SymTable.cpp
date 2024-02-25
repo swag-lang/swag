@@ -326,7 +326,7 @@ bool SymTable::acceptGhostSymbolNoLock(ErrorContext*, const AstNode* node, Symbo
 bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, const TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol) const
 {
     auto token = &node->token;
-    if (node->kind == AstNodeKind::FuncDecl)
+    if (node->is(AstNodeKind::FuncDecl))
     {
         const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         token               = &funcNode->tokenName;

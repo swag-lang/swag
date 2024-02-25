@@ -359,6 +359,9 @@ struct AstNode
     uint32_t     childParentIdx() const;
     void         printLoc() const;
 
+    bool is(AstNodeKind what) const { return kind == what; }
+    bool isNot(AstNodeKind what) const { return kind != what; }
+
     bool hasAstFlag(AstNodeFlags fl) const { return flags.has(fl); }
     void addAstFlag(AstNodeFlags fl) { flags.add(fl); }
     void removeAstFlag(AstNodeFlags fl) { flags.remove(fl); }

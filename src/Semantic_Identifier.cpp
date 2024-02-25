@@ -26,7 +26,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
     if (back->resolvedSymbolName()->is(SymbolKind::Variable))
     {
         // alias x = struct.x is not possible
-        if (back->kind == AstNodeKind::IdentifierRef)
+        if (back->is(AstNodeKind::IdentifierRef))
         {
             int cptVar = 0;
             for (const auto& c : back->children)
@@ -147,7 +147,7 @@ bool Semantic::setupIdentifierRef(SemanticContext*, AstNode* node)
     if (overload && overload->hasFlag(OVERLOAD_CONST_ASSIGN))
         node->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
 
-    if (node->parent->kind != AstNodeKind::IdentifierRef)
+    if (node->parent->isNot(AstNodeKind::IdentifierRef))
         return true;
 
     const auto identifierRef = castAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
@@ -244,7 +244,7 @@ bool Semantic::setupIdentifierRef(SemanticContext*, AstNode* node)
 bool Semantic::isFunctionButNotACall(SemanticContext*, AstNode* node, const SymbolName* symbol)
 {
     const AstIdentifier* id = nullptr;
-    if (node && node->kind == AstNodeKind::Identifier)
+    if (node && node->is(AstNodeKind::Identifier))
     {
         id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (id != id->identifierRef()->children.back())
@@ -256,34 +256,34 @@ bool Semantic::isFunctionButNotACall(SemanticContext*, AstNode* node, const Symb
         const auto grandParent = node->parent->parent;
         if (symbol->is(SymbolKind::Attribute))
         {
-            if (grandParent->kind != AstNodeKind::AttrUse)
+            if (grandParent->isNot(AstNodeKind::AttrUse))
                 return true;
         }
         else if (symbol->is(SymbolKind::Function))
         {
             if (symbol->is(SymbolKind::Function))
             {
-                if (grandParent->kind == AstNodeKind::MakePointer && node == node->parent->children.back())
+                if (grandParent->is(AstNodeKind::MakePointer) && node == node->parent->children.back())
                 {
                     if (id && id->callParameters)
                         return false;
                     return true;
                 }
 
-                if (grandParent->kind == AstNodeKind::MakePointerLambda && node == node->parent->children.back())
+                if (grandParent->is(AstNodeKind::MakePointerLambda) && node == node->parent->children.back())
                     return true;
             }
 
-            if (grandParent->kind == AstNodeKind::TypeAlias ||
-                grandParent->kind == AstNodeKind::NameAlias ||
-                grandParent->kind == AstNodeKind::IntrinsicDefined ||
-                grandParent->kind == AstNodeKind::IntrinsicLocation ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicStringOf) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicRunes) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicTypeOf) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicDeclType) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicKindOf))
+            if (grandParent->is(AstNodeKind::TypeAlias) ||
+                grandParent->is(AstNodeKind::NameAlias) ||
+                grandParent->is(AstNodeKind::IntrinsicDefined) ||
+                grandParent->is(AstNodeKind::IntrinsicLocation) ||
+                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicStringOf) ||
+                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicNameOf) ||
+                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicRunes) ||
+                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicTypeOf) ||
+                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicDeclType) ||
+                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicKindOf))
             {
                 return true;
             }
@@ -343,8 +343,8 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
     // If this is a parameter of a function call, we will try to deduce the type with a function signature
     const auto fctCallParam = node->findParent(AstNodeKind::FuncCallParam);
     if (fctCallParam &&
-        fctCallParam->parent->kind == AstNodeKind::FuncCallParams &&
-        fctCallParam->parent->parent->kind == AstNodeKind::Identifier)
+        fctCallParam->parent->is(AstNodeKind::FuncCallParams) &&
+        fctCallParam->parent->parent->is(AstNodeKind::Identifier))
     {
         VectorNative<OneSymbolMatch> symbolMatch;
 
@@ -421,7 +421,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                             break;
                         if (child->typeInfo && child->typeInfo->getConcreteAlias()->isEnum())
                             enumIdx++;
-                        else if (child->kind == AstNodeKind::IdentifierRef && child->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE))
+                        else if (child->is(AstNodeKind::IdentifierRef) && child->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE))
                             enumIdx++;
                     }
 
@@ -478,15 +478,15 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
     auto parent        = node->parent;
     while (parent)
     {
-        if (canScanChilds && (parent->kind == AstNodeKind::BinaryOp ||
-                              parent->kind == AstNodeKind::FactorOp ||
-                              parent->kind == AstNodeKind::AffectOp ||
-                              parent->kind == AstNodeKind::VarDecl ||
-                              parent->kind == AstNodeKind::ConstDecl ||
-                              parent->kind == AstNodeKind::FuncDeclParam ||
-                              parent->kind == AstNodeKind::Switch))
+        if (canScanChilds && (parent->is(AstNodeKind::BinaryOp) ||
+                              parent->is(AstNodeKind::FactorOp) ||
+                              parent->is(AstNodeKind::AffectOp) ||
+                              parent->is(AstNodeKind::VarDecl) ||
+                              parent->is(AstNodeKind::ConstDecl) ||
+                              parent->is(AstNodeKind::FuncDeclParam) ||
+                              parent->is(AstNodeKind::Switch)))
         {
-            if (parent->kind != AstNodeKind::FactorOp)
+            if (parent->isNot(AstNodeKind::FactorOp))
                 canScanChilds = false;
 
             SharedLock lk(parent->mutex);
@@ -495,7 +495,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                 auto typeInfoChild = c->typeInfo;
 
                 // Take first child of an expression list
-                if (c->kind == AstNodeKind::ExpressionList)
+                if (c->is(AstNodeKind::ExpressionList))
                 {
                     const auto expr = castAst<AstExpressionList>(c, AstNodeKind::ExpressionList);
                     typeInfoChild   = expr->children[0]->typeInfo;
@@ -525,14 +525,14 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
         if (!result.empty())
             return true;
 
-        if (parent->kind == AstNodeKind::Statement ||
-            parent->kind == AstNodeKind::SwitchCaseBlock ||
-            parent->kind == AstNodeKind::FuncDecl ||
-            parent->kind == AstNodeKind::File ||
-            parent->kind == AstNodeKind::Module ||
-            parent->kind == AstNodeKind::FuncDeclParam ||
-            parent->kind == AstNodeKind::VarDecl ||
-            parent->kind == AstNodeKind::ConstDecl)
+        if (parent->is(AstNodeKind::Statement) ||
+            parent->is(AstNodeKind::SwitchCaseBlock) ||
+            parent->is(AstNodeKind::FuncDecl) ||
+            parent->is(AstNodeKind::File) ||
+            parent->is(AstNodeKind::Module) ||
+            parent->is(AstNodeKind::FuncDeclParam) ||
+            parent->is(AstNodeKind::VarDecl) ||
+            parent->is(AstNodeKind::ConstDecl))
             break;
 
         parent = parent->parent;
@@ -605,7 +605,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
 
         if (getIt)
         {
-            if (dep.node->parent->kind == AstNodeKind::With)
+            if (dep.node->parent->is(AstNodeKind::With))
                 hasWith = true;
             dep.flags.add(okForUfcs ? ALT_SCOPE_UFCS : 0);
             toCheck.push_back(dep);
@@ -618,7 +618,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         for (auto& dep : toCheck)
         {
             SWAG_ASSERT(dep.node->parent);
-            const bool isWith = dep.node->parent->kind == AstNodeKind::With;
+            const bool isWith = dep.node->parent->is(AstNodeKind::With);
             if (!isWith)
                 dep.node = nullptr;
         }
@@ -699,17 +699,17 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
             if (node->callParameters && node->callParameters->children.size() < typeFunc->parameters.size())
             {
                 auto parent = node->parent;
-                if (parent->parent->kind == AstNodeKind::Catch ||
-                    parent->parent->kind == AstNodeKind::Try ||
-                    parent->parent->kind == AstNodeKind::Assume ||
-                    parent->parent->kind == AstNodeKind::TryCatch)
+                if (parent->parent->is(AstNodeKind::Catch) ||
+                    parent->parent->is(AstNodeKind::Try) ||
+                    parent->parent->is(AstNodeKind::Assume) ||
+                    parent->parent->is(AstNodeKind::TryCatch))
                     parent = parent->parent;
 
                 const auto parentIdx = parent->childParentIdx();
                 if (parentIdx != parent->parent->children.size() - 1)
                 {
                     const auto brother = parent->parent->children[parentIdx + 1];
-                    if (brother->kind == AstNodeKind::Statement)
+                    if (brother->is(AstNodeKind::Statement))
                     {
                         const auto brotherParent = brother->parent;
                         switch (brotherParent->kind)
@@ -907,7 +907,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
 
     // #validifx is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
     // #validif is evaluated once, so keep it.
-    if (funcDecl->validIf->kind == AstNodeKind::CompilerValidIfx)
+    if (funcDecl->validIf->is(AstNodeKind::CompilerValidIfx))
         expr->removeAstFlag(AST_COMPUTED_VALUE);
 
     if (!expr->hasFlagComputedValue())
@@ -916,7 +916,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         context->validIfParameters = oneMatch->oneOverload->callParameters;
 
         ErrCxtStepKind type;
-        if (funcDecl->validIf->kind == AstNodeKind::CompilerValidIfx)
+        if (funcDecl->validIf->is(AstNodeKind::CompilerValidIfx))
             type = ErrCxtStepKind::ValidIfx;
         else
             type = ErrCxtStepKind::ValidIf;

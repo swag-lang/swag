@@ -652,7 +652,7 @@ void LLVMDebug::setLocation(llvm::IRBuilder<>* builder, const ByteCode* bc, cons
 
     SWAG_ASSERT(dbgBuilder);
 
-    if (ip->node->kind == AstNodeKind::FuncDecl)
+    if (ip->node->is(AstNodeKind::FuncDecl))
     {
         builder->SetCurrentDebugLocation(llvm::DebugLoc());
         return;

@@ -666,11 +666,11 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         }
 
         // User initialization
-        if (varDecl->assignment && varDecl->assignment->kind != AstNodeKind::ExplicitNoInit)
+        if (varDecl->assignment && varDecl->assignment->isNot(AstNodeKind::ExplicitNoInit))
         {
             if (typeVar->isArray())
             {
-                if (varDecl->assignment->kind == AstNodeKind::ExpressionList)
+                if (varDecl->assignment->is(AstNodeKind::ExpressionList))
                 {
                     auto exprList = castAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                     SWAG_ASSERT(exprList->computedValue()->storageSegment);
@@ -1205,7 +1205,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
         bool mustReinit = true;
         for (auto& toDrop : from->ownerScope->symTable.structVarsToDrop)
         {
-            if (toDrop.overload && toDrop.overload->symbol->is(SymbolKind::Function) && from->kind == AstNodeKind::IdentifierRef)
+            if (toDrop.overload && toDrop.overload->symbol->is(SymbolKind::Function) && from->is(AstNodeKind::IdentifierRef))
             {
                 if (toDrop.overload == from->resolvedSymbolOverload() && toDrop.storageOffset == from->children.back()->computedValue()->storageOffset)
                 {
@@ -1349,7 +1349,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
                 // When generating parameters for a closure call, keep the reference if we want one !
                 auto       noRef = child->typeInfo;
                 const auto front = param->children.front();
-                if (front->kind != AstNodeKind::MakePointer || !front->hasSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF))
+                if (front->isNot(AstNodeKind::MakePointer) || !front->hasSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF))
                     noRef = TypeManager::concretePtrRefType(noRef);
 
                 emitAffectEqual(context, r0, child->resultRegisterRc, noRef, child);

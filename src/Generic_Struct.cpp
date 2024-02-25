@@ -10,7 +10,7 @@
 
 bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl* node)
 {
-    if (node->typeInfo->isStruct() && node->type && node->type->kind == AstNodeKind::TypeExpression)
+    if (node->typeInfo->isStruct() && node->type && node->type->is(AstNodeKind::TypeExpression))
     {
         const auto typeExpr = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         if (typeExpr->identifier)
@@ -80,7 +80,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // In that case, we need to retrieve the real struct
     const auto genericStructType = castTypeInfo<TypeInfoStruct>(overload->typeInfo, overload->typeInfo->kind);
     const auto sourceSymbol      = match.symbolName;
-    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, formErr(Err0297, node->token.c_str())}));
+    SWAG_VERIFY(sourceNode->is(AstNodeKind::StructDecl), context->report({node, node->token, formErr(Err0297, node->token.c_str())}));
 
     // Make a new type
     const auto newType = castTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);

@@ -44,7 +44,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
             switch (exp.type)
             {
                 case ErrCxtStepKind::Generic:
-                    if (exp.node && exp.node->kind == AstNodeKind::VarDecl) // Can happen with automatic call of opIndexSuffix
+                    if (exp.node && exp.node->is(AstNodeKind::VarDecl)) // Can happen with automatic call of opIndexSuffix
                     {
                         exp.hide = true;
                     }
@@ -118,7 +118,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::ValidIf:
-                    if (exp.node->kind == AstNodeKind::StructDecl)
+                    if (exp.node->is(AstNodeKind::StructDecl))
                         msg = formNte(Nte0092, name.c_str());
                     else
                         msg = formNte(Nte0093, name.c_str());

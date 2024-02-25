@@ -743,7 +743,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
         // If it has been inlined, then the inline block contains the register we need
         const auto back = context->allParamsTmp->children.back();
-        if (back->kind == AstNodeKind::Inline)
+        if (back->is(AstNodeKind::Inline))
         {
             exprNode->resultRegisterRc = back->resultRegisterRc;
             exprNode->allocateExtension(ExtensionKind::Owner);
@@ -1005,7 +1005,7 @@ bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
     const auto exprNode = node->children[0];
 
     // Will be done by parent in case of a func call param
-    if (node->parent->kind == AstNodeKind::FuncCallParam)
+    if (node->parent->is(AstNodeKind::FuncCallParam))
     {
         node->resultRegisterRc   = exprNode->resultRegisterRc;
         exprNode->castedTypeInfo = nullptr;

@@ -116,7 +116,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     if (node->hasFlagComputedValue() && !node->hasAstFlag(AST_NO_BYTECODE))
         return true;
 
-    if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
+    if (node->is(AstNodeKind::TypeExpression) || node->is(AstNodeKind::TypeLambda))
         return context->report({node, toErr(Err0284)});
     if (node->hasAstFlag(AST_FROM_GENERIC_REPLACE))
         return context->report({node, toErr(Err0284)});
@@ -126,7 +126,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
 
     // If this is an identifier ref, then we need to be check concrete from left to right,
     // to raise an error on the first problem, and not only the result
-    if (node->kind == AstNodeKind::IdentifierRef)
+    if (node->is(AstNodeKind::IdentifierRef))
     {
         for (const auto c : node->children)
         {
@@ -179,9 +179,9 @@ bool Semantic::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bo
         return true;
 
     const auto symbolName = node->resolvedSymbolName();
-    if (node->kind == AstNodeKind::TypeExpression ||
-        node->kind == AstNodeKind::TypeLambda ||
-        (node->kind == AstNodeKind::IdentifierRef && node->hasAstFlag(AST_FROM_GENERIC_REPLACE)) ||
+    if (node->is(AstNodeKind::TypeExpression) ||
+        node->is(AstNodeKind::TypeLambda) ||
+        (node->is(AstNodeKind::IdentifierRef) && node->hasAstFlag(AST_FROM_GENERIC_REPLACE)) ||
         (symbolName && symbolName->is(SymbolKind::Struct)) ||
         (symbolName && symbolName->is(SymbolKind::TypeAlias)) ||
         (symbolName && symbolName->is(SymbolKind::Interface)) ||
@@ -268,7 +268,7 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
 
     typeInfo->computeName();
 
-    if (node->kind == AstNodeKind::TypeClosure)
+    if (node->is(AstNodeKind::TypeClosure))
     {
         typeInfo->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
         typeInfo->addFlag(TYPEINFO_CLOSURE);
@@ -525,7 +525,7 @@ bool Semantic::resolveType(SemanticContext* context)
             uint32_t count        = 0;
             bool     genericCount = false;
 
-            if (child->kind == AstNodeKind::IdentifierRef &&
+            if (child->is(AstNodeKind::IdentifierRef) &&
                 !child->hasAstFlag(AST_CONST_EXPR) &&
                 typeNode->ownerStructScope &&
                 typeNode->ownerStructScope->owner->typeInfo->isGeneric())

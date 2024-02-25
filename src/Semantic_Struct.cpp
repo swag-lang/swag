@@ -141,8 +141,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     context->tmpNodes.clear();
     flattenStructChildren(context, node, context->tmpNodes);
 
-    SWAG_ASSERT(node->children[0]->kind == AstNodeKind::IdentifierRef);
-    SWAG_ASSERT(node->children[1]->kind == AstNodeKind::IdentifierRef);
+    SWAG_ASSERT(node->children[0]->is(AstNodeKind::IdentifierRef));
+    SWAG_ASSERT(node->children[1]->is(AstNodeKind::IdentifierRef));
     const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(node->children[0]->typeInfo, TypeInfoKind::Interface);
     const auto typeStruct        = castTypeInfo<TypeInfoStruct>(node->children[1]->typeInfo, TypeInfoKind::Struct);
 
@@ -191,7 +191,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
     for (const auto child : children)
     {
-        if (child->kind != AstNodeKind::FuncDecl)
+        if (child->isNot(AstNodeKind::FuncDecl))
             continue;
         const auto childFct = castAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
 
@@ -406,7 +406,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
 
     for (auto child : children)
     {
-        if (child->kind != AstNodeKind::VarDecl)
+        if (child->isNot(AstNodeKind::VarDecl))
             continue;
 
         const auto varDecl = castAst<AstVarDecl>(child, AstNodeKind::VarDecl);
@@ -660,7 +660,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
 bool Semantic::preResolveStructContent(SemanticContext* context)
 {
     const auto node = castAst<AstStruct>(context->node->parent);
-    SWAG_ASSERT(node->kind == AstNodeKind::StructDecl || node->kind == AstNodeKind::InterfaceDecl);
+    SWAG_ASSERT(node->is(AstNodeKind::StructDecl) || node->is(AstNodeKind::InterfaceDecl));
 
     const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
@@ -759,7 +759,7 @@ void Semantic::flattenStructChildren(SemanticContext* context, AstNode* parent, 
             case AstNodeKind::AttrUse:
             {
                 const AstAttrUse* attrUse = castAst<AstAttrUse>(child, AstNodeKind::AttrUse);
-                if (attrUse->content->kind == AstNodeKind::Statement)
+                if (attrUse->content->is(AstNodeKind::Statement))
                     flattenStructChildren(context, attrUse->content, result);
                 else
                     result.push_back(attrUse->content);
@@ -884,13 +884,13 @@ bool Semantic::resolveStruct(SemanticContext* context)
         SWAG_RACE_CONDITION_WRITE(typeInfo->raceFields);
         for (auto child : children)
         {
-            if (child->kind != AstNodeKind::VarDecl && child->kind != AstNodeKind::ConstDecl)
+            if (child->isNot(AstNodeKind::VarDecl) && child->isNot(AstNodeKind::ConstDecl))
                 continue;
 
             auto varDecl = castAst<AstVarDecl>(child, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
             // Using can only be used on a structure
-            if (child->hasAstFlag(AST_DECL_USING) && child->kind == AstNodeKind::ConstDecl)
+            if (child->hasAstFlag(AST_DECL_USING) && child->is(AstNodeKind::ConstDecl))
                 return context->report({child, toErr(Err0473)});
             if (child->hasAstFlag(AST_DECL_USING) && !child->typeInfo->isStruct() && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
                 return context->report({child, formErr(Err0475, child->typeInfo->getDisplayNameC())});
@@ -905,21 +905,21 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 if (varDecl->hasAstFlag(AST_DECL_USING))
                     typeParam->flags |= TYPEINFOPARAM_HAS_USING;
                 SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
-                if (child->kind == AstNodeKind::VarDecl)
+                if (child->is(AstNodeKind::VarDecl))
                     typeInfo->fields.push_back(typeParam);
                 else
                     typeInfo->constDecl.push_back(typeParam);
             }
 
             child->addAstFlag(AST_REGISTERED_IN_STRUCT);
-            if (child->kind == AstNodeKind::VarDecl)
+            if (child->is(AstNodeKind::VarDecl))
                 typeParam = typeInfo->fields[storageIndexField];
             else
                 typeParam = typeInfo->constDecl[storageIndexConst];
             typeParam->typeInfo = child->typeInfo;
             typeParam->declNode = child;
 
-            if (child->kind != AstNodeKind::VarDecl)
+            if (child->isNot(AstNodeKind::VarDecl))
             {
                 storageIndexConst++;
                 continue;

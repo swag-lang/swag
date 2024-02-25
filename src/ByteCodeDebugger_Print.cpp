@@ -548,7 +548,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     const auto toLogIp        = g_ByteCodeDebugger.cxtIp;
     g_ByteCodeDebugger.bcMode = false;
 
-    if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->token.sourceFile)
+    if (toLogBc->node && toLogBc->node->is(AstNodeKind::FuncDecl) && toLogBc->node->token.sourceFile)
     {
         uint32_t offset = 3;
         if (arg.split.size() == 2)
@@ -591,7 +591,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         toLogIp = toLogBc->out;
     }
 
-    if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->token.sourceFile)
+    if (toLogBc->node && toLogBc->node->is(AstNodeKind::FuncDecl) && toLogBc->node->token.sourceFile)
     {
         const auto funcNode = castAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
         if (funcNode->content)

@@ -759,7 +759,7 @@ namespace
         {
             auto       child     = decl->captureParameters->children[i];
             const auto typeParam = child->typeInfo;
-            if (child->kind == AstNodeKind::MakePointer)
+            if (child->is(AstNodeKind::MakePointer))
                 child = child->children.front();
             const auto overload = child->resolvedSymbolOverload();
             if (!typeParam || !overload)

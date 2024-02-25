@@ -143,13 +143,13 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     // If function has some attributes, we need to clone the attributes too
     auto cloneNode = funcNode;
-    while (cloneNode->parent && cloneNode->parent->kind == AstNodeKind::AttrUse)
+    while (cloneNode->parent && cloneNode->parent->is(AstNodeKind::AttrUse))
         cloneNode = cloneNode->parent;
 
     cloneNode = cloneNode->clone(cloneContext);
 
     auto newFuncNode = cloneNode;
-    while (newFuncNode->kind == AstNodeKind::AttrUse)
+    while (newFuncNode->is(AstNodeKind::AttrUse))
         newFuncNode = newFuncNode->children.back();
 
     AstFuncDecl* newFunc = castAst<AstFuncDecl>(newFuncNode, AstNodeKind::FuncDecl);
@@ -165,14 +165,14 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         newFunc->content->removeAstFlag(AST_NO_SEMANTIC);
 
     auto p = funcNode->parent;
-    while (p && p->kind == AstNodeKind::AttrUse)
+    while (p && p->is(AstNodeKind::AttrUse))
         p = p->parent;
     Ast::addChildBack(p, cloneNode);
 
     // :ContextCall
     // If we are calling the function in a struct context (struct.func), then add the struct as
     // an alternative scope
-    if (context->node->kind == AstNodeKind::Identifier)
+    if (context->node->is(AstNodeKind::Identifier))
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->identifierRef()->resolvedSymbolOverload())
@@ -233,7 +233,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
 {
     const auto node = context->node;
 
-    if (node->kind == AstNodeKind::Identifier)
+    if (node->is(AstNodeKind::Identifier))
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (!identifier->genericParameters)
@@ -277,7 +277,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
 
     // :ContextCall
     // Get the contextual structure call if it exists
-    if (context->node->kind == AstNodeKind::Identifier)
+    if (context->node->is(AstNodeKind::Identifier))
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         const auto idRef      = identifier->identifierRef();

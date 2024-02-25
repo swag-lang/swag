@@ -396,7 +396,7 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
         if (res && identifier->typeInfo)
             return true;
 
-        SWAG_ASSERT(node->parent->parent && node->parent->parent->kind == AstNodeKind::Literal);
+        SWAG_ASSERT(node->parent->parent && node->parent->parent->is(AstNodeKind::Literal));
         node->parent->parent->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
         return true;
     }
@@ -525,7 +525,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     // Check if this is in fact a negative literal. This is important to know now, in order
     // to be able to correctly check bounds.
     bool negApplied = false;
-    if (node->parent->kind == AstNodeKind::SingleOp && node->parent->token.id == TokenId::SymMinus)
+    if (node->parent->is(AstNodeKind::SingleOp) && node->parent->token.id == TokenId::SymMinus)
     {
         switch (suffix->typeInfo->nativeType)
         {

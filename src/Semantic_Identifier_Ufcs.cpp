@@ -70,15 +70,15 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
         // Before was a function call
         else if (idRefSymbolName->is(SymbolKind::Function) &&
                  identifierRef->previousResolvedNode &&
-                 identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
+                 identifierRef->previousResolvedNode->is(AstNodeKind::FuncCall))
             canTry = true;
         // Before was an inlined function call
         else if (idRefSymbolName->is(SymbolKind::Function) &&
                  identifierRef->previousResolvedNode &&
-                 identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
+                 identifierRef->previousResolvedNode->is(AstNodeKind::Identifier) &&
                  !identifierRef->previousResolvedNode->children.empty() &&
-                 identifierRef->previousResolvedNode->children.front()->kind == AstNodeKind::FuncCallParams &&
-                 identifierRef->previousResolvedNode->children.back()->kind == AstNodeKind::Inline)
+                 identifierRef->previousResolvedNode->children.front()->is(AstNodeKind::FuncCallParams) &&
+                 identifierRef->previousResolvedNode->children.back()->is(AstNodeKind::Inline))
             canTry = true;
 
         if (canTry)
@@ -106,7 +106,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
         if (idRefSymbolName &&
             idRefSymbolName->is(SymbolKind::Function) &&
             identifierRef->previousResolvedNode &&
-            identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
+            identifierRef->previousResolvedNode->is(AstNodeKind::Identifier) &&
             identifierRef->previousResolvedNode->hasAstFlag(AST_INLINED))
         {
             fine = true;
@@ -115,7 +115,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
         if (idRefSymbolName &&
             idRefSymbolName->is(SymbolKind::Function) &&
             identifierRef->previousResolvedNode &&
-            identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
+            identifierRef->previousResolvedNode->is(AstNodeKind::FuncCall))
         {
             fine = true;
         }
@@ -173,7 +173,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     const auto idRef = Ast::newIdentifierRef(nullptr, fctCallParam);
     if (symbol->is(SymbolKind::Variable))
     {
-        if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
+        if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->is(AstNodeKind::FuncCall))
         {
             // Function that returns an interface, used as an ufcs.
             // Ex: var cfg = @compiler().getBuildCfg()
@@ -229,7 +229,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
 
                     // In case of a parameter of an inlined function, we will have to find the real OVERLOAD_VAR_INLINE variable
                     // :InlineUsingParam
-                    if (dependentVar->kind == AstNodeKind::FuncDeclParam && copyChild->hasOwnerInline() && copyChild->ownerInline()->parametersScope)
+                    if (dependentVar->is(AstNodeKind::FuncDeclParam) && copyChild->hasOwnerInline() && copyChild->ownerInline()->parametersScope)
                     {
                         // Really, but REALLY not sure about that fix !! Seems really like a hack...
                         if (!copyChild->isSameStackFrame(copyChild->resolvedSymbolOverload()))

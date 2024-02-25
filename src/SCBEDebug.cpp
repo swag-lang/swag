@@ -510,7 +510,7 @@ void SCBEDebug::setLocation(CPUFunction* cpuFct, const ByteCode* bc, const ByteC
         return;
     }
 
-    if (ip->node->kind == AstNodeKind::FuncDecl)
+    if (ip->node->is(AstNodeKind::FuncDecl))
     {
         return;
     }

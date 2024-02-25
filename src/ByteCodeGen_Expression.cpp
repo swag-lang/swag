@@ -153,7 +153,7 @@ void ByteCodeGen::collectLiteralsChildren(AstNode* node, VectorNative<AstNode*>*
 {
     for (auto child : node->children)
     {
-        if (child->kind == AstNodeKind::ExpressionList)
+        if (child->is(AstNodeKind::ExpressionList))
             collectLiteralsChildren(child, orderedChildren);
         else
             orderedChildren->push_back(child);
@@ -168,7 +168,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
     // A non const expression list will be collected by the top ExpressionList
     if (!node->hasAstFlag(AST_CONST_EXPR))
     {
-        if (node->parent->kind == AstNodeKind::ExpressionList)
+        if (node->parent->is(AstNodeKind::ExpressionList))
             return true;
     }
 
@@ -217,7 +217,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 
         // If initializing a variable, then push the variable storage directly if possible.
         // That way can avoid one affectation.
-        else if (listNode->parent->kind == AstNodeKind::VarDecl)
+        else if (listNode->parent->is(AstNodeKind::VarDecl))
         {
             const auto varDecl = castAst<AstVarDecl>(listNode->parent, AstNodeKind::VarDecl);
             if (varDecl->assignment == listNode)
@@ -323,12 +323,12 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
     typeInfo      = TypeManager::concreteType(typeInfo);
 
     AstIdentifierRef* identifierRef = nullptr;
-    if (node->kind == AstNodeKind::Identifier)
+    if (node->is(AstNodeKind::Identifier))
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         identifierRef         = identifier->identifierRef();
     }
-    else if (node->kind == AstNodeKind::ArrayPointerIndex)
+    else if (node->is(AstNodeKind::ArrayPointerIndex))
     {
         identifierRef = castAst<AstIdentifierRef>(node->findParent(AstNodeKind::IdentifierRef));
     }

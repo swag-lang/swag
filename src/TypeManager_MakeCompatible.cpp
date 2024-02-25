@@ -35,7 +35,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                 }
             }
 
-            if (fromNode->parent->kind == AstNodeKind::FuncDeclParam)
+            if (fromNode->parent->is(AstNodeKind::FuncDeclParam))
                 convert = false;
 
             if (convert)
@@ -72,7 +72,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     {
         if (fromNode->typeInfo->isListTuple() || fromNode->typeInfo->isListArray())
         {
-            while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
+            while (fromNode && fromNode->isNot(AstNodeKind::ExpressionList))
                 fromNode = fromNode->children.empty() ? nullptr : fromNode->children.front();
 
             if (fromNode && fromNode->hasAstFlag(AST_CONST_EXPR))
@@ -211,7 +211,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     // From a reference
     if (fromType->isPointerRef() ||
-        (fromNode && fromNode->kind == AstNodeKind::KeepRef && fromType->isPointer()))
+        (fromNode && fromNode->is(AstNodeKind::KeepRef) && fromType->isPointer()))
     {
         const auto fromTypeRef = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         if (fromTypeRef == toType)

@@ -237,18 +237,18 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     SWAG_ASSERT(prevNodeLocal);
 
     // :JobNodeIsFile
-    if (prevNodeLocal && prevNodeLocal->kind == AstNodeKind::File)
+    if (prevNodeLocal && prevNodeLocal->is(AstNodeKind::File))
         return nullptr;
 
     const AstNode* prevNode = nullptr;
     if (!prevJob->originalNode)
         prevNode = prevNodeLocal;
-    else if (prevJob->originalNode->kind == AstNodeKind::VarDecl ||
-             prevJob->originalNode->kind == AstNodeKind::ConstDecl ||
-             prevJob->originalNode->kind == AstNodeKind::TypeAlias ||
-             prevJob->originalNode->kind == AstNodeKind::NameAlias ||
-             prevJob->originalNode->kind == AstNodeKind::StructDecl ||
-             prevJob->originalNode->kind == AstNodeKind::EnumDecl)
+    else if (prevJob->originalNode->is(AstNodeKind::VarDecl) ||
+             prevJob->originalNode->is(AstNodeKind::ConstDecl) ||
+             prevJob->originalNode->is(AstNodeKind::TypeAlias) ||
+             prevJob->originalNode->is(AstNodeKind::NameAlias) ||
+             prevJob->originalNode->is(AstNodeKind::StructDecl) ||
+             prevJob->originalNode->is(AstNodeKind::EnumDecl))
         prevNode = prevJob->originalNode;
     else
         prevNode = prevNodeLocal;
@@ -382,7 +382,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
 
             for (const auto depJob : cycle)
             {
-                if (prevJob->nodes.size() > 1 && prevJob->originalNode->kind == AstNodeKind::FuncDecl)
+                if (prevJob->nodes.size() > 1 && prevJob->originalNode->is(AstNodeKind::FuncDecl))
                 {
                     const auto front  = prevJob->nodes.front();
                     const auto back   = prevJob->nodes.back();
@@ -532,7 +532,7 @@ void Workspace::checkPendingJobs()
             node = pendingJob->originalNode;
         if (!node)
             continue;
-        if (node->kind == AstNodeKind::FuncDeclType)
+        if (node->is(AstNodeKind::FuncDeclType))
             node = node->parent;
 
         PendingJob pj;

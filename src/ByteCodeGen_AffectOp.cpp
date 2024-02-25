@@ -174,7 +174,7 @@ bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, const RegisterLis
         SWAG_ASSERT(from);
 
         // :ConvertToClosure
-        if (from->kind == AstNodeKind::MakePointerLambda)
+        if (from->is(AstNodeKind::MakePointerLambda))
         {
             EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);
             const auto inst = EMIT_INST1(context, ByteCodeOp::SetAtPointer64, r0);

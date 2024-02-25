@@ -101,7 +101,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                         if (listArr->subTypes[0]->typeInfo->isUntypedInteger() || listArr->subTypes[0]->typeInfo->isUntypedFloat())
                         {
                             errType = fromNode->typeInfo = listArr->subTypes[0]->typeInfo;
-                            if (fromNode->kind == AstNodeKind::FuncCallParam)
+                            if (fromNode->is(AstNodeKind::FuncCallParam))
                                 errNode = fromNode->children.front()->children.front();
                             else
                                 errNode = fromNode->children.front();

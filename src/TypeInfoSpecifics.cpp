@@ -715,7 +715,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
 
         // If the two functions are generics, compare the types that have been used to instantiate the function.
         // If the types do not match, then the two functions are not the same.
-        if (declNode && declNode->kind == AstNodeKind::FuncDecl && other->declNode && other->declNode->kind == AstNodeKind::FuncDecl)
+        if (declNode && declNode->is(AstNodeKind::FuncDecl) && other->declNode && other->declNode->is(AstNodeKind::FuncDecl))
         {
             const auto myFunc        = castAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
             const auto typeMyFunc    = castTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
@@ -1189,9 +1189,9 @@ bool TypeInfoStruct::isPlainOldData() const
 
 Utf8 TypeInfoStruct::getDisplayName()
 {
-    if (declNode && declNode->kind == AstNodeKind::InterfaceDecl)
+    if (declNode && declNode->is(AstNodeKind::InterfaceDecl))
         return form("interface %s", name.c_str());
-    if (declNode && declNode->kind == AstNodeKind::StructDecl && declNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
+    if (declNode && declNode->is(AstNodeKind::StructDecl) && declNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
         return form("union %s", name.c_str());
 
     Utf8 str;

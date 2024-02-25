@@ -72,7 +72,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 {
     if (left->children.back()->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN))
     {
-        if (!left->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef)
+        if (!left->typeInfo->isPointerRef() || right->is(AstNodeKind::KeepRef))
         {
             left->addAstFlag(AST_IS_CONST);
         }
@@ -84,7 +84,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         left->hasAstFlag(AST_IS_CONST) ||
         !left->hasAstFlag(AST_L_VALUE) ||
         (left->typeInfo->isConstAlias() && left->typeInfo->isConst()) ||
-        (left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))
+        (left->typeInfo->isConstPointerRef() && right->isNot(AstNodeKind::KeepRef)))
     {
         isConst = true;
     }
@@ -101,7 +101,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     const Diagnostic* note    = nullptr;
     const auto        orgLeft = left;
 
-    if (left->kind == AstNodeKind::IdentifierRef)
+    if (left->is(AstNodeKind::IdentifierRef))
     {
         // If not, try to find the culprit type
         for (int i = left->children.count - 1; i >= 0; i--)
@@ -111,7 +111,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             if (!typeChild)
                 continue;
 
-            if (child->kind == AstNodeKind::ArrayPointerIndex)
+            if (child->is(AstNodeKind::ArrayPointerIndex))
             {
                 const auto arr = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
                 if (arr->array->typeInfo->isString())
@@ -135,7 +135,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             }
         }
 
-        if (left->kind == AstNodeKind::Identifier && left->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING | AstIdentifier::SPEC_FLAG_FROM_WITH))
+        if (left->is(AstNodeKind::Identifier) && left->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING | AstIdentifier::SPEC_FLAG_FROM_WITH))
         {
             const auto leftId = castAst<AstIdentifier>(left, AstNodeKind::Identifier);
             hint              = "this is equivalent to [[";
@@ -187,7 +187,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
     if (left->resolvedSymbolOverload() &&
         left->resolvedSymbolOverload()->hasFlag(OVERLOAD_IS_LET) &&
-        (!left->resolvedSymbolOverload()->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef))
+        (!left->resolvedSymbolOverload()->typeInfo->isPointerRef() || right->is(AstNodeKind::KeepRef)))
     {
         Diagnostic err{node, node->token, toErr(Err0104)};
         err.addNote(left, toNte(Nte0017));
@@ -270,7 +270,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     SWAG_VERIFY(!rightTypeInfo->isVoid(), context->report({right, toErr(Err0385)}));
 
     // Be sure modifiers are relevant
-    if (right->kind == AstNodeKind::NoDrop || right->kind == AstNodeKind::Move)
+    if (right->is(AstNodeKind::NoDrop) || right->is(AstNodeKind::Move))
     {
         PushErrCxtStep ec(context, right, ErrCxtStepKind::Note, [rightTypeInfo] { return Diagnostic::isType(rightTypeInfo); });
 
@@ -296,7 +296,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
     // Is this an array like affectation ?
     AstArrayPointerIndex* arrayNode = nullptr;
-    if (left->kind == AstNodeKind::IdentifierRef && left->children.back()->kind == AstNodeKind::ArrayPointerIndex)
+    if (left->is(AstNodeKind::IdentifierRef) && left->children.back()->is(AstNodeKind::ArrayPointerIndex))
     {
         arrayNode            = castAst<AstArrayPointerIndex>(left->children.back(), AstNodeKind::ArrayPointerIndex);
         const auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo);
@@ -309,7 +309,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             if (!node->hasSemFlag(SEMFLAG_FLAT_PARAMS))
             {
                 auto leftNode = arrayNode;
-                while (leftNode->array->kind == AstNodeKind::ArrayPointerIndex)
+                while (leftNode->array->is(AstNodeKind::ArrayPointerIndex))
                     leftNode = castAst<AstArrayPointerIndex>(leftNode->array, AstNodeKind::ArrayPointerIndex);
                 arrayNode->structFlatParams.push_back(right);
                 arrayNode->structFlatParams.push_front(leftNode->array);

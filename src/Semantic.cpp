@@ -8,22 +8,22 @@
 void Semantic::start(SemanticContext* context, SourceFile* sourceFile, AstNode* originalNode)
 {
     context->sourceFile = sourceFile;
-    context->canSpawn   = originalNode->kind == AstNodeKind::Impl ||
-                        originalNode->kind == AstNodeKind::File ||
-                        originalNode->kind == AstNodeKind::StatementNoScope ||
-                        originalNode->kind == AstNodeKind::AttrUse ||
-                        originalNode->kind == AstNodeKind::CompilerIf;
+    context->canSpawn   = originalNode->is(AstNodeKind::Impl) ||
+                        originalNode->is(AstNodeKind::File) ||
+                        originalNode->is(AstNodeKind::StatementNoScope) ||
+                        originalNode->is(AstNodeKind::AttrUse) ||
+                        originalNode->is(AstNodeKind::CompilerIf);
 
     // Sub functions attributes inheritance
-    if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->ownerFct)
+    if (originalNode->is(AstNodeKind::FuncDecl) && originalNode->ownerFct)
         inheritAttributesFromOwnerFunc(originalNode);
 
     // In configuration pass1, we only treat the #dependencies block
-    if (context->sourceFile->module->kind == ModuleKind::Config && originalNode->kind == AstNodeKind::File)
+    if (context->sourceFile->module->kind == ModuleKind::Config && originalNode->is(AstNodeKind::File))
     {
         for (const auto c : originalNode->children)
         {
-            if (c->kind != AstNodeKind::CompilerDependencies)
+            if (c->isNot(AstNodeKind::CompilerDependencies))
             {
                 c->addAstFlag(AST_NO_SEMANTIC); // :FirstPassCfgNoSem
                 c->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
@@ -34,9 +34,9 @@ void Semantic::start(SemanticContext* context, SourceFile* sourceFile, AstNode* 
 
 bool Semantic::setUnRef(AstNode* node)
 {
-    if (node->kind == AstNodeKind::KeepRef)
+    if (node->is(AstNodeKind::KeepRef))
         return false;
-    if (node->kind == AstNodeKind::Cast)
+    if (node->is(AstNodeKind::Cast))
         return false;
 
     node->addSemFlag(SEMFLAG_FROM_REF);
@@ -173,7 +173,7 @@ bool Semantic::setState(SemanticContext* context, AstNode* node, AstNodeResolveS
     switch (state)
     {
         case AstNodeResolveState::Enter:
-            if (node->kind == AstNodeKind::IdentifierRef)
+            if (node->is(AstNodeKind::IdentifierRef))
             {
                 const auto idRef  = castAst<AstIdentifierRef>(node);
                 idRef->startScope = nullptr;
@@ -184,11 +184,11 @@ bool Semantic::setState(SemanticContext* context, AstNode* node, AstNodeResolveS
             break;
 
         case AstNodeResolveState::PostChildren:
-            if (node->kind == AstNodeKind::FuncDecl ||
-                node->kind == AstNodeKind::StructDecl ||
-                node->kind == AstNodeKind::EnumDecl ||
-                node->kind == AstNodeKind::TypeAlias ||
-                node->kind == AstNodeKind::ConstDecl)
+            if (node->is(AstNodeKind::FuncDecl) ||
+                node->is(AstNodeKind::StructDecl) ||
+                node->is(AstNodeKind::EnumDecl) ||
+                node->is(AstNodeKind::TypeAlias) ||
+                node->is(AstNodeKind::ConstDecl))
             {
                 SWAG_CHECK(checkAccess(context, node));
             }

@@ -532,7 +532,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         if (binNode->children.size() == 2)
         {
             auto child1 = binNode->children[1];
-            while (child1->kind == AstNodeKind::BinaryOp && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
+            while (child1->is(AstNodeKind::BinaryOp) && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
             {
                 const auto child0 = child1->children[0];
                 child0->allocateExtension(ExtensionKind::Misc);
@@ -596,7 +596,7 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
         if (binNode->children.size() == 2)
         {
             auto child1 = binNode->children[1];
-            while (child1->kind == AstNodeKind::BinaryOp && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
+            while (child1->is(AstNodeKind::BinaryOp) && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
             {
                 const auto child0 = child1->children[0];
                 child0->allocateExtension(ExtensionKind::Misc);
@@ -798,7 +798,7 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
             {
                 node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
                 const auto back = node->children.back();
-                SWAG_ASSERT(back->kind == AstNodeKind::Inline);
+                SWAG_ASSERT(back->is(AstNodeKind::Inline));
                 context->baseJob->nodes.push_back(back);
                 context->result = ContextResult::NewChildren;
             }

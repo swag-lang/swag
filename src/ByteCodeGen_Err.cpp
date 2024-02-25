@@ -202,7 +202,7 @@ bool ByteCodeGen::checkEscapedThrow(ByteCodeGenContext* context)
         auto hasCatch = node;
         while (hasCatch != defer)
         {
-            if (hasCatch->kind == AstNodeKind::Catch)
+            if (hasCatch->is(AstNodeKind::Catch))
                 return true;
             hasCatch = hasCatch->parent;
         }

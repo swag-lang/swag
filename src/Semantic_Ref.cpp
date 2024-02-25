@@ -73,7 +73,7 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
 
 bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
 {
-    SWAG_ASSERT(node->kind == AstNodeKind::IdentifierRef || node->kind == AstNodeKind::ArrayPointerIndex);
+    SWAG_ASSERT(node->is(AstNodeKind::IdentifierRef) || node->is(AstNodeKind::ArrayPointerIndex));
     if (!node->hasAstFlag(AST_L_VALUE))
     {
         if (node->resolvedSymbolName()->isNot(SymbolKind::Variable))
@@ -150,7 +150,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 
     if (child->resolvedSymbolOverload() && child->resolvedSymbolOverload()->hasFlag(OVERLOAD_IS_LET))
     {
-        if (child->kind != AstNodeKind::IdentifierRef || child->children.back()->kind != AstNodeKind::ArrayPointerIndex)
+        if (child->isNot(AstNodeKind::IdentifierRef) || child->children.back()->isNot(AstNodeKind::ArrayPointerIndex))
         {
             const Diagnostic err{node, node->token, toErr(Err0185)};
             return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload()->node));
@@ -161,9 +161,9 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     {
         // For a function, if no parameters, then this is for a lambda
         const auto back = child->children.back();
-        if (back->kind != AstNodeKind::FuncCall)
+        if (back->isNot(AstNodeKind::FuncCall))
         {
-            if (back->kind != AstNodeKind::Identifier)
+            if (back->isNot(AstNodeKind::Identifier))
                 return resolveMakePointerLambda(context);
 
             const auto idBack = castAst<AstIdentifier>(back, AstNodeKind::Identifier);
@@ -224,10 +224,10 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 
     // :PointerArithmetic
     // Taking the address of an array element is ok for pointer arithmetic
-    if (child->kind == AstNodeKind::IdentifierRef)
+    if (child->is(AstNodeKind::IdentifierRef))
     {
         const auto last = child->children.back();
-        if (last->kind == AstNodeKind::ArrayPointerIndex)
+        if (last->is(AstNodeKind::ArrayPointerIndex))
             ptrFlags.add(TYPEINFO_POINTER_ARITHMETIC);
     }
 
@@ -488,13 +488,13 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
     {
         Diagnostic err{node, node->token, formErr(Err0365, typeInfo->getDisplayNameC())};
 
-        if (front->kind == AstNodeKind::IdentifierRef && front->children.front()->kind == AstNodeKind::ArrayPointerIndex)
+        if (front->is(AstNodeKind::IdentifierRef) && front->children.front()->is(AstNodeKind::ArrayPointerIndex))
         {
             err.addNote(front, toNte(Nte0026));
             return context->report(err);
         }
 
-        if (front->kind == AstNodeKind::IdentifierRef)
+        if (front->is(AstNodeKind::IdentifierRef))
         {
             err.hint = toNte(Nte0129);
             err.addNote(front, formNte(Nte0195, front->token.c_str()));
@@ -539,13 +539,13 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 
     // If this is not the last child of the IdentifierRef, then this is a reference, and
     // we must take the address and not dereference that identifier
-    if (node->parent->kind == AstNodeKind::IdentifierRef)
+    if (node->parent->is(AstNodeKind::IdentifierRef))
     {
         const auto parent = castAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
         if (node != parent->children.back())
         {
             // The last ArrayPointerIndex in a list [0, 0, 0] must dereference
-            if (node->children[0]->kind != AstNodeKind::ArrayPointerIndex)
+            if (node->children[0]->isNot(AstNodeKind::ArrayPointerIndex))
                 node->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
 
             // In order to resolve what's next, we need to fill the startScope of the identifier ref
@@ -602,7 +602,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 
     // When we are building a pointer, this is fine to be const, because in fact we do no generate an address to modify the content
     // (or it will be done later on a pointer, and it will be const too)
-    if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
+    if (arrayNode->parent->parent->isNot(AstNodeKind::MakePointer))
     {
         if (baseType->isConst())
         {
@@ -728,7 +728,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             arrayNode->typeInfo = arrayType;
 
             // In fact we are taking the address of an operator [] call result
-            if (arrayNode->parent->parent->kind == AstNodeKind::MakePointer)
+            if (arrayNode->parent->parent->is(AstNodeKind::MakePointer))
             {
                 SWAG_CHECK(resolveArrayPointerDeRef(context));
                 YIELD();
@@ -736,7 +736,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             }
 
             // Only the top level ArrayPointerIndex node will deal with the call
-            if (arrayNode->parent->kind != AstNodeKind::ArrayPointerIndex)
+            if (arrayNode->parent->isNot(AstNodeKind::ArrayPointerIndex))
             {
                 // Flatten all indexes. self and value will be set before the call later
                 // Can be already done, so do not overwrite
@@ -746,7 +746,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
                     arrayNode->structFlatParams.push_back(arrayNode->access);
 
                     AstNode* child = arrayNode->array;
-                    while (child->kind == AstNodeKind::ArrayPointerIndex)
+                    while (child->is(AstNodeKind::ArrayPointerIndex))
                     {
                         const auto arrayChild = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
                         arrayNode->structFlatParams.push_front(arrayChild->access);
@@ -779,7 +779,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
 
         // Deal with array of array
         auto subArray = arrayNode;
-        while (isConstAccess && subArray->array->kind == AstNodeKind::ArrayPointerIndex)
+        while (isConstAccess && subArray->array->is(AstNodeKind::ArrayPointerIndex))
         {
             subArray      = castAst<AstArrayPointerIndex>(subArray->array, AstNodeKind::ArrayPointerIndex);
             isConstAccess = isConstAccess && subArray->access->hasFlagComputedValue();
@@ -1010,7 +1010,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             arrayNode->access->typeInfo = getConcreteTypeUnRef(arrayNode->access, CONCRETE_FUNC | CONCRETE_ALIAS);
 
             // Only the top level ArrayPointerIndex node (for a given serial) will deal with the call
-            if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex &&
+            if (arrayNode->parent->is(AstNodeKind::ArrayPointerIndex) &&
                 arrayNode->parent->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL) == arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL))
             {
                 arrayNode->typeInfo = arrayType;
@@ -1024,7 +1024,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 
             const auto serial = arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
             AstNode*   child  = arrayNode->array;
-            while (child->kind == AstNodeKind::ArrayPointerIndex &&
+            while (child->is(AstNodeKind::ArrayPointerIndex) &&
                    child->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL) == serial)
             {
                 const auto arrayChild = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
@@ -1109,7 +1109,7 @@ bool Semantic::resolveInit(SemanticContext* context)
     if (!node->count)
     {
         expressionTypeInfo = getConcreteTypeUnRef(node->expression, CONCRETE_ALIAS);
-        SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, context->report({node->expression, formErr(Err0199, node->token.c_str())}));
+        SWAG_VERIFY(node->expression->is(AstNodeKind::IdentifierRef), context->report({node->expression, formErr(Err0199, node->token.c_str())}));
         SWAG_VERIFY(node->expression->resolvedSymbolOverload(), context->report({node->expression, formErr(Err0199, node->token.c_str())}));
         SWAG_VERIFY(!expressionTypeInfo->isConst(), context->report({node->expression, formErr(Err0057, node->token.c_str(), expressionTypeInfo->getDisplayNameC())}));
         const auto back = node->expression->children.back();
@@ -1202,7 +1202,7 @@ bool Semantic::resolveDropCopyMove(SemanticContext* context)
     SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
 
     // Be sure struct if not marked as nocopy
-    if (node->kind == AstNodeKind::PostCopy)
+    if (node->is(AstNodeKind::PostCopy))
     {
         const auto ptrType     = castTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
         const auto pointedType = TypeManager::concreteType(ptrType->pointedType);

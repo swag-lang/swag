@@ -310,7 +310,7 @@ void Ast::addChildBack(AstNode* parent, AstNode* child)
 
 void Ast::setForceConstType(AstNode* node)
 {
-    if (node && node->kind == AstNodeKind::TypeExpression)
+    if (node && node->is(AstNodeKind::TypeExpression))
         castAst<AstTypeExpression>(node)->typeFlags.add(TYPEFLAG_FORCE_CONST);
 }
 

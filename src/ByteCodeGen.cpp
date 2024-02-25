@@ -57,7 +57,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
     {
         EMIT_INST0(context, ByteCodeOp::End);
 
-        if (node->kind == AstNodeKind::FuncDecl || context->bc->isCompilerGenerated)
+        if (node->is(AstNodeKind::FuncDecl) || context->bc->isCompilerGenerated)
         {
 #ifdef SWAG_STATS
             g_Stats.numInstructions += context->bc->numInstructions;
@@ -78,8 +78,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
         }
 
         // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
-        if (context->bc->node &&
-            context->bc->node->kind == AstNodeKind::FuncDecl)
+        if (context->bc->node && context->bc->node->is(AstNodeKind::FuncDecl))
         {
             const auto funcNode = castAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
 
@@ -126,7 +125,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
     {
         if (node->hasAttribute(ATTRIBUTE_PRINT_BC) || (node->ownerFct && node->ownerFct->hasAttribute(ATTRIBUTE_PRINT_BC)))
         {
-            if (node->hasAttribute(ATTRIBUTE_GENERATED_FUNC) || node->kind != AstNodeKind::FuncDecl)
+            if (node->hasAttribute(ATTRIBUTE_GENERATED_FUNC) || node->isNot(AstNodeKind::FuncDecl))
             {
                 constexpr ByteCodePrintOptions opt;
                 context->bc->print(opt);
@@ -141,8 +140,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
         context->sourceFile->module->mapRuntimeFct[context->bc->getCallName()] = context->bc;
     }
 
-    if (context->bc->node &&
-        context->bc->node->kind == AstNodeKind::FuncDecl)
+    if (context->bc->node && context->bc->node->is(AstNodeKind::FuncDecl))
     {
         const auto funcNode = castAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
         if (!funcNode->token.sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
@@ -176,7 +174,7 @@ bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
 {
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
     const auto res = Ast::visit(context, node, [](ErrorContext* cxt, const AstNode* n) {
-        if (n->kind != AstNodeKind::Literal)
+        if (n->isNot(AstNodeKind::Literal))
             return Ast::VisitResult::Continue;
         if (n->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
         {
@@ -199,7 +197,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
 
     // If this is a foreign function, we do not need bytecode
     AstFuncDecl* funcDecl = nullptr;
-    if (node->kind == AstNodeKind::FuncDecl)
+    if (node->is(AstNodeKind::FuncDecl))
     {
         funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         if (funcDecl->content && funcDecl->content->hasAstFlag(AST_NO_SEMANTIC))
@@ -282,7 +280,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
                 extension->bc->name += node->token.text;
             }
 
-            if (node->kind == AstNodeKind::FuncDecl)
+            if (node->is(AstNodeKind::FuncDecl))
                 sourceFile->module->addByteCodeFunc(node->extByteCode()->bc);
 
             if (flags & ASKBC_WAIT_DONE)

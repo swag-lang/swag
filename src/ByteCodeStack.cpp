@@ -100,7 +100,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     if (ip->node->hasAstFlag(AST_IN_MIXIN))
     {
         auto owner = ip->node->parent;
-        while (owner && owner->kind != AstNodeKind::CompilerMixin)
+        while (owner && owner->isNot(AstNodeKind::CompilerMixin))
             owner = owner->parent;
         if (owner)
         {

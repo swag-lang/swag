@@ -529,22 +529,22 @@ void Parser::registerSubDecl(AstNode* subDecl)
     AstAttrUse* newAttrUse = nullptr;
 
     // If parent is an attribute, then we will move it with the sub-decl
-    if (subDecl->parent->kind == AstNodeKind::AttrUse)
+    if (subDecl->parent->is(AstNodeKind::AttrUse))
         subDecl = subDecl->parent;
 
     // Else if we are in an attr-use block, we need to duplicate each of them, in order
     // for the sub-decl to have its own attr-use
-    else if (subDecl->parent->kind == AstNodeKind::Statement)
+    else if (subDecl->parent->is(AstNodeKind::Statement))
     {
         auto testParent  = subDecl->parent;
         int  idxToInsert = 0;
         while (testParent)
         {
-            while (testParent && testParent->kind == AstNodeKind::Statement)
+            while (testParent && testParent->is(AstNodeKind::Statement))
                 testParent = testParent->parent;
             if (!testParent)
                 break;
-            if (testParent->kind != AstNodeKind::AttrUse)
+            if (testParent->isNot(AstNodeKind::AttrUse))
                 break;
             if (!newAttrUse)
                 newAttrUse = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, subDecl->parent);
@@ -577,7 +577,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     Ast::removeFromParent(subDecl);
 
     // :SubDeclParent
-    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->kind != AstNodeKind::Namespace)
+    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->isNot(AstNodeKind::Namespace))
         newParent = newParent->parent;
 
     // Force the parent to be the new attribute, if defined
@@ -603,7 +603,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     // solved, in case we make a reference to it (like in 5296, the @decltype).
     // So we add a fake makePointerLambda which will authorise the solving of the corresponding sub-decl
     // when it is evaluated.
-    if (orgSubDecl->kind != AstNodeKind::FuncDecl || !orgSubDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
+    if (orgSubDecl->isNot(AstNodeKind::FuncDecl) || !orgSubDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
     {
         const auto solver   = Ast::newNode<AstRefSubDecl>(AstNodeKind::RefSubDecl, this, orgParent);
         solver->semanticFct = Semantic::resolveSubDeclRef;

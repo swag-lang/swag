@@ -38,9 +38,9 @@ bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCod
         return true;
 
     child = child->children.front();
-    SWAG_ASSERT(child->kind == AstNodeKind::IdentifierRef);
+    SWAG_ASSERT(child->is(AstNodeKind::IdentifierRef));
     child = child->children.front();
-    SWAG_ASSERT(child->kind == AstNodeKind::IntrinsicProp);
+    SWAG_ASSERT(child->is(AstNodeKind::IntrinsicProp));
     child = child->children.front();
 
     if (child->typeInfo->isListArray())

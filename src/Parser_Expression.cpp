@@ -812,7 +812,7 @@ namespace
     bool doOperatorPrecedence(AstNode** result)
     {
         auto factor = *result;
-        if (factor->kind != AstNodeKind::FactorOp && factor->kind != AstNodeKind::BinaryOp)
+        if (factor->isNot(AstNodeKind::FactorOp) && factor->isNot(AstNodeKind::BinaryOp))
             return true;
 
         auto left = factor->children[0];
@@ -820,7 +820,7 @@ namespace
         auto right = factor->children[1];
         SWAG_CHECK(doOperatorPrecedence(&right));
 
-        if ((right->kind == AstNodeKind::FactorOp || right->kind == AstNodeKind::BinaryOp) && !right->hasAstFlag(AST_IN_ATOMIC_EXPR))
+        if ((right->is(AstNodeKind::FactorOp) || right->is(AstNodeKind::BinaryOp)) && !right->hasAstFlag(AST_IN_ATOMIC_EXPR))
         {
             const auto myPrecedence    = getPrecedence(factor->token.id);
             const auto rightPrecedence = getPrecedence(right->token.id);
@@ -967,7 +967,7 @@ bool Parser::doCompareExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
         return true;
     }
 
-    if (!exprFlags.has(EXPR_FLAG_NAMED_PARAM) || leftNode->kind != AstNodeKind::IdentifierRef)
+    if (!exprFlags.has(EXPR_FLAG_NAMED_PARAM) || leftNode->isNot(AstNodeKind::IdentifierRef))
         SWAG_VERIFY(tokenParse.token.id != TokenId::SymEqual, error(tokenParse.token, toErr(Err0674), toNte(Nte0086)));
 
     Ast::addChildBack(parent, leftNode);
@@ -1191,7 +1191,7 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
             // Name
             if (tokenParse.token.id == TokenId::SymColon)
             {
-                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, formErr(Err0310, tokenParse.token.c_str())));
+                SWAG_VERIFY(paramExpression->is(AstNodeKind::IdentifierRef), error(paramExpression, formErr(Err0310, tokenParse.token.c_str())));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->children.back()));
                 auto       namedToFree     = paramExpression;
@@ -1334,7 +1334,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 if (withNode && prePrendWith)
                 {
                     prePrendWith = false;
-                    SWAG_ASSERT(exprNode->kind == AstNodeKind::IdentifierRef);
+                    SWAG_ASSERT(exprNode->is(AstNodeKind::IdentifierRef));
                     for (int wi = static_cast<int>(withNode->id.size()) - 1; wi >= 0; wi--)
                     {
                         const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), withNode->id[wi], this, exprNode);
@@ -1458,7 +1458,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
 
         // Multiple affectation
         // like in a, b, c = 0
-        if (leftNode->kind == AstNodeKind::MultiIdentifier)
+        if (leftNode->is(AstNodeKind::MultiIdentifier))
         {
             savedtoken.token.startLocation = tokenParse.token.startLocation;
             const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
@@ -1497,7 +1497,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
                 }
 
                 // This is not an initialization, so we need to duplicate the right expression
-                else if (affectNode->token.id != TokenId::SymEqual || affectExpression->kind == AstNodeKind::Literal)
+                else if (affectNode->token.id != TokenId::SymEqual || affectExpression->is(AstNodeKind::Literal))
                 {
                     const auto newAffect = Ast::clone(affectExpression, affectNode);
                     newAffect->inheritTokenLocation(affectExpression->token);
@@ -1515,7 +1515,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         }
 
         // Tuple unpacking
-        else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
+        else if (leftNode->is(AstNodeKind::MultiIdentifierTuple))
         {
             savedtoken.token.startLocation = tokenParse.token.startLocation;
             const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
@@ -1589,7 +1589,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
 
             // :DeduceLambdaType
             const auto back = affectNode->children.back();
-            if (back->kind == AstNodeKind::MakePointerLambda && back->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE))
+            if (back->is(AstNodeKind::MakePointerLambda) && back->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE))
             {
                 const auto front = affectNode->children.front();
                 front->allocateExtension(ExtensionKind::Semantic);

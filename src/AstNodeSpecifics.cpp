@@ -75,11 +75,11 @@ AstIdentifier::~AstIdentifier()
 
 AstIdentifierRef* AstIdentifier::identifierRef() const
 {
-    if (parent->kind == AstNodeKind::IdentifierRef)
+    if (parent->is(AstNodeKind::IdentifierRef))
         return castAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
 
     auto check = parent;
-    while (check->kind != AstNodeKind::IdentifierRef)
+    while (check->isNot(AstNodeKind::IdentifierRef))
     {
         check = check->parent;
         SWAG_ASSERT(check);
@@ -201,7 +201,7 @@ Utf8 AstFuncDecl::getNameForUserCompiler() const
     if (hasAttribute(ATTRIBUTE_SHARP_FUNC))
     {
         auto fct = parent;
-        while (fct && (fct->kind != AstNodeKind::FuncDecl || fct->hasAttribute(ATTRIBUTE_SHARP_FUNC)))
+        while (fct && (fct->isNot(AstNodeKind::FuncDecl) || fct->hasAttribute(ATTRIBUTE_SHARP_FUNC)))
             fct = fct->parent;
         if (fct)
             return fct->getScopedName();
@@ -321,10 +321,10 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
 
         cloneContext.parentScope = subFuncScope;
         cloneContext.parent      = nullptr; // Register in parent will be done at the end (race condition)
-        if (f->parent->kind == AstNodeKind::AttrUse)
+        if (f->parent->is(AstNodeKind::AttrUse))
             f = f->parent;
         auto subF     = f->clone(cloneContext);
-        auto sub      = subF->kind == AstNodeKind::AttrUse ? castAst<AstAttrUse>(subF)->content : subF;
+        auto sub      = subF->is(AstNodeKind::AttrUse) ? castAst<AstAttrUse>(subF)->content : subF;
         sub->typeInfo = sub->typeInfo->clone();
 
         // Be sure symbol is not already there. This can happen when using mixins
@@ -471,7 +471,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         // And then we update the current 'makePointerLambda'.
         for (const auto& p : context.nodeRefsToUpdate)
         {
-            if (p.node->kind == AstNodeKind::MakePointerLambda)
+            if (p.node->is(AstNodeKind::MakePointerLambda))
             {
                 const auto mpl = castAst<AstMakePointer>(p.node, AstNodeKind::MakePointerLambda);
                 if (mpl->lambda == newNode)
@@ -493,9 +493,9 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         // Content can be an automatic try block in case of a throwable function
         // But we want the scope to have the function statement as an owner
         // :AutomaticTryContent
-        if (newNode->content->kind == AstNodeKind::Try)
+        if (newNode->content->is(AstNodeKind::Try))
         {
-            SWAG_ASSERT(newNode->content->children.front()->kind == AstNodeKind::Statement || newNode->content->children.front()->kind == AstNodeKind::Return);
+            SWAG_ASSERT(newNode->content->children.front()->is(AstNodeKind::Statement) || newNode->content->children.front()->is(AstNodeKind::Return));
             bodyScope->owner = newNode->content->children.front();
         }
         else
@@ -619,9 +619,9 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
 
     if (context.ownerBreakable)
     {
-        if (newNode->kind == AstNodeKind::Break)
+        if (newNode->is(AstNodeKind::Break))
             context.ownerBreakable->breakList.push_back(newNode);
-        else if (newNode->kind == AstNodeKind::Continue)
+        else if (newNode->is(AstNodeKind::Continue))
             context.ownerBreakable->continueList.push_back(newNode);
     }
 
@@ -938,7 +938,7 @@ AstNode* AstImpl::clone(CloneContext& context)
     {
         const auto newChild = c->clone(cloneContext);
 
-        if (newChild->kind == AstNodeKind::FuncDecl)
+        if (newChild->is(AstNodeKind::FuncDecl))
         {
             const auto newFunc       = castAst<AstFuncDecl>(newChild, AstNodeKind::FuncDecl);
             newFunc->originalGeneric = c;
@@ -1170,7 +1170,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
     cloneContext.parent = newNode;
     for (const auto p : children)
     {
-        if (p->kind == AstNodeKind::FuncDecl)
+        if (p->is(AstNodeKind::FuncDecl))
         {
             cloneContext.ownerInline = nullptr;
             cloneContext.removeFlags.add(AST_IN_RUN_BLOCK);
@@ -1305,7 +1305,7 @@ AstNode* AstMakePointer::clone(CloneContext& context)
         {
             if (lambda->captureParameters && children.front() == lambda->captureParameters)
             {
-                SWAG_ASSERT(newNode->children[0]->kind == AstNodeKind::FuncCallParams);
+                SWAG_ASSERT(newNode->children[0]->is(AstNodeKind::FuncCallParams));
                 lambda->captureParameters = newNode->children[0];
             }
 

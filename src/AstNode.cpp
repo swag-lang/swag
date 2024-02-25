@@ -152,7 +152,7 @@ void AstNode::cloneChildren(CloneContext& context, AstNode* from)
     {
         // Do not duplicate a struct if it's a child of something else (i.e. another struct), because
         // in case of generics, we do want the normal generic stuff to be done (cloning)
-        if (from->children[i]->kind != AstNodeKind::StructDecl)
+        if (from->children[i]->isNot(AstNodeKind::StructDecl))
             from->children[i]->clone(context);
     }
 
@@ -860,11 +860,11 @@ AstNode* AstNode::inSimpleReturn() const
     const auto test = parent;
     if (!test)
         return nullptr;
-    if (test->kind == AstNodeKind::Return)
+    if (test->is(AstNodeKind::Return))
         return test;
-    if (test->kind == AstNodeKind::Try && test->parent->kind == AstNodeKind::Return)
+    if (test->is(AstNodeKind::Try) && test->parent->is(AstNodeKind::Return))
         return test->parent;
-    if (test->kind == AstNodeKind::Catch && test->parent->kind == AstNodeKind::Return)
+    if (test->is(AstNodeKind::Catch) && test->parent->is(AstNodeKind::Return))
         return test->parent;
     return nullptr;
 }
@@ -1200,13 +1200,13 @@ void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)
     end   = token.endLocation;
     for (const auto p : children)
     {
-        if (p->kind == AstNodeKind::Statement)
+        if (p->is(AstNodeKind::Statement))
             break;
-        if (p->kind == AstNodeKind::Inline)
+        if (p->is(AstNodeKind::Inline))
             break;
         if (p->hasAstFlag(AST_GENERATED))
             continue;
-        if (p->kind == AstNodeKind::FuncDeclType && p->children.empty())
+        if (p->is(AstNodeKind::FuncDeclType) && p->children.empty())
             continue;
 
         SourceLocation childStart, childEnd;
@@ -1237,7 +1237,7 @@ AstNode* AstNode::findParentAttrUse(const Utf8& name) const
     auto search = parent;
     while (search)
     {
-        if (search->kind == AstNodeKind::AttrUse)
+        if (search->is(AstNodeKind::AttrUse))
         {
             const auto attrDecl = castAst<AstAttrUse>(search, AstNodeKind::AttrUse);
             if (const auto it = attrDecl->attributes.getAttribute(name))

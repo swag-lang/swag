@@ -68,20 +68,20 @@ bool Semantic::resolveWith(SemanticContext* context)
     TypeInfo*  typeResolved = nullptr;
     const auto front        = node->children.front();
     bool       fromVar      = false;
-    if (front->kind == AstNodeKind::IdentifierRef)
+    if (front->is(AstNodeKind::IdentifierRef))
     {
         front->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
         SWAG_ASSERT(front->resolvedSymbolName() && front->resolvedSymbolOverload());
         typeResolved = front->resolvedSymbolOverload()->typeInfo;
         fromVar      = front->resolvedSymbolName()->is(SymbolKind::Variable);
     }
-    else if (front->kind == AstNodeKind::VarDecl)
+    else if (front->is(AstNodeKind::VarDecl))
     {
         SWAG_ASSERT(front->resolvedSymbolOverload());
         typeResolved = front->resolvedSymbolOverload()->typeInfo;
         fromVar      = true;
     }
-    else if (front->kind == AstNodeKind::AffectOp)
+    else if (front->is(AstNodeKind::AffectOp))
     {
         SWAG_ASSERT(front->children.front()->resolvedSymbolOverload());
         typeResolved = front->children.front()->resolvedSymbolOverload()->typeInfo;

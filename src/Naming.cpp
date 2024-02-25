@@ -89,19 +89,19 @@ Utf8 Naming::kindName(const SymbolName* symbol, const AstNode* node, const TypeI
         return "field";
     }
 
-    if (node->kind == AstNodeKind::FuncDecl && node->hasAttribute(ATTRIBUTE_MACRO))
+    if (node->is(AstNodeKind::FuncDecl) && node->hasAttribute(ATTRIBUTE_MACRO))
     {
         article = "a";
         return "macro";
     }
 
-    if (node->kind == AstNodeKind::FuncDecl && node->hasAttribute(ATTRIBUTE_MIXIN))
+    if (node->is(AstNodeKind::FuncDecl) && node->hasAttribute(ATTRIBUTE_MIXIN))
     {
         article = "a";
         return "mixin";
     }
 
-    if (node->kind == AstNodeKind::FuncDecl && node->hasAttribute(ATTRIBUTE_INLINE))
+    if (node->is(AstNodeKind::FuncDecl) && node->hasAttribute(ATTRIBUTE_INLINE))
     {
         article = "an";
         return "inlined function";

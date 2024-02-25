@@ -59,7 +59,7 @@ bool Semantic::canInheritAccess(const AstNode* node)
     }
 
     // Content of a struct will propagate if struct is not opaque
-    if (node->kind == AstNodeKind::StructContent)
+    if (node->is(AstNodeKind::StructContent))
     {
         if (node->ownerStructScope->owner->hasAttribute(ATTRIBUTE_OPAQUE))
             return false;
@@ -173,14 +173,14 @@ void Semantic::setDefaultAccess(AstNode* node)
     // generic function or struct
     if (node->typeInfo && node->typeInfo->isFromGeneric())
     {
-        if (node->kind == AstNodeKind::StructDecl)
+        if (node->is(AstNodeKind::StructDecl))
         {
             const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl);
             SWAG_ASSERT(structNode->originalGeneric);
             node->addSemFlag(structNode->originalGeneric->semFlags.mask(SEMFLAG_ACCESS_MASK));
         }
 
-        if (node->kind == AstNodeKind::FuncDecl)
+        if (node->is(AstNodeKind::FuncDecl))
         {
             const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
             SWAG_ASSERT(funcNode->originalGeneric);
@@ -213,7 +213,7 @@ namespace
         if (!Semantic::canInheritAccess(n))
             return nullptr;
 
-        if (n->kind == AstNodeKind::Identifier || n->kind == AstNodeKind::FuncCall)
+        if (n->is(AstNodeKind::Identifier) || n->is(AstNodeKind::FuncCall))
         {
             if (n->hasSemFlag(SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
             {
@@ -221,9 +221,9 @@ namespace
             }
         }
 
-        if (n->kind == AstNodeKind::Identifier ||
-            n->kind == AstNodeKind::FuncDeclType ||
-            n->kind == AstNodeKind::VarDecl)
+        if (n->is(AstNodeKind::Identifier) ||
+            n->is(AstNodeKind::FuncDeclType) ||
+            n->is(AstNodeKind::VarDecl))
         {
             if (n->typeInfo)
             {
@@ -240,7 +240,7 @@ namespace
 
                     if (retType->declNode && retType->declNode->hasSemFlag(SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
                     {
-                        if (n->kind == AstNodeKind::ConstDecl || n->kind == AstNodeKind::VarDecl)
+                        if (n->is(AstNodeKind::ConstDecl) || n->is(AstNodeKind::VarDecl))
                         {
                             const auto varDecl = castAst<AstVarDecl>(n, AstNodeKind::ConstDecl, AstNodeKind::VarDecl);
                             if (varDecl->type)

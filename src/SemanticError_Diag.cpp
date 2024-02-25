@@ -488,28 +488,28 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     if (errorParam.errorNode->isSilentCall())
     {
         errorParam.errorNode = errorParam.errorNode->parent->children[errorParam.errorNode->childParentIdx() - 1];
-        SWAG_ASSERT(errorParam.errorNode->kind == AstNodeKind::ArrayPointerIndex);
+        SWAG_ASSERT(errorParam.errorNode->is(AstNodeKind::ArrayPointerIndex));
     }
 
     // Get parameters of destination symbol
     AstNode* declNode = oneTry.overload ? oneTry.overload->node : oneTry.type->declNode;
     SWAG_ASSERT(declNode);
-    if (declNode->kind == AstNodeKind::FuncDecl)
+    if (declNode->is(AstNodeKind::FuncDecl))
     {
         errorParam.destFuncDecl   = castAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
         errorParam.destParameters = errorParam.destFuncDecl->parameters;
     }
-    else if (declNode->kind == AstNodeKind::AttrDecl)
+    else if (declNode->is(AstNodeKind::AttrDecl))
     {
         errorParam.destAttrDecl   = castAst<AstAttrDecl>(declNode, AstNodeKind::AttrDecl);
         errorParam.destParameters = errorParam.destAttrDecl->parameters;
     }
-    else if (declNode->kind == AstNodeKind::VarDecl)
+    else if (declNode->is(AstNodeKind::VarDecl))
     {
         errorParam.destLambdaDecl = castAst<AstTypeLambda>(declNode->typeInfo->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
         errorParam.destParameters = errorParam.destLambdaDecl->parameters;
     }
-    else if (declNode->kind == AstNodeKind::StructDecl)
+    else if (declNode->is(AstNodeKind::StructDecl))
     {
         errorParam.destStructDecl = castAst<AstStruct>(declNode, AstNodeKind::StructDecl);
     }

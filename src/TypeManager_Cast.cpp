@@ -2332,7 +2332,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
 bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* fromNode, CastFlags castFlags)
 {
     const auto fromSize = fromTypeList->subTypes.size();
-    while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
+    while (fromNode && fromNode->isNot(AstNodeKind::ExpressionList))
         fromNode = fromNode->children.front();
     SWAG_ASSERT(!fromNode || fromSize == fromNode->children.size());
 
@@ -2348,7 +2348,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         const auto child = fromNode ? fromNode->children[i] : nullptr;
 
         // Expression list inside another expression list (like a struct inside an array)
-        if (child && child->kind == AstNodeKind::ExpressionList && toType->isStruct())
+        if (child && child->is(AstNodeKind::ExpressionList) && toType->isStruct())
         {
             SWAG_CHECK(castSubExpressionList(context, child, toType, castFlags));
         }
@@ -2872,7 +2872,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         if (fromNode &&
             fromType->isPointerRef() &&
             castFlags.has(CAST_FLAG_FOR_AFFECT) &&
-            fromNode->kind == AstNodeKind::KeepRef &&
+            fromNode->is(AstNodeKind::KeepRef) &&
             toType->isConst() != fromType->isConst())
         {
             return castError(context, toType, fromType, fromNode, castFlags);

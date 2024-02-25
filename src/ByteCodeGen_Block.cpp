@@ -18,9 +18,9 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 
     // Missing try/catch...
     auto parent = node->parent;
-    if (parent->kind == AstNodeKind::Identifier && parent->parent)
+    if (parent->is(AstNodeKind::Identifier) && parent->parent)
         parent = parent->parent;
-    if (parent->kind == AstNodeKind::IdentifierRef && parent->parent)
+    if (parent->is(AstNodeKind::IdentifierRef) && parent->parent)
         parent = parent->parent;
     SWAG_CHECK(checkCatchError(context, node->func->typeInfo->declNode, node, node->func, parent, node->func->typeInfo));
 
@@ -48,29 +48,29 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     parameters.inheritTokenLocation(parent->token);
     parameters.inheritOwners(parent);
 
-    if (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
+    if (parent->is(AstNodeKind::ArrayPointerIndex) || parent->is(AstNodeKind::ArrayPointerSlicing))
     {
         allParams = parent;
         SWAG_ASSERT(!allParams->children.empty());
         numCallParams = allParams->children.size() - 1; // Remove the inline block
-        while (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
+        while (parent->is(AstNodeKind::ArrayPointerIndex) || parent->is(AstNodeKind::ArrayPointerSlicing))
             parent = parent->parent;
         parent->resultRegisterRc = node->resultRegisterRc;
     }
-    else if (parent->kind == AstNodeKind::Identifier)
+    else if (parent->is(AstNodeKind::Identifier))
     {
         auto identifier                               = castAst<AstIdentifier>(parent, AstNodeKind::Identifier);
         identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;
         allParams                                     = identifier->callParameters;
         numCallParams                                 = allParams ? allParams->children.size() : 0;
     }
-    else if (parent->kind == AstNodeKind::Loop)
+    else if (parent->is(AstNodeKind::Loop))
     {
         SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opCount));
         allParams     = parent;
         numCallParams = 1;
     }
-    else if (parent->kind == AstNodeKind::AutoSlicingUp)
+    else if (parent->is(AstNodeKind::AutoSlicingUp))
     {
         SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opCount));
         auto slicing   = castAst<AstArrayPointerSlicing>(parent->parent, AstNodeKind::ArrayPointerSlicing);
@@ -80,7 +80,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         numCallParams    = parameters.children.size();
         canFreeRegParams = false;
     }
-    else if (parent->kind == AstNodeKind::SwitchCase)
+    else if (parent->is(AstNodeKind::SwitchCase))
     {
         SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opEquals));
         auto caseNode   = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
@@ -90,14 +90,14 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         allParams     = &parameters;
         numCallParams = parameters.children.size();
     }
-    else if (parent->kind == AstNodeKind::AffectOp && (parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAffect) || parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAssign)))
+    else if (parent->is(AstNodeKind::AffectOp) && (parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAffect) || parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAssign)))
     {
-        SWAG_ASSERT(parent->children.front()->kind == AstNodeKind::IdentifierRef);
+        SWAG_ASSERT(parent->children.front()->is(AstNodeKind::IdentifierRef));
         auto ptIdx = castAst<AstArrayPointerIndex>(parent->children.front()->children.back(), AstNodeKind::ArrayPointerIndex);
         auto arr   = ptIdx->array;
 
         auto ptIdx1 = ptIdx;
-        while (ptIdx1->array->kind == AstNodeKind::ArrayPointerIndex)
+        while (ptIdx1->array->is(AstNodeKind::ArrayPointerIndex))
         {
             ptIdx1 = castAst<AstArrayPointerIndex>(ptIdx1->array, AstNodeKind::ArrayPointerIndex);
             arr    = ptIdx1->array;
@@ -345,7 +345,7 @@ bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
     // Resolve ByteCodeOp::Jump expression
     // Be sure this is not an infinite loop without a jump instruction
     bool hasJump = true;
-    if (!node->hasSpecialFuncCall() && node->kind == AstNodeKind::Loop)
+    if (!node->hasSpecialFuncCall() && node->is(AstNodeKind::Loop))
     {
         const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
         if (!loopNode->expression)
@@ -368,7 +368,7 @@ bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
                 const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
                 if (loopNode->expression)
                 {
-                    if (loopNode->expression->kind == AstNodeKind::Range)
+                    if (loopNode->expression->is(AstNodeKind::Range))
                     {
                         const auto rangeNode = castAst<AstRange>(loopNode->expression, AstNodeKind::Range);
                         freeRegisterRC(context, rangeNode->expressionLow);
@@ -436,7 +436,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         YIELD();
 
         // If opCount has been inlined, then the register of the inline block contains the result
-        if (loopNode->children.back()->kind == AstNodeKind::Inline)
+        if (loopNode->children.back()->is(AstNodeKind::Inline))
             node->resultRegisterRc = loopNode->children.back()->resultRegisterRc;
     }
 
@@ -448,7 +448,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
     loopNode->breakableFlags.add(BREAKABLE_NEED_INDEX);
 
     // Normal loop
-    if (loopNode->expression->kind != AstNodeKind::Range)
+    if (loopNode->expression->isNot(AstNodeKind::Range))
     {
         if (loopNode->hasSpecFlag(AstLoop::SPEC_FLAG_BACK))
         {
@@ -604,7 +604,7 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
 
     const auto loopNode = castAst<AstBreakable>(node->parent);
 
-    if (node->parent->kind != AstNodeKind::ScopeBreakable)
+    if (node->parent->isNot(AstNodeKind::ScopeBreakable))
     {
         const auto inst = EMIT_INST0(context, ByteCodeOp::Jump);
         const auto diff = loopNode->seekJumpBeforeContinue - context->bc->numInstructions;
@@ -817,7 +817,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
             for (const auto expr : caseNode->expressions)
             {
                 RegisterList r0;
-                if (expr->kind == AstNodeKind::Range)
+                if (expr->is(AstNodeKind::Range))
                 {
                     r0 = reserveRegisterRC(context);
                     SWAG_CHECK(emitInRange(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, r0));
@@ -843,7 +843,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                     caseNode->ownerSwitch->expression->resultRegisterRc.cannotFree = false;
                     expr->resultRegisterRc.cannotFree                              = false;
 
-                    if (caseNode->children.back()->kind == AstNodeKind::Inline)
+                    if (caseNode->children.back()->is(AstNodeKind::Inline))
                         r0 = caseNode->children.back()->resultRegisterRc;
                     else
                         r0 = node->resultRegisterRc;
@@ -1138,7 +1138,7 @@ bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative
 
     // Leave all scopes
     const Scope* topScope;
-    if (node->hasOwnerInline() && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
+    if (node->hasOwnerInline() && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) || node->isNot(AstNodeKind::Return)))
     {
         // If the inline comes from a mixin, then the node->ownerInline->scope is the one the mixin is included
         // inside. We do not want to release that scope, as we do not own it ! But we want to release all the

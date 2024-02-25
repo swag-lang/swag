@@ -338,7 +338,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
 
     // :SubDeclParent
     auto newParent = parent;
-    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->kind != AstNodeKind::Namespace)
+    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->isNot(AstNodeKind::Namespace))
     {
         newParent = newParent->parent;
         SWAG_ASSERT(newParent);
@@ -443,7 +443,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* /*parent*/
     }
 
     // Specific error messages
-    if (node->parent && node->parent->kind == AstNodeKind::TupleContent)
+    if (node->parent && node->parent->is(AstNodeKind::TupleContent))
     {
         const Diagnostic err{sourceFile, tokenParse.token, formErr(Err0401, tokenParse.token.c_str())};
         return context->report(err);
