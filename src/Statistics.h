@@ -4,21 +4,21 @@
 
 struct Stats
 {
-    atomic<int> numFiles                 = 0;
-    atomic<int> numLines                 = 0;
-    atomic<int> numModules               = 0;
-    atomic<int> numGenModules            = 0;
-    atomic<int> testFunctions            = 0;
-    atomic<int> runFunctions             = 0;
-    atomic<int> numInstructions          = 0;
-    atomic<int> totalOptimBC             = 0;
-    atomic<int> totalConcreteTypes       = 0;
-    atomic<int> totalConcreteStructTypes = 0;
-    atomic<int> numInitPtr               = 0;
-    atomic<int> numInitFuncPtr           = 0;
-    atomic<int> numNodes                 = 0;
-    atomic<int> releaseNodes             = 0;
-    atomic<int> numTokens                = 0;
+    atomic<uint32_t> numFiles                 = 0;
+    atomic<uint32_t> numLines                 = 0;
+    atomic<uint32_t> numModules               = 0;
+    atomic<uint32_t> numGenModules            = 0;
+    atomic<uint32_t> testFunctions            = 0;
+    atomic<uint32_t> runFunctions             = 0;
+    atomic<uint32_t> numInstructions          = 0;
+    atomic<uint32_t> totalOptimBC             = 0;
+    atomic<uint32_t> totalConcreteTypes       = 0;
+    atomic<uint32_t> totalConcreteStructTypes = 0;
+    atomic<uint32_t> numInitPtr               = 0;
+    atomic<uint32_t> numInitFuncPtr           = 0;
+    atomic<uint32_t> numNodes                 = 0;
+    atomic<uint32_t> releaseNodes             = 0;
+    atomic<uint32_t> numTokens                = 0;
 
     atomic<uint64_t> readFilesTime            = 0;
     atomic<uint64_t> cfgTime                  = 0;
@@ -61,10 +61,10 @@ struct Stats
 
     atomic<size_t> sizeBackendDbg = 0;
 
-    atomic<int> countOpFreq[static_cast<int>(ByteCodeOp::End) + 1][static_cast<int>(ByteCodeOp::End) + 1] = {{0}};
+    atomic<uint32_t> countOpFreq[static_cast<int>(ByteCodeOp::End) + 1][static_cast<int>(ByteCodeOp::End) + 1] = {{0}};
 
 #ifdef SWAG_DEV_MODE
-    atomic<int> countTypesByKind[50] = {0};
+    atomic<uint32_t> countTypesByKind[50] = {0};
 #endif
 
     void print() const;

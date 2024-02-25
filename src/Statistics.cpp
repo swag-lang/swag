@@ -23,8 +23,8 @@ void Stats::printFreq()
 
     for (uint32_t cpt = 0; cpt < g_CommandLine.statsFreqCount; cpt++)
     {
-        int best  = -1;
-        int bestI = 0;
+        uint32_t best  = 0;
+        uint32_t bestI = UINT32_MAX;
 
         for (int i = 0; i < static_cast<int>(ByteCodeOp::End); i++)
         {
@@ -44,7 +44,7 @@ void Stats::printFreq()
             }
         }
 
-        if (countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)].load())
+        if (bestI != UINT32_MAX && countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)].load())
         {
             g_Log.setColor(LogColor::Index);
             g_Log.print(form("%5d ", countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)].load()));
