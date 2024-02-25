@@ -1069,7 +1069,70 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
             return true;
         }
     }
-    
+
+    return true;
+}
+
+bool Semantic::setSymbolMatchUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* identifier, AstNode* dependentVar)
+{
+    const auto idRef = castAst<AstIdentifierRef>(identifierRef, AstNodeKind::IdentifierRef);
+    if (dependentVar->is(AstNodeKind::IdentifierRef))
+    {
+        for (int i = static_cast<int>(dependentVar->childCount()) - 1; i >= 0; i--)
+        {
+            const auto child         = dependentVar->children[i];
+            const auto idNode        = Ast::newIdentifier(idRef, child->token.text, nullptr, nullptr);
+            idNode->token.sourceFile = dependentVar->token.sourceFile;
+            idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
+            idNode->inheritTokenLocation(idRef->token);
+            idNode->allocateIdentifierExtension();
+            idNode->identifierExtension->fromAlternateVar = child;
+            Ast::addChildFront(idRef, idNode);
+            context->baseJob->nodes.push_back(idNode);
+            if (i == 0 && identifier->identifierExtension)
+            {
+                idNode->identifierExtension->scopeUpMode  = identifier->identifierExtension->scopeUpMode;
+                idNode->identifierExtension->scopeUpValue = identifier->identifierExtension->scopeUpValue;
+            }
+
+            idNode->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING);
+        }
+    }
+    else
+    {
+        const auto idNode        = Ast::newIdentifier(idRef, dependentVar->token.text, nullptr, nullptr);
+        idNode->token.sourceFile = dependentVar->token.sourceFile;
+        idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
+        idNode->inheritTokenLocation(identifier->token);
+
+        // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
+        // if it's not a direct child of 'idRef'. So we need to find the direct child of 'idRef', which is
+        // also a parent if 'identifier', in order to get the right child index, and insert the 'using'
+        // just before.
+        const AstNode* newParent = identifier;
+        while (newParent->parent != idRef)
+            newParent = newParent->parent;
+
+        idNode->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING);
+
+        if (identifier->identifierExtension || dependentVar)
+            idNode->allocateIdentifierExtension();
+
+        if (identifier->identifierExtension)
+        {
+            idNode->identifierExtension->scopeUpMode  = identifier->identifierExtension->scopeUpMode;
+            idNode->identifierExtension->scopeUpValue = identifier->identifierExtension->scopeUpValue;
+        }
+
+        if (idNode->identifierExtension)
+            idNode->identifierExtension->fromAlternateVar = dependentVar;
+
+        Ast::insertChild(idRef, idNode, newParent->childParentIdx());
+        context->baseJob->nodes.push_back(idNode);
+    }
+
+    context->node->semanticState = AstNodeResolveState::Enter;
+    context->result              = ContextResult::NewChildren;
     return true;
 }
 
@@ -1250,64 +1313,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     {
         if (dependentVar && identifierRef->is(AstNodeKind::IdentifierRef) && symbol->isNot(SymbolKind::Function))
         {
-            const auto idRef = castAst<AstIdentifierRef>(identifierRef, AstNodeKind::IdentifierRef);
-            if (dependentVar->is(AstNodeKind::IdentifierRef))
-            {
-                for (int i = static_cast<int>(dependentVar->childCount()) - 1; i >= 0; i--)
-                {
-                    const auto child         = dependentVar->children[i];
-                    const auto idNode        = Ast::newIdentifier(idRef, child->token.text, nullptr, nullptr);
-                    idNode->token.sourceFile = dependentVar->token.sourceFile;
-                    idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
-                    idNode->inheritTokenLocation(idRef->token);
-                    idNode->allocateIdentifierExtension();
-                    idNode->identifierExtension->fromAlternateVar = child;
-                    Ast::addChildFront(idRef, idNode);
-                    context->baseJob->nodes.push_back(idNode);
-                    if (i == 0 && identifier->identifierExtension)
-                    {
-                        idNode->identifierExtension->scopeUpMode  = identifier->identifierExtension->scopeUpMode;
-                        idNode->identifierExtension->scopeUpValue = identifier->identifierExtension->scopeUpValue;
-                    }
-
-                    idNode->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING);
-                }
-            }
-            else
-            {
-                const auto idNode        = Ast::newIdentifier(idRef, dependentVar->token.text, nullptr, nullptr);
-                idNode->token.sourceFile = dependentVar->token.sourceFile;
-                idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
-                idNode->inheritTokenLocation(identifier->token);
-
-                // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
-                // if it's not a direct child of 'idRef'. So we need to find the direct child of 'idRef', which is
-                // also a parent if 'identifier', in order to get the right child index, and insert the 'using'
-                // just before.
-                const AstNode* newParent = identifier;
-                while (newParent->parent != idRef)
-                    newParent = newParent->parent;
-
-                idNode->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING);
-
-                if (identifier->identifierExtension || dependentVar)
-                    idNode->allocateIdentifierExtension();
-
-                if (identifier->identifierExtension)
-                {
-                    idNode->identifierExtension->scopeUpMode  = identifier->identifierExtension->scopeUpMode;
-                    idNode->identifierExtension->scopeUpValue = identifier->identifierExtension->scopeUpValue;
-                }
-
-                if (idNode->identifierExtension)
-                    idNode->identifierExtension->fromAlternateVar = dependentVar;
-
-                Ast::insertChild(idRef, idNode, newParent->childParentIdx());
-                context->baseJob->nodes.push_back(idNode);
-            }
-
-            context->node->semanticState = AstNodeResolveState::Enter;
-            context->result              = ContextResult::NewChildren;
+            SWAG_CHECK(setSymbolMatchUsingVar(context, identifierRef, identifier, dependentVar));
             return true;
         }
     }
@@ -1355,9 +1361,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             break;
 
         case SymbolKind::EnumValue:
-            if (idRef &&
-                idRef->previousResolvedNode &&
-                idRef->previousResolvedNode->resolvedSymbolName()->is(SymbolKind::Variable))
+            if (idRef && idRef->previousResolvedNode && idRef->previousResolvedNode->resolvedSymbolName()->is(SymbolKind::Variable))
             {
                 const Diagnostic err{idRef->previousResolvedNode, formErr(Err0260, idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
                 return context->report(err);
