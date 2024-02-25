@@ -47,8 +47,9 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
 
     newTypeFunc->forceComputeName();
 
-    ScopedLock lk(newFunc->resolvedSymbolName()->mutex);
-    const auto newJob = end(context, context->baseJob, newFunc->resolvedSymbolName(), newFunc, false, cloneContext.replaceTypes);
+    const auto symbolName = newFunc->resolvedSymbolName();
+    ScopedLock lk(symbolName->mutex);
+    const auto newJob = end(context, context->baseJob, symbolName, newFunc, false, cloneContext.replaceTypes);
     structJob->dependentJobs.add(newJob);
 }
 

@@ -27,15 +27,16 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
         if (c->hasAstFlag(AST_CONST_EXPR))
             continue;
 
-        if (c->resolvedSymbolName())
+        const auto symbolName = c->resolvedSymbolName();
+        if (symbolName)
         {
-            if (c->resolvedSymbolName()->kind == SymbolKind::Function)
+            if (symbolName->kind == SymbolKind::Function)
             {
                 if (c->resolvedSymbolOverload())
                 {
                     if (!c->resolvedSymbolOverload()->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
-                        const auto result = Diagnostic::note(c, c->token, formNte(Nte0117, c->resolvedSymbolName()->name.c_str()));
+                        const auto result = Diagnostic::note(c, c->token, formNte(Nte0117, symbolName->name.c_str()));
                         result->hint      = toNte(Nte0079);
                         return result;
                     }
@@ -44,9 +45,9 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                 }
             }
 
-            if (c->resolvedSymbolName()->kind == SymbolKind::Variable)
+            if (symbolName->kind == SymbolKind::Variable)
             {
-                return Diagnostic::note(c, c->token, formNte(Nte0005, c->resolvedSymbolName()->name.c_str()));
+                return Diagnostic::note(c, c->token, formNte(Nte0005, symbolName->name.c_str()));
             }
 
             return Diagnostic::note(c, toNte(Nte0056));
