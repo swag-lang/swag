@@ -1159,7 +1159,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     if (identifier->callParameters && !identifier->callParameters->children.empty() && identifier->callParameters->firstChild()->hasAstFlag(AST_TO_UFCS))
         hasForcedUfcs = true;
 
-    // Convert possible symbols to a list of try
+    // Do the actual match
     SWAG_CHECK(computeMatch(context, identifier, riFlags, symbolsMatch, identifierRef, hasForcedUfcs));
     YIELD();
 

@@ -1920,15 +1920,18 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
     const auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload();
     const auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName();
     const auto orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
+    auto&      toSolveOverload           = context->cacheToSolveOverload;
+    auto&      listTryMatch              = context->cacheListTryMatch;
 
     while (true)
     {
+        context->cacheMatches.clear();
+        toSolveOverload.clear();
+
         // Collect all overloads to solve. We collect also the number of overloads when the collect is done, in
         // case that number changes (other thread) during the resolution. Because if the number of overloads differs
         // at one point in the process (for a given symbol), then this will invalidate the resolution
         // (number of overloads can change when instantiating a generic)
-        auto& toSolveOverload = context->cacheToSolveOverload;
-        toSolveOverload.clear();
         for (const auto& p : symbolsMatch)
         {
             const auto symbol = p.symbol;
@@ -1948,17 +1951,11 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
         if (toSolveOverload.empty())
         {
             if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
-            {
-                context->cacheMatches.clear();
                 return true;
-            }
-
             return context->report({identifier, formErr(Err0730, identifier->token.c_str())});
         }
 
-        auto& listTryMatch = context->cacheListTryMatch;
         context->clearTryMatch();
-
         for (const auto& oneOver : toSolveOverload)
         {
             const auto symbolOverload = oneOver.overload;
@@ -2026,10 +2023,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
         }
 
         if (listTryMatch.empty())
-        {
-            context->cacheMatches.clear();
             break;
-        }
 
         MatchIdParamsFlags mipFlags = 0;
         if (riFlags.has(RI_FOR_GHOSTING))
@@ -2038,27 +2032,28 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
             mipFlags.add(MIP_FOR_ZERO_GHOSTING);
         SWAG_CHECK(Semantic::matchIdentifierParameters(context, listTryMatch, identifier, mipFlags));
 
-        if (context->result == ContextResult::Pending)
+        switch (context->result)
         {
-            identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
-            identifierRef->previousResolvedNode = orgPreviousResolvedNode;
-            return true;
+            case ContextResult::Pending:
+                identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
+                identifierRef->previousResolvedNode = orgPreviousResolvedNode;
+                return true;
+
+            case ContextResult::NewChildren1:
+                identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
+                identifierRef->previousResolvedNode = orgPreviousResolvedNode;
+                context->result                     = ContextResult::NewChildren;
+                return true;
+
+            // The number of overloads for a given symbol has been changed by another thread, which
+            // means that we need to restart everything...
+            case ContextResult::NewChildren:
+                context->result = ContextResult::Done;
+                break;
+
+            default:
+                return true;
         }
-
-        if (context->result == ContextResult::NewChildren1)
-        {
-            identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
-            identifierRef->previousResolvedNode = orgPreviousResolvedNode;
-            context->result                     = ContextResult::NewChildren;
-            return true;
-        }
-
-        // The number of overloads for a given symbol has been changed by another thread, which
-        // means that we need to restart everything...
-        if (context->result != ContextResult::NewChildren)
-            break;
-
-        context->result = ContextResult::Done;
     }
 
     return true;
