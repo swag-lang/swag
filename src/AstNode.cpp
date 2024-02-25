@@ -200,7 +200,7 @@ void AstNode::release()
         Allocator::free<NodeExtension>(extension);
 
     // Pre-release, if we need to children to be alive
-    if (kind == AstNodeKind::FuncDecl)
+    if (is(AstNodeKind::FuncDecl))
     {
         if (const auto funcDecl = castAst<AstFuncDecl>(this, AstNodeKind::FuncDecl); funcDecl->content)
             funcDecl->content->ownerScope->release();
@@ -785,12 +785,12 @@ bool AstNode::isConstantFalse() const
 
 bool AstNode::isGeneratedSelf() const
 {
-    return kind == AstNodeKind::FuncDeclParam && hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
+    return is(AstNodeKind::FuncDeclParam) && hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
 }
 
 bool AstNode::isEmptyFct()
 {
-    if (kind != AstNodeKind::FuncDecl)
+    if (isNot(AstNodeKind::FuncDecl))
         return false;
     const auto funcDecl = castAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
     return funcDecl->content == nullptr;
@@ -803,7 +803,7 @@ bool AstNode::isForeign() const
 
 bool AstNode::isSilentCall() const
 {
-    return kind == AstNodeKind::Identifier && hasSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL);
+    return is(AstNodeKind::Identifier) && hasSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL);
 }
 
 bool AstNode::isPublic() const
@@ -817,9 +817,9 @@ bool AstNode::isPublic() const
 
 bool AstNode::isFunctionCall()
 {
-    if (kind == AstNodeKind::FuncCall)
+    if (is(AstNodeKind::FuncCall))
         return true;
-    if (kind != AstNodeKind::Identifier)
+    if (isNot(AstNodeKind::Identifier))
         return false;
 
     const auto id = castAst<AstIdentifier>(this, AstNodeKind::Identifier);
@@ -1039,37 +1039,37 @@ bool AstNode::isConstant1() const
 
 const Token& AstNode::getTokenName() const
 {
-    if (kind == AstNodeKind::FuncDecl)
+    if (is(AstNodeKind::FuncDecl))
     {
         const auto fctDecl = castAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
         return fctDecl->tokenName;
     }
 
-    if (kind == AstNodeKind::AttrDecl)
+    if (is(AstNodeKind::AttrDecl))
     {
         const auto attrDecl = castAst<AstAttrDecl>(this, AstNodeKind::AttrDecl);
         return attrDecl->tokenName;
     }
 
-    if (kind == AstNodeKind::StructDecl)
+    if (is(AstNodeKind::StructDecl))
     {
         const auto structDecl = castAst<AstStruct>(this, AstNodeKind::StructDecl);
         return structDecl->tokenName;
     }
 
-    if (kind == AstNodeKind::InterfaceDecl)
+    if (is(AstNodeKind::InterfaceDecl))
     {
         const auto itfDecl = castAst<AstStruct>(this, AstNodeKind::InterfaceDecl);
         return itfDecl->tokenName;
     }
 
-    if (kind == AstNodeKind::EnumDecl)
+    if (is(AstNodeKind::EnumDecl))
     {
         const auto enumDecl = castAst<AstEnum>(this, AstNodeKind::EnumDecl);
         return enumDecl->tokenName;
     }
 
-    if (kind == AstNodeKind::Impl)
+    if (is(AstNodeKind::Impl))
     {
         const auto implDecl = castAst<AstImpl>(this, AstNodeKind::Impl);
         return implDecl->identifier->getTokenName();
