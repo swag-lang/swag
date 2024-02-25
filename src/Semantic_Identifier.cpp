@@ -1040,7 +1040,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             OneMatch oneMatch;
             oneMatch.symbolOverload = identifier->resolvedSymbolOverload();
             oneMatch.scope          = identifier->resolvedSymbolOverload()->node->ownerScope;
-            SWAG_CHECK(setSymbolMatch(context, identifierRef, identifier, oneMatch));
+            SWAG_CHECK(setIdentifierSymbol(context, identifierRef, identifier, oneMatch));
         }
 
         return true;
@@ -1342,13 +1342,8 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         }
     }
 
-    if (identifier->isSilentCall())
-        identifier->typeInfo = identifierRef->typeInfo;
-    else if (match->typeWasForced)
-        identifier->typeInfo = match->typeWasForced;
-    else
-        identifier->typeInfo = match->symbolOverload->typeInfo;
+    SWAG_CHECK(setIdentifierSymbolAndType(context, identifierRef, identifier, *match));
+    YIELD();
 
-    SWAG_CHECK(setSymbolMatch(context, identifierRef, identifier, *match));
     return true;
 }

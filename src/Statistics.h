@@ -19,6 +19,8 @@ struct Stats
     atomic<uint32_t> numNodes                 = 0;
     atomic<uint32_t> releaseNodes             = 0;
     atomic<uint32_t> numTokens                = 0;
+    atomic<uint32_t> numCustom0               = 0;
+    atomic<uint32_t> numCustom1               = 0;
 
     atomic<uint64_t> readFilesTime            = 0;
     atomic<uint64_t> cfgTime                  = 0;

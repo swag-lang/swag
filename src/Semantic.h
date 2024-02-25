@@ -140,7 +140,8 @@ namespace Semantic
     bool           setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMatch, AstIdentifierRef* idRef, AstIdentifier* identifier, SymbolOverload* overload);
     bool           setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier, const SymbolOverload* overload);
     bool           setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier, const SymbolOverload* overload, TypeInfo* typeAlias);
-    bool           setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
+    bool           setIdentifierSymbolAndType(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
+    bool           setIdentifierSymbol(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
     bool           setSymbolMatchUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* identifier, AstNode* dependentVar);
     void           resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcNode, const TypeInfo* resolvedType);
     void           allocateOnStack(AstNode* node, const TypeInfo* typeInfo);

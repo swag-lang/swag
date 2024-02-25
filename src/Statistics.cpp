@@ -124,6 +124,8 @@ void Stats::print() const
     g_Log.messageHeaderDot("source lines", form("%u", numLines.load()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("lines/s", form("%u", static_cast<int>(numLines.load() / OS::timerToSeconds(g_Workspace->totalTime.load()))), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("tokens", form("%u", numTokens.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("custom 0", form("%u", numCustom0.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("custom 1", form("%u", numCustom1.load()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("ast nodes", form("%u", numNodes.load()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("ast released nodes", form("%u", releaseNodes.load()), LogColor::Header, LogColor::Value);
     if (g_CommandLine.output)
