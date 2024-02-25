@@ -90,10 +90,11 @@ bool Module::flushCompilerMessages(JobContext* context, uint32_t pass, Job* job)
         // Release symbol
         if (msg.concrete.kind == CompilerMsgKind::AttributeGen)
         {
-            SWAG_ASSERT(msg.node->resolvedSymbolName());
-            ScopedLock lk(msg.node->resolvedSymbolName()->mutex);
-            msg.node->resolvedSymbolName()->flags.remove(SYMBOL_ATTRIBUTE_GEN);
-            msg.node->resolvedSymbolName()->dependentJobs.setRunning();
+            const auto symbolName = msg.node->resolvedSymbolName();
+            SWAG_ASSERT(symbolName);
+            ScopedLock lk(symbolName->mutex);
+            symbolName->flags.remove(SYMBOL_ATTRIBUTE_GEN);
+            symbolName->dependentJobs.setRunning();
         }
     }
 

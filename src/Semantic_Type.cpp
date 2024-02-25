@@ -166,8 +166,9 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     Diagnostic err{node, formErr(Err0589, Naming::kindName(node->resolvedSymbolName()->kind).c_str(), node->resolvedSymbolName()->name.c_str())};
 
     // struct.field
-    if (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Struct)
-        err.addNote(formNte(Nte0088, node->resolvedSymbolName()->name.c_str(), node->resolvedSymbolName()->name.c_str()));
+    const auto symbolName = node->resolvedSymbolName();
+    if (symbolName && symbolName->kind == SymbolKind::Struct)
+        err.addNote(formNte(Nte0088, symbolName->name.c_str(), symbolName->name.c_str()));
 
     return context->report(err);
 }
@@ -177,15 +178,16 @@ bool Semantic::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bo
     if (node->hasAstFlag(AST_R_VALUE))
         return true;
 
+    const auto symbolName = node->resolvedSymbolName();
     if (node->kind == AstNodeKind::TypeExpression ||
         node->kind == AstNodeKind::TypeLambda ||
         (node->kind == AstNodeKind::IdentifierRef && node->hasAstFlag(AST_FROM_GENERIC_REPLACE)) ||
-        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Struct) ||
-        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::TypeAlias) ||
-        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Interface) ||
-        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Attribute) ||
-        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Namespace) ||
-        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Enum))
+        (symbolName && symbolName->kind == SymbolKind::Struct) ||
+        (symbolName && symbolName->kind == SymbolKind::TypeAlias) ||
+        (symbolName && symbolName->kind == SymbolKind::Interface) ||
+        (symbolName && symbolName->kind == SymbolKind::Attribute) ||
+        (symbolName && symbolName->kind == SymbolKind::Namespace) ||
+        (symbolName && symbolName->kind == SymbolKind::Enum))
     {
         TypeInfo* result = nullptr;
         SWAG_CHECK(resolveTypeAsExpression(context, node, &result));
@@ -405,9 +407,9 @@ bool Semantic::resolveType(SemanticContext* context)
         const auto child = typeNode->identifier->children.back();
         if (!child->typeInfo || !child->typeInfo->isUndefined())
         {
-            if (child->resolvedSymbolName())
+            const auto symName = child->resolvedSymbolName();
+            if (symName)
             {
-                const auto symName = child->resolvedSymbolName();
                 const auto symOver = child->resolvedSymbolOverload();
                 if (symName->kind != SymbolKind::Enum &&
                     symName->kind != SymbolKind::TypeAlias &&

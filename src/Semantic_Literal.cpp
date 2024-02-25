@@ -496,10 +496,9 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     // Check suffix type is correct (should be native)
     if (suffix->token.id != TokenId::NativeType)
     {
-        if (suffix->resolvedSymbolName() && suffix->resolvedSymbolName()->kind != SymbolKind::TypeAlias)
-        {
-            return context->report({suffix, formErr(Err0319, suffix->resolvedSymbolName()->name.c_str(), Naming::aKindName(suffix->resolvedSymbolName()->kind).c_str())});
-        }
+        const auto symbolName = suffix->resolvedSymbolName();
+        if (symbolName && symbolName->kind != SymbolKind::TypeAlias)
+            return context->report({suffix, formErr(Err0319, suffix->resolvedSymbolName()->name.c_str(), Naming::aKindName(symbolName->kind).c_str())});
     }
 
     const auto suffixType = TypeManager::concreteType(suffix->typeInfo, CONCRETE_ALIAS);

@@ -735,20 +735,21 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     }
 
     // Register function name
-    auto typeInfo      = makeType<TypeInfoFuncAttr>();
-    typeInfo->declNode = funcNode;
-    auto newScope      = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
-    funcNode->typeInfo = typeInfo;
-    funcNode->scope    = newScope;
-    funcNode->setResolvedSymbolName(currentScope->symTable.registerSymbolName(context, funcNode, SymbolKind::Function));
+    auto typeInfo         = makeType<TypeInfoFuncAttr>();
+    typeInfo->declNode    = funcNode;
+    auto newScope         = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
+    funcNode->typeInfo    = typeInfo;
+    funcNode->scope       = newScope;
+    const auto symbolName = currentScope->symTable.registerSymbolName(context, funcNode, SymbolKind::Function);
+    funcNode->setResolvedSymbolName(symbolName);
 
     // Store specific symbols for fast retrieve
     if (funcNode->token.text == g_LangSpec->name_opAffect)
-        currentScope->symbolOpAffect = funcNode->resolvedSymbolName();
+        currentScope->symbolOpAffect = symbolName;
     else if (funcNode->token.text == g_LangSpec->name_opAffectLiteral)
-        currentScope->symbolOpAffectSuffix = funcNode->resolvedSymbolName();
+        currentScope->symbolOpAffectSuffix = symbolName;
     else if (funcNode->token.text == g_LangSpec->name_opCast)
-        currentScope->symbolOpCast = funcNode->resolvedSymbolName();
+        currentScope->symbolOpCast = symbolName;
 
     // Count number of methods to resolve
     if (currentScope->kind == ScopeKind::Struct && !funcForCompiler)

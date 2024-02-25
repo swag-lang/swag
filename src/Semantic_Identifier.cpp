@@ -31,7 +31,8 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
             int cptVar = 0;
             for (const auto& c : back->children)
             {
-                if (c->resolvedSymbolName() && c->resolvedSymbolName()->kind == SymbolKind::Variable)
+                const auto symbolName = c->resolvedSymbolName();
+                if (symbolName && symbolName->kind == SymbolKind::Variable)
                 {
                     SWAG_VERIFY(cptVar == 0, context->report({back, toErr(Err0163)}));
                     cptVar++;
@@ -40,20 +41,21 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
         }
     }
 
-    if (back->resolvedSymbolName()->kind != SymbolKind::Namespace &&
-        back->resolvedSymbolName()->kind != SymbolKind::Function &&
-        back->resolvedSymbolName()->kind != SymbolKind::Variable)
+    const auto symbolName = back->resolvedSymbolName();
+    if (symbolName->kind != SymbolKind::Namespace &&
+        symbolName->kind != SymbolKind::Function &&
+        symbolName->kind != SymbolKind::Variable)
     {
-        Diagnostic err{back, formErr(Err0328, Naming::aKindName(back->resolvedSymbolName()->kind).c_str())};
+        Diagnostic err{back, formErr(Err0328, Naming::aKindName(symbolName->kind).c_str())};
 
         err.addNote(toNte(Nte0013));
 
-        if (back->resolvedSymbolName()->kind == SymbolKind::Enum ||
-            back->resolvedSymbolName()->kind == SymbolKind::Interface ||
-            back->resolvedSymbolName()->kind == SymbolKind::TypeAlias ||
-            back->resolvedSymbolName()->kind == SymbolKind::Struct)
+        if (symbolName->kind == SymbolKind::Enum ||
+            symbolName->kind == SymbolKind::Interface ||
+            symbolName->kind == SymbolKind::TypeAlias ||
+            symbolName->kind == SymbolKind::Struct)
         {
-            err.addNote(node, node->kwdLoc, formNte(Nte0025, Naming::aKindName(back->resolvedSymbolName()->kind).c_str()));
+            err.addNote(node, node->kwdLoc, formNte(Nte0025, Naming::aKindName(symbolName->kind).c_str()));
         }
 
         return context->report(err);

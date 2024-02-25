@@ -172,8 +172,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     if (fromNode && fromNode->resolvedSymbolName())
     {
-        if (fromNode->resolvedSymbolName()->kind == SymbolKind::EnumValue ||
-            fromNode->resolvedSymbolName()->kind == SymbolKind::Function)
+        const auto symbolName = fromNode->resolvedSymbolName();
+        if (symbolName->kind == SymbolKind::EnumValue ||
+            symbolName->kind == SymbolKind::Function)
         {
             toType   = toType->getConcreteAlias();
             fromType = fromType->getConcreteAlias();

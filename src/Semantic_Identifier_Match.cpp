@@ -1122,8 +1122,9 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             const auto childIdx = identifier->childParentIdx();
             if (childIdx)
             {
-                const auto prev = identifier->identifierRef()->children[childIdx - 1];
-                if (prev->resolvedSymbolName() && prev->resolvedSymbolName()->kind == SymbolKind::Variable && !prev->hasAstFlag(AST_FROM_UFCS))
+                const auto prev       = identifier->identifierRef()->children[childIdx - 1];
+                const auto symbolName = prev->resolvedSymbolName();
+                if (symbolName && symbolName->kind == SymbolKind::Variable && !prev->hasAstFlag(AST_FROM_UFCS))
                 {
                     Diagnostic err{prev, formErr(Err0585, Naming::kindName(prev->resolvedSymbolOverload()->node).c_str(), prev->token.c_str(), identifier->token.c_str())};
                     err.addNote(identifier->token, formNte(Nte0154, prev->typeInfo->getDisplayNameC()));

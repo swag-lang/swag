@@ -19,10 +19,11 @@ bool Semantic::resolveEnum(SemanticContext* context)
     node->addAstFlag(AST_NO_BYTECODE);
 
     // Be sure we have only one enum node
-    if (node->resolvedSymbolName() && node->resolvedSymbolName()->nodes.size() > 1)
+    const auto symbolName = node->resolvedSymbolName();
+    if (symbolName && symbolName->nodes.size() > 1)
     {
-        Diagnostic err({node, node->getTokenName(), formErr(Err0080, node->resolvedSymbolName()->name.c_str())});
-        for (const auto p : node->resolvedSymbolName()->nodes)
+        Diagnostic err({node, node->getTokenName(), formErr(Err0080, symbolName->name.c_str())});
+        for (const auto p : symbolName->nodes)
         {
             if (p != node)
             {

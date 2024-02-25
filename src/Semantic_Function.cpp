@@ -880,21 +880,22 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // real function at some point.
     if (funcNode->isEmptyFct() && !funcNode->isForeign() && funcNode->token.text[0] != '@')
     {
-        ScopedLock lk(funcNode->resolvedSymbolName()->mutex);
+        const auto symbolName = funcNode->resolvedSymbolName();
+        ScopedLock lk(symbolName->mutex);
 
         // We need to be sure that we only have empty functions, and not a real one.
         // As we can have multiple times the same empty function prototype, count them.
         size_t cptEmpty = 0;
-        for (const auto n : funcNode->resolvedSymbolName()->nodes)
+        for (const auto n : symbolName->nodes)
         {
             if (!n->isEmptyFct())
                 break;
             cptEmpty++;
         }
 
-        if (cptEmpty == funcNode->resolvedSymbolName()->nodes.size() && funcNode->resolvedSymbolName()->cptOverloads == 1)
+        if (cptEmpty == symbolName->nodes.size() && symbolName->cptOverloads == 1)
         {
-            funcNode->resolvedSymbolName()->kind = SymbolKind::PlaceHolder;
+            symbolName->kind = SymbolKind::PlaceHolder;
             return true;
         }
     }
@@ -952,10 +953,11 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     if (!funcNode->hasAstFlag(AST_FROM_GENERIC))
     {
         SharedLock lk(funcNode->ownerScope->symTable.mutex);
-        if (funcNode->resolvedSymbolName()->overloads.size() > 1 && !funcNode->hasAttribute(ATTRIBUTE_OVERLOAD))
+        const auto symbolName =funcNode->resolvedSymbolName(); 
+        if (symbolName->overloads.size() > 1 && !funcNode->hasAttribute(ATTRIBUTE_OVERLOAD))
         {
             AstFuncDecl* other = nullptr;
-            for (const auto n : funcNode->resolvedSymbolName()->nodes)
+            for (const auto n : symbolName->nodes)
             {
                 if (n != funcNode && n->kind == AstNodeKind::FuncDecl)
                 {

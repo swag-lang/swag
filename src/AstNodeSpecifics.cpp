@@ -263,12 +263,13 @@ void AstFuncDecl::computeFullNameForeignExport()
 
     // If the symbol has overloads, i.e. more than one definition, then we
     // append the type
-    if (resolvedSymbolName() && resolvedSymbolName()->overloads.size() > 1)
+    const auto symName = resolvedSymbolName();
+    if (symName && symName->overloads.size() > 1)
     {
         // Empty (forward) decl are counted as overloads, so be sure it's not a bunch of
         // empty functions.
         uint32_t countNoEmpty = 0;
-        for (const auto r : resolvedSymbolName()->overloads)
+        for (const auto r : symName->overloads)
         {
             if (!r->node->isEmptyFct())
             {
@@ -1233,9 +1234,10 @@ AstNode* AstAlias::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstAlias>();
     newNode->copyFrom(context, this);
-    newNode->kwdLoc = kwdLoc;
-    if (resolvedSymbolName())
-        newNode->setResolvedSymbolName(newNode->ownerScope->symTable.registerSymbolName(nullptr, newNode, resolvedSymbolName()->kind));
+    newNode->kwdLoc    = kwdLoc;
+    const auto symName = resolvedSymbolName();
+    if (symName)
+        newNode->setResolvedSymbolName(newNode->ownerScope->symTable.registerSymbolName(nullptr, newNode, symName->kind));
     return newNode;
 }
 
