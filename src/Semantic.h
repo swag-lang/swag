@@ -212,6 +212,7 @@ namespace Semantic
     TypeInfo*      getConcreteTypeUnRef(AstNode* node, ToConcreteFlags concreteFlags);
     AstIdentifier* createTmpId(SemanticContext* context, AstNode* node, const Utf8& name);
     bool           makeIntrinsicKindof(SemanticContext* context, AstNode* node);
+    bool           computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, bool hasForcedUfcs);
 
     Utf8 getCompilerFunctionString(const AstNode* node, TokenId id);
     bool sendCompilerMsgFuncDecl(SemanticContext* context);
@@ -310,7 +311,6 @@ namespace Semantic
     bool resolveImplForAfterFor(SemanticContext* context);
     bool resolveImplForType(SemanticContext* context);
     bool resolveImplFor(SemanticContext* context);
-    bool generateMissingInterfaceFct(const uint32_t& numFctInterface, VectorNative<AstFuncDecl*>& mapItIdxToFunc, SemanticContext* context, TypeInfoStruct* typeStruct, TypeInfoStruct* typeBaseInterface, TypeInfoStruct* typeInterface, AstImpl* node, TypeInfo* typeInfo, bool& retFlag);
     bool resolveStruct(SemanticContext* context);
     bool resolveInterface(SemanticContext* context);
     bool resolveEnum(SemanticContext* context);

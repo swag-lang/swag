@@ -986,11 +986,11 @@ bool Semantic::resolveIdentifier(SemanticContext* context)
 
 bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags)
 {
-    auto  job                = context->baseJob;
-    auto& scopeHierarchy     = context->cacheScopeHierarchy;
-    auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
-    auto& symbolsMatch       = context->cacheSymbolsMatch;
-    auto  identifierRef      = identifier->identifierRef();
+    const auto job                = context->baseJob;
+    auto&      scopeHierarchy     = context->cacheScopeHierarchy;
+    auto&      scopeHierarchyVars = context->cacheScopeHierarchyVars;
+    auto&      symbolsMatch       = context->cacheSymbolsMatch;
+    const auto identifierRef      = identifier->identifierRef();
 
     identifier->byteCodeFct = ByteCodeGen::emitIdentifier;
 
@@ -1015,17 +1015,17 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     // So we must update the types.
     if (identifier->callParameters && identifier->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
     {
-        for (auto c : identifier->callParameters->children)
+        for (const auto c : identifier->callParameters->children)
         {
             if (c->resolvedSymbolOverload() &&
                 c->typeInfo &&
                 c->typeInfo->isLambdaClosure() &&
                 c->typeInfo != c->resolvedSymbolOverload()->typeInfo)
             {
-                auto newTypeInfo    = c->resolvedSymbolOverload()->typeInfo->clone();
-                newTypeInfo->kind   = TypeInfoKind::LambdaClosure;
-                newTypeInfo->sizeOf = c->typeInfo->sizeOf;
-                c->typeInfo         = newTypeInfo;
+                const auto newTypeInfo = c->resolvedSymbolOverload()->typeInfo->clone();
+                newTypeInfo->kind      = TypeInfoKind::LambdaClosure;
+                newTypeInfo->sizeOf    = c->typeInfo->sizeOf;
+                c->typeInfo            = newTypeInfo;
             }
         }
     }
@@ -1101,7 +1101,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
         if (!fine)
         {
-            for (auto& p : symbolsMatch)
+            for (const auto& p : symbolsMatch)
             {
                 SharedLock lkn(p.symbol->mutex);
                 if (!needToCompleteSymbolNoLock(context, identifier, p.symbol, false))
@@ -1111,9 +1111,9 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     }
 
     // If one of my dependent symbol is not fully solved, we need to wait
-    for (auto& p : symbolsMatch)
+    for (const auto& p : symbolsMatch)
     {
-        auto symbol = p.symbol;
+        const auto symbol = p.symbol;
 
         // First test, with just a SharedLock for contention
         {
@@ -1155,161 +1155,22 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         return true;
     }
 
-    auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload();
-    auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName();
-    auto orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
-
-    // In case of a reevaluation, ufcsFirstParam will be null, but we still want to cast for ufcs
     bool hasForcedUfcs = false;
     if (identifier->callParameters && !identifier->callParameters->children.empty() && identifier->callParameters->firstChild()->hasAstFlag(AST_TO_UFCS))
         hasForcedUfcs = true;
 
-    while (true)
-    {
-        // Collect all overloads to solve. We collect also the number of overloads when the collect is done, in
-        // case that number changes (other thread) during the resolution. Because if the number of overloads differs
-        // at one point in the process (for a given symbol), then this will invalidate the resolution
-        // (number of overloads can change when instantiating a generic)
-        auto& toSolveOverload = context->cacheToSolveOverload;
-        toSolveOverload.clear();
-        for (auto& p : symbolsMatch)
-        {
-            auto       symbol = p.symbol;
-            SharedLock lk(symbol->mutex);
-            for (auto over : symbol->overloads)
-            {
-                OneOverload t;
-                t.overload         = over;
-                t.scope            = p.scope;
-                t.cptOverloads     = symbol->overloads.size();
-                t.cptOverloadsInit = symbol->cptOverloadsInit;
-                toSolveOverload.push_back(t);
-            }
-        }
+    // Convert possible symbols to a list of try
+    SWAG_CHECK(computeMatch(context, identifier, riFlags, symbolsMatch, identifierRef, hasForcedUfcs));
+    YIELD();
 
-        // Can happen if a symbol is inside a disabled #if for example
-        if (toSolveOverload.empty())
-        {
-            if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
-                return true;
-            return context->report({identifier, formErr(Err0730, identifier->token.c_str())});
-        }
-
-        auto& listTryMatch = context->cacheListTryMatch;
-        context->clearTryMatch();
-
-        for (auto& oneOver : toSolveOverload)
-        {
-            auto symbolOverload = oneOver.overload;
-            identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
-            identifierRef->previousResolvedNode = orgPreviousResolvedNode;
-
-            // Is there a using variable associated with the symbol to solve ?
-            AstNode* dependentVar     = nullptr;
-            AstNode* dependentVarLeaf = nullptr;
-            SWAG_CHECK(getUsingVar(context, identifierRef, identifier, symbolOverload, &dependentVar, &dependentVarLeaf));
-            YIELD();
-
-            // Get the ufcs first parameter if we can
-            AstNode* ufcsFirstParam = nullptr;
-
-            // The ufcs parameter has already been set in we are evaluating an identifier for the second time
-            // (when we inline a function call)
-            if (!identifier->callParameters || identifier->callParameters->children.empty() || !identifier->callParameters->firstChild()->hasAstFlag(AST_TO_UFCS))
-            {
-                SWAG_CHECK(getUfcs(context, identifierRef, identifier, symbolOverload, &ufcsFirstParam));
-                YIELD();
-                if (identifier->hasSemFlag(SEMFLAG_FORCE_UFCS) && !ufcsFirstParam)
-                    continue;
-            }
-
-            // If the last parameter of a function is of type 'code', and the last call parameter is not,
-            // then we take the next statement, after the function, and put it as the last parameter
-            SWAG_CHECK(appendLastCodeStatement(context, identifier, symbolOverload));
-
-            // This if for a lambda
-            bool forLambda = false;
-            if (identifier->isForceTakeAddress() && isFunctionButNotACall(context, identifier, symbolOverload->symbol))
-                forLambda = true;
-
-            // Will try with ufcs, and will try without
-            for (int tryUfcs = 0; tryUfcs < 2; tryUfcs++)
-            {
-                auto  tryMatch        = context->getTryMatch();
-                auto& symMatchContext = tryMatch->symMatchContext;
-
-                tryMatch->symMatchContext.matchFlags |= forLambda ? SymbolMatchContext::MATCH_FOR_LAMBDA : 0;
-
-                tryMatch->genericParameters = identifier->genericParameters;
-                tryMatch->callParameters    = identifier->callParameters;
-                tryMatch->dependentVar      = dependentVar;
-                tryMatch->dependentVarLeaf  = dependentVarLeaf;
-                tryMatch->overload          = symbolOverload;
-                tryMatch->scope             = oneOver.scope;
-                tryMatch->ufcs              = ufcsFirstParam || hasForcedUfcs;
-                tryMatch->cptOverloads      = oneOver.cptOverloads;
-                tryMatch->cptOverloadsInit  = oneOver.cptOverloadsInit;
-
-                SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, identifier, symbolOverload, ufcsFirstParam));
-                YIELD();
-                SWAG_CHECK(fillMatchContextGenericParameters(context, symMatchContext, identifier, symbolOverload));
-
-                listTryMatch.push_back(tryMatch);
-
-                if (!ufcsFirstParam)
-                    break;
-                if (identifier->hasSemFlag(SEMFLAG_FORCE_UFCS))
-                    break;
-                ufcsFirstParam = nullptr;
-            }
-        }
-
-        if (listTryMatch.empty())
-        {
-            context->cacheMatches.clear();
-            break;
-        }
-
-        MatchIdParamsFlags mipFlags = 0;
-        if (riFlags.has(RI_FOR_GHOSTING))
-            mipFlags.add(MIP_FOR_GHOSTING);
-        if (riFlags.has(RI_FOR_ZERO_GHOSTING))
-            mipFlags.add(MIP_FOR_ZERO_GHOSTING);
-        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, identifier, mipFlags));
-
-        if (context->result == ContextResult::Pending)
-        {
-            identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
-            identifierRef->previousResolvedNode = orgPreviousResolvedNode;
-            return true;
-        }
-
-        if (context->result == ContextResult::NewChildren1)
-        {
-            identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
-            identifierRef->previousResolvedNode = orgPreviousResolvedNode;
-            context->result                     = ContextResult::NewChildren;
-            return true;
-        }
-
-        // The number of overloads for a given symbol has been changed by another thread, which
-        // means that we need to restart everything...
-        if (context->result != ContextResult::NewChildren)
-            break;
-
-        context->result = ContextResult::Done;
-    }
-
+    // No match !
     if (context->cacheMatches.empty())
     {
-        // We want to force the ufcs
+        if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
+            return true;
+        
         if (identifier->hasSemFlag(SEMFLAG_FORCE_UFCS))
-        {
-            if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
-                return true;
             SemanticError::unknownIdentifierError(context, identifierRef, castAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
-            return false;
-        }
 
         return false;
     }
@@ -1326,7 +1187,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
     // Deal with ufcs. Now that the match is done, we will change the ast in order to
     // add the ufcs parameters to the function call parameters
-    auto& match = context->cacheMatches[0];
+    const auto& match = context->cacheMatches[0];
     if (match->ufcs && !hasForcedUfcs)
     {
         // Do not change AST if this is code inside a generic function
