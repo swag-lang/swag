@@ -21,12 +21,14 @@ void Stats::printFreq()
     Utf8 str1 = g_CommandLine.statsFreqOp1;
     str1.makeLower();
 
+    constexpr auto endOp = static_cast<uint32_t>(ByteCodeOp::End);
+
     for (uint32_t cpt = 0; cpt < g_CommandLine.statsFreqCount; cpt++)
     {
         uint32_t best  = 0;
         uint32_t bestI = UINT32_MAX;
 
-        for (int i = 0; i < static_cast<int>(ByteCodeOp::End); i++)
+        for (uint32_t i = 0; i < endOp; i++)
         {
             // Filter by name
             if (!str0.empty())
@@ -37,20 +39,20 @@ void Stats::printFreq()
                     continue;
             }
 
-            if (countOpFreq[i][static_cast<int>(ByteCodeOp::End)] > best)
+            if (countOpFreq[i][endOp] > best)
             {
-                best  = countOpFreq[i][static_cast<int>(ByteCodeOp::End)];
+                best  = countOpFreq[i][endOp];
                 bestI = i;
             }
         }
 
-        if (bestI != UINT32_MAX && countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)].load())
+        if (bestI != UINT32_MAX && countOpFreq[bestI][endOp].load())
         {
             g_Log.setColor(LogColor::Index);
-            g_Log.print(form("%5d ", countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)].load()));
+            g_Log.print(form("%5d ", countOpFreq[bestI][endOp].load()));
             g_Log.setColor(LogColor::Name);
             g_Log.print(form("%s\n", g_ByteCodeOpDesc[bestI].name));
-            countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)] = 0;
+            countOpFreq[bestI][endOp] = 0;
         }
     }
 
@@ -58,10 +60,10 @@ void Stats::printFreq()
 
     for (uint32_t cpt = 0; cpt < g_CommandLine.statsFreqCount; cpt++)
     {
-        int best  = -1;
-        int bestI = 0;
-        int bestJ = 0;
-        for (int i = 0; i < static_cast<int>(ByteCodeOp::End); i++)
+        uint32_t best  = 0;
+        uint32_t bestI = UINT32_MAX;
+        uint32_t bestJ = UINT32_MAX;
+        for (uint32_t i = 0; i < endOp; i++)
         {
             // Filter by name
             if (!str0.empty())
@@ -72,7 +74,7 @@ void Stats::printFreq()
                     continue;
             }
 
-            for (int j = 0; j < static_cast<int>(ByteCodeOp::End); j++)
+            for (uint32_t j = 0; j < endOp; j++)
             {
                 // Filter by name
                 if (!str1.empty())
@@ -92,7 +94,7 @@ void Stats::printFreq()
             }
         }
 
-        if (countOpFreq[bestI][bestJ].load())
+        if (bestI != UINT32_MAX && countOpFreq[bestI][bestJ].load())
         {
             g_Log.setColor(LogColor::Index);
             g_Log.print(form("%5d ", countOpFreq[bestI][bestJ].load()));
@@ -156,8 +158,8 @@ void Stats::print() const
     g_Log.messageHeaderDot("semantic time", form("%.3fs", OS::timerToSeconds(semanticTime.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("run time", form("%.3fs", OS::timerToSeconds(runTime.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("run test time", form("%.3fs", OS::timerToSeconds(runTestTime.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("prep out 1 time", form("%.3fs (genfunc: %.3fs)", OS::timerToSeconds(prepOutputStage1TimeJob.load()), OS::timerToSeconds(prepOutputTimeJobGenFunc.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("prep out 2 time", form("%.3fs (saveobj: %.3fs)", OS::timerToSeconds(prepOutputStage2TimeJob.load()), OS::timerToSeconds(prepOutputTimeJobSaveObj.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("prep out 1 time", form("%.3fs (gen func: %.3fs)", OS::timerToSeconds(prepOutputStage1TimeJob.load()), OS::timerToSeconds(prepOutputTimeJobGenFunc.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("prep out 2 time", form("%.3fs (save obj: %.3fs)", OS::timerToSeconds(prepOutputStage2TimeJob.load()), OS::timerToSeconds(prepOutputTimeJobSaveObj.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("gen out time", form("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("optim bc time", form("%.3fs", OS::timerToSeconds(optimBCTime.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("total time", form("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())), LogColor::Header, LogColor::Value);
