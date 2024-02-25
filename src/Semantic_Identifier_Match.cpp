@@ -974,6 +974,105 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     return true;
 }
 
+bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier, const SymbolOverload* overload, TypeInfo* typeAlias)
+{
+    if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
+        SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
+    identifierRef->startScope = castTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
+
+    if (!identifier->callParameters)
+        identifier->addAstFlag(AST_CONST_EXPR);
+
+    // Be sure it's the NAME{} syntax
+    if (identifier->callParameters &&
+        !identifier->hasAstFlag(AST_GENERATED) &&
+        !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
+    {
+        const Diagnostic err{identifier, identifier->token, toErr(Err0377)};
+        return context->report(err);
+    }
+
+    // A struct with parameters is in fact the creation of a temporary variable
+    bool canConvertStructParams = false;
+    bool canOptimAffect         = false;
+    if (identifier->callParameters &&
+        !identifier->hasAstFlag(AST_GENERATED) &&
+        !identifier->hasAstFlag(AST_IN_TYPE_VAR_DECLARATION) &&
+        !identifier->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))
+    {
+        canConvertStructParams = true;
+        if (identifier->parent->parent->is(AstNodeKind::VarDecl) || identifier->parent->parent->is(AstNodeKind::ConstDecl))
+        {
+            const auto varNode = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+            if (varNode->assignment == identifier->parent && !varNode->type)
+            {
+                // Optim if we have var = Struct{}
+                // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
+                // of 'var'
+                canOptimAffect = true;
+            }
+        }
+    }
+
+    // Need to make all types compatible, in case a cast is necessary
+    if (identifier->callParameters)
+    {
+        Semantic::sortParameters(identifier->callParameters);
+        const auto maxParams = identifier->callParameters->childCount();
+        for (uint32_t i = 0; i < maxParams; i++)
+        {
+            const auto   nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
+            const size_t idx      = nodeCall->indexParam;
+            if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
+            {
+                CastFlags castFlags = CAST_FLAG_TRY_COERCE | CAST_FLAG_FORCE_UN_CONST | CAST_FLAG_PTR_REF;
+                if (canOptimAffect)
+                    castFlags.add(CAST_FLAG_NO_TUPLE_TO_STRUCT);
+                SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, castFlags));
+
+                const auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+                if (!oneMatch.solvedParameters[idx]->typeInfo->isPointerRef() && typeCall->isPointerRef())
+                    setUnRef(nodeCall);
+            }
+        }
+    }
+
+    // Optim if we have var = Struct{}
+    // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
+    // of 'var'
+    if (canOptimAffect)
+    {
+        const auto varNode  = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+        const auto typeNode = Ast::newTypeExpression(nullptr, varNode);
+        varNode->type       = typeNode;
+        varNode->assignment = nullptr;
+        typeNode->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
+        typeNode->addSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN);
+        identifier->addSemFlag(SEMFLAG_ONCE);
+        Ast::removeFromParent(identifier->parent);
+        Ast::addChildBack(typeNode, identifier->parent);
+        typeNode->identifier = identifier->parent;
+        context->baseJob->nodes.pop_back();
+        context->baseJob->nodes.pop_back();
+        context->baseJob->nodes.push_back(typeNode);
+        context->result = ContextResult::NewChildren;
+        return true;
+    }
+
+    // A struct with parameters is in fact the creation of a temporary variable
+    if (canConvertStructParams)
+    {
+        if (identifier->parent->parent->isNot(AstNodeKind::TypeExpression) ||
+            !identifier->parent->parent->hasSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN))
+        {
+            SWAG_CHECK(Ast::convertStructParamsToTmpVar(context, identifier));
+            return true;
+        }
+    }
+    
+    return true;
+}
+
 bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
 {
     const auto symbol       = oneMatch.symbolOverload->symbol;
@@ -1256,7 +1355,6 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             break;
 
         case SymbolKind::EnumValue:
-
             if (idRef &&
                 idRef->previousResolvedNode &&
                 idRef->previousResolvedNode->resolvedSymbolName()->is(SymbolKind::Variable))
@@ -1273,103 +1371,9 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
         case SymbolKind::Struct:
         case SymbolKind::Interface:
-        {
-            if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
-                SWAG_CHECK(setupIdentifierRef(context, identifier));
-            identifierRef->startScope = castTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
-
-            if (!identifier->callParameters)
-                identifier->addAstFlag(AST_CONST_EXPR);
-
-            // Be sure it's the NAME{} syntax
-            if (identifier->callParameters &&
-                !identifier->hasAstFlag(AST_GENERATED) &&
-                !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-            {
-                const Diagnostic err{identifier, identifier->token, toErr(Err0377)};
-                return context->report(err);
-            }
-
-            // A struct with parameters is in fact the creation of a temporary variable
-            bool canConvertStructParams = false;
-            bool canOptimAffect         = false;
-            if (identifier->callParameters &&
-                !identifier->hasAstFlag(AST_GENERATED) &&
-                !identifier->hasAstFlag(AST_IN_TYPE_VAR_DECLARATION) &&
-                !identifier->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))
-            {
-                canConvertStructParams = true;
-                if (identifier->parent->parent->is(AstNodeKind::VarDecl) || identifier->parent->parent->is(AstNodeKind::ConstDecl))
-                {
-                    const auto varNode = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-                    if (varNode->assignment == identifier->parent && !varNode->type)
-                    {
-                        // Optim if we have var = Struct{}
-                        // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
-                        // of 'var'
-                        canOptimAffect = true;
-                    }
-                }
-            }
-
-            // Need to make all types compatible, in case a cast is necessary
-            if (identifier->callParameters)
-            {
-                sortParameters(identifier->callParameters);
-                const auto maxParams = identifier->callParameters->childCount();
-                for (uint32_t i = 0; i < maxParams; i++)
-                {
-                    const auto   nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
-                    const size_t idx      = nodeCall->indexParam;
-                    if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
-                    {
-                        CastFlags castFlags = CAST_FLAG_TRY_COERCE | CAST_FLAG_FORCE_UN_CONST | CAST_FLAG_PTR_REF;
-                        if (canOptimAffect)
-                            castFlags.add(CAST_FLAG_NO_TUPLE_TO_STRUCT);
-                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, castFlags));
-
-                        const auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-                        if (!oneMatch.solvedParameters[idx]->typeInfo->isPointerRef() && typeCall->isPointerRef())
-                            setUnRef(nodeCall);
-                    }
-                }
-            }
-
-            // Optim if we have var = Struct{}
-            // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
-            // of 'var'
-            if (canOptimAffect)
-            {
-                const auto varNode  = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-                const auto typeNode = Ast::newTypeExpression(nullptr, varNode);
-                varNode->type       = typeNode;
-                varNode->assignment = nullptr;
-                typeNode->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
-                typeNode->addSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN);
-                identifier->addSemFlag(SEMFLAG_ONCE);
-                Ast::removeFromParent(identifier->parent);
-                Ast::addChildBack(typeNode, identifier->parent);
-                typeNode->identifier = identifier->parent;
-                context->baseJob->nodes.pop_back();
-                context->baseJob->nodes.pop_back();
-                context->baseJob->nodes.push_back(typeNode);
-                context->result = ContextResult::NewChildren;
-                return true;
-            }
-
-            // A struct with parameters is in fact the creation of a temporary variable
-            if (canConvertStructParams)
-            {
-                if (identifier->parent->parent->isNot(AstNodeKind::TypeExpression) ||
-                    !identifier->parent->parent->hasSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN))
-                {
-                    SWAG_CHECK(Ast::convertStructParamsToTmpVar(context, identifier));
-                    return true;
-                }
-            }
-
+            SWAG_CHECK(setSymbolMatchStruct(context, oneMatch, identifierRef, identifier, overload, typeAlias));
+            YIELD();
             break;
-        }
 
         case SymbolKind::Variable:
             SWAG_CHECK(setSymbolMatchVar(context, oneMatch, idRef, identifier, overload));
