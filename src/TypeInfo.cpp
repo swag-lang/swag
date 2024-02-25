@@ -20,7 +20,7 @@ void TypeInfo::forceComputeName()
 
 void TypeInfo::computeScopedName(Utf8& newName) const
 {
-    if (declNode && declNode->ownerScope && declNode->ownerScope->kind != ScopeKind::Function)
+    if (declNode && declNode->ownerScope && declNode->ownerScope->isNot(ScopeKind::Function))
     {
         newName += declNode->ownerScope->getFullName();
         if (!newName.empty())

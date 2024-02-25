@@ -2156,7 +2156,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
     context.forExport = true;
 
     // Namespace
-    if (scope->kind == ScopeKind::Namespace && !scope->name.empty())
+    if (scope->is(ScopeKind::Namespace) && !scope->name.empty())
     {
         if (!scope->flags.has(SCOPE_AUTO_GENERATED))
         {
@@ -2189,7 +2189,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
     else if (!scope->isGlobal() && scope->isGlobalOrImpl() && !scope->name.empty())
     {
         concat.addIndent(context.indent);
-        if (scope->kind == ScopeKind::Impl)
+        if (scope->is(ScopeKind::Impl))
         {
             const auto nodeImpl = castAst<AstImpl>(scope->owner, AstNodeKind::Impl);
             const auto symbol   = nodeImpl->identifier->resolvedSymbolOverload();
@@ -2197,7 +2197,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
             concat.addString(scope->parentScope->name);
             concat.addEol();
         }
-        else if (scope->kind == ScopeKind::Enum)
+        else if (scope->is(ScopeKind::Enum))
         {
             CONCAT_FIXED_STR(concat, "impl enum ");
             concat.addString(scope->name);
@@ -2218,7 +2218,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
         SWAG_CHECK(outputScopeContent(context, concat, moduleToGen, scope));
         for (const auto oneScope : scope->childScopes)
         {
-            if (oneScope->kind == ScopeKind::Impl)
+            if (oneScope->is(ScopeKind::Impl))
                 continue;
             SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
         }
@@ -2232,7 +2232,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
 
         for (const auto oneScope : scope->childScopes)
         {
-            if (oneScope->kind != ScopeKind::Impl)
+            if (oneScope->isNot(ScopeKind::Impl))
                 continue;
             SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
         }

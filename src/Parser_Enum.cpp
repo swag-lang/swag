@@ -34,7 +34,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     {
         ScopedLock lk(currentScope->symTable.mutex);
         newScope = Ast::newScope(enumNode, enumNode->token.text, ScopeKind::Enum, currentScope, true);
-        if (newScope->kind != ScopeKind::Enum)
+        if (newScope->isNot(ScopeKind::Enum))
         {
             if (newScope->owner->kind == AstNodeKind::Impl)
             {

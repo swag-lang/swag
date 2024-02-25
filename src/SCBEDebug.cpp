@@ -526,7 +526,7 @@ void SCBEDebug::setLocation(CPUFunction* cpuFct, const ByteCode* bc, const ByteC
         if (scope->backendStart == 0)
             scope->backendStart = byteOffset;
         scope->backendEnd = byteOffset;
-        if (scope->kind == ScopeKind::Function)
+        if (scope->is(ScopeKind::Function))
             break;
         scope = scope->parentScope;
     }

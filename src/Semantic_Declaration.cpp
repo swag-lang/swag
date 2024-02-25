@@ -16,7 +16,7 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
     const auto regNode = node->ownerScope ? node->ownerScope->owner : node;
 
     SWAG_ASSERT(regNode);
-    SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, formErr(Err0477, Naming::kindName(node->ownerScope->kind).c_str())}));
+    SWAG_VERIFY(node->ownerFct || node->ownerScope->is(ScopeKind::Struct), context->report({node, formErr(Err0477, Naming::kindName(node->ownerScope->kind).c_str())}));
 
     const AltScopeFlags altFlags = node->hasAstFlag(AST_STRUCT_MEMBER) ? ALT_SCOPE_STRUCT_USING : 0;
 

@@ -58,7 +58,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             parent = parent->ownerFct->parent;
         SWAG_VERIFY(parent, context->report({parent, toErr(Err0447)}));
 
-        if (parent->ownerScope->kind == ScopeKind::Struct || parent->ownerScope->kind == ScopeKind::Enum)
+        if (parent->ownerScope->is(ScopeKind::Struct) || parent->ownerScope->is(ScopeKind::Enum))
         {
             parent = parent->ownerScope->owner;
             node->addAstFlag(AST_CAN_MATCH_INCOMPLETE);
@@ -215,7 +215,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 {
                     // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
                     // relevant and we should not use it
-                    if (startScope->kind != ScopeKind::Namespace && startScope->owner->extension)
+                    if (startScope->isNot(ScopeKind::Namespace) && startScope->owner->extension)
                     {
                         collectAlternativeScopes(startScope->owner, scopeHierarchy);
                         collectAlternativeScopeVars(startScope->owner, scopeHierarchy, scopeHierarchyVars);
@@ -322,7 +322,7 @@ void Semantic::collectAlternativeScopes(const AstNode* startNode, VectorNative<A
             done.push_back(it0.scope);
             addAlternativeScopeOnce(scopes, it0.scope, it0.flags);
 
-            if (it0.scope && it0.scope->kind == ScopeKind::Struct)
+            if (it0.scope && it0.scope->is(ScopeKind::Struct))
             {
                 SharedLock lk(it0.scope->owner->mutex);
                 if (it0.scope->owner->hasExtMisc())
@@ -364,7 +364,7 @@ void Semantic::collectAlternativeScopeVars(const AstNode* startNode, VectorNativ
             done.push_back(it0.scope);
             addAlternativeScopeOnce(scopes, it0.scope, it0.flags);
 
-            if (it0.scope && it0.scope->kind == ScopeKind::Struct)
+            if (it0.scope && it0.scope->is(ScopeKind::Struct))
             {
                 SharedLock lk(it0.scope->owner->mutex);
                 if (it0.scope->owner->hasExtMisc())
@@ -580,7 +580,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
         {
             for (uint64_t i = 0; i < scopeUpValue->literalValue.u8; i++)
             {
-                while (startScope && startScope->kind != ScopeKind::Inline && startScope->kind != ScopeKind::Macro)
+                while (startScope && startScope->isNot(ScopeKind::Inline) && startScope->isNot(ScopeKind::Macro))
                     startScope = startScope->parentScope;
 
                 if (!startScope && i == 0)
@@ -630,20 +630,20 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
             continue;
 
         // For an inline scope, stop here
-        if (scope->kind == ScopeKind::Inline)
+        if (scope->is(ScopeKind::Inline))
         {
             continue;
         }
 
         // For a macro scope, jump right to the inline
-        if (scope->kind == ScopeKind::Macro)
+        if (scope->is(ScopeKind::Macro))
         {
             const auto orgScope = scope;
             if (scope->hieScope)
                 scope = scope->hieScope;
             else
             {
-                while (scope && scope->kind != ScopeKind::Inline)
+                while (scope && scope->isNot(ScopeKind::Inline))
                     scope = scope->parentScope;
                 if (!scope)
                     continue;
@@ -655,7 +655,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
         // Add parent scope
         if (scope->parentScope)
         {
-            if (scope->parentScope->kind == ScopeKind::Struct && flags.has(COLLECT_NO_STRUCT))
+            if (scope->parentScope->is(ScopeKind::Struct) && flags.has(COLLECT_NO_STRUCT))
                 continue;
 
             if (!hasAlternativeScope(scopes, scope->parentScope))

@@ -141,7 +141,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         return context->report(err);
     }
 
-    if (node->ownerScope->kind == ScopeKind::Impl)
+    if (node->ownerScope->is(ScopeKind::Impl))
     {
         const Diagnostic err{node, node->getTokenName(), formErr(Err0508, node->token.c_str())};
         return context->report(err);

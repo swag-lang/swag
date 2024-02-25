@@ -775,7 +775,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
             oneSymbol->isNot(SymbolKind::Struct) &&
             oneSymbol->isNot(SymbolKind::Enum) &&
             (oneSymbol->overloads.size() != 1 || !oneSymbol->overloads[0]->hasFlag(OVERLOAD_COMPUTED_VALUE)) &&
-            oneSymbol->ownerTable->scope->kind == ScopeKind::Struct &&
+            oneSymbol->ownerTable->scope->is(ScopeKind::Struct) &&
             !identifierRef->startScope)
         {
             isValid                  = false;

@@ -108,10 +108,10 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         return true;
     if (node->hasAstFlag(AST_IS_GENERIC))
         return true;
-    if (scope->kind == ScopeKind::Struct)
+    if (scope->is(ScopeKind::Struct))
         return true;
 
-    if (scope->kind != ScopeKind::Inline && scope->owner != node && !node->isParentOf(scope->owner))
+    if (scope->isNot(ScopeKind::Inline) && scope->owner != node && !node->isParentOf(scope->owner))
         return true;
 
     const auto& table = scope->symTable;

@@ -30,7 +30,7 @@ bool Scope::isGlobalOrImpl() const
     if (isGlobal() || kind == ScopeKind::Impl)
         return true;
     if (kind == ScopeKind::Struct || kind == ScopeKind::Enum)
-        return !parentScope || parentScope->isGlobal() || parentScope->kind == ScopeKind::Impl;
+        return !parentScope || parentScope->isGlobal() || parentScope->is(ScopeKind::Impl);
     return false;
 }
 

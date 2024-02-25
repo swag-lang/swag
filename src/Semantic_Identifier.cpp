@@ -593,7 +593,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             getIt = true;
 
         // The symbol scope is an 'impl' inside a struct (impl for)
-        else if (symScope->kind == ScopeKind::Impl && symScope->parentScope == dep.scope)
+        else if (symScope->is(ScopeKind::Impl) && symScope->parentScope == dep.scope)
             getIt = true;
 
         // For mtd sub functions and ufcs

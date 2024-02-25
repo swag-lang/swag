@@ -96,7 +96,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
             SWAG_VERIFY(funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, toErr(Err0456)}));
 
         // Not everything is possible for types for attributes
-        if (param->ownerScope->kind == ScopeKind::Attribute)
+        if (param->ownerScope->is(ScopeKind::Attribute))
         {
             SWAG_VERIFY(!funcParam->typeInfo->isAny(), context->report({nodeParam, formErr(Err0393, funcParam->typeInfo->getDisplayNameC())}));
 
@@ -355,7 +355,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
     {
         bool implFor = false;
-        if (funcNode->ownerScope && funcNode->ownerScope->kind == ScopeKind::Impl)
+        if (funcNode->ownerScope && funcNode->ownerScope->is(ScopeKind::Impl))
         {
             const auto implNode = castAst<AstImpl>(funcNode->ownerScope->owner, AstNodeKind::Impl);
             if (implNode->identifierFor)
@@ -1021,7 +1021,7 @@ bool Semantic::isMethod(const AstFuncDecl* funcNode)
         funcNode->parent->kind != AstNodeKind::CompilerValidIfx &&
         !funcNode->hasAstFlag(AST_FROM_GENERIC) &&
         !funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
-        funcNode->ownerScope->kind == ScopeKind::Struct &&
+        funcNode->ownerScope->is(ScopeKind::Struct) &&
         funcNode->ownerStructScope->owner->typeInfo->isStruct())
     {
         return true;
@@ -1244,7 +1244,7 @@ bool Semantic::resolveRetVal(SemanticContext* context)
     const auto fctDecl = node->hasOwnerInline() ? node->ownerInline()->func : node->ownerFct;
 
     SWAG_VERIFY(fctDecl, context->report({node, toErr(Err0469)}));
-    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, toErr(Err0469)}));
+    SWAG_VERIFY(node->ownerScope && node->ownerScope->isNot(ScopeKind::Function), context->report({node, toErr(Err0469)}));
 
     const auto fct     = castAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);

@@ -1096,7 +1096,7 @@ AstNode* AstCompilerMixin::clone(CloneContext& context)
 
 AstInline::~AstInline()
 {
-    if (scope && scope->kind == ScopeKind::Inline)
+    if (scope && scope->is(ScopeKind::Inline))
         scope->release();
 }
 
@@ -1124,7 +1124,7 @@ AstNode* AstInline::clone(CloneContext& context)
     cloneContext.parent      = newNode;
     cloneContext.ownerInline = newNode;
 
-    if (scope && scope->kind == ScopeKind::Inline)
+    if (scope && scope->is(ScopeKind::Inline))
         cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
 
     newNode->scope = cloneContext.parentScope;

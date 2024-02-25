@@ -616,7 +616,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         overFlags.add(OVERLOAD_VAR_GLOBAL);
     else if (node->ownerScope->isGlobalOrImpl() && node->hasAstFlag(AST_IN_IMPL) && !node->hasAstFlag(AST_STRUCT_MEMBER))
         overFlags.add(OVERLOAD_VAR_GLOBAL);
-    else if (node->ownerScope->kind == ScopeKind::Struct)
+    else if (node->ownerScope->is(ScopeKind::Struct))
         overFlags.add(OVERLOAD_VAR_STRUCT);
     else if (!isCompilerConstant)
         overFlags.add(OVERLOAD_VAR_LOCAL);
@@ -1024,7 +1024,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
             // AST_PENDING_LAMBDA_TYPING will stop semantic, forcing to not evaluate the content of the function,
             // until types are known
-            if (node->ownerFct && node->ownerScope->kind != ScopeKind::Struct)
+            if (node->ownerFct && node->ownerScope->isNot(ScopeKind::Struct))
                 node->ownerFct->addSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING);
         }
     }

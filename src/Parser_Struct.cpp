@@ -80,9 +80,9 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     {
         Diagnostic err{implNode, formErr(Err0008, Naming::kindName(scopeKind).c_str(), implNode->token.c_str(), Naming::kindName(newScope->kind).c_str())};
         err.addNote(Diagnostic::hereIs(newScope->owner));
-        if (newScope->kind == ScopeKind::Enum)
+        if (newScope->is(ScopeKind::Enum))
             err.addNote(formNte(Nte0043, implNode->token.c_str()));
-        else if (newScope->kind == ScopeKind::Struct)
+        else if (newScope->is(ScopeKind::Struct))
             err.addNote(formNte(Nte0042, implNode->token.c_str()));
         return context->report(err);
     }
@@ -221,7 +221,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     }
 
     // If a struct is declared inside a generic struct, force the sub struct to have generic parameters
-    else if (currentScope && currentScope->kind == ScopeKind::Struct && currentScope->owner->kind == AstNodeKind::StructDecl)
+    else if (currentScope && currentScope->is(ScopeKind::Struct) && currentScope->owner->kind == AstNodeKind::StructDecl)
     {
         const auto parentStruct = castAst<AstStruct>(currentScope->owner, AstNodeKind::StructDecl);
         if (parentStruct->genericParameters)
@@ -253,7 +253,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
     {
         ScopedLock lk(currentScope->symTable.mutex);
         newScope = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, currentScope, true);
-        if (newScope->kind != ScopeKind::Struct)
+        if (newScope->isNot(ScopeKind::Struct))
         {
             if (newScope->owner->kind == AstNodeKind::Impl)
             {

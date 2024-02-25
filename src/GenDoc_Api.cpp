@@ -363,7 +363,7 @@ void GenDoc::collectScopes(Scope* root)
     for (const auto c : root->childScopes)
         collectScopes(c);
 
-    if (root->kind == ScopeKind::Namespace)
+    if (root->is(ScopeKind::Namespace))
     {
         for (const auto s : root->symTable.allSymbols)
         {
@@ -375,7 +375,7 @@ void GenDoc::collectScopes(Scope* root)
     }
 
     // If something is exported inside a namespace, then force the namespace to be exported too
-    if (collect.size() != count && root->kind == ScopeKind::Namespace && !root->owner->hasAttribute(ATTRIBUTE_PUBLIC))
+    if (collect.size() != count && root->is(ScopeKind::Namespace) && !root->owner->hasAttribute(ATTRIBUTE_PUBLIC))
         root->owner->addAttribute(ATTRIBUTE_PUBLIC);
 
     if (!root->flags.has(SCOPE_AUTO_GENERATED))

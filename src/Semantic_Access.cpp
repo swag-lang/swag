@@ -52,7 +52,7 @@ bool Semantic::canInheritAccess(const AstNode* node)
         return false;
 
     // Content of the function will propagate only if the function is inlined or generic
-    if (node->ownerScope && node->ownerScope->kind == ScopeKind::FunctionBody)
+    if (node->ownerScope && node->ownerScope->is(ScopeKind::FunctionBody))
     {
         if (!node->ownerFct->hasAstFlag(AST_IS_GENERIC) && !node->ownerFct->mustUserInline(true))
             return false;

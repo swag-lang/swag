@@ -697,12 +697,12 @@ llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
 
     // If this asserts triggers, this will crash at one point in llvm. This should never
     // happen, so check the corresponding instruction !
-    SWAG_ASSERT(scope->kind != ScopeKind::Function);
+    SWAG_ASSERT(scope->isNot(ScopeKind::Function));
 
     llvm::DIScope*       parent = file;
     VectorNative<Scope*> toGen;
     auto                 scanScope = scope;
-    while (scanScope->kind != ScopeKind::Module && scanScope->kind != ScopeKind::File)
+    while (scanScope->isNot(ScopeKind::Module) && scanScope->isNot(ScopeKind::File))
     {
         auto it = mapScopes.find(scanScope);
         if (it != mapScopes.end())
@@ -712,9 +712,9 @@ llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
         }
 
         // If parent function has not yet been created, then create it now
-        if (scanScope->kind == ScopeKind::FunctionBody)
+        if (scanScope->is(ScopeKind::FunctionBody))
         {
-            SWAG_ASSERT(scanScope->parentScope->kind == ScopeKind::Function);
+            SWAG_ASSERT(scanScope->parentScope->is(ScopeKind::Function));
             const auto decl = castAst<AstFuncDecl>(scanScope->parentScope->owner, AstNodeKind::FuncDecl);
             SWAG_ASSERT(decl->hasExtByteCode());
             parent = startFunction(decl->extByteCode()->bc);
@@ -732,7 +732,7 @@ llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
     {
         auto           toGenScope = toGen[i];
         llvm::DIScope* newScope;
-        if (toGenScope->kind == ScopeKind::Namespace)
+        if (toGenScope->is(ScopeKind::Namespace))
         {
             newScope = dbgBuilder->createNameSpace(parent, toGenScope->name.c_str(), true);
         }

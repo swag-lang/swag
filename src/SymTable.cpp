@@ -226,7 +226,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 
 void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset)
 {
-    if (scope->kind == ScopeKind::Struct)
+    if (scope->is(ScopeKind::Struct))
         return;
     if (overload && overload->hasFlag(OVERLOAD_RETVAL))
         return;

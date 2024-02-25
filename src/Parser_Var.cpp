@@ -86,7 +86,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
 bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet)
 {
     bool acceptDeref = true;
-    if (currentScope->kind == ScopeKind::Struct || currentScope->kind == ScopeKind::File)
+    if (currentScope->is(ScopeKind::Struct) || currentScope->is(ScopeKind::File))
         acceptDeref = false;
 
     // Multiple affectation

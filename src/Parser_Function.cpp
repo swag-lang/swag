@@ -224,7 +224,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         SWAG_CHECK(eatToken());
 
         // For an enum, 'self' is replaced with the type itself, not a pointer to the type like for a struct
-        if (paramNode->ownerStructScope->kind == ScopeKind::Enum)
+        if (paramNode->ownerStructScope->is(ScopeKind::Enum))
         {
             const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
             typeNode->typeFlags.add(TYPEFLAG_IS_SELF);
@@ -235,7 +235,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         }
         else
         {
-            SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(tokenParse.token, toErr(Err0470)));
+            SWAG_VERIFY(paramNode->ownerStructScope->is(ScopeKind::Struct), error(tokenParse.token, toErr(Err0470)));
             const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
             typeNode->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
             typeNode->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
@@ -603,10 +603,10 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         if (!funcNode->ownerStructScope)
             return error(tokenParse.token, toErr(Err0467));
 
-        if (funcNode->ownerStructScope->kind == ScopeKind::Enum)
+        if (funcNode->ownerStructScope->is(ScopeKind::Enum))
             return error(tokenParse.token, toErr(Err0468));
 
-        if (funcNode->ownerStructScope->kind != ScopeKind::Struct)
+        if (funcNode->ownerStructScope->isNot(ScopeKind::Struct))
             return error(tokenParse.token, toErr(Err0467));
     }
 
@@ -752,7 +752,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         currentScope->symbolOpCast = symbolName;
 
     // Count number of methods to resolve
-    if (currentScope->kind == ScopeKind::Struct && !funcForCompiler)
+    if (currentScope->is(ScopeKind::Struct) && !funcForCompiler)
     {
         auto typeStruct       = castTypeInfo<TypeInfoStruct>(currentScope->owner->typeInfo, TypeInfoKind::Struct);
         auto typeParam        = TypeManager::makeParam();

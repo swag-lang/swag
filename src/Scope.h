@@ -65,6 +65,9 @@ struct Scope
     bool        isTopLevel() const;
     bool        isGlobalOrImpl() const;
 
+    bool is(ScopeKind what) const { return kind == what; }
+    bool isNot(ScopeKind what) const { return kind != what; }
+
     SharedMutex             mutex;
     SymTable                symTable;
     Utf8                    name;

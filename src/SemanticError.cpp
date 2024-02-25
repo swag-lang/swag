@@ -46,7 +46,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
 
             for (const auto s : identifierRef->startScope->childScopes)
             {
-                if (s->kind == ScopeKind::Impl && s->symTable.find(node->token.text))
+                if (s->is(ScopeKind::Impl) && s->symTable.find(node->token.text))
                 {
                     auto msg = formNte(Nte0136, node->token.c_str(), s->getFullName().c_str());
                     err->remarks.push_back(msg);
