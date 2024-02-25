@@ -989,7 +989,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     auto  job                = context->baseJob;
     auto& scopeHierarchy     = context->cacheScopeHierarchy;
     auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
-    auto& dependentSymbols   = context->cacheDependentSymbols;
+    auto& symbolsMatch       = context->cacheSymbolsMatch;
     auto  identifierRef      = identifier->identifierRef();
 
     identifier->byteCodeFct = ByteCodeGen::emitIdentifier;
@@ -1051,23 +1051,23 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     {
         scopeHierarchy.clear();
         scopeHierarchyVars.clear();
-        dependentSymbols.clear();
+        symbolsMatch.clear();
     }
 
-    if (dependentSymbols.empty())
+    if (symbolsMatch.empty())
     {
         if (identifier->isSilentCall())
         {
             OneSymbolMatch sm;
             sm.symbol = identifierRef->resolvedSymbolName();
-            dependentSymbols.push_back(sm);
+            symbolsMatch.push_back(sm);
         }
         else
         {
             SWAG_CHECK(findIdentifierInScopes(context, identifierRef, identifier));
             if (context->result != ContextResult::Done)
             {
-                dependentSymbols.clear();
+                symbolsMatch.clear();
                 return true;
             }
         }
@@ -1076,7 +1076,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         if (identifier->hasSemFlag(SEMFLAG_FORCE_SCOPE))
             return true;
 
-        if (dependentSymbols.empty())
+        if (symbolsMatch.empty())
         {
             SWAG_ASSERT(identifierRef->hasAstFlag(AST_SILENT_CHECK));
             return true;
@@ -1085,33 +1085,33 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
     // Filter symbols
     SWAG_CHECK(filterSymbols(context, identifier));
-    if (dependentSymbols.empty())
+    if (symbolsMatch.empty())
         return context->report({identifier, formErr(Err0730, identifier->token.c_str())});
 
     // If we have multiple symbols, we need to check that no one can be solved as incomplete, otherwise it
     // can lead to ambiguities, or even worse, take the wrong one.
-    if (dependentSymbols.size() > 1)
+    if (symbolsMatch.size() > 1)
     {
         // A struct and an interface, this is legit
         bool fine = false;
-        if (dependentSymbols.size() == 2 && dependentSymbols[0].symbol->is(SymbolKind::Struct) && dependentSymbols[1].symbol->is(SymbolKind::Interface))
+        if (symbolsMatch.size() == 2 && symbolsMatch[0].symbol->is(SymbolKind::Struct) && symbolsMatch[1].symbol->is(SymbolKind::Interface))
             fine = true;
-        else if (dependentSymbols.size() == 2 && dependentSymbols[0].symbol->is(SymbolKind::Interface) && dependentSymbols[1].symbol->is(SymbolKind::Struct))
+        else if (symbolsMatch.size() == 2 && symbolsMatch[0].symbol->is(SymbolKind::Interface) && symbolsMatch[1].symbol->is(SymbolKind::Struct))
             fine = true;
 
         if (!fine)
         {
-            for (auto& p : dependentSymbols)
+            for (auto& p : symbolsMatch)
             {
                 SharedLock lkn(p.symbol->mutex);
                 if (!needToCompleteSymbolNoLock(context, identifier, p.symbol, false))
-                    return SemanticError::ambiguousSymbolError(context, identifier, p.symbol, dependentSymbols);
+                    return SemanticError::ambiguousSymbolError(context, identifier, p.symbol, symbolsMatch);
             }
         }
     }
 
     // If one of my dependent symbol is not fully solved, we need to wait
-    for (auto& p : dependentSymbols)
+    for (auto& p : symbolsMatch)
     {
         auto symbol = p.symbol;
 
@@ -1172,7 +1172,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         // (number of overloads can change when instantiating a generic)
         auto& toSolveOverload = context->cacheToSolveOverload;
         toSolveOverload.clear();
-        for (auto& p : dependentSymbols)
+        for (auto& p : symbolsMatch)
         {
             auto       symbol = p.symbol;
             SharedLock lk(symbol->mutex);

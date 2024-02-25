@@ -130,7 +130,7 @@ struct OneSymbolMatch
 {
     SymbolName*   symbol  = nullptr;
     Scope*        scope   = nullptr;
-    AltScopeFlags asFlags = 0;
+    AltScopeFlags altFlags = 0;
     bool          remove  = false;
 
     bool operator==(const OneSymbolMatch& other) const
@@ -159,7 +159,7 @@ struct SemanticContext : JobContext
     CastFlags                         castErrorFlags    = 0;
     CastErrorType                     castErrorType     = CastErrorType::Zero;
 
-    VectorNative<OneSymbolMatch>      cacheDependentSymbols;
+    VectorNative<OneSymbolMatch>      cacheSymbolsMatch;
     VectorNative<AlternativeScope>    cacheScopeHierarchy;
     VectorNative<AlternativeScopeVar> cacheScopeHierarchyVars;
     VectorNative<OneOverload>         cacheToSolveOverload;

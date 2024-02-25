@@ -102,8 +102,8 @@ namespace Semantic
     void collectAlternativeScopeVars(const AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
     void collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, CollectFlags flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
     bool collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, CollectFlags flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
-    bool findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
-    bool findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node);
+    bool findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
+    bool findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
 
     bool        canInheritAccess(const AstNode* node);
     AstSemFlags attributeToAccess(AttributeFlags attribute);
@@ -185,7 +185,7 @@ namespace Semantic
     bool           resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags);
     TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
     bool           findEnumTypeInContext(SemanticContext* context, const AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has, VectorNative<SymbolOverload*>& testedOver);
-    void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, AltScopeFlags asFlags);
+    void           addSymbolMatch(VectorNative<OneSymbolMatch>& symbolsMatch, SymbolName* symName, Scope* scope, AltScopeFlags altFlags);
     bool           ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     bool           filterGenericMatches(const SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches);
     bool           filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);

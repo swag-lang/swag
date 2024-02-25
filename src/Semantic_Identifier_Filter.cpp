@@ -707,7 +707,7 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
 bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
 {
     const auto identifierRef    = node->identifierRef();
-    auto&      dependentSymbols = context->cacheDependentSymbols;
+    auto&      dependentSymbols = context->cacheSymbolsMatch;
 
     if (dependentSymbols.size() == 1)
         return true;
@@ -719,11 +719,11 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
             continue;
 
         // A variable inside a scope file has priority
-        if (p.asFlags.has(ALT_SCOPE_FILE_PRIVATE))
+        if (p.altFlags.has(ALT_SCOPE_FILE_PRIVATE))
         {
             for (auto& p1 : dependentSymbols)
             {
-                if (!p1.asFlags.has(ALT_SCOPE_FILE_PRIVATE))
+                if (!p1.altFlags.has(ALT_SCOPE_FILE_PRIVATE))
                     p1.remove = true;
             }
         }
@@ -759,11 +759,11 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
         }
 
         // If a generic type does not come from a 'using', it has priority
-        if (!p.asFlags.has(ALT_SCOPE_STRUCT_USING) && p.symbol->is(SymbolKind::GenericType))
+        if (!p.altFlags.has(ALT_SCOPE_STRUCT_USING) && p.symbol->is(SymbolKind::GenericType))
         {
             for (auto& p1 : dependentSymbols)
             {
-                if (p1.asFlags.has(ALT_SCOPE_STRUCT_USING) && p1.symbol->is(SymbolKind::GenericType))
+                if (p1.altFlags.has(ALT_SCOPE_STRUCT_USING) && p1.symbol->is(SymbolKind::GenericType))
                     p1.remove = true;
             }
         }

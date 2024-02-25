@@ -11,49 +11,49 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, AltScopeFlags asFlags)
+void Semantic::addSymbolMatch(VectorNative<OneSymbolMatch>& symbolsMatch, SymbolName* symName, Scope* scope, AltScopeFlags altFlags)
 {
-    for (const auto& ds : symbols)
+    for (const auto& ds : symbolsMatch)
     {
         if (ds.symbol == symName)
             return;
     }
 
     OneSymbolMatch osm;
-    osm.symbol  = symName;
-    osm.scope   = scope;
-    osm.asFlags = asFlags;
-    symbols.push_back(osm);
+    osm.symbol   = symName;
+    osm.scope    = scope;
+    osm.altFlags = altFlags;
+    symbolsMatch.push_back(osm);
 }
 
-bool Semantic::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
+bool Semantic::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
-    return findIdentifierInScopes(context, context->cacheDependentSymbols, identifierRef, node);
+    return findIdentifierInScopes(context, context->cacheSymbolsMatch, identifierRef, identifier);
 }
 
-bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node)
+bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     const auto job = context->baseJob;
 
     // When this is "retval" type, no need to do fancy things, we take the corresponding function
     // return symbol. This will avoid some ambiguous resolutions with multiple tuples/structs.
-    if (node->token.text == g_LangSpec->name_retval)
+    if (identifier->token.text == g_LangSpec->name_retval)
     {
         // Be sure this is correct
         SWAG_CHECK(resolveRetVal(context));
-        const auto fctDecl = node->hasOwnerInline() ? node->ownerInline()->func : node->ownerFct;
+        const auto fctDecl = identifier->hasOwnerInline() ? identifier->ownerInline()->func : identifier->ownerFct;
         SWAG_ASSERT(fctDecl);
         const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(fctDecl->typeInfo, TypeInfoKind::FuncAttr);
         SWAG_ASSERT(typeFct->returnType->isStruct());
-        addDependentSymbol(dependentSymbols, typeFct->returnType->declNode->resolvedSymbolName(), nullptr, 0);
+        addSymbolMatch(symbolsMatch, typeFct->returnType->declNode->resolvedSymbolName(), nullptr, 0);
         return true;
     }
 
     // #self
-    if (node->token.text == g_LangSpec->name_sharpself)
+    if (identifier->token.text == g_LangSpec->name_sharpself)
     {
-        SWAG_VERIFY(node->ownerFct, context->report({node, toErr(Err0447)}));
-        AstNode* parent = node;
+        SWAG_VERIFY(identifier->ownerFct, context->report({identifier, toErr(Err0447)}));
+        AstNode* parent = identifier;
         while (parent->ownerFct->hasAttribute(ATTRIBUTE_SHARP_FUNC) && parent->ownerFct->parent->ownerFct)
             parent = parent->ownerFct->parent;
         SWAG_VERIFY(parent, context->report({parent, toErr(Err0447)}));
@@ -61,7 +61,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         if (parent->ownerScope->is(ScopeKind::Struct) || parent->ownerScope->is(ScopeKind::Enum))
         {
             parent = parent->ownerScope->owner;
-            node->addAstFlag(AST_CAN_MATCH_INCOMPLETE);
+            identifier->addAstFlag(AST_CAN_MATCH_INCOMPLETE);
         }
         else
         {
@@ -69,27 +69,27 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             parent = parent->ownerFct;
 
             // Force scope
-            if (!node->callParameters && node != identifierRef->lastChild())
+            if (!identifier->callParameters && identifier != identifierRef->lastChild())
             {
-                node->addSemFlag(SEMFLAG_FORCE_SCOPE);
-                node->typeInfo                      = g_TypeMgr->typeInfoVoid;
-                identifierRef->previousResolvedNode = node;
-                if (node->hasOwnerInline())
-                    identifierRef->startScope = node->ownerInline()->parametersScope;
+                identifier->addSemFlag(SEMFLAG_FORCE_SCOPE);
+                identifier->typeInfo                = g_TypeMgr->typeInfoVoid;
+                identifierRef->previousResolvedNode = identifier;
+                if (identifier->hasOwnerInline())
+                    identifierRef->startScope = identifier->ownerInline()->parametersScope;
                 else
-                    identifierRef->startScope = node->ownerFct->scope;
-                node->addAstFlag(AST_NO_BYTECODE);
+                    identifierRef->startScope = identifier->ownerFct->scope;
+                identifier->addAstFlag(AST_NO_BYTECODE);
                 return true;
             }
         }
 
-        addDependentSymbol(dependentSymbols, parent->resolvedSymbolName(), nullptr, 0);
+        addSymbolMatch(symbolsMatch, parent->resolvedSymbolName(), nullptr, 0);
         return true;
     }
 
     auto&      scopeHierarchy     = context->cacheScopeHierarchy;
     auto&      scopeHierarchyVars = context->cacheScopeHierarchyVars;
-    const auto crc                = node->token.text.hash();
+    const auto crc                = identifier->token.text.hash();
 
     bool forceEnd  = false;
     bool checkWait = false;
@@ -102,8 +102,8 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         if (!startScope || oneTry == 1)
         {
             constexpr CollectFlags collectFlags = COLLECT_ALL;
-            const auto             scopeUpMode  = node->identifierExtension ? node->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
-            auto                   scopeUpValue = node->identifierExtension ? node->identifierExtension->scopeUpValue : TokenParse{};
+            const auto             scopeUpMode  = identifier->identifierExtension ? identifier->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
+            auto                   scopeUpValue = identifier->identifierExtension ? identifier->identifierExtension->scopeUpValue : TokenParse{};
 
             // :AutoScope
             // Auto scoping depending on the context
@@ -119,7 +119,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 // More than one match : ambiguous
                 if (typeEnum.size() > 1)
                 {
-                    Diagnostic err{identifierRef, formErr(Err0018, node->token.c_str())};
+                    Diagnostic err{identifierRef, formErr(Err0018, identifier->token.c_str())};
                     for (const auto t : typeEnum)
                     {
                         auto msg = formNte(Nte0197, t->getDisplayNameC());
@@ -140,13 +140,13 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 // No match, we will try 'with'
                 else
                 {
-                    const auto withNodeP = node->findParent(AstNodeKind::With);
+                    const auto withNodeP = identifier->findParent(AstNodeKind::With);
                     if (!withNodeP)
                     {
                         if (!hasEnum.empty())
                         {
-                            Diagnostic err{identifierRef, formErr(Err0708, node->token.c_str(), hasEnum[0].second->getDisplayNameC())};
-                            const auto closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
+                            Diagnostic err{identifierRef, formErr(Err0708, identifier->token.c_str(), hasEnum[0].second->getDisplayNameC())};
+                            const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                             if (!closest.empty())
                                 err.addNote(closest);
                             if (hasEnum[0].first)
@@ -155,7 +155,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                             return context->report(err);
                         }
 
-                        Diagnostic err{identifierRef, formErr(Err0718, node->token.c_str())};
+                        Diagnostic err{identifierRef, formErr(Err0718, identifier->token.c_str())};
 
                         // Call to a function ?
                         if (testedOver.size() == 1)
@@ -188,7 +188,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             }
             else
             {
-                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags, scopeUpMode, &scopeUpValue));
+                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifier, collectFlags, scopeUpMode, &scopeUpValue));
             }
 
             // Be sure this is the last try
@@ -199,10 +199,10 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             addAlternativeScopeOnce(scopeHierarchy, startScope);
 
             // No need to go further if we have found the symbol in the parent identifierRef scope (if specified).
-            const auto symbol = startScope->symTable.find(node->token.text, crc);
+            const auto symbol = startScope->symTable.find(identifier->token.text, crc);
             if (symbol)
             {
-                addDependentSymbol(dependentSymbols, symbol, startScope, 0);
+                addSymbolMatch(symbolsMatch, symbol, startScope, 0);
             }
             else
             {
@@ -224,7 +224,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             }
         }
 
-        if (!dependentSymbols.empty())
+        if (!symbolsMatch.empty())
             break;
 
         // Search symbol in all the scopes of the hierarchy
@@ -242,17 +242,17 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
 
                 if (as.scope->symTable.tryRead())
                 {
-                    const auto symbol = as.scope->symTable.findNoLock(node->token.text, crc);
+                    const auto symbol = as.scope->symTable.findNoLock(identifier->token.text, crc);
                     as.scope->symTable.endRead();
                     if (symbol)
-                        addDependentSymbol(dependentSymbols, symbol, as.scope, as.flags);
+                        addSymbolMatch(symbolsMatch, symbol, as.scope, as.flags);
                     scopeHierarchy.erase_unordered(i);
                     i--;
                 }
             }
         }
 
-        if (!dependentSymbols.empty())
+        if (!symbolsMatch.empty())
             break;
 
         // If can happen than types are not completed when collecting hierarchies, so we can miss some scopes (because of using).
@@ -289,11 +289,11 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         {
             if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
                 return true;
-            SemanticError::unknownIdentifierError(context, identifierRef, node);
+            SemanticError::unknownIdentifierError(context, identifierRef, identifier);
             return false;
         }
 
-        node->addSemFlag(SEMFLAG_FORCE_UFCS);
+        identifier->addSemFlag(SEMFLAG_FORCE_UFCS);
     }
 
     return true;
