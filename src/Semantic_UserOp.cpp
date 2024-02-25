@@ -769,7 +769,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     auto overload  = oneMatch->symbolOverload;
     node->typeInfo = overload->typeInfo;
     node->addExtraPointer(ExtraPointerKind::UserOp, overload);
-    SWAG_ASSERT(symbol && symbol->kind == SymbolKind::Function);
+    SWAG_ASSERT(symbol && symbol->is(SymbolKind::Function));
     SWAG_ASSERT(overload);
 
     // Allocate room on the stack to store the result of the function call

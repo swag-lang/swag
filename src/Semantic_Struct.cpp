@@ -22,7 +22,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
     const auto id   = context->node;
     const auto node = castAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
 
-    if (id->resolvedSymbolName()->kind != SymbolKind::Struct)
+    if (id->resolvedSymbolName()->isNot(SymbolKind::Struct))
         return context->report({id->children.back(), formErr(Err0160, id->resolvedSymbolName()->name.c_str(), Naming::aKindName(id->resolvedSymbolName()->kind).c_str())});
 
     const auto structDecl = castAst<AstStruct>(id->resolvedSymbolOverload()->node, AstNodeKind::StructDecl);

@@ -581,7 +581,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     // Test x.toto with x not a struct (like a native type for example), but toto is known, so
     // no error was raised before
     if (symbol &&
-        symbol->kind == SymbolKind::Variable &&
+        symbol->is(SymbolKind::Variable) &&
         !overload->typeInfo->isLambdaClosure() &&
         !identifierRef->startScope &&
         !identifier->isSilentCall() &&
@@ -597,11 +597,11 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     // error too, cause it's too strange.
     // x.toto() with toto taking no argument for example, but toto is 'in' x scope.
     if (symbol &&
-        symbol->kind == SymbolKind::Function &&
+        symbol->is(SymbolKind::Function) &&
         identifierRef->startScope &&
         prevNode &&
         prevNode->resolvedSymbolName() &&
-        (prevNode->resolvedSymbolName()->kind == SymbolKind::Variable || prevNode->resolvedSymbolName()->kind == SymbolKind::Function) &&
+        (prevNode->resolvedSymbolName()->is(SymbolKind::Variable) || prevNode->resolvedSymbolName()->is(SymbolKind::Function)) &&
         !prevNode->hasAstFlag(AST_FROM_UFCS))
     {
         if (prevNode->kind == AstNodeKind::Identifier && prevNode->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH))
@@ -633,7 +633,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
     // A.X and A is an array : missing index
     if (symbol &&
-        symbol->kind == SymbolKind::Variable &&
+        symbol->is(SymbolKind::Variable) &&
         identifier->typeInfo->isArray() &&
         identifier->parent->kind != AstNodeKind::ArrayPointerIndex &&
         identifier->parent == identifierRef &&
@@ -644,7 +644,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
     // A.X and A is a slice : missing index
     if (symbol &&
-        symbol->kind == SymbolKind::Variable &&
+        symbol->is(SymbolKind::Variable) &&
         identifier->typeInfo->isSlice() &&
         identifier->parent->kind != AstNodeKind::ArrayPointerIndex &&
         identifier->parent == identifierRef &&
@@ -660,7 +660,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         pp.param->resolvedParameter = pp.resolvedParameter;
     }
 
-    if (prevNode && symbol->kind == SymbolKind::Variable)
+    if (prevNode && symbol->is(SymbolKind::Variable))
     {
         identifier->addAstFlag(AST_L_VALUE);
 
@@ -704,7 +704,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     // If this a L or R value
     if (overload->hasFlag(OVERLOAD_VAR_STRUCT))
     {
-        if (symbol->kind != SymbolKind::GenericType)
+        if (symbol->isNot(SymbolKind::GenericType))
         {
             if (identifierRef->previousResolvedNode)
             {
@@ -715,7 +715,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             }
         }
     }
-    else if (symbol->kind == SymbolKind::Variable)
+    else if (symbol->is(SymbolKind::Variable))
     {
         identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
     }
@@ -737,7 +737,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     // Except if symbol is a constant !
     if (!overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
     {
-        if (dependentVar && identifierRef->kind == AstNodeKind::IdentifierRef && symbol->kind != SymbolKind::Function)
+        if (dependentVar && identifierRef->kind == AstNodeKind::IdentifierRef && symbol->isNot(SymbolKind::Function))
         {
             const auto idRef = castAst<AstIdentifierRef>(identifierRef, AstNodeKind::IdentifierRef);
             if (dependentVar->kind == AstNodeKind::IdentifierRef)
@@ -804,7 +804,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     // If this is a typealias, find the right thing
     auto typeAlias  = identifier->typeInfo;
     auto symbolKind = symbol->kind;
-    if (symbol->kind == SymbolKind::TypeAlias)
+    if (symbol->is(SymbolKind::TypeAlias))
     {
         typeAlias = TypeManager::concreteType(identifier->typeInfo, CONCRETE_FORCE_ALIAS);
         if (typeAlias->isStruct())
@@ -847,7 +847,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
             if (idRef &&
                 idRef->previousResolvedNode &&
-                idRef->previousResolvedNode->resolvedSymbolName()->kind == SymbolKind::Variable)
+                idRef->previousResolvedNode->resolvedSymbolName()->is(SymbolKind::Variable))
             {
                 const Diagnostic err{idRef->previousResolvedNode, formErr(Err0260, idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
                 return context->report(err);
@@ -1020,7 +1020,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     const auto brother = checkParent->children[i];
                     if (!brother->hasFlagComputedValue() &&
                         brother->resolvedSymbolOverload() &&
-                        brother->resolvedSymbolOverload()->symbol->kind == SymbolKind::Variable)
+                        brother->resolvedSymbolOverload()->symbol->is(SymbolKind::Variable))
                     {
                         brother->addAstFlag(AST_NO_BYTECODE);
                     }
@@ -1124,7 +1124,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             {
                 const auto prev       = identifier->identifierRef()->children[childIdx - 1];
                 const auto symbolName = prev->resolvedSymbolName();
-                if (symbolName && symbolName->kind == SymbolKind::Variable && !prev->hasAstFlag(AST_FROM_UFCS))
+                if (symbolName && symbolName->is(SymbolKind::Variable) && !prev->hasAstFlag(AST_FROM_UFCS))
                 {
                     Diagnostic err{prev, formErr(Err0585, Naming::kindName(prev->resolvedSymbolOverload()->node).c_str(), prev->token.c_str(), identifier->token.c_str())};
                     err.addNote(identifier->token, formNte(Nte0154, prev->typeInfo->getDisplayNameC()));
@@ -1423,14 +1423,14 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 
             {
                 SharedLock ls(symbol->mutex);
-                if ((symbol->kind != SymbolKind::Function || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
+                if ((symbol->isNot(SymbolKind::Function) || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
                     needLock = true;
             }
 
             if (needLock)
             {
                 ScopedLock ls(symbol->mutex);
-                if ((symbol->kind != SymbolKind::Function || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
+                if ((symbol->isNot(SymbolKind::Function) || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
                 {
                     waitSymbolNoLock(job, symbol);
                     return true;
@@ -1547,7 +1547,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 
         // We need () for a function call !
         bool emptyParams = oneOverload.symMatchContext.parameters.empty() && !callParameters;
-        if (!forcedFine && emptyParams && oneOverload.symMatchContext.result == MatchResult::Ok && symbol->kind == SymbolKind::Function)
+        if (!forcedFine && emptyParams && oneOverload.symMatchContext.result == MatchResult::Ok && symbol->is(SymbolKind::Function))
         {
             oneOverload.symMatchContext.result = MatchResult::MissingParameters;
         }
@@ -1555,7 +1555,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         // Function type without call parameters
         if (emptyParams && oneOverload.symMatchContext.result == MatchResult::NotEnoughParameters)
         {
-            if (symbol->kind == SymbolKind::Variable)
+            if (symbol->is(SymbolKind::Variable))
                 oneOverload.symMatchContext.result = MatchResult::Ok;
         }
 
@@ -1596,9 +1596,9 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                         asMatch = true;
                     else if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf)
                         asMatch = true;
-                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->token.id == TokenId::SymEqualEqual && overload->symbol->kind == SymbolKind::Struct)
+                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->token.id == TokenId::SymEqualEqual && overload->symbol->is(SymbolKind::Struct))
                         asMatch = true;
-                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->token.id == TokenId::SymExclamEqual && overload->symbol->kind == SymbolKind::Struct)
+                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->token.id == TokenId::SymExclamEqual && overload->symbol->is(SymbolKind::Struct))
                         asMatch = true;
                     else if (grandParent->kind == AstNodeKind::IntrinsicDefined)
                         asMatch = true;

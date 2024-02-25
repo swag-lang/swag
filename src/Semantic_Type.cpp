@@ -167,7 +167,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
 
     // struct.field
     const auto symbolName = node->resolvedSymbolName();
-    if (symbolName && symbolName->kind == SymbolKind::Struct)
+    if (symbolName && symbolName->is(SymbolKind::Struct))
         err.addNote(formNte(Nte0088, symbolName->name.c_str(), symbolName->name.c_str()));
 
     return context->report(err);
@@ -182,12 +182,12 @@ bool Semantic::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bo
     if (node->kind == AstNodeKind::TypeExpression ||
         node->kind == AstNodeKind::TypeLambda ||
         (node->kind == AstNodeKind::IdentifierRef && node->hasAstFlag(AST_FROM_GENERIC_REPLACE)) ||
-        (symbolName && symbolName->kind == SymbolKind::Struct) ||
-        (symbolName && symbolName->kind == SymbolKind::TypeAlias) ||
-        (symbolName && symbolName->kind == SymbolKind::Interface) ||
-        (symbolName && symbolName->kind == SymbolKind::Attribute) ||
-        (symbolName && symbolName->kind == SymbolKind::Namespace) ||
-        (symbolName && symbolName->kind == SymbolKind::Enum))
+        (symbolName && symbolName->is(SymbolKind::Struct)) ||
+        (symbolName && symbolName->is(SymbolKind::TypeAlias)) ||
+        (symbolName && symbolName->is(SymbolKind::Interface)) ||
+        (symbolName && symbolName->is(SymbolKind::Attribute)) ||
+        (symbolName && symbolName->is(SymbolKind::Namespace)) ||
+        (symbolName && symbolName->is(SymbolKind::Enum)))
     {
         TypeInfo* result = nullptr;
         SWAG_CHECK(resolveTypeAsExpression(context, node, &result));
@@ -411,14 +411,14 @@ bool Semantic::resolveType(SemanticContext* context)
             if (symName)
             {
                 const auto symOver = child->resolvedSymbolOverload();
-                if (symName->kind != SymbolKind::Enum &&
-                    symName->kind != SymbolKind::TypeAlias &&
-                    symName->kind != SymbolKind::GenericType &&
-                    symName->kind != SymbolKind::Struct &&
-                    symName->kind != SymbolKind::Interface)
+                if (symName->isNot(SymbolKind::Enum) &&
+                    symName->isNot(SymbolKind::TypeAlias) &&
+                    symName->isNot(SymbolKind::GenericType) &&
+                    symName->isNot(SymbolKind::Struct) &&
+                    symName->isNot(SymbolKind::Interface))
                 {
                     Diagnostic err{child->token.sourceFile, child->token, formErr(Err0399, child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
-                    if (typeNode->typeFlags.has(TYPEFLAG_IS_PTR) && symName->kind == SymbolKind::Variable)
+                    if (typeNode->typeFlags.has(TYPEFLAG_IS_PTR) && symName->is(SymbolKind::Variable))
                     {
                         if (symOver->typeInfo->isPointer())
                         {

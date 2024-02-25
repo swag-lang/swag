@@ -46,7 +46,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
         const auto overSym  = over->symbol;
 
         // Take care of #validif/#validifx
-        if (overSym->kind == SymbolKind::Function &&
+        if (overSym->is(SymbolKind::Function) &&
             !context->node->hasAstFlag(AST_IN_VALIDIF) &&
             !context->node->hasAttribute(ATTRIBUTE_MATCH_VALIDIF_OFF))
         {
@@ -61,7 +61,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
         }
 
         // Do not match "self"
-        if (overSym->kind == SymbolKind::Function &&
+        if (overSym->is(SymbolKind::Function) &&
             context->node->hasAttribute(ATTRIBUTE_MATCH_SELF_OFF))
         {
             if (node->hasOwnerInline())
@@ -280,7 +280,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             {
                 for (uint32_t j = 0; j < countMatches; j++)
                 {
-                    if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Function)
+                    if (matches[j]->symbolOverload->symbol->is(SymbolKind::Function))
                     {
                         const auto nodeFct = matches[j]->symbolOverload->node;
                         if (!callParams->ownerFct->isParentOf(nodeFct))
@@ -320,11 +320,11 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         }
 
         // Priority to not a namespace (??)
-        if (curMatch->symbolOverload->symbol->kind == SymbolKind::Namespace)
+        if (curMatch->symbolOverload->symbol->is(SymbolKind::Namespace))
         {
             for (uint32_t j = 0; j < countMatches; j++)
             {
-                if (matches[j]->symbolOverload->symbol->kind != SymbolKind::Namespace)
+                if (matches[j]->symbolOverload->symbol->isNot(SymbolKind::Namespace))
                 {
                     curMatch->remove = true;
                     break;
@@ -333,13 +333,13 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         }
 
         // Closure variable has a priority over a "out of scope" one
-        if (curMatch->symbolOverload->symbol->kind == SymbolKind::Variable)
+        if (curMatch->symbolOverload->symbol->is(SymbolKind::Variable))
         {
             for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (i == j)
                     continue;
-                if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Variable && matches[j]->symbolOverload->hasFlag(OVERLOAD_VAR_CAPTURE))
+                if (matches[j]->symbolOverload->symbol->is(SymbolKind::Variable) && matches[j]->symbolOverload->hasFlag(OVERLOAD_VAR_CAPTURE))
                 {
                     if (curMatch->symbolOverload->node->ownerScope->isParentOf(matches[j]->symbolOverload->node->ownerScope))
                     {
@@ -422,7 +422,7 @@ void Semantic::computeMatchesCoerceCast(VectorNative<OneMatch*>& matches)
 {
     for (const auto m : matches)
     {
-        if (m->symbolOverload->symbol->kind != SymbolKind::Function)
+        if (m->symbolOverload->symbol->isNot(SymbolKind::Function))
             continue;
 
         m->coerceCast = 0;
@@ -446,7 +446,7 @@ bool Semantic::filterMatchesCoerceCast(SemanticContext*, VectorNative<OneMatch*>
     const auto prio = matches[0]->coerceCast;
     for (const auto m : matches)
     {
-        if (m->symbolOverload->symbol->kind != SymbolKind::Function)
+        if (m->symbolOverload->symbol->isNot(SymbolKind::Function))
             continue;
 
         if (m->coerceCast > prio)
@@ -662,7 +662,7 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
         // We try to eliminate a function if it does not match a contextual generic match
         // Because if we call a generic function without generic parameters, we can have multiple matches
         // if the generic type has not been deduced from parameters (if any).
-        if (over->symbol->kind == SymbolKind::Function)
+        if (over->symbol->is(SymbolKind::Function))
         {
             const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeFunc->replaceTypes.empty())
@@ -730,7 +730,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
 
         // A variable which is name as a function...
         if (!node->callParameters &&
-            oneSymbol->kind == SymbolKind::Function &&
+            oneSymbol->is(SymbolKind::Function) &&
             !isFunctionButNotACall(context, node, oneSymbol))
         {
             p.remove = true;
@@ -739,7 +739,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
 
         // A function call which is named as a variable, and the variable is not a lambda
         if (node->callParameters &&
-            oneSymbol->kind == SymbolKind::Variable)
+            oneSymbol->is(SymbolKind::Variable))
         {
             bool ok = false;
             for (const auto& o : oneSymbol->overloads)
@@ -759,21 +759,21 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
         }
 
         // If a generic type does not come from a 'using', it has priority
-        if (!p.asFlags.has(ALT_SCOPE_STRUCT_USING) && p.symbol->kind == SymbolKind::GenericType)
+        if (!p.asFlags.has(ALT_SCOPE_STRUCT_USING) && p.symbol->is(SymbolKind::GenericType))
         {
             for (auto& p1 : dependentSymbols)
             {
-                if (p1.asFlags.has(ALT_SCOPE_STRUCT_USING) && p1.symbol->kind == SymbolKind::GenericType)
+                if (p1.asFlags.has(ALT_SCOPE_STRUCT_USING) && p1.symbol->is(SymbolKind::GenericType))
                     p1.remove = true;
             }
         }
 
         // Reference to a variable inside a struct, without a direct explicit reference
         bool isValid = true;
-        if (oneSymbol->kind != SymbolKind::Function &&
-            oneSymbol->kind != SymbolKind::GenericType &&
-            oneSymbol->kind != SymbolKind::Struct &&
-            oneSymbol->kind != SymbolKind::Enum &&
+        if (oneSymbol->isNot(SymbolKind::Function) &&
+            oneSymbol->isNot(SymbolKind::GenericType) &&
+            oneSymbol->isNot(SymbolKind::Struct) &&
+            oneSymbol->isNot(SymbolKind::Enum) &&
             (oneSymbol->overloads.size() != 1 || !oneSymbol->overloads[0]->hasFlag(OVERLOAD_COMPUTED_VALUE)) &&
             oneSymbol->ownerTable->scope->kind == ScopeKind::Struct &&
             !identifierRef->startScope)

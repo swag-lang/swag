@@ -846,13 +846,13 @@ void AstNode::swap2Children()
 bool AstNode::hasSpecialFuncCall() const
 {
     const auto userOp = extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-    return userOp && userOp->symbol->kind == SymbolKind::Function;
+    return userOp && userOp->symbol->is(SymbolKind::Function);
 }
 
 bool AstNode::hasSpecialFuncCall(const Utf8& name) const
 {
     const auto userOp = extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-    return userOp && userOp->symbol->kind == SymbolKind::Function && userOp->symbol->name == name;
+    return userOp && userOp->symbol->is(SymbolKind::Function) && userOp->symbol->name == name;
 }
 
 AstNode* AstNode::inSimpleReturn() const
@@ -1119,7 +1119,7 @@ bool AstNode::isValidIfParam(const SymbolOverload* overload) const
 
 bool AstNode::isSameStackFrame(const SymbolOverload* overload) const
 {
-    if (overload->symbol->kind != SymbolKind::Variable)
+    if (overload->symbol->isNot(SymbolKind::Variable))
         return true;
     if (overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
         return true;

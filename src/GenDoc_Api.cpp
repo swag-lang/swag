@@ -369,7 +369,7 @@ void GenDoc::collectScopes(Scope* root)
         {
             if (s->nodes.empty())
                 continue;
-            if (s->kind == SymbolKind::Variable || s->kind == SymbolKind::TypeAlias)
+            if (s->is(SymbolKind::Variable) || s->is(SymbolKind::TypeAlias))
                 collectNode(s->nodes[0]);
         }
     }

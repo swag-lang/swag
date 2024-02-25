@@ -164,7 +164,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         toType = toType->getConcreteAlias();
     }
 
-    if (toNode && toNode->resolvedSymbolName() && toNode->resolvedSymbolName()->kind == SymbolKind::EnumValue)
+    if (toNode && toNode->resolvedSymbolName() && toNode->resolvedSymbolName()->is(SymbolKind::EnumValue))
     {
         toType   = toType->getConcreteAlias();
         fromType = fromType->getConcreteAlias();
@@ -173,8 +173,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromNode && fromNode->resolvedSymbolName())
     {
         const auto symbolName = fromNode->resolvedSymbolName();
-        if (symbolName->kind == SymbolKind::EnumValue ||
-            symbolName->kind == SymbolKind::Function)
+        if (symbolName->is(SymbolKind::EnumValue) ||
+            symbolName->is(SymbolKind::Function))
         {
             toType   = toType->getConcreteAlias();
             fromType = fromType->getConcreteAlias();

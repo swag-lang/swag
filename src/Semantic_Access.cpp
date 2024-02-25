@@ -77,7 +77,7 @@ void Semantic::setNodeAccess(AstNode* node)
         return;
     if (overload->node->hasAstFlag(AST_GENERATED))
         return;
-    if (overload->symbol->kind == SymbolKind::Namespace)
+    if (overload->symbol->is(SymbolKind::Namespace))
         return;
 
     if (overload->node->hasAttribute(ATTRIBUTE_ACCESS_MASK))

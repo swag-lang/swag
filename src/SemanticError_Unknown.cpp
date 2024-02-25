@@ -90,7 +90,7 @@ namespace
         // Variable before
         if (prevIdentifier &&
             prevIdentifier->resolvedSymbolName() &&
-            prevIdentifier->resolvedSymbolName()->kind == SymbolKind::Variable &&
+            prevIdentifier->resolvedSymbolName()->is(SymbolKind::Variable) &&
             !prevIdentifier->hasAstFlag(AST_GENERATED))
         {
             err->addNote(prevIdentifier, Diagnostic::isType(prevIdentifier));

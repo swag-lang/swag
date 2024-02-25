@@ -68,7 +68,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
         // Generate initialization
         // Do not generate if we have a user define affectation, and the operator is marked as 'complete'
         const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-        if (!userOp || userOp->symbol->kind != SymbolKind::Function || !userOp->node->hasAttribute(ATTRIBUTE_COMPLETE))
+        if (!userOp || userOp->symbol->isNot(SymbolKind::Function) || !userOp->node->hasAttribute(ATTRIBUTE_COMPLETE))
         {
             if (!node->hasSemFlag(SEMFLAG_VAR_DECL_STRUCT_PARAMETERS))
             {

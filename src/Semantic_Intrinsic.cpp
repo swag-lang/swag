@@ -250,9 +250,9 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     typeInfo      = typeInfo->getConcreteAlias();
 
     const auto symbolName = expression->resolvedSymbolName();
-    if (symbolName && symbolName->kind == SymbolKind::EnumValue)
+    if (symbolName && symbolName->is(SymbolKind::EnumValue))
         typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
-    else if (symbolName && symbolName->kind == SymbolKind::Variable)
+    else if (symbolName && symbolName->is(SymbolKind::Variable))
         typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
 
     if (typeInfo->isEnum())

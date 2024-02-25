@@ -1151,9 +1151,9 @@ bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
         if (!symbol)
             continue;
 
-        if (symbol->kind == SymbolKind::Variable ||
-            symbol->kind == SymbolKind::Namespace ||
-            symbol->kind == SymbolKind::Attribute)
+        if (symbol->is(SymbolKind::Variable) ||
+            symbol->is(SymbolKind::Namespace) ||
+            symbol->is(SymbolKind::Attribute))
         {
             return context->report({c, formErr(Err0303, Naming::aKindName(symbol->kind).c_str(), symbol->name.c_str())});
         }

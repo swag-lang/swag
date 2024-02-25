@@ -73,7 +73,7 @@ bool Semantic::resolveWith(SemanticContext* context)
         front->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
         SWAG_ASSERT(front->resolvedSymbolName() && front->resolvedSymbolOverload());
         typeResolved = front->resolvedSymbolOverload()->typeInfo;
-        fromVar      = front->resolvedSymbolName()->kind == SymbolKind::Variable;
+        fromVar      = front->resolvedSymbolName()->is(SymbolKind::Variable);
     }
     else if (front->kind == AstNodeKind::VarDecl)
     {
@@ -119,7 +119,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
     node->addAstFlag(AST_NO_BYTECODE);
 
     SWAG_ASSERT(idref->resolvedSymbolName());
-    if (idref->resolvedSymbolName()->kind == SymbolKind::Variable)
+    if (idref->resolvedSymbolName()->is(SymbolKind::Variable))
     {
         SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload()->typeInfo));
         return true;

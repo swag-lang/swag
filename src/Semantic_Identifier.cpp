@@ -23,7 +23,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
     node->addAstFlag(AST_NO_BYTECODE);
 
     // Constraints with alias on a variable
-    if (back->resolvedSymbolName()->kind == SymbolKind::Variable)
+    if (back->resolvedSymbolName()->is(SymbolKind::Variable))
     {
         // alias x = struct.x is not possible
         if (back->kind == AstNodeKind::IdentifierRef)
@@ -32,7 +32,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
             for (const auto& c : back->children)
             {
                 const auto symbolName = c->resolvedSymbolName();
-                if (symbolName && symbolName->kind == SymbolKind::Variable)
+                if (symbolName && symbolName->is(SymbolKind::Variable))
                 {
                     SWAG_VERIFY(cptVar == 0, context->report({back, toErr(Err0163)}));
                     cptVar++;
@@ -42,18 +42,18 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
     }
 
     const auto symbolName = back->resolvedSymbolName();
-    if (symbolName->kind != SymbolKind::Namespace &&
-        symbolName->kind != SymbolKind::Function &&
-        symbolName->kind != SymbolKind::Variable)
+    if (symbolName->isNot(SymbolKind::Namespace) &&
+        symbolName->isNot(SymbolKind::Function) &&
+        symbolName->isNot(SymbolKind::Variable))
     {
         Diagnostic err{back, formErr(Err0328, Naming::aKindName(symbolName->kind).c_str())};
 
         err.addNote(toNte(Nte0013));
 
-        if (symbolName->kind == SymbolKind::Enum ||
-            symbolName->kind == SymbolKind::Interface ||
-            symbolName->kind == SymbolKind::TypeAlias ||
-            symbolName->kind == SymbolKind::Struct)
+        if (symbolName->is(SymbolKind::Enum) ||
+            symbolName->is(SymbolKind::Interface) ||
+            symbolName->is(SymbolKind::TypeAlias) ||
+            symbolName->is(SymbolKind::Struct))
         {
             err.addNote(node, node->kwdLoc, formNte(Nte0025, Naming::aKindName(symbolName->kind).c_str()));
         }
@@ -254,14 +254,14 @@ bool Semantic::isFunctionButNotACall(SemanticContext*, AstNode* node, const Symb
     if (node && node->parent && node->parent->parent)
     {
         const auto grandParent = node->parent->parent;
-        if (symbol->kind == SymbolKind::Attribute)
+        if (symbol->is(SymbolKind::Attribute))
         {
             if (grandParent->kind != AstNodeKind::AttrUse)
                 return true;
         }
-        else if (symbol->kind == SymbolKind::Function)
+        else if (symbol->is(SymbolKind::Function))
         {
-            if (symbol->kind == SymbolKind::Function)
+            if (symbol->is(SymbolKind::Function))
             {
                 if (grandParent->kind == AstNodeKind::MakePointer && node == node->parent->children.back())
                 {
@@ -363,7 +363,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
         for (const auto& sm : symbolMatch)
         {
             const auto symbol = sm.symbol;
-            if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Variable)
+            if (symbol->isNot(SymbolKind::Function) && symbol->isNot(SymbolKind::Variable))
                 continue;
 
             ScopedLock ls(symbol->mutex);
@@ -377,7 +377,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
         for (const auto& sm : symbolMatch)
         {
             const auto symbol = sm.symbol;
-            if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Variable)
+            if (symbol->isNot(SymbolKind::Function) && symbol->isNot(SymbolKind::Variable))
                 continue;
 
             for (auto& overload : symbol->overloads)
@@ -577,7 +577,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
 
         // This is a function, and first parameter matches the using var
         bool okForUfcs = false;
-        if (symbol->kind == SymbolKind::Function)
+        if (symbol->is(SymbolKind::Function))
         {
             const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeInfo->parameters.empty())
@@ -666,7 +666,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         // This way the ufcs can trigger even with an implicit 'using' var (typically for a 'using self')
         if (!identifierRef->previousResolvedNode)
         {
-            if (symbol->kind == SymbolKind::Function)
+            if (symbol->is(SymbolKind::Function))
             {
                 // Be sure we have a missing parameter in order to try ufcs
                 const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
@@ -688,7 +688,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
 
 bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, const SymbolOverload* overload)
 {
-    if (!node->hasSemFlag(SEMFLAG_LAST_PARAM_CODE) && overload->symbol->kind == SymbolKind::Function)
+    if (!node->hasSemFlag(SEMFLAG_LAST_PARAM_CODE) && overload->symbol->is(SymbolKind::Function))
     {
         node->addSemFlag(SEMFLAG_LAST_PARAM_CODE);
 
@@ -1094,9 +1094,9 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     {
         // A struct and an interface, this is legit
         bool fine = false;
-        if (dependentSymbols.size() == 2 && dependentSymbols[0].symbol->kind == SymbolKind::Struct && dependentSymbols[1].symbol->kind == SymbolKind::Interface)
+        if (dependentSymbols.size() == 2 && dependentSymbols[0].symbol->is(SymbolKind::Struct) && dependentSymbols[1].symbol->is(SymbolKind::Interface))
             fine = true;
-        else if (dependentSymbols.size() == 2 && dependentSymbols[0].symbol->kind == SymbolKind::Interface && dependentSymbols[1].symbol->kind == SymbolKind::Struct)
+        else if (dependentSymbols.size() == 2 && dependentSymbols[0].symbol->is(SymbolKind::Interface) && dependentSymbols[1].symbol->is(SymbolKind::Struct))
             fine = true;
 
         if (!fine)

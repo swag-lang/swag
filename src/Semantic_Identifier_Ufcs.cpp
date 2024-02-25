@@ -45,9 +45,9 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
     const auto symbol = overload->symbol;
 
     bool canDoUfcs = false;
-    if (symbol->kind == SymbolKind::Function)
+    if (symbol->is(SymbolKind::Function))
         canDoUfcs = true;
-    if (symbol->kind == SymbolKind::Variable && overload->typeInfo->isLambdaClosure())
+    if (symbol->is(SymbolKind::Variable) && overload->typeInfo->isLambdaClosure())
         canDoUfcs = node->callParameters;
     if (isFunctionButNotACall(context, node, symbol))
         canDoUfcs = false;
@@ -62,18 +62,18 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
         bool canTry = false;
 
         // Before was a variable
-        if (idRefSymbolName->kind == SymbolKind::Variable)
+        if (idRefSymbolName->is(SymbolKind::Variable))
             canTry = true;
         // Before was an enum value
-        else if (idRefSymbolName->kind == SymbolKind::EnumValue)
+        else if (idRefSymbolName->is(SymbolKind::EnumValue))
             canTry = true;
         // Before was a function call
-        else if (idRefSymbolName->kind == SymbolKind::Function &&
+        else if (idRefSymbolName->is(SymbolKind::Function) &&
                  identifierRef->previousResolvedNode &&
                  identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
             canTry = true;
         // Before was an inlined function call
-        else if (idRefSymbolName->kind == SymbolKind::Function &&
+        else if (idRefSymbolName->is(SymbolKind::Function) &&
                  identifierRef->previousResolvedNode &&
                  identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
                  !identifierRef->previousResolvedNode->children.empty() &&
@@ -99,12 +99,12 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
         }
     }
 
-    if (symbol->kind == SymbolKind::Variable)
+    if (symbol->is(SymbolKind::Variable))
     {
         bool fine = false;
 
         if (idRefSymbolName &&
-            idRefSymbolName->kind == SymbolKind::Function &&
+            idRefSymbolName->is(SymbolKind::Function) &&
             identifierRef->previousResolvedNode &&
             identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
             identifierRef->previousResolvedNode->hasAstFlag(AST_INLINED))
@@ -113,7 +113,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
         }
 
         if (idRefSymbolName &&
-            idRefSymbolName->kind == SymbolKind::Function &&
+            idRefSymbolName->is(SymbolKind::Function) &&
             identifierRef->previousResolvedNode &&
             identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
         {
@@ -122,7 +122,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
 
         if (!fine)
         {
-            if (idRefSymbolName && idRefSymbolName->kind != SymbolKind::Variable)
+            if (idRefSymbolName && idRefSymbolName->isNot(SymbolKind::Variable))
             {
                 const auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
                 Diagnostic err{subNode, subNode->token, formErr(Err0317, idRefSymbolName->name.c_str(), Naming::aKindName(idRefSymbolName->kind).c_str())};
@@ -171,7 +171,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     fctCallParam->resolvedParameter = match.solvedParameters[0];
 
     const auto idRef = Ast::newIdentifierRef(nullptr, fctCallParam);
-    if (symbol->kind == SymbolKind::Variable)
+    if (symbol->is(SymbolKind::Variable))
     {
         if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
         {

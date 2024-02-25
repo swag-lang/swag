@@ -689,7 +689,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         // Be sure this is an attribute
         auto resolvedName = identifier->resolvedSymbolName();
         auto resolved     = identifier->resolvedSymbolOverload();
-        if (resolvedName->kind != SymbolKind::Attribute)
+        if (resolvedName->isNot(SymbolKind::Attribute))
         {
             Diagnostic err{identifier, identifier->token, formErr(Err0217, resolvedName->name.c_str(), Naming::aKindName(resolvedName->kind).c_str())};
             context->report(err, Diagnostic::hereIs(resolved));

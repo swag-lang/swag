@@ -297,7 +297,7 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
 
 auto Semantic::needToCompleteSymbolNoLock(SemanticContext*, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads) -> bool
 {
-    if (symbol->kind != SymbolKind::Struct && symbol->kind != SymbolKind::Interface)
+    if (symbol->isNot(SymbolKind::Struct) && symbol->isNot(SymbolKind::Interface))
         return true;
     if (identifier->callParameters || identifier->genericParameters)
         return true;
@@ -351,7 +351,7 @@ bool Semantic::needToWaitForSymbolNoLock(SemanticContext* /*context*/, const Ast
 
     // This is enough to resolve, as we just need parameters, and that case means that some functions
     // do not know their return type yet (short lambdas)
-    if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
+    if (symbol->is(SymbolKind::Function) && symbol->overloads.size() == symbol->cptOverloadsInit)
         return false;
 
     return true;

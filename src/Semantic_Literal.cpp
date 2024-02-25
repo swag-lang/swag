@@ -497,7 +497,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     if (suffix->token.id != TokenId::NativeType)
     {
         const auto symbolName = suffix->resolvedSymbolName();
-        if (symbolName && symbolName->kind != SymbolKind::TypeAlias)
+        if (symbolName && symbolName->isNot(SymbolKind::TypeAlias))
             return context->report({suffix, formErr(Err0319, suffix->resolvedSymbolName()->name.c_str(), Naming::aKindName(symbolName->kind).c_str())});
     }
 

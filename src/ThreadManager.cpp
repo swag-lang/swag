@@ -201,7 +201,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         wakeUpParent = true;
 
     // or if we are waiting for a placeholder symbol to be solved, because the parent job *will* generate the placeholder
-    else if (job->waitingSymbolSolved && job->waitingSymbolSolved->kind == SymbolKind::PlaceHolder)
+    else if (job->waitingSymbolSolved && job->waitingSymbolSolved->is(SymbolKind::PlaceHolder))
         wakeUpParent = true;
 
     // or if the symbol is waiting for code generation

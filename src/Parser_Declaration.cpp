@@ -280,7 +280,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
                 toAdd.symbolName = currentScope->symTable.registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, &namespaceNode->token.text);
                 currentScope->symTable.addSymbolTypeInfoNoLock(context, toAdd);
             }
-            else if (symbol->kind != SymbolKind::Namespace)
+            else if (symbol->isNot(SymbolKind::Namespace))
             {
                 return SemanticError::duplicatedSymbolError(context, sourceFile, tokenParse.token, SymbolKind::Namespace, symbol->name, symbol->kind, symbol->nodes.front());
             }

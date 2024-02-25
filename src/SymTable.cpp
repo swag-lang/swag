@@ -12,8 +12,7 @@ void SymTable::release()
 {
     for (const auto s : allSymbols)
     {
-        for (const auto over :
-             s->overloads)
+        for (const auto over : s->overloads)
             Allocator::free<SymbolOverload>(over);
         Allocator::free<SymbolName>(s);
     }
@@ -64,7 +63,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext*, AstNode* node, Sym
         symbol->ownerTable = this;
         mapNames.add(symbol);
     }
-    else if (symbol->kind == SymbolKind::PlaceHolder)
+    else if (symbol->is(SymbolKind::PlaceHolder))
     {
         wasPlaceHolder = true;
         symbol->kind   = kind;
@@ -132,17 +131,17 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     }
 
     // If symbol was registered as a placeholder, and is no more, then replace its kind
-    if (symbol->kind == SymbolKind::PlaceHolder && toAdd.kind != SymbolKind::PlaceHolder)
+    if (symbol->is(SymbolKind::PlaceHolder) && toAdd.kind != SymbolKind::PlaceHolder)
         symbol->kind = toAdd.kind;
 
     SymbolOverload* overload = nullptr;
 
     // Remove incomplete flag
-    if (symbol->kind == SymbolKind::TypeAlias ||
-        symbol->kind == SymbolKind::Variable ||
-        symbol->kind == SymbolKind::Struct ||
-        symbol->kind == SymbolKind::Interface ||
-        symbol->kind == SymbolKind::Function)
+    if (symbol->is(SymbolKind::TypeAlias) ||
+        symbol->is(SymbolKind::Variable) ||
+        symbol->is(SymbolKind::Struct) ||
+        symbol->is(SymbolKind::Interface) ||
+        symbol->is(SymbolKind::Function))
     {
         for (const auto resolved : symbol->overloads)
         {
@@ -180,7 +179,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         overload->flags.add(toAdd.flags);
 
         // Register for dropping in end of scope, if necessary
-        if (symbol->kind == SymbolKind::Variable &&
+        if (symbol->is(SymbolKind::Variable) &&
             !toAdd.flags.has(OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_GLOBAL | OVERLOAD_TUPLE_UNPACK) &&
             !toAdd.computedValue)
         {
@@ -208,7 +207,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         // For function, will be done later because we register the full
         // symbol with the function type, and we want to compute the access
         // after the complete semantic pass of the content (for exported inline)
-        if (symbol->kind != SymbolKind::Function)
+        if (symbol->isNot(SymbolKind::Function))
             Semantic::computeAccess(overload->node);
         symbol->decreaseOverloadNoLock();
     }
@@ -217,7 +216,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     // because an incomplete function doesn't yet know its return type, but we don't need it in order
     // to make a match
     if (symbol->overloads.size() == symbol->cptOverloadsInit &&
-        (symbol->kind == SymbolKind::Function || symbol->kind == SymbolKind::Struct))
+        (symbol->is(SymbolKind::Function) || symbol->is(SymbolKind::Struct)))
     {
         symbol->dependentJobs.setRunning();
     }
@@ -311,10 +310,10 @@ bool SymTable::acceptGhostSymbolNoLock(ErrorContext*, const AstNode* node, Symbo
         if (node->ownerScope && &node->ownerScope->symTable != this)
         {
             // We do not accept, right away, a conflict with a namespace
-            if (kind != SymbolKind::Namespace && symbol->kind != SymbolKind::Namespace)
+            if (kind != SymbolKind::Namespace && symbol->isNot(SymbolKind::Namespace))
                 return true;
             // Except if the namespace name is the name of the current module
-            if (symbol->kind != SymbolKind::Namespace && node->token.sourceFile->module->name == symbol->name)
+            if (symbol->isNot(SymbolKind::Namespace) && node->token.sourceFile->module->name == symbol->name)
                 return true;
             if (kind != SymbolKind::Namespace && node->token.sourceFile->module->name == node->token.text)
                 return true;
@@ -347,7 +346,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, con
         return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, *token, kind, symbol->name, symbol->kind, front);
     }
 
-    if (symbol->kind == SymbolKind::Namespace)
+    if (symbol->is(SymbolKind::Namespace))
         return true;
 
     // Overloads are not allowed on certain types

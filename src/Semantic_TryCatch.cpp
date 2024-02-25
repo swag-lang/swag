@@ -39,7 +39,7 @@ bool Semantic::checkCanCatch(SemanticContext* context)
     {
         if (!c->resolvedSymbolOverload())
             continue;
-        if (c->resolvedSymbolOverload()->symbol->kind == SymbolKind::Function || c->resolvedSymbolOverload()->typeInfo->isLambdaClosure())
+        if (c->resolvedSymbolOverload()->symbol->is(SymbolKind::Function) || c->resolvedSymbolOverload()->typeInfo->isLambdaClosure())
             return true;
     }
 

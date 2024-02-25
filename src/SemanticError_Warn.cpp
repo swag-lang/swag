@@ -129,7 +129,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         if (!sym->nodes.count || !sym->overloads.count)
             continue;
 
-        if (sym->kind == SymbolKind::GenericType)
+        if (sym->is(SymbolKind::GenericType))
             continue;
         if (sym->name[0] == '#')
             continue;

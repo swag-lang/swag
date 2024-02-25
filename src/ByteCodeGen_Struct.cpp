@@ -1205,7 +1205,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
         bool mustReinit = true;
         for (auto& toDrop : from->ownerScope->symTable.structVarsToDrop)
         {
-            if (toDrop.overload && toDrop.overload->symbol->kind == SymbolKind::Function && from->kind == AstNodeKind::IdentifierRef)
+            if (toDrop.overload && toDrop.overload->symbol->is(SymbolKind::Function) && from->kind == AstNodeKind::IdentifierRef)
             {
                 if (toDrop.overload == from->resolvedSymbolOverload() && toDrop.storageOffset == from->children.back()->computedValue()->storageOffset)
                 {

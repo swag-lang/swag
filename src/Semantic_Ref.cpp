@@ -76,7 +76,7 @@ bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
     SWAG_ASSERT(node->kind == AstNodeKind::IdentifierRef || node->kind == AstNodeKind::ArrayPointerIndex);
     if (!node->hasAstFlag(AST_L_VALUE))
     {
-        if (node->resolvedSymbolName()->kind != SymbolKind::Variable)
+        if (node->resolvedSymbolName()->isNot(SymbolKind::Variable))
         {
             const Diagnostic err{node, formErr(Err0179, Naming::aKindName(node->resolvedSymbolName()->kind).c_str())};
             return context->report(err);
@@ -157,7 +157,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         }
     }
 
-    if (child->resolvedSymbolName()->kind == SymbolKind::Function)
+    if (child->resolvedSymbolName()->is(SymbolKind::Function))
     {
         // For a function, if no parameters, then this is for a lambda
         const auto back = child->children.back();

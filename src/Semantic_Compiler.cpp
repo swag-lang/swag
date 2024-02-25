@@ -30,7 +30,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
         const auto symbolName = c->resolvedSymbolName();
         if (symbolName)
         {
-            if (symbolName->kind == SymbolKind::Function)
+            if (symbolName->is(SymbolKind::Function))
             {
                 if (c->resolvedSymbolOverload())
                 {
@@ -45,7 +45,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                 }
             }
 
-            if (symbolName->kind == SymbolKind::Variable)
+            if (symbolName->is(SymbolKind::Variable))
             {
                 return Diagnostic::note(c, c->token, formNte(Nte0005, symbolName->name.c_str()));
             }

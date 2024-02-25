@@ -94,6 +94,8 @@ struct SymbolName
     void            addDependentJobNoLock(Job* job);
     void            unregisterNode(const AstNode* node);
 
+    bool is(SymbolKind what) const { return kind == what; }
+    bool isNot(SymbolKind what) const { return kind != what; }
     bool hasFlag(SymbolFlags fl) const { return flags.has(fl); }
 
     SharedMutex                   mutex;

@@ -91,26 +91,26 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
 
             // Filter to try to be as relevant as possible
             if (searchFor == IdentifierSearchFor::Function &&
-                one.symbolName->kind != SymbolKind::Function)
+                one.symbolName->isNot(SymbolKind::Function))
                 continue;
             if (searchFor == IdentifierSearchFor::Attribute &&
-                one.symbolName->kind != SymbolKind::Attribute)
+                one.symbolName->isNot(SymbolKind::Attribute))
                 continue;
             if (searchFor != IdentifierSearchFor::Function &&
-                one.symbolName->kind == SymbolKind::Function)
+                one.symbolName->is(SymbolKind::Function))
                 continue;
             if (searchFor != IdentifierSearchFor::Function &&
-                one.symbolName->kind == SymbolKind::Attribute)
+                one.symbolName->is(SymbolKind::Attribute))
                 continue;
             if (searchFor == IdentifierSearchFor::Type &&
-                one.symbolName->kind != SymbolKind::TypeAlias &&
-                one.symbolName->kind != SymbolKind::Enum &&
-                one.symbolName->kind != SymbolKind::GenericType &&
-                one.symbolName->kind != SymbolKind::Struct &&
-                one.symbolName->kind != SymbolKind::Interface)
+                one.symbolName->isNot(SymbolKind::TypeAlias) &&
+                one.symbolName->isNot(SymbolKind::Enum) &&
+                one.symbolName->isNot(SymbolKind::GenericType) &&
+                one.symbolName->isNot(SymbolKind::Struct) &&
+                one.symbolName->isNot(SymbolKind::Interface))
                 continue;
             if (searchFor == IdentifierSearchFor::Struct &&
-                one.symbolName->kind != SymbolKind::Struct)
+                one.symbolName->isNot(SymbolKind::Struct))
                 continue;
             if (one.symbolName->cptOverloadsInit == 0)
                 continue;
