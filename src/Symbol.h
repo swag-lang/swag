@@ -11,7 +11,27 @@ struct SymTable;
 struct SymbolName;
 struct TypeInfo;
 
-using OverloadFlags                               = Flags<uint32_t>;
+using OverloadFlags = Flags<uint32_t>;
+using SymbolFlags   = Flags<uint16_t>;
+
+enum class SymbolKind : uint8_t
+{
+    Invalid,
+    Variable,
+    TypeAlias,
+    NameAlias,
+    Namespace,
+    Enum,
+    EnumValue,
+    Function,
+    Attribute,
+    Struct,
+    Interface,
+    GenericType,
+    Label,
+    PlaceHolder,
+};
+
 constexpr OverloadFlags OVERLOAD_VAR_BSS          = 0x00000001;
 constexpr OverloadFlags OVERLOAD_VAR_CAPTURE      = 0x00000002;
 constexpr OverloadFlags OVERLOAD_VAR_COMPILER     = 0x00000004;
@@ -42,6 +62,9 @@ constexpr OverloadFlags OVERLOAD_HINT_REG         = 0x04000000;
 constexpr OverloadFlags OVERLOAD_INLINE_REG       = 0x08000000;
 constexpr OverloadFlags OVERLOAD_UNDEFINED        = 0x10000000;
 
+constexpr SymbolFlags SYMBOL_ATTRIBUTE_GEN = 0x0001;
+constexpr SymbolFlags SYMBOL_USED          = 0x0002;
+
 struct SymbolOverload
 {
     void from(const SymbolOverload* other);
@@ -60,28 +83,6 @@ struct SymbolOverload
     uint32_t      storageIndex = 0;
     OverloadFlags flags        = 0;
 };
-
-enum class SymbolKind : uint8_t
-{
-    Invalid,
-    Variable,
-    TypeAlias,
-    NameAlias,
-    Namespace,
-    Enum,
-    EnumValue,
-    Function,
-    Attribute,
-    Struct,
-    Interface,
-    GenericType,
-    Label,
-    PlaceHolder,
-};
-
-using SymbolFlags                          = Flags<uint16_t>;
-constexpr SymbolFlags SYMBOL_ATTRIBUTE_GEN = 0x0001;
-constexpr SymbolFlags SYMBOL_USED          = 0x0002;
 
 struct SymbolName
 {
