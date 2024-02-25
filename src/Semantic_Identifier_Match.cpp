@@ -54,11 +54,12 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
 
 void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcNode, const TypeInfo* resolvedType)
 {
-    const auto funcDecl = castAst<AstFuncDecl>(funcNode, AstNodeKind::FuncDecl);
-    SWAG_ASSERT(!funcDecl->hasAstFlag(AST_IS_GENERIC));
+    const auto funcDecl         = castAst<AstFuncDecl>(funcNode, AstNodeKind::FuncDecl);
     const auto typeUndefinedFct = castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
     const auto concreteType     = TypeManager::concreteType(resolvedType);
     const auto typeDefinedFct   = castTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::LambdaClosure);
+
+    SWAG_ASSERT(!funcDecl->hasAstFlag(AST_IS_GENERIC));
 
     // Replace every parameters types
     for (uint32_t paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
@@ -208,7 +209,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 // We need to create a temporary variable to store the value, in order to have an address.
                 if (front->hasFlagComputedValue() || nodeCall->typeInfo->isListArray())
                 {
-                    const auto varNode = Ast::newVarDecl(form("__7tmp_%d", g_UniqueID.fetch_add(1)), nullptr, nodeCall);
+                    const auto varNode = Ast::newVarDecl(form(R"(__7tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, nodeCall);
                     varNode->inheritTokenLocation(nodeCall->token);
                     varNode->addAstFlag(AST_GENERATED);
                     Ast::removeFromParent(front);
@@ -279,7 +280,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 convert = true;
             if (convert)
             {
-                const auto varNode = Ast::newVarDecl(form("__ctmp_%d", g_UniqueID.fetch_add(1)), nullptr, identifier);
+                const auto varNode = Ast::newVarDecl(form(R"(__ctmp_%d)", g_UniqueID.fetch_add(1)), nullptr, identifier);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -343,7 +344,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 nodeCall->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                 nodeCall->castedTypeInfo = nullptr;
 
-                const auto varNode = Ast::newVarDecl(form("__2tmp_%d", g_UniqueID.fetch_add(1)), nullptr, identifier);
+                const auto varNode = Ast::newVarDecl(form(R"(__2tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, identifier);
                 varNode->inheritTokenLocation(nodeCall->token);
 
                 // Put child front, because emitCall wants the parameters to be the last
@@ -467,7 +468,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
 
             if (!covered)
             {
-                const auto varNode = Ast::newVarDecl(form("__3tmp_%d", g_UniqueID.fetch_add(1)), nullptr, identifier);
+                const auto varNode = Ast::newVarDecl(form(R"(__3tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, identifier);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -700,7 +701,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
         if (CallConv::returnNeedsStack(funcType))
         {
             identifier->addAstFlag(AST_TRANSIENT);
-            Semantic::allocateOnStack(identifier, funcType->concreteReturnType());
+            allocateOnStack(identifier, funcType->concreteReturnType());
         }
     }
     else
@@ -877,7 +878,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         return context->report(err, Diagnostic::hereIs(overload));
     }
 
-    if (funcDecl->mustInline() && !Semantic::isFunctionButNotACall(context, identifier, overload->symbol))
+    if (funcDecl->mustInline() && !isFunctionButNotACall(context, identifier, overload->symbol))
     {
         // Mixin and macros must be inlined here, because no call is possible
         bool forceInline = false;
@@ -891,7 +892,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
             if (!identifier->ownerFct || !identifier->ownerFct->mustInline() || forceInline)
             {
                 // Need to wait for function full semantic resolve
-                Semantic::waitFuncDeclFullResolve(context->baseJob, funcDecl);
+                waitFuncDeclFullResolve(context->baseJob, funcDecl);
                 YIELD();
 
                 // First pass, we inline the function.
@@ -1017,7 +1018,7 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
     // Need to make all types compatible, in case a cast is necessary
     if (identifier->callParameters)
     {
-        Semantic::sortParameters(identifier->callParameters);
+        sortParameters(identifier->callParameters);
         const auto maxParams = identifier->callParameters->childCount();
         for (uint32_t i = 0; i < maxParams; i++)
         {
@@ -1078,7 +1079,7 @@ bool Semantic::setSymbolMatchUsingVar(SemanticContext* context, AstIdentifierRef
     const auto idRef = castAst<AstIdentifierRef>(identifierRef, AstNodeKind::IdentifierRef);
     if (dependentVar->is(AstNodeKind::IdentifierRef))
     {
-        for (int i = static_cast<int>(dependentVar->childCount()) - 1; i >= 0; i--)
+        for (uint32_t i = dependentVar->childCount() - 1; i != UINT32_MAX; i--)
         {
             const auto child         = dependentVar->children[i];
             const auto idNode        = Ast::newIdentifier(idRef, child->token.text, nullptr, nullptr);
@@ -1813,7 +1814,12 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 
             auto symbol = overloads[0]->overload->symbol;
             auto match  = matches[0];
-            return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, match->symbolOverload->symbol->kind,
+            return SemanticError::duplicatedSymbolError(context,
+                                                        node->token.sourceFile,
+                                                        node->token,
+                                                        symbol->kind,
+                                                        symbol->name,
+                                                        match->symbolOverload->symbol->kind,
                                                         match->symbolOverload->node);
         }
 
