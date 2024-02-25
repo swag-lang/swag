@@ -112,5 +112,6 @@ struct AttributeList
     }
 
     Vector<OneAttribute> allAttributes;
-                         SWAG_RACE_CONDITION_INSTANCE(raceCond);
+
+    SWAG_RACE_CONDITION_INSTANCE(raceCond);
 };
