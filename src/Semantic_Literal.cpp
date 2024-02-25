@@ -375,7 +375,7 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
     const auto node = context->node;
 
     // Can be a predefined native type
-    if (node->token.id == TokenId::NativeType)
+    if (node->token.is(TokenId::NativeType))
     {
         const auto it = g_LangSpec->nativeTypes.find(node->token.text);
         SWAG_ASSERT(it);
@@ -384,7 +384,7 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
     }
 
     // Search if identifier is a type
-    if (node->token.id == TokenId::Identifier)
+    if (node->token.is(TokenId::Identifier))
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
 
@@ -477,7 +477,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
         SWAG_ASSERT(!suffix || node->hasSemFlag(SEMFLAG_LITERAL_SUFFIX));
 
         // Convert to unsigned int for a character without suffix
-        if (node->token.id == TokenId::LiteralCharacter)
+        if (node->token.is(TokenId::LiteralCharacter))
         {
             auto errMsg = checkLiteralValue(*node->computedValue(), node->literalType, node->literalValue, g_TypeMgr->typeInfoCharacter, false);
             if (!errMsg.empty())
@@ -494,7 +494,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     }
 
     // Check suffix type is correct (should be native)
-    if (suffix->token.id != TokenId::NativeType)
+    if (suffix->token.isNot(TokenId::NativeType))
     {
         const auto symbolName = suffix->resolvedSymbolName();
         if (symbolName && symbolName->isNot(SymbolKind::TypeAlias))
@@ -525,7 +525,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     // Check if this is in fact a negative literal. This is important to know now, in order
     // to be able to correctly check bounds.
     bool negApplied = false;
-    if (node->parent->is(AstNodeKind::SingleOp) && node->parent->token.id == TokenId::SymMinus)
+    if (node->parent->is(AstNodeKind::SingleOp) && node->parent->token.is(TokenId::SymMinus))
     {
         switch (suffix->typeInfo->nativeType)
         {

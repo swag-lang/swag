@@ -1008,14 +1008,14 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             typeInfo->computeScopedName();
             SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node, formErr(Err0650, typeInfo->getDisplayNameC())}));
 
-            if (node->token.id == TokenId::IntrinsicCVaStart)
+            if (node->token.is(TokenId::IntrinsicCVaStart))
             {
                 SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && !node->ownerFct->parameters->children.empty(), context->report({node, node->token, toErr(Err0452)}));
                 const auto typeParam = node->ownerFct->parameters->lastChild()->typeInfo;
                 SWAG_VERIFY(typeParam->isCVariadic(), context->report({node, node->token, toErr(Err0452)}));
                 node->byteCodeFct = ByteCodeGen::emitIntrinsicCVaStart;
             }
-            else if (node->token.id == TokenId::IntrinsicCVaEnd)
+            else if (node->token.is(TokenId::IntrinsicCVaEnd))
             {
                 node->byteCodeFct = ByteCodeGen::emitIntrinsicCVaEnd;
             }

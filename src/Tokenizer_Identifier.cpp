@@ -19,7 +19,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
     if (it)
     {
         tokenParse.token.id = *it;
-        if (tokenParse.token.id == TokenId::NativeType)
+        if (tokenParse.is(TokenId::NativeType))
         {
             const auto it1 = g_LangSpec->nativeTypes.find(tokenParse.token.text);
             SWAG_ASSERT(it1);

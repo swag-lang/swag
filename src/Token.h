@@ -21,6 +21,9 @@ struct Token
 {
     const char* c_str() const { return text.c_str(); }
 
+    bool is(TokenId what) const { return id == what; }
+    bool isNot(TokenId what) const { return id != what; }
+
     SourceFile*    sourceFile = nullptr;
     Utf8           text;
     SourceLocation startLocation;

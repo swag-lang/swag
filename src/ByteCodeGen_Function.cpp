@@ -431,7 +431,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             case TokenId::IntrinsicACos:
             {
                 auto t0  = TypeManager::concreteType(callParams->children[0]->typeInfo);
-                auto msg = node->token.id == TokenId::IntrinsicASin ? safetyMsg(SafetyMsg::IntrinsicASin, t0) : safetyMsg(SafetyMsg::IntrinsicACos, t0);
+                auto msg = node->token.is(TokenId::IntrinsicASin) ? safetyMsg(SafetyMsg::IntrinsicASin, t0) : safetyMsg(SafetyMsg::IntrinsicACos, t0);
                 auto re  = reserveRegisterRC(context);
                 if (t0->nativeType == NativeTypeKind::F32)
                 {

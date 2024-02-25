@@ -40,7 +40,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     // impl TITI for TOTO syntax (interface implementation for a given struct)
     bool implInterface    = false;
     auto identifierStruct = implNode->identifier;
-    if (tokenParse.token.id == TokenId::KwdFor)
+    if (tokenParse.is(TokenId::KwdFor))
     {
         if (scopeKind == ScopeKind::Enum)
         {
@@ -174,7 +174,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         Scoped       scoped(this, parentScope);
         ScopedStruct scopedStruct(this, newScope);
         ScopedFlags  scopedFlags(this, AST_IN_IMPL);
-        while (tokenParse.token.id != TokenId::EndOfFile && tokenParse.token.id != TokenId::SymRightCurly)
+        while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
         {
             SWAG_CHECK(doTopLevelInstruction(implNode, &dummyResult));
         }
@@ -200,13 +200,13 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
 
     // Special case
     auto structType = SyntaxStructType::Struct;
-    if (tokenParse.token.id == TokenId::KwdInterface)
+    if (tokenParse.is(TokenId::KwdInterface))
     {
         structType              = SyntaxStructType::Interface;
         structNode->kind        = AstNodeKind::InterfaceDecl;
         structNode->semanticFct = Semantic::resolveInterface;
     }
-    else if (tokenParse.token.id == TokenId::KwdUnion)
+    else if (tokenParse.is(TokenId::KwdUnion))
     {
         structNode->addSpecFlag(AstStruct::SPEC_FLAG_UNION);
     }
@@ -214,7 +214,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     // Generic arguments
-    if (tokenParse.token.id == TokenId::SymLeftParen)
+    if (tokenParse.is(TokenId::SymLeftParen))
     {
         SWAG_CHECK(doGenericDeclParameters(structNode, &structNode->genericParameters));
         structNode->addAstFlag(AST_IS_GENERIC | AST_NO_BYTECODE);
@@ -237,7 +237,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
 
 bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
-    SWAG_VERIFY(tokenParse.token.id != TokenId::SymLeftCurly, error(tokenParse.token, toErr(Err0581)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse.token, toErr(Err0581)));
     SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0378, tokenParse.token.c_str())));
     structNode->inheritTokenName(tokenParse.token);
     structNode->tokenName = tokenParse.token;
@@ -323,9 +323,9 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
     SWAG_CHECK(eatToken());
 
     // '#validif' block
-    if (tokenParse.token.id == TokenId::CompilerValidIfx)
+    if (tokenParse.is(TokenId::CompilerValidIfx))
         return error(tokenParse.token, toErr(Err0659));
-    if (tokenParse.token.id == TokenId::CompilerValidIf)
+    if (tokenParse.is(TokenId::CompilerValidIf))
     {
         Scoped       scoped(this, newScope);
         ScopedStruct scopedStruct(this, newScope);
@@ -344,7 +344,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
         const auto startLoc = tokenParse.token.startLocation;
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[struct]] body"));
-        while (tokenParse.token.id != TokenId::SymRightCurly && tokenParse.token.id != TokenId::EndOfFile)
+        while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(contentNode, structType, &dummyResult));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[struct]] body"));
     }
@@ -355,12 +355,12 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result)
 {
     const auto startLoc = tokenParse.token.startLocation;
-    if (tokenParse.token.id == TokenId::SymLeftCurly)
+    if (tokenParse.is(TokenId::SymLeftCurly))
     {
         const auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
         *result         = stmt;
         SWAG_CHECK(eatToken());
-        while (tokenParse.token.id != TokenId::SymRightCurly && tokenParse.token.id != TokenId::EndOfFile)
+        while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(stmt, structType, &dummyResult));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the struct body"));
         parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
@@ -468,12 +468,12 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             const auto kind = tokenParse.token.id;
             SWAG_CHECK(eatToken());
 
-            SWAG_VERIFY(tokenParse.token.id != TokenId::SymLeftParen, error(tokenParse.token, toErr(Err0685)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse.token, toErr(Err0685)));
 
             const bool isMethod      = kind == TokenId::KwdMethod;
             bool       isConstMethod = false;
 
-            if (tokenParse.token.id == TokenId::KwdConst)
+            if (tokenParse.is(TokenId::KwdConst))
             {
                 SWAG_VERIFY(isMethod, error(tokenParse.token, toErr(Err0458)));
                 isConstMethod = true;
@@ -509,7 +509,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             if (typeNode->parameters)
                 typeNode->parameters->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
 
-            if (tokenParse.token.id == TokenId::SymMinusGreat)
+            if (tokenParse.is(TokenId::SymMinusGreat))
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeNode->returnType));
@@ -524,7 +524,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
                 typeNode->returnType->clone(cloneContext);
             }
 
-            if (tokenParse.token.id == TokenId::KwdThrow)
+            if (tokenParse.is(TokenId::KwdThrow))
             {
                 SWAG_CHECK(eatToken());
                 typeNode->addSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW);

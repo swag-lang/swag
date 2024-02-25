@@ -1501,7 +1501,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             if (compilerIf->hasSpecFlag(AstIf::SPEC_FLAG_ASSIGN))
             {
                 const auto varNode = castAst<AstVarDecl>(compilerIf->firstChild(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-                if (varNode->token.id == TokenId::KwdConst)
+                if (varNode->token.is(TokenId::KwdConst))
                     CONCAT_FIXED_STR(concat, "const ");
                 else
                     CONCAT_FIXED_STR(concat, "var ");

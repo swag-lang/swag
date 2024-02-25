@@ -1253,7 +1253,7 @@ AstNode* AstNode::findParentAttrUse(const Utf8& name) const
 AstNode* AstNode::findParent(TokenId tkn) const
 {
     auto find = parent;
-    while (find && find->token.id != tkn)
+    while (find && find->token.isNot(tkn))
         find = find->parent;
     return find;
 }

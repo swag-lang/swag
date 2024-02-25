@@ -1312,7 +1312,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             identifier->kind = AstNodeKind::FuncCall;
 
             // @print behaves like a normal function, so we want an emitCall in that case
-            if (identifier->token.text[0] == '@' && identifier->token.id != TokenId::IntrinsicPrint)
+            if (identifier->token.text[0] == '@' && identifier->token.isNot(TokenId::IntrinsicPrint))
             {
                 dealWithIntrinsic(context, identifier);
                 identifier->byteCodeFct = ByteCodeGen::emitIntrinsic;
@@ -1590,15 +1590,15 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                             isLast = true;
                     }
 
-                    if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicTypeOf)
+                    if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicTypeOf))
                         asMatch = true;
-                    else if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicKindOf)
+                    else if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicKindOf))
                         asMatch = true;
-                    else if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.id == TokenId::IntrinsicNameOf)
+                    else if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicNameOf))
                         asMatch = true;
-                    else if (isLast && grandParent->is(AstNodeKind::BinaryOp) && grandParent->token.id == TokenId::SymEqualEqual && overload->symbol->is(SymbolKind::Struct))
+                    else if (isLast && grandParent->is(AstNodeKind::BinaryOp) && grandParent->token.is(TokenId::SymEqualEqual) && overload->symbol->is(SymbolKind::Struct))
                         asMatch = true;
-                    else if (isLast && grandParent->is(AstNodeKind::BinaryOp) && grandParent->token.id == TokenId::SymExclamEqual && overload->symbol->is(SymbolKind::Struct))
+                    else if (isLast && grandParent->is(AstNodeKind::BinaryOp) && grandParent->token.is(TokenId::SymExclamEqual) && overload->symbol->is(SymbolKind::Struct))
                         asMatch = true;
                     else if (grandParent->is(AstNodeKind::IntrinsicDefined))
                         asMatch = true;

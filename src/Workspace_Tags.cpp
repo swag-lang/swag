@@ -105,13 +105,13 @@ void Workspace::setupUserTags()
                 bool neg = false;
                 tokenizer.nextToken(tokenParse);
 
-                if (tokenParse.token.id == TokenId::KwdTrue)
+                if (tokenParse.is(TokenId::KwdTrue))
                 {
                     if (defaultType)
                         oneTag.type = g_TypeMgr->typeInfoBool;
                     tokenParse.literalValue.b = true;
                 }
-                else if (tokenParse.token.id == TokenId::KwdFalse)
+                else if (tokenParse.is(TokenId::KwdFalse))
                 {
                     if (defaultType)
                         oneTag.type = g_TypeMgr->typeInfoBool;
@@ -119,17 +119,17 @@ void Workspace::setupUserTags()
                 }
                 else
                 {
-                    if (tokenParse.token.id == TokenId::SymMinus)
+                    if (tokenParse.is(TokenId::SymMinus))
                     {
                         neg = true;
                         tokenizer.nextToken(tokenParse);
                     }
-                    else if (tokenParse.token.id == TokenId::SymPlus)
+                    else if (tokenParse.is(TokenId::SymPlus))
                     {
                         tokenizer.nextToken(tokenParse);
                     }
 
-                    if (tokenParse.token.id != TokenId::LiteralNumber && tokenParse.token.id != TokenId::LiteralString)
+                    if (tokenParse.isNot(TokenId::LiteralNumber) && tokenParse.isNot(TokenId::LiteralString))
                     {
                         Report::error(formErr(Fat0032, tokenVal.c_str(), oneTagName.c_str()));
                         helpUserTags();

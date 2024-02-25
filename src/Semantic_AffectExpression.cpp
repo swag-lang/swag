@@ -246,7 +246,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
     // Special case for enum : nothing is possible, except for flags
     bool forEnumFlags = false;
-    if (node->token.id != TokenId::SymEqual)
+    if (node->token.isNot(TokenId::SymEqual))
     {
         const auto leftReal = TypeManager::concreteType(leftTypeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
         if (leftReal->kind != TypeInfoKind::Struct)
@@ -254,9 +254,9 @@ bool Semantic::resolveAffect(SemanticContext* context)
             if (leftTypeInfo->getConcreteAlias()->isEnum() || rightTypeInfo->getConcreteAlias()->isEnum())
             {
                 SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-                if (node->token.id != TokenId::SymVerticalEqual &&
-                    node->token.id != TokenId::SymAmpersandEqual &&
-                    node->token.id != TokenId::SymCircumflexEqual)
+                if (node->token.isNot(TokenId::SymVerticalEqual) &&
+                    node->token.isNot(TokenId::SymAmpersandEqual) &&
+                    node->token.isNot(TokenId::SymCircumflexEqual))
                     return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
                 if (!leftTypeInfo->getConcreteAlias()->hasFlag(TYPEINFO_ENUM_FLAGS) || !rightTypeInfo->getConcreteAlias()->hasFlag(TYPEINFO_ENUM_FLAGS))
                     return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]", left);
@@ -287,7 +287,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     }
 
     // No direct operations on any, except affect any to any
-    if (leftTypeInfo->isAny() && node->token.id != TokenId::SymEqual)
+    if (leftTypeInfo->isAny() && node->token.isNot(TokenId::SymEqual))
     {
         Diagnostic err{node, node->token, formErr(Err0351, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));

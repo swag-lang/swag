@@ -104,13 +104,13 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
         case InvalidTokenError::PrimaryExpression:
 
             // Bad character syntax as an expression
-            if (tokenParse.token.id == TokenId::SymQuote)
+            if (tokenParse.is(TokenId::SymQuote))
             {
                 const auto startToken = tokenParse;
                 eatToken();
                 const auto inToken = tokenParse;
                 eatToken();
-                if (tokenParse.token.id == TokenId::SymQuote)
+                if (tokenParse.is(TokenId::SymQuote))
                 {
                     const Diagnostic err{sourceFile, startToken.token.startLocation, tokenParse.token.endLocation, formErr(Err0237, inToken.token.c_str())};
                     return context->report(err);
@@ -164,12 +164,12 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 {
     SWAG_ASSERT(msg);
 
-    if (tokenParse.token.id != id)
+    if (tokenParse.token.isNot(id))
     {
         const Utf8 related = Naming::tokenToName(id);
         const auto diagMsg = formErr(Err0545, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
 
-        if (tokenParse.token.id == TokenId::EndOfFile)
+        if (tokenParse.is(TokenId::EndOfFile))
         {
             const Diagnostic err{sourceFile, start, start, diagMsg};
             return context->report(err);
@@ -197,7 +197,7 @@ void Parser::prepareExpectTokenError()
 
 bool Parser::eatTokenError(TokenId id, const Utf8& msg)
 {
-    if (tokenParse.token.id != id)
+    if (tokenParse.token.isNot(id))
     {
         prepareExpectTokenError();
         const Diagnostic err{sourceFile, tokenParse.token, form(msg.c_str(), tokenParse.token.c_str())};
@@ -211,7 +211,7 @@ bool Parser::eatTokenError(TokenId id, const Utf8& msg)
 bool Parser::eatToken(TokenId id, const char* msg)
 {
     SWAG_ASSERT(msg);
-    if (tokenParse.token.id != id)
+    if (tokenParse.token.isNot(id))
     {
         prepareExpectTokenError();
         const Diagnostic err{sourceFile, tokenParse.token, formErr(Err0083, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str())};
@@ -226,13 +226,13 @@ bool Parser::eatSemiCol(const char* msg)
 {
     SWAG_ASSERT(msg);
 
-    if (tokenParse.token.id != TokenId::SymSemiColon && tokenParse.token.id != TokenId::EndOfFile && !tokenParse.flags.has(TOKEN_PARSE_LAST_EOL))
+    if (tokenParse.isNot(TokenId::SymSemiColon) && tokenParse.isNot(TokenId::EndOfFile) && !tokenParse.flags.has(TOKEN_PARSE_LAST_EOL))
     {
-        if (tokenParse.token.id == TokenId::SymAsterisk)
+        if (tokenParse.is(TokenId::SymAsterisk))
         {
             const auto st = tokenParse;
             eatToken();
-            if (tokenParse.token.id == TokenId::SymSlash)
+            if (tokenParse.is(TokenId::SymSlash))
             {
                 tokenParse.token.startLocation = st.token.startLocation;
                 return error(tokenParse.token, formErr(Err0680, msg));
@@ -244,7 +244,7 @@ bool Parser::eatSemiCol(const char* msg)
         return error(tokenParse.token, formErr(Err0550, msg, tokenParse.token.c_str()));
     }
 
-    if (tokenParse.token.id == TokenId::SymSemiColon)
+    if (tokenParse.is(TokenId::SymSemiColon))
         SWAG_CHECK(eatToken());
     return true;
 }
@@ -356,7 +356,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
 
     while (true)
     {
-        if (tokenParse.token.id == TokenId::EndOfFile)
+        if (tokenParse.is(TokenId::EndOfFile))
             break;
         switch (kind)
         {
@@ -504,7 +504,7 @@ bool Parser::generateAst()
         module->docComment = std::move(tokenizer.comment);
 
     // Parse !!!
-    while (tokenParse.token.id != TokenId::EndOfFile)
+    while (tokenParse.isNot(TokenId::EndOfFile))
         SWAG_CHECK(doTopLevelInstruction(sourceFile->astRoot, &dummyResult));
 
     return true;

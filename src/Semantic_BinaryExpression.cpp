@@ -187,7 +187,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
     // Must be float, without a dynamic cast
     if (leftTypeInfo->isNativeFloat() && !left->castedTypeInfo && !node->castedTypeInfo)
     {
-        if (left->is(AstNodeKind::FactorOp) && left->token.id == TokenId::SymAsterisk)
+        if (left->is(AstNodeKind::FactorOp) && left->token.is(TokenId::SymAsterisk))
         {
             left->addSpecFlag(AstOp::SPEC_FLAG_FMA);
             node->addSpecFlag(AstOp::SPEC_FLAG_FMA);
@@ -987,9 +987,9 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
 
-        if (node->token.id != TokenId::SymVertical &&
-            node->token.id != TokenId::SymAmpersand &&
-            node->token.id != TokenId::SymCircumflex)
+        if (node->token.isNot(TokenId::SymVertical) &&
+            node->token.isNot(TokenId::SymAmpersand) &&
+            node->token.isNot(TokenId::SymCircumflex))
             return SemanticError::notAllowedError(context, node, leftTypeInfo);
 
         if (leftTypeInfo->isEnum() && !leftTypeInfo->hasFlag(TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
@@ -1039,9 +1039,9 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     node->inheritAstFlagsOr(AST_SIDE_EFFECTS);
 
     // Determine if we must promote.
-    if (node->token.id != TokenId::SymVertical &&
-        node->token.id != TokenId::SymAmpersand &&
-        node->token.id != TokenId::SymCircumflex)
+    if (node->token.isNot(TokenId::SymVertical) &&
+        node->token.isNot(TokenId::SymAmpersand) &&
+        node->token.isNot(TokenId::SymCircumflex))
     {
         SWAG_CHECK(TypeManager::promote(context, left, right));
         if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
@@ -1116,9 +1116,9 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
                 node->typeInfo = TypeManager::concretePtrRef(left->typeInfo);
             }
 
-            if (node->token.id == TokenId::SymVertical)
+            if (node->token.is(TokenId::SymVertical))
                 SWAG_CHECK(resolveBitmaskOr(context, left, right));
-            else if (node->token.id == TokenId::SymAmpersand)
+            else if (node->token.is(TokenId::SymAmpersand))
                 SWAG_CHECK(resolveBitmaskAnd(context, left, right));
             else
                 SWAG_CHECK(resolveXor(context, left, right));
@@ -1425,7 +1425,7 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
                 return Report::internalError(context->node, "resolveBoolExpression, token not supported");
         }
     }
-    else if (node->token.id == TokenId::KwdAnd)
+    else if (node->token.is(TokenId::KwdAnd))
     {
         if (module->mustOptimizeBytecode(node))
         {
@@ -1457,7 +1457,7 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
             }
         }
     }
-    else if (node->token.id == TokenId::KwdOr)
+    else if (node->token.is(TokenId::KwdOr))
     {
         if (module->mustOptimizeBytecode(node))
         {

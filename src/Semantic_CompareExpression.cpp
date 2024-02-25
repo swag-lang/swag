@@ -418,7 +418,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
 
     if ((leftTypeInfo->isLambdaClosure() || leftTypeInfo->isPointerNull()) &&
         (rightTypeInfo->isLambdaClosure() || rightTypeInfo->isPointerNull()) &&
-        (node->token.id == TokenId::SymEqualEqual || node->token.id == TokenId::SymExclamEqual))
+        (node->token.is(TokenId::SymEqualEqual) || node->token.is(TokenId::SymExclamEqual)))
     {
         // This is fine to compare two lambdas
     }
@@ -443,7 +443,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     }
 
     // Cannot compare tuples
-    if (node->token.id != TokenId::SymEqualEqual && node->token.id != TokenId::SymExclamEqual)
+    if (node->token.isNot(TokenId::SymEqualEqual) && node->token.isNot(TokenId::SymExclamEqual))
     {
         if (leftTypeInfo->isTuple() || rightTypeInfo->isTuple())
         {
@@ -488,7 +488,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     }
 
     // Some types can only be compared for equality
-    if (node->token.id != TokenId::SymEqualEqual && node->token.id != TokenId::SymExclamEqual)
+    if (node->token.isNot(TokenId::SymEqualEqual) && node->token.isNot(TokenId::SymExclamEqual))
     {
         if (leftTypeInfo->isSlice() || leftTypeInfo->isInterface())
         {
@@ -506,7 +506,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     }
 
     // Return type
-    if (node->token.id == TokenId::SymLowerEqualGreater)
+    if (node->token.is(TokenId::SymLowerEqualGreater))
         node->typeInfo = g_TypeMgr->typeInfoS32;
     else
         node->typeInfo = g_TypeMgr->typeInfoBool;

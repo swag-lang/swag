@@ -42,8 +42,8 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
-    SWAG_VERIFY(tokenParse.token.id != TokenId::SymMinusGreat, error(tokenParse.token, toErr(Err0676), toNte(Nte0020)));
-    SWAG_VERIFY(tokenParse.token.id != TokenId::KwdThrow, error(tokenParse.token, toErr(Err0671), toNte(Nte0020)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymMinusGreat), error(tokenParse.token, toErr(Err0676), toNte(Nte0020)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse.token, toErr(Err0671), toNte(Nte0020)));
     SWAG_CHECK(eatSemiCol("attribute definition"));
 
     //////
@@ -71,21 +71,21 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
         attrBlockNode->extMisc()->docComment = std::move(tokenizer.comment);
     }
 
-    while (tokenParse.token.id == TokenId::SymAttrStart)
+    while (tokenParse.is(TokenId::SymAttrStart))
     {
         SWAG_CHECK(eatToken());
-        while (tokenParse.token.id == TokenId::Identifier)
+        while (tokenParse.is(TokenId::Identifier))
         {
             AstNode* params;
             SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
             params->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-            SWAG_VERIFY(tokenParse.token.id == TokenId::SymRightSquare || tokenParse.token.id == TokenId::SymComma, error(tokenParse.token, formErr(Err0220, tokenParse.token.c_str())));
+            SWAG_VERIFY(tokenParse.is(TokenId::SymRightSquare) || tokenParse.is(TokenId::SymComma), error(tokenParse.token, formErr(Err0220, tokenParse.token.c_str())));
 
-            if (tokenParse.token.id != TokenId::SymRightSquare)
+            if (tokenParse.isNot(TokenId::SymRightSquare))
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma, "to use another attribute, or ']' to end"));
-                SWAG_VERIFY(tokenParse.token.id != TokenId::SymLeftParen, error(tokenParse.token, toErr(Err0543)));
+                SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse.token, toErr(Err0543)));
                 SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0219, tokenParse.token.c_str())));
             }
         }
