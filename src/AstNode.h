@@ -608,6 +608,7 @@ struct AstIdentifier : AstNode
     ~                 AstIdentifier();
     AstNode*          clone(CloneContext& context);
     void              allocateIdentifierExtension();
+    bool              isForcedUFCS() const;
     AstIdentifierRef* identifierRef() const;
 
     AstFuncCallParams*   genericParameters;

@@ -73,6 +73,13 @@ AstIdentifier::~AstIdentifier()
         Allocator::free<IdentifierExtension>(identifierExtension);
 }
 
+bool AstIdentifier::isForcedUFCS() const
+{
+    if (callParameters && !callParameters->children.empty() && callParameters->firstChild()->hasAstFlag(AST_TO_UFCS))
+        return true;
+    return false;
+}
+
 AstIdentifierRef* AstIdentifier::identifierRef() const
 {
     if (parent->is(AstNodeKind::IdentifierRef))
@@ -1202,7 +1209,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         newNode->ownerScope->symTable.registerSymbolName(nullptr, func, SymbolKind::Function);
 
         // Ref to the function
-        const auto idRef                   = castAst<AstIdentifierRef>(newNode->lastChild(), AstNodeKind::IdentifierRef);
+        const auto idRef               = castAst<AstIdentifierRef>(newNode->lastChild(), AstNodeKind::IdentifierRef);
         idRef->lastChild()->token.text = newName;
     }
 

@@ -1915,11 +1915,12 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     return true;
 }
 
-bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, bool hasForcedUfcs)
+bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef)
 {
     const auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload();
     const auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName();
     const auto orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
+    const auto isForcedUFCS              = identifier->isForcedUFCS();
     auto&      toSolveOverload           = context->cacheToSolveOverload;
     auto&      listTryMatch              = context->cacheListTryMatch;
 
@@ -2004,7 +2005,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
                 tryMatch->dependentVarLeaf  = dependentVarLeaf;
                 tryMatch->overload          = symbolOverload;
                 tryMatch->scope             = oneOver.scope;
-                tryMatch->ufcs              = ufcsFirstParam || hasForcedUfcs;
+                tryMatch->ufcs              = ufcsFirstParam || isForcedUFCS;
                 tryMatch->cptOverloads      = oneOver.cptOverloads;
                 tryMatch->cptOverloadsInit  = oneOver.cptOverloadsInit;
 

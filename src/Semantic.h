@@ -212,7 +212,7 @@ namespace Semantic
     TypeInfo*      getConcreteTypeUnRef(AstNode* node, ToConcreteFlags concreteFlags);
     AstIdentifier* createTmpId(SemanticContext* context, AstNode* node, const Utf8& name);
     bool           makeIntrinsicKindof(SemanticContext* context, AstNode* node);
-    bool           computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, bool hasForcedUfcs);
+    bool           computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef);
 
     Utf8 getCompilerFunctionString(const AstNode* node, TokenId id);
     bool sendCompilerMsgFuncDecl(SemanticContext* context);

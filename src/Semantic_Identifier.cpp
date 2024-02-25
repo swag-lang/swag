@@ -1155,12 +1155,8 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         return true;
     }
 
-    bool hasForcedUfcs = false;
-    if (identifier->callParameters && !identifier->callParameters->children.empty() && identifier->callParameters->firstChild()->hasAstFlag(AST_TO_UFCS))
-        hasForcedUfcs = true;
-
     // Do the actual match
-    SWAG_CHECK(computeMatch(context, identifier, riFlags, symbolsMatch, identifierRef, hasForcedUfcs));
+    SWAG_CHECK(computeMatch(context, identifier, riFlags, symbolsMatch, identifierRef));
     YIELD();
 
     // No match !
@@ -1175,6 +1171,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         return false;
     }
 
+    // We have a match, and we were just asking to check ghosting. So we are done.
     if (riFlags.has(RI_FOR_GHOSTING | RI_FOR_ZERO_GHOSTING))
         return true;
 
@@ -1185,10 +1182,10 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         return true;
     }
 
-    // Deal with ufcs. Now that the match is done, we will change the ast in order to
+    // Deal with UFCS. Now that the match is done, we will change the ast in order to
     // add the ufcs parameters to the function call parameters
     const auto& match = context->cacheMatches[0];
-    if (match->ufcs && !hasForcedUfcs)
+    if (match->ufcs && !identifier->isForcedUFCS())
     {
         // Do not change AST if this is code inside a generic function
         if (!identifier->ownerFct || !identifier->ownerFct->hasAstFlag(AST_IS_GENERIC))
