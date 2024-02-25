@@ -551,7 +551,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 
             // Clone all attributes
             CloneContext cloneContext;
-            for (uint32_t i = 0; i < testParent->children.size() - 1; i++) // Do not clone content
+            for (uint32_t i = 0; i < testParent->childCount() - 1; i++) // Do not clone content
             {
                 cloneContext.parent = newAttrUse;
                 const auto child    = testParent->children[i]->clone(cloneContext);
@@ -585,7 +585,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     {
         // The last child must have the semanticAfterFct set
         // :AttrUseLastChild
-        const auto back = newAttrUse->children.back();
+        const auto back = newAttrUse->lastChild();
         back->allocateExtension(ExtensionKind::Semantic);
         SWAG_ASSERT(!back->extSemantic()->semanticAfterFct);
         back->extSemantic()->semanticAfterFct = Semantic::resolveAttrUse;

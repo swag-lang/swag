@@ -63,7 +63,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
                 if (multi && tokenParse.token.id != TokenId::SymComma && tokenParse.token.id != TokenId::SymRightParen)
                 {
                     tokenizer.restoreState(tokenParse);
-                    Ast::removeFromParent(param->children.back());
+                    Ast::removeFromParent(param->lastChild());
                     SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &dummyResult));
                 }
                 break;
@@ -134,9 +134,9 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
             // Name
             if (tokenParse.token.id == TokenId::SymColon)
             {
-                if (paramExpression->isNot(AstNodeKind::IdentifierRef) || paramExpression->children.size() != 1)
+                if (paramExpression->isNot(AstNodeKind::IdentifierRef) || paramExpression->childCount() != 1)
                     return context->report({paramExpression, formErr(Err0329, paramExpression->token.c_str())});
-                param->addExtraPointer(ExtraPointerKind::IsNamed, paramExpression->children.front());
+                param->addExtraPointer(ExtraPointerKind::IsNamed, paramExpression->firstChild());
                 param->allocateExtension(ExtensionKind::Owner);
                 param->extOwner()->nodesToFree.push_back(paramExpression);
                 SWAG_CHECK(eatToken());
@@ -288,7 +288,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         // Type
         if (tokenParse.token.id == TokenId::SymColon)
         {
-            if (unnamedTokens.size() == parent->children.size())
+            if (unnamedTokens.size() == parent->childCount())
             {
                 Diagnostic err{sourceFile, tokenParse.token, toErr(Err0702)};
                 err.addNote(unnamedTokens.front(), toNte(Nte0188));
@@ -346,7 +346,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         // Assignment
         if (tokenParse.token.id == TokenId::SymEqual)
         {
-            if (unnamedTokens.size() == parent->children.size())
+            if (unnamedTokens.size() == parent->childCount())
             {
                 Diagnostic err{sourceFile, tokenParse.token, toErr(Err0214)};
                 err.addNote(unnamedTokens.front(), toNte(Nte0162));
@@ -470,9 +470,9 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             {
                 SWAG_ASSERT(hasMissingType);
                 if (!missingTypes && *hasMissingType)
-                    return error(allParams->children.back(), toErr(Err0691));
+                    return error(allParams->lastChild(), toErr(Err0691));
                 if (oneParamDone && !*hasMissingType && missingTypes)
-                    return error(allParams->children.back(), toErr(Err0569));
+                    return error(allParams->lastChild(), toErr(Err0569));
                 *hasMissingType = *hasMissingType || missingTypes;
             }
 
@@ -1254,7 +1254,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         // Reference to the function
         AstNode* identifierRef = Ast::newIdentifierRef(lambda->token.text, this, exprNode);
         identifierRef->inheritTokenLocation(lambda->token);
-        identifierRef->children.back()->inheritTokenLocation(lambda->token);
+        identifierRef->lastChild()->inheritTokenLocation(lambda->token);
         isForceTakeAddress(identifierRef);
 
         // Create the capture block (a tuple)
@@ -1277,7 +1277,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         // Reference to the captured block
         identifierRef = Ast::newIdentifierRef(nameCaptureBlock, this, exprNode);
         identifierRef->inheritTokenLocation(lambdaDecl->captureParameters->token);
-        identifierRef->children.back()->inheritTokenLocation(lambdaDecl->captureParameters->token);
+        identifierRef->lastChild()->inheritTokenLocation(lambdaDecl->captureParameters->token);
         isForceTakeAddress(identifierRef);
     }
     else
@@ -1285,7 +1285,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         // Reference to the function
         AstNode* identifierRef = Ast::newIdentifierRef(lambda->token.text, this, exprNode);
         identifierRef->inheritTokenLocation(lambda->token);
-        identifierRef->children.back()->inheritTokenLocation(lambda->token);
+        identifierRef->lastChild()->inheritTokenLocation(lambda->token);
         isForceTakeAddress(identifierRef);
     }
 

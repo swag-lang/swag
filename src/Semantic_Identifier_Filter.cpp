@@ -237,7 +237,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
                 if (!matches[j]->symbolOverload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
                 {
                     // If interface name is alone, then we take in priority the interface definition, not the impl block
-                    if (node == node->parent->children.front())
+                    if (node == node->parent->firstChild())
                         curMatch->remove = true;
                     // If interface name is not alone (like X.ITruc), then we take in priority the sub scope
                     else

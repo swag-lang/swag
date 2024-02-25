@@ -81,7 +81,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     result->addAlternativeScope(typeRightStruct->declNode->ownerScope);
 
     SWAG_ASSERT(result->is(AstNodeKind::Impl));
-    SWAG_ASSERT(result->children.back()->is(AstNodeKind::FuncDecl));
+    SWAG_ASSERT(result->lastChild()->is(AstNodeKind::FuncDecl));
 
     const auto job = context->baseJob;
     job->nodes.push_back(result);
@@ -158,13 +158,13 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
     // We have generated methods, so restart
     if (!content.empty())
     {
-        const int numChildren = static_cast<int>(node->children.size());
+        const uint32_t numChildren = node->childCount();
 
         Parser parser;
         parser.setup(context, context->sourceFile->module, context->sourceFile);
         SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
 
-        for (uint32_t i = numChildren; i < node->children.size(); i++)
+        for (uint32_t i = numChildren; i < node->childCount(); i++)
             context->baseJob->nodes.push_back(node->children[i]);
         context->result = ContextResult::NewChildren;
         return true;

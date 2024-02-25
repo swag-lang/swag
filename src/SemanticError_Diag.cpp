@@ -97,7 +97,7 @@ namespace
         errorParam.addError(err);
 
         const size_t other = errorParam.oneTry->symMatchContext.badSignatureInfos.badSignatureNum1;
-        SWAG_ASSERT(other < errorParam.oneTry->callParameters->children.size());
+        SWAG_ASSERT(other < errorParam.oneTry->callParameters->childCount());
         const auto note = Diagnostic::note(errorParam.oneTry->callParameters->children[other], toNte(Nte0165));
         errorParam.addNote(note);
     }
@@ -274,7 +274,7 @@ namespace
         errorParam.addError(err);
 
         // Here is
-        if (errorParam.destFuncDecl && bi.badSignatureParameterIdx < errorParam.destFuncDecl->genericParameters->children.size())
+        if (errorParam.destFuncDecl && bi.badSignatureParameterIdx < errorParam.destFuncDecl->genericParameters->childCount())
         {
             const auto reqParam = errorParam.destFuncDecl->genericParameters->children[bi.badSignatureParameterIdx];
             const auto note     = Diagnostic::note(reqParam, formNte(Nte0068, reqParam->token.c_str(), Naming::kindName(overload).c_str()));
@@ -310,7 +310,7 @@ namespace
         }
 
         AstNode* destParamNode = nullptr;
-        if (errorParam.destParameters && bi.badSignatureParameterIdx < errorParam.destParameters->children.size())
+        if (errorParam.destParameters && bi.badSignatureParameterIdx < errorParam.destParameters->childCount())
             destParamNode = errorParam.destParameters->children[bi.badSignatureParameterIdx];
         const auto callParamNode = match.parameters[bi.badSignatureParameterIdx];
 
@@ -444,8 +444,8 @@ namespace
         if (badParamIdx &&
             callParameters &&
             !callParameters->children.empty() &&
-            callParameters->children.front()->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) &&
-            !callParameters->children.front()->hasAstFlag(AST_UFCS_FCT))
+            callParameters->firstChild()->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) &&
+            !callParameters->firstChild()->hasAstFlag(AST_UFCS_FCT))
         {
             badParamIdx--;
         }
@@ -479,7 +479,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     // Get the call parameter that failed
     const auto callParameters = oneTry.callParameters;
     errorParam.badParamIdx    = getBadParamIdx(oneTry, callParameters);
-    if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < static_cast<int>(callParameters->children.size()))
+    if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < static_cast<int>(callParameters->childCount()))
         errorParam.failedParam = castAst<AstFuncCallParam>(callParameters->children[errorParam.badParamIdx]);
     errorParam.badParamIdx += 1;
 

@@ -336,6 +336,9 @@ struct AstNode
     bool isSilentCall() const;
     bool isPublic() const;
 
+    bool is(AstNodeKind what) const { return kind == what; }
+    bool isNot(AstNodeKind what) const { return kind != what; }
+
     AstNode* findChildRef(const AstNode* ref, AstNode* fromChild) const;
     AstNode* findChildRefRec(AstNode* ref, AstNode* fromChild) const;
     AstNode* findParent(AstNodeKind parentKind) const;
@@ -344,6 +347,10 @@ struct AstNode
     AstNode* findChild(AstNodeKind childKind) const;
     AstNode* findParentAttrUse(const Utf8& name) const;
     AstNode* findParent(TokenId tkn) const;
+
+    AstNode* firstChild() const { return children.front(); }
+    AstNode* lastChild() const { return children.back(); }
+    uint32_t childCount() const { return children.size(); }
 
     const Token& getTokenName() const;
     Utf8         getScopedName() const;
@@ -358,9 +365,6 @@ struct AstNode
     void         addAlternativeScopeVar(Scope* scope, AstNode* varNode, AltScopeFlags altFlags = 0);
     uint32_t     childParentIdx() const;
     void         printLoc() const;
-
-    bool is(AstNodeKind what) const { return kind == what; }
-    bool isNot(AstNodeKind what) const { return kind != what; }
 
     bool hasAstFlag(AstNodeFlags fl) const { return flags.has(fl); }
     void addAstFlag(AstNodeFlags fl) { flags.add(fl); }

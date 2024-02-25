@@ -26,7 +26,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
             const auto varDecl = castAst<AstVarDecl>(nodeGenericParameters[i], AstNodeKind::FuncDeclParam);
 
             // If the user has specified a generic type, take it
-            if (callGenericParameters && i < callGenericParameters->children.size())
+            if (callGenericParameters && i < callGenericParameters->childCount())
             {
                 const auto genParam       = callGenericParameters->children[i];
                 param->typeInfo           = genParam->typeInfo;
@@ -102,9 +102,9 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                         {
                             errType = fromNode->typeInfo = listArr->subTypes[0]->typeInfo;
                             if (fromNode->is(AstNodeKind::FuncCallParam))
-                                errNode = fromNode->children.front()->children.front();
+                                errNode = fromNode->firstChild()->firstChild();
                             else
-                                errNode = fromNode->children.front();
+                                errNode = fromNode->firstChild();
                             break;
                         }
                     }

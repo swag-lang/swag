@@ -142,7 +142,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         Diagnostic err{node, formErr(Err0590, node->resolvedSymbolOverload()->symbol->ownerTable->scope->name.c_str())};
 
         // Missing self ?
-        if (node->children.size() <= 1 &&
+        if (node->childCount() <= 1 &&
             node->ownerStructScope &&
             node->ownerStructScope == context->node->ownerStructScope &&
             node->ownerFct)
@@ -154,7 +154,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
                 if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isSelf())
                     err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0041));
                 else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING))
-                    err.addNote(nodeFct->parameters->children.front(), toNte(Nte0027));
+                    err.addNote(nodeFct->parameters->firstChild(), toNte(Nte0027));
                 else
                     err.addNote(toNte(Nte0045));
             }
@@ -242,19 +242,19 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
             if (typeParam->typeInfo->isVariadic())
             {
                 typeInfo->addFlag(TYPEINFO_VARIADIC);
-                if (index != node->parameters->children.size() - 1)
+                if (index != node->parameters->childCount() - 1)
                     return context->report({param, toErr(Err0513)});
             }
             else if (typeParam->typeInfo->isTypedVariadic())
             {
                 typeInfo->addFlag(TYPEINFO_TYPED_VARIADIC);
-                if (index != node->parameters->children.size() - 1)
+                if (index != node->parameters->childCount() - 1)
                     return context->report({param, toErr(Err0513)});
             }
             else if (typeParam->typeInfo->isCVariadic())
             {
                 typeInfo->addFlag(TYPEINFO_C_VARIADIC);
-                if (index != node->parameters->children.size() - 1)
+                if (index != node->parameters->childCount() - 1)
                     return context->report({param, toErr(Err0513)});
             }
 
@@ -368,7 +368,7 @@ bool Semantic::resolveType(SemanticContext* context)
     }
     else if (typeNode->typeFlags.has(TYPEFLAG_IS_SUB_TYPE))
     {
-        typeNode->typeInfo = typeNode->children.back()->typeInfo;
+        typeNode->typeInfo = typeNode->lastChild()->typeInfo;
     }
     else
     {
@@ -381,7 +381,7 @@ bool Semantic::resolveType(SemanticContext* context)
         {
             const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(typeNode->typeInfo->clone());
             typeVariadic->kind      = TypeInfoKind::TypedVariadic;
-            typeVariadic->rawType   = typeNode->children.front()->typeInfo;
+            typeVariadic->rawType   = typeNode->firstChild()->typeInfo;
             typeVariadic->addFlag(typeVariadic->rawType->flags.mask(TYPEINFO_GENERIC));
             typeVariadic->forceComputeName();
             typeNode->typeFromLiteral = typeVariadic;
@@ -404,7 +404,7 @@ bool Semantic::resolveType(SemanticContext* context)
     // If type comes from an identifier, be sure it's a type
     if (typeNode->identifier && !typeNode->identifier->children.empty())
     {
-        const auto child = typeNode->identifier->children.back();
+        const auto child = typeNode->identifier->lastChild();
         if (!child->typeInfo || !child->typeInfo->isUndefined())
         {
             const auto symName = child->resolvedSymbolName();
@@ -515,7 +515,7 @@ bool Semantic::resolveType(SemanticContext* context)
         }
 
         const auto rawType = typeNode->typeInfo;
-        SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->children.back(), toErr(Err0736)}));
+        SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->lastChild(), toErr(Err0736)}));
 
         uint32_t totalCount = 1;
         for (int i = typeNode->arrayDim - 1; i >= 0; i--)
@@ -623,7 +623,7 @@ bool Semantic::resolveTypeAlias(SemanticContext* context)
 {
     const auto node     = context->node;
     const auto typeInfo = castTypeInfo<TypeInfoAlias>(node->typeInfo, TypeInfoKind::Alias);
-    typeInfo->rawType   = node->children.front()->typeInfo;
+    typeInfo->rawType   = node->firstChild()->typeInfo;
     typeInfo->sizeOf    = typeInfo->rawType->sizeOf;
     typeInfo->addFlag(typeInfo->rawType->flags.mask(TYPEINFO_GENERIC));
     typeInfo->addFlag(typeInfo->rawType->flags.mask(TYPEINFO_CONST));
@@ -792,8 +792,8 @@ bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 bool Semantic::resolveTypeList(SemanticContext* context)
 {
     const auto node = context->node;
-    if (node->children.size() == 1)
-        node->typeInfo = node->children.front()->typeInfo;
+    if (node->childCount() == 1)
+        node->typeInfo = node->firstChild()->typeInfo;
     return true;
 }
 

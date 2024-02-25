@@ -13,8 +13,8 @@
 bool Parser::testIsSingleIdentifier(AstNode* node)
 {
     if (node->isNot(AstNodeKind::IdentifierRef) ||
-        node->children.size() > 1 ||
-        node->children.back()->isNot(AstNodeKind::Identifier))
+        node->childCount() > 1 ||
+        node->lastChild()->isNot(AstNodeKind::Identifier))
     {
         return false;
     }
@@ -315,7 +315,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
 
     // Mark the identifier with AST_DISCARD
     while (idRef && idRef->isNot(AstNodeKind::IdentifierRef))
-        idRef = idRef->children.front();
+        idRef = idRef->firstChild();
     SWAG_ASSERT(idRef);
 
     // This is where AST_DISCARD will be really used
@@ -462,7 +462,7 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     AstNode* expr;
     SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_ARRAY));
     SWAG_CHECK(eatSemiCol("[[namealias]] expression"));
-    expr->children.back()->addSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS);
+    expr->lastChild()->addSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS);
 
     node->semanticFct = Semantic::resolveNameAlias;
     node->setResolvedSymbolName(currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias));

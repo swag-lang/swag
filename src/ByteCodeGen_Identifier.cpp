@@ -15,7 +15,7 @@
 bool ByteCodeGen::emitIdentifierRef(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
-    node->resultRegisterRc = node->children.back()->resultRegisterRc;
+    node->resultRegisterRc = node->lastChild()->resultRegisterRc;
     return true;
 }
 
@@ -73,7 +73,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 
         // Get capture block pointer (first parameter)
         const auto inst         = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
-        inst->b.mergeU64U32.low = node->ownerFct->parameters->children.front()->resolvedSymbolOverload()->computedValue.storageOffset;
+        inst->b.mergeU64U32.low = node->ownerFct->parameters->firstChild()->resolvedSymbolOverload()->computedValue.storageOffset;
 
         // :VariadicAndClosure
         // If function is variable, then parameter of the capture context is 2 (after the slice), and not 0.
@@ -166,13 +166,13 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             // :UfcsItfInlined
             // Very specific case where an inlined call returns an interface, and we directly call a lambda of that interface.
             // In that case we want to take the register that defined the vtable, not the object.
-            if (identifier != identifier->parent->children.front())
+            if (identifier != identifier->parent->firstChild())
             {
                 const auto idIdx = identifier->childParentIdx();
                 const auto prev  = identifier->identifierRef()->children[idIdx - 1];
                 if (!prev->children.empty())
                 {
-                    const auto back = prev->children.back();
+                    const auto back = prev->lastChild();
                     if (back->is(AstNodeKind::Inline))
                     {
                         if (back->typeInfo->isInterface())

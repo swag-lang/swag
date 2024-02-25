@@ -112,11 +112,11 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
 bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
 {
     AstNode*        node         = context->node;
-    auto            typeInfo     = forcedTypeInfo ? forcedTypeInfo : node->children.front()->typeInfo;
+    auto            typeInfo     = forcedTypeInfo ? forcedTypeInfo : node->firstChild()->typeInfo;
     const TypeInfo* fromTypeInfo = from ? from->typeInfo : typeInfo;
 
     typeInfo = TypeManager::concreteType(typeInfo);
-    if (node->children.front()->hasSemFlag(SEMFLAG_FROM_REF))
+    if (node->firstChild()->hasSemFlag(SEMFLAG_FROM_REF))
         typeInfo = TypeManager::concretePtrRefType(typeInfo);
 
     if (typeInfo->isStruct())
@@ -185,7 +185,7 @@ bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, const RegisterLis
             // Copy closure capture buffer
             const auto nodeCapture = castAst<AstMakePointer>(from, AstNodeKind::MakePointerLambda);
             SWAG_ASSERT(nodeCapture->lambda->captureParameters);
-            const auto typeBlock = castTypeInfo<TypeInfoStruct>(nodeCapture->children.back()->typeInfo, TypeInfoKind::Struct);
+            const auto typeBlock = castTypeInfo<TypeInfoStruct>(nodeCapture->lastChild()->typeInfo, TypeInfoKind::Struct);
             if (!typeBlock->fields.empty())
             {
                 EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0)->b.u64 = 2 * sizeof(void*);
@@ -223,7 +223,7 @@ bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, const RegisterLis
             EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0);
             EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
         }
-        else if (node->children.size() > 1 && node->children[1]->typeInfo->isArray())
+        else if (node->childCount() > 1 && node->children[1]->typeInfo->isArray())
         {
             EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);
 
@@ -309,7 +309,7 @@ bool ByteCodeGen::emitAffectPlusEqual(const ByteCodeGenContext* context, uint32_
 {
     const AstNode* node = context->node;
 
-    const auto front        = node->children.front();
+    const auto front        = node->firstChild();
     auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->hasSemFlag(SEMFLAG_FROM_REF))
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
@@ -371,7 +371,7 @@ bool ByteCodeGen::emitAffectMinusEqual(const ByteCodeGenContext* context, uint32
 {
     const AstNode* node = context->node;
 
-    const auto front        = node->children.front();
+    const auto front        = node->firstChild();
     auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->hasSemFlag(SEMFLAG_FROM_REF))
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
@@ -433,7 +433,7 @@ bool ByteCodeGen::emitAffectMulEqual(const ByteCodeGenContext* context, uint32_t
 {
     const AstNode* node = context->node;
 
-    const auto front        = node->children.front();
+    const auto front        = node->firstChild();
     auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->hasSemFlag(SEMFLAG_FROM_REF))
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
@@ -483,7 +483,7 @@ bool ByteCodeGen::emitAffectAndEqual(const ByteCodeGenContext* context, uint32_t
 {
     const AstNode* node = context->node;
 
-    const auto front        = node->children.front();
+    const auto front        = node->firstChild();
     auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->hasSemFlag(SEMFLAG_FROM_REF))
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
@@ -520,7 +520,7 @@ bool ByteCodeGen::emitAffectOrEqual(const ByteCodeGenContext* context, uint32_t 
 {
     const AstNode* node = context->node;
 
-    const auto front        = node->children.front();
+    const auto front        = node->firstChild();
     auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->hasSemFlag(SEMFLAG_FROM_REF))
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
@@ -557,7 +557,7 @@ bool ByteCodeGen::emitAffectXorEqual(const ByteCodeGenContext* context, uint32_t
 {
     const AstNode* node = context->node;
 
-    const auto front        = node->children.front();
+    const auto front        = node->firstChild();
     auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->hasSemFlag(SEMFLAG_FROM_REF))
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
@@ -594,7 +594,7 @@ bool ByteCodeGen::emitAffectShiftLeftEqual(const ByteCodeGenContext* context, ui
 {
     const AstNode* node = context->node;
 
-    const auto front        = node->children.front();
+    const auto front        = node->firstChild();
     auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->hasSemFlag(SEMFLAG_FROM_REF))
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
@@ -638,7 +638,7 @@ bool ByteCodeGen::emitAffectShiftRightEqual(const ByteCodeGenContext* context, u
 {
     const AstNode* node = context->node;
 
-    const auto front        = node->children.front();
+    const auto front        = node->firstChild();
     auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->hasSemFlag(SEMFLAG_FROM_REF))
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
@@ -683,7 +683,7 @@ bool ByteCodeGen::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_t r
 {
     const AstNode* node = context->node;
 
-    const auto front        = node->children.front();
+    const auto front        = node->firstChild();
     auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->hasSemFlag(SEMFLAG_FROM_REF))
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
@@ -735,7 +735,7 @@ bool ByteCodeGen::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, u
 {
     const AstNode* node = context->node;
 
-    const auto front        = node->children.front();
+    const auto front        = node->firstChild();
     auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->hasSemFlag(SEMFLAG_FROM_REF))
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
@@ -814,7 +814,7 @@ bool ByteCodeGen::emitAffect(ByteCodeGenContext* context)
     {
         if (node->hasSemFlag(SEMFLAG_FLAT_PARAMS))
         {
-            const auto arrayNode = castAst<AstArrayPointerIndex>(leftNode->children.back(), AstNodeKind::ArrayPointerIndex);
+            const auto arrayNode = castAst<AstArrayPointerIndex>(leftNode->lastChild(), AstNodeKind::ArrayPointerIndex);
             context->allocateTempCallParams();
             context->allParamsTmp->children = arrayNode->structFlatParams;
             SWAG_CHECK(emitUserOp(context, context->allParamsTmp));

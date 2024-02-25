@@ -147,7 +147,7 @@ void AstNode::cloneChildren(CloneContext& context, AstNode* from)
 {
     const auto oldParent = context.parent;
     context.parent       = this;
-    const auto num       = from->children.size();
+    const auto num       = from->childCount();
     for (uint32_t i = 0; i < num; i++)
     {
         // Do not duplicate a struct if it's a child of something else (i.e. another struct), because
@@ -837,7 +837,7 @@ bool AstNode::isForceTakeAddress() const
 
 void AstNode::swap2Children()
 {
-    SWAG_ASSERT(children.size() == 2);
+    SWAG_ASSERT(childCount() == 2);
     const auto tmp = children[0];
     children[0]    = children[1];
     children[1]    = tmp;
@@ -1149,7 +1149,7 @@ void AstNode::printLoc() const
 uint32_t AstNode::childParentIdx() const
 {
     SWAG_ASSERT(parent);
-    for (uint32_t it = 0; it < parent->children.size(); it++)
+    for (uint32_t it = 0; it < parent->childCount(); it++)
     {
         if (parent->children[it] == this)
             return it;
@@ -1297,7 +1297,7 @@ AstNode* AstNode::findChildRef(const AstNode* ref, AstNode* fromChild) const
 {
     if (!ref)
         return nullptr;
-    for (uint32_t i = 0; i < children.size(); i++)
+    for (uint32_t i = 0; i < childCount(); i++)
     {
         if (children[i] == ref)
             return fromChild->children[i];
@@ -1312,7 +1312,7 @@ AstNode* AstNode::findChildRefRec(AstNode* ref, AstNode* fromChild) const
         return nullptr;
     if (this == ref)
         return fromChild;
-    for (uint32_t i = 0; i < children.size(); i++)
+    for (uint32_t i = 0; i < childCount(); i++)
     {
         if (children[i] == ref)
             return fromChild->children[i];

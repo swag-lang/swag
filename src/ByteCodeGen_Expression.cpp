@@ -279,7 +279,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         {
             EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc[0])->b.u64 = startOffset;
             if (!node->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
-                EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1])->b.u64 = listNode->children.size();
+                EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1])->b.u64 = listNode->childCount();
         }
         else
         {
@@ -312,7 +312,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context)
 {
     const auto node = context->node;
     if (node->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
-        return context->report({node->children.front(), formErr(Err0403, node->children.front()->token.c_str())});
+        return context->report({node->firstChild(), formErr(Err0403, node->firstChild()->token.c_str())});
     SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRc));
     return true;
 }
@@ -523,7 +523,7 @@ bool ByteCodeGen::emitComputedValue(ByteCodeGenContext* context)
 bool ByteCodeGen::emitDefer(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstDefer>(context->node, AstNodeKind::Defer);
-    SWAG_ASSERT(node->children.size() == 1);
+    SWAG_ASSERT(node->childCount() == 1);
     node->ownerScope->deferredNodes.push_back(node);
     return true;
 }

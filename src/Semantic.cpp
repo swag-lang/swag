@@ -47,7 +47,7 @@ bool Semantic::setUnRef(AstNode* node)
         case AstNodeKind::NoDrop:
         case AstNodeKind::Move:
         case AstNodeKind::FuncCallParam:
-            setUnRef(node->children.back());
+            setUnRef(node->lastChild());
             break;
         default:
             break;
@@ -77,12 +77,12 @@ AstIdentifier* Semantic::createTmpId(SemanticContext* context, AstNode* node, co
     {
         context->tmpIdRef                   = Ast::newIdentifierRef(name, nullptr, nullptr);
         context->tmpIdRef->token.sourceFile = context->sourceFile;
-        context->tmpIdRef->children.back()->addAstFlag(AST_SILENT_CHECK);
+        context->tmpIdRef->lastChild()->addAstFlag(AST_SILENT_CHECK);
         context->tmpIdRef->addAstFlag(AST_SILENT_CHECK);
     }
 
     context->tmpIdRef->parent = node;
-    const auto id             = castAst<AstIdentifier>(context->tmpIdRef->children.back(), AstNodeKind::Identifier);
+    const auto id             = castAst<AstIdentifier>(context->tmpIdRef->lastChild(), AstNodeKind::Identifier);
     id->token.sourceFile      = context->sourceFile;
     id->token.text            = node->token.text;
     id->inheritOwners(node);

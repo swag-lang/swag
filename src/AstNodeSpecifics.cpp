@@ -367,7 +367,7 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
                 {
                     const int id = g_UniqueID.fetch_add(1);
                     sub->token.text += to_string(id);
-                    const auto idRef  = castAst<AstIdentifier>(nodeFunc->makePointerLambda->children.front()->children.back(), AstNodeKind::Identifier);
+                    const auto idRef  = castAst<AstIdentifier>(nodeFunc->makePointerLambda->firstChild()->lastChild(), AstNodeKind::Identifier);
                     idRef->token.text = sub->token.text;
                 }
 
@@ -495,8 +495,8 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         // :AutomaticTryContent
         if (newNode->content->is(AstNodeKind::Try))
         {
-            SWAG_ASSERT(newNode->content->children.front()->is(AstNodeKind::Statement) || newNode->content->children.front()->is(AstNodeKind::Return));
-            bodyScope->owner = newNode->content->children.front();
+            SWAG_ASSERT(newNode->content->firstChild()->is(AstNodeKind::Statement) || newNode->content->firstChild()->is(AstNodeKind::Return));
+            bodyScope->owner = newNode->content->firstChild();
         }
         else
             bodyScope->owner = newNode->content;
@@ -798,7 +798,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
         {
             SWAG_ASSERT(newNode->identifier);
             newNode->identifier->removeAstFlag(AST_NO_SEMANTIC);
-            const auto back = castAst<AstIdentifier>(newNode->identifier->children.back(), AstNodeKind::Identifier);
+            const auto back = castAst<AstIdentifier>(newNode->identifier->lastChild(), AstNodeKind::Identifier);
             SWAG_ASSERT(back->callParameters);
             back->callParameters->removeAstFlag(AST_NO_SEMANTIC);
         }
@@ -914,7 +914,7 @@ AstNode* AstImpl::clone(CloneContext& context)
     if (identifierFor)
     {
         const auto baseScope     = cloneContext.ownerStructScope;
-        const auto itfName       = children.front()->token.text;
+        const auto itfName       = firstChild()->token.text;
         cloneContext.parentScope = Ast::newScope(newNode, itfName, ScopeKind::Impl, baseScope);
         newNode->scope           = cloneContext.parentScope;
 
@@ -1080,7 +1080,7 @@ AstNode* AstCompilerMacro::clone(CloneContext& context)
     cloneContext.parent      = newNode;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Macro, context.parentScope ? context.parentScope : ownerScope);
     newNode->scope           = cloneContext.parentScope;
-    children.back()->clone(cloneContext);
+    lastChild()->clone(cloneContext);
     context.propagateResult(cloneContext);
 
     return newNode;
@@ -1186,7 +1186,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
 
     // If the compiler block has an embedded function, we need to restore the semantic pass on that function
     // content now
-    if (newNode->children.size() > 1)
+    if (newNode->childCount() > 1)
     {
         // We also want to replace the name of the function (and the reference to it) in case
         // the block is in a mixin block, because in that case the function can be registered
@@ -1194,7 +1194,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         const int  id      = g_UniqueID.fetch_add(1);
         const Utf8 newName = R"(__cmpfunc)" + to_string(id);
 
-        const auto func  = castAst<AstFuncDecl>(newNode->children.front(), AstNodeKind::FuncDecl);
+        const auto func  = castAst<AstFuncDecl>(newNode->firstChild(), AstNodeKind::FuncDecl);
         func->token.text = newName;
         func->removeAstFlag(AST_NO_SEMANTIC);
         func->content->removeAstFlag(AST_NO_SEMANTIC);
@@ -1202,8 +1202,8 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         newNode->ownerScope->symTable.registerSymbolName(nullptr, func, SymbolKind::Function);
 
         // Ref to the function
-        const auto idRef                   = castAst<AstIdentifierRef>(newNode->children.back(), AstNodeKind::IdentifierRef);
-        idRef->children.back()->token.text = newName;
+        const auto idRef                   = castAst<AstIdentifierRef>(newNode->lastChild(), AstNodeKind::IdentifierRef);
+        idRef->lastChild()->token.text = newName;
     }
 
     context.propagateResult(cloneContext);
@@ -1303,7 +1303,7 @@ AstNode* AstMakePointer::clone(CloneContext& context)
         // So this is a mess
         if (context.forceFlags.has(AST_IN_MIXIN))
         {
-            if (lambda->captureParameters && children.front() == lambda->captureParameters)
+            if (lambda->captureParameters && firstChild() == lambda->captureParameters)
             {
                 SWAG_ASSERT(newNode->children[0]->is(AstNodeKind::FuncCallParams));
                 lambda->captureParameters = newNode->children[0];

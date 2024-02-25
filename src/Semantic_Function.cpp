@@ -63,13 +63,13 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
     if (forGenerics)
     {
         typeInfo->genericParameters.clear();
-        typeInfo->genericParameters.reserve(static_cast<int>(parameters->children.size()));
+        typeInfo->genericParameters.reserve(static_cast<int>(parameters->childCount()));
         typeInfo->addFlag(TYPEINFO_GENERIC);
     }
     else
     {
         typeInfo->parameters.clear();
-        typeInfo->parameters.reserve(static_cast<int>(parameters->children.size()));
+        typeInfo->parameters.reserve(static_cast<int>(parameters->childCount()));
     }
 
     AstNode* firstParamWithDef = nullptr;
@@ -122,21 +122,21 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         {
             SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, toErr(Err0745)}));
             typeInfo->addFlag(TYPEINFO_VARIADIC);
-            if (index != parameters->children.size())
+            if (index != parameters->childCount())
                 return context->report({nodeParam, toErr(Err0513)});
         }
         else if (paramType->isTypedVariadic())
         {
             SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, toErr(Err0745)}));
             typeInfo->addFlag(TYPEINFO_TYPED_VARIADIC);
-            if (index != parameters->children.size())
+            if (index != parameters->childCount())
                 return context->report({nodeParam, toErr(Err0513)});
         }
         else if (paramType->isCVariadic())
         {
             SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, toErr(Err0745)}));
             typeInfo->addFlag(TYPEINFO_C_VARIADIC);
-            if (index != parameters->children.size())
+            if (index != parameters->childCount())
                 return context->report({nodeParam, toErr(Err0513)});
         }
 
@@ -360,7 +360,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
             const auto implNode = castAst<AstImpl>(funcNode->ownerScope->owner, AstNodeKind::Impl);
             if (implNode->identifierFor)
             {
-                const auto forId = implNode->identifier->children.back();
+                const auto forId = implNode->identifier->lastChild();
                 implFor          = true;
 
                 // Be sure interface has been fully solved
@@ -436,13 +436,13 @@ void Semantic::setFuncDeclParamsIndex(const AstFuncDecl* funcNode)
         uint32_t storageIndex = 0;
         if (funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
         {
-            const auto param       = funcNode->parameters->children.back();
+            const auto param       = funcNode->parameters->lastChild();
             const auto resolved    = param->resolvedSymbolOverload();
             resolved->storageIndex = 0; // Always the first one
             storageIndex += 2;
         }
 
-        const auto childSize = funcNode->parameters->children.size();
+        const auto childSize = funcNode->parameters->childCount();
         for (uint32_t i = 0; i < childSize; i++)
         {
             if (i == childSize - 1 && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
@@ -514,7 +514,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // Return type
     if (!typeNode->children.empty())
     {
-        const auto front   = typeNode->children.front();
+        const auto front   = typeNode->firstChild();
         typeNode->typeInfo = front->typeInfo;
         if (typeNode->typeInfo->getConcreteAlias()->isVoid())
         {
@@ -641,7 +641,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->hasAttribute(ATTRIBUTE_IMPLICIT) && funcNode->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
     {
         bool ok = false;
-        if (funcNode->token.text == g_LangSpec->name_opAffectLiteral && funcNode->genericParameters->children.size() <= 1)
+        if (funcNode->token.text == g_LangSpec->name_opAffectLiteral && funcNode->genericParameters->childCount() <= 1)
             ok = true;
         if (funcNode->token.text == g_LangSpec->name_opAffect && !funcNode->genericParameters)
             ok = true;
@@ -758,7 +758,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         !typeInfo->returnType->isArray() &&
         !typeInfo->returnType->isPointer())
     {
-        return context->report({typeNode->children.front(), formErr(Err0368, typeInfo->returnType->getDisplayNameC())});
+        return context->report({typeNode->firstChild(), formErr(Err0368, typeInfo->returnType->getDisplayNameC())});
     }
 
     typeInfo->name.clear();
@@ -766,7 +766,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     typeInfo->computeWhateverNameNoLock(COMPUTE_NAME);
 
     // Special functions registration
-    if (funcNode->parameters && funcNode->parameters->children.size() == 1)
+    if (funcNode->parameters && funcNode->parameters->childCount() == 1)
     {
         if (funcNode->token.text == g_LangSpec->name_opInit)
         {
@@ -850,7 +850,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         {
             Utf8 name = c->token.text;
             if (c->is(AstNodeKind::MakePointer))
-                name = c->children.front()->token.text;
+                name = c->firstChild()->token.text;
 
             AddSymbolTypeInfo toAdd;
             toAdd.node      = c;
@@ -921,7 +921,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         // The function wants to return something, but has the 'Swag.CalleeReturn' attribute
         if (!funcNode->returnType->typeInfo->isVoid() && funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN))
         {
-            Diagnostic err{funcNode->returnType->children.front(), toErr(Err0697)};
+            Diagnostic err{funcNode->returnType->firstChild(), toErr(Err0697)};
             const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
             err.addNote(attr, formNte(Nte0063, "attribute"));
             return context->report(err);
@@ -953,7 +953,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     if (!funcNode->hasAstFlag(AST_FROM_GENERIC))
     {
         SharedLock lk(funcNode->ownerScope->symTable.mutex);
-        const auto symbolName =funcNode->resolvedSymbolName(); 
+        const auto symbolName = funcNode->resolvedSymbolName();
         if (symbolName->overloads.size() > 1 && !funcNode->hasAttribute(ATTRIBUTE_OVERLOAD))
         {
             AstFuncDecl* other = nullptr;
@@ -1147,7 +1147,7 @@ bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
         if (c->hasFlagComputedValue())
             continue;
 
-        const auto symbol = c->children.front()->resolvedSymbolName();
+        const auto symbol = c->firstChild()->resolvedSymbolName();
         if (!symbol)
             continue;
 
@@ -1174,7 +1174,7 @@ bool Semantic::resolveFuncCallParams(SemanticContext* context)
 bool Semantic::resolveFuncCallParam(SemanticContext* context)
 {
     auto       node  = castAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
-    const auto child = node->children.front();
+    const auto child = node->firstChild();
     node->typeInfo   = child->typeInfo;
 
     SWAG_VERIFY(!node->typeInfo->isCVariadic(), context->report({node, toErr(Err0588)}));
@@ -1205,7 +1205,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
 
     node->inheritComputedValue(child);
     node->inheritAstFlagsOr(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GEN_TYPEINFO | AST_OP_AFFECT_CAST | AST_TRANSIENT);
-    if (node->children.front()->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
+    if (node->firstChild()->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
         node->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
@@ -1396,7 +1396,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             if (!funcReturnType->isVoid())
             {
                 Diagnostic err{node, formErr(Err0576, funcReturnType->getDisplayNameC())};
-                err.addNote(funcNode->returnTypeDeducedNode->children.front(), toNte(Nte0072));
+                err.addNote(funcNode->returnTypeDeducedNode->firstChild(), toNte(Nte0072));
                 return context->report(err);
             }
 
@@ -1418,7 +1418,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         if (!TypeManager::makeCompatibles(context, funcNode->returnType->typeInfo, nullptr, child, castFlags))
         {
             Diagnostic err{child, formErr(Err0621, funcNode->returnType->typeInfo->getDisplayNameC(), child->typeInfo->getDisplayNameC())};
-            err.addNote(funcNode->returnTypeDeducedNode->children.front(), toNte(Nte0072));
+            err.addNote(funcNode->returnTypeDeducedNode->firstChild(), toNte(Nte0072));
             return context->report(err);
         }
     }
@@ -1451,12 +1451,12 @@ bool Semantic::resolveReturn(SemanticContext* context)
             if (tryDeduce)
             {
                 funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_FORCE_LATE_REGISTER);
-                typeInfoFunc->returnType  = TypeManager::concreteType(node->children.front()->typeInfo, CONCRETE_FUNC);
+                typeInfoFunc->returnType  = TypeManager::concreteType(node->firstChild()->typeInfo, CONCRETE_FUNC);
                 typeInfoFunc->returnType  = TypeManager::promoteUntyped(typeInfoFunc->returnType);
                 const auto concreteReturn = TypeManager::concreteType(typeInfoFunc->returnType);
                 if (concreteReturn->isListTuple())
                 {
-                    SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, funcNode->content, node->children.front(), &funcNode->returnType));
+                    SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, funcNode->content, node->firstChild(), &funcNode->returnType));
                     Ast::setForceConstType(funcNode->returnType);
                     context->baseJob->nodes.push_back(funcNode->returnType);
                     context->result = ContextResult::NewChildren;
@@ -1475,7 +1475,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     if (node->children.empty())
     {
         Diagnostic err{node, formErr(Err0577, funcNode->returnType->typeInfo->getDisplayNameC())};
-        err.addNote(funcNode->returnType->children.front(), formNte(Nte0007, typeInfoFunc->returnType->getDisplayNameC()));
+        err.addNote(funcNode->returnType->firstChild(), formNte(Nte0007, typeInfoFunc->returnType->getDisplayNameC()));
         return context->report(err);
     }
 
@@ -1555,7 +1555,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         {
             auto nodeErr = funcNode->returnType;
             if (nodeErr->is(AstNodeKind::FuncDeclType) && !funcNode->returnType->children.empty())
-                nodeErr = funcNode->returnType->children.front();
+                nodeErr = funcNode->returnType->firstChild();
             PushErrCxtStep ec{context, nodeErr, ErrCxtStepKind::Note, [returnType] {
                                   return formNte(Nte0007, returnType->getDisplayNameC());
                               }};
@@ -1613,7 +1613,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             idRef->allocateExtension(ExtensionKind::Owner);
             idRef->extOwner()->nodesToFree.push_back(child);
 
-            context->baseJob->nodes.push_back(node->children.front());
+            context->baseJob->nodes.push_back(node->firstChild());
             context->baseJob->nodes.push_back(varNode);
             varNode->addSemFlag(SEMFLAG_ONCE);
             context->result = ContextResult::NewChildren;
@@ -1893,9 +1893,9 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 
     if (newContent->is(AstNodeKind::Try) || newContent->is(AstNodeKind::TryCatch) || newContent->is(AstNodeKind::Assume))
     {
-        if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN) && newContent->children.front()->extension)
+        if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN) && newContent->firstChild()->extension)
         {
-            const auto front = newContent->children.front();
+            const auto front = newContent->firstChild();
             if (front->hasExtByteCode())
                 front->extByteCode()->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
         }

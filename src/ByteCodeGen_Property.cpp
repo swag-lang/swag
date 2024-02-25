@@ -11,8 +11,8 @@
 bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {
     const auto node  = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    const auto front = node->children.front();
-    const auto back  = node->children.back();
+    const auto front = node->firstChild();
+    const auto back  = node->lastChild();
     reserveRegisterRC(context, node->resultRegisterRc, 2);
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], front->resultRegisterRc);
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[1], back->resultRegisterRc);
@@ -25,7 +25,7 @@ bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
 {
     const auto node    = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    const auto ptrNode = node->children.front();
+    const auto ptrNode = node->firstChild();
     EMIT_INST1(context, ByteCodeOp::IntrinsicMakeCallback, ptrNode->resultRegisterRc);
     node->resultRegisterRc = ptrNode->resultRegisterRc;
     return true;
@@ -34,8 +34,8 @@ bool ByteCodeGen::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 {
     const auto node      = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    const auto ptrNode   = node->children.front();
-    const auto countNode = node->children.back();
+    const auto ptrNode   = node->firstChild();
+    const auto countNode = node->lastChild();
 
     SWAG_CHECK(emitCast(context, countNode, countNode->typeInfo, countNode->castedTypeInfo));
     reserveRegisterRC(context, node->resultRegisterRc, 2);
@@ -50,7 +50,7 @@ bool ByteCodeGen::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 {
     const auto node   = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    const auto params = node->children.front();
+    const auto params = node->firstChild();
 
     reserveLinearRegisterRC2(context, node->resultRegisterRc);
 
@@ -81,7 +81,7 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
 {
     const auto node     = context->node;
-    const auto expr     = node->children.back();
+    const auto expr     = node->lastChild();
     const auto typeInfo = TypeManager::concreteType(expr->typeInfo);
 
     if (typeInfo->isArray())
@@ -108,7 +108,7 @@ bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
 {
     const auto node  = castAst<AstNode>(context->node, AstNodeKind::IntrinsicLocation);
-    const auto front = node->children.front();
+    const auto front = node->firstChild();
 
     node->resultRegisterRc = reserveRegisterRC(context);
     const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicLocationSI, node->resultRegisterRc);
@@ -125,7 +125,7 @@ bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
 {
     const auto node  = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    const auto front = node->children.front();
+    const auto front = node->firstChild();
 
     node->resultRegisterRc = reserveRegisterRC(context);
     const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicIsConstExprSI, node->resultRegisterRc);
@@ -177,7 +177,7 @@ bool ByteCodeGen::emitImplicitKindOfInterface(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
     const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    const auto front    = node->children.front();
+    const auto front    = node->firstChild();
     const auto typeInfo = TypeManager::concretePtrRefType(front->typeInfo);
     SWAG_CHECK(emitKindOf(context, front, typeInfo->kind));
     node->resultRegisterRc         = front->resultRegisterRc;
@@ -220,7 +220,7 @@ bool ByteCodeGen::emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* nod
 bool ByteCodeGen::emitIntrinsicCountOf(ByteCodeGenContext* context)
 {
     const auto node = context->node;
-    const auto expr = node->children.back();
+    const auto expr = node->lastChild();
     SWAG_CHECK(emitIntrinsicCountOf(context, node, expr));
     return true;
 }
@@ -228,7 +228,7 @@ bool ByteCodeGen::emitIntrinsicCountOf(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicDataOf(ByteCodeGenContext* context)
 {
     const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    const auto front    = node->children.front();
+    const auto front    = node->firstChild();
     const auto typeInfo = TypeManager::concretePtrRefType(front->typeInfo);
 
     if (node->hasExtraPointer(ExtraPointerKind::UserOp))

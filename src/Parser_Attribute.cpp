@@ -98,7 +98,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 
     // :AttrUseLastChild
     SWAG_VERIFY(!attrBlockNode->children.empty(), error(attrBlockNode, toErr(Err0263)));
-    const auto back = attrBlockNode->children.back();
+    const auto back = attrBlockNode->lastChild();
     back->allocateExtension(ExtensionKind::Semantic);
     SWAG_ASSERT(!back->extSemantic()->semanticAfterFct);
     back->extSemantic()->semanticAfterFct = Semantic::resolveAttrUse;

@@ -77,8 +77,8 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
                  identifierRef->previousResolvedNode &&
                  identifierRef->previousResolvedNode->is(AstNodeKind::Identifier) &&
                  !identifierRef->previousResolvedNode->children.empty() &&
-                 identifierRef->previousResolvedNode->children.front()->is(AstNodeKind::FuncCallParams) &&
-                 identifierRef->previousResolvedNode->children.back()->is(AstNodeKind::Inline))
+                 identifierRef->previousResolvedNode->firstChild()->is(AstNodeKind::FuncCallParams) &&
+                 identifierRef->previousResolvedNode->lastChild()->is(AstNodeKind::Inline))
             canTry = true;
 
         if (canTry)

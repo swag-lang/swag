@@ -105,7 +105,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
             // Then setup the pointer to that data, and the data count
             const auto ptrStorage = constSegment->address(storageOffsetValue);
             ptrSlice->buffer      = ptrStorage;
-            ptrSlice->count       = assignment->children.size();
+            ptrSlice->count       = assignment->childCount();
             storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
         }
 
@@ -272,7 +272,7 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
                 typeInfo = param->resolvedParameter->typeInfo;
             }
 
-            assignment = child->children.front();
+            assignment = child->firstChild();
 
             // If we have an expression list in a call parameter, like = {{1}}, then we check if the expression
             // list has been converted to a variable. If that's the case, then we should have type parameters to
@@ -285,7 +285,7 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
                 SWAG_ASSERT(varDecl->type);
                 const auto typeDecl = castAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
                 SWAG_ASSERT(typeDecl->identifier);
-                const auto idDecl = castAst<AstIdentifier>(typeDecl->identifier->children.back(), AstNodeKind::Identifier);
+                const auto idDecl = castAst<AstIdentifier>(typeDecl->identifier->lastChild(), AstNodeKind::Identifier);
                 SWAG_ASSERT(idDecl->callParameters);
                 SWAG_CHECK(collectLiteralsToSegment(context, storageSegment, baseOffset, offset, idDecl->callParameters));
             }
@@ -431,7 +431,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
             if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
             {
                 const auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-                const auto identifier     = castAst<AstIdentifier>(typeExpression->identifier->children.back(), AstNodeKind::Identifier);
+                const auto identifier     = castAst<AstIdentifier>(typeExpression->identifier->lastChild(), AstNodeKind::Identifier);
 
                 // First collect values from the structure default initialization, except if the parameters cover
                 // all the fields (in that case no need to initialize the struct twice)

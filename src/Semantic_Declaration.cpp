@@ -66,7 +66,7 @@ bool Semantic::resolveWith(SemanticContext* context)
 
     // If this is a simple identifier, no bytecode generation
     TypeInfo*  typeResolved = nullptr;
-    const auto front        = node->children.front();
+    const auto front        = node->firstChild();
     bool       fromVar      = false;
     if (front->is(AstNodeKind::IdentifierRef))
     {
@@ -83,8 +83,8 @@ bool Semantic::resolveWith(SemanticContext* context)
     }
     else if (front->is(AstNodeKind::AffectOp))
     {
-        SWAG_ASSERT(front->children.front()->resolvedSymbolOverload());
-        typeResolved = front->children.front()->resolvedSymbolOverload()->typeInfo;
+        SWAG_ASSERT(front->firstChild()->resolvedSymbolOverload());
+        typeResolved = front->firstChild()->resolvedSymbolOverload()->typeInfo;
         fromVar      = true;
     }
 

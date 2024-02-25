@@ -627,7 +627,7 @@ namespace
         if (decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
             return;
 
-        const auto countParams = decl->parameters->children.size();
+        const auto countParams = decl->parameters->childCount();
         uint32_t   regCounter  = 0;
         for (uint32_t i = 0; i < countParams; i++)
         {
@@ -754,13 +754,13 @@ namespace
         if (decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
             return;
 
-        const auto countParams = decl->captureParameters->children.size();
+        const auto countParams = decl->captureParameters->childCount();
         for (uint32_t i = 0; i < countParams; i++)
         {
             auto       child     = decl->captureParameters->children[i];
             const auto typeParam = child->typeInfo;
             if (child->is(AstNodeKind::MakePointer))
-                child = child->children.front();
+                child = child->firstChild();
             const auto overload = child->resolvedSymbolOverload();
             if (!typeParam || !overload)
                 continue;

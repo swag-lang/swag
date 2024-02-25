@@ -27,7 +27,7 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
             SWAG_VERIFY(tokenParse.token.id == TokenId::Identifier || tokenParse.token.id == TokenId::NativeType, error(tokenParse.token, formErr(Err0404, tokenParse.token.c_str())));
             const auto identifierRef = Ast::newIdentifierRef(this, node);
             SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
-            identifierRef->children.back()->semanticFct = Semantic::resolveLiteralSuffix;
+            identifierRef->lastChild()->semanticFct = Semantic::resolveLiteralSuffix;
         }
         else
         {
@@ -411,7 +411,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
                 if (tokenParse.token.id != TokenId::SymRightParen && tokenParse.token.id != TokenId::SymRightCurly && tokenParse.token.id != TokenId::SymComma)
                 {
                     tokenizer.restoreState(tokenParse);
-                    Ast::removeFromParent(parent->children.back());
+                    Ast::removeFromParent(parent->lastChild());
                     SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_NONE, result));
                 }
             }
@@ -854,7 +854,7 @@ namespace
 
                 const auto leftRight = right->children[0];
                 Ast::removeFromParent(right);
-                if (factor->parent && factor == factor->parent->children.front())
+                if (factor->parent && factor == factor->parent->firstChild())
                     Ast::addChildFront(factor->parent, right);
                 else
                     Ast::addChildBack(factor->parent, right);
@@ -1079,7 +1079,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
                 const auto idRef                = Ast::newIdentifierRef(funcNode->token.text, this, node);
                 idRef->token.startLocation      = node->token.startLocation;
                 idRef->token.endLocation        = node->token.endLocation;
-                const auto identifier           = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
+                const auto identifier           = castAst<AstIdentifier>(idRef->lastChild(), AstNodeKind::Identifier);
                 identifier->callParameters      = Ast::newFuncCallParams(this, identifier);
                 identifier->token.startLocation = node->token.startLocation;
                 identifier->token.endLocation   = node->token.endLocation;
@@ -1108,7 +1108,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
             else
                 SWAG_CHECK(doBoolExpression(node, exprFlags, &dummyResult));
             const auto typeCode = makeType<TypeInfoCode>();
-            typeCode->content   = node->children.front();
+            typeCode->content   = node->firstChild();
             typeCode->content->addAstFlag(AST_NO_SEMANTIC);
             node->typeInfo = typeCode;
             node->addAstFlag(AST_NO_BYTECODE);
@@ -1193,9 +1193,9 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
             {
                 SWAG_VERIFY(paramExpression->is(AstNodeKind::IdentifierRef), error(paramExpression, formErr(Err0310, tokenParse.token.c_str())));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
-                SWAG_CHECK(checkIsValidVarName(paramExpression->children.back()));
+                SWAG_CHECK(checkIsValidVarName(paramExpression->lastChild()));
                 auto       namedToFree     = paramExpression;
-                const auto namedExpression = namedToFree->children.back();
+                const auto namedExpression = namedToFree->lastChild();
                 SWAG_CHECK(eatToken());
                 if (tokenParse.token.id == TokenId::SymLeftCurly)
                     SWAG_CHECK(doExpressionListTuple(initNode, &paramExpression));
@@ -1276,7 +1276,7 @@ void Parser::isForceTakeAddress(AstNode* node)
     switch (node->kind)
     {
         case AstNodeKind::IdentifierRef:
-            isForceTakeAddress(node->children.back());
+            isForceTakeAddress(node->lastChild());
             break;
         case AstNodeKind::ArrayPointerIndex:
             isForceTakeAddress(castAst<AstArrayPointerIndex>(node)->array);
@@ -1341,7 +1341,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                         id->addAstFlag(AST_GENERATED);
                         id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
                         id->allocateIdentifierExtension();
-                        id->identifierExtension->fromAlternateVar = withNode->children.front();
+                        id->identifierExtension->fromAlternateVar = withNode->firstChild();
                         id->inheritTokenLocation(exprNode->token);
                         exprNode->children.pop_back();
                         Ast::addChildFront(exprNode, id);
@@ -1471,14 +1471,14 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
             // If the affect expression is a literal, it's better to duplicate also
             AstNode*   affectExpression = nullptr;
             bool       firstDone        = false;
-            const auto front            = castAst<AstIdentifierRef>(leftNode->children.front(), AstNodeKind::IdentifierRef);
+            const auto front            = castAst<AstIdentifierRef>(leftNode->firstChild(), AstNodeKind::IdentifierRef);
             front->computeName();
 
             const auto cloneFront = Ast::clone(front, nullptr);
 
             while (!leftNode->children.empty())
             {
-                const auto child      = leftNode->children.front();
+                const auto child      = leftNode->firstChild();
                 const auto affectNode = Ast::newAffectOp(opFlags, opAttrFlags, nullptr, parentNode);
                 affectNode->token     = savedtoken.token;
                 affectNode->token.id  = savedtoken.token.id;
@@ -1537,8 +1537,8 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
             varNode->assignment = assignment;
             varNode->assignment->addAstFlag(AST_NO_LEFT_DROP);
 
-            varNode->token.startLocation = leftNode->children.front()->token.startLocation;
-            varNode->token.endLocation   = leftNode->children.back()->token.endLocation;
+            varNode->token.startLocation = leftNode->firstChild()->token.startLocation;
+            varNode->token.endLocation   = leftNode->lastChild()->token.endLocation;
             varNode->allocateExtension(ExtensionKind::Semantic);
             varNode->extSemantic()->semanticAfterFct = Semantic::resolveTupleUnpackBefore;
 
@@ -1546,10 +1546,10 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
             int idx = 0;
             while (!leftNode->children.empty())
             {
-                const auto child = leftNode->children.front();
+                const auto child = leftNode->firstChild();
 
                 // Ignore field if '?', otherwise check that this is a valid variable name
-                if (child->children.front()->token.text == '?')
+                if (child->firstChild()->token.text == '?')
                 {
                     idx++;
                     Ast::removeFromParent(child);
@@ -1588,10 +1588,10 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
                 SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &dummyResult));
 
             // :DeduceLambdaType
-            const auto back = affectNode->children.back();
+            const auto back = affectNode->lastChild();
             if (back->is(AstNodeKind::MakePointerLambda) && back->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE))
             {
-                const auto front = affectNode->children.front();
+                const auto front = affectNode->firstChild();
                 front->allocateExtension(ExtensionKind::Semantic);
                 front->extSemantic()->semanticAfterFct = Semantic::resolveAfterKnownType;
             }

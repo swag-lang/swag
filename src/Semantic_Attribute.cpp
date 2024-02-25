@@ -59,7 +59,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     {
         const auto attrUse = castAst<AstAttrUse>(checkNode, AstNodeKind::AttrUse);
         if (checkNode->hasAstFlag(AST_GENERATED) && attrUse->content->is(AstNodeKind::Namespace) && attrUse->content->hasAstFlag(AST_GENERATED))
-            SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content->children.front()));
+            SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content->firstChild()));
         else
             SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content));
         return true;
@@ -374,7 +374,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             //////
             else if (child->token.text == g_LangSpec->name_Using)
             {
-                auto id = castAst<AstIdentifier>(child->children.back(), AstNodeKind::Identifier);
+                auto id = castAst<AstIdentifier>(child->lastChild(), AstNodeKind::Identifier);
                 id->addAstFlag(AST_NO_SEMANTIC);
 
                 SWAG_VERIFY(id->callParameters && !id->callParameters->children.empty(), context->report({id, toErr(Err0541)}));
@@ -684,7 +684,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
 
         // Collect parameters
         auto identifierRef = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
-        auto identifier    = castAst<AstIdentifier>(identifierRef->children.back());
+        auto identifier    = castAst<AstIdentifier>(identifierRef->lastChild());
 
         // Be sure this is an attribute
         auto resolvedName = identifier->resolvedSymbolName();

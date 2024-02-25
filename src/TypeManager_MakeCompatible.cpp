@@ -73,13 +73,13 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
         if (fromNode->typeInfo->isListTuple() || fromNode->typeInfo->isListArray())
         {
             while (fromNode && fromNode->isNot(AstNodeKind::ExpressionList))
-                fromNode = fromNode->children.empty() ? nullptr : fromNode->children.front();
+                fromNode = fromNode->children.empty() ? nullptr : fromNode->firstChild();
 
             if (fromNode && fromNode->hasAstFlag(AST_CONST_EXPR))
             {
 #ifdef SWAG_HAS_ASSERT
                 const TypeInfoList* typeList = castTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
-                SWAG_ASSERT(typeList->subTypes.size() == fromNode->children.size());
+                SWAG_ASSERT(typeList->subTypes.size() == fromNode->childCount());
 #endif
                 const auto exprList = castAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
                 if (exprList && !exprList->hasSemFlag(SEMFLAG_EXPR_LIST_CST))

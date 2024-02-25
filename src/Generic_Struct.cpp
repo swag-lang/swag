@@ -20,7 +20,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
             if (nodeStruct->genericParameters)
             {
                 const auto idRef      = castAst<AstIdentifierRef>(typeExpr->identifier, AstNodeKind::IdentifierRef);
-                const auto identifier = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
+                const auto identifier = castAst<AstIdentifier>(idRef->lastChild(), AstNodeKind::Identifier);
                 if (!identifier->genericParameters)
                 {
                     identifier->genericParameters = Ast::newFuncCallGenParams(nullptr, identifier);

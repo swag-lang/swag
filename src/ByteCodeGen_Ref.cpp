@@ -460,7 +460,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     if (node->lambda && node->lambda->captureParameters)
         front = node->children[1];
     else
-        front = node->children.front();
+        front = node->firstChild();
 
     const auto funcNode = castAst<AstFuncDecl>(front->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
 
@@ -488,7 +488,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     // Block capture
     if (node->typeInfo->isClosure())
     {
-        node->resultRegisterRc += node->children.back()->resultRegisterRc[0];
+        node->resultRegisterRc += node->lastChild()->resultRegisterRc[0];
     }
 
     return true;
@@ -498,7 +498,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
 bool ByteCodeGen::emitMakePointer(ByteCodeGenContext* context)
 {
     const auto node        = context->node;
-    const auto front       = node->children.front();
+    const auto front       = node->firstChild();
     node->resultRegisterRc = front->resultRegisterRc;
     return true;
 }

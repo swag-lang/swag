@@ -11,7 +11,7 @@
 
 void AstOutput::incIndentStatement(const AstNode* node, int& indent)
 {
-    if (node->is(AstNodeKind::CompilerIfBlock) && node->children.front()->is(AstNodeKind::Statement))
+    if (node->is(AstNodeKind::CompilerIfBlock) && node->firstChild()->is(AstNodeKind::Statement))
         return;
     if (node->isNot(AstNodeKind::Statement))
         indent++;
@@ -19,7 +19,7 @@ void AstOutput::incIndentStatement(const AstNode* node, int& indent)
 
 void AstOutput::decIndentStatement(const AstNode* node, int& indent)
 {
-    if (node->is(AstNodeKind::CompilerIfBlock) && node->children.front()->is(AstNodeKind::Statement))
+    if (node->is(AstNodeKind::CompilerIfBlock) && node->firstChild()->is(AstNodeKind::Statement))
         return;
     if (node->isNot(AstNodeKind::Statement))
         indent--;
@@ -75,7 +75,7 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
             hasSomething = false;
             break;
         }
-        if (scanAttr->content->children.size() > 1)
+        if (scanAttr->content->childCount() > 1)
             break;
         if (scanAttr->content->children[0]->isNot(AstNodeKind::AttrUse))
             break;
@@ -157,7 +157,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
 
         auto returnNode = funcNode->returnType;
         if (returnNode && !returnNode->children.empty())
-            returnNode = returnNode->children.front();
+            returnNode = returnNode->firstChild();
 
         if (typeFunc->returnType && !typeFunc->returnType->isVoid())
         {
@@ -245,7 +245,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     // Return type
     auto returnNode = node->returnType;
     if (returnNode && !returnNode->children.empty())
-        returnNode = returnNode->children.front();
+        returnNode = returnNode->firstChild();
 
     const auto typeFunc = node->typeInfo ? castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure) : nullptr;
     if (typeFunc && typeFunc->returnType && !typeFunc->returnType->isVoid())
@@ -270,7 +270,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     {
         CONCAT_FIXED_STR(concat, " => ");
         SWAG_ASSERT(node->content->is(AstNodeKind::Return) || node->content->is(AstNodeKind::Try));
-        SWAG_CHECK(outputNode(context, concat, node->content->children.front()));
+        SWAG_CHECK(outputNode(context, concat, node->content->firstChild()));
         concat.addEol();
         return true;
     }
@@ -339,7 +339,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
     concat.addString(node->token.text);
 
     // Raw type
-    if (!node->children.front()->children.empty())
+    if (!node->firstChild()->children.empty())
     {
         CONCAT_FIXED_STR(concat, " : ");
         SWAG_ASSERT(node->children[0]->is(AstNodeKind::EnumType));
@@ -359,7 +359,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
             if (c->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
             {
                 CONCAT_FIXED_STR(concat, "using ");
-                SWAG_CHECK(outputNode(context, concat, c->children.front()));
+                SWAG_CHECK(outputNode(context, concat, c->firstChild()));
             }
             else
             {
@@ -367,7 +367,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
                 if (!c->children.empty())
                 {
                     CONCAT_FIXED_STR(concat, " = ");
-                    SWAG_CHECK(outputNode(context, concat, c->children.front()));
+                    SWAG_CHECK(outputNode(context, concat, c->firstChild()));
                 }
             }
 
@@ -639,7 +639,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
             if (p->is(AstNodeKind::MakePointer))
             {
                 concat.addChar('&');
-                concat.addString(p->children.front()->token.text);
+                concat.addString(p->firstChild()->token.text);
             }
             else
             {
@@ -676,7 +676,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
                 if (!p->children.empty())
                 {
                     CONCAT_FIXED_STR(concat, ": ");
-                    SWAG_CHECK(outputNode(context, concat, p->children.front()));
+                    SWAG_CHECK(outputNode(context, concat, p->firstChild()));
                 }
 
                 if (param->assignment)
@@ -694,7 +694,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
     {
         CONCAT_FIXED_STR(concat, " => ");
         SWAG_ASSERT(funcDecl->content->is(AstNodeKind::Return));
-        SWAG_CHECK(outputNode(context, concat, funcDecl->content->children.front()));
+        SWAG_CHECK(outputNode(context, concat, funcDecl->content->firstChild()));
     }
     else
     {
@@ -733,7 +733,7 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstV
             SWAG_ASSERT(!varNode->assignment);
             SWAG_ASSERT(typeExpr->identifier);
             SWAG_ASSERT(varNode->type->typeInfo && varNode->type->typeInfo->isTuple());
-            const auto id = castAst<AstIdentifier>(typeExpr->identifier->children.back(), AstNodeKind::Identifier);
+            const auto id = castAst<AstIdentifier>(typeExpr->identifier->lastChild(), AstNodeKind::Identifier);
             concat.addChar('{');
             SWAG_CHECK(outputNode(context, concat, id->callParameters));
             concat.addChar('}');
@@ -889,7 +889,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
 
             if (node->identifier)
             {
-                const auto id = castAst<AstIdentifier>(node->identifier->children.back(), AstNodeKind::Identifier);
+                const auto id = castAst<AstIdentifier>(node->identifier->lastChild(), AstNodeKind::Identifier);
                 if (id->callParameters)
                 {
                     if (id->hasAstFlag(AST_GENERATED))
@@ -917,7 +917,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
     if (node->arrayDim == UINT8_MAX)
     {
         CONCAT_FIXED_STR(concat, "[] ");
-        SWAG_CHECK(outputNode(context, concat, node->children.front()));
+        SWAG_CHECK(outputNode(context, concat, node->firstChild()));
         return true;
     }
 
@@ -932,28 +932,28 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
         }
 
         CONCAT_FIXED_STR(concat, "] ");
-        SWAG_CHECK(outputNode(context, concat, node->children.front()));
+        SWAG_CHECK(outputNode(context, concat, node->firstChild()));
         return true;
     }
 
     if (node->typeFlags.has(TYPEFLAG_IS_SLICE))
     {
         CONCAT_FIXED_STR(concat, "[..] ");
-        SWAG_CHECK(outputNode(context, concat, node->children.front()));
+        SWAG_CHECK(outputNode(context, concat, node->firstChild()));
         return true;
     }
 
     if (node->typeFlags.has(TYPEFLAG_IS_PTR) && node->typeFlags.has(TYPEFLAG_IS_PTR_ARITHMETIC))
     {
         concat.addChar('^');
-        SWAG_CHECK(outputNode(context, concat, node->children.front()));
+        SWAG_CHECK(outputNode(context, concat, node->firstChild()));
         return true;
     }
 
     if (node->typeFlags.has(TYPEFLAG_IS_PTR))
     {
         concat.addChar('*');
-        SWAG_CHECK(outputNode(context, concat, node->children.front()));
+        SWAG_CHECK(outputNode(context, concat, node->firstChild()));
         return true;
     }
 
@@ -1072,7 +1072,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         case AstNodeKind::Throw:
             concat.addString(node->token.text);
             concat.addChar(' ');
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
 
         case AstNodeKind::Try:
@@ -1081,7 +1081,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             if (node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED) && node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK))
             {
                 context.indent += 1;
-                for (const auto c : node->children.front()->children)
+                for (const auto c : node->firstChild()->children)
                 {
                     SWAG_CHECK(outputNode(context, concat, c));
                     concat.addEolIndent(context.indent);
@@ -1095,7 +1095,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                     CONCAT_FIXED_STR(concat, "discard ");
                 concat.addString(node->token.text);
                 concat.addChar(' ');
-                SWAG_CHECK(outputNode(context, concat, node->children.front()));
+                SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             }
             break;
         }
@@ -1106,14 +1106,14 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                 CONCAT_FIXED_STR(concat, "discard ");
             concat.addString(node->token.text);
             concat.addChar(' ');
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
 
         case AstNodeKind::FuncDeclType:
             if (!node->children.empty())
             {
                 CONCAT_FIXED_STR(concat, "->");
-                SWAG_CHECK(outputNode(context, concat, node->children.front()));
+                SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             }
             break;
 
@@ -1184,7 +1184,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         case AstNodeKind::Defer:
             CONCAT_FIXED_STR(concat, "defer ");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             concat.addEol();
             break;
 
@@ -1212,41 +1212,41 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             break;
         case AstNodeKind::Init:
             CONCAT_FIXED_STR(concat, "@init(");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
-            if (node->children.size() == 2)
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
+            if (node->childCount() == 2)
             {
                 CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(outputNode(context, concat, node->children.back()));
+                SWAG_CHECK(outputNode(context, concat, node->lastChild()));
             }
             concat.addChar(')');
             break;
         case AstNodeKind::Drop:
             CONCAT_FIXED_STR(concat, "@drop(");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
-            if (node->children.size() == 2)
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
+            if (node->childCount() == 2)
             {
                 CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(outputNode(context, concat, node->children.back()));
+                SWAG_CHECK(outputNode(context, concat, node->lastChild()));
             }
             concat.addChar(')');
             break;
         case AstNodeKind::PostMove:
             CONCAT_FIXED_STR(concat, "@postmove(");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
-            if (node->children.size() == 2)
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
+            if (node->childCount() == 2)
             {
                 CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(outputNode(context, concat, node->children.back()));
+                SWAG_CHECK(outputNode(context, concat, node->lastChild()));
             }
             concat.addChar(')');
             break;
         case AstNodeKind::PostCopy:
             CONCAT_FIXED_STR(concat, "@postcopy(");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
-            if (node->children.size() == 2)
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
+            if (node->childCount() == 2)
             {
                 CONCAT_FIXED_STR(concat, ", ");
-                SWAG_CHECK(outputNode(context, concat, node->children.back()));
+                SWAG_CHECK(outputNode(context, concat, node->lastChild()));
             }
             concat.addChar(')');
             break;
@@ -1270,7 +1270,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         case AstNodeKind::MakePointer:
         {
             concat.addChar('&');
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
         }
 
@@ -1283,12 +1283,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         case AstNodeKind::NoDrop:
             CONCAT_FIXED_STR(concat, "nodrop ");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
 
         case AstNodeKind::Move:
             CONCAT_FIXED_STR(concat, "move ");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
 
         case AstNodeKind::ArrayPointerSlicing:
@@ -1351,11 +1351,11 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         case AstNodeKind::CompilerLoad:
             CONCAT_FIXED_STR(concat, "#load ");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
         case AstNodeKind::CompilerInclude:
             CONCAT_FIXED_STR(concat, "#include ");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
 
         case AstNodeKind::CompilerRun:
@@ -1373,7 +1373,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             else if (node->is(AstNodeKind::CompilerValidIfx))
                 CONCAT_FIXED_STR(concat, "#validifx ");
 
-            const auto front = node->children.front();
+            const auto front = node->firstChild();
             if (front->is(AstNodeKind::FuncDecl))
             {
                 const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(front, AstNodeKind::FuncDecl);
@@ -1392,24 +1392,24 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         }
 
         case AstNodeKind::CompilerIfBlock:
-            if (node->children.front()->isNot(AstNodeKind::Statement))
+            if (node->firstChild()->isNot(AstNodeKind::Statement))
                 CONCAT_FIXED_STR(concat, "#do ");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
 
         case AstNodeKind::CompilerMacro:
             CONCAT_FIXED_STR(concat, "#macro");
-            incIndentStatement(node->children.front(), context.indent);
+            incIndentStatement(node->firstChild(), context.indent);
             concat.addEolIndent(context.indent);
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
-            decIndentStatement(node->children.front(), context.indent);
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
+            decIndentStatement(node->firstChild(), context.indent);
             break;
 
         case AstNodeKind::CompilerMixin:
         {
             const auto compilerMixin = castAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
             CONCAT_FIXED_STR(concat, "#mixin ");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             if (!compilerMixin->replaceTokens.empty())
             {
                 CONCAT_FIXED_STR(concat, " { ");
@@ -1439,21 +1439,21 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         case AstNodeKind::CompilerPrint:
             CONCAT_FIXED_STR(concat, "#print ");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
         case AstNodeKind::CompilerError:
             CONCAT_FIXED_STR(concat, "#error ");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
         case AstNodeKind::CompilerWarning:
             CONCAT_FIXED_STR(concat, "#warning ");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
 
         case AstNodeKind::CompilerAssert:
             CONCAT_FIXED_STR(concat, "#assert ");
             SWAG_CHECK(outputNode(context, concat, node->children[0]));
-            if (node->children.size() > 1)
+            if (node->childCount() > 1)
             {
                 concat.addChar(',');
                 SWAG_CHECK(outputNode(context, concat, node->children[1]));
@@ -1478,14 +1478,14 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                 concat.addEolIndent(context.indent);
                 CONCAT_FIXED_STR(concat, "#else ");
 
-                if (compilerIf->elseBlock->children.front()->isNot(AstNodeKind::CompilerIf))
+                if (compilerIf->elseBlock->firstChild()->isNot(AstNodeKind::CompilerIf))
                 {
                     incIndentStatement(compilerIf->elseBlock, context.indent);
                     concat.addEolIndent(context.indent);
                 }
 
                 SWAG_CHECK(outputNode(context, concat, compilerIf->elseBlock));
-                if (compilerIf->elseBlock->children.front()->isNot(AstNodeKind::CompilerIf))
+                if (compilerIf->elseBlock->firstChild()->isNot(AstNodeKind::CompilerIf))
                 {
                     decIndentStatement(compilerIf->elseBlock, context.indent);
                 }
@@ -1500,7 +1500,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
             if (compilerIf->hasSpecFlag(AstIf::SPEC_FLAG_ASSIGN))
             {
-                const auto varNode = castAst<AstVarDecl>(compilerIf->children.front(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+                const auto varNode = castAst<AstVarDecl>(compilerIf->firstChild(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
                 if (varNode->token.id == TokenId::KwdConst)
                     CONCAT_FIXED_STR(concat, "const ");
                 else
@@ -1658,7 +1658,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             CONCAT_FIXED_STR(concat, "typealias ");
             concat.addString(node->token.text);
             CONCAT_FIXED_STR(concat, " = ");
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
         }
         case AstNodeKind::NameAlias:
@@ -1666,7 +1666,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             CONCAT_FIXED_STR(concat, "namealias ");
             concat.addString(node->token.text);
             CONCAT_FIXED_STR(concat, " = ");
-            const auto back = node->children.back();
+            const auto back = node->lastChild();
             if (back->resolvedSymbolName())
                 concat.addString(back->resolvedSymbolName()->getFullName());
             else
@@ -1702,7 +1702,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         {
             CONCAT_FIXED_STR(concat, "return ");
             if (!node->children.empty())
-                SWAG_CHECK(outputNode(context, concat, node->children.front()));
+                SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
         }
 
@@ -1710,7 +1710,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         case AstNodeKind::IntrinsicLocation:
             concat.addString(node->token.text);
             concat.addChar('(');
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             concat.addChar(')');
             break;
 
@@ -1794,7 +1794,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                     concat.addChar('}');
                 else if (identifier->callParameters->children.empty())
                     concat.addChar(')');
-                else if (identifier->callParameters->children.back()->children.back()->isNot(AstNodeKind::CompilerCode))
+                else if (identifier->callParameters->lastChild()->lastChild()->isNot(AstNodeKind::CompilerCode))
                     concat.addChar(')');
             }
 
@@ -1873,7 +1873,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         case AstNodeKind::FuncCallParam:
         {
-            SWAG_CHECK(outputNode(context, concat, node->children.front()));
+            SWAG_CHECK(outputNode(context, concat, node->firstChild()));
             break;
         }
 

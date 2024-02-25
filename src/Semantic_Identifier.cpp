@@ -14,7 +14,7 @@
 bool Semantic::resolveNameAlias(SemanticContext* context)
 {
     const auto node = castAst<AstAlias>(context->node, AstNodeKind::NameAlias);
-    auto       back = node->children.back();
+    auto       back = node->lastChild();
 
     SWAG_ASSERT(node->resolvedSymbolName());
     SWAG_ASSERT(back->resolvedSymbolName());
@@ -88,7 +88,7 @@ bool Semantic::preResolveIdentifierRef(SemanticContext* context)
 bool Semantic::resolveIdentifierRef(SemanticContext* context)
 {
     const auto node      = castAst<AstIdentifierRef>(context->node);
-    const auto childBack = node->children.back();
+    const auto childBack = node->lastChild();
 
     // Keep resolution
     if (!node->typeInfo || !node->hasSemFlag(SEMFLAG_TYPE_SOLVED))
@@ -177,7 +177,7 @@ bool Semantic::setupIdentifierRef(SemanticContext*, AstNode* node)
     // Deref
     if (node->typeInfo->isFuncAttr() || node->typeInfo->isLambdaClosure())
     {
-        if (scopeType->isPointerRef() && node != identifierRef->children.back())
+        if (scopeType->isPointerRef() && node != identifierRef->lastChild())
         {
             setUnRef(node);
             scopeType = TypeManager::concretePtrRef(scopeType);
@@ -247,7 +247,7 @@ bool Semantic::isFunctionButNotACall(SemanticContext*, AstNode* node, const Symb
     if (node && node->is(AstNodeKind::Identifier))
     {
         id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        if (id != id->identifierRef()->children.back())
+        if (id != id->identifierRef()->lastChild())
             return false;
     }
 
@@ -263,14 +263,14 @@ bool Semantic::isFunctionButNotACall(SemanticContext*, AstNode* node, const Symb
         {
             if (symbol->is(SymbolKind::Function))
             {
-                if (grandParent->is(AstNodeKind::MakePointer) && node == node->parent->children.back())
+                if (grandParent->is(AstNodeKind::MakePointer) && node == node->parent->lastChild())
                 {
                     if (id && id->callParameters)
                         return false;
                     return true;
                 }
 
-                if (grandParent->is(AstNodeKind::MakePointerLambda) && node == node->parent->children.back())
+                if (grandParent->is(AstNodeKind::MakePointerLambda) && node == node->parent->lastChild())
                     return true;
             }
 
@@ -414,7 +414,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                 else if (subResult.size() > 1)
                 {
                     int enumIdx = 0;
-                    for (uint32_t i = 0; i < fctCallParam->parent->children.size(); i++)
+                    for (uint32_t i = 0; i < fctCallParam->parent->childCount(); i++)
                     {
                         const auto child = fctCallParam->parent->children[i];
                         if (child == fctCallParam)
@@ -696,7 +696,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
         const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
         if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->isCode())
         {
-            if (node->callParameters && node->callParameters->children.size() < typeFunc->parameters.size())
+            if (node->callParameters && node->callParameters->childCount() < typeFunc->parameters.size())
             {
                 auto parent = node->parent;
                 if (parent->parent->is(AstNodeKind::Catch) ||
@@ -706,7 +706,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                     parent = parent->parent;
 
                 const auto parentIdx = parent->childParentIdx();
-                if (parentIdx != parent->parent->children.size() - 1)
+                if (parentIdx != parent->parent->childCount() - 1)
                 {
                     const auto brother = parent->parent->children[parentIdx + 1];
                     if (brother->is(AstNodeKind::Statement))
@@ -808,7 +808,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
 
     if (callParameters)
     {
-        const auto childCount = callParameters->children.size();
+        const auto childCount = callParameters->childCount();
         for (uint32_t i = 0; i < childCount; i++)
         {
             const auto oneParam = castAst<AstFuncCallParam>(callParameters->children[i], AstNodeKind::FuncCallParam);
@@ -873,7 +873,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             return context->report(err);
         }
 
-        const auto childCount = genericParameters->children.size();
+        const auto childCount = genericParameters->childCount();
         for (uint32_t i = 0; i < childCount; i++)
         {
             const auto oneParam = castAst<AstFuncCallParam>(genericParameters->children[i], AstNodeKind::FuncCallParam);
@@ -903,7 +903,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     }
 
     // Execute #validif/#validifx block
-    const auto expr = funcDecl->validIf->children.back();
+    const auto expr = funcDecl->validIf->lastChild();
 
     // #validifx is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
     // #validif is evaluated once, so keep it.
@@ -997,7 +997,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     // Current file scope
     if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.text == context->sourceFile->scopeFile->name)
     {
-        SWAG_VERIFY(identifier == identifierRef->children.front(), context->report({identifier, toErr(Err0366)}));
+        SWAG_VERIFY(identifier == identifierRef->firstChild(), context->report({identifier, toErr(Err0366)}));
         identifierRef->startScope = context->sourceFile->scopeFile;
         return true;
     }
@@ -1149,7 +1149,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         identifier->typeInfo = identifier->resolvedSymbolOverload()->typeInfo;
 
         // In case identifier is part of a reference, need to initialize it
-        if (identifier != identifier->identifierRef()->children.back())
+        if (identifier != identifier->identifierRef()->lastChild())
             SWAG_CHECK(setupIdentifierRef(context, identifier));
 
         return true;
@@ -1161,7 +1161,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
     // In case of a reevaluation, ufcsFirstParam will be null, but we still want to cast for ufcs
     bool hasForcedUfcs = false;
-    if (identifier->callParameters && !identifier->callParameters->children.empty() && identifier->callParameters->children.front()->hasAstFlag(AST_TO_UFCS))
+    if (identifier->callParameters && !identifier->callParameters->children.empty() && identifier->callParameters->firstChild()->hasAstFlag(AST_TO_UFCS))
         hasForcedUfcs = true;
 
     while (true)
@@ -1215,7 +1215,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
             // The ufcs parameter has already been set in we are evaluating an identifier for the second time
             // (when we inline a function call)
-            if (!identifier->callParameters || identifier->callParameters->children.empty() || !identifier->callParameters->children.front()->hasAstFlag(AST_TO_UFCS))
+            if (!identifier->callParameters || identifier->callParameters->children.empty() || !identifier->callParameters->firstChild()->hasAstFlag(AST_TO_UFCS))
             {
                 SWAG_CHECK(getUfcs(context, identifierRef, identifier, symbolOverload, &ufcsFirstParam));
                 YIELD();

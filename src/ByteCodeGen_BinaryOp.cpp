@@ -529,7 +529,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         // We try to share the result register with other 'and'/'or' to give optimization opportunities when we
         // have more than one test in a row.
         // That way we have multiple jumps with the same register, which can be optimized
-        if (binNode->children.size() == 2)
+        if (binNode->childCount() == 2)
         {
             auto child1 = binNode->children[1];
             while (child1->is(AstNodeKind::BinaryOp) && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
@@ -538,7 +538,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
                 child0->allocateExtension(ExtensionKind::Misc);
                 child0->extMisc()->additionalRegisterRC            = left->extMisc()->additionalRegisterRC;
                 child0->extMisc()->additionalRegisterRC.cannotFree = true;
-                if (child1->children.size() != 2)
+                if (child1->childCount() != 2)
                     break;
                 child1 = child1->children[1];
             }
@@ -593,7 +593,7 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
             left->resultRegisterRc.cannotFree     = true;
         }
 
-        if (binNode->children.size() == 2)
+        if (binNode->childCount() == 2)
         {
             auto child1 = binNode->children[1];
             while (child1->is(AstNodeKind::BinaryOp) && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
@@ -602,7 +602,7 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
                 child0->allocateExtension(ExtensionKind::Misc);
                 child0->extMisc()->additionalRegisterRC            = left->extMisc()->additionalRegisterRC;
                 child0->extMisc()->additionalRegisterRC.cannotFree = true;
-                if (child1->children.size() != 2)
+                if (child1->childCount() != 2)
                     break;
                 child1 = child1->children[1];
             }
@@ -797,7 +797,7 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
             if (!node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
             {
                 node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
-                const auto back = node->children.back();
+                const auto back = node->lastChild();
                 SWAG_ASSERT(back->is(AstNodeKind::Inline));
                 context->baseJob->nodes.push_back(back);
                 context->result = ContextResult::NewChildren;

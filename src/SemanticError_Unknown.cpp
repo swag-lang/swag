@@ -115,7 +115,7 @@ namespace
 
     bool badParentScope(const AstIdentifier* identifier, Vector<const Diagnostic*>& notes)
     {
-        if (identifier->identifierRef()->startScope || identifier == identifier->parent->children.front())
+        if (identifier->identifierRef()->startScope || identifier == identifier->parent->firstChild())
             return false;
 
         const auto prev = identifier->identifierRef()->children[identifier->childParentIdx() - 1];
@@ -156,9 +156,9 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
 {
     // What kind of thing to we search for ?
     auto searchFor = IdentifierSearchFor::Whatever;
-    if (node->parent->parent && node->parent->parent->is(AstNodeKind::TypeExpression) && node->parent->children.back() == node)
+    if (node->parent->parent && node->parent->parent->is(AstNodeKind::TypeExpression) && node->parent->lastChild() == node)
         searchFor = IdentifierSearchFor::Type;
-    else if (node->parent->parent && node->parent->parent->is(AstNodeKind::AttrUse) && node->parent->children.back() == node)
+    else if (node->parent->parent && node->parent->parent->is(AstNodeKind::AttrUse) && node->parent->lastChild() == node)
         searchFor = IdentifierSearchFor::Attribute;
     else if (node->callParameters && node->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         searchFor = IdentifierSearchFor::Struct;

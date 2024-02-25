@@ -70,7 +70,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
 
 bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const AstNode* right)
 {
-    if (left->children.back()->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN))
+    if (left->lastChild()->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN))
     {
         if (!left->typeInfo->isPointerRef() || right->is(AstNodeKind::KeepRef))
         {
@@ -139,7 +139,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         {
             const auto leftId = castAst<AstIdentifier>(left, AstNodeKind::Identifier);
             hint              = "this is equivalent to [[";
-            for (uint32_t ic = 0; ic < orgLeft->children.size(); ic++)
+            for (uint32_t ic = 0; ic < orgLeft->childCount(); ic++)
             {
                 const auto c = orgLeft->children[ic];
                 if (ic)
@@ -162,7 +162,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
     if (left->typeInfo->isConst() && left->resolvedSymbolOverload() && left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
     {
-        if (left == left->parent->children.back())
+        if (left == left->parent->lastChild())
         {
             Diagnostic err{node, node->token, formErr(Err0106, left->resolvedSymbolName()->name.c_str())};
             err.addNote(left, Diagnostic::isType(left->typeInfo));
@@ -296,9 +296,9 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
     // Is this an array like affectation ?
     AstArrayPointerIndex* arrayNode = nullptr;
-    if (left->is(AstNodeKind::IdentifierRef) && left->children.back()->is(AstNodeKind::ArrayPointerIndex))
+    if (left->is(AstNodeKind::IdentifierRef) && left->lastChild()->is(AstNodeKind::ArrayPointerIndex))
     {
-        arrayNode            = castAst<AstArrayPointerIndex>(left->children.back(), AstNodeKind::ArrayPointerIndex);
+        arrayNode            = castAst<AstArrayPointerIndex>(left->lastChild(), AstNodeKind::ArrayPointerIndex);
         const auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo);
         if (!arrayType->isStruct())
             arrayNode = nullptr;

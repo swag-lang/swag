@@ -243,10 +243,10 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // Add a note in case we affect to an identifier.
         if (context->node->is(AstNodeKind::AffectOp))
         {
-            const auto left = context->node->children.front();
+            const auto left = context->node->firstChild();
             if (left->is(AstNodeKind::IdentifierRef))
             {
-                const auto* note = Diagnostic::note(left->children.back(), Diagnostic::isType(left->children.back()));
+                const auto* note = Diagnostic::note(left->lastChild(), Diagnostic::isType(left->lastChild()));
                 notes.push_back(note);
             }
         }

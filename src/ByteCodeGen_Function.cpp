@@ -51,7 +51,7 @@ bool ByteCodeGen::emitFuncCallParam(ByteCodeGenContext* context)
         return true;
     }
 
-    const auto front = node->children.front();
+    const auto front = node->firstChild();
 
     // If we have a cast to an interface, be sure interface has been fully solved
     // Semantic will pass only if the interface has been registered in the struct, and not solved.
@@ -83,10 +83,10 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     // Copy result to RR0... registers
     if (!node->hasSemFlag(SEMFLAG_EMIT_DEFERRED) && !node->children.empty() && !returnType->isVoid())
     {
-        const auto returnExpression = node->children.front();
-        auto       backExpression   = node->children.back();
+        const auto returnExpression = node->firstChild();
+        auto       backExpression   = node->lastChild();
         if (backExpression->is(AstNodeKind::Try) || backExpression->is(AstNodeKind::Catch) || backExpression->is(AstNodeKind::TryCatch))
-            backExpression = backExpression->children.back();
+            backExpression = backExpression->lastChild();
         const auto exprType = TypeManager::concretePtrRef(returnExpression->typeInfo);
 
         // Implicit cast
@@ -106,7 +106,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         if (node->hasSemFlag(SEMFLAG_RETVAL) ||
             (backExpression->resolvedSymbolOverload() && backExpression->resolvedSymbolOverload()->hasFlag(OVERLOAD_RETVAL)))
         {
-            const auto child = node->children.front();
+            const auto child = node->firstChild();
             freeRegisterRC(context, child->resultRegisterRc);
         }
 
@@ -138,7 +138,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                     // Do it first, because source stack can be shared with node->ownerInline->resultRegisterRC
                     const auto nodeCapture = castAst<AstMakePointer>(returnExpression, AstNodeKind::MakePointerLambda);
                     SWAG_ASSERT(nodeCapture->lambda->captureParameters);
-                    const auto typeBlock = castTypeInfo<TypeInfoStruct>(nodeCapture->children.back()->typeInfo, TypeInfoKind::Struct);
+                    const auto typeBlock = castTypeInfo<TypeInfoStruct>(nodeCapture->lastChild()->typeInfo, TypeInfoKind::Struct);
                     if (!typeBlock->fields.empty())
                     {
                         const auto r1 = reserveRegisterRC(context);
@@ -232,7 +232,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             }
             else if (returnType->isString())
             {
-                const auto child = node->children.front();
+                const auto child = node->firstChild();
                 if (funcNode->hasAttribute(ATTRIBUTE_AST_FUNC))
                     EMIT_INST2(context, ByteCodeOp::CloneString, child->resultRegisterRc[0], child->resultRegisterRc[1]);
                 EMIT_INST2(context, ByteCodeOp::CopyRARBtoRR2, child->resultRegisterRc[0], child->resultRegisterRc[1]);
@@ -240,7 +240,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             }
             else if (returnType->isClosure())
             {
-                const auto child = node->children.front();
+                const auto child = node->firstChild();
 
                 RegisterList r1 = reserveRegisterRC(context);
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, r1);
@@ -257,7 +257,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                     // Copy closure capture buffer
                     const auto nodeCapture = castAst<AstMakePointer>(child, AstNodeKind::MakePointerLambda);
                     SWAG_ASSERT(nodeCapture->lambda->captureParameters);
-                    const auto typeBlock = castTypeInfo<TypeInfoStruct>(nodeCapture->children.back()->typeInfo, TypeInfoKind::Struct);
+                    const auto typeBlock = castTypeInfo<TypeInfoStruct>(nodeCapture->lastChild()->typeInfo, TypeInfoKind::Struct);
                     if (!typeBlock->fields.empty())
                     {
                         EMIT_INST1(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = 2 * sizeof(void*);
@@ -274,8 +274,8 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             }
             else
             {
-                SWAG_ASSERT(node->children.size() == 1);
-                const auto child = node->children.front();
+                SWAG_ASSERT(node->childCount() == 1);
+                const auto child = node->firstChild();
                 SWAG_ASSERT(child->resultRegisterRc.size() >= returnType->numRegisters());
                 const auto numRetReg = returnType->numRegisters();
                 SWAG_ASSERT(numRetReg <= 2);
@@ -319,7 +319,7 @@ bool ByteCodeGen::emitIntrinsicCVaStart(ByteCodeGenContext* context)
     SWAG_ASSERT(node->ownerFct);
     SWAG_ASSERT(node->ownerFct->parameters);
     SWAG_ASSERT(!node->ownerFct->parameters->children.empty());
-    const auto param = node->ownerFct->parameters->children.back();
+    const auto param = node->ownerFct->parameters->lastChild();
     SWAG_ASSERT(param->typeInfo->isCVariadic());
     const auto storageOffset = param->resolvedSymbolOverload()->computedValue.storageOffset;
     SWAG_ASSERT(storageOffset != UINT32_MAX);
@@ -467,8 +467,8 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
     {
         case TokenId::IntrinsicCompilerError:
         {
-            auto child0 = callParams->children.front();
-            auto child1 = callParams->children.back();
+            auto child0 = callParams->firstChild();
+            auto child1 = callParams->lastChild();
             EMIT_INST3(context, ByteCodeOp::IntrinsicCompilerError, child0->resultRegisterRc[0], child0->resultRegisterRc[1], child1->resultRegisterRc);
             freeRegisterRC(context, child0);
             freeRegisterRC(context, child1);
@@ -476,8 +476,8 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
         case TokenId::IntrinsicCompilerWarning:
         {
-            auto child0 = callParams->children.front();
-            auto child1 = callParams->children.back();
+            auto child0 = callParams->firstChild();
+            auto child1 = callParams->lastChild();
             EMIT_INST3(context, ByteCodeOp::IntrinsicCompilerWarning, child0->resultRegisterRc[0], child0->resultRegisterRc[1], child1->resultRegisterRc);
             freeRegisterRC(context, child0);
             freeRegisterRC(context, child1);
@@ -485,8 +485,8 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
         case TokenId::IntrinsicPanic:
         {
-            auto child0 = callParams->children.front();
-            auto child1 = callParams->children.back();
+            auto child0 = callParams->firstChild();
+            auto child1 = callParams->lastChild();
             EMIT_INST3(context, ByteCodeOp::IntrinsicPanic, child0->resultRegisterRc[0], child0->resultRegisterRc[1], child1->resultRegisterRc);
             freeRegisterRC(context, child0);
             freeRegisterRC(context, child1);
@@ -494,7 +494,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
         case TokenId::IntrinsicAssert:
         {
-            auto child0 = callParams->children.front();
+            auto child0 = callParams->firstChild();
             emitAssert(context, child0->resultRegisterRc, "assertion failed");
             freeRegisterRC(context, child0);
             break;
@@ -506,7 +506,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
         case TokenId::IntrinsicAlloc:
         {
-            auto child0            = callParams->children.front();
+            auto child0            = callParams->firstChild();
             node->resultRegisterRc = reserveRegisterRC(context);
             EMIT_INST2(context, ByteCodeOp::IntrinsicAlloc, node->resultRegisterRc, child0->resultRegisterRc);
             freeRegisterRC(context, child0);
@@ -514,15 +514,15 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
         case TokenId::IntrinsicFree:
         {
-            auto child0 = callParams->children.front();
+            auto child0 = callParams->firstChild();
             EMIT_INST1(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRc);
             freeRegisterRC(context, child0);
             break;
         }
         case TokenId::IntrinsicRealloc:
         {
-            auto child0            = callParams->children.front();
-            auto child1            = callParams->children.back();
+            auto child0            = callParams->firstChild();
+            auto child1            = callParams->lastChild();
             node->resultRegisterRc = reserveRegisterRC(context);
             EMIT_INST3(context, ByteCodeOp::IntrinsicRealloc, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
             freeRegisterRC(context, child0);
@@ -1195,7 +1195,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
     SWAG_CHECK(emitIdentifier(context));
     node->allocateExtension(ExtensionKind::Misc);
     node->extMisc()->additionalRegisterRC = node->resultRegisterRc;
-    const auto allParams                  = node->children.empty() ? nullptr : node->children.back();
+    const auto allParams                  = node->children.empty() ? nullptr : node->lastChild();
     SWAG_ASSERT(!allParams || allParams->is(AstNodeKind::FuncCallParams));
 
     auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCE_ALIAS);
@@ -1265,7 +1265,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context)
     const auto overload = node->resolvedSymbolOverload();
     const auto funcNode = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
 
-    const auto allParams = node->children.empty() ? nullptr : node->children.back();
+    const auto allParams = node->children.empty() ? nullptr : node->lastChild();
     SWAG_ASSERT(!allParams || allParams->is(AstNodeKind::FuncCallParams));
     SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRc, false, true));
     YIELD();
@@ -1509,7 +1509,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     if (parentReturn)
     {
         // Must be the last expression in the return expression (no deref !)
-        if (node->parent->isNot(AstNodeKind::IdentifierRef) || node == node->parent->children.back())
+        if (node->parent->isNot(AstNodeKind::IdentifierRef) || node == node->parent->lastChild())
         {
             if (node->hasOwnerInline())
             {
@@ -1618,7 +1618,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     askForByteCode(context->baseJob, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
     YIELD();
 
-    uint32_t numCallParams = allParams ? allParams->children.size() : 0;
+    uint32_t numCallParams = allParams ? allParams->childCount() : 0;
 
     // For a untyped variadic, we need to store all parameters as 'any'
     // So we must generate one type per parameter
@@ -1683,7 +1683,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
     else if (allParams && allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS))
     {
-        SWAG_ASSERT(allParams->children.size() == 2);
+        SWAG_ASSERT(allParams->childCount() == 2);
         allParams->swap2Children();
     }
 
@@ -1801,7 +1801,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                     else
                     {
                         auto funcDesc = castAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
-                        parameters    = funcDesc->children.front();
+                        parameters    = funcDesc->firstChild();
                     }
                 }
 
@@ -1955,7 +1955,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
         SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, formErr(Err0639, SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
 
-    auto lastParam = allParams && !allParams->children.empty() ? allParams->children.back() : nullptr;
+    auto lastParam = allParams && !allParams->children.empty() ? allParams->lastChild() : nullptr;
 
     if (lastParam && lastParam->typeInfo && lastParam->typeInfo->isTypedVariadic())
     {
@@ -2200,7 +2200,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
     SWAG_IF_ASSERT(uint32_t storageIndex = 0);
     if (funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
-        const auto param                      = node->children.back();
+        const auto param                      = node->lastChild();
         const auto resolved                   = param->resolvedSymbolOverload();
         resolved->computedValue.storageOffset = offset;
         offset += g_TypeMgr->typeInfoVariadic->sizeOf;
@@ -2208,7 +2208,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
         SWAG_IF_ASSERT(storageIndex += 2);
     }
 
-    const auto childSize = node->children.size();
+    const auto childSize = node->childCount();
     for (uint32_t i = 0; i < childSize; i++)
     {
         if (i == childSize - 1 && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
@@ -2290,7 +2290,7 @@ bool ByteCodeGen::emitForeignCall(ByteCodeGenContext* context)
     AstNode*   node      = context->node;
     const auto overload  = node->resolvedSymbolOverload();
     const auto funcNode  = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-    const auto allParams = node->children.empty() ? nullptr : node->children.back();
+    const auto allParams = node->children.empty() ? nullptr : node->lastChild();
     SWAG_ASSERT(!allParams || allParams->is(AstNodeKind::FuncCallParams));
     emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRc, true, true);
     return true;
@@ -2302,7 +2302,7 @@ bool ByteCodeGen::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl,
 
     // Create a semantic job to resolve the inline part, and wait for that to be finished
     context->baseJob->setPending(JobWaitKind::MakeInline, nullptr, funcDecl, nullptr);
-    const auto inlineNode = identifier->children.back();
+    const auto inlineNode = identifier->lastChild();
     SWAG_ASSERT(inlineNode->is(AstNodeKind::Inline));
     const auto job = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, inlineNode, false);
     job->addDependentJob(context->baseJob);

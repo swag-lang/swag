@@ -69,7 +69,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             parent = parent->ownerFct;
 
             // Force scope
-            if (!node->callParameters && node != identifierRef->children.back())
+            if (!node->callParameters && node != identifierRef->lastChild())
             {
                 node->addSemFlag(SEMFLAG_FORCE_SCOPE);
                 node->typeInfo                      = g_TypeMgr->typeInfoVoid;
@@ -174,7 +174,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                         id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
                         id->allocateIdentifierExtension();
                         id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;
-                        id->identifierExtension->fromAlternateVar = withNode->children.front();
+                        id->identifierExtension->fromAlternateVar = withNode->firstChild();
                         id->inheritTokenLocation(identifierRef->token);
                         identifierRef->children.pop_back();
                         Ast::addChildFront(identifierRef, id);

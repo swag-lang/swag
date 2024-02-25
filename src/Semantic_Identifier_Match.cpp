@@ -18,7 +18,7 @@ void Semantic::sortParameters(AstNode* allParams)
 
     if (!allParams || !allParams->hasAstFlag(AST_MUST_SORT_CHILDREN))
         return;
-    if (allParams->children.size() <= 1)
+    if (allParams->childCount() <= 1)
         return;
 
     ranges::sort(allParams->children, [](AstNode* n1, AstNode* n2) {
@@ -42,7 +42,7 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
             {
                 // Remove assert(true)
                 SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->children.empty());
-                const auto param = identifier->callParameters->children.front();
+                const auto param = identifier->callParameters->firstChild();
                 if (param->hasFlagComputedValue() && param->computedValue()->reg.b)
                     identifier->addAstFlag(AST_NO_BYTECODE);
             }
@@ -150,7 +150,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
     }
 
     sortParameters(identifier->callParameters);
-    const auto maxParams = identifier->callParameters->children.size();
+    const auto maxParams = identifier->callParameters->childCount();
     for (uint32_t idx = 0; idx < maxParams; idx++)
     {
         const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[idx], AstNodeKind::FuncCallParam);
@@ -202,7 +202,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                      !nodeCall->typeInfo->isStruct() &&
                      !nodeCall->typeInfo->isListTuple())
             {
-                const auto front = nodeCall->children.front();
+                const auto front = nodeCall->firstChild();
 
                 // We have a compile time value (like a literal), and we want a const ref, i.e. a pointer
                 // We need to create a temporary variable to store the value, in order to have an address.
@@ -239,20 +239,20 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 // Force to keep the address
                 if (front->is(AstNodeKind::IdentifierRef))
                 {
-                    front->children.back()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
+                    front->lastChild()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
                 }
                 else
                     return Report::internalError(nodeCall, "cannot deal with value to pointer ref conversion");
             }
             else if (context->castFlagsResult.has(CAST_RESULT_FORCE_REF))
             {
-                const auto front = nodeCall->children.front();
+                const auto front = nodeCall->firstChild();
 
                 // We have a value, and we need a reference.
                 // Force to keep the address
                 if (front->is(AstNodeKind::IdentifierRef))
                 {
-                    front->children.back()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
+                    front->lastChild()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
                 }
             }
         }
@@ -266,7 +266,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         // If passing a closure
         // :FctCallParamClosure
         const auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_FORCE_ALIAS);
-        auto       makePtrL  = nodeCall->children.empty() ? nullptr : nodeCall->children.front();
+        auto       makePtrL  = nodeCall->children.empty() ? nullptr : nodeCall->firstChild();
 
         if (makePtrL && toTypeRef && toTypeRef->isClosure())
         {
@@ -355,9 +355,9 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 typeExpr->addAstFlag(AST_NO_SEMANTIC);
                 varNode->type = typeExpr;
 
-                auto assign = nodeCall->children.front();
+                auto assign = nodeCall->firstChild();
                 if (assign->is(AstNodeKind::Cast))
-                    assign = assign->children.back();
+                    assign = assign->lastChild();
 
                 CloneContext cloneContext;
                 cloneContext.parent      = varNode;
@@ -420,10 +420,10 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         else
         {
             const auto funcDecl = castAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
-            parameters          = funcDecl->children.front();
+            parameters          = funcDecl->firstChild();
         }
 
-        for (uint32_t i = 0; i < parameters->children.size(); i++)
+        for (uint32_t i = 0; i < parameters->childCount(); i++)
         {
             if (parameters->children[i]->isNot(AstNodeKind::FuncDeclParam))
                 continue;
@@ -549,11 +549,11 @@ namespace
             checkParent->is(AstNodeKind::SwitchCaseBlock))
         {
             // If this is the last identifier
-            if (identifier == identifier->identifierRef()->children.back())
+            if (identifier == identifier->identifierRef()->lastChild())
                 return true;
 
             // If this is not the last identifier, and it's not a function call
-            const auto back = identifier->identifierRef()->children.back();
+            const auto back = identifier->identifierRef()->lastChild();
             if (back->is(AstNodeKind::Identifier) && !castAst<AstIdentifier>(back)->callParameters)
                 return true;
         }
@@ -637,7 +637,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         identifier->typeInfo->isArray() &&
         identifier->parent->isNot(AstNodeKind::ArrayPointerIndex) &&
         identifier->parent == identifierRef &&
-        identifierRef->children.back() != identifier)
+        identifierRef->lastChild() != identifier)
     {
         return context->report({identifier, formErr(Err0548, symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
     }
@@ -648,7 +648,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         identifier->typeInfo->isSlice() &&
         identifier->parent->isNot(AstNodeKind::ArrayPointerIndex) &&
         identifier->parent == identifierRef &&
-        identifierRef->children.back() != identifier)
+        identifierRef->lastChild() != identifier)
     {
         return context->report({identifier, formErr(Err0549, symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
     }
@@ -742,7 +742,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             const auto idRef = castAst<AstIdentifierRef>(identifierRef, AstNodeKind::IdentifierRef);
             if (dependentVar->is(AstNodeKind::IdentifierRef))
             {
-                for (int i = static_cast<int>(dependentVar->children.size()) - 1; i >= 0; i--)
+                for (int i = static_cast<int>(dependentVar->childCount()) - 1; i >= 0; i--)
                 {
                     const auto child         = dependentVar->children[i];
                     const auto idNode        = Ast::newIdentifier(idRef, child->token.text, nullptr, nullptr);
@@ -904,7 +904,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (identifier->callParameters)
             {
                 sortParameters(identifier->callParameters);
-                const auto maxParams = identifier->callParameters->children.size();
+                const auto maxParams = identifier->callParameters->childCount();
                 for (uint32_t i = 0; i < maxParams; i++)
                 {
                     const auto   nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
@@ -1586,7 +1586,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     if (node && node->is(AstNodeKind::Identifier))
                     {
                         auto id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
-                        if (id == id->identifierRef()->children.back())
+                        if (id == id->identifierRef()->lastChild())
                             isLast = true;
                     }
 

@@ -468,7 +468,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
     // Allocate some temporary variables linked to parameters
     if (decl && decl->parameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
     {
-        countParams = decl->parameters->children.size();
+        countParams = decl->parameters->childCount();
         allocaParams.reserve(static_cast<uint32_t>(countParams));
 
         if (typeFunc->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
@@ -533,7 +533,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
         // Variadic. Pass as first parameters, but get type at the end
         if (typeFunc->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
         {
-            const auto    child     = decl->parameters->children.back();
+            const auto    child     = decl->parameters->lastChild();
             const auto&   loc       = child->token.startLocation;
             const auto    typeParam = typeFunc->parameters.back()->typeInfo;
             const auto    scope     = SP;

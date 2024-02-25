@@ -235,7 +235,7 @@ bool SemanticError::warnUnreachableCode(SemanticContext* context)
     const auto node = context->node;
 
     // Return must be the last of its block
-    if (node->parent->children.back() != node)
+    if (node->parent->lastChild() != node)
     {
         if (node->parent->is(AstNodeKind::If))
         {

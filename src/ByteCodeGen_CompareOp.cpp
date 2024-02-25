@@ -493,8 +493,8 @@ bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, AstNo
 bool ByteCodeGen::emitCompareOpEqual(const ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
     const auto node  = context->node;
-    const auto left  = node->children.front();
-    const auto right = node->children.back();
+    const auto left  = node->firstChild();
+    const auto right = node->lastChild();
     SWAG_CHECK(emitCompareOpEqual(context, left, right, r0, r1, r2));
     return true;
 }
@@ -502,8 +502,8 @@ bool ByteCodeGen::emitCompareOpEqual(const ByteCodeGenContext* context, const Re
 bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
     const auto node  = context->node;
-    const auto left  = node->children.front();
-    const auto right = node->children.back();
+    const auto left  = node->firstChild();
+    const auto right = node->lastChild();
     SWAG_CHECK(emitCompareOpNotEqual(context, left, right, r0, r1, r2));
     return true;
 }
@@ -608,8 +608,8 @@ bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, const As
 bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto node  = context->node;
-    const auto left  = node->children.front();
-    const auto right = node->children.back();
+    const auto left  = node->firstChild();
+    const auto right = node->lastChild();
     SWAG_CHECK(emitCompareOpLower(context, left, right, r0, r1, r2));
     return true;
 }
@@ -669,8 +669,8 @@ bool ByteCodeGen::emitCompareOpLowerEq(const ByteCodeGenContext* context, const 
 bool ByteCodeGen::emitCompareOpLowerEq(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto node  = context->node;
-    const auto left  = node->children.front();
-    const auto right = node->children.back();
+    const auto left  = node->firstChild();
+    const auto right = node->lastChild();
     SWAG_CHECK(emitCompareOpLowerEq(context, left, right, r0, r1, r2));
     return true;
 }
@@ -730,8 +730,8 @@ bool ByteCodeGen::emitCompareOpGreater(const ByteCodeGenContext* context, const 
 bool ByteCodeGen::emitCompareOpGreater(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto node  = context->node;
-    const auto left  = node->children.front();
-    const auto right = node->children.back();
+    const auto left  = node->firstChild();
+    const auto right = node->lastChild();
     SWAG_CHECK(emitCompareOpGreater(context, left, right, r0, r1, r2));
     return true;
 }
@@ -791,8 +791,8 @@ bool ByteCodeGen::emitCompareOpGreaterEq(const ByteCodeGenContext* context, cons
 bool ByteCodeGen::emitCompareOpGreaterEq(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto node  = context->node;
-    const auto left  = node->children.front();
-    const auto right = node->children.back();
+    const auto left  = node->firstChild();
+    const auto right = node->lastChild();
     SWAG_CHECK(emitCompareOpGreaterEq(context, left, right, r0, r1, r2));
     return true;
 }

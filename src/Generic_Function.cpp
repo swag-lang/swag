@@ -150,7 +150,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     auto newFuncNode = cloneNode;
     while (newFuncNode->is(AstNodeKind::AttrUse))
-        newFuncNode = newFuncNode->children.back();
+        newFuncNode = newFuncNode->lastChild();
 
     AstFuncDecl* newFunc = castAst<AstFuncDecl>(newFuncNode, AstNodeKind::FuncDecl);
     newFunc->addAstFlag(AST_FROM_GENERIC);

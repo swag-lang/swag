@@ -137,11 +137,11 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             // :DupGen
             // We generate a new struct with the wanted generic parameters to have those names for replacement.
             auto newStructType = castTypeInfo<TypeInfoStruct>(firstMatch.symbolOverload->typeInfo, TypeInfoKind::Struct);
-            if (newStructType->genericParameters.size() == genericParameters->children.size() && !genericParameters->children.empty())
+            if (newStructType->genericParameters.size() == genericParameters->childCount() && !genericParameters->children.empty())
             {
                 const auto typeWasForced = firstMatch.symbolOverload->typeInfo->clone();
                 newStructType            = castTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
-                for (uint32_t i = 0; i < genericParameters->children.size(); i++)
+                for (uint32_t i = 0; i < genericParameters->childCount(); i++)
                 {
                     newStructType->genericParameters[i]->name     = genericParameters->children[i]->typeInfo->name;
                     newStructType->genericParameters[i]->typeInfo = genericParameters->children[i]->typeInfo;

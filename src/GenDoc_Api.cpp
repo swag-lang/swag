@@ -328,7 +328,7 @@ void GenDoc::outputType(AstNode* node)
     else if (node->is(AstNodeKind::TypeAlias))
     {
         const auto typeDecl = castAst<AstAlias>(node, AstNodeKind::TypeAlias);
-        outputCode(getOutputNode(typeDecl->children.front()), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
+        outputCode(getOutputNode(typeDecl->firstChild()), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
     }
 }
 

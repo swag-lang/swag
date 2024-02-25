@@ -373,7 +373,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     const auto idRef = Ast::newIdentifierRef(structNode->token.text, this, parent);
     *result          = idRef;
 
-    idRef->children.back()->addAstFlag(AST_GENERATED);
+    idRef->lastChild()->addAstFlag(AST_GENERATED);
     Ast::removeFromParent(structNode);
     Ast::addChildBack(newParent, structNode);
     structNode->inheritOwners(newParent);
@@ -416,7 +416,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* /*parent*/
         case TokenId::Identifier:
             SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_ARRAY));
             if (inTypeVarDecl)
-                node->identifier->children.back()->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
+                node->identifier->lastChild()->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
             node->token.endLocation = node->identifier->token.endLocation;
             return true;
 
@@ -613,7 +613,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
         if (!tokenParse.flags.has(TOKEN_PARSE_LAST_EOL) && tokenParse.token.id == TokenId::SymLeftCurly)
         {
             node->identifier = Ast::newIdentifierRef(g_LangSpec->name_retval, this, node);
-            const auto id    = castAst<AstIdentifier>(node->identifier->children.back(), AstNodeKind::Identifier);
+            const auto id    = castAst<AstIdentifier>(node->identifier->lastChild(), AstNodeKind::Identifier);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
             id->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);

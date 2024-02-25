@@ -28,7 +28,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
     {
         case TokenId::IntrinsicSafety:
         {
-            auto front = node->children.front();
+            auto front = node->firstChild();
             SWAG_CHECK(evaluateConstExpression(context, front));
             YIELD();
             SWAG_CHECK(checkIsConstExpr(context, front->hasFlagComputedValue(), front, toErr(Err0033), node->token.text));
@@ -61,7 +61,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 
         case TokenId::IntrinsicHasTag:
         {
-            auto front = node->children.front();
+            auto front = node->firstChild();
             SWAG_CHECK(evaluateConstExpression(context, front));
             YIELD();
             SWAG_CHECK(checkIsConstExpr(context, front->hasFlagComputedValue(), front, toErr(Err0033), node->token.text));
@@ -119,7 +119,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node)
 {
-    auto       first     = node->children.front();
+    auto       first     = node->firstChild();
     const auto typeFirst = TypeManager::concreteType(first->typeInfo);
 
     // Check first parameter
@@ -146,8 +146,8 @@ bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* n
 
 bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* name)
 {
-    auto       first  = node->children.front();
-    const auto second = node->children.back();
+    auto       first  = node->firstChild();
+    const auto second = node->lastChild();
 
     // Must start with a pointer of the same type as the slice
     if (!first->typeInfo->isPointer())
@@ -175,8 +175,8 @@ bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node
 
 bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    auto first  = node->children.front();
-    auto second = node->children.back();
+    auto first  = node->firstChild();
+    auto second = node->lastChild();
 
     // Check first parameter
     if (!first->typeInfo->isPointer())
@@ -213,7 +213,7 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, 
 bool Semantic::resolveIntrinsicMakeInterface(SemanticContext* context)
 {
     const auto node   = context->node;
-    const auto params = node->children.front();
+    const auto params = node->firstChild();
 
     auto       first      = params->children[0];
     auto       second     = params->children[1];
@@ -550,7 +550,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
 bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
 {
     const auto node     = context->node;
-    auto       expr     = node->children.front();
+    auto       expr     = node->firstChild();
     const auto typeInfo = expr->typeInfo;
 
     node->setFlagsValueIsComputed();
@@ -595,7 +595,7 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
 bool Semantic::resolveIntrinsicNameOf(SemanticContext* context)
 {
     const auto node = context->node;
-    auto       expr = node->children.front();
+    auto       expr = node->firstChild();
 
     node->setFlagsValueIsComputed();
     SWAG_CHECK(checkIsConcreteOrType(context, expr, true));
@@ -617,7 +617,7 @@ bool Semantic::resolveIntrinsicNameOf(SemanticContext* context)
 bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
 {
     const auto node     = context->node;
-    auto       expr     = node->children.front();
+    auto       expr     = node->firstChild();
     const auto typeInfo = expr->typeInfo;
 
     SWAG_CHECK(checkIsConstExpr(context, expr->hasFlagComputedValue(), expr));
@@ -659,7 +659,7 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
 bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 {
     auto       node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto       expr     = node->children.front();
+    auto       expr     = node->firstChild();
     const auto typeInfo = TypeManager::concreteType(expr->typeInfo);
     node->byteCodeFct   = ByteCodeGen::emitIntrinsicSpread;
 
@@ -711,7 +711,7 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
 {
     const auto node       = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    const auto expr       = node->children.front();
+    const auto expr       = node->firstChild();
     const auto sourceFile = context->sourceFile;
     auto&      typeGen    = sourceFile->module->typeGen;
 
@@ -796,7 +796,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
 bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
 {
     const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto       expr     = node->children.front();
+    auto       expr     = node->firstChild();
     auto       typeInfo = expr->typeInfo;
 
     SWAG_VERIFY(!typeInfo->isKindGeneric(), context->report({expr, toErr(Err0396)}));
@@ -836,7 +836,7 @@ bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
 bool Semantic::resolveIntrinsicTypeOf(SemanticContext* context)
 {
     const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto       expr     = node->children.front();
+    auto       expr     = node->firstChild();
     const auto typeInfo = expr->typeInfo;
 
     SWAG_VERIFY(!typeInfo->isKindGeneric(), context->report({expr, toErr(Err0396)}));
@@ -862,7 +862,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         case TokenId::IntrinsicIsConstExpr:
         {
-            const auto expr = node->children.front();
+            const auto expr = node->firstChild();
             node->typeInfo  = g_TypeMgr->typeInfoBool;
             expr->addAstFlag(AST_NO_BYTECODE);
 
@@ -880,7 +880,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         case TokenId::IntrinsicSizeOf:
         {
-            auto expr = node->children.front();
+            auto expr = node->firstChild();
             SWAG_VERIFY(!expr->typeInfo->isGeneric(), context->report({expr, toErr(Err0154)}));
             node->setFlagsValueIsComputed();
             node->computedValue()->reg.u64 = expr->typeInfo->sizeOf;
@@ -893,7 +893,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         case TokenId::IntrinsicAlignOf:
         {
-            auto expr = node->children.front();
+            auto expr = node->firstChild();
             SWAG_VERIFY(!expr->typeInfo->isGeneric(), context->report({expr, toErr(Err0149)}));
             node->setFlagsValueIsComputed();
             node->computedValue()->reg.u64 = TypeManager::alignOf(expr->typeInfo);
@@ -906,7 +906,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         case TokenId::IntrinsicOffsetOf:
         {
-            const auto expr = node->children.front();
+            const auto expr = node->firstChild();
             SWAG_CHECK(checkIsConstExpr(context, expr->resolvedSymbolOverload(), expr));
             node->setFlagsValueIsComputed();
             node->computedValue()->reg.u64 = expr->resolvedSymbolOverload()->computedValue.storageOffset;
@@ -942,7 +942,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         case TokenId::IntrinsicCountOf:
         {
-            const auto expr     = node->children.front();
+            const auto expr     = node->firstChild();
             const auto typeInfo = expr->typeInfo->getConcreteAlias();
             if (!typeInfo->isEnum() && !typeInfo->isArray())
                 SWAG_CHECK(checkIsConcrete(context, expr));
@@ -953,7 +953,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         case TokenId::IntrinsicDataOf:
         {
-            const auto expr = node->children.front();
+            const auto expr = node->firstChild();
             SWAG_CHECK(checkIsConcrete(context, expr));
             SWAG_CHECK(resolveIntrinsicDataOf(context, node, expr));
             break;
@@ -961,7 +961,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         case TokenId::IntrinsicMakeAny:
         {
-            const auto expr = node->children.front();
+            const auto expr = node->firstChild();
             SWAG_CHECK(checkIsConcrete(context, expr));
             SWAG_CHECK(resolveIntrinsicMakeAny(context, node, expr->typeInfo));
             break;
@@ -969,7 +969,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         case TokenId::IntrinsicMakeSlice:
         {
-            const auto expr = node->children.front();
+            const auto expr = node->firstChild();
             SWAG_CHECK(checkIsConcrete(context, expr));
             SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo, "@mkslice"));
             break;
@@ -977,7 +977,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         case TokenId::IntrinsicMakeString:
         {
-            auto expr = node->children.front();
+            auto expr = node->firstChild();
             SWAG_CHECK(checkIsConcrete(context, expr));
             if (!expr->typeInfo->isPointerTo(NativeTypeKind::U8))
                 return context->report({expr, formErr(Err0208, expr->typeInfo->getDisplayNameC())});
@@ -988,7 +988,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         case TokenId::IntrinsicMakeCallback:
         {
-            const auto expr = node->children.front();
+            const auto expr = node->firstChild();
             SWAG_CHECK(checkIsConcrete(context, expr));
             SWAG_CHECK(resolveIntrinsicMakeCallback(context, node));
             break;
@@ -1011,7 +1011,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             if (node->token.id == TokenId::IntrinsicCVaStart)
             {
                 SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && !node->ownerFct->parameters->children.empty(), context->report({node, node->token, toErr(Err0452)}));
-                const auto typeParam = node->ownerFct->parameters->children.back()->typeInfo;
+                const auto typeParam = node->ownerFct->parameters->lastChild()->typeInfo;
                 SWAG_VERIFY(typeParam->isCVariadic(), context->report({node, node->token, toErr(Err0452)}));
                 node->byteCodeFct = ByteCodeGen::emitIntrinsicCVaStart;
             }

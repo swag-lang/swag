@@ -478,7 +478,7 @@ namespace
 
             if (myTypeInfo->isGeneric())
             {
-                const auto firstChild = callParameter->children.empty() ? nullptr : callParameter->children.front();
+                const auto firstChild = callParameter->children.empty() ? nullptr : callParameter->firstChild();
                 if (firstChild)
                 {
                     bool isValue = false;

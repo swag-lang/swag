@@ -2251,15 +2251,15 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
     bool hasChanged = false;
 
     // Not enough fields
-    if (toTypeStruct->fields.size() > child->children.size())
+    if (toTypeStruct->fields.size() > child->childCount())
     {
         exprNode->castToStruct = toTypeStruct;
     }
 
     // Too many fields
-    else if (toTypeStruct->fields.size() < child->children.size())
+    else if (toTypeStruct->fields.size() < child->childCount())
     {
-        const auto       msg = formErr(Err0634, toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->children.size());
+        const auto       msg = formErr(Err0634, toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childCount());
         const Diagnostic err{child->children[toTypeStruct->fields.count], msg};
         return context->report(err);
     }
@@ -2291,7 +2291,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
             break;
     }
 
-    for (uint32_t j = 0; j < child->children.size(); j++)
+    for (uint32_t j = 0; j < child->childCount(); j++)
     {
         const auto           childJ = child->children[j];
         const TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
@@ -2333,8 +2333,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 {
     const auto fromSize = fromTypeList->subTypes.size();
     while (fromNode && fromNode->isNot(AstNodeKind::ExpressionList))
-        fromNode = fromNode->children.front();
-    SWAG_ASSERT(!fromNode || fromSize == fromNode->children.size());
+        fromNode = fromNode->firstChild();
+    SWAG_ASSERT(!fromNode || fromSize == fromNode->childCount());
 
     // Need to recompute total size, as the size of each element can have been changed by the cast
     uint32_t newSizeof = 0;

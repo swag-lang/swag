@@ -742,7 +742,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         YIELD();
 
         // If it has been inlined, then the inline block contains the register we need
-        const auto back = context->allParamsTmp->children.back();
+        const auto back = context->allParamsTmp->lastChild();
         if (back->is(AstNodeKind::Inline))
         {
             exprNode->resultRegisterRc = back->resultRegisterRc;
@@ -769,7 +769,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         if (!anyNode->hasExtraPointer(ExtraPointerKind::AnyTypeSegment))
         {
             SWAG_ASSERT(!anyNode->children.empty());
-            anyNode = anyNode->children.front();
+            anyNode = anyNode->firstChild();
         }
 
         emitSafetyCastAny(context, anyNode, typeInfo);

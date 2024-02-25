@@ -223,7 +223,7 @@ bool Semantic::evaluateConstExpression(SemanticContext* context, AstNode* node1,
 bool Semantic::resolveConditionalOp(SemanticContext* context)
 {
     const auto node = context->node;
-    SWAG_ASSERT(node->children.size() == 3);
+    SWAG_ASSERT(node->childCount() == 3);
 
     const auto expression = node->children[0];
     const auto ifTrue     = node->children[1];
@@ -295,7 +295,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
 bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 {
     const auto node = context->node;
-    SWAG_ASSERT(node->children.size() >= 2);
+    SWAG_ASSERT(node->childCount() >= 2);
 
     const auto expression = node->children[0];
     const auto ifZero     = node->children[1];
@@ -392,8 +392,8 @@ bool Semantic::resolveDefer(SemanticContext* context)
     const auto node   = castAst<AstDefer>(context->node, AstNodeKind::Defer);
     node->byteCodeFct = ByteCodeGen::emitDefer;
 
-    SWAG_ASSERT(node->children.size() == 1);
-    const auto expr = node->children.front();
+    SWAG_ASSERT(node->childCount() == 1);
+    const auto expr = node->firstChild();
     expr->addAstFlag(AST_NO_BYTECODE);
 
     return true;

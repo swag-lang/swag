@@ -121,7 +121,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
         const AstIdentifier* identifier = nullptr;
         if (node->parent->is(AstNodeKind::Identifier))
             identifier = castAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-        for (uint32_t i = 0; i < func->parameters->children.size(); i++)
+        for (uint32_t i = 0; i < func->parameters->childCount(); i++)
         {
             const auto funcParam = func->parameters->children[i];
 
@@ -707,7 +707,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
         varDecl->assignment = Ast::newIntrinsicProp(TokenId::IntrinsicDataOf, nullptr, varDecl);
         Ast::clone(node->expression, varDecl->assignment);
-        varDecl->assignment->children.front()->addAstFlag(AST_NO_SEMANTIC);
+        varDecl->assignment->firstChild()->addAstFlag(AST_NO_SEMANTIC);
         newVar = varDecl;
 
         firstAliasVar = 2;
@@ -748,7 +748,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         varDecl->assignment = Ast::newIntrinsicProp(TokenId::IntrinsicDataOf, nullptr, varDecl);
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
         Ast::clone(node->expression, varDecl->assignment);
-        varDecl->assignment->children.front()->addAstFlag(AST_NO_SEMANTIC);
+        varDecl->assignment->firstChild()->addAstFlag(AST_NO_SEMANTIC);
         newVar = varDecl;
 
         firstAliasVar = 1;
@@ -922,7 +922,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     parser.setup(context, context->sourceFile->module, context->sourceFile);
     SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::EmbeddedInstruction, false));
 
-    newExpression = node->children.back();
+    newExpression = node->lastChild();
     if (newVar)
     {
         Ast::removeFromParent(newVar);
@@ -952,7 +952,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     });
 
     // First child is the let in the statement, and first child of this is the loop node
-    auto loopNode = castAst<AstLoop>(node->children.back()->children.back(), AstNodeKind::Loop);
+    auto loopNode = castAst<AstLoop>(node->lastChild()->lastChild(), AstNodeKind::Loop);
     loopNode->setOwnerBreakable(node->safeOwnerBreakable());
     Ast::removeFromParent(node->block);
     Ast::addChildBack(loopNode->block, node->block);
@@ -978,7 +978,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     // Re-root the parent scope of the user block so that it points to the scope of the loop block
     auto ownerScope = node->block->ownerScope;
     ownerScope->parentScope->removeChildNoLock(ownerScope);
-    ownerScope->parentScope = loopNode->block->children.front()->ownerScope;
+    ownerScope->parentScope = loopNode->block->firstChild()->ownerScope;
     ownerScope->parentScope->addChildNoLock(ownerScope);
 
     job->nodes.pop_back();

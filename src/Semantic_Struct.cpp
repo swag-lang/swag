@@ -23,7 +23,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
     const auto node = castAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
 
     if (id->resolvedSymbolName()->isNot(SymbolKind::Struct))
-        return context->report({id->children.back(), formErr(Err0160, id->resolvedSymbolName()->name.c_str(), Naming::aKindName(id->resolvedSymbolName()->kind).c_str())});
+        return context->report({id->lastChild(), formErr(Err0160, id->resolvedSymbolName()->name.c_str(), Naming::aKindName(id->resolvedSymbolName()->kind).c_str())});
 
     const auto structDecl = castAst<AstStruct>(id->resolvedSymbolOverload()->node, AstNodeKind::StructDecl);
 
@@ -778,7 +778,7 @@ bool Semantic::solveValidIf(SemanticContext* context, const AstStruct* structDec
     ScopedLock lk1(structDecl->mutex);
 
     // Execute #validif/#validifx block
-    const auto expr = structDecl->validif->children.back();
+    const auto expr = structDecl->validif->lastChild();
 
     if (!expr->hasFlagComputedValue())
     {
