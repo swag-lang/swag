@@ -13,9 +13,9 @@ void DataSegment::setup(SegmentKind myKind, Module* myModule)
     module = myModule;
 
     // :DefaultSizeBuckets
-    if (myModule->kind == ModuleKind::BootStrap)
+    if (myModule->is(ModuleKind::BootStrap))
         granularity = 4 * 1024;
-    else if (myModule->kind == ModuleKind::Runtime)
+    else if (myModule->is(ModuleKind::Runtime))
         granularity = 16 * 1024;
     else
         granularity = 4 * 1024;

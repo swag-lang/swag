@@ -311,7 +311,7 @@ void initDefaultContext()
 uint64_t getDefaultContextFlags(const Module* module)
 {
     uint64_t flags = 0;
-    if (module->kind == ModuleKind::Test)
+    if (module->is(ModuleKind::Test))
         flags |= static_cast<uint64_t>(ContextFlags::Test);
     return flags;
 }

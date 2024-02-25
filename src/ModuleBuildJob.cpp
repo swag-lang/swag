@@ -226,11 +226,11 @@ JobResult ModuleBuildJob::execute()
     {
         module->logPass(pass);
         module->logStage("ModuleBuildPass::Init\n");
-        if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
+        if (module->isNot(ModuleKind::BootStrap) && module->isNot(ModuleKind::Runtime))
             module->initFrom(g_Workspace->runtimeModule);
         if (fromError)
             pass = ModuleBuildPass::IncludeSwg;
-        else if (module->kind == ModuleKind::Config)
+        else if (module->is(ModuleKind::Config))
             pass = ModuleBuildPass::SemanticModule;
         else
             pass = ModuleBuildPass::Dependencies;
@@ -366,7 +366,7 @@ JobResult ModuleBuildJob::execute()
         }
 
         pass = ModuleBuildPass::IncludeSwg;
-        if (g_CommandLine.output && !module->path.empty() && module->kind != ModuleKind::Test)
+        if (g_CommandLine.output && !module->path.empty() && module->isNot(ModuleKind::Test))
         {
             publishFilesToPublic();
             publishFilesToTarget();
@@ -529,7 +529,7 @@ JobResult ModuleBuildJob::execute()
         module->logPass(pass);
         module->logStage("ModuleBuildPass::WaitForDependencies\n");
 
-        if (module->kind != ModuleKind::Config)
+        if (module->isNot(ModuleKind::Config))
         {
             if (!module->waitForDependenciesDone(this))
                 return JobResult::KeepJobAlive;
@@ -559,7 +559,7 @@ JobResult ModuleBuildJob::execute()
 
         if (!module->hasBytecodeToRun())
             pass = ModuleBuildPass::Output;
-        else if (module->kind == ModuleKind::Script && !g_CommandLine.scriptRun)
+        else if (module->is(ModuleKind::Script) && !g_CommandLine.scriptRun)
             pass = ModuleBuildPass::Done;
         else
             pass = ModuleBuildPass::RunByteCode;
@@ -601,7 +601,7 @@ JobResult ModuleBuildJob::execute()
         bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine.scriptMode;
 
         // OR in a test module, during testing
-        callInitDrop |= g_CommandLine.test && g_CommandLine.runByteCodeTests && module->kind == ModuleKind::Test;
+        callInitDrop |= g_CommandLine.test && g_CommandLine.runByteCodeTests && module->is(ModuleKind::Test);
 
         if (callInitDrop)
         {
@@ -687,7 +687,7 @@ JobResult ModuleBuildJob::execute()
             // We should have a #main to execute
             if (!module->byteCodeMainFunc)
             {
-                if (module->kind == ModuleKind::Script)
+                if (module->is(ModuleKind::Script))
                 {
                     Report::error(module, toErr(Err0523));
                     return JobResult::ReleaseJob;
@@ -733,7 +733,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
         module->logStage("ModuleBuildPass::Output\n");
 
-        if (module->kind == ModuleKind::Config || module->kind == ModuleKind::Script)
+        if (module->is(ModuleKind::Config) || module->is(ModuleKind::Script))
             pass = ModuleBuildPass::Done;
         else
         {
@@ -826,7 +826,7 @@ JobResult ModuleBuildJob::execute()
 
         // Run command
         if (g_CommandLine.run &&
-            module->kind != ModuleKind::Test &&
+            module->isNot(ModuleKind::Test) &&
             module->buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Executable)
         {
             module->logPass(ModuleBuildPass::RunNative);
@@ -846,7 +846,7 @@ JobResult ModuleBuildJob::execute()
 
 void ModuleBuildJob::release()
 {
-    if (module->kind != ModuleKind::Config)
+    if (module->isNot(ModuleKind::Config))
     {
         module->release();
     }

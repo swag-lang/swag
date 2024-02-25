@@ -207,6 +207,9 @@ struct Module
     void logStage(const char* msg) const;
     void logPass(ModuleBuildPass pass);
 
+    bool is(ModuleKind what) const { return kind == what; }
+    bool isNot(ModuleKind what) const { return kind != what; }
+
     struct ForToSolve
     {
         uint32_t      count;

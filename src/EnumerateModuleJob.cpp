@@ -21,7 +21,7 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
                                                 bool                 markDown)
 {
     const auto file = Allocator::alloc<SourceFile>();
-    file->addFlag(theModule->kind == ModuleKind::Test ? FILE_FROM_TESTS : 0);
+    file->addFlag(theModule->is(ModuleKind::Test) ? FILE_FROM_TESTS : 0);
     file->name     = fileName;
     file->imported = imported;
 
@@ -135,7 +135,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     {
         for (const auto f : it->second->files)
         {
-            if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || f->name.containsNoCase(g_CommandLine.testFilter))
+            if (theModule->isNot(ModuleKind::Test) || g_CommandLine.testFilter.empty() || f->name.containsNoCase(g_CommandLine.testFilter))
             {
                 const auto pz = strrchr(f->name, '.');
                 if (pz && !_strcmpi(pz, ".swg"))
@@ -177,7 +177,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
             else
             {
                 const Utf8 fileN = cFileName;
-                if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || fileN.containsNoCase(g_CommandLine.testFilter))
+                if (theModule->isNot(ModuleKind::Test) || g_CommandLine.testFilter.empty() || fileN.containsNoCase(g_CommandLine.testFilter))
                 {
                     const auto pz = strrchr(cFileName, '.');
                     if (pz && !_strcmpi(pz, ".swg"))

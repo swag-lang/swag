@@ -163,7 +163,7 @@ void Module::release()
 
 void Module::computePublicPath()
 {
-    if (kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
+    if (is(ModuleKind::BootStrap) || is(ModuleKind::Runtime))
         return;
     if (path.empty())
         return;
@@ -171,7 +171,7 @@ void Module::computePublicPath()
     publicPath = path;
     publicPath.append(SWAG_PUBLIC_FOLDER);
 
-    if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
+    if (!isScriptFile && isNot(ModuleKind::Script) && !isErrorModule)
     {
         error_code err;
         if (!filesystem::exists(publicPath, err))
@@ -186,7 +186,7 @@ void Module::computePublicPath()
 
     publicPath.append(Workspace::getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target).c_str());
 
-    if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
+    if (!isScriptFile && isNot(ModuleKind::Script) && !isErrorModule)
     {
         error_code err;
         if (!filesystem::exists(publicPath, err))
@@ -265,7 +265,7 @@ void Module::initFrom(Module* other)
 
 void Module::buildModulesSlice()
 {
-    if (kind == ModuleKind::Config || kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
+    if (is(ModuleKind::Config) || is(ModuleKind::BootStrap) || is(ModuleKind::Runtime))
         return;
 
     uint8_t* resultPtr;
@@ -318,7 +318,7 @@ void Module::buildModulesSlice()
 
 void Module::buildGlobalVarsToDropSlice()
 {
-    if (kind == ModuleKind::Config || kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
+    if (is(ModuleKind::Config) || is(ModuleKind::BootStrap) || is(ModuleKind::Runtime))
         return;
     if (globalVarsToDrop.empty())
         return;
@@ -446,8 +446,8 @@ void Module::allocateBackend()
     if (!shouldHaveError &&
         !shouldHaveWarning &&
         buildPass >= BuildPass::Backend &&
-        kind != ModuleKind::Runtime &&
-        kind != ModuleKind::BootStrap)
+        isNot(ModuleKind::Runtime) &&
+        isNot(ModuleKind::BootStrap))
     {
         switch (g_CommandLine.backendGenType)
         {
@@ -967,7 +967,7 @@ bool Module::mustGenerateTestExe() const
         return false;
     if (!g_CommandLine.outputTest)
         return false;
-    if (kind != ModuleKind::Test)
+    if (isNot(ModuleKind::Test))
         return false;
     if (buildCfg.backendKind != BuildCfgBackendKind::Executable)
         return false;
@@ -984,7 +984,7 @@ bool Module::mustGenerateTestExe() const
 bool Module::mustGenerateLegit() const
 {
     // Normal module
-    if (kind != ModuleKind::Test)
+    if (isNot(ModuleKind::Test))
     {
         if (!g_CommandLine.outputLegit)
             return false;
@@ -1012,19 +1012,19 @@ bool Module::mustOutputSomething() const
     // do not generate an executable that has been run in script mode
     if (byteCodeMainFunc && g_CommandLine.scriptMode)
         mustOutput = false;
-    else if (kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
+    else if (is(ModuleKind::BootStrap) || is(ModuleKind::Runtime))
         mustOutput = false;
     else if (buildPass < BuildPass::Backend)
         mustOutput = false;
     else if (files.empty())
         mustOutput = false;
     // a test module needs swag to be in test mode
-    else if (kind == ModuleKind::Test && !g_CommandLine.outputTest)
+    else if (is(ModuleKind::Test) && !g_CommandLine.outputTest)
         mustOutput = false;
     // if all files are exported, then do not generate a module
     else if (buildCfg.backendKind == BuildCfgBackendKind::Export)
         mustOutput = false;
-    else if (kind != ModuleKind::Test && buildCfg.backendKind == BuildCfgBackendKind::None)
+    else if (isNot(ModuleKind::Test) && buildCfg.backendKind == BuildCfgBackendKind::None)
         mustOutput = false;
 
     return mustOutput;
@@ -1199,9 +1199,9 @@ void Module::logPass(ModuleBuildPass pass)
     curPass = pass;
 
     if (isErrorModule ||
-        kind == ModuleKind::Config ||
-        kind == ModuleKind::Runtime ||
-        kind == ModuleKind::BootStrap ||
+        is(ModuleKind::Config) ||
+        is(ModuleKind::Runtime) ||
+        is(ModuleKind::BootStrap) ||
         buildCfg.backendKind == BuildCfgBackendKind::Export)
         return;
 
@@ -1251,7 +1251,7 @@ void Module::logPass(ModuleBuildPass pass)
             str = "Compiling";
             break;
         case ModuleBuildPass::RunByteCode:
-            if (kind == ModuleKind::Script)
+            if (is(ModuleKind::Script))
                 str = "Running ByteCode";
             break;
         case ModuleBuildPass::Output:

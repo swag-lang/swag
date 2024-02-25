@@ -411,7 +411,7 @@ bool Parser::generateAst()
     auto parentScope = module->scopeRoot;
 
     // Creates a top namespace with the module namespace name
-    if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
+    if (module->isNot(ModuleKind::BootStrap) && module->isNot(ModuleKind::Runtime))
     {
         const auto moduleForNp = sourceFile->imported ? sourceFile->imported : sourceFile->module;
 
@@ -500,7 +500,7 @@ bool Parser::generateAst()
     SWAG_CHECK(eatToken());
 
     // Module global comment must be put in module.swg
-    if (!tokenizer.comment.empty() && sourceFile->module->kind == ModuleKind::Config)
+    if (!tokenizer.comment.empty() && sourceFile->module->is(ModuleKind::Config))
         module->docComment = std::move(tokenizer.comment);
 
     // Parse !!!

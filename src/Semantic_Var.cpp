@@ -241,7 +241,7 @@ bool Semantic::sendCompilerMsgGlobalVar(SemanticContext* context)
     const auto node       = context->node;
 
     // Filter what we send
-    if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
+    if (module->is(ModuleKind::BootStrap) || module->is(ModuleKind::Runtime))
         return true;
     if (sourceFile->imported)
         return true;

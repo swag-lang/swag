@@ -68,7 +68,7 @@ bool Module::flushCompilerMessages(JobContext* context, uint32_t pass, Job* job)
     if (compilerMessages[pass].empty())
         return true;
 
-    if (kind != ModuleKind::Config)
+    if (isNot(ModuleKind::Config))
     {
         if (!waitForDependenciesDone(job))
         {

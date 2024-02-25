@@ -69,7 +69,7 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
 
 bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode* one)
 {
-    if (moduleToGen->kind == ModuleKind::Test)
+    if (moduleToGen->is(ModuleKind::Test))
         return true;
     if (!one->node || !one->node->token.sourceFile || !one->node->resolvedSymbolName())
         return true;

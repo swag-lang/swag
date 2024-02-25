@@ -80,9 +80,9 @@ JobResult ModuleOutputJob::execute()
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
-                if (module->kind == ModuleKind::Test)
+                if (module->is(ModuleKind::Test))
                     preCompileJob->buildParameters.compileType = Test;
-                else if (module->kind == ModuleKind::Example)
+                else if (module->is(ModuleKind::Example))
                     preCompileJob->buildParameters.compileType = Example;
                 else
                     preCompileJob->buildParameters.compileType = Normal;
@@ -122,9 +122,9 @@ JobResult ModuleOutputJob::execute()
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
-                if (module->kind == ModuleKind::Test)
+                if (module->is(ModuleKind::Test))
                     preCompileJob->buildParameters.compileType = Test;
-                else if (module->kind == ModuleKind::Example)
+                else if (module->is(ModuleKind::Example))
                     preCompileJob->buildParameters.compileType = Example;
                 else
                     preCompileJob->buildParameters.compileType = Normal;
@@ -177,9 +177,9 @@ JobResult ModuleOutputJob::execute()
             compileJob->dependentJob    = this;
             compileJob->buildParameters = module->buildParameters;
 
-            if (module->kind == ModuleKind::Test)
+            if (module->is(ModuleKind::Test))
                 compileJob->buildParameters.compileType = Test;
-            else if (module->kind == ModuleKind::Example)
+            else if (module->is(ModuleKind::Example))
                 compileJob->buildParameters.compileType = Example;
             else
                 compileJob->buildParameters.compileType = Normal;

@@ -486,7 +486,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 
         if (tokenParse.token.text == g_LangSpec->name_testerror)
         {
-            SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, tokenParse.token, toErr(Err0435)}));
+            SWAG_VERIFY(sourceFile->module->is(ModuleKind::Test), context->report({sourceFile, tokenParse.token, toErr(Err0435)}));
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), context->report({sourceFile, tokenParse.token, formErr(Err0518, tokenParse.token.c_str())}));
             sourceFile->tokenHasError = tokenParse.token;
@@ -498,7 +498,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
         else
         {
-            SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, tokenParse.token, toErr(Err0436)}));
+            SWAG_VERIFY(sourceFile->module->is(ModuleKind::Test), context->report({sourceFile, tokenParse.token, toErr(Err0436)}));
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), context->report({sourceFile, tokenParse.token, formErr(Err0519, tokenParse.token.c_str())}));
             sourceFile->tokenHasWarning = tokenParse.token;
@@ -620,7 +620,7 @@ bool Parser::doCompilerDependencies(AstNode* parent)
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doCurlyStatement(node, &dummyResult));
 
-    if (sourceFile->module->kind != ModuleKind::Config)
+    if (sourceFile->module->isNot(ModuleKind::Config))
     {
         node->addAstFlag(AST_NO_SEMANTIC);
         node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
@@ -665,7 +665,7 @@ bool Parser::doCompilerLoad(AstNode* parent)
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(eatSemiCol("[[#load]] expression"));
-    if (sourceFile->module->kind == ModuleKind::Config)
+    if (sourceFile->module->is(ModuleKind::Config))
     {
         if (node->hasOwnerCompilerIfBlock())
             node->ownerCompilerIfBlock()->includes.push_back(node);
@@ -732,7 +732,7 @@ bool Parser::doCompilerImport(AstNode* parent)
     }
 
     SWAG_CHECK(eatSemiCol("[[#import]] expression"));
-    if (sourceFile->hasFlag(FILE_IS_GENERATED) || sourceFile->module->kind == ModuleKind::Config)
+    if (sourceFile->hasFlag(FILE_IS_GENERATED) || sourceFile->module->is(ModuleKind::Config))
     {
         if (node->hasOwnerCompilerIfBlock())
             node->ownerCompilerIfBlock()->imports.push_back(node);

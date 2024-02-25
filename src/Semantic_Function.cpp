@@ -205,7 +205,7 @@ bool Semantic::sendCompilerMsgFuncDecl(SemanticContext* context)
     const auto module     = sourceFile->module;
 
     // Filter what we send
-    if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
+    if (module->is(ModuleKind::BootStrap) || module->is(ModuleKind::Runtime))
         return true;
     if (sourceFile->imported && !sourceFile->hasFlag(FILE_IS_EMBEDDED))
         return true;
@@ -320,7 +320,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     {
         if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC))
         {
-            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({funcNode, toErr(Err0448)}));
+            SWAG_VERIFY(module->is(ModuleKind::Test), context->report({funcNode, toErr(Err0448)}));
         }
     }
 

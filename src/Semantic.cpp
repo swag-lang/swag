@@ -19,7 +19,7 @@ void Semantic::start(SemanticContext* context, SourceFile* sourceFile, AstNode* 
         inheritAttributesFromOwnerFunc(originalNode);
 
     // In configuration pass1, we only treat the #dependencies block
-    if (context->sourceFile->module->kind == ModuleKind::Config && originalNode->is(AstNodeKind::File))
+    if (context->sourceFile->module->is(ModuleKind::Config) && originalNode->is(AstNodeKind::File))
     {
         for (const auto c : originalNode->children)
         {

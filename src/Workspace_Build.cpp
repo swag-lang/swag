@@ -557,7 +557,7 @@ bool Workspace::buildRTModule(Module* module)
 
     if (module->numErrors)
     {
-        Report::error(module->kind == ModuleKind::BootStrap ? toErr(Fat0014) : toErr(Fat0015));
+        Report::error(module->is(ModuleKind::BootStrap) ? toErr(Fat0014) : toErr(Fat0015));
         return false;
     }
 
@@ -574,7 +574,7 @@ bool Workspace::buildRTModule(Module* module)
     // Errors !!!
     if (module->numErrors)
     {
-        Report::error(module->kind == ModuleKind::BootStrap ? toErr(Fat0014) : toErr(Fat0015));
+        Report::error(module->is(ModuleKind::BootStrap) ? toErr(Fat0014) : toErr(Fat0015));
         return false;
     }
 

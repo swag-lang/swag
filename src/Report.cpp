@@ -356,10 +356,10 @@ namespace
 
         // No warning if it's in a dependency
         const auto sourceFile = Report::getDiagFile(err);
-        if (sourceFile->imported && sourceFile->imported->kind == ModuleKind::Dependency)
+        if (sourceFile->imported && sourceFile->imported->is(ModuleKind::Dependency))
             return false;
         const auto module = sourceFile->module;
-        if (module->kind == ModuleKind::Dependency)
+        if (module->is(ModuleKind::Dependency))
             return false;
 
         // Get warning identifier
