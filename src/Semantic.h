@@ -136,7 +136,9 @@ namespace Semantic
     bool           makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     void           sortParameters(AstNode* allParams);
     void           dealWithIntrinsic(const SemanticContext* context, AstIdentifier* identifier);
-    bool           setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
+    bool           setSymbolMatchCallParams(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier);
+    bool           setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMatch, AstIdentifierRef* idRef, AstIdentifier* identifier, SymbolOverload* overload);
+    bool           setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier, const SymbolOverload* overload);
     bool           setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
     void           resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcNode, const TypeInfo* resolvedType);
     void           allocateOnStack(AstNode* node, const TypeInfo* typeInfo);
