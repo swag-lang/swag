@@ -635,25 +635,19 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
         const auto funcNode = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
         if (funcNode->parameters && funcNode->parameters->hasAstFlag(AST_IS_GENERIC))
         {
-            SymbolMatchContext cpyContext = context;
-            matchParametersAndNamed(cpyContext, typeFunc->parameters, CAST_FLAG_DEFAULT);
-            if (cpyContext.semContext->result != ContextResult::Done)
+            matchParametersAndNamed(context, typeFunc->parameters, CAST_FLAG_DEFAULT);
+            if (context.semContext->result != ContextResult::Done)
                 return;
-            if (cpyContext.result == MatchResult::BadSignature)
+            if (context.result == MatchResult::BadSignature)
             {
+                context.result = MatchResult::Ok;
                 matchParametersAndNamed(context, typeFunc->parameters, CAST_FLAG_AUTO_OP_CAST);
                 if (context.semContext->result != ContextResult::Done)
                     return;
 
                 // We have a match with an automatic cast (opAffect or opCast).
                 if (context.result == MatchResult::Ok)
-                {
                     context.castFlagsResult.add(CAST_RESULT_GEN_AUTO_OP_CAST);
-                }
-            }
-            else
-            {
-                context = std::move(cpyContext);
             }
         }
         else
