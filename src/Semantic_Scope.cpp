@@ -168,6 +168,33 @@ bool Semantic::collectScopeHierarchy(Scope*                             startSco
     return true;
 }
 
+void Semantic::findSymbolsInHierarchy(VectorNative<AlternativeScope>& scopeHierarchy, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier, uint32_t identifierCrc)
+{
+    while (!scopeHierarchy.empty())
+    {
+        for (uint32_t i = 0; i < scopeHierarchy.size(); i++)
+        {
+            const auto& as = scopeHierarchy[i];
+            if (!as.scope)
+            {
+                scopeHierarchy.erase_unordered(i);
+                i--;
+                continue;
+            }
+
+            if (as.scope->symTable.tryRead())
+            {
+                const auto symbol = as.scope->symTable.findNoLock(identifier->token.text, identifierCrc);
+                as.scope->symTable.endRead();
+                if (symbol)
+                    Semantic::addSymbolMatch(symbolsMatch, symbol, as.scope, as.flags);
+                scopeHierarchy.erase_unordered(i);
+                i--;
+            }
+        }
+    }
+}
+
 bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     const auto job = context->baseJob;
@@ -213,30 +240,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         }
 
         // Search symbol in all the scopes of the hierarchy
-        while (!scopeHierarchy.empty())
-        {
-            for (uint32_t i = 0; i < scopeHierarchy.size(); i++)
-            {
-                const auto& as = scopeHierarchy[i];
-                if (!as.scope)
-                {
-                    scopeHierarchy.erase_unordered(i);
-                    i--;
-                    continue;
-                }
-
-                if (as.scope->symTable.tryRead())
-                {
-                    const auto symbol = as.scope->symTable.findNoLock(identifier->token.text, identifierCrc);
-                    as.scope->symTable.endRead();
-                    if (symbol)
-                        addSymbolMatch(symbolsMatch, symbol, as.scope, as.flags);
-                    scopeHierarchy.erase_unordered(i);
-                    i--;
-                }
-            }
-        }
-
+        findSymbolsInHierarchy(scopeHierarchy, symbolsMatch, identifier, identifierCrc);
         if (!symbolsMatch.empty())
             break;
 
