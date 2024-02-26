@@ -1750,8 +1750,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
     }
 
     // We remove all generated nodes, because if they exist, they do not participate in the error
-    const auto oneTry = tryMatches[0];
-    for (uint32_t i = 0; i < tryMatches.size(); i++)
+    for (uint32_t i = 0; i < tryMatches.size() && tryMatches.size() != 1; i++)
     {
         if (tryMatches[i]->overload->node->hasAstFlag(AST_FROM_GENERIC))
         {
@@ -1760,11 +1759,6 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
             i--;
         }
     }
-
-    // Be sure to have something. This should raise in case of internal error only, because
-    // we must have at least the generic symbol
-    if (tryMatches.empty())
-        tryMatches.push_back(oneTry);
 
     // There's no match at all
     if (matches.empty())
@@ -1783,7 +1777,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
 
             if (!cpyOverloads.empty())
             {
-                const auto result = Semantic::matchIdentifierParameters(context, cpyOverloads, node, flags | MIP_JUST_CHECK | MIP_SECOND_GENERIC_TRY);
+                const auto result = matchIdentifierParameters(context, cpyOverloads, node, flags | MIP_JUST_CHECK | MIP_SECOND_GENERIC_TRY);
                 if (result)
                     return true;
             }
@@ -1804,7 +1798,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
 
         if (justCheck)
             return false;
-        
+
         return SemanticError::ambiguousOverloadError(context, node, tryMatches, matches, flags);
     }
 
@@ -2016,7 +2010,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
 
             // This if for a lambda
             bool forLambda = false;
-            if (identifier->isForceTakeAddress() && Semantic::isFunctionButNotACall(context, identifier, symbolOverload->symbol))
+            if (identifier->isForceTakeAddress() && isFunctionButNotACall(context, identifier, symbolOverload->symbol))
                 forLambda = true;
 
             // Will try with ufcs, and will try without
