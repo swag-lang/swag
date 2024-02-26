@@ -1547,6 +1547,55 @@ bool Semantic::registerMatch(SemanticContext*            context,
     return true;
 }
 
+bool Semantic::doSimpleMatch(SemanticContext* context, VectorNative<OneMatch*>& matches, OneTryMatch* const& oneMatch, OneTryMatch& oneOverload)
+{
+    if (oneOverload.symMatchContext.parameters.empty() && oneOverload.symMatchContext.genericParameters.empty())
+    {
+        const auto symbolKind = oneOverload.overload->symbol->kind;
+
+        if (symbolKind != SymbolKind::Attribute &&
+            symbolKind != SymbolKind::Function &&
+            symbolKind != SymbolKind::Struct &&
+            symbolKind != SymbolKind::Interface &&
+            !oneOverload.overload->typeInfo->isLambdaClosure())
+        {
+            const auto match        = context->getOneMatch();
+            match->symbolOverload   = oneOverload.overload;
+            match->scope            = oneMatch->scope;
+            match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
+            match->solvedCastFlags  = std::move(oneOverload.symMatchContext.solvedCastFlags);
+            match->dependentVar     = oneOverload.dependentVar;
+            match->ufcs             = oneOverload.ufcs;
+            matches.push_back(match);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Semantic::needToWaitForSymbol(Job* job, SymbolName* symbol)
+{
+    bool needLock = false;
+
+    {
+        SharedLock ls(symbol->mutex);
+        if ((symbol->isNot(SymbolKind::Function) || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
+            needLock = true;
+    }
+
+    if (needLock)
+    {
+        ScopedLock ls(symbol->mutex);
+        if ((symbol->isNot(SymbolKind::Function) || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
+        {
+            waitSymbolNoLock(job, symbol);
+            return true;
+        }
+    }
+
+    return true;
+}
+
 bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, MatchIdParamsFlags flags)
 {
     const bool justCheck        = flags.has(MIP_JUST_CHECK);
@@ -1564,55 +1613,17 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     {
         auto& oneOverload = *oneMatch;
 
-        if (oneOverload.symMatchContext.parameters.empty() && oneOverload.symMatchContext.genericParameters.empty())
-        {
-            const auto symbolKind = oneOverload.overload->symbol->kind;
+        // For everything except functions/attributes/structs (which have overloads), this is a match
+        if (doSimpleMatch(context, matches, oneMatch, oneOverload))
+            continue;
 
-            // For everything except functions/attributes/structs (which have overloads), this is a match
-            if (symbolKind != SymbolKind::Attribute &&
-                symbolKind != SymbolKind::Function &&
-                symbolKind != SymbolKind::Struct &&
-                symbolKind != SymbolKind::Interface &&
-                !oneOverload.overload->typeInfo->isLambdaClosure())
-            {
-                auto match              = context->getOneMatch();
-                match->symbolOverload   = oneOverload.overload;
-                match->scope            = oneMatch->scope;
-                match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
-                match->solvedCastFlags  = std::move(oneOverload.symMatchContext.solvedCastFlags);
-                match->dependentVar     = oneOverload.dependentVar;
-                match->ufcs             = oneOverload.ufcs;
-                matches.push_back(match);
-                continue;
-            }
-        }
-
-        const auto overload       = oneOverload.overload;
-        const auto symbol         = overload->symbol;
-        
         // Major contention offender.
-        // Do it in two passes, as most of the time if will fail
-        {
-            bool needLock = false;
+        SWAG_CHECK(needToWaitForSymbol(job, oneOverload.overload->symbol));
+        YIELD();
 
-            {
-                SharedLock ls(symbol->mutex);
-                if ((symbol->isNot(SymbolKind::Function) || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
-                    needLock = true;
-            }
-
-            if (needLock)
-            {
-                ScopedLock ls(symbol->mutex);
-                if ((symbol->isNot(SymbolKind::Function) || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
-                {
-                    waitSymbolNoLock(job, symbol);
-                    return true;
-                }
-            }
-        }
-
-        auto rawTypeInfo = overload->typeInfo;
+        const auto overload    = oneOverload.overload;
+        const auto symbol      = overload->symbol;
+        auto       rawTypeInfo = overload->typeInfo;
 
         // :DupGen
         TypeInfo* typeWasForced = nullptr;
@@ -1718,7 +1729,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 forcedFine                         = true;
             }
         }
-        
+
         // We need () for a function call !
         const bool emptyParams = oneOverload.symMatchContext.parameters.empty() && !oneOverload.callParameters;
         if (!forcedFine && emptyParams && oneOverload.symMatchContext.result == MatchResult::Ok && symbol->is(SymbolKind::Function))
