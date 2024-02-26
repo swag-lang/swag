@@ -1647,9 +1647,213 @@ bool Semantic::tryOneMatch(SemanticContext* context, OneTryMatch& oneOverload, c
     return true;
 }
 
+bool Semantic::dealWithMatchResults(SemanticContext*            context,
+                                    VectorNative<OneTryMatch*>& tryMatches,
+                                    AstNode*&                   node,
+                                    MatchIdParamsFlags          flags,
+                                    VectorNative<OneMatch*>&    matches,
+                                    VectorNative<OneMatch*>&    genericMatches,
+                                    VectorNative<OneMatch*>&    genericMatchesSI,
+                                    bool                        forStruct,
+                                    uint32_t                    prevMatchesCount,
+                                    bool&                       hasError)
+{
+    const bool justCheck = flags.has(MIP_JUST_CHECK);
+
+    // If to match an instance, we always need an automatic opCast, then we only keep generic matches in order
+    // to create an instance with the exact type.
+    // We only test the first match here, because the filtering of matches would have remove it if some other instances
+    // without autoOpCast are present.
+    if (!matches.empty() && matches[0]->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST) && (!genericMatches.empty() || !genericMatchesSI.empty()))
+    {
+        prevMatchesCount = 0;
+        matches.clear();
+    }
+
+    // All choices were removed because of #validif
+    if (genericMatches.empty() && !genericMatchesSI.empty() && matches.empty() && prevMatchesCount)
+    {
+        if (justCheck)
+        {
+            hasError = false;
+            return true;
+        }
+        
+        hasError = SemanticError::cannotMatchIdentifierError(context, tryMatches, node);
+        return true;
+    }
+
+    // Multi instantiation in case of #validif
+    if (!genericMatchesSI.empty() && matches.empty() && !prevMatchesCount)
+    {
+        if (justCheck)
+        {
+            hasError = true;
+            return true;
+        }
+
+        Set<SymbolName*> symbols;
+        for (const auto& g : genericMatchesSI)
+            symbols.insert(g->symbolName);
+        for (auto& g : symbols)
+            g->mutex.lock();
+
+        for (const auto& g : genericMatchesSI)
+        {
+            Generic::checkCanInstantiateGenericSymbol(context, *g);
+            if (context->result != ContextResult::Done)
+                break;
+        }
+
+        if (context->result == ContextResult::Done)
+        {
+            for (const auto& g : genericMatchesSI)
+            {
+                SWAG_CHECK(Generic::instantiateFunction(context, g->genericParameters, *g, true));
+            }
+        }
+
+        for (auto& g : symbols)
+            g->mutex.unlock();
+        
+        hasError = true;
+        return true;
+    }
+
+    // This is a generic
+    if (genericMatches.size() == 1 && matches.empty())
+    {
+        if (justCheck && !flags.has(MIP_SECOND_GENERIC_TRY))
+        {
+            hasError = true;
+            return true;
+        }
+        SWAG_CHECK(Generic::instantiateGenericSymbol(context, *genericMatches[0], forStruct));
+        hasError = true;
+        
+        return true;
+    }
+
+    // Done !!!
+    if (matches.size() == 1)
+    {
+        // We should have no symbol
+        if (flags.has(MIP_FOR_ZERO_GHOSTING))
+        {
+            if (justCheck)
+            {
+                hasError = false;
+                return true;
+            }
+            if (!node)
+                node = context->node;
+
+            const auto symbol   = tryMatches[0]->overload->symbol;
+            const auto match    = matches[0];
+            const auto overload = match->symbolOverload;
+            hasError            = SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, overload->symbol->kind, overload->node);
+            return true;
+            
+        }
+
+        hasError = true;
+        return true;
+    }
+
+    // Ambiguity with generics
+    if (genericMatches.size() > 1)
+    {
+        if (justCheck)
+        {
+            hasError = false;
+            return true;
+        }
+        
+        hasError = SemanticError::ambiguousGenericError(context, node, tryMatches, genericMatches);
+        return true;
+    }
+
+    // We remove all generated nodes, because if they exist, they do not participate in the error
+    const auto oneTry = tryMatches[0];
+    for (uint32_t i = 0; i < tryMatches.size(); i++)
+    {
+        if (tryMatches[i]->overload->node->hasAstFlag(AST_FROM_GENERIC))
+        {
+            tryMatches[i] = tryMatches.back();
+            tryMatches.pop_back();
+            i--;
+        }
+    }
+
+    // Be sure to have something. This should raise in case of internal error only, because
+    // we must have at least the generic symbol
+    if (tryMatches.empty())
+        tryMatches.push_back(oneTry);
+
+    // There's no match at all
+    if (matches.empty())
+    {
+        if (!flags.has(MIP_SECOND_GENERIC_TRY))
+        {
+            VectorNative<OneTryMatch*> cpyOverloads;
+            for (auto& oneMatch : tryMatches)
+            {
+                if (oneMatch->symMatchContext.result == MatchResult::NotEnoughGenericParameters &&
+                    oneMatch->symMatchContext.genericParameters.empty())
+                {
+                    cpyOverloads.push_back(oneMatch);
+                }
+            }
+
+            if (!cpyOverloads.empty())
+            {
+                const auto result = Semantic::matchIdentifierParameters(context, cpyOverloads, node, flags | MIP_JUST_CHECK | MIP_SECOND_GENERIC_TRY);
+                if (result)
+                {
+                    hasError = true;
+                    return true;
+                }
+            }
+        }
+
+        if (justCheck)
+        {
+            hasError = false;
+            return true;
+        }
+
+        hasError = SemanticError::cannotMatchIdentifierError(context, tryMatches, node);
+        return true;
+    }
+
+    // There is more than one possible match, and this is an identifier for a name alias.
+    // We are fine
+    if (matches.size() > 1 &&
+        node &&
+        node->is(AstNodeKind::Identifier) &&
+        node->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS))
+    {
+        hasError = true;
+        return true;
+    }
+
+    // There is more than one possible match
+    if (matches.size() > 1)
+    {
+        if (justCheck)
+        {
+            hasError = false;
+            return true;
+        }
+        hasError = SemanticError::ambiguousOverloadError(context, node, tryMatches, matches, flags);
+        return true;
+    }
+
+    return false;
+}
+
 bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, MatchIdParamsFlags flags)
 {
-    const bool justCheck        = flags.has(MIP_JUST_CHECK);
     const auto job              = context->baseJob;
     auto&      matches          = context->cacheMatches;
     auto&      genericMatches   = context->cacheGenericMatches;
@@ -1772,160 +1976,13 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     }
 
     // Filter depending on various priorities
-    auto prevMatchesCount = matches.size();
+    const auto prevMatchesCount = matches.size();
     SWAG_CHECK(filterMatches(context, matches, genericMatches, genericMatchesSI));
     YIELD();
 
-    // If to match an instance, we always need an automatic opCast, then we only keep generic matches in order
-    // to create an instance with the exact type.
-    // We only test the first match here, because the filtering of matches would have remove it if some other instances
-    // without autoOpCast are present.
-    if (!matches.empty() && matches[0]->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST) && (!genericMatches.empty() || !genericMatchesSI.empty()))
-    {
-        prevMatchesCount = 0;
-        matches.clear();
-    }
-
-    // All choices were removed because of #validif
-    if (genericMatches.empty() && !genericMatchesSI.empty() && matches.empty() && prevMatchesCount)
-    {
-        if (justCheck)
-            return false;
-        return SemanticError::cannotMatchIdentifierError(context, tryMatches, node);
-    }
-
-    // Multi instantiation in case of #validif
-    if (!genericMatchesSI.empty() && matches.empty() && !prevMatchesCount)
-    {
-        if (justCheck)
-            return true;
-
-        Set<SymbolName*> symbols;
-        for (const auto& g : genericMatchesSI)
-            symbols.insert(g->symbolName);
-        for (auto& g : symbols)
-            g->mutex.lock();
-
-        for (const auto& g : genericMatchesSI)
-        {
-            Generic::checkCanInstantiateGenericSymbol(context, *g);
-            if (context->result != ContextResult::Done)
-                break;
-        }
-
-        if (context->result == ContextResult::Done)
-        {
-            for (const auto& g : genericMatchesSI)
-            {
-                SWAG_CHECK(Generic::instantiateFunction(context, g->genericParameters, *g, true));
-            }
-        }
-
-        for (auto& g : symbols)
-            g->mutex.unlock();
-        return true;
-    }
-
-    // This is a generic
-    if (genericMatches.size() == 1 && matches.empty())
-    {
-        if (justCheck && !flags.has(MIP_SECOND_GENERIC_TRY))
-            return true;
-        SWAG_CHECK(Generic::instantiateGenericSymbol(context, *genericMatches[0], forStruct));
-        return true;
-    }
-
-    // Done !!!
-    if (matches.size() == 1)
-    {
-        // We should have no symbol
-        if (flags.has(MIP_FOR_ZERO_GHOSTING))
-        {
-            if (justCheck)
-                return false;
-            if (!node)
-                node = context->node;
-
-            const auto symbol   = tryMatches[0]->overload->symbol;
-            const auto match    = matches[0];
-            const auto overload = match->symbolOverload;
-            return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, overload->symbol->kind, overload->node);
-        }
-
-        return true;
-    }
-
-    // Ambiguity with generics
-    if (genericMatches.size() > 1)
-    {
-        if (justCheck)
-            return false;
-        return SemanticError::ambiguousGenericError(context, node, tryMatches, genericMatches);
-    }
-
-    // We remove all generated nodes, because if they exist, they do not participate in the error
-    const auto oneTry = tryMatches[0];
-    for (uint32_t i = 0; i < tryMatches.size(); i++)
-    {
-        if (tryMatches[i]->overload->node->hasAstFlag(AST_FROM_GENERIC))
-        {
-            tryMatches[i] = tryMatches.back();
-            tryMatches.pop_back();
-            i--;
-        }
-    }
-
-    // Be sure to have something. This should raise in case of internal error only, because
-    // we must have at least the generic symbol
-    if (tryMatches.empty())
-        tryMatches.push_back(oneTry);
-
-    // There's no match at all
-    if (matches.empty())
-    {
-        if (!flags.has(MIP_SECOND_GENERIC_TRY))
-        {
-            VectorNative<OneTryMatch*> cpyOverloads;
-            for (auto& oneMatch : tryMatches)
-            {
-                if (oneMatch->symMatchContext.result == MatchResult::NotEnoughGenericParameters &&
-                    oneMatch->symMatchContext.genericParameters.empty())
-                {
-                    cpyOverloads.push_back(oneMatch);
-                }
-            }
-
-            if (!cpyOverloads.empty())
-            {
-                const auto result = matchIdentifierParameters(context, cpyOverloads, node, flags | MIP_JUST_CHECK | MIP_SECOND_GENERIC_TRY);
-                if (result)
-                    return true;
-            }
-        }
-
-        if (justCheck)
-            return false;
-
-        return SemanticError::cannotMatchIdentifierError(context, tryMatches, node);
-    }
-
-    // There is more than one possible match, and this is an identifier for a name alias.
-    // We are fine
-    if (matches.size() > 1 &&
-        node &&
-        node->is(AstNodeKind::Identifier) &&
-        node->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS))
-    {
-        return true;
-    }
-
-    // There is more than one possible match
-    if (matches.size() > 1)
-    {
-        if (justCheck)
-            return false;
-        return SemanticError::ambiguousOverloadError(context, node, tryMatches, matches, flags);
-    }
+    bool hasError = false;
+    if (dealWithMatchResults(context, tryMatches, node, flags, matches, genericMatches, genericMatchesSI, forStruct, prevMatchesCount, hasError))
+        return hasError;
 
     return true;
 }
