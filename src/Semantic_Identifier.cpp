@@ -978,12 +978,6 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     return true;
 }
 
-bool Semantic::resolveIdentifier(SemanticContext* context)
-{
-    const auto node = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-    return resolveIdentifier(context, node, RI_ZERO);
-}
-
 bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job)
 {
     auto& symbolsMatch = context->cacheSymbolsMatch;
@@ -1033,6 +1027,12 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
     }
 
     return true;
+}
+
+bool Semantic::resolveIdentifier(SemanticContext* context)
+{
+    const auto node = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    return resolveIdentifier(context, node, RI_ZERO);
 }
 
 bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags)

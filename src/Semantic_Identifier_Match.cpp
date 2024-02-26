@@ -1670,6 +1670,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
     }
 
     // All choices were removed because of #validif
+    /////////////////////////////////////////////////////////////////////
     if (genericMatches.empty() && !genericMatchesSI.empty() && matches.empty() && prevMatchesCount)
     {
         if (justCheck)
@@ -1678,6 +1679,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
     }
 
     // Multi instantiation in case of #validif
+    /////////////////////////////////////////////////////////////////////
     if (!genericMatchesSI.empty() && matches.empty() && !prevMatchesCount)
     {
         if (justCheck)
@@ -1710,38 +1712,40 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
         return true;
     }
 
-    // This is a generic
+    // This is a generic match. We need to instantiate.
+    /////////////////////////////////////////////////////////////////////
     if (genericMatches.size() == 1 && matches.empty())
     {
         if (justCheck && !flags.has(MIP_SECOND_GENERIC_TRY))
             return true;
-
         SWAG_CHECK(Generic::instantiateGenericSymbol(context, *genericMatches[0], forStruct));
         return true;
     }
 
-    // Done !!!
+    // One match, but want want none !
+    /////////////////////////////////////////////////////////////////////
+    if (matches.size() == 1 && flags.has(MIP_FOR_ZERO_GHOSTING))
+    {
+        if (justCheck)
+            return false;
+
+        if (!node)
+            node = context->node;
+
+        const auto symbol   = tryMatches[0]->overload->symbol;
+        const auto overload = matches[0]->symbolOverload;
+        return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, overload->symbol->kind, overload->node);
+    }    
+
+    // Success !!!
+    /////////////////////////////////////////////////////////////////////
     if (matches.size() == 1)
     {
-        // We should have no symbol
-        if (flags.has(MIP_FOR_ZERO_GHOSTING))
-        {
-            if (justCheck)
-                return false;
-
-            if (!node)
-                node = context->node;
-
-            const auto symbol   = tryMatches[0]->overload->symbol;
-            const auto match    = matches[0];
-            const auto overload = match->symbolOverload;
-            return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, overload->symbol->kind, overload->node);
-        }
-
         return true;
     }
 
     // Ambiguity with generics
+    /////////////////////////////////////////////////////////////////////
     if (genericMatches.size() > 1)
     {
         if (justCheck)
@@ -1761,6 +1765,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
     }
 
     // There's no match at all
+    /////////////////////////////////////////////////////////////////////
     if (matches.empty())
     {
         if (!flags.has(MIP_SECOND_GENERIC_TRY))
@@ -1790,6 +1795,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
     }
 
     // There is more than one possible match
+    /////////////////////////////////////////////////////////////////////
     if (matches.size() > 1)
     {
         // This is an identifier for a name alias. We are fine.
