@@ -175,22 +175,18 @@ void Semantic::findSymbolsInHierarchy(VectorNative<AlternativeScope>& scopeHiera
         for (uint32_t i = 0; i < scopeHierarchy.size(); i++)
         {
             const auto& as = scopeHierarchy[i];
-            if (!as.scope)
+            if (as.scope)
             {
-                scopeHierarchy.erase_unordered(i);
-                i--;
-                continue;
-            }
-
-            if (as.scope->symTable.tryRead())
-            {
+                if (!as.scope->symTable.tryRead())
+                    continue;
                 const auto symbol = as.scope->symTable.findNoLock(identifier->token.text, identifierCrc);
                 as.scope->symTable.endRead();
                 if (symbol)
-                    Semantic::addSymbolMatch(symbolsMatch, symbol, as.scope, as.flags);
-                scopeHierarchy.erase_unordered(i);
-                i--;
+                    addSymbolMatch(symbolsMatch, symbol, as.scope, as.flags);
             }
+
+            scopeHierarchy.erase_unordered(i);
+            i--;
         }
     }
 }
