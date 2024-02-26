@@ -1655,8 +1655,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
                                     VectorNative<OneMatch*>&    genericMatches,
                                     VectorNative<OneMatch*>&    genericMatchesSI,
                                     bool                        forStruct,
-                                    uint32_t                    prevMatchesCount,
-                                    bool&                       hasError)
+                                    uint32_t                    prevMatchesCount)
 {
     const bool justCheck = flags.has(MIP_JUST_CHECK);
 
@@ -1674,23 +1673,15 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
     if (genericMatches.empty() && !genericMatchesSI.empty() && matches.empty() && prevMatchesCount)
     {
         if (justCheck)
-        {
-            hasError = false;
-            return true;
-        }
-        
-        hasError = SemanticError::cannotMatchIdentifierError(context, tryMatches, node);
-        return true;
+            return false;
+        return SemanticError::cannotMatchIdentifierError(context, tryMatches, node);
     }
 
     // Multi instantiation in case of #validif
     if (!genericMatchesSI.empty() && matches.empty() && !prevMatchesCount)
     {
         if (justCheck)
-        {
-            hasError = true;
             return true;
-        }
 
         Set<SymbolName*> symbols;
         for (const auto& g : genericMatchesSI)
@@ -1715,8 +1706,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
 
         for (auto& g : symbols)
             g->mutex.unlock();
-        
-        hasError = true;
+
         return true;
     }
 
@@ -1724,13 +1714,9 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
     if (genericMatches.size() == 1 && matches.empty())
     {
         if (justCheck && !flags.has(MIP_SECOND_GENERIC_TRY))
-        {
-            hasError = true;
             return true;
-        }
+
         SWAG_CHECK(Generic::instantiateGenericSymbol(context, *genericMatches[0], forStruct));
-        hasError = true;
-        
         return true;
     }
 
@@ -1741,22 +1727,17 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
         if (flags.has(MIP_FOR_ZERO_GHOSTING))
         {
             if (justCheck)
-            {
-                hasError = false;
-                return true;
-            }
+                return false;
+
             if (!node)
                 node = context->node;
 
             const auto symbol   = tryMatches[0]->overload->symbol;
             const auto match    = matches[0];
             const auto overload = match->symbolOverload;
-            hasError            = SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, overload->symbol->kind, overload->node);
-            return true;
-            
+            return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, overload->symbol->kind, overload->node);
         }
 
-        hasError = true;
         return true;
     }
 
@@ -1764,13 +1745,8 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
     if (genericMatches.size() > 1)
     {
         if (justCheck)
-        {
-            hasError = false;
-            return true;
-        }
-        
-        hasError = SemanticError::ambiguousGenericError(context, node, tryMatches, genericMatches);
-        return true;
+            return false;
+        return SemanticError::ambiguousGenericError(context, node, tryMatches, genericMatches);
     }
 
     // We remove all generated nodes, because if they exist, they do not participate in the error
@@ -1809,47 +1785,30 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
             {
                 const auto result = Semantic::matchIdentifierParameters(context, cpyOverloads, node, flags | MIP_JUST_CHECK | MIP_SECOND_GENERIC_TRY);
                 if (result)
-                {
-                    hasError = true;
                     return true;
-                }
             }
         }
 
         if (justCheck)
-        {
-            hasError = false;
-            return true;
-        }
+            return false;
 
-        hasError = SemanticError::cannotMatchIdentifierError(context, tryMatches, node);
-        return true;
-    }
-
-    // There is more than one possible match, and this is an identifier for a name alias.
-    // We are fine
-    if (matches.size() > 1 &&
-        node &&
-        node->is(AstNodeKind::Identifier) &&
-        node->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS))
-    {
-        hasError = true;
-        return true;
+        return SemanticError::cannotMatchIdentifierError(context, tryMatches, node);
     }
 
     // There is more than one possible match
     if (matches.size() > 1)
     {
-        if (justCheck)
-        {
-            hasError = false;
+        // This is an identifier for a name alias. We are fine.
+        if (node && node->is(AstNodeKind::Identifier) && node->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS))
             return true;
-        }
-        hasError = SemanticError::ambiguousOverloadError(context, node, tryMatches, matches, flags);
-        return true;
+
+        if (justCheck)
+            return false;
+        
+        return SemanticError::ambiguousOverloadError(context, node, tryMatches, matches, flags);
     }
 
-    return false;
+    return true;
 }
 
 bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, MatchIdParamsFlags flags)
@@ -1980,11 +1939,8 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     SWAG_CHECK(filterMatches(context, matches, genericMatches, genericMatchesSI));
     YIELD();
 
-    bool hasError = false;
-    if (dealWithMatchResults(context, tryMatches, node, flags, matches, genericMatches, genericMatchesSI, forStruct, prevMatchesCount, hasError))
-        return hasError;
-
-    return true;
+    // Process the results
+    return dealWithMatchResults(context, tryMatches, node, flags, matches, genericMatches, genericMatchesSI, forStruct, prevMatchesCount);
 }
 
 bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef)
