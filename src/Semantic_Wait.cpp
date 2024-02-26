@@ -183,7 +183,10 @@ void Semantic::waitOverloadCompleted(Job* job, const SymbolOverload* overload)
     SWAG_ASSERT(overload);
 
     {
-        SharedLock lk(overload->symbol->mutex);
+        // Note sure that we can have a problematic race condition here.
+        // And this lock creates contention. So remove it from now (26/02/2024).
+        
+        //SharedLock lk(overload->symbol->mutex);
         if (!overload->hasFlag(OVERLOAD_INCOMPLETE))
             return;
     }
