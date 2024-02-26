@@ -835,6 +835,11 @@ bool AstNode::isForceTakeAddress() const
     return false;
 }
 
+bool AstNode::hasIntrinsicName() const
+{
+    return token.text.length() > 1 && token.text[0] == '@';
+}
+
 void AstNode::swap2Children()
 {
     SWAG_ASSERT(childCount() == 2);

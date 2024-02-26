@@ -404,7 +404,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     bool genByteCode = true;
     if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
         genByteCode = false;
-    if (funcNode->token.text[0] == '@' && !funcNode->hasAstFlag(AST_DEFINED_INTRINSIC))
+    if (funcNode->hasIntrinsicName() && !funcNode->hasAstFlag(AST_DEFINED_INTRINSIC))
         genByteCode = false;
     if (funcNode->isForeign())
         genByteCode = false;

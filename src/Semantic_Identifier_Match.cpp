@@ -758,24 +758,16 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     YIELD();
 
     if (identifier->token.text == g_LangSpec->name_opInit)
-    {
         return context->report({identifier, identifier->token, toErr(Err0109)});
-    }
     if (identifier->token.text == g_LangSpec->name_opDrop)
-    {
         return context->report({identifier, identifier->token, toErr(Err0108)});
-    }
     if (identifier->token.text == g_LangSpec->name_opPostCopy)
-    {
         return context->report({identifier, identifier->token, toErr(Err0110)});
-    }
     if (identifier->token.text == g_LangSpec->name_opPostMove)
-    {
         return context->report({identifier, identifier->token, toErr(Err0111)});
-    }
 
     // Be sure this is not a 'forward' decl
-    if (funcDecl->isEmptyFct() && !funcDecl->isForeign() && identifier->token.text[0] != '@')
+    if (funcDecl->isEmptyFct() && !funcDecl->isForeign() && !identifier->hasIntrinsicName())
     {
         const Diagnostic err{identifier, identifier->token, formErr(Err0292, identifier->token.c_str())};
         return context->report(err, Diagnostic::hereIs(overload));
@@ -922,7 +914,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     identifier->kind = AstNodeKind::FuncCall;
 
     // @print behaves like a normal function, so we want an emitCall in that case
-    if (identifier->token.text[0] == '@' && identifier->token.isNot(TokenId::IntrinsicPrint))
+    if (identifier->hasIntrinsicName() && identifier->token.isNot(TokenId::IntrinsicPrint))
     {
         dealWithIntrinsic(context, identifier);
         identifier->byteCodeFct = ByteCodeGen::emitIntrinsic;
@@ -957,10 +949,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
     // Setup parent if necessary
     if (returnType->isStruct())
-    {
-        identifier->addSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT);
-        identifier->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
-    }
+        identifier->addSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT | SEMFLAG_IS_CONST_ASSIGN);
 
     SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
 
@@ -1735,7 +1724,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
         const auto symbol   = tryMatches[0]->overload->symbol;
         const auto overload = matches[0]->symbolOverload;
         return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, overload->symbol->kind, overload->node);
-    }    
+    }
 
     // Success !!!
     /////////////////////////////////////////////////////////////////////

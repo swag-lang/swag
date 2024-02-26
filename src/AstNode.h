@@ -335,6 +335,19 @@ struct AstNode
     bool isForeign() const;
     bool isSilentCall() const;
     bool isPublic() const;
+    bool isForceTakeAddress() const;
+
+    const Token& getTokenName() const;
+    Utf8         getScopedName() const;
+    void         setPassThrough();
+    bool         hasSpecialFuncCall() const;
+    bool         hasSpecialFuncCall(const Utf8& name) const;
+    AstNode*     inSimpleReturn() const;
+    bool         hasIntrinsicName() const;
+    void         computeLocation(SourceLocation& start, SourceLocation& end);
+    void         addAlternativeScope(Scope* scope, AltScopeFlags altFlags = 0);
+    void         addAlternativeScopeVar(Scope* scope, AstNode* varNode, AltScopeFlags altFlags = 0);
+    void         printLoc() const;
 
     bool is(AstNodeKind what) const { return kind == what; }
     bool isNot(AstNodeKind what) const { return kind != what; }
@@ -347,24 +360,12 @@ struct AstNode
     AstNode* findChild(AstNodeKind childKind) const;
     AstNode* findParentAttrUse(const Utf8& name) const;
     AstNode* findParent(TokenId tkn) const;
+    uint32_t childParentIdx() const;
+    void     swap2Children();
 
     AstNode* firstChild() const { return children.front(); }
     AstNode* lastChild() const { return children.back(); }
     uint32_t childCount() const { return children.size(); }
-
-    const Token& getTokenName() const;
-    Utf8         getScopedName() const;
-    void         setPassThrough();
-    void         swap2Children();
-    bool         hasSpecialFuncCall() const;
-    bool         hasSpecialFuncCall(const Utf8& name) const;
-    AstNode*     inSimpleReturn() const;
-    bool         isForceTakeAddress() const;
-    void         computeLocation(SourceLocation& start, SourceLocation& end);
-    void         addAlternativeScope(Scope* scope, AltScopeFlags altFlags = 0);
-    void         addAlternativeScopeVar(Scope* scope, AstNode* varNode, AltScopeFlags altFlags = 0);
-    uint32_t     childParentIdx() const;
-    void         printLoc() const;
 
     bool hasAstFlag(AstNodeFlags fl) const { return flags.has(fl); }
     void addAstFlag(AstNodeFlags fl) { flags.add(fl); }

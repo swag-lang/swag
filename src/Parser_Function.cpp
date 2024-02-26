@@ -719,13 +719,9 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
         isIntrinsic = tokenParse.token.text[0] == '@';
         if (isIntrinsic)
-        {
             SWAG_VERIFY(sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) || sourceFile->hasFlag(FILE_IS_RUNTIME_FILE), error(tokenParse.token, formErr(Err0294, tokenParse.token.c_str())));
-        }
         else
-        {
             SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0295, tokenParse.token.c_str())));
-        }
 
         funcNode->tokenName = tokenParse.token;
         funcNode->inheritTokenName(tokenParse.token);
