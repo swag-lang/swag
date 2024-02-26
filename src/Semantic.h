@@ -156,7 +156,7 @@ namespace Semantic
     bool           reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     bool           storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     bool           isFunctionButNotACall(SemanticContext* context, AstNode* node, const SymbolName* symbol);
-    bool           matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, MatchIdParamsFlags flags = 0);
+    bool           matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, MatchIdParamsFlags flags = 0);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);
@@ -180,8 +180,6 @@ namespace Semantic
     bool           processLiteralString(SemanticContext* context);
     bool           computeExpressionListTupleType(SemanticContext* context, AstNode* node);
     bool           getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* node, const SymbolOverload* overload, AstNode** result, AstNode** resultLeaf);
-    bool           canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* ufcsNode, bool nodeIsExplicit);
-    bool           getUfcs(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, const SymbolOverload* overload, AstNode** ufcsFirstParam);
     bool           appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, const SymbolOverload* overload);
     bool           fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* identifier, const SymbolOverload* overload, AstNode* ufcsFirstParam);
     bool           fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, const SymbolOverload* overload);
@@ -191,16 +189,8 @@ namespace Semantic
     TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
     bool           findEnumTypeInContext(SemanticContext* context, const AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has, VectorNative<SymbolOverload*>& testedOver);
     void           addSymbolMatch(VectorNative<OneSymbolMatch>& symbolsMatch, SymbolName* symName, Scope* scope, AltScopeFlags altFlags);
-    bool           ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
-    bool           filterGenericMatches(const SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches);
-    bool           filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);
     bool           solveValidIf(SemanticContext* context, const AstStruct* structDecl);
     bool           solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
-    bool           filterMatchesDirect(SemanticContext* context, VectorNative<OneMatch*>& matches);
-    bool           filterMatchesCompare(const SemanticContext* context, VectorNative<OneMatch*>& matches);
-    void           computeMatchesCoerceCast(VectorNative<OneMatch*>& matches);
-    bool           filterMatchesCoerceCast(SemanticContext* context, VectorNative<OneMatch*>& matches);
-    bool           filterSymbols(SemanticContext* context, AstIdentifier* node);
     void           flattenStructChildren(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
     bool           setFullResolve(SemanticContext* context, AstFuncDecl* funcNode);
     void           setFuncDeclParamsIndex(const AstFuncDecl* funcNode);
@@ -217,9 +207,22 @@ namespace Semantic
     AstIdentifier* createTmpId(SemanticContext* context, AstNode* node, const Utf8& name);
     bool           makeIntrinsicKindof(SemanticContext* context, AstNode* node);
     bool           computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef);
-    bool           waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job);
     bool           matchRetval(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier);
     bool           matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
+    bool           waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job);
+
+    bool ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
+    bool canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* ufcsNode, bool nodeIsExplicit);
+    bool getUfcs(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, const SymbolOverload* overload, AstNode** ufcsFirstParam);
+
+    void computeMatchesCoerceCast(VectorNative<OneMatch*>& matches);
+    bool filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genericMatches, VectorNative<OneMatch*>& genericMatchesSI);
+    bool filterMatchesDirect(SemanticContext* context, VectorNative<OneMatch*>& matches);
+    bool filterMatchesCompare(const SemanticContext* context, VectorNative<OneMatch*>& matches);
+    bool filterMatchesCoerceCast(SemanticContext* context, VectorNative<OneMatch*>& matches);
+    bool filterSymbols(SemanticContext* context, AstIdentifier* node);
+    bool filterGenericMatches(const SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches);
+    bool filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);
 
     Utf8 getCompilerFunctionString(const AstNode* node, TokenId id);
     bool sendCompilerMsgFuncDecl(SemanticContext* context);

@@ -20,6 +20,40 @@ namespace
             }
         }
     }
+
+    bool areGenericReplaceTypesIdentical(TypeInfo* typeInfo, const OneMatch& match)
+    {
+        if (typeInfo->kind != TypeInfoKind::FuncAttr)
+            return false;
+
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+        if (match.genericReplaceTypes.size() != typeFunc->replaceTypes.size())
+            return false;
+
+        for (const auto& rt : match.genericReplaceTypes)
+        {
+            auto it = typeFunc->replaceTypes.find(rt.first);
+            if (it == typeFunc->replaceTypes.end())
+                return false;
+            if (rt.second.typeInfoReplace != it->second.typeInfoReplace)
+                return false;
+        }
+
+        return true;
+    }
+
+    int scopeCost(const Scope* from, const Scope* to)
+    {
+        // Not sure if this is really correct, because we do not take care of 'using'
+        int cost = 0;
+        while (from && from != to)
+        {
+            cost += 1;
+            from = from->parentScope;
+        }
+
+        return cost;
+    }
 }
 
 bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMatch*>& matches)
@@ -457,43 +491,6 @@ bool Semantic::filterMatchesCoerceCast(SemanticContext*, VectorNative<OneMatch*>
     return true;
 }
 
-namespace
-{
-    bool areGenericReplaceTypesIdentical(TypeInfo* typeInfo, const OneMatch& match)
-    {
-        if (typeInfo->kind != TypeInfoKind::FuncAttr)
-            return false;
-
-        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
-        if (match.genericReplaceTypes.size() != typeFunc->replaceTypes.size())
-            return false;
-
-        for (const auto& rt : match.genericReplaceTypes)
-        {
-            auto it = typeFunc->replaceTypes.find(rt.first);
-            if (it == typeFunc->replaceTypes.end())
-                return false;
-            if (rt.second.typeInfoReplace != it->second.typeInfoReplace)
-                return false;
-        }
-
-        return true;
-    }
-
-    int scopeCost(const Scope* from, const Scope* to)
-    {
-        // Not sure if this is really correct, because we do not take care of 'using'
-        int cost = 0;
-        while (from && from != to)
-        {
-            cost += 1;
-            from = from->parentScope;
-        }
-
-        return cost;
-    }
-}
-
 bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches)
 {
     // We have a match and more than one generic match
@@ -804,5 +801,30 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
         }
     }
 
+    return true;
+}
+
+bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genericMatches, VectorNative<OneMatch*>& genericMatchesSI)
+{
+    if (matches.size() + genericMatches.size() + genericMatchesSI.size() > 1)
+    {
+        computeMatchesCoerceCast(matches);
+        computeMatchesCoerceCast(genericMatches);
+        computeMatchesCoerceCast(genericMatchesSI);
+    }
+
+    SWAG_CHECK(filterMatchesDirect(context, matches));
+    YIELD();
+
+    SWAG_CHECK(filterMatchesCompare(context, matches));
+    SWAG_CHECK(filterMatchesInContext(context, matches));
+    SWAG_CHECK(filterMatchesCoerceCast(context, matches));
+
+    SWAG_CHECK(filterGenericMatches(context, matches, genericMatches));
+    SWAG_CHECK(filterGenericMatches(context, matches, genericMatchesSI));
+    SWAG_CHECK(filterMatchesCoerceCast(context, genericMatches));
+    SWAG_CHECK(filterMatchesCoerceCast(context, genericMatchesSI));
+
+    SWAG_ASSERT(context->result == ContextResult::Done);
     return true;
 }

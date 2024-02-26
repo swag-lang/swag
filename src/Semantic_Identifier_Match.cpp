@@ -1407,7 +1407,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
     return true;
 }
 
-bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, MatchIdParamsFlags flags)
+bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, MatchIdParamsFlags flags)
 {
     bool  justCheck        = flags.has(MIP_JUST_CHECK);
     auto  job              = context->baseJob;
@@ -1420,7 +1420,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     context->bestSignatureInfos.clear();
 
     bool forStruct = false;
-    for (auto oneMatch : overloads)
+    for (auto oneMatch : tryMatches)
     {
         auto& oneOverload       = *oneMatch;
         auto  genericParameters = oneOverload.genericParameters;
@@ -1734,26 +1734,10 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         }
     }
 
-    if (matches.size() + genericMatches.size() + genericMatchesSI.size() > 1)
-    {
-        computeMatchesCoerceCast(matches);
-        computeMatchesCoerceCast(genericMatches);
-        computeMatchesCoerceCast(genericMatchesSI);
-    }
-
+    // Filter depending on various priorities
     auto prevMatchesCount = matches.size();
-    SWAG_CHECK(filterMatchesDirect(context, matches));
+    SWAG_CHECK(filterMatches(context, matches, genericMatches, genericMatchesSI));
     YIELD();
-    SWAG_CHECK(filterMatchesCompare(context, matches));
-    SWAG_CHECK(filterMatchesInContext(context, matches));
-    SWAG_CHECK(filterMatchesCoerceCast(context, matches));
-
-    SWAG_CHECK(filterGenericMatches(context, matches, genericMatches));
-    SWAG_CHECK(filterGenericMatches(context, matches, genericMatchesSI));
-    SWAG_CHECK(filterMatchesCoerceCast(context, genericMatches));
-    SWAG_CHECK(filterMatchesCoerceCast(context, genericMatchesSI));
-
-    SWAG_ASSERT(context->result == ContextResult::Done);
 
     // If to match an instance, we always need an automatic opCast, then we only keep generic matches in order
     // to create an instance with the exact type.
@@ -1770,7 +1754,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     {
         if (justCheck)
             return false;
-        return SemanticError::cannotMatchIdentifierError(context, overloads, node);
+        return SemanticError::cannotMatchIdentifierError(context, tryMatches, node);
     }
 
     // Multi instantiation in case of #validif
@@ -1825,15 +1809,10 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             if (!node)
                 node = context->node;
 
-            auto symbol = overloads[0]->overload->symbol;
-            auto match  = matches[0];
-            return SemanticError::duplicatedSymbolError(context,
-                                                        node->token.sourceFile,
-                                                        node->token,
-                                                        symbol->kind,
-                                                        symbol->name,
-                                                        match->symbolOverload->symbol->kind,
-                                                        match->symbolOverload->node);
+            auto symbol   = tryMatches[0]->overload->symbol;
+            auto match    = matches[0];
+            auto overload = match->symbolOverload;
+            return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, overload->symbol->kind, overload->node);
         }
 
         return true;
@@ -1844,26 +1823,25 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     {
         if (justCheck)
             return false;
-        return SemanticError::ambiguousGenericError(context, node, overloads, genericMatches);
+        return SemanticError::ambiguousGenericError(context, node, tryMatches, genericMatches);
     }
 
-    // We remove all generated nodes, because if they exist, they do not participate in the
-    // error
-    auto oneTry = overloads[0];
-    for (uint32_t i = 0; i < overloads.size(); i++)
+    // We remove all generated nodes, because if they exist, they do not participate in the error
+    auto oneTry = tryMatches[0];
+    for (uint32_t i = 0; i < tryMatches.size(); i++)
     {
-        if (overloads[i]->overload->node->hasAstFlag(AST_FROM_GENERIC))
+        if (tryMatches[i]->overload->node->hasAstFlag(AST_FROM_GENERIC))
         {
-            overloads[i] = overloads.back();
-            overloads.pop_back();
+            tryMatches[i] = tryMatches.back();
+            tryMatches.pop_back();
             i--;
         }
     }
 
     // Be sure to have something. This should raise in case of internal error only, because
     // we must have at least the generic symbol
-    if (overloads.empty())
-        overloads.push_back(oneTry);
+    if (tryMatches.empty())
+        tryMatches.push_back(oneTry);
 
     // There's no match at all
     if (matches.empty())
@@ -1871,7 +1849,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         if (!flags.has(MIP_SECOND_GENERIC_TRY))
         {
             VectorNative<OneTryMatch*> cpyOverloads;
-            for (auto& oneMatch : overloads)
+            for (auto& oneMatch : tryMatches)
             {
                 if (oneMatch->symMatchContext.result == MatchResult::NotEnoughGenericParameters &&
                     oneMatch->symMatchContext.genericParameters.empty())
@@ -1891,7 +1869,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         if (justCheck)
             return false;
 
-        return SemanticError::cannotMatchIdentifierError(context, overloads, node);
+        return SemanticError::cannotMatchIdentifierError(context, tryMatches, node);
     }
 
     // There is more than one possible match, and this is an identifier for a name alias.
@@ -1909,7 +1887,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     {
         if (justCheck)
             return false;
-        return SemanticError::ambiguousOverloadError(context, node, overloads, matches, flags);
+        return SemanticError::ambiguousOverloadError(context, node, tryMatches, matches, flags);
     }
 
     return true;
