@@ -994,18 +994,18 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
         // First test, with just a SharedLock for contention
         {
             SharedLock lkn(symbol->mutex);
-            if (!Semantic::needToWaitForSymbolNoLock(context, identifier, symbol))
+            if (!needToWaitForSymbolNoLock(context, identifier, symbol))
                 continue;
         }
 
         {
             // Do the test again, this time with a lock
             ScopedLock lkn(symbol->mutex);
-            if (!Semantic::needToWaitForSymbolNoLock(context, identifier, symbol))
+            if (!needToWaitForSymbolNoLock(context, identifier, symbol))
                 continue;
 
             // Can we make a partial match ?
-            if (Semantic::needToCompleteSymbolNoLock(context, identifier, symbol, true))
+            if (needToCompleteSymbolNoLock(context, identifier, symbol, true))
             {
                 waitSymbolNoLock(job, symbol);
                 return true;
@@ -1026,7 +1026,7 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
 
         // In case identifier is part of a reference, need to initialize it
         if (identifier != identifier->identifierRef()->lastChild())
-            SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
+            SWAG_CHECK(setupIdentifierRef(context, identifier));
 
         symbolsMatch.clear();
         return true;
