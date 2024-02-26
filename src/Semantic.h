@@ -102,6 +102,7 @@ namespace Semantic
     void collectAlternativeScopeVars(const AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
     void collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, CollectFlags flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
     bool collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, CollectFlags flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
+    bool collectAutoScope(SemanticContext* context, VectorNative<AlternativeScope>& scopeHierarchy, AstIdentifierRef* identifierRef, const AstIdentifier* identifier);
     bool findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
     bool findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
 

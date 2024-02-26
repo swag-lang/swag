@@ -31,6 +31,86 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef
     return findIdentifierInScopes(context, context->cacheSymbolsMatch, identifierRef, identifier);
 }
 
+bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<AlternativeScope>& scopeHierarchy, AstIdentifierRef* identifierRef, const AstIdentifier* identifier)
+{
+    VectorNative<TypeInfoEnum*>                      typeEnum;
+    VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
+    VectorNative<SymbolOverload*>                    testedOver;
+    SWAG_CHECK(Semantic::findEnumTypeInContext(context, identifierRef, typeEnum, hasEnum, testedOver));
+    YIELD();
+
+    // More than one match : ambiguous
+    if (typeEnum.size() > 1)
+    {
+        Diagnostic err{identifierRef, formErr(Err0018, identifier->token.c_str())};
+        for (const auto t : typeEnum)
+        {
+            auto msg = formNte(Nte0197, t->getDisplayNameC());
+            err.addNote(t->declNode, t->declNode->getTokenName(), msg);
+        }
+
+        return context->report(err);
+    }
+
+    // One single match : we are done
+    if (typeEnum.size() == 1)
+    {
+        identifierRef->startScope = typeEnum[0]->scope;
+        scopeHierarchy.clear();
+        Semantic::addAlternativeScopeOnce(scopeHierarchy, typeEnum[0]->scope);
+    }
+
+    // No match, we will try 'with'
+    else
+    {
+        const auto withNodeP = identifier->findParent(AstNodeKind::With);
+        if (!withNodeP)
+        {
+            if (!hasEnum.empty())
+            {
+                Diagnostic err{identifierRef, formErr(Err0708, identifier->token.c_str(), hasEnum[0].second->getDisplayNameC())};
+                const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
+                if (!closest.empty())
+                    err.addNote(closest);
+                if (hasEnum[0].first)
+                    err.addNote(hasEnum[0].first, Diagnostic::isType(hasEnum[0].first));
+                err.addNote(Diagnostic::hereIs(hasEnum[0].second->declNode));
+                return context->report(err);
+            }
+
+            Diagnostic err{identifierRef, formErr(Err0718, identifier->token.c_str())};
+
+            // Call to a function ?
+            if (testedOver.size() == 1)
+                err.addNote(Diagnostic::hereIs(testedOver[0]));
+
+            return context->report(err);
+        }
+
+        const auto withNode = castAst<AstWith>(withNodeP, AstNodeKind::With);
+
+        // Prepend the 'with' identifier, and reevaluate
+        for (int wi = static_cast<int>(withNode->id.size()) - 1; wi >= 0; wi--)
+        {
+            const auto id = Ast::newIdentifier(identifierRef, withNode->id[wi], nullptr, identifierRef);
+            id->addAstFlag(AST_GENERATED);
+            id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
+            id->allocateIdentifierExtension();
+            id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;
+            id->identifierExtension->fromAlternateVar = withNode->firstChild();
+            id->inheritTokenLocation(identifierRef->token);
+            identifierRef->children.pop_back();
+            Ast::addChildFront(identifierRef, id);
+            identifierRef->addSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE);
+            context->baseJob->nodes.push_back(id);
+        }
+
+        context->result = ContextResult::NewChildren;
+    }
+
+    return true;
+}
+
 bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     const auto job = context->baseJob;
@@ -64,94 +144,19 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         const auto startScope = identifierRef->startScope;
         if (!startScope || oneTry == 1)
         {
-            constexpr CollectFlags collectFlags = COLLECT_ALL;
-            const auto             scopeUpMode  = identifier->identifierExtension ? identifier->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
-            auto                   scopeUpValue = identifier->identifierExtension ? identifier->identifierExtension->scopeUpValue : TokenParse{};
-
             // :AutoScope
             // Auto scoping depending on the context
             // We scan the parent hierarchy for an already defined type that can be used for scoping
             if (identifierRef->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE) && !identifierRef->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE))
             {
-                VectorNative<TypeInfoEnum*>                      typeEnum;
-                VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
-                VectorNative<SymbolOverload*>                    testedOver;
-                SWAG_CHECK(findEnumTypeInContext(context, identifierRef, typeEnum, hasEnum, testedOver));
+                SWAG_CHECK(collectAutoScope(context, scopeHierarchy, identifierRef, identifier));
                 YIELD();
-
-                // More than one match : ambiguous
-                if (typeEnum.size() > 1)
-                {
-                    Diagnostic err{identifierRef, formErr(Err0018, identifier->token.c_str())};
-                    for (const auto t : typeEnum)
-                    {
-                        auto msg = formNte(Nte0197, t->getDisplayNameC());
-                        err.addNote(t->declNode, t->declNode->getTokenName(), msg);
-                    }
-
-                    return context->report(err);
-                }
-
-                // One single match : we are done
-                if (typeEnum.size() == 1)
-                {
-                    identifierRef->startScope = typeEnum[0]->scope;
-                    scopeHierarchy.clear();
-                    addAlternativeScopeOnce(scopeHierarchy, typeEnum[0]->scope);
-                }
-
-                // No match, we will try 'with'
-                else
-                {
-                    const auto withNodeP = identifier->findParent(AstNodeKind::With);
-                    if (!withNodeP)
-                    {
-                        if (!hasEnum.empty())
-                        {
-                            Diagnostic err{identifierRef, formErr(Err0708, identifier->token.c_str(), hasEnum[0].second->getDisplayNameC())};
-                            const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
-                            if (!closest.empty())
-                                err.addNote(closest);
-                            if (hasEnum[0].first)
-                                err.addNote(hasEnum[0].first, Diagnostic::isType(hasEnum[0].first));
-                            err.addNote(Diagnostic::hereIs(hasEnum[0].second->declNode));
-                            return context->report(err);
-                        }
-
-                        Diagnostic err{identifierRef, formErr(Err0718, identifier->token.c_str())};
-
-                        // Call to a function ?
-                        if (testedOver.size() == 1)
-                            err.addNote(Diagnostic::hereIs(testedOver[0]));
-
-                        return context->report(err);
-                    }
-
-                    const auto withNode = castAst<AstWith>(withNodeP, AstNodeKind::With);
-
-                    // Prepend the 'with' identifier, and reevaluate
-                    for (int wi = static_cast<int>(withNode->id.size()) - 1; wi >= 0; wi--)
-                    {
-                        const auto id = Ast::newIdentifier(identifierRef, withNode->id[wi], nullptr, identifierRef);
-                        id->addAstFlag(AST_GENERATED);
-                        id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
-                        id->allocateIdentifierExtension();
-                        id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;
-                        id->identifierExtension->fromAlternateVar = withNode->firstChild();
-                        id->inheritTokenLocation(identifierRef->token);
-                        identifierRef->children.pop_back();
-                        Ast::addChildFront(identifierRef, id);
-                        identifierRef->addSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE);
-                        context->baseJob->nodes.push_back(id);
-                    }
-
-                    context->result = ContextResult::NewChildren;
-                    return true;
-                }
             }
             else
             {
-                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifier, collectFlags, scopeUpMode, &scopeUpValue));
+                const auto scopeUpMode  = identifier->identifierExtension ? identifier->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
+                auto       scopeUpValue = identifier->identifierExtension ? identifier->identifierExtension->scopeUpValue : TokenParse{};
+                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifier, COLLECT_ALL, scopeUpMode, &scopeUpValue));
             }
 
             // Be sure this is the last try
