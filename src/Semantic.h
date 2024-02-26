@@ -207,7 +207,7 @@ namespace Semantic
     bool setSymbolMatchUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* identifier, AstNode* dependentVar);
     bool setMatchResultAndType(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
     bool setMatchResult(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
-    bool registerMatch(SemanticContext* context, AstNode* node, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genericMatches, VectorNative<OneMatch*>& genericMatchesSI, OneTryMatch& oneOverload, AstNode* genericParameters, AstNode* dependentVar, SymbolOverload* overload, SymbolName* symbol, TypeInfo* typeWasForced);
+    bool registerMatch(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genericMatches, VectorNative<OneMatch*>& genericMatchesSI, OneTryMatch& oneOverload, TypeInfo* typeWasForced);
     bool matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, MatchIdParamsFlags flags = 0);
     bool computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef);
     bool matchRetval(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier);

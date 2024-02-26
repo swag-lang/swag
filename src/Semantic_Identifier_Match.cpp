@@ -1407,18 +1407,20 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
     return true;
 }
 
-bool Semantic::registerMatch(SemanticContext*         context,
-                             AstNode*                 node,
-                             VectorNative<OneMatch*>& matches,
-                             VectorNative<OneMatch*>& genericMatches,
-                             VectorNative<OneMatch*>& genericMatchesSI,
-                             OneTryMatch&             oneOverload,
-                             AstNode*                 genericParameters,
-                             AstNode*                 dependentVar,
-                             SymbolOverload*          overload,
-                             SymbolName*              symbol,
-                             TypeInfo*                typeWasForced)
+bool Semantic::registerMatch(SemanticContext*            context,
+                             AstNode*                    node,
+                             VectorNative<OneTryMatch*>& tryMatches,
+                             VectorNative<OneMatch*>&    matches,
+                             VectorNative<OneMatch*>&    genericMatches,
+                             VectorNative<OneMatch*>&    genericMatchesSI,
+                             OneTryMatch&                oneOverload,
+                             TypeInfo*                   typeWasForced)
 {
+    const auto genericParameters = oneOverload.genericParameters;
+    const auto dependentVar      = oneOverload.dependentVar;
+    const auto overload          = oneOverload.overload;
+    const auto symbol            = overload->symbol;
+
     if (overload->hasFlag(OVERLOAD_GENERIC))
     {
         // Be sure that we would like to instantiate in case we do not have user generic parameters.
@@ -1461,6 +1463,7 @@ bool Semantic::registerMatch(SemanticContext*         context,
             match->matchFlags       = oneOverload.symMatchContext.matchFlags;
             match->castFlagsResult  = oneOverload.symMatchContext.castFlagsResult;
             matches.push_back(match);
+            tryMatches.clear();
             return true;
         }
 
@@ -1541,7 +1544,7 @@ bool Semantic::registerMatch(SemanticContext*         context,
         }
     }
 
-    return false;
+    return true;
 }
 
 bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, MatchIdParamsFlags flags)
@@ -1559,36 +1562,34 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     bool forStruct = false;
     for (const auto& oneMatch : tryMatches)
     {
-        auto&      oneOverload       = *oneMatch;
-        const auto genericParameters = oneOverload.genericParameters;
-        const auto callParameters    = oneOverload.callParameters;
-        const auto dependentVar      = oneOverload.dependentVar;
-        const auto overload          = oneOverload.overload;
-        const auto symbol            = overload->symbol;
+        auto& oneOverload = *oneMatch;
 
         if (oneOverload.symMatchContext.parameters.empty() && oneOverload.symMatchContext.genericParameters.empty())
         {
-            const auto symbolKind = symbol->kind;
+            const auto symbolKind = oneOverload.overload->symbol->kind;
 
             // For everything except functions/attributes/structs (which have overloads), this is a match
             if (symbolKind != SymbolKind::Attribute &&
                 symbolKind != SymbolKind::Function &&
                 symbolKind != SymbolKind::Struct &&
                 symbolKind != SymbolKind::Interface &&
-                !overload->typeInfo->isLambdaClosure())
+                !oneOverload.overload->typeInfo->isLambdaClosure())
             {
                 auto match              = context->getOneMatch();
-                match->symbolOverload   = overload;
+                match->symbolOverload   = oneOverload.overload;
                 match->scope            = oneMatch->scope;
                 match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                 match->solvedCastFlags  = std::move(oneOverload.symMatchContext.solvedCastFlags);
-                match->dependentVar     = dependentVar;
+                match->dependentVar     = oneOverload.dependentVar;
                 match->ufcs             = oneOverload.ufcs;
                 matches.push_back(match);
                 continue;
             }
         }
 
+        const auto overload       = oneOverload.overload;
+        const auto symbol         = overload->symbol;
+        
         // Major contention offender.
         // Do it in two passes, as most of the time if will fail
         {
@@ -1717,9 +1718,9 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 forcedFine                         = true;
             }
         }
-
+        
         // We need () for a function call !
-        const bool emptyParams = oneOverload.symMatchContext.parameters.empty() && !callParameters;
+        const bool emptyParams = oneOverload.symMatchContext.parameters.empty() && !oneOverload.callParameters;
         if (!forcedFine && emptyParams && oneOverload.symMatchContext.result == MatchResult::Ok && symbol->is(SymbolKind::Function))
         {
             oneOverload.symMatchContext.result = MatchResult::MissingParameters;
@@ -1745,11 +1746,12 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             }
         }
 
-        if (oneOverload.symMatchContext.result == MatchResult::Ok)
-        {
-            if (registerMatch(context, node, matches, genericMatches, genericMatchesSI, oneOverload, genericParameters, dependentVar, overload, symbol, typeWasForced))
-                break;
-        }
+        if (oneOverload.symMatchContext.result != MatchResult::Ok)
+            continue;
+
+        SWAG_CHECK(registerMatch(context, node, tryMatches, matches, genericMatches, genericMatchesSI, oneOverload, typeWasForced));
+        if (tryMatches.empty())
+            break;
     }
 
     // Filter depending on various priorities
