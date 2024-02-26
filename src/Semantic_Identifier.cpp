@@ -1034,6 +1034,7 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
 
     return true;
 }
+
 bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags)
 {
     const auto job                = context->baseJob;
@@ -1175,7 +1176,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             return true;
 
         if (identifier->hasSemFlag(SEMFLAG_FORCE_UFCS))
-            SemanticError::unknownIdentifierError(context, identifierRef, castAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
+            return SemanticError::unknownIdentifierError(context, identifierRef, castAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
 
         return false;
     }

@@ -197,8 +197,6 @@ void Semantic::findSymbolsInHierarchy(VectorNative<AlternativeScope>& scopeHiera
 
 bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
-    const auto job = context->baseJob;
-
     // When this is "retval" type, no need to do fancy things, we take the corresponding function
     // return symbol. This will avoid some ambiguous resolutions with multiple tuples/structs.
     if (identifier->token.text == g_LangSpec->name_retval)
@@ -214,78 +212,55 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         return true;
     }
 
+    const auto job                = context->baseJob;
     auto&      scopeHierarchy     = context->cacheScopeHierarchy;
     auto&      scopeHierarchyVars = context->cacheScopeHierarchyVars;
     const auto identifierCrc      = identifier->token.text.hash();
 
-    bool forceEnd  = false;
-    bool checkWait = false;
-
-    // We make 2 tries at max : one try with the previous symbol scope (A.B), and one try with the collected scope
-    // hierarchy. We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
-    for (int oneTry = 0; oneTry < 2 && !forceEnd; oneTry++)
+    // First, we search in the specified scope, if defined
+    const auto startScope = identifierRef->startScope;
+    if (startScope)
     {
-        const auto startScope = identifierRef->startScope;
-        if (!startScope || oneTry == 1)
-        {
-            SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifierRef, identifier));
-            YIELD();
-            forceEnd = true; // Be sure this is the last try
-        }
-        else
-        {
-            SWAG_CHECK(collectScopeHierarchy(startScope, scopeHierarchy, scopeHierarchyVars, symbolsMatch, identifierRef, identifier, identifierCrc));
-            if (!symbolsMatch.empty())
-                break;
-        }
-
-        // Search symbol in all the scopes of the hierarchy
+        SWAG_CHECK(collectScopeHierarchy(startScope, scopeHierarchy, scopeHierarchyVars, symbolsMatch, identifierRef, identifier, identifierCrc));
+        if (!symbolsMatch.empty())
+            return true;
         findSymbolsInHierarchy(scopeHierarchy, symbolsMatch, identifier, identifierCrc);
         if (!symbolsMatch.empty())
-            break;
+            return true;
 
-        // It can happen than types are not completed when collecting hierarchies, so we can miss some scopes (because of using).
-        // If the types are completed between the collect and the waitTypeCompleted, then we won't find the missing hierarchies,
-        // because we won't parse again.
-        // So here, if we do not find symbols, then we restart until all types are completed.
-        if (!checkWait)
-        {
-            // If we dereference something, be sure the owner has been completed
-            if (identifierRef->startScope)
-            {
-                waitTypeCompleted(job, identifierRef->startScope->owner->typeInfo);
-                YIELD();
-            }
+        waitTypeCompleted(job, startScope->owner->typeInfo);
+        YIELD();
 
-            // Same if dereference is implied by a using var
-            for (const auto& sv : scopeHierarchyVars)
-            {
-                waitTypeCompleted(job, sv.scope->owner->typeInfo);
-                YIELD();
-            }
-
-            forceEnd  = false;
-            checkWait = true;
-            oneTry--;
-            continue;
-        }
-
-        checkWait = false;
-
-        // We raise an error if we have tried to resolve with the normal scope hierarchy, and not just the scope
-        // from the previous symbol
-        if (oneTry || forceEnd || !identifierRef->startScope || !identifierRef->previousResolvedNode)
-        {
-            if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
-                return true;
-            SemanticError::unknownIdentifierError(context, identifierRef, identifier);
-            return false;
-        }
+        if (!identifierRef->previousResolvedNode && identifierRef->hasAstFlag(AST_SILENT_CHECK))
+            return true;
+        if (!identifierRef->previousResolvedNode)
+            return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
 
         identifier->addSemFlag(SEMFLAG_FORCE_UFCS);
     }
 
-    return true;
+    // We then search in the normal hierarchy
+    // We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
+    SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifierRef, identifier));
+    YIELD();
+    findSymbolsInHierarchy(scopeHierarchy, symbolsMatch, identifier, identifierCrc);
+    if (!symbolsMatch.empty())
+        return true;
+
+    // It can happen than types are not completed when collecting hierarchies, so we can miss some scopes (because of using).
+    // If the types are completed between the collect and the waitTypeCompleted, then we won't find the missing hierarchies,
+    // because we won't parse again.
+    // So here, if we do not find symbols, then we restart until all types are completed.
+    for (const auto& sv : scopeHierarchyVars)
+    {
+        waitTypeCompleted(job, sv.scope->owner->typeInfo);
+        YIELD();
+    }
+
+    // Error, no symbol !
+    if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
+        return true;
+    return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
 }
 
 void Semantic::collectAlternativeScopes(const AstNode* startNode, VectorNative<AlternativeScope>& scopes)

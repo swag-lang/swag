@@ -152,7 +152,7 @@ namespace
     }
 }
 
-void SemanticError::unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node)
+bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
     // What kind of thing to we search for ?
     auto searchFor = IdentifierSearchFor::Whatever;
@@ -216,5 +216,5 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     }
 
     commonErrorNotes(context, {}, node, err, notes);
-    context->report(*err, notes);
+    return context->report(*err, notes);
 }

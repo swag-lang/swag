@@ -51,7 +51,7 @@ namespace SemanticError
     bool ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, MatchIdParamsFlags flags);
     bool ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& matches);
 
-    void unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node);
+    bool unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node);
 
     void commonErrorNotes(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes);
     bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
