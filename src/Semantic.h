@@ -214,6 +214,8 @@ namespace Semantic
     bool           makeIntrinsicKindof(SemanticContext* context, AstNode* node);
     bool           computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef);
     bool           waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job);
+    bool           matchRetval(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier);
+    bool           matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
 
     Utf8 getCompilerFunctionString(const AstNode* node, TokenId id);
     bool sendCompilerMsgFuncDecl(SemanticContext* context);

@@ -2059,3 +2059,52 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
 
     return true;
 }
+
+bool Semantic::matchRetval(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier)
+{
+    // Be sure this is correct
+    SWAG_CHECK(resolveRetVal(context));
+    const auto fctDecl = identifier->hasOwnerInline() ? identifier->ownerInline()->func : identifier->ownerFct;
+    SWAG_ASSERT(fctDecl);
+    const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(fctDecl->typeInfo, TypeInfoKind::FuncAttr);
+    SWAG_ASSERT(typeFct->returnType->isStruct());
+    addSymbolMatch(symbolsMatch, typeFct->returnType->declNode->resolvedSymbolName(), nullptr, 0);
+    return true;
+}
+
+bool Semantic::matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
+{
+    SWAG_VERIFY(identifier->ownerFct, context->report({identifier, toErr(Err0447)}));
+    AstNode* parent = identifier;
+    while (parent->ownerFct->hasAttribute(ATTRIBUTE_SHARP_FUNC) && parent->ownerFct->parent->ownerFct)
+        parent = parent->ownerFct->parent;
+    SWAG_VERIFY(parent, context->report({parent, toErr(Err0447)}));
+
+    if (parent->ownerScope->is(ScopeKind::Struct) || parent->ownerScope->is(ScopeKind::Enum))
+    {
+        parent = parent->ownerScope->owner;
+        identifier->addAstFlag(AST_CAN_MATCH_INCOMPLETE);
+    }
+    else
+    {
+        SWAG_VERIFY(parent->ownerFct, context->report({parent, toErr(Err0447)}));
+        parent = parent->ownerFct;
+
+        // Force scope
+        if (!identifier->callParameters && identifier != identifierRef->lastChild())
+        {
+            identifier->addSemFlag(SEMFLAG_FORCE_SCOPE);
+            identifier->typeInfo                = g_TypeMgr->typeInfoVoid;
+            identifierRef->previousResolvedNode = identifier;
+            if (identifier->hasOwnerInline())
+                identifierRef->startScope = identifier->ownerInline()->parametersScope;
+            else
+                identifierRef->startScope = identifier->ownerFct->scope;
+            identifier->addAstFlag(AST_NO_BYTECODE);
+            return true;
+        }
+    }
+
+    addSymbolMatch(symbolsMatch, parent->resolvedSymbolName(), nullptr, 0);
+    return true;
+}
