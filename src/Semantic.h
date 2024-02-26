@@ -140,8 +140,8 @@ namespace Semantic
     bool           setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMatch, AstIdentifierRef* idRef, AstIdentifier* identifier, SymbolOverload* overload);
     bool           setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier, const SymbolOverload* overload);
     bool           setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier, const SymbolOverload* overload, TypeInfo* typeAlias);
-    bool           setIdentifierSymbolAndType(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
-    bool           setIdentifierSymbol(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
+    bool           setMatchResultAndType(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
+    bool           setMatchResult(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
     bool           setSymbolMatchUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* identifier, AstNode* dependentVar);
     void           resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcNode, const TypeInfo* resolvedType);
     void           allocateOnStack(AstNode* node, const TypeInfo* typeInfo);
@@ -213,6 +213,7 @@ namespace Semantic
     AstIdentifier* createTmpId(SemanticContext* context, AstNode* node, const Utf8& name);
     bool           makeIntrinsicKindof(SemanticContext* context, AstNode* node);
     bool           computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef);
+    bool           waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job);
 
     Utf8 getCompilerFunctionString(const AstNode* node, TokenId id);
     bool sendCompilerMsgFuncDecl(SemanticContext* context);

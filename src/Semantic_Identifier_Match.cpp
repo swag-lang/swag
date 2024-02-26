@@ -1137,7 +1137,7 @@ bool Semantic::setSymbolMatchUsingVar(SemanticContext* context, AstIdentifierRef
     return true;
 }
 
-bool Semantic::setIdentifierSymbolAndType(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
+bool Semantic::setMatchResultAndType(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
 {
     if (identifier->isSilentCall())
         identifier->typeInfo = identifierRef->typeInfo;
@@ -1146,11 +1146,11 @@ bool Semantic::setIdentifierSymbolAndType(SemanticContext* context, AstIdentifie
     else
         identifier->typeInfo = oneMatch.symbolOverload->typeInfo;
 
-    SWAG_CHECK(setIdentifierSymbol(context, identifierRef, identifier, oneMatch));
+    SWAG_CHECK(setMatchResult(context, identifierRef, identifier, oneMatch));
     return true;
 }
 
-bool Semantic::setIdentifierSymbol(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
+bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
 {
     const auto symbol       = oneMatch.symbolOverload->symbol;
     const auto overload     = oneMatch.symbolOverload;

@@ -984,6 +984,56 @@ bool Semantic::resolveIdentifier(SemanticContext* context)
     return resolveIdentifier(context, node, RI_ZERO);
 }
 
+bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job)
+{
+    auto& symbolsMatch = context->cacheSymbolsMatch;
+    for (const auto& p : symbolsMatch)
+    {
+        const auto symbol = p.symbol;
+
+        // First test, with just a SharedLock for contention
+        {
+            SharedLock lkn(symbol->mutex);
+            if (!Semantic::needToWaitForSymbolNoLock(context, identifier, symbol))
+                continue;
+        }
+
+        {
+            // Do the test again, this time with a lock
+            ScopedLock lkn(symbol->mutex);
+            if (!Semantic::needToWaitForSymbolNoLock(context, identifier, symbol))
+                continue;
+
+            // Can we make a partial match ?
+            if (Semantic::needToCompleteSymbolNoLock(context, identifier, symbol, true))
+            {
+                waitSymbolNoLock(job, symbol);
+                return true;
+            }
+
+            // Be sure that we have at least a registered incomplete symbol
+            SWAG_ASSERT(symbol->overloads.size() == 1);
+            if (!symbol->overloads[0]->hasFlag(OVERLOAD_INCOMPLETE))
+            {
+                waitSymbolNoLock(job, symbol);
+                return true;
+            }
+        }
+
+        // Partial resolution
+        identifier->setResolvedSymbol(symbol, symbol->overloads[0]);
+        identifier->typeInfo = identifier->resolvedSymbolOverload()->typeInfo;
+
+        // In case identifier is part of a reference, need to initialize it
+        if (identifier != identifier->identifierRef()->lastChild())
+            SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
+
+        symbolsMatch.clear();
+        return true;
+    }
+
+    return true;
+}
 bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags)
 {
     const auto job                = context->baseJob;
@@ -1040,7 +1090,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             OneMatch oneMatch;
             oneMatch.symbolOverload = identifier->resolvedSymbolOverload();
             oneMatch.scope          = identifier->resolvedSymbolOverload()->node->ownerScope;
-            SWAG_CHECK(setIdentifierSymbol(context, identifierRef, identifier, oneMatch));
+            SWAG_CHECK(setMatchResult(context, identifierRef, identifier, oneMatch));
         }
 
         return true;
@@ -1066,10 +1116,8 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         {
             SWAG_CHECK(findIdentifierInScopes(context, identifierRef, identifier));
             if (context->result != ContextResult::Done)
-            {
                 symbolsMatch.clear();
-                return true;
-            }
+            YIELD();
         }
 
         // Because of #self
@@ -1111,49 +1159,10 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     }
 
     // If one of my dependent symbol is not fully solved, we need to wait
-    for (const auto& p : symbolsMatch)
-    {
-        const auto symbol = p.symbol;
-
-        // First test, with just a SharedLock for contention
-        {
-            SharedLock lkn(symbol->mutex);
-            if (!needToWaitForSymbolNoLock(context, identifier, symbol))
-                continue;
-        }
-
-        {
-            // Do the test again, this time with a lock
-            ScopedLock lkn(symbol->mutex);
-            if (!needToWaitForSymbolNoLock(context, identifier, symbol))
-                continue;
-
-            // Can we make a partial match ?
-            if (needToCompleteSymbolNoLock(context, identifier, symbol, true))
-            {
-                waitSymbolNoLock(job, symbol);
-                return true;
-            }
-
-            // Be sure that we have at least a registered incomplete symbol
-            SWAG_ASSERT(symbol->overloads.size() == 1);
-            if (!symbol->overloads[0]->hasFlag(OVERLOAD_INCOMPLETE))
-            {
-                waitSymbolNoLock(job, symbol);
-                return true;
-            }
-        }
-
-        // Partial resolution
-        identifier->setResolvedSymbol(symbol, symbol->overloads[0]);
-        identifier->typeInfo = identifier->resolvedSymbolOverload()->typeInfo;
-
-        // In case identifier is part of a reference, need to initialize it
-        if (identifier != identifier->identifierRef()->lastChild())
-            SWAG_CHECK(setupIdentifierRef(context, identifier));
-
+    SWAG_CHECK(waitForSymbols(context, identifier, job));
+    if (symbolsMatch.empty())
         return true;
-    }
+    YIELD();
 
     // Do the actual match
     SWAG_CHECK(computeMatch(context, identifier, riFlags, symbolsMatch, identifierRef));
@@ -1164,7 +1173,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     {
         if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
             return true;
-        
+
         if (identifier->hasSemFlag(SEMFLAG_FORCE_UFCS))
             SemanticError::unknownIdentifierError(context, identifierRef, castAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
 
@@ -1200,7 +1209,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         }
     }
 
-    SWAG_CHECK(setIdentifierSymbolAndType(context, identifierRef, identifier, *match));
+    SWAG_CHECK(setMatchResultAndType(context, identifierRef, identifier, *match));
     YIELD();
 
     return true;
