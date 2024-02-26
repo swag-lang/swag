@@ -1596,6 +1596,57 @@ bool Semantic::needToWaitForSymbol(Job* job, SymbolName* symbol)
     return true;
 }
 
+bool Semantic::tryOneMatch(SemanticContext* context, OneTryMatch& oneOverload, const SymbolOverload* overload, TypeInfo* rawTypeInfo, MatchIdParamsFlags flags)
+{
+    // This way, a special cast can be done for the first parameter of a function
+    if (oneOverload.ufcs)
+        oneOverload.symMatchContext.matchFlags |= SymbolMatchContext::MATCH_UFCS;
+
+    // We collect type replacements depending on where the identifier is
+    Generic::setContextualGenericTypeReplacement(context, oneOverload, overload, flags);
+
+    oneOverload.symMatchContext.semContext = context;
+    context->castFlagsResult               = 0;
+
+    if (rawTypeInfo->isStruct())
+    {
+        const auto typeInfo = castTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
+        Match::match(typeInfo, oneOverload.symMatchContext);
+    }
+    else if (rawTypeInfo->isInterface())
+    {
+        const auto typeInfo = castTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Interface);
+        Match::match(typeInfo, oneOverload.symMatchContext);
+    }
+    else if (rawTypeInfo->isFuncAttr())
+    {
+        const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr);
+        Match::match(typeInfo, oneOverload.symMatchContext);
+    }
+    else if (rawTypeInfo->isLambdaClosure())
+    {
+        const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::LambdaClosure);
+        Match::match(typeInfo, oneOverload.symMatchContext);
+    }
+    else if (rawTypeInfo->isKindGeneric())
+    {
+        oneOverload.symMatchContext.result = MatchResult::Ok;
+    }
+    else if (rawTypeInfo->isArray())
+    {
+        const auto typeArr   = castTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
+        const auto typeFinal = TypeManager::concreteType(typeArr->finalType);
+        const auto typeInfo  = castTypeInfo<TypeInfoFuncAttr>(typeFinal, TypeInfoKind::LambdaClosure);
+        Match::match(typeInfo, oneOverload.symMatchContext);
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+
+    return true;
+}
+
 bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, MatchIdParamsFlags flags)
 {
     const bool justCheck        = flags.has(MIP_JUST_CHECK);
@@ -1664,55 +1715,10 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             }
         }
 
-        // This way, a special cast can be done for the first parameter of a function
-        if (oneOverload.ufcs)
-            oneOverload.symMatchContext.matchFlags |= SymbolMatchContext::MATCH_UFCS;
+        forStruct = rawTypeInfo->isStruct() || rawTypeInfo->isInterface();
 
-        // We collect type replacements depending on where the identifier is
-        Generic::setContextualGenericTypeReplacement(context, oneOverload, overload, flags);
-
-        oneOverload.symMatchContext.semContext = context;
-        context->castFlagsResult               = 0;
-
-        if (rawTypeInfo->isStruct())
-        {
-            forStruct           = true;
-            const auto typeInfo = castTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
-            Match::match(typeInfo, oneOverload.symMatchContext);
-            YIELD();
-        }
-        else if (rawTypeInfo->isInterface())
-        {
-            forStruct           = true;
-            const auto typeInfo = castTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Interface);
-            Match::match(typeInfo, oneOverload.symMatchContext);
-        }
-        else if (rawTypeInfo->isFuncAttr())
-        {
-            const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr);
-            Match::match(typeInfo, oneOverload.symMatchContext);
-        }
-        else if (rawTypeInfo->isLambdaClosure())
-        {
-            const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::LambdaClosure);
-            Match::match(typeInfo, oneOverload.symMatchContext);
-        }
-        else if (rawTypeInfo->isKindGeneric())
-        {
-            oneOverload.symMatchContext.result = MatchResult::Ok;
-        }
-        else if (rawTypeInfo->isArray())
-        {
-            const auto typeArr   = castTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
-            const auto typeFinal = TypeManager::concreteType(typeArr->finalType);
-            const auto typeInfo  = castTypeInfo<TypeInfoFuncAttr>(typeFinal, TypeInfoKind::LambdaClosure);
-            Match::match(typeInfo, oneOverload.symMatchContext);
-        }
-        else
-        {
-            SWAG_ASSERT(false);
-        }
-
+        // The main deal ! Try the match
+        SWAG_CHECK(tryOneMatch(context, oneOverload, overload, rawTypeInfo, flags));
         YIELD();
 
         // For a function, sometime, we do not want call parameters
