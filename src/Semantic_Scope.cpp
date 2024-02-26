@@ -111,6 +111,63 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Alternati
     return true;
 }
 
+bool Semantic::collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopeHierarchy, VectorNative<AlternativeScopeVar>& scopeHierarchyVars, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
+{
+    // :AutoScope
+    // Auto scoping depending on the context
+    // We scan the parent hierarchy for an already defined type that can be used for scoping
+    if (identifierRef->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE) && !identifierRef->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE))
+    {
+        SWAG_CHECK(collectAutoScope(context, scopeHierarchy, identifierRef, identifier));
+        YIELD();
+    }
+    else
+    {
+        const auto scopeUpMode  = identifier->identifierExtension ? identifier->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
+        auto       scopeUpValue = identifier->identifierExtension ? identifier->identifierExtension->scopeUpValue : TokenParse{};
+        SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifier, COLLECT_ALL, scopeUpMode, &scopeUpValue));
+    }
+
+    return true;
+}
+
+bool Semantic::collectScopeHierarchy(Scope*                             startScope,
+                                     VectorNative<AlternativeScope>&    scopeHierarchy,
+                                     VectorNative<AlternativeScopeVar>& scopeHierarchyVars,
+                                     VectorNative<OneSymbolMatch>&      symbolsMatch,
+                                     const AstIdentifierRef*            identifierRef,
+                                     const AstIdentifier*               identifier,
+                                     uint32_t                           identifierCrc)
+{
+    addAlternativeScopeOnce(scopeHierarchy, startScope);
+
+    // No need to go further if we have found the symbol in the parent identifierRef scope (if specified).
+    const auto symbol = startScope->symTable.find(identifier->token.text, identifierCrc);
+    if (symbol)
+    {
+        addSymbolMatch(symbolsMatch, symbol, startScope, 0);
+        return true;
+    }
+
+    // Only deal with previous scope if the previous node wants to
+    bool addAlternative = true;
+    if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->hasSemFlag(SEMFLAG_FORCE_SCOPE))
+        addAlternative = false;
+
+    if (addAlternative)
+    {
+        // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
+        // relevant and we should not use it
+        if (startScope->isNot(ScopeKind::Namespace) && startScope->owner->extension)
+        {
+            collectAlternativeScopes(startScope->owner, scopeHierarchy);
+            collectAlternativeScopeVars(startScope->owner, scopeHierarchy, scopeHierarchyVars);
+        }
+    }
+
+    return true;
+}
+
 bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     const auto job = context->baseJob;
@@ -132,7 +189,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
 
     auto&      scopeHierarchy     = context->cacheScopeHierarchy;
     auto&      scopeHierarchyVars = context->cacheScopeHierarchyVars;
-    const auto crc                = identifier->token.text.hash();
+    const auto identifierCrc      = identifier->token.text.hash();
 
     bool forceEnd  = false;
     bool checkWait = false;
@@ -144,56 +201,16 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         const auto startScope = identifierRef->startScope;
         if (!startScope || oneTry == 1)
         {
-            // :AutoScope
-            // Auto scoping depending on the context
-            // We scan the parent hierarchy for an already defined type that can be used for scoping
-            if (identifierRef->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE) && !identifierRef->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE))
-            {
-                SWAG_CHECK(collectAutoScope(context, scopeHierarchy, identifierRef, identifier));
-                YIELD();
-            }
-            else
-            {
-                const auto scopeUpMode  = identifier->identifierExtension ? identifier->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
-                auto       scopeUpValue = identifier->identifierExtension ? identifier->identifierExtension->scopeUpValue : TokenParse{};
-                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifier, COLLECT_ALL, scopeUpMode, &scopeUpValue));
-            }
-
-            // Be sure this is the last try
-            forceEnd = true;
+            SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifierRef, identifier));
+            YIELD();
+            forceEnd = true; // Be sure this is the last try
         }
         else
         {
-            addAlternativeScopeOnce(scopeHierarchy, startScope);
-
-            // No need to go further if we have found the symbol in the parent identifierRef scope (if specified).
-            const auto symbol = startScope->symTable.find(identifier->token.text, crc);
-            if (symbol)
-            {
-                addSymbolMatch(symbolsMatch, symbol, startScope, 0);
-            }
-            else
-            {
-                // Only deal with previous scope if the previous node wants to
-                bool addAlternative = true;
-                if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->hasSemFlag(SEMFLAG_FORCE_SCOPE))
-                    addAlternative = false;
-
-                if (addAlternative)
-                {
-                    // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
-                    // relevant and we should not use it
-                    if (startScope->isNot(ScopeKind::Namespace) && startScope->owner->extension)
-                    {
-                        collectAlternativeScopes(startScope->owner, scopeHierarchy);
-                        collectAlternativeScopeVars(startScope->owner, scopeHierarchy, scopeHierarchyVars);
-                    }
-                }
-            }
+            SWAG_CHECK(collectScopeHierarchy(startScope, scopeHierarchy, scopeHierarchyVars, symbolsMatch, identifierRef, identifier, identifierCrc));
+            if (!symbolsMatch.empty())
+                break;
         }
-
-        if (!symbolsMatch.empty())
-            break;
 
         // Search symbol in all the scopes of the hierarchy
         while (!scopeHierarchy.empty())
@@ -210,7 +227,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
 
                 if (as.scope->symTable.tryRead())
                 {
-                    const auto symbol = as.scope->symTable.findNoLock(identifier->token.text, crc);
+                    const auto symbol = as.scope->symTable.findNoLock(identifier->token.text, identifierCrc);
                     as.scope->symTable.endRead();
                     if (symbol)
                         addSymbolMatch(symbolsMatch, symbol, as.scope, as.flags);
@@ -223,7 +240,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         if (!symbolsMatch.empty())
             break;
 
-        // If can happen than types are not completed when collecting hierarchies, so we can miss some scopes (because of using).
+        // It can happen than types are not completed when collecting hierarchies, so we can miss some scopes (because of using).
         // If the types are completed between the collect and the waitTypeCompleted, then we won't find the missing hierarchies,
         // because we won't parse again.
         // So here, if we do not find symbols, then we restart until all types are completed.
