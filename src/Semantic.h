@@ -138,16 +138,6 @@ namespace Semantic
     void           setOwnerMaxStackSize(AstNode* node, uint32_t size);
     bool           makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     bool           makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
-    void           sortParameters(AstNode* allParams);
-    void           dealWithIntrinsic(const SemanticContext* context, AstIdentifier* identifier);
-    bool           setSymbolMatchCallParams(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier);
-    bool           setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMatch, AstIdentifierRef* idRef, AstIdentifier* identifier, SymbolOverload* overload);
-    bool           setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier, const SymbolOverload* overload);
-    bool           setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier, const SymbolOverload* overload, TypeInfo* typeAlias);
-    bool           setMatchResultAndType(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
-    bool           setMatchResult(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
-    bool           setSymbolMatchUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* identifier, AstNode* dependentVar);
-    void           resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcNode, const TypeInfo* resolvedType);
     void           allocateOnStack(AstNode* node, const TypeInfo* typeInfo);
     bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcNode, AstNode* parameters, bool forGenerics);
     Diagnostic*    computeNonConstExprNote(AstNode* node);
@@ -156,7 +146,6 @@ namespace Semantic
     bool           reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     bool           storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     bool           isFunctionButNotACall(SemanticContext* context, AstNode* node, const SymbolName* symbol);
-    bool           matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, MatchIdParamsFlags flags = 0);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);
@@ -206,10 +195,23 @@ namespace Semantic
     TypeInfo*      getConcreteTypeUnRef(AstNode* node, ToConcreteFlags concreteFlags);
     AstIdentifier* createTmpId(SemanticContext* context, AstNode* node, const Utf8& name);
     bool           makeIntrinsicKindof(SemanticContext* context, AstNode* node);
-    bool           computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef);
-    bool           matchRetval(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier);
-    bool           matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
     bool           waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job);
+
+    void sortParameters(AstNode* allParams);
+    void dealWithIntrinsic(const SemanticContext* context, AstIdentifier* identifier);
+    void resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcNode, const TypeInfo* resolvedType);
+    bool setSymbolMatchCallParams(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier);
+    bool setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMatch, AstIdentifierRef* idRef, AstIdentifier* identifier, SymbolOverload* overload);
+    bool setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier, const SymbolOverload* overload);
+    bool setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier, const SymbolOverload* overload, TypeInfo* typeAlias);
+    bool setSymbolMatchUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* identifier, AstNode* dependentVar);
+    bool setMatchResultAndType(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
+    bool setMatchResult(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
+    bool registerMatch(SemanticContext* context, AstNode* node, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genericMatches, VectorNative<OneMatch*>& genericMatchesSI, OneTryMatch& oneOverload, AstNode* genericParameters, AstNode* dependentVar, SymbolOverload* overload, SymbolName* symbol, TypeInfo* typeWasForced);
+    bool matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, MatchIdParamsFlags flags = 0);
+    bool computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef);
+    bool matchRetval(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier);
+    bool matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
 
     bool ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     bool canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* ufcsNode, bool nodeIsExplicit);
