@@ -813,16 +813,6 @@ bool AstNode::isPublic() const
     return false;
 }
 
-bool AstNode::isFunctionCall() const
-{
-    if(hasAttribute(AST_FUNC_CALL))
-        return true;
-    if (isNot(AstNodeKind::Identifier))
-        return false;
-    const auto id = castAst<AstIdentifier>(this, AstNodeKind::Identifier);
-    return id->callParameters != nullptr;
-}
-
 bool AstNode::isForceTakeAddress() const
 {
     if (hasAstFlag(AST_TAKE_ADDRESS) && !hasSemFlag(SEMFLAG_FORCE_NO_TAKE_ADDRESS))

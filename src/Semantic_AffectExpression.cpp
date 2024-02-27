@@ -104,7 +104,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     if (left->is(AstNodeKind::IdentifierRef))
     {
         // If not, try to find the culprit type
-        for (int i = left->children.count - 1; i >= 0; i--)
+        for (uint32_t i = left->children.count - 1; i != UINT32_MAX; i--)
         {
             const auto child     = left->children[i];
             const auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCE_ALIAS);
@@ -121,7 +121,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
                 }
             }
 
-            if (child->isFunctionCall() && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
+            if (child->hasAstFlag(AST_FUNC_CALL) && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
             {
                 left = child;
                 hint = formNte(Nte0119, left->typeInfo->getDisplayNameC());
