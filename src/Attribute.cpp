@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Attribute.h"
 
-OneAttribute* AttributeList::getAttribute(const Utf8& fullName)
+const OneAttribute* AttributeList::getAttribute(const Utf8& fullName) const
 {
     SWAG_RACE_CONDITION_READ(raceCond);
     for (auto& it : allAttributes)

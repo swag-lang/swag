@@ -4,9 +4,12 @@
 #include "RaceCondition.h"
 #include "Token.h"
 
+struct AstNode;
 struct TypeInfo;
+struct TypeInfoFuncAttr;
 
-using AttributeFlags                                   = Flags<uint64_t>;
+using AttributeFlags = Flags<uint64_t>;
+
 constexpr AttributeFlags ATTRIBUTE_CONSTEXPR           = 0x0000000000000001;
 constexpr AttributeFlags ATTRIBUTE_PRINT_BC            = 0x0000000000000002;
 constexpr AttributeFlags ATTRIBUTE_TEST_FUNC           = 0x0000000000000004;
@@ -67,9 +70,6 @@ constexpr AttributeFlags ATTRIBUTE_ACCESS_MASK   = ATTRIBUTE_PUBLIC | ATTRIBUTE_
 constexpr AttributeFlags ATTRIBUTE_MATCH_MASK    = ATTRIBUTE_MATCH_VALIDIF_OFF | ATTRIBUTE_MATCH_SELF_OFF;
 constexpr AttributeFlags ATTRIBUTE_OVERFLOW_MASK = ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF;
 
-struct TypeInfoFuncAttr;
-struct AstNode;
-
 struct AttributeParameter
 {
     Token         token;
@@ -91,7 +91,7 @@ struct OneAttribute
 
 struct AttributeList
 {
-    OneAttribute*             getAttribute(const Utf8& fullName);
+    const OneAttribute*       getAttribute(const Utf8& fullName) const;
     void                      getAttributes(VectorNative<const OneAttribute*>& res, const Utf8& fullName) const;
     const AttributeParameter* getParam(const Utf8& fullName, const Utf8& parameter) const;
     const ComputedValue*      getValue(const Utf8& fullName, const Utf8& parameter) const;
