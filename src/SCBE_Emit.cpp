@@ -14,7 +14,7 @@ void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip,
     else
     {
         if (ip->hasFlag(BCI_IMM_B))
-            pp.emitLoad8Immediate(RCX, static_cast<uint8_t>(min(ip->b.u32, (uint32_t) numBits - 1)));
+            pp.emitLoad8Immediate(RCX, static_cast<uint8_t>(min(ip->b.u32, static_cast<uint32_t>(numBits) - 1)));
         else
         {
             pp.emitLoad32Indirect(REG_OFFSET(ip->b.u32), RCX);

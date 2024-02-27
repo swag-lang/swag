@@ -57,7 +57,7 @@ void SymTableHash::addElem(SymbolName* data, uint32_t crc)
 
     buffer[idx].hash       = crc;
     buffer[idx].symbolName = data;
-    maxLength              = max(maxLength, (uint32_t) data->name.length());
+    maxLength              = max(maxLength, data->name.length());
     count += 1;
 }
 

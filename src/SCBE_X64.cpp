@@ -1142,7 +1142,7 @@ void SCBE_X64::emitOpNIndirectDst(CPURegister reg, uint64_t value, CPUOp op, CPU
         op == CPUOp::SHL)
     {
         SWAG_ASSERT(reg == RAX);
-        value = min(value, (uint32_t) numBits - 1);
+        value = min(value, static_cast<uint32_t>(numBits) - 1);
 
         emitREX(concat, numBits);
         if (value == 1)
@@ -1325,7 +1325,7 @@ void SCBE_X64::emitOpNImmediate(CPURegister reg, uint64_t value, CPUOp op, CPUBi
             case CPUOp::SHR:
             case CPUOp::SHL:
                 emitREX(concat, numBits);
-                value = min(value, (uint32_t) numBits - 1);
+                value = min(value, static_cast<uint32_t>(numBits) - 1);
                 if (value == 1)
                 {
                     emitSpec8(concat, 0xD1, numBits);

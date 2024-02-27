@@ -8,7 +8,7 @@
 #include "TypeManager.h"
 
 #undef BYTECODE_OP
-#define BYTECODE_OP(__op, __flags, __dis) {__flags, (uint32_t) strlen(#__op), #__op, __dis},
+#define BYTECODE_OP(__op, __flags, __dis) {__flags, static_cast<uint32_t>(strlen(#__op)), #__op, __dis},
 ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 #include "ByteCodeOpList.h"
 };
@@ -367,7 +367,7 @@ uint32_t ByteCode::computeCrc(const ByteCodeInstruction* ip, uint32_t oldCrc, bo
     else if (hasSomethingInA(ip))
         oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->a.pointer), oldCrc);
 
-    // For a jump, we compute the crc to go the destination (if two jump nodes
+    // For a jump, we compute the crc to go to the destination (if two jump nodes
     // are going to the same instruction, then we consider they are equal)
     if (specialJump && ip->op == ByteCodeOp::Jump)
     {
@@ -388,7 +388,7 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     if (numInstructions + room < maxInstructions)
         return;
 
-    const auto oldSize = static_cast<int>(maxInstructions * sizeof(ByteCodeInstruction));
+    const auto oldSize = static_cast<uint32_t>(maxInstructions * sizeof(ByteCodeInstruction));
     maxInstructions    = max(numInstructions + room * 2, maxInstructions * 2);
 
     // Evaluate the first number of instructions for a given function.
@@ -398,7 +398,7 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     {
         const auto funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         // 0.8f is kind of magical, based on various measures.
-        maxInstructions = static_cast<int>(static_cast<float>(funcDecl->nodeCounts) * 0.8f);
+        maxInstructions = static_cast<uint32_t>(static_cast<float>(funcDecl->nodeCounts) * 0.8f);
     }
 
     maxInstructions            = max(maxInstructions, 8);
