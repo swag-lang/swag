@@ -1031,7 +1031,7 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
 
 bool Semantic::resolveIdentifier(SemanticContext* context)
 {
-    const auto node = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    const auto node = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
     return resolveIdentifier(context, node, RI_ZERO);
 }
 

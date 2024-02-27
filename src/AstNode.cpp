@@ -222,7 +222,6 @@ void AstNode::release()
             Allocator::free<AstIdentifierRef>(this);
             break;
         case AstNodeKind::Identifier:
-        case AstNodeKind::FuncCall:
             Allocator::free<AstIdentifier>(this);
             break;
         case AstNodeKind::FuncDecl:
@@ -406,7 +405,6 @@ AstNode* AstNode::clone(CloneContext& context)
         case AstNodeKind::IdentifierRef:
             return clone<AstIdentifierRef>(this, context);
         case AstNodeKind::Identifier:
-        case AstNodeKind::FuncCall:
             return clone<AstIdentifier>(this, context);
         case AstNodeKind::FuncDecl:
             return clone<AstFuncDecl>(this, context);
@@ -815,13 +813,12 @@ bool AstNode::isPublic() const
     return false;
 }
 
-bool AstNode::isFunctionCall()
+bool AstNode::isFunctionCall() const
 {
-    if (is(AstNodeKind::FuncCall))
+    if(hasAttribute(AST_FUNC_CALL))
         return true;
     if (isNot(AstNodeKind::Identifier))
         return false;
-
     const auto id = castAst<AstIdentifier>(this, AstNodeKind::Identifier);
     return id->callParameters != nullptr;
 }

@@ -161,7 +161,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     {
         // For a function, if no parameters, then this is for a lambda
         const auto back = child->lastChild();
-        if (back->isNot(AstNodeKind::FuncCall))
+        if (!back->hasAstFlag(AST_FUNC_CALL))
         {
             if (back->isNot(AstNodeKind::Identifier))
                 return resolveMakePointerLambda(context);

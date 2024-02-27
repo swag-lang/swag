@@ -356,7 +356,7 @@ bool ByteCodeGen::emitIntrinsicCVaArg(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
 {
-    auto node       = castAst<AstIdentifier>(context->node, AstNodeKind::FuncCall);
+    auto node       = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
     auto callParams = castAst<AstNode>(node->children[0], AstNodeKind::FuncCallParams);
 
     // If the intrinsic is defined in runtime, then need to wait for the function bytecode
@@ -1497,7 +1497,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     node->resultRegisterRc = reserveRegisterRC(context);
 
     auto testReturn = node;
-    if (testReturn->is(AstNodeKind::Identifier) || testReturn->is(AstNodeKind::FuncCall))
+    if (testReturn->is(AstNodeKind::Identifier))
     {
         // We need a copy in #ast functions
         if (!node->ownerFct || !node->ownerFct->hasAttribute(ATTRIBUTE_AST_FUNC))
@@ -1535,7 +1535,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     // No need to put the result on the stack and copy the result later, just make a direct reference to
     // the field address
     testReturn = node;
-    if (testReturn->is(AstNodeKind::Identifier) || testReturn->is(AstNodeKind::FuncCall))
+    if (testReturn->is(AstNodeKind::Identifier))
         testReturn = testReturn->parent;
 
     if (testReturn->parent->is(AstNodeKind::FuncCallParam) &&

@@ -120,7 +120,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     {
         const AstIdentifier* identifier = nullptr;
         if (node->parent->is(AstNodeKind::Identifier))
-            identifier = castAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+            identifier = castAst<AstIdentifier>(node->parent, AstNodeKind::Identifier);
         for (uint32_t i = 0; i < func->parameters->childCount(); i++)
         {
             const auto funcParam = func->parameters->children[i];

@@ -224,9 +224,9 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
     const AstNode* genericParameters = nullptr;
 
     // node can be null when we try to resolve a userOp
-    if (node && (node->is(AstNodeKind::Identifier) || node->is(AstNodeKind::FuncCall)))
+    if (node && node->is(AstNodeKind::Identifier))
     {
-        const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+        const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         genericParameters     = identifier->genericParameters;
     }
     else

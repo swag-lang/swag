@@ -167,7 +167,6 @@ enum class AstNodeKind : uint8_t
     FuncDeclType,
     FuncCallParams,
     FuncCallParam,
-    FuncCall,
     Return,
     RetVal,
     EnumType,
@@ -329,7 +328,7 @@ struct AstNode
     bool isSameStackFrame(const SymbolOverload* overload) const;
     bool isSpecialFunctionName() const;
     bool isSpecialFunctionGenerated() const;
-    bool isFunctionCall();
+    bool isFunctionCall() const;
     bool isGeneratedSelf() const;
     bool isEmptyFct();
     bool isForeign() const;

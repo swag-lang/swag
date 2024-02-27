@@ -1752,27 +1752,21 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         case AstNodeKind::Identifier:
         {
-            const auto ident = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
-            if (ident->identifierExtension && ident->identifierExtension->scopeUpMode != IdentifierScopeUpMode::None)
+            const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
+            if (identifier->identifierExtension && identifier->identifierExtension->scopeUpMode != IdentifierScopeUpMode::None)
             {
                 CONCAT_FIXED_STR(concat, "#up");
-                if (ident->identifierExtension->scopeUpMode == IdentifierScopeUpMode::Count &&
-                    ident->identifierExtension->scopeUpValue.literalValue.u8 > 1)
+                if (identifier->identifierExtension->scopeUpMode == IdentifierScopeUpMode::Count &&
+                    identifier->identifierExtension->scopeUpValue.literalValue.u8 > 1)
                 {
                     concat.addChar('(');
-                    concat.addStringFormat("%d", ident->identifierExtension->scopeUpValue.literalValue.u8);
+                    concat.addStringFormat("%d", identifier->identifierExtension->scopeUpValue.literalValue.u8);
                     concat.addChar(')');
                 }
 
                 concat.addChar(' ');
             }
 
-            [[fallthrough]];
-        }
-
-        case AstNodeKind::FuncCall:
-        {
-            const auto identifier = castAst<AstIdentifier>(node);
             concat.addString(node->token.text);
 
             if (identifier->genericParameters)

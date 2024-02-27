@@ -70,7 +70,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
         // Before was a function call
         else if (idRefSymbolName->is(SymbolKind::Function) &&
                  identifierRef->previousResolvedNode &&
-                 identifierRef->previousResolvedNode->is(AstNodeKind::FuncCall))
+                 identifierRef->previousResolvedNode->hasAstFlag(AST_FUNC_CALL))
             canTry = true;
         // Before was an inlined function call
         else if (idRefSymbolName->is(SymbolKind::Function) &&
@@ -115,7 +115,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
         if (idRefSymbolName &&
             idRefSymbolName->is(SymbolKind::Function) &&
             identifierRef->previousResolvedNode &&
-            identifierRef->previousResolvedNode->is(AstNodeKind::FuncCall))
+            identifierRef->previousResolvedNode->hasAstFlag(AST_FUNC_CALL))
         {
             fine = true;
         }
@@ -139,7 +139,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
 {
     const auto symbol       = match.symbolOverload->symbol;
     const auto dependentVar = match.dependentVar;
-    const auto node         = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    const auto node         = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
 
     const auto fctCallParam        = Ast::newNode<AstFuncCallParam>(AstNodeKind::FuncCallParam, nullptr, nullptr);
     fctCallParam->token.sourceFile = node->token.sourceFile;
@@ -173,7 +173,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     const auto idRef = Ast::newIdentifierRef(nullptr, fctCallParam);
     if (symbol->is(SymbolKind::Variable))
     {
-        if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->is(AstNodeKind::FuncCall))
+        if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->hasAstFlag(AST_FUNC_CALL))
         {
             // Function that returns an interface, used as an ufcs.
             // Ex: var cfg = @compiler().getBuildCfg()

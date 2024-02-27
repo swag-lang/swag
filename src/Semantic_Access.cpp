@@ -213,12 +213,10 @@ namespace
         if (!Semantic::canInheritAccess(n))
             return nullptr;
 
-        if (n->is(AstNodeKind::Identifier) || n->is(AstNodeKind::FuncCall))
+        if (n->is(AstNodeKind::Identifier))
         {
             if (n->hasSemFlag(SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
-            {
                 return n;
-            }
         }
 
         if (n->is(AstNodeKind::Identifier) ||

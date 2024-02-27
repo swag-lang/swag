@@ -893,11 +893,6 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
                 if (!identifier->hasAstFlag(AST_INLINED))
                 {
                     identifier->addAstFlag(AST_INLINED);
-
-                    // In case of an inline call inside an inline function, the identifier kind has been changed to
-                    // AstNodeKind::FuncCall in the original function. So we restore it to be a simple identifier.
-                    identifier->kind = AstNodeKind::Identifier;
-
                     SWAG_CHECK(Semantic::makeInline(context, funcDecl, identifier));
                 }
                 else
@@ -911,7 +906,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         }
     }
 
-    identifier->kind = AstNodeKind::FuncCall;
+    identifier->addAstFlag(AST_FUNC_CALL);
 
     // @print behaves like a normal function, so we want an emitCall in that case
     if (identifier->hasIntrinsicName() && identifier->token.isNot(TokenId::IntrinsicPrint))

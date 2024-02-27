@@ -350,17 +350,19 @@ Utf8 Naming::kindName(const AstNode* node, Utf8& article)
         }
 
         case AstNodeKind::Identifier:
+            if(node->hasAstFlag(AST_FUNC_CALL))
+            {
+                article = "a";
+                return "function call";
+            }
+
             article = "an";
             return "identifier";
 
         case AstNodeKind::IntrinsicProp:
             article = "an";
             return "intrinsic";
-
-        case AstNodeKind::FuncCall:
-            article = "a";
-            return "function call";
-
+        
         case AstNodeKind::TypeExpression:
             article = "a";
             return "type";
