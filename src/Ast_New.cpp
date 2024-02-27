@@ -138,7 +138,7 @@ AstIdentifierRef* Ast::newMultiIdentifierRef(const Utf8& name, Parser* parser, A
         const auto id = Ast::newNode<AstIdentifier>(AstNodeKind::Identifier, parser, node);
         SWAG_ASSERT(id->token.sourceFile);
         id->semanticFct      = Semantic::resolveIdentifier;
-        id->token.text.count = static_cast<int>(pz - pzStart);
+        id->token.text.count = static_cast<uint32_t>(pz - pzStart);
         if (name.allocated)
         {
             id->token.text = Utf8{pzStart, id->token.text.count};

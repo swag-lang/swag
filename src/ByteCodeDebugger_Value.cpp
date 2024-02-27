@@ -230,7 +230,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += form("0x%016llx", ptr);
             str += " ";
             Utf8 str1;
-            str1.setView(static_cast<const char*>(ptr->name.buffer), static_cast<int>(ptr->name.count));
+            str1.setView(static_cast<const char*>(ptr->name.buffer), static_cast<uint32_t>(ptr->name.count));
             str += Log::colorToVTS(LogColor::Type);
             str += str1;
             str += Log::colorToVTS(LogColor::Default);

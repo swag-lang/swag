@@ -391,9 +391,9 @@ bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Job*
     if (precompileIndex == 1) // :SegZeroIsData
     {
         SWAG_ASSERT(g_Workspace->bootstrapModule);
-        addFunctionsToJob(g_Workspace->bootstrapModule, job, 0, static_cast<int>(g_Workspace->bootstrapModule->byteCodeFuncToGen.size()));
+        addFunctionsToJob(g_Workspace->bootstrapModule, job, 0, g_Workspace->bootstrapModule->byteCodeFuncToGen.size());
         SWAG_ASSERT(g_Workspace->runtimeModule);
-        addFunctionsToJob(g_Workspace->runtimeModule, job, 0, static_cast<int>(g_Workspace->runtimeModule->byteCodeFuncToGen.size()));
+        addFunctionsToJob(g_Workspace->runtimeModule, job, 0, g_Workspace->runtimeModule->byteCodeFuncToGen.size());
     }
 
     addFunctionsToJob(buildParameters.module, job, start, end);

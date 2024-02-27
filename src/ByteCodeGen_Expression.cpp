@@ -31,7 +31,7 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitUserOp(context, child0, nullptr, false));
         YIELD();
-        EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRc)->b.s32 = static_cast<int>(child0->resultRegisterRc.size()); // After the "if not null"
+        EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRc)->b.s32 = static_cast<int32_t>(child0->resultRegisterRc.size()); // After the "if not null"
         freeRegisterRC(context, node->resultRegisterRc);
         node->resultRegisterRc = child1->resultRegisterRc;
     }
@@ -61,7 +61,7 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
                 break;
         }
 
-        inst->b.s32 = static_cast<int>(child0->resultRegisterRc.size()); // After the "if not null"
+        inst->b.s32 = static_cast<int32_t>(child0->resultRegisterRc.size()); // After the "if not null"
     }
 
     // If not null
@@ -105,7 +105,7 @@ bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 
     // After this, this is the IfFalse block, so update jump value after the expression
     const auto inst = &context->bc->out[binNode->seekJumpIfFalse];
-    inst->b.s32     = static_cast<int>(context->bc->numInstructions - binNode->seekJumpIfFalse - 1);
+    inst->b.s32     = static_cast<int32_t>(context->bc->numInstructions - binNode->seekJumpIfFalse - 1);
 
     return true;
 }
@@ -127,7 +127,7 @@ bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
 
     // Update jump after the IfTrue block
     const auto inst = &context->bc->out[node->seekJumpAfterIfFalse];
-    inst->b.s32     = static_cast<int>(context->bc->numInstructions - node->seekJumpAfterIfFalse - 1);
+    inst->b.s32     = static_cast<int32_t>(context->bc->numInstructions - node->seekJumpAfterIfFalse - 1);
 
     freeRegisterRC(context, expression);
     freeRegisterRC(context, ifTrue);

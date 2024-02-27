@@ -65,7 +65,7 @@ bool ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
         }
 
         SET_OP(ipJump, ByteCodeOp::JumpIfError);
-        ipJump->b.s32 = static_cast<int>(bc->numInstructions - cpt - 2);
+        ipJump->b.s32 = static_cast<int32_t>(bc->numInstructions - cpt - 2);
 
         bc->numInstructions += countErrInst;
         bc->out[bc->numInstructions - 1] = saveEnd;

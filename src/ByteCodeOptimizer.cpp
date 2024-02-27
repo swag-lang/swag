@@ -309,11 +309,11 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 
         if (ByteCode::isJump(ip))
         {
-            const auto srcJump = static_cast<int>(ip - context->bc->out);
+            const auto srcJump = static_cast<int32_t>(ip - context->bc->out);
             const auto dstJump = srcJump + ip->b.s32 + 1;
             for (const auto nop : context->nops)
             {
-                const auto idxNop = static_cast<int>(nop - context->bc->out);
+                const auto idxNop = static_cast<int32_t>(nop - context->bc->out);
 
                 // If this is a ordered jump, and there's a nop between the destination jump
                 // and the jump, then we need to remove one jump instruction
@@ -335,11 +335,11 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
             const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(ip->d.u32));
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
             {
-                const auto srcJump = static_cast<int>(ip - context->bc->out);
+                const auto srcJump = static_cast<int32_t>(ip - context->bc->out);
                 const auto dstJump = srcJump + table[idx] + 1;
                 for (const auto nop : context->nops)
                 {
-                    const auto idxNop = static_cast<int>(nop - context->bc->out);
+                    const auto idxNop = static_cast<int32_t>(nop - context->bc->out);
                     if (srcJump < dstJump && idxNop > srcJump && idxNop < dstJump)
                         table[idx]--;
                     else if (srcJump > dstJump && idxNop >= dstJump && idxNop < srcJump)
@@ -351,7 +351,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
         *ipDest++ = *ip++;
     }
 
-    context->bc->numInstructions -= static_cast<int>(context->nops.size());
+    context->bc->numInstructions -= context->nops.size();
     context->nops.clear();
 }
 
@@ -371,7 +371,7 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
             nop++;
     }
 
-    for (int it = 0; it < static_cast<int>(context->jumps.size()); it++)
+    for (uint32_t it = 0; it < context->jumps.size(); it++)
     {
         const auto jump = context->jumps[it];
         SWAG_ASSERT(ByteCode::isJumpOrDyn(jump));
@@ -502,18 +502,18 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
         totalInstructions /= g_ThreadMgr.numWorkers * 4;
         totalInstructions = max(totalInstructions, 1);
 
-        size_t startIndex = 0;
+        uint32_t startIndex = 0;
         while (startIndex < module->byteCodeFunc.size())
         {
             const auto newJob    = Allocator::alloc<ByteCodeOptimizerJob>();
             newJob->module       = module;
             newJob->dependentJob = job;
-            newJob->startIndex   = static_cast<int>(startIndex);
-            newJob->endIndex     = static_cast<int>(min(startIndex + 1, module->byteCodeFunc.size()));
+            newJob->startIndex   = startIndex;
+            newJob->endIndex     = min(startIndex + 1, module->byteCodeFunc.size());
             startIndex           = newJob->endIndex;
 
             auto curInst = module->byteCodeFunc[newJob->startIndex]->numInstructions;
-            while (curInst < totalInstructions && newJob->endIndex + 1 < static_cast<int>(module->byteCodeFunc.size()))
+            while (curInst < totalInstructions && newJob->endIndex + 1 < module->byteCodeFunc.size())
             {
                 const auto bc = module->byteCodeFunc[newJob->endIndex];
                 if (bc->canEmit())

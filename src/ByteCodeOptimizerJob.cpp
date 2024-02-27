@@ -17,7 +17,7 @@ JobResult ByteCodeOptimizerJob::execute()
     optContext.module = module;
 
     bool restart = false;
-    for (int i = startIndex; i < endIndex; i++)
+    for (uint32_t i = startIndex; i < endIndex; i++)
     {
         const auto bc = module->byteCodeFunc[i];
         if (!ByteCodeOptimizer::optimize(optContext, bc, restart))

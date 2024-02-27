@@ -10,6 +10,6 @@ struct ByteCodeOptimizerJob final : Job
     void release() override { Allocator::free<ByteCodeOptimizerJob>(this); }
 
     ByteCodeOptContext optContext;
-    int                startIndex;
-    int                endIndex;
+    uint32_t           startIndex;
+    uint32_t           endIndex;
 };

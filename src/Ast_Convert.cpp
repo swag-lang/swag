@@ -72,10 +72,10 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     identifier->callParameters = newFuncCallParams(nullptr, identifier);
     identifier->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
 
-    int countParams = static_cast<int>(fromNode->childCount());
+    uint32_t countParams = fromNode->childCount();
     if (parentForRef == fromNode)
         countParams--;
-    for (int i = 0; i < countParams; i++)
+    for (uint32_t i = 0; i < countParams; i++)
     {
         const auto   oneChild = fromNode->children[i];
         const auto   oneParam = newFuncCallParam(nullptr, identifier->callParameters);
@@ -99,7 +99,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     // For a tuple initialization, every parameter must be covered
     if (!fromType && typeStruct->isTuple())
     {
-        const int maxCount = static_cast<int>(typeStruct->fields.size());
+        const uint32_t maxCount = typeStruct->fields.size();
         if (countParams > maxCount)
         {
             const Diagnostic err{fromNode->children[maxCount], formErr(Err0636, maxCount, countParams)};

@@ -278,7 +278,7 @@ struct Context
 {
     ByteCodeOptContext*       context = nullptr;
     ByteCode*                 bc      = nullptr;
-    int                       state   = 0;
+    uint32_t                  state   = 0;
     Set<ByteCodeInstruction*> statesHere;
     Vector<State*>            states;
     bool                      canSetConstants = true;
@@ -2424,7 +2424,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
 
     for (uint32_t i = 0; i < cxt.states.size(); i++)
     {
-        cxt.state = static_cast<int>(i);
+        cxt.state = i;
         SWAG_CHECK(optimizePassSanityStack(context, cxt));
         if (i == cxt.states.size() - 1)
             break;

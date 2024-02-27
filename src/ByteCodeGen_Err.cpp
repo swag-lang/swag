@@ -296,7 +296,7 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
     SWAG_CHECK(emitTryThrowExit(context, tryNode));
     YIELD();
 
-    context->bc->out[tryNode->seekInsideJump].b.s32 = static_cast<int>(context->bc->numInstructions - tryNode->seekInsideJump - 1);
+    context->bc->out[tryNode->seekInsideJump].b.s32 = static_cast<int32_t>(context->bc->numInstructions - tryNode->seekInsideJump - 1);
     SWAG_ASSERT(context->bc->out[tryNode->seekInsideJump].b.s32);
     return true;
 }
@@ -321,7 +321,7 @@ bool ByteCodeGen::emitTryCatch(ByteCodeGenContext* context)
     SWAG_CHECK(emitTryThrowExit(context, tryNode));
     YIELD();
 
-    context->bc->out[tryNode->seekInsideJump].b.s32 = static_cast<int>(context->bc->numInstructions - tryNode->seekInsideJump - 1);
+    context->bc->out[tryNode->seekInsideJump].b.s32 = static_cast<int32_t>(context->bc->numInstructions - tryNode->seekInsideJump - 1);
     SWAG_ASSERT(context->bc->out[tryNode->seekInsideJump].b.s32);
     return true;
 }
@@ -359,6 +359,6 @@ bool ByteCodeGen::emitAssume(ByteCodeGenContext* context)
     EMIT_INST1(context, ByteCodeOp::InternalFailedAssume, r1);
     freeRegisterRC(context, r1);
 
-    context->bc->out[assumeNode->seekInsideJump].b.s32 = static_cast<int>(context->bc->numInstructions - assumeNode->seekInsideJump - 1);
+    context->bc->out[assumeNode->seekInsideJump].b.s32 = static_cast<int32_t>(context->bc->numInstructions - assumeNode->seekInsideJump - 1);
     return true;
 }

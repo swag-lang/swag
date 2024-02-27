@@ -237,7 +237,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
 
     // Update all returns to jump at the end of the inline block
     for (const auto r : node->returnList)
-        context->bc->out[r->seekJump].b.s32 = static_cast<int>(context->bc->numInstructions - r->seekJump - 1);
+        context->bc->out[r->seekJump].b.s32 = static_cast<int32_t>(context->bc->numInstructions - r->seekJump - 1);
 
     // If the inlined function returns a reference, and we want a value, we need to unref
     if (node->parent->hasSemFlag(SEMFLAG_FROM_REF) && !node->parent->isForceTakeAddress())
@@ -294,14 +294,14 @@ bool ByteCodeGen::emitIf(ByteCodeGenContext* context)
     // Resolve ByteCodeOp::Jump expression, after the if block
     if (ifNode->elseBlock)
     {
-        instruction->b.s32 = static_cast<int>(diff);
+        instruction->b.s32 = static_cast<int32_t>(diff);
 
         instruction        = context->bc->out + ifNode->seekJumpAfterIf;
         diff               = context->bc->numInstructions - ifNode->seekJumpAfterIf;
-        instruction->b.s32 = static_cast<int>(diff - 1);
+        instruction->b.s32 = static_cast<int32_t>(diff - 1);
     }
     else
-        instruction->b.s32 = static_cast<int>(diff - 1);
+        instruction->b.s32 = static_cast<int32_t>(diff - 1);
 
     return true;
 }
@@ -356,7 +356,7 @@ bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
     {
         const auto instruction = context->bc->out + node->seekJumpExpression;
         const auto diff        = node->seekJumpAfterBlock - node->seekJumpExpression;
-        instruction->b.s32     = static_cast<int>(diff - 1);
+        instruction->b.s32     = static_cast<int32_t>(diff - 1);
     }
 
     if (!node->hasSpecialFuncCall())
@@ -608,7 +608,7 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         const auto inst = EMIT_INST0(context, ByteCodeOp::Jump);
         const auto diff = loopNode->seekJumpBeforeContinue - context->bc->numInstructions;
-        inst->b.s32     = static_cast<int>(diff);
+        inst->b.s32     = static_cast<int32_t>(diff);
     }
 
     loopNode->seekJumpAfterBlock = context->bc->numInstructions;
@@ -618,7 +618,7 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         const auto inst = context->bc->out + continueNode->jumpInstruction;
         const auto diff = loopNode->seekJumpBeforeContinue - continueNode->jumpInstruction - 1;
-        inst->b.s32     = static_cast<int>(diff);
+        inst->b.s32     = static_cast<int32_t>(diff);
     }
 
     // Resolve all break instructions
@@ -626,7 +626,7 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         const auto inst = context->bc->out + breakNode->jumpInstruction;
         const auto diff = context->bc->numInstructions - breakNode->jumpInstruction - 1;
-        inst->b.s32     = static_cast<int>(diff);
+        inst->b.s32     = static_cast<int32_t>(diff);
     }
 
     return true;
@@ -677,7 +677,7 @@ bool ByteCodeGen::emitForBeforeExpr(ByteCodeGenContext* context)
     // Set the jump to the start of the expression
     const auto inst = context->bc->out + forNode->seekJumpToExpression;
     const auto diff = context->bc->numInstructions - forNode->seekJumpToExpression - 1;
-    inst->b.s32     = static_cast<int>(diff);
+    inst->b.s32     = static_cast<int32_t>(diff);
 
     return true;
 }
@@ -734,14 +734,14 @@ bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
     // Resolve the jump to go outside the switch
     auto inst   = context->bc->out + switchNode->seekJumpExpression;
     auto diff   = context->bc->numInstructions - switchNode->seekJumpExpression - 1;
-    inst->b.s32 = static_cast<int>(diff);
+    inst->b.s32 = static_cast<int32_t>(diff);
 
     // Resolve all break instructions
     for (const auto breakNode : switchNode->breakList)
     {
         inst        = context->bc->out + breakNode->jumpInstruction;
         diff        = context->bc->numInstructions - breakNode->jumpInstruction - 1;
-        inst->b.s32 = static_cast<int>(diff);
+        inst->b.s32 = static_cast<int32_t>(diff);
     }
 
     // Resolve all fallthrough instructions
@@ -755,7 +755,7 @@ bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
 
         inst        = context->bc->out + fallNode->jumpInstruction;
         diff        = nextCaseBlock->seekStart - fallNode->jumpInstruction - 1;
-        inst->b.s32 = static_cast<int>(diff);
+        inst->b.s32 = static_cast<int32_t>(diff);
     }
 
     return true;
@@ -897,7 +897,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         for (const auto jumpIdx : allJumps)
         {
             ByteCodeInstruction* jump = context->bc->out + jumpIdx;
-            jump->b.s32               = static_cast<int>(context->bc->numInstructions - jump->b.u32);
+            jump->b.s32               = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
         }
 
         // Pop the location from emitSwitchCaseBeforeCase
@@ -922,12 +922,12 @@ bool ByteCodeGen::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     // Jump to exit the switch
     context->setNoLocation();
     auto inst   = EMIT_INST0(context, ByteCodeOp::Jump);
-    inst->b.s32 = static_cast<int>(blockNode->ownerCase->ownerSwitch->seekJumpExpression - context->bc->numInstructions);
+    inst->b.s32 = static_cast<int32_t>(blockNode->ownerCase->ownerSwitch->seekJumpExpression - context->bc->numInstructions);
     context->restoreNoLocation();
 
     // Resolve jump from case to case
     inst        = context->bc->out + blockNode->seekJumpNextCase;
-    inst->b.s32 = static_cast<int>(context->bc->numInstructions - blockNode->seekJumpNextCase - 1);
+    inst->b.s32 = static_cast<int32_t>(context->bc->numInstructions - blockNode->seekJumpNextCase - 1);
     return true;
 }
 
@@ -1007,12 +1007,12 @@ bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* s
     auto&      table = scope->symTable;
     ScopedLock lock(table.mutex);
 
-    const auto count = static_cast<int>(table.structVarsToDrop.size()) - 1;
-    if (count == -1)
+    const auto count = table.structVarsToDrop.size() - 1;
+    if (count == UINT32_MAX)
         return true;
 
     // Need to wait for all the structures to be ok, in order to call the opDrop function
-    for (int i = count; i >= 0; i--)
+    for (uint32_t i = count; i != UINT32_MAX; i--)
     {
         const auto one = table.structVarsToDrop[i];
         if (!one.typeStruct)
@@ -1022,7 +1022,7 @@ bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* s
         YIELD();
     }
 
-    for (int i = count; i >= 0; i--)
+    for (uint32_t i = count; i != UINT32_MAX; i--)
     {
         auto one = table.structVarsToDrop[i];
         if (!one.typeStruct)
@@ -1070,7 +1070,7 @@ bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* s
                 inst->addFlag(BCI_IMM_B);
 
                 EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0[0]);
-                EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = static_cast<int>(seekJump - context->bc->numInstructions - 1);
+                EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = static_cast<int32_t>(seekJump - context->bc->numInstructions - 1);
 
                 freeRegisterRC(context, r0);
                 freeRegisterRC(context, r1);

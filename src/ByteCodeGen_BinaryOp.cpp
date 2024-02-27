@@ -566,7 +566,7 @@ bool ByteCodeGen::emitLogicalAnd(const ByteCodeGenContext* context, uint32_t r1,
 
     // And we update the shortcut jump after the 'right' side of the expression
     const auto inst = &context->bc->out[node->seekJumpExpression];
-    inst->b.s32     = static_cast<int>(context->bc->numInstructions - node->seekJumpExpression - 1);
+    inst->b.s32     = static_cast<int32_t>(context->bc->numInstructions - node->seekJumpExpression - 1);
     return true;
 }
 
@@ -624,7 +624,7 @@ bool ByteCodeGen::emitLogicalOr(const ByteCodeGenContext* context, uint32_t r1, 
     if (r2 != r1)
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
     const auto inst = &context->bc->out[node->seekJumpExpression];
-    inst->b.s32     = static_cast<int>(context->bc->numInstructions - node->seekJumpExpression - 1);
+    inst->b.s32     = static_cast<int32_t>(context->bc->numInstructions - node->seekJumpExpression - 1);
     return true;
 }
 
