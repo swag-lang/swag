@@ -6,6 +6,55 @@
 #include "Tokenizer.h"
 #include "TypeInfo.h"
 
+Utf8 ByteCode::getPrintName()
+{
+    if (out && node)
+        return node->getScopedName();
+    return name;
+}
+
+Utf8 ByteCode::getPrintFileName() const
+{
+    if (sourceFile)
+        return sourceFile->name;
+    return "";
+}
+
+Utf8 ByteCode::getPrintRefName()
+{
+    Utf8 str = Log::colorToVTS(LogColor::Name);
+    str += getPrintName();
+
+    const auto type = getCallType();
+    if (type)
+    {
+        str += " ";
+        str += Log::colorToVTS(LogColor::Type);
+        str += type->getDisplayName();
+    }
+
+    if (!out)
+        return str;
+
+    const auto loc = getLocation(this, out);
+    if (loc.file || loc.location)
+        str += " ";
+
+    if (loc.file)
+    {
+        str += Log::colorToVTS(LogColor::Location);
+        str += loc.file->path;
+    }
+
+    if (loc.location)
+    {
+        str += Log::colorToVTS(LogColor::Location);
+        str += form(":%d", loc.location->line - 1);
+    }
+
+    return str;
+}
+
 void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile) const
 {
     if (ip->op == ByteCodeOp::End)
