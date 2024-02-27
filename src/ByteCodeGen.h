@@ -141,7 +141,7 @@ namespace ByteCodeGen
     bool emitCompareOpGreaterEq(const ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitCompareOpGreaterEq(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitCompareOp(ByteCodeGenContext* context);
-    void emitPostCallUfcs(ByteCodeGenContext* context);
+    void emitPostCallUFCS(ByteCodeGenContext* context);
     bool emitCall(ByteCodeGenContext* context);
     void emitPushRAParams(const ByteCodeGenContext* context, VectorNative<uint32_t>& accParams, bool forVariadic);
     bool emitReturnByCopyAddress(const ByteCodeGenContext* context, AstNode* node, const TypeInfoFuncAttr* typeInfoFunc);

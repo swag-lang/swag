@@ -570,7 +570,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
 
     // Collect all matches
     bool hasWith = false;
-    bool hasUfcs = false;
+    bool hasUFCS = false;
     for (auto& dep : scopeHierarchyVars)
     {
         bool getIt = false;
@@ -596,10 +596,10 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         else if (symScope->is(ScopeKind::Impl) && symScope->parentScope == dep.scope)
             getIt = true;
 
-        // For mtd sub functions and ufcs
+        // For mtd sub functions and UFCS
         else if (okForUfcs)
         {
-            hasUfcs = true;
+            hasUFCS = true;
             getIt   = true;
         }
 
@@ -624,8 +624,8 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         }
     }
 
-    // If something has an ufcs match, then remove all those that don't
-    if (hasUfcs)
+    // If something has an UFCS match, then remove all those that don't
+    if (hasUFCS)
     {
         for (auto& dep : toCheck)
         {
@@ -663,12 +663,12 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         dependentVar     = dep.node;
         dependentVarLeaf = dep.leafNode;
 
-        // This way the ufcs can trigger even with an implicit 'using' var (typically for a 'using self')
+        // This way the UFCS can trigger even with an implicit 'using' var (typically for a 'using self')
         if (!identifierRef->previousResolvedNode)
         {
             if (symbol->is(SymbolKind::Function))
             {
-                // Be sure we have a missing parameter in order to try ufcs
+                // Be sure we have a missing parameter in order to try UFCS
                 const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
                 const bool canTry   = canTryUfcs(context, typeFunc, dependentVar, false);
                 YIELD();
@@ -1037,15 +1037,10 @@ bool Semantic::resolveIdentifier(SemanticContext* context)
 
 bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags)
 {
-    const auto job                = context->baseJob;
-    auto&      scopeHierarchy     = context->cacheScopeHierarchy;
-    auto&      scopeHierarchyVars = context->cacheScopeHierarchyVars;
-    auto&      symbolsMatch       = context->cacheSymbolsMatch;
-    const auto identifierRef      = identifier->identifierRef();
-
     identifier->byteCodeFct = ByteCodeGen::emitIdentifier;
 
     // Current file scope
+    const auto identifierRef = identifier->identifierRef();
     if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.text == context->sourceFile->scopeFile->name)
     {
         SWAG_VERIFY(identifier == identifierRef->firstChild(), context->report({identifier, toErr(Err0366)}));
@@ -1096,6 +1091,10 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
         return true;
     }
+
+    auto& scopeHierarchy     = context->cacheScopeHierarchy;
+    auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
+    auto& symbolsMatch       = context->cacheSymbolsMatch;
 
     // Compute dependencies if not already done
     if (identifier->semanticState == AstNodeResolveState::ProcessingChildren || riFlags.has(RI_FOR_GHOSTING) || riFlags.has(RI_FOR_ZERO_GHOSTING))
@@ -1160,7 +1159,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     }
 
     // If one of my dependent symbol is not fully solved, we need to wait
-    SWAG_CHECK(waitForSymbols(context, identifier, job));
+    SWAG_CHECK(waitForSymbols(context, identifier, context->baseJob));
     if (symbolsMatch.empty())
         return true;
     YIELD();
@@ -1170,7 +1169,8 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     YIELD();
 
     // No match !
-    if (context->cacheMatches.empty())
+    auto& matches = context->cacheMatches;
+    if (matches.empty())
     {
         if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
             return true;
@@ -1181,20 +1181,20 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         return false;
     }
 
-    // We have a match, and we were just asking to check ghosting. So we are done.
+    // We have one or more match, and we were just asking to check ghosting. So we are done.
     if (riFlags.has(RI_FOR_GHOSTING | RI_FOR_ZERO_GHOSTING))
         return true;
 
     // Name alias with overloads (more than one match)
-    if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS) && context->cacheMatches.size() > 1)
+    if (matches.size() > 1 && identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS))
     {
-        identifier->setResolvedSymbol(context->cacheMatches[0]->symbolOverload->symbol, nullptr);
+        identifier->setResolvedSymbol(matches[0]->symbolOverload->symbol, nullptr);
         return true;
     }
 
-    // Deal with UFCS. Now that the match is done, we will change the ast in order to
-    // add the ufcs parameters to the function call parameters
-    const auto& match = context->cacheMatches[0];
+    // Deal with UFCS. Now that the match is done, we will change the AST in order to
+    // add the UFCS parameters to the function call parameters
+    const auto& match = matches[0];
     if (match->ufcs && !identifier->isForcedUFCS())
     {
         // Do not change AST if this is code inside a generic function

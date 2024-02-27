@@ -8,32 +8,32 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 
-bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* ufcsNode, bool nodeIsExplicit)
+bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* nodeUFCS, bool nodeIsExplicit)
 {
-    if (!ufcsNode || typeFunc->parameters.empty())
+    if (!nodeUFCS || typeFunc->parameters.empty())
         return false;
 
-    // Be sure the identifier we want to use in ufcs emits code, otherwise we cannot use it.
-    // This can happen if we have already changed the ast, but the nodes are reevaluated later
+    // Be sure the identifier we want to use in UFCS emits code, otherwise we cannot use it.
+    // This can happen if we have already changed the AST, but the nodes are reevaluated later
     // (because of an inline for example)
-    if (ufcsNode->hasAstFlag(AST_NO_BYTECODE))
+    if (nodeUFCS->hasAstFlag(AST_NO_BYTECODE))
         return false;
 
     // If we have an explicit node, then we can try. Anyway we will also try without...
     if (nodeIsExplicit)
         return true;
 
-    // Compare first function parameter with ufcsNode type.
+    // Compare first function parameter with nodeUFCS type.
     const bool cmpTypeUfcs = TypeManager::makeCompatibles(context,
                                                           typeFunc->parameters[0]->typeInfo,
-                                                          ufcsNode->typeInfo,
+                                                          nodeUFCS->typeInfo,
                                                           nullptr,
-                                                          ufcsNode,
+                                                          nodeUFCS,
                                                           CAST_FLAG_JUST_CHECK | CAST_FLAG_UFCS | CAST_FLAG_ACCEPT_PENDING);
     if (context->result != ContextResult::Done)
         return false;
 
-    // In case ufcsNode is not explicit (using var), then be sure that first parameter type matches.
+    // In case nodeUFCS is not explicit (using var), then be sure that first parameter type matches.
     if (!cmpTypeUfcs)
         return false;
 
@@ -162,7 +162,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     fctCallParam->inheritAstFlagsOr(node, AST_IN_MIXIN);
 
     // If this is a closure, then parameter index 0 is for the embedded struct.
-    // So ufcs will have index 1.
+    // So UFCS will have index 1.
     if (match.symbolOverload->typeInfo->isClosure())
         fctCallParam->indexParam = 1;
 
@@ -175,11 +175,11 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     {
         if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->hasAstFlag(AST_FUNC_CALL))
         {
-            // Function that returns an interface, used as an ufcs.
+            // Function that returns an interface, used as an UFCS.
             // Ex: var cfg = @compiler().getBuildCfg()
-            // :SpecUfcsNode
+            // :SpecUFCSNode
             identifierRef->previousResolvedNode->addAstFlag(AST_TO_UFCS);
-            fctCallParam->specUfcsNode = identifierRef->previousResolvedNode;
+            fctCallParam->specUFCSNode = identifierRef->previousResolvedNode;
             const auto id              = Ast::newIdentifier(idRef, form("__8tmp_%d", g_UniqueID.fetch_add(1)), nullptr, idRef);
             id->addAstFlag(AST_NO_BYTECODE);
         }
@@ -213,7 +213,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     {
         identifierRef->previousResolvedNode->addAstFlag(AST_UFCS_FCT);
 
-        // If ufcs comes from a using var, then we must make a reference to the using var in
+        // If UFCS comes from a using var, then we must make a reference to the using var in
         // the first call parameter
         if (dependentVar == identifierRef->previousResolvedNode)
         {

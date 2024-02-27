@@ -710,7 +710,7 @@ struct AstFuncCallParam : AstNode
 
     AstReturn*     autoTupleReturn;
     TypeInfoParam* resolvedParameter;
-    AstNode*       specUfcsNode;
+    AstNode*       specUFCSNode;
     uint32_t       indexParam;
 };
 

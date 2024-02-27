@@ -3007,7 +3007,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     }
 
     // Struct to pointer to struct
-    // Accept only if this is ufcs, to simulate calling a method of a base 'class'
+    // Accept only if this is UFCS, to simulate calling a method of a base 'class'
     if (castFlags.has(CAST_FLAG_UFCS) && fromType->isStruct() && toTypePointer->pointedType->isStruct())
     {
         const auto fromStruct = castTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);

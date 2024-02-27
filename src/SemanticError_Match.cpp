@@ -260,7 +260,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
             tryMatches = n;
     }
 
-    // Remove duplicates overloads, as we can have one with ufcs, and one without, as we
+    // Remove duplicates overloads, as we can have one with UFCS, and one without, as we
     // could have tried both
     {
         Vector<OneTryMatch*> n;
@@ -273,7 +273,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
                 if (oneMatch->overload != oneMatch1->overload)
                     continue;
 
-                // If the ufcs version has matched the UFCS parameter, then take that one
+                // If the UFCS version has matched the UFCS parameter, then take that one
                 if (oneMatch->ufcs && oneMatch->symMatchContext.badSignatureInfos.badSignatureParameterIdx > 0)
                     oneMatch1->overload = nullptr;
 

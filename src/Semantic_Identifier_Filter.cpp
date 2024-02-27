@@ -144,7 +144,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             break;
         }
 
-        // Priority to 'ufcs'
+        // Priority to UFCS
         if (!curMatch->ufcs)
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -384,7 +384,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // If we didn't match with ufcs, then priority to a match that do not start with 'self'
+        // If we didn't match with UFCS, then priority to a match that do not start with 'self'
         if (!curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
@@ -405,7 +405,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // If we did match with ufcs, then priority to a match that starts with 'self'
+        // If we did match with UFCS, then priority to a match that starts with 'self'
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
@@ -426,7 +426,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // 2 ufcs : priority to the first parameter that is not const
+        // 2 UFCS : priority to the first parameter that is not const
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
@@ -564,7 +564,7 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
         }
     }
 
-    // priority to 'ufcs'
+    // priority to UFCS
     for (uint32_t i = 0; i < genMatches.size(); i++)
     {
         if (!genMatches[i]->ufcs)

@@ -218,7 +218,7 @@ namespace Semantic
     bool matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
 
     bool ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
-    bool canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* ufcsNode, bool nodeIsExplicit);
+    bool canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* nodeUFCS, bool nodeIsExplicit);
     bool getUfcs(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, const SymbolOverload* overload, AstNode** ufcsFirstParam);
 
     void computeMatchesCoerceCast(VectorNative<OneMatch*>& matches);

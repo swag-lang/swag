@@ -376,7 +376,7 @@ namespace
             return true;
         warnMsg.makeLower();
 
-        // Check attributes in the ast hierarchy
+        // Check attributes in the AST hierarchy
         while (node)
         {
             if (node->is(AstNodeKind::AttrUse))

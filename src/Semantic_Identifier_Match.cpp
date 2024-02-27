@@ -1165,7 +1165,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         return context->report(err);
     }
 
-    // If a variable on the left has only been used for scoping, and not evaluated as an ufcs source, then this is an
+    // If a variable on the left has only been used for scoping, and not evaluated as an UFCS source, then this is an
     // error too, cause it's too strange.
     // x.toto() with toto taking no argument for example, but toto is 'in' x scope.
     if (symbol &&
@@ -1292,7 +1292,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
     }
 
-    // Do not register a sub impl scope, for ufcs to use the real variable
+    // Do not register a sub impl scope, for UFCS to use the real variable
     if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
     {
         identifierRef->setResolvedSymbol(symbol, overload);
@@ -1981,10 +1981,10 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
             SWAG_CHECK(Semantic::getUsingVar(context, identifierRef, identifier, symbolOverload, &dependentVar, &dependentVarLeaf));
             YIELD();
 
-            // Get the ufcs first parameter if we can
+            // Get the UFCS first parameter if we can
             AstNode* ufcsFirstParam = nullptr;
 
-            // The ufcs parameter has already been set in we are evaluating an identifier for the second time
+            // The UFCS parameter has already been set in we are evaluating an identifier for the second time
             // (when we inline a function call)
             if (!identifier->callParameters || identifier->callParameters->children.empty() || !identifier->callParameters->firstChild()->hasAstFlag(AST_TO_UFCS))
             {
@@ -2003,7 +2003,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
             if (identifier->isForceTakeAddress() && isFunctionButNotACall(context, identifier, symbolOverload->symbol))
                 forLambda = true;
 
-            // Will try with ufcs, and will try without
+            // Will try with UFCS, and will try without
             for (int tryUfcs = 0; tryUfcs < 2; tryUfcs++)
             {
                 auto  tryMatch        = context->getTryMatch();

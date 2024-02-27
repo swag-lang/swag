@@ -163,7 +163,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         {
             ensureCanBeChangedRC(context, node->resultRegisterRc);
 
-            // :UfcsItfInlined
+            // :UFCSItfInlined
             // Very specific case where an inlined call returns an interface, and we directly call a lambda of that interface.
             // In that case we want to take the register that defined the vtable, not the object.
             if (identifier != identifier->parent->firstChild())
@@ -588,7 +588,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         for (uint32_t i = 0; i < node->resultRegisterRc.size(); i++)
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[i], resolved->symRegisters[i]);
 
-        // :UfcsItfInlined
+        // :UFCSItfInlined
         // if we have something of the form vitf.call() where call is inlined.
         // Need to take the vtable register.
         if (node->hasAstFlag(AST_FROM_UFCS) && node->typeInfo->isInterface())

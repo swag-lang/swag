@@ -403,7 +403,7 @@ bool Parser::generateAst()
     ++g_Stats.numFiles;
 #endif
 
-    // Setup root ast for file
+    // Setup root AST for file
     tokenParse.token.sourceFile = sourceFile;
     sourceFile->astRoot         = Ast::newNode<AstFile>(AstNodeKind::File, this, module->astRoot);
 

@@ -40,14 +40,14 @@ bool ByteCodeGen::emitFuncCallParam(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
 
-    // Special case when the parameter comes from an ufcs call that returns an interface.
+    // Special case when the parameter comes from an UFCS call that returns an interface.
     // In that case 'specUfcsNode' is the node that makes the call. The register will be
     // the object pointer of the returned interface.
-    // :SpecUfcsNode
-    if (node->specUfcsNode)
+    // :SpecUFCSNode
+    if (node->specUFCSNode)
     {
-        node->typeInfo         = node->specUfcsNode->typeInfo;
-        node->resultRegisterRc = node->specUfcsNode->resultRegisterRc;
+        node->typeInfo         = node->specUFCSNode->typeInfo;
+        node->resultRegisterRc = node->specUFCSNode->resultRegisterRc;
         return true;
     }
 
@@ -697,7 +697,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             reserveLinearRegisterRC2(context, node->resultRegisterRc);
             node->parent->resultRegisterRc = node->resultRegisterRc;
             EMIT_INST2(context, ByteCodeOp::IntrinsicCompiler, node->resultRegisterRc[0], node->resultRegisterRc[1]);
-            emitPostCallUfcs(context);
+            emitPostCallUFCS(context);
             break;
         }
         case TokenId::IntrinsicIsByteCode:
@@ -1235,13 +1235,13 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
 }
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
-void ByteCodeGen::emitPostCallUfcs(ByteCodeGenContext* context)
+void ByteCodeGen::emitPostCallUFCS(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
-    // :SpecUfcsNode
+    // :SpecUFCSNode
     // Specific case. The function returns an interface, so it returns two registers.
-    // But we want that interface to be also an ufcs parameter.
+    // But we want that interface to be also an UFCS parameter.
     // Ex: var cfg = @compiler().getBuildCfg()
     if (node->typeInfo->isInterface() && node->hasAstFlag(AST_TO_UFCS))
     {
@@ -1269,7 +1269,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context)
     SWAG_ASSERT(!allParams || allParams->is(AstNodeKind::FuncCallParams));
     SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRc, false, true));
     YIELD();
-    emitPostCallUfcs(context);
+    emitPostCallUFCS(context);
     return true;
 }
 
