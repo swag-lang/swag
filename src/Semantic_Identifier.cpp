@@ -538,7 +538,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
     return true;
 }
 
-bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* node, const SymbolOverload* overload, AstNode** result, AstNode** resultLeaf)
+bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* /*node*/, const SymbolOverload* overload, AstNode** result, AstNode** resultLeaf)
 {
     auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
 

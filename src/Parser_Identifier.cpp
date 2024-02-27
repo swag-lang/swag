@@ -10,7 +10,7 @@
 #include "SemanticError.h"
 #include "SourceFile.h"
 
-bool Parser::testIsSingleIdentifier(AstNode* node)
+bool Parser::testIsSingleIdentifier(const AstNode* node)
 {
     if (node->isNot(AstNodeKind::IdentifierRef) ||
         node->childCount() > 1 ||

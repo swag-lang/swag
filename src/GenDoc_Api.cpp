@@ -172,7 +172,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
                 parameters += ")";
             }
 
-            helpContent += form("<span class=\"%s\"><a href=\"#%s\">%s</a></span>", SYN_FUNCTION, toRef(n1->getScopedName()).c_str(), n1->token.text.c_str());
+            helpContent += form(R"(<span class="%s"><a href="#%s">%s</a></span>)", SYN_FUNCTION, toRef(n1->getScopedName()).c_str(), n1->token.text.c_str());
             SyntaxColorContext cxt;
             cxt.mode = SyntaxColorMode::ForDoc;
             helpContent += syntaxColor(parameters, cxt);
@@ -289,7 +289,7 @@ void GenDoc::outputTitle(OneRef& c)
                 str.append(c.nodes[0]->token.sourceFile->name.c_str());
             }
 
-            helpContent += form("<a href=\"%s#L%d\" class=\"src\">[src]</a>", str.c_str(), c.nodes[0]->token.startLocation.line + 1);
+            helpContent += form(R"(<a href="%s#L%d" class="src">[src]</a>)", str.c_str(), c.nodes[0]->token.startLocation.line + 1);
         }
 
         helpContent += "</td>\n";
@@ -927,7 +927,7 @@ bool GenDoc::generateApi()
             if (c.second[0]->isNot(AstNodeKind::Namespace))
             {
                 oneRef.category = c.second[0]->token.sourceFile->path.parent_path();
-                const auto len  = static_cast<uint32_t>(c.second[0]->token.sourceFile->module->path.length());
+                const auto len  = c.second[0]->token.sourceFile->module->path.length();
                 if (oneRef.category.length() <= len + 5) // +5 because of /src/
                     oneRef.category.clear();
                 else

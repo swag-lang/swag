@@ -812,14 +812,14 @@ void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
 
         if (pz[1] == 's' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
         {
-            result += form("0x%llx", reinterpret_cast<uint64_t>(context->sp));
+            result += form("0x%llx", context->sp);
             pz += 3;
             continue;
         }
 
         if (pz[1] == 'b' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
         {
-            result += form("0x%llx", reinterpret_cast<uint64_t>(context->bp));
+            result += form("0x%llx", context->bp);
             pz += 3;
             continue;
         }

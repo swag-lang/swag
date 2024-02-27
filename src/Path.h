@@ -1,4 +1,5 @@
 // ReSharper disable CppInconsistentNaming
+// ReSharper disable CppNonExplicitConvertingConstructor
 #pragma once
 #include "Utf8.h"
 
@@ -64,11 +65,13 @@ struct Path : Utf8
         return p.replace_extension(ext).string().c_str();
     }
 
+    // ReSharper disable once CppNonExplicitConversionOperator
     operator filesystem::path() const
     {
         return filesystem::path{c_str()};
     }
 
+    // ReSharper disable once CppNonExplicitConversionOperator
     operator string() const
     {
         return string{c_str()};

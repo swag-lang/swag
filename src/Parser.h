@@ -96,7 +96,7 @@ struct Parser
     bool eatTokenError(TokenId id, const Utf8& msg);
     bool eatSemiCol(const char* msg);
 
-    static bool testIsSingleIdentifier(AstNode* node);
+    static bool testIsSingleIdentifier(const AstNode* node);
     bool        checkIsSingleIdentifier(AstNode* node, const char* msg) const;
     bool        checkIsIdentifier(const TokenParse& myToken, const char* msg) const;
     bool        testIsValidUserName(const AstNode* node) const;
@@ -106,7 +106,7 @@ struct Parser
     void        registerSubDecl(AstNode* subDecl);
     static void isForceTakeAddress(AstNode* node);
 
-    bool doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, bool isUnion);
+    bool doAnonymousStruct(AstNode* parent, AstNode** result, bool isUnion);
     bool doCompilerScopeBreakable(AstNode* parent, AstNode** result);
     bool doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result);
     bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);

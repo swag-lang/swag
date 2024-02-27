@@ -1261,9 +1261,9 @@ void ByteCodeGen::emitPostCallUFCS(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitCall(ByteCodeGenContext* context)
 {
-    AstNode*   node     = context->node;
-    const auto overload = node->resolvedSymbolOverload();
-    const auto funcNode = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+    const AstNode* node     = context->node;
+    const auto     overload = node->resolvedSymbolOverload();
+    const auto     funcNode = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
 
     const auto allParams = node->children.empty() ? nullptr : node->lastChild();
     SWAG_ASSERT(!allParams || allParams->is(AstNodeKind::FuncCallParams));
@@ -1998,7 +1998,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         toFree.push_back(r0[1]);
 
         auto inst                = EMIT_INST1(context, ByteCodeOp::CopySPVaargs, r0[0]);
-        inst->b.u32              = static_cast<uint32_t>(offset) * sizeof(Register);
+        inst->b.u32              = offset * sizeof(Register);
         context->bc->maxSpVaargs = max(context->bc->maxSpVaargs, maxCallParams + 2);
 
         // If this is a closure, the first parameter is optional, depending on node->additionalRegisterRC[1] content
@@ -2038,7 +2038,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         toFree.push_back(r0[1]);
 
         auto inst                = EMIT_INST1(context, ByteCodeOp::CopySPVaargs, r0[0]);
-        inst->b.u32              = static_cast<uint32_t>(offset) * sizeof(Register);
+        inst->b.u32              = offset * sizeof(Register);
         context->bc->maxSpVaargs = max(context->bc->maxSpVaargs, maxCallParams + 2);
 
         // If this is a closure, the first parameter is optional, depending on node->additionalRegisterRC[1] content
@@ -2287,10 +2287,10 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitForeignCall(ByteCodeGenContext* context)
 {
-    AstNode*   node      = context->node;
-    const auto overload  = node->resolvedSymbolOverload();
-    const auto funcNode  = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-    const auto allParams = node->children.empty() ? nullptr : node->lastChild();
+    const AstNode* node      = context->node;
+    const auto     overload  = node->resolvedSymbolOverload();
+    const auto     funcNode  = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+    const auto     allParams = node->children.empty() ? nullptr : node->lastChild();
     SWAG_ASSERT(!allParams || allParams->is(AstNodeKind::FuncCallParams));
     emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRc, true, true);
     return true;

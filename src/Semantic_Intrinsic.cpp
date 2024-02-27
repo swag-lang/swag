@@ -142,7 +142,7 @@ bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* n
     return true;
 }
 
-bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* name)
+bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, const char* name)
 {
     auto       first  = node->firstChild();
     const auto second = node->lastChild();
@@ -969,7 +969,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
         {
             const auto expr = node->firstChild();
             SWAG_CHECK(checkIsConcrete(context, expr));
-            SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo, "@mkslice"));
+            SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, "@mkslice"));
             break;
         }
 
@@ -979,7 +979,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             SWAG_CHECK(checkIsConcrete(context, expr));
             if (!expr->typeInfo->isPointerTo(NativeTypeKind::U8))
                 return context->report({expr, formErr(Err0208, expr->typeInfo->getDisplayNameC())});
-            SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo, "@mkstring"));
+            SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, "@mkstring"));
             node->typeInfo = g_TypeMgr->typeInfoString;
             break;
         }

@@ -420,7 +420,7 @@ bool AstOutput::outputAttributesUsage(const OutputContext& context, Concat& conc
     return true;
 }
 
-bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, const TypeInfo* typeInfo, const AttributeList& attributes)
+bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* /*node*/, const TypeInfo* typeInfo, const AttributeList& attributes)
 {
     const auto attr = &attributes;
     if (!attr->empty())
@@ -970,7 +970,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
     return true;
 }
 
-bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo)
+bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* /*node*/, TypeInfo* typeInfo)
 {
     // Lambda
     /////////////////////////////////

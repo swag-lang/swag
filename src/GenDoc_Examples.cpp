@@ -96,11 +96,9 @@ bool GenDoc::generateExamples()
     tocLastTitleLevel = 1;
     for (const auto file : module->files)
     {
-        Path path = file->name;
-        path.replace_extension("");
-
-        Utf8 name  = path;
-        Utf8 title = name;
+        const Path  path  = file->name;
+        const Utf8& name  = path;
+        Utf8        title = name;
 
         int titleLevel = 0;
         while (title.length() > 4 && SWAG_IS_DIGIT(title[0]) && SWAG_IS_DIGIT(title[1]) && SWAG_IS_DIGIT(title[2]) && title[3] == '_')

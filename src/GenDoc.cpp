@@ -697,7 +697,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             auto ppz = tokenizeReference(pz + 1, name, link);
             if (ppz && !link.empty())
             {
-                result += form("<img src=\"%s\" alt=\"%s\">", link.c_str(), name.c_str());
+                result += form(R"(<img src="%s" alt="%s">)", link.c_str(), name.c_str());
                 pz = ppz;
                 continue;
             }

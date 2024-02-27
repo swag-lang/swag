@@ -294,7 +294,7 @@ namespace
         g_Log.eol();
     }
 
-    bool dealWithWarning(AstAttrUse* attrUse, const Utf8& warnMsg, Diagnostic& err, Vector<const Diagnostic*>& inNotes, bool& retResult)
+    bool dealWithWarning(const AstAttrUse* attrUse, const Utf8& warnMsg, Diagnostic& err, bool& retResult)
     {
         const auto attrWarn = attrUse->attributes.getAttribute(g_LangSpec->name_Swag_Warn);
         if (!attrWarn)
@@ -383,7 +383,7 @@ namespace
             {
                 const auto attrUse   = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
                 bool       retResult = true;
-                if (dealWithWarning(attrUse, warnMsg, err, notes, retResult))
+                if (dealWithWarning(attrUse, warnMsg, err, retResult))
                     return retResult;
             }
 
@@ -395,7 +395,7 @@ namespace
         while (attrUse)
         {
             bool retResult = true;
-            if (dealWithWarning(attrUse, warnMsg, err, notes, retResult))
+            if (dealWithWarning(attrUse, warnMsg, err, retResult))
                 return retResult;
             if (attrUse->hasExtOwner())
                 attrUse = attrUse->extOwner()->ownerAttrUse;

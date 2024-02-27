@@ -5,6 +5,7 @@ struct Flags
 {
     Flags() = default;
 
+    // ReSharper disable once CppNonExplicitConvertingConstructor
     constexpr Flags(T other) :
         flags{other}
     {

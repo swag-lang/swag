@@ -783,8 +783,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
         case ByteCodeOp::IntrinsicMemCpy:
         {
-            auto   dst  = static_cast<uint8_t*>(registersRC[ip->a.u32].pointer);
-            auto   src  = static_cast<uint8_t*>(registersRC[ip->b.u32].pointer);
+            auto   dst  = registersRC[ip->a.u32].pointer;
+            auto   src  = registersRC[ip->b.u32].pointer;
             size_t size = IMMC_U64(ip);
             std::copy_n(src, size, dst);
             break;
@@ -3304,7 +3304,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) += IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpPlusEqS8_SSSafe:
-            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) += static_cast<int8_t>(*reinterpret_cast<int8_t*>(context->bp + ip->b.u32));
+            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) += *reinterpret_cast<int8_t*>(context->bp + ip->b.u32);
             break;
 
         case ByteCodeOp::AffectOpPlusEqS16:
@@ -3319,7 +3319,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) += IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpPlusEqS16_SSSafe:
-            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) += static_cast<int16_t>(*reinterpret_cast<int16_t*>(context->bp + ip->b.u32));
+            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) += *reinterpret_cast<int16_t*>(context->bp + ip->b.u32);
             break;
 
         case ByteCodeOp::AffectOpPlusEqS32:
@@ -3446,7 +3446,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) -= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpMinusEqS8_SSSafe:
-            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) -= static_cast<int8_t>(*reinterpret_cast<int8_t*>(context->bp + ip->b.u32));
+            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) -= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32);
             break;
 
         case ByteCodeOp::AffectOpMinusEqS16:
@@ -3461,7 +3461,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) -= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpMinusEqS16_SSSafe:
-            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) -= static_cast<int16_t>(*reinterpret_cast<int16_t*>(context->bp + ip->b.u32));
+            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) -= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32);
             break;
 
         case ByteCodeOp::AffectOpMinusEqS32:
@@ -3588,7 +3588,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) *= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS8_SSSafe:
-            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) *= static_cast<int8_t>(*reinterpret_cast<int8_t*>(context->bp + ip->b.u32));
+            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) *= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32);
             break;
 
         case ByteCodeOp::AffectOpMulEqS16:
@@ -3603,7 +3603,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) *= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS16_SSSafe:
-            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) *= static_cast<int16_t>(*reinterpret_cast<int16_t*>(context->bp + ip->b.u32));
+            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) *= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32);
             break;
 
         case ByteCodeOp::AffectOpMulEqS32:
@@ -3725,7 +3725,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) /= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpDivEqS8_SS:
-            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) /= static_cast<int8_t>(*reinterpret_cast<int8_t*>(context->bp + ip->b.u32));
+            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) /= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32);
             break;
 
         case ByteCodeOp::AffectOpDivEqS16:
@@ -3735,7 +3735,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) /= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpDivEqS16_SS:
-            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) /= static_cast<int16_t>(*reinterpret_cast<int16_t*>(context->bp + ip->b.u32));
+            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) /= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32);
             break;
 
         case ByteCodeOp::AffectOpDivEqS32:
@@ -3827,7 +3827,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) %= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpModuloEqS8_SS:
-            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) %= static_cast<int8_t>(*reinterpret_cast<int8_t*>(context->bp + ip->b.u32));
+            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) %= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32);
             break;
 
         case ByteCodeOp::AffectOpModuloEqS16:
@@ -3837,7 +3837,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) %= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpModuloEqS16_SS:
-            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) %= static_cast<int16_t>(*reinterpret_cast<int16_t*>(context->bp + ip->b.u32));
+            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) %= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32);
             break;
 
         case ByteCodeOp::AffectOpModuloEqS32:

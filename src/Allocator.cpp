@@ -7,6 +7,7 @@ constexpr uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 constexpr uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 #endif
 
+// ReSharper disable once CppParameterNamesMismatch
 void* operator new(size_t size)
 {
     size         = Allocator::alignSize(static_cast<int>(size) + 2 * sizeof(uint64_t));
@@ -20,6 +21,7 @@ void* operator new(size_t size)
     return p + 2;
 }
 
+// ReSharper disable once CppParameterNamesMismatch
 void operator delete(void* block) noexcept
 {
     if (!block)

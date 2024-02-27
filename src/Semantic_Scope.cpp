@@ -57,7 +57,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Alternati
     {
         identifierRef->startScope = typeEnum[0]->scope;
         scopeHierarchy.clear();
-        Semantic::addAlternativeScopeOnce(scopeHierarchy, typeEnum[0]->scope);
+        addAlternativeScopeOnce(scopeHierarchy, typeEnum[0]->scope);
     }
 
     // No match, we will try 'with'

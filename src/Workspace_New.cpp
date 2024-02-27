@@ -66,7 +66,7 @@ void Workspace::newModule(const Utf8& moduleName) const
         OS::exit(-1);
     }
 
-    auto oneCfg = R"(
+    const auto oneCfg = R"(
 // Swag module configuration file
 #dependencies
 {
@@ -95,7 +95,7 @@ void Workspace::newModule(const Utf8& moduleName) const
         OS::exit(-1);
     }
 
-    auto contentMain = R"(
+    const auto contentMain = R"(
 #main
 {
 	@print("Hello world!\n")

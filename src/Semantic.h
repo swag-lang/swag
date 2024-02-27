@@ -331,7 +331,7 @@ namespace Semantic
     bool resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     bool resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node);
     bool resolveIntrinsicMakeInterface(SemanticContext* context);
-    bool resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* name);
+    bool resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, const char* name);
     bool resolveIntrinsicNameOf(SemanticContext* context);
     bool resolveIntrinsicProperty(SemanticContext* context);
     bool resolveIntrinsicRunes(SemanticContext* context);

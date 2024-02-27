@@ -1,3 +1,4 @@
+// ReSharper disable CppNonExplicitConvertingConstructor
 #pragma once
 #include "Vector.h"
 #include "VectorNative.h"
@@ -75,6 +76,7 @@ struct Utf8
     void insert(uint32_t index, const char* str);
     void insert(uint32_t index, char c);
 
+    // ReSharper disable once CppNonExplicitConversionOperator
     operator const char*() const;
     char        operator[](uint32_t index) const;
     Utf8&       operator=(const char* txt);

@@ -71,7 +71,7 @@ void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, c
 {
     g_Log.print(title, LogColor::Gray);
     g_Log.print(" ");
-    int len = title.length();
+    uint32_t len = title.length();
     while (len++ < 25)
         g_Log.print(".");
     g_Log.print(" ");
@@ -475,8 +475,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         g_Log.eol();
 
         addrB = addrLine;
-        addrB += min(count, perLine) * (fmt.bitCount / 8);
-        count -= min(count, perLine);
+        addrB += static_cast<int64_t>(min(count, perLine)) * (fmt.bitCount / 8);
+        count -= static_cast<int64_t>(min(count, perLine));
         if (!count)
             break;
     }

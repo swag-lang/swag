@@ -5062,7 +5062,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     uint32_t idxParam = pushRAParams.size() - sizeB / static_cast<int>(sizeof(Register)) - 1;
                     while (idxParam != UINT32_MAX)
                     {
-                        SWAG_ASSERT(static_cast<uint32_t>(idx) < bc->maxSpVaargs);
+                        SWAG_ASSERT(idx < bc->maxSpVaargs);
                         auto r0 = GEP64(allocVA, idx);
                         auto r1 = GEP64(allocR, pushRAParams[idxParam]);
                         builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);

@@ -588,7 +588,7 @@ bool Parser::doUnaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** r
     return doPrimaryExpression(parent, exprFlags, result);
 }
 
-bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& mdfFlags, AstNode* node)
+bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& mdfFlags, AstNode* /*node*/)
 {
     const auto opId = tokenId;
 
@@ -1608,7 +1608,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
     return true;
 }
 
-bool Parser::doInit(AstNode* parent, AstNode** result)
+bool Parser::doInit(AstNode* parent, AstNode** /*result*/)
 {
     const auto node   = Ast::newNode<AstInit>(AstNodeKind::Init, this, parent);
     node->semanticFct = Semantic::resolveInit;
@@ -1635,7 +1635,7 @@ bool Parser::doInit(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
+bool Parser::doDropCopyMove(AstNode* parent, AstNode** /*result*/)
 {
     const auto node = Ast::newNode<AstDropCopyMove>(AstNodeKind::Drop, this, parent);
     switch (tokenParse.token.id)

@@ -85,7 +85,7 @@ Utf8 ByteCode::getCallName()
     else
         callName = name;
 
-    callName += form("_%lX", reinterpret_cast<uint64_t>(this));
+    callName += form("_%lX", this);
     return callName;
 }
 

@@ -30,7 +30,7 @@ bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeV
     return true;
 }
 
-bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl)
+bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** /*result*/, bool inTypeVarDecl)
 {
     AstTypeExpression* firstAddedType = nullptr;
     AstNode*           params         = nullptr;
@@ -314,7 +314,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
     return true;
 }
 
-bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, bool isUnion)
+bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isUnion)
 {
     const auto structNode = Ast::newStructDecl(this, parent);
     structNode->addAstFlag(AST_INTERNAL | AST_GENERATED);
@@ -422,16 +422,16 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* /*parent*/
 
         case TokenId::KwdStruct:
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags.has(TYPEFLAG_IS_CONST), false));
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, false));
             return true;
 
         case TokenId::KwdUnion:
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags.has(TYPEFLAG_IS_CONST), true));
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, true));
             return true;
 
         case TokenId::SymLeftCurly:
-            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags.has(TYPEFLAG_IS_CONST), false));
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, false));
             return true;
 
         case TokenId::KwdFunc:

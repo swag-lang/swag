@@ -421,7 +421,7 @@ void Diagnostic::printSourceCode() const
     SyntaxColorContext cxt;
     cxt.mode = SyntaxColorMode::ForLog;
 
-    auto pz = lineCode.c_str();
+    const auto pz = lineCode.c_str();
     if (*pz == 0 || *pz == '\n' || *pz == '\r')
         return;
     printMargin(false, true, lineCodeNum);

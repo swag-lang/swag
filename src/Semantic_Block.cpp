@@ -855,11 +855,11 @@ bool Semantic::resolveVisit(SemanticContext* context)
             return context->report(err);
         }
 
-        content += form(R"({ loop%s %s { )", visitBack.c_str(), reinterpret_cast<const char*>(concat.firstBucket->data));
+        content += form(R"({ loop%s %s { )", visitBack.c_str(), concat.firstBucket->data);
         firstAliasVar = 0;
         content += R"(let )";
         content += alias0Name;
-        content += form(R"( = %s[#index]; )", reinterpret_cast<const char*>(concat.firstBucket->data));
+        content += form(R"( = %s[#index]; )", concat.firstBucket->data);
 
         content += R"(let )";
         content += alias1Name;
@@ -877,7 +877,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         }
 
         auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        content += form(R"({ let __addr%u = @typeof(%s); )", id, reinterpret_cast<const char*>(concat.firstBucket->data));
+        content += form(R"({ let __addr%u = @typeof(%s); )", id, concat.firstBucket->data);
         content += form(R"(loop%s %d { )", visitBack.c_str(), typeEnum->values.size());
         firstAliasVar = 1;
         content += R"(let )";
