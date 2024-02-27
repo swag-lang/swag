@@ -1988,7 +1988,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
             // (when we inline a function call)
             if (!identifier->callParameters || identifier->callParameters->children.empty() || !identifier->callParameters->firstChild()->hasAstFlag(AST_TO_UFCS))
             {
-                SWAG_CHECK(Semantic::getUfcs(context, identifierRef, identifier, symbolOverload, &ufcsFirstParam));
+                SWAG_CHECK(Semantic::getUFCS(context, identifierRef, identifier, symbolOverload, &ufcsFirstParam));
                 YIELD();
                 if (identifier->hasSemFlag(SEMFLAG_FORCE_UFCS) && !ufcsFirstParam)
                     continue;

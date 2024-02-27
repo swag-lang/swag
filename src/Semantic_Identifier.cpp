@@ -670,7 +670,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             {
                 // Be sure we have a missing parameter in order to try UFCS
                 const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                const bool canTry   = canTryUfcs(context, typeFunc, dependentVar, false);
+                const bool canTry   = canTryUFCS(context, typeFunc, dependentVar, false);
                 YIELD();
                 if (canTry)
                 {
@@ -1206,7 +1206,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
                 identifierRef->previousResolvedNode = match->dependentVar;
             }
 
-            SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, *match));
+            SWAG_CHECK(setFirstParamUFCS(context, identifierRef, *match));
         }
     }
 

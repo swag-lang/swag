@@ -8,7 +8,7 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 
-bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* nodeUFCS, bool nodeIsExplicit)
+bool Semantic::canTryUFCS(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* nodeUFCS, bool nodeIsExplicit)
 {
     if (!nodeUFCS || typeFunc->parameters.empty())
         return false;
@@ -40,7 +40,7 @@ bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, 
     return true;
 }
 
-bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, const SymbolOverload* overload, AstNode** ufcsFirstParam)
+bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, const SymbolOverload* overload, AstNode** firstParamUFCS)
 {
     const auto symbol = overload->symbol;
 
@@ -92,10 +92,10 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
             }
 
             const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-            canTry              = canTryUfcs(context, typeFunc, identifierRef->previousResolvedNode, true);
+            canTry              = canTryUFCS(context, typeFunc, identifierRef->previousResolvedNode, true);
             YIELD();
             if (canTry)
-                *ufcsFirstParam = identifierRef->previousResolvedNode;
+                *firstParamUFCS = identifierRef->previousResolvedNode;
         }
     }
 
@@ -135,7 +135,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
     return true;
 }
 
-bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match)
+bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match)
 {
     const auto symbol       = match.symbolOverload->symbol;
     const auto dependentVar = match.dependentVar;
