@@ -41,7 +41,7 @@ bool ByteCodeGen::emitFuncCallParam(ByteCodeGenContext* context)
     const auto node = castAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
 
     // Special case when the parameter comes from an UFCS call that returns an interface.
-    // In that case 'specUfcsNode' is the node that makes the call. The register will be
+    // In that case 'specUFCSNode' is the node that makes the call. The register will be
     // the object pointer of the returned interface.
     // :SpecUFCSNode
     if (node->specUFCSNode)

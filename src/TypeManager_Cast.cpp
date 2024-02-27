@@ -2952,7 +2952,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         }
     }
 
-    // Ufcs, accept type to ref type
+    // UFCS, accept type to ref type
     if (castFlags.has(CAST_FLAG_UFCS))
     {
         if (toTypePointer->pointedType->isSame(fromType, castFlags.with(CAST_FLAG_CAST)))

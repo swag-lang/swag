@@ -2004,7 +2004,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
                 forLambda = true;
 
             // Will try with UFCS, and will try without
-            for (int tryUfcs = 0; tryUfcs < 2; tryUfcs++)
+            for (int tryUFCS = 0; tryUFCS < 2; tryUFCS++)
             {
                 auto  tryMatch        = context->getTryMatch();
                 auto& symMatchContext = tryMatch->symMatchContext;

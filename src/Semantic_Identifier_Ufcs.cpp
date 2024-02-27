@@ -24,7 +24,7 @@ bool Semantic::canTryUFCS(SemanticContext* context, TypeInfoFuncAttr* typeFunc, 
         return true;
 
     // Compare first function parameter with nodeUFCS type.
-    const bool cmpTypeUfcs = TypeManager::makeCompatibles(context,
+    const bool cmpTypeUFCS = TypeManager::makeCompatibles(context,
                                                           typeFunc->parameters[0]->typeInfo,
                                                           nodeUFCS->typeInfo,
                                                           nullptr,
@@ -34,7 +34,7 @@ bool Semantic::canTryUFCS(SemanticContext* context, TypeInfoFuncAttr* typeFunc, 
         return false;
 
     // In case nodeUFCS is not explicit (using var), then be sure that first parameter type matches.
-    if (!cmpTypeUfcs)
+    if (!cmpTypeUFCS)
         return false;
 
     return true;
@@ -44,15 +44,15 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
 {
     const auto symbol = overload->symbol;
 
-    bool canDoUfcs = false;
+    bool canDoUFCS = false;
     if (symbol->is(SymbolKind::Function))
-        canDoUfcs = true;
+        canDoUFCS = true;
     if (symbol->is(SymbolKind::Variable) && overload->typeInfo->isLambdaClosure())
-        canDoUfcs = node->callParameters;
+        canDoUFCS = node->callParameters;
     if (isFunctionButNotACall(context, node, symbol))
-        canDoUfcs = false;
+        canDoUFCS = false;
 
-    if (!canDoUfcs)
+    if (!canDoUFCS)
         return true;
 
     // If a variable is defined just before a function call, then this can be an UFCS (uniform function call syntax)

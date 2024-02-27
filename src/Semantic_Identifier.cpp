@@ -576,7 +576,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         bool getIt = false;
 
         // This is a function, and first parameter matches the using var
-        bool okForUfcs = false;
+        bool okForUFCS = false;
         if (symbol->is(SymbolKind::Function))
         {
             const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
@@ -584,7 +584,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             {
                 const auto firstParam = typeInfo->parameters.front()->typeInfo;
                 if (firstParam->isSame(dep.node->typeInfo, CAST_FLAG_EXACT))
-                    okForUfcs = true;
+                    okForUFCS = true;
             }
         }
 
@@ -597,7 +597,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             getIt = true;
 
         // For mtd sub functions and UFCS
-        else if (okForUfcs)
+        else if (okForUFCS)
         {
             hasUFCS = true;
             getIt   = true;
@@ -607,7 +607,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         {
             if (dep.node->parent->is(AstNodeKind::With))
                 hasWith = true;
-            dep.flags.add(okForUfcs ? ALT_SCOPE_UFCS : 0);
+            dep.flags.add(okForUFCS ? ALT_SCOPE_UFCS : 0);
             toCheck.push_back(dep);
         }
     }
