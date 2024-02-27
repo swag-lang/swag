@@ -963,7 +963,7 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
 {
     if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
         SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
-    identifierRef->startScope = castTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
+    identifierRef->startScope = castTypeInfo<TypeInfoStruct>(typeAlias)->scope;
 
     if (!identifier->callParameters)
         identifier->addAstFlag(AST_CONST_EXPR);
@@ -1134,22 +1134,14 @@ bool Semantic::setMatchResultAndType(SemanticContext* context, AstIdentifierRef*
     return true;
 }
 
-bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
+bool Semantic::checkMatchResult(SemanticContext*        context,
+                                const AstIdentifierRef* identifierRef,
+                                AstIdentifier*          identifier,
+                                const OneMatch&         oneMatch,
+                                const SymbolName*       symbol,
+                                const SymbolOverload*   overload,
+                                AstNode*                prevNode)
 {
-    const auto symbol       = oneMatch.symbolOverload->symbol;
-    const auto overload     = oneMatch.symbolOverload;
-    const auto dependentVar = oneMatch.dependentVar;
-
-    // Mark as used
-    if (symbol)
-        symbol->flags.add(SYMBOL_USED);
-    if (dependentVar && dependentVar->resolvedSymbolName())
-        dependentVar->resolvedSymbolName()->flags.add(SYMBOL_USED);
-    if (dependentVar && dependentVar->resolvedSymbolOverload())
-        dependentVar->resolvedSymbolOverload()->symbol->flags.add(SYMBOL_USED);
-
-    const auto prevNode = identifierRef->previousResolvedNode;
-
     // Test x.toto with x not a struct (like a native type for example), but toto is known, so
     // no error was raised before
     if (symbol &&
@@ -1211,7 +1203,8 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         identifier->parent == identifierRef &&
         identifierRef->lastChild() != identifier)
     {
-        return context->report({identifier, formErr(Err0548, symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
+        const Diagnostic err{identifier, formErr(Err0548, symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())};
+        return context->report(err);
     }
 
     // A.X and A is a slice : missing index
@@ -1222,8 +1215,29 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         identifier->parent == identifierRef &&
         identifierRef->lastChild() != identifier)
     {
-        return context->report({identifier, formErr(Err0549, symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
+        const Diagnostic err{identifier, formErr(Err0549, symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())};
+        return context->report(err);
     }
+
+    return true;
+}
+
+bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
+{
+    const auto symbol       = oneMatch.symbolOverload->symbol;
+    const auto overload     = oneMatch.symbolOverload;
+    const auto dependentVar = oneMatch.dependentVar;
+
+    // Mark as used
+    if (symbol)
+        symbol->flags.add(SYMBOL_USED);
+    if (dependentVar && dependentVar->resolvedSymbolName())
+        dependentVar->resolvedSymbolName()->flags.add(SYMBOL_USED);
+    if (dependentVar && dependentVar->resolvedSymbolOverload())
+        dependentVar->resolvedSymbolOverload()->symbol->flags.add(SYMBOL_USED);
+
+    // Verify that this match is possible
+    SWAG_CHECK(checkMatchResult(context, identifierRef, identifier, oneMatch, symbol, overload, identifierRef->previousResolvedNode));
 
     // Reapply back the values of the match to the call parameter node
     for (const auto& pp : oneMatch.paramParameters)
@@ -1232,6 +1246,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         pp.param->resolvedParameter = pp.resolvedParameter;
     }
 
+    const auto prevNode = identifierRef->previousResolvedNode;
     if (prevNode && symbol->is(SymbolKind::Variable))
     {
         identifier->addAstFlag(AST_L_VALUE);

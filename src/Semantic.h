@@ -206,6 +206,7 @@ namespace Semantic
     bool needToWaitForSymbol(Job* job, SymbolName* symbol);
     bool registerMatch(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genericMatches, VectorNative<OneMatch*>& genericMatchesSI, OneTryMatch& oneOverload, TypeInfo* typeWasForced);
     bool setMatchResult(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
+    bool checkMatchResult(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* identifier, const OneMatch& oneMatch, const SymbolName* symbol, const SymbolOverload* overload, AstNode* prevNode);
     bool setMatchResultAndType(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
     bool setSymbolMatchCallParams(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier);
     bool setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier, const SymbolOverload* overload);
