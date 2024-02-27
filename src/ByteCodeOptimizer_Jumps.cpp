@@ -1987,7 +1987,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         // Then register each value
         for (const auto& it : context->map6432)
         {
-            const int64_t v      = it.first - minValue;
+            const int64_t v      = static_cast<int64_t>(it.first - minValue);
             patchCompiler[v + 1] = it.second;
         }
 

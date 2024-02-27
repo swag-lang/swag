@@ -465,7 +465,7 @@ Utf8 Naming::niceArgumentRank(size_t idx)
         case 3:
             return "third argument";
     }
-    
+
     return form("argument [[%d]]", idx);
 }
 

@@ -57,7 +57,7 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
         inst->addFlag(BCI_IMM_B);
 
         EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0);
-        EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+        EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = static_cast<int>(seekJump - context->bc->numInstructions - 1);
 
         freeRegisterRC(context, r0);
         return true;
@@ -103,7 +103,7 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
     inst->addFlag(BCI_IMM_B);
 
     EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0);
-    EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+    EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = static_cast<int>(seekJump - context->bc->numInstructions - 1);
 
     freeRegisterRC(context, r0);
     return true;

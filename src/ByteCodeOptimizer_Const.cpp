@@ -1032,12 +1032,12 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     break;
                 case ByteCodeOp::InvertU8:
                     SET_OP(ip, ByteCodeOp::SetImmediate32);
-                    ip->b.s8 = ~ip->b.s8;
+                    ip->b.s8 = static_cast<int8_t>(~ip->b.s8);
                     OK();
                     break;
                 case ByteCodeOp::InvertU16:
                     SET_OP(ip, ByteCodeOp::SetImmediate32);
-                    ip->b.s16 = ~ip->b.s16;
+                    ip->b.s16 = static_cast<int16_t>(~ip->b.s16);
                     OK();
                     break;
                 case ByteCodeOp::InvertU32:

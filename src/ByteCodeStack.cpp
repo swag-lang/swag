@@ -37,7 +37,7 @@ Utf8 ByteCodeStack::getStepName(const AstNode* node, const ByteCodeInstruction* 
 
 namespace
 {
-    Utf8 sourceLine(SourceFile* sourceFile, int line)
+    Utf8 sourceLine(SourceFile* sourceFile, uint32_t line)
     {
         auto code = sourceFile->getLine(line);
         code.trim();

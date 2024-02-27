@@ -12,9 +12,9 @@ namespace
 {
     void rgbToHsl(const RgbColor& color, float* h, float* s, float* l)
     {
-        const float r = color.r / 255.0f;
-        const float g = color.g / 255.0f;
-        const float b = color.b / 255.0f;
+        const float r = static_cast<float>(color.r) / 255.0f;
+        const float g = static_cast<float>(color.g) / 255.0f;
+        const float b = static_cast<float>(color.b) / 255.0f;
 
         const float maxVal = fmaxf(fmaxf(r, g), b);
         const float minVal = fminf(fminf(r, g), b);
@@ -28,11 +28,11 @@ namespace
         else
         {
             const float d = maxVal - minVal;
-            *s            = *l > 0.5 ? d / (2 - maxVal - minVal) : d / (maxVal + minVal);
+            *s            = *l > 0.5f ? d / (2 - maxVal - minVal) : d / (maxVal + minVal);
 
             if (maxVal == r)
             {
-                *h = (g - b) / d + (g < b ? 6 : 0);
+                *h = (g - b) / d + (g < b ? 6.0f : 0.0f);
             }
             else if (maxVal == g)
             {

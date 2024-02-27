@@ -393,7 +393,7 @@ llvm::DISubprogram* LLVMDebug::startFunction(const ByteCode* bc, AstFuncDecl** r
 
     Utf8              name     = bc->name;
     AstFuncDecl*      decl     = nullptr;
-    int               line     = 0;
+    uint32_t          line     = 0;
     TypeInfoFuncAttr* typeFunc = bc->typeInfoFunc;
 
     if (bc->node)
@@ -460,7 +460,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
     VectorNative<llvm::AllocaInst*> allocaRetval;
     llvm::AllocaInst*               allocaVariadic = nullptr;
     size_t                          countParams    = 0;
-    int                             idxParam       = 0;
+    uint32_t                        idxParam       = 0;
     const bool                      isDebug        = buildParameters.isDebug();
 
     // Allocate some temporary variables linked to parameters

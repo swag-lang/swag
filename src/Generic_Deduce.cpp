@@ -269,7 +269,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
     }
 }
 
-void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, CastFlags castFlags, int idxParam, AstNode* callParameter)
+void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, CastFlags castFlags, uint32_t idxParam, AstNode* callParameter)
 {
     // Do we already have mapped the generic parameter to something ?
     const auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);

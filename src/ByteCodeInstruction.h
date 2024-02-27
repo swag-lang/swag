@@ -54,9 +54,9 @@ struct ByteCodeInstruction
 
 #ifdef SWAG_DEV_MODE
     const char* sourceFile;
-    int         sourceLine;
-    int         serial;
-    int         treeNode;
+    uint32_t    sourceLine;
+    uint32_t    serial;
+    uint32_t    treeNode;
     uint32_t    crc;
 #endif
 };

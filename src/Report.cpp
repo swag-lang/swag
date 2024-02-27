@@ -623,7 +623,7 @@ namespace
                 if (context && context->traceIndex)
                 {
                     Utf8 str;
-                    for (int i = context->traceIndex - 1; i >= 0; i--)
+                    for (uint32_t i = context->traceIndex - 1; i != UINT32_MAX; i--)
                     {
                         const auto sourceFile1 = g_Workspace->findFile(static_cast<const char*>(context->traces[i]->fileName.buffer));
                         if (sourceFile1)

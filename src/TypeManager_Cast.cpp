@@ -1951,7 +1951,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 return true;
             case NativeTypeKind::Bool:
                 if (canChange)
-                    fromNode->computedValue()->reg.f32 = static_cast<float>(fromNode->computedValue()->reg.b) ? 1.0f : 0.0f;
+                    fromNode->computedValue()->reg.f32 = fromNode->computedValue()->reg.b ? 1.0f : 0.0f;
                 return true;
             case NativeTypeKind::U8:
                 if (canChange)
@@ -2050,7 +2050,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
                 return true;
             case NativeTypeKind::Bool:
                 if (canChange)
-                    fromNode->computedValue()->reg.f64 = static_cast<double>(fromNode->computedValue()->reg.b) ? 1.0 : 0.0;
+                    fromNode->computedValue()->reg.f64 = fromNode->computedValue()->reg.b ? 1.0 : 0.0;
                 return true;
             case NativeTypeKind::U8:
                 if (canChange)

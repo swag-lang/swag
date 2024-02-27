@@ -215,7 +215,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                     EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0[0]);
                     if (finalType->sizeOf)
                         EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0[1])->b.u64 = finalType->sizeOf;
-                    EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+                    EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = static_cast<int>(seekJump - context->bc->numInstructions - 1);
 
                     freeRegisterRC(context, r0);
                 }
