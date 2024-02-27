@@ -414,7 +414,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 
             case NativeTypeKind::String:
             {
-                void*    ptr;
+                char*    ptr;
                 uint64_t len;
 
                 if (res.value)
@@ -424,7 +424,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 }
                 else
                 {
-                    ptr = static_cast<void**>(addr)[0];
+                    ptr = static_cast<char**>(addr)[0];
                     len = static_cast<uint64_t*>(addr)[1];
                 }
 
@@ -433,8 +433,8 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 else
                 {
                     Utf8 str1;
-                    str1.resize(static_cast<int>(len));
-                    memcpy(str1.buffer, ptr, len);
+                    str1.resize(static_cast<uint32_t>(len));
+                    std::copy_n(ptr, len, str1.buffer);
                     str += "\"";
                     str += str1;
                     str += "\"";

@@ -207,7 +207,7 @@ void Concat::addString(const Utf8& v)
 {
     const auto len = static_cast<int>(v.length());
     ensureSpace(len);
-    memcpy(currentSP, v.buffer, len);
+    std::copy_n(v.buffer, len, currentSP);
     currentSP += len;
 }
 
@@ -251,7 +251,7 @@ void Concat::addString5(const char* v)
 void Concat::addString(const char* v, uint32_t len)
 {
     ensureSpace(len);
-    memcpy(currentSP, v, len);
+    std::copy_n(v, len, currentSP);
     currentSP += len;
 }
 
@@ -259,7 +259,7 @@ void Concat::addString(const char* v)
 {
     const auto len = static_cast<uint32_t>(strlen(v));
     ensureSpace(len);
-    memcpy(currentSP, v, len);
+    std::copy_n(v, len, currentSP);
     currentSP += len;
 }
 

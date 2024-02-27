@@ -2256,7 +2256,7 @@ namespace
                         SWAG_CHECK(checkStackInitialized(cxt, addr2, vc.reg.u32, rb->overload));
                         SWAG_CHECK(getStackValue(va, cxt, addr2, vc.reg.u32));
                         setStackValue(cxt, addr, vc.reg.u32, va.kind);
-                        memcpy(addr, addr2, vc.reg.u32);
+                        std::copy_n(addr2, vc.reg.u32, addr);
                         break;
                     }
                     invalidateCurStateStack(cxt);

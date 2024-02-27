@@ -783,10 +783,10 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
         case ByteCodeOp::IntrinsicMemCpy:
         {
-            auto   dst  = static_cast<void*>(registersRC[ip->a.u32].pointer);
-            auto   src  = static_cast<void*>(registersRC[ip->b.u32].pointer);
+            auto   dst  = static_cast<uint8_t*>(registersRC[ip->a.u32].pointer);
+            auto   src  = static_cast<uint8_t*>(registersRC[ip->b.u32].pointer);
             size_t size = IMMC_U64(ip);
-            memcpy(dst, src, size);
+            std::copy_n(src, size, dst);
             break;
         }
 
@@ -2848,7 +2848,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             auto size                      = Allocator::alignSize(count + 1);
             registersRC[ip->a.u32].pointer = Allocator::alloc_n<uint8_t>(size);
             context->bc->autoFree.push_back({static_cast<void*>(registersRC[ip->a.u32].pointer), size});
-            memcpy(registersRC[ip->a.u32].pointer, ptr, count + 1);
+            std::copy_n(ptr, count + 1, registersRC[ip->a.u32].pointer);
             registersRC[ip->a.u32].pointer[count] = 0;
             break;
         }

@@ -1135,7 +1135,7 @@ void Module::decImplForToSolve(const TypeInfoStruct* typeStruct)
 
 void Module::initProcessInfos()
 {
-    memcpy(&processInfos, &g_ProcessInfos, sizeof(SwagProcessInfos));
+    std::copy_n(&g_ProcessInfos, 1, &processInfos);
     processInfos.modules.buffer = modulesSlice;
     processInfos.modules.count  = moduleDependencies.count + 1;
 }

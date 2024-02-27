@@ -1322,7 +1322,7 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
     SwagSourceCodeLocation* loc;
     const auto              offset = seg->reserve(sizeof(SwagSourceCodeLocation), reinterpret_cast<uint8_t**>(&loc), sizeof(void*));
     seg->addInitPtr(offset, offsetName);
-    memcpy(loc, &tmpLoc.loc, sizeof(tmpLoc.loc));
+    std::copy_n(&tmpLoc.loc, 1, loc);
 
     // Store in the cache
     tmpLoc.storageSegment = seg;

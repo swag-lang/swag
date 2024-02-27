@@ -54,7 +54,7 @@ void DataSegment::initFrom(DataSegment* other)
         // If this assert, then we must increase the default granularity size in setup()
         SWAG_ASSERT(other->buckets.size() == 1);
         reserve(other->totalCount);
-        memcpy(buckets[0].buffer, other->buckets[0].buffer, other->totalCount);
+        std::copy_n(other->buckets[0].buffer, other->totalCount, buckets[0].buffer);
     }
 
     initPtr.clear();
@@ -343,7 +343,7 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
     const auto offset = reserveNoLock(str.count + 1, &addr);
     if (resultPtr)
         *resultPtr = addr;
-    memcpy(addr, str.buffer, str.count);
+    std::copy_n(str.buffer, str.count, addr);
     addr[str.count] = 0;
 
     iter.first->second = {offset, addr};
