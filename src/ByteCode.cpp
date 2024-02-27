@@ -212,9 +212,6 @@ bool ByteCode::isDoingNothing() const
             }
 
             break;
-
-        default:
-            break;
     }
 
     return false;
@@ -436,8 +433,6 @@ uint32_t ByteCode::getSetZeroAtPointerSize(const ByteCodeInstruction* inst, uint
         case ByteCodeOp::SetZeroAtPointerX:
             offset = inst->c.u32;
             return inst->b.u32;
-        default:
-            break;
     }
 
     return 0;
@@ -462,8 +457,6 @@ uint32_t ByteCode::getSetZeroStackSize(const ByteCodeInstruction* inst, uint32_t
         case ByteCodeOp::SetZeroStackX:
             offset = inst->a.u32;
             return inst->b.u32;
-        default:
-            break;
     }
 
     return 0;

@@ -185,9 +185,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
                 break;
             }
             break;
-
-        default:
-            break;
     }
 }
 

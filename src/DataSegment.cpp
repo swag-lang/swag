@@ -43,8 +43,6 @@ void DataSegment::setup(SegmentKind myKind, Module* myModule)
         case SegmentKind::String:
             name = "string segment";
             break;
-        default:
-            break;
     }
 }
 
@@ -292,9 +290,6 @@ uint32_t DataSegment::addComputedValue(const TypeInfo* typeInfo, ComputedValue& 
             }
             break;
         }
-
-        default:
-            break;
     }
 
     uint8_t*   addr;
@@ -318,8 +313,6 @@ uint32_t DataSegment::addComputedValue(const TypeInfo* typeInfo, ComputedValue& 
         case 8:
             *reinterpret_cast<uint64_t*>(addr)    = computedValue.reg.u64;
             storedValues64[computedValue.reg.u64] = {storageOffset, addr};
-            break;
-        default:
             break;
     }
 

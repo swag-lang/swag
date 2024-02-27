@@ -327,8 +327,6 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
         case JobWaitKind::WaitSymbol:
             remark = form("waiting for %s to be solved", sym.c_str());
             break;
-        default:
-            break;
     }
 
     if (!remark.empty())

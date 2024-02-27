@@ -583,8 +583,6 @@ bool Parser::doUnaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** r
             SWAG_VERIFY(tokenParse.isNot(TokenId::KwdDeRef), error(tokenParse.token, formErr(Err0282, prevTokenParse.token.c_str(), tokenParse.token.c_str(), prevTokenParse.token.c_str())));
             return doSinglePrimaryExpression(node, exprFlags, &dummyResult);
         }
-        default:
-            break;
     }
 
     return doPrimaryExpression(parent, exprFlags, result);
@@ -1281,8 +1279,6 @@ void Parser::isForceTakeAddress(AstNode* node)
         case AstNodeKind::ArrayPointerIndex:
             isForceTakeAddress(castAst<AstArrayPointerIndex>(node)->array);
             break;
-        default:
-            break;
     }
 }
 
@@ -1654,8 +1650,6 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
         case TokenId::IntrinsicPostMove:
             node->token.text = g_LangSpec->name_atpostMove;
             node->kind       = AstNodeKind::PostMove;
-            break;
-        default:
             break;
     }
 

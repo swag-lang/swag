@@ -233,9 +233,6 @@ bool Semantic::setupIdentifierRef(SemanticContext*, AstNode* node)
             node->typeInfo = typeInfo;
             break;
         }
-
-        default:
-            break;
     }
 
     return true;
@@ -560,8 +557,6 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         case SymbolKind::TypeAlias:
         case SymbolKind::Interface:
             return true;
-        default:
-            break;
     }
 
     const auto                  symbol   = overload->symbol;

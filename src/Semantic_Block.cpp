@@ -304,8 +304,6 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         case TypeInfoKind::Array:
         case TypeInfoKind::Interface:
             return context->report({node->expression, formErr(Err0169, typeSwitch->getDisplayNameC())});
-        default:
-            break;
     }
 
     SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, toErr(Err0076)}));

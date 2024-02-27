@@ -50,8 +50,6 @@ inline bool isOsDarwin(SwagTargetOs os)
     {
         case SwagTargetOs::MacOsX:
             return true;
-        default:
-            break;
     }
 
     return false;

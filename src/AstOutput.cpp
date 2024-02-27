@@ -533,8 +533,6 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
         case AstNodeKind::ConstDecl:
         case AstNodeKind::NameAlias:
             return true;
-        default:
-            break;
     }
 
     SWAG_CHECK(outputAttributesGlobalUsing(context, concat, node));
@@ -561,8 +559,6 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
             attr            = &type->attributes;
             break;
         }
-        default:
-            break;
     }
 
     if (!attr)

@@ -363,8 +363,6 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
             }
 
             break;
-        default:
-            break;
     }
 
     return "";
@@ -455,8 +453,6 @@ bool Semantic::resolveLiteral(SemanticContext* context)
             node->token.id         = TokenId::LiteralNumber;
             node->literalType      = LiteralType::TypeSigned32;
             node->literalValue.s32 = SWAG_BUILD_NUM;
-            break;
-        default:
             break;
     }
 

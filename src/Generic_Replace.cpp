@@ -325,9 +325,6 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
             break;
         }
-
-        default:
-            break;
     }
 
     return typeInfo;

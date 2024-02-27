@@ -653,8 +653,6 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             stepMode         = DebugStepMode::None;
             break;
         }
-        default:
-            break;
     }
 
     return !zapCurrentIp;

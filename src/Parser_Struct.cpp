@@ -26,8 +26,6 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
             scopeKind = ScopeKind::Enum;
             SWAG_CHECK(eatToken());
             break;
-        default:
-            break;
     }
 
     // Identifier

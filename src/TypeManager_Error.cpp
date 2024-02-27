@@ -113,8 +113,6 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
                     return context->report({fromNode ? fromNode : context->node, msg});
             }
             break;
-        default:
-            break;
     }
 
     return true;

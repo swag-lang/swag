@@ -165,8 +165,6 @@ Utf8 Naming::kindName(SymbolKind kind, Utf8& article)
         case SymbolKind::PlaceHolder:
             article = "a";
             return "placeholder";
-        default:
-            break;
     }
 
     article = "a";
@@ -257,9 +255,6 @@ Utf8 Naming::kindName(const TypeInfo* typeInfo, Utf8& article)
         case TypeInfoKind::Native:
             article = "a";
             return "type";
-
-        default:
-            break;
     }
 
     article = "a";
@@ -350,7 +345,7 @@ Utf8 Naming::kindName(const AstNode* node, Utf8& article)
         }
 
         case AstNodeKind::Identifier:
-            if(node->hasAstFlag(AST_FUNC_CALL))
+            if (node->hasAstFlag(AST_FUNC_CALL))
             {
                 article = "a";
                 return "function call";
@@ -362,7 +357,7 @@ Utf8 Naming::kindName(const AstNode* node, Utf8& article)
         case AstNodeKind::IntrinsicProp:
             article = "an";
             return "intrinsic";
-        
+
         case AstNodeKind::TypeExpression:
             article = "a";
             return "type";
@@ -375,9 +370,6 @@ Utf8 Naming::kindName(const AstNode* node, Utf8& article)
         case AstNodeKind::Defer:
             article = "an";
             return "instruction";
-
-        default:
-            break;
     }
 
     article = "a";
@@ -472,8 +464,6 @@ Utf8 Naming::niceArgumentRank(size_t idx)
             return "second argument";
         case 3:
             return "third argument";
-        default:
-            break;
     }
     return form("argument [[%d]]", idx);
 }
@@ -488,8 +478,6 @@ Utf8 Naming::niceParameterRank(size_t idx)
             return "second parameter";
         case 3:
             return "third parameter";
-        default:
-            break;
     }
     return form("parameter [[%d]]", idx);
 }
@@ -526,8 +514,6 @@ Utf8 Naming::tokenToName(TokenId id)
             return "=";
         case TokenId::SymVertical:
             return "|";
-        default:
-            break;
     }
 
     return "???";

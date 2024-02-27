@@ -39,8 +39,6 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
                 pp.emitLoad32Indirect(paramStack, RAX, RDI);
             pp.emitStore64Indirect(REG_OFFSET(reg), RAX);
             return;
-        default:
-            break;
     }
 
     SWAG_ASSERT(toAdd <= 0x7FFFFFFFF);

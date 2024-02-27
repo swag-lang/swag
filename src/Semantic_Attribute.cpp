@@ -180,8 +180,6 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         case Constant:
             specificMsg = "a constant";
             break;
-        default:
-            break;
     }
 
     if (specificMsg)

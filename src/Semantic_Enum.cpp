@@ -197,9 +197,6 @@ bool Semantic::resolveEnumType(SemanticContext* context)
             if (rawTypeInfo->nativeType == NativeTypeKind::Any)
                 return context->report({typeNode->firstChild(), formErr(Err0273, rawTypeInfo->getDisplayNameC())});
             return true;
-
-        default:
-            break;
     }
 
     if (rawTypeInfo->isCString())

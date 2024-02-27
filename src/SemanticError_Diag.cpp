@@ -532,9 +532,6 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
             }
 
             break;
-
-        default:
-            break;
     }
 
     switch (oneTry.symMatchContext.result)

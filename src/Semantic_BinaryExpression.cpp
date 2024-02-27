@@ -1403,8 +1403,6 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
         case TokenId::KwdOr:
             left->setBcNotifyAfter(ByteCodeGen::emitLogicalOrAfterLeft);
             break;
-        default:
-            break;
     }
 
     node->inheritAstFlagsAnd(AST_CONST_EXPR, AST_R_VALUE);

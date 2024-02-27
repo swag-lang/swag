@@ -104,9 +104,6 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
         case ByteCodeOp::JumpIfNoError:
             context->contextBcFlags |= OCF_HAS_ERR;
             break;
-
-        default:
-            break;
     }
 }
 

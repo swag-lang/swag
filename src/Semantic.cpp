@@ -49,8 +49,6 @@ bool Semantic::setUnRef(AstNode* node)
         case AstNodeKind::FuncCallParam:
             setUnRef(node->lastChild());
             break;
-        default:
-            break;
     }
 
     return true;
@@ -192,9 +190,6 @@ bool Semantic::setState(SemanticContext* context, AstNode* node, AstNodeResolveS
             {
                 SWAG_CHECK(checkAccess(context, node));
             }
-            break;
-
-        default:
             break;
     }
 

@@ -245,9 +245,6 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
                 break;
             }
             break;
-
-        default:
-            break;
     }
 }
 
@@ -305,9 +302,6 @@ void ByteCodeOptimizer::reduceFactor(ByteCodeOptContext* context, ByteCodeInstru
                 break;
             }
 
-            break;
-
-        default:
             break;
     }
 }
@@ -525,9 +519,6 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                 break;
             }
 
-            break;
-
-        default:
             break;
     }
 }
@@ -811,9 +802,6 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
             }
 
             break;
-
-        default:
-            break;
     }
 
     // A = something followed by B = A
@@ -1039,9 +1027,6 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 setNop(context, ip + 1);
                 break;
             }
-            break;
-
-        default:
             break;
     }
 }
@@ -2675,9 +2660,6 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             }
 
             break;
-
-        default:
-            break;
     }
 
     // Init stack just before a return
@@ -2995,9 +2977,6 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             }
 
             break;
-
-        default:
-            break;
     }
 }
 
@@ -3073,9 +3052,6 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
                 break;
             }
             break;
-
-        default:
-            break;
     }
 }
 
@@ -3139,9 +3115,6 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
                 setNop(context, ip + 1);
                 break;
             }
-            break;
-
-        default:
             break;
     }
 
@@ -3652,9 +3625,6 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
                 break;
             }
 
-            break;
-
-        default:
             break;
     }
 }
@@ -5543,9 +5513,6 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
             }
 
             break;
-
-        default:
-            break;
     }
 
     // Compare to == 0
@@ -5809,9 +5776,6 @@ void ByteCodeOptimizer::reduceLateStack(ByteCodeOptContext* context, ByteCodeIns
                 setNop(context, ip);
                 break;
             }
-            break;
-
-        default:
             break;
     }
 }
@@ -6278,9 +6242,6 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 }
             }
             break;
-
-        default:
-            break;
     }
 }
 
@@ -6439,9 +6400,6 @@ void ByteCodeOptimizer::reduceForceSafe(ByteCodeOptContext* context, ByteCodeIns
             break;
         case ByteCodeOp::BinOpMulU64:
             SET_OP(ip, ByteCodeOp::BinOpMulU64_Safe);
-            break;
-
-        default:
             break;
     }
 }

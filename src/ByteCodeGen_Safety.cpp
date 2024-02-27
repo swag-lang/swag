@@ -317,8 +317,6 @@ void ByteCodeGen::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeIn
             emitAssert(context, re, forAbs ? msg : msg1);
             break;
         }
-        default:
-            break;
     }
 
     freeRegisterRC(context, re);
@@ -1162,8 +1160,6 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
                 default:
                     break;
             }
-            break;
-        default:
             break;
     }
 

@@ -286,8 +286,6 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
             SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
             SWAG_CHECK(resolveUnaryOpInvert(context, child));
             break;
-        default:
-            break;
     }
 
     op->inheritComputedValue(child);

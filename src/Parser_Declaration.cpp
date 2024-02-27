@@ -148,8 +148,6 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
             Ast::newIdentifierRef(varNode->token.text, this, node);
             return true;
         }
-        default:
-            break;
     }
 
     // We must ensure that no job can be run before the using
@@ -718,8 +716,6 @@ bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, const AstWith*
         case TokenId::IntrinsicCVaEnd:
         case TokenId::IntrinsicCVaArg:
             SWAG_CHECK(doIdentifierRef(parent, result));
-            break;
-        default:
             break;
     }
 

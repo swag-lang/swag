@@ -428,8 +428,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         case 64:
             perLine = 4;
             break;
-        default:
-            break;
     }
 
     auto addrB = reinterpret_cast<const uint8_t*>(addrVal);

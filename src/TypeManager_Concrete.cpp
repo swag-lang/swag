@@ -74,9 +74,6 @@ TypeInfo* TypeManager::concreteType(const TypeInfo* typeInfo, ToConcreteFlags fl
                 return concreteType(typeGeneric->rawType, flags);
             }
             break;
-
-        default:
-            break;
     }
 
     return const_cast<TypeInfo*>(typeInfo);

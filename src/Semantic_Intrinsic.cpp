@@ -111,8 +111,6 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 
             return true;
         }
-        default:
-            break;
     }
     return true;
 }
@@ -1037,8 +1035,6 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
             break;
         }
-        default:
-            break;
     }
 
     return true;

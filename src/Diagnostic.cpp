@@ -178,9 +178,6 @@ void Diagnostic::printErrorLevel()
             g_Log.print("note: ");
             g_Log.setColor(noteColor);
             break;
-
-        default:
-            break;
     }
 
     if (!id.empty())
@@ -449,8 +446,6 @@ void Diagnostic::setColorRanges(DiagnosticLevel level) const
             break;
         case DiagnosticLevel::Note:
             g_Log.setColor(rangeNoteColor);
-            break;
-        default:
             break;
     }
 }

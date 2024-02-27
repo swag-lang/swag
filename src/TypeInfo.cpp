@@ -103,9 +103,6 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
                 scopedNameExport = std::move(str);
             }
             return scopedNameExport;
-
-        default:
-            break;
     }
 
     SWAG_ASSERT(false);
@@ -125,9 +122,6 @@ void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameType)
         case COMPUTE_SCOPED_NAME_EXPORT:
             computeScopedName(resName);
             resName += name;
-            break;
-
-        default:
             break;
     }
 }

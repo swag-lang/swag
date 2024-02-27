@@ -33,8 +33,6 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
         case TypeInfoKind::TypeListTuple:
             typeInfo = TypeManager::convertTypeListToStruct(context, castTypeInfo<TypeInfoList>(typeInfo));
             break;
-        default:
-            break;
     }
 
     if (!genFlags.has(GEN_EXPORTED_TYPE_FORCE_NO_SCOPE))
@@ -347,8 +345,6 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
             SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
             break;
         }
-        default:
-            break;
     }
 
     return true;

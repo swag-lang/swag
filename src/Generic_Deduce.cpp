@@ -266,9 +266,6 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
             }
             break;
         }
-
-        default:
-            break;
     }
 }
 

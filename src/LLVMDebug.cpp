@@ -334,8 +334,6 @@ llvm::DIType* LLVMDebug::getType(TypeInfo* typeInfo, llvm::DIFile* file)
                     return s64Ty;
             }
         }
-        default:
-            break;
     }
 
     switch (typeInfo->sizeOf)

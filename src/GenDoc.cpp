@@ -1235,8 +1235,6 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             helpContent += form("</h%d>\n", titleLevel + level + 1);
             break;
         }
-        default:
-            break;
     }
 }
 
@@ -1505,8 +1503,6 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
         case BuildCfgDocKind::Examples:
             if (!generateExamples())
                 return false;
-            break;
-        default:
             break;
     }
 

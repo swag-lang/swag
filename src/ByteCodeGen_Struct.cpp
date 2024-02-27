@@ -30,8 +30,6 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, const TypeIn
         case EmitOpUserKind::PostMove:
             emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, pushParam, offset, numParams);
             break;
-        default:
-            break;
     }
 }
 
@@ -1691,8 +1689,6 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
             generateStruct_opPostMove(context, typeStruct);
             YIELD();
             somethingToDo = typeStruct->opPostMove || typeStruct->opUserPostMoveFct;
-            break;
-        default:
             break;
     }
 

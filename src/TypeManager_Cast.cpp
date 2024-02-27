@@ -2287,8 +2287,6 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
             SWAG_ASSERT(!result0.empty());
             return context->report(*result0[0], result1);
         }
-        default:
-            break;
     }
 
     for (uint32_t j = 0; j < child->childCount(); j++)

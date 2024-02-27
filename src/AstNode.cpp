@@ -988,8 +988,6 @@ bool AstNode::isConstant0() const
             return computedValue()->reg.u32 == 0;
         case 8:
             return computedValue()->reg.u64 == 0;
-        default:
-            break;
     }
 
     return false;
@@ -1022,8 +1020,6 @@ bool AstNode::isConstant1() const
             return computedValue()->reg.f32 == 1;
         case NativeTypeKind::F64:
             return computedValue()->reg.f64 == 1;
-        default:
-            break;
     }
 
     return false;

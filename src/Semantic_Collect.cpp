@@ -167,8 +167,6 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         case 8:
             *reinterpret_cast<uint64_t*>(ptrDest) = value->reg.u64;
             break;
-        default:
-            break;
     }
 
     return true;

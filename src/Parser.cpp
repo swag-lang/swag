@@ -81,9 +81,6 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
                 return error(tokenParse.token, toErr(Err0661));
             break;
-
-        default:
-            break;
     }
 
     Utf8 msg;

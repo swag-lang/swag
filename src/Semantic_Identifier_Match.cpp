@@ -47,8 +47,6 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
             }
             break;
         }
-        default:
-            break;
     }
 }
 

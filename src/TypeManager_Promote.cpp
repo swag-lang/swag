@@ -77,8 +77,6 @@ bool TypeManager::promote32(SemanticContext* context, AstNode* left)
                 left->computedValue()->reg.u64 = left->computedValue()->reg.u32;
             SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, left, CAST_FLAG_TRY_COERCE));
             break;
-        default:
-            break;
     }
 
     return true;
@@ -198,8 +196,6 @@ bool TypeManager::promoteLeft(SemanticContext*, AstNode* left, AstNode* right)
         case NativeTypeKind::F32:
             if (newLeft == NativeTypeKind::F64)
                 left->computedValue()->reg.f64 = left->computedValue()->reg.f32;
-            break;
-        default:
             break;
     }
 

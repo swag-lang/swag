@@ -51,8 +51,6 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
             v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
             break;
         }
-        default:
-            break;
     }
 
     Diagnostic err{identifier, identifier->token, formErr(Wrn0002, Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload()->symbol->name.c_str()), DiagnosticLevel::Warning};
