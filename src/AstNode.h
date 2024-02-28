@@ -1080,6 +1080,8 @@ struct AstCompilerSpecFunc : AstNode
 
 struct AstNameSpace : AstNode
 {
+    static constexpr SpecFlags SPEC_FLAG_GENERATED_TOP_LEVEL = 0x0001;
+
     AstNode* clone(CloneContext& context);
 };
 

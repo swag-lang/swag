@@ -418,7 +418,8 @@ bool Parser::generateAst()
             npName = moduleForNp->name;
         Ast::normalizeIdentifierName(npName);
 
-        const auto namespaceNode  = Ast::newNode<AstNameSpace>(AstNodeKind::Namespace, this, sourceFile->astRoot);
+        const auto namespaceNode = Ast::newNode<AstNameSpace>(AstNodeKind::Namespace, this, sourceFile->astRoot);
+        namespaceNode->addSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL);
         namespaceNode->token.text = npName;
 
         ScopedLock lk(parentScope->symTable.mutex);

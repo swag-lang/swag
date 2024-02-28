@@ -28,6 +28,8 @@ struct FormatAst
     static void incIndentStatement(const AstNode* node, int& indent);
     static void decIndentStatement(const AstNode* node, int& indent);
     static void removeLastBlankLine(Concat& concat);
+    static void addEol();
+    static void addIndent();
 
     static bool outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node);
     static bool outputEnum(OutputContext& context, Concat& concat, AstEnum* node);

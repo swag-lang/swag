@@ -1085,11 +1085,14 @@ bool FormatAst::outputNode(OutputContext& context, Concat& concat, AstNode* node
                 CONCAT_FIXED_STR(concat, " for ");
                 concat.addString(nodeImpl->identifierFor->token.text);
             }
-            concat.addEol();
+            concat.addEolIndent(context.indent);
             concat.addChar('{');
             concat.addEol();
-            for (const auto child : node->children)
+
+            uint32_t first = nodeImpl->identifierFor ? 2 : 1;
+            for (uint32_t i = first; i < node->childCount(); i++)
             {
+                const auto child = node->children[i];
                 concat.addIndent(context.indent + 1);
                 context.indent++;
                 SWAG_CHECK(outputNode(context, concat, child));
@@ -1105,11 +1108,15 @@ bool FormatAst::outputNode(OutputContext& context, Concat& concat, AstNode* node
         }
 
         case AstNodeKind::Namespace:
-            CONCAT_FIXED_STR(concat, "namespace ");
-            concat.addString(node->token.text);
-            concat.addEol();
-            concat.addChar('{');
-            concat.addEol();
+            if (!node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
+            {
+                CONCAT_FIXED_STR(concat, "namespace ");
+                concat.addString(node->token.text);
+                concat.addEolIndent(context.indent);
+                concat.addChar('{');
+                concat.addEol();
+            }
+
             for (const auto child : node->children)
             {
                 concat.addIndent(context.indent + 1);
@@ -1119,10 +1126,13 @@ bool FormatAst::outputNode(OutputContext& context, Concat& concat, AstNode* node
                 concat.addEol();
             }
 
-            removeLastBlankLine(concat);
-            concat.addIndent(context.indent);
-            concat.addChar('}');
-            concat.addEolIndent(context.indent);
+            if (!node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
+            {
+                removeLastBlankLine(concat);
+                concat.addIndent(context.indent);
+                concat.addChar('}');
+                concat.addEolIndent(context.indent);
+            }
             break;
 
         case AstNodeKind::CompilerImport:
@@ -1139,6 +1149,12 @@ bool FormatAst::outputNode(OutputContext& context, Concat& concat, AstNode* node
         case AstNodeKind::CompilerPlaceHolder:
             CONCAT_FIXED_STR(concat, "#placeholder ");
             concat.addString(node->token.text);
+            concat.addEol();
+            break;
+
+        case AstNodeKind::CompilerForeignLib:
+            CONCAT_FIXED_STR(concat, "#foreignlib ");
+            SWAG_CHECK(outputNode(context, concat, node->children[0]));
             concat.addEol();
             break;
 
