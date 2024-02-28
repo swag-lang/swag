@@ -349,10 +349,13 @@ bool Concat::flushToFile(const Path& path)
     }
 
     auto bucket = firstBucket;
-    while (bucket != lastBucket->nextBucket)
+    if (bucket)
     {
-        (void) fwrite(bucket->data, 1, bucketCount(bucket), f);
-        bucket = bucket->nextBucket;
+        while (bucket != lastBucket->nextBucket)
+        {
+            (void) fwrite(bucket->data, 1, bucketCount(bucket), f);
+            bucket = bucket->nextBucket;
+        }
     }
 
     (void) fflush(f);

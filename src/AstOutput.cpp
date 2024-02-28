@@ -1140,6 +1140,16 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             break;
         }
 
+        case AstNodeKind::AttrDecl:
+        {
+            const auto nodeAttr = castAst<AstAttrDecl>(node, AstNodeKind::AttrDecl);
+            CONCAT_FIXED_STR(concat, "attr ");
+            concat.addString(nodeAttr->token.text);
+            SWAG_CHECK(outputNode(context, concat, nodeAttr->parameters));
+            concat.addEol();
+            break;
+        }
+
         case AstNodeKind::EnumType:
             if (!node->children.empty())
                 SWAG_CHECK(outputNode(context, concat, node->children[0]));
@@ -2050,8 +2060,99 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             break;
         }
 
+        case AstNodeKind::File:
+            for (const auto c : node->children)
+                outputNode(context, concat, c);
+            break;
+
+        case AstNodeKind::CompilerDependencies:
+            CONCAT_FIXED_STR(concat, "#dependencies");
+            concat.addEol();
+            concat.addChar('{');
+            concat.addEol();
+            for (const auto child : node->children)
+            {
+                concat.addIndent(context.indent + 1);
+                context.indent++;
+                SWAG_CHECK(outputNode(context, concat, child));
+                context.indent--;
+                concat.addEol();
+            }
+            removeLastBlankLine(concat);
+            concat.addIndent(context.indent);
+            concat.addChar('}');
+            concat.addEolIndent(context.indent);
+            break;
+
+        case AstNodeKind::Impl:
+        {
+            const auto nodeImpl = castAst<AstImpl>(node, AstNodeKind::Impl);
+            CONCAT_FIXED_STR(concat, "impl ");
+            concat.addString(nodeImpl->identifier->token.text);
+            if (nodeImpl->identifierFor)
+            {
+                CONCAT_FIXED_STR(concat, " for ");
+                concat.addString(nodeImpl->identifierFor->token.text);
+            }
+            concat.addEol();
+            concat.addChar('{');
+            concat.addEol();
+            for (const auto child : node->children)
+            {
+                concat.addIndent(context.indent + 1);
+                context.indent++;
+                SWAG_CHECK(outputNode(context, concat, child));
+                context.indent--;
+                concat.addEol();
+            }
+
+            removeLastBlankLine(concat);
+            concat.addIndent(context.indent);
+            concat.addChar('}');
+            concat.addEolIndent(context.indent);
+            break;
+        }
+
+        case AstNodeKind::Namespace:
+            CONCAT_FIXED_STR(concat, "namespace ");
+            concat.addString(node->token.text);
+            concat.addEol();
+            concat.addChar('{');
+            concat.addEol();
+            for (const auto child : node->children)
+            {
+                concat.addIndent(context.indent + 1);
+                context.indent++;
+                SWAG_CHECK(outputNode(context, concat, child));
+                context.indent--;
+                concat.addEol();
+            }
+
+            removeLastBlankLine(concat);
+            concat.addIndent(context.indent);
+            concat.addChar('}');
+            concat.addEolIndent(context.indent);
+            break;
+
+        case AstNodeKind::CompilerImport:
+            CONCAT_FIXED_STR(concat, "#import ");
+            concat.addString(node->token.text);
+            concat.addEol();
+            break;
+
+        case AstNodeKind::FallThrough:
+            CONCAT_FIXED_STR(concat, "fallthrough");
+            concat.addEol();
+            break;
+
+        case AstNodeKind::CompilerPlaceHolder:
+            CONCAT_FIXED_STR(concat, "#placeholder ");
+            concat.addString(node->token.text);
+            concat.addEol();
+            break;
+
         default:
-            return Report::internalError(node, "Ast::outputNode, unknown funcDecl");
+            return Report::internalError(node, "Ast::outputNode, unknown node kind");
     }
 
     return true;

@@ -344,6 +344,18 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Publish)
     {
+        /*
+        for (auto file : module->files)
+        {
+            Path                     path = R"(c:/perso/)" + file->path.filename();
+            AstOutput::OutputContext cxt;
+            Concat                   concat;
+            concat.init(4 * 1024);
+            AstOutput::outputNode(cxt, concat, file->astRoot);
+            //concat.flushToFile(path);
+        }
+        */
+
         if (module->numErrors)
             return JobResult::ReleaseJob;
         module->logPass(pass);
@@ -731,6 +743,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
+
         module->logStage("ModuleBuildPass::Output\n");
 
         if (module->is(ModuleKind::Config) || module->is(ModuleKind::Script))
