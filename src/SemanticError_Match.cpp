@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Ast.h"
-#include "AstOutput.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "FormatAst.h"
 #include "Naming.h"
 #include "Semantic.h"
 #include "SemanticError.h"
@@ -80,7 +80,7 @@ namespace
         }
 
         Concat                   concat;
-        AstOutput::OutputContext outCxt;
+        FormatAst::OutputContext outCxt;
         concat.init(10 * 1024);
 
         const auto maxOverloads = min(tryResult.size(), MAX_OVERLOADS);
@@ -120,13 +120,13 @@ namespace
             if (tryResult[i]->overload->node->is(AstNodeKind::FuncDecl))
             {
                 const auto funcNode = castAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
-                AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
+                FormatAst::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
             }
             else if (tryResult[i]->overload->node->is(AstNodeKind::VarDecl))
             {
                 const auto varNode = castAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
                 const auto lambda  = castAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
-                AstOutput::outputFuncSignature(outCxt, concat, varNode, nullptr, lambda->parameters, nullptr);
+                FormatAst::outputFuncSignature(outCxt, concat, varNode, nullptr, lambda->parameters, nullptr);
             }
             else
             {

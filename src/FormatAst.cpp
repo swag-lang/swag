@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "AstOutput.h"
 #include "Ast.h"
 #include "AstFlags.h"
+#include "FormatAst.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Report.h"
@@ -9,7 +9,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-void AstOutput::incIndentStatement(const AstNode* node, int& indent)
+void FormatAst::incIndentStatement(const AstNode* node, int& indent)
 {
     if (node->is(AstNodeKind::CompilerIfBlock) && node->firstChild()->is(AstNodeKind::Statement))
         return;
@@ -17,7 +17,7 @@ void AstOutput::incIndentStatement(const AstNode* node, int& indent)
         indent++;
 }
 
-void AstOutput::decIndentStatement(const AstNode* node, int& indent)
+void FormatAst::decIndentStatement(const AstNode* node, int& indent)
 {
     if (node->is(AstNodeKind::CompilerIfBlock) && node->firstChild()->is(AstNodeKind::Statement))
         return;
@@ -25,7 +25,7 @@ void AstOutput::decIndentStatement(const AstNode* node, int& indent)
         indent--;
 }
 
-bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node)
+bool FormatAst::outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node)
 {
     CONCAT_FIXED_STR(concat, "(");
     int idx = 0;
@@ -60,7 +60,7 @@ bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, 
     return true;
 }
 
-bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* node, bool& hasSomething)
+bool FormatAst::outputAttrUse(OutputContext& context, Concat& concat, AstNode* node, bool& hasSomething)
 {
     const auto nodeAttr = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
 
@@ -109,13 +109,13 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
     return true;
 }
 
-bool AstOutput::outputFuncName(OutputContext&, Concat& concat, const AstFuncDecl* node)
+bool FormatAst::outputFuncName(OutputContext&, Concat& concat, const AstFuncDecl* node)
 {
     concat.addString(node->token.text);
     return true;
 }
 
-bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf)
+bool FormatAst::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf)
 {
     ScopeExportNode sen(context, node);
 
@@ -191,7 +191,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
     return true;
 }
 
-void AstOutput::removeLastBlankLine(Concat& concat)
+void FormatAst::removeLastBlankLine(Concat& concat)
 {
     auto p = concat.currentSP;
     if (p == concat.lastBucket->data)
@@ -216,7 +216,7 @@ void AstOutput::removeLastBlankLine(Concat& concat)
     }
 }
 
-bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* node)
+bool FormatAst::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* node)
 {
     PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export, nullptr);
     CONCAT_FIXED_STR(concat, "func");
@@ -331,7 +331,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     return true;
 }
 
-bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node)
+bool FormatAst::outputEnum(OutputContext& context, Concat& concat, AstEnum* node)
 {
     PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export, nullptr);
 
@@ -381,7 +381,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
     return true;
 }
 
-bool AstOutput::outputAttributesUsage(const OutputContext& context, Concat& concat, const TypeInfoFuncAttr* typeFunc)
+bool FormatAst::outputAttributesUsage(const OutputContext& context, Concat& concat, const TypeInfoFuncAttr* typeFunc)
 {
     bool first = true;
     concat.addIndent(context.indent);
@@ -420,7 +420,7 @@ bool AstOutput::outputAttributesUsage(const OutputContext& context, Concat& conc
     return true;
 }
 
-bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* /*node*/, const TypeInfo* typeInfo, const AttributeList& attributes)
+bool FormatAst::outputAttributes(OutputContext& context, Concat& concat, AstNode* /*node*/, const TypeInfo* typeInfo, const AttributeList& attributes)
 {
     const auto attr = &attributes;
     if (!attr->empty())
@@ -488,7 +488,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     return true;
 }
 
-bool AstOutput::outputAttributesGlobalUsing(const OutputContext& context, Concat& concat, const AstNode* node)
+bool FormatAst::outputAttributesGlobalUsing(const OutputContext& context, Concat& concat, const AstNode* node)
 {
     // Global using
     bool outputUsing = true;
@@ -526,7 +526,7 @@ bool AstOutput::outputAttributesGlobalUsing(const OutputContext& context, Concat
     return true;
 }
 
-bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo)
+bool FormatAst::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo)
 {
     switch (node->kind)
     {
@@ -568,7 +568,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     return true;
 }
 
-bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
+bool FormatAst::outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
 {
     if (typeInfo->isPointerNull())
     {
@@ -616,7 +616,7 @@ bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* n
     return true;
 }
 
-bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node)
+bool FormatAst::outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node)
 {
     const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 
@@ -701,7 +701,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
     return true;
 }
 
-bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstVarDecl* varNode, bool isSelf)
+bool FormatAst::outputVarDecl(OutputContext& context, Concat& concat, const AstVarDecl* varNode, bool isSelf)
 {
     if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME))
     {
@@ -745,7 +745,7 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstV
     return true;
 }
 
-bool AstOutput::outputVar(OutputContext& context, Concat& concat, const AstVarDecl* varNode)
+bool FormatAst::outputVar(OutputContext& context, Concat& concat, const AstVarDecl* varNode)
 {
     if (varNode->hasAstFlag(AST_DECL_USING))
         CONCAT_FIXED_STR(concat, "using ");
@@ -772,7 +772,7 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, const AstVarDe
     return true;
 }
 
-bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* node)
+bool FormatAst::outputStruct(OutputContext& context, Concat& concat, AstStruct* node)
 {
     // If we need to export as opaque, and the struct has init values, then we add the
     // #[Swag.ExportType] attribute
@@ -857,7 +857,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     return true;
 }
 
-bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
+bool FormatAst::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
 {
     typeInfo = TypeManager::concretePtrRef(typeInfo);
     SWAG_ASSERT(typeInfo->isTuple());
@@ -867,7 +867,7 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
     return true;
 }
 
-bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpression* node)
+bool FormatAst::outputType(OutputContext& context, Concat& concat, AstTypeExpression* node)
 {
     if (node->typeFlags.has(TYPEFLAG_IS_RETVAL))
     {
@@ -970,7 +970,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
     return true;
 }
 
-bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* /*node*/, TypeInfo* typeInfo)
+bool FormatAst::outputType(OutputContext& context, Concat& concat, AstNode* /*node*/, TypeInfo* typeInfo)
 {
     // Lambda
     /////////////////////////////////
@@ -1016,7 +1016,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* /*no
     return true;
 }
 
-bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node)
+bool FormatAst::outputNode(OutputContext& context, Concat& concat, AstNode* node)
 {
     if (!node)
         return true;
@@ -2158,7 +2158,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     return true;
 }
 
-bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, const Module* moduleToGen, const Scope* scope)
+bool FormatAst::outputScopeContent(OutputContext& context, Concat& concat, const Module* moduleToGen, const Scope* scope)
 {
     const auto publicSet = scope->publicSet;
     if (!publicSet)
@@ -2236,7 +2236,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, const
     return true;
 }
 
-bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
+bool FormatAst::outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
 {
     SWAG_ASSERT(moduleToGen);
     if (!scope->flags.has(SCOPE_FLAG_HAS_EXPORTS))

@@ -16,7 +16,7 @@ struct TypeInfoFuncAttr;
 
 enum class ScopeKind : uint8_t;
 
-struct AstOutput
+struct FormatAst
 {
     struct OutputContext : JobContext
     {
@@ -54,7 +54,7 @@ struct AstOutput
 
 struct ScopeExportNode
 {
-    ScopeExportNode(AstOutput::OutputContext& context, AstNode* node)
+    ScopeExportNode(FormatAst::OutputContext& context, AstNode* node)
     {
         savedContext         = &context;
         savedExportedNode    = context.exportedNode;
@@ -66,6 +66,6 @@ struct ScopeExportNode
         savedContext->exportedNode = savedExportedNode;
     }
 
-    AstOutput::OutputContext* savedContext;
+    FormatAst::OutputContext* savedContext;
     AstNode*                  savedExportedNode;
 };

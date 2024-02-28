@@ -38,9 +38,6 @@
     <ClCompile Include="../src/Backend.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="../src/AstOutput.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\LLVM_Setup.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
@@ -686,6 +683,9 @@
     <ClCompile Include="..\src\LLVMDebug.cpp">
       <Filter>Backend\LLVM\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="../src/AstOutput.cpp">
+      <Filter>Format</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -868,9 +868,6 @@
     </ClInclude>
     <ClInclude Include="..\src\PrepCompilerMsgJob.h">
       <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\AstOutput.h">
-      <Filter>Syntax</Filter>
     </ClInclude>
     <ClInclude Include="..\src\MapRegTo.h">
       <Filter>Backend\ByteCode\Optimize</Filter>
@@ -1061,6 +1058,9 @@
     <ClInclude Include="..\src\Token.h">
       <Filter>Syntax\Tokenizer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\AstOutput.h">
+      <Filter>Format</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -1164,6 +1164,9 @@
     </Filter>
     <Filter Include="Backend\SCBE\Obj">
       <UniqueIdentifier>{5b17cb69-4d96-4b78-aeea-02449687dd00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Format">
+      <UniqueIdentifier>{ba5b3615-f7de-4534-9914-d4c5b73355a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

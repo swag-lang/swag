@@ -1,8 +1,8 @@
 #pragma once
 #include "Ast.h"
-#include "AstOutput.h"
 #include "BackendParameters.h"
 #include "Concat.h"
+#include "FormatAst.h"
 
 struct AstFuncDecl;
 struct AstNode;
@@ -100,6 +100,6 @@ struct Backend
     uint32_t              numPreCompileBuffers = 0;
     BackendPreCompilePass passExport           = BackendPreCompilePass::Init;
 
-    AstOutput::OutputContext outputContext;
+    FormatAst::OutputContext outputContext;
     bool                     mustCompile = true;
 };

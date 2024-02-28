@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Ast.h"
 #include "AstFlags.h"
-#include "AstOutput.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "FormatAst.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Semantic.h"
@@ -573,9 +573,9 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
         Concat concat;
         concat.init(4 * 1024);
 
-        AstOutput::OutputContext outputContext;
+        FormatAst::OutputContext outputContext;
         const auto               typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
-        AstOutput::outputNode(outputContext, concat, typeCode->content);
+        FormatAst::outputNode(outputContext, concat, typeCode->content);
         for (auto b = concat.firstBucket; b; b = b->nextBucket)
             node->computedValue()->text.append(reinterpret_cast<const char*>(b->data), concat.bucketCount(b));
     }

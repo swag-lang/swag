@@ -307,7 +307,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
         bufferSwg.addEol();
 
         // Emit everything that's public
-        if (!AstOutput::outputScope(outputContext, bufferSwg, module, module->scopeRoot))
+        if (!FormatAst::outputScope(outputContext, bufferSwg, module, module->scopeRoot))
             return JobResult::ReleaseJob;
     }
 

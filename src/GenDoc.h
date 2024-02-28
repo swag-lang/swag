@@ -1,8 +1,8 @@
 #pragma once
 #include "AstNode.h"
-#include "AstOutput.h"
 #include "Concat.h"
 #include "Flags.h"
+#include "FormatAst.h"
 
 struct Scope;
 struct AstStruct;
@@ -123,8 +123,8 @@ struct GenDoc
 
     Utf8                            titleToc;
     Utf8                            titleContent;
-    AstOutput                       output;
-    AstOutput::OutputContext        outputCxt;
+    FormatAst                       output;
+    FormatAst::OutputContext        outputCxt;
     MapUtf8<VectorNative<AstNode*>> collect;
     Vector<OneRef>                  allNodes;
     Vector<Utf8>                    titleRefStack;

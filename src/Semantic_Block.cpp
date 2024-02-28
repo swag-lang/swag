@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Ast.h"
 #include "AstFlags.h"
-#include "AstOutput.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "FormatAst.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Parser.h"
@@ -679,8 +679,8 @@ bool Semantic::resolveVisit(SemanticContext* context)
     // Get back the expression string
     auto& concat = context->tmpConcat;
     concat.init(1024);
-    AstOutput::OutputContext outputContext;
-    SWAG_CHECK(AstOutput::outputNode(outputContext, concat, node->expression));
+    FormatAst::OutputContext outputContext;
+    SWAG_CHECK(FormatAst::outputNode(outputContext, concat, node->expression));
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
 

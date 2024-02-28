@@ -305,7 +305,7 @@ Utf8 GenDoc::getOutputNode(AstNode* node)
     if (!node)
         return "";
     concat.clear();
-    AstOutput::outputNode(outputCxt, concat, node);
+    FormatAst::outputNode(outputCxt, concat, node);
     return Utf8{reinterpret_cast<const char*>(concat.firstBucket->data), (concat.bucketCount(concat.firstBucket))};
 }
 

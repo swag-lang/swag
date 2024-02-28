@@ -220,7 +220,7 @@
         <ClInclude Include="../src/AstNode.h"/>
         <ClInclude Include="../src/Attribute.h"/>
         <ClInclude Include="../src/Backend.h"/>
-        <ClInclude Include="..\src\AstOutput.h"/>
+        <ClInclude Include="..\src\FormatAst.h" />
         <ClInclude Include="..\src\BackendFunctionBodyJob.h"/>
         <ClInclude Include="..\src\ByteCode_Math.h"/>
         <ClInclude Include="..\src\Flags.h"/>
@@ -343,7 +343,7 @@
         <ClCompile Include="../src/Assert.cpp"/>
         <ClCompile Include="../src/Ast.cpp"/>
         <ClCompile Include="../src/AstNode.cpp"/>
-        <ClCompile Include="../src/AstOutput.cpp"/>
+        <ClCompile Include="..\src\FormatAst.cpp" />
         <ClCompile Include="../src/Attribute.cpp"/>
         <ClCompile Include="../src/Backend.cpp"/>
         <ClCompile Include="..\src\AstNodeSpecifics.cpp"/>
