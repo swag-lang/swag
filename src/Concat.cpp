@@ -203,14 +203,6 @@ void Concat::addPointer(void* v)
     currentSP += sizeof(void*);
 }
 
-void Concat::addString(const Utf8& v)
-{
-    const auto len = static_cast<int>(v.length());
-    ensureSpace(len);
-    std::copy_n(v.buffer, len, currentSP);
-    currentSP += len;
-}
-
 void Concat::addString1(const char* v)
 {
     ensureSpace(1);
@@ -248,14 +240,7 @@ void Concat::addString5(const char* v)
     currentSP += 5;
 }
 
-void Concat::addString(const char* v, uint32_t len)
-{
-    ensureSpace(len);
-    std::copy_n(v, len, currentSP);
-    currentSP += len;
-}
-
-void Concat::addString(const char* v)
+void Concat::addStringX(const char* v)
 {
     const auto len = static_cast<uint32_t>(strlen(v));
     ensureSpace(len);
@@ -263,80 +248,11 @@ void Concat::addString(const char* v)
     currentSP += len;
 }
 
-void Concat::addChar(char c)
+void Concat::addStringN(const char* v, uint32_t len)
 {
-    ensureSpace(1);
-    *currentSP++ = c;
-}
-
-void Concat::addEol()
-{
-    ensureSpace(1);
-    *currentSP++ = '\n';
-    eolCount++;
-}
-
-void Concat::addIndent(uint32_t num)
-{
-    while (num--)
-        addChar('\t');
-}
-
-void Concat::addEolIndent(uint32_t num)
-{
-    auto p = currentSP;
-    while (p != lastBucket->data)
-    {
-        p--;
-        if (SWAG_IS_BLANK(*p))
-            continue;
-        if (*p == '\n')
-            return;
-        break;
-    }
-
-    addEol();
-    addIndent(num);
-}
-
-void Concat::addStringFormat(const char* format, ...)
-{
-    char    buf[4096];
-    va_list args;
-    va_start(args, format);
-    const auto len = vsnprintf(buf, 4096, format, args);
-    SWAG_ASSERT(len < 4095);
-    va_end(args);
-    addString(buf, len);
-}
-
-void Concat::addU32Str(uint32_t value)
-{
-    if (value < 10)
-        addChar(static_cast<char>(value + '0'));
-    else
-        addString(std::to_string(value));
-}
-
-void Concat::addS32Str8(int value)
-{
-    ensureSpace(8);
-
-    currentSP += 8;
-    auto pz = currentSP;
-
-    for (int i = 0; i < 8; i++)
-    {
-        pz--;
-        if (!value)
-            *pz = '0';
-        else
-        {
-            const auto id = value - 10 * (value / 10);
-            value /= 10;
-            *pz = static_cast<char>('0' + id);
-        }
-    }
+    ensureSpace(len);
+    std::copy_n(v, len, currentSP);
+    currentSP += len;
 }
 
 bool Concat::flushToFile(const Path& path)

@@ -61,7 +61,7 @@ namespace
 
         // Compiler version
         const Utf8 version = form("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-        concat.addString(version, version.length() + 1);
+        concat.addStringN(version, version.length() + 1);
         concat.align(4);
         *patchRecordCount = static_cast<uint16_t>(concat.totalCount() - patchRecordOffset);
 
@@ -73,7 +73,7 @@ namespace
         auto& concat = pp.concat;
         SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeview debug (should truncate)
         if (str.buffer && str.count)
-            concat.addString(str.buffer, str.count);
+            concat.addStringN(str.buffer, str.count);
         concat.addU8(0);
     }
 
@@ -907,7 +907,7 @@ namespace
         while (stringTable.length() & 3) // Align to 4 bytes
             stringTable.append(static_cast<char>(0));
         concat.addU32(stringTable.length());
-        concat.addString(stringTable);
+        concat.addStringN(stringTable.data(), stringTable.length());
 
         return true;
     }

@@ -856,7 +856,6 @@ bool FormatAst::outputNode(OutputContext& context, FormatConcat& concat, AstNode
                 concat.addEol();
             }
 
-            removeLastBlankLine(concat);
             concat.addIndent(context.indent);
             concat.addChar('}');
             concat.addEolIndent(context.indent);
@@ -1069,7 +1068,7 @@ bool FormatAst::outputNode(OutputContext& context, FormatConcat& concat, AstNode
                 context.indent--;
                 concat.addEol();
             }
-            removeLastBlankLine(concat);
+        
             concat.addIndent(context.indent);
             concat.addChar('}');
             concat.addEolIndent(context.indent);
@@ -1100,7 +1099,6 @@ bool FormatAst::outputNode(OutputContext& context, FormatConcat& concat, AstNode
                 concat.addEol();
             }
 
-            removeLastBlankLine(concat);
             concat.addIndent(context.indent);
             concat.addChar('}');
             concat.addEolIndent(context.indent);
@@ -1128,7 +1126,6 @@ bool FormatAst::outputNode(OutputContext& context, FormatConcat& concat, AstNode
 
             if (!node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
             {
-                removeLastBlankLine(concat);
                 concat.addIndent(context.indent);
                 concat.addChar('}');
                 concat.addEolIndent(context.indent);

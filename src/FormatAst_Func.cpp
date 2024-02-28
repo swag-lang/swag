@@ -194,7 +194,6 @@ bool FormatAst::outputFunc(OutputContext& context, FormatConcat& concat, AstFunc
         }
     }
 
-    removeLastBlankLine(concat);
     context.indent--;
     concat.addIndent(context.indent);
     concat.addChar('}');

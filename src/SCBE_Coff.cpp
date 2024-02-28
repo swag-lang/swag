@@ -72,7 +72,7 @@ namespace
             return true;
         *pp.patchDROffset = concat.totalCount();
         *pp.patchDRCount  = pp.directives.length();
-        concat.addString(pp.directives);
+        concat.addStringN(pp.directives.data(), pp.directives.length());
         return true;
     }
 
@@ -148,7 +148,7 @@ namespace
         SWAG_IF_ASSERT(uint32_t subTotal = 4);
         for (const auto str : pp.stringTable)
         {
-            concat.addString(str->buffer, str->count);
+            concat.addStringN(str->buffer, str->count);
             concat.addU8(0);
             SWAG_IF_ASSERT(subTotal += str->count + 1);
         }
@@ -191,7 +191,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
     /////////////////////////////////////////////
     uint16_t secIndex   = 1;
     pp.sectionIndexText = secIndex++;
-    concat.addString(".text\0\0\0", 8);                         // .Name
+    concat.addStringN(".text\0\0\0", 8);                   // .Name
     concat.addU32(0);                                           // .VirtualSize
     concat.addU32(0);                                           // .VirtualAddress
     pp.patchTextSectionSize             = concat.addU32Addr(0); // .SizeOfRawData
@@ -205,7 +205,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
     // global strings sections
     /////////////////////////////////////////////
     pp.sectionIndexSS = secIndex++;
-    concat.addString(".rdata\0\0", 8);       // .Name
+    concat.addStringN(".rdata\0\0", 8); // .Name
     concat.addU32(0);                        // .VirtualSize
     concat.addU32(0);                        // .VirtualAddress
     pp.patchSSCount  = concat.addU32Addr(0); // .SizeOfRawData
@@ -218,7 +218,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
 
     // directive section (to register dll exported symbols)
     pp.sectionIndexDR = secIndex++;
-    concat.addString(".drectve", 8);         // .Name
+    concat.addStringN(".drectve", 8);   // .Name
     concat.addU32(0);                        // .VirtualSize
     concat.addU32(0);                        // .VirtualAddress
     pp.patchDRCount  = concat.addU32Addr(0); // .SizeOfRawData
@@ -231,7 +231,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
 
     // .pdata section (to register functions)
     pp.sectionIndexPD = secIndex++;
-    concat.addString(".pdata\0\0", 8);                        // .Name
+    concat.addStringN(".pdata\0\0", 8);                  // .Name
     concat.addU32(0);                                         // .VirtualSize
     concat.addU32(0);                                         // .VirtualAddress
     pp.patchPDCount                   = concat.addU32Addr(0); // .SizeOfRawData
@@ -244,7 +244,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
 
     // .xdata section (for unwind infos)
     pp.sectionIndexXD = secIndex++;
-    concat.addString(".xdata\0\0", 8);       // .Name
+    concat.addStringN(".xdata\0\0", 8); // .Name
     concat.addU32(0);                        // .VirtualSize
     concat.addU32(0);                        // .VirtualAddress
     pp.patchXDCount  = concat.addU32Addr(0); // .SizeOfRawData
@@ -257,7 +257,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
 
     // .debug$S section
     pp.sectionIndexDBGS = secIndex++;
-    concat.addString(".debug$S", 8);                            // .Name
+    concat.addStringN(".debug$S", 8);                      // .Name
     concat.addU32(0);                                           // .VirtualSize
     concat.addU32(0);                                           // .VirtualAddress
     pp.patchDBGSCount                   = concat.addU32Addr(0); // .SizeOfRawData
@@ -270,7 +270,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
 
     // .debug$T section
     pp.sectionIndexDBGT = secIndex++;
-    concat.addString(".debug$T", 8);           // .Name
+    concat.addStringN(".debug$T", 8);     // .Name
     concat.addU32(0);                          // .VirtualSize
     concat.addU32(0);                          // .VirtualAddress
     pp.patchDBGTCount  = concat.addU32Addr(0); // .SizeOfRawData
@@ -287,7 +287,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         // This is not readonly because we can patch some stuff during the initialization stage of the module
         /////////////////////////////////////////////
         pp.sectionIndexCS = secIndex++;
-        concat.addString(".data\0\0\0", 8);                       // .Name
+        concat.addStringN(".data\0\0\0", 8);                 // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
         pp.patchCSCount                   = concat.addU32Addr(0); // .SizeOfRawData
@@ -301,7 +301,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         // bss section
         /////////////////////////////////////////////
         pp.sectionIndexBS = secIndex++;
-        concat.addString(".bss\0\0\0\0", 8);          // .Name
+        concat.addStringN(".bss\0\0\0\0", 8);    // .Name
         concat.addU32(0);                             // .VirtualSize
         concat.addU32(0);                             // .VirtualAddress
         concat.addU32(module->bssSegment.totalCount); // .SizeOfRawData
@@ -315,21 +315,21 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         // global section
         /////////////////////////////////////////////
         pp.sectionIndexGS = secIndex++;
-        concat.addString(".data\0\0\0", 8);      // .Name
-        concat.addU32(0);                        // .VirtualSize
-        concat.addU32(0);                        // .VirtualAddress
-        pp.patchGSCount  = concat.addU32Addr(0); // .SizeOfRawData
-        pp.patchGSOffset = concat.addU32Addr(0); // .PointerToRawData
-        concat.addU32(0);                        // .PointerToRelocations
-        concat.addU32(0);                        // .PointerToLineNumbers
-        concat.addU16(0);                        // .NumberOfRelocations
-        concat.addU16(0);                        // .NumberOfLineNumbers
+        concat.addStringN(".data\0\0\0", 8); // .Name
+        concat.addU32(0);                         // .VirtualSize
+        concat.addU32(0);                         // .VirtualAddress
+        pp.patchGSCount  = concat.addU32Addr(0);  // .SizeOfRawData
+        pp.patchGSOffset = concat.addU32Addr(0);  // .PointerToRawData
+        concat.addU32(0);                         // .PointerToRelocations
+        concat.addU32(0);                         // .PointerToLineNumbers
+        concat.addU16(0);                         // .NumberOfRelocations
+        concat.addU16(0);                         // .NumberOfLineNumbers
         concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
 
         // mutable section
         /////////////////////////////////////////////
         pp.sectionIndexMS = secIndex++;
-        concat.addString(".data\0\0\0", 8);                       // .Name
+        concat.addStringN(".data\0\0\0", 8);                 // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
         pp.patchMSCount                   = concat.addU32Addr(0); // .SizeOfRawData
@@ -343,7 +343,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         // tls section
         /////////////////////////////////////////////
         pp.sectionIndexTLS = secIndex++;
-        concat.addString(".data\0\0\0", 8);                        // .Name
+        concat.addStringN(".data\0\0\0", 8);                  // .Name
         concat.addU32(0);                                          // .VirtualSize
         concat.addU32(0);                                          // .VirtualAddress
         pp.patchTLSCount                   = concat.addU32Addr(0); // .SizeOfRawData

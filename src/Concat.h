@@ -41,16 +41,8 @@ struct Concat
     void      addString3(const char* v);
     void      addString4(const char* v);
     void      addString5(const char* v);
-    void      addString(const char* v, uint32_t len);
-    void      addString(const char* v);
-    void      addString(const Utf8& v);
-    void      addEolIndent(uint32_t num);
-    void      addIndent(uint32_t num);
-    void      addChar(char c);
-    void      addEol();
-    void      addStringFormat(const char* format, ...);
-    void      addU32Str(uint32_t value);
-    void      addS32Str8(int value);
+    void      addStringX(const char* v);
+    void      addStringN(const char* v, uint32_t len);
 
     template<typename T>
     T* addObj()
@@ -107,31 +99,5 @@ struct Concat
     uint8_t*      currentSP   = nullptr;
 
     uint32_t bucketSize      = 0;
-    uint32_t eolCount        = 0;
     uint32_t totalCountBytes = 0;
 };
-
-#define CONCAT_FIXED_STR(__concat, __str)                                         \
-    do                                                                            \
-    {                                                                             \
-        static constexpr int __len = (int) std::char_traits<char>::length(__str); \
-        (__concat).addString(__str, __len);                                       \
-    } while (0)
-
-#define CONCAT_STR_1(__concat, __before, __int, __after) \
-    do                                                   \
-    {                                                    \
-        CONCAT_FIXED_STR(__concat, __before);            \
-        (__concat).addU32Str(__int);                     \
-        CONCAT_FIXED_STR(__concat, __after);             \
-    } while (0)
-
-#define CONCAT_STR_2(__concat, __before, __int1, __middle, __int2, __after) \
-    do                                                                      \
-    {                                                                       \
-        CONCAT_FIXED_STR(__concat, __before);                               \
-        (__concat).addU32Str(__int1);                                       \
-        CONCAT_FIXED_STR(__concat, __middle);                               \
-        (__concat).addU32Str(__int2);                                       \
-        CONCAT_FIXED_STR(__concat, __after);                                \
-    } while (0)

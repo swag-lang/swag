@@ -108,31 +108,6 @@ bool FormatAst::outputAttrUse(OutputContext& context, FormatConcat& concat, AstN
     return true;
 }
 
-void FormatAst::removeLastBlankLine(FormatConcat& concat)
-{
-    auto p = concat.currentSP;
-    if (p == concat.lastBucket->data)
-        return;
-    p--;
-    if (*p != '\n')
-        return;
-
-    while (p != concat.lastBucket->data)
-    {
-        p--;
-        if (SWAG_IS_BLANK(*p))
-            continue;
-        if (*p == '\n')
-        {
-            concat.currentSP = p + 1;
-            concat.eolCount--;
-            return;
-        }
-
-        return;
-    }
-}
-
 bool FormatAst::outputEnum(OutputContext& context, FormatConcat& concat, AstEnum* node)
 {
     PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export, nullptr);
@@ -599,7 +574,6 @@ bool FormatAst::outputScope(OutputContext& context, FormatConcat& concat, Module
         if (!scope->flags.has(SCOPE_AUTO_GENERATED))
         {
             context.indent--;
-            removeLastBlankLine(concat);
             concat.addIndent(context.indent);
             concat.addChar('}');
             concat.addEol();
@@ -646,7 +620,6 @@ bool FormatAst::outputScope(OutputContext& context, FormatConcat& concat, Module
         }
 
         context.indent--;
-        removeLastBlankLine(concat);
         concat.addIndent(context.indent);
         concat.addChar('}');
         concat.addEol();
@@ -673,7 +646,6 @@ bool FormatAst::outputScope(OutputContext& context, FormatConcat& concat, Module
             SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
         context.indent--;
 
-        removeLastBlankLine(concat);
         concat.addIndent(context.indent);
         concat.addChar('}');
         concat.addEol();

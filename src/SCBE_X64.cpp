@@ -1317,7 +1317,7 @@ void SCBE_X64::emitOpNImmediate(CPURegister reg, uint64_t value, CPUOp op, CPUBi
                 if (numBits == CPUBits::B8)
                     concat.addU8(0x34);
                 else
-                    concat.addString("\x83\xF0");
+                    concat.addString2("\x83\xF0");
                 concat.addU8(static_cast<uint8_t>(value));
                 break;
 
