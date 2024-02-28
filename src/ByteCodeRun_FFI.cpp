@@ -40,7 +40,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
             // Not sure why. Probably an hidden problem somewhere.
             // Give this other tries.
             bool lastChance = false;
-            for (int i = 0; i < 10; i++)
+            for (uint32_t i = 0; i < 10; i++)
             {
                 using namespace std::chrono_literals;
                 std::this_thread::sleep_for(100ms);

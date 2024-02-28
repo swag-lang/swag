@@ -1091,7 +1091,7 @@ void initErrors()
 Utf8 formErr(ErrorID idx, ...)
 {
     va_list args;
-    va_start(args, static_cast<uint64_t>(idx));
+    va_start(args, idx);
     auto result = form("[%s] %s", g_EI[idx], g_E[idx].c_str());
     result      = form(result.c_str(), args);
     va_end(args);
