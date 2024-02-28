@@ -252,7 +252,7 @@ void GenDoc::outputTitle(OneRef& c)
     helpContent += form("<span class=\"api-item-title-kind\">%s</span> ", name.c_str());
 
     helpContent += "<span class=\"api-item-title-light\">";
-    for (int i = 0; i < static_cast<int>(tkn.size()) - 1; i++)
+    for (uint32_t i = 0; i < tkn.size() - 1; i++)
     {
         helpContent += tkn[i];
         helpContent += ".";
@@ -529,7 +529,7 @@ void GenDoc::generateContent()
     // Output content
     helpContent += "<h1>Content</h1>\n";
 
-    for (int i = 0; i < static_cast<int>(allNodes.size()); i++)
+    for (uint32_t i = 0; i < allNodes.size(); i++)
     {
         auto& c  = allNodes[i];
         auto  n0 = c.nodes[0];
@@ -567,7 +567,7 @@ void GenDoc::generateContent()
 
                 helpContent += "<table class=\"table-enumeration\">\n";
 
-                for (int j = i; j < static_cast<int>(allNodes.size()); j++)
+                for (uint32_t j = i; j < allNodes.size(); j++)
                 {
                     auto& c1 = allNodes[j];
                     auto  n  = c1.nodes[0];
@@ -608,7 +608,7 @@ void GenDoc::generateContent()
 
                 helpContent += "<table class=\"table-enumeration\">\n";
 
-                for (int j = i; j < static_cast<int>(allNodes.size()); j++)
+                for (uint32_t j = i; j < allNodes.size(); j++)
                 {
                     auto& c1 = allNodes[j];
                     auto  n  = c1.nodes[0];

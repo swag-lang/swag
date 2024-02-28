@@ -371,7 +371,7 @@ JobResult EnumerateModuleJob::execute()
 
         Vector<SourceFile*>             allFiles;
         VectorNative<ModuleDependency*> toKeep;
-        for (int i = static_cast<int>(m->moduleDependencies.size()) - 1; i >= 0; i--)
+        for (uint32_t i = m->moduleDependencies.size() - 1; i != UINT32_MAX; i--)
         {
             auto dep = m->moduleDependencies[i];
             auto mod = g_Workspace->getModuleByName(dep->name);

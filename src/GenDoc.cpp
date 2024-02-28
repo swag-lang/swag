@@ -278,13 +278,13 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
         l.replace("\\|", "&vert;");
     }
 
-    int start = 0;
-    while (start < static_cast<int>(lines.size()))
+    uint32_t start = 0;
+    while (start < lines.size())
     {
         auto blk = new UserBlock;
 
         // Start of a block
-        for (; start < static_cast<int>(lines.size()); start++)
+        for (; start < lines.size(); start++)
         {
             auto line = lines[start];
             line.trim();
@@ -392,9 +392,9 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
             continue;
         }
 
-        for (; start < static_cast<int>(lines.size()); start++)
+        for (; start < lines.size(); start++)
         {
-            const bool lastLine = start == static_cast<int>(lines.size()) - 1;
+            const bool lastLine = start == lines.size() - 1;
             auto       line     = lines[start];
             line.trim();
 
@@ -407,7 +407,7 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
                 case UserBlockKind::Title4:
                 case UserBlockKind::Title5:
                 case UserBlockKind::Title6:
-                    line.remove(0, 2 + (static_cast<int>(blk->kind) - static_cast<int>(UserBlockKind::Title1))); // #<blank>
+                    line.remove(0, 2 + (static_cast<uint32_t>(blk->kind) - static_cast<uint32_t>(UserBlockKind::Title1))); // #<blank>
                     blk->lines.push_back(line);
                     mustEnd = true;
                     start++;
@@ -512,7 +512,7 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
                     auto title = line;
                     start++;
 
-                    for (; start < static_cast<int>(lines.size()); start++)
+                    for (; start < lines.size(); start++)
                     {
                         auto line1 = lines[start];
                         if (line1.startsWith("    "))
@@ -1012,9 +1012,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                     tkn1.erase(tkn1.end());
 
                 bool hasHeader = true;
-                for (int it = 0; it < static_cast<int>(tkn0.size()); it++)
+                for (uint32_t it = 0; it < tkn0.size(); it++)
                 {
-                    if (it >= static_cast<int>(tkn1.size()))
+                    if (it >= tkn1.size())
                     {
                         hasHeader = false;
                         break;
@@ -1096,12 +1096,12 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             // Update toc
             if (docKind == BuildCfgDocKind::Examples)
             {
-                int myTitleLevel = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
+                uint32_t myTitleLevel = static_cast<uint32_t>(user.kind) - static_cast<uint32_t>(UserBlockKind::Title1);
                 addTocTitle(user.lines[0], user.lines[0], titleLevel + myTitleLevel);
             }
 
-            int  level = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
-            auto ref   = getTocTitleRef();
+            uint32_t level = static_cast<uint32_t>(user.kind) - static_cast<uint32_t>(UserBlockKind::Title1);
+            auto     ref   = getTocTitleRef();
             helpContent += form("<h%d id=\"%s\">", titleLevel + level + 1, ref.c_str());
             break;
         }
@@ -1125,11 +1125,11 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                 tkn.pop_back();
 
             helpContent += "<tr>";
-            for (int it = 0; it < static_cast<int>(tkn.size()); it++)
+            for (uint32_t it = 0; it < tkn.size(); it++)
             {
                 auto& t = tkn[it];
 
-                if (it < static_cast<int>(tableAlignCols.size()))
+                if (it < tableAlignCols.size())
                 {
                     switch (tableAlignCols[it])
                     {
@@ -1231,7 +1231,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         case UserBlockKind::Title5:
         case UserBlockKind::Title6:
         {
-            int level = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
+            uint32_t level = static_cast<uint32_t>(user.kind) - static_cast<uint32_t>(UserBlockKind::Title1);
             helpContent += form("</h%d>\n", titleLevel + level + 1);
             break;
         }

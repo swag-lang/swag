@@ -74,7 +74,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
             }
         }
 
-        for (int i = static_cast<int>(errCxtSteps.size()) - 1; i >= 0; i--)
+        for (uint32_t i = errCxtSteps.size() - 1; i != UINT32_MAX; i--)
         {
             auto& exp = errCxtSteps[i];
             if (exp.hide)

@@ -726,7 +726,7 @@ llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
     if (toGen.empty())
         return parent;
 
-    for (int i = static_cast<int>(toGen.size()) - 1; i >= 0; i--)
+    for (uint32_t i = toGen.size() - 1; i != UINT32_MAX; i--)
     {
         auto           toGenScope = toGen[i];
         llvm::DIScope* newScope;

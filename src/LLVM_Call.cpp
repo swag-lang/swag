@@ -477,8 +477,8 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
     auto&       context         = *pp.llvmContext;
     auto&       builder         = *pp.builder;
 
-    int numCallParams = static_cast<int>(typeFuncBC->parameters.size());
-    int idxParam      = static_cast<int>(pushParams.size()) - 1;
+    uint32_t numCallParams = typeFuncBC->parameters.size();
+    uint32_t idxParam      = pushParams.size() - 1;
 
     // Variadic are first
     if (typeFuncBC->isFctVariadic())
@@ -697,10 +697,10 @@ llvm::Value* LLVM::emitCall(const BuildParameters&      buildParameters,
 
     // Invert regs
     VectorNative<uint32_t> pushRAParams;
-    for (int i = static_cast<int>(regs.size()) - 1; i >= 0; i--)
+    for (uint32_t i = regs.size() - 1; i != UINT32_MAX; i--)
         pushRAParams.push_back(regs[i]);
     Vector<llvm::Value*> pushVParams;
-    for (int i = static_cast<int>(values.size()) - 1; i >= 0; i--)
+    for (uint32_t i = values.size() - 1; i != UINT32_MAX; i--)
         pushVParams.push_back(values[i]);
 
     return emitCall(buildParameters, name, typeFunc, allocR, allocT, pushRAParams, pushVParams, true);
@@ -721,8 +721,8 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
     const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       builder         = *pp.builder;
     auto&       context         = *pp.llvmContext;
-    int         popRAidx        = static_cast<int>(pushRAParams.size()) - 1;
-    int         numCallParams   = static_cast<int>(typeFuncBC->parameters.size());
+    uint32_t    popRAidx        = pushRAParams.size() - 1;
+    uint32_t    numCallParams   = typeFuncBC->parameters.size();
 
     // Return value
     // Normal user case

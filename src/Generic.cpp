@@ -84,7 +84,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             const auto identifier         = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
             identifier->genericParameters = Ast::newFuncCallGenParams(nullptr, node);
             genericParameters             = identifier->genericParameters;
-            for (int i = 0; i < static_cast<int>(firstMatch.genericParametersCallTypes.size()); i++)
+            for (uint32_t i = 0; i < firstMatch.genericParametersCallTypes.size(); i++)
             {
                 const auto& param     = firstMatch.genericParametersCallTypes[i];
                 const auto  callParam = Ast::newFuncCallParam(nullptr, genericParameters);
@@ -162,8 +162,8 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
 
 void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters)
 {
-    const int wantedNumGenericParams = static_cast<int>(genericParameters.size());
-    const int numGenericParams       = static_cast<int>(context.genericParameters.size());
+    const uint32_t wantedNumGenericParams = genericParameters.size();
+    const uint32_t numGenericParams       = context.genericParameters.size();
     if (!numGenericParams && !wantedNumGenericParams)
         return;
 
@@ -179,7 +179,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
     }
 
     VectorMap<Utf8, GenericReplaceType> m;
-    for (int i = 0; i < numGenericParams; i++)
+    for (uint32_t i = 0; i < numGenericParams; i++)
     {
         const auto& genName     = genericParameters[i]->name;
         const auto  genType     = genericParameters[i]->typeInfo;
@@ -252,7 +252,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         }
     }
 
-    for (int i = 0; i < wantedNumGenericParams; i++)
+    for (uint32_t i = 0; i < wantedNumGenericParams; i++)
     {
         const auto genType                                    = genericParameters[i]->typeInfo;
         context.mapGenericTypeToIndex[genType->name]          = i;
