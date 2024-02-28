@@ -15,7 +15,7 @@ void Stats::printFreq()
     if (!g_CommandLine.statsFreq)
         return;
 
-    g_Log.eol();
+    g_Log.writeEol();
     Utf8 str0 = g_CommandLine.statsFreqOp0;
     str0.makeLower();
     Utf8 str1 = g_CommandLine.statsFreqOp1;
@@ -56,7 +56,7 @@ void Stats::printFreq()
         }
     }
 
-    g_Log.print("\n");
+    g_Log.write("\n");
 
     for (uint32_t cpt = 0; cpt < g_CommandLine.statsFreqCount; cpt++)
     {
@@ -115,7 +115,7 @@ void Stats::print() const
         return;
 
     g_Log.setColor(LogColor::DarkCyan);
-    g_Log.eol();
+    g_Log.writeEol();
 
     /////////////////////////
     g_Log.messageHeaderDot("workers", form("%u", g_ThreadMgr.numWorkers), LogColor::Header, LogColor::Value);
@@ -138,19 +138,19 @@ void Stats::print() const
         g_Log.messageHeaderDot("errors", form("%u", g_Workspace->numErrors.load()), LogColor::Red);
     if (g_Workspace->numWarnings)
         g_Log.messageHeaderDot("warnings", form("%u", g_Workspace->numWarnings.load()), LogColor::Magenta);
-    g_Log.eol();
+    g_Log.writeEol();
 
     g_Log.messageHeaderDot("instructions", form("%u", numInstructions.load()), LogColor::Header, LogColor::Value);
     const float pc1 = static_cast<float>(totalOptimBC.load()) * 100.0f / static_cast<float>(numInstructions.load());
     g_Log.messageHeaderDot("kicked", form("%d %.1f%%", totalOptimBC.load(), pc1), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("total", form("%u", numInstructions.load() - totalOptimBC.load()), LogColor::Header, LogColor::Value);
-    g_Log.eol();
+    g_Log.writeEol();
 
     g_Log.messageHeaderDot("concrete types", form("%u", totalConcreteTypes.load()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("concrete struct types", form("%u", totalConcreteStructTypes.load()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("init ptr", form("%u", numInitPtr.load()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("init func ptr", form("%u", numInitFuncPtr.load()), LogColor::Header, LogColor::Value);
-    g_Log.eol();
+    g_Log.writeEol();
 
     /////////////////////////
     g_Log.messageHeaderDot("cfg time", form("%.3fs", OS::timerToSeconds(cfgTime.load())), LogColor::Header, LogColor::Value);
@@ -165,22 +165,22 @@ void Stats::print() const
     g_Log.messageHeaderDot("gen out time", form("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("optim bc time", form("%.3fs", OS::timerToSeconds(optimBCTime.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("total time", form("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())), LogColor::Header, LogColor::Value);
-    g_Log.eol();
+    g_Log.writeEol();
 
     /////////////////////////
     g_Log.messageHeaderDot("mem max", form("%s", Utf8::toNiceSize(maxAllocatedMemory.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem allocated", form("%s", Utf8::toNiceSize(allocatedMemory.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.eol();
+    g_Log.writeEol();
     g_Log.messageHeaderDot("mem utf8", form("%s", Utf8::toNiceSize(memUtf8.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem c str", form("%s", Utf8::toNiceSize(memUtf8CStr.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem new", form("%s", Utf8::toNiceSize(memNew.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem std", form("%s", Utf8::toNiceSize(memStd.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.eol();
+    g_Log.writeEol();
     g_Log.messageHeaderDot("mem ast nodes", form("%s", Utf8::toNiceSize(memNodes.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem ast nodes ext", form("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem ast nodes literal", form("%s", Utf8::toNiceSize(memNodesLiteral.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem ast identifiers ext", form("%s", Utf8::toNiceSize(memIdentifiersExt.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.eol();
+    g_Log.writeEol();
     g_Log.messageHeaderDot("mem concat", form("%s", Utf8::toNiceSize(memConcat.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem types", form("%s", Utf8::toNiceSize(memTypes.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem params", form("%s", Utf8::toNiceSize(memParams.load()).c_str()), LogColor::Header, LogColor::Value);
@@ -196,7 +196,7 @@ void Stats::print() const
         g_Log.messageHeaderDot("mem x64 dbg", form("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()), LogColor::Header, LogColor::Value);
 
     /////////////////////////
-    g_Log.eol();
+    g_Log.writeEol();
     for (const auto m : g_Workspace->modules)
     {
         if (m->isErrorModule)
@@ -223,7 +223,7 @@ void Stats::print() const
         g_Log.print(Utf8::toNiceSize(m->mutableSegment.totalCount), LogColor::Value);
         g_Log.print(" seg tls: ", LogColor::Header);
         g_Log.print(Utf8::toNiceSize(m->tlsSegment.totalCount), LogColor::Value);
-        g_Log.eol();
+        g_Log.writeEol();
     }
 
     g_Log.setDefaultColor();

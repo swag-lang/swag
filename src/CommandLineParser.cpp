@@ -34,6 +34,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu", "--output", "-o", CommandLineType::Bool, &cmdLine->output, nullptr, "output backend");
     addArg("bu", "--output-legit", "-ol", CommandLineType::Bool, &cmdLine->outputLegit, nullptr, "output legit backend");
     addArg("bu", "--output-test", "-ot", CommandLineType::Bool, &cmdLine->outputTest, nullptr, "output test backend");
+    addArg("doc", "--output-doc", "-od", CommandLineType::Bool, &cmdLine->outputDoc, nullptr, "output the generated documentation");
 
     addArg("te", "--test-bytecode", "-tb", CommandLineType::Bool, &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");
     addArg("te", "--test-native", "-tn", CommandLineType::Bool, &cmdLine->runBackendTests, nullptr, "run #test functions as native");

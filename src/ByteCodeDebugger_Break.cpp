@@ -31,10 +31,10 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* /*context*/) const
         }
 
         if (bkp.disabled)
-            g_Log.print(" (DISABLED)");
+            g_Log.write(" (DISABLED)");
         if (bkp.autoRemove)
-            g_Log.print(" (ONE SHOT)");
-        g_Log.eol();
+            g_Log.write(" (ONE SHOT)");
+        g_Log.writeEol();
     }
 }
 

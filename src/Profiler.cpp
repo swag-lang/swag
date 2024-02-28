@@ -85,7 +85,7 @@ namespace
         {
             Utf8 line = getProfileBc(child, level);
             g_Log.print(line);
-            g_Log.eol();
+            g_Log.writeEol();
             printChildren(child, level);
         }
     }
@@ -97,7 +97,7 @@ void profiler()
         return;
 
     g_Log.setColor(LogColor::Gray);
-    g_Log.print("\n");
+    g_Log.write("\n");
 
     // Collect
     //////////////////////////////////////////
@@ -146,7 +146,7 @@ void profiler()
         line += " ";
     line += "name";
     g_Log.print(line);
-    g_Log.eol();
+    g_Log.writeEol();
 
     for (const auto bc : bcs)
     {
@@ -154,7 +154,7 @@ void profiler()
             continue;
         line = getProfileBc(bc, 0);
         g_Log.print(line);
-        g_Log.eol();
+        g_Log.writeEol();
         printChildren(bc, 0);
     }
 
@@ -167,7 +167,7 @@ void profiler()
     while (!linFFi.empty() && OS::timerToSeconds(linFFi.back().cum) <= g_CommandLine.profileMinTime)
         linFFi.pop_back();
 
-    g_Log.eol();
+    g_Log.writeEol();
     line.clear();
     line += "#ffi_calls";
     while (line.count < COL1)
@@ -177,13 +177,13 @@ void profiler()
         line += " ";
     line += "name";
     g_Log.print(line);
-    g_Log.eol();
+    g_Log.writeEol();
 
     for (auto& it : linFFi)
     {
         line = getProfileFFI(it);
         g_Log.print(line);
-        g_Log.eol();
+        g_Log.writeEol();
     }
 
     g_Log.setDefaultColor();

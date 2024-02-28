@@ -503,7 +503,7 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
     }
 
     // All parameters
-    for (int idxCall = idxFirst; idxCall < numCallParams; idxCall++)
+    for (uint32_t idxCall = idxFirst; idxCall < numCallParams; idxCall++)
     {
         auto typeParam = TypeManager::concreteType(typeFuncBC->parameters[idxCall]->typeInfo);
         if (typeParam->isAutoConstPointerRef())
@@ -763,14 +763,14 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
         numCallParams--;
     }
 
-    int idxFirst = 0;
+    uint32_t idxFirst = 0;
     if (typeFuncBC->isClosure() && closureToLambda)
     {
         idxFirst = 1;
         popRAidx--;
     }
 
-    for (int idxCall = idxFirst; idxCall < numCallParams; idxCall++)
+    for (uint32_t idxCall = idxFirst; idxCall < numCallParams; idxCall++)
     {
         auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
         typeParam      = TypeManager::concreteType(typeParam);
@@ -831,7 +831,7 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
     if (typeFuncBC->isFctCVariadic())
     {
         const auto numVariadics = popRAidx + 1;
-        for (int idxCall = 0; idxCall < numVariadics; idxCall++)
+        for (uint32_t idxCall = 0; idxCall < numVariadics; idxCall++)
         {
             const auto index = pushRAParams[popRAidx--];
             const auto v0    = builder.CreateLoad(I64_TY(), GEP64(allocR, index));

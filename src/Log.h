@@ -75,11 +75,11 @@ struct Log
 
     void printHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot);
     void printHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor);
-    void print(const char* message, bool raw = false);
+    void write(const char* message, bool raw = false);
     void print(const char* message, LogColor color);
     void print(const Utf8& message, bool raw = false);
     void print(LogSymbol symbol);
-    void eol();
+    void writeEol();
 
     void messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Green, LogColor msgColor = LogColor::White);
     void messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Cyan, LogColor msgColor = LogColor::Cyan, const char* dot = ".");

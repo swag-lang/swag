@@ -33,7 +33,7 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
             cpt = 0;
             g_Log.setColor(LogColor::Gray);
             static auto MSG = "-- Type <RET> for more, 'q' to quit, 'c' to continue without paging --";
-            g_Log.print(MSG);
+            g_Log.write(MSG);
             bool ctrl, shift;
             int  c = 0;
             while (true)
@@ -58,49 +58,49 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
         cpt++;
 
         g_Log.print(i);
-        g_Log.eol();
+        g_Log.writeEol();
     }
 }
 
 void ByteCodeDebugger::printSeparator()
 {
-    g_Log.eol();
+    g_Log.writeEol();
 }
 
 void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type)
 {
     g_Log.print(title, LogColor::Gray);
-    g_Log.print(" ");
+    g_Log.write(" ");
     uint32_t len = title.length();
     while (len++ < 25)
-        g_Log.print(".");
-    g_Log.print(" ");
+        g_Log.write(".");
+    g_Log.write(" ");
     g_Log.print(name, LogColor::Name);
-    g_Log.print(" ");
+    g_Log.write(" ");
     g_Log.print(type, LogColor::Type);
-    g_Log.eol();
+    g_Log.writeEol();
 }
 
 void ByteCodeDebugger::printCmdError(const Utf8& msg)
 {
     g_Log.print(msg, LogColor::Red);
-    g_Log.eol();
+    g_Log.writeEol();
 }
 
 void ByteCodeDebugger::printCmdResult(const Utf8& msg)
 {
     g_Log.print(msg, LogColor::Gray);
-    g_Log.eol();
+    g_Log.writeEol();
 }
 
 void ByteCodeDebugger::printMsgBkp(const Utf8& msg)
 {
-    g_Log.eol();
+    g_Log.writeEol();
     g_Log.print("#### ", LogColor::Green);
     g_Log.print(msg, LogColor::Green);
     g_Log.print(" ####", LogColor::Green);
-    g_Log.eol();
-    g_Log.eol();
+    g_Log.writeEol();
+    g_Log.writeEol();
 }
 
 void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force)
@@ -161,7 +161,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
 
     // Separation
     if (printSomething)
-        g_Log.eol();
+        g_Log.writeEol();
 
     // Print instruction
     if (bcMode)
@@ -186,7 +186,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     stepLastFunc     = newFunc;
 
     if (!display.empty())
-        g_Log.eol();
+        g_Log.writeEol();
     printDisplay(context);
 }
 
@@ -221,7 +221,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     {
         g_Log.print("bytecode source file: ", LogColor::Gray);
         g_Log.print(bc->sourceFile->path, LogColor::DarkYellow);
-        g_Log.eol();
+        g_Log.writeEol();
     }
 
     if (ipNode && ipNode->token.sourceFile)
@@ -453,15 +453,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
             for (int i = 0; i < perLine - min(count, perLine); i++)
             {
                 if (fmt.isHexa)
-                    g_Log.print("   ");
+                    g_Log.write("   ");
                 else if (!fmt.isSigned)
-                    g_Log.print("    ");
+                    g_Log.write("    ");
                 else
-                    g_Log.print("     ");
+                    g_Log.write("     ");
             }
 
             // Print as 'char'
-            g_Log.print(" ");
+            g_Log.write(" ");
             for (int i = 0; i < min(count, perLine); i++)
             {
                 auto c = getAddrValue<uint8_t>(addrB);
@@ -472,7 +472,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
             }
         }
 
-        g_Log.eol();
+        g_Log.writeEol();
 
         addrB = addrLine;
         addrB += static_cast<int64_t>(min(count, perLine)) * (fmt.bitCount / 8);

@@ -112,7 +112,7 @@ void Diagnostic::printSourceLine() const
     if (hasLocation)
         g_Log.print(form(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
     else
-        g_Log.print(": ");
+        g_Log.write(": ");
 }
 
 void Diagnostic::printMarginLineNo(int lineNo) const
@@ -121,10 +121,10 @@ void Diagnostic::printMarginLineNo(int lineNo) const
 
     int m = lineNo ? lineCodeNumDigits : 0;
     while (m++ < lineCodeMaxDigits + 1)
-        g_Log.print(" ");
+        g_Log.write(" ");
     if (lineNo)
         g_Log.print(form("%d", lineNo));
-    g_Log.print(" ");
+    g_Log.write(" ");
 }
 
 void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo) const
@@ -132,7 +132,7 @@ void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo) const
     if (!printLineNo)
     {
         if (eol)
-            g_Log.eol();
+            g_Log.writeEol();
         return;
     }
 
@@ -140,10 +140,10 @@ void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo) const
 
     g_Log.setColor(marginBorderColor);
     g_Log.print(LogSymbol::VerticalLine);
-    g_Log.print(" ");
+    g_Log.write(" ");
 
     if (eol)
-        g_Log.eol();
+        g_Log.writeEol();
 }
 
 void Diagnostic::printErrorLevel()
@@ -160,22 +160,22 @@ void Diagnostic::printErrorLevel()
     {
         case DiagnosticLevel::Error:
             g_Log.setColor(errorColor);
-            g_Log.print("error: ");
+            g_Log.write("error: ");
             break;
 
         case DiagnosticLevel::Panic:
             g_Log.setColor(errorColor);
-            g_Log.print("panic: ");
+            g_Log.write("panic: ");
             break;
 
         case DiagnosticLevel::Warning:
             g_Log.setColor(warningColor);
-            g_Log.print("warning: ");
+            g_Log.write("warning: ");
             break;
 
         case DiagnosticLevel::Note:
             g_Log.setColor(noteTitleColor);
-            g_Log.print("note: ");
+            g_Log.write("note: ");
             g_Log.setColor(noteColor);
             break;
     }
@@ -183,7 +183,7 @@ void Diagnostic::printErrorLevel()
     if (!id.empty())
     {
         g_Log.print(id);
-        g_Log.print(": ");
+        g_Log.write(": ");
     }
 }
 
@@ -199,7 +199,7 @@ void Diagnostic::printPreRemarks() const
             if (r.empty() || r[0] == ' ')
             {
                 g_Log.setColor(remarkColor);
-                g_Log.print(" ");
+                g_Log.write(" ");
             }
             else
             {
@@ -207,9 +207,9 @@ void Diagnostic::printPreRemarks() const
                 g_Log.print(LogSymbol::DotList);
             }
 
-            g_Log.print(" ");
+            g_Log.write(" ");
             g_Log.print(r);
-            g_Log.eol();
+            g_Log.writeEol();
         }
     }
 }
@@ -225,9 +225,9 @@ void Diagnostic::printRemarks() const
             printMargin(false, true, 0);
             g_Log.setColor(autoRemarkColor);
             g_Log.print(LogSymbol::DotList);
-            g_Log.print(" ");
+            g_Log.write(" ");
             g_Log.print(r);
-            g_Log.eol();
+            g_Log.writeEol();
         }
     }
 
@@ -240,9 +240,9 @@ void Diagnostic::printRemarks() const
             printMargin(false, true, 0);
             g_Log.setColor(remarkColor);
             g_Log.print(LogSymbol::DotList);
-            g_Log.print(" ");
+            g_Log.write(" ");
             g_Log.print(r);
-            g_Log.eol();
+            g_Log.writeEol();
         }
     }
 }
@@ -381,7 +381,7 @@ void Diagnostic::reportCompact()
     printErrorLevel();
     printSourceLine();
     g_Log.print(oneLiner(textMsg));
-    g_Log.eol();
+    g_Log.writeEol();
 }
 
 void Diagnostic::collectSourceCode()
@@ -430,7 +430,7 @@ void Diagnostic::printSourceCode() const
 
     const auto colored = syntaxColor(lineCode.c_str() + minBlanks, cxt);
     g_Log.print(colored, true);
-    g_Log.eol();
+    g_Log.writeEol();
 }
 
 void Diagnostic::setColorRanges(DiagnosticLevel level) const
@@ -455,16 +455,16 @@ void Diagnostic::alignRangeColumn(int& curColumn, int where, bool withCode) cons
     while (curColumn < where)
     {
         if (withCode && curColumn < static_cast<int>(lineCode.count) && lineCode[curColumn] == '\t')
-            g_Log.print("\t");
+            g_Log.write("\t");
         else
-            g_Log.print(" ");
+            g_Log.write(" ");
         curColumn++;
     }
 }
 
 int Diagnostic::printRangesVerticalBars(size_t maxMarks)
 {
-    g_Log.eol();
+    g_Log.writeEol();
     printMargin(false, true);
     int curColumn = minBlanks;
     for (uint32_t ii = 0; ii < maxMarks; ii++)
@@ -546,7 +546,7 @@ void Diagnostic::printRanges()
         const auto  unformat = Log::removeFormat(r.hint.c_str());
         if (curColumn + 1 + unformat.length() < g_CommandLine.errorRightColumn)
         {
-            g_Log.print(" ");
+            g_Log.write(" ");
             printLastRangeHint(curColumn + 1);
             ranges.pop_back();
         }
@@ -569,7 +569,7 @@ void Diagnostic::printRanges()
         {
             alignRangeColumn(curColumn, r.mid - 2 - static_cast<int>(unformat.length()));
             g_Log.print(r.hint);
-            g_Log.print(" ");
+            g_Log.write(" ");
             g_Log.print(LogSymbol::HorizontalLine);
             g_Log.print(LogSymbol::DownLeft);
         }
@@ -582,7 +582,7 @@ void Diagnostic::printRanges()
             {
                 alignRangeColumn(curColumn, r.mid);
                 g_Log.print(LogSymbol::VerticalLineUp);
-                g_Log.eol();
+                g_Log.writeEol();
                 printMargin(false, true);
                 curColumn = minBlanks;
             }
@@ -597,7 +597,7 @@ void Diagnostic::printRanges()
             alignRangeColumn(curColumn, r.mid);
             g_Log.print(LogSymbol::DownRight);
             g_Log.print(LogSymbol::HorizontalLine);
-            g_Log.print(" ");
+            g_Log.write(" ");
             curColumn += 3;
             printLastRangeHint(curColumn);
         }
@@ -605,7 +605,7 @@ void Diagnostic::printRanges()
         ranges.pop_back();
     }
 
-    g_Log.eol();
+    g_Log.writeEol();
 }
 
 void Diagnostic::report()
@@ -626,24 +626,24 @@ void Diagnostic::report()
                 g_Log.print(tokens[i]);
                 if (i != tokens.size() - 1)
                 {
-                    g_Log.eol();
+                    g_Log.writeEol();
                     printMargin(false, true);
                 }
             }
 
             showErrorLevel = false;
-            g_Log.eol();
+            g_Log.writeEol();
             if (hasContent)
             {
                 printMargin(false, true);
-                g_Log.eol();
+                g_Log.writeEol();
             }
         }
         else
         {
             printErrorLevel();
             g_Log.print(textMsg);
-            g_Log.eol();
+            g_Log.writeEol();
         }
     }
 
@@ -651,14 +651,14 @@ void Diagnostic::report()
     if (showFileName)
     {
         if (showErrorLevel)
-            g_Log.eol();
+            g_Log.writeEol();
         printMarginLineNo(0);
         g_Log.setColor(marginBorderColor);
         g_Log.print(LogSymbol::VerticalLine);
-        g_Log.print(" ");
+        g_Log.write(" ");
         g_Log.setColor(sourceFileColor);
         printSourceLine();
-        g_Log.eol();
+        g_Log.writeEol();
         printMargin(false, true);
     }
 

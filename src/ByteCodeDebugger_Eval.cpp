@@ -224,7 +224,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     g_Log.setColor(LogColor::Name);
     g_Log.print(expr);
     g_Log.setColor(LogColor::Default);
-    g_Log.print(" = ");
+    g_Log.write(" = ");
 
     printLong(str);
     return BcDbgCommandResult::Continue;

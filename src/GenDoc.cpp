@@ -1482,14 +1482,6 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     fullFileName = filePath;
     fullFileName.makeLower();
 
-    // Write for output
-    FILE* f = nullptr;
-    if (fopen_s(&f, fullFileName, "wb"))
-    {
-        Report::errorOS(formErr(Err0096, fullFileName.c_str()));
-        return false;
-    }
-
     // Titles
     helpToc += form("<h2>%s</h2>\n", titleToc.c_str());
     helpContent += form("<h1>%s</h1>\n", titleContent.c_str());
@@ -1508,14 +1500,25 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
 
     constructPage();
 
-    // Write file
-    if (fwrite(helpOutput, 1, helpOutput.length(), f) != helpOutput.length())
+    // Write for output
+    if (g_CommandLine.outputDoc)
     {
-        Report::errorOS(formErr(Err0099, fullFileName.c_str()));
+        FILE* f = nullptr;
+        if (fopen_s(&f, fullFileName, "wb"))
+        {
+            Report::errorOS(formErr(Err0096, fullFileName.c_str()));
+            return false;
+        }
+
+        if (fwrite(helpOutput, 1, helpOutput.length(), f) != helpOutput.length())
+        {
+            Report::errorOS(formErr(Err0099, fullFileName.c_str()));
+            (void) fclose(f);
+            return false;
+        }
+
         (void) fclose(f);
-        return false;
     }
 
-    (void) fclose(f);
     return true;
 }

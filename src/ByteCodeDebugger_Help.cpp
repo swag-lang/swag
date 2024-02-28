@@ -27,7 +27,7 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)
     line += cmd.help;
 
     g_Log.print(line);
-    g_Log.eol();
+    g_Log.writeEol();
 
     g_Log.setColor(LogColor::Gray);
 }
@@ -55,7 +55,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
                 g_Log.setColor(LogColor::Gray);
                 g_Log.print(form("short name:  %s\n", c.shortname));
                 g_Log.print(form("description: %s\n", c.help));
-                g_Log.eol();
+                g_Log.writeEol();
                 ok = true;
             }
         }

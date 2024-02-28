@@ -557,7 +557,7 @@ bool Semantic::resolveCompilerPrint(SemanticContext* context)
         switch (typeInfo->nativeType)
         {
             case NativeTypeKind::Bool:
-                g_Log.print(expr->computedValue()->reg.b ? "true" : "false");
+                g_Log.write(expr->computedValue()->reg.b ? "true" : "false");
                 break;
             case NativeTypeKind::S8:
                 g_Log.print(to_string(expr->computedValue()->reg.s8));
@@ -605,7 +605,7 @@ bool Semantic::resolveCompilerPrint(SemanticContext* context)
         g_Log.print(form("<%s>", typeInfo->getDisplayNameC()));
     }
 
-    g_Log.eol();
+    g_Log.writeEol();
     g_Log.unlock();
     return true;
 }

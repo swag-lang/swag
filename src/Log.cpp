@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
-#include "Log.h"
+
+#include "ByteCodeDebugger.h"
 #include "CommandLine.h"
+#include "Log.h"
 
 Log g_Log;
 
@@ -86,86 +88,86 @@ void Log::print(LogSymbol symbol)
         case LogSymbol::VerticalLine:
         case LogSymbol::VerticalLineDot:
             if (g_CommandLine.logAscii)
-                print("|");
+                write("|");
             else
-                print("\xe2\x94\x82");
+                write("\xe2\x94\x82");
             break;
 
         case LogSymbol::VerticalLineUp:
             if (g_CommandLine.logAscii)
-                print("|");
+                write("|");
             else
-                print("\xe2\x95\xb5");
+                write("\xe2\x95\xb5");
             break;
 
         case LogSymbol::DotCenter:
             if (g_CommandLine.logAscii)
-                print(".");
+                write(".");
             else
-                print("\xc2\xb7");
+                write("\xc2\xb7");
             break;
 
         case LogSymbol::DotList:
             if (g_CommandLine.logAscii)
-                print("*");
+                write("*");
             else
-                print("\xE2\x80\xa2");
+                write("\xE2\x80\xa2");
             break;
 
         case LogSymbol::HorizontalLine:
             if (g_CommandLine.logAscii)
-                print("-");
+                write("-");
             else
-                print("\xe2\x94\x80");
+                write("\xe2\x94\x80");
             break;
 
         case LogSymbol::HorizontalLine2:
             if (g_CommandLine.logAscii)
-                print("=");
+                write("=");
             else
-                print("\xe2\x95\x90");
+                write("\xe2\x95\x90");
             break;
 
         case LogSymbol::HorizontalLineMidVert:
             if (g_CommandLine.logAscii)
-                print("-");
+                write("-");
             else
-                print("\xe2\x94\xac");
+                write("\xe2\x94\xac");
             break;
 
         case LogSymbol::HorizontalLine2MidVert:
             if (g_CommandLine.logAscii)
-                print("=");
+                write("=");
             else
-                print("\xe2\x95\xa4");
+                write("\xe2\x95\xa4");
             break;
 
         case LogSymbol::DownRight:
             if (g_CommandLine.logAscii)
-                print("|");
+                write("|");
             else
-                print("\xe2\x94\x94");
+                write("\xe2\x94\x94");
             break;
 
         case LogSymbol::DownLeft:
             if (g_CommandLine.logAscii)
-                print("|");
+                write("|");
             else
-                print("\xe2\x94\x98");
+                write("\xe2\x94\x98");
             break;
 
         case LogSymbol::UpRight:
             if (g_CommandLine.logAscii)
-                print("|");
+                write("|");
             else
-                print("\xe2\x94\x8c");
+                write("\xe2\x94\x8c");
             break;
 
         case LogSymbol::RightDown:
             if (g_CommandLine.logAscii)
-                print("|");
+                write("|");
             else
-                print("\xe2\x94\x90");
+                write("\xe2\x94\x90");
             break;
     }
 }
@@ -240,13 +242,30 @@ Utf8 Log::format(const char* message)
     return m;
 }
 
-void Log::print(const char* message, bool raw)
+void Log::writeEol()
 {
+    if (g_CommandLine.silent)
+        return;
+
+    if (storeMode)
+    {
+        store.push_back(storeLine);
+        storeLine.clear();
+    }
+    else
+        cout << "\n";
+}
+
+void Log::write(const char* message, bool raw)
+{
+    if (g_CommandLine.silent)
+        return;
+
     if (storeMode)
     {
         storeLine += message;
         if (storeLine.back() == '\n')
-            eol();
+            writeEol();
         return;
     }
 
@@ -258,24 +277,13 @@ void Log::print(const char* message, bool raw)
 
 void Log::print(const Utf8& message, bool raw)
 {
-    print(message.c_str(), raw);
+    write(message.c_str(), raw);
 }
 
 void Log::print(const char* message, LogColor color)
 {
     setColor(color);
-    print(message);
-}
-
-void Log::eol()
-{
-    if (storeMode)
-    {
-        store.push_back(storeLine);
-        storeLine.clear();
-    }
-    else
-        cout << "\n";
+    write(message);
 }
 
 constexpr int CENTER_COLUMN = 24;
@@ -288,18 +296,18 @@ void Log::printHeaderDot(const Utf8& header, const Utf8& message, LogColor heade
     auto size = header.length();
     while (size < CENTER_COLUMN)
     {
-        print(dot);
+        write(dot);
         size++;
     }
 
-    print(" ");
+    write(" ");
     setColor(msgColor);
 
     if (!message.empty())
     {
         print(message);
         if (message.back() != '\n')
-            eol();
+            writeEol();
     }
 }
 
@@ -309,16 +317,16 @@ void Log::printHeaderCentered(const Utf8& header, const Utf8& message, LogColor 
     auto size = header.length();
     while (size < CENTER_COLUMN)
     {
-        print(" ");
+        write(" ");
         size++;
     }
 
     print(header);
-    print(" ");
+    write(" ");
     setColor(msgColor);
     print(message);
     if (!message.length() || message.back() != '\n')
-        eol();
+        writeEol();
 }
 
 void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)
@@ -352,21 +360,21 @@ void Log::messageInfo(const Utf8& message)
     setColor(LogColor::Gray);
     print(message);
     if (message.back() != '\n')
-        eol();
+        writeEol();
     setDefaultColor();
     unlock();
 }
 
 void Log::messageVerbose(const Utf8& message)
 {
-    if (g_CommandLine.silent || !g_CommandLine.verbose)
+    if (!g_CommandLine.verbose)
         return;
 
     lock();
     setColor(LogColor::DarkCyan);
     print(message);
     if (message.back() != '\n')
-        eol();
+        writeEol();
     setDefaultColor();
     unlock();
 }

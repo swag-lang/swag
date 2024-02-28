@@ -461,7 +461,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         debugCmdHistoryIndex = debugCmdHistory.size();
     }
 
-    g_Log.eol();
+    g_Log.writeEol();
     return line;
 }
 
@@ -677,16 +677,16 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             firstOne = false;
             g_Log.setColor(LogColor::Gray);
 
-            g_Log.eol();
+            g_Log.writeEol();
             for (int i = 0; i < LINE_W; i++)
                 g_Log.print(LogSymbol::HorizontalLine2);
-            g_Log.eol();
+            g_Log.writeEol();
 
-            g_Log.print("entering bytecode debugger, type '?' for help\n");
+            g_Log.write("entering bytecode debugger, type '?' for help\n");
 
             for (int i = 0; i < LINE_W; i++)
                 g_Log.print(LogSymbol::HorizontalLine);
-            g_Log.eol();
+            g_Log.writeEol();
 
             g_Log.print(form("build configuration            = [[%s]]\n", g_CommandLine.buildCfg.c_str()));
 
@@ -703,7 +703,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
             for (int i = 0; i < LINE_W; i++)
                 g_Log.print(LogSymbol::HorizontalLine2);
-            g_Log.eol();
+            g_Log.writeEol();
             g_Log.setColor(LogColor::Gray);
         }
 
@@ -739,7 +739,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         /////////////////////////////////////////
 
         g_Log.setColor(LogColor::Green);
-        g_Log.print("(bcdbg) > ");
+        g_Log.write("(bcdbg) > ");
 
         // Get command from user
         bool ctrl  = false;
@@ -759,7 +759,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         // Split in command + parameters
         BcDbgCommandArg arg;
         tokenizeCommand(line, arg);
-        g_Log.eol();
+        g_Log.writeEol();
 
         // Command
         /////////////////////////////////////////

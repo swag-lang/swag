@@ -118,6 +118,7 @@ struct CommandLine
     bool           output         = true;
     bool           outputTest     = true;
     bool           outputLegit    = true;
+    bool           outputDoc      = true;
 
     // Dependencies
     bool getDepCmd   = false;

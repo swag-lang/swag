@@ -54,7 +54,7 @@ void ByteCodeDebugger::printDisplayList() const
     for (uint32_t i = 0; i < display.size(); i++)
     {
         g_Log.print(form("#%d: %s", i + 1, display[i].c_str()));
-        g_Log.eol();
+        g_Log.writeEol();
     }
 }
 

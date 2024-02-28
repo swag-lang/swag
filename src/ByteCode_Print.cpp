@@ -81,25 +81,25 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
             g_Log.setColor(LogColor::DarkBlue);
         else
             g_Log.setColor(LogColor::Yellow);
-        g_Log.print("         ");
+        g_Log.write("         ");
         if (forDbg)
-            g_Log.print("   ");
+            g_Log.write("   ");
 
         if (s.empty())
-            g_Log.print("<blank>");
+            g_Log.write("<blank>");
         else
             g_Log.print(s);
 
-        g_Log.eol();
+        g_Log.writeEol();
 
         if (loc.file != sourceFile)
         {
-            g_Log.print("         ");
+            g_Log.write("         ");
             if (forDbg)
-                g_Log.print("   ");
+                g_Log.write("   ");
             g_Log.setColor(LogColor::Location);
             g_Log.print(form("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
-            g_Log.eol();
+            g_Log.writeEol();
         }
     }
 }
@@ -432,7 +432,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     }
 #endif
 
-    g_Log.eol();
+    g_Log.writeEol();
 }
 
 enum class RankStr
@@ -583,7 +583,7 @@ void ByteCode::printName()
 {
     const auto str = getPrintRefName();
     g_Log.print(str);
-    g_Log.eol();
+    g_Log.writeEol();
 }
 
 void ByteCode::print(const ByteCodePrintOptions& options)
@@ -596,7 +596,7 @@ void ByteCode::print(const ByteCodePrintOptions& options)
     // Instructions
     print(options, 0, numInstructions);
 
-    g_Log.eol();
+    g_Log.writeEol();
     g_Log.setDefaultColor();
     g_Log.unlock();
 }

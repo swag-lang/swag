@@ -115,8 +115,8 @@ namespace OS
             Report::error(toErr(Fat0036));
             g_Log.lock();
             g_Log.setColor(LogColor::Cyan);
-            g_Log.print("=> in order to build a windows executable or dll, you must install the latest version of the windows 10/11 sdk!\n");
-            g_Log.print("=> you can try https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/\n");
+            g_Log.write("=> in order to build a windows executable or dll, you must install the latest version of the windows 10/11 sdk!\n");
+            g_Log.write("=> you can try https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/\n");
             g_Log.setDefaultColor();
             g_Log.unlock();
             return false;
@@ -251,7 +251,7 @@ namespace OS
                     if (oneLine.empty())
                     {
                         g_Log.lock();
-                        g_Log.eol();
+                        g_Log.writeEol();
                         g_Log.unlock();
                         continue;
                     }

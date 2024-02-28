@@ -266,7 +266,7 @@ namespace
             notes.push_back(new Diagnostic{*n});
 
         cleanNotes(notes);
-        g_Log.eol();
+        g_Log.writeEol();
 
         bool marginBefore = true;
         for (const auto n : notes)
@@ -283,7 +283,7 @@ namespace
                 n->printMarginLineNo(0);
                 g_Log.setColor(n->marginBorderColor);
                 g_Log.print(LogSymbol::VerticalLineDot);
-                g_Log.eol();
+                g_Log.writeEol();
             }
 
             n->report();
@@ -291,7 +291,7 @@ namespace
         }
 
         g_Log.setDefaultColor();
-        g_Log.eol();
+        g_Log.writeEol();
     }
 
     bool dealWithWarning(const AstAttrUse* attrUse, const Utf8& warnMsg, Diagnostic& err, bool& retResult)
@@ -615,7 +615,7 @@ namespace
                         g_Log.setDefaultColor();
                         g_Log.print(callStack);
                         g_Log.setDefaultColor();
-                        g_Log.eol();
+                        g_Log.writeEol();
                     }
                 }
 
@@ -642,7 +642,7 @@ namespace
                         g_Log.setDefaultColor();
                         g_Log.print(str);
                         g_Log.setDefaultColor();
-                        g_Log.eol();
+                        g_Log.writeEol();
                     }
                 }
 
@@ -656,7 +656,7 @@ namespace
                         g_Log.setDefaultColor();
                         g_Log.print(nativeStack);
                         g_Log.setDefaultColor();
-                        g_Log.eol();
+                        g_Log.writeEol();
                     }
                 }
             }
@@ -707,10 +707,10 @@ bool Report::error(Module* module, const Utf8& msg)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
-    g_Log.print("error: ");
+    g_Log.write("error: ");
     g_Log.print(form("module %s: ", module->name.c_str()));
     g_Log.print(Diagnostic::oneLiner(msg));
-    g_Log.eol();
+    g_Log.writeEol();
     g_Log.setDefaultColor();
     ++g_Workspace->numErrors;
     ++module->numErrors;
@@ -722,10 +722,10 @@ void Report::error(const Utf8& msg)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
-    g_Log.print("error: ");
+    g_Log.write("error: ");
     g_Log.print(Diagnostic::oneLiner(msg));
     if (msg.back() != '\n')
-        g_Log.eol();
+        g_Log.writeEol();
     g_Log.setDefaultColor();
     g_Log.unlock();
 }
@@ -738,11 +738,11 @@ void Report::errorOS(const Utf8& msg)
     g_Log.print(Diagnostic::oneLiner(msg));
     if (!str.empty())
     {
-        g_Log.print(" => ");
+        g_Log.write(" => ");
         g_Log.print(str);
     }
 
-    g_Log.eol();
+    g_Log.writeEol();
     g_Log.setDefaultColor();
     g_Log.unlock();
 }
@@ -758,10 +758,10 @@ bool Report::internalError(Module* module, const char* msg)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
-    g_Log.print("error: ");
+    g_Log.write("error: ");
     g_Log.print(form("module %s: [compiler internal] ", module->name.c_str()));
-    g_Log.print(msg);
-    g_Log.eol();
+    g_Log.write(msg);
+    g_Log.writeEol();
     g_Log.setDefaultColor();
     ++g_Workspace->numErrors;
     ++module->numErrors;
