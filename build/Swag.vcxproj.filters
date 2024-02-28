@@ -695,6 +695,9 @@
     <ClCompile Include="..\src\FormatAst_Func.cpp">
       <Filter>Format</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\FormatConcat.cpp">
+      <Filter>Format</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -1068,6 +1071,9 @@
       <Filter>Syntax\Tokenizer</Filter>
     </ClInclude>
     <ClInclude Include="..\src\FormatAst.h">
+      <Filter>Format</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\FormatConcat.h">
       <Filter>Format</Filter>
     </ClInclude>
   </ItemGroup>

@@ -24,7 +24,7 @@ void FormatAst::decIndentStatement(const AstNode* node, int& indent)
         indent--;
 }
 
-bool FormatAst::outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node)
+bool FormatAst::outputGenericParameters(OutputContext& context, FormatConcat& concat, AstNode* node)
 {
     CONCAT_FIXED_STR(concat, "(");
     int idx = 0;
@@ -59,7 +59,7 @@ bool FormatAst::outputGenericParameters(OutputContext& context, Concat& concat, 
     return true;
 }
 
-bool FormatAst::outputAttrUse(OutputContext& context, Concat& concat, AstNode* node, bool& hasSomething)
+bool FormatAst::outputAttrUse(OutputContext& context, FormatConcat& concat, AstNode* node, bool& hasSomething)
 {
     const auto nodeAttr = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
 
@@ -108,7 +108,7 @@ bool FormatAst::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
     return true;
 }
 
-void FormatAst::removeLastBlankLine(Concat& concat)
+void FormatAst::removeLastBlankLine(FormatConcat& concat)
 {
     auto p = concat.currentSP;
     if (p == concat.lastBucket->data)
@@ -133,7 +133,7 @@ void FormatAst::removeLastBlankLine(Concat& concat)
     }
 }
 
-bool FormatAst::outputEnum(OutputContext& context, Concat& concat, AstEnum* node)
+bool FormatAst::outputEnum(OutputContext& context, FormatConcat& concat, AstEnum* node)
 {
     PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export, nullptr);
 
@@ -183,7 +183,7 @@ bool FormatAst::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
     return true;
 }
 
-bool FormatAst::outputAttributesUsage(const OutputContext& context, Concat& concat, const TypeInfoFuncAttr* typeFunc)
+bool FormatAst::outputAttributesUsage(const OutputContext& context, FormatConcat& concat, const TypeInfoFuncAttr* typeFunc)
 {
     bool first = true;
     concat.addIndent(context.indent);
@@ -222,7 +222,7 @@ bool FormatAst::outputAttributesUsage(const OutputContext& context, Concat& conc
     return true;
 }
 
-bool FormatAst::outputAttributes(OutputContext& context, Concat& concat, AstNode* /*node*/, const TypeInfo* typeInfo, const AttributeList& attributes)
+bool FormatAst::outputAttributes(OutputContext& context, FormatConcat& concat, AstNode* /*node*/, const TypeInfo* typeInfo, const AttributeList& attributes)
 {
     const auto attr = &attributes;
     if (!attr->empty())
@@ -290,7 +290,7 @@ bool FormatAst::outputAttributes(OutputContext& context, Concat& concat, AstNode
     return true;
 }
 
-bool FormatAst::outputAttributesGlobalUsing(const OutputContext& context, Concat& concat, const AstNode* node)
+bool FormatAst::outputAttributesGlobalUsing(const OutputContext& context, FormatConcat& concat, const AstNode* node)
 {
     // Global using
     bool outputUsing = true;
@@ -328,7 +328,7 @@ bool FormatAst::outputAttributesGlobalUsing(const OutputContext& context, Concat
     return true;
 }
 
-bool FormatAst::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo)
+bool FormatAst::outputAttributes(OutputContext& context, FormatConcat& concat, AstNode* node, TypeInfo* typeInfo)
 {
     switch (node->kind)
     {
@@ -370,7 +370,7 @@ bool FormatAst::outputAttributes(OutputContext& context, Concat& concat, AstNode
     return true;
 }
 
-bool FormatAst::outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
+bool FormatAst::outputLiteral(OutputContext& context, FormatConcat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
 {
     if (typeInfo->isPointerNull())
     {
@@ -418,7 +418,7 @@ bool FormatAst::outputLiteral(OutputContext& context, Concat& concat, AstNode* n
     return true;
 }
 
-bool FormatAst::outputVarDecl(OutputContext& context, Concat& concat, const AstVarDecl* varNode, bool isSelf)
+bool FormatAst::outputVarDecl(OutputContext& context, FormatConcat& concat, const AstVarDecl* varNode, bool isSelf)
 {
     if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME))
     {
@@ -462,7 +462,7 @@ bool FormatAst::outputVarDecl(OutputContext& context, Concat& concat, const AstV
     return true;
 }
 
-bool FormatAst::outputVar(OutputContext& context, Concat& concat, const AstVarDecl* varNode)
+bool FormatAst::outputVar(OutputContext& context, FormatConcat& concat, const AstVarDecl* varNode)
 {
     if (varNode->hasAstFlag(AST_DECL_USING))
         CONCAT_FIXED_STR(concat, "using ");
@@ -489,7 +489,7 @@ bool FormatAst::outputVar(OutputContext& context, Concat& concat, const AstVarDe
     return true;
 }
 
-bool FormatAst::outputScopeContent(OutputContext& context, Concat& concat, const Module* moduleToGen, const Scope* scope)
+bool FormatAst::outputScopeContent(OutputContext& context, FormatConcat& concat, const Module* moduleToGen, const Scope* scope)
 {
     const auto publicSet = scope->publicSet;
     if (!publicSet)
@@ -567,7 +567,7 @@ bool FormatAst::outputScopeContent(OutputContext& context, Concat& concat, const
     return true;
 }
 
-bool FormatAst::outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
+bool FormatAst::outputScope(OutputContext& context, FormatConcat& concat, Module* moduleToGen, Scope* scope)
 {
     SWAG_ASSERT(moduleToGen);
     if (!scope->flags.has(SCOPE_FLAG_HAS_EXPORTS))

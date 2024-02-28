@@ -5,13 +5,13 @@
 #include "LanguageSpec.h"
 #include "Semantic.h"
 
-bool FormatAst::outputFuncName(OutputContext&, Concat& concat, const AstFuncDecl* node)
+bool FormatAst::outputFuncName(OutputContext&, FormatConcat& concat, const AstFuncDecl* node)
 {
     concat.addString(node->token.text);
     return true;
 }
 
-bool FormatAst::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf)
+bool FormatAst::outputFuncSignature(OutputContext& context, FormatConcat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf)
 {
     ScopeExportNode sen(context, node);
 
@@ -87,7 +87,7 @@ bool FormatAst::outputFuncSignature(OutputContext& context, Concat& concat, AstN
     return true;
 }
 
-bool FormatAst::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* node)
+bool FormatAst::outputFunc(OutputContext& context, FormatConcat& concat, AstFuncDecl* node)
 {
     PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export, nullptr);
     CONCAT_FIXED_STR(concat, "func");
@@ -202,7 +202,7 @@ bool FormatAst::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     return true;
 }
 
-bool FormatAst::outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node)
+bool FormatAst::outputLambdaExpression(OutputContext& context, FormatConcat& concat, AstNode* node)
 {
     const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 

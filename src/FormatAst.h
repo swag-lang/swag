@@ -1,4 +1,5 @@
 #pragma once
+#include "FormatConcat.h"
 #include "Job.h"
 
 struct AstEnum;
@@ -8,7 +9,7 @@ struct AstTypeExpression;
 struct AstVarDecl;
 struct AttributeList;
 struct ComputedValue;
-struct Concat;
+struct FormatConcat;
 struct Scope;
 struct TypeInfo;
 struct TypeInfoEnum;
@@ -27,31 +28,29 @@ struct FormatAst
 
     static void incIndentStatement(const AstNode* node, int& indent);
     static void decIndentStatement(const AstNode* node, int& indent);
-    static void removeLastBlankLine(Concat& concat);
-    static void addEol();
-    static void addIndent();
+    static void removeLastBlankLine(FormatConcat& concat);
 
-    static bool outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node);
-    static bool outputEnum(OutputContext& context, Concat& concat, AstEnum* node);
-    static bool outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* node);
-    static bool outputAttrUse(OutputContext& context, Concat& concat, AstNode* node, bool& hasSomething);
-    static bool outputFuncName(OutputContext& context, Concat& concat, const AstFuncDecl* node);
-    static bool outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf);
-    static bool outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node);
-    static bool outputAttributesUsage(const OutputContext& context, Concat& concat, const TypeInfoFuncAttr* typeFunc);
-    static bool outputAttributes(OutputContext& context, Concat& concat, AstNode* node, const TypeInfo* typeInfo, const AttributeList& attributes);
-    static bool outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo);
-    static bool outputAttributesGlobalUsing(const OutputContext& context, Concat& concat, const AstNode* node);
-    static bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
-    static bool outputVarDecl(OutputContext& context, Concat& concat, const AstVarDecl* varNode, bool isSelf);
-    static bool outputVar(OutputContext& context, Concat& concat, const AstVarDecl* varNode);
-    static bool outputStruct(OutputContext& context, Concat& concat, AstStruct* node);
-    static bool outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
-    static bool outputType(OutputContext& context, Concat& concat, AstTypeExpression* node);
-    static bool outputType(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo);
-    static bool outputScopeContent(OutputContext& context, Concat& concat, const Module* moduleToGen, const Scope* scope);
-    static bool outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope);
-    static bool outputNode(OutputContext& context, Concat& concat, AstNode* node);
+    static bool outputLambdaExpression(OutputContext& context, FormatConcat& concat, AstNode* node);
+    static bool outputEnum(OutputContext& context, FormatConcat& concat, AstEnum* node);
+    static bool outputFunc(OutputContext& context, FormatConcat& concat, AstFuncDecl* node);
+    static bool outputAttrUse(OutputContext& context, FormatConcat& concat, AstNode* node, bool& hasSomething);
+    static bool outputFuncName(OutputContext& context, FormatConcat& concat, const AstFuncDecl* node);
+    static bool outputFuncSignature(OutputContext& context, FormatConcat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf);
+    static bool outputGenericParameters(OutputContext& context, FormatConcat& concat, AstNode* node);
+    static bool outputAttributesUsage(const OutputContext& context, FormatConcat& concat, const TypeInfoFuncAttr* typeFunc);
+    static bool outputAttributes(OutputContext& context, FormatConcat& concat, AstNode* node, const TypeInfo* typeInfo, const AttributeList& attributes);
+    static bool outputAttributes(OutputContext& context, FormatConcat& concat, AstNode* node, TypeInfo* typeInfo);
+    static bool outputAttributesGlobalUsing(const OutputContext& context, FormatConcat& concat, const AstNode* node);
+    static bool outputLiteral(OutputContext& context, FormatConcat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
+    static bool outputVarDecl(OutputContext& context, FormatConcat& concat, const AstVarDecl* varNode, bool isSelf);
+    static bool outputVar(OutputContext& context, FormatConcat& concat, const AstVarDecl* varNode);
+    static bool outputStruct(OutputContext& context, FormatConcat& concat, AstStruct* node);
+    static bool outputTypeTuple(OutputContext& context, FormatConcat& concat, TypeInfo* typeInfo);
+    static bool outputType(OutputContext& context, FormatConcat& concat, AstTypeExpression* node);
+    static bool outputType(OutputContext& context, FormatConcat& concat, AstNode* node, TypeInfo* typeInfo);
+    static bool outputScopeContent(OutputContext& context, FormatConcat& concat, const Module* moduleToGen, const Scope* scope);
+    static bool outputScope(OutputContext& context, FormatConcat& concat, Module* moduleToGen, Scope* scope);
+    static bool outputNode(OutputContext& context, FormatConcat& concat, AstNode* node);
 };
 
 struct ScopeExportNode

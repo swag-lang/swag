@@ -570,7 +570,7 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
     }
     else if (expr->typeInfo->isCode())
     {
-        Concat concat;
+        FormatConcat concat;
         concat.init(4 * 1024);
 
         FormatAst::OutputContext outputContext;

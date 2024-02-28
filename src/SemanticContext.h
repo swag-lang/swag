@@ -1,6 +1,6 @@
 #pragma once
 #include "AstNode.h"
-#include "Concat.h"
+#include "FormatConcat.h"
 #include "Generic.h"
 #include "Job.h"
 #include "TypeInfo.h"
@@ -172,7 +172,7 @@ struct SemanticContext : JobContext
     VectorNative<OneTryMatch*>        cacheFreeTryMatch;
     VectorNative<AlternativeScope>    scopesToProcess;
     VectorNative<AstNode*>            tmpNodes;
-    Concat                            tmpConcat;
+    FormatConcat                      tmpConcat;
     AstIdentifierRef*                 tmpIdRef = nullptr;
     AstFuncCallParam                  closureFirstParam;
     MatchResult                       bestMatchResult;

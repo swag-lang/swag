@@ -91,9 +91,9 @@ struct Backend
 
     BackendEncoder* perThread[Count][MAX_PRECOMPILE_BUFFERS];
 
-    Concat bufferSwg;
-    Path   exportFileName;
-    Path   exportFilePath;
+    FormatConcat bufferSwg;
+    Path         exportFileName;
+    Path         exportFilePath;
 
     Module*               module               = nullptr;
     uint64_t              timeExportFile       = 0;

@@ -79,7 +79,7 @@ namespace
                 break;
         }
 
-        Concat                   concat;
+        FormatConcat             concat;
         FormatAst::OutputContext outCxt;
         concat.init(10 * 1024);
 

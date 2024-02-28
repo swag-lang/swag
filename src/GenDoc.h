@@ -74,7 +74,7 @@ struct GenDoc
 
     Module*         module = nullptr;
     BuildCfgDocKind docKind;
-    Concat          concat;
+    FormatConcat    concat;
     Utf8            helpOutput;
     Utf8            helpToc;
     Utf8            helpContent;

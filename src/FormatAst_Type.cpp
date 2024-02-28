@@ -6,7 +6,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool FormatAst::outputStruct(OutputContext& context, Concat& concat, AstStruct* node)
+bool FormatAst::outputStruct(OutputContext& context, FormatConcat& concat, AstStruct* node)
 {
     // If we need to export as opaque, and the struct has init values, then we add the
     // #[Swag.ExportType] attribute
@@ -91,7 +91,7 @@ bool FormatAst::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     return true;
 }
 
-bool FormatAst::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
+bool FormatAst::outputTypeTuple(OutputContext& context, FormatConcat& concat, TypeInfo* typeInfo)
 {
     typeInfo = TypeManager::concretePtrRef(typeInfo);
     SWAG_ASSERT(typeInfo->isTuple());
@@ -101,7 +101,7 @@ bool FormatAst::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
     return true;
 }
 
-bool FormatAst::outputType(OutputContext& context, Concat& concat, AstTypeExpression* node)
+bool FormatAst::outputType(OutputContext& context, FormatConcat& concat, AstTypeExpression* node)
 {
     if (node->typeFlags.has(TYPEFLAG_IS_RETVAL))
     {
@@ -204,7 +204,7 @@ bool FormatAst::outputType(OutputContext& context, Concat& concat, AstTypeExpres
     return true;
 }
 
-bool FormatAst::outputType(OutputContext& context, Concat& concat, AstNode* /*node*/, TypeInfo* typeInfo)
+bool FormatAst::outputType(OutputContext& context, FormatConcat& concat, AstNode* /*node*/, TypeInfo* typeInfo)
 {
     // Lambda
     /////////////////////////////////

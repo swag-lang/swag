@@ -7,7 +7,7 @@
 #include "Report.h"
 #include "Semantic.h"
 
-bool FormatAst::outputNode(OutputContext& context, Concat& concat, AstNode* node)
+bool FormatAst::outputNode(OutputContext& context, FormatConcat& concat, AstNode* node)
 {
     if (!node)
         return true;
