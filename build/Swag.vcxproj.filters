@@ -683,7 +683,13 @@
     <ClCompile Include="..\src\LLVMDebug.cpp">
       <Filter>Backend\LLVM\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="../src/AstOutput.cpp">
+    <ClCompile Include="..\src\FormatAst.cpp">
+      <Filter>Format</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FormatAst_Node.cpp">
+      <Filter>Format</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FormatAst_Type.cpp">
       <Filter>Format</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1058,7 +1064,7 @@
     <ClInclude Include="..\src\Token.h">
       <Filter>Syntax\Tokenizer</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\AstOutput.h">
+    <ClInclude Include="..\src\FormatAst.h">
       <Filter>Format</Filter>
     </ClInclude>
   </ItemGroup>
