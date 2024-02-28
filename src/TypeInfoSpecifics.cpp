@@ -318,9 +318,9 @@ TypeInfo* TypeInfoList::clone()
 {
     const auto newType = makeType<TypeInfoList>(kind);
 
-    const int size = static_cast<int>(subTypes.size());
+    const uint32_t size = subTypes.size();
     newType->subTypes.reserve(size);
-    for (int i = 0; i < size; i++)
+    for (uint32_t i = 0; i < size; i++)
     {
         auto param = subTypes[i];
         param      = param->clone();
@@ -778,8 +778,8 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
         if (type1->hasFlag(TYPEINFO_POINTER_MOVE_REF) != type2->hasFlag(TYPEINFO_POINTER_MOVE_REF))
         {
             bi.matchResult      = MatchResult::BadSignature;
-            bi.badSignatureNum1 = static_cast<int>(i);
-            bi.badSignatureNum2 = static_cast<int>(i) + firstParam;
+            bi.badSignatureNum1 = i;
+            bi.badSignatureNum2 = i + firstParam;
             return false;
         }
 
@@ -788,8 +788,8 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
             type2->isPointerRef())
         {
             bi.matchResult      = MatchResult::BadSignature;
-            bi.badSignatureNum1 = static_cast<int>(i);
-            bi.badSignatureNum2 = static_cast<int>(i) + firstParam;
+            bi.badSignatureNum1 = i;
+            bi.badSignatureNum2 = i + firstParam;
             return false;
         }
 
@@ -798,8 +798,8 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
         if (!type1->isSame(type2, castFlags))
         {
             bi.matchResult      = MatchResult::BadSignature;
-            bi.badSignatureNum1 = static_cast<int>(i);
-            bi.badSignatureNum2 = static_cast<int>(i) + firstParam;
+            bi.badSignatureNum1 = i;
+            bi.badSignatureNum2 = i + firstParam;
             return false;
         }
     }
@@ -1003,36 +1003,36 @@ TypeInfo* TypeInfoStruct::clone()
     newType->structName        = structName;
     newType->replaceTypes      = replaceTypes;
 
-    int size = static_cast<int>(genericParameters.size());
+    uint32_t size = genericParameters.size();
     newType->genericParameters.reserve(size);
-    for (int i = 0; i < size; i++)
+    for (uint32_t i = 0; i < size; i++)
     {
         auto param = genericParameters[i];
         param      = param->clone();
         newType->genericParameters.push_back(param);
     }
 
-    size = static_cast<int>(fields.size());
+    size = fields.size();
     newType->fields.reserve(size);
-    for (int i = 0; i < size; i++)
+    for (uint32_t i = 0; i < size; i++)
     {
         auto param = fields[i];
         param      = param->clone();
         newType->fields.push_back(param);
     }
 
-    size = static_cast<int>(constDecl.size());
+    size = constDecl.size();
     newType->constDecl.reserve(size);
-    for (int i = 0; i < size; i++)
+    for (uint32_t i = 0; i < size; i++)
     {
         auto param = constDecl[i];
         param      = param->clone();
         newType->constDecl.push_back(param);
     }
 
-    size = static_cast<int>(methods.size());
+    size = methods.size();
     newType->methods.reserve(size);
-    for (int i = 0; i < size; i++)
+    for (uint32_t i = 0; i < size; i++)
     {
         auto param = methods[i];
         param      = param->clone();

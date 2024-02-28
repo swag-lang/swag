@@ -379,7 +379,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
         SWAG_CHECK(parser.constructEmbeddedAst(expression->computedValue()->text, node, expression, kind, true));
 
         job->nodes.pop_back();
-        for (int i = static_cast<int>(node->childCount()) - 1; i >= 0; i--)
+        for (uint32_t i = node->childCount() - 1; i != UINT32_MAX; i--)
             job->nodes.push_back(node->children[i]);
         job->nodes.push_back(node);
     }

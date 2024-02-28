@@ -42,7 +42,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
             Diagnostic err{sourceFile, tokenParse.token, formErr(Err0245, tokenParse.token.c_str())};
 
             Vector<Utf8> searchList{};
-            for (int i = 0; i < static_cast<int>(g_LangSpec->keywords.allocated); i++)
+            for (uint32_t i = 0; i < g_LangSpec->keywords.allocated; i++)
             {
                 const auto& k = g_LangSpec->keywords.buffer[i].key;
                 if (k && k[0] == '#')
@@ -63,7 +63,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
         Diagnostic err{sourceFile, tokenParse.token, formErr(Err0316, tokenParse.token.c_str())};
 
         Vector<Utf8> searchList{};
-        for (int i = 0; i < static_cast<int>(g_LangSpec->keywords.allocated); i++)
+        for (uint32_t i = 0; i < g_LangSpec->keywords.allocated; i++)
         {
             const auto& k = g_LangSpec->keywords.buffer[i].key;
             if (k && k[0] == '@')

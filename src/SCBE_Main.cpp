@@ -217,7 +217,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     pp.emitCall(thisDrop);
 
     // Call to global drop of all dependencies
-    for (int i = static_cast<int>(moduleDependencies.size()) - 1; i >= 0; i--)
+    for (uint32_t i = moduleDependencies.size() - 1; i != UINT32_MAX; i--)
     {
         const auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)

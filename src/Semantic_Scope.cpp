@@ -90,7 +90,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Alternati
         const auto withNode = castAst<AstWith>(withNodeP, AstNodeKind::With);
 
         // Prepend the 'with' identifier, and reevaluate
-        for (int wi = static_cast<int>(withNode->id.size()) - 1; wi >= 0; wi--)
+        for (uint32_t wi = withNode->id.size() - 1; wi != UINT32_MAX; wi--)
         {
             const auto id = Ast::newIdentifier(identifierRef, withNode->id[wi], nullptr, identifierRef);
             id->addAstFlag(AST_GENERATED);

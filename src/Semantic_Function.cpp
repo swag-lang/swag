@@ -63,13 +63,13 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
     if (forGenerics)
     {
         typeInfo->genericParameters.clear();
-        typeInfo->genericParameters.reserve(static_cast<int>(parameters->childCount()));
+        typeInfo->genericParameters.reserve(parameters->childCount());
         typeInfo->addFlag(TYPEINFO_GENERIC);
     }
     else
     {
         typeInfo->parameters.clear();
-        typeInfo->parameters.reserve(static_cast<int>(parameters->childCount()));
+        typeInfo->parameters.reserve(parameters->childCount());
     }
 
     AstNode* firstParamWithDef = nullptr;
@@ -174,7 +174,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         {
             if (defaultValueDone)
             {
-                Diagnostic err{nodeParam, formErr(Err0547, Naming::niceParameterRank(static_cast<int>(index)).c_str())};
+                Diagnostic err{nodeParam, formErr(Err0547, Naming::niceParameterRank(index).c_str())};
                 err.addNote(firstParamWithDef, toNte(Nte0170));
                 return context->report(err);
             }

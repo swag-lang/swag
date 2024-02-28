@@ -149,7 +149,7 @@ JobResult SemanticJob::execute()
                 context.tmpNodes = node->children;
                 if (node->hasAstFlag(AST_REVERSE_SEMANTIC))
                     context.tmpNodes.reverse();
-                for (int i = static_cast<int>(context.tmpNodes.count) - 1; i >= 0; i--)
+                for (uint32_t i = context.tmpNodes.count - 1; i != UINT32_MAX; i--)
                 {
                     auto child = context.tmpNodes[i];
 

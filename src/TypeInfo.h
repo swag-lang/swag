@@ -251,7 +251,7 @@ struct TypeInfoNative final : TypeInfo
     {
         kind       = TypeInfoKind::Native;
         nativeType = type;
-        name.setView(ptrName, static_cast<int>(strlen(ptrName)));
+        name.setView(ptrName, static_cast<uint32_t>(strlen(ptrName)));
         sizeOf       = sof;
         flags        = fl;
         valueInteger = 0;

@@ -454,7 +454,7 @@ Utf8 Naming::aKindName(ScopeKind kind)
     return article;
 }
 
-Utf8 Naming::niceArgumentRank(size_t idx)
+Utf8 Naming::niceArgumentRank(uint32_t idx)
 {
     switch (idx)
     {
@@ -469,7 +469,7 @@ Utf8 Naming::niceArgumentRank(size_t idx)
     return form("argument [[%d]]", idx);
 }
 
-Utf8 Naming::niceParameterRank(size_t idx)
+Utf8 Naming::niceParameterRank(uint32_t idx)
 {
     switch (idx)
     {

@@ -16,7 +16,7 @@ struct ErrorParam
 
     AstNode*          errorNode      = nullptr;
     AstFuncCallParam* failedParam    = nullptr;
-    int               badParamIdx    = 0;
+    uint32_t          badParamIdx    = 0;
     AstFuncDecl*      destFuncDecl   = nullptr;
     AstTypeLambda*    destLambdaDecl = nullptr;
     AstAttrDecl*      destAttrDecl   = nullptr;
@@ -479,7 +479,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     // Get the call parameter that failed
     const auto callParameters = oneTry.callParameters;
     errorParam.badParamIdx    = getBadParamIdx(oneTry, callParameters);
-    if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < static_cast<int>(callParameters->childCount()))
+    if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < callParameters->childCount())
         errorParam.failedParam = castAst<AstFuncCallParam>(callParameters->children[errorParam.badParamIdx]);
     errorParam.badParamIdx += 1;
 

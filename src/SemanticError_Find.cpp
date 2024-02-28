@@ -117,7 +117,7 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
         }
     }
 
-    for (int i = 0; i < static_cast<int>(g_LangSpec->keywords.allocated); i++)
+    for (uint32_t i = 0; i < g_LangSpec->keywords.allocated; i++)
     {
         switch (searchFor)
         {

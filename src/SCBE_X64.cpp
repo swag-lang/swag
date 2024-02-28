@@ -76,7 +76,7 @@ void SCBE_X64::emitSymbolRelocationRef(const Utf8& name)
     const auto callSym = getOrAddSymbol(name, CPUSymbolKind::Extern);
     if (callSym->kind == CPUSymbolKind::Function)
     {
-        concat.addS32(static_cast<int>(callSym->value + textSectionOffset - (concat.totalCount() + 4)));
+        concat.addS32(static_cast<int32_t>(callSym->value + textSectionOffset - (concat.totalCount() + 4)));
     }
     else
     {
@@ -1781,7 +1781,7 @@ void SCBE_X64::emitCall(const Utf8& symbolName)
     const auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
     if (callSym->kind == CPUSymbolKind::Function)
     {
-        concat.addS32(static_cast<int>(callSym->value + textSectionOffset - (concat.totalCount() + 4)));
+        concat.addS32(static_cast<int32_t>(callSym->value + textSectionOffset - (concat.totalCount() + 4)));
     }
     else
     {

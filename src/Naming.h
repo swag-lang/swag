@@ -31,8 +31,8 @@ namespace Naming
     Utf8 kindName(ScopeKind kind);
     Utf8 aKindName(ScopeKind kind);
 
-    Utf8 niceArgumentRank(size_t idx);
-    Utf8 niceParameterRank(size_t idx);
+    Utf8 niceArgumentRank(uint32_t idx);
+    Utf8 niceParameterRank(uint32_t idx);
 
     Utf8 tokenToName(TokenId id);
     Utf8 funcToName(const AstFuncDecl* node);

@@ -50,7 +50,7 @@ namespace
 
             if (callParameter->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
             {
-                context.cptResolved                             = static_cast<int>(context.parameters.size());
+                context.cptResolved                             = context.parameters.size();
                 const auto param                                = castAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
                 param->resolvedParameter                        = parameters.back();
                 param->indexParam                               = parameters.size() - 1;
@@ -76,7 +76,7 @@ namespace
                 }
                 else
                 {
-                    context.cptResolved = static_cast<int>(context.parameters.size());
+                    context.cptResolved = context.parameters.size();
                     return;
                 }
             }
@@ -92,7 +92,7 @@ namespace
                 }
                 else
                 {
-                    context.cptResolved = static_cast<int>(context.parameters.size());
+                    context.cptResolved = context.parameters.size();
                     return;
                 }
             }
@@ -195,14 +195,14 @@ namespace
             {
                 if (context.doneParameters[j])
                 {
-                    context.badSignatureInfos.badSignatureNum1 = static_cast<int>(j);
+                    context.badSignatureInfos.badSignatureNum1 = j;
                     for (uint32_t k = 0; k < context.parameters.size(); k++)
                     {
                         const auto checkParam = context.parameters[k];
                         isNamed               = checkParam->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
                         if (isNamed && isNamed->token.text == parameters[j]->name)
                         {
-                            context.badSignatureInfos.badSignatureNum1 = static_cast<int>(k);
+                            context.badSignatureInfos.badSignatureNum1 = k;
                             break;
                         }
                     }
@@ -248,13 +248,13 @@ namespace
                 }
                 else if (wantedTypeInfo->isGeneric())
                 {
-                    Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, static_cast<int>(j), castFlags.mask(CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_AUTO_OP_CAST));
+                    Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, j, castFlags.mask(CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_AUTO_OP_CAST));
                 }
 
                 context.solvedParameters[j]                  = wantedParameter;
                 context.solvedCallParameters[parameterIndex] = wantedParameter;
                 callParameter->resolvedParameter             = wantedParameter;
-                callParameter->indexParam                    = static_cast<int>(j);
+                callParameter->indexParam                    = j;
                 context.doneParameters[j]                    = true;
                 context.cptResolved++;
                 return;
@@ -305,7 +305,7 @@ namespace
             {
                 context.cptResolved                             = context.parameters.size();
                 param->resolvedParameter                        = parameters.back();
-                param->indexParam                               = static_cast<int>(parameters.size()) - 1;
+                param->indexParam                               = parameters.size() - 1;
                 context.solvedParameters[param->indexParam]     = parameters.back();
                 context.solvedCallParameters[param->indexParam] = parameters.back();
                 break;
@@ -334,8 +334,8 @@ namespace
     void matchGenericParameters(SymbolMatchContext& context, const TypeInfo* myTypeInfo, VectorNative<TypeInfoParam*>& genericParameters)
     {
         // Solve generic parameters
-        const int wantedNumGenericParams = static_cast<int>(genericParameters.size());
-        const int userGenericParams      = static_cast<int>(context.genericParameters.size());
+        const uint32_t wantedNumGenericParams = genericParameters.size();
+        const uint32_t userGenericParams      = context.genericParameters.size();
 
         // It's valid to not specify generic parameters. They will be deduced.
         // A reference to a generic without specifying the generic parameters is a match
@@ -349,7 +349,7 @@ namespace
                 context.matchFlags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
                 if (!myTypeInfo->isGeneric() || context.parameters.empty())
                 {
-                    for (int i = 0; i < wantedNumGenericParams; i++)
+                    for (uint32_t i = 0; i < wantedNumGenericParams; i++)
                     {
                         const auto symbolParameter = genericParameters[i];
                         const auto genType         = symbolParameter->typeInfo;
@@ -422,7 +422,7 @@ namespace
 
         if (!userGenericParams && wantedNumGenericParams)
         {
-            for (int i = 0; i < wantedNumGenericParams; i++)
+            for (uint32_t i = 0; i < wantedNumGenericParams; i++)
             {
                 const auto symbolParameter = genericParameters[i];
                 if (!symbolParameter->typeInfo->isUndefined())
@@ -470,7 +470,7 @@ namespace
             }
         }
 
-        for (int i = 0; i < userGenericParams; i++)
+        for (uint32_t i = 0; i < userGenericParams; i++)
         {
             const auto callParameter   = context.genericParameters[i];
             const auto typeInfo        = TypeManager::concreteType(context.genericParametersCallTypes[i].typeInfoReplace, CONCRETE_FUNC);

@@ -16,7 +16,7 @@ struct VectorNative
         allocated = 0;
         buffer    = nullptr;
 
-        count = static_cast<int>(other.size());
+        count = other.size();
         reserve(count, false);
         std::copy_n(other.buffer, count, buffer);
     }
@@ -287,7 +287,7 @@ struct VectorNative
 
     VectorNative& operator=(const Vector<T>& other)
     {
-        count = static_cast<int>(other.size());
+        count = other.size();
         if (allocated < count)
             reserve(count, false);
         std::copy_n(&other[0], count, buffer);
@@ -299,7 +299,7 @@ struct VectorNative
         if (&other == this)
             return *this;
 
-        count = static_cast<int>(other.size());
+        count = other.size();
         if (allocated < count)
             reserve(count, false);
         std::copy_n(other.buffer, count, buffer);
