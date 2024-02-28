@@ -49,18 +49,18 @@ bool CommandLine::check()
     // Make some paths canonical
     if (!workspacePath.empty())
     {
-        workspacePath = filesystem::absolute(workspacePath);
-        error_code err;
-        const auto workspacePath1 = filesystem::canonical(workspacePath, err);
+        workspacePath = std::filesystem::absolute(workspacePath);
+        std::error_code err;
+        const auto      workspacePath1 = std::filesystem::canonical(workspacePath, err);
         if (!err)
             workspacePath = workspacePath1;
     }
 
     if (!cachePath.empty())
     {
-        cachePath = filesystem::absolute(cachePath);
-        error_code err;
-        const auto cachePath1 = filesystem::canonical(cachePath, err);
+        cachePath = std::filesystem::absolute(cachePath);
+        std::error_code err;
+        const auto      cachePath1 = std::filesystem::canonical(cachePath, err);
         if (!err)
             cachePath = cachePath1;
     }

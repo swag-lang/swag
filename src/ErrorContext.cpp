@@ -6,7 +6,7 @@
 #include "Scope.h"
 #include "SourceFile.h"
 
-PushErrCxtStep::PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const function<Utf8()>& err, bool locIsToken) :
+PushErrCxtStep::PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const std::function<Utf8()>& err, bool locIsToken) :
     cxt{context}
 {
     ErrorCxtStep expNode;

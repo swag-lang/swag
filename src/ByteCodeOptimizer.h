@@ -14,11 +14,11 @@ struct ByteCodeOptimizer
     static void     genTree(ByteCodeOptContext* context, uint32_t nodeIdx, bool computeCrc);
     static void     genTree(ByteCodeOptContext* context, bool computeCrc);
     static void     parseTree(ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt);
-    static void     parseTree(ByteCodeOptContext*                                                      context,
-                              uint32_t                                                                 startNode,
-                              ByteCodeInstruction*                                                     startIp,
-                              uint32_t                                                                 doneFlag,
-                              const function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)>& cb);
+    static void     parseTree(ByteCodeOptContext*                                                           context,
+                              uint32_t                                                                      startNode,
+                              ByteCodeInstruction*                                                          startIp,
+                              uint32_t                                                                      doneFlag,
+                              const std::function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)>& cb);
 
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void setContextFlags(ByteCodeOptContext* context, ByteCodeInstruction* ip);

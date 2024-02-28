@@ -533,7 +533,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     // Struct is on the right, so we need to inverse the test
     else if (!leftTypeInfo->isStruct())
     {
-        swap(left, right);
+        std::swap(left, right);
         node->addSemFlag(SEMFLAG_INVERSE_PARAMS);
     }
 

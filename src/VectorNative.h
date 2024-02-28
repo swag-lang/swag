@@ -6,8 +6,8 @@
 template<typename T>
 struct VectorNative
 {
-    static_assert(is_trivially_destructible<T>());
-    static_assert(is_trivially_copyable<T>());
+    static_assert(std::is_trivially_destructible<T>());
+    static_assert(std::is_trivially_copyable<T>());
 
     VectorNative() = default;
 
@@ -31,7 +31,7 @@ struct VectorNative
         other.allocated = 0;
     }
 
-    VectorNative(const initializer_list<T>& other)
+    VectorNative(const std::initializer_list<T>& other)
     {
         for (auto it : other)
             push_back(it);
@@ -102,7 +102,7 @@ struct VectorNative
     void reverse()
     {
         for (uint32_t i = 0; i < count / 2; i++)
-            swap(buffer[i], buffer[count - i - 1]);
+            std::swap(buffer[i], buffer[count - i - 1]);
     }
 
     void insert_at_index(const T& val, size_t index)

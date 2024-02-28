@@ -92,7 +92,7 @@ JobResult FetchModuleFileSystemJob::execute()
             auto n = destPath;
             n.append(f.c_str());
 
-            if (!filesystem::remove(n))
+            if (!std::filesystem::remove(n))
             {
                 Report::errorOS(formErr(Err0090, n.c_str()));
                 return JobResult::ReleaseJob;
@@ -108,9 +108,9 @@ JobResult FetchModuleFileSystemJob::execute()
         auto destFileName = destPath;
         destFileName.append(f.c_str());
 
-        auto       folder = destFileName.parent_path();
-        error_code err;
-        if (!filesystem::exists(folder, err) && !filesystem::create_directories(folder, err))
+        auto            folder = destFileName.parent_path();
+        std::error_code err;
+        if (!std::filesystem::exists(folder, err) && !std::filesystem::create_directories(folder, err))
         {
             Report::errorOS(formErr(Err0100, folder.c_str()));
             return JobResult::ReleaseJob;

@@ -113,9 +113,9 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     // Be sure the output file is here, and is more recent than the export file
     if (module->buildCfg.backendKind != BuildCfgBackendKind::None && module->buildCfg.backendKind != BuildCfgBackendKind::Export)
     {
-        const auto outFileFame = getOutputFileName(g_CommandLine.target, module->name, BuildCfgOutputKind::DynamicLib);
-        error_code err;
-        if (!filesystem::exists(outFileFame, err))
+        const auto      outFileFame = getOutputFileName(g_CommandLine.target, module->name, BuildCfgOutputKind::DynamicLib);
+        std::error_code err;
+        if (!std::filesystem::exists(outFileFame, err))
             return false;
         const auto timeOut = OS::getFileWriteTime(outFileFame.c_str());
         if (!invert && timeOut < moreRecentSourceFile)

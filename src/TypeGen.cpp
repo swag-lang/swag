@@ -592,14 +592,14 @@ void TypeGen::initFrom(Module* module, TypeGen* other)
         setup(name);
 
     mapPerSegment[0]->exportedTypes = other->mapPerSegment[0]->exportedTypes;
-    for (auto& val : mapPerSegment[0]->exportedTypes | views::values)
+    for (auto& val : mapPerSegment[0]->exportedTypes | std::views::values)
     {
         val.exportedType                                         = reinterpret_cast<ExportedTypeInfo*>(module->constantSegment.address(val.storageOffset));
         mapPerSegment[0]->exportedTypesReverse[val.exportedType] = val.realType;
     }
 
     mapPerSegment[1]->exportedTypes = other->mapPerSegment[1]->exportedTypes;
-    for (auto& val : mapPerSegment[1]->exportedTypes | views::values)
+    for (auto& val : mapPerSegment[1]->exportedTypes | std::views::values)
     {
         val.exportedType                                         = reinterpret_cast<ExportedTypeInfo*>(module->compilerSegment.address(val.storageOffset));
         mapPerSegment[1]->exportedTypesReverse[val.exportedType] = val.realType;

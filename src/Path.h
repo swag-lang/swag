@@ -17,14 +17,14 @@ struct Path : Utf8
     {
     }
 
-    Path(const filesystem::path& other) :
+    Path(const std::filesystem::path& other) :
         Utf8{other.string()}
     {
     }
 
     void append(const char* str)
     {
-        filesystem::path p = c_str();
+        std::filesystem::path p = c_str();
         p.append(str);
         *this = p.string().c_str();
     }
@@ -41,40 +41,40 @@ struct Path : Utf8
 
     Utf8 extension() const
     {
-        const filesystem::path p = c_str();
+        const std::filesystem::path p = c_str();
         return p.extension().string();
     }
 
     Path parent_path() const
     {
-        const filesystem::path p = c_str();
+        const std::filesystem::path p = c_str();
         return p.parent_path().string().c_str();
     }
 
     Path filename() const
     {
-        const filesystem::path p = c_str();
+        const std::filesystem::path p = c_str();
         return p.filename().string().c_str();
     }
 
     Path replace_extension(const char* ext = nullptr) const
     {
-        filesystem::path p = c_str();
+        std::filesystem::path p = c_str();
         if (!ext)
             return p.replace_extension().string().c_str();
         return p.replace_extension(ext).string().c_str();
     }
 
     // ReSharper disable once CppNonExplicitConversionOperator
-    operator filesystem::path() const
+    operator std::filesystem::path() const
     {
-        return filesystem::path{c_str()};
+        return std::filesystem::path{c_str()};
     }
 
     // ReSharper disable once CppNonExplicitConversionOperator
-    operator string() const
+    operator std::string() const
     {
-        return string{c_str()};
+        return std::string{c_str()};
     }
 };
 

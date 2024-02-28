@@ -28,8 +28,8 @@ namespace Ast
     void addChildBack(AstNode* parent, AstNode* child);
     void addChildFront(AstNode* parent, AstNode* child);
 
-    void        visit(AstNode* root, const function<void(AstNode*)>& fct);
-    VisitResult visit(ErrorContext* context, AstNode* root, const function<VisitResult(ErrorContext*, AstNode*)>& fct);
+    void        visit(AstNode* root, const std::function<void(AstNode*)>& fct);
+    VisitResult visit(ErrorContext* context, AstNode* root, const std::function<VisitResult(ErrorContext*, AstNode*)>& fct);
     void        setForceConstType(AstNode* node);
     Utf8        enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped = true);
     Utf8        literalToString(const TypeInfo* typeInfo, const ComputedValue& value);
@@ -181,4 +181,4 @@ const T* castAst(const AstNode* ptr)
     return casted;
 }
 
-extern atomic<int> g_UniqueID;
+extern std::atomic<uint32_t> g_UniqueID;

@@ -8,7 +8,7 @@
 #include "SourceFile.h"
 #include "TypeManager.h"
 
-atomic<int> g_UniqueID;
+std::atomic<uint32_t> g_UniqueID;
 
 bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType)
 {

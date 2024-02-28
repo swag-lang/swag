@@ -178,7 +178,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                         if (back->typeInfo->isInterface())
                         {
                             SWAG_ASSERT(node->resultRegisterRc.countResults == 2);
-                            swap(node->resultRegisterRc.oneResult[0], node->resultRegisterRc.oneResult[1]);
+                            std::swap(node->resultRegisterRc.oneResult[0], node->resultRegisterRc.oneResult[1]);
                         }
                     }
                 }
@@ -594,7 +594,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         if (node->hasAstFlag(AST_FROM_UFCS) && node->typeInfo->isInterface())
         {
             SWAG_ASSERT(node->resultRegisterRc.size() == 2);
-            swap(node->resultRegisterRc.oneResult[0], node->resultRegisterRc.oneResult[1]);
+            std::swap(node->resultRegisterRc.oneResult[0], node->resultRegisterRc.oneResult[1]);
         }
 
         identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;

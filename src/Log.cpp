@@ -253,7 +253,7 @@ void Log::writeEol()
         storeLine.clear();
     }
     else
-        cout << "\n";
+        std::cout << "\n";
 }
 
 void Log::write(const char* message, bool raw)
@@ -270,9 +270,9 @@ void Log::write(const char* message, bool raw)
     }
 
     if (raw)
-        cout << message;
+        std::cout << message;
     else
-        cout << format(message).c_str();
+        std::cout << format(message).c_str();
 }
 
 void Log::print(const Utf8& message, bool raw)

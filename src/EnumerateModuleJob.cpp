@@ -85,17 +85,17 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
         Path orgFilePath = n->token.text;
 
         // Is this a simple file ?
-        auto       filePath = orgFilePath;
-        error_code err;
-        if (!filesystem::exists(filePath, err))
+        auto            filePath = orgFilePath;
+        std::error_code err;
+        if (!std::filesystem::exists(filePath, err))
         {
             filePath = theModule->path;
             filePath.append(orgFilePath);
-            filePath             = filesystem::absolute(filePath);
-            const auto filePath1 = filesystem::canonical(filePath, err);
+            filePath             = std::filesystem::absolute(filePath);
+            const auto filePath1 = std::filesystem::canonical(filePath, err);
             if (!err)
                 filePath = filePath1;
-            if (!filesystem::exists(filePath, err))
+            if (!std::filesystem::exists(filePath, err))
             {
                 Report::report({n->token.sourceFile, n->token, formErr(Err0709, n->token.c_str())});
                 return false;
@@ -110,7 +110,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
+        std::ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
         for (const auto file : allFiles)
             theModule->addFile(file);
     }
@@ -214,7 +214,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
+        std::ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
         for (const auto file : allFiles)
             theModule->addFile(file);
     }
@@ -293,7 +293,7 @@ Module* EnumerateModuleJob::addModule(const Path& path)
 
 void EnumerateModuleJob::enumerateModules(const Path& path)
 {
-    Vector<string> allModules;
+    Vector<std::string> allModules;
 
     // Scan source folder
     OS::visitFolders(path, [&](const char* cFolderName) {
@@ -312,7 +312,7 @@ void EnumerateModuleJob::enumerateModules(const Path& path)
     // Sort modules, and register them in a constant order
     if (!allModules.empty())
     {
-        ranges::sort(allModules);
+        std::ranges::sort(allModules);
         for (const auto& m : allModules)
         {
             auto toAdd = path;
@@ -416,7 +416,7 @@ JobResult EnumerateModuleJob::execute()
         // Sort files, and register them in a constant order
         if (!allFiles.empty())
         {
-            ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
+            std::ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
             for (const auto file : allFiles)
                 m->addFile(file);
         }

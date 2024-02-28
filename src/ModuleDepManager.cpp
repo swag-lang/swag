@@ -98,8 +98,8 @@ Path ModuleDepManager::getAliasPath(const Path& srcPath)
 {
     auto p = srcPath;
     p.append(SWAG_ALIAS_FILENAME);
-    error_code err;
-    if (filesystem::exists(p, err))
+    std::error_code err;
+    if (std::filesystem::exists(p, err))
     {
         FILE* f = nullptr;
         if (!fopen_s(&f, p, "rt"))
@@ -127,15 +127,15 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
         cfgName.append(SWAG_CFG_FILE);
 
         // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
-        error_code err;
-        if (filesystem::exists(cfgName, err))
+        std::error_code err;
+        if (std::filesystem::exists(cfgName, err))
             newCfgFile(allFiles, cfgPath, SWAG_CFG_FILE);
     });
 
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
+        std::ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
         for (const auto file : allFiles)
             registerCfgFile(file);
     }
@@ -147,8 +147,8 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFileP
     remotePath.append(SWAG_CFG_FILE);
 
     // No cfg file, we are done, we need one !
-    error_code err;
-    if (!filesystem::exists(remotePath, err))
+    std::error_code err;
+    if (!std::filesystem::exists(remotePath, err))
         return Report::report({dep->node, dep->tokenLocation, formErr(Err0093, SWAG_CFG_FILE, remotePath.c_str())});
 
     // Otherwise we copy the config file to the cache path, with a unique name.
@@ -199,12 +199,12 @@ bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Path& cfgFilePa
     remotePath.append(SWAG_MODULES_FOLDER);
     remotePath.append(dep->name);
 
-    remotePath = filesystem::absolute(remotePath);
-    error_code err;
-    const auto remotePath1 = filesystem::canonical(remotePath, err);
+    remotePath = std::filesystem::absolute(remotePath);
+    std::error_code err;
+    const auto      remotePath1 = std::filesystem::canonical(remotePath, err);
     if (!err)
         remotePath = remotePath1;
-    if (!filesystem::exists(remotePath, err))
+    if (!std::filesystem::exists(remotePath, err))
         return Report::report({dep->node, dep->tokenLocation, formErr(Err0255, remotePath.c_str())});
     if (!fetch)
         return true;
@@ -218,12 +218,12 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Path& cfgFilePa
     remotePath.append(SWAG_MODULES_FOLDER);
     remotePath.append(dep->name);
 
-    remotePath = filesystem::absolute(remotePath);
-    error_code err;
-    const auto remotePath1 = filesystem::canonical(remotePath, err);
+    remotePath = std::filesystem::absolute(remotePath);
+    std::error_code err;
+    const auto      remotePath1 = std::filesystem::canonical(remotePath, err);
     if (!err)
         remotePath = remotePath1;
-    if (!filesystem::exists(remotePath, err))
+    if (!std::filesystem::exists(remotePath, err))
         return Report::report({dep->node, dep->tokenLocation, formErr(Err0255, remotePath.c_str())});
     if (!fetch)
         return true;
@@ -453,9 +453,9 @@ bool ModuleDepManager::execute()
         // We want each script with the same set of dependencies to have the same
         // cache folder. So we compute a CRC that will be used in the workspace name.
         Utf8 strCrc;
-        for (auto val : allModules | views::values)
+        for (const auto val : allModules | std::views::values)
         {
-            for (auto dep : val->moduleDependencies)
+            for (const auto dep : val->moduleDependencies)
             {
                 strCrc += dep->name;
                 strCrc += form("%d.%d.%d", dep->verNum, dep->revNum, dep->buildNum);
@@ -474,9 +474,9 @@ bool ModuleDepManager::execute()
 
     // Remember the configuration of the local modules
     //////////////////////////////////////////////////
-    for (auto val : allModules | views::values)
+    for (const auto val : allModules | std::views::values)
     {
-        auto module         = val;
+        const auto module   = val;
         module->localCfgDep = module->buildCfg;
     }
 
@@ -487,9 +487,9 @@ bool ModuleDepManager::execute()
     while (ok)
     {
         pendingCfgModules.clear();
-        for (auto val : allModules | views::values)
+        for (const auto val : allModules | std::views::values)
         {
-            auto parentModule = val;
+            const auto parentModule = val;
 
             // Do not treat dependencies of a module without a remote location.
             // The remote location will be initialized when known, starting with
@@ -497,7 +497,7 @@ bool ModuleDepManager::execute()
             if (parentModule->remoteLocationDep.empty())
                 continue;
 
-            for (auto dep : parentModule->moduleDependencies)
+            for (const auto dep : parentModule->moduleDependencies)
             {
                 // We need to be sure that the dependency declaration is correct
                 if (!dep->location.empty() && !dep->locationAutoResolved)
@@ -554,10 +554,10 @@ bool ModuleDepManager::execute()
 
     // Compare versions
     //////////////////////////////////////////////////
-    for (auto val : allModules | views::values)
+    for (const auto val : allModules | std::views::values)
     {
-        auto module = val;
-        auto dep    = module->fetchDep;
+        const auto module = val;
+        const auto dep    = module->fetchDep;
         if (!dep)
             continue;
 
@@ -598,10 +598,10 @@ bool ModuleDepManager::execute()
     //////////////////////////////////////////////////
     if (g_CommandLine.listDepCmd)
     {
-        for (auto val : allModules | views::values)
+        for (const auto val : allModules | std::views::values)
         {
-            auto module = val;
-            Utf8 msg;
+            const auto module = val;
+            Utf8       msg;
             if (module->fetchDep)
                 msg += form("%d.%d.%d", module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum);
             else
@@ -624,7 +624,7 @@ bool ModuleDepManager::execute()
     //////////////////////////////////////////////////
     if (g_CommandLine.fetchDep)
     {
-        for (auto val : allModules | views::values)
+        for (const auto val : allModules | std::views::values)
         {
             if (!val->fetchDep)
                 continue;
@@ -645,10 +645,10 @@ bool ModuleDepManager::execute()
                 // That file will contain the path to the corresponding module location
                 case DependencyFetchKind::Swag:
                 {
-                    error_code err;
-                    auto       pathSrc = g_Workspace->dependenciesPath;
+                    std::error_code err;
+                    auto            pathSrc = g_Workspace->dependenciesPath;
                     pathSrc.append(val->name.c_str());
-                    if (!filesystem::exists(pathSrc, err) && !filesystem::create_directories(pathSrc, err))
+                    if (!std::filesystem::exists(pathSrc, err) && !std::filesystem::create_directories(pathSrc, err))
                     {
                         Report::errorOS(formErr(Err0100, pathSrc.c_str()));
                         ok = false;
@@ -685,21 +685,21 @@ bool ModuleDepManager::execute()
     }
 
     // For each modules, flatten all dependencies
-    for (auto val : allModules | views::values)
+    for (const auto val : allModules | std::views::values)
     {
         SetUtf8                          depNames;
         VectorNative<ModuleDependency*>& dep = val->moduleDependencies;
 
-        for (auto d : val->moduleDependencies)
+        for (const auto d : val->moduleDependencies)
             depNames.insert(d->module->name);
 
         for (uint32_t i = 0; i < dep.size(); i++)
         {
-            auto d = dep[i];
+            const auto d = dep[i];
             if (!d->module)
                 continue;
 
-            for (auto d1 : d->module->moduleDependencies)
+            for (const auto d1 : d->module->moduleDependencies)
             {
                 if (depNames.contains(d1->module->name))
                     continue;

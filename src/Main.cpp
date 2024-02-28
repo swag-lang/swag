@@ -58,14 +58,14 @@ int main(int argc, const char* argv[])
     }
 
     // Log help for a given command
-    if (argc == 3 && string(argv[2]) == "--help")
+    if (argc == 3 && std::string(argv[2]) == "--help")
     {
         help(cmdParser, command);
         OS::exit(0);
     }
 
     // Retrieve the compiler executable path
-    g_CommandLine.exePath = filesystem::absolute(OS::getExePath());
+    g_CommandLine.exePath = std::filesystem::absolute(OS::getExePath());
 
     // Process all arguments
     if (!cmdParser.process(command, argc - 2, argv + 2))

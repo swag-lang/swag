@@ -38,7 +38,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* /*context*
         return BcDbgCommandResult::Continue;
     }
 
-    ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
+    std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
     printLong(all);
     return BcDbgCommandResult::Continue;
 }
@@ -51,7 +51,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* /*contex
     Vector<Utf8> all;
     for (const auto m : g_Workspace->modules)
         all.push_back(m->name);
-    ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
+    std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
     printLong(all);
     return BcDbgCommandResult::Continue;
 }

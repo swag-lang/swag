@@ -146,7 +146,7 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
     while (!oo.try_lock())
     {
         g_ThreadMgr.tryExecuteJob();
-        this_thread::yield();
+        std::this_thread::yield();
     }
 
     // Log linker parameters

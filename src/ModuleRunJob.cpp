@@ -10,8 +10,8 @@ JobResult ModuleRunJob::execute()
     Path path = g_Workspace->targetPath;
     path.append(buildParameters.module->name);
     path += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgOutputKind::Executable);
-    error_code err;
-    if (!filesystem::exists(path, err))
+    std::error_code err;
+    if (!std::filesystem::exists(path, err))
         return JobResult::ReleaseJob;
 
 #ifdef SWAG_STATS

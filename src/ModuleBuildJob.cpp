@@ -52,8 +52,8 @@ void ModuleBuildJob::publishFilesToPublic(const Module* moduleToPublish)
         // Otherwise, remove it !
         auto path = publicPath;
         path.append(filename);
-        error_code err;
-        filesystem::remove(path, err);
+        std::error_code err;
+        std::filesystem::remove(path, err);
     });
 
     // Add all #public files
@@ -73,8 +73,8 @@ void ModuleBuildJob::publishFilesToTarget(const Module* moduleToPublish)
 {
     Path publishPath = moduleToPublish->path;
     publishPath.append(SWAG_PUBLISH_FOLDER);
-    error_code err;
-    if (!filesystem::exists(publishPath, err))
+    std::error_code err;
+    if (!std::filesystem::exists(publishPath, err))
         return;
 
     // Everything at the root of the /publish folder will be copied "as is" in the output directory, whatever the
@@ -95,7 +95,7 @@ void ModuleBuildJob::publishFilesToTarget(const Module* moduleToPublish)
     osArchPath.append(Backend::getOsName(g_CommandLine.target));
     osArchPath += "-";
     osArchPath += Backend::getArchName(g_CommandLine.target);
-    if (filesystem::exists(osArchPath, err))
+    if (std::filesystem::exists(osArchPath, err))
     {
         OS::visitFiles(osArchPath, [&](const char* cFileName) {
             const auto job  = Allocator::alloc<CopyFileJob>();
@@ -154,8 +154,8 @@ bool ModuleBuildJob::loadDependency(Module* depModule)
     // Add all public files from the dependency module
     VectorNative<SourceFile*> files;
     const auto                publicPath = depModule->publicPath;
-    error_code                err;
-    if (filesystem::exists(publicPath, err))
+    std::error_code           err;
+    if (std::filesystem::exists(publicPath, err))
     {
         OS::visitFiles(publicPath, [&](const char* filename) {
             const auto pz = strrchr(filename, '.');

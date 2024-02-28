@@ -42,7 +42,8 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
             bool lastChance = false;
             for (int i = 0; i < 10; i++)
             {
-                this_thread::sleep_for(100ms);
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(100ms);
                 if (g_ModuleMgr->loadModule(moduleName))
                 {
                     lastChance = true;

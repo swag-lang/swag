@@ -560,37 +560,37 @@ bool Semantic::resolveCompilerPrint(SemanticContext* context)
                 g_Log.write(expr->computedValue()->reg.b ? "true" : "false");
                 break;
             case NativeTypeKind::S8:
-                g_Log.print(to_string(expr->computedValue()->reg.s8));
+                g_Log.print(std::to_string(expr->computedValue()->reg.s8));
                 break;
             case NativeTypeKind::S16:
-                g_Log.print(to_string(expr->computedValue()->reg.s16));
+                g_Log.print(std::to_string(expr->computedValue()->reg.s16));
                 break;
             case NativeTypeKind::S32:
-                g_Log.print(to_string(expr->computedValue()->reg.s32));
+                g_Log.print(std::to_string(expr->computedValue()->reg.s32));
                 break;
             case NativeTypeKind::S64:
-                g_Log.print(to_string(expr->computedValue()->reg.s64));
+                g_Log.print(std::to_string(expr->computedValue()->reg.s64));
                 break;
             case NativeTypeKind::U8:
-                g_Log.print(to_string(expr->computedValue()->reg.u8));
+                g_Log.print(std::to_string(expr->computedValue()->reg.u8));
                 break;
             case NativeTypeKind::U16:
-                g_Log.print(to_string(expr->computedValue()->reg.u16));
+                g_Log.print(std::to_string(expr->computedValue()->reg.u16));
                 break;
             case NativeTypeKind::U32:
-                g_Log.print(to_string(expr->computedValue()->reg.u32));
+                g_Log.print(std::to_string(expr->computedValue()->reg.u32));
                 break;
             case NativeTypeKind::U64:
-                g_Log.print(to_string(expr->computedValue()->reg.u64));
+                g_Log.print(std::to_string(expr->computedValue()->reg.u64));
                 break;
             case NativeTypeKind::F32:
-                g_Log.print(to_string(expr->computedValue()->reg.f32));
+                g_Log.print(std::to_string(expr->computedValue()->reg.f32));
                 break;
             case NativeTypeKind::F64:
-                g_Log.print(to_string(expr->computedValue()->reg.f64));
+                g_Log.print(std::to_string(expr->computedValue()->reg.f64));
                 break;
             case NativeTypeKind::Rune:
-                g_Log.print(to_string(expr->computedValue()->reg.ch));
+                g_Log.print(std::to_string(expr->computedValue()->reg.ch));
                 break;
             case NativeTypeKind::String:
                 g_Log.print(expr->computedValue()->text);
@@ -728,17 +728,17 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
         // Search first in the same folder as the source file
         Path fullFileName = node->token.sourceFile->path.parent_path();
         fullFileName.append(filename.c_str());
-        error_code err;
-        if (!filesystem::exists(fullFileName, err))
+        std::error_code err;
+        if (!std::filesystem::exists(fullFileName, err))
         {
             // Search relative to the module path
             fullFileName = node->token.sourceFile->module->path;
             fullFileName.append(filename.c_str());
-            if (!filesystem::exists(fullFileName, err))
+            if (!std::filesystem::exists(fullFileName, err))
             {
                 // Search the file itself, without any special path
                 fullFileName = filename;
-                if (!filesystem::exists(fullFileName, err))
+                if (!std::filesystem::exists(fullFileName, err))
                     return context->report({back, formErr(Err0710, filename.c_str())});
             }
         }
@@ -830,7 +830,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
         if (locNode->ownerFct && locNode->ownerFct->typeInfo && locNode->ownerFct->requestedGeneric)
         {
             const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(locNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-            for (const auto& val : typeFunc->replaceTypes | views::values)
+            for (const auto& val : typeFunc->replaceTypes | std::views::values)
             {
                 bool fromGen = false;
                 if (val.typeInfoReplace == locNode->typeInfo)

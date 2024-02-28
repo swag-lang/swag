@@ -315,7 +315,7 @@ void Concat::addU32Str(uint32_t value)
     if (value < 10)
         addChar(static_cast<char>(value + '0'));
     else
-        addString(to_string(value));
+        addString(std::to_string(value));
 }
 
 void Concat::addS32Str8(int value)

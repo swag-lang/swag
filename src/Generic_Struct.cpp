@@ -145,7 +145,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     // :GenericConcreteAlias
     // Make all types concrete in case of simple aliases
-    for (auto& val : cloneContext.replaceTypes | views::values)
+    for (auto& val : cloneContext.replaceTypes | std::views::values)
     {
         val.typeInfoReplace = TypeManager::concreteType(val.typeInfoReplace, CONCRETE_ALIAS);
     }

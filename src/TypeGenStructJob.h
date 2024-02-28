@@ -13,8 +13,8 @@ struct TypeGenStructJob final : Job
     JobResult execute() override;
     bool      computeStruct();
 
-    Utf8                                 typeName;
-    Vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
+    Utf8                                      typeName;
+    Vector<std::pair<AstFuncDecl*, uint32_t>> patchMethods;
 
     TypeGen*          typeGen               = nullptr;
     ExportedTypeInfo* exportedTypeInfoValue = nullptr;

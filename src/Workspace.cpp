@@ -25,22 +25,22 @@ void Workspace::setup()
         OS::exit(-1);
     }
 
-    error_code err;
-    if (!filesystem::exists(workspacePath, err))
+    std::error_code err;
+    if (!std::filesystem::exists(workspacePath, err))
     {
         Report::error(formErr(Fat0035, workspacePath.c_str()));
         g_Log.messageInfo(toNte(Nte0190));
         OS::exit(-1);
     }
 
-    if (!g_CommandLine.scriptCommand && !filesystem::exists(modulesPath, err) && !filesystem::exists(testsPath, err))
+    if (!g_CommandLine.scriptCommand && !std::filesystem::exists(modulesPath, err) && !std::filesystem::exists(testsPath, err))
     {
         Report::error(formErr(Fat0027, workspacePath.c_str()));
         g_Log.messageInfo(toNte(Nte0190));
         OS::exit(-1);
     }
 
-    if (g_CommandLine.scriptCommand && !filesystem::exists(g_CommandLine.scriptName.c_str(), err))
+    if (g_CommandLine.scriptCommand && !std::filesystem::exists(g_CommandLine.scriptName.c_str(), err))
     {
         Report::error(formErr(Fat0030, g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
@@ -51,9 +51,9 @@ void Workspace::setup()
 
 void Workspace::setupPaths()
 {
-    workspacePath = filesystem::absolute(g_CommandLine.workspacePath);
+    workspacePath = std::filesystem::absolute(g_CommandLine.workspacePath);
     if (workspacePath.empty())
-        workspacePath = filesystem::current_path();
+        workspacePath = std::filesystem::current_path();
 
     testsPath = workspacePath;
     testsPath.append(SWAG_TESTS_FOLDER);

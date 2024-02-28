@@ -2087,13 +2087,13 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     {
         if (toType->isUntypedInteger() && !fromType->isUntypedInteger())
         {
-            swap(toType, fromType);
-            swap(toNode, fromNode);
+            std::swap(toType, fromType);
+            std::swap(toNode, fromNode);
         }
         else if (toType->isUntypedFloat() && !fromType->isUntypedFloat())
         {
-            swap(toType, fromType);
-            swap(toNode, fromNode);
+            std::swap(toType, fromType);
+            std::swap(toNode, fromNode);
         }
     }
 

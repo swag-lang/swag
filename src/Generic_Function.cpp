@@ -76,7 +76,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // If we instantiate with a tuple list (literal), then we must convert that to a proper struct decl and make
     // a reference to it.
     const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(match.symbolOverload->node->typeInfo, TypeInfoKind::FuncAttr);
-    for (const auto& val : match.genericReplaceTypes | views::values)
+    for (const auto& val : match.genericReplaceTypes | std::views::values)
     {
         if (val.typeInfoReplace->isListTuple())
         {
@@ -132,7 +132,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     // :GenericConcreteAlias
     // Make all types concrete in case of simple aliases
-    for (auto& val : cloneContext.replaceTypes | views::values)
+    for (auto& val : cloneContext.replaceTypes | std::views::values)
     {
         val.typeInfoReplace = TypeManager::concreteType(val.typeInfoReplace, CONCRETE_ALIAS);
     }

@@ -331,14 +331,14 @@ Scope* Ast::newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* pa
     return newScope;
 }
 
-void Ast::visit(AstNode* root, const function<void(AstNode*)>& fct)
+void Ast::visit(AstNode* root, const std::function<void(AstNode*)>& fct)
 {
     fct(root);
     for (const auto child : root->children)
         visit(child, fct);
 }
 
-Ast::VisitResult Ast::visit(ErrorContext* context, AstNode* root, const function<VisitResult(ErrorContext*, AstNode*)>& fct)
+Ast::VisitResult Ast::visit(ErrorContext* context, AstNode* root, const std::function<VisitResult(ErrorContext*, AstNode*)>& fct)
 {
     auto result = fct(context, root);
     if (result == Stop)

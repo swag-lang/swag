@@ -29,8 +29,8 @@ namespace OS
     bool                 setupBuild();
     const BackendTarget& getNativeTarget();
 
-    bool  doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors);
-    void  setThreadName(thread* thread, const char* threadName);
+    bool  doProcess(Module* module, const Utf8& cmdline, const std::string& currentDirectory, uint32_t& numErrors);
+    void  setThreadName(std::thread* thread, const char* threadName);
     void  exit(int code);
     void* loadLibrary(const char* name);
     void* getProcAddress(void* handle, const char* name);
@@ -46,10 +46,10 @@ namespace OS
     void errorBox(const char* title, const char* expr);
     void assertBox(const char* expr, const char* file, int line);
 
-    void visitFiles(const char* folder, const function<void(const char*)>& user);
-    void visitFolders(const char* folder, const function<void(const char*)>& user, const char* match = "*");
-    void visitFilesFolders(const char* folder, const function<void(uint64_t, const char*, bool)>& user);
-    void visitFilesRec(const char* folder, const function<void(const char*)>& user);
+    void visitFiles(const char* folder, const std::function<void(const char*)>& user);
+    void visitFolders(const char* folder, const std::function<void(const char*)>& user, const char* match = "*");
+    void visitFilesFolders(const char* folder, const std::function<void(uint64_t, const char*, bool)>& user);
+    void visitFilesRec(const char* folder, const std::function<void(const char*)>& user);
 
     void     ensureFileIsWritten(const char* fileName);
     uint64_t getFileWriteTime(const char* fileName);

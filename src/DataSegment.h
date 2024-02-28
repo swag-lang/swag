@@ -110,11 +110,11 @@ struct DataSegment
     Map<uint32_t, CacheValue> storedValues32;
     Map<uint64_t, CacheValue> storedValues64;
 
-    VectorNative<InitPtrRef>             initPtr;
-    Map<uint32_t, Utf8>                  initFuncPtr;
-    Map<uint8_t*, SaveValue>             savedValues;
-    Vector<PatchPtrRef>                  patchPtr;
-    Vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
+    VectorNative<InitPtrRef>                  initPtr;
+    Map<uint32_t, Utf8>                       initFuncPtr;
+    Map<uint8_t*, SaveValue>                  savedValues;
+    Vector<PatchPtrRef>                       patchPtr;
+    Vector<std::pair<AstFuncDecl*, uint32_t>> patchMethods;
 
     const char* name   = nullptr;
     Module*     module = nullptr;

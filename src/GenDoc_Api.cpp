@@ -119,9 +119,9 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
     }
 
     VectorNative<AstNode*> symbols;
-    for (auto& val : symbolsMap | views::values)
+    for (auto& val : symbolsMap | std::views::values)
         symbols.append(val);
-    ranges::sort(symbols, [](const AstNode* a, const AstNode* b) {
+    std::ranges::sort(symbols, [](const AstNode* a, const AstNode* b) {
         const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
         const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
         return strcmp(a0, b0) < 0;
@@ -443,7 +443,7 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
         collectInvert[n->fullName] = n->fullName;
     }
 
-    ranges::sort(pendingNodes, [](const OneRef* a, const OneRef* b) {
+    std::ranges::sort(pendingNodes, [](const OneRef* a, const OneRef* b) {
         return strcmp(a->tocName, b->tocName) < 0;
     });
 
@@ -487,7 +487,7 @@ void GenDoc::generateTocSection(AstNodeKind kind, const char* sectionName)
 
 void GenDoc::generateToc()
 {
-    ranges::sort(allNodes, [](OneRef& a, OneRef& b) {
+    std::ranges::sort(allNodes, [](OneRef& a, OneRef& b) {
         const int s0 = sortOrder(a.nodes[0]->kind);
         const int s1 = sortOrder(b.nodes[0]->kind);
         if (s0 != s1)
@@ -514,7 +514,7 @@ void GenDoc::generateContent()
     computeUserComments(moduleComment, module->docComment, false);
     outputUserComment(moduleComment);
 
-    ranges::sort(allNodes, [](OneRef& a, OneRef& b) {
+    std::ranges::sort(allNodes, [](OneRef& a, OneRef& b) {
         if (a.nodes[0]->is(AstNodeKind::ConstDecl) && b.nodes[0]->isNot(AstNodeKind::ConstDecl))
             return true;
         if (a.nodes[0]->isNot(AstNodeKind::ConstDecl) && b.nodes[0]->is(AstNodeKind::ConstDecl))
@@ -953,7 +953,7 @@ bool GenDoc::generateApi()
             oneRef.displayName += tkn[tkn.size() - 1];
         }
 
-        ranges::sort(oneRef.nodes, [](const AstNode* a, const AstNode* b) {
+        std::ranges::sort(oneRef.nodes, [](const AstNode* a, const AstNode* b) {
             const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
             const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
             return strcmp(a0, b0) < 0;

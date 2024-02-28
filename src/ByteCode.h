@@ -111,8 +111,8 @@ struct ByteCode
     static bool areSame(const ByteCodeInstruction* start0, const ByteCodeInstruction* end0, const ByteCodeInstruction* start1, const ByteCodeInstruction* end1, bool specialJump, bool specialCall);
     uint32_t    computeCrc(const ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const;
 
-    VectorNative<uint32_t>            availableRegistersRC;
-    VectorNative<pair<void*, size_t>> autoFree;
+    VectorNative<uint32_t>                 availableRegistersRC;
+    VectorNative<std::pair<void*, size_t>> autoFree;
 
     Mutex                  mutexCallName;
     Utf8                   name;
@@ -158,7 +158,7 @@ struct ByteCode
     bool sanDone                 = false;
     bool isInSeg                 = false;
 
-    atomic<bool> isEmpty;
+    std::atomic<bool> isEmpty;
 
     SWAG_RACE_CONDITION_INSTANCE(raceCond);
 };

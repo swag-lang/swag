@@ -8,7 +8,7 @@
 
 void newScriptFile()
 {
-    ofstream file(g_CommandLine.scriptName);
+    std::ofstream file(g_CommandLine.scriptName);
     if (!file.is_open())
     {
         Report::errorOS(formErr(Fat0020, g_CommandLine.scriptName.c_str()));
@@ -38,19 +38,19 @@ void newScriptFile()
 
 void Workspace::newModule(const Utf8& moduleName) const
 {
-    error_code err;
+    std::error_code err;
 
     // Create one module folder
     auto modulePath = g_CommandLine.test ? testsPath : modulesPath;
     modulePath.append(moduleName.c_str());
 
-    if (filesystem::exists(modulePath, err))
+    if (std::filesystem::exists(modulePath, err))
     {
         Report::errorOS(formErr(Fat0028, moduleName.c_str()));
         OS::exit(-1);
     }
 
-    if (!filesystem::create_directories(modulePath, err))
+    if (!std::filesystem::create_directories(modulePath, err))
     {
         Report::errorOS(formErr(Fat0017, modulePath.c_str()));
         OS::exit(-1);
@@ -59,7 +59,7 @@ void Workspace::newModule(const Utf8& moduleName) const
     // Create a configuration file
     auto cfgFileName = modulePath;
     cfgFileName.append(SWAG_CFG_FILE);
-    ofstream fileCfg(cfgFileName.c_str());
+    std::ofstream fileCfg(cfgFileName.c_str());
     if (!fileCfg.is_open())
     {
         Report::errorOS(formErr(Fat0018, cfgFileName.c_str()));
@@ -89,7 +89,7 @@ void Workspace::newModule(const Utf8& moduleName) const
 
     // Create an hello world file
     modulePath.append(SWAG_SRC_FOLDER);
-    if (!filesystem::create_directories(modulePath, err))
+    if (!std::filesystem::create_directories(modulePath, err))
     {
         Report::errorOS(formErr(Fat0017, modulePath.c_str()));
         OS::exit(-1);
@@ -114,7 +114,7 @@ void Workspace::newModule(const Utf8& moduleName) const
         modulePath.append("test1.swg");
     else
         modulePath.append("main.swg");
-    ofstream file(modulePath.c_str());
+    std::ofstream file(modulePath.c_str());
     if (!file.is_open())
     {
         Report::errorOS(formErr(Fat0018, modulePath.c_str()));
@@ -144,36 +144,36 @@ void Workspace::newCommand()
     }
 
     // Create workspace
-    error_code err;
-    Utf8       moduleName;
+    std::error_code err;
+    Utf8            moduleName;
     if (g_CommandLine.moduleName.empty())
     {
-        if (filesystem::exists(workspacePath, err))
+        if (std::filesystem::exists(workspacePath, err))
         {
             Report::error(formErr(Fat0034, workspacePath.c_str()));
             OS::exit(-1);
         }
 
         // Create workspace folders
-        if (!filesystem::create_directories(workspacePath, err))
+        if (!std::filesystem::create_directories(workspacePath, err))
         {
             Report::errorOS(formErr(Fat0017, workspacePath.c_str()));
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(testsPath, err))
+        if (!std::filesystem::create_directories(testsPath, err))
         {
             Report::errorOS(formErr(Fat0017, testsPath.c_str()));
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(modulesPath, err))
+        if (!std::filesystem::create_directories(modulesPath, err))
         {
             Report::errorOS(formErr(Fat0017, modulesPath.c_str()));
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(dependenciesPath, err))
+        if (!std::filesystem::create_directories(dependenciesPath, err))
         {
             Report::errorOS(formErr(Fat0017, dependenciesPath.c_str()));
             OS::exit(-1);
@@ -186,7 +186,7 @@ void Workspace::newCommand()
     // Use an existing workspace to create a new module
     else
     {
-        if (!filesystem::exists(workspacePath, err))
+        if (!std::filesystem::exists(workspacePath, err))
         {
             Report::error(formErr(Fat0035, workspacePath.c_str()));
             OS::exit(-1);

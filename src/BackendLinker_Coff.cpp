@@ -16,7 +16,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
     libPaths.push_back(g_CommandLine.exePath.parent_path());
 
     for (const auto& oneLibPath : libPaths)
-        arguments.push_back("/LIBPATH:" + oneLibPath);
+        arguments.push_back(R"(/LIBPATH:)" + oneLibPath);
 
     // Register #foreignlib
     // As this is defined by the user, we consider the library must exists
@@ -31,9 +31,9 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
     // Be sure that the library exists. Some modules rely on external libraries, and do not have their own one
     for (const auto& dep : buildParameters.module->moduleDependencies)
     {
-        auto       libName = Backend::getOutputFileName(g_CommandLine.target, dep->module->name, BuildCfgOutputKind::ImportLib);
-        error_code err;
-        if (filesystem::exists(libName, err))
+        auto            libName = Backend::getOutputFileName(g_CommandLine.target, dep->module->name, BuildCfgOutputKind::ImportLib);
+        std::error_code err;
+        if (std::filesystem::exists(libName, err))
             arguments.push_back(libName);
     }
 
@@ -41,26 +41,26 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
     {
         if (dep->buildCfg.backendKind == BuildCfgBackendKind::Export)
         {
-            auto       libName = Backend::getOutputFileName(g_CommandLine.target, dep->name, BuildCfgOutputKind::ImportLib);
-            error_code err;
-            if (filesystem::exists(libName, err))
+            auto            libName = Backend::getOutputFileName(g_CommandLine.target, dep->name, BuildCfgOutputKind::ImportLib);
+            std::error_code err;
+            if (std::filesystem::exists(libName, err))
                 arguments.push_back(libName);
         }
     }
 
-    arguments.push_back("/INCREMENTAL:NO");
-    arguments.push_back("/NOLOGO");
+    arguments.push_back(R"(/INCREMENTAL:NO)");
+    arguments.push_back(R"(/NOLOGO)");
     if (buildParameters.buildCfg->backendSubKind == BuildCfgBackendSubKind::Console)
-        arguments.push_back("/SUBSYSTEM:CONSOLE");
+        arguments.push_back(R"(/SUBSYSTEM:CONSOLE)");
     else
         arguments.push_back("/SUBSYSTEM:WINDOWS");
-    arguments.push_back("/NODEFAULTLIB");
-    arguments.push_back("/ERRORLIMIT:0");
+    arguments.push_back(R"(/NODEFAULTLIB)");
+    arguments.push_back(R"(/ERRORLIMIT:0)");
 
     if (isArchArm(g_CommandLine.target.arch))
-        arguments.push_back("/MACHINE:ARM64");
+        arguments.push_back(R"(/MACHINE:ARM64)");
     else
-        arguments.push_back("/MACHINE:X64");
+        arguments.push_back(R"(/MACHINE:X64)");
 
     if (buildParameters.buildCfg->backendDebugInfos)
     {
@@ -71,9 +71,9 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
         if (buildParameters.module->isNot(ModuleKind::Test) || !buildParameters.module->byteCodeTestFunc.empty())
         {
             if (g_ThreadMgr.numWorkers == 1)
-                arguments.push_back("/DEBUG");
+                arguments.push_back(R"(/DEBUG)");
             else
-                arguments.push_back("/DEBUG:GHASH");
+                arguments.push_back(R"(/DEBUG:GHASH)");
         }
     }
 

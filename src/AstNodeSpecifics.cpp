@@ -373,7 +373,7 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
                 if (nodeFunc->makePointerLambda)
                 {
                     const int id = g_UniqueID.fetch_add(1);
-                    sub->token.text += to_string(id);
+                    sub->token.text += std::to_string(id);
                     const auto idRef  = castAst<AstIdentifier>(nodeFunc->makePointerLambda->firstChild()->lastChild(), AstNodeKind::Identifier);
                     idRef->token.text = sub->token.text;
                 }
@@ -1199,7 +1199,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         // the block is in a mixin block, because in that case the function can be registered
         // more than once in the same scope.
         const int  id      = g_UniqueID.fetch_add(1);
-        const Utf8 newName = R"(__cmpfunc)" + to_string(id);
+        const Utf8 newName = R"(__cmpfunc)" + std::to_string(id);
 
         const auto func  = castAst<AstFuncDecl>(newNode->firstChild(), AstNodeKind::FuncDecl);
         func->token.text = newName;

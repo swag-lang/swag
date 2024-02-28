@@ -9,11 +9,11 @@ struct JobThread
     void loop();
     void notifyJob();
 
-    mutex              mutexNotify;
-    condition_variable condVar;
+    std::mutex              mutexNotify;
+    std::condition_variable condVar;
 
-    thread*  thread     = nullptr;
-    uint32_t threadRank = UINT32_MAX;
+    std::thread* thread     = nullptr;
+    uint32_t     threadRank = UINT32_MAX;
 
     bool requestEnd = false;
 };

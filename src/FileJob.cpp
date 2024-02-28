@@ -18,8 +18,8 @@ void CopyFileJob::release()
 JobResult CopyFileJob::execute()
 {
     // Copy only if source is more recent than destination
-    error_code err;
-    if (filesystem::exists(destPath, err))
+    std::error_code err;
+    if (std::filesystem::exists(destPath, err))
     {
         const auto tsrc  = OS::getFileWriteTime(sourcePath);
         const auto tdest = OS::getFileWriteTime(destPath);

@@ -9,7 +9,7 @@ struct ModuleGenOutputJob final : Job
 
     JobResult execute() override;
 
-    BuildParameters     buildParameters;
-    condition_variable* condVar   = nullptr;
-    mutex*              mutexDone = nullptr;
+    BuildParameters          buildParameters;
+    std::condition_variable* condVar   = nullptr;
+    std::mutex*              mutexDone = nullptr;
 };

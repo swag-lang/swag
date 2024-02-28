@@ -1,19 +1,19 @@
 #pragma once
 
 template<typename T>
-struct Vector : vector<T, StdAllocator<T>>
+struct Vector : std::vector<T, StdAllocator<T>>
 {
     Vector() :
-        vector<T, StdAllocator<T>>()
+        std::vector<T, StdAllocator<T>>()
     {
     }
 
-    Vector(const initializer_list<T>& other) :
-        vector<T, StdAllocator<T>>(other)
+    Vector(const std::initializer_list<T>& other) :
+        std::vector<T, StdAllocator<T>>(other)
     {
     }
 
-    uint32_t size() const { return static_cast<uint32_t>(vector<T, StdAllocator<T>>::size()); }
+    uint32_t size() const { return static_cast<uint32_t>(std::vector<T, StdAllocator<T>>::size()); }
 
     bool contains(const T& value) const
     {
@@ -47,10 +47,10 @@ struct Vector : vector<T, StdAllocator<T>>
 };
 
 template<typename K, typename V>
-struct VectorMap : Vector<pair<K, V>>
+struct VectorMap : Vector<std::pair<K, V>>
 {
-    using It      = typename Vector<pair<K, V>>::iterator;
-    using ConstIt = typename Vector<pair<K, V>>::const_iterator;
+    using It      = typename Vector<std::pair<K, V>>::iterator;
+    using ConstIt = typename Vector<std::pair<K, V>>::const_iterator;
 
     ConstIt find(const K& key) const
     {
@@ -84,7 +84,7 @@ struct VectorMap : Vector<pair<K, V>>
         auto it = find(key);
         if (it != this->end())
             return it->second;
-        pair<K, V> tmp;
+        std::pair<K, V> tmp;
         tmp.first = key;
         this->emplace_back(std::move(tmp));
         return this->back().second;

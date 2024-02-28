@@ -288,7 +288,7 @@ namespace
 
 void Diagnostic::sortRanges()
 {
-    ranges::sort(ranges, [](auto& r1, auto& r2) { return r1.startLocation.column < r2.startLocation.column; });
+    std::ranges::sort(ranges, [](auto& r1, auto& r2) { return r1.startLocation.column < r2.startLocation.column; });
 }
 
 void Diagnostic::collectRanges()
@@ -329,7 +329,7 @@ void Diagnostic::collectRanges()
 
         // Be sure start column is before end column
         if (r.startLocation.line == r.endLocation.line && r.startLocation.column > r.endLocation.column)
-            swap(r.startLocation.column, r.endLocation.column);
+            std::swap(r.startLocation.column, r.endLocation.column);
 
         r.width = 1;
         if (r.endLocation.line == r.startLocation.line)

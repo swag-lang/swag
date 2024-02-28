@@ -118,7 +118,7 @@ namespace
                 break;
             case CommandLineType::Int:
                 value        = "<integer>";
-                defaultValue = to_string(*static_cast<int*>(oneArg->buffer));
+                defaultValue = std::to_string(*static_cast<int*>(oneArg->buffer));
                 break;
             case CommandLineType::String:
                 value        = "<string>";
@@ -465,10 +465,10 @@ Utf8 CommandLineParser::buildString() const
     defaultParser.setup(&defaultValues);
 
     Vector<CommandLineArgument*> list;
-    for (const auto& oneArg : longNameArgs | views::values)
+    for (const auto& oneArg : longNameArgs | std::views::values)
         list.push_back(oneArg);
 
-    ranges::sort(list, [](const CommandLineArgument* a, const CommandLineArgument* b) { return strcmp(a->longName, b->longName) < 0; });
+    std::ranges::sort(list, [](const CommandLineArgument* a, const CommandLineArgument* b) { return strcmp(a->longName, b->longName) < 0; });
 
     Utf8 result;
     for (const auto& oneArg : list)
@@ -522,7 +522,7 @@ Utf8 CommandLineParser::buildString() const
             case CommandLineType::Int:
                 result += oneArg->longName + ":";
                 result += Log::colorToVTS(LogColor::Value);
-                result += to_string(*static_cast<int*>(oneArg->buffer));
+                result += std::to_string(*static_cast<int*>(oneArg->buffer));
                 break;
 
             case CommandLineType::Bool:

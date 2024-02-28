@@ -2,7 +2,7 @@
 #pragma once
 struct Mutex
 {
-    mutex mt;
+    std::mutex mt;
 
     void lock() { mt.lock(); }
     void unlock() { mt.unlock(); }
@@ -11,7 +11,7 @@ struct Mutex
 
 struct SharedMutex
 {
-    shared_mutex mt;
+    std::shared_mutex mt;
 
     void lock() { mt.lock(); }
     void unlock() { mt.unlock(); }

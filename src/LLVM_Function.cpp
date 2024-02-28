@@ -91,10 +91,10 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     }
 
     // Generate bytecode
-    auto                                   ip = bc->out;
-    VectorNative<pair<uint32_t, uint32_t>> pushRVParams;
-    VectorNative<uint32_t>                 pushRAParams;
-    llvm::Value*                           resultFuncCall = nullptr;
+    auto                                        ip = bc->out;
+    VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;
+    VectorNative<uint32_t>                      pushRAParams;
+    llvm::Value*                                resultFuncCall = nullptr;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))

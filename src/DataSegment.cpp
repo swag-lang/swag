@@ -330,8 +330,8 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
     SWAG_RACE_CONDITION_WRITE(raceC);
 
     // Same string already there ?
-    using P                            = MapUtf8<CacheValue>;
-    const pair<P::iterator, bool> iter = storedStrings.insert(P::value_type(str, {}));
+    using P                                 = MapUtf8<CacheValue>;
+    const std::pair<P::iterator, bool> iter = storedStrings.insert(P::value_type(str, {}));
     if (!iter.second)
     {
         if (resultPtr)

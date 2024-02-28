@@ -203,9 +203,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     if (typeFunc->isClosure() && debug)
         pp.emitCopyN(R12, RCX, CPUBits::B64);
 
-    auto                                   ip = bc->out;
-    VectorNative<uint32_t>                 pushRAParams;
-    VectorNative<pair<uint32_t, uint32_t>> pushRVParams;
+    auto                                        ip = bc->out;
+    VectorNative<uint32_t>                      pushRAParams;
+    VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;
     for (int32_t i = 0; i < static_cast<int32_t>(bc->numInstructions); i++, ip++)
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))

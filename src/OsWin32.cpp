@@ -165,7 +165,7 @@ namespace OS
         return g_NativeTarget;
     }
 
-    bool doProcess(Module* /*module*/, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors)
+    bool doProcess(Module* /*module*/, const Utf8& cmdline, const std::string& currentDirectory, uint32_t& numErrors)
     {
         STARTUPINFOA        si;
         PROCESS_INFORMATION pi;
@@ -290,8 +290,8 @@ namespace OS
                         g_Log.lock();
                         g_Log.setColor(LogColor::Red);
                         numErrors++;
-                        cout << cmdline.c_str();
-                        cout << ": access violation during process execution\n";
+                        std::cout << cmdline.c_str();
+                        std::cout << ": access violation during process execution\n";
                         g_Log.setDefaultColor();
                         g_Log.unlock();
                         ok = false;
@@ -300,8 +300,8 @@ namespace OS
                         g_Log.lock();
                         g_Log.setColor(LogColor::Red);
                         numErrors++;
-                        cout << cmdline.c_str();
-                        cout << ": process execution failed\n";
+                        std::cout << cmdline.c_str();
+                        std::cout << ": process execution failed\n";
                         g_Log.setDefaultColor();
                         g_Log.unlock();
                         ok = false;
@@ -397,12 +397,12 @@ namespace OS
         auto writeTime = getFileWriteTime(fileName);
         while (!writeTime)
         {
-            this_thread::yield();
+            std::this_thread::yield();
             writeTime = getFileWriteTime(fileName);
         }
     }
 
-    void visitFiles(const char* folder, const function<void(const char*)>& user)
+    void visitFiles(const char* folder, const std::function<void(const char*)>& user)
     {
         WIN32_FIND_DATAA findFile;
         Utf8             searchPath = folder;
@@ -421,7 +421,7 @@ namespace OS
         }
     }
 
-    void visitFolders(const char* folder, const function<void(const char*)>& user, const char* match)
+    void visitFolders(const char* folder, const std::function<void(const char*)>& user, const char* match)
     {
         WIN32_FIND_DATAA findFile;
         Utf8             searchPath = folder;
@@ -443,7 +443,7 @@ namespace OS
         }
     }
 
-    void visitFilesFolders(const char* folder, const function<void(uint64_t, const char*, bool)>& user)
+    void visitFilesFolders(const char* folder, const std::function<void(uint64_t, const char*, bool)>& user)
     {
         WIN32_FIND_DATAA findFile;
         Utf8             searchPath = folder;
@@ -470,7 +470,7 @@ namespace OS
         }
     }
 
-    void visitFilesRec(const char* folder, const function<void(const char*)>& user)
+    void visitFilesRec(const char* folder, const std::function<void(const char*)>& user)
     {
         WIN32_FIND_DATAA findFile;
         Path             searchPath = folder;
@@ -535,7 +535,7 @@ namespace OS
         setThreadName(GetCurrentThreadId(), threadName);
     }
 
-    void setThreadName(thread* thread, const char* threadName)
+    void setThreadName(std::thread* thread, const char* threadName)
     {
         const auto  handle   = thread->native_handle();
         const DWORD threadId = GetThreadId(handle);

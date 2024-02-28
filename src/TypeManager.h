@@ -156,9 +156,9 @@ struct TypeManager
         TypeInfoPointer* pointerTo;
     };
 
-    Map<TypeInfo*, vector<PointerCache>> mapPointers;
-    Map<TypeInfo*, TypeInfo*>            mapConst;
-    Map<TypeInfo*, TypeInfo*>            mapUnConst;
+    Map<TypeInfo*, std::vector<PointerCache>> mapPointers;
+    Map<TypeInfo*, TypeInfo*>                 mapConst;
+    Map<TypeInfo*, TypeInfo*>                 mapUnConst;
 
     TypeInfoNative* typeInfoS8        = nullptr;
     TypeInfoNative* typeInfoS16       = nullptr;

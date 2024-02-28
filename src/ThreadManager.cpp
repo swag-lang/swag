@@ -332,7 +332,7 @@ void ThreadManager::clearOptionalJobs()
     }
 
     while (jobsOptInThreads)
-        this_thread::yield();
+        std::this_thread::yield();
 }
 
 void ThreadManager::waitEndJobsSync()
@@ -354,7 +354,7 @@ void ThreadManager::waitEndJobs()
     // Else wait for all jobs to be done in other threads
     while (true)
     {
-        unique_lock lk(mutexDone);
+        std::unique_lock lk(mutexDone);
         if (doneWithJobs())
             break;
         condVarDone.wait(lk);
@@ -498,7 +498,7 @@ Job* ThreadManager::getJob(JobThread* thread)
         return job;
     }
 
-    unique_lock lk(thread->mutexNotify);
+    std::unique_lock lk(thread->mutexNotify);
     mutexAdd.lock();
     availableThreads.push_back(thread);
     mutexAdd.unlock();

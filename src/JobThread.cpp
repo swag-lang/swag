@@ -19,7 +19,7 @@ JobThread::~JobThread()
 
 void JobThread::notifyJob()
 {
-    lock_guard lk(mutexNotify);
+    std::lock_guard lk(mutexNotify);
     condVar.notify_one();
 }
 

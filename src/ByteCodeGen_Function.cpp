@@ -1675,7 +1675,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // Sort children by parameter index
     if (allParams && allParams->hasAstFlag(AST_MUST_SORT_CHILDREN))
     {
-        ranges::sort(allParams->children, [](AstNode* n1, AstNode* n2) {
+        std::ranges::sort(allParams->children, [](AstNode* n1, AstNode* n2) {
             const auto p1 = castAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
             const auto p2 = castAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
             return p1->indexParam < p2->indexParam;

@@ -150,8 +150,8 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     {
         auto nameLib = getOutputFileName(g_CommandLine.target, dep->module->name, BuildCfgOutputKind::DynamicLib);
 
-        error_code err;
-        if (filesystem::exists(nameLib, err))
+        std::error_code err;
+        if (std::filesystem::exists(nameLib, err))
         {
             nameLib = nameLib.filename();
             pp.pushParams.clear();

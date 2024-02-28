@@ -23,7 +23,7 @@ void JobGroup::waitAndClear()
 {
     ScopedLock lk(mutex);
     while (runningJobs.load() > 0)
-        this_thread::yield();
+        std::this_thread::yield();
     for (const auto j : jobs)
         j->release();
     jobs.clear();
@@ -33,7 +33,7 @@ void JobGroup::complete(Job* parentJob)
 {
     ScopedLock lk(mutex);
     while (runningJobs.load() > 0)
-        this_thread::yield();
+        std::this_thread::yield();
     for (auto j : jobs)
     {
         j->dependentJob = parentJob;
@@ -60,6 +60,6 @@ void JobGroup::moveFrom(JobGroup& grp)
 {
     ScopedLock lk(mutex);
     while (runningJobs.load() > 0)
-        this_thread::yield();
+        std::this_thread::yield();
     jobs = std::move(grp.jobs);
 }

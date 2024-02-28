@@ -23,17 +23,17 @@ enum class ErrCxtStepKind
 
 struct ErrorCxtStep
 {
-    AstNode*                            node = nullptr;
-    ErrCxtStepKind                      type = ErrCxtStepKind::Note;
     VectorMap<Utf8, GenericReplaceType> replaceTypes;
+    std::function<Utf8()>               err;
+    AstNode*                            node       = nullptr;
+    ErrCxtStepKind                      type       = ErrCxtStepKind::Note;
     bool                                locIsToken = false;
     bool                                hide       = false;
-    function<Utf8()>                    err;
 };
 
 struct PushErrCxtStep
 {
-                  PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const function<Utf8()>& err, bool locIsToken = false);
+                  PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const std::function<Utf8()>& err, bool locIsToken = false);
     ~             PushErrCxtStep();
     ErrorContext* cxt;
 };

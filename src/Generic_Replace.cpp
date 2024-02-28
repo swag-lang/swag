@@ -82,7 +82,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                 auto       errNode = context->node;
 
                 const TypeInfo* errType = nullptr;
-                for (const auto& val : match.genericReplaceTypes | views::values)
+                for (const auto& val : match.genericReplaceTypes | std::views::values)
                 {
                     const auto fromNode = val.fromNode;
                     if (!fromNode)

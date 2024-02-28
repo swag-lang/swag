@@ -3,7 +3,7 @@
 
 struct Timer
 {
-    explicit Timer(atomic<uint64_t>* dest, bool force = false) :
+    explicit Timer(std::atomic<uint64_t>* dest, bool force = false) :
         destValue{dest}
     {
         start(force);
@@ -30,6 +30,6 @@ struct Timer
             *destValue += OS::timerNow() - timeBefore;
     }
 
-    atomic<uint64_t>* destValue;
-    uint64_t          timeBefore = 0;
+    std::atomic<uint64_t>* destValue;
+    uint64_t               timeBefore = 0;
 };

@@ -1938,7 +1938,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         {
             PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
             const auto     id = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
-            for (auto& val : cloneContext.replaceNames | views::values)
+            for (auto& val : cloneContext.replaceNames | std::views::values)
             {
                 auto it = cloneContext.usedReplaceNames.find(val);
                 if (it == cloneContext.usedReplaceNames.end())

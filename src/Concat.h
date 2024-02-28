@@ -111,11 +111,11 @@ struct Concat
     uint32_t totalCountBytes = 0;
 };
 
-#define CONCAT_FIXED_STR(__concat, __str)                                    \
-    do                                                                       \
-    {                                                                        \
-        static constexpr int __len = (int) char_traits<char>::length(__str); \
-        (__concat).addString(__str, __len);                                  \
+#define CONCAT_FIXED_STR(__concat, __str)                                         \
+    do                                                                            \
+    {                                                                             \
+        static constexpr int __len = (int) std::char_traits<char>::length(__str); \
+        (__concat).addString(__str, __len);                                       \
     } while (0)
 
 #define CONCAT_STR_1(__concat, __before, __int, __after) \

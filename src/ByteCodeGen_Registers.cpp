@@ -26,7 +26,7 @@ void ByteCodeGen::sortRegistersRC(const ByteCodeGenContext* context)
     context->bc->isDirtyRegistersRC = false;
     if (context->bc->availableRegistersRC.size() <= 1)
         return;
-    ranges::sort(context->bc->availableRegistersRC, [](const uint32_t a, const uint32_t b) { return a > b; });
+    std::ranges::sort(context->bc->availableRegistersRC, [](const uint32_t a, const uint32_t b) { return a > b; });
 }
 
 void ByteCodeGen::freeRegisterRC(const ByteCodeGenContext* context, uint32_t rc)

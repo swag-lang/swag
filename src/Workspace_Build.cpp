@@ -57,7 +57,7 @@ void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& modu
 SourceFile* Workspace::findFile(const char* fileName) const
 {
     SourceFile* sourceFile = nullptr;
-    for (const auto& val : mapModulesNames | views::values)
+    for (const auto& val : mapModulesNames | std::views::values)
     {
         sourceFile = val->findFile(fileName);
         if (sourceFile)
@@ -197,8 +197,8 @@ void Workspace::setupTarget()
     if (g_CommandLine.verbosePath)
         g_Log.messageVerbose(form("target path is [[%s]]", targetPath.c_str()));
 
-    error_code err;
-    if (!filesystem::exists(targetPath, err) && !filesystem::create_directories(targetPath, err))
+    std::error_code err;
+    if (!std::filesystem::exists(targetPath, err) && !std::filesystem::create_directories(targetPath, err))
     {
         Report::errorOS(formErr(Fat0021, targetPath.c_str()));
         OS::exit(-1);
@@ -206,14 +206,14 @@ void Workspace::setupTarget()
 
     // Cache directory
     setupCachePath();
-    if (!filesystem::exists(cachePath, err))
+    if (!std::filesystem::exists(cachePath, err))
     {
         Report::errorOS(formErr(Fat0010, cachePath.c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
-    if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
+    if (!std::filesystem::exists(cachePath, err) && !std::filesystem::create_directories(cachePath, err))
     {
         Report::errorOS(formErr(Fat0016, cachePath.c_str()));
         OS::exit(-1);
@@ -221,7 +221,7 @@ void Workspace::setupTarget()
 
     const auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
     cachePath.append(workspacePath.filename() + "-" + targetFullName.c_str());
-    if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
+    if (!std::filesystem::exists(cachePath, err) && !std::filesystem::create_directories(cachePath, err))
     {
         Report::errorOS(formErr(Fat0016, cachePath.c_str()));
         OS::exit(-1);

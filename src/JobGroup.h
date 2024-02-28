@@ -11,7 +11,7 @@ struct JobGroup
     void moveFrom(JobGroup& grp);
     void waitAndClear();
 
-    Mutex              mutex;
-    atomic<int>        runningJobs = 0;
-    VectorNative<Job*> jobs;
+    Mutex                 mutex;
+    std::atomic<uint32_t> runningJobs = 0;
+    VectorNative<Job*>    jobs;
 };

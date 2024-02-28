@@ -2,25 +2,25 @@
 #include "Path.h"
 
 template<typename T>
-struct Set : unordered_set<T, hash<T>, equal_to<T>, StdAllocator<T>>
+struct Set : std::unordered_set<T, std::hash<T>, std::equal_to<T>, StdAllocator<T>>
 {
     Set() :
-        unordered_set<T, hash<T>, equal_to<T>, StdAllocator<T>>()
+        std::unordered_set<T, std::hash<T>, std::equal_to<T>, StdAllocator<T>>()
     {
     }
 
     Set(const Set& other) :
-        unordered_set<T, hash<T>, equal_to<T>, StdAllocator<T>>(other)
+        std::unordered_set<T, std::hash<T>, std::equal_to<T>, StdAllocator<T>>(other)
     {
     }
 };
 
-struct SetUtf8 : unordered_set<Utf8, HashUtf8, equal_to<Utf8>, StdAllocator<Utf8>>
+struct SetUtf8 : std::unordered_set<Utf8, HashUtf8, std::equal_to<Utf8>, StdAllocator<Utf8>>
 {
     SetUtf8() = default;
 };
 
-struct SetPath : unordered_set<Path, HashPath, equal_to<Path>, StdAllocator<Path>>
+struct SetPath : std::unordered_set<Path, HashPath, std::equal_to<Path>, StdAllocator<Path>>
 {
     SetPath() = default;
 };

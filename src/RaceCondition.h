@@ -9,7 +9,7 @@ struct RaceCondition
         Instance() = default;
 
         SharedMutex      mutex;
-        thread::id       lastThreadID;
+        std::thread::id  lastThreadID;
         std::atomic<int> countWrite = 0;
     };
 

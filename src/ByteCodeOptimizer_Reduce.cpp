@@ -898,7 +898,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip[1].op == ByteCodeOp::IncSPPostCall &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
-                swap(ip[0], ip[1]);
+                std::swap(ip[0], ip[1]);
                 context->setDirtyPass();
                 break;
             }
@@ -2766,7 +2766,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                         ip[1].b.u32 = ip[0].a.u32;
                         ip[1].c.s64 += ip[0].b.s64;
                         if (ip[0].a.u32 != ip[1].a.u32)
-                            swap(ip[0], ip[1]);
+                            std::swap(ip[0], ip[1]);
                     }
                     break;
                 }
@@ -2787,7 +2787,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                         ip[1].b.u32 = ip[0].a.u32;
                         ip[1].c.s64 += ip[0].b.s64;
                         if (ip[0].a.u32 != ip[1].a.u32)
-                            swap(ip[0], ip[1]);
+                            std::swap(ip[0], ip[1]);
                     }
                     break;
                 }
@@ -2808,7 +2808,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                         ip[1].b.u32 = ip[0].a.u32;
                         ip[1].c.s64 += ip[0].b.s64;
                         if (ip[0].a.u32 != ip[1].a.u32)
-                            swap(ip[0], ip[1]);
+                            std::swap(ip[0], ip[1]);
                     }
                     break;
                 }
@@ -2829,7 +2829,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                         ip[1].b.u32 = ip[0].a.u32;
                         ip[1].c.s64 += ip[0].b.s64;
                         if (ip[0].a.u32 != ip[1].a.u32)
-                            swap(ip[0], ip[1]);
+                            std::swap(ip[0], ip[1]);
                     }
                     break;
                 }
@@ -2868,7 +2868,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                     !ip[0].hasFlag(BCI_START_STMT))
                 {
                     ip[1].b.s64 += ip[0].b.s64;
-                    swap(ip[0], ip[1]);
+                    std::swap(ip[0], ip[1]);
                     context->setDirtyPass();
                     break;
                 }
@@ -2885,7 +2885,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
 
                 {
                     ip[1].c.s64 += ip[0].b.s64;
-                    swap(ip[0], ip[1]);
+                    std::swap(ip[0], ip[1]);
                     context->setDirtyPass();
                     break;
                 }

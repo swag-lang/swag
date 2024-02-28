@@ -85,8 +85,8 @@ struct Workspace
     Path                  modulesPath;
     Path                  dependenciesPath;
     SharedMutex           mutexModules;
-    atomic<uint32_t>      numErrors   = 0;
-    atomic<uint32_t>      numWarnings = 0;
+    std::atomic<uint32_t> numErrors   = 0;
+    std::atomic<uint32_t> numWarnings = 0;
     VectorNative<Module*> modules;
     Module*               runModule = nullptr;
 
@@ -99,8 +99,8 @@ struct Workspace
     Module*          runtimeModule   = nullptr;
     ScopeSwag        swagScope;
 
-    atomic<uint32_t> skippedModules = 0;
-    atomic<uint64_t> totalTime      = 0;
+    std::atomic<uint32_t> skippedModules = 0;
+    std::atomic<uint64_t> totalTime      = 0;
 };
 
 extern Workspace* g_Workspace;

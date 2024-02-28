@@ -1062,13 +1062,13 @@ struct AstCompilerIfBlock : AstNode
         uint32_t        methodIdx;
     };
 
-    VectorNative<AstCompilerIfBlock*>         blocks;
-    VectorNative<pair<AstNode*, SymbolName*>> symbols;
-    VectorNative<TypeInfoStruct*>             interfacesCount;
-    VectorNative<MethodCount>                 methodsCount;
-    VectorNative<AstNode*>                    subDecl;
-    VectorNative<AstNode*>                    imports;
-    VectorNative<AstNode*>                    includes;
+    VectorNative<AstCompilerIfBlock*>              blocks;
+    VectorNative<std::pair<AstNode*, SymbolName*>> symbols;
+    VectorNative<TypeInfoStruct*>                  interfacesCount;
+    VectorNative<MethodCount>                      methodsCount;
+    VectorNative<AstNode*>                         subDecl;
+    VectorNative<AstNode*>                         imports;
+    VectorNative<AstNode*>                         includes;
 };
 
 struct AstCompilerSpecFunc : AstNode

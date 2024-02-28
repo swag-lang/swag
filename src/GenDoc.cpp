@@ -1322,7 +1322,7 @@ void GenDoc::constructPage()
         (void) localtime_s(&nt, &t);
         std::ostringstream oss;
         oss << std::put_time(&nt, "%d-%m-%Y");
-        const string dateTime = oss.str();
+        const std::string dateTime = oss.str();
         helpOutput += form("Generated on %s with <a href=\"https://swag-lang.org/index.php\">swag</a> %d.%d.%d", dateTime.c_str(), SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
         helpOutput += "</div>\n";
     }

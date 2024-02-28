@@ -173,10 +173,10 @@ void Module::computePublicPath()
 
     if (!isScriptFile && isNot(ModuleKind::Script) && !isErrorModule)
     {
-        error_code err;
-        if (!filesystem::exists(publicPath, err))
+        std::error_code err;
+        if (!std::filesystem::exists(publicPath, err))
         {
-            if (!filesystem::create_directories(publicPath, err))
+            if (!std::filesystem::create_directories(publicPath, err))
             {
                 Report::errorOS(formErr(Fat0019, publicPath.c_str()));
                 OS::exit(-1);
@@ -188,10 +188,10 @@ void Module::computePublicPath()
 
     if (!isScriptFile && isNot(ModuleKind::Script) && !isErrorModule)
     {
-        error_code err;
-        if (!filesystem::exists(publicPath, err))
+        std::error_code err;
+        if (!std::filesystem::exists(publicPath, err))
         {
-            if (!filesystem::create_directories(publicPath, err))
+            if (!std::filesystem::create_directories(publicPath, err))
             {
                 Report::errorOS(formErr(Fat0019, publicPath.c_str()));
                 OS::exit(-1);
@@ -389,7 +389,7 @@ void Module::buildTypesSlice()
     moduleSlice->types.count  = numTypes;
     constantSegment.addInitPtr(modulesSliceOffset + offsetof(SwagModule, types), typesSliceOffset + sizeof(uint64_t));
 
-    for (const auto& val : mapTypes | views::values)
+    for (const auto& val : mapTypes | std::views::values)
     {
         *reinterpret_cast<ExportedTypeInfo**>(resultPtr) = val.exportedType;
         constantSegment.addInitPtr(offset, val.storageOffset);
@@ -855,7 +855,7 @@ bool Module::waitForDependenciesDone(Job* job)
 void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result) const
 {
     result = moduleDependencies;
-    ranges::sort(result, [](const ModuleDependency* n1, const ModuleDependency* n2) {
+    std::ranges::sort(result, [](const ModuleDependency* n1, const ModuleDependency* n2) {
         return n2->module->hasDependencyTo(n1->module);
     });
 }
@@ -1171,7 +1171,7 @@ bool Module::filterFunctionsToEmit()
         byteCodeFuncToGen.push_back(bc);
     }
 
-    ranges::sort(byteCodeFuncToGen, [](ByteCode* bc1, ByteCode* bc2) {
+    std::ranges::sort(byteCodeFuncToGen, [](ByteCode* bc1, ByteCode* bc2) {
         return reinterpret_cast<size_t>(bc1->sourceFile) < reinterpret_cast<size_t>(bc2->sourceFile);
     });
 

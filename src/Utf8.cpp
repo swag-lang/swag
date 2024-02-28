@@ -55,7 +55,7 @@ Utf8::Utf8(const char* from, uint32_t len)
     count       = len;
 }
 
-Utf8::Utf8(const string& from)
+Utf8::Utf8(const std::string& from)
 {
     const uint32_t len = static_cast<uint32_t>(from.length());
     if (!len)

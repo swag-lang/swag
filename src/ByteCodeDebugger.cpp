@@ -116,7 +116,7 @@ ByteCode* ByteCodeDebugger::findCmdBc(const Utf8& name)
 VectorNative<ByteCode*> ByteCodeDebugger::findBc(const char* bcName)
 {
     VectorNative<Module*> modules;
-    for (auto val : g_Workspace->mapModulesNames | views::values)
+    for (auto val : g_Workspace->mapModulesNames | std::views::values)
         modules.push_back(val);
     modules.push_back(g_Workspace->bootstrapModule);
     modules.push_back(g_Workspace->runtimeModule);
@@ -660,8 +660,8 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 
 bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 {
-    static mutex dbgMutex;
-    ScopedLock   sc(dbgMutex);
+    static std::mutex dbgMutex;
+    ScopedLock        sc(dbgMutex);
 
     const auto ip = context->ip;
 

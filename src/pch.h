@@ -44,8 +44,6 @@
 #include <unordered_set>
 #include <vector>
 
-using namespace std;
-
 ////////////////////////////
 
 #ifdef SWAG_DEV_MODE

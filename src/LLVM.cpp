@@ -404,7 +404,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     auto targetPath = getCacheFolder();
     auto path       = targetPath;
     path.append(pp.filename);
-    error_code                err;
+    std::error_code           err;
     llvm::raw_fd_ostream      dest(path.c_str(), err, llvm::sys::fs::OF_None);
     llvm::legacy::PassManager llvmPass;
 

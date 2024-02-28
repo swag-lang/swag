@@ -38,7 +38,7 @@ struct ByteCodeOptTreeParseContext
     bool mustStopAll   = false;
     bool mustStopBlock = false;
 
-    function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb;
+    std::function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb;
 };
 
 constexpr uint32_t OCF_HAS_COPY_RBRA = 0x00000001;
@@ -53,20 +53,20 @@ struct ByteCodeOptContext : JobContext
 {
     void setDirtyPass() { passHasDoneSomething = true; }
 
-    VectorNative<ByteCodeInstruction*>                  jumps;
-    VectorNative<ByteCodeInstruction*>                  nops;
-    VectorNative<ByteCodeInstruction*>                  vecInst;
-    VectorNative<uint32_t>                              vecReg;
-    MapRegTo<uint32_t>                                  mapRegReg;
-    MapRegTo<uint64_t>                                  mapRegU64;
-    MapRegTo<ByteCodeInstruction*>                      mapRegInstA;
-    MapRegTo<ByteCodeInstruction*>                      mapRegInstB;
-    Map<uint64_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
-    Map<uint64_t, uint32_t>                             map6432;
-    Map<uint32_t, ByteCodeOptTreeNode*>                 map32Node;
-    Vector<ByteCodeOptTreeNode>                         tree;
-    Map<ByteCodeInstruction*, uint32_t>                 mapInstNode;
-    Map<ByteCodeInstruction*, ByteCodeInstruction*>     mapInstInst;
+    VectorNative<ByteCodeInstruction*>                       jumps;
+    VectorNative<ByteCodeInstruction*>                       nops;
+    VectorNative<ByteCodeInstruction*>                       vecInst;
+    VectorNative<uint32_t>                                   vecReg;
+    MapRegTo<uint32_t>                                       mapRegReg;
+    MapRegTo<uint64_t>                                       mapRegU64;
+    MapRegTo<ByteCodeInstruction*>                           mapRegInstA;
+    MapRegTo<ByteCodeInstruction*>                           mapRegInstB;
+    Map<uint64_t, std::pair<uint64_t, ByteCodeInstruction*>> mapCst;
+    Map<uint64_t, uint32_t>                                  map6432;
+    Map<uint32_t, ByteCodeOptTreeNode*>                      map32Node;
+    Vector<ByteCodeOptTreeNode>                              tree;
+    Map<ByteCodeInstruction*, uint32_t>                      mapInstNode;
+    Map<ByteCodeInstruction*, ByteCodeInstruction*>          mapInstInst;
 
     ByteCode* bc     = nullptr;
     Module*   module = nullptr;

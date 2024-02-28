@@ -248,7 +248,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
     // But some times, it's better to do the other way
     if (leftT->typeInfo->isConst() ||
         leftT->typeInfo->isUntypedInteger())
-        swap(leftT, rightT);
+        std::swap(leftT, rightT);
 
     // Make the cast
     {

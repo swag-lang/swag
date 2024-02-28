@@ -14,7 +14,7 @@ void RaceCondition::lock(Instance* inst, bool r)
     ScopedLock lk(inst->mutex);
     myInstance = inst;
 
-    const auto currentThreadId = this_thread::get_id();
+    const auto currentThreadId = std::this_thread::get_id();
     SWAG_ASSERT(!myInstance->countWrite || myInstance->lastThreadID == currentThreadId);
     read = r;
 
@@ -33,7 +33,7 @@ RaceCondition::~RaceCondition()
 void RaceCondition::unlock() const
 {
     ScopedLock lk(myInstance->mutex);
-    if (!read && myInstance->lastThreadID == this_thread::get_id())
+    if (!read && myInstance->lastThreadID == std::this_thread::get_id())
     {
         SWAG_ASSERT(myInstance->countWrite);
         --myInstance->countWrite;

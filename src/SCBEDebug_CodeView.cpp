@@ -394,8 +394,8 @@ namespace
     {
         uint32_t checkSymIndex = 0;
 
-        using P                            = MapPath<uint32_t>;
-        const pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
+        using P                                 = MapPath<uint32_t>;
+        const std::pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
         if (iter.second)
         {
             checkSymIndex = arrFileNames.size();
@@ -579,7 +579,7 @@ namespace
         /////////////////////////////////
         if (scope->childScopes.size() > 1)
         {
-            ranges::sort(scope->childScopes, [](const Scope* n1, const Scope* n2) { return n1->backendStart < n2->backendStart; });
+            std::ranges::sort(scope->childScopes, [](const Scope* n1, const Scope* n2) { return n1->backendStart < n2->backendStart; });
         }
 
         for (const auto c : scope->childScopes)

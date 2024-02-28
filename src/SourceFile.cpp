@@ -145,12 +145,12 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
         }
         else
         {
-            const auto fileToRead = fileForSourceLocation ? fileForSourceLocation : this;
-            ifstream   fle(fileToRead->path.c_str(), ios::binary);
+            const auto    fileToRead = fileForSourceLocation ? fileForSourceLocation : this;
+            std::ifstream fle(fileToRead->path.c_str(), std::ios::binary);
             if (!fle.is_open())
                 return "?";
 
-            string line;
+            std::string line;
             line.reserve(1024);
             while (std::getline(fle, line))
             {

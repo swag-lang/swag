@@ -2,10 +2,10 @@
 #include "Path.h"
 
 template<typename K, typename V>
-struct Map : unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<const K, V>>>
+struct Map : std::unordered_map<K, V, std::hash<K>, std::equal_to<K>, StdAllocator<std::pair<const K, V>>>
 {
     Map() :
-        unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<const K, V>>>()
+        std::unordered_map<K, V, std::hash<K>, std::equal_to<K>, StdAllocator<std::pair<const K, V>>>()
     {
     }
 
@@ -17,10 +17,10 @@ struct Map : unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<const K
 };
 
 template<typename V>
-struct MapUtf8 : unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<pair<const Utf8, V>>>
+struct MapUtf8 : std::unordered_map<Utf8, V, HashUtf8, std::equal_to<Utf8>, StdAllocator<std::pair<const Utf8, V>>>
 {
     MapUtf8() :
-        unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<pair<const Utf8, V>>>()
+        std::unordered_map<Utf8, V, HashUtf8, std::equal_to<Utf8>, StdAllocator<std::pair<const Utf8, V>>>()
     {
     }
 
@@ -32,15 +32,15 @@ struct MapUtf8 : unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<p
 };
 
 template<typename V>
-struct MapPath : unordered_map<Path, V, HashPath, equal_to<Path>, StdAllocator<pair<const Path, V>>>
+struct MapPath : std::unordered_map<Path, V, HashPath, std::equal_to<Path>, StdAllocator<std::pair<const Path, V>>>
 {
     MapPath() :
-        unordered_map<Path, V, HashPath, equal_to<Path>, StdAllocator<pair<const Path, V>>>()
+        std::unordered_map<Path, V, HashPath, std::equal_to<Path>, StdAllocator<std::pair<const Path, V>>>()
     {
     }
 
     MapPath(const MapPath& other) :
-        unordered_map<Path, V, HashPath, equal_to<Path>, StdAllocator<pair<const Path, V>>>(other)
+        std::unordered_map<Path, V, HashPath, std::equal_to<Path>, StdAllocator<std::pair<const Path, V>>>(other)
     {
     }
 

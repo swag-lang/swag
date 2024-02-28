@@ -15,7 +15,7 @@ void GenDoc::addTitle(const Utf8& title, int level)
 
 bool GenDoc::processMarkDownFile(const Path& fileName, int titleLevel)
 {
-    ifstream ifs(fileName.c_str());
+    std::ifstream ifs(fileName.c_str());
 
     if (!ifs)
     {
@@ -24,7 +24,7 @@ bool GenDoc::processMarkDownFile(const Path& fileName, int titleLevel)
     }
 
     Vector<Utf8> lines;
-    string       line;
+    std::string  line;
     while (std::getline(ifs, line))
         lines.push_back(line);
 
@@ -37,7 +37,7 @@ bool GenDoc::processMarkDownFile(const Path& fileName, int titleLevel)
 
 bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
 {
-    ifstream ifs(fileName.c_str());
+    std::ifstream ifs(fileName.c_str());
 
     if (!ifs)
     {
@@ -46,7 +46,7 @@ bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
     }
 
     Vector<Utf8> lines;
-    string       line;
+    std::string  line;
     while (std::getline(ifs, line))
         lines.push_back(line);
 
@@ -88,7 +88,7 @@ bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
 
 bool GenDoc::generateExamples()
 {
-    ranges::sort(module->files, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
+    std::ranges::sort(module->files, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
 
     helpToc += "<ul>\n";
 
