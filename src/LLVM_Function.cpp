@@ -5007,9 +5007,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                             break;
                     }
 
-                    int idx      = 0;
-                    int idxParam = static_cast<int>(pushRVParams.size()) - 1;
-                    while (idxParam >= 0)
+                    uint32_t idx      = 0;
+                    uint32_t idxParam = pushRVParams.size() - 1;
+                    while (idxParam != UINT32_MAX)
                     {
                         auto reg = pushRVParams[idxParam].first;
                         switch (sizeOf)
@@ -5059,7 +5059,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     //
                     // The number of normal parameters is deduced from the 'offset' of the CopySPVaargs instruction (ip->b.u32)
                     uint32_t idx      = 0;
-                    uint32_t idxParam = pushRAParams.size() - sizeB / static_cast<int>(sizeof(Register)) - 1;
+                    uint32_t idxParam = pushRAParams.size() - sizeB / static_cast<uint32_t>(sizeof(Register)) - 1;
                     while (idxParam != UINT32_MAX)
                     {
                         SWAG_ASSERT(idx < bc->maxSpVaargs);

@@ -159,9 +159,9 @@ namespace
     {
         auto& concat = pp.concat;
 
-        auto bucket = pp.dbgTypeRecords.firstBucket;
-        auto f      = reinterpret_cast<SCBEDebugTypeRecord*>(bucket->data);
-        int  cpt    = 0;
+        auto     bucket = pp.dbgTypeRecords.firstBucket;
+        auto     f      = reinterpret_cast<SCBEDebugTypeRecord*>(bucket->data);
+        uint32_t cpt    = 0;
 
         while (true)
         {
@@ -289,7 +289,7 @@ namespace
             cpt += sizeof(SCBEDebugTypeRecord);
             f += 1;
 
-            if (cpt >= static_cast<int>(pp.dbgTypeRecords.bucketCount(bucket)))
+            if (cpt >= pp.dbgTypeRecords.bucketCount(bucket))
             {
                 bucket = bucket->nextBucket;
                 if (!bucket)
@@ -894,7 +894,7 @@ namespace
         // File checksum table
         /////////////////////////////////
         concat.addU32(DEBUG_S_FILECHKSMS);
-        concat.addU32(static_cast<int>(arrFileNames.size()) * 8); // Size of sub section
+        concat.addU32(arrFileNames.size() * 8); // Size of sub section
         for (const auto& p : arrFileNames)
         {
             concat.addU32(p); // Offset of file name in string table

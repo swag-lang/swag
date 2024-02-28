@@ -125,7 +125,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             defaultCase = caseNode;
         else
             switchNode->cases.push_back(caseNode);
-        caseNode->caseIndex = static_cast<int>(switchNode->cases.size()) - 1;
+        caseNode->caseIndex = switchNode->cases.size() - 1;
 
         // Case expressions
         if (!isDefault)

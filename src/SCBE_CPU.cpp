@@ -79,7 +79,7 @@ uint32_t SCBE_CPU::getOrCreateLabel(uint32_t ip)
     if (it == labels.end())
     {
         const auto count = concat.totalCount();
-        labels[ip]       = static_cast<int>(count);
+        labels[ip]       = static_cast<int32_t>(count);
         return count;
     }
 

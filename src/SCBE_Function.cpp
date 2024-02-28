@@ -3522,12 +3522,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->d.pointer), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                 if (!pushRVParams.empty())
                 {
-                    auto     sizeOf            = pushRVParams[0].second;
-                    int      idxParam          = static_cast<int>(pushRVParams.size()) - 1;
+                    auto     sizeOf   = pushRVParams[0].second;
+                    uint32_t idxParam = pushRVParams.size() - 1;
+
                     uint32_t variadicStackSize = idxParam * sizeOf;
                     MK_ALIGN16(variadicStackSize);
                     uint32_t offset = sizeParamsStack - variadicStackSize;
-                    while (idxParam >= 0)
+
+                    while (idxParam != UINT32_MAX)
                     {
                         auto reg = pushRVParams[idxParam].first;
                         switch (sizeOf)

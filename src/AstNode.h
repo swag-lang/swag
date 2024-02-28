@@ -1059,7 +1059,7 @@ struct AstCompilerIfBlock : AstNode
     {
         AstFuncDecl*    funcNode;
         TypeInfoStruct* typeInfo;
-        int             methodIdx;
+        uint32_t        methodIdx;
     };
 
     VectorNative<AstCompilerIfBlock*>         blocks;

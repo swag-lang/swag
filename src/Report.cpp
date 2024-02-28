@@ -72,7 +72,7 @@ namespace
     void cleanNotes(Vector<Diagnostic*>& notes)
     {
         // Remove notes without messages
-        for (int i = 0; i < static_cast<int>(notes.size()); i++)
+        for (uint32_t i = 0; i < notes.size(); i++)
         {
             if (notes[i]->textMsg.empty())
             {
@@ -102,7 +102,7 @@ namespace
 
             err->hint = parts[1];
 
-            for (int i = 2; i < static_cast<int>(parts.size()); i++)
+            for (uint32_t i = 2; i < parts.size(); i++)
             {
                 auto newNote = Diagnostic::note(parts[i]);
                 notes.push_back(newNote);

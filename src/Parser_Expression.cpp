@@ -1331,7 +1331,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 {
                     prePrendWith = false;
                     SWAG_ASSERT(exprNode->is(AstNodeKind::IdentifierRef));
-                    for (int wi = static_cast<int>(withNode->id.size()) - 1; wi >= 0; wi--)
+                    for (uint32_t wi = withNode->id.size() - 1; wi != UINT32_MAX; wi--)
                     {
                         const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), withNode->id[wi], this, exprNode);
                         id->addAstFlag(AST_GENERATED);

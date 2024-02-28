@@ -762,7 +762,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         typeStruct->cptRemainingMethods++;
         typeStruct->methods.push_back(typeParam);
         if (funcNode->hasOwnerCompilerIfBlock())
-            funcNode->ownerCompilerIfBlock()->methodsCount.push_back({funcNode, typeStruct, static_cast<int>(typeStruct->methods.size()) - 1});
+            funcNode->ownerCompilerIfBlock()->methodsCount.push_back({funcNode, typeStruct, typeStruct->methods.size() - 1});
         if (funcNode->isSpecialFunctionName())
             typeStruct->cptRemainingSpecialMethods++;
     }

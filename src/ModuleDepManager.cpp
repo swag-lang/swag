@@ -693,7 +693,7 @@ bool ModuleDepManager::execute()
         for (auto d : val->moduleDependencies)
             depNames.insert(d->module->name);
 
-        for (int i = 0; i < static_cast<int>(dep.size()); i++)
+        for (uint32_t i = 0; i < dep.size(); i++)
         {
             auto d = dep[i];
             if (!d->module)

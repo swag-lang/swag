@@ -154,7 +154,7 @@ void SCBE::emitInternalCall(SCBE_X64& pp, const Utf8& funcName, const VectorNati
 
     // Invert order
     VectorNative<CPUPushParam> p;
-    for (int i = static_cast<int>(pushRAParams.size()) - 1; i >= 0; i--)
+    for (uint32_t i = pushRAParams.size() - 1; i != UINT32_MAX; i--)
         p.push_back({CPUPushParamType::Reg, pushRAParams[i]});
 
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
@@ -168,7 +168,7 @@ void SCBE::emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorN
 
     // Invert order
     VectorNative<CPUPushParam> p;
-    for (int i = static_cast<int>(pushParams.size()) - 1; i >= 0; i--)
+    for (uint32_t i = pushParams.size() - 1; i != UINT32_MAX; i--)
         p.push_back({pushParams[i]});
 
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
@@ -193,7 +193,7 @@ void SCBE::emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc, ui
     }
 
     uint32_t stackOffset = typeFuncBc->numReturnRegisters() * sizeof(Register);
-    for (int idxParam = static_cast<int>(pushRAParams.size()) - 1; idxParam >= 0; idxParam--, idxReg++)
+    for (uint32_t idxParam = pushRAParams.size() - 1; idxParam != UINT32_MAX; idxParam--, idxReg++)
     {
         static constexpr CPURegister IDX_TO_REG[4] = {RDX, R8, R9};
 
