@@ -572,10 +572,10 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
     {
         FormatConcat concat;
         concat.init(4 * 1024);
+        FormatAst fmtAst{concat};
 
-        FormatAst::OutputContext outputContext;
-        const auto               typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
-        FormatAst::outputNode(outputContext, concat, typeCode->content);
+        const auto typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
+        fmtAst.outputNode(typeCode->content);
         for (auto b = concat.firstBucket; b; b = b->nextBucket)
             node->computedValue()->text.append(reinterpret_cast<const char*>(b->data), concat.bucketCount(b));
     }

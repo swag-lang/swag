@@ -6,7 +6,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool FormatAst::outputStruct(OutputContext& context, FormatConcat& concat, AstStruct* node)
+bool FormatAst::outputStruct(AstStruct* node)
 {
     // If we need to export as opaque, and the struct has init values, then we add the
     // #[Swag.ExportType] attribute
@@ -17,7 +17,7 @@ bool FormatAst::outputStruct(OutputContext& context, FormatConcat& concat, AstSt
         if (typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
             CONCAT_FIXED_STR(concat, "#[ExportType(\"nozero\")]");
-            concat.addEolIndent(context.indent);
+            concat->addEolIndent(context.indent);
         }
     }
 
@@ -35,30 +35,30 @@ bool FormatAst::outputStruct(OutputContext& context, FormatConcat& concat, AstSt
     }
 
     if (node->genericParameters)
-        SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
+        SWAG_CHECK(outputGenericParameters(node->genericParameters));
 
     if (!node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))
     {
         CONCAT_FIXED_STR(concat, " ");
-        concat.addString(node->token.text);
+        concat->addString(node->token.text);
     }
 
-    concat.addEolIndent(context.indent);
+    concat->addEolIndent(context.indent);
 
     // #validif must be exported
     if (node->validif)
     {
         context.indent++;
-        concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, node->validif));
+        concat->addEolIndent(context.indent);
+        SWAG_CHECK(outputNode(node->validif));
         context.indent--;
     }
 
     // Opaque export. Just simulate structure with the correct size.
     if (node->hasAttribute(ATTRIBUTE_OPAQUE))
     {
-        concat.addChar('{');
-        concat.addEol();
+        concat->addChar('{');
+        concat->addEol();
 
         const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         SWAG_ASSERT(typeStruct);
@@ -67,41 +67,41 @@ bool FormatAst::outputStruct(OutputContext& context, FormatConcat& concat, AstSt
         if (typeStruct->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
         {
             SWAG_ASSERT(!typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES));
-            concat.addIndent(context.indent + 1);
-            concat.addStringFormat("padding: [%llu] u8 = ?", typeStruct->sizeOf);
-            concat.addEol();
+            concat->addIndent(context.indent + 1);
+            concat->addStringFormat("padding: [%llu] u8 = ?", typeStruct->sizeOf);
+            concat->addEol();
         }
 
         // Everything in the structure is initialized to zero
         else
         {
-            concat.addIndent(context.indent + 1);
-            concat.addStringFormat("padding: [%llu] u8", typeStruct->sizeOf);
-            concat.addEol();
+            concat->addIndent(context.indent + 1);
+            concat->addStringFormat("padding: [%llu] u8", typeStruct->sizeOf);
+            concat->addEol();
         }
 
-        concat.addIndent(context.indent);
-        concat.addChar('}');
+        concat->addIndent(context.indent);
+        concat->addChar('}');
     }
     else
     {
-        SWAG_CHECK(outputNode(context, concat, node->content));
+        SWAG_CHECK(outputNode(node->content));
     }
 
     return true;
 }
 
-bool FormatAst::outputTypeTuple(OutputContext& context, FormatConcat& concat, TypeInfo* typeInfo)
+bool FormatAst::outputTypeTuple(TypeInfo* typeInfo)
 {
     typeInfo = TypeManager::concretePtrRef(typeInfo);
     SWAG_ASSERT(typeInfo->isTuple());
     const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     const auto nodeStruct = castAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-    SWAG_CHECK(outputStruct(context, concat, nodeStruct));
+    SWAG_CHECK(outputStruct(nodeStruct));
     return true;
 }
 
-bool FormatAst::outputType(OutputContext& context, FormatConcat& concat, AstTypeExpression* node)
+bool FormatAst::outputType(AstTypeExpression* node)
 {
     if (node->typeFlags.has(TYPEFLAG_IS_RETVAL))
     {
@@ -115,7 +115,7 @@ bool FormatAst::outputType(OutputContext& context, FormatConcat& concat, AstType
         // order to export the real node (for example for an array of lambdas/closures)
         if (!node->identifier || !node->identifier->hasExtraPointer(ExtraPointerKind::ExportNode))
         {
-            SWAG_CHECK(outputType(context, concat, node, node->typeInfo));
+            SWAG_CHECK(outputType(node, node->typeInfo));
 
             if (node->identifier)
             {
@@ -125,14 +125,14 @@ bool FormatAst::outputType(OutputContext& context, FormatConcat& concat, AstType
                     if (id->hasAstFlag(AST_GENERATED))
                     {
                         CONCAT_FIXED_STR(concat, " = {");
-                        SWAG_CHECK(outputNode(context, concat, id->callParameters));
-                        concat.addChar('}');
+                        SWAG_CHECK(outputNode(id->callParameters));
+                        concat->addChar('}');
                     }
                     else
                     {
-                        concat.addChar('{');
-                        SWAG_CHECK(outputNode(context, concat, id->callParameters));
-                        concat.addChar('}');
+                        concat->addChar('{');
+                        SWAG_CHECK(outputNode(id->callParameters));
+                        concat->addChar('}');
                     }
                 }
             }
@@ -147,7 +147,7 @@ bool FormatAst::outputType(OutputContext& context, FormatConcat& concat, AstType
     if (node->arrayDim == UINT8_MAX)
     {
         CONCAT_FIXED_STR(concat, "[] ");
-        SWAG_CHECK(outputNode(context, concat, node->firstChild()));
+        SWAG_CHECK(outputNode(node->firstChild()));
         return true;
     }
 
@@ -158,38 +158,38 @@ bool FormatAst::outputType(OutputContext& context, FormatConcat& concat, AstType
         {
             if (i)
                 CONCAT_FIXED_STR(concat, ", ");
-            SWAG_CHECK(outputNode(context, concat, node->children[i]));
+            SWAG_CHECK(outputNode(node->children[i]));
         }
 
         CONCAT_FIXED_STR(concat, "] ");
-        SWAG_CHECK(outputNode(context, concat, node->firstChild()));
+        SWAG_CHECK(outputNode(node->firstChild()));
         return true;
     }
 
     if (node->typeFlags.has(TYPEFLAG_IS_SLICE))
     {
         CONCAT_FIXED_STR(concat, "[..] ");
-        SWAG_CHECK(outputNode(context, concat, node->firstChild()));
+        SWAG_CHECK(outputNode(node->firstChild()));
         return true;
     }
 
     if (node->typeFlags.has(TYPEFLAG_IS_PTR) && node->typeFlags.has(TYPEFLAG_IS_PTR_ARITHMETIC))
     {
-        concat.addChar('^');
-        SWAG_CHECK(outputNode(context, concat, node->firstChild()));
+        concat->addChar('^');
+        SWAG_CHECK(outputNode(node->firstChild()));
         return true;
     }
 
     if (node->typeFlags.has(TYPEFLAG_IS_PTR))
     {
-        concat.addChar('*');
-        SWAG_CHECK(outputNode(context, concat, node->firstChild()));
+        concat->addChar('*');
+        SWAG_CHECK(outputNode(node->firstChild()));
         return true;
     }
 
     if (node->identifier)
     {
-        SWAG_CHECK(outputNode(context, concat, node->identifier));
+        SWAG_CHECK(outputNode(node->identifier));
     }
     else
     {
@@ -198,20 +198,20 @@ bool FormatAst::outputType(OutputContext& context, FormatConcat& concat, AstType
             typeFromLiteral = TypeManager::literalTypeToType(node->literalType);
         SWAG_ASSERT(typeFromLiteral);
         SWAG_ASSERT(!typeFromLiteral->name.empty());
-        concat.addString(typeFromLiteral->name);
+        concat->addString(typeFromLiteral->name);
     }
 
     return true;
 }
 
-bool FormatAst::outputType(OutputContext& context, FormatConcat& concat, AstNode* /*node*/, TypeInfo* typeInfo)
+bool FormatAst::outputType(AstNode* /*node*/, TypeInfo* typeInfo)
 {
     // Lambda
     /////////////////////////////////
     if (typeInfo->isLambdaClosure())
     {
         SWAG_ASSERT(typeInfo->declNode && typeInfo->declNode->is(AstNodeKind::TypeLambda));
-        SWAG_CHECK(outputNode(context, concat, typeInfo->declNode));
+        SWAG_CHECK(outputNode(typeInfo->declNode));
         return true;
     }
 
@@ -219,7 +219,7 @@ bool FormatAst::outputType(OutputContext& context, FormatConcat& concat, AstNode
     /////////////////////////////////
     if (typeInfo->isTuple())
     {
-        SWAG_CHECK(outputTypeTuple(context, concat, typeInfo));
+        SWAG_CHECK(outputTypeTuple(typeInfo));
         return true;
     }
 
@@ -245,7 +245,7 @@ bool FormatAst::outputType(OutputContext& context, FormatConcat& concat, AstNode
     // Export type name
     typeInfo->computeScopedNameExport();
     SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
-    concat.addString(typeInfo->scopedNameExport);
+    concat->addString(typeInfo->scopedNameExport);
 
     return true;
 }

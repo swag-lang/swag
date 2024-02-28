@@ -121,10 +121,9 @@ struct GenDoc
     void        generateToc();
     void        generateContent();
 
+    FormatAst                       output;
     Utf8                            titleToc;
     Utf8                            titleContent;
-    FormatAst                       output;
-    FormatAst::OutputContext        outputCxt;
     MapUtf8<VectorNative<AstNode*>> collect;
     Vector<OneRef>                  allNodes;
     Vector<Utf8>                    titleRefStack;

@@ -5,13 +5,13 @@
 #include "LanguageSpec.h"
 #include "Semantic.h"
 
-bool FormatAst::outputFuncName(OutputContext&, FormatConcat& concat, const AstFuncDecl* node)
+bool FormatAst::outputFuncName(const AstFuncDecl* node) const
 {
-    concat.addString(node->token.text);
+    concat->addString(node->token.text);
     return true;
 }
 
-bool FormatAst::outputFuncSignature(OutputContext& context, FormatConcat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf)
+bool FormatAst::outputFuncSignature(AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf)
 {
     ScopeExportNode sen(context, node);
 
@@ -22,11 +22,11 @@ bool FormatAst::outputFuncSignature(OutputContext& context, FormatConcat& concat
 
     if (genericParameters)
     {
-        concat.addChar('\'');
-        SWAG_CHECK(outputNode(context, concat, genericParameters));
+        concat->addChar('\'');
+        SWAG_CHECK(outputNode(genericParameters));
     }
 
-    concat.addChar(' ');
+    concat->addChar(' ');
 
     if (node->is(AstNodeKind::FuncDecl) && node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
         CONCAT_FIXED_STR(concat, "impl ");
@@ -34,14 +34,14 @@ bool FormatAst::outputFuncSignature(OutputContext& context, FormatConcat& concat
     if (node->is(AstNodeKind::FuncDecl))
     {
         const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        outputFuncName(context, concat, funcNode);
+        outputFuncName(funcNode);
     }
     else
-        concat.addString(node->token.text);
+        concat->addString(node->token.text);
 
     // Parameters
     if (parameters)
-        SWAG_CHECK(outputNode(context, concat, parameters));
+        SWAG_CHECK(outputNode(parameters));
     else
         CONCAT_FIXED_STR(concat, "()");
 
@@ -58,12 +58,12 @@ bool FormatAst::outputFuncSignature(OutputContext& context, FormatConcat& concat
         if (typeFunc->returnType && !typeFunc->returnType->isVoid())
         {
             CONCAT_FIXED_STR(concat, "->");
-            SWAG_CHECK(outputType(context, concat, returnNode, typeFunc->returnType));
+            SWAG_CHECK(outputType(returnNode, typeFunc->returnType));
         }
         else if (funcNode->returnType && funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
         {
             CONCAT_FIXED_STR(concat, "->");
-            SWAG_CHECK(outputNode(context, concat, returnNode));
+            SWAG_CHECK(outputNode(returnNode));
         }
     }
 
@@ -77,17 +77,17 @@ bool FormatAst::outputFuncSignature(OutputContext& context, FormatConcat& concat
     if (validIf)
     {
         context.indent++;
-        concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, validIf));
+        concat->addEolIndent(context.indent);
+        SWAG_CHECK(outputNode(validIf));
         context.indent--;
     }
 
     CONCAT_FIXED_STR(concat, ";");
-    concat.addEol();
+    concat->addEol();
     return true;
 }
 
-bool FormatAst::outputFunc(OutputContext& context, FormatConcat& concat, AstFuncDecl* node)
+bool FormatAst::outputFunc(AstFuncDecl* node)
 {
     PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export, nullptr);
     CONCAT_FIXED_STR(concat, "func");
@@ -96,7 +96,7 @@ bool FormatAst::outputFunc(OutputContext& context, FormatConcat& concat, AstFunc
     if (node->genericParameters)
     {
         if (!node->hasAstFlag(AST_FROM_GENERIC) || node->hasAstFlag(AST_IS_GENERIC))
-            SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
+            SWAG_CHECK(outputGenericParameters(node->genericParameters));
     }
 
     // Implementation
@@ -105,11 +105,11 @@ bool FormatAst::outputFunc(OutputContext& context, FormatConcat& concat, AstFunc
 
     // Name
     CONCAT_FIXED_STR(concat, " ");
-    outputFuncName(context, concat, node);
+    outputFuncName(node);
 
     // Parameters
     if (node->parameters)
-        SWAG_CHECK(outputNode(context, concat, node->parameters));
+        SWAG_CHECK(outputNode(node->parameters));
     else
         CONCAT_FIXED_STR(concat, "()");
 
@@ -122,12 +122,12 @@ bool FormatAst::outputFunc(OutputContext& context, FormatConcat& concat, AstFunc
     if (typeFunc && typeFunc->returnType && !typeFunc->returnType->isVoid())
     {
         CONCAT_FIXED_STR(concat, "->");
-        SWAG_CHECK(outputType(context, concat, returnNode, typeFunc->returnType));
+        SWAG_CHECK(outputType(returnNode, typeFunc->returnType));
     }
     else if (node->returnType && node->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
     {
         CONCAT_FIXED_STR(concat, "->");
-        SWAG_CHECK(outputNode(context, concat, returnNode));
+        SWAG_CHECK(outputNode(returnNode));
     }
 
     // Throw
@@ -141,8 +141,8 @@ bool FormatAst::outputFunc(OutputContext& context, FormatConcat& concat, AstFunc
     {
         CONCAT_FIXED_STR(concat, " => ");
         SWAG_ASSERT(node->content->is(AstNodeKind::Return) || node->content->is(AstNodeKind::Try));
-        SWAG_CHECK(outputNode(context, concat, node->content->firstChild()));
-        concat.addEol();
+        SWAG_CHECK(outputNode(node->content->firstChild()));
+        concat->addEol();
         return true;
     }
 
@@ -150,58 +150,58 @@ bool FormatAst::outputFunc(OutputContext& context, FormatConcat& concat, AstFunc
     if (node->validIf)
     {
         context.indent++;
-        concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, node->validIf));
+        concat->addEolIndent(context.indent);
+        SWAG_CHECK(outputNode(node->validIf));
         context.indent--;
     }
     else if (node->content)
     {
-        concat.addEolIndent(context.indent);
+        concat->addEolIndent(context.indent);
     }
 
     if (!node->content)
         return true;
 
     // Content, normal function
-    concat.addChar('{');
+    concat->addChar('{');
     context.indent++;
-    concat.addEol();
+    concat->addEol();
 
     if (node->content->isNot(AstNodeKind::Statement))
     {
-        concat.addIndent(context.indent);
+        concat->addIndent(context.indent);
         context.indent--;
-        SWAG_CHECK(outputNode(context, concat, node->content));
+        SWAG_CHECK(outputNode(node->content));
         context.indent++;
-        concat.addEol();
+        concat->addEol();
     }
     else
     {
         for (auto c : node->subDecl)
         {
-            concat.addIndent(context.indent);
+            concat->addIndent(context.indent);
             if (c->parent && c->parent->is(AstNodeKind::AttrUse))
                 c = c->parent;
-            SWAG_CHECK(outputNode(context, concat, c));
-            concat.addEol();
+            SWAG_CHECK(outputNode(c));
+            concat->addEol();
         }
 
         for (const auto c : node->content->children)
         {
-            concat.addIndent(context.indent);
-            SWAG_CHECK(outputNode(context, concat, c));
-            concat.addEol();
+            concat->addIndent(context.indent);
+            SWAG_CHECK(outputNode(c));
+            concat->addEol();
         }
     }
 
     context.indent--;
-    concat.addIndent(context.indent);
-    concat.addChar('}');
-    concat.addEol();
+    concat->addIndent(context.indent);
+    concat->addChar('}');
+    concat->addEol();
     return true;
 }
 
-bool FormatAst::outputLambdaExpression(OutputContext& context, FormatConcat& concat, AstNode* node)
+bool FormatAst::outputLambdaExpression(AstNode* node)
 {
     const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 
@@ -219,16 +219,16 @@ bool FormatAst::outputLambdaExpression(OutputContext& context, FormatConcat& con
 
             if (p->is(AstNodeKind::MakePointer))
             {
-                concat.addChar('&');
-                concat.addString(p->firstChild()->token.text);
+                concat->addChar('&');
+                concat->addString(p->firstChild()->token.text);
             }
             else
             {
-                concat.addString(p->token.text);
+                concat->addString(p->token.text);
             }
         }
 
-        concat.addChar('|');
+        concat->addChar('|');
     }
     else
     {
@@ -236,7 +236,7 @@ bool FormatAst::outputLambdaExpression(OutputContext& context, FormatConcat& con
     }
 
     // Parameters
-    concat.addChar('(');
+    concat->addChar('(');
     if (funcDecl->parameters && !funcDecl->parameters->children.empty())
     {
         bool first = true;
@@ -250,37 +250,37 @@ bool FormatAst::outputLambdaExpression(OutputContext& context, FormatConcat& con
             first            = false;
             const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
             if (param->hasSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED))
-                concat.addChar('?');
+                concat->addChar('?');
             else
             {
-                concat.addString(p->token.text);
+                concat->addString(p->token.text);
                 if (!p->children.empty())
                 {
                     CONCAT_FIXED_STR(concat, ": ");
-                    SWAG_CHECK(outputNode(context, concat, p->firstChild()));
+                    SWAG_CHECK(outputNode(p->firstChild()));
                 }
 
                 if (param->assignment)
                 {
                     CONCAT_FIXED_STR(concat, " = ");
-                    SWAG_CHECK(outputNode(context, concat, param->assignment));
+                    SWAG_CHECK(outputNode(param->assignment));
                 }
             }
         }
     }
 
-    concat.addChar(')');
+    concat->addChar(')');
 
     if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
     {
         CONCAT_FIXED_STR(concat, " => ");
         SWAG_ASSERT(funcDecl->content->is(AstNodeKind::Return));
-        SWAG_CHECK(outputNode(context, concat, funcDecl->content->firstChild()));
+        SWAG_CHECK(outputNode(funcDecl->content->firstChild()));
     }
     else
     {
-        concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, funcDecl->content));
+        concat->addEolIndent(context.indent);
+        SWAG_CHECK(outputNode(funcDecl->content));
     }
 
     return true;

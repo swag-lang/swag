@@ -677,16 +677,16 @@ bool Semantic::resolveVisit(SemanticContext* context)
     Utf8 content;
 
     // Get back the expression string
-    auto& concat = context->tmpConcat;
+    FormatAst fmtAst{context->tmpConcat};
+    auto&     concat = context->tmpConcat;
     concat.init(1024);
-    FormatAst::OutputContext outputContext;
-    SWAG_CHECK(FormatAst::outputNode(outputContext, concat, node->expression));
+    SWAG_CHECK(fmtAst.outputNode(node->expression));
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
 
     AstNode* newVar        = nullptr;
     size_t   firstAliasVar = 0;
-    int      id            = g_UniqueID.fetch_add(1);
+    uint32_t id            = g_UniqueID.fetch_add(1);
 
     Utf8 visitBack;
     if (node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))

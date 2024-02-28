@@ -286,28 +286,29 @@ JobResult Backend::generateExportFile(Job* ownerJob)
             return JobResult::ReleaseJob;
         if (!mustCompile)
             return JobResult::ReleaseJob;
+        module->isSwag = true;
 
         bufferSwg.init(4 * 1024);
         bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
         bufferSwg.addEol();
         bufferSwg.addString("#global generated");
-        module->isSwag = true;
         bufferSwg.addEol();
 
         for (const auto& dep : module->moduleDependencies)
         {
-            CONCAT_FIXED_STR(bufferSwg, "#import \"");
+            bufferSwg.addString("#import \"");
             bufferSwg.addString(dep->name);
             bufferSwg.addChar('"');
             bufferSwg.addEol();
         }
 
-        CONCAT_FIXED_STR(bufferSwg, "using Swag");
+        bufferSwg.addString("using Swag");
         bufferSwg.addEol();
         bufferSwg.addEol();
 
         // Emit everything that's public
-        if (!FormatAst::outputScope(outputContext, bufferSwg, module, module->scopeRoot))
+        FormatAst fmtAst{bufferSwg};
+        if (!fmtAst.outputScope(module, module->scopeRoot))
             return JobResult::ReleaseJob;
     }
 

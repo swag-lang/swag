@@ -19,6 +19,38 @@ enum class ScopeKind : uint8_t;
 
 struct FormatAst
 {
+    FormatAst() = default;
+
+    FormatAst(FormatConcat& c) :
+        concat{&c}
+    {
+    }
+
+    void incIndentStatement(const AstNode* node, int& indent);
+    void decIndentStatement(const AstNode* node, int& indent);
+
+    bool outputLambdaExpression(AstNode* node);
+    bool outputEnum(AstEnum* node);
+    bool outputFunc(AstFuncDecl* node);
+    bool outputAttrUse(AstNode* node, bool& hasSomething);
+    bool outputFuncName(const AstFuncDecl* node) const;
+    bool outputFuncSignature(AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf);
+    bool outputGenericParameters(AstNode* node);
+    bool outputAttributesUsage(const TypeInfoFuncAttr* typeFunc);
+    bool outputAttributes(AstNode* node, const TypeInfo* typeInfo, const AttributeList& attributes);
+    bool outputAttributes(AstNode* node, TypeInfo* typeInfo);
+    bool outputAttributesGlobalUsing(const AstNode* node);
+    bool outputLiteral(AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
+    bool outputVarDecl(const AstVarDecl* varNode, bool isSelf);
+    bool outputVar(const AstVarDecl* varNode);
+    bool outputStruct(AstStruct* node);
+    bool outputTypeTuple(TypeInfo* typeInfo);
+    bool outputType(AstTypeExpression* node);
+    bool outputType(AstNode* node, TypeInfo* typeInfo);
+    bool outputScopeContent(const Module* moduleToGen, const Scope* scope);
+    bool outputScope(Module* moduleToGen, Scope* scope);
+    bool outputNode(AstNode* node);
+
     struct OutputContext : JobContext
     {
         AstNode* exportedNode = nullptr;
@@ -26,30 +58,8 @@ struct FormatAst
         bool     forExport    = false;
     };
 
-    static void incIndentStatement(const AstNode* node, int& indent);
-    static void decIndentStatement(const AstNode* node, int& indent);
-
-    static bool outputLambdaExpression(OutputContext& context, FormatConcat& concat, AstNode* node);
-    static bool outputEnum(OutputContext& context, FormatConcat& concat, AstEnum* node);
-    static bool outputFunc(OutputContext& context, FormatConcat& concat, AstFuncDecl* node);
-    static bool outputAttrUse(OutputContext& context, FormatConcat& concat, AstNode* node, bool& hasSomething);
-    static bool outputFuncName(OutputContext& context, FormatConcat& concat, const AstFuncDecl* node);
-    static bool outputFuncSignature(OutputContext& context, FormatConcat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf);
-    static bool outputGenericParameters(OutputContext& context, FormatConcat& concat, AstNode* node);
-    static bool outputAttributesUsage(const OutputContext& context, FormatConcat& concat, const TypeInfoFuncAttr* typeFunc);
-    static bool outputAttributes(OutputContext& context, FormatConcat& concat, AstNode* node, const TypeInfo* typeInfo, const AttributeList& attributes);
-    static bool outputAttributes(OutputContext& context, FormatConcat& concat, AstNode* node, TypeInfo* typeInfo);
-    static bool outputAttributesGlobalUsing(const OutputContext& context, FormatConcat& concat, const AstNode* node);
-    static bool outputLiteral(OutputContext& context, FormatConcat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
-    static bool outputVarDecl(OutputContext& context, FormatConcat& concat, const AstVarDecl* varNode, bool isSelf);
-    static bool outputVar(OutputContext& context, FormatConcat& concat, const AstVarDecl* varNode);
-    static bool outputStruct(OutputContext& context, FormatConcat& concat, AstStruct* node);
-    static bool outputTypeTuple(OutputContext& context, FormatConcat& concat, TypeInfo* typeInfo);
-    static bool outputType(OutputContext& context, FormatConcat& concat, AstTypeExpression* node);
-    static bool outputType(OutputContext& context, FormatConcat& concat, AstNode* node, TypeInfo* typeInfo);
-    static bool outputScopeContent(OutputContext& context, FormatConcat& concat, const Module* moduleToGen, const Scope* scope);
-    static bool outputScope(OutputContext& context, FormatConcat& concat, Module* moduleToGen, Scope* scope);
-    static bool outputNode(OutputContext& context, FormatConcat& concat, AstNode* node);
+    OutputContext context;
+    FormatConcat* concat = nullptr;
 };
 
 struct ScopeExportNode

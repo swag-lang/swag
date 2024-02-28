@@ -255,6 +255,46 @@ void Concat::addStringN(const char* v, uint32_t len)
     currentSP += len;
 }
 
+uint8_t* Concat::getSeekPtr() const
+{
+    return currentSP;
+}
+
+uint32_t Concat::totalCount() const
+{
+    if (!lastBucket)
+        return 0;
+    return totalCountBytes + static_cast<uint32_t>(currentSP - lastBucket->data);
+}
+
+uint8_t* Concat::getPtr(uint32_t seek) const
+{
+    SWAG_ASSERT(firstBucket);
+    auto ptr = firstBucket;
+    while (true)
+    {
+        if (ptr == lastBucket)
+        {
+            SWAG_ASSERT(seek < static_cast<uint32_t>(currentSP - lastBucket->data));
+            return lastBucket->data + seek;
+        }
+
+        if (seek < ptr->countBytes)
+            return ptr->data + seek;
+        seek -= ptr->countBytes;
+        ptr = ptr->nextBucket;
+    }
+}
+
+uint32_t Concat::bucketCount(const ConcatBucket* b) const
+{
+    if (b != lastBucket)
+        return b->countBytes;
+    const auto count = static_cast<uint32_t>(currentSP - lastBucket->data);
+    SWAG_ASSERT(count <= bucketSize);
+    return count;
+}
+
 bool Concat::flushToFile(const Path& path)
 {
     FILE* f = nullptr;

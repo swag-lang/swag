@@ -100,6 +100,5 @@ struct Backend
     uint32_t              numPreCompileBuffers = 0;
     BackendPreCompilePass passExport           = BackendPreCompilePass::Init;
 
-    FormatAst::OutputContext outputContext;
-    bool                     mustCompile = true;
+    bool mustCompile = true;
 };

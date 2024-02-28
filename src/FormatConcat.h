@@ -17,14 +17,14 @@ struct FormatConcat : Concat
     do                                                                            \
     {                                                                             \
         static constexpr int __len = (int) std::char_traits<char>::length(__str); \
-        (__concat).addString(__str, __len);                                       \
+        (__concat)->addString(__str, __len);                                      \
     } while (0)
 
 #define CONCAT_STR_1(__concat, __before, __int, __after) \
     do                                                   \
     {                                                    \
         CONCAT_FIXED_STR(__concat, __before);            \
-        (__concat).addU32Str(__int);                     \
+        (__concat)->addU32Str(__int);                    \
         CONCAT_FIXED_STR(__concat, __after);             \
     } while (0)
 
@@ -32,8 +32,8 @@ struct FormatConcat : Concat
     do                                                                      \
     {                                                                       \
         CONCAT_FIXED_STR(__concat, __before);                               \
-        (__concat).addU32Str(__int1);                                       \
+        (__concat)->addU32Str(__int1);                                      \
         CONCAT_FIXED_STR(__concat, __middle);                               \
-        (__concat).addU32Str(__int2);                                       \
+        (__concat)->addU32Str(__int2);                                      \
         CONCAT_FIXED_STR(__concat, __after);                                \
     } while (0)

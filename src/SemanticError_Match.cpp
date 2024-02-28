@@ -79,8 +79,7 @@ namespace
                 break;
         }
 
-        FormatConcat             concat;
-        FormatAst::OutputContext outCxt;
+        FormatConcat concat;
         concat.init(10 * 1024);
 
         const auto maxOverloads = min(tryResult.size(), MAX_OVERLOADS);
@@ -113,6 +112,7 @@ namespace
                 note->textMsg = addMsg[0];
         }
 
+        FormatAst fmtAst{concat};
         for (uint32_t i = 0; i < maxOverloads; i++)
         {
             // Output the function signature
@@ -120,13 +120,13 @@ namespace
             if (tryResult[i]->overload->node->is(AstNodeKind::FuncDecl))
             {
                 const auto funcNode = castAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
-                FormatAst::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
+                fmtAst.outputFuncSignature(funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
             }
             else if (tryResult[i]->overload->node->is(AstNodeKind::VarDecl))
             {
                 const auto varNode = castAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
                 const auto lambda  = castAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
-                FormatAst::outputFuncSignature(outCxt, concat, varNode, nullptr, lambda->parameters, nullptr);
+                fmtAst.outputFuncSignature(varNode, nullptr, lambda->parameters, nullptr);
             }
             else
             {
