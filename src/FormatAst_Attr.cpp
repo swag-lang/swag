@@ -8,7 +8,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool FormatAst::outputAttrUse(AstNode* node, bool& hasSomething)
+bool FormatAst::outputAttrUse(const AstNode* node, bool& hasSomething)
 {
     const auto nodeAttr = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
 
@@ -96,7 +96,7 @@ bool FormatAst::outputAttributesUsage(const TypeInfoFuncAttr* typeFunc) const
     return true;
 }
 
-bool FormatAst::outputAttributes(AstNode* /*node*/, const TypeInfo* typeInfo, const AttributeList& attributes)
+bool FormatAst::outputAttributes(const AstNode* /*node*/, const TypeInfo* typeInfo, const AttributeList& attributes)
 {
     const auto attr = &attributes;
     if (!attr->empty())
@@ -202,7 +202,7 @@ bool FormatAst::outputAttributesGlobalUsing(const AstNode* node) const
     return true;
 }
 
-bool FormatAst::outputAttributes(AstNode* node, TypeInfo* typeInfo)
+bool FormatAst::outputAttributes(const AstNode* node, TypeInfo* typeInfo)
 {
     switch (node->kind)
     {

@@ -26,38 +26,40 @@ struct FormatAst
     {
     }
 
-    static void incIndentStatement(const AstNode* node, uint32_t& idt);
-    static void decIndentStatement(const AstNode* node, uint32_t& idt);
-    bool        outputChildren(const AstNode* node);
+    static const AstNode* convertNode(const AstNode* node);
+    static void    incIndentStatement(const AstNode* node, uint32_t& idt);
+    static void    decIndentStatement(const AstNode* node, uint32_t& idt);
+    bool           outputChildren(const AstNode* node);
+    bool           outputCommaChildren(const AstNode* node);
 
-    bool outputLambdaExpression(AstNode* node);
-    bool outputEnum(AstEnum* node);
+    bool outputLambdaExpression(const AstNode* node);
+    bool outputEnum(const AstEnum* node);
     bool outputFuncDeclReturnType(const AstNode* node);
-    bool outputFuncDeclParams(AstNode* node);
-    bool outputFuncDecl(AstFuncDecl* node);
-    bool outputAttrUse(AstNode* node, bool& hasSomething);
+    bool outputFuncDeclParams(const AstNode* node);
+    bool outputFuncDecl(const AstFuncDecl* node);
+    bool outputAttrUse(const AstNode* node, bool& hasSomething);
     bool outputFuncName(const AstFuncDecl* node) const;
     bool outputFuncSignature(AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf);
-    bool outputGenericParameters(AstNode* node);
+    bool outputGenericParameters(const AstNode* node);
     bool outputAttributesUsage(const TypeInfoFuncAttr* typeFunc) const;
-    bool outputAttributes(AstNode* node, const TypeInfo* typeInfo, const AttributeList& attributes);
-    bool outputAttributes(AstNode* node, TypeInfo* typeInfo);
+    bool outputAttributes(const AstNode* node, const TypeInfo* typeInfo, const AttributeList& attributes);
+    bool outputAttributes(const AstNode* node, TypeInfo* typeInfo);
     bool outputAttributesGlobalUsing(const AstNode* node) const;
-    bool outputLiteral(AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
+    bool outputLiteral(const AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
     bool outputVarDecl(const AstVarDecl* varNode, bool isSelf);
     bool outputVar(const AstVarDecl* varNode);
-    bool outputStructDeclContent(AstNode* node);
-    bool outputTupleDeclContent(AstNode* node);
-    bool outputStructDecl(AstStruct* node);
+    bool outputStructDeclContent(const AstNode* node);
+    bool outputTupleDeclContent(const AstNode* node);
+    bool outputStructDecl(const AstStruct* node);
     bool outputTypeTuple(TypeInfo* typeInfo);
-    bool outputType(AstTypeExpression* node);
-    bool outputType(AstNode* node, TypeInfo* typeInfo);
+    bool outputType(const AstTypeExpression* node);
+    bool outputType(const AstNode* node, TypeInfo* typeInfo);
     bool outputScopeContent(const Module* module, const Scope* scope);
     bool outputScopeContentAndChilds(Module* module, const Scope* scope);
     bool outputScopeBlock(Module* module, const Scope* scope);
     bool outputScope(Module* module, Scope* scope);
 
-    bool outputNode(AstNode* node);
+    bool outputNode(const AstNode* node);
 
     FormatConcat* concat    = nullptr;
     uint32_t      indent    = 0;

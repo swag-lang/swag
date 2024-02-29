@@ -104,33 +104,15 @@ bool FormatAst::outputFuncDeclReturnType(const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputFuncDeclParams(AstNode* node)
+bool FormatAst::outputFuncDeclParams(const AstNode* node)
 {
     concat->addChar('(');
-    bool first = true;
-    for (auto c : node->children)
-    {
-        const auto subExportNode = c->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
-        if (subExportNode)
-            c = subExportNode;
-        if (c->hasAstFlag(AST_GENERATED) && !c->hasAstFlag(AST_GENERATED_USER))
-            continue;
-        
-        if (!first)
-        {
-            concat->addChar(',');
-            concat->addBlank();
-        }
-
-        first = false;
-        SWAG_CHECK(outputNode(c));
-    }
-
+    outputCommaChildren(node);
     concat->addChar(')');
     return true;
 }
 
-bool FormatAst::outputFuncDecl(AstFuncDecl* node)
+bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
 {
     CONCAT_FIXED_STR(concat, "func");
 
@@ -254,7 +236,7 @@ bool FormatAst::outputFuncDecl(AstFuncDecl* node)
     return true;
 }
 
-bool FormatAst::outputLambdaExpression(AstNode* node)
+bool FormatAst::outputLambdaExpression(const AstNode* node)
 {
     const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 

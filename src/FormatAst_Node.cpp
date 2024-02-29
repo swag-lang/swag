@@ -7,13 +7,10 @@
 #include "Report.h"
 #include "Semantic.h"
 
-bool FormatAst::outputNode(AstNode* node)
+bool FormatAst::outputNode(const AstNode* node)
 {
-    if (!node)
-        return true;
-    if (const auto exportNode = node->extraPointer<AstNode>(ExtraPointerKind::ExportNode))
-        node = exportNode;
-    if (node->hasAstFlag(AST_GENERATED) && !node->hasAstFlag(AST_GENERATED_USER))
+    node = convertNode(node);
+    if(!node)
         return true;
 
     // Prepend some stuff
@@ -601,7 +598,7 @@ bool FormatAst::outputNode(AstNode* node)
                     CONCAT_FIXED_STR(concat, "#cfg");
                     break;
                 default:
-                    Report::internalError(node, "Ast::outputNode, unknown compiler function");
+                    Report::internalError(const_cast<AstNode*>(node), "Ast::outputNode, unknown compiler function");
             }
             break;
         }
@@ -1119,7 +1116,7 @@ bool FormatAst::outputNode(AstNode* node)
             break;
 
         default:
-            return Report::internalError(node, "FormatAst::outputNode, unknown node kind");
+            return Report::internalError(const_cast<AstNode*>(node), "FormatAst::outputNode, unknown node kind");
     }
 
     return true;

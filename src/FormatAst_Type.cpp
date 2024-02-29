@@ -6,18 +6,12 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool FormatAst::outputStructDeclContent(AstNode* node)
+bool FormatAst::outputStructDeclContent(const AstNode* node)
 {
     concat->addChar('{');
     concat->addEol();
     indent++;
-    for (const auto c : node->children)
-    {
-        concat->addIndent(indent);
-        SWAG_CHECK(outputNode(c));
-        concat->addEol();
-    }
-
+    outputChildren(node);
     indent--;
     concat->addIndent(indent);
     concat->addChar('}');
@@ -25,28 +19,15 @@ bool FormatAst::outputStructDeclContent(AstNode* node)
     return true;
 }
 
-bool FormatAst::outputTupleDeclContent(AstNode* node)
+bool FormatAst::outputTupleDeclContent(const AstNode* node)
 {
     concat->addChar('{');
-
-    bool first = true;
-    for (const auto c : node->children)
-    {
-        if(!first)
-        {
-            concat->addChar(',');
-            concat->addBlank();
-        }
-        
-        SWAG_CHECK(outputNode(c));
-        first = false;
-    }
-
+    outputCommaChildren(node);
     concat->addChar('}');
     return true;
 }
 
-bool FormatAst::outputStructDecl(AstStruct* node)
+bool FormatAst::outputStructDecl(const AstStruct* node)
 {
     // If we need to export as opaque, and the struct has init values, then we add the
     // #[Swag.ExportType] attribute
@@ -139,7 +120,7 @@ bool FormatAst::outputTypeTuple(TypeInfo* typeInfo)
     return true;
 }
 
-bool FormatAst::outputType(AstTypeExpression* node)
+bool FormatAst::outputType(const AstTypeExpression* node)
 {
     if (node->typeFlags.has(TYPEFLAG_IS_RETVAL))
     {
@@ -242,7 +223,7 @@ bool FormatAst::outputType(AstTypeExpression* node)
     return true;
 }
 
-bool FormatAst::outputType(AstNode* /*node*/, TypeInfo* typeInfo)
+bool FormatAst::outputType(const AstNode* /*node*/, TypeInfo* typeInfo)
 {
     // Lambda
     /////////////////////////////////
@@ -285,5 +266,90 @@ bool FormatAst::outputType(AstNode* /*node*/, TypeInfo* typeInfo)
     SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
     concat->addString(typeInfo->scopedNameExport);
 
+    return true;
+}
+
+bool FormatAst::outputEnum(const AstEnum* node)
+{
+    CONCAT_FIXED_STR(concat, "enum ");
+    concat->addString(node->token.text);
+
+    // Raw type
+    if (node->firstChild()->childCount())
+    {
+        concat->addBlank();
+        concat->addChar(':');
+        concat->addBlank();
+        SWAG_ASSERT(node->firstChild()->is(AstNodeKind::EnumType));
+        SWAG_CHECK(outputNode(node->firstChild()));
+    }
+
+    concat->addEolIndent(indent);
+    concat->addChar('{');
+    concat->addEol();
+
+    for (const auto c : node->children)
+    {
+        if (c->is(AstNodeKind::EnumValue))
+        {
+            concat->addIndent(indent + 1);
+
+            if (c->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
+            {
+                CONCAT_FIXED_STR(concat, "using ");
+                SWAG_CHECK(outputNode(c->firstChild()));
+            }
+            else
+            {
+                concat->addString(c->token.text);
+                if (!c->children.empty())
+                {
+                    CONCAT_FIXED_STR(concat, " = ");
+                    SWAG_CHECK(outputNode(c->firstChild()));
+                }
+            }
+
+            concat->addEol();
+        }
+    }
+
+    concat->addIndent(indent);
+    concat->addChar('}');
+    concat->addEol();
+    return true;
+}
+
+bool FormatAst::outputGenericParameters(const AstNode* node)
+{
+    CONCAT_FIXED_STR(concat, "(");
+    int idx = 0;
+    for (const auto p : node->children)
+    {
+        if (idx)
+            CONCAT_FIXED_STR(concat, ", ");
+        concat->addString(p->token.text);
+
+        const AstVarDecl* varDecl = castAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+        if (varDecl->type)
+        {
+            CONCAT_FIXED_STR(concat, ": ");
+            SWAG_CHECK(outputNode(varDecl->type));
+        }
+        else if (varDecl->typeConstraint)
+        {
+            CONCAT_FIXED_STR(concat, ": ");
+            SWAG_CHECK(outputNode(varDecl->typeConstraint));
+        }
+
+        if (varDecl->assignment)
+        {
+            CONCAT_FIXED_STR(concat, " = ");
+            SWAG_CHECK(outputNode(varDecl->assignment));
+        }
+
+        idx++;
+    }
+
+    CONCAT_FIXED_STR(concat, ")");
     return true;
 }

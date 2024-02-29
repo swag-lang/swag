@@ -7,6 +7,17 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
+const AstNode* FormatAst::convertNode(const AstNode* node)
+{
+    if (!node)
+        return nullptr;
+    if (const auto subExportNode = node->extraPointer<AstNode>(ExtraPointerKind::ExportNode))
+        node = subExportNode;
+    if (node->hasAstFlag(AST_GENERATED) && !node->hasAstFlag(AST_GENERATED_USER))
+        return nullptr;
+    return node;
+}
+
 void FormatAst::incIndentStatement(const AstNode* node, uint32_t& idt)
 {
     if (node->is(AstNodeKind::CompilerIfBlock) && node->firstChild()->is(AstNodeKind::Statement))
@@ -27,100 +38,41 @@ bool FormatAst::outputChildren(const AstNode* node)
 {
     for (const auto child : node->children)
     {
+        const auto toExport = convertNode(child);
+        if (!toExport)
+            continue;
+
         concat->addIndent(indent);
-        SWAG_CHECK(outputNode(child));
+        SWAG_CHECK(outputNode(toExport));
         concat->addEol();
     }
 
     return true;
 }
 
-bool FormatAst::outputGenericParameters(AstNode* node)
+bool FormatAst::outputCommaChildren(const AstNode* node)
 {
-    CONCAT_FIXED_STR(concat, "(");
-    int idx = 0;
-    for (const auto p : node->children)
+    bool first = true;
+    for (const auto child : node->children)
     {
-        if (idx)
-            CONCAT_FIXED_STR(concat, ", ");
-        concat->addString(p->token.text);
+        const auto toExport = convertNode(child);
+        if (!toExport)
+            continue;
 
-        const AstVarDecl* varDecl = castAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-        if (varDecl->type)
+        if (!first)
         {
-            CONCAT_FIXED_STR(concat, ": ");
-            SWAG_CHECK(outputNode(varDecl->type));
-        }
-        else if (varDecl->typeConstraint)
-        {
-            CONCAT_FIXED_STR(concat, ": ");
-            SWAG_CHECK(outputNode(varDecl->typeConstraint));
+            concat->addChar(',');
+            concat->addBlank();
         }
 
-        if (varDecl->assignment)
-        {
-            CONCAT_FIXED_STR(concat, " = ");
-            SWAG_CHECK(outputNode(varDecl->assignment));
-        }
-
-        idx++;
+        SWAG_CHECK(outputNode(toExport));
+        first = false;
     }
 
-    CONCAT_FIXED_STR(concat, ")");
     return true;
 }
 
-bool FormatAst::outputEnum(AstEnum* node)
-{
-    CONCAT_FIXED_STR(concat, "enum ");
-    concat->addString(node->token.text);
-
-    // Raw type
-    if (node->firstChild()->childCount())
-    {
-        concat->addBlank();
-        concat->addChar(':');
-        concat->addBlank();
-        SWAG_ASSERT(node->firstChild()->is(AstNodeKind::EnumType));
-        SWAG_CHECK(outputNode(node->firstChild()));
-    }
-
-    concat->addEolIndent(indent);
-    concat->addChar('{');
-    concat->addEol();
-
-    for (const auto c : node->children)
-    {
-        if (c->is(AstNodeKind::EnumValue))
-        {
-            concat->addIndent(indent + 1);
-
-            if (c->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
-            {
-                CONCAT_FIXED_STR(concat, "using ");
-                SWAG_CHECK(outputNode(c->firstChild()));
-            }
-            else
-            {
-                concat->addString(c->token.text);
-                if (!c->children.empty())
-                {
-                    CONCAT_FIXED_STR(concat, " = ");
-                    SWAG_CHECK(outputNode(c->firstChild()));
-                }
-            }
-
-            concat->addEol();
-        }
-    }
-
-    concat->addIndent(indent);
-    concat->addChar('}');
-    concat->addEol();
-    return true;
-}
-
-bool FormatAst::outputLiteral(AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
+bool FormatAst::outputLiteral(const AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
 {
     if (typeInfo->isPointerNull())
     {
