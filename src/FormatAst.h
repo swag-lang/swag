@@ -46,7 +46,9 @@ struct FormatAst
     bool outputLiteral(AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
     bool outputVarDecl(const AstVarDecl* varNode, bool isSelf);
     bool outputVar(const AstVarDecl* varNode);
-    bool outputStruct(AstStruct* node);
+    bool outputStructDeclContent(AstNode* node);
+    bool outputTupleDeclContent(AstNode* node);
+    bool outputStructDecl(AstStruct* node);
     bool outputTypeTuple(TypeInfo* typeInfo);
     bool outputType(AstTypeExpression* node);
     bool outputType(AstNode* node, TypeInfo* typeInfo);

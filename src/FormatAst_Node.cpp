@@ -130,28 +130,17 @@ bool FormatAst::outputNode(AstNode* node)
             break;
 
         case AstNodeKind::StructContent:
+            SWAG_CHECK(outputStructDeclContent(node));
+            break;
         case AstNodeKind::TupleContent:
-            CONCAT_FIXED_STR(concat, "{ ");
-            concat->addEol();
-            indent++;
-            for (const auto c : node->children)
-            {
-                concat->addIndent(indent);
-                SWAG_CHECK(outputNode(c));
-                concat->addEol();
-            }
-
-            indent--;
-            concat->addIndent(indent);
-            concat->addChar('}');
-            concat->addEol();
+            SWAG_CHECK(outputTupleDeclContent(node));
             break;
 
         case AstNodeKind::StructDecl:
         case AstNodeKind::InterfaceDecl:
         {
             const auto nodeStruct = castAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-            SWAG_CHECK(outputStruct(nodeStruct));
+            SWAG_CHECK(outputStructDecl(nodeStruct));
             break;
         }
 

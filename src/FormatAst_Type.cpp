@@ -6,7 +6,47 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool FormatAst::outputStruct(AstStruct* node)
+bool FormatAst::outputStructDeclContent(AstNode* node)
+{
+    concat->addChar('{');
+    concat->addEol();
+    indent++;
+    for (const auto c : node->children)
+    {
+        concat->addIndent(indent);
+        SWAG_CHECK(outputNode(c));
+        concat->addEol();
+    }
+
+    indent--;
+    concat->addIndent(indent);
+    concat->addChar('}');
+    concat->addEol();
+    return true;
+}
+
+bool FormatAst::outputTupleDeclContent(AstNode* node)
+{
+    concat->addChar('{');
+
+    bool first = true;
+    for (const auto c : node->children)
+    {
+        if(!first)
+        {
+            concat->addChar(',');
+            concat->addBlank();
+        }
+        
+        SWAG_CHECK(outputNode(c));
+        first = false;
+    }
+
+    concat->addChar('}');
+    return true;
+}
+
+bool FormatAst::outputStructDecl(AstStruct* node)
 {
     // If we need to export as opaque, and the struct has init values, then we add the
     // #[Swag.ExportType] attribute
@@ -95,7 +135,7 @@ bool FormatAst::outputTypeTuple(TypeInfo* typeInfo)
     SWAG_ASSERT(typeInfo->isTuple());
     const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     const auto nodeStruct = castAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-    SWAG_CHECK(outputStruct(nodeStruct));
+    SWAG_CHECK(outputTupleDeclContent(nodeStruct->content));
     return true;
 }
 
