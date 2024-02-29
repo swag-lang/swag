@@ -707,6 +707,15 @@
     <ClCompile Include="..\src\FormatAst_Var.cpp">
       <Filter>Format</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\FormatAst_Compiler.cpp">
+      <Filter>Format</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FormatAst_Logic.cpp">
+      <Filter>Format</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FormatAst_Literal.cpp">
+      <Filter>Format</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">

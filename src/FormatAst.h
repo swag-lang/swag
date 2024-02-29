@@ -58,6 +58,7 @@ struct FormatAst
     bool outputScopeContentAndChilds(Module* module, const Scope* scope);
     bool outputScopeBlock(Module* module, const Scope* scope);
     bool outputScope(Module* module, Scope* scope);
+    bool outputIf(const Utf8& name, const AstNode* node);
 
     bool outputNode(const AstNode* node);
 

@@ -353,7 +353,10 @@
     <ClCompile Include="..\src\Ast_New.cpp" />
     <ClCompile Include="..\src\BackendLinker_Coff.cpp" />
     <ClCompile Include="..\src\FormatAst_Attr.cpp" />
+    <ClCompile Include="..\src\FormatAst_Compiler.cpp" />
     <ClCompile Include="..\src\FormatAst_Func.cpp" />
+    <ClCompile Include="..\src\FormatAst_Literal.cpp" />
+    <ClCompile Include="..\src\FormatAst_Logic.cpp" />
     <ClCompile Include="..\src\FormatAst_Node.cpp" />
     <ClCompile Include="..\src\FormatAst_Scope.cpp" />
     <ClCompile Include="..\src\FormatAst_Type.cpp" />
