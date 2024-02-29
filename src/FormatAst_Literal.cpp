@@ -1,10 +1,42 @@
 #include "pch.h"
-#include "FormatAst.h"
 #include "Ast.h"
+#include "FormatAst.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Semantic.h"
 #include "TypeManager.h"
+
+bool FormatAst::outputLiteral(const AstNode* node)
+{
+    const auto literalNode = castAst<AstLiteral>(node, AstNodeKind::Literal);
+    if (literalNode->literalType == LiteralType::TypeStringRaw)
+        CONCAT_FIXED_STR(concat, "#\"");
+    else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
+        CONCAT_FIXED_STR(concat, "\"");
+    else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
+        CONCAT_FIXED_STR(concat, "\"\"\"");
+    else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
+        CONCAT_FIXED_STR(concat, "`");
+
+    concat->addString(node->token.text);
+
+    if (literalNode->literalType == LiteralType::TypeStringRaw)
+        CONCAT_FIXED_STR(concat, "\"#");
+    else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
+        CONCAT_FIXED_STR(concat, "\"");
+    else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
+        CONCAT_FIXED_STR(concat, "\"\"\"");
+    else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
+        CONCAT_FIXED_STR(concat, "`");
+
+    if (!node->children.empty())
+    {
+        concat->addChar('\'');
+        SWAG_CHECK(outputNode(node->firstChild()));
+    }
+
+    return true;
+}
 
 bool FormatAst::outputLiteral(const AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
 {

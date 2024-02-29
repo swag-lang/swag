@@ -353,7 +353,7 @@ bool FormatAst::outputNode(const AstNode* node)
 
         case AstNodeKind::If:
             SWAG_CHECK(outputIf("if", node));
-            break;            
+            break;
 
         case AstNodeKind::CompilerMacro:
             CONCAT_FIXED_STR(concat, "#macro");
@@ -405,11 +405,13 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
+        
         case AstNodeKind::CompilerError:
             CONCAT_FIXED_STR(concat, "#error");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
+        
         case AstNodeKind::CompilerWarning:
             CONCAT_FIXED_STR(concat, "#warning");
             concat->addBlank();
@@ -426,7 +428,6 @@ bool FormatAst::outputNode(const AstNode* node)
                 concat->addBlank();
                 SWAG_CHECK(outputNode(node->secondChild()));
             }
-
             break;
 
         case AstNodeKind::For:
@@ -457,7 +458,7 @@ bool FormatAst::outputNode(const AstNode* node)
                 concat->addChar('&');
 
             bool first = true;
-            for (auto& a : visitNode->aliasNames)
+            for (const auto& a : visitNode->aliasNames)
             {
                 if (!first)
                 {
@@ -551,7 +552,7 @@ bool FormatAst::outputNode(const AstNode* node)
                     CONCAT_FIXED_STR(concat, "#cfg");
                     break;
                 default:
-                    Report::internalError(const_cast<AstNode*>(node), "Ast::outputNode, unknown compiler function");
+                    Report::internalError(const_cast<AstNode*>(node), "FormatAst::outputNode, unknown compiler function");
             }
             break;
         }
@@ -573,7 +574,6 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::TypeAlias:
-        {
             CONCAT_FIXED_STR(concat, "typealias");
             concat->addBlank();
             concat->addString(node->token.text);
@@ -582,22 +582,19 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
-        }
+        
         case AstNodeKind::NameAlias:
-        {
             CONCAT_FIXED_STR(concat, "namealias");
             concat->addBlank();
             concat->addString(node->token.text);
             concat->addBlank();
             concat->addChar('=');
             concat->addBlank();
-            const auto back = node->lastChild();
-            if (back->resolvedSymbolName())
-                concat->addString(back->resolvedSymbolName()->getFullName());
+            if (node->lastChild()->resolvedSymbolName())
+                concat->addString(node->lastChild()->resolvedSymbolName()->getFullName());
             else
-                SWAG_CHECK(outputNode(back));
+                SWAG_CHECK(outputNode(node->lastChild()));
             break;
-        }
 
         case AstNodeKind::ConstDecl:
         case AstNodeKind::VarDecl:
@@ -627,14 +624,11 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::IntrinsicProp:
-        {
-            const auto propertyNode = castAst<AstIntrinsicProp>(node, AstNodeKind::IntrinsicProp);
-            concat->addString(propertyNode->token.text);
+            concat->addString(node->token.text);
             concat->addChar('(');
             SWAG_CHECK(outputCommaChildren(node));
             concat->addChar(')');
             break;
-        }
 
         case AstNodeKind::IdentifierRef:
         {
@@ -780,32 +774,26 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::AffectOp:
-        {
-            const auto opNode = castAst<AstOp>(node, AstNodeKind::AffectOp);
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addBlank();
             concat->addString(node->token.text);
-            if (opNode->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
+            if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
                 CONCAT_FIXED_STR(concat, ",over");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
             break;
-        }
 
         case AstNodeKind::FactorOp:
-        {
-            const auto opNode = castAst<AstOp>(node, AstNodeKind::FactorOp);
             concat->addChar('(');
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addBlank();
             concat->addString(node->token.text);
-            if (opNode->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
+            if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
                 CONCAT_FIXED_STR(concat, ",over");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
             concat->addChar(')');
             break;
-        }
 
         case AstNodeKind::BinaryOp:
             concat->addChar('(');
@@ -836,48 +824,18 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::TypeExpression:
-        {
-            const auto typeNode = castAst<AstTypeExpression>(node);
-            if (typeNode->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
+            if (node->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
             {
                 CONCAT_FIXED_STR(concat, "#type");
                 concat->addBlank();
             }
 
-            SWAG_CHECK(outputType(typeNode));
+            SWAG_CHECK(outputType(castAst<AstTypeExpression>(node)));
             break;
-        }
 
         case AstNodeKind::Literal:
-        {
-            const auto literalNode = castAst<AstLiteral>(node, AstNodeKind::Literal);
-            if (literalNode->literalType == LiteralType::TypeStringRaw)
-                CONCAT_FIXED_STR(concat, "#\"");
-            else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
-                CONCAT_FIXED_STR(concat, "\"");
-            else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
-                CONCAT_FIXED_STR(concat, "\"\"\"");
-            else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
-                CONCAT_FIXED_STR(concat, "`");
-
-            concat->addString(node->token.text);
-
-            if (literalNode->literalType == LiteralType::TypeStringRaw)
-                CONCAT_FIXED_STR(concat, "\"#");
-            else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
-                CONCAT_FIXED_STR(concat, "\"");
-            else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
-                CONCAT_FIXED_STR(concat, "\"\"\"");
-            else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
-                CONCAT_FIXED_STR(concat, "`");
-
-            if (!node->children.empty())
-            {
-                concat->addChar('\'');
-                SWAG_CHECK(outputNode(node->firstChild()));
-            }
+            SWAG_CHECK(outputLiteral(node));
             break;
-        }
 
         case AstNodeKind::ScopeBreakable:
             CONCAT_FIXED_STR(concat, "#scope");
