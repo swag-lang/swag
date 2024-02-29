@@ -25,9 +25,9 @@ bool FormatAst::outputAttrUse(const AstNode* node, bool& hasSomething)
         }
         if (scanAttr->content->childCount() > 1)
             break;
-        if (scanAttr->content->children[0]->isNot(AstNodeKind::AttrUse))
+        if (scanAttr->content->firstChild()->isNot(AstNodeKind::AttrUse))
             break;
-        scanAttr = castAst<AstAttrUse>(scanAttr->content->children[0]);
+        scanAttr = castAst<AstAttrUse>(scanAttr->content->firstChild());
     }
 
     if (!hasSomething)

@@ -68,7 +68,7 @@ bool ByteCodeGen::emitUnaryOpInvert(const ByteCodeGenContext* context, const Typ
 bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
 {
     AstNode*   node  = context->node;
-    const auto front = node->children[0];
+    const auto front = node->firstChild();
 
     node->resultRegisterRc = front->resultRegisterRc;
     ensureCanBeChangedRC(context, node->resultRegisterRc);

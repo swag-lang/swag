@@ -770,14 +770,14 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     {
         if (funcNode->token.text == g_LangSpec->name_opInit)
         {
-            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->firstChild()->typeInfo, TypeInfoKind::Pointer);
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserInitFct = funcNode;
         }
         else if (funcNode->token.text == g_LangSpec->name_opDrop)
         {
-            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->firstChild()->typeInfo, TypeInfoKind::Pointer);
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
@@ -785,7 +785,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
         {
-            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->firstChild()->typeInfo, TypeInfoKind::Pointer);
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
@@ -793,7 +793,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostMove)
         {
-            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->firstChild()->typeInfo, TypeInfoKind::Pointer);
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostMoveFct = funcNode;
@@ -1403,7 +1403,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             return true;
         }
 
-        const auto child     = node->children[0];
+        const auto child     = node->firstChild();
         const auto childType = TypeManager::concreteType(child->typeInfo);
 
         // We try to return something, but the previous return had nothing
@@ -1482,7 +1482,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     auto returnType = funcNode->returnType->typeInfo;
 
     // Check types
-    auto child = node->children[0];
+    auto child = node->firstChild();
     SWAG_CHECK(checkIsConcreteOrType(context, child));
     YIELD();
 

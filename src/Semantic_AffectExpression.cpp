@@ -14,7 +14,7 @@
 bool Semantic::resolveMove(SemanticContext* context)
 {
     const auto node  = context->node;
-    const auto right = node->children[0];
+    const auto right = node->firstChild();
     SWAG_CHECK(checkIsConcrete(context, right));
     node->inheritAstFlagsOr(right, AST_NO_LEFT_DROP | AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
     node->typeInfo    = right->typeInfo;
@@ -224,8 +224,8 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 bool Semantic::resolveAffect(SemanticContext* context)
 {
     auto       node    = castAst<AstOp>(context->node, AstNodeKind::AffectOp);
-    auto       left    = node->children[0];
-    auto       right   = node->children[1];
+    auto       left    = node->firstChild();
+    auto       right   = node->secondChild();
     const auto tokenId = node->token.id;
 
     SWAG_CHECK(checkIsConcrete(context, left));

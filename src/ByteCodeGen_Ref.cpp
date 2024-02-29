@@ -458,7 +458,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
 
     AstNode* front;
     if (node->lambda && node->lambda->captureParameters)
-        front = node->children[1];
+        front = node->secondChild();
     else
         front = node->firstChild();
 

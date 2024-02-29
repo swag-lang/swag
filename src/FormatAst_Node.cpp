@@ -51,7 +51,7 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addEolIndent(indent);
-            SWAG_CHECK(outputNode(node->children[1]));
+            SWAG_CHECK(outputNode(node->secondChild()));
             break;
 
         case AstNodeKind::Throw:
@@ -415,7 +415,7 @@ bool FormatAst::outputNode(const AstNode* node)
             if (node->childCount() > 1)
             {
                 concat->addChar(',');
-                SWAG_CHECK(outputNode(node->children[1]));
+                SWAG_CHECK(outputNode(node->secondChild()));
             }
 
             break;
@@ -606,7 +606,7 @@ bool FormatAst::outputNode(const AstNode* node)
         case AstNodeKind::ConditionalExpression:
             SWAG_CHECK(outputNode(node->firstChild()));
             CONCAT_FIXED_STR(concat, " ? (");
-            SWAG_CHECK(outputNode(node->children[1]));
+            SWAG_CHECK(outputNode(node->secondChild()));
             CONCAT_FIXED_STR(concat, ") : (");
             SWAG_CHECK(outputNode(node->children[2]));
             concat->addChar(')');
@@ -833,7 +833,7 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addBlank();
             CONCAT_FIXED_STR(concat, "orelse");
             concat->addBlank();
-            SWAG_CHECK(outputNode(node->children[1]));
+            SWAG_CHECK(outputNode(node->secondChild()));
             break;
 
         case AstNodeKind::AffectOp:
@@ -845,7 +845,7 @@ bool FormatAst::outputNode(const AstNode* node)
             if (opNode->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
                 CONCAT_FIXED_STR(concat, ",over");
             concat->addBlank();
-            SWAG_CHECK(outputNode(node->children[1]));
+            SWAG_CHECK(outputNode(node->secondChild()));
             break;
         }
 
@@ -859,7 +859,7 @@ bool FormatAst::outputNode(const AstNode* node)
             if (opNode->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
                 CONCAT_FIXED_STR(concat, ",over");
             concat->addBlank();
-            SWAG_CHECK(outputNode(node->children[1]));
+            SWAG_CHECK(outputNode(node->secondChild()));
             concat->addChar(')');
             break;
         }
@@ -870,7 +870,7 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addBlank();
             concat->addString(node->token.text);
             concat->addBlank();
-            SWAG_CHECK(outputNode(node->children[1]));
+            SWAG_CHECK(outputNode(node->secondChild()));
             concat->addChar(')');
             break;
 
@@ -888,7 +888,7 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addChar('(');
             SWAG_CHECK(outputNode(node->firstChild()));
             CONCAT_FIXED_STR(concat, ") ");
-            SWAG_CHECK(outputNode(node->children[1]));
+            SWAG_CHECK(outputNode(node->secondChild()));
             break;
 
         case AstNodeKind::TypeExpression:
@@ -944,7 +944,7 @@ bool FormatAst::outputNode(const AstNode* node)
                 CONCAT_FIXED_STR(concat, " until ");
             else
                 CONCAT_FIXED_STR(concat, " to ");
-            SWAG_CHECK(outputNode(node->children[1]));
+            SWAG_CHECK(outputNode(node->secondChild()));
             break;
 
         case AstNodeKind::TypeLambda:

@@ -96,7 +96,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 
     // When this is a closure, we have /capture params/ref to the function/capture block/ref to the capture block
     if (node->lambda && node->lambda->captureParameters)
-        child = node->children[1];
+        child = node->secondChild();
     else
         child = node->firstChild();
 
@@ -545,7 +545,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
         if (node != parent->lastChild())
         {
             // The last ArrayPointerIndex in a list [0, 0, 0] must dereference
-            if (node->children[0]->isNot(AstNodeKind::ArrayPointerIndex))
+            if (node->firstChild()->isNot(AstNodeKind::ArrayPointerIndex))
                 node->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
 
             // In order to resolve what's next, we need to fill the startScope of the identifier ref

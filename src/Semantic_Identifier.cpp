@@ -495,7 +495,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                 if (c->is(AstNodeKind::ExpressionList))
                 {
                     const auto expr = castAst<AstExpressionList>(c, AstNodeKind::ExpressionList);
-                    typeInfoChild   = expr->children[0]->typeInfo;
+                    typeInfoChild   = expr->firstChild()->typeInfo;
                 }
 
                 auto typeEnum = findEnumTypeInContext(context, typeInfoChild);

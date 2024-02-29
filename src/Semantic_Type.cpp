@@ -644,8 +644,8 @@ bool Semantic::resolveTypeAlias(SemanticContext* context)
 bool Semantic::resolveExplicitBitCast(SemanticContext* context)
 {
     const auto node     = castAst<AstCast>(context->node, AstNodeKind::Cast);
-    const auto typeNode = node->children[0];
-    const auto exprNode = node->children[1];
+    const auto typeNode = node->firstChild();
+    const auto exprNode = node->secondChild();
 
     SWAG_CHECK(checkIsConcrete(context, exprNode));
 
@@ -714,8 +714,8 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
 bool Semantic::resolveExplicitCast(SemanticContext* context)
 {
     const auto node     = castAst<AstCast>(context->node, AstNodeKind::Cast);
-    const auto typeNode = node->children[0];
-    const auto exprNode = node->children[1];
+    const auto typeNode = node->firstChild();
+    const auto exprNode = node->secondChild();
 
     SWAG_CHECK(checkIsConcrete(context, exprNode));
 
@@ -775,7 +775,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 {
     const auto node     = castAst<AstCast>(context->node, AstNodeKind::AutoCast);
-    const auto exprNode = node->children[0];
+    const auto exprNode = node->firstChild();
 
     exprNode->typeInfo   = getConcreteTypeUnRef(exprNode, CONCRETE_FUNC | CONCRETE_ALIAS);
     const auto cloneType = exprNode->typeInfo->clone();

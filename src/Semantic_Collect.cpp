@@ -277,9 +277,9 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
             // that var, and we must take them instead of the expression list, because cast has been done
             if (assignment->is(AstNodeKind::ExpressionList) &&
                 child->children.count == 3 &&
-                child->children[1]->is(AstNodeKind::VarDecl))
+                child->secondChild()->is(AstNodeKind::VarDecl))
             {
-                const auto varDecl = castAst<AstVarDecl>(child->children[1], AstNodeKind::VarDecl);
+                const auto varDecl = castAst<AstVarDecl>(child->secondChild(), AstNodeKind::VarDecl);
                 SWAG_ASSERT(varDecl->type);
                 const auto typeDecl = castAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
                 SWAG_ASSERT(typeDecl->identifier);

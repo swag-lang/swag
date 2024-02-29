@@ -335,7 +335,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     const auto numParams = assign->childCount();
     for (uint32_t i = 0; i < numParams; i++)
     {
-        const auto child = assign->children[0];
+        const auto child = assign->firstChild();
         const auto param = Ast::newFuncCallParam(nullptr, identifier->callParameters);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);

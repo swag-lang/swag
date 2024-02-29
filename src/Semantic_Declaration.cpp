@@ -115,7 +115,7 @@ bool Semantic::resolveWith(SemanticContext* context)
 bool Semantic::resolveUsing(SemanticContext* context)
 {
     auto       node  = context->node;
-    const auto idref = castAst<AstIdentifierRef>(node->children[0], AstNodeKind::IdentifierRef);
+    const auto idref = castAst<AstIdentifierRef>(node->firstChild(), AstNodeKind::IdentifierRef);
     node->addAstFlag(AST_NO_BYTECODE);
 
     SWAG_ASSERT(idref->resolvedSymbolName());

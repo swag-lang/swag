@@ -225,8 +225,8 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
     const auto node = context->node;
     SWAG_ASSERT(node->childCount() == 3);
 
-    const auto expression = node->children[0];
-    const auto ifTrue     = node->children[1];
+    const auto expression = node->firstChild();
+    const auto ifTrue     = node->secondChild();
     const auto ifFalse    = node->children[2];
     SWAG_CHECK(checkIsConcrete(context, expression));
     SWAG_CHECK(checkIsConcreteOrType(context, ifTrue));
@@ -297,8 +297,8 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
     const auto node = context->node;
     SWAG_ASSERT(node->childCount() >= 2);
 
-    const auto expression = node->children[0];
-    const auto ifZero     = node->children[1];
+    const auto expression = node->firstChild();
+    const auto ifZero     = node->secondChild();
     SWAG_CHECK(checkIsConcrete(context, expression));
     SWAG_CHECK(checkIsConcrete(context, ifZero));
 

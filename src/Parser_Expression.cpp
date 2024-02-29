@@ -813,9 +813,9 @@ namespace
         if (factor->isNot(AstNodeKind::FactorOp) && factor->isNot(AstNodeKind::BinaryOp))
             return true;
 
-        auto left = factor->children[0];
+        auto left = factor->firstChild();
         SWAG_CHECK(doOperatorPrecedence(&left));
-        auto right = factor->children[1];
+        auto right = factor->secondChild();
         SWAG_CHECK(doOperatorPrecedence(&right));
 
         if ((right->is(AstNodeKind::FactorOp) || right->is(AstNodeKind::BinaryOp)) && !right->hasAstFlag(AST_IN_ATOMIC_EXPR))
@@ -850,7 +850,7 @@ namespace
                 const auto atom = factor->hasAstFlag(AST_IN_ATOMIC_EXPR);
                 factor->removeAstFlag(AST_IN_ATOMIC_EXPR);
 
-                const auto leftRight = right->children[0];
+                const auto leftRight = right->firstChild();
                 Ast::removeFromParent(right);
                 if (factor->parent && factor == factor->parent->firstChild())
                     Ast::addChildFront(factor->parent, right);

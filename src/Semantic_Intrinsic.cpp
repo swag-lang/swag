@@ -75,8 +75,8 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 
         case TokenId::IntrinsicGetTag:
         {
-            auto       nameNode   = node->children[0];
-            const auto typeNode   = node->children[1];
+            auto       nameNode   = node->firstChild();
+            const auto typeNode   = node->secondChild();
             auto       defaultVal = node->children[2];
             SWAG_CHECK(evaluateConstExpression(context, nameNode));
             YIELD();
@@ -213,8 +213,8 @@ bool Semantic::resolveIntrinsicMakeInterface(SemanticContext* context)
     const auto node   = context->node;
     const auto params = node->firstChild();
 
-    auto       first      = params->children[0];
-    auto       second     = params->children[1];
+    auto       first      = params->firstChild();
+    auto       second     = params->secondChild();
     auto       third      = params->children[2];
     const auto sourceFile = context->sourceFile;
     const auto module     = sourceFile->module;
@@ -1002,7 +1002,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
         case TokenId::IntrinsicCVaEnd:
         case TokenId::IntrinsicCVaArg:
         {
-            const auto typeInfo = node->children[0]->typeInfo;
+            const auto typeInfo = node->firstChild()->typeInfo;
             typeInfo->computeScopedName();
             SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node, formErr(Err0650, typeInfo->getDisplayNameC())}));
 
@@ -1019,16 +1019,16 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             }
             else
             {
-                node->typeInfo = node->children[1]->typeInfo;
+                node->typeInfo = node->secondChild()->typeInfo;
 
-                SWAG_VERIFY(node->typeInfo->numRegisters() == 1, context->report({node->children[1], formErr(Err0394, node->typeInfo->getDisplayNameC())}));
+                SWAG_VERIFY(node->typeInfo->numRegisters() == 1, context->report({node->secondChild(), formErr(Err0394, node->typeInfo->getDisplayNameC())}));
 
-                SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::F32), context->report({node->children[1], formErr(Err0153, node->typeInfo->getDisplayNameC(), "f64")}));
-                SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S8), context->report({node->children[1], formErr(Err0153, node->typeInfo->getDisplayNameC(), "s32")}));
-                SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S16), context->report({node->children[1], formErr(Err0153, node->typeInfo->getDisplayNameC(), "s32")}));
-                SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U8), context->report({node->children[1], formErr(Err0153, node->typeInfo->getDisplayNameC(), "u32")}));
-                SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U16), context->report({node->children[1], formErr(Err0153, node->typeInfo->getDisplayNameC(), "u32")}));
-                SWAG_VERIFY(!node->typeInfo->isBool(), context->report({node->children[1], formErr(Err0153, node->typeInfo->getDisplayNameC(), "u32")}));
+                SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::F32), context->report({node->secondChild(), formErr(Err0153, node->typeInfo->getDisplayNameC(), "f64")}));
+                SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S8), context->report({node->secondChild(), formErr(Err0153, node->typeInfo->getDisplayNameC(), "s32")}));
+                SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S16), context->report({node->secondChild(), formErr(Err0153, node->typeInfo->getDisplayNameC(), "s32")}));
+                SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U8), context->report({node->secondChild(), formErr(Err0153, node->typeInfo->getDisplayNameC(), "u32")}));
+                SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U16), context->report({node->secondChild(), formErr(Err0153, node->typeInfo->getDisplayNameC(), "u32")}));
+                SWAG_VERIFY(!node->typeInfo->isBool(), context->report({node->secondChild(), formErr(Err0153, node->typeInfo->getDisplayNameC(), "u32")}));
 
                 node->byteCodeFct = ByteCodeGen::emitIntrinsicCVaArg;
             }

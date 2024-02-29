@@ -980,7 +980,7 @@ bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 {
     const auto node         = castAst<AstCast>(context->node, AstNodeKind::Cast);
     const auto typeInfo     = node->toCastTypeInfo;
-    const auto exprNode     = node->children[1];
+    const auto exprNode     = node->secondChild();
     const auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
 
     // First we cast with the user requested type. This is important to keep it, to
@@ -1002,7 +1002,7 @@ bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
 {
     const auto node     = castAst<AstCast>(context->node, AstNodeKind::AutoCast);
-    const auto exprNode = node->children[0];
+    const auto exprNode = node->firstChild();
 
     // Will be done by parent in case of a func call param
     if (node->parent->is(AstNodeKind::FuncCallParam))

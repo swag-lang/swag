@@ -223,11 +223,11 @@ bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, const RegisterLis
             EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0);
             EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
         }
-        else if (node->childCount() > 1 && node->children[1]->typeInfo->isArray())
+        else if (node->childCount() > 1 && node->secondChild()->typeInfo->isArray())
         {
             EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);
 
-            const auto typeArray = castTypeInfo<TypeInfoArray>(node->children[1]->typeInfo, TypeInfoKind::Array);
+            const auto typeArray = castTypeInfo<TypeInfoArray>(node->secondChild()->typeInfo, TypeInfoKind::Array);
             const auto r2        = reserveRegisterRC(context);
 
             EMIT_INST1(context, ByteCodeOp::SetImmediate64, r2)->b.u64     = typeArray->count;
@@ -794,12 +794,12 @@ bool ByteCodeGen::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, u
 bool ByteCodeGen::emitAffect(ByteCodeGenContext* context)
 {
     AstNode* node      = context->node;
-    AstNode* leftNode  = context->node->children[0];
-    AstNode* rightNode = context->node->children[1];
+    AstNode* leftNode  = context->node->firstChild();
+    AstNode* rightNode = context->node->secondChild();
 
     if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->children[1], TypeManager::concreteType(node->children[1]->typeInfo), node->children[1]->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->secondChild(), TypeManager::concreteType(node->secondChild()->typeInfo), node->secondChild()->castedTypeInfo));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST1);
     }
@@ -829,8 +829,8 @@ bool ByteCodeGen::emitAffect(ByteCodeGenContext* context)
         return true;
     }
 
-    auto r0 = node->children[0]->resultRegisterRc;
-    auto r1 = node->children[1]->resultRegisterRc;
+    auto r0 = node->firstChild()->resultRegisterRc;
+    auto r1 = node->secondChild()->resultRegisterRc;
 
     switch (node->token.id)
     {

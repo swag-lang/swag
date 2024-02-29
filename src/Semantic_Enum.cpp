@@ -134,7 +134,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     // By default, raw type is s32, except for flags and index
     TypeInfo* rawTypeInfo = enumNode->hasAttribute(ATTRIBUTE_ENUM_FLAGS | ATTRIBUTE_ENUM_INDEX) ? g_TypeMgr->typeInfoU32 : g_TypeMgr->typeInfoS32;
     if (!typeNode->children.empty())
-        rawTypeInfo = typeNode->children[0]->typeInfo;
+        rawTypeInfo = typeNode->firstChild()->typeInfo;
 
     typeInfo->rawType = rawTypeInfo;
     typeInfo->sizeOf  = rawTypeInfo->sizeOf;
@@ -269,7 +269,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
     if (typeEnum->rawType->isGeneric())
         return true;
 
-    const auto   assignNode     = valNode->children.empty() ? nullptr : valNode->children[0];
+    const auto   assignNode     = valNode->children.empty() ? nullptr : valNode->firstChild();
     const auto   rawTypeInfo    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_FORCE_ALIAS);
     uint32_t     storageOffset  = UINT32_MAX;
     DataSegment* storageSegment = nullptr;

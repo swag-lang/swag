@@ -65,13 +65,13 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     emitMakeSegPointer(context, constSegment, childItf->computedValue()->storageOffset, r0);
 
     // Copy object pointer to first result register
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], params->children[0]->resultRegisterRc);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], params->firstChild()->resultRegisterRc);
 
     // Get interface itable pointer in the second result register
-    EMIT_INST3(context, ByteCodeOp::IntrinsicItfTableOf, params->children[1]->resultRegisterRc, r0, node->resultRegisterRc[1]);
+    EMIT_INST3(context, ByteCodeOp::IntrinsicItfTableOf, params->secondChild()->resultRegisterRc, r0, node->resultRegisterRc[1]);
 
-    freeRegisterRC(context, params->children[0]);
-    freeRegisterRC(context, params->children[1]);
+    freeRegisterRC(context, params->firstChild());
+    freeRegisterRC(context, params->secondChild());
     freeRegisterRC(context, params->children[2]);
     freeRegisterRC(context, r0);
     return true;

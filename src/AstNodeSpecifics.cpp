@@ -1312,8 +1312,8 @@ AstNode* AstMakePointer::clone(CloneContext& context)
         {
             if (lambda->captureParameters && firstChild() == lambda->captureParameters)
             {
-                SWAG_ASSERT(newNode->children[0]->is(AstNodeKind::FuncCallParams));
-                lambda->captureParameters = newNode->children[0];
+                SWAG_ASSERT(newNode->firstChild()->is(AstNodeKind::FuncCallParams));
+                lambda->captureParameters = newNode->firstChild();
             }
 
             lambda->makePointerLambda = newNode;

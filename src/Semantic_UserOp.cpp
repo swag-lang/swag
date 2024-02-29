@@ -203,10 +203,10 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         SWAG_VERIFY(node->genericParameters, context->report({node, node->getTokenName(), formErr(Err0559, name.c_str())}));
         SWAG_VERIFY(node->genericParameters->childCount() >= 2, context->report({node->genericParameters, formErr(Err0594, name.c_str())}));
         SWAG_VERIFY(node->genericParameters->childCount() <= 3, context->report({node->genericParameters, formErr(Err0633, name.c_str())}));
-        auto firstGen = node->genericParameters->children[0];
+        auto firstGen = node->genericParameters->firstChild();
         SWAG_VERIFY(firstGen->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT), context->report({firstGen, formErr(Err0306, name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
         SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CAST_FLAG_CAST), context->report({firstGen, formErr(Err0391, name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
-        auto secondGen = node->genericParameters->children[1];
+        auto secondGen = node->genericParameters->secondChild();
         SWAG_VERIFY(secondGen->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT), context->report({secondGen, formErr(Err0306, name.c_str(), secondGen->typeInfo->getDisplayNameC())}));
         SWAG_VERIFY(secondGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CAST_FLAG_CAST), context->report({secondGen, formErr(Err0391, name.c_str(), secondGen->typeInfo->getDisplayNameC())}));
         SWAG_VERIFY(node->hasAttribute(ATTRIBUTE_MACRO), context->report({node, node->token, toErr(Err0542)}));
@@ -276,15 +276,15 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        const auto second = TypeManager::concretePtrRef(parameters->children[1]->typeInfo);
-        SWAG_VERIFY(!second->isSame(typeStruct, CAST_FLAG_EXACT), context->report({parameters->children[1], formErr(Err0390, name.c_str(), typeStruct->name.c_str())}));
+        const auto second = TypeManager::concretePtrRef(parameters->secondChild()->typeInfo);
+        SWAG_VERIFY(!second->isSame(typeStruct, CAST_FLAG_EXACT), context->report({parameters->secondChild(), formErr(Err0390, name.c_str(), typeStruct->name.c_str())}));
     }
     else if (name == g_LangSpec->name_opAffectLiteral)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        const auto second = TypeManager::concretePtrRef(parameters->children[1]->typeInfo);
-        SWAG_VERIFY(!second->isSame(typeStruct, CAST_FLAG_EXACT), context->report({parameters->children[1], formErr(Err0390, name.c_str(), typeStruct->name.c_str())}));
+        const auto second = TypeManager::concretePtrRef(parameters->secondChild()->typeInfo);
+        SWAG_VERIFY(!second->isSame(typeStruct, CAST_FLAG_EXACT), context->report({parameters->secondChild(), formErr(Err0390, name.c_str(), typeStruct->name.c_str())}));
     }
     else if (name == g_LangSpec->name_opSlice)
     {

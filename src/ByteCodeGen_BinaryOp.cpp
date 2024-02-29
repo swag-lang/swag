@@ -62,7 +62,7 @@ bool ByteCodeGen::emitBinaryOpPlus(const ByteCodeGenContext* context, const Type
             const auto rt = reserveRegisterRC(context);
 
             // Be sure that the pointer is on the left side, because ptr = 1 + ptr is possible
-            if (context->node->children[0]->typeInfo->isPointer())
+            if (context->node->firstChild()->typeInfo->isPointer())
             {
                 EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, rt, r1);
                 EMIT_INST1(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
@@ -96,7 +96,7 @@ bool ByteCodeGen::emitBinaryOpMinus(const ByteCodeGenContext* context, const Typ
     // This is the difference of two pointers if we have a s64 on the left, and a pointer on the right
     if (typeInfo->isNative(NativeTypeKind::S64))
     {
-        const auto rightTypeInfo = TypeManager::concretePtrRefType(node->children[1]->typeInfo);
+        const auto rightTypeInfo = TypeManager::concretePtrRefType(node->secondChild()->typeInfo);
         if (rightTypeInfo->isPointer())
         {
             const auto rightTypePointer = castTypeInfo<TypeInfoPointer>(rightTypeInfo, TypeInfoKind::Pointer);
@@ -531,16 +531,16 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         // That way we have multiple jumps with the same register, which can be optimized
         if (binNode->childCount() == 2)
         {
-            auto child1 = binNode->children[1];
+            auto child1 = binNode->secondChild();
             while (child1->is(AstNodeKind::BinaryOp) && (child1->token.is(TokenId::KwdAnd) || child1->token.is(TokenId::KwdOr)))
             {
-                const auto child0 = child1->children[0];
+                const auto child0 = child1->firstChild();
                 child0->allocateExtension(ExtensionKind::Misc);
                 child0->extMisc()->additionalRegisterRC            = left->extMisc()->additionalRegisterRC;
                 child0->extMisc()->additionalRegisterRC.cannotFree = true;
                 if (child1->childCount() != 2)
                     break;
-                child1 = child1->children[1];
+                child1 = child1->secondChild();
             }
         }
     }
@@ -595,16 +595,16 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
 
         if (binNode->childCount() == 2)
         {
-            auto child1 = binNode->children[1];
+            auto child1 = binNode->secondChild();
             while (child1->is(AstNodeKind::BinaryOp) && (child1->token.is(TokenId::KwdAnd) || child1->token.is(TokenId::KwdOr)))
             {
-                const auto child0 = child1->children[0];
+                const auto child0 = child1->firstChild();
                 child0->allocateExtension(ExtensionKind::Misc);
                 child0->extMisc()->additionalRegisterRC            = left->extMisc()->additionalRegisterRC;
                 child0->extMisc()->additionalRegisterRC.cannotFree = true;
                 if (child1->childCount() != 2)
                     break;
-                child1 = child1->children[1];
+                child1 = child1->secondChild();
             }
         }
     }
@@ -634,14 +634,14 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
 
     if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->children[0], TypeManager::concreteType(node->children[0]->typeInfo), node->children[0]->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->firstChild(), TypeManager::concreteType(node->firstChild()->typeInfo), node->firstChild()->castedTypeInfo));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST1);
     }
 
     if (!node->hasSemFlag(SEMFLAG_CAST2))
     {
-        SWAG_CHECK(emitCast(context, node->children[1], TypeManager::concreteType(node->children[1]->typeInfo), node->children[1]->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->secondChild(), TypeManager::concreteType(node->secondChild()->typeInfo), node->secondChild()->castedTypeInfo));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST2);
     }
@@ -657,27 +657,27 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
         }
         else if (node->token.is(TokenId::SymPlus) && node->hasSpecFlag(AstOp::SPEC_FLAG_FMA))
         {
-            const auto front       = node->children[0];
+            const auto front       = node->firstChild();
             const auto typeInfo    = TypeManager::concreteType(front->typeInfo);
             node->resultRegisterRc = reserveRegisterRC(context);
 
             switch (typeInfo->nativeType)
             {
                 case NativeTypeKind::F32:
-                    EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF32, node->resultRegisterRc, front->children[0]->resultRegisterRc, front->children[1]->resultRegisterRc,
-                               node->children[1]->resultRegisterRc);
+                    EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF32, node->resultRegisterRc, front->firstChild()->resultRegisterRc, front->secondChild()->resultRegisterRc,
+                               node->secondChild()->resultRegisterRc);
                     break;
                 case NativeTypeKind::F64:
-                    EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF64, node->resultRegisterRc, front->children[0]->resultRegisterRc, front->children[1]->resultRegisterRc,
-                               node->children[1]->resultRegisterRc);
+                    EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF64, node->resultRegisterRc, front->firstChild()->resultRegisterRc, front->secondChild()->resultRegisterRc,
+                               node->secondChild()->resultRegisterRc);
                     break;
                 default:
                     return Report::internalError(context->node, "emitBinaryOpPlus, muladd, type not supported");
             }
 
-            freeRegisterRC(context, front->children[0]->resultRegisterRc);
-            freeRegisterRC(context, front->children[1]->resultRegisterRc);
-            freeRegisterRC(context, node->children[1]->resultRegisterRc);
+            freeRegisterRC(context, front->firstChild()->resultRegisterRc);
+            freeRegisterRC(context, front->secondChild()->resultRegisterRc);
+            freeRegisterRC(context, node->secondChild()->resultRegisterRc);
             node->addSemFlag(SEMFLAG_EMIT_OP);
         }
         else if (node->token.is(TokenId::SymAsterisk) && node->hasSpecFlag(AstOp::SPEC_FLAG_FMA))
@@ -686,8 +686,8 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
         }
         else
         {
-            auto     r0 = node->children[0]->resultRegisterRc;
-            auto     r1 = node->children[1]->resultRegisterRc;
+            auto     r0 = node->firstChild()->resultRegisterRc;
+            auto     r1 = node->secondChild()->resultRegisterRc;
             uint32_t r2;
 
             // Register for the binary operation has already been allocated in 'additionalRegisterRC' by the left expression in case of a logical test
@@ -695,7 +695,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             if (node->token.is(TokenId::KwdAnd) || node->token.is(TokenId::KwdOr))
             {
                 // :BinOpAndOr
-                const auto front       = node->children[0];
+                const auto front       = node->firstChild();
                 r2                     = front->extMisc()->additionalRegisterRC;
                 node->resultRegisterRc = front->extMisc()->additionalRegisterRC;
                 front->extMisc()->additionalRegisterRC.clear();

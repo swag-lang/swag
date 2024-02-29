@@ -426,7 +426,7 @@ bool Semantic::resolveCompilerAssert(SemanticContext* context)
         return true;
 
     // Expression to check
-    const auto expr = node->children[0];
+    const auto expr = node->firstChild();
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CAST_FLAG_AUTO_BOOL | CAST_FLAG_JUST_CHECK));
     SWAG_CHECK(executeCompilerNode(context, expr, true));
     YIELD();
@@ -466,7 +466,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
 
     node->addSemFlag(SEMFLAG_COMPILER_INSERT);
 
-    auto expr = node->children[0];
+    auto expr = node->firstChild();
     SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, formErr(Err0193, expr->typeInfo->getDisplayNameC())}));
 
     node->setBcNotifyBefore(ByteCodeGen::emitDebugNop);
@@ -546,7 +546,7 @@ bool Semantic::resolveCompilerPrint(SemanticContext* context)
     if (node->hasAstFlag(AST_IS_GENERIC))
         return true;
 
-    const auto expr = context->node->children[0];
+    const auto expr = context->node->firstChild();
     SWAG_CHECK(executeCompilerNode(context, expr, true));
     YIELD();
 
@@ -713,7 +713,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
     const auto job    = context->baseJob;
     const auto node   = context->node;
     const auto module = context->sourceFile->module;
-    auto       back   = node->children[0];
+    auto       back   = node->firstChild();
 
     SWAG_CHECK(checkIsConstExpr(context, back->hasFlagComputedValue(), back, toErr(Err0030)));
     SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, formErr(Err0192, back->typeInfo->getDisplayNameC())}));

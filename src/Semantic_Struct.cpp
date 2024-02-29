@@ -76,8 +76,8 @@ bool Semantic::resolveImplForType(SemanticContext* context)
     // Race condition in case a templated function is instantiated in the impl block during that access
     {
         SharedLock lk(node->mutex);
-        first = node->children[0];
-        back  = node->children[1];
+        first = node->firstChild();
+        back  = node->secondChild();
     }
 
     const auto typeStruct = castTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Struct);
@@ -141,10 +141,10 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     context->tmpNodes.clear();
     flattenStructChildren(context, node, context->tmpNodes);
 
-    SWAG_ASSERT(node->children[0]->is(AstNodeKind::IdentifierRef));
-    SWAG_ASSERT(node->children[1]->is(AstNodeKind::IdentifierRef));
-    const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(node->children[0]->typeInfo, TypeInfoKind::Interface);
-    const auto typeStruct        = castTypeInfo<TypeInfoStruct>(node->children[1]->typeInfo, TypeInfoKind::Struct);
+    SWAG_ASSERT(node->firstChild()->is(AstNodeKind::IdentifierRef));
+    SWAG_ASSERT(node->secondChild()->is(AstNodeKind::IdentifierRef));
+    const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(node->firstChild()->typeInfo, TypeInfoKind::Interface);
+    const auto typeStruct        = castTypeInfo<TypeInfoStruct>(node->secondChild()->typeInfo, TypeInfoKind::Struct);
 
     // Be sure interface has been fully solved
     {

@@ -111,7 +111,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         }
 
         parameters.children.push_back(ptIdx->access);
-        parameters.children.push_back(parent->children[1]);
+        parameters.children.push_back(parent->secondChild());
         allParams     = &parameters;
         numCallParams = parameters.childCount();
     }

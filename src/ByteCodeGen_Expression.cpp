@@ -15,8 +15,8 @@
 bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
 {
     const auto node     = context->node;
-    const auto child0   = node->children[0];
-    const auto child1   = node->children[1];
+    const auto child0   = node->firstChild();
+    const auto child1   = node->secondChild();
     const auto typeInfo = TypeManager::concreteType(child0->typeInfo);
 
     if (!child0->hasSemFlag(SEMFLAG_CAST1))
@@ -114,8 +114,8 @@ bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
 {
     const auto node       = castAst<AstConditionalOpNode>(context->node, AstNodeKind::ConditionalExpression);
-    const auto expression = node->children[0];
-    const auto ifTrue     = node->children[1];
+    const auto expression = node->firstChild();
+    const auto ifTrue     = node->secondChild();
     const auto ifFalse    = node->children[2];
 
     // Copy If false result

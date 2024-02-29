@@ -511,7 +511,7 @@ bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, const
 bool ByteCodeGen::emitCompareOp3Way(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode*   node     = context->node;
-    const auto typeInfo = TypeManager::concreteType(node->children[0]->typeInfo);
+    const auto typeInfo = TypeManager::concreteType(node->firstChild()->typeInfo);
     if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
@@ -803,14 +803,14 @@ bool ByteCodeGen::emitCompareOp(ByteCodeGenContext* context)
 
     if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->children[0], TypeManager::concreteType(node->children[0]->typeInfo), node->children[0]->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->firstChild(), TypeManager::concreteType(node->firstChild()->typeInfo), node->firstChild()->castedTypeInfo));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST1);
     }
 
     if (!node->hasSemFlag(SEMFLAG_CAST2))
     {
-        SWAG_CHECK(emitCast(context, node->children[1], TypeManager::concreteType(node->children[1]->typeInfo), node->children[1]->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->secondChild(), TypeManager::concreteType(node->secondChild()->typeInfo), node->secondChild()->castedTypeInfo));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST2);
     }
@@ -824,8 +824,8 @@ bool ByteCodeGen::emitCompareOp(ByteCodeGenContext* context)
     }
     else
     {
-        auto& r0 = node->children[0]->resultRegisterRc;
-        auto& r1 = node->children[1]->resultRegisterRc;
+        auto& r0 = node->firstChild()->resultRegisterRc;
+        auto& r1 = node->secondChild()->resultRegisterRc;
 
         const RegisterList r2  = reserveRegisterRC(context);
         node->resultRegisterRc = r2;

@@ -362,6 +362,7 @@ struct AstNode
     void     swap2Children();
 
     AstNode* firstChild() const { return children.front(); }
+    AstNode* secondChild() const { return children[1]; }
     AstNode* lastChild() const { return children.back(); }
     uint32_t childCount() const { return children.size(); }
 
