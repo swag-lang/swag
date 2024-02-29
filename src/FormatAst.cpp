@@ -36,14 +36,14 @@ void FormatAst::decIndentStatement(const AstNode* node, uint32_t& idt)
 
 bool FormatAst::outputChildren(const AstNode* node)
 {
-    for (const auto child : node->children)
+    for (const auto it : node->children)
     {
-        const auto toExport = convertNode(child);
-        if (!toExport)
+        const auto child = convertNode(it);
+        if (!child)
             continue;
 
         concat->addIndent(indent);
-        SWAG_CHECK(outputNode(toExport));
+        SWAG_CHECK(outputNode(child));
         concat->addEol();
     }
 
@@ -53,10 +53,10 @@ bool FormatAst::outputChildren(const AstNode* node)
 bool FormatAst::outputCommaChildren(const AstNode* node)
 {
     bool first = true;
-    for (const auto child : node->children)
+    for (const auto it : node->children)
     {
-        const auto toExport = convertNode(child);
-        if (!toExport)
+        const auto child = convertNode(it);
+        if (!child)
             continue;
 
         if (!first)
@@ -65,7 +65,7 @@ bool FormatAst::outputCommaChildren(const AstNode* node)
             concat->addBlank();
         }
 
-        SWAG_CHECK(outputNode(toExport));
+        SWAG_CHECK(outputNode(child));
         first = false;
     }
 

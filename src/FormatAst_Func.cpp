@@ -11,7 +11,7 @@ bool FormatAst::outputFuncName(const AstFuncDecl* node) const
     return true;
 }
 
-bool FormatAst::outputFuncSignature(AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf)
+bool FormatAst::outputFuncSignature(AstNode* node, const AstNode* genericParameters, const AstNode* parameters, const AstNode* validIf)
 {
     if (node->is(AstNodeKind::AttrDecl))
         CONCAT_FIXED_STR(concat, "attr");

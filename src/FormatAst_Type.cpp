@@ -271,7 +271,8 @@ bool FormatAst::outputType(const AstNode* /*node*/, TypeInfo* typeInfo)
 
 bool FormatAst::outputEnum(const AstEnum* node)
 {
-    CONCAT_FIXED_STR(concat, "enum ");
+    CONCAT_FIXED_STR(concat, "enum");
+    concat->addBlank();
     concat->addString(node->token.text);
 
     // Raw type
@@ -288,31 +289,39 @@ bool FormatAst::outputEnum(const AstEnum* node)
     concat->addChar('{');
     concat->addEol();
 
-    for (const auto c : node->children)
+    indent++;
+    for (const auto it : node->children)
     {
-        if (c->is(AstNodeKind::EnumValue))
+        const auto child = convertNode(it);
+        if (!child)
+            continue;
+        if (!child->is(AstNodeKind::EnumValue))
+            continue;
+
+        concat->addIndent(indent);
+
+        if (child->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
         {
-            concat->addIndent(indent + 1);
-
-            if (c->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
-            {
-                CONCAT_FIXED_STR(concat, "using ");
-                SWAG_CHECK(outputNode(c->firstChild()));
-            }
-            else
-            {
-                concat->addString(c->token.text);
-                if (!c->children.empty())
-                {
-                    CONCAT_FIXED_STR(concat, " = ");
-                    SWAG_CHECK(outputNode(c->firstChild()));
-                }
-            }
-
-            concat->addEol();
+            CONCAT_FIXED_STR(concat, "using");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(child->firstChild()));
         }
+        else
+        {
+            concat->addString(child->token.text);
+            if (!child->children.empty())
+            {
+                concat->addBlank();
+                concat->addChar('=');
+                concat->addBlank();
+                SWAG_CHECK(outputNode(child->firstChild()));
+            }
+        }
+
+        concat->addEol();
     }
 
+    indent--;
     concat->addIndent(indent);
     concat->addChar('}');
     concat->addEol();
@@ -321,35 +330,48 @@ bool FormatAst::outputEnum(const AstEnum* node)
 
 bool FormatAst::outputGenericParameters(const AstNode* node)
 {
-    CONCAT_FIXED_STR(concat, "(");
-    int idx = 0;
-    for (const auto p : node->children)
-    {
-        if (idx)
-            CONCAT_FIXED_STR(concat, ", ");
-        concat->addString(p->token.text);
+    concat->addChar('(');
 
-        const AstVarDecl* varDecl = castAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+    bool first = true;
+    for (const auto it : node->children)
+    {
+        const auto child = convertNode(it);
+        if (!child)
+            continue;
+
+        if (!first)
+        {
+            concat->addChar(',');
+            concat->addBlank();
+        }
+
+        concat->addString(child->token.text);
+
+        const AstVarDecl* varDecl = castAst<AstVarDecl>(child, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
         if (varDecl->type)
         {
-            CONCAT_FIXED_STR(concat, ": ");
+            concat->addChar(':');
+            concat->addBlank();
             SWAG_CHECK(outputNode(varDecl->type));
         }
         else if (varDecl->typeConstraint)
         {
-            CONCAT_FIXED_STR(concat, ": ");
+            concat->addChar(':');
+            concat->addBlank();
             SWAG_CHECK(outputNode(varDecl->typeConstraint));
         }
 
         if (varDecl->assignment)
         {
-            CONCAT_FIXED_STR(concat, " = ");
+            concat->addBlank();
+            concat->addChar('=');
+            concat->addBlank();
             SWAG_CHECK(outputNode(varDecl->assignment));
         }
 
-        idx++;
+        first = false;
     }
 
-    CONCAT_FIXED_STR(concat, ")");
+    concat->addChar(')');
     return true;
 }
