@@ -1,6 +1,7 @@
 #include "pch.h"
-#include "FormatAst.h"
 #include "Ast.h"
+#include "FormatAst.h"
+#include "Report.h"
 #include "Semantic.h"
 
 bool FormatAst::outputCompilerIf(const Utf8& name, const AstNode* node)
@@ -57,6 +58,86 @@ bool FormatAst::outputCompilerIf(const Utf8& name, const AstNode* node)
             concat->addIndent(indent);
             SWAG_CHECK(outputNode(compilerIf->elseBlock->firstChild()));
         }
+    }
+
+    return true;
+}
+
+bool FormatAst::outputCompilerSpecialValue(const AstNode* node) const
+{
+    switch (node->token.id)
+    {
+        case TokenId::CompilerSelf:
+            CONCAT_FIXED_STR(concat, "#self");
+            break;
+        case TokenId::CompilerCallerFunction:
+            CONCAT_FIXED_STR(concat, "#callerfunction");
+            break;
+        case TokenId::CompilerCallerLocation:
+            CONCAT_FIXED_STR(concat, "#callerlocation");
+            break;
+        case TokenId::CompilerLocation:
+            CONCAT_FIXED_STR(concat, "#location");
+            break;
+        case TokenId::CompilerOs:
+            CONCAT_FIXED_STR(concat, "#os");
+            break;
+        case TokenId::CompilerSwagOs:
+            CONCAT_FIXED_STR(concat, "#swagos");
+            break;
+        case TokenId::CompilerArch:
+            CONCAT_FIXED_STR(concat, "#arch");
+            break;
+        case TokenId::CompilerCpu:
+            CONCAT_FIXED_STR(concat, "#cpu");
+            break;
+        case TokenId::CompilerBackend:
+            CONCAT_FIXED_STR(concat, "#backend");
+            break;
+        case TokenId::CompilerBuildCfg:
+            CONCAT_FIXED_STR(concat, "#cfg");
+            break;
+        default:
+            Report::internalError(const_cast<AstNode*>(node), "FormatAst::outputNode, unknown compiler function");
+    }
+
+    return true;
+}
+
+bool FormatAst::outputCompilerMixin(const AstNode* node)
+{
+    const auto compilerMixin = castAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
+    CONCAT_FIXED_STR(concat, "#mixin");
+    concat->addBlank();
+    SWAG_CHECK(outputNode(node->firstChild()));
+    if (!compilerMixin->replaceTokens.empty())
+    {
+        concat->addBlank();
+        concat->addChar('{');
+        concat->addBlank();
+        for (const auto m : compilerMixin->replaceTokens)
+        {
+            switch (m.first)
+            {
+                case TokenId::KwdBreak:
+                    CONCAT_FIXED_STR(concat, "break");
+                    break;
+                case TokenId::KwdContinue:
+                    CONCAT_FIXED_STR(concat, "continue");
+                    break;
+                default:
+                    SWAG_ASSERT(false);
+                    break;
+            }
+
+            concat->addBlank();
+            concat->addChar('=');
+            concat->addBlank();
+            SWAG_CHECK(outputNode(m.second));
+            concat->addChar(';');
+            concat->addBlank();
+        }
+        concat->addChar('}');
     }
 
     return true;

@@ -39,3 +39,90 @@ bool FormatAst::outputIf(const Utf8& name, const AstNode* node)
 
     return true;
 }
+
+bool FormatAst::outputWhile(const AstNode* node)
+{
+    const auto whileNode = castAst<AstWhile>(node, AstNodeKind::While);
+    CONCAT_FIXED_STR(concat, "while");
+    concat->addBlank();
+    SWAG_CHECK(outputNode(whileNode->boolExpression));
+    concat->addEol();
+    concat->addIndent(indent);
+    SWAG_CHECK(outputNode(whileNode->block));
+    return true;
+}
+
+bool FormatAst::outputLoop(const AstNode* node)
+{
+    const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
+    CONCAT_FIXED_STR(concat, "loop");
+    if (loopNode->hasSpecFlag(AstLoop::SPEC_FLAG_BACK))
+        CONCAT_FIXED_STR(concat, ",back");
+    concat->addBlank();
+
+    if (loopNode->specificName)
+    {
+        concat->addString(loopNode->specificName->token.text);
+        concat->addChar(':');
+        concat->addBlank();
+    }
+
+    SWAG_CHECK(outputNode(loopNode->expression));
+    concat->addEol();
+    concat->addIndent(indent);
+    SWAG_CHECK(outputNode(loopNode->block));
+    return true;
+}
+
+bool FormatAst::outputVisit(const AstNode* node)
+{
+    const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
+    CONCAT_FIXED_STR(concat, "visit");
+    concat->addBlank();
+
+    if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
+        concat->addChar('&');
+
+    bool first = true;
+    for (const auto& a : visitNode->aliasNames)
+    {
+        if (!first)
+        {
+            concat->addChar(',');
+            concat->addBlank();
+        }
+
+        concat->addString(a.text);
+        first = false;
+    }
+
+    if (!visitNode->aliasNames.empty())
+    {
+        concat->addChar(':');
+        concat->addBlank();
+    }
+
+    SWAG_CHECK(outputNode(visitNode->expression));
+    concat->addEol();
+    concat->addIndent(indent);
+    SWAG_CHECK(outputNode(visitNode->block));
+    return true;
+}
+
+bool FormatAst::outputFor(const AstNode* node)
+{
+    const auto forNode = castAst<AstFor>(node, AstNodeKind::For);
+    CONCAT_FIXED_STR(concat, "for");
+    concat->addBlank();
+    SWAG_CHECK(outputNode(forNode->preExpression));
+    concat->addChar(';');
+    concat->addBlank();
+    SWAG_CHECK(outputNode(forNode->boolExpression));
+    concat->addChar(';');
+    concat->addBlank();
+    SWAG_CHECK(outputNode(forNode->postExpression));
+    concat->addEol();
+    concat->addIndent(indent);
+    SWAG_CHECK(outputNode(forNode->block));
+    return true;
+}

@@ -44,7 +44,9 @@ struct FormatAst
     bool outputAttributes(const AstNode* node, const TypeInfo* typeInfo, const AttributeList& attributes);
     bool outputAttributes(const AstNode* node, TypeInfo* typeInfo);
     bool outputAttributesGlobalUsing(const AstNode* node) const;
+    bool outputCompilerSpecialValue(const AstNode* node) const;
     bool outputCompilerIf(const Utf8& name, const AstNode* node);
+    bool outputCompilerMixin(const AstNode* node);
     bool outputLiteral(const AstNode* node);
     bool outputLiteral(const AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
     bool outputVarDecl(const AstVarDecl* varNode, bool isSelf);
@@ -59,6 +61,10 @@ struct FormatAst
     bool outputScopeContentAndChilds(Module* module, const Scope* scope);
     bool outputScopeBlock(Module* module, const Scope* scope);
     bool outputScope(Module* module, Scope* scope);
+    bool outputWhile(const AstNode* node);
+    bool outputLoop(const AstNode* node);
+    bool outputVisit(const AstNode* node);
+    bool outputFor(const AstNode* node);
     bool outputIf(const Utf8& name, const AstNode* node);
 
     bool outputNode(const AstNode* node);

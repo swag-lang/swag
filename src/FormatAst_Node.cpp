@@ -363,55 +363,21 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::CompilerMixin:
-        {
-            const auto compilerMixin = castAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
-            CONCAT_FIXED_STR(concat, "#mixin");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->firstChild()));
-            if (!compilerMixin->replaceTokens.empty())
-            {
-                concat->addBlank();
-                concat->addChar('{');
-                concat->addBlank();
-                for (const auto m : compilerMixin->replaceTokens)
-                {
-                    switch (m.first)
-                    {
-                        case TokenId::KwdBreak:
-                            CONCAT_FIXED_STR(concat, "break");
-                            break;
-                        case TokenId::KwdContinue:
-                            CONCAT_FIXED_STR(concat, "continue");
-                            break;
-                        default:
-                            SWAG_ASSERT(false);
-                            break;
-                    }
-
-                    concat->addBlank();
-                    concat->addChar('=');
-                    concat->addBlank();
-                    SWAG_CHECK(outputNode(m.second));
-                    concat->addChar(';');
-                    concat->addBlank();
-                }
-                concat->addChar('}');
-            }
+            SWAG_CHECK(outputCompilerMixin(node));
             break;
-        }
 
         case AstNodeKind::CompilerPrint:
             CONCAT_FIXED_STR(concat, "#print");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
-        
+
         case AstNodeKind::CompilerError:
             CONCAT_FIXED_STR(concat, "#error");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
-        
+
         case AstNodeKind::CompilerWarning:
             CONCAT_FIXED_STR(concat, "#warning");
             concat->addBlank();
@@ -431,131 +397,24 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::For:
-        {
-            const auto forNode = castAst<AstFor>(node, AstNodeKind::For);
-            CONCAT_FIXED_STR(concat, "for");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(forNode->preExpression));
-            concat->addChar(';');
-            concat->addBlank();
-            SWAG_CHECK(outputNode(forNode->boolExpression));
-            concat->addChar(';');
-            concat->addBlank();
-            SWAG_CHECK(outputNode(forNode->postExpression));
-            concat->addEol();
-            concat->addIndent(indent);
-            SWAG_CHECK(outputNode(forNode->block));
+            SWAG_CHECK(outputFor(node));
             break;
-        }
 
         case AstNodeKind::Visit:
-        {
-            const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
-            CONCAT_FIXED_STR(concat, "visit");
-            concat->addBlank();
-
-            if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
-                concat->addChar('&');
-
-            bool first = true;
-            for (const auto& a : visitNode->aliasNames)
-            {
-                if (!first)
-                {
-                    concat->addChar(',');
-                    concat->addBlank();
-                }
-
-                concat->addString(a.text);
-                first = false;
-            }
-
-            if (!visitNode->aliasNames.empty())
-            {
-                concat->addChar(':');
-                concat->addBlank();
-            }
-
-            SWAG_CHECK(outputNode(visitNode->expression));
-            concat->addEol();
-            concat->addIndent(indent);
-            SWAG_CHECK(outputNode(visitNode->block));
+            SWAG_CHECK(outputVisit(node));
             break;
-        }
 
         case AstNodeKind::Loop:
-        {
-            const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
-            CONCAT_FIXED_STR(concat, "loop");
-            if (loopNode->hasSpecFlag(AstLoop::SPEC_FLAG_BACK))
-                CONCAT_FIXED_STR(concat, ",back");
-            concat->addBlank();
-
-            if (loopNode->specificName)
-            {
-                concat->addString(loopNode->specificName->token.text);
-                concat->addChar(':');
-                concat->addBlank();
-            }
-
-            SWAG_CHECK(outputNode(loopNode->expression));
-            concat->addEol();
-            concat->addIndent(indent);
-            SWAG_CHECK(outputNode(loopNode->block));
+            SWAG_CHECK(outputLoop(node));
             break;
-        }
 
         case AstNodeKind::While:
-        {
-            const auto whileNode = castAst<AstWhile>(node, AstNodeKind::While);
-            CONCAT_FIXED_STR(concat, "while");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(whileNode->boolExpression));
-            concat->addEol();
-            concat->addIndent(indent);
-            SWAG_CHECK(outputNode(whileNode->block));
+            SWAG_CHECK(outputWhile(node));
             break;
-        }
 
         case AstNodeKind::CompilerSpecialValue:
-        {
-            switch (node->token.id)
-            {
-                case TokenId::CompilerSelf:
-                    CONCAT_FIXED_STR(concat, "#self");
-                    break;
-                case TokenId::CompilerCallerFunction:
-                    CONCAT_FIXED_STR(concat, "#callerfunction");
-                    break;
-                case TokenId::CompilerCallerLocation:
-                    CONCAT_FIXED_STR(concat, "#callerlocation");
-                    break;
-                case TokenId::CompilerLocation:
-                    CONCAT_FIXED_STR(concat, "#location");
-                    break;
-                case TokenId::CompilerOs:
-                    CONCAT_FIXED_STR(concat, "#os");
-                    break;
-                case TokenId::CompilerSwagOs:
-                    CONCAT_FIXED_STR(concat, "#swagos");
-                    break;
-                case TokenId::CompilerArch:
-                    CONCAT_FIXED_STR(concat, "#arch");
-                    break;
-                case TokenId::CompilerCpu:
-                    CONCAT_FIXED_STR(concat, "#cpu");
-                    break;
-                case TokenId::CompilerBackend:
-                    CONCAT_FIXED_STR(concat, "#backend");
-                    break;
-                case TokenId::CompilerBuildCfg:
-                    CONCAT_FIXED_STR(concat, "#cfg");
-                    break;
-                default:
-                    Report::internalError(const_cast<AstNode*>(node), "FormatAst::outputNode, unknown compiler function");
-            }
+            SWAG_CHECK(outputCompilerSpecialValue(node));
             break;
-        }
 
         case AstNodeKind::ConditionalExpression:
             SWAG_CHECK(outputNode(node->firstChild()));
@@ -582,7 +441,7 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
-        
+
         case AstNodeKind::NameAlias:
             CONCAT_FIXED_STR(concat, "namealias");
             concat->addBlank();
