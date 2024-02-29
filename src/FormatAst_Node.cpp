@@ -319,33 +319,8 @@ bool FormatAst::outputNode(const AstNode* node)
         case AstNodeKind::CompilerAst:
         case AstNodeKind::CompilerValidIf:
         case AstNodeKind::CompilerValidIfx:
-        {
-            if (node->is(AstNodeKind::CompilerRun) || node->is(AstNodeKind::CompilerRunExpression))
-                CONCAT_FIXED_STR(concat, "#run");
-            else if (node->is(AstNodeKind::CompilerAst))
-                CONCAT_FIXED_STR(concat, "#ast");
-            else if (node->is(AstNodeKind::CompilerValidIf))
-                CONCAT_FIXED_STR(concat, "#validif");
-            else if (node->is(AstNodeKind::CompilerValidIfx))
-                CONCAT_FIXED_STR(concat, "#validifx");
-            concat->addBlank();
-
-            const auto front = node->firstChild();
-            if (front->is(AstNodeKind::FuncDecl))
-            {
-                const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(front, AstNodeKind::FuncDecl);
-                concat->addEol();
-                concat->addIndent(indent);
-                SWAG_CHECK(outputNode(funcDecl->content));
-                concat->addEol();
-            }
-            else
-            {
-                SWAG_CHECK(outputNode(front));
-                concat->addEol();
-            }
+            SWAG_CHECK(outputCompilerExpr(node));
             break;
-        }
 
         case AstNodeKind::CompilerIf:
             SWAG_CHECK(outputCompilerIf("#if", node));

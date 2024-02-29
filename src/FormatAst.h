@@ -46,6 +46,7 @@ struct FormatAst
     bool outputAttributesGlobalUsing(const AstNode* node) const;
     bool outputCompilerSpecialValue(const AstNode* node) const;
     bool outputCompilerIf(const Utf8& name, const AstNode* node);
+    bool outputCompilerExpr(const AstNode* node);
     bool outputCompilerMixin(const AstNode* node);
     bool outputLiteral(const AstNode* node);
     bool outputLiteral(const AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
