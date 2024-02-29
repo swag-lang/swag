@@ -17,7 +17,6 @@ enum class ErrCxtStepKind
     CompileTime,
     ValidIf,
     ValidIfx,
-    Export,
     HereIs,
 };
 

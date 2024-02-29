@@ -102,9 +102,6 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
             {
                 case ErrCxtStepKind::Note:
                     break;
-                case ErrCxtStepKind::Export:
-                    msg = formNte(Nte0097, name.c_str());
-                    break;
                 case ErrCxtStepKind::Generic:
                     msg            = formNte(Nte0095, name.c_str());
                     exp.locIsToken = true;

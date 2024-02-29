@@ -17,11 +17,9 @@ bool FormatAst::outputStruct(AstStruct* node)
         if (typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
             CONCAT_FIXED_STR(concat, "#[ExportType(\"nozero\")]");
-            concat->addEolIndent(context.indent);
+            concat->addEolIndent(indent);
         }
     }
-
-    PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export, nullptr);
 
     if (node->is(AstNodeKind::InterfaceDecl))
         CONCAT_FIXED_STR(concat, "interface");
@@ -43,15 +41,15 @@ bool FormatAst::outputStruct(AstStruct* node)
         concat->addString(node->token.text);
     }
 
-    concat->addEolIndent(context.indent);
+    concat->addEolIndent(indent);
 
     // #validif must be exported
     if (node->validif)
     {
-        context.indent++;
-        concat->addEolIndent(context.indent);
+        indent++;
+        concat->addEolIndent(indent);
         SWAG_CHECK(outputNode(node->validif));
-        context.indent--;
+        indent--;
     }
 
     // Opaque export. Just simulate structure with the correct size.
@@ -67,7 +65,7 @@ bool FormatAst::outputStruct(AstStruct* node)
         if (typeStruct->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
         {
             SWAG_ASSERT(!typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES));
-            concat->addIndent(context.indent + 1);
+            concat->addIndent(indent + 1);
             concat->addStringFormat("padding: [%llu] u8 = ?", typeStruct->sizeOf);
             concat->addEol();
         }
@@ -75,12 +73,12 @@ bool FormatAst::outputStruct(AstStruct* node)
         // Everything in the structure is initialized to zero
         else
         {
-            concat->addIndent(context.indent + 1);
+            concat->addIndent(indent + 1);
             concat->addStringFormat("padding: [%llu] u8", typeStruct->sizeOf);
             concat->addEol();
         }
 
-        concat->addIndent(context.indent);
+        concat->addIndent(indent);
         concat->addChar('}');
     }
     else

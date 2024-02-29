@@ -8,20 +8,20 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-void FormatAst::incIndentStatement(const AstNode* node, int& indent)
+void FormatAst::incIndentStatement(const AstNode* node, uint32_t& idt)
 {
     if (node->is(AstNodeKind::CompilerIfBlock) && node->firstChild()->is(AstNodeKind::Statement))
         return;
     if (node->isNot(AstNodeKind::Statement))
-        indent++;
+        idt++;
 }
 
-void FormatAst::decIndentStatement(const AstNode* node, int& indent)
+void FormatAst::decIndentStatement(const AstNode* node, uint32_t& idt)
 {
     if (node->is(AstNodeKind::CompilerIfBlock) && node->firstChild()->is(AstNodeKind::Statement))
         return;
     if (node->isNot(AstNodeKind::Statement))
-        indent--;
+        idt--;
 }
 
 bool FormatAst::outputGenericParameters(AstNode* node)
@@ -110,20 +110,20 @@ bool FormatAst::outputAttrUse(AstNode* node, bool& hasSomething)
 
 bool FormatAst::outputEnum(AstEnum* node)
 {
-    PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export, nullptr);
-
     CONCAT_FIXED_STR(concat, "enum ");
     concat->addString(node->token.text);
 
     // Raw type
-    if (!node->firstChild()->children.empty())
+    if (node->firstChild()->childCount())
     {
-        CONCAT_FIXED_STR(concat, " : ");
-        SWAG_ASSERT(node->children[0]->is(AstNodeKind::EnumType));
-        SWAG_CHECK(outputNode(node->children[0]));
+        concat->addBlank();
+        concat->addChar(':');
+        concat->addBlank();
+        SWAG_ASSERT(node->firstChild()->is(AstNodeKind::EnumType));
+        SWAG_CHECK(outputNode(node->firstChild()));
     }
 
-    concat->addEolIndent(context.indent);
+    concat->addEolIndent(indent);
     concat->addChar('{');
     concat->addEol();
 
@@ -131,7 +131,7 @@ bool FormatAst::outputEnum(AstEnum* node)
     {
         if (c->is(AstNodeKind::EnumValue))
         {
-            concat->addIndent(context.indent + 1);
+            concat->addIndent(indent + 1);
 
             if (c->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
             {
@@ -152,7 +152,7 @@ bool FormatAst::outputEnum(AstEnum* node)
         }
     }
 
-    concat->addIndent(context.indent);
+    concat->addIndent(indent);
     concat->addChar('}');
     concat->addEol();
     return true;
@@ -161,7 +161,7 @@ bool FormatAst::outputEnum(AstEnum* node)
 bool FormatAst::outputAttributesUsage(const TypeInfoFuncAttr* typeFunc)
 {
     bool first = true;
-    concat->addIndent(context.indent);
+    concat->addIndent(indent);
     concat->addString("#[AttrUsage(");
 
 #define ADD_ATTR_USAGE(__f, __n)                         \
@@ -221,7 +221,7 @@ bool FormatAst::outputAttributes(AstNode* /*node*/, const TypeInfo* typeInfo, co
                 if (done.contains(one.node))
                     continue;
                 done.insert(one.node);
-                concat->addIndent(context.indent);
+                concat->addIndent(indent);
                 bool hasSomething = true;
                 SWAG_CHECK(outputAttrUse(one.node, hasSomething));
                 concat->addEol();
@@ -233,7 +233,7 @@ bool FormatAst::outputAttributes(AstNode* /*node*/, const TypeInfo* typeInfo, co
                 else
                 {
                     first = false;
-                    concat->addIndent(context.indent);
+                    concat->addIndent(indent);
                     CONCAT_FIXED_STR(concat, "#[");
                 }
 
@@ -281,7 +281,7 @@ bool FormatAst::outputAttributesGlobalUsing(const AstNode* node)
 
             if (!one)
             {
-                concat->addIndent(context.indent);
+                concat->addIndent(indent);
                 CONCAT_FIXED_STR(concat, "#[Using(");
                 one = true;
             }
@@ -476,7 +476,7 @@ bool FormatAst::outputScopeContent(const Module* moduleToGen, const Scope* scope
         for (const auto one : publicSet->publicNodes)
         {
             SWAG_CHECK(outputAttributes(one, one->typeInfo));
-            concat->addIndent(context.indent);
+            concat->addIndent(indent);
             SWAG_CHECK(outputNode(one));
             concat->addEol();
         }
@@ -495,12 +495,12 @@ bool FormatAst::outputScopeContent(const Module* moduleToGen, const Scope* scope
 
             // Remap special functions to their generated equivalent
             node->computeFullNameForeignExport();
-            concat->addIndent(context.indent);
+            concat->addIndent(indent);
             concat->addStringFormat(R"(#[Foreign("%s", "%s")])", moduleToGen->name.c_str(), node->fullnameForeignExport.c_str());
             concat->addEol();
             SWAG_CHECK(outputAttributes(node, node->typeInfo));
 
-            concat->addIndent(context.indent);
+            concat->addIndent(indent);
             if (node->token.text == g_LangSpec->name_opInitGenerated)
             {
                 CONCAT_FIXED_STR(concat, "func opInit(using self);");
@@ -534,7 +534,7 @@ bool FormatAst::outputScopeContent(const Module* moduleToGen, const Scope* scope
             const auto              node     = castAst<AstAttrDecl>(one, AstNodeKind::AttrDecl);
             const TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             SWAG_CHECK(outputAttributesUsage(typeFunc));
-            concat->addIndent(context.indent);
+            concat->addIndent(indent);
             SWAG_CHECK(outputFuncSignature(node, nullptr, node->parameters, nullptr));
         }
     }
@@ -550,21 +550,21 @@ bool FormatAst::outputScope(Module* moduleToGen, Scope* scope)
     if (scope->flags.has(SCOPE_IMPORTED))
         return true;
 
-    context.forExport = true;
+    forExport = true;
 
     // Namespace
     if (scope->is(ScopeKind::Namespace) && !scope->name.empty())
     {
         if (!scope->flags.has(SCOPE_AUTO_GENERATED))
         {
-            concat->addIndent(context.indent);
+            concat->addIndent(indent);
             CONCAT_FIXED_STR(concat, "namespace ");
             concat->addString(scope->name);
             concat->addEol();
-            concat->addIndent(context.indent);
+            concat->addIndent(indent);
             concat->addChar('{');
             concat->addEol();
-            context.indent++;
+            indent++;
         }
 
         SWAG_CHECK(outputScopeContent(moduleToGen, scope));
@@ -573,8 +573,8 @@ bool FormatAst::outputScope(Module* moduleToGen, Scope* scope)
 
         if (!scope->flags.has(SCOPE_AUTO_GENERATED))
         {
-            context.indent--;
-            concat->addIndent(context.indent);
+            indent--;
+            concat->addIndent(indent);
             concat->addChar('}');
             concat->addEol();
             concat->addEol();
@@ -584,7 +584,7 @@ bool FormatAst::outputScope(Module* moduleToGen, Scope* scope)
     // Impl
     else if (!scope->isGlobal() && scope->isGlobalOrImpl() && !scope->name.empty())
     {
-        concat->addIndent(context.indent);
+        concat->addIndent(indent);
         if (scope->is(ScopeKind::Impl))
         {
             const auto nodeImpl = castAst<AstImpl>(scope->owner, AstNodeKind::Impl);
@@ -606,11 +606,11 @@ bool FormatAst::outputScope(Module* moduleToGen, Scope* scope)
             concat->addEol();
         }
 
-        concat->addIndent(context.indent);
+        concat->addIndent(indent);
         concat->addChar('{');
         concat->addEol();
 
-        context.indent++;
+        indent++;
         SWAG_CHECK(outputScopeContent(moduleToGen, scope));
         for (const auto oneScope : scope->childScopes)
         {
@@ -619,8 +619,8 @@ bool FormatAst::outputScope(Module* moduleToGen, Scope* scope)
             SWAG_CHECK(outputScope(moduleToGen, oneScope));
         }
 
-        context.indent--;
-        concat->addIndent(context.indent);
+        indent--;
+        concat->addIndent(indent);
         concat->addChar('}');
         concat->addEol();
         concat->addEol();
@@ -636,17 +636,17 @@ bool FormatAst::outputScope(Module* moduleToGen, Scope* scope)
     // Named scope
     else if (!scope->name.empty())
     {
-        concat->addIndent(context.indent);
+        concat->addIndent(indent);
         concat->addChar('{');
         concat->addEol();
 
-        context.indent++;
+        indent++;
         SWAG_CHECK(outputScopeContent(moduleToGen, scope));
         for (const auto oneScope : scope->childScopes)
             SWAG_CHECK(outputScope(moduleToGen, oneScope));
-        context.indent--;
+        indent--;
 
-        concat->addIndent(context.indent);
+        concat->addIndent(indent);
         concat->addChar('}');
         concat->addEol();
         concat->addEol();

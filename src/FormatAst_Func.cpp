@@ -13,8 +13,6 @@ bool FormatAst::outputFuncName(const AstFuncDecl* node) const
 
 bool FormatAst::outputFuncSignature(AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf)
 {
-    ScopeExportNode sen(context, node);
-
     if (node->is(AstNodeKind::AttrDecl))
         CONCAT_FIXED_STR(concat, "attr");
     else
@@ -76,10 +74,10 @@ bool FormatAst::outputFuncSignature(AstNode* node, AstNode* genericParameters, A
     // #validif must be exported
     if (validIf)
     {
-        context.indent++;
-        concat->addEolIndent(context.indent);
+        indent++;
+        concat->addEolIndent(indent);
         SWAG_CHECK(outputNode(validIf));
-        context.indent--;
+        indent--;
     }
 
     CONCAT_FIXED_STR(concat, ";");
@@ -89,7 +87,6 @@ bool FormatAst::outputFuncSignature(AstNode* node, AstNode* genericParameters, A
 
 bool FormatAst::outputFunc(AstFuncDecl* node)
 {
-    PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export, nullptr);
     CONCAT_FIXED_STR(concat, "func");
 
     // Emit generic parameter, except if the function is an instance
@@ -149,14 +146,14 @@ bool FormatAst::outputFunc(AstFuncDecl* node)
     // #validifx block
     if (node->validIf)
     {
-        context.indent++;
-        concat->addEolIndent(context.indent);
+        indent++;
+        concat->addEolIndent(indent);
         SWAG_CHECK(outputNode(node->validIf));
-        context.indent--;
+        indent--;
     }
     else if (node->content)
     {
-        concat->addEolIndent(context.indent);
+        concat->addEolIndent(indent);
     }
 
     if (!node->content)
@@ -164,22 +161,22 @@ bool FormatAst::outputFunc(AstFuncDecl* node)
 
     // Content, normal function
     concat->addChar('{');
-    context.indent++;
+    indent++;
     concat->addEol();
 
     if (node->content->isNot(AstNodeKind::Statement))
     {
-        concat->addIndent(context.indent);
-        context.indent--;
+        concat->addIndent(indent);
+        indent--;
         SWAG_CHECK(outputNode(node->content));
-        context.indent++;
+        indent++;
         concat->addEol();
     }
     else
     {
         for (auto c : node->subDecl)
         {
-            concat->addIndent(context.indent);
+            concat->addIndent(indent);
             if (c->parent && c->parent->is(AstNodeKind::AttrUse))
                 c = c->parent;
             SWAG_CHECK(outputNode(c));
@@ -188,14 +185,14 @@ bool FormatAst::outputFunc(AstFuncDecl* node)
 
         for (const auto c : node->content->children)
         {
-            concat->addIndent(context.indent);
+            concat->addIndent(indent);
             SWAG_CHECK(outputNode(c));
             concat->addEol();
         }
     }
 
-    context.indent--;
-    concat->addIndent(context.indent);
+    indent--;
+    concat->addIndent(indent);
     concat->addChar('}');
     concat->addEol();
     return true;
@@ -279,7 +276,7 @@ bool FormatAst::outputLambdaExpression(AstNode* node)
     }
     else
     {
-        concat->addEolIndent(context.indent);
+        concat->addEolIndent(indent);
         SWAG_CHECK(outputNode(funcDecl->content));
     }
 

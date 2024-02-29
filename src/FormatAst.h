@@ -26,8 +26,8 @@ struct FormatAst
     {
     }
 
-    void incIndentStatement(const AstNode* node, int& indent);
-    void decIndentStatement(const AstNode* node, int& indent);
+    static void        incIndentStatement(const AstNode* node, uint32_t& indent);
+    static void decIndentStatement(const AstNode* node, uint32_t& indent);
 
     bool outputLambdaExpression(AstNode* node);
     bool outputEnum(AstEnum* node);
@@ -51,31 +51,7 @@ struct FormatAst
     bool outputScope(Module* moduleToGen, Scope* scope);
     bool outputNode(AstNode* node);
 
-    struct OutputContext : JobContext
-    {
-        AstNode* exportedNode = nullptr;
-        int      indent       = 0;
-        bool     forExport    = false;
-    };
-
-    OutputContext context;
-    FormatConcat* concat = nullptr;
-};
-
-struct ScopeExportNode
-{
-    ScopeExportNode(FormatAst::OutputContext& context, AstNode* node)
-    {
-        savedContext         = &context;
-        savedExportedNode    = context.exportedNode;
-        context.exportedNode = node;
-    }
-
-    ~ScopeExportNode()
-    {
-        savedContext->exportedNode = savedExportedNode;
-    }
-
-    FormatAst::OutputContext* savedContext;
-    AstNode*                  savedExportedNode;
+    FormatConcat* concat    = nullptr;
+    uint32_t      indent    = 0;
+    bool          forExport = false;
 };

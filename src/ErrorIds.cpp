@@ -982,7 +982,7 @@ void initErrors()
     SWAG_ERROR(Nte0094, "occurred during the [[#validifx]] check of the call to [[%s]]");
     SWAG_ERROR(Nte0095, "occurred during the generic instantiation of [[%s]]");
     SWAG_ERROR(Nte0096, "occurred during the inline expansion of [[%s]]");
-    SWAG_ERROR(Nte0097, "occurred during the public export of [[%s]]");
+    SWAG_ERROR(Nte0097, nullptr);
     SWAG_ERROR(Nte0098, "occurred in generated code");
     SWAG_ERROR(Nte0099, "one function declares [[throw]] while the other doesn't");
     SWAG_ERROR(Nte0100, "only the address of a returned reference can be taken, and this is %s");

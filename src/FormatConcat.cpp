@@ -1,6 +1,12 @@
 #include "pch.h"
 #include "FormatConcat.h"
 
+void FormatConcat::addBlank(bool test)
+{
+    if(test)
+        addChar(' ');
+}
+
 void FormatConcat::addEol()
 {
     ensureSpace(1);

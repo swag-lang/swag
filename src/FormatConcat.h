@@ -3,6 +3,7 @@
 
 struct FormatConcat : Concat
 {
+    void addBlank(bool test = true);
     void addEolIndent(uint32_t num);
     void addIndent(uint32_t num);
     void addEol();
