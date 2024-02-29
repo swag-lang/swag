@@ -18,22 +18,6 @@ const AstNode* FormatAst::convertNode(const AstNode* node)
     return node;
 }
 
-void FormatAst::incIndentStatement(const AstNode* node, uint32_t& idt)
-{
-    if (node->is(AstNodeKind::CompilerIfBlock) && node->firstChild()->is(AstNodeKind::Statement))
-        return;
-    if (node->isNot(AstNodeKind::Statement))
-        idt++;
-}
-
-void FormatAst::decIndentStatement(const AstNode* node, uint32_t& idt)
-{
-    if (node->is(AstNodeKind::CompilerIfBlock) && node->firstChild()->is(AstNodeKind::Statement))
-        return;
-    if (node->isNot(AstNodeKind::Statement))
-        idt--;
-}
-
 bool FormatAst::outputChildren(const AstNode* node)
 {
     for (const auto it : node->children)

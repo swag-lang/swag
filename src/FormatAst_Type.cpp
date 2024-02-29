@@ -38,7 +38,8 @@ bool FormatAst::outputStructDecl(const AstStruct* node)
         if (typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
             CONCAT_FIXED_STR(concat, "#[ExportType(\"nozero\")]");
-            concat->addEolIndent(indent);
+            concat->addEol();
+            concat->addIndent(indent);
         }
     }
 
@@ -62,13 +63,16 @@ bool FormatAst::outputStructDecl(const AstStruct* node)
         concat->addString(node->token.text);
     }
 
-    concat->addEolIndent(indent);
+    concat->addEol();
+    concat->addIndent(indent);
+
 
     // #validif must be exported
     if (node->validif)
     {
         indent++;
-        concat->addEolIndent(indent);
+        concat->addEol();
+        concat->addIndent(indent);
         SWAG_CHECK(outputNode(node->validif));
         indent--;
     }
@@ -285,7 +289,8 @@ bool FormatAst::outputEnum(const AstEnum* node)
         SWAG_CHECK(outputNode(node->firstChild()));
     }
 
-    concat->addEolIndent(indent);
+    concat->addEol();
+    concat->addIndent(indent);
     concat->addChar('{');
     concat->addEol();
 

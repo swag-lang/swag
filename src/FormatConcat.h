@@ -4,7 +4,6 @@
 struct FormatConcat : Concat
 {
     void addBlank(bool test = true);
-    void addEolIndent(uint32_t num);
     void addIndent(uint32_t num);
     void addEol();
     void addU32Str(uint32_t value);

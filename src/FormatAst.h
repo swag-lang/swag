@@ -27,10 +27,8 @@ struct FormatAst
     }
 
     static const AstNode* convertNode(const AstNode* node);
-    static void    incIndentStatement(const AstNode* node, uint32_t& idt);
-    static void    decIndentStatement(const AstNode* node, uint32_t& idt);
-    bool           outputChildren(const AstNode* node);
-    bool           outputCommaChildren(const AstNode* node);
+    bool                  outputChildren(const AstNode* node);
+    bool                  outputCommaChildren(const AstNode* node);
 
     bool outputLambdaExpression(const AstNode* node);
     bool outputEnum(const AstEnum* node);

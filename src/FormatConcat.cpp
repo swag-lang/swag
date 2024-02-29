@@ -24,12 +24,6 @@ void FormatConcat::addIndent(uint32_t num)
     }
 }
 
-void FormatConcat::addEolIndent(uint32_t num)
-{
-    addEol();
-    addIndent(num);
-}
-
 void FormatConcat::addChar(char c)
 {
     SWAG_ASSERT(!SWAG_IS_BLANK(c));

@@ -84,7 +84,8 @@ bool FormatAst::outputFuncSignature(AstNode* node, const AstNode* genericParamet
     if (validIf)
     {
         indent++;
-        concat->addEolIndent(indent);
+        concat->addEol();
+        concat->addIndent(indent);
         SWAG_CHECK(outputNode(validIf));
         indent--;
     }
@@ -185,13 +186,15 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
     if (node->validIf)
     {
         indent++;
-        concat->addEolIndent(indent);
+        concat->addEol();
+        concat->addIndent(indent);
         SWAG_CHECK(outputNode(node->validIf));
         indent--;
     }
     else if (node->content)
     {
-        concat->addEolIndent(indent);
+        concat->addEol();
+        concat->addIndent(indent);
     }
 
     if (!node->content)
