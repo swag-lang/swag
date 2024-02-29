@@ -26,8 +26,9 @@ struct FormatAst
     {
     }
 
-    static void        incIndentStatement(const AstNode* node, uint32_t& indent);
-    static void decIndentStatement(const AstNode* node, uint32_t& indent);
+    static void incIndentStatement(const AstNode* node, uint32_t& idt);
+    static void decIndentStatement(const AstNode* node, uint32_t& idt);
+    bool        outputChildren(const AstNode* node);
 
     bool outputLambdaExpression(AstNode* node);
     bool outputEnum(AstEnum* node);
@@ -36,10 +37,10 @@ struct FormatAst
     bool outputFuncName(const AstFuncDecl* node) const;
     bool outputFuncSignature(AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf);
     bool outputGenericParameters(AstNode* node);
-    bool outputAttributesUsage(const TypeInfoFuncAttr* typeFunc);
+    bool outputAttributesUsage(const TypeInfoFuncAttr* typeFunc) const;
     bool outputAttributes(AstNode* node, const TypeInfo* typeInfo, const AttributeList& attributes);
     bool outputAttributes(AstNode* node, TypeInfo* typeInfo);
-    bool outputAttributesGlobalUsing(const AstNode* node);
+    bool outputAttributesGlobalUsing(const AstNode* node) const;
     bool outputLiteral(AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
     bool outputVarDecl(const AstVarDecl* varNode, bool isSelf);
     bool outputVar(const AstVarDecl* varNode);
@@ -47,8 +48,11 @@ struct FormatAst
     bool outputTypeTuple(TypeInfo* typeInfo);
     bool outputType(AstTypeExpression* node);
     bool outputType(AstNode* node, TypeInfo* typeInfo);
-    bool outputScopeContent(const Module* moduleToGen, const Scope* scope);
-    bool outputScope(Module* moduleToGen, Scope* scope);
+    bool outputScopeContent(const Module* module, const Scope* scope);
+    bool outputScopeContentAndChilds(Module* module, const Scope* scope);
+    bool outputScopeBlock(Module* module, const Scope* scope);
+    bool outputScope(Module* module, Scope* scope);
+
     bool outputNode(AstNode* node);
 
     FormatConcat* concat    = nullptr;

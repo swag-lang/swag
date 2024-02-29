@@ -1106,35 +1106,30 @@ bool FormatAst::outputNode(AstNode* node)
         }
 
         case AstNodeKind::Namespace:
-            if (!node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
+            if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
             {
-                CONCAT_FIXED_STR(concat, "namespace ");
-                concat->addString(node->token.text);
-                concat->addEolIndent(indent);
-                concat->addChar('{');
-                concat->addEol();
+                SWAG_CHECK(outputChildren(node));
+                break;
             }
 
-            for (const auto child : node->children)
-            {
-                concat->addIndent(indent + 1);
-                indent++;
-                SWAG_CHECK(outputNode(child));
-                indent--;
-                concat->addEol();
-            }
-
-
-        if (!node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
-            {
-                concat->addIndent(indent);
-                concat->addChar('}');
-                concat->addEolIndent(indent);
-            }
+            CONCAT_FIXED_STR(concat, "namespace");
+            concat->addBlank();
+            concat->addString(node->token.text);
+            concat->addEol();
+            concat->addIndent(indent);
+            concat->addChar('{');
+            concat->addEol();
+            indent++;
+            outputChildren(node);
+            indent--;
+            concat->addIndent(indent);
+            concat->addChar('}');
+            concat->addEol();
             break;
 
         case AstNodeKind::CompilerImport:
-            CONCAT_FIXED_STR(concat, "#import ");
+            CONCAT_FIXED_STR(concat, "#import");
+            concat->addBlank();
             concat->addString(node->token.text);
             concat->addEol();
             break;
@@ -1145,19 +1140,21 @@ bool FormatAst::outputNode(AstNode* node)
             break;
 
         case AstNodeKind::CompilerPlaceHolder:
-            CONCAT_FIXED_STR(concat, "#placeholder ");
+            CONCAT_FIXED_STR(concat, "#placeholder");
+            concat->addBlank();
             concat->addString(node->token.text);
             concat->addEol();
             break;
 
         case AstNodeKind::CompilerForeignLib:
-            CONCAT_FIXED_STR(concat, "#foreignlib ");
-            SWAG_CHECK(outputNode(node->children[0]));
+            CONCAT_FIXED_STR(concat, "#foreignlib");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->firstChild()));
             concat->addEol();
             break;
 
         default:
-            return Report::internalError(node, "Ast::outputNode, unknown node kind");
+            return Report::internalError(node, "FormatAst::outputNode, unknown node kind");
     }
 
     return true;

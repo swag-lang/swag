@@ -352,9 +352,12 @@
     <ClCompile Include="..\src\Ast_Generate.cpp" />
     <ClCompile Include="..\src\Ast_New.cpp" />
     <ClCompile Include="..\src\BackendLinker_Coff.cpp" />
+    <ClCompile Include="..\src\FormatAst_Attr.cpp" />
     <ClCompile Include="..\src\FormatAst_Func.cpp" />
     <ClCompile Include="..\src\FormatAst_Node.cpp" />
+    <ClCompile Include="..\src\FormatAst_Scope.cpp" />
     <ClCompile Include="..\src\FormatAst_Type.cpp" />
+    <ClCompile Include="..\src\FormatAst_Var.cpp" />
     <ClCompile Include="..\src\FormatConcat.cpp" />
     <ClCompile Include="..\src\LLVM_Call.cpp" />
     <ClCompile Include="..\src\LLVM_Data.cpp" />
