@@ -347,14 +347,44 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
         }
 
-        case AstNodeKind::CompilerIfBlock:
-            if (node->firstChild()->isNot(AstNodeKind::Statement))
-            {
-                CONCAT_FIXED_STR(concat, "#do");
-                concat->addBlank();
-            }
-            SWAG_CHECK(outputNode(node->firstChild()));
+        case AstNodeKind::CompilerIf:
+            SWAG_CHECK(outputCompilerIf("#if", node));
             break;
+
+        case AstNodeKind::If:
+        {
+            const auto compilerIf = castAst<AstIf>(node, AstNodeKind::If);
+            CONCAT_FIXED_STR(concat, "if");
+            concat->addBlank();
+
+            if (compilerIf->hasSpecFlag(AstIf::SPEC_FLAG_ASSIGN))
+            {
+                const auto varNode = castAst<AstVarDecl>(compilerIf->firstChild(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+                if (varNode->token.is(TokenId::KwdConst))
+                    CONCAT_FIXED_STR(concat, "const");
+                else
+                    CONCAT_FIXED_STR(concat, "var");
+                concat->addBlank();
+                SWAG_CHECK(outputVarDecl(varNode, false));
+            }
+            else
+                SWAG_CHECK(outputNode(compilerIf->boolExpression));
+
+            concat->addEol();
+            concat->addIndent(indent);
+            SWAG_CHECK(outputNode(compilerIf->ifBlock));
+
+            if (compilerIf->elseBlock)
+            {
+                concat->addEol();
+                concat->addIndent(indent);
+                CONCAT_FIXED_STR(concat, "else");
+                concat->addEol();
+                concat->addIndent(indent);
+                SWAG_CHECK(outputNode(compilerIf->elseBlock));
+            }
+            break;
+        }
 
         case AstNodeKind::CompilerMacro:
             CONCAT_FIXED_STR(concat, "#macro");
@@ -429,63 +459,6 @@ bool FormatAst::outputNode(const AstNode* node)
             }
 
             break;
-
-        case AstNodeKind::CompilerIf:
-        {
-            const auto compilerIf = castAst<AstIf>(node, AstNodeKind::CompilerIf);
-            CONCAT_FIXED_STR(concat, "#if");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(compilerIf->boolExpression));
-
-            concat->addEol();
-            concat->addIndent(indent);
-            SWAG_CHECK(outputNode(compilerIf->ifBlock));
-
-            if (compilerIf->elseBlock)
-            {
-                concat->addEol();
-                concat->addIndent(indent);
-                CONCAT_FIXED_STR(concat, "#else");
-                concat->addBlank();
-                SWAG_CHECK(outputNode(compilerIf->elseBlock));
-            }
-            break;
-        }
-
-        case AstNodeKind::If:
-        {
-            const auto compilerIf = castAst<AstIf>(node, AstNodeKind::If);
-            CONCAT_FIXED_STR(concat, "if");
-            concat->addBlank();
-
-            if (compilerIf->hasSpecFlag(AstIf::SPEC_FLAG_ASSIGN))
-            {
-                const auto varNode = castAst<AstVarDecl>(compilerIf->firstChild(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-                if (varNode->token.is(TokenId::KwdConst))
-                    CONCAT_FIXED_STR(concat, "const");
-                else
-                    CONCAT_FIXED_STR(concat, "var");
-                concat->addBlank();
-                SWAG_CHECK(outputVarDecl(varNode, false));
-            }
-            else
-                SWAG_CHECK(outputNode(compilerIf->boolExpression));
-
-            concat->addEol();
-            concat->addIndent(indent);
-            SWAG_CHECK(outputNode(compilerIf->ifBlock));
-
-            if (compilerIf->elseBlock)
-            {
-                concat->addEol();
-                concat->addIndent(indent);
-                CONCAT_FIXED_STR(concat, "else");
-                concat->addEol();
-                concat->addIndent(indent);
-                SWAG_CHECK(outputNode(compilerIf->elseBlock));
-            }
-            break;
-        }
 
         case AstNodeKind::For:
         {
