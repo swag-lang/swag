@@ -335,3 +335,33 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
 
     return true;
 }
+
+bool FormatAst::outputFuncCallParams(const AstNode* node)
+{
+    const auto funcCallParams = castAst<AstFuncCallParams>(node, AstNodeKind::FuncCallParams);
+
+    // Aliases
+    if (!funcCallParams->aliasNames.empty())
+    {
+        concat->addChar('|');
+
+        bool first = true;
+        for (const auto& it : funcCallParams->aliasNames)
+        {
+            if (!first)
+            {
+                concat->addChar(',');
+                concat->addBlank();
+            }
+
+            concat->addString(it.text);
+            first = false;
+        }
+
+        concat->addChar('|');
+        concat->addBlank();
+    }
+
+    SWAG_CHECK(outputCommaChildren(node));
+    return true;
+}

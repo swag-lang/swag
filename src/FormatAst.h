@@ -38,6 +38,7 @@ struct FormatAst
     bool outputFuncDeclParams(const AstNode* node);
     bool outputFuncDecl(const AstFuncDecl* node);
     bool outputAttrUse(const AstNode* node, bool& hasSomething);
+    bool outputFuncCallParams(const AstNode* node);
     bool outputFuncName(const AstFuncDecl* node) const;
     bool outputFuncSignature(AstNode* node, const AstNode* genericParameters, const AstNode* parameters, const AstNode* validIf);
     bool outputGenericParameters(const AstNode* node);

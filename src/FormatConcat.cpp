@@ -3,8 +3,10 @@
 
 void FormatConcat::addBlank(bool test)
 {
-    if(test)
-        addChar(' ');
+    if(!test)
+        return;
+    ensureSpace(1);
+    *currentSP++ = ' ';
 }
 
 void FormatConcat::addEol()
@@ -16,7 +18,10 @@ void FormatConcat::addEol()
 void FormatConcat::addIndent(uint32_t num)
 {
     while (num--)
-        addChar('\t');
+    {
+        ensureSpace(1);
+        *currentSP++ = '\t';
+    }
 }
 
 void FormatConcat::addEolIndent(uint32_t num)
@@ -27,6 +32,7 @@ void FormatConcat::addEolIndent(uint32_t num)
 
 void FormatConcat::addChar(char c)
 {
+    SWAG_ASSERT(!SWAG_IS_BLANK(c));
     ensureSpace(1);
     *currentSP++ = c;
 }

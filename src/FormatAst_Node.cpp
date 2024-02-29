@@ -10,7 +10,7 @@
 bool FormatAst::outputNode(const AstNode* node)
 {
     node = convertNode(node);
-    if(!node)
+    if (!node)
         return true;
 
     // Prepend some stuff
@@ -47,14 +47,12 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::With:
-        {
             CONCAT_FIXED_STR(concat, "with");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addEolIndent(indent);
             SWAG_CHECK(outputNode(node->children[1]));
             break;
-        }
 
         case AstNodeKind::Throw:
             concat->addString(node->token.text);
@@ -64,7 +62,6 @@ bool FormatAst::outputNode(const AstNode* node)
 
         case AstNodeKind::Try:
         case AstNodeKind::Assume:
-        {
             if (node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED) && node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK))
             {
                 indent++;
@@ -84,7 +81,6 @@ bool FormatAst::outputNode(const AstNode* node)
                 SWAG_CHECK(outputNode(node->firstChild()));
             }
             break;
-        }
 
         case AstNodeKind::Catch:
         case AstNodeKind::TryCatch:
@@ -97,6 +93,13 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addString(node->token.text);
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
+            break;
+
+        case AstNodeKind::FuncCallParam:
+            SWAG_CHECK(outputNode(node->firstChild()));
+            break;
+        case AstNodeKind::FuncCallParams:
+            SWAG_CHECK(outputFuncCallParams(node));
             break;
 
         case AstNodeKind::FuncDeclType:
@@ -135,11 +138,8 @@ bool FormatAst::outputNode(const AstNode* node)
 
         case AstNodeKind::StructDecl:
         case AstNodeKind::InterfaceDecl:
-        {
-            const auto nodeStruct = castAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-            SWAG_CHECK(outputStructDecl(nodeStruct));
+            SWAG_CHECK(outputStructDecl(castAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl)));
             break;
-        }
 
         case AstNodeKind::Defer:
             CONCAT_FIXED_STR(concat, "defer ");
@@ -823,46 +823,6 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addEolIndent(indent);
             break;
 
-        case AstNodeKind::FuncCallParam:
-        {
-            SWAG_CHECK(outputNode(node->firstChild()));
-            break;
-        }
-
-        case AstNodeKind::FuncCallParams:
-        {
-            const auto funcCallParams = castAst<AstFuncCallParams>(node, AstNodeKind::FuncCallParams);
-
-            // Aliases
-            bool first = true;
-            if (!funcCallParams->aliasNames.empty())
-            {
-                CONCAT_FIXED_STR(concat, "|");
-                for (auto& t : funcCallParams->aliasNames)
-                {
-                    if (!first)
-                        CONCAT_FIXED_STR(concat, ", ");
-                    concat->addString(t.text);
-                    first = false;
-                }
-
-                CONCAT_FIXED_STR(concat, "| ");
-            }
-
-            first = true;
-            for (const auto child : funcCallParams->children)
-            {
-                if (child->hasAstFlag(AST_GENERATED))
-                    continue;
-                if (!first)
-                    CONCAT_FIXED_STR(concat, ", ");
-                first = false;
-                SWAG_CHECK(outputNode(child));
-            }
-
-            break;
-        }
-
         case AstNodeKind::SingleOp:
             concat->addString(node->token.text);
             SWAG_CHECK(outputNode(node->firstChild()));
@@ -870,7 +830,9 @@ bool FormatAst::outputNode(const AstNode* node)
 
         case AstNodeKind::NullConditionalExpression:
             SWAG_CHECK(outputNode(node->firstChild()));
-            concat->addString(" orelse ");
+            concat->addBlank();
+            CONCAT_FIXED_STR(concat, "orelse");
+            concat->addBlank();
             SWAG_CHECK(outputNode(node->children[1]));
             break;
 
