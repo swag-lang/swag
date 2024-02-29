@@ -32,7 +32,9 @@ struct FormatAst
 
     bool outputLambdaExpression(AstNode* node);
     bool outputEnum(AstEnum* node);
-    bool outputFunc(AstFuncDecl* node);
+    bool outputFuncDeclReturnType(const AstNode* node);
+    bool outputFuncDeclParams(AstNode* node);
+    bool outputFuncDecl(AstFuncDecl* node);
     bool outputAttrUse(AstNode* node, bool& hasSomething);
     bool outputFuncName(const AstFuncDecl* node) const;
     bool outputFuncSignature(AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf);

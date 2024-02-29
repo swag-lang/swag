@@ -37,7 +37,7 @@ bool FormatAst::outputStruct(AstStruct* node)
 
     if (!node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))
     {
-        CONCAT_FIXED_STR(concat, " ");
+        concat->addBlank();
         concat->addString(node->token.text);
     }
 
