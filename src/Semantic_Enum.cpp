@@ -449,7 +449,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 
     // Store the value in the enum type
     const auto typeParam = TypeManager::makeParam();
-    typeParam->flags |= TYPEINFOPARAM_DEFINED_VALUE;
+    typeParam->flags.add(TYPEINFOPARAM_DEFINED_VALUE);
     typeParam->name     = valNode->token.text;
     typeParam->typeInfo = rawTypeInfo;
     typeParam->allocateComputedValue();

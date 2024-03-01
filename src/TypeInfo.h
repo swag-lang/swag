@@ -23,7 +23,8 @@ struct TypeInfoFuncAttr;
 struct TypeInfoParam;
 struct TypeInfoStruct;
 
-using TypeInfoFlags = Flags<uint64_t>;
+using TypeInfoFlags  = Flags<uint64_t>;
+using TypeParamFlags = Flags<uint32_t>;
 
 constexpr int COMPUTE_NAME               = 0;
 constexpr int COMPUTE_SCOPED_NAME        = 1;
@@ -84,12 +85,12 @@ constexpr TypeInfoFlags TYPEINFO_ENUM_HAS_USING           = 0x00040000'00000000;
 constexpr TypeInfoFlags TYPEINFO_GHOST_TUPLE              = 0x00080000'00000000;
 constexpr TypeInfoFlags TYPEINFO_GENERATED_OP_EQUALS      = 0x00100000'00000000;
 
-constexpr uint8_t TYPEINFOPARAM_DEFINED_VALUE    = 0x00000001;
-constexpr uint8_t TYPEINFOPARAM_HAS_USING        = 0x00000002;
-constexpr uint8_t TYPEINFOPARAM_AUTO_NAME        = 0x00000004;
-constexpr uint8_t TYPEINFOPARAM_GENERIC_TYPE     = 0x00000008;
-constexpr uint8_t TYPEINFOPARAM_GENERIC_CONSTANT = 0x00000010;
-constexpr uint8_t TYPEINFOPARAM_FROM_GENERIC     = 0x00000020;
+constexpr TypeParamFlags TYPEINFOPARAM_DEFINED_VALUE    = 0x00000001;
+constexpr TypeParamFlags TYPEINFOPARAM_HAS_USING        = 0x00000002;
+constexpr TypeParamFlags TYPEINFOPARAM_AUTO_NAME        = 0x00000004;
+constexpr TypeParamFlags TYPEINFOPARAM_GENERIC_TYPE     = 0x00000008;
+constexpr TypeParamFlags TYPEINFOPARAM_GENERIC_CONSTANT = 0x00000010;
+constexpr TypeParamFlags TYPEINFOPARAM_FROM_GENERIC     = 0x00000020;
 
 struct TypeInfo
 {
@@ -234,9 +235,10 @@ struct TypeInfoParam
     TypeInfo*      typeInfo = nullptr;
     AstNode*       declNode = nullptr;
 
-    uint32_t flags : 8  = 0;
-    uint32_t index : 24 = 0;
-    uint32_t offset     = 0;
+    uint32_t       index   = 0;
+    uint32_t       offset  = 0;
+    TypeParamFlags flags   = 0;
+    uint32_t       padding = 0;
 };
 
 struct TypeInfoNative final : TypeInfo

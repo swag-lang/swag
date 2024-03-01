@@ -37,11 +37,11 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                     param->allocateComputedValue();
                     *param->value = *genParam->computedValue();
                     if (genParam->hasFlagComputedValue() && !genParam->isConstantGenTypeInfo())
-                        param->flags |= TYPEINFOPARAM_DEFINED_VALUE;
+                        param->flags.add(TYPEINFOPARAM_DEFINED_VALUE);
                 }
             }
 
-            // If we have a calltype filled with the match, take it
+            // If we have a call type filled with the match, take it
             else if (match.genericParametersCallTypes[i].typeInfoReplace)
             {
                 param->typeInfo           = match.genericParametersCallTypes[i].typeInfoReplace;
@@ -67,7 +67,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
         auto it1 = match.genericReplaceValues.find(param->name);
         if (it1 != match.genericReplaceValues.end() && it1->second)
         {
-            param->flags |= TYPEINFOPARAM_DEFINED_VALUE;
+            param->flags.add(TYPEINFOPARAM_DEFINED_VALUE);
             param->allocateComputedValue();
             *param->value = *it1->second;
         }
@@ -313,7 +313,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
                     const auto newParam = newLambda->parameters[idx];
                     newParam->typeInfo  = newType;
-                    newParam->flags |= TYPEINFOPARAM_FROM_GENERIC;
+                    newParam->flags.add(TYPEINFOPARAM_FROM_GENERIC);
                 }
             }
 

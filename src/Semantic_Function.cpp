@@ -84,9 +84,9 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         funcParam->declNode   = nodeParam;
         funcParam->attributes = nodeParam->attributes;
         if (nodeParam->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_TYPE))
-            funcParam->flags |= TYPEINFOPARAM_GENERIC_TYPE;
+            funcParam->flags.add(TYPEINFOPARAM_GENERIC_TYPE);
         else if (nodeParam->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
-            funcParam->flags |= TYPEINFOPARAM_GENERIC_CONSTANT;
+            funcParam->flags.add(TYPEINFOPARAM_GENERIC_CONSTANT);
 
         const auto paramType     = nodeParam->typeInfo;
         auto       paramNodeType = nodeParam->type ? nodeParam->type : nodeParam;

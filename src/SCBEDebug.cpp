@@ -56,7 +56,7 @@ void SCBEDebug::getStructFields(SCBE_CPU& pp, SCBEDebugTypeRecord* tr, TypeInfoS
         field.value.reg.u32 = baseOffset + p->offset;
         tr->LF_FieldList.fields.push_back(field);
 
-        if (p->flags & TYPEINFOPARAM_HAS_USING && p->typeInfo->isStruct())
+        if (p->flags.has(TYPEINFOPARAM_HAS_USING) && p->typeInfo->isStruct())
         {
             const auto typeStructField = castTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
             getStructFields(pp, tr, typeStructField, baseOffset + p->offset);

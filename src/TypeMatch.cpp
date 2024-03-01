@@ -124,7 +124,7 @@ namespace
                 castFlags.add(CAST_FLAG_LITERAL_SUFFIX);
             if (callParameter->hasAstFlag(AST_TRANSIENT) && wantedTypeInfo->isPointerMoveRef())
                 castFlags.add(CAST_FLAG_ACCEPT_MOVE_REF);
-            if (!(wantedParameter->flags & TYPEINFOPARAM_FROM_GENERIC))
+            if (!wantedParameter->flags.has(TYPEINFOPARAM_FROM_GENERIC))
                 castFlags.add(CAST_FLAG_TRY_COERCE);
             castFlags.add(forceCastFlags);
             castFlags.add(CAST_FLAG_PARAMS | CAST_FLAG_PTR_REF);
@@ -577,7 +577,7 @@ namespace
             else if (myTypeInfo->isGeneric() ||
                      symbolParameter->typeInfo->isStruct() ||
                      callParameter->typeInfo->isAlias() ||
-                     !(symbolParameter->flags & TYPEINFOPARAM_DEFINED_VALUE) ||
+                     !symbolParameter->flags.has(TYPEINFOPARAM_DEFINED_VALUE) ||
                      Semantic::valueEqualsTo(symbolParameter->value, callParameter))
             {
                 auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);

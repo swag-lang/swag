@@ -559,7 +559,7 @@ namespace
                 resName += ", ";
 
             const auto genParam = genericParameters[i];
-            if (genParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
+            if (genParam->flags.has(TYPEINFOPARAM_DEFINED_VALUE))
             {
                 SWAG_ASSERT(genParam->typeInfo);
                 SWAG_ASSERT(genParam->value);
@@ -570,7 +570,7 @@ namespace
                 if (genParam->typeInfo->isString())
                     resName += "\"";
             }
-            else if (genParam->flags & TYPEINFOPARAM_GENERIC_CONSTANT)
+            else if (genParam->flags.has(TYPEINFOPARAM_GENERIC_CONSTANT))
                 resName += genParam->name;
             else if (genParam->typeInfo)
                 resName += genParam->typeInfo->computeWhateverName(nameType);
@@ -933,7 +933,7 @@ namespace
 {
     void flatten(VectorNative<TypeInfoParam*>& result, TypeInfoParam* param)
     {
-        if (!(param->flags & TYPEINFOPARAM_HAS_USING) || !param->typeInfo->isStruct())
+        if (!param->flags.has(TYPEINFOPARAM_HAS_USING) || !param->typeInfo->isStruct())
         {
             result.push_back(param);
             return;
@@ -1105,7 +1105,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, CastFlags castFlags) const
                         continue;
                 }
 
-                if (myGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE || otherGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
+                if (myGenParam->flags.has(TYPEINFOPARAM_DEFINED_VALUE) || otherGenParam->flags.has(TYPEINFOPARAM_DEFINED_VALUE))
                 {
                     SemanticContext cxt;
                     const auto      castCom = castFlags.with(CAST_FLAG_JUST_CHECK | CAST_FLAG_COMMUTATIVE);
@@ -1220,7 +1220,7 @@ Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>&
             }
         }
 
-        if (!param->name.empty() && !(param->flags & TYPEINFOPARAM_AUTO_NAME))
+        if (!param->name.empty() && !param->flags.has(TYPEINFOPARAM_AUTO_NAME))
         {
             resName += param->name;
             resName += ":";

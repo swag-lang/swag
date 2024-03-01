@@ -308,7 +308,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
 
         if (autoName)
         {
-            typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
+            typeParam->flags.add(TYPEINFOPARAM_AUTO_NAME);
         }
 
         paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType, !assignment->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_CAPTURE));
@@ -407,7 +407,7 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
         toAdd.flags         = OVERLOAD_VAR_STRUCT;
         f->declNode->setResolvedSymbolOverload(typeStruct->scope->symTable.addSymbolTypeInfo(context, toAdd));
 
-        if (!(f->flags & TYPEINFOPARAM_AUTO_NAME))
+        if (!f->flags.has(TYPEINFOPARAM_AUTO_NAME))
         {
             toAdd.aliasName = form("item%d", idx);
             f->declNode->setResolvedSymbolOverload(typeStruct->scope->symTable.addSymbolTypeInfo(context, toAdd));

@@ -433,7 +433,7 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStr
         // Struct in using hierarchy
         for (const auto field : leftStruct->fields)
         {
-            if (!(field->flags & TYPEINFOPARAM_HAS_USING))
+            if (!field->flags.has(TYPEINFOPARAM_HAS_USING))
                 continue;
             const auto typeS = field->typeInfo->getStructOrPointedStruct();
             if (!typeS)
@@ -672,7 +672,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         {
             auto      toType    = oneMatch->solvedParameters[i]->typeInfo;
             CastFlags castFlags = CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_UFCS | CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_PARAMS;
-            if (!(oneMatch->solvedParameters[i]->flags & TYPEINFOPARAM_FROM_GENERIC))
+            if (!oneMatch->solvedParameters[i]->flags.has(TYPEINFOPARAM_FROM_GENERIC))
                 castFlags.add(CAST_FLAG_TRY_COERCE);
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, params[i], castFlags));
             YIELD();

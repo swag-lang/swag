@@ -683,9 +683,9 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
                 funcParam->name     = param->token.text;
                 funcParam->typeInfo = param->typeInfo;
                 if (param->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_TYPE))
-                    funcParam->flags |= TYPEINFOPARAM_GENERIC_TYPE;
+                    funcParam->flags.add(TYPEINFOPARAM_GENERIC_TYPE);
                 else if (param->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
-                    funcParam->flags |= TYPEINFOPARAM_GENERIC_CONSTANT;
+                    funcParam->flags.add(TYPEINFOPARAM_GENERIC_CONSTANT);
                 typeInfo->genericParameters.push_back(funcParam);
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
             }
@@ -903,7 +903,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 typeParam->typeInfo = child->typeInfo;
                 typeParam->offset   = storageOffset;
                 if (varDecl->hasAstFlag(AST_DECL_USING))
-                    typeParam->flags |= TYPEINFOPARAM_HAS_USING;
+                    typeParam->flags.add(TYPEINFOPARAM_HAS_USING);
                 SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
                 if (child->is(AstNodeKind::VarDecl))
                     typeInfo->fields.push_back(typeParam);
@@ -1144,12 +1144,12 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 }
                 else
                 {
-                    typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
+                    typeParam->flags.add(TYPEINFOPARAM_AUTO_NAME);
                 }
             }
             else
             {
-                typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
+                typeParam->flags.add(TYPEINFOPARAM_AUTO_NAME);
             }
 
             storageIndexField++;

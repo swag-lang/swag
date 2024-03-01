@@ -452,7 +452,7 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
     SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
 
     // Value
-    if (realType->flags & TYPEINFOPARAM_DEFINED_VALUE)
+    if (realType->flags.has(TYPEINFOPARAM_DEFINED_VALUE))
     {
         if (realType->typeInfo->isArray() || realType->typeInfo->isListArray() || realType->typeInfo->isSlice())
         {

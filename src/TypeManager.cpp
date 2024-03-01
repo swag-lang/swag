@@ -280,7 +280,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
         if (typeParam->name.empty())
         {
             typeParam->name = form("item%u", idx);
-            typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
+            typeParam->flags.add(TYPEINFOPARAM_AUTO_NAME);
         }
 
         typeStruct->sizeOf += one->typeInfo->sizeOf;
