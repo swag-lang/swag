@@ -25,9 +25,9 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     return context->report(err);
 }
 
-bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, MatchIdParamsFlags flags)
+bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneMatch*>& matches, MatchIdParamsFlags flags)
 {
-    const auto symbol = tryMatches[0]->overload->symbol;
+    const auto symbol = matches[0]->symbolOverload->symbol;
     if (!node)
         node = context->node;
 

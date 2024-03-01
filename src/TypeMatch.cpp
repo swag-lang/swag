@@ -135,7 +135,7 @@ namespace
             context.semContext->castErrorFlags    = 0;
             context.semContext->castErrorType     = CastErrorType::Zero;
 
-            const bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
+            const bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr/*callParameter*/, castFlags);
             if (context.semContext->result != ContextResult::Done)
                 return;
 

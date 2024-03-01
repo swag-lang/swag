@@ -48,19 +48,13 @@ namespace SemanticError
 
     bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
     bool ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& genericMatches);
-    bool ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, MatchIdParamsFlags flags);
+    bool ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneMatch*>& matches, MatchIdParamsFlags flags);
     bool ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& matches);
 
     bool unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node);
 
     void commonErrorNotes(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes);
     bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
-    bool duplicatedSymbolError(ErrorContext* context,
-                               SourceFile*   sourceFile,
-                               const Token&  token,
-                               SymbolKind    thisKind,
-                               const Utf8&   thisName,
-                               SymbolKind    otherKind,
-                               AstNode*      otherSymbolDecl);
+    bool duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, const Token& token, SymbolKind thisKind, const Utf8& thisName, SymbolKind otherKind, AstNode* otherSymbolDecl);
     bool error(SemanticContext* context, const Utf8& msg);
-} // namespace SemanticError
+}

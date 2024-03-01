@@ -1802,7 +1802,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
         if (justCheck)
             return false;
 
-        return SemanticError::ambiguousOverloadError(context, node, tryMatches, matches, flags);
+        return SemanticError::ambiguousOverloadError(context, node, matches, flags);
     }
 
     return true;

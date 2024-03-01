@@ -463,9 +463,11 @@ void Semantic::computeMatchesCoerceCast(VectorNative<OneMatch*>& matches)
         for (const auto flags : m->solvedCastFlags)
         {
             if (flags.has(CAST_RESULT_COERCE) && !flags.has(CAST_RESULT_UNTYPED_CONVERT))
-                m->coerceCast++;
+                m->coerceCast += m->solvedCastFlags.size();
+            else if (flags.has(CAST_RESULT_UNTYPED_CONVERT))
+                m->coerceCast += 1;
             else if (flags.has(CAST_RESULT_CONST_COERCE))
-                m->coerceCast++;
+                m->coerceCast += 1;
         }
     }
 }
@@ -493,6 +495,20 @@ bool Semantic::filterMatchesCoerceCast(SemanticContext*, VectorNative<OneMatch*>
 
 bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches)
 {
+    // Remove all matches with more conversions than the generic match
+    /*if (!matches.empty() && genMatches.size() == 1)
+    {
+        for (uint32_t i = 0; i < matches.size(); i++)
+        {
+            if (matches[i]->coerceCast > genMatches[0]->coerceCast)
+            {
+                matches[i] = matches.back();
+                matches.pop_back();
+                i--;
+            }
+        }
+    }*/
+
     // We have a match and more than one generic match
     // We need to be sure than instantiated another generic match will not be better than keeping
     // the already instantiated one

@@ -2123,11 +2123,14 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
         }
     }
 
-    if (castFlags.has(CAST_FLAG_COERCE))
-        context->castFlagsResult.add(CAST_RESULT_COERCE);
+    // If it matches, then it matches with a conversion
+    if (!toType->isPointerNull() && !fromType->isPointerNull())
+    {
+        if (!toType->isSame(fromType, CAST_FLAG_EXACT))
+            context->castFlagsResult.add(CAST_RESULT_COERCE);
+    }
 
     // If it matches, then it matches with a conversion
-    // useful to discriminate generics
     if (fromType->isUntypedInteger() || fromType->isUntypedFloat())
         context->castFlagsResult.add(CAST_RESULT_UNTYPED_CONVERT);
 

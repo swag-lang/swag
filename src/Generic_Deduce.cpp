@@ -290,7 +290,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
                                                        typeReplace,
                                                        callTypeInfo,
                                                        nullptr,
-                                                       nullptr,
+                                                       callParameter,
                                                        castFlags.with(CAST_FLAG_JUST_CHECK | CAST_FLAG_PARAMS | CAST_FLAG_COMMUTATIVE));
         if (context.semContext->result != ContextResult::Done)
             return;
