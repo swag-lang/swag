@@ -124,7 +124,6 @@ struct TypeManager
     static TypeInfoStruct* convertTypeListToStruct(JobContext* context, TypeInfoList* typeList);
 
     static bool      collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, const TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst = false);
-    static TypeInfo* solidifyUntyped(TypeInfo* typeInfo);
     static TypeInfo* resolveUntypedType(TypeInfo* typeInfo, uint32_t value);
     static TypeInfo* literalTypeToType(LiteralType literalType);
     static TypeInfo* literalTypeToType(LiteralType literalType, Register literalValue);
@@ -161,22 +160,25 @@ struct TypeManager
     Map<TypeInfo*, TypeInfo*>                 mapConst;
     Map<TypeInfo*, TypeInfo*>                 mapUnConst;
 
-    TypeInfoNative* typeInfoS8        = nullptr;
-    TypeInfoNative* typeInfoS16       = nullptr;
-    TypeInfoNative* typeInfoS32       = nullptr;
-    TypeInfoNative* typeInfoS64       = nullptr;
-    TypeInfoNative* typeInfoU8        = nullptr;
-    TypeInfoNative* typeInfoU16       = nullptr;
-    TypeInfoNative* typeInfoU32       = nullptr;
-    TypeInfoNative* typeInfoU64       = nullptr;
-    TypeInfoNative* typeInfoBool      = nullptr;
-    TypeInfoNative* typeInfoF32       = nullptr;
-    TypeInfoNative* typeInfoF64       = nullptr;
-    TypeInfoNative* typeInfoRune      = nullptr;
-    TypeInfoNative* typeInfoString    = nullptr;
-    TypeInfoNative* typeInfoAny       = nullptr;
-    TypeInfoNative* typeInfoVoid      = nullptr;
-    TypeInfoNative* typeInfoUndefined = nullptr;
+    TypeInfoNative* typeInfoS8          = nullptr;
+    TypeInfoNative* typeInfoS16         = nullptr;
+    TypeInfoNative* typeInfoS32         = nullptr;
+    TypeInfoNative* typeInfoS64         = nullptr;
+    TypeInfoNative* typeInfoU8          = nullptr;
+    TypeInfoNative* typeInfoU16         = nullptr;
+    TypeInfoNative* typeInfoU32         = nullptr;
+    TypeInfoNative* typeInfoU64         = nullptr;
+    TypeInfoNative* typeInfoBool        = nullptr;
+    TypeInfoNative* typeInfoF32         = nullptr;
+    TypeInfoNative* typeInfoF64         = nullptr;
+    TypeInfoNative* typeInfoRune        = nullptr;
+    TypeInfoNative* typeInfoString      = nullptr;
+    TypeInfoNative* typeInfoAny         = nullptr;
+    TypeInfoNative* typeInfoVoid        = nullptr;
+    TypeInfoNative* typeInfoUndefined   = nullptr;
+    TypeInfoNative* typeInfoS32Promoted = nullptr;
+    TypeInfoNative* typeInfoF32Promoted = nullptr;
+    TypeInfoNative* typeInfoU32Promoted = nullptr;
 
     TypeInfoPointer* typeInfoNull    = nullptr;
     TypeInfoPointer* typeInfoCString = nullptr;

@@ -84,6 +84,7 @@ constexpr TypeInfoFlags TYPEINFO_CHARACTER                = 0x00020000'00000000;
 constexpr TypeInfoFlags TYPEINFO_ENUM_HAS_USING           = 0x00040000'00000000;
 constexpr TypeInfoFlags TYPEINFO_GHOST_TUPLE              = 0x00080000'00000000;
 constexpr TypeInfoFlags TYPEINFO_GENERATED_OP_EQUALS      = 0x00100000'00000000;
+constexpr TypeInfoFlags TYPEINFO_WAS_UNTYPED              = 0x00200000'00000000;
 
 constexpr TypeParamFlags TYPEINFOPARAM_DEFINED_VALUE    = 0x00000001;
 constexpr TypeParamFlags TYPEINFOPARAM_HAS_USING        = 0x00000002;

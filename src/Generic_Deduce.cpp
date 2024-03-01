@@ -275,13 +275,23 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
     const auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);
     if (it != context.genericReplaceTypes.end())
     {
+        // If the deduced type was untyped, then restore it to untyped. That way we will replace it
+        // with a real type if we can (i.e. if the match is ok).
+        auto typeReplace = it->second.typeInfoReplace;
+        if (typeReplace == g_TypeMgr->typeInfoS32Promoted)
+            typeReplace = g_TypeMgr->typeInfoUntypedInt;
+        else if (typeReplace == g_TypeMgr->typeInfoF32Promoted)
+            typeReplace = g_TypeMgr->typeInfoUntypedFloat;
+        else if (typeReplace == g_TypeMgr->typeInfoU32Promoted)
+            typeReplace = g_TypeMgr->typeInfoUntypedInt;
+
         // We must be sure that the registered type is the same as the new one
         const bool same = TypeManager::makeCompatibles(context.semContext,
-                                                       it->second.typeInfoReplace,
+                                                       typeReplace,
                                                        callTypeInfo,
                                                        nullptr,
                                                        nullptr,
-                                                       castFlags.with(CAST_FLAG_JUST_CHECK | CAST_FLAG_PARAMS));
+                                                       castFlags.with(CAST_FLAG_JUST_CHECK | CAST_FLAG_PARAMS | CAST_FLAG_COMMUTATIVE));
         if (context.semContext->result != ContextResult::Done)
             return;
 
@@ -295,6 +305,10 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
             context.badSignatureInfos.badGenMatch               = wantedTypeInfo->name;
             SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
             context.result = MatchResult::BadSignature;
+        }
+        else if(it->second.typeInfoReplace != typeReplace)
+        {
+            it->second.typeInfoReplace = callTypeInfo;
         }
 
         return;
@@ -348,7 +362,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
     if (itIdx != context.mapGenericTypeToIndex.end())
     {
         st.typeInfoGeneric                                = wantedTypeInfo;
-        st.typeInfoReplace                                = TypeManager::promoteUntyped(callTypeInfo);
+        st.typeInfoReplace                                = callTypeInfo;
         st.fromNode                                       = callParameter;
         context.genericParametersCallTypes[itIdx->second] = st;
     }

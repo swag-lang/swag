@@ -35,6 +35,9 @@ void TypeManager::setup()
     typeInfoUntypedBinHex = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_UNTYPED_BIN_HEX);
     typeInfoUntypedFloat  = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT | TYPEINFO_UNTYPED_FLOAT);
     typeInfoCharacter     = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER | TYPEINFO_CHARACTER);
+    typeInfoS32Promoted   = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_WAS_UNTYPED);
+    typeInfoU32Promoted   = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_WAS_UNTYPED);
+    typeInfoF32Promoted   = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT | TYPEINFO_WAS_UNTYPED);
 
     typeInfoVariadic = new TypeInfoVariadic();
     typeInfoVariadic->name.setView("...", 3);
@@ -218,7 +221,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 
     while (true)
     {
-        typeArray->pointedType = solidifyUntyped(typeList->subTypes.front()->typeInfo);
+        typeArray->pointedType = promoteUntyped(typeList->subTypes.front()->typeInfo);
         finalType              = typeArray->pointedType;
         typeArray->sizeOf      = typeList->sizeOf;
         typeArray->count       = typeList->subTypes.size();
@@ -292,15 +295,6 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
 
     Ast::convertTypeStructToStructDecl(context, typeStruct);
     return typeStruct;
-}
-
-TypeInfo* TypeManager::solidifyUntyped(TypeInfo* typeInfo)
-{
-    if (typeInfo->isUntypedInteger())
-        return g_TypeMgr->typeInfoS32;
-    if (typeInfo->isUntypedFloat())
-        return g_TypeMgr->typeInfoF32;
-    return typeInfo;
 }
 
 TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)

@@ -5,11 +5,9 @@
 TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
 {
     if (typeInfo->isUntypedInteger())
-        return g_TypeMgr->typeInfoS32;
+        return g_TypeMgr->typeInfoS32Promoted;
     if (typeInfo->isUntypedFloat())
-        return g_TypeMgr->typeInfoF32;
-    if (typeInfo->isUntypedBinHex())
-        return g_TypeMgr->typeInfoU32;
+        return g_TypeMgr->typeInfoF32Promoted;
     return typeInfo;
 }
 

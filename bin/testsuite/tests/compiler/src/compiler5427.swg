@@ -1,13 +1,13 @@
+//#global skip
 //#global testerror "Err0613"
 
-func(T) max(a: T)
+func(T) max(a, b: T)
 {
     //@print(@typeof(T).name)
 }
 
 #test
 {
-    //let a = max(1'f32, 1'f32)
-    max's16(1)
-    max(1)
+    max's32(1, 1)
+    max(1, 1'f32)
 }
