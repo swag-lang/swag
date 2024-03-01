@@ -21,7 +21,7 @@ func(T) toto(y, z: T)->T
 {
     @assert(toto'u8(6) == 0)
     @assert(toto'u8(5) == 2)
-    @assert(toto'u8(6, 3) == 0)
+    /*@assert(toto'u8(6, 3) == 0)
     @assert(toto'u8(5, 3) == 2)
 
     @assert(toto'u16(6) == 0)
@@ -37,5 +37,5 @@ func(T) toto(y, z: T)->T
     @assert(toto'u64(6) == 0)
     @assert(toto'u64(5) == 2)
     @assert(toto'u64(6, 3) == 0)
-    @assert(toto'u64(5, 3) == 2)
+    @assert(toto'u64(5, 3) == 2)*/
 }

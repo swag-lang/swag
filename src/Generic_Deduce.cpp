@@ -269,7 +269,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
     }
 }
 
-void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, CastFlags castFlags, uint32_t idxParam, AstNode* callParameter)
+void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, AstNode* callParameter, uint32_t idxParam, CastFlags castFlags)
 {
     // Do we already have mapped the generic parameter to something ?
     const auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);
@@ -339,7 +339,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
     // Associate the generic type with that concrete one
     GenericReplaceType st;
     st.typeInfoGeneric                                = wantedTypeInfo;
-    st.typeInfoReplace                                = regTypeInfo;
+    st.typeInfoReplace                                = TypeManager::promoteUntyped(regTypeInfo);
     st.fromNode                                       = callParameter;
     context.genericReplaceTypes[wantedTypeInfo->name] = st;
 
@@ -348,7 +348,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
     if (itIdx != context.mapGenericTypeToIndex.end())
     {
         st.typeInfoGeneric                                = wantedTypeInfo;
-        st.typeInfoReplace                                = callTypeInfo;
+        st.typeInfoReplace                                = TypeManager::promoteUntyped(callTypeInfo);
         st.fromNode                                       = callParameter;
         context.genericParametersCallTypes[itIdx->second] = st;
     }
@@ -377,7 +377,7 @@ void Generic::deduceGenericTypes(SymbolMatchContext& context,
         if (!callTypeInfo)
             continue;
 
-        deduceType(context, wantedTypeInfo, callTypeInfo, castFlags, idxParam, callParameter);
+        deduceType(context, wantedTypeInfo, callTypeInfo, callParameter, idxParam, castFlags);
         deduceSubType(context, wantedTypeInfo, callTypeInfo, wantedTypeInfos, callTypeInfos, callParameter);
         if (context.semContext->result != ContextResult::Done)
             return;

@@ -10,12 +10,12 @@
 #include "TypeManager.h"
 
 bool Generic::replaceGenericParameters(SemanticContext*              context,
-                                       bool                          doType,
-                                       bool                          doNode,
+                                       OneMatch&                     match,
                                        VectorNative<TypeInfoParam*>& typeGenericParameters,
                                        VectorNative<AstNode*>&       nodeGenericParameters,
                                        AstNode*                      callGenericParameters,
-                                       OneMatch&                     match)
+                                       bool                          doType,
+                                       bool                          doNode)
 {
     for (uint32_t i = 0; i < typeGenericParameters.size(); i++)
     {
@@ -70,53 +70,6 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
             param->flags.add(TYPEINFOPARAM_DEFINED_VALUE);
             param->allocateComputedValue();
             *param->value = *it1->second;
-        }
-
-        // We should not instantiate with unresolved types
-        const auto genGen = match.genericParametersCallTypes[i].typeInfoGeneric;
-        if (genGen->isKindGeneric())
-        {
-            if (param->typeInfo->isUntypedInteger() || param->typeInfo->isUntypedFloat())
-            {
-                const auto symbol  = match.symbolName;
-                auto       errNode = context->node;
-
-                const TypeInfo* errType = nullptr;
-                for (const auto& val : match.genericReplaceTypes | std::views::values)
-                {
-                    const auto fromNode = val.fromNode;
-                    if (!fromNode)
-                        continue;
-
-                    if (fromNode->typeInfo->isUntypedInteger() || fromNode->typeInfo->isUntypedFloat())
-                    {
-                        errType = fromNode->typeInfo;
-                        errNode = fromNode;
-                        break;
-                    }
-
-                    if (fromNode->typeInfo->isListArray())
-                    {
-                        const auto listArr = castTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListArray);
-                        if (listArr->subTypes[0]->typeInfo->isUntypedInteger() || listArr->subTypes[0]->typeInfo->isUntypedFloat())
-                        {
-                            errType = fromNode->typeInfo = listArr->subTypes[0]->typeInfo;
-                            if (fromNode->is(AstNodeKind::FuncCallParam))
-                                errNode = fromNode->firstChild()->firstChild();
-                            else
-                                errNode = fromNode->firstChild();
-                            break;
-                        }
-                    }
-                }
-
-                Diagnostic err{errNode, errNode->token, formErr(Err0015, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
-                if (errType && errType->isUntypedInteger())
-                    err.hint = toNte(Nte0107);
-                else if (errType && errType->isUntypedFloat())
-                    err.hint = toNte(Nte0107);
-                return context->report(err);
-            }
         }
 
         if (doNode)
