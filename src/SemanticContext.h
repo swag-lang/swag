@@ -147,7 +147,6 @@ struct SemanticContext : JobContext
     void         clearMatch();
     OneMatch*    getOneMatch();
     void         clearGenericMatch();
-    OneMatch*    getOneGenericMatch();
 
     Vector<CastStructStructField>     castStructStructFields;
     Vector<CastCollectInterfaceField> castCollectInterfaceField;
@@ -167,7 +166,6 @@ struct SemanticContext : JobContext
     VectorNative<OneMatch*>           cacheFreeMatches;
     VectorNative<OneMatch*>           cacheGenericMatches;
     VectorNative<OneMatch*>           cacheGenericMatchesSI;
-    VectorNative<OneMatch*>           cacheFreeGenericMatches;
     VectorNative<OneTryMatch*>        cacheListTryMatch;
     VectorNative<OneTryMatch*>        cacheFreeTryMatch;
     VectorNative<AlternativeScope>    scopesToProcess;

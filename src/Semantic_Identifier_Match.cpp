@@ -1448,9 +1448,9 @@ bool Semantic::registerMatch(SemanticContext*            context,
                 asMatch = true;
         }
 
+        const auto match = context->getOneMatch();
         if (asMatch)
         {
-            const auto match        = context->getOneMatch();
             match->symbolOverload   = overload;
             match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
             match->solvedCastFlags  = std::move(oneOverload.symMatchContext.solvedCastFlags);
@@ -1461,29 +1461,29 @@ bool Semantic::registerMatch(SemanticContext*            context,
             match->castFlagsResult  = oneOverload.symMatchContext.castFlagsResult;
             matches.push_back(match);
             tryMatches.clear();
-            return true;
         }
-
-        auto* match                        = context->getOneGenericMatch();
-        match->matchFlags                  = oneOverload.symMatchContext.matchFlags;
-        match->castFlagsResult             = oneOverload.symMatchContext.castFlagsResult;
-        match->symbolName                  = symbol;
-        match->symbolOverload              = overload;
-        match->genericParametersCallTypes  = std::move(oneOverload.symMatchContext.genericParametersCallTypes);
-        match->genericParametersCallValues = std::move(oneOverload.symMatchContext.genericParametersCallValues);
-        match->genericReplaceTypes         = std::move(oneOverload.symMatchContext.genericReplaceTypes);
-        match->genericReplaceValues        = std::move(oneOverload.symMatchContext.genericReplaceValues);
-        match->parameters                  = std::move(oneOverload.symMatchContext.parameters);
-        match->solvedParameters            = std::move(oneOverload.symMatchContext.solvedParameters);
-        match->solvedCastFlags             = std::move(oneOverload.symMatchContext.solvedCastFlags);
-        match->genericParameters           = genericParameters;
-        match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
-        match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
-        match->ufcs                        = oneOverload.ufcs;
-        if (overload->node->hasAstFlag(AST_HAS_SELECT_IF) && overload->node->is(AstNodeKind::FuncDecl))
-            genericMatchesSI.push_back(match);
         else
-            genericMatches.push_back(match);
+        {
+            match->matchFlags                  = oneOverload.symMatchContext.matchFlags;
+            match->castFlagsResult             = oneOverload.symMatchContext.castFlagsResult;
+            match->symbolName                  = symbol;
+            match->symbolOverload              = overload;
+            match->genericParametersCallTypes  = std::move(oneOverload.symMatchContext.genericParametersCallTypes);
+            match->genericParametersCallValues = std::move(oneOverload.symMatchContext.genericParametersCallValues);
+            match->genericReplaceTypes         = std::move(oneOverload.symMatchContext.genericReplaceTypes);
+            match->genericReplaceValues        = std::move(oneOverload.symMatchContext.genericReplaceValues);
+            match->parameters                  = std::move(oneOverload.symMatchContext.parameters);
+            match->solvedParameters            = std::move(oneOverload.symMatchContext.solvedParameters);
+            match->solvedCastFlags             = std::move(oneOverload.symMatchContext.solvedCastFlags);
+            match->genericParameters           = genericParameters;
+            match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
+            match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
+            match->ufcs                        = oneOverload.ufcs;
+            if (overload->node->hasAstFlag(AST_HAS_SELECT_IF) && overload->node->is(AstNodeKind::FuncDecl))
+                genericMatchesSI.push_back(match);
+            else
+                genericMatches.push_back(match);
+        }
     }
     else
     {
