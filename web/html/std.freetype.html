@@ -1797,7 +1797,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></div>
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 29-02-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
+Generated on 01-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
 </div>
 </div>
 </div>
