@@ -136,7 +136,7 @@ void initErrors()
     SWAG_ERROR(Err0012, "access modifier already defined                   $ invalid use of a [[%s]] access modifier after [[%s]]");
     SWAG_ERROR(Err0013, "ambiguous [[using]]                               $ unexpected [[using]] on two variables with the same type ([[%s]])");
     SWAG_ERROR(Err0014, "ambiguous cast                                    $ there are multiple [[using]] fields of type [[%s]] in [[%s]]");
-    SWAG_ERROR(Err0015, "ambiguous generic instantiation                   $ can't instantiate the generic %s [[%s]] with an unsized value");
+    SWAG_ERROR(Err0015, nullptr);
     SWAG_ERROR(Err0016, "ambiguous symbol                                  $ ambiguous conversion of struct [[%s]] to interface [[%s]]");
     SWAG_ERROR(Err0017, "ambiguous symbol                                  $ ambiguous resolution of the %s [[%s]]");
     SWAG_ERROR(Err0018, "ambiguous symbol                                  $ ambiguous resolution of the enum value [[%s]]");
