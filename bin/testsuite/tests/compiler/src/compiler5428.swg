@@ -1,13 +1,13 @@
-#global skip
+//#global skip
 //#global testerror "Err0613"
 
-func(T) max(a, b: T)
+func(T) max(a, b: T, c: string)
 {
-    @print(@typeof(T).name)
+    @assert(@typeof(T).name == c)
 }
 
 #test
 {
-    max's16(1, 1)
-    max(1, 1)
+    max's16(1, 1, "s16")
+    max(1, 1, "s32")
 }
