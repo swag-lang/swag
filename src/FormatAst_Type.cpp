@@ -157,6 +157,7 @@ bool FormatAst::outputType(const AstNode* /*node*/, TypeInfo* typeInfo)
 
 bool FormatAst::outputEnum(const AstEnum* node)
 {
+    concat->addIndent(indent);
     CONCAT_FIXED_STR(concat, "enum");
     concat->addBlank();
     concat->addString(node->token.text);
@@ -212,6 +213,7 @@ bool FormatAst::outputEnum(const AstEnum* node)
     concat->addIndent(indent);
     concat->addChar('}');
     concat->addEol();
+
     return true;
 }
 

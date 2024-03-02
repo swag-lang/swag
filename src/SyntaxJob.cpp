@@ -39,11 +39,8 @@ JobResult SyntaxJob::execute()
     {
         FormatAst fmt;
         fmt.outputNode(sourceFile->astRoot);
-        if (g_CommandLine.randSeed)
-        {
-            const Path path = R"(c:/temp/)" + sourceFile->path.filename();
-            fmt.concat->flushToFile(path);
-        }
+        // const Path path = R"(c:/temp/)" + sourceFile->path.filename();
+        // fmt.concat->flushToFile(path);
     }
 #endif
 

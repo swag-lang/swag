@@ -36,12 +36,13 @@ bool FormatAst::outputStructDecl(const AstStruct* node)
         SWAG_ASSERT(typeStruct);
         if (typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
+            concat->addIndent(indent);
             CONCAT_FIXED_STR(concat, "#[ExportType(\"nozero\")]");
             concat->addEol();
-            concat->addIndent(indent);
         }
     }
 
+    concat->addIndent(indent);
     if (node->is(AstNodeKind::InterfaceDecl))
         CONCAT_FIXED_STR(concat, "interface");
     else
@@ -138,7 +139,7 @@ bool FormatAst::outputImpl(const AstNode* node)
         concat->addBlank();
         concat->addString(nodeImpl->identifierFor->token.text);
     }
-    else if(nodeImpl->scope && nodeImpl->scope->kind == ScopeKind::Enum)
+    else if (nodeImpl->scope && nodeImpl->scope->kind == ScopeKind::Enum)
     {
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "enum");

@@ -18,54 +18,59 @@ bool FormatAst::outputScopeContent(const Module* module, const Scope* scope)
     {
         for (const auto one : publicSet->publicNodes)
         {
+            concat->addBlankLine();
             SWAG_CHECK(outputAttributes(one, one->typeInfo));
             concat->addIndent(indent);
             SWAG_CHECK(outputNode(one));
             concat->addEol();
+            concat->addBlankLine();
         }
     }
 
-    // Functions
+    // Exported functions (signatures)
     if (!publicSet->publicFunc.empty())
     {
         for (const auto one : publicSet->publicFunc)
         {
-            AstFuncDecl* node = castAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
-
             // Can be removed in case of special functions
-            if (!node->hasAttribute(ATTRIBUTE_PUBLIC))
+            if (!one->hasAttribute(ATTRIBUTE_PUBLIC))
                 continue;
 
+            concat->addBlankLine();
+
             // Remap special functions to their generated equivalent
-            node->computeFullNameForeignExport();
+            AstFuncDecl* funcNode = castAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
+            funcNode->computeFullNameForeignExport();
             concat->addIndent(indent);
-            concat->addStringFormat(R"(#[Foreign("%s", "%s")])", module->name.c_str(), node->fullnameForeignExport.c_str());
+            concat->addStringFormat(R"(#[Foreign("%s", "%s")])", module->name.c_str(), funcNode->fullnameForeignExport.c_str());
             concat->addEol();
-            SWAG_CHECK(outputAttributes(node, node->typeInfo));
+            SWAG_CHECK(outputAttributes(funcNode, funcNode->typeInfo));
 
             concat->addIndent(indent);
-            if (node->token.text == g_LangSpec->name_opInitGenerated)
+            if (funcNode->token.text == g_LangSpec->name_opInitGenerated)
             {
                 CONCAT_FIXED_STR(concat, "func opInit(using self);");
                 concat->addEol();
             }
-            else if (node->token.text == g_LangSpec->name_opDropGenerated)
+            else if (funcNode->token.text == g_LangSpec->name_opDropGenerated)
             {
                 CONCAT_FIXED_STR(concat, "func opDrop(using self);");
                 concat->addEol();
             }
-            else if (node->token.text == g_LangSpec->name_opPostCopyGenerated)
+            else if (funcNode->token.text == g_LangSpec->name_opPostCopyGenerated)
             {
                 CONCAT_FIXED_STR(concat, "func opPostCopy(using self);");
                 concat->addEol();
             }
-            else if (node->token.text == g_LangSpec->name_opPostMoveGenerated)
+            else if (funcNode->token.text == g_LangSpec->name_opPostMoveGenerated)
             {
                 CONCAT_FIXED_STR(concat, "func opPostMove(using self);");
                 concat->addEol();
             }
             else
-                SWAG_CHECK(outputFuncSignature(node, nullptr, node->parameters, node->validIf));
+                SWAG_CHECK(outputFuncSignature(funcNode, nullptr, funcNode->parameters, funcNode->validIf));
+
+            concat->addBlankLine();
         }
     }
 
@@ -74,11 +79,13 @@ bool FormatAst::outputScopeContent(const Module* module, const Scope* scope)
     {
         for (const auto one : publicSet->publicAttr)
         {
+            concat->addBlankLine();
             const auto              node     = castAst<AstAttrDecl>(one, AstNodeKind::AttrDecl);
             const TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             SWAG_CHECK(outputAttributesUsage(typeFunc));
             concat->addIndent(indent);
             SWAG_CHECK(outputFuncSignature(node, nullptr, node->parameters, nullptr));
+            concat->addBlankLine();
         }
     }
 
@@ -129,6 +136,7 @@ bool FormatAst::outputScope(Module* module, Scope* scope)
             concat->addString(scope->name);
             concat->addEol();
             outputScopeBlock(module, scope);
+            concat->addBlankLine();
         }
         else
         {
@@ -195,12 +203,16 @@ bool FormatAst::outputScope(Module* module, Scope* scope)
                 continue;
             SWAG_CHECK(outputScope(module, oneScope));
         }
+
+        concat->addBlankLine();
     }
 
     // Named scope
     else if (!scope->name.empty())
     {
+        concat->addBlankLine();
         outputScopeBlock(module, scope);
+        concat->addBlankLine();
     }
 
     // Unnamed scope
@@ -220,7 +232,6 @@ bool FormatAst::outputNamespace(const AstNode* node)
         return true;
     }
 
-    concat->addBlankLine();
     concat->addIndent(indent);
     CONCAT_FIXED_STR(concat, "namespace");
     concat->addBlank();
@@ -235,6 +246,5 @@ bool FormatAst::outputNamespace(const AstNode* node)
     concat->addIndent(indent);
     concat->addChar('}');
     concat->addEol();
-    concat->addBlankLine();
     return true;
 }

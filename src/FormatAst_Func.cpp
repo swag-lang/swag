@@ -236,7 +236,6 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
     concat->addIndent(indent);
     concat->addChar('}');
     concat->addEol();
-    concat->addBlankLine();
     return true;
 }
 
