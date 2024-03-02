@@ -7,6 +7,7 @@ struct FormatConcat : Concat
 
     void addBlank(bool test = true);
     void addIndent(uint32_t num);
+    void addBlankLine();
     void addEol();
     void addU32Str(uint32_t value);
     void addString(const char* v, uint32_t len);

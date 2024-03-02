@@ -202,8 +202,8 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
     concat->addEol();
     concat->addIndent(indent);
     concat->addChar('{');
-    indent++;
     concat->addEol();
+    indent++;
 
     if (node->content->isNot(AstNodeKind::Statement))
     {
@@ -236,6 +236,7 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
     concat->addIndent(indent);
     concat->addChar('}');
     concat->addEol();
+    concat->addBlankLine();
     return true;
 }
 

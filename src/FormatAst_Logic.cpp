@@ -34,6 +34,8 @@ bool FormatAst::outputIf(const Utf8& name, const AstNode* node)
         }
         else
         {
+            concat->addIndent(indent);
+            CONCAT_FIXED_STR(concat, "else");
             SWAG_CHECK(outputDoStatement(ifNode->elseBlock));
         }
     }

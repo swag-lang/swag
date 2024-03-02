@@ -125,6 +125,9 @@ bool FormatAst::outputTypeTuple(TypeInfo* typeInfo)
 bool FormatAst::outputImpl(const AstNode* node)
 {
     const auto nodeImpl = castAst<AstImpl>(node, AstNodeKind::Impl);
+
+    concat->addBlankLine();
+    concat->addIndent(indent);
     CONCAT_FIXED_STR(concat, "impl");
     concat->addBlank();
     concat->addString(nodeImpl->identifier->token.text);
@@ -134,6 +137,12 @@ bool FormatAst::outputImpl(const AstNode* node)
         CONCAT_FIXED_STR(concat, "for");
         concat->addBlank();
         concat->addString(nodeImpl->identifierFor->token.text);
+    }
+    else if(nodeImpl->scope && nodeImpl->scope->kind == ScopeKind::Enum)
+    {
+        concat->addBlank();
+        CONCAT_FIXED_STR(concat, "enum");
+        concat->addBlank();
     }
 
     concat->addEol();

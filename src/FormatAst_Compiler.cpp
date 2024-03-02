@@ -180,7 +180,6 @@ bool FormatAst::outputCompilerExpr(const AstNode* node)
         SWAG_CHECK(outputNode(front));
     }
 
-    if (endEol)
-        concat->addEol();
+    concat->addEol();
     return true;
 }

@@ -122,6 +122,7 @@ bool FormatAst::outputScope(Module* module, Scope* scope)
     {
         if (!scope->flags.has(SCOPE_AUTO_GENERATED))
         {
+            concat->addBlankLine();
             concat->addIndent(indent);
             CONCAT_FIXED_STR(concat, "namespace");
             concat->addBlank();
@@ -138,6 +139,7 @@ bool FormatAst::outputScope(Module* module, Scope* scope)
     // Impl
     else if (!scope->isGlobal() && scope->isGlobalOrImpl() && !scope->name.empty())
     {
+        concat->addBlankLine();
         concat->addIndent(indent);
         if (scope->is(ScopeKind::Impl))
         {
@@ -218,6 +220,8 @@ bool FormatAst::outputNamespace(const AstNode* node)
         return true;
     }
 
+    concat->addBlankLine();
+    concat->addIndent(indent);
     CONCAT_FIXED_STR(concat, "namespace");
     concat->addBlank();
     concat->addString(node->token.text);
@@ -231,5 +235,6 @@ bool FormatAst::outputNamespace(const AstNode* node)
     concat->addIndent(indent);
     concat->addChar('}');
     concat->addEol();
+    concat->addBlankLine();
     return true;
 }

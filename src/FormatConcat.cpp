@@ -43,6 +43,12 @@ void FormatConcat::addEol()
     addChar('\n');
 }
 
+void FormatConcat::addBlankLine()
+{
+    if (eol == 1)
+        addChar('\n');
+}
+
 void FormatConcat::addIndent(uint32_t num)
 {
     if (blank)
