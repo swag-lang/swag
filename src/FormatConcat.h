@@ -3,6 +3,8 @@
 
 struct FormatConcat : Concat
 {
+    Utf8 getUtf8() const;
+
     void addBlank(bool test = true);
     void addIndent(uint32_t num);
     void addEol();

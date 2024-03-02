@@ -8,7 +8,7 @@ void FormatConcat::addChar(char c)
 
     if (SWAG_IS_EOL(c))
         eol++;
-    else if(!SWAG_IS_BLANK(c))
+    else if (!SWAG_IS_BLANK(c))
         eol = 0;
 }
 
@@ -67,4 +67,12 @@ void FormatConcat::addU32Str(uint32_t value)
         addChar(static_cast<char>(value + '0'));
     else
         addString(std::to_string(value));
+}
+
+Utf8 FormatConcat::getUtf8() const
+{
+    Utf8 result;
+    for (auto b = firstBucket; b; b = b->nextBucket)
+        result.append(reinterpret_cast<const char*>(b->data), bucketCount(b));
+    return result;
 }

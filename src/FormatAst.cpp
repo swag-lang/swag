@@ -10,16 +10,14 @@ void FormatAst::clear() const
 
 Utf8 FormatAst::getUtf8() const
 {
-    Utf8 result;
-    for (auto b = concat->firstBucket; b; b = b->nextBucket)
-        result.append(reinterpret_cast<const char*>(b->data), concat->bucketCount(b));
-    return result;
+    return concat->getUtf8();
 }
 
 const AstNode* FormatAst::convertNode(const AstNode* node)
 {
     if (!node)
         return nullptr;
+
     if (const auto subExportNode = node->extraPointer<AstNode>(ExtraPointerKind::ExportNode))
         node = subExportNode;
     if (node->hasAstFlag(AST_GENERATED) && !node->hasAstFlag(AST_GENERATED_USER))
@@ -29,6 +27,9 @@ const AstNode* FormatAst::convertNode(const AstNode* node)
 
 bool FormatAst::outputChildren(const AstNode* node)
 {
+    if (!node)
+        return true;
+
     for (const auto it : node->children)
     {
         const auto child = convertNode(it);
@@ -45,6 +46,9 @@ bool FormatAst::outputChildren(const AstNode* node)
 
 bool FormatAst::outputCommaChildren(const AstNode* node)
 {
+    if (!node)
+        return true;
+
     bool first = true;
     for (const auto it : node->children)
     {
