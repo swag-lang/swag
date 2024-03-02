@@ -127,7 +127,6 @@ bool FormatAst::outputImpl(const AstNode* node)
 {
     const auto nodeImpl = castAst<AstImpl>(node, AstNodeKind::Impl);
 
-    concat->addBlankLine();
     concat->addIndent(indent);
     CONCAT_FIXED_STR(concat, "impl");
     concat->addBlank();

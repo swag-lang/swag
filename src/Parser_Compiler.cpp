@@ -399,11 +399,11 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         block->addAstFlag(AST_GLOBAL_NODE);
 
         ScopedCompilerIfBlock scopedIf(this, block);
+
+        const auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, block);
         SWAG_CHECK(eatSemiCol("[[#global if]]"));
         while (tokenParse.isNot(TokenId::EndOfFile))
-        {
-            SWAG_CHECK(doTopLevelInstruction(block, &dummyResult));
-        }
+            SWAG_CHECK(doTopLevelInstruction(stmt, &dummyResult));
     }
 
     /////////////////////////////////
