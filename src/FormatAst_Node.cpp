@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "AstFlags.h"
+#include "ByteCodeDebugger.h"
 #include "FormatAst.h"
 #include "LanguageSpec.h"
 #include "Module.h"
@@ -523,7 +524,7 @@ bool FormatAst::outputNode(const AstNode* node)
                 SWAG_CHECK(outputNode(identifier->callParameters));
                 if (identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
                     concat->addChar('}');
-                else if (identifier->callParameters->children.empty())
+                else if (identifier->callParameters->children.empty() || identifier->callParameters->lastChild()->children.empty())
                     concat->addChar(')');
                 else if (identifier->callParameters->lastChild()->lastChild()->isNot(AstNodeKind::CompilerCode))
                     concat->addChar(')');
@@ -532,58 +533,18 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
         }
 
-        case AstNodeKind::Switch:
-        {
-            const auto nodeSwitch = castAst<AstSwitch>(node, AstNodeKind::Switch);
-            CONCAT_FIXED_STR(concat, "switch");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(nodeSwitch->expression));
-            concat->addEol();
-            concat->addIndent(indent);
-            concat->addChar('{');
-            concat->addEol();
-            concat->addIndent(indent);
-
-            for (const auto c : nodeSwitch->cases)
-            {
-                if (c->expressions.empty())
-                    CONCAT_FIXED_STR(concat, "default");
-                else
-                {
-                    CONCAT_FIXED_STR(concat, "case");
-                    concat->addBlank();
-                    bool first = true;
-                    for (const auto it : c->expressions)
-                    {
-                        if (!first)
-                        {
-                            concat->addChar(',');
-                            concat->addBlank();
-                        }
-
-                        SWAG_CHECK(outputNode(it));
-                        first = false;
-                    }
-                }
-                concat->addChar(':');
-                concat->addEol();
-                concat->addIndent(indent);
-                SWAG_CHECK(outputNode(c->block));
-                concat->addEol();
-                concat->addIndent(indent);
-            }
-
-            concat->addChar('}');
-            concat->addEol();
+        case AstNodeKind::SwitchCaseBlock:
+            SWAG_CHECK(outputSwitchCaseBlock(node));
             break;
-        }
+        case AstNodeKind::Switch:
+            SWAG_CHECK(outputSwitch(node));
+            break;
 
         case AstNodeKind::StatementNoScope:
             SWAG_CHECK(outputChildren(node));
             break;
 
         case AstNodeKind::Statement:
-        case AstNodeKind::SwitchCaseBlock:
             concat->addChar('{');
             concat->addEol();
             indent++;
@@ -784,25 +745,7 @@ bool FormatAst::outputNode(const AstNode* node)
         }
 
         case AstNodeKind::Namespace:
-            if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
-            {
-                SWAG_CHECK(outputChildren(node));
-                break;
-            }
-
-            CONCAT_FIXED_STR(concat, "namespace");
-            concat->addBlank();
-            concat->addString(node->token.text);
-            concat->addEol();
-            concat->addIndent(indent);
-            concat->addChar('{');
-            concat->addEol();
-            indent++;
-            outputChildren(node);
-            indent--;
-            concat->addIndent(indent);
-            concat->addChar('}');
-            concat->addEol();
+            SWAG_CHECK(outputNamespace(node));
             break;
 
         case AstNodeKind::CompilerImport:
@@ -814,6 +757,11 @@ bool FormatAst::outputNode(const AstNode* node)
 
         case AstNodeKind::FallThrough:
             CONCAT_FIXED_STR(concat, "fallthrough");
+            concat->addEol();
+            break;
+
+        case AstNodeKind::Unreachable:
+            CONCAT_FIXED_STR(concat, "unreachable");
             concat->addEol();
             break;
 

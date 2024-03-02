@@ -361,9 +361,9 @@ struct AstNode
     uint32_t childParentIdx() const;
     void     swap2Children();
 
-    AstNode* firstChild() const { return children.front(); }
-    AstNode* secondChild() const { return children[1]; }
-    AstNode* lastChild() const { return children.back(); }
+    AstNode* firstChild() const { return children.empty() ? nullptr : children.front(); }
+    AstNode* secondChild() const { return children.size() < 2 ? nullptr : children[1]; }
+    AstNode* lastChild() const { return children.empty() ? nullptr : children.back(); }
     uint32_t childCount() const { return children.size(); }
 
     bool hasAstFlag(AstNodeFlags fl) const { return flags.has(fl); }

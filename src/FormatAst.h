@@ -73,7 +73,10 @@ struct FormatAst
     bool outputLoop(const AstNode* node);
     bool outputVisit(const AstNode* node);
     bool outputFor(const AstNode* node);
+    bool outputSwitch(const AstNode* node);
+    bool outputSwitchCaseBlock(const AstNode* node);
     bool outputIf(const Utf8& name, const AstNode* node);
+    bool outputNamespace(const AstNode* node);
 
     bool outputNode(const AstNode* node);
 

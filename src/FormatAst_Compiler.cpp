@@ -11,14 +11,17 @@ bool FormatAst::outputCompilerIf(const Utf8& name, const AstNode* node)
     concat->addBlank();
     SWAG_CHECK(outputNode(compilerIf->boolExpression));
 
-    if (compilerIf->ifBlock->firstChild()->isNot(AstNodeKind::Statement))
+    if (!compilerIf->ifBlock->childCount() || compilerIf->ifBlock->firstChild()->isNot(AstNodeKind::Statement))
     {
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "#do");
         concat->addEol();
         indent++;
         concat->addIndent(indent);
-        SWAG_CHECK(outputNode(compilerIf->ifBlock->firstChild()));
+        if (!compilerIf->ifBlock->childCount())
+            SWAG_CHECK(outputNode(compilerIf->ifBlock));
+        else
+            SWAG_CHECK(outputNode(compilerIf->ifBlock->firstChild()));
         indent--;
         concat->addEol();
     }
@@ -32,10 +35,13 @@ bool FormatAst::outputCompilerIf(const Utf8& name, const AstNode* node)
     if (!compilerIf->elseBlock)
         return true;
 
-    if (compilerIf->elseBlock->firstChild()->is(AstNodeKind::CompilerIf))
+    if (!compilerIf->elseBlock->childCount() || compilerIf->elseBlock->firstChild()->is(AstNodeKind::CompilerIf))
     {
         concat->addIndent(indent);
-        SWAG_CHECK(outputCompilerIf("#elif", compilerIf->elseBlock->firstChild()));
+        if (!compilerIf->elseBlock->childCount())
+            SWAG_CHECK(outputCompilerIf("#elif", compilerIf->elseBlock));
+        else
+            SWAG_CHECK(outputCompilerIf("#elif", compilerIf->elseBlock->firstChild()));
     }
     else
     {

@@ -126,3 +126,57 @@ bool FormatAst::outputFor(const AstNode* node)
     SWAG_CHECK(outputNode(forNode->block));
     return true;
 }
+
+bool FormatAst::outputSwitch(const AstNode* node)
+{
+    const auto nodeSwitch = castAst<AstSwitch>(node, AstNodeKind::Switch);
+    CONCAT_FIXED_STR(concat, "switch");
+    concat->addBlank();
+    SWAG_CHECK(outputNode(nodeSwitch->expression));
+    concat->addEol();
+    concat->addIndent(indent);
+    concat->addChar('{');
+    concat->addEol();
+
+    for (const auto c : nodeSwitch->cases)
+    {
+        concat->addIndent(indent);
+        if (c->expressions.empty())
+            CONCAT_FIXED_STR(concat, "default");
+        else
+        {
+            CONCAT_FIXED_STR(concat, "case");
+            concat->addBlank();
+            bool first = true;
+            for (const auto it : c->expressions)
+            {
+                if (!first)
+                {
+                    concat->addChar(',');
+                    concat->addBlank();
+                }
+
+                SWAG_CHECK(outputNode(it));
+                first = false;
+            }
+        }
+
+        concat->addChar(':');
+        concat->addEol();
+        indent++;
+        SWAG_CHECK(outputNode(c->block));
+        concat->addEol();
+        indent--;
+    }
+
+    concat->addIndent(indent);
+    concat->addChar('}');
+    concat->addEol();
+    return true;
+}
+
+bool FormatAst::outputSwitchCaseBlock(const AstNode* node)
+{
+    SWAG_CHECK(outputChildren(node));
+    return true;
+}

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "SyntaxJob.h"
-#include "Concat.h"
 #include "FormatAst.h"
 #include "LoadSourceFileJob.h"
 #include "Parser.h"
@@ -37,12 +36,10 @@ JobResult SyntaxJob::execute()
 
 #ifdef SWAG_DEV_MODE
     /*
-    FormatAst::OutputContext cxt;
-    Concat                   concat;
-    concat.init(4 * 1024);
-    FormatAst::outputNode(cxt, concat, sourceFile->astRoot);
+    FormatAst fmt;
+    fmt.outputNode(sourceFile->astRoot);
     const Path path = R"(c:/temp/)" + sourceFile->path.filename();
-    concat.flushToFile(path);
+    fmt.concat->flushToFile(path);
     */
 #endif
 

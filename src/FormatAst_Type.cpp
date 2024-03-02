@@ -280,7 +280,7 @@ bool FormatAst::outputEnum(const AstEnum* node)
     concat->addString(node->token.text);
 
     // Raw type
-    if (node->firstChild()->childCount())
+    if (node->firstChild() && node->firstChild()->childCount())
     {
         concat->addBlank();
         concat->addChar(':');
