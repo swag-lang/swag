@@ -852,27 +852,27 @@ void GenDoc::generateContent()
 
                     helpContent += "<div class=\"api-additional-infos\">";
                     helpContent += "<b>Usage</b>: ";
-                    if (typeInfo->attributeUsage & All)
+                    if (typeInfo->attributeUsage.has(ATTR_USAGE_ALL))
                         helpContent += "all ";
-                    if (typeInfo->attributeUsage & Function)
+                    if (typeInfo->attributeUsage.has(ATTR_USAGE_FUNC))
                         helpContent += "function ";
-                    if (typeInfo->attributeUsage & FunctionParameter)
+                    if (typeInfo->attributeUsage.has(ATTR_USAGE_FUNC_PARAM))
                         helpContent += "func-param ";
-                    if (typeInfo->attributeUsage & Enum)
+                    if (typeInfo->attributeUsage.has(ATTR_USAGE_ENUM))
                         helpContent += "enum ";
-                    if (typeInfo->attributeUsage & EnumValue)
+                    if (typeInfo->attributeUsage.has(ATTR_USAGE_ENUM_VALUE))
                         helpContent += "enum-value ";
-                    if (typeInfo->attributeUsage & Struct)
+                    if (typeInfo->attributeUsage.has(ATTR_USAGE_STRUCT))
                         helpContent += "struct ";
-                    if (typeInfo->attributeUsage & StructVariable)
+                    if (typeInfo->attributeUsage.has(ATTR_USAGE_STRUCT_VAR))
                         helpContent += "struct-var ";
-                    if (typeInfo->attributeUsage & Variable)
+                    if (typeInfo->attributeUsage.has(ATTR_USAGE_VAR))
                         helpContent += "var ";
-                    if (typeInfo->attributeUsage & GlobalVariable)
+                    if (typeInfo->attributeUsage.has(ATTR_USAGE_GLOBAL_VAR))
                         helpContent += "global-var ";
-                    if (typeInfo->attributeUsage & Constant)
+                    if (typeInfo->attributeUsage.has(ATTR_USAGE_CONSTANT))
                         helpContent += "const ";
-                    if (typeInfo->attributeUsage & Multi)
+                    if (typeInfo->attributeUsage.has(ATTR_USAGE_MULTI))
                         helpContent += "multi ";
                     helpContent += "\n";
                     helpContent += "</div>\n";

@@ -499,7 +499,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
         const auto offsetStartAttr = curOffsetAttributes;
 
         // Type of the attribute
-        SWAG_CHECK(genExportedSubTypeInfo(context, reinterpret_cast<ExportedTypeInfo**>(ptrStorageAttributes), attrAddr, storageSegment, offsetStartAttr, one.typeFunc, genFlags));
+        SWAG_CHECK(genExportedSubTypeInfo(context, reinterpret_cast<ExportedTypeInfo**>(ptrStorageAttributes), attrAddr, storageSegment, offsetStartAttr, one.type, genFlags));
         curOffsetAttributes += sizeof(ExportedTypeInfo*);
         ptrStorageAttributes += sizeof(ExportedTypeInfo*);
 
@@ -529,9 +529,9 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
                 auto typeValue = oneParam.typeInfo;
 
                 // This is a typed variadic
-                if (one.typeFunc && one.typeFunc->hasFlag(TYPEINFO_TYPED_VARIADIC) && cptParam >= one.typeFunc->parameters.size() - 1)
+                if (one.type && one.type->hasFlag(TYPEINFO_TYPED_VARIADIC) && cptParam >= one.type->parameters.size() - 1)
                 {
-                    const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(one.typeFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
+                    const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(one.type->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
                     typeValue               = typeVariadic->rawType;
                 }
 

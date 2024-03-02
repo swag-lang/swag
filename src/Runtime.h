@@ -30,25 +30,21 @@ enum WarnLevel : uint8_t
     Error,
 };
 
-enum AttributeUsage
-{
-    // Usage
-    Enum              = 0x00000001,
-    EnumValue         = 0x00000002,
-    StructVariable    = 0x00000004,
-    GlobalVariable    = 0x00000008,
-    Variable          = 0x00000010,
-    Struct            = 0x00000020,
-    Function          = 0x00000040,
-    FunctionParameter = 0x00000080,
-    File              = 0x00000100,
-    Constant          = 0x00000200,
-    MaskType          = 0x00FFFFFF,
-    // Flags
-    Multi = 0x01000000,
-    Gen   = 0x02000000,
-    All   = 0x04000000,
-};
+using AttrUsageFlags                           = Flags<uint32_t>;
+constexpr AttrUsageFlags ATTR_USAGE_ENUM       = 0x00000001;
+constexpr AttrUsageFlags ATTR_USAGE_ENUM_VALUE = 0x00000002;
+constexpr AttrUsageFlags ATTR_USAGE_STRUCT_VAR = 0x00000004;
+constexpr AttrUsageFlags ATTR_USAGE_GLOBAL_VAR = 0x00000008;
+constexpr AttrUsageFlags ATTR_USAGE_VAR        = 0x00000010;
+constexpr AttrUsageFlags ATTR_USAGE_STRUCT     = 0x00000020;
+constexpr AttrUsageFlags ATTR_USAGE_FUNC       = 0x00000040;
+constexpr AttrUsageFlags ATTR_USAGE_FUNC_PARAM = 0x00000080;
+constexpr AttrUsageFlags ATTR_USAGE_FILE       = 0x00000100;
+constexpr AttrUsageFlags ATTR_USAGE_CONSTANT   = 0x00000200;
+constexpr AttrUsageFlags ATTR_USAGE_MASK_TYPE  = 0x00FFFFFF;
+constexpr AttrUsageFlags ATTR_USAGE_MULTI      = 0x01000000;
+constexpr AttrUsageFlags ATTR_USAGE_GEN        = 0x02000000;
+constexpr AttrUsageFlags ATTR_USAGE_ALL        = 0x04000000;
 
 enum class ContextFlags : uint64_t
 {

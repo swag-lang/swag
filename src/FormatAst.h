@@ -51,7 +51,7 @@ struct FormatAst
     bool outputFuncSignature(AstNode* node, const AstNode* genericParameters, const AstNode* parameters, const AstNode* validIf);
     bool outputGenericParameters(const AstNode* node);
     bool outputAttributesUsage(const TypeInfoFuncAttr* typeFunc) const;
-    bool outputAttributes(const AstNode* node, const TypeInfo* typeInfo, const AttributeList& attributes);
+    bool outputAttributes(const TypeInfo* typeInfo, const AttributeList& attributes);
     bool outputAttributes(const AstNode* node, TypeInfo* typeInfo);
     bool outputAttributesGlobalUsing(const AstNode* node) const;
     bool outputCompilerSpecialValue(const AstNode* node) const;

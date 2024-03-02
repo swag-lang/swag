@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "FormatAst.h"
 #include "Ast.h"
 #include "AstFlags.h"
+#include "FormatAst.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Scope.h"
@@ -41,18 +41,22 @@ bool FormatAst::outputAttrUse(const AstNode* node, bool& hasSomething)
         if (s->is(AstNodeKind::AttrUse))
             continue;
 
-        if (!first)
-            CONCAT_FIXED_STR(concat, ", ");
-        else
+        if (first)
+        {
             CONCAT_FIXED_STR(concat, "#[");
-        first = false;
+            first = false;
+        }
+        else
+        {
+            concat->addChar(',');
+            concat->addBlank();
+        }
+
         SWAG_CHECK(outputNode(s));
     }
 
     if (!first)
-    {
         concat->addChar(']');
-    }
 
     return true;
 }
@@ -66,7 +70,7 @@ bool FormatAst::outputAttributesUsage(const TypeInfoFuncAttr* typeFunc) const
 #define ADD_ATTR_USAGE(__f, __n)                         \
     do                                                   \
     {                                                    \
-        if (typeFunc->attributeUsage & (int) (__f))      \
+        if (typeFunc->attributeUsage.has(__f))           \
         {                                                \
             if (!first)                                  \
                 CONCAT_FIXED_STR(concat, "|");           \
@@ -76,89 +80,95 @@ bool FormatAst::outputAttributesUsage(const TypeInfoFuncAttr* typeFunc) const
         }                                                \
     } while (0)
 
-    ADD_ATTR_USAGE(AttributeUsage::Enum, "Enum");
-    ADD_ATTR_USAGE(AttributeUsage::EnumValue, "EnumValue");
-    ADD_ATTR_USAGE(AttributeUsage::StructVariable, "Field");
-    ADD_ATTR_USAGE(AttributeUsage::GlobalVariable, "GlobalVariable");
-    ADD_ATTR_USAGE(AttributeUsage::Variable, "Variable");
-    ADD_ATTR_USAGE(AttributeUsage::Struct, "Struct");
-    ADD_ATTR_USAGE(AttributeUsage::Function, "Function");
-    ADD_ATTR_USAGE(AttributeUsage::FunctionParameter, "FunctionParameter");
-    ADD_ATTR_USAGE(AttributeUsage::File, "File");
-    ADD_ATTR_USAGE(AttributeUsage::Constant, "Constant");
-
-    ADD_ATTR_USAGE(AttributeUsage::Multi, "Multi");
-    ADD_ATTR_USAGE(AttributeUsage::Gen, "Gen");
-    ADD_ATTR_USAGE(AttributeUsage::All, "All");
+    ADD_ATTR_USAGE(ATTR_USAGE_ENUM, "Enum");
+    ADD_ATTR_USAGE(ATTR_USAGE_ENUM_VALUE, "EnumValue");
+    ADD_ATTR_USAGE(ATTR_USAGE_STRUCT_VAR, "Field");
+    ADD_ATTR_USAGE(ATTR_USAGE_GLOBAL_VAR, "GlobalVariable");
+    ADD_ATTR_USAGE(ATTR_USAGE_VAR, "Variable");
+    ADD_ATTR_USAGE(ATTR_USAGE_STRUCT, "Struct");
+    ADD_ATTR_USAGE(ATTR_USAGE_FUNC, "Function");
+    ADD_ATTR_USAGE(ATTR_USAGE_FUNC_PARAM, "FunctionParameter");
+    ADD_ATTR_USAGE(ATTR_USAGE_FILE, "File");
+    ADD_ATTR_USAGE(ATTR_USAGE_CONSTANT, "Constant");
+    ADD_ATTR_USAGE(ATTR_USAGE_MULTI, "Multi");
+    ADD_ATTR_USAGE(ATTR_USAGE_GEN, "Gen");
+    ADD_ATTR_USAGE(ATTR_USAGE_ALL, "All");
 
     concat->addString(")]");
     concat->addEol();
     return true;
 }
 
-bool FormatAst::outputAttributes(const AstNode* /*node*/, const TypeInfo* typeInfo, const AttributeList& attributes)
+bool FormatAst::outputAttributes(const TypeInfo* typeInfo, const AttributeList& attributes)
 {
     const auto attr = &attributes;
-    if (!attr->empty())
+    if (attr->empty())
+        return true;
+
+    Set<AstNode*> done;
+    bool          first = true;
+
+    for (auto& one : attr->allAttributes)
     {
-        Set<AstNode*> done;
-        bool          first = true;
-        for (auto& one : attr->allAttributes)
+        // Be sure usage is valid
+        if (typeInfo->isStruct() && one.type && !one.type->attributeUsage.has(ATTR_USAGE_ALL | ATTR_USAGE_STRUCT))
+            continue;
+        if (typeInfo->isInterface() && one.type && !one.type->attributeUsage.has(ATTR_USAGE_ALL | ATTR_USAGE_STRUCT))
+            continue;
+        if (typeInfo->isFuncAttr() && one.type && !one.type->attributeUsage.has(ATTR_USAGE_ALL | ATTR_USAGE_FUNC))
+            continue;
+        if (typeInfo->isEnum() && one.type && !one.type->attributeUsage.has(ATTR_USAGE_ALL | ATTR_USAGE_ENUM))
+            continue;
+
+        if (one.node)
         {
-            // Be sure usage is valid
-            if (typeInfo->isStruct() && one.typeFunc && !(one.typeFunc->attributeUsage & (All | Struct)))
+            if (done.contains(one.node))
                 continue;
-            if (typeInfo->isInterface() && one.typeFunc && !(one.typeFunc->attributeUsage & (All | Struct)))
-                continue;
-            if (typeInfo->isFuncAttr() && one.typeFunc && !(one.typeFunc->attributeUsage & (All | Function)))
-                continue;
-            if (typeInfo->isEnum() && one.typeFunc && !(one.typeFunc->attributeUsage & (All | Enum)))
-                continue;
-
-            if (one.node)
-            {
-                if (done.contains(one.node))
-                    continue;
-                done.insert(one.node);
-                concat->addIndent(indent);
-                bool hasSomething = true;
-                SWAG_CHECK(outputAttrUse(one.node, hasSomething));
-                concat->addEol();
-            }
-            else
-            {
-                if (!first)
-                    CONCAT_FIXED_STR(concat, ", ");
-                else
-                {
-                    first = false;
-                    concat->addIndent(indent);
-                    CONCAT_FIXED_STR(concat, "#[");
-                }
-
-                concat->addString(one.name);
-                if (!one.parameters.empty())
-                {
-                    concat->addChar('(');
-
-                    for (uint32_t i = 0; i < one.parameters.size(); i++)
-                    {
-                        auto& oneParam = one.parameters[i];
-                        if (i)
-                            CONCAT_FIXED_STR(concat, ", ");
-                        SWAG_CHECK(outputLiteral(one.node, oneParam.typeInfo, oneParam.value));
-                    }
-
-                    concat->addChar(')');
-                }
-            }
+            done.insert(one.node);
+            concat->addIndent(indent);
+            bool hasSomething = true;
+            SWAG_CHECK(outputAttrUse(one.node, hasSomething));
+            concat->addEol();
+            continue;
         }
 
         if (!first)
         {
-            CONCAT_FIXED_STR(concat, "]");
-            concat->addEol();
+            concat->addChar(',');
+            concat->addBlank();
         }
+        else
+        {
+            first = false;
+            concat->addIndent(indent);
+            CONCAT_FIXED_STR(concat, "#[");
+        }
+
+        concat->addString(one.name);
+        if (!one.parameters.empty())
+        {
+            concat->addChar('(');
+
+            for (uint32_t i = 0; i < one.parameters.size(); i++)
+            {
+                auto& oneParam = one.parameters[i];
+                if (i)
+                {
+                    concat->addChar(',');
+                    concat->addBlank();
+                }
+
+                SWAG_CHECK(outputLiteral(one.node, oneParam.typeInfo, oneParam.value));
+            }
+
+            concat->addChar(')');
+        }
+    }
+
+    if (!first)
+    {
+        CONCAT_FIXED_STR(concat, "]");
+        concat->addEol();
     }
 
     return true;
@@ -239,7 +249,7 @@ bool FormatAst::outputAttributes(const AstNode* node, TypeInfo* typeInfo)
 
     if (!attr)
         return true;
-    SWAG_CHECK(outputAttributes(node, typeInfo, *attr));
+    SWAG_CHECK(outputAttributes(typeInfo, *attr));
 
     return true;
 }

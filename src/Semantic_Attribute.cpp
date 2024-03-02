@@ -73,7 +73,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(checkNode);
 
-    if (typeInfo->attributeUsage & All)
+    if (typeInfo->attributeUsage.has(ATTR_USAGE_ALL))
         return true;
 
     const bool  isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
@@ -128,59 +128,47 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     if (!specificMsg)
     {
-        if (typeInfo->attributeUsage & Function && kind == AstNodeKind::FuncDecl)
+        if (typeInfo->attributeUsage.has(ATTR_USAGE_FUNC) && kind == AstNodeKind::FuncDecl)
             return true;
-        if (typeInfo->attributeUsage & Struct && kind == AstNodeKind::StructDecl)
+        if (typeInfo->attributeUsage.has(ATTR_USAGE_STRUCT) && kind == AstNodeKind::StructDecl)
             return true;
-        if (typeInfo->attributeUsage & Enum && kind == AstNodeKind::EnumDecl)
+        if (typeInfo->attributeUsage.has(ATTR_USAGE_ENUM) && kind == AstNodeKind::EnumDecl)
             return true;
-        if (typeInfo->attributeUsage & EnumValue && kind == AstNodeKind::EnumValue)
+        if (typeInfo->attributeUsage.has(ATTR_USAGE_ENUM_VALUE) && kind == AstNodeKind::EnumValue)
             return true;
-        if (typeInfo->attributeUsage & Variable && kind == AstNodeKind::VarDecl)
+        if (typeInfo->attributeUsage.has(ATTR_USAGE_VAR) && kind == AstNodeKind::VarDecl)
             return true;
-        if (typeInfo->attributeUsage & Constant && kind == AstNodeKind::ConstDecl)
+        if (typeInfo->attributeUsage.has(ATTR_USAGE_CONSTANT) && kind == AstNodeKind::ConstDecl)
             return true;
-        if (typeInfo->attributeUsage & StructVariable && isStructVar)
+        if (typeInfo->attributeUsage.has(ATTR_USAGE_STRUCT_VAR) && isStructVar)
             return true;
-        if (typeInfo->attributeUsage & GlobalVariable && isGlobalVar)
+        if (typeInfo->attributeUsage.has(ATTR_USAGE_GLOBAL_VAR) && isGlobalVar)
             return true;
-        if (typeInfo->attributeUsage & FunctionParameter && isFuncParam)
+        if (typeInfo->attributeUsage.has(ATTR_USAGE_FUNC_PARAM) && isFuncParam)
             return true;
     }
 
-    switch (typeInfo->attributeUsage & MaskType)
-    {
-        case Enum:
-            specificMsg = "an enum";
-            break;
-        case EnumValue:
-            specificMsg = "an enum value";
-            break;
-        case StructVariable:
-            specificMsg = "a struct variable";
-            break;
-        case GlobalVariable:
-            specificMsg = "a global variable";
-            break;
-        case Variable:
-            specificMsg = "a variable";
-            break;
-        case Struct:
-            specificMsg = "a struct";
-            break;
-        case Function:
-            specificMsg = "a function";
-            break;
-        case FunctionParameter:
-            specificMsg = "a function parameter";
-            break;
-        case File:
-            specificMsg = "a file";
-            break;
-        case Constant:
-            specificMsg = "a constant";
-            break;
-    }
+    const auto mask = typeInfo->attributeUsage.mask(ATTR_USAGE_MASK_TYPE);
+    if (mask == ATTR_USAGE_ENUM)
+        specificMsg = "an enum";
+    else if (mask == ATTR_USAGE_ENUM_VALUE)
+        specificMsg = "an enum value";
+    else if (mask == ATTR_USAGE_STRUCT_VAR)
+        specificMsg = "a struct variable";
+    else if (mask == ATTR_USAGE_GLOBAL_VAR)
+        specificMsg = "a global variable";
+    else if (mask == ATTR_USAGE_VAR)
+        specificMsg = "a variable";
+    else if (mask == ATTR_USAGE_STRUCT)
+        specificMsg = "a struct";
+    else if (mask == ATTR_USAGE_FUNC)
+        specificMsg = "a function";
+    else if (mask == ATTR_USAGE_FUNC_PARAM)
+        specificMsg = "a function parameter";
+    else if (mask == ATTR_USAGE_FILE)
+        specificMsg = "a file";
+    else if (mask == ATTR_USAGE_CONSTANT)
+        specificMsg = "a constant";
 
     if (specificMsg)
     {
@@ -319,27 +307,25 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     typeAttr->attributeUsage = value->reg.u32;
 
                 if (curAttr->attributes.hasAttribute(g_LangSpec->name_Swag_AttrMulti))
-                    typeAttr->attributeUsage |= Multi;
+                    typeAttr->attributeUsage.add(ATTR_USAGE_MULTI);
 
                 // Some checks
-                if (typeAttr->attributeUsage & Gen)
+                if (typeAttr->attributeUsage.has(ATTR_USAGE_GEN))
                 {
                     auto what = typeAttr->attributeUsage;
-                    if (!(what & (Struct | Enum)))
+                    if (!what.has(ATTR_USAGE_STRUCT | ATTR_USAGE_ENUM))
                         return context->report({child, toErr(Err0221)});
 
-                    what &= ~Struct;
-                    what &= ~Enum;
-                    what &= ~Gen;
-                    if (typeAttr->attributeUsage & what)
+                    what.remove(ATTR_USAGE_STRUCT);
+                    what.remove(ATTR_USAGE_ENUM);
+                    what.remove(ATTR_USAGE_GEN);
+                    if (typeAttr->attributeUsage.has(what))
                         return context->report({child, toErr(Err0221)});
                 }
             }
 
-            if (typeInfo->attributeUsage & Gen)
-            {
+            if (typeInfo->attributeUsage.has(ATTR_USAGE_GEN))
                 flags.add(ATTRIBUTE_GEN);
-            }
 
             // Predefined attributes will mark some flags (to speed up detection)
             auto it = g_LangSpec->attributesFlags.find(child->token.text);
@@ -698,7 +684,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         if (node->hasSpecFlag(AstAttrUse::SPEC_FLAG_GLOBAL))
         {
             auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-            if (!(typeInfo->attributeUsage & File))
+            if (!(typeInfo->attributeUsage.has(ATTR_USAGE_FILE)))
             {
                 Diagnostic err{identifier, identifier->token, formErr(Err0493, resolvedName->name.c_str())};
                 context->report(err, Diagnostic::hereIs(resolved));
@@ -750,7 +736,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             oneAttribute.parameters.emplace_back(std::move(attrParam));
         }
 
-        oneAttribute.typeFunc = typeFunc;
+        oneAttribute.type = typeFunc;
         node->attributes.emplace(oneAttribute);
     }
 
