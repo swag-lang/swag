@@ -394,8 +394,6 @@ bool FormatAst::outputNode(const AstNode* node)
 
         case AstNodeKind::CompilerMacro:
             CONCAT_FIXED_STR(concat, "#macro");
-            concat->addEol();
-            concat->addIndent(indent);
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
 

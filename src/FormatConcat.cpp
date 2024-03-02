@@ -7,9 +7,17 @@ void FormatConcat::addChar(char c)
     *currentSP++ = c;
 
     if (SWAG_IS_EOL(c))
+    {
         eol++;
+        blank = 0;
+    }
     else if (!SWAG_IS_BLANK(c))
-        eol = 0;
+    {
+        eol   = 0;
+        blank = 0;
+    }
+    else
+        blank++;
 }
 
 void FormatConcat::addString(const char* v, uint32_t len)
@@ -17,7 +25,8 @@ void FormatConcat::addString(const char* v, uint32_t len)
     ensureSpace(len);
     std::copy_n(v, len, currentSP);
     currentSP += len;
-    eol = 0;
+    eol   = 0;
+    blank = 0;
 }
 
 void FormatConcat::addBlank(bool test)
@@ -36,6 +45,8 @@ void FormatConcat::addEol()
 
 void FormatConcat::addIndent(uint32_t num)
 {
+    if (blank)
+        return;
     while (num--)
     {
         addBlank();
