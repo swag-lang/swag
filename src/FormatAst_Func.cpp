@@ -86,7 +86,7 @@ bool FormatAst::outputFuncSignature(AstNode* node, const AstNode* genericParamet
         indent++;
         concat->addEol();
         concat->addIndent(indent);
-        SWAG_CHECK(outputNode(validIf));
+        SWAG_CHECK(outputCompilerExpr(validIf));
         indent--;
     }
 
@@ -97,7 +97,7 @@ bool FormatAst::outputFuncSignature(AstNode* node, const AstNode* genericParamet
 
 bool FormatAst::outputFuncDeclReturnType(const AstNode* node)
 {
-    if(!node)
+    if (!node)
         return true;
     CONCAT_FIXED_STR(concat, "->");
     SWAG_CHECK(outputNode(node));
@@ -193,13 +193,14 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
     else if (node->content)
     {
         concat->addEol();
-        concat->addIndent(indent);
     }
 
     if (!node->content)
         return true;
 
     // Content, normal function
+    concat->addEol();
+    concat->addIndent(indent);
     concat->addChar('{');
     indent++;
     concat->addEol();

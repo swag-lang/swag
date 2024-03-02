@@ -174,13 +174,13 @@ bool FormatAst::outputCompilerExpr(const AstNode* node)
         concat->addEol();
         concat->addIndent(indent);
         SWAG_CHECK(outputNode(funcDecl->content));
-        concat->addEol();
     }
     else
     {
         SWAG_CHECK(outputNode(front));
-        concat->addEol();
     }
 
+    if (endEol)
+        concat->addEol();
     return true;
 }
