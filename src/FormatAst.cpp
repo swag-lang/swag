@@ -1,11 +1,20 @@
 #include "pch.h"
 #include "FormatAst.h"
-#include "Ast.h"
 #include "AstFlags.h"
-#include "LanguageSpec.h"
-#include "Module.h"
 #include "Semantic.h"
-#include "TypeManager.h"
+
+void FormatAst::clear() const
+{
+    concat->clear();
+}
+
+Utf8 FormatAst::getUtf8() const
+{
+    Utf8 result;
+    for (auto b = concat->firstBucket; b; b = b->nextBucket)
+        result.append(reinterpret_cast<const char*>(b->data), concat->bucketCount(b));
+    return result;
+}
 
 const AstNode* FormatAst::convertNode(const AstNode* node)
 {

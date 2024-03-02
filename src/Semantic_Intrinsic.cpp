@@ -570,14 +570,10 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
     }
     else if (expr->typeInfo->isCode())
     {
-        FormatConcat concat;
-        concat.init(4 * 1024);
-        FormatAst fmtAst{concat};
-
+        FormatAst  fmtAst;
         const auto typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
         fmtAst.outputNode(typeCode->content);
-        for (auto b = concat.firstBucket; b; b = b->nextBucket)
-            node->computedValue()->text.append(reinterpret_cast<const char*>(b->data), concat.bucketCount(b));
+        node->computedValue()->text = fmtAst.getUtf8();
     }
     else if (expr->resolvedSymbolName())
         node->computedValue()->text = expr->resolvedSymbolName()->getFullName();

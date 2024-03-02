@@ -300,14 +300,13 @@ void GenDoc::outputTitle(OneRef& c)
     helpContent += "</p>\n";
 }
 
-Utf8 GenDoc::getOutputNode(AstNode* node)
+Utf8 GenDoc::getOutputNode(const AstNode* node)
 {
     if (!node)
         return "";
-    concat.clear();
-    FormatAst fmtAst{concat};
+    fmtAst.clear();
     fmtAst.outputNode(node);
-    return Utf8{reinterpret_cast<const char*>(concat.firstBucket->data), (concat.bucketCount(concat.firstBucket))};
+    return fmtAst.getUtf8();
 }
 
 void GenDoc::outputType(AstNode* node)
@@ -905,8 +904,6 @@ void GenDoc::generateContent()
 
 bool GenDoc::generateApi()
 {
-    concat.init();
-
     // Collect content
     if (module != g_Workspace->runtimeModule)
         collectScopes(module->scopeRoot);

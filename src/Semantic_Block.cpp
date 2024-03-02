@@ -678,11 +678,9 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
     // Get back the expression string
     FormatAst fmtAst{context->tmpConcat};
-    auto&     concat = context->tmpConcat;
-    concat.init(1024);
+    context->tmpConcat.init(1024);
     SWAG_CHECK(fmtAst.outputNode(node->expression));
-    concat.addU8(0);
-    SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
+    Utf8 result = fmtAst.getUtf8();
 
     AstNode* newVar        = nullptr;
     size_t   firstAliasVar = 0;
@@ -855,11 +853,11 @@ bool Semantic::resolveVisit(SemanticContext* context)
             return context->report(err);
         }
 
-        content += form(R"({ loop%s %s { )", visitBack.c_str(), concat.firstBucket->data);
+        content += form(R"({ loop%s %s { )", visitBack.c_str(), result.c_str());
         firstAliasVar = 0;
         content += R"(let )";
         content += alias0Name;
-        content += form(R"( = %s[#index]; )", concat.firstBucket->data);
+        content += form(R"( = %s[#index]; )", result.c_str());
 
         content += R"(let )";
         content += alias1Name;
@@ -877,7 +875,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         }
 
         auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        content += form(R"({ let __addr%u = @typeof(%s); )", id, concat.firstBucket->data);
+        content += form(R"({ let __addr%u = @typeof(%s); )", id, result.c_str());
         content += form(R"(loop%s %d { )", visitBack.c_str(), typeEnum->values.size());
         firstAliasVar = 1;
         content += R"(let )";

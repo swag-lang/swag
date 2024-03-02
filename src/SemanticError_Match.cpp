@@ -79,9 +79,6 @@ namespace
                 break;
         }
 
-        FormatConcat concat;
-        concat.init(10 * 1024);
-
         const auto maxOverloads = min(tryResult.size(), MAX_OVERLOADS);
 
         // Additional error message per overload
@@ -112,11 +109,11 @@ namespace
                 note->textMsg = addMsg[0];
         }
 
-        FormatAst fmtAst{concat};
+        FormatAst fmtAst;
         for (uint32_t i = 0; i < maxOverloads; i++)
         {
             // Output the function signature
-            concat.clear();
+            fmtAst.clear();
             if (tryResult[i]->overload->node->is(AstNodeKind::FuncDecl))
             {
                 const auto funcNode = castAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
@@ -133,7 +130,7 @@ namespace
                 SWAG_ASSERT(false);
             }
 
-            auto n = Utf8{reinterpret_cast<const char*>(concat.firstBucket->data), concat.bucketCount(concat.firstBucket)};
+            auto n = fmtAst.getUtf8();
             if (n.back() == '\n')
                 n.count--;
             if (n.back() == ';')
