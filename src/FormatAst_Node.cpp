@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
 #include "AstFlags.h"
-#include "ByteCodeDebugger.h"
 #include "FormatAst.h"
 #include "LanguageSpec.h"
 #include "Module.h"
@@ -708,41 +707,8 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::Impl:
-        {
-            const auto nodeImpl = castAst<AstImpl>(node, AstNodeKind::Impl);
-            CONCAT_FIXED_STR(concat, "impl");
-            concat->addBlank();
-            concat->addString(nodeImpl->identifier->token.text);
-            if (nodeImpl->identifierFor)
-            {
-                concat->addBlank();
-                CONCAT_FIXED_STR(concat, "for");
-                concat->addBlank();
-                concat->addString(nodeImpl->identifierFor->token.text);
-            }
-
-            concat->addEol();
-            concat->addIndent(indent);
-            concat->addChar('{');
-            concat->addEol();
-
-            const uint32_t first = nodeImpl->identifierFor ? 2 : 1;
-            for (uint32_t i = first; i < node->childCount(); i++)
-            {
-                const auto child = node->children[i];
-                concat->addIndent(indent + 1);
-                indent++;
-                SWAG_CHECK(outputNode(child));
-                indent--;
-                concat->addEol();
-            }
-
-            concat->addIndent(indent);
-            concat->addChar('}');
-            concat->addEol();
-            concat->addIndent(indent);
+            SWAG_CHECK(outputImpl(node));
             break;
-        }
 
         case AstNodeKind::Namespace:
             SWAG_CHECK(outputNamespace(node));

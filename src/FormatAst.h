@@ -77,6 +77,7 @@ struct FormatAst
     bool outputSwitchCaseBlock(const AstNode* node);
     bool outputIf(const Utf8& name, const AstNode* node);
     bool outputNamespace(const AstNode* node);
+    bool outputImpl(const AstNode* node);
 
     bool outputNode(const AstNode* node);
 

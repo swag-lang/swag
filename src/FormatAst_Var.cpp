@@ -4,7 +4,6 @@
 #include "AstFlags.h"
 #include "LanguageSpec.h"
 #include "Semantic.h"
-#include "TypeManager.h"
 
 bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
 {
