@@ -82,6 +82,21 @@ public impl Md5
         v.final(result)
         return result
     }
+
+    // Convert a MD5 result to a string
+    func toString(digest: Digest)->String
+    {
+        var result: retval
+        visit v: digest
+        {
+            let a = (v & 0xF0) >> 4
+            result += a > 9 ? a - 10 + `A` : a + `0`
+            let b = (v & 0x0F)
+            result += b > 9 ? b - 10 + `A` : b + `0`
+        }
+
+        return result
+    }
 }
 
 impl Md5
