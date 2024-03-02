@@ -7,6 +7,19 @@
 bool FormatAst::outputCompilerIf(const Utf8& name, const AstNode* node)
 {
     const auto ifNode = castAst<AstIf>(node, AstNodeKind::CompilerIf);
+
+    if (ifNode->hasAstFlag(AST_GLOBAL_NODE))
+    {
+        CONCAT_FIXED_STR(concat, "#global");
+        concat->addBlank();
+        CONCAT_FIXED_STR(concat, "#if");
+        concat->addBlank();
+        SWAG_CHECK(outputNode(ifNode->boolExpression));
+        concat->addEol();
+        SWAG_CHECK(outputChildren(ifNode->ifBlock->firstChild()));
+        return true;
+    }
+
     concat->addString(name);
     concat->addBlank();
     SWAG_CHECK(outputNode(ifNode->boolExpression));
