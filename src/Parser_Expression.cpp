@@ -240,10 +240,8 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             const auto startLoc = tokenParse.token.startLocation;
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(startLoc, tokenParse.token.endLocation, toErr(Err0679)));
-            AstNode* expr;
-            SWAG_CHECK(doExpression(parent, exprFlags, &expr));
-            *result = expr;
-            expr->addAstFlag(AST_IN_ATOMIC_EXPR);
+            SWAG_CHECK(doExpression(parent, exprFlags, result));
+            (*result)->addAstFlag(AST_IN_ATOMIC_EXPR);
             if (parent)
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, form("to end the [[%s]] expression", parent->token.c_str())));
             else

@@ -456,15 +456,11 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addBlank();
             concat->addChar('?');
             concat->addBlank();
-            concat->addChar('(');
             SWAG_CHECK(outputNode(node->secondChild()));
-            concat->addChar(')');
             concat->addBlank();
             concat->addChar(':');
             concat->addBlank();
-            concat->addChar('(');
             SWAG_CHECK(outputNode(node->children[2]));
-            concat->addChar(')');
             break;
 
         case AstNodeKind::TypeAlias:
@@ -624,7 +620,8 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::FactorOp:
-            concat->addChar('(');
+            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+                concat->addChar('(');
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addBlank();
             concat->addString(node->token.text);
@@ -632,17 +629,20 @@ bool FormatAst::outputNode(const AstNode* node)
                 CONCAT_FIXED_STR(concat, ",over");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
-            concat->addChar(')');
+            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+                concat->addChar(')');
             break;
 
         case AstNodeKind::BinaryOp:
-            concat->addChar('(');
+            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+                concat->addChar('(');
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addBlank();
             concat->addString(node->token.text);
             concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
-            concat->addChar(')');
+            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+                concat->addChar(')');
             break;
 
         case AstNodeKind::AutoCast:
