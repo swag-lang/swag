@@ -80,6 +80,8 @@ struct FormatAst
     bool outputIf(const Utf8& name, const AstNode* node);
     bool outputNamespace(const AstNode* node);
     bool outputImpl(const AstNode* node);
+    bool outputIdentifier(const AstNode* node);
+    bool outputIdentifierRef(const AstNode* node);
 
     bool outputNode(const AstNode* node);
 
