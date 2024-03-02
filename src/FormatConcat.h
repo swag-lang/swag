@@ -11,6 +11,8 @@ struct FormatConcat : Concat
     void addString(const Utf8& v);
     void addStringFormat(const char* format, ...);
     void addChar(char c);
+
+    uint32_t eol = 0;
 };
 
 #define CONCAT_FIXED_STR(__concat, __str)                                         \
