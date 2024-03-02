@@ -363,6 +363,7 @@ bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
     *result         = node;
+    node->addSpecFlag(AstStatement::SPEC_FLAG_CURLY);
 
     const bool isGlobal = currentScope->isGlobalOrImpl();
     const auto startLoc = tokenParse.token.startLocation;

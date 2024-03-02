@@ -35,12 +35,13 @@ JobResult SyntaxJob::execute()
     parser.generateAst();
 
 #ifdef SWAG_DEV_MODE
-    /*
-    FormatAst fmt;
-    fmt.outputNode(sourceFile->astRoot);
-    const Path path = R"(c:/temp/)" + sourceFile->path.filename();
-    fmt.concat->flushToFile(path);
-    */
+    if (!sourceFile->numErrors)
+    {
+        FormatAst fmt;
+        fmt.outputNode(sourceFile->astRoot);
+        //const Path path = R"(c:/temp/)" + sourceFile->path.filename();
+        //fmt.concat->flushToFile(path);
+    }
 #endif
 
     return JobResult::ReleaseJob;

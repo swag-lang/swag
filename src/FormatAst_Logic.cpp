@@ -23,18 +23,65 @@ bool FormatAst::outputIf(const Utf8& name, const AstNode* node)
     else
         SWAG_CHECK(outputNode(ifNode->boolExpression));
 
-    concat->addEol();
-    concat->addIndent(indent);
-    SWAG_CHECK(outputNode(ifNode->ifBlock));
-
-    if (ifNode->elseBlock)
+    if (!ifNode->ifBlock->childCount())
     {
         concat->addEol();
         concat->addIndent(indent);
-        CONCAT_FIXED_STR(concat, "else");
+        SWAG_CHECK(outputNode(ifNode->ifBlock));
+    }
+    else if (ifNode->ifBlock->is(AstNodeKind::Statement) && !ifNode->ifBlock->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY))
+    {
+        concat->addBlank();
+        CONCAT_FIXED_STR(concat, "do");
+        concat->addEol();
+        indent++;
+        concat->addIndent(indent);
+        SWAG_CHECK(outputNode(ifNode->ifBlock->firstChild()));
+        indent--;
+        concat->addEol();
+    }
+    else
+    {
         concat->addEol();
         concat->addIndent(indent);
-        SWAG_CHECK(outputNode(ifNode->elseBlock));
+        SWAG_CHECK(outputNode(ifNode->ifBlock));
+    }
+
+    if (!ifNode->elseBlock)
+        return true;
+
+    if (!ifNode->elseBlock->childCount())
+    {
+        concat->addEol();
+        concat->addIndent(indent);
+        SWAG_CHECK(outputNode(ifNode->elseBlock));    
+    }
+    else if (ifNode->elseBlock->is(AstNodeKind::If))
+    {
+        concat->addIndent(indent);
+        SWAG_CHECK(outputIf("elif", ifNode->elseBlock));
+    }
+    else
+    {
+        concat->addIndent(indent);
+        CONCAT_FIXED_STR(concat, "else");
+        if (ifNode->elseBlock->is(AstNodeKind::Statement) && !ifNode->elseBlock->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY))
+        {
+            concat->addBlank();
+            CONCAT_FIXED_STR(concat, "do");
+            concat->addEol();
+            indent++;
+            concat->addIndent(indent);
+            SWAG_CHECK(outputNode(ifNode->elseBlock->firstChild()));
+            indent--;
+            concat->addEol();
+        }
+        else
+        {
+            concat->addEol();
+            concat->addIndent(indent);
+            SWAG_CHECK(outputNode(ifNode->elseBlock));
+        }
     }
 
     return true;

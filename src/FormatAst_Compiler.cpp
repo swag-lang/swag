@@ -6,22 +6,25 @@
 
 bool FormatAst::outputCompilerIf(const Utf8& name, const AstNode* node)
 {
-    const auto compilerIf = castAst<AstIf>(node, AstNodeKind::CompilerIf);
+    const auto ifNode = castAst<AstIf>(node, AstNodeKind::CompilerIf);
     concat->addString(name);
     concat->addBlank();
-    SWAG_CHECK(outputNode(compilerIf->boolExpression));
+    SWAG_CHECK(outputNode(ifNode->boolExpression));
 
-    if (!compilerIf->ifBlock->childCount() || compilerIf->ifBlock->firstChild()->isNot(AstNodeKind::Statement))
+    if (!ifNode->ifBlock->childCount())
+    {
+        concat->addEol();
+        concat->addIndent(indent);
+        SWAG_CHECK(outputNode(ifNode->ifBlock));
+    }
+    else if (ifNode->ifBlock->firstChild()->isNot(AstNodeKind::Statement))
     {
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "#do");
         concat->addEol();
         indent++;
         concat->addIndent(indent);
-        if (!compilerIf->ifBlock->childCount())
-            SWAG_CHECK(outputNode(compilerIf->ifBlock));
-        else
-            SWAG_CHECK(outputNode(compilerIf->ifBlock->firstChild()));
+        SWAG_CHECK(outputNode(ifNode->ifBlock->firstChild()));
         indent--;
         concat->addEol();
     }
@@ -29,32 +32,35 @@ bool FormatAst::outputCompilerIf(const Utf8& name, const AstNode* node)
     {
         concat->addEol();
         concat->addIndent(indent);
-        SWAG_CHECK(outputNode(compilerIf->ifBlock->firstChild()));
+        SWAG_CHECK(outputNode(ifNode->ifBlock->firstChild()));
     }
 
-    if (!compilerIf->elseBlock)
+    if (!ifNode->elseBlock)
         return true;
 
-    if (!compilerIf->elseBlock->childCount() || compilerIf->elseBlock->firstChild()->is(AstNodeKind::CompilerIf))
+    if (!ifNode->elseBlock->childCount())
+    {
+        concat->addEol();
+        concat->addIndent(indent);
+        SWAG_CHECK(outputNode(ifNode->elseBlock));
+    }
+    else if (ifNode->elseBlock->firstChild()->is(AstNodeKind::CompilerIf))
     {
         concat->addIndent(indent);
-        if (!compilerIf->elseBlock->childCount())
-            SWAG_CHECK(outputCompilerIf("#elif", compilerIf->elseBlock));
-        else
-            SWAG_CHECK(outputCompilerIf("#elif", compilerIf->elseBlock->firstChild()));
+        SWAG_CHECK(outputCompilerIf("#elif", ifNode->elseBlock->firstChild()));
     }
     else
     {
         concat->addIndent(indent);
         CONCAT_FIXED_STR(concat, "#else");
-        if (compilerIf->elseBlock->firstChild()->isNot(AstNodeKind::Statement))
+        if (ifNode->elseBlock->firstChild()->isNot(AstNodeKind::Statement))
         {
             concat->addBlank();
             CONCAT_FIXED_STR(concat, "#do");
             concat->addEol();
             indent++;
             concat->addIndent(indent);
-            SWAG_CHECK(outputNode(compilerIf->elseBlock->firstChild()));
+            SWAG_CHECK(outputNode(ifNode->elseBlock->firstChild()));
             indent--;
             concat->addEol();
         }
@@ -62,7 +68,7 @@ bool FormatAst::outputCompilerIf(const Utf8& name, const AstNode* node)
         {
             concat->addEol();
             concat->addIndent(indent);
-            SWAG_CHECK(outputNode(compilerIf->elseBlock->firstChild()));
+            SWAG_CHECK(outputNode(ifNode->elseBlock->firstChild()));
         }
     }
 
