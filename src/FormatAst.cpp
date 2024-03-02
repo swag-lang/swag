@@ -68,3 +68,45 @@ bool FormatAst::outputCommaChildren(const AstNode* node)
 
     return true;
 }
+
+bool FormatAst::outputStatement(const AstNode* node)
+{
+    concat->addEol();
+    concat->addIndent(indent);
+    concat->addChar('{');
+    concat->addEol();
+    indent++;
+    SWAG_CHECK(outputChildren(node));
+    indent--;
+    concat->addIndent(indent);
+    concat->addChar('}');
+    concat->addEol();
+    return true;
+}
+
+bool FormatAst::outputDoStatement(const AstNode* node)
+{
+    if (!node->childCount())
+    {
+        concat->addEol();
+        concat->addIndent(indent);
+        SWAG_CHECK(outputNode(node));
+    }
+    else if (node->is(AstNodeKind::Statement) && !node->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY))
+    {
+        concat->addBlank();
+        CONCAT_FIXED_STR(concat, "do");
+        concat->addEol();
+        indent++;
+        concat->addIndent(indent);
+        SWAG_CHECK(outputNode(node->firstChild()));
+        indent--;
+        concat->addEol();
+    }
+    else
+    {
+        outputNode(node);
+    }
+    
+    return true;
+}

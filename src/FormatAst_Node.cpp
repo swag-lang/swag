@@ -30,6 +30,18 @@ bool FormatAst::outputNode(const AstNode* node)
             SWAG_CHECK(outputChildren(node));
             break;
 
+        case AstNodeKind::ExplicitNoInit:
+            CONCAT_FIXED_STR(concat, "undefined");
+            break;
+
+        case AstNodeKind::Index:
+            CONCAT_FIXED_STR(concat, "#index");
+            break;
+
+        case AstNodeKind::GetErr:
+            CONCAT_FIXED_STR(concat, "@err");
+            break;
+
         case AstNodeKind::CompilerLoad:
             CONCAT_FIXED_STR(concat, "#load");
             concat->addBlank();
@@ -199,11 +211,28 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::Defer:
+        {
+            const auto deferNode = castAst<AstDefer>(node, AstNodeKind::Defer);
             CONCAT_FIXED_STR(concat, "defer");
+            switch (deferNode->deferKind)
+            {
+                case DeferKind::Error:
+                    concat->addChar('(');
+                    CONCAT_FIXED_STR(concat, "err");
+                    concat->addChar(')');
+                    break;
+                case DeferKind::NoError:
+                    concat->addChar('(');
+                    CONCAT_FIXED_STR(concat, "noerr");
+                    concat->addChar(')');
+                    break;
+            }
+
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addEol();
             break;
+        }
 
         case AstNodeKind::AttrUse:
         {
@@ -217,16 +246,6 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
         }
 
-        case AstNodeKind::ExplicitNoInit:
-            CONCAT_FIXED_STR(concat, "undefined");
-            break;
-
-        case AstNodeKind::Index:
-            CONCAT_FIXED_STR(concat, "#index");
-            break;
-        case AstNodeKind::GetErr:
-            CONCAT_FIXED_STR(concat, "@err");
-            break;
         case AstNodeKind::Init:
             CONCAT_FIXED_STR(concat, "@init(");
             SWAG_CHECK(outputNode(node->firstChild()));
@@ -580,14 +599,7 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::Statement:
-            concat->addChar('{');
-            concat->addEol();
-            indent++;
-            SWAG_CHECK(outputChildren(node));
-            indent--;
-            concat->addIndent(indent);
-            concat->addChar('}');
-            concat->addEol();
+            SWAG_CHECK(outputStatement(node));
             break;
 
         case AstNodeKind::SingleOp:

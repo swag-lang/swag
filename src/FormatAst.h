@@ -36,6 +36,8 @@ struct FormatAst
     static const AstNode* convertNode(const AstNode* node);
     bool                  outputChildren(const AstNode* node);
     bool                  outputCommaChildren(const AstNode* node);
+    bool                  outputStatement(const AstNode* node);
+    bool                  outputDoStatement(const AstNode* node);
 
     bool outputLambdaExpression(const AstNode* node);
     bool outputEnum(const AstEnum* node);
