@@ -221,9 +221,3 @@ bool FormatAst::outputSwitch(const AstNode* node)
     concat->addEol();
     return true;
 }
-
-bool FormatAst::outputSwitchCaseBlock(const AstNode* node)
-{
-    SWAG_CHECK(outputChildren(node));
-    return true;
-}

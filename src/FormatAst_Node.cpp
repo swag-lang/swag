@@ -24,15 +24,65 @@ bool FormatAst::outputNode(const AstNode* node)
 
     switch (node->kind)
     {
+        case AstNodeKind::SwitchCaseBlock:
+        case AstNodeKind::StatementNoScope:
+        case AstNodeKind::File:
+            SWAG_CHECK(outputChildren(node));
+            break;
+
+        case AstNodeKind::CompilerLoad:
+            CONCAT_FIXED_STR(concat, "#load");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->firstChild()));
+            break;
+
+        case AstNodeKind::CompilerInclude:
+            CONCAT_FIXED_STR(concat, "#include");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->firstChild()));
+            break;
+
         case AstNodeKind::KeepRef:
             CONCAT_FIXED_STR(concat, "ref");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
+
         case AstNodeKind::MoveRef:
             CONCAT_FIXED_STR(concat, "moveref");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
+            break;
+
+        case AstNodeKind::CompilerImport:
+            CONCAT_FIXED_STR(concat, "#import");
+            concat->addBlank();
+            concat->addString(node->token.text);
+            concat->addEol();
+            break;
+
+        case AstNodeKind::FallThrough:
+            CONCAT_FIXED_STR(concat, "fallthrough");
+            concat->addEol();
+            break;
+
+        case AstNodeKind::Unreachable:
+            CONCAT_FIXED_STR(concat, "unreachable");
+            concat->addEol();
+            break;
+
+        case AstNodeKind::CompilerPlaceHolder:
+            CONCAT_FIXED_STR(concat, "#placeholder");
+            concat->addBlank();
+            concat->addString(node->token.text);
+            concat->addEol();
+            break;
+
+        case AstNodeKind::CompilerForeignLib:
+            CONCAT_FIXED_STR(concat, "#foreignlib");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->firstChild()));
+            concat->addEol();
             break;
 
         case AstNodeKind::CompilerCode:
@@ -108,11 +158,13 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::FuncDeclType:
-            SWAG_CHECK(outputFuncDeclReturnType(node));
+            SWAG_CHECK(outputFuncDeclReturnType(node->firstChild()));
             break;
+
         case AstNodeKind::FuncDeclParams:
             SWAG_CHECK(outputFuncDeclParams(node));
             break;
+
         case AstNodeKind::FuncDecl:
             SWAG_CHECK(outputFuncDecl(castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl)));
             break;
@@ -186,6 +238,7 @@ bool FormatAst::outputNode(const AstNode* node)
             }
             concat->addChar(')');
             break;
+
         case AstNodeKind::Drop:
             CONCAT_FIXED_STR(concat, "@drop(");
             SWAG_CHECK(outputNode(node->firstChild()));
@@ -197,6 +250,7 @@ bool FormatAst::outputNode(const AstNode* node)
             }
             concat->addChar(')');
             break;
+
         case AstNodeKind::PostMove:
             CONCAT_FIXED_STR(concat, "@postmove(");
             SWAG_CHECK(outputNode(node->firstChild()));
@@ -208,6 +262,7 @@ bool FormatAst::outputNode(const AstNode* node)
             }
             concat->addChar(')');
             break;
+
         case AstNodeKind::PostCopy:
             CONCAT_FIXED_STR(concat, "@postcopy(");
             SWAG_CHECK(outputNode(node->firstChild()));
@@ -225,13 +280,12 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addBlank();
             concat->addString(castAst<AstBreakContinue>(node, AstNodeKind::Break)->label.text);
             break;
+
         case AstNodeKind::Continue:
-        {
             CONCAT_FIXED_STR(concat, "continue");
             concat->addBlank();
             concat->addString(castAst<AstBreakContinue>(node, AstNodeKind::Continue)->label.text);
             break;
-        }
 
         case AstNodeKind::MakePointer:
             concat->addChar('&');
@@ -302,17 +356,6 @@ bool FormatAst::outputNode(const AstNode* node)
                 concat->addChar(']');
             break;
         }
-
-        case AstNodeKind::CompilerLoad:
-            CONCAT_FIXED_STR(concat, "#load");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->firstChild()));
-            break;
-        case AstNodeKind::CompilerInclude:
-            CONCAT_FIXED_STR(concat, "#include");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->firstChild()));
-            break;
 
         case AstNodeKind::CompilerRun:
         case AstNodeKind::CompilerRunExpression:
@@ -532,15 +575,8 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
         }
 
-        case AstNodeKind::SwitchCaseBlock:
-            SWAG_CHECK(outputSwitchCaseBlock(node));
-            break;
         case AstNodeKind::Switch:
             SWAG_CHECK(outputSwitch(node));
-            break;
-
-        case AstNodeKind::StatementNoScope:
-            SWAG_CHECK(outputChildren(node));
             break;
 
         case AstNodeKind::Statement:
@@ -653,43 +689,7 @@ bool FormatAst::outputNode(const AstNode* node)
 
         case AstNodeKind::TypeLambda:
         case AstNodeKind::TypeClosure:
-        {
-            const auto typeNode = castAst<AstTypeLambda>(node);
-            if (typeNode->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
-            {
-                CONCAT_FIXED_STR(concat, "#type");
-                concat->addBlank();
-            }
-
-            if (node->is(AstNodeKind::TypeLambda))
-                CONCAT_FIXED_STR(concat, "func");
-            else
-                CONCAT_FIXED_STR(concat, "closure");
-            if (!typeNode->parameters)
-                CONCAT_FIXED_STR(concat, "()");
-            else
-                SWAG_CHECK(outputNode(typeNode->parameters));
-            if (typeNode->returnType)
-            {
-                CONCAT_FIXED_STR(concat, "->");
-                SWAG_CHECK(outputNode(typeNode->returnType));
-            }
-
-            if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
-            {
-                concat->addBlank();
-                CONCAT_FIXED_STR(concat, "throw");
-            }
-            else if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
-            {
-                concat->addBlank();
-                CONCAT_FIXED_STR(concat, "assume");
-            }
-            break;
-        }
-
-        case AstNodeKind::File:
-            SWAG_CHECK(outputChildren(node));
+            SWAG_CHECK(outputTypeLambda(node));
             break;
 
         case AstNodeKind::CompilerDependencies:
@@ -712,37 +712,6 @@ bool FormatAst::outputNode(const AstNode* node)
 
         case AstNodeKind::Namespace:
             SWAG_CHECK(outputNamespace(node));
-            break;
-
-        case AstNodeKind::CompilerImport:
-            CONCAT_FIXED_STR(concat, "#import");
-            concat->addBlank();
-            concat->addString(node->token.text);
-            concat->addEol();
-            break;
-
-        case AstNodeKind::FallThrough:
-            CONCAT_FIXED_STR(concat, "fallthrough");
-            concat->addEol();
-            break;
-
-        case AstNodeKind::Unreachable:
-            CONCAT_FIXED_STR(concat, "unreachable");
-            concat->addEol();
-            break;
-
-        case AstNodeKind::CompilerPlaceHolder:
-            CONCAT_FIXED_STR(concat, "#placeholder");
-            concat->addBlank();
-            concat->addString(node->token.text);
-            concat->addEol();
-            break;
-
-        case AstNodeKind::CompilerForeignLib:
-            CONCAT_FIXED_STR(concat, "#foreignlib");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->firstChild()));
-            concat->addEol();
             break;
 
         default:

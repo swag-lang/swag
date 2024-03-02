@@ -97,11 +97,10 @@ bool FormatAst::outputFuncSignature(AstNode* node, const AstNode* genericParamet
 
 bool FormatAst::outputFuncDeclReturnType(const AstNode* node)
 {
-    if (node->children.empty())
+    if(!node)
         return true;
-
     CONCAT_FIXED_STR(concat, "->");
-    SWAG_CHECK(outputNode(node->firstChild()));
+    SWAG_CHECK(outputNode(node));
     return true;
 }
 
@@ -366,5 +365,41 @@ bool FormatAst::outputFuncCallParams(const AstNode* node)
     }
 
     SWAG_CHECK(outputCommaChildren(node));
+    return true;
+}
+
+bool FormatAst::outputTypeLambda(const AstNode* node)
+{
+    const auto typeNode = castAst<AstTypeLambda>(node);
+
+    if (typeNode->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
+    {
+        CONCAT_FIXED_STR(concat, "#type");
+        concat->addBlank();
+    }
+
+    if (node->is(AstNodeKind::TypeLambda))
+        CONCAT_FIXED_STR(concat, "func");
+    else
+        CONCAT_FIXED_STR(concat, "closure");
+
+    if (!typeNode->parameters)
+        CONCAT_FIXED_STR(concat, "()");
+    else
+        SWAG_CHECK(outputNode(typeNode->parameters));
+
+    SWAG_CHECK(outputFuncDeclReturnType(typeNode->returnType));
+
+    if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
+    {
+        concat->addBlank();
+        CONCAT_FIXED_STR(concat, "throw");
+    }
+    else if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
+    {
+        concat->addBlank();
+        CONCAT_FIXED_STR(concat, "assume");
+    }
+
     return true;
 }

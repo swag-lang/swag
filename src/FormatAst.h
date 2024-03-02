@@ -44,6 +44,7 @@ struct FormatAst
     bool outputFuncDecl(const AstFuncDecl* node);
     bool outputAttrUse(const AstNode* node, bool& hasSomething);
     bool outputFuncCallParams(const AstNode* node);
+    bool outputTypeLambda(const AstNode* node);
     bool outputFuncName(const AstFuncDecl* node) const;
     bool outputFuncSignature(AstNode* node, const AstNode* genericParameters, const AstNode* parameters, const AstNode* validIf);
     bool outputGenericParameters(const AstNode* node);
@@ -74,7 +75,6 @@ struct FormatAst
     bool outputVisit(const AstNode* node);
     bool outputFor(const AstNode* node);
     bool outputSwitch(const AstNode* node);
-    bool outputSwitchCaseBlock(const AstNode* node);
     bool outputIf(const Utf8& name, const AstNode* node);
     bool outputNamespace(const AstNode* node);
     bool outputImpl(const AstNode* node);
