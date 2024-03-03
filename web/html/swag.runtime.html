@@ -491,7 +491,7 @@
 <tr>
 <td id="Swag_MaxTraces">MaxTraces</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td>Maximum error traces. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Swag_S16_Max">Max</td>
@@ -1605,7 +1605,7 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_BaseError"><span class="SCst">BaseError</span></a></td>
-<td>This is the base of all errors. </td>
+<td>Maximum error traces  This is the base of all errors. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_BuildCfg"><span class="SCst">BuildCfg</span></a></td>
@@ -2263,7 +2263,7 @@
 </tr>
 </table>
 </p>
-<p>This is the base of all errors. </p>
+<p>Maximum error traces  This is the base of all errors. </p>
 <table class="table-enumeration">
 <tr>
 <td>message</td>
@@ -3008,12 +3008,12 @@
 <tr>
 <td>flags</td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ContextFlags">ContextFlags</a></span></span></td>
-<td>Context flags. </td>
+<td></td>
 </tr>
 <tr>
 <td>tempAllocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span></span></td>
-<td>Other fields, can be in any order A temporary allocator for the user. </td>
+<td>A temporary allocator for the user. </td>
 </tr>
 <tr>
 <td>errorAllocator</td>
@@ -3180,17 +3180,17 @@
 <tr>
 <td>nextId</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>The next allocated id to assign. </td>
+<td></td>
 </tr>
 <tr>
 <td>maxFreeSize</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarantine. </td>
+<td>The next allocated id to assign. </td>
 </tr>
 <tr>
 <td>breakOnAllocId</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>Will @assert when the current allocation id reaches that value. </td>
+<td>Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarantine Will @assert when the current allocation id reaches that value. </td>
 </tr>
 <tr>
 <td>showMaxLeaks</td>
@@ -5461,7 +5461,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 01-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
+Generated on 03-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
 </div>
 </div>
 </div>

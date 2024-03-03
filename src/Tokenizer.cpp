@@ -161,8 +161,6 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
     tokenParse.token.sourceFile = sourceFile;
     tokenParse.flags            = 0;
 
-    bool hasEol = false;
-
     if (!propagateComment)
         comment.clear();
     propagateComment = true;
@@ -192,7 +190,6 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
             while (SWAG_IS_EOL(curBuffer[0]))
                 readChar();
             tokenParse.flags.add(TOKEN_PARSE_LAST_EOL);
-            hasEol = true;
             comment.clear();
             continue;
         }
@@ -216,10 +213,10 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
             {
                 readChar();
 
-                if (hasEol)
+                if (tokenParse.flags.has(TOKEN_PARSE_LAST_EOL))
                 {
                     tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE_COMMENT);
-                    hasEol = false;
+                    tokenParse.flags.remove(TOKEN_PARSE_LAST_EOL);
                 }
 
                 startTokenName = curBuffer;
@@ -271,11 +268,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
                         while (curBuffer[0] && (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_BLANK(curBuffer[0])))
                         {
                             if (SWAG_IS_EOL(curBuffer[0]))
-                            {
                                 tokenParse.flags.add(TOKEN_PARSE_LAST_EOL);
-                                hasEol = true;
-                            }
-
                             readChar();
                         }
                     }

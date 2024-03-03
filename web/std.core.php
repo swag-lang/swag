@@ -698,6 +698,7 @@
 <li><a href="#Core_Hash_Md5_compute">Md5.compute</a></li>
 <li><a href="#Core_Hash_Md5_final">Md5.final</a></li>
 <li><a href="#Core_Hash_Md5_init">Md5.init</a></li>
+<li><a href="#Core_Hash_Md5_toString">Md5.toString</a></li>
 <li><a href="#Core_Hash_Md5_update">Md5.update</a></li>
 <li><a href="#Core_Hash_Sha256_compute">Sha256.compute</a></li>
 <li><a href="#Core_Hash_Sha256_final">Sha256.final</a></li>
@@ -8004,6 +8005,10 @@
 <td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Md5_toString">toString</a></span></td>
+<td>Convert a MD5 result to a string. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Hash_Md5_update">update</a></span></td>
 <td>Update the hash value with <span class="code-inline">buffer</span> content. </td>
 </tr>
@@ -8047,6 +8052,19 @@
 </p>
 <p>Initialize the hashing sequence. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_Md5_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Md5.</span><span class="api-item-title-strong">toString</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\md5.swg#L87" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert a MD5 result to a string. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(digest: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Hash">Hash</a></span>.<span class="SCst"><a href="#Core_Hash_Md5">Md5</a></span>.<span class="SCst">Digest</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8843,7 +8861,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SCst">Core</span>.__hashtable_tpl3_33'(<span class="SCst">K</span>, <span class="SCst">V</span>))</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SCst">Core</span>.__hashtable_tpl3_35'(<span class="SCst">K</span>, <span class="SCst">V</span>))</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28351,7 +28369,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 01-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
+Generated on 03-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
 </div>
 </div>
 </div>

@@ -1429,7 +1429,6 @@
 <div class="right">
 <div class="right-page">
 <h1>Module win32</h1>
-<p> Wrappers for Microsoft Windows Sdk Libraries.  10.0.19041.0 </p>
 <h1>Content</h1>
 <p>
 <table class="api-item">
@@ -11391,7 +11390,7 @@
 <p>Throw a <a href="swag.runtime.php#Swag_SystemError">Swag.SystemError</a>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">throwWinError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 01-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
+Generated on 03-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
 </div>
 </div>
 </div>
