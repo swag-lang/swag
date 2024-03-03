@@ -217,6 +217,8 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
         repl.replace(">", "&gt;");
     }
 
+    repl.replace(" ", "&nbsp;");
+
     // Syntax coloration
     Utf8 codeText;
     if (flags.has(GENDOC_CODE_SYNTAX_COL))
