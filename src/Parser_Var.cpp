@@ -264,9 +264,10 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
 
 bool Parser::doVarDecl(AstNode* parent, AstNode** result)
 {
-    // First variable
-    AstNodeKind kind;
-    bool        isLet = false;
+    const TokenParse savedTokenParse = tokenParse;
+    AstNodeKind      kind;
+    bool             isLet = false;
+
     if (tokenParse.is(TokenId::KwdConst))
     {
         kind = AstNodeKind::ConstDecl;
@@ -284,6 +285,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
+    if (*result)
+        (*result)->inheritFormatFlags(savedTokenParse);
+
     return true;
 }
 

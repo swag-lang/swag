@@ -13,8 +13,7 @@ void Ast::initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, Ast
     {
         node->token = parser->tokenParse.token;
         node->inheritOwnersAndFlags(parser);
-        if (parser->tokenParse.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
-            node->fmtFlags.add(FMTFLAG_BLANK_LINE_BEFORE);
+        node->inheritFormatFlags(parser->tokenParse);
     }
     else if (parent)
     {

@@ -24,7 +24,7 @@ bool FormatAst::outputNode(const AstNode* node)
 
     if (fmtFlags.has(FORMAT_FOR_BEAUTIFY))
     {
-        if (node->fmtFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
+        if (node->formatFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
         {
             concat->addBlankLine();
             concat->addIndent(indent);

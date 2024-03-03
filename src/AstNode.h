@@ -304,6 +304,7 @@ struct AstNode
     void inheritTokenName(Token& tkn);
     void inheritTokenLocation(const Token& tkn);
     void inheritOwners(const AstNode* from);
+    void inheritFormatFlags(const TokenParse& tokenParse);
     void inheritOwnersAndFlags(const Parser* parser);
 
     void allocateComputedValue();
@@ -504,7 +505,7 @@ struct AstNode
     AstNodeKind         kind;
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
-    AstFormatFlags      fmtFlags;
+    AstFormatFlags      formatFlags;
 
     mutable SharedMutex    mutex;
     VectorNative<AstNode*> children;

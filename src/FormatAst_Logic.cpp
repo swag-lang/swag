@@ -139,7 +139,7 @@ bool FormatAst::outputSwitch(const AstNode* node)
         concat->addIndent(indent);
         if (c->expressions.empty())
         {
-            if (fmtFlags.has(FORMAT_FOR_BEAUTIFY) && c->fmtFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
+            if (fmtFlags.has(FORMAT_FOR_BEAUTIFY) && c->formatFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
             {
                 concat->addBlankLine();
                 concat->addIndent(indent);
@@ -149,7 +149,7 @@ bool FormatAst::outputSwitch(const AstNode* node)
         }
         else
         {
-            if (fmtFlags.has(FORMAT_FOR_BEAUTIFY) && c->fmtFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
+            if (fmtFlags.has(FORMAT_FOR_BEAUTIFY) && c->formatFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
             {
                 concat->addBlankLine();
                 concat->addIndent(indent);
