@@ -142,7 +142,7 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
         SWAG_CHECK(outputNode(node->content->firstChild()));
         concat->addEol();
         return true;
-    }    
+    }
 
     // #validifx block
     if (node->validIf)
@@ -209,8 +209,12 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
         concat->addChar('|');
 
         bool first = true;
-        for (const auto p : funcDecl->captureParameters->children)
+        for (const auto it : funcDecl->captureParameters->children)
         {
+            const auto child = convertNode(it);
+            if (!child)
+                continue;
+
             if (!first)
             {
                 concat->addChar(',');
@@ -219,14 +223,14 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
 
             first = false;
 
-            if (p->is(AstNodeKind::MakePointer))
+            if (child->is(AstNodeKind::MakePointer))
             {
                 concat->addChar('&');
-                concat->addString(p->firstChild()->token.text);
+                concat->addString(child->firstChild()->token.text);
             }
             else
             {
-                concat->addString(p->token.text);
+                concat->addString(child->token.text);
             }
         }
 
@@ -242,9 +246,10 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
     if (funcDecl->parameters && !funcDecl->parameters->children.empty())
     {
         bool first = true;
-        for (const auto p : funcDecl->parameters->children)
+        for (const auto it : funcDecl->parameters->children)
         {
-            if (p->hasAstFlag(AST_GENERATED) && !p->hasAstFlag(AST_GENERATED_USER))
+            const auto child = convertNode(it);
+            if (!child)
                 continue;
 
             if (!first)
@@ -253,18 +258,19 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
                 concat->addBlank();
             }
 
-            first            = false;
-            const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
+            first = false;
+
+            const auto param = castAst<AstVarDecl>(child, AstNodeKind::FuncDeclParam);
             if (param->hasSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED))
                 concat->addChar('?');
             else
             {
-                concat->addString(p->token.text);
-                if (!p->children.empty())
+                concat->addString(child->token.text);
+                if (!child->children.empty())
                 {
                     concat->addChar(':');
                     concat->addBlank();
-                    SWAG_CHECK(outputNode(p->firstChild()));
+                    SWAG_CHECK(outputNode(child->firstChild()));
                 }
 
                 if (param->assignment)
@@ -286,6 +292,13 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
         CONCAT_FIXED_STR(concat, "=>");
         concat->addBlank();
         SWAG_ASSERT(funcDecl->content->is(AstNodeKind::Return));
+        SWAG_CHECK(outputNode(funcDecl->content->firstChild()));
+    }
+    else if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM))
+    {
+        concat->addBlank();
+        CONCAT_FIXED_STR(concat, "=");
+        concat->addBlank();
         SWAG_CHECK(outputNode(funcDecl->content->firstChild()));
     }
     else
@@ -345,7 +358,7 @@ bool FormatAst::outputTypeLambda(const AstNode* node)
 
     SWAG_CHECK(outputFuncDeclParameters(typeNode->parameters, false));
 
-    if(typeNode->returnType)
+    if (typeNode->returnType)
     {
         CONCAT_FIXED_STR(concat, "->");
         SWAG_CHECK(outputNode(typeNode->returnType));
