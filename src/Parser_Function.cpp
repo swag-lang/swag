@@ -590,10 +590,10 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     funcNode->allocateExtension(ExtensionKind::Semantic);
     funcNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgFuncDecl;
 
-    if (tokenizer.comment.length())
+    if (tokenParse.comment.length())
     {
         funcNode->allocateExtension(ExtensionKind::Misc);
-        funcNode->extMisc()->docComment = std::move(tokenizer.comment);
+        funcNode->extMisc()->docComment = std::move(tokenParse.comment);
     }
 
     bool isMethod = tokenParse.is(TokenId::KwdMethod);

@@ -15,10 +15,10 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     enumNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgTypeDecl;
     *result                                   = enumNode;
 
-    if (!tokenizer.comment.empty())
+    if (!tokenParse.comment.empty())
     {
         enumNode->allocateExtension(ExtensionKind::Misc);
-        enumNode->extMisc()->docComment = std::move(tokenizer.comment);
+        enumNode->extMisc()->docComment = std::move(tokenParse.comment);
     }
 
     SWAG_CHECK(eatToken());
@@ -154,10 +154,10 @@ bool Parser::doSubEnumValue(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(doIdentifierRef(enumValue, &dummyResult, IDENTIFIER_NO_PARAMS));
 
-    if (tokenizer.comment.length())
+    if (tokenParse.comment.length())
     {
         enumValue->allocateExtension(ExtensionKind::Misc);
-        enumValue->extMisc()->docComment = std::move(tokenizer.comment);
+        enumValue->extMisc()->docComment = std::move(tokenParse.comment);
     }
 
     if (tokenParse.is(TokenId::SymComma))
@@ -185,10 +185,10 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(enumValue, EXPR_FLAG_NONE, &dummyResult));
     }
 
-    if (tokenizer.comment.length())
+    if (tokenParse.comment.length())
     {
         enumValue->allocateExtension(ExtensionKind::Misc);
-        enumValue->extMisc()->docComment = std::move(tokenizer.comment);
+        enumValue->extMisc()->docComment = std::move(tokenParse.comment);
     }
 
     if (tokenParse.is(TokenId::SymComma))

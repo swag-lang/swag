@@ -34,6 +34,7 @@ struct Tokenizer
     void     processChar(uint32_t c, unsigned offset);
     void     eatChar(uint32_t c, unsigned offset);
 
+    bool doSingleLineComment(TokenParse& tokenParse);
     bool doMultiLineComment(TokenParse& tokenParse);
     bool doIdentifier(TokenParse& tokenParse);
     bool doNumberLiteral(TokenParse& tokenParse, uint32_t c);
@@ -53,8 +54,6 @@ struct Tokenizer
     bool nextToken(TokenParse& tokenParse);
 
     static TokenId tokenRelated(TokenId id);
-    bool           doSingleLineComment(TokenParse& tokenParse);
-    bool           doMultiLineComment(TokenParse& tokenParse, bool& value1);
 
     static bool isKeyword(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_KWD); }
     static bool isSymbol(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_SYM); }
@@ -66,7 +65,6 @@ struct Tokenizer
 
     SourceLocation location;
 
-    Utf8           comment;
     ErrorContext*  errorContext     = nullptr;
     char*          curBuffer        = nullptr;
     char*          endBuffer        = nullptr;
@@ -77,7 +75,6 @@ struct Tokenizer
     bool           propagateComment = false;
     bool           idLetters[256]   = {false};
 
-    Utf8           savedComment;
     TokenParse     savedToken;
     SourceLocation savedLocation;
     char*          savedCurBuffer = nullptr;

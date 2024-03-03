@@ -24,9 +24,9 @@ bool Tokenizer::doSingleLineComment(TokenParse& tokenParse)
     if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
     {
         appendTokenName(tokenParse);
-        comment += tokenParse.token.text;
-        if (comment.back() != '\n')
-            comment += "\n";
+        tokenParse.comment += tokenParse.token.text;
+        if (tokenParse.comment.back() != '\n')
+            tokenParse.comment += "\n";
 
         // In case of end of line comments, skip all blanks after
         if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
@@ -97,9 +97,9 @@ bool Tokenizer::doMultiLineComment(TokenParse& tokenParse)
     if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
     {
         appendTokenName(tokenParse);
-        comment += tokenParse.token.text;
-        comment.removeBack();
-        comment.removeBack();
+        tokenParse.comment += tokenParse.token.text;
+        tokenParse.comment.removeBack();
+        tokenParse.comment.removeBack();
 
         // In case of end of line comments, skip all blanks after
         if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))

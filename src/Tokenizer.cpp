@@ -66,7 +66,6 @@ void Tokenizer::saveState(const TokenParse& token)
     savedToken     = token;
     savedCurBuffer = curBuffer;
     savedLocation  = location;
-    savedComment   = comment;
 }
 
 void Tokenizer::restoreState(TokenParse& token)
@@ -74,7 +73,6 @@ void Tokenizer::restoreState(TokenParse& token)
     token     = savedToken;
     curBuffer = savedCurBuffer;
     location  = savedLocation;
-    comment   = savedComment;
 }
 
 uint32_t Tokenizer::peekChar(unsigned& offset) const
@@ -162,7 +160,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
     tokenParse.flags            = 0;
 
     if (!propagateComment)
-        comment.clear();
+        tokenParse.comment.clear();
     propagateComment = true;
 
     while (true)
@@ -193,7 +191,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
                 tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
             if (SWAG_IS_WIN_EOL(curBuffer[0]))
                 readChar();
-            comment.clear();
+            tokenParse.comment.clear();
             continue;
         }
 

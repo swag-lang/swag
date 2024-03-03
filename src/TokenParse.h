@@ -52,6 +52,7 @@ struct TokenParse
     bool isNot(TokenId what) const { return token.id != what; }
 
     Token           token;
+    Utf8            comment;
     Register        literalValue;
     LiteralType     literalType = static_cast<LiteralType>(0);
     TokenParseFlags flags       = 0;

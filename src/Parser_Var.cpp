@@ -391,17 +391,17 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
     }
 
     const auto resNode = *result;
-    if (resNode && !tokenizer.comment.empty() && !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
+    if (resNode && !tokenParse.comment.empty() && !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
     {
         resNode->allocateExtension(ExtensionKind::Misc);
 
         Vector<Utf8> tkn;
-        Utf8::tokenize(tokenizer.comment, '\n', tkn);
+        Utf8::tokenize(tokenParse.comment, '\n', tkn);
         resNode->extMisc()->docComment = tkn[0];
 
-        tokenizer.comment.clear();
+        tokenParse.comment.clear();
         for (uint32_t i = 1; i < tkn.size(); i++)
-            tokenizer.comment += tkn[i];
+            tokenParse.comment += tkn[i];
     }
 
     return true;
