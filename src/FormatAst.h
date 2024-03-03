@@ -35,6 +35,7 @@ struct FormatAst
     }
 
     void clear() const;
+    void beautifyBlankLine(const AstNode* node) const;
     Utf8 getUtf8() const;
 
     static const AstNode* convertNode(const AstNode* node);

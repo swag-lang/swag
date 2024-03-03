@@ -13,6 +13,8 @@ bool FormatAst::outputNode(const AstNode* node)
     if (!node)
         return true;
 
+    beautifyBlankLine(node);
+
     // Prepend some stuff
     const auto isNamed = node->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
     if (isNamed)
@@ -20,15 +22,6 @@ bool FormatAst::outputNode(const AstNode* node)
         concat->addString(isNamed->token.text);
         concat->addChar(':');
         concat->addBlank();
-    }
-
-    if (fmtFlags.has(FORMAT_FOR_BEAUTIFY))
-    {
-        if (node->formatFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
-        {
-            concat->addBlankLine();
-            concat->addIndent(indent);
-        }
     }
 
     switch (node->kind)

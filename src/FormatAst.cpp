@@ -13,6 +13,18 @@ Utf8 FormatAst::getUtf8() const
     return concat->getUtf8();
 }
 
+void FormatAst::beautifyBlankLine(const AstNode* node) const
+{
+    if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
+        return;
+
+    if (node->formatFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
+    {
+        concat->addBlankLine();
+        concat->addIndent(indent);
+    }
+}
+
 const AstNode* FormatAst::convertNode(const AstNode* node)
 {
     if (!node)
