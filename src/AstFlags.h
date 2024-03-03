@@ -1,8 +1,9 @@
 #pragma once
 #include "Flags.h"
 
-using AstNodeFlags = Flags<uint64_t>;
-using AstSemFlags  = Flags<uint64_t>;
+using AstNodeFlags   = Flags<uint64_t>;
+using AstSemFlags    = Flags<uint64_t>;
+using AstFormatFlags = Flags<uint8_t>;
 
 constexpr AstNodeFlags AST_CONST_EXPR                 = 0x00000000'00000001;
 constexpr AstNodeFlags AST_COMPUTED_VALUE             = 0x00000000'00000002;
@@ -127,3 +128,5 @@ constexpr AstSemFlags SEMFLAG_ACCESS_MASK                = SEMFLAG_ACCESS_PUBLIC
 constexpr AstSemFlags SEMFLAG_ACCESS_COMPUTED            = 0x04000000'00000000;
 constexpr AstSemFlags SEMFLAG_FROM_PTR_REF               = 0x08000000'00000000;
 constexpr AstSemFlags SEMFLAG_HAS_SYMBOL_NAME            = 0x10000000'00000000;
+
+constexpr AstFormatFlags FMTFLAG_BLANK_LINE_BEFORE = 0x01;

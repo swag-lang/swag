@@ -504,7 +504,7 @@ struct AstNode
     AstNodeKind         kind;
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
-    uint8_t             padding0;
+    AstFormatFlags      fmtFlags;
 
     mutable SharedMutex    mutex;
     VectorNative<AstNode*> children;

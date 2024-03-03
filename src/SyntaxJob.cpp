@@ -41,6 +41,7 @@ JobResult SyntaxJob::execute()
     if (!sourceFile->numErrors && g_CommandLine.devModeCheckAst)
     {
         FormatAst fmt;
+        fmt.fmtFlags.add(FORMAT_FOR_BEAUTIFY);
         fmt.outputNode(sourceFile->astRoot);
         if (g_CommandLine.devModeWriteAst)
         {

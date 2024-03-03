@@ -138,9 +138,23 @@ bool FormatAst::outputSwitch(const AstNode* node)
     {
         concat->addIndent(indent);
         if (c->expressions.empty())
+        {
+            if (fmtFlags.has(FORMAT_FOR_BEAUTIFY) && c->fmtFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
+            {
+                concat->addBlankLine();
+                concat->addIndent(indent);
+            }
+
             CONCAT_FIXED_STR(concat, "default");
+        }
         else
         {
+            if (fmtFlags.has(FORMAT_FOR_BEAUTIFY) && c->fmtFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
+            {
+                concat->addBlankLine();
+                concat->addIndent(indent);
+            }
+
             CONCAT_FIXED_STR(concat, "case");
             concat->addBlank();
             bool first = true;

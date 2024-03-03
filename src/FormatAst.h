@@ -16,6 +16,10 @@ struct TypeInfoEnum;
 struct TypeInfoFuncAttr;
 
 enum class ScopeKind : uint8_t;
+using FormatFlags = Flags<uint32_t>;
+
+constexpr FormatFlags FORMAT_FOR_EXPORT   = 0x00000001;
+constexpr FormatFlags FORMAT_FOR_BEAUTIFY = 0x00000002;
 
 struct FormatAst
 {
@@ -84,7 +88,7 @@ struct FormatAst
     bool outputNode(const AstNode* node);
 
     FormatConcat  inConcat;
-    FormatConcat* concat    = nullptr;
-    uint32_t      indent    = 0;
-    bool          forExport = false;
+    FormatConcat* concat   = nullptr;
+    uint32_t      indent   = 0;
+    FormatFlags   fmtFlags = 0;
 };

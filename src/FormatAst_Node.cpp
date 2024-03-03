@@ -22,6 +22,15 @@ bool FormatAst::outputNode(const AstNode* node)
         concat->addBlank();
     }
 
+    if (fmtFlags.has(FORMAT_FOR_BEAUTIFY))
+    {
+        if (node->fmtFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
+        {
+            concat->addBlankLine();
+            concat->addIndent(indent);
+        }
+    }
+
     switch (node->kind)
     {
         case AstNodeKind::SwitchCaseBlock:
