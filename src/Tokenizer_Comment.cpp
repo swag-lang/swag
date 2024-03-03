@@ -7,14 +7,15 @@ bool Tokenizer::doSingleLineComment(TokenParse& tokenParse)
     readChar();
     startTokenName = curBuffer;
 
+    tokenParse.flags.remove(TOKEN_PARSE_EOL_BEFORE);
     while (curBuffer[0] && SWAG_IS_NOT_EOL(curBuffer[0]))
         readChar();
 
     if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
     {
         appendTokenName(tokenParse);
-        tokenParse.commentBefore += tokenParse.token.text;
-        tokenParse.commentBefore += "\n";
+        tokenParse.commentJustBefore += tokenParse.token.text;
+        tokenParse.commentJustBefore += "\n";
     }
 
     return true;
@@ -25,7 +26,9 @@ bool Tokenizer::doMultiLineComment(TokenParse& tokenParse)
     readChar();
     startTokenName = curBuffer;
 
-    int countEmb = 1;
+    tokenParse.flags.remove(TOKEN_PARSE_EOL_BEFORE);
+    uint32_t countEmb = 1;
+
     while (true)
     {
         auto c = readChar();
@@ -68,9 +71,9 @@ bool Tokenizer::doMultiLineComment(TokenParse& tokenParse)
     if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
     {
         appendTokenName(tokenParse);
-        tokenParse.commentBefore += tokenParse.token.text;
-        tokenParse.commentBefore.removeBack();
-        tokenParse.commentBefore.removeBack();
+        tokenParse.commentJustBefore += tokenParse.token.text;
+        tokenParse.commentJustBefore.removeBack();
+        tokenParse.commentJustBefore.removeBack();
     }
 
     return true;

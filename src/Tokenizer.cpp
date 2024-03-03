@@ -169,14 +169,14 @@ bool Tokenizer::doAfterToken(TokenParse& tokenParse)
             auto copy = tokenParse;
             SWAG_CHECK(doSingleLineComment(copy));
             tokenParse.flags.add(TOKEN_PARSE_EOL_AFTER);
-            tokenParse.commentAfterSameLine = std::move(copy.commentBefore);
+            tokenParse.commentAfterSameLine = std::move(copy.commentJustBefore);
         }
         else if (curBuffer[0] == '/' && curBuffer[1] == '*')
         {
             curBuffer++;
             auto copy = tokenParse;
             SWAG_CHECK(doMultiLineComment(copy));
-            tokenParse.commentAfterSameLine = std::move(copy.commentBefore);
+            tokenParse.commentAfterSameLine = std::move(copy.commentJustBefore);
         }
 
         return true;
@@ -192,7 +192,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
 
     tokenParse.literalType      = LiteralType::TypeMax;
     tokenParse.token.sourceFile = sourceFile;
-    tokenParse.commentBefore.clear();
+    tokenParse.commentJustBefore.clear();
     tokenParse.commentAfterSameLine.clear();
 
     tokenParse.flags.remove(TOKEN_PARSE_BLANK_BEFORE);
@@ -227,7 +227,11 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         if (SWAG_IS_EOL(c))
         {
             if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
+            {
+                tokenParse.commentBefore += tokenParse.commentJustBefore;
+                tokenParse.commentJustBefore.clear();
                 tokenParse.flags.add(TOKEN_PARSE_BLANK_LINE_BEFORE);
+            }
             else
                 tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
             if (SWAG_IS_WIN_EOL(curBuffer[0]))

@@ -670,6 +670,12 @@ void AstNode::inheritFormatFromBefore(const TokenParse& tokenParse)
         allocateExtension(ExtensionKind::Misc);
         extMisc()->commentBefore = tokenParse.commentBefore;
     }
+    
+    if (!tokenParse.commentJustBefore.empty())
+    {
+        allocateExtension(ExtensionKind::Misc);
+        extMisc()->commentJustBefore = tokenParse.commentJustBefore;
+    }
 }
 
 void AstNode::inheritFormatFromAfter(const TokenParse& tokenParse)

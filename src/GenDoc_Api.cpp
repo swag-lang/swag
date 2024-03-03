@@ -90,13 +90,13 @@ Utf8 GenDoc::getDocComment(const AstNode* node)
         return "";
     }
 
-    if (node->hasExtMisc() && !node->extMisc()->commentBefore.empty())
-        return node->extMisc()->commentBefore;
+    if (node->hasExtMisc() && !node->extMisc()->commentJustBefore.empty())
+        return node->extMisc()->commentJustBefore;
 
     while (node->parent && node->parent->is(AstNodeKind::AttrUse))
     {
-        if (node->parent->hasExtMisc() && !node->parent->extMisc()->commentBefore.empty())
-            return node->parent->extMisc()->commentBefore;
+        if (node->parent->hasExtMisc() && !node->parent->extMisc()->commentJustBefore.empty())
+            return node->parent->extMisc()->commentJustBefore;
         node = node->parent;
     }
 

@@ -54,6 +54,7 @@ struct TokenParse
 
     Token           token;
     Utf8            commentBefore;
+    Utf8            commentJustBefore;
     Utf8            commentAfterSameLine;
     Register        literalValue;
     LiteralType     literalType = static_cast<LiteralType>(0);

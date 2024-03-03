@@ -418,6 +418,7 @@ struct AstNode
         VectorNative<AlternativeScopeVar>  alternativeScopesVars;
         VectorNative<uint32_t>             registersToRelease;
         Utf8                               commentBefore;
+        Utf8                               commentJustBefore;
         Utf8                               commentAfterSameLine;
         VectorMap<ExtraPointerKind, void*> extraPointers;
 
