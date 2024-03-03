@@ -19,15 +19,6 @@ bool FormatAst::outputFuncDeclParameters(const AstNode* parameters, bool isMetho
     return true;
 }
 
-bool FormatAst::outputFuncDeclReturnType(const AstNode* node)
-{
-    if (!node)
-        return true;
-    CONCAT_FIXED_STR(concat, "->");
-    SWAG_CHECK(outputNode(node));
-    return true;
-}
-
 bool FormatAst::outputFuncSignature(const AstNode* node, const AstNode* genericParameters, const AstNode* parameters, const AstNode* validIf)
 {
     bool isMethod = false;
@@ -116,8 +107,8 @@ bool FormatAst::outputFuncSignature(const AstNode* node, const AstNode* genericP
     // #validif must be exported
     if (validIf)
     {
-        indent++;
         concat->addEol();
+        indent++;
         concat->addIndent(indent);
         SWAG_CHECK(outputCompilerExpr(validIf));
         indent--;
@@ -142,13 +133,24 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
         return true;
     }
 
+    // Content, short form
+    if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM))
+    {
+        concat->addBlank();
+        CONCAT_FIXED_STR(concat, "=");
+        concat->addBlank();
+        SWAG_CHECK(outputNode(node->content->firstChild()));
+        concat->addEol();
+        return true;
+    }    
+
     // #validifx block
     if (node->validIf)
     {
-        indent++;
         concat->addEol();
+        indent++;
         concat->addIndent(indent);
-        SWAG_CHECK(outputNode(node->validIf));
+        SWAG_CHECK(outputCompilerExpr(node->validIf));
         indent--;
     }
 
@@ -342,7 +344,12 @@ bool FormatAst::outputTypeLambda(const AstNode* node)
         CONCAT_FIXED_STR(concat, "closure");
 
     SWAG_CHECK(outputFuncDeclParameters(typeNode->parameters, false));
-    SWAG_CHECK(outputFuncDeclReturnType(typeNode->returnType));
+
+    if(typeNode->returnType)
+    {
+        CONCAT_FIXED_STR(concat, "->");
+        SWAG_CHECK(outputNode(typeNode->returnType));
+    }
 
     if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
     {

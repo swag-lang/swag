@@ -169,10 +169,6 @@ bool FormatAst::outputNode(const AstNode* node)
             SWAG_CHECK(outputFuncCallParams(node));
             break;
 
-        case AstNodeKind::FuncDeclType:
-            SWAG_CHECK(outputFuncDeclReturnType(node->firstChild()));
-            break;
-
         case AstNodeKind::FuncDeclParams:
             concat->addChar('(');
             outputCommaChildren(node);
