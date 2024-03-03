@@ -915,7 +915,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     node->expression->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
     Parser parser;
-    parser.setup(context, context->sourceFile->module, context->sourceFile);
+    parser.setup(context, context->sourceFile->module, context->sourceFile, PARSER_DEFAULT);
     SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::EmbeddedInstruction, false));
 
     newExpression = node->lastChild();

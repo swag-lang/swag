@@ -228,7 +228,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
                     readChar();
                 }
 
-                if (trackComments)
+                if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
                 {
                     appendTokenName(tokenParse);
                     comment += tokenParse.token.text;
@@ -263,7 +263,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
                 startTokenName = curBuffer;
                 SWAG_CHECK(doMultiLineComment(tokenParse));
 
-                if (trackComments)
+                if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
                 {
                     appendTokenName(tokenParse);
                     comment += tokenParse.token.text;

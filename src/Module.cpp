@@ -1054,7 +1054,7 @@ bool Module::compileString(const Utf8& text)
 
     JobContext jobContext;
     Parser     parser;
-    parser.setup(&jobContext, this, sourceFile);
+    parser.setup(&jobContext, this, sourceFile, PARSER_DEFAULT);
     if (!parser.constructEmbeddedAst(text, parent, ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;
 

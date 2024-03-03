@@ -705,7 +705,7 @@ void AstNode::inheritOwnersAndFlags(const Parser* parser)
         extOwner()->ownerTryCatchAssume = nullptr;
     }
 
-    flags.add(parser->currentFlags);
+    flags.add(parser->currentAstNodeFlags);
 }
 
 void AstNode::allocateComputedValue()

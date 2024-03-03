@@ -73,7 +73,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     content += "}\n}";
 
     Parser parser;
-    parser.setup(context, context->sourceFile->module, context->sourceFile);
+    parser.setup(context, context->sourceFile->module, context->sourceFile, PARSER_DEFAULT);
     const auto structDecl = castAst<AstStruct>(typeLeft->declNode, AstNodeKind::StructDecl);
     AstNode*   result     = nullptr;
     SWAG_CHECK(parser.constructEmbeddedAst(content, structDecl, structDecl, CompilerAstKind::TopLevelInstruction, true, &result));
@@ -161,7 +161,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         const uint32_t numChildren = node->childCount();
 
         Parser parser;
-        parser.setup(context, context->sourceFile->module, context->sourceFile);
+        parser.setup(context, context->sourceFile->module, context->sourceFile, PARSER_DEFAULT);
         SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
 
         for (uint32_t i = numChildren; i < node->childCount(); i++)

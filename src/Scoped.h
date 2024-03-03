@@ -100,13 +100,13 @@ struct ScopedFlags
     ScopedFlags(Parser* parser, AstNodeFlags newFlags)
     {
         savedJob   = parser;
-        savedFlags = parser->currentFlags;
-        parser->currentFlags.add(newFlags);
+        savedFlags = parser->currentAstNodeFlags;
+        parser->currentAstNodeFlags.add(newFlags);
     }
 
     ~ScopedFlags()
     {
-        savedJob->currentFlags = savedFlags;
+        savedJob->currentAstNodeFlags = savedFlags;
     }
 
     Parser*      savedJob;

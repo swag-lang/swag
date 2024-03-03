@@ -375,7 +375,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
             kind = CompilerAstKind::EmbeddedInstruction;
 
         Parser parser;
-        parser.setup(context, context->sourceFile->module, context->sourceFile);
+        parser.setup(context, context->sourceFile->module, context->sourceFile, PARSER_DEFAULT);
         SWAG_CHECK(parser.constructEmbeddedAst(expression->computedValue()->text, node, expression, kind, true));
 
         job->nodes.pop_back();

@@ -382,12 +382,15 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     return true;
 }
 
-void Parser::setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file)
+void Parser::setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file, ParseFlags flags)
 {
-    context                 = errorCxt;
-    module                  = mdl;
-    sourceFile              = file;
-    tokenizer.trackComments = g_CommandLine.genDoc;
+    context    = errorCxt;
+    module     = mdl;
+    sourceFile = file;
+
+    parseFlags = flags;
+    if (parseFlags.has(PARSER_TRACK_COMMENTS))
+        tokenizer.tokenizeFlags.add(TOKENIZER_TRACK_COMMENTS);
 }
 
 bool Parser::generateAst()

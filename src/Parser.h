@@ -26,7 +26,12 @@ struct SourceFile;
 struct Utf8;
 
 enum class AstNodeKind : uint8_t;
-using AstNodeFlags = Flags<uint64_t>;
+
+using AstNodeFlags    = Flags<uint64_t>;
+using ModifierFlags   = Flags<uint32_t>;
+using IdentifierFlags = Flags<uint32_t>;
+using ExprFlags       = Flags<uint32_t>;
+using ParseFlags      = Flags<uint32_t>;
 
 enum class InvalidTokenError
 {
@@ -42,7 +47,6 @@ enum class SyntaxStructType
     Interface,
 };
 
-using ModifierFlags                            = Flags<uint32_t>;
 constexpr ModifierFlags MODIFIER_OVERFLOW      = 0x00000001;
 constexpr ModifierFlags MODIFIER_UP            = 0x00000002;
 constexpr ModifierFlags MODIFIER_NO_LEFT_DROP  = 0x00000004;
@@ -52,7 +56,6 @@ constexpr ModifierFlags MODIFIER_BIT           = 0x00000020;
 constexpr ModifierFlags MODIFIER_UN_CONST      = 0x00000040;
 constexpr ModifierFlags MODIFIER_BACK          = 0x00000080;
 
-using IdentifierFlags                                = Flags<uint32_t>;
 constexpr IdentifierFlags IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
 constexpr IdentifierFlags IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
 constexpr IdentifierFlags IDENTIFIER_TYPE_DECL       = 0x00000004;
@@ -60,7 +63,6 @@ constexpr IdentifierFlags IDENTIFIER_ACCEPT_QUESTION = 0x00000008;
 constexpr IdentifierFlags IDENTIFIER_NO_ARRAY        = 0x00000010;
 constexpr IdentifierFlags IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_GEN_PARAMS | IDENTIFIER_NO_ARRAY;
 
-using ExprFlags                                     = Flags<uint32_t>;
 constexpr ExprFlags EXPR_FLAG_NONE                  = 0x00000000;
 constexpr ExprFlags EXPR_FLAG_SIMPLE                = 0x00000001;
 constexpr ExprFlags EXPR_FLAG_ALIAS                 = 0x00000002;
@@ -73,11 +75,14 @@ constexpr ExprFlags EXPR_FLAG_TYPE_EXPR             = 0x00000080;
 constexpr ExprFlags EXPR_FLAG_IN_VAR_DECL_WITH_TYPE = 0x00000100;
 constexpr ExprFlags EXPR_FLAG_NAMED_PARAM           = 0x00000200;
 
+constexpr ParseFlags PARSER_DEFAULT        = 0x00000000;
+constexpr ParseFlags PARSER_TRACK_COMMENTS = 0x00000001;
+
 constexpr uint32_t CONTEXT_FLAG_EXPRESSION = 0x00000001;
 
 struct Parser
 {
-    void setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file);
+    void setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file, ParseFlags flags);
     bool generateAst();
 
     static bool saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path& tmpFilePath, Utf8& tmpFileName, uint32_t& previousLogLine);
@@ -222,15 +227,15 @@ struct Parser
     bool doDropCopyMove(AstNode* parent, AstNode** result);
     bool doRange(AstNode* parent, AstNode* expression, AstNode** result);
 
-    ErrorContext* context    = nullptr;
-    SourceFile*   sourceFile = nullptr;
-    Module*       module     = nullptr;
-
     Tokenizer  tokenizer;
     TokenParse prevTokenParse;
     TokenParse tokenParse;
 
-    AstNode*            dummyResult            = nullptr;
+    ErrorContext* context     = nullptr;
+    SourceFile*   sourceFile  = nullptr;
+    Module*       module      = nullptr;
+    AstNode*      dummyResult = nullptr;
+
     Scope*              currentScope           = nullptr;
     AstFuncDecl*        currentFct             = nullptr;
     AstBreakable*       currentBreakable       = nullptr;
@@ -239,8 +244,9 @@ struct Parser
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
     AstTryCatchAssume*  currentTryCatchAssume  = nullptr;
     AstInline*          currentInline          = nullptr;
+    AstNodeFlags        currentAstNodeFlags    = 0;
 
-    AstNodeFlags currentFlags = 0;
+    ParseFlags parseFlags = 0;
 
     bool afterGlobal = false;
 };

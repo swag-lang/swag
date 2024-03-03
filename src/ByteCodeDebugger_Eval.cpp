@@ -36,7 +36,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 
     JobContext jobContext;
     Parser     parser;
-    parser.setup(&jobContext, sourceFile->module, sourceFile);
+    parser.setup(&jobContext, sourceFile->module, sourceFile, PARSER_DEFAULT);
     if (!parser.constructEmbeddedAst(expr, &parent, nullptr, kind, false))
     {
         if (silent)

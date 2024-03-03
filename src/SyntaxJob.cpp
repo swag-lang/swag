@@ -30,8 +30,11 @@ JobResult SyntaxJob::execute()
         return JobResult::KeepJobAlive;
     }
 
-    Parser parser;
-    parser.setup(&context, sourceFile->module, sourceFile);
+    Parser     parser;
+    ParseFlags parseFlags = 0;
+    if (g_CommandLine.genDoc)
+        parseFlags.add(PARSER_TRACK_COMMENTS);
+    parser.setup(&context, sourceFile->module, sourceFile, parseFlags);
     parser.generateAst();
 
 #ifdef SWAG_DEV_MODE
@@ -39,8 +42,8 @@ JobResult SyntaxJob::execute()
     {
         FormatAst fmt;
         fmt.outputNode(sourceFile->astRoot);
-        //const Path path = R"(c:/temp/)" + sourceFile->path.filename();
-        //fmt.concat->flushToFile(path);
+        // const Path path = R"(c:/temp/)" + sourceFile->path.filename();
+        // fmt.concat->flushToFile(path);
     }
 #endif
 

@@ -7,7 +7,8 @@ struct SourceFile;
 struct TypeInfo;
 struct ErrorContext;
 
-using TokenFlags = Flags<uint32_t>;
+using TokenFlags     = Flags<uint32_t>;
+using TokenizerFlags = Flags<uint32_t>;
 
 constexpr TokenFlags TOKEN_SYM                = 0x00000001;
 constexpr TokenFlags TOKEN_INTRINSIC_NORETURN = 0x00000002;
@@ -17,6 +18,8 @@ constexpr TokenFlags TOKEN_COMPILER           = 0x00000010;
 constexpr TokenFlags TOKEN_LITERAL            = 0x00000020;
 constexpr TokenFlags TOKEN_COMPILER_FUNC      = 0x00000040;
 constexpr TokenFlags TOKEN_TOP_LEVEL_INST     = 0x00000080;
+
+constexpr TokenizerFlags TOKENIZER_TRACK_COMMENTS = 0x00000001;
 
 extern const char*      g_TokenNames[];
 extern const TokenFlags g_TokenFlags[];
@@ -61,16 +64,16 @@ struct Tokenizer
 
     SourceLocation location;
 
-    Utf8          comment;
-    ErrorContext* errorContext     = nullptr;
-    char*         curBuffer        = nullptr;
-    char*         endBuffer        = nullptr;
-    SourceFile*   sourceFile       = nullptr;
-    char*         startTokenName   = nullptr;
-    bool          realAppendName   = false;
-    bool          trackComments    = false;
-    bool          propagateComment = false;
-    bool          idLetters[256]   = {false};
+    Utf8           comment;
+    ErrorContext*  errorContext     = nullptr;
+    char*          curBuffer        = nullptr;
+    char*          endBuffer        = nullptr;
+    SourceFile*    sourceFile       = nullptr;
+    char*          startTokenName   = nullptr;
+    TokenizerFlags tokenizeFlags    = 0;
+    bool           realAppendName   = false;
+    bool           propagateComment = false;
+    bool           idLetters[256]   = {false};
 
     Utf8           savedComment;
     TokenParse     savedToken;
