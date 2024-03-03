@@ -68,7 +68,11 @@ bool FormatAst::outputScopeContent(const Module* module, const Scope* scope)
                 concat->addEol();
             }
             else
+            {
                 SWAG_CHECK(outputFuncSignature(funcNode, nullptr, funcNode->parameters, funcNode->validIf));
+                concat->addChar(';');
+                concat->addEol();
+            }
 
             concat->addBlankLine();
         }
@@ -85,6 +89,7 @@ bool FormatAst::outputScopeContent(const Module* module, const Scope* scope)
             SWAG_CHECK(outputAttributesUsage(typeFunc));
             concat->addIndent(indent);
             SWAG_CHECK(outputFuncSignature(node, nullptr, node->parameters, nullptr));
+            concat->addEol();
             concat->addBlankLine();
         }
     }
