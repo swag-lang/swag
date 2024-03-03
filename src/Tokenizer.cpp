@@ -158,10 +158,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
     tokenParse.literalType      = LiteralType::TypeMax;
     tokenParse.token.sourceFile = sourceFile;
     tokenParse.flags            = 0;
-
-    if (!propagateComment)
-        tokenParse.comment.clear();
-    propagateComment = true;
+    tokenParse.comment.clear();
 
     while (true)
     {

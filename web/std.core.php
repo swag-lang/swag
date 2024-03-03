@@ -1681,7 +1681,8 @@
 <div class="right">
 <div class="right-page">
 <h1>Swag Std.Core</h1>
-<p> The <span class="code-inline">Std.core</span> module contains basic types and algorithms.  It is the base of all other modules of the standard <span class="code-inline">Std</span> workspace.  You will find collections like <a href="#Core_Array">Array</a> or <a href="#Core_HashTable">HashTable</a>, a dynamic <a href="#Core_String">String</a> and so on. </p>
+<p> The <span class="code-inline">Std.core</span> module contains basic types and algorithms.  It is the base of all other modules of the standard <span class="code-inline">Std</span> workspace. </p>
+<p> You will find collections like <a href="#Core_Array">Array</a> or <a href="#Core_HashTable">HashTable</a>, a dynamic <a href="#Core_String">String</a> and so on. </p>
 <h1>Content</h1>
 <p>
 <table class="api-item">
@@ -1708,7 +1709,7 @@
 <tr>
 <td id="Core_Env_EndLine">EndLine</td>
 <td class="code-type"><span class="STpe">string</span></td>
-<td></td>
+<td>The system font directory. </td>
 </tr>
 <tr>
 <td id="Core_Latin1_CharProperties">CharProperties</td>
@@ -1728,7 +1729,7 @@
 <tr>
 <td id="Core_Path_VolumeSeparatorChar">VolumeSeparatorChar</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td></td>
+<td>Returns true if the given character is a directory separator. </td>
 </tr>
 <tr>
 <td id="Core_Random_NN">NN</td>
@@ -1803,7 +1804,7 @@
 <tr>
 <td id="Core_Time_MaxMillis">MaxMillis</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Returns the current time expressed in milliseconds. </td>
 </tr>
 <tr>
 <td id="Core_Time_MaxTicks">MaxTicks</td>
@@ -1883,7 +1884,7 @@
 <tr>
 <td id="Core_Utf16_SurrSelf">SurrSelf</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>Get the unicode character pointed by <span class="code-inline">buffer</span>, and the number of u16 to encode it  Will return <span class="code-inline">RuneError</span> for an invalid utf16 sequence. </td>
 </tr>
 <tr>
 <td id="Core_Utf8_MaxRunes">MaxRunes</td>
@@ -1936,7 +1937,7 @@
 <tr>
 <td id="Core_Input_VirtualKey">VirtualKey</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>Represents a virtual system key. </td>
 </tr>
 <tr>
 <td id="Core_Math_ConstF32">ConstF32</td>
@@ -3981,7 +3982,8 @@
 </p>
 <p>The <span class="code-inline">IsSet</span> generic struct is a mirror of the user input struct. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_CommandLine_IsSet">IsSet</a></span>(<span class="SCst">T</span>)</span></div>
-<p> Each field has the same name as the original one, but with a <span class="code-inline">bool</span> type.  It will indicate, after the command line parsing, that the corresponding argument has been  specified or not by the user. </p>
+<p> Each field has the same name as the original one, but with a <span class="code-inline">bool</span> type. </p>
+<p> It will indicate, after the command line parsing, that the corresponding argument has been  specified or not by the user. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -7586,12 +7588,12 @@
 <tr>
 <td>negativeSign</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td></td>
+<td>The byte that denotes that the associated number is positive. The default is "+". </td>
 </tr>
 <tr>
 <td>positiveSign</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td></td>
+<td>The byte to use as the decimal separator in numeric values. The default is ".". </td>
 </tr>
 <tr>
 <td>decimalSeparator</td>
@@ -8859,7 +8861,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SCst">Core</span>.__hashtable_tpl3_36'(<span class="SCst">K</span>, <span class="SCst">V</span>))</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SCst">Core</span>.__hashtable_tpl3_35'(<span class="SCst">K</span>, <span class="SCst">V</span>))</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9107,12 +9109,12 @@
 <tr>
 <td>currentState</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Input">Input</a></span>.<span class="SCst"><a href="#Core_Input_GamePadState">GamePadState</a></span></span></td>
-<td></td>
+<td>The pad index associated with that GamePad instance. </td>
 </tr>
 <tr>
 <td>padIndex</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>true if the corresponding padIndex is connected. </td>
 </tr>
 <tr>
 <td>connected</td>
@@ -10287,17 +10289,17 @@
 <tr>
 <td>pressedTime</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">188</span>] <span class="STpe">u32</span></span></td>
-<td></td>
+<td>Delay, in milliseconds, before a repeated key stroke starts. </td>
 </tr>
 <tr>
 <td>pressedRepeatStartTimeMs</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>Delay, in miliseconds, between two repeated key strokes. </td>
 </tr>
 <tr>
 <td>pressedRepeatTimeMs</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>Allow key stroke repetition if true. </td>
 </tr>
 <tr>
 <td>canRepeat</td>
@@ -11048,7 +11050,7 @@
 <tr>
 <td>data</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
-<td></td>
+<td>Internal state. </td>
 </tr>
 <tr>
 <td>state</td>
@@ -11252,7 +11254,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Latin1_compareNatural">compareNatural</a></span></td>
-<td>Compare two utf8 strings in a natural way, dealing only with latin1 table  Returns -1, 0 or 1  :LICENCE  This code is based on <span class="code-inline">natsort</span> by Martin Pool (https://github.com/sourcefrog/natsort)  The original code has been modified for Swag  See LICENCE.md for the corresponding licence. </td>
+<td>Compare two utf8 strings in a natural way, dealing only with latin1 table  Returns -1, 0 or 1. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Latin1_isAscii">isAscii</a></span></td>
@@ -11428,8 +11430,9 @@
 </tr>
 </table>
 </p>
-<p>Compare two utf8 strings in a natural way, dealing only with latin1 table  Returns -1, 0 or 1  :LICENCE  This code is based on <span class="code-inline">natsort</span> by Martin Pool (https://github.com/sourcefrog/natsort)  The original code has been modified for Swag  See LICENCE.md for the corresponding licence. </p>
+<p>Compare two utf8 strings in a natural way, dealing only with latin1 table  Returns -1, 0 or 1. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compareNatural</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, dst: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, ignoreCase = <span class="SKwd">false</span>)-&gt;<span class="STpe">s32</span></span></div>
+<p> :LICENCE  This code is based on <span class="code-inline">natsort</span> by Martin Pool (https://github.com/sourcefrog/natsort)  The original code has been modified for Swag  See LICENCE.md for the corresponding licence. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22934,7 +22937,7 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_StrConv_ConvertFormatInt"><span class="SCst">ConvertFormatInt</span></a></td>
-<td>Format structure to convert an integer to a string  If <span class="code-inline">signed</span> is <span class="code-inline">true</span>, the value to convert must be stored in <span class="code-inline">signedValue</span>, otherwise it must  be stored in <span class="code-inline">unsignedValue</span>. </td>
+<td>Format structure to convert an integer to a string. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_StrConv_StringBuilder"><span class="SCst">StringBuilder</span></a></td>
@@ -23196,12 +23199,22 @@
 </p>
 <p>Set some format options with a given user string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
-<p> Format is <span class="code-inline">[+][fmt][precision]</span>  + <span class="code-inline">+</span>      To force the positive sign if the number is positive  + <span class="code-inline">fmt</span>      This is the output format: </p>
-<div class="code-block"><span class="SCde">| e | -d.dddde±dd, a decimal exponent
- | E | -d.ddddE±dd, a decimal exponent
- | f | -ddd.dddd, no exponent
- | g | 'e' for large exponents, 'f' otherwise
- | G | 'E' for large exponents, 'f' otherwise</span></div>
+<p> Format is <span class="code-inline">[+][fmt][precision]</span> </p>
+<div class="description-list-title"><p><span class="code-inline">+</span></p></div>
+<div class="description-list-block">
+<p> To force the positive sign if the number is positive </p>
+</div>
+<div class="description-list-title"><p><span class="code-inline">fmt</span></p></div>
+<div class="description-list-block">
+<p> This is the output format: </p>
+<table class="table-markdown">
+<tr><td> e </td><td> -d.dddde±dd, a decimal exponent</td></tr>
+<tr><td> E </td><td> -d.ddddE±dd, a decimal exponent</td></tr>
+<tr><td> f </td><td> -ddd.dddd, no exponent</td></tr>
+<tr><td> g </td><td> <span class="code-inline">e</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
+<tr><td> G </td><td> <span class="code-inline">E</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
+</table>
+</div>
 <div class="description-list-title"><p><span class="code-inline">precision</span></p></div>
 <div class="description-list-block">
 <p> A number which is the precision of the fractional part </p>
@@ -23217,7 +23230,7 @@
 </tr>
 </table>
 </p>
-<p>Format structure to convert an integer to a string  If <span class="code-inline">signed</span> is <span class="code-inline">true</span>, the value to convert must be stored in <span class="code-inline">signedValue</span>, otherwise it must  be stored in <span class="code-inline">unsignedValue</span>. </p>
+<p>Format structure to convert an integer to a string. </p>
 <table class="table-enumeration">
 <tr>
 <td>using val</td>
@@ -23245,6 +23258,7 @@
 <td></td>
 </tr>
 </table>
+<p> If <span class="code-inline">signed</span> is <span class="code-inline">true</span>, the value to convert must be stored in <span class="code-inline">signedValue</span>, otherwise it must  be stored in <span class="code-inline">unsignedValue</span>. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -23265,10 +23279,20 @@
 </p>
 <p>Set some format options with a given user string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
-<p> The format is <span class="code-inline">[+][fmt][padding][width]</span>  + <span class="code-inline">+</span>      To force the positive sign if the number is positive  + <span class="code-inline">fmt</span>      This is the output format: </p>
-<div class="code-block"><span class="SCde">| B | Binary
- | D | Decimal
- | X | Hexadecimal</span></div>
+<p> The format is <span class="code-inline">[+][fmt][padding][width]</span> </p>
+<div class="description-list-title"><p><span class="code-inline">+</span></p></div>
+<div class="description-list-block">
+<p> To force the positive sign if the number is positive </p>
+</div>
+<div class="description-list-title"><p><span class="code-inline">fmt</span></p></div>
+<div class="description-list-block">
+<p> This is the output format: </p>
+<table class="table-markdown">
+<tr><td> B </td><td> Binary</td></tr>
+<tr><td> D </td><td> Decimal</td></tr>
+<tr><td> X </td><td> Hexadecimal</td></tr>
+</table>
+</div>
 <div class="description-list-title"><p><span class="code-inline">padding</span></p></div>
 <div class="description-list-block">
 <p> The padding character, in ascii. It's mandatory before the next field </p>
@@ -23861,7 +23885,8 @@
 </p>
 <p>This function will parse the string <span class="code-inline">buf</span> and decode the corresponding value in <span class="code-inline">addr</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseValue</span>(addr: *<span class="STpe">void</span>, type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, buf: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
-<p> <span class="code-inline">addr</span> must point to an initialized memory location that can hold <span class="code-inline">type</span>  Accepted types are : </p>
+<p> <span class="code-inline">addr</span> must point to an initialized memory location that can hold <span class="code-inline">type</span> </p>
+<p> Accepted types are : </p>
 <ul>
 <li><span class="code-inline">s8, s16, s32, s64, u8, u16, u32, u64, rune, bool, f32, f64</span></li>
 <li><span class="code-inline">Core.String</span>  literal strings are not supported as <span class="code-inline">buf</span> is supposed to be transient</li>
@@ -27767,7 +27792,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_countBytesAt">countBytesAt</a></span></td>
-<td>Returns the number of bytes to encode the first rune of the utf8 buffer  If it's an invalid encoding, returns 1. </td>
+<td>Returns the number of bytes to encode the first rune of the utf8 buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_countRunes">countRunes</a></span></td>
@@ -27779,11 +27804,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_decodeRune">decodeRune</a></span></td>
-<td>Get the unicode rune pointed by <span class="code-inline">buffer</span>, and the number of bytes to encode it  Will return <span class="code-inline">RuneError</span> for an invalid utf8 sequence. </td>
+<td>Get the unicode rune pointed by <span class="code-inline">buffer</span>, and the number of bytes to encode it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_encodeRune">encodeRune</a></span></td>
-<td>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns  the number of bytes that were needed to make the conversion.  <span class="code-inline">dest</span> must be at least 4 bytes long. </td>
+<td>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns  the number of bytes that were needed to make the conversion. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_endsWith">endsWith</a></span></td>
@@ -27795,7 +27820,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_fromUnicode">fromUnicode</a></span><span class="SCde">([..] <span class="STpe">u8</span>, <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
-<td>Convert a rune array to an utf8 buffer  Returns the number of bytes written in the destination buffer  <span class="code-inline">dest</span> must be at least 4 bytes long. </td>
+<td>Convert a rune array to an utf8 buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_fromUnicode">fromUnicode</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
@@ -27803,7 +27828,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_fromUtf16">fromUtf16</a></span><span class="SCde">([..] <span class="STpe">u8</span>, <span class="SKwd">const</span> [..] <span class="STpe">u16</span>)</span></td>
-<td>Convert an utf16 array to an utf8 buffer  Returns the number of bytes written in the destination buffer.  <span class="code-inline">dest</span> must be at least 4 bytes long. </td>
+<td>Convert an utf16 array to an utf8 buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_fromUtf16">fromUtf16</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u16</span>)</span></td>
@@ -27945,8 +27970,9 @@
 </tr>
 </table>
 </p>
-<p>Returns the number of bytes to encode the first rune of the utf8 buffer  If it's an invalid encoding, returns 1. </p>
+<p>Returns the number of bytes to encode the first rune of the utf8 buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">countBytesAt</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p> If it's an invalid encoding, returns 1. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -27984,8 +28010,9 @@
 </tr>
 </table>
 </p>
-<p>Get the unicode rune pointed by <span class="code-inline">buffer</span>, and the number of bytes to encode it  Will return <span class="code-inline">RuneError</span> for an invalid utf8 sequence. </p>
+<p>Get the unicode rune pointed by <span class="code-inline">buffer</span>, and the number of bytes to encode it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decodeRune</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;{c:<span class="STpe">rune</span>,eat:<span class="STpe">u32</span>}</span></div>
+<p> Will return <span class="code-inline">RuneError</span> for an invalid utf8 sequence </p>
 <p>
 <table class="api-item">
 <tr>
@@ -27997,8 +28024,9 @@
 </tr>
 </table>
 </p>
-<p>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns  the number of bytes that were needed to make the conversion.  <span class="code-inline">dest</span> must be at least 4 bytes long. </p>
+<p>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns  the number of bytes that were needed to make the conversion. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">encodeRune</span>(dest: [..] <span class="STpe">u8</span>, src: <span class="STpe">rune</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p> <span class="code-inline">dest</span> must be at least 4 bytes long </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28036,10 +28064,11 @@
 </tr>
 </table>
 </p>
-<p>Convert a rune array to an utf8 buffer  Returns the number of bytes written in the destination buffer  <span class="code-inline">dest</span> must be at least 4 bytes long. </p>
+<p>Convert a rune array to an utf8 buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUnicode</span>(dest: [..] <span class="STpe">u8</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Convert an unicode buffer to a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUnicode</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<p> Returns the number of bytes written in the destination buffer  <span class="code-inline">dest</span> must be at least 4 bytes long </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28051,10 +28080,11 @@
 </tr>
 </table>
 </p>
-<p>Convert an utf16 array to an utf8 buffer  Returns the number of bytes written in the destination buffer.  <span class="code-inline">dest</span> must be at least 4 bytes long. </p>
+<p>Convert an utf16 array to an utf8 buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf16</span>(dest: [..] <span class="STpe">u8</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u16</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Convert an utf16 buffer to a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf16</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u16</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<p> Returns the number of bytes written in the destination buffer.  <span class="code-inline">dest</span> must be at least 4 bytes long </p>
 <p>
 <table class="api-item">
 <tr>

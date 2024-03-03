@@ -5164,7 +5164,7 @@
 <tr>
 <td>serial</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>Flatten infos. </td>
 </tr>
 <tr>
 <td>flattenQuality</td>
@@ -7826,7 +7826,7 @@
 <tr>
 <td>points</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>)</span></td>
-<td></td>
+<td>Fill with a call to compute(). </td>
 </tr>
 <tr>
 <td>isClockwise</td>
@@ -8730,7 +8730,7 @@
 <tr>
 <td>colorIdx</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>From <span class="code-inline">computeLayout</span>. </td>
 </tr>
 <tr>
 <td>boundRect</td>

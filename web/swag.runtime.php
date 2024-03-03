@@ -491,7 +491,7 @@
 <tr>
 <td id="Swag_MaxTraces">MaxTraces</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>Maximum error traces  This is the base of all errors. </td>
 </tr>
 <tr>
 <td id="Swag_S16_Max">Max</td>
@@ -536,7 +536,7 @@
 <tr>
 <td id="Swag_SafetyAll">SafetyAll</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td><span class="code-inline">LLVM</span> backend specific options. </td>
 </tr>
 <tr>
 <td id="Swag_SafetyAny">SafetyAny</td>
@@ -1827,7 +1827,7 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_AttrUsage"><span class="SCst">AttrUsage</span></a></td>
-<td></td>
+<td>Hardcoded usage. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_CalleeReturn"><span class="SCst">CalleeReturn</span></a></td>
@@ -2112,6 +2112,7 @@
 </tr>
 </table>
 </p>
+<p>Hardcoded usage. </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AttrUsage">AttrUsage</a></span>(usage: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AttributeUsage">AttributeUsage</a></span>)</span></div>
@@ -3180,17 +3181,17 @@
 <tr>
 <td>nextId</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>The next allocated id to assign  Debug/behaviour parameters. </td>
 </tr>
 <tr>
 <td>maxFreeSize</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>The next allocated id to assign. </td>
+<td>Maximum total size (in kbs) of free blocks in quarantine. </td>
 </tr>
 <tr>
 <td>breakOnAllocId</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarantine Will @assert when the current allocation id reaches that value. </td>
+<td>Will @assert when the current allocation id reaches that value. </td>
 </tr>
 <tr>
 <td>showMaxLeaks</td>

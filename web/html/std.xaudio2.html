@@ -448,12 +448,12 @@
 <tr>
 <td id="XAudio2_XAUDIO2_COMMIT_ALL">XAUDIO2_COMMIT_ALL</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td>Numeric values with special meanings Used as an OperationSet argument Used in IXAudio2::CommitChanges. </td>
+<td>Used in IXAudio2::CommitChanges. </td>
 </tr>
 <tr>
 <td id="XAudio2_XAUDIO2_COMMIT_NOW">XAUDIO2_COMMIT_NOW</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td>Maximum simultaneous XAudio2 objects on Xbox 360. </td>
+<td>Maximum simultaneous XAudio2 objects on Xbox 360  Numeric values with special meanings. </td>
 </tr>
 <tr>
 <td id="XAudio2_XAUDIO2_DEBUG_ENGINE">XAUDIO2_DEBUG_ENGINE</td>
@@ -473,7 +473,7 @@
 <tr>
 <td id="XAudio2_XAUDIO2_DEFAULT_SAMPLERATE">XAUDIO2_DEFAULT_SAMPLERATE</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>Used in CreateMasteringVoice  Values for the TraceMask and BreakMask bitmaps.  Only ERRORS and WARNINGS  are valid in BreakMask.  WARNINGS implies ERRORS, DETAIL implies INFO, and  FUNC_CALLS implies API_CALLS.  By default, TraceMask is ERRORS and WARNINGS  and all the other settings are zero. </td>
 </tr>
 <tr>
 <td id="XAudio2_XAUDIO2_END_OF_STREAM">XAUDIO2_END_OF_STREAM</td>
@@ -498,7 +498,7 @@
 <tr>
 <td id="XAudio2_XAUDIO2_LOG_ERRORS">XAUDIO2_LOG_ERRORS</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>Used in CreateMasteringVoice. </td>
+<td>Used in CreateMasteringVoice  Values for the TraceMask and BreakMask bitmaps.  Only ERRORS and WARNINGS  are valid in BreakMask.  WARNINGS implies ERRORS, DETAIL implies INFO, and  FUNC_CALLS implies API_CALLS.  By default, TraceMask is ERRORS and WARNINGS  and all the other settings are zero. </td>
 </tr>
 <tr>
 <td id="XAudio2_XAUDIO2_LOG_FUNC_CALLS">XAUDIO2_LOG_FUNC_CALLS</td>
@@ -533,7 +533,7 @@
 <tr>
 <td id="XAudio2_XAUDIO2_LOG_WARNINGS">XAUDIO2_LOG_WARNINGS</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>Values for the TraceMask and BreakMask bitmaps.  Only ERRORS and WARNINGS are valid in BreakMask.  WARNINGS implies ERRORS, DETAIL implies INFO, and FUNC_CALLS implies API_CALLS.  By default, TraceMask is ERRORS and WARNINGS and all the other settings are zero. For handled errors with serious effects. For handled errors that may be recoverable. </td>
+<td>For handled errors that may be recoverable. </td>
 </tr>
 <tr>
 <td id="XAudio2_XAUDIO2_LOOP_INFINITE">XAUDIO2_LOOP_INFINITE</td>
@@ -573,7 +573,7 @@
 <tr>
 <td id="XAudio2_XAUDIO2_MAX_INSTANCES">XAUDIO2_MAX_INSTANCES</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>Maximum simultaneous XAudio2 objects on Xbox 360  Numeric values with special meanings. </td>
 </tr>
 <tr>
 <td id="XAudio2_XAUDIO2_MAX_LOOP_COUNT">XAUDIO2_MAX_LOOP_COUNT</td>
@@ -1538,7 +1538,7 @@
 </tr>
 <tr>
 <td>HighPassOnePoleFilter</td>
-<td>Attenuates frequencies above the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect)  Attenuates frequencies below the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect). </td>
+<td>Attenuates frequencies below the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect). </td>
 </tr>
 </table>
 <p>

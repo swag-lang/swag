@@ -66,8 +66,6 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     if (newScope->flags.has(SCOPE_FILE))
         newScope = newScope->parentScope;
 
-    tokenizer.propagateComment = true;
-
     SWAG_ASSERT(newScope);
     Scoped     scoped(this, newScope);
     const auto attrUse = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);

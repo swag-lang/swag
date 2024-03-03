@@ -65,15 +65,14 @@ struct Tokenizer
 
     SourceLocation location;
 
-    ErrorContext*  errorContext     = nullptr;
-    char*          curBuffer        = nullptr;
-    char*          endBuffer        = nullptr;
-    SourceFile*    sourceFile       = nullptr;
-    char*          startTokenName   = nullptr;
-    TokenizerFlags tokenizeFlags    = 0;
-    bool           realAppendName   = false;
-    bool           propagateComment = false;
-    bool           idLetters[256]   = {false};
+    ErrorContext*  errorContext   = nullptr;
+    char*          curBuffer      = nullptr;
+    char*          endBuffer      = nullptr;
+    SourceFile*    sourceFile     = nullptr;
+    char*          startTokenName = nullptr;
+    TokenizerFlags tokenizeFlags  = 0;
+    bool           realAppendName = false;
+    bool           idLetters[256] = {false};
 
     TokenParse     savedToken;
     SourceLocation savedLocation;

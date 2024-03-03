@@ -9846,6 +9846,7 @@
 </tr>
 </table>
 </p>
+<p>Start a new category. </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Category">Category</a></span>(name: <span class="STpe">string</span>)</span></div>
@@ -9860,6 +9861,7 @@
 </tr>
 </table>
 </p>
+<p>Add a description. </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Description">Description</a></span>(desc: <span class="STpe">string</span>)</span></div>
@@ -9874,6 +9876,7 @@
 </tr>
 </table>
 </p>
+<p>Native float edit width a slider. </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_EditSlider">EditSlider</a></span>(min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>)</span></div>
@@ -9888,6 +9891,7 @@
 </tr>
 </table>
 </p>
+<p>Change the field display name. </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Name">Name</a></span>(name: <span class="STpe">string</span>)</span></div>
@@ -9902,6 +9906,7 @@
 </tr>
 </table>
 </p>
+<p>Start a new sub category. </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_SubCategory">SubCategory</a></span>(name: <span class="STpe">string</span>)</span></div>
