@@ -187,8 +187,6 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         ///////////////////////////////////////////
         if (SWAG_IS_EOL(c))
         {
-            if(sourceFile->name == "compiler53.swg")
-                int a = 0;
             if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
                 tokenParse.flags.add(TOKEN_PARSE_BLANK_LINE_BEFORE);
             else
