@@ -42,7 +42,7 @@ enum class LiteralType : uint8_t
 };
 
 constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE         = 0x01;
-constexpr TokenParseFlags TOKEN_PARSE_BLANK_BEFORE         = 0x02;
+constexpr TokenParseFlags TOKEN_PARSE_BLANK_BEFORE       = 0x02;
 constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE_COMMENT = 0x04;
 
 struct TokenParse

@@ -110,3 +110,40 @@ bool FormatAst::outputDoStatement(const AstNode* node)
 
     return true;
 }
+
+bool FormatAst::outputNamespace(const AstNode* node)
+{
+    if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
+    {
+        SWAG_CHECK(outputChildren(node));
+        return true;
+    }
+
+    if (node->hasAstFlag(AST_GLOBAL_NODE))
+    {
+        CONCAT_FIXED_STR(concat, "#global");
+        concat->addBlank();
+        CONCAT_FIXED_STR(concat, "namespace");
+        concat->addBlank();
+        concat->addString(node->token.text);
+        concat->addEol();
+        outputChildren(node);
+        return true;
+    }
+
+    concat->addIndent(indent);
+    CONCAT_FIXED_STR(concat, "namespace");
+    concat->addBlank();
+    concat->addString(node->token.text);
+    concat->addEol();
+    concat->addIndent(indent);
+    concat->addChar('{');
+    concat->addEol();
+    indent++;
+    outputChildren(node);
+    indent--;
+    concat->addIndent(indent);
+    concat->addChar('}');
+    concat->addEol();
+    return true;
+}

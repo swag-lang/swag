@@ -223,28 +223,3 @@ bool FormatAst::outputScope(Module* module, Scope* scope)
 
     return true;
 }
-
-bool FormatAst::outputNamespace(const AstNode* node)
-{
-    if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
-    {
-        SWAG_CHECK(outputChildren(node));
-        return true;
-    }
-
-    concat->addIndent(indent);
-    CONCAT_FIXED_STR(concat, "namespace");
-    concat->addBlank();
-    concat->addString(node->token.text);
-    concat->addEol();
-    concat->addIndent(indent);
-    concat->addChar('{');
-    concat->addEol();
-    indent++;
-    outputChildren(node);
-    indent--;
-    concat->addIndent(indent);
-    concat->addChar('}');
-    concat->addEol();
-    return true;
-}
