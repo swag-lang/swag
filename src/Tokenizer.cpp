@@ -200,7 +200,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         {
             while (SWAG_IS_BLANK(curBuffer[0]))
                 readChar();
-            tokenParse.flags.add(TOKEN_PARSE_LAST_BLANK);
+            tokenParse.flags.add(TOKEN_PARSE_BLANK_BEFORE);
             continue;
         }
 

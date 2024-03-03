@@ -319,7 +319,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 
             // Ambiguous {
             if (tokenParse.is(TokenId::SymLeftCurly) &&
-                tokenParse.flags.has(TOKEN_PARSE_LAST_BLANK) &&
+                tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE) &&
                 !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) &&
                 type->is(AstNodeKind::TypeExpression))
             {
