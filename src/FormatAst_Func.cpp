@@ -11,10 +11,40 @@ bool FormatAst::outputFuncName(const AstFuncDecl* node) const
     return true;
 }
 
+bool FormatAst::outputFuncDeclParameters(const AstNode* parameters, bool isMethod)
+{
+    if (!parameters)
+    {
+        CONCAT_FIXED_STR(concat, "()");
+        return true;
+    }
+
+    concat->addChar('(');
+    SWAG_CHECK(outputCommaChildren(parameters, isMethod ? 1 : 0));
+    concat->addChar(')');
+    return true;
+}
+
+bool FormatAst::outputFuncDeclReturnType(const AstNode* node)
+{
+    if (!node)
+        return true;
+    CONCAT_FIXED_STR(concat, "->");
+    SWAG_CHECK(outputNode(node));
+    return true;
+}
+
 bool FormatAst::outputFuncSignature(AstNode* node, const AstNode* genericParameters, const AstNode* parameters, const AstNode* validIf)
 {
+    bool isMethod = false;
+
     if (node->is(AstNodeKind::AttrDecl))
         CONCAT_FIXED_STR(concat, "attr");
+    else if (node->is(AstNodeKind::FuncDecl) && node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
+    {
+        isMethod = true;
+        CONCAT_FIXED_STR(concat, "mtd");
+    }
     else
         CONCAT_FIXED_STR(concat, "func");
 
@@ -26,25 +56,34 @@ bool FormatAst::outputFuncSignature(AstNode* node, const AstNode* genericParamet
 
     concat->addBlank();
 
-    if (node->is(AstNodeKind::FuncDecl) && node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
-    {
-        CONCAT_FIXED_STR(concat, "impl");
-        concat->addBlank();
-    }
-
     if (node->is(AstNodeKind::FuncDecl))
     {
         const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+
+        if (isMethod)
+        {
+            const auto varDecl  = castAst<AstVarDecl>(parameters->firstChild());
+            const auto typeDecl = castAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
+            if (typeDecl->typeFlags.has(TYPEFLAG_IS_CONST))
+            {
+                CONCAT_FIXED_STR(concat, "const");
+                concat->addBlank();
+            }
+        }
+
+        if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
+        {
+            CONCAT_FIXED_STR(concat, "impl");
+            concat->addBlank();
+        }
+
         SWAG_CHECK(outputFuncName(funcNode));
     }
     else
         concat->addString(node->token.text);
 
     // Parameters
-    if (parameters)
-        SWAG_CHECK(outputNode(parameters));
-    else
-        CONCAT_FIXED_STR(concat, "()");
+    SWAG_CHECK(outputFuncDeclParameters(parameters, isMethod));
 
     // Return type, in case of function (not attr)
     if (node->is(AstNodeKind::FuncDecl))
@@ -95,15 +134,6 @@ bool FormatAst::outputFuncSignature(AstNode* node, const AstNode* genericParamet
     return true;
 }
 
-bool FormatAst::outputFuncDeclReturnType(const AstNode* node)
-{
-    if (!node)
-        return true;
-    CONCAT_FIXED_STR(concat, "->");
-    SWAG_CHECK(outputNode(node));
-    return true;
-}
-
 bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
 {
     const bool isMethod = node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD);
@@ -142,14 +172,7 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
     SWAG_CHECK(outputFuncName(node));
 
     // Parameters
-    if (node->parameters)
-    {
-        concat->addChar('(');
-        outputCommaChildren(node->parameters, isMethod ? 1 : 0);
-        concat->addChar(')');
-    }
-    else
-        CONCAT_FIXED_STR(concat, "()");
+    SWAG_CHECK(outputFuncDeclParameters(node->parameters, isMethod));
 
     // Return type
     auto returnNode = node->returnType;
@@ -395,15 +418,7 @@ bool FormatAst::outputTypeLambda(const AstNode* node)
     else
         CONCAT_FIXED_STR(concat, "closure");
 
-    if (typeNode->parameters)
-    {
-        concat->addChar('(');
-        outputCommaChildren(typeNode->parameters);
-        concat->addChar(')');
-    }
-    else
-        CONCAT_FIXED_STR(concat, "()");
-
+    SWAG_CHECK(outputFuncDeclParameters(typeNode->parameters, false));
     SWAG_CHECK(outputFuncDeclReturnType(typeNode->returnType));
 
     if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
