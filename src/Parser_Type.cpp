@@ -543,7 +543,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
         auto rightSquareToken = tokenParse;
         SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, leftSquareToken.token.startLocation));
-        if (tokenParse.flags.has(TOKEN_PARSE_LAST_EOL))
+        if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
         {
             if (exprFlags.has(EXPR_FLAG_TYPE_EXPR))
             {
@@ -610,7 +610,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
         // So we create an identifier, that will be matched with the type alias automatically
         // created in the function.
         SWAG_CHECK(eatToken());
-        if (!tokenParse.flags.has(TOKEN_PARSE_LAST_EOL) && tokenParse.is(TokenId::SymLeftCurly))
+        if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) && tokenParse.is(TokenId::SymLeftCurly))
         {
             node->identifier = Ast::newIdentifierRef(g_LangSpec->name_retval, this, node);
             const auto id    = castAst<AstIdentifier>(node->identifier->lastChild(), AstNodeKind::Identifier);

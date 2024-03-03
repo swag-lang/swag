@@ -1013,7 +1013,7 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
 
     // Return value
     SWAG_CHECK(eatToken());
-    if (tokenParse.flags.has(TOKEN_PARSE_LAST_EOL))
+    if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
         return true;
     if (tokenParse.isNot(TokenId::SymSemiColon))
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));

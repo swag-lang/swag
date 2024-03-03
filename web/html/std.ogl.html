@@ -2145,7 +2145,7 @@
 <tr>
 <td id="Ogl_GL_4D_COLOR_TEXTURE">GL_4D_COLOR_TEXTURE</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>FeedBackToken. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_4_BYTES">GL_4_BYTES</td>
@@ -2215,7 +2215,7 @@
 <tr>
 <td id="Ogl_GL_ADD">GL_ADD</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>AlphaFunction. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_ADD_SIGNED">GL_ADD_SIGNED</td>
@@ -2235,7 +2235,7 @@
 <tr>
 <td id="Ogl_GL_ALL_ATTRIB_BITS">GL_ALL_ATTRIB_BITS</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>BeginMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_ALPHA">GL_ALPHA</td>
@@ -2300,7 +2300,7 @@
 <tr>
 <td id="Ogl_GL_ALWAYS">GL_ALWAYS</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>AttribMask. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_AMBIENT">GL_AMBIENT</td>
@@ -2370,7 +2370,7 @@
 <tr>
 <td id="Ogl_GL_AUX3">GL_AUX3</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>ErrorCode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_AUX_BUFFERS">GL_AUX_BUFFERS</td>
@@ -2405,7 +2405,7 @@
 <tr>
 <td id="Ogl_GL_BGRA_EXT">GL_BGRA_EXT</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>EXT_paletted_texture  These must match the GL_COLOR_TABLE_..._SGI enumerants. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_BGRA_INTEGER">GL_BGRA_INTEGER</td>
@@ -2425,7 +2425,7 @@
 <tr>
 <td id="Ogl_GL_BITMAP">GL_BITMAP</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>PolygonMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_BITMAP_TOKEN">GL_BITMAP_TOKEN</td>
@@ -2600,7 +2600,7 @@
 <tr>
 <td id="Ogl_GL_CCW">GL_CCW</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>GetMapTarget. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_CLAMP">GL_CLAMP</td>
@@ -2645,7 +2645,7 @@
 <tr>
 <td id="Ogl_GL_CLIENT_ALL_ATTRIB_BITS">GL_CLIENT_ALL_ATTRIB_BITS</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>polygon_offset. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_CLIENT_ATTRIB_STACK_DEPTH">GL_CLIENT_ATTRIB_STACK_DEPTH</td>
@@ -2730,7 +2730,7 @@
 <tr>
 <td id="Ogl_GL_CLIP_PLANE5">GL_CLIP_PLANE5</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>DataType. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_COEFF">GL_COEFF</td>
@@ -2905,7 +2905,7 @@
 <tr>
 <td id="Ogl_GL_COLOR_INDEX16_EXT">GL_COLOR_INDEX16_EXT</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>WIN_draw_range_elements. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_COLOR_INDEX1_EXT">GL_COLOR_INDEX1_EXT</td>
@@ -2930,7 +2930,7 @@
 <tr>
 <td id="Ogl_GL_COLOR_INDEXES">GL_COLOR_INDEXES</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>MatrixMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_COLOR_LOGIC_OP">GL_COLOR_LOGIC_OP</td>
@@ -3105,7 +3105,7 @@
 <tr>
 <td id="Ogl_GL_COMPILE_AND_EXECUTE">GL_COMPILE_AND_EXECUTE</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>LogicOp. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_COMPILE_STATUS">GL_COMPILE_STATUS</td>
@@ -3435,12 +3435,12 @@
 <tr>
 <td id="Ogl_GL_DECAL">GL_DECAL</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>TextureEnvParameter. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_DECR">GL_DECR</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>StringName. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_DECR_WRAP">GL_DECR_WRAP</td>
@@ -3565,7 +3565,7 @@
 <tr>
 <td id="Ogl_GL_DOMAIN">GL_DOMAIN</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>GetTarget. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_DONT_CARE">GL_DONT_CARE</td>
@@ -3585,7 +3585,7 @@
 <tr>
 <td id="Ogl_GL_DOUBLE">GL_DOUBLE</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>DrawBufferMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_DOUBLEBUFFER">GL_DOUBLEBUFFER</td>
@@ -3595,7 +3595,7 @@
 <tr>
 <td id="Ogl_GL_DOUBLE_EXT">GL_DOUBLE_EXT</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>EXT_bgra. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_DRAW_BUFFER">GL_DRAW_BUFFER</td>
@@ -3810,12 +3810,12 @@
 <tr>
 <td id="Ogl_GL_EXP2">GL_EXP2</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>FrontFaceDirection. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_EXTENSIONS">GL_EXTENSIONS</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>TextureCoordName. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_EXT_bgra">GL_EXT_bgra</td>
@@ -3840,12 +3840,12 @@
 <tr>
 <td id="Ogl_GL_EYE_PLANE">GL_EYE_PLANE</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>TextureMagFilter. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_FALSE">GL_FALSE</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td>ClipPlaneName. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_FASTEST">GL_FASTEST</td>
@@ -3875,7 +3875,7 @@
 <tr>
 <td id="Ogl_GL_FILL">GL_FILL</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>RenderingMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_FIXED_ONLY">GL_FIXED_ONLY</td>
@@ -4065,7 +4065,7 @@
 <tr>
 <td id="Ogl_GL_FOG_SPECULAR_TEXTURE_WIN">GL_FOG_SPECULAR_TEXTURE_WIN</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>For compatibility with OpenGL v1.0. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_FOG_START">GL_FOG_START</td>
@@ -4705,7 +4705,7 @@
 <tr>
 <td id="Ogl_GL_LIGHT7">GL_LIGHT7</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>LightParameter. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_LIGHTING">GL_LIGHTING</td>
@@ -4745,7 +4745,7 @@
 <tr>
 <td id="Ogl_GL_LINEAR">GL_LINEAR</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>TextureMinFilter. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_LINEAR_ATTENUATION">GL_LINEAR_ATTENUATION</td>
@@ -4755,7 +4755,7 @@
 <tr>
 <td id="Ogl_GL_LINEAR_MIPMAP_LINEAR">GL_LINEAR_MIPMAP_LINEAR</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>TextureParameterName. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_LINEAR_MIPMAP_NEAREST">GL_LINEAR_MIPMAP_NEAREST</td>
@@ -4785,7 +4785,7 @@
 <tr>
 <td id="Ogl_GL_LINE_RESET_TOKEN">GL_LINE_RESET_TOKEN</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>FogMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_LINE_SMOOTH">GL_LINE_SMOOTH</td>
@@ -4945,7 +4945,7 @@
 <tr>
 <td id="Ogl_GL_LUMINANCE_ALPHA">GL_LUMINANCE_ALPHA</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>PixelType. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_MAJOR_VERSION">GL_MAJOR_VERSION</td>
@@ -5155,7 +5155,7 @@
 <tr>
 <td id="Ogl_GL_MAX_ELEMENTS_INDICES_WIN">GL_MAX_ELEMENTS_INDICES_WIN</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>WIN_phong_shading. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_MAX_ELEMENTS_VERTICES">GL_MAX_ELEMENTS_VERTICES</td>
@@ -5515,7 +5515,7 @@
 <tr>
 <td id="Ogl_GL_NICEST">GL_NICEST</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>LightName. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_NONE">GL_NONE</td>
@@ -5650,7 +5650,7 @@
 <tr>
 <td id="Ogl_GL_ONE_MINUS_DST_ALPHA">GL_ONE_MINUS_DST_ALPHA</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>BlendingFactorSrc. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_ONE_MINUS_DST_COLOR">GL_ONE_MINUS_DST_COLOR</td>
@@ -5720,7 +5720,7 @@
 <tr>
 <td id="Ogl_GL_OUT_OF_MEMORY">GL_OUT_OF_MEMORY</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>FeedBackMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_PACK_ALIGNMENT">GL_PACK_ALIGNMENT</td>
@@ -5785,7 +5785,7 @@
 <tr>
 <td id="Ogl_GL_PHONG_HINT_WIN">GL_PHONG_HINT_WIN</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>WIN_specular_fog. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_PHONG_WIN">GL_PHONG_WIN</td>
@@ -5995,7 +5995,7 @@
 <tr>
 <td id="Ogl_GL_POLYGON">GL_POLYGON</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>BlendingFactorDest. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_POLYGON_BIT">GL_POLYGON_BIT</td>
@@ -6020,7 +6020,7 @@
 <tr>
 <td id="Ogl_GL_POLYGON_OFFSET_FILL">GL_POLYGON_OFFSET_FILL</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>texture. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_POLYGON_OFFSET_LINE">GL_POLYGON_OFFSET_LINE</td>
@@ -6245,7 +6245,7 @@
 <tr>
 <td id="Ogl_GL_PROXY_TEXTURE_2D">GL_PROXY_TEXTURE_2D</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>texture_object. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_PROXY_TEXTURE_2D_ARRAY">GL_PROXY_TEXTURE_2D_ARRAY</td>
@@ -6275,12 +6275,12 @@
 <tr>
 <td id="Ogl_GL_Q">GL_Q</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>TextureEnvMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_QUADRATIC_ATTENUATION">GL_QUADRATIC_ATTENUATION</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>ListMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_QUADS">GL_QUADS</td>
@@ -6500,7 +6500,7 @@
 <tr>
 <td id="Ogl_GL_REPEAT">GL_REPEAT</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>ClientAttribMask. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_REPLACE">GL_REPLACE</td>
@@ -6935,7 +6935,7 @@
 <tr>
 <td id="Ogl_GL_SELECT">GL_SELECT</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>ShadingModel. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_SELECTION_BUFFER_POINTER">GL_SELECTION_BUFFER_POINTER</td>
@@ -6965,7 +6965,7 @@
 <tr>
 <td id="Ogl_GL_SET">GL_SET</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>MaterialParameter. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_SHADER_BINARY_FORMAT_SPIR_V">GL_SHADER_BINARY_FORMAT_SPIR_V</td>
@@ -7040,7 +7040,7 @@
 <tr>
 <td id="Ogl_GL_SMOOTH">GL_SMOOTH</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>StencilOp. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_SMOOTH_LINE_WIDTH_GRANULARITY">GL_SMOOTH_LINE_WIDTH_GRANULARITY</td>
@@ -7100,7 +7100,7 @@
 <tr>
 <td id="Ogl_GL_SPHERE_MAP">GL_SPHERE_MAP</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>TextureGenParameter. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_SPIR_V_BINARY">GL_SPIR_V_BINARY</td>
@@ -7165,7 +7165,7 @@
 <tr>
 <td id="Ogl_GL_SRC_ALPHA_SATURATE">GL_SRC_ALPHA_SATURATE</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>Boolean. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_SRC_COLOR">GL_SRC_COLOR</td>
@@ -7220,7 +7220,7 @@
 <tr>
 <td id="Ogl_GL_STENCIL">GL_STENCIL</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>PixelFormat. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_STENCIL_ATTACHMENT">GL_STENCIL_ATTACHMENT</td>
@@ -7410,7 +7410,7 @@
 <tr>
 <td id="Ogl_GL_T4F_C4F_N3F_V4F">GL_T4F_C4F_N3F_V4F</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>Extensions. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_T4F_V4F">GL_T4F_V4F</td>
@@ -7435,7 +7435,7 @@
 <tr>
 <td id="Ogl_GL_TEXTURE">GL_TEXTURE</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>PixelCopyType. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_TEXTURE0">GL_TEXTURE0</td>
@@ -7650,7 +7650,7 @@
 <tr>
 <td id="Ogl_GL_TEXTURE_BINDING_2D">GL_TEXTURE_BINDING_2D</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>vertex_array. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_TEXTURE_BINDING_2D_ARRAY">GL_TEXTURE_BINDING_2D_ARRAY</td>
@@ -7700,7 +7700,7 @@
 <tr>
 <td id="Ogl_GL_TEXTURE_BORDER">GL_TEXTURE_BORDER</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>HintMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_TEXTURE_BORDER_COLOR">GL_TEXTURE_BORDER_COLOR</td>
@@ -7885,12 +7885,12 @@
 <tr>
 <td id="Ogl_GL_TEXTURE_ENV">GL_TEXTURE_ENV</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>TextureGenMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_TEXTURE_ENV_COLOR">GL_TEXTURE_ENV_COLOR</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>TextureEnvTarget. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_TEXTURE_ENV_MODE">GL_TEXTURE_ENV_MODE</td>
@@ -8065,7 +8065,7 @@
 <tr>
 <td id="Ogl_GL_TEXTURE_WRAP_T">GL_TEXTURE_WRAP_T</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>TextureWrapMode. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_TRANSFORM_BIT">GL_TRANSFORM_BIT</td>
@@ -8555,7 +8555,7 @@
 <tr>
 <td id="Ogl_GL_WIN_draw_range_elements">GL_WIN_draw_range_elements</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td>EXT_vertex_array. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_WIN_swap_hint">GL_WIN_swap_hint</td>

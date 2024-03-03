@@ -18752,11 +18752,11 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Decoder"><span class="SCst">Decoder</span></a></td>
-<td>Serialization decoder. </td>
+<td></td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Encoder"><span class="SCst">Encoder</span></a></td>
-<td>Serialization encoder. </td>
+<td></td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Serializer"><span class="SCst">Serializer</span></a></td>
@@ -18830,7 +18830,6 @@
 </tr>
 </table>
 </p>
-<p>Serialization decoder. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Serialization_Decoder">Decoder</a></span>(<span class="SCst">T</span>)</span></div>
 <table class="table-enumeration">
 <tr>
@@ -18844,10 +18843,6 @@
 <td></td>
 </tr>
 </table>
-<p>This is a high level decoder that needs a specific implementation like <a href="#Core_Serialization_Read_TagBin">Core.Serialization.Read.TagBin</a> or <a href="#Core_Serialization_Read_JSon">Core.Serialization.Read.JSon</a>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> res = <span class="SCst">File</span>.<span class="SFct">readAllBytes</span>(file)
-<span class="SKwd">var</span> decoder: <span class="SCst">Decoder</span>'<span class="SCst">Read</span>.<span class="SCst">TagBin</span>
-<span class="SKwd">let</span> myStruct = <span class="SKwd">catch</span> decoder.<span class="SFct">readAll</span>'<span class="SCst">MyStruct</span>(res.<span class="SFct">toSlice</span>())</span></div>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -19206,7 +19201,6 @@
 </tr>
 </table>
 </p>
-<p>Serialization encoder. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Serialization_Encoder">Encoder</a></span>(<span class="SCst">T</span>)</span></div>
 <table class="table-enumeration">
 <tr>
@@ -19220,25 +19214,6 @@
 <td>If true, an error will be raised if a type cannot be saved. The field will be ignored if set to false. </td>
 </tr>
 </table>
-<p>This is a high level encoder that needs a specific implementation like <a href="#Core_Serialization_Write_TagBin">Core.Serialization.Write.TagBin</a> or <a href="#Core_Serialization_Write_JSon">Core.Serialization.Write.JSon</a>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> buf:     <span class="SCst">ConcatBuffer</span>
-<span class="SKwd">var</span> encoder: <span class="SCst">Encoder</span>'<span class="SCst">Write</span>.<span class="SCst">TagBin</span>
-encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
-<span class="SCst">File</span>.<span class="SFct">writeAllBytes</span>(file, buf)</span></div>
-<p>Can be serialized: </p>
-<ul>
-<li>All simple types: <span class="code-inline">bool/u8/u16/u32/u64/s8/s16/s32/s64/rune/f32/f64</span></li>
-<li>A type value <span class="code-inline">typeinfo</span>, which will be saved as a crc32.</li>
-<li>An interface. Will be stored as a type and a typed value.</li>
-<li>A struct.</li>
-<li>A <span class="code-inline">Core.String</span>.</li>
-<li>A <span class="code-inline">Core.Array</span> of valid values.</li>
-<li>A static array of valid values.</li>
-</ul>
-<div class="blockquote blockquote-note">
-<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> Type <span class="code-inline">string</span> is not supported. Consider using <a href="#Core_String">Core.String</a> instead. </p>
-</div>
-<p>A struct can implement the <span class="code-inline">ISerialize</span> interface in order to have a specific serialization. If not defined, then the struct will be saved field by field. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -20407,7 +20382,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Read_TagBin"><span class="SCst">TagBin</span></a></td>
-<td>Binary serializer with forward/backward compatibility. </td>
+<td></td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Read_TagBinOptions"><span class="SCst">TagBinOptions</span></a></td>
@@ -20753,7 +20728,6 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Binary serializer with forward/backward compatibility. </p>
 <table class="table-enumeration">
 <tr>
 <td>stream</td>
@@ -20791,27 +20765,6 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 </table>
-<p>Changes that are supported from V to V+1 are : </p>
-<ul>
-<li>Add a new field. The new field will stay at the default value.</li>
-<li>Remove a field. It will just be ignored.</li>
-<li>Reorder of fields, as long as their name/type are the same.</li>
-<li>Rename a field with <span class="code-inline">Serialization.Alias</span>.</li>
-</ul>
-<p>Supported type changes are : </p>
-<ul>
-<li>Conversion from integer/float/rune/bool to integer/float/rune/bool.</li>
-<li>Change the size of a static array.</li>
-<li>Conversion from a static array to a dynamic <span class="code-inline">Core.Array</span>, and vice versa.</li>
-<li>Conversion from a single value to a static array or <span class="code-inline">Core.Array</span>, and vice versa.</li>
-</ul>
-<p>Supported attributes are : </p>
-<ul>
-<li><span class="code-inline">Serialisation.Version</span>. If version is specified, then loading will not have versioning if versions are the same</li>
-<li><span class="code-inline">Serialization.Alias</span>. To rename a field. Multiple aliases are supported.</li>
-<li><span class="code-inline">Serialization.Final</span>. The struct will be loaded/saved without versioning (faster and lower serialization size)</li>
-<li><span class="code-inline">Serialization.PodFinal</span>. The struct will be loaded/saved in place without versioning</li>
-</ul>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>

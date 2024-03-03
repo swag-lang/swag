@@ -320,7 +320,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             // Ambiguous {
             if (tokenParse.is(TokenId::SymLeftCurly) &&
                 tokenParse.flags.has(TOKEN_PARSE_LAST_BLANK) &&
-                !tokenParse.flags.has(TOKEN_PARSE_LAST_EOL) &&
+                !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) &&
                 type->is(AstNodeKind::TypeExpression))
             {
                 const auto typeExpr = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
@@ -386,13 +386,14 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         }
     }
 
-    if (!tokenizer.comment.empty() && *result && !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
+    const auto resNode = *result;
+    if (resNode && !tokenizer.comment.empty() && !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
     {
-        (*result)->allocateExtension(ExtensionKind::Misc);
+        resNode->allocateExtension(ExtensionKind::Misc);
 
         Vector<Utf8> tkn;
         Utf8::tokenize(tokenizer.comment, '\n', tkn);
-        (*result)->extMisc()->docComment = tkn[0];
+        resNode->extMisc()->docComment = tkn[0];
 
         tokenizer.comment.clear();
         for (uint32_t i = 1; i < tkn.size(); i++)

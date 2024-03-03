@@ -41,7 +41,7 @@ enum class LiteralType : uint8_t
     TypeMax,
 };
 
-constexpr TokenParseFlags TOKEN_PARSE_LAST_EOL           = 0x01;
+constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE           = 0x01;
 constexpr TokenParseFlags TOKEN_PARSE_LAST_BLANK         = 0x02;
 constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE_COMMENT = 0x04;
 

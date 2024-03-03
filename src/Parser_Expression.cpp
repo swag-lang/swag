@@ -591,7 +591,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
     const auto opId = tokenId;
 
     mdfFlags = 0;
-    while (tokenParse.is(TokenId::SymComma) && !tokenParse.flags.has(TOKEN_PARSE_LAST_BLANK) && !tokenParse.flags.has(TOKEN_PARSE_LAST_EOL))
+    while (tokenParse.is(TokenId::SymComma) && !tokenParse.flags.has(TOKEN_PARSE_LAST_BLANK) && !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
     {
         SWAG_CHECK(eatToken());
 

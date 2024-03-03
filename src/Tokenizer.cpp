@@ -189,7 +189,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         {
             while (SWAG_IS_EOL(curBuffer[0]))
                 readChar();
-            tokenParse.flags.add(TOKEN_PARSE_LAST_EOL);
+            tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
             comment.clear();
             continue;
         }
@@ -211,21 +211,20 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
             // Line comment
             if (curBuffer[0] == '/')
             {
-                readChar();
-
-                if (tokenParse.flags.has(TOKEN_PARSE_LAST_EOL))
+                if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
                 {
                     tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE_COMMENT);
-                    tokenParse.flags.remove(TOKEN_PARSE_LAST_EOL);
+                    tokenParse.flags.remove(TOKEN_PARSE_EOL_BEFORE);
                 }
 
+                readChar();
                 startTokenName = curBuffer;
                 while (curBuffer[0] && SWAG_IS_NOT_EOL(curBuffer[0]))
                     readChar();
 
                 if (curBuffer[0])
                 {
-                    tokenParse.flags.add(TOKEN_PARSE_LAST_EOL);
+                    tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
                     readChar();
                 }
 
@@ -240,7 +239,11 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
                     if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
                     {
                         while (curBuffer[0] && (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_BLANK(curBuffer[0])))
+                        {
+                            if (SWAG_IS_EOL(curBuffer[0]))
+                                tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
                             readChar();
+                        }
                     }
                 }
 
@@ -250,8 +253,13 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
             // Multiline comment
             if (curBuffer[0] == '*')
             {
+                if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
+                {
+                    tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE_COMMENT);
+                    tokenParse.flags.remove(TOKEN_PARSE_EOL_BEFORE);
+                }
+                
                 readChar();
-
                 startTokenName = curBuffer;
                 SWAG_CHECK(doMultiLineComment(tokenParse));
 
@@ -268,7 +276,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
                         while (curBuffer[0] && (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_BLANK(curBuffer[0])))
                         {
                             if (SWAG_IS_EOL(curBuffer[0]))
-                                tokenParse.flags.add(TOKEN_PARSE_LAST_EOL);
+                                tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
                             readChar();
                         }
                     }
@@ -278,7 +286,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
             }
         }
 
-        // Compîler
+        // Compiler
         ///////////////////////////////////////////
         if (c == '#')
         {

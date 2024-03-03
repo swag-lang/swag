@@ -150,7 +150,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     }
 
     // Generic arguments
-    if (!tokenParse.flags.has(TOKEN_PARSE_LAST_EOL) && !identifierFlags.has(IDENTIFIER_NO_GEN_PARAMS))
+    if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) && !identifierFlags.has(IDENTIFIER_NO_GEN_PARAMS))
     {
         if (tokenParse.is(TokenId::SymQuote))
         {
@@ -161,7 +161,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     }
 
     // Function call parameters
-    if (!tokenParse.flags.has(TOKEN_PARSE_LAST_EOL) && !identifierFlags.has(IDENTIFIER_NO_FCT_PARAMS))
+    if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) && !identifierFlags.has(IDENTIFIER_NO_FCT_PARAMS))
     {
         if (tokenParse.is(TokenId::SymLeftParen))
         {
@@ -206,7 +206,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
                 serial.add(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
         }
 
-        if (!tokenParse.flags.has(TOKEN_PARSE_LAST_EOL) && !identifierFlags.has(IDENTIFIER_NO_FCT_PARAMS) && tokenParse.is(TokenId::SymLeftParen))
+        if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) && !identifierFlags.has(IDENTIFIER_NO_FCT_PARAMS) && tokenParse.is(TokenId::SymLeftParen))
         {
             // :SilentCall
             SWAG_CHECK(eatToken());
@@ -270,7 +270,7 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags 
             break;
     }
 
-    while (tokenParse.is(TokenId::SymDot) && !tokenParse.flags.has(TOKEN_PARSE_LAST_EOL))
+    while (tokenParse.is(TokenId::SymDot) && !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
