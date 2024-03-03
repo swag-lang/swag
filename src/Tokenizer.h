@@ -53,6 +53,8 @@ struct Tokenizer
     bool nextToken(TokenParse& tokenParse);
 
     static TokenId tokenRelated(TokenId id);
+    bool           doSingleLineComment(TokenParse& tokenParse);
+    bool           doMultiLineComment(TokenParse& tokenParse, bool& value1);
 
     static bool isKeyword(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_KWD); }
     static bool isSymbol(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_SYM); }

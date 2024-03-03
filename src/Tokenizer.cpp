@@ -211,80 +211,17 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         ///////////////////////////////////////////
         if (c == '/')
         {
-            // Line comment
+            // Single line comment
             if (curBuffer[0] == '/')
             {
-                if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
-                {
-                    tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE_COMMENT);
-                    tokenParse.flags.remove(TOKEN_PARSE_EOL_BEFORE);
-                }
-
-                readChar();
-                startTokenName = curBuffer;
-                while (curBuffer[0] && SWAG_IS_NOT_EOL(curBuffer[0]))
-                    readChar();
-
-                if (curBuffer[0])
-                {
-                    tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
-                    readChar();
-                }
-
-                if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
-                {
-                    appendTokenName(tokenParse);
-                    comment += tokenParse.token.text;
-                    if (comment.back() != '\n')
-                        comment += "\n";
-
-                    // In case of end of line comments, skip all blanks after
-                    if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
-                    {
-                        while (curBuffer[0] && (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_BLANK(curBuffer[0])))
-                        {
-                            if (SWAG_IS_EOL(curBuffer[0]))
-                                tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
-                            readChar();
-                        }
-                    }
-                }
-
+                SWAG_CHECK(doSingleLineComment(tokenParse));
                 continue;
             }
 
             // Multiline comment
             if (curBuffer[0] == '*')
             {
-                if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
-                {
-                    tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE_COMMENT);
-                    tokenParse.flags.remove(TOKEN_PARSE_EOL_BEFORE);
-                }
-
-                readChar();
-                startTokenName = curBuffer;
                 SWAG_CHECK(doMultiLineComment(tokenParse));
-
-                if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
-                {
-                    appendTokenName(tokenParse);
-                    comment += tokenParse.token.text;
-                    comment.removeBack();
-                    comment.removeBack();
-
-                    // In case of end of line comments, skip all blanks after
-                    if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
-                    {
-                        while (curBuffer[0] && (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_BLANK(curBuffer[0])))
-                        {
-                            if (SWAG_IS_EOL(curBuffer[0]))
-                                tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
-                            readChar();
-                        }
-                    }
-                }
-
                 continue;
             }
         }
