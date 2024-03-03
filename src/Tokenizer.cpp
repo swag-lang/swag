@@ -63,20 +63,18 @@ void Tokenizer::setup(ErrorContext* errorCxt, SourceFile* file)
 
 void Tokenizer::saveState(const TokenParse& token)
 {
-    savedToken               = token;
-    savedCurBuffer           = curBuffer;
-    savedLocation            = location;
-    savedForceLastTokenIsEOL = forceLastTokenIsEOL;
-    savedComment             = comment;
+    savedToken     = token;
+    savedCurBuffer = curBuffer;
+    savedLocation  = location;
+    savedComment   = comment;
 }
 
 void Tokenizer::restoreState(TokenParse& token)
 {
-    token               = savedToken;
-    curBuffer           = savedCurBuffer;
-    location            = savedLocation;
-    forceLastTokenIsEOL = savedForceLastTokenIsEOL;
-    comment             = savedComment;
+    token     = savedToken;
+    curBuffer = savedCurBuffer;
+    location  = savedLocation;
+    comment   = savedComment;
 }
 
 uint32_t Tokenizer::peekChar(unsigned& offset) const
@@ -161,9 +159,9 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
 
     tokenParse.literalType      = LiteralType::TypeMax;
     tokenParse.token.sourceFile = sourceFile;
-    bool hasEol                 = forceLastTokenIsEOL;
-    tokenParse.flags            = forceLastTokenIsEOL ? TOKEN_PARSE_LAST_EOL : 0;
-    forceLastTokenIsEOL         = false;
+    tokenParse.flags            = 0;
+
+    bool hasEol = false;
 
     if (!propagateComment)
         comment.clear();

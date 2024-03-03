@@ -62,20 +62,18 @@ struct Tokenizer
     SourceLocation location;
 
     Utf8          comment;
-    ErrorContext* errorContext        = nullptr;
-    char*         curBuffer           = nullptr;
-    char*         endBuffer           = nullptr;
-    SourceFile*   sourceFile          = nullptr;
-    char*         startTokenName      = nullptr;
-    bool          forceLastTokenIsEOL = false;
-    bool          realAppendName      = false;
-    bool          trackComments       = false;
-    bool          propagateComment    = false;
-    bool          idLetters[256]      = {false};
+    ErrorContext* errorContext     = nullptr;
+    char*         curBuffer        = nullptr;
+    char*         endBuffer        = nullptr;
+    SourceFile*   sourceFile       = nullptr;
+    char*         startTokenName   = nullptr;
+    bool          realAppendName   = false;
+    bool          trackComments    = false;
+    bool          propagateComment = false;
+    bool          idLetters[256]   = {false};
 
     Utf8           savedComment;
     TokenParse     savedToken;
     SourceLocation savedLocation;
-    char*          savedCurBuffer           = nullptr;
-    bool           savedForceLastTokenIsEOL = false;
+    char*          savedCurBuffer = nullptr;
 };
