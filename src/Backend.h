@@ -1,7 +1,6 @@
 #pragma once
 #include "Ast.h"
 #include "BackendParameters.h"
-#include "Concat.h"
 #include "FormatAst.h"
 
 struct AstFuncDecl;

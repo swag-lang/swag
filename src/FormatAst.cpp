@@ -107,6 +107,6 @@ bool FormatAst::outputDoStatement(const AstNode* node)
     {
         outputNode(node);
     }
-    
+
     return true;
 }

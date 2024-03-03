@@ -258,7 +258,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
                     tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE_COMMENT);
                     tokenParse.flags.remove(TOKEN_PARSE_EOL_BEFORE);
                 }
-                
+
                 readChar();
                 startTokenName = curBuffer;
                 SWAG_CHECK(doMultiLineComment(tokenParse));

@@ -90,8 +90,8 @@ bool ByteCodeGen::emitBinaryOpPlus(const ByteCodeGenContext* context, const Type
 
 bool ByteCodeGen::emitBinaryOpMinus(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode*   node     = context->node;
-    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const AstNode* node     = context->node;
+    const auto     typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     // This is the difference of two pointers if we have a s64 on the left, and a pointer on the right
     if (typeInfo->isNative(NativeTypeKind::S64))

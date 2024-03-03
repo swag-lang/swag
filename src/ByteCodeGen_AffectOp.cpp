@@ -111,7 +111,7 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
 
 bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
 {
-    AstNode*        node         = context->node;
+    const AstNode*  node         = context->node;
     auto            typeInfo     = forcedTypeInfo ? forcedTypeInfo : node->firstChild()->typeInfo;
     const TypeInfo* fromTypeInfo = from ? from->typeInfo : typeInfo;
 

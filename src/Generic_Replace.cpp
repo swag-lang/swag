@@ -4,13 +4,11 @@
 #include "BackendParameters.h"
 #include "DataSegment.h"
 #include "Diagnostic.h"
-#include "ErrorIds.h"
 #include "Naming.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
 
-bool Generic::replaceGenericParameters(SemanticContext*              context,
-                                       OneMatch&                     match,
+bool Generic::replaceGenericParameters(OneMatch&                     match,
                                        VectorNative<TypeInfoParam*>& typeGenericParameters,
                                        VectorNative<AstNode*>&       nodeGenericParameters,
                                        AstNode*                      callGenericParameters,

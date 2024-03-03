@@ -510,8 +510,8 @@ bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, const
 
 bool ByteCodeGen::emitCompareOp3Way(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode*   node     = context->node;
-    const auto typeInfo = TypeManager::concreteType(node->firstChild()->typeInfo);
+    const AstNode* node     = context->node;
+    const auto     typeInfo = TypeManager::concreteType(node->firstChild()->typeInfo);
     if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)

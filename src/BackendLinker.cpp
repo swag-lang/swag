@@ -3,9 +3,11 @@
 #include "Backend.h"
 #include "Log.h"
 #include "Module.h"
-#include "Os.h"
 #include "ThreadManager.h"
 #include "Workspace.h"
+#ifdef SWAG_DEV_MODE
+#include "Os.h"
+#endif
 
 class MyOStream final : public llvm::raw_ostream
 {

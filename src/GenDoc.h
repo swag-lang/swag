@@ -1,6 +1,5 @@
 #pragma once
 #include "AstNode.h"
-#include "Concat.h"
 #include "Flags.h"
 #include "FormatAst.h"
 

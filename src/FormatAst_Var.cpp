@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "FormatAst.h"
 #include "Ast.h"
 #include "AstFlags.h"
+#include "FormatAst.h"
 #include "LanguageSpec.h"
 #include "Semantic.h"
 

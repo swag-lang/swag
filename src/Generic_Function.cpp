@@ -221,7 +221,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     }
 
     // Replace generic types and values in the function generic parameters
-    SWAG_CHECK(replaceGenericParameters(context, match, newTypeFunc->genericParameters, newFunc->genericParameters->children, genericParameters, true, true));
+    SWAG_CHECK(replaceGenericParameters(match, newTypeFunc->genericParameters, newFunc->genericParameters->children, genericParameters, true, true));
     newTypeFunc->forceComputeName();
 
     const auto job = end(context, context->baseJob, match.symbolName, cloneNode, true, cloneContext.replaceTypes);

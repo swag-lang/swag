@@ -1,5 +1,4 @@
 #pragma once
-#include "Assert.h"
 struct Utf8;
 struct Path;
 
