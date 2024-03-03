@@ -1681,8 +1681,7 @@
 <div class="right">
 <div class="right-page">
 <h1>Swag Std.Core</h1>
-<p> The <span class="code-inline">Std.core</span> module contains basic types and algorithms.  It is the base of all other modules of the standard <span class="code-inline">Std</span> workspace. </p>
-<p> You will find collections like <a href="#Core_Array">Array</a> or <a href="#Core_HashTable">HashTable</a>, a dynamic <a href="#Core_String">String</a> and so on. </p>
+<p> The <span class="code-inline">Std.core</span> module contains basic types and algorithms.  It is the base of all other modules of the standard <span class="code-inline">Std</span> workspace.  You will find collections like <a href="#Core_Array">Array</a> or <a href="#Core_HashTable">HashTable</a>, a dynamic <a href="#Core_String">String</a> and so on. </p>
 <h1>Content</h1>
 <p>
 <table class="api-item">
@@ -3982,8 +3981,7 @@
 </p>
 <p>The <span class="code-inline">IsSet</span> generic struct is a mirror of the user input struct. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_CommandLine_IsSet">IsSet</a></span>(<span class="SCst">T</span>)</span></div>
-<p> Each field has the same name as the original one, but with a <span class="code-inline">bool</span> type. </p>
-<p> It will indicate, after the command line parsing, that the corresponding argument has been  specified or not by the user. </p>
+<p> Each field has the same name as the original one, but with a <span class="code-inline">bool</span> type.  It will indicate, after the command line parsing, that the corresponding argument has been  specified or not by the user. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8861,7 +8859,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SCst">Core</span>.__hashtable_tpl3_35'(<span class="SCst">K</span>, <span class="SCst">V</span>))</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SCst">Core</span>.__hashtable_tpl3_36'(<span class="SCst">K</span>, <span class="SCst">V</span>))</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11254,7 +11252,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Latin1_compareNatural">compareNatural</a></span></td>
-<td>Compare two utf8 strings in a natural way, dealing only with latin1 table  Returns -1, 0 or 1. </td>
+<td>Compare two utf8 strings in a natural way, dealing only with latin1 table  Returns -1, 0 or 1  :LICENCE  This code is based on <span class="code-inline">natsort</span> by Martin Pool (https://github.com/sourcefrog/natsort)  The original code has been modified for Swag  See LICENCE.md for the corresponding licence. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Latin1_isAscii">isAscii</a></span></td>
@@ -11430,9 +11428,8 @@
 </tr>
 </table>
 </p>
-<p>Compare two utf8 strings in a natural way, dealing only with latin1 table  Returns -1, 0 or 1. </p>
+<p>Compare two utf8 strings in a natural way, dealing only with latin1 table  Returns -1, 0 or 1  :LICENCE  This code is based on <span class="code-inline">natsort</span> by Martin Pool (https://github.com/sourcefrog/natsort)  The original code has been modified for Swag  See LICENCE.md for the corresponding licence. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compareNatural</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, dst: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, ignoreCase = <span class="SKwd">false</span>)-&gt;<span class="STpe">s32</span></span></div>
-<p> :LICENCE  This code is based on <span class="code-inline">natsort</span> by Martin Pool (https://github.com/sourcefrog/natsort)  The original code has been modified for Swag  See LICENCE.md for the corresponding licence. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22937,7 +22934,7 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_StrConv_ConvertFormatInt"><span class="SCst">ConvertFormatInt</span></a></td>
-<td>Format structure to convert an integer to a string. </td>
+<td>Format structure to convert an integer to a string  If <span class="code-inline">signed</span> is <span class="code-inline">true</span>, the value to convert must be stored in <span class="code-inline">signedValue</span>, otherwise it must  be stored in <span class="code-inline">unsignedValue</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_StrConv_StringBuilder"><span class="SCst">StringBuilder</span></a></td>
@@ -23199,22 +23196,12 @@
 </p>
 <p>Set some format options with a given user string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
-<p> Format is <span class="code-inline">[+][fmt][precision]</span> </p>
-<div class="description-list-title"><p><span class="code-inline">+</span></p></div>
-<div class="description-list-block">
-<p> To force the positive sign if the number is positive </p>
-</div>
-<div class="description-list-title"><p><span class="code-inline">fmt</span></p></div>
-<div class="description-list-block">
-<p> This is the output format: </p>
-<table class="table-markdown">
-<tr><td> e </td><td> -d.dddde±dd, a decimal exponent</td></tr>
-<tr><td> E </td><td> -d.ddddE±dd, a decimal exponent</td></tr>
-<tr><td> f </td><td> -ddd.dddd, no exponent</td></tr>
-<tr><td> g </td><td> <span class="code-inline">e</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
-<tr><td> G </td><td> <span class="code-inline">E</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
-</table>
-</div>
+<p> Format is <span class="code-inline">[+][fmt][precision]</span>  + <span class="code-inline">+</span>      To force the positive sign if the number is positive  + <span class="code-inline">fmt</span>      This is the output format: </p>
+<div class="code-block"><span class="SCde">| e | -d.dddde±dd, a decimal exponent
+ | E | -d.ddddE±dd, a decimal exponent
+ | f | -ddd.dddd, no exponent
+ | g | 'e' for large exponents, 'f' otherwise
+ | G | 'E' for large exponents, 'f' otherwise</span></div>
 <div class="description-list-title"><p><span class="code-inline">precision</span></p></div>
 <div class="description-list-block">
 <p> A number which is the precision of the fractional part </p>
@@ -23230,7 +23217,7 @@
 </tr>
 </table>
 </p>
-<p>Format structure to convert an integer to a string. </p>
+<p>Format structure to convert an integer to a string  If <span class="code-inline">signed</span> is <span class="code-inline">true</span>, the value to convert must be stored in <span class="code-inline">signedValue</span>, otherwise it must  be stored in <span class="code-inline">unsignedValue</span>. </p>
 <table class="table-enumeration">
 <tr>
 <td>using val</td>
@@ -23258,7 +23245,6 @@
 <td></td>
 </tr>
 </table>
-<p> If <span class="code-inline">signed</span> is <span class="code-inline">true</span>, the value to convert must be stored in <span class="code-inline">signedValue</span>, otherwise it must  be stored in <span class="code-inline">unsignedValue</span>. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -23279,20 +23265,10 @@
 </p>
 <p>Set some format options with a given user string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
-<p> The format is <span class="code-inline">[+][fmt][padding][width]</span> </p>
-<div class="description-list-title"><p><span class="code-inline">+</span></p></div>
-<div class="description-list-block">
-<p> To force the positive sign if the number is positive </p>
-</div>
-<div class="description-list-title"><p><span class="code-inline">fmt</span></p></div>
-<div class="description-list-block">
-<p> This is the output format: </p>
-<table class="table-markdown">
-<tr><td> B </td><td> Binary</td></tr>
-<tr><td> D </td><td> Decimal</td></tr>
-<tr><td> X </td><td> Hexadecimal</td></tr>
-</table>
-</div>
+<p> The format is <span class="code-inline">[+][fmt][padding][width]</span>  + <span class="code-inline">+</span>      To force the positive sign if the number is positive  + <span class="code-inline">fmt</span>      This is the output format: </p>
+<div class="code-block"><span class="SCde">| B | Binary
+ | D | Decimal
+ | X | Hexadecimal</span></div>
 <div class="description-list-title"><p><span class="code-inline">padding</span></p></div>
 <div class="description-list-block">
 <p> The padding character, in ascii. It's mandatory before the next field </p>
@@ -23885,8 +23861,7 @@
 </p>
 <p>This function will parse the string <span class="code-inline">buf</span> and decode the corresponding value in <span class="code-inline">addr</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseValue</span>(addr: *<span class="STpe">void</span>, type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, buf: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
-<p> <span class="code-inline">addr</span> must point to an initialized memory location that can hold <span class="code-inline">type</span> </p>
-<p> Accepted types are : </p>
+<p> <span class="code-inline">addr</span> must point to an initialized memory location that can hold <span class="code-inline">type</span>  Accepted types are : </p>
 <ul>
 <li><span class="code-inline">s8, s16, s32, s64, u8, u16, u32, u64, rune, bool, f32, f64</span></li>
 <li><span class="code-inline">Core.String</span>  literal strings are not supported as <span class="code-inline">buf</span> is supposed to be transient</li>
@@ -27792,7 +27767,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_countBytesAt">countBytesAt</a></span></td>
-<td>Returns the number of bytes to encode the first rune of the utf8 buffer. </td>
+<td>Returns the number of bytes to encode the first rune of the utf8 buffer  If it's an invalid encoding, returns 1. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_countRunes">countRunes</a></span></td>
@@ -27804,11 +27779,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_decodeRune">decodeRune</a></span></td>
-<td>Get the unicode rune pointed by <span class="code-inline">buffer</span>, and the number of bytes to encode it. </td>
+<td>Get the unicode rune pointed by <span class="code-inline">buffer</span>, and the number of bytes to encode it  Will return <span class="code-inline">RuneError</span> for an invalid utf8 sequence. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_encodeRune">encodeRune</a></span></td>
-<td>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns  the number of bytes that were needed to make the conversion. </td>
+<td>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns  the number of bytes that were needed to make the conversion.  <span class="code-inline">dest</span> must be at least 4 bytes long. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_endsWith">endsWith</a></span></td>
@@ -27820,7 +27795,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_fromUnicode">fromUnicode</a></span><span class="SCde">([..] <span class="STpe">u8</span>, <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
-<td>Convert a rune array to an utf8 buffer. </td>
+<td>Convert a rune array to an utf8 buffer  Returns the number of bytes written in the destination buffer  <span class="code-inline">dest</span> must be at least 4 bytes long. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_fromUnicode">fromUnicode</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
@@ -27828,7 +27803,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_fromUtf16">fromUtf16</a></span><span class="SCde">([..] <span class="STpe">u8</span>, <span class="SKwd">const</span> [..] <span class="STpe">u16</span>)</span></td>
-<td>Convert an utf16 array to an utf8 buffer. </td>
+<td>Convert an utf16 array to an utf8 buffer  Returns the number of bytes written in the destination buffer.  <span class="code-inline">dest</span> must be at least 4 bytes long. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_fromUtf16">fromUtf16</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u16</span>)</span></td>
@@ -27970,9 +27945,8 @@
 </tr>
 </table>
 </p>
-<p>Returns the number of bytes to encode the first rune of the utf8 buffer. </p>
+<p>Returns the number of bytes to encode the first rune of the utf8 buffer  If it's an invalid encoding, returns 1. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">countBytesAt</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
-<p> If it's an invalid encoding, returns 1. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28010,9 +27984,8 @@
 </tr>
 </table>
 </p>
-<p>Get the unicode rune pointed by <span class="code-inline">buffer</span>, and the number of bytes to encode it. </p>
+<p>Get the unicode rune pointed by <span class="code-inline">buffer</span>, and the number of bytes to encode it  Will return <span class="code-inline">RuneError</span> for an invalid utf8 sequence. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decodeRune</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;{c:<span class="STpe">rune</span>,eat:<span class="STpe">u32</span>}</span></div>
-<p> Will return <span class="code-inline">RuneError</span> for an invalid utf8 sequence </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28024,9 +27997,8 @@
 </tr>
 </table>
 </p>
-<p>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns  the number of bytes that were needed to make the conversion. </p>
+<p>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns  the number of bytes that were needed to make the conversion.  <span class="code-inline">dest</span> must be at least 4 bytes long. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">encodeRune</span>(dest: [..] <span class="STpe">u8</span>, src: <span class="STpe">rune</span>)-&gt;<span class="STpe">u32</span></span></div>
-<p> <span class="code-inline">dest</span> must be at least 4 bytes long </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28064,11 +28036,10 @@
 </tr>
 </table>
 </p>
-<p>Convert a rune array to an utf8 buffer. </p>
+<p>Convert a rune array to an utf8 buffer  Returns the number of bytes written in the destination buffer  <span class="code-inline">dest</span> must be at least 4 bytes long. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUnicode</span>(dest: [..] <span class="STpe">u8</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Convert an unicode buffer to a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUnicode</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p> Returns the number of bytes written in the destination buffer  <span class="code-inline">dest</span> must be at least 4 bytes long </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28080,11 +28051,10 @@
 </tr>
 </table>
 </p>
-<p>Convert an utf16 array to an utf8 buffer. </p>
+<p>Convert an utf16 array to an utf8 buffer  Returns the number of bytes written in the destination buffer.  <span class="code-inline">dest</span> must be at least 4 bytes long. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf16</span>(dest: [..] <span class="STpe">u8</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u16</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Convert an utf16 buffer to a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf16</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u16</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p> Returns the number of bytes written in the destination buffer.  <span class="code-inline">dest</span> must be at least 4 bytes long </p>
 <p>
 <table class="api-item">
 <tr>

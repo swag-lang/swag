@@ -27,6 +27,7 @@ bool Tokenizer::doSingleLineComment(TokenParse& tokenParse)
         tokenParse.comment += tokenParse.token.text;
         if (tokenParse.comment.back() != '\n')
             tokenParse.comment += "\n";
+        tokenParse.comment.replace("\n\r", "\n");
 
         // In case of end of line comments, skip all blanks after
         if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
@@ -100,6 +101,7 @@ bool Tokenizer::doMultiLineComment(TokenParse& tokenParse)
         tokenParse.comment += tokenParse.token.text;
         tokenParse.comment.removeBack();
         tokenParse.comment.removeBack();
+        tokenParse.comment.replace("\n\r", "\n");
 
         // In case of end of line comments, skip all blanks after
         if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
