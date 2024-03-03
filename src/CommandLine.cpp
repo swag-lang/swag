@@ -8,6 +8,10 @@ CommandLine g_CommandLine;
 
 bool CommandLine::check()
 {
+#ifdef SWAG_DEV_MODE
+    dbgDevMode = true;
+#endif
+
     // Stack
     limitStackRT = Allocator::alignSize(limitStackRT);
     if (limitStackRT < SWAG_LIMIT_MIN_STACK || limitStackRT > SWAG_LIMIT_MAX_STACK)

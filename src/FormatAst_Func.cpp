@@ -104,23 +104,30 @@ bool FormatAst::outputFuncDeclReturnType(const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputFuncDeclParams(const AstNode* node)
-{
-    concat->addChar('(');
-    outputCommaChildren(node);
-    concat->addChar(')');
-    return true;
-}
-
 bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
 {
-    CONCAT_FIXED_STR(concat, "func");
+    const bool isMethod = node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD);
+    if (isMethod)
+        CONCAT_FIXED_STR(concat, "mtd");
+    else
+        CONCAT_FIXED_STR(concat, "func");
 
     // Emit generic parameter, except if the function is an instance
     if (node->genericParameters)
     {
         if (!node->hasAstFlag(AST_FROM_GENERIC) || node->hasAstFlag(AST_IS_GENERIC))
             SWAG_CHECK(outputGenericParameters(node->genericParameters));
+    }
+
+    if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
+    {
+        const auto varDecl  = castAst<AstVarDecl>(node->parameters->firstChild());
+        const auto typeDecl = castAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
+        if (typeDecl->typeFlags.has(TYPEFLAG_IS_CONST))
+        {
+            concat->addBlank();
+            CONCAT_FIXED_STR(concat, "const");
+        }
     }
 
     // Implementation
@@ -136,7 +143,11 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
 
     // Parameters
     if (node->parameters)
-        SWAG_CHECK(outputNode(node->parameters));
+    {
+        concat->addChar('(');
+        outputCommaChildren(node->parameters, isMethod ? 1 : 0);
+        concat->addChar(')');
+    }
     else
         CONCAT_FIXED_STR(concat, "()");
 
@@ -384,10 +395,14 @@ bool FormatAst::outputTypeLambda(const AstNode* node)
     else
         CONCAT_FIXED_STR(concat, "closure");
 
-    if (!typeNode->parameters)
-        CONCAT_FIXED_STR(concat, "()");
+    if (typeNode->parameters)
+    {
+        concat->addChar('(');
+        outputCommaChildren(typeNode->parameters);
+        concat->addChar(')');
+    }
     else
-        SWAG_CHECK(outputNode(typeNode->parameters));
+        CONCAT_FIXED_STR(concat, "()");
 
     SWAG_CHECK(outputFuncDeclReturnType(typeNode->returnType));
 

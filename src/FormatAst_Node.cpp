@@ -174,7 +174,9 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::FuncDeclParams:
-            SWAG_CHECK(outputFuncDeclParams(node));
+            concat->addChar('(');
+            outputCommaChildren(node);
+            concat->addChar(')');
             break;
 
         case AstNodeKind::FuncDecl:
@@ -182,12 +184,17 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::AttrDecl:
+        {
+            const auto attrDecl = castAst<AstAttrDecl>(node, AstNodeKind::AttrDecl);
             CONCAT_FIXED_STR(concat, "attr");
             concat->addBlank();
             concat->addString(node->token.text);
-            SWAG_CHECK(outputFuncDeclParams(castAst<AstAttrDecl>(node, AstNodeKind::AttrDecl)->parameters));
+            concat->addChar('(');
+            outputCommaChildren(attrDecl->parameters);
+            concat->addChar(')');
             concat->addEol();
             break;
+        }
 
         case AstNodeKind::EnumType:
             if (!node->children.empty())

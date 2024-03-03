@@ -34,15 +34,14 @@ struct FormatAst
     Utf8 getUtf8() const;
 
     static const AstNode* convertNode(const AstNode* node);
-    bool                  outputChildren(const AstNode* node);
-    bool                  outputCommaChildren(const AstNode* node);
+    bool                  outputChildren(const AstNode* node, uint32_t start = 0);
+    bool                  outputCommaChildren(const AstNode* node, uint32_t start = 0);
     bool                  outputStatement(const AstNode* node);
     bool                  outputDoStatement(const AstNode* node);
 
     bool outputLambdaExpression(const AstNode* node);
     bool outputEnum(const AstEnum* node);
     bool outputFuncDeclReturnType(const AstNode* node);
-    bool outputFuncDeclParams(const AstNode* node);
     bool outputFuncDecl(const AstFuncDecl* node);
     bool outputAttrUse(const AstNode* node, bool& hasSomething);
     bool outputFuncCallParams(const AstNode* node);

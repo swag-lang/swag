@@ -25,13 +25,14 @@ const AstNode* FormatAst::convertNode(const AstNode* node)
     return node;
 }
 
-bool FormatAst::outputChildren(const AstNode* node)
+bool FormatAst::outputChildren(const AstNode* node, uint32_t start)
 {
     if (!node)
         return true;
 
-    for (const auto it : node->children)
+    for (uint32_t i = start; i < node->childCount(); i++)
     {
+        const auto it    = node->children[i];
         const auto child = convertNode(it);
         if (!child)
             continue;
@@ -44,14 +45,15 @@ bool FormatAst::outputChildren(const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputCommaChildren(const AstNode* node)
+bool FormatAst::outputCommaChildren(const AstNode* node, uint32_t start)
 {
     if (!node)
         return true;
 
     bool first = true;
-    for (const auto it : node->children)
+    for (uint32_t i = start; i < node->childCount(); i++)
     {
+        const auto it    = node->children[i];
         const auto child = convertNode(it);
         if (!child)
             continue;

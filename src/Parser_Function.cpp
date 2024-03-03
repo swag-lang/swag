@@ -596,16 +596,14 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         funcNode->extMisc()->docComment = std::move(tokenizer.comment);
     }
 
-    bool isMethod      = tokenParse.is(TokenId::KwdMethod);
-    bool isConstMethod = false;
-    if (isMethod || isConstMethod)
+    bool isMethod = tokenParse.is(TokenId::KwdMethod);
+    if (isMethod)
     {
+        funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD);
         if (!funcNode->ownerStructScope)
             return error(tokenParse.token, toErr(Err0467));
-
         if (funcNode->ownerStructScope->is(ScopeKind::Enum))
             return error(tokenParse.token, toErr(Err0468));
-
         if (funcNode->ownerStructScope->isNot(ScopeKind::Struct))
             return error(tokenParse.token, toErr(Err0467));
     }
@@ -616,6 +614,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         SWAG_CHECK(eatToken());
     }
 
+    bool isConstMethod   = false;
     bool isIntrinsic     = false;
     auto funcForCompiler = g_TokenFlags[static_cast<int>(typeFuncId)].has(TOKEN_COMPILER_FUNC);
 

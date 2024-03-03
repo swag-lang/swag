@@ -151,16 +151,9 @@ bool FormatAst::outputImpl(const AstNode* node)
     concat->addEol();
 
     const uint32_t first = nodeImpl->identifierFor ? 2 : 1;
-    for (uint32_t i = first; i < node->childCount(); i++)
-    {
-        const auto child = node->children[i];
-        indent++;
-        concat->addIndent(indent);
-        SWAG_CHECK(outputNode(child));
-        concat->addEol();
-        indent--;
-        concat->addEol();
-    }
+    indent++;
+    SWAG_CHECK(outputChildren(node, first));
+    indent--;
 
     concat->addIndent(indent);
     concat->addChar('}');

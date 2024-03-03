@@ -54,15 +54,13 @@ struct CommandLine
     bool dbgOff        = false;
     bool dbgCallStack  = false;
     bool dbgPrintBcExt = false;
-#ifdef SWAG_DEV_MODE
-    bool dbgDevMode = true;
-#else
-    bool dbgDevMode = false;
-#endif
+    bool dbgDevMode    = false;
 
 #ifdef SWAG_DEV_MODE
-    bool randomize = false;
-    int  randSeed  = 0;
+    bool devModeCheckAst = true;
+    bool devModeWriteAst = false;
+    bool randomize       = false;
+    int  randSeed        = 0;
 #endif
 
     // User arguments

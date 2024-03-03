@@ -38,12 +38,15 @@ JobResult SyntaxJob::execute()
     parser.generateAst();
 
 #ifdef SWAG_DEV_MODE
-    if (!sourceFile->numErrors)
+    if (!sourceFile->numErrors && g_CommandLine.devModeCheckAst)
     {
         FormatAst fmt;
         fmt.outputNode(sourceFile->astRoot);
-        // const Path path = R"(c:/temp/)" + sourceFile->path.filename();
-        // fmt.concat->flushToFile(path);
+        if (g_CommandLine.devModeWriteAst)
+        {
+            const Path path = R"(c:/temp/)" + sourceFile->path.filename();
+            fmt.concat->flushToFile(path);
+        }
     }
 #endif
 
