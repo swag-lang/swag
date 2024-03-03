@@ -659,16 +659,25 @@ void AstNode::inheritOwners(const AstNode* from)
     }
 }
 
-void AstNode::inheritFormatFlags(const TokenParse& tokenParse)
+void AstNode::inheritFormatFromBefore(const TokenParse& tokenParse)
 {
     formatFlags.remove(FMTFLAG_BLANK_LINE_BEFORE);
     if (tokenParse.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
         formatFlags.add(FMTFLAG_BLANK_LINE_BEFORE);
 
-    if(!tokenParse.comment.empty())
+    if (!tokenParse.commentBefore.empty())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->docComment = tokenParse.comment;
+        extMisc()->commentBefore = tokenParse.commentBefore;
+    }
+}
+
+void AstNode::inheritFormatFromAfter(const TokenParse& tokenParse)
+{
+    if (!tokenParse.commentAfterSameLine.empty())
+    {
+        allocateExtension(ExtensionKind::Misc);
+        extMisc()->commentAfterSameLine = tokenParse.commentAfterSameLine;
     }
 }
 

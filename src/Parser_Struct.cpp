@@ -190,10 +190,10 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgTypeDecl;
 
-    if (!tokenParse.comment.empty())
+    if (!tokenParse.commentBefore.empty())
     {
         structNode->allocateExtension(ExtensionKind::Misc);
-        structNode->extMisc()->docComment = std::move(tokenParse.comment);
+        structNode->extMisc()->commentBefore = std::move(tokenParse.commentBefore);
     }
 
     // Special case
@@ -531,10 +531,10 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
             varNode->addExtraPointer(ExtraPointerKind::ExportNode, funcNode);
 
-            if (!tokenParse.comment.empty())
+            if (!tokenParse.commentBefore.empty())
             {
                 varNode->allocateExtension(ExtensionKind::Misc);
-                varNode->extMisc()->docComment = std::move(tokenParse.comment);
+                varNode->extMisc()->commentBefore = std::move(tokenParse.commentBefore);
             }
 
             SWAG_CHECK(eatSemiCol("interface function definition"));

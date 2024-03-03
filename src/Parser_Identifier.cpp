@@ -432,6 +432,8 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
 
     AstNode* expr;
     SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &expr));
+    node->inheritFormatFromAfter(prevTokenParse);
+
     SWAG_CHECK(eatSemiCol("[[typealias]] expression"));
 
     node->allocateExtension(ExtensionKind::Semantic);
@@ -461,6 +463,8 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
 
     AstNode* expr;
     SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_ARRAY));
+    node->inheritFormatFromAfter(prevTokenParse);
+
     SWAG_CHECK(eatSemiCol("[[namealias]] expression"));
     expr->lastChild()->addSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS);
 

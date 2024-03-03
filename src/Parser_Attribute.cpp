@@ -65,12 +65,6 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
     const auto attrBlockNode = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
     *result                  = attrBlockNode;
 
-    if (tokenParse.comment.length())
-    {
-        attrBlockNode->allocateExtension(ExtensionKind::Misc);
-        attrBlockNode->extMisc()->docComment = std::move(tokenParse.comment);
-    }
-
     while (tokenParse.is(TokenId::SymAttrStart))
     {
         SWAG_CHECK(eatToken());

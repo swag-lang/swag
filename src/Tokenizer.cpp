@@ -148,6 +148,41 @@ TokenId Tokenizer::tokenRelated(TokenId id)
     return TokenId::SymQuestion;
 }
 
+bool Tokenizer::doAfterToken(TokenParse& tokenParse)
+{
+    if (!tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
+        return true;
+
+    while (true)
+    {
+        if (SWAG_IS_BLANK(curBuffer[0]))
+        {
+            curBuffer++;
+            while (SWAG_IS_BLANK(curBuffer[0]))
+                readChar();
+            tokenParse.flags.add(TOKEN_PARSE_BLANK_AFTER);
+        }
+
+        if (curBuffer[0] == '/' && curBuffer[1] == '/')
+        {
+            curBuffer++;
+            auto copy = tokenParse;
+            SWAG_CHECK(doSingleLineComment(copy));
+            tokenParse.flags.add(TOKEN_PARSE_EOL_AFTER);
+            tokenParse.commentAfterSameLine = std::move(copy.commentBefore);
+        }
+        else if (curBuffer[0] == '/' && curBuffer[1] == '*')
+        {
+            curBuffer++;
+            auto copy = tokenParse;
+            SWAG_CHECK(doMultiLineComment(copy));
+            tokenParse.commentAfterSameLine = std::move(copy.commentBefore);
+        }
+
+        return true;
+    }
+}
+
 bool Tokenizer::nextToken(TokenParse& tokenParse)
 {
 #ifdef SWAG_STATS
@@ -157,8 +192,17 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
 
     tokenParse.literalType      = LiteralType::TypeMax;
     tokenParse.token.sourceFile = sourceFile;
-    tokenParse.flags            = 0;
-    tokenParse.comment.clear();
+    tokenParse.commentBefore.clear();
+    tokenParse.commentAfterSameLine.clear();
+
+    tokenParse.flags.remove(TOKEN_PARSE_BLANK_BEFORE);
+    if (tokenParse.flags.has(TOKEN_PARSE_BLANK_AFTER))
+        tokenParse.flags.add(TOKEN_PARSE_BLANK_BEFORE);
+    tokenParse.flags.remove(TOKEN_PARSE_EOL_BEFORE);
+    if (tokenParse.flags.has(TOKEN_PARSE_EOL_AFTER))
+        tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
+
+    tokenParse.flags.remove(TOKEN_PARSE_EOL_AFTER | TOKEN_PARSE_BLANK_AFTER | TOKEN_PARSE_BLANK_LINE_BEFORE);
 
     while (true)
     {
@@ -188,7 +232,6 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
                 tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
             if (SWAG_IS_WIN_EOL(curBuffer[0]))
                 readChar();
-            tokenParse.comment.clear();
             continue;
         }
 
@@ -245,7 +288,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
             }
 
             tokenParse.token.endLocation = location;
-            return true;
+            break;
         }
 
         // Intrinsic
@@ -254,7 +297,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         {
             SWAG_CHECK(doIdentifier(tokenParse));
             tokenParse.token.endLocation = location;
-            return true;
+            break;
         }
 
         // Identifier
@@ -263,7 +306,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         {
             SWAG_CHECK(doIdentifier(tokenParse));
             tokenParse.token.endLocation = location;
-            return true;
+            break;
         }
 
         // Number literal
@@ -271,7 +314,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         if (SWAG_IS_DIGIT(c))
         {
             SWAG_CHECK(doNumberLiteral(tokenParse, c));
-            return true;
+            break;
         }
 
         // Character literal
@@ -279,7 +322,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         if (c == '`')
         {
             SWAG_CHECK(doCharacterLiteral(tokenParse));
-            return true;
+            break;
         }
 
         // String literal
@@ -299,7 +342,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
                 SWAG_CHECK(doStringLiteral(tokenParse));
             }
 
-            return true;
+            break;
         }
 
         // Symbols
@@ -308,7 +351,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         {
             tokenParse.token.endLocation = location;
             appendTokenName(tokenParse);
-            return true;
+            break;
         }
 
         // Unknown character
@@ -317,4 +360,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         tokenParse.token.id   = TokenId::Invalid;
         return error(tokenParse, formErr(Err0234, tokenParse.token.c_str()));
     }
+
+    doAfterToken(tokenParse);
+    return true;
 }

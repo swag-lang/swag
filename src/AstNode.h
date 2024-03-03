@@ -304,7 +304,8 @@ struct AstNode
     void inheritTokenName(Token& tkn);
     void inheritTokenLocation(const Token& tkn);
     void inheritOwners(const AstNode* from);
-    void inheritFormatFlags(const TokenParse& tokenParse);
+    void inheritFormatFromBefore(const TokenParse& tokenParse);
+    void inheritFormatFromAfter(const TokenParse& tokenParse);
     void inheritOwnersAndFlags(const Parser* parser);
 
     void allocateComputedValue();
@@ -416,7 +417,8 @@ struct AstNode
         VectorNative<AlternativeScope>     alternativeScopes;
         VectorNative<AlternativeScopeVar>  alternativeScopesVars;
         VectorNative<uint32_t>             registersToRelease;
-        Utf8                               docComment;
+        Utf8                               commentBefore;
+        Utf8                               commentAfterSameLine;
         VectorMap<ExtraPointerKind, void*> extraPointers;
 
         RegisterList additionalRegisterRC;

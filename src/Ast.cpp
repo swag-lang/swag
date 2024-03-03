@@ -13,7 +13,8 @@ void Ast::initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, Ast
     {
         node->token = parser->tokenParse.token;
         node->inheritOwnersAndFlags(parser);
-        node->inheritFormatFlags(parser->tokenParse);
+        node->inheritFormatFromBefore(parser->tokenParse);
+        node->inheritFormatFromAfter(parser->tokenParse);
     }
     else if (parent)
     {

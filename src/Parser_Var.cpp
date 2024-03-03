@@ -286,7 +286,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
     if (*result)
-        (*result)->inheritFormatFlags(savedTokenParse);
+        (*result)->inheritFormatFromBefore(savedTokenParse);
 
     return true;
 }
@@ -381,6 +381,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         SWAG_CHECK(eatToken());
     }
 
+    (*result)->inheritFormatFromAfter(prevTokenParse);
+
     if (!forStruct || tokenParse.isNot(TokenId::SymRightCurly))
     {
         if (!parent || parent->isNot(AstNodeKind::If))
@@ -388,20 +390,6 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqualEqual), error(tokenParse.token, toErr(Err0677)));
             SWAG_CHECK(eatSemiCol("variable declaration"));
         }
-    }
-
-    const auto resNode = *result;
-    if (resNode && !tokenParse.comment.empty() && !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
-    {
-        resNode->allocateExtension(ExtensionKind::Misc);
-
-        Vector<Utf8> tkn;
-        Utf8::tokenize(tokenParse.comment, '\n', tkn);
-        resNode->extMisc()->docComment = tkn[0];
-
-        tokenParse.comment.clear();
-        for (uint32_t i = 1; i < tkn.size(); i++)
-            tokenParse.comment += tkn[i];
     }
 
     return true;

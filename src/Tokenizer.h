@@ -51,6 +51,7 @@ struct Tokenizer
     void restoreState(TokenParse& token);
 
     void setup(ErrorContext* errorCxt, SourceFile* file);
+    bool doAfterToken(TokenParse& tokenParse);
     bool nextToken(TokenParse& tokenParse);
 
     static TokenId tokenRelated(TokenId id);

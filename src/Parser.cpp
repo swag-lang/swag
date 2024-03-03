@@ -501,8 +501,8 @@ bool Parser::generateAst()
     SWAG_CHECK(eatToken());
 
     // Module global comment must be put in module.swg
-    if (!tokenParse.comment.empty() && sourceFile->module->is(ModuleKind::Config))
-        module->docComment = std::move(tokenParse.comment);
+    if (!tokenParse.commentBefore.empty() && sourceFile->module->is(ModuleKind::Config))
+        module->docComment = std::move(tokenParse.commentBefore);
 
     // Parse !!!
     while (tokenParse.isNot(TokenId::EndOfFile))
