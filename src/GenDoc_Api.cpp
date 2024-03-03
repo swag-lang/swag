@@ -329,17 +329,17 @@ void GenDoc::outputType(AstNode* node)
     if (typeInfo)
     {
         typeInfo->computeScopedNameExport();
-        outputCode(typeInfo->scopedNameExport, GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
+        outputCode(typeInfo->scopedNameExport, GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL | GENDOC_CODE_NBSP);
     }
     else if (node->is(AstNodeKind::VarDecl) || node->is(AstNodeKind::ConstDecl))
     {
         const auto varDecl = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-        outputCode(getOutputNode(varDecl->type), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
+        outputCode(getOutputNode(varDecl->type), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL | GENDOC_CODE_NBSP);
     }
     else if (node->is(AstNodeKind::TypeAlias))
     {
         const auto typeDecl = castAst<AstAlias>(node, AstNodeKind::TypeAlias);
-        outputCode(getOutputNode(typeDecl->firstChild()), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
+        outputCode(getOutputNode(typeDecl->firstChild()), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL | GENDOC_CODE_NBSP);
     }
 }
 

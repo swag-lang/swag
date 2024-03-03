@@ -228,9 +228,6 @@
 <div class="right">
 <div class="right-page">
 <h1>Module freetype</h1>
-<div class="code-block"><span class="SCde">:LICENCE
-The freetype module is a wrapper for the great Freetype 2 library.
-See LICENCE.md for the corresponding licence (FTL).</span></div>
 <h1>Content</h1>
 <p>
 <table class="api-item">
@@ -1255,7 +1252,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></div>
 </tr>
 <tr>
 <td>modules</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Module">FT_Module</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>]&nbsp;<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Module">FT_Module</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -1275,12 +1272,12 @@ See LICENCE.md for the corresponding licence (FTL).</span></div>
 </tr>
 <tr>
 <td>debug_hooks</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">4</span>] <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_DebugHook_Func">FT_DebugHook_Func</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">4</span>]&nbsp;<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_DebugHook_Func">FT_DebugHook_Func</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>lcd_geometry</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Vector">FT_Vector</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>]&nbsp;<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Vector">FT_Vector</a></span></span></td>
 <td></td>
 </tr>
 <tr>

@@ -303,7 +303,6 @@
 <div class="right">
 <div class="right-page">
 <h1>Module gdi32</h1>
-<p> Wrapper for Microsoft Gdi32 library. </p>
 <h1>Content</h1>
 <p>
 <table class="api-item">
@@ -932,27 +931,27 @@
 <table class="table-enumeration">
 <tr>
 <td id="Gdi32_FONTENUMPROCA">FONTENUMPROCA</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span>, <span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_TEXTMETRICA">TEXTMETRICA</a></span>, <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, <span class="SCst">Win32</span>.<span class="SCst">LPARAM</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span>&nbsp;*<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span>,&nbsp;<span class="SKwd">const</span>&nbsp;*<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_TEXTMETRICA">TEXTMETRICA</a></span>,&nbsp;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span>,&nbsp;<span class="SCst">Win32</span>.<span class="SCst">LPARAM</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Gdi32_FONTENUMPROCW">FONTENUMPROCW</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span>, <span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_TEXTMETRICW">TEXTMETRICW</a></span>, <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, <span class="SCst">Win32</span>.<span class="SCst">LPARAM</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span>&nbsp;*<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span>,&nbsp;<span class="SKwd">const</span>&nbsp;*<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_TEXTMETRICW">TEXTMETRICW</a></span>,&nbsp;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span>,&nbsp;<span class="SCst">Win32</span>.<span class="SCst">LPARAM</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Gdi32_HFONT">HFONT</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Gdi32_HGDIOBJ">HGDIOBJ</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Gdi32_HPEN">HPEN</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1023,7 +1022,7 @@
 </tr>
 <tr>
 <td>bmiColors</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">1</span>] <span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_RGBQUAD">RGBQUAD</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">1</span>]&nbsp;<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_RGBQUAD">RGBQUAD</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1258,17 +1257,17 @@
 </tr>
 <tr>
 <td>elfFullName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">64</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>elfStyle</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>elfScript</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1291,17 +1290,17 @@
 </tr>
 <tr>
 <td>elfFullName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">64</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>elfStyle</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>elfScript</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1518,7 +1517,7 @@
 </tr>
 <tr>
 <td>lfFaceName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">CHAR</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst">CHAR</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1601,7 +1600,7 @@
 </tr>
 <tr>
 <td>lfFaceName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
 <td></td>
 </tr>
 </table>

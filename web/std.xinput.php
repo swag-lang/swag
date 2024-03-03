@@ -144,7 +144,6 @@
 <div class="right">
 <div class="right-page">
 <h1>Module xinput</h1>
-<p> Wrapper for Microsoft DirectX Input. </p>
 <h1>Content</h1>
 <p>
 <table class="api-item">

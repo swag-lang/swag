@@ -13,6 +13,7 @@ using GenDocFlags = Flags<uint32_t>;
 static constexpr GenDocFlags GENDOC_CODE_REFS       = 0x00000001;
 static constexpr GenDocFlags GENDOC_CODE_BLOCK      = 0x00000002;
 static constexpr GenDocFlags GENDOC_CODE_SYNTAX_COL = 0x00000004;
+static constexpr GenDocFlags GENDOC_CODE_NBSP       = 0x00000008;
 
 struct GenDoc
 {
@@ -57,7 +58,7 @@ struct GenDoc
     void               constructPage();
     static Utf8        toRef(Utf8 str);
     Utf8               getTocTitleRef() const;
-    void               addTocTitle(const Utf8& name, const Utf8& title, int titleLevel);
+    void               addTocTitle(const Utf8& name, const Utf8& title, uint32_t titleLevel);
     static Utf8        getFileExtension(const Module* module);
     bool               generate(Module* mdl, BuildCfgDocKind kind);
     void               outputStyles();
@@ -80,7 +81,7 @@ struct GenDoc
     Utf8            helpCode;
     Utf8            fullFileName;
     MapUtf8<Utf8>   collectInvert;
-    int             tocLastTitleLevel = 0;
+    uint32_t        tocLastTitleLevel = 0;
 
     // Pages
     ///////////////////////////////////

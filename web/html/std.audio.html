@@ -195,21 +195,6 @@
 <div class="right">
 <div class="right-page">
 <h1>Module audio</h1>
-<p><span class="code-inline">Std.Audio</span> is a module to decode and play sound files. Under windows, it is based on the <span class="code-inline">xaudio2</span> library. </p>
-<h2 id="">How to play a sound </h2>
-<p>First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>. </p>
-<div class="code-block"><span class="SCde"><span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
-<span class="SLgc">defer</span> <span class="SCst">Audio</span>.<span class="SFct">destroyEngine</span>() <span class="SCmt">// Don't forget to destroy the engine when you are done</span></span></div>
-<p>You then have to load a sound file. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>)</span></div>
-<p>Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <span class="code-inline">loadDatas</span> to false. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>, loadDatas = <span class="SKwd">false</span>)</span></div>
-<p>Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will be destroyed. </p>
-<div class="code-block"><span class="SCde"><span class="SCst">Voice</span>.<span class="SFct">play</span>(soundFile)</span></div>
-<p>To have more control, you could also use <a href="#Audio_Voice_create">Voice.create</a> then [[Voice.Play]] on the created sound. That way you will recieve a <a href="#Audio_Voice">Voice</a> object you can play with. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">let</span> voice = <span class="SCst">Voice</span>.<span class="SFct">create</span>(&soundFile)
-voice.<span class="SFct">setVolume</span>(<span class="SNum">0.5</span>)
-voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div>
 <h1>Content</h1>
 <p>
 <table class="api-item">
@@ -385,7 +370,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 </tr>
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoStruct</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfoStruct</span></span></td>
 <td>The real type of the codec. </td>
 </tr>
 </table>
@@ -404,22 +389,22 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 <table class="table-enumeration">
 <tr>
 <td>canEncode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>,&nbsp;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>canDecode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>,&nbsp;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>init</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>,&nbsp;^<span class="STpe">void</span>,&nbsp;<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>decode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;{write:<span class="STpe">u64</span>,read:<span class="STpe">u64</span>} <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>,&nbsp;^<span class="STpe">void</span>,&nbsp;<span class="STpe">u64</span>,&nbsp;^<span class="STpe">void</span>,&nbsp;<span class="STpe">u64</span>)-&gt;{write:<span class="STpe">u64</span>,read:<span class="STpe">u64</span>}&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>

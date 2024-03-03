@@ -8707,7 +8707,7 @@
 </tr>
 <tr>
 <td id="Ogl_HGLRC">HGLRC</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>

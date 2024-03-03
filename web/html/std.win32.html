@@ -2389,22 +2389,22 @@
 </tr>
 <tr>
 <td id="Win32_HWND_BOTTOM">HWND_BOTTOM</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_HWND_NOTOPMOST">HWND_NOTOPMOST</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_HWND_TOP">HWND_TOP</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_HWND_TOPMOST">HWND_TOPMOST</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -2574,7 +2574,7 @@
 </tr>
 <tr>
 <td id="Win32_INVALID_HANDLE_VALUE">INVALID_HANDLE_VALUE</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6422,7 +6422,7 @@
 <table class="table-enumeration">
 <tr>
 <td id="Win32_ATOM">ATOM</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6462,27 +6462,27 @@
 </tr>
 <tr>
 <td id="Win32_HANDLE">HANDLE</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_HBITMAP">HBITMAP</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_HBRUSH">HBRUSH</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_HCURSOR">HCURSOR</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_HDC">HDC</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6492,7 +6492,7 @@
 </tr>
 <tr>
 <td id="Win32_HICON">HICON</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6507,7 +6507,7 @@
 </tr>
 <tr>
 <td id="Win32_HMENU">HMENU</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6517,7 +6517,7 @@
 </tr>
 <tr>
 <td id="Win32_HMONITOR">HMONITOR</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6527,7 +6527,7 @@
 </tr>
 <tr>
 <td id="Win32_HWND">HWND</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6562,22 +6562,22 @@
 </tr>
 <tr>
 <td id="Win32_LPCSTR">LPCSTR</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_LPCTSTR">LPCTSTR</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_LPCVOID">LPCVOID</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_LPCWSTR">LPCWSTR</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6622,12 +6622,12 @@
 </tr>
 <tr>
 <td id="Win32_PCSTR">PCSTR</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_PCWSTR">PCWSTR</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6677,7 +6677,7 @@
 </tr>
 <tr>
 <td id="Win32_WAITORTIMERCALLBACK">WAITORTIMERCALLBACK</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>,&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -6839,12 +6839,12 @@
 </tr>
 <tr>
 <td>hMenu</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hwndParent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6874,12 +6874,12 @@
 </tr>
 <tr>
 <td>lpszName</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>lpszClass</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6912,12 +6912,12 @@
 </tr>
 <tr>
 <td>hMenu</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hwndParent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6947,12 +6947,12 @@
 </tr>
 <tr>
 <td>lpszName</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>lpszClass</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7802,7 +7802,7 @@
 </tr>
 <tr>
 <td>Data4</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">8</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">8</span>]&nbsp;<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8471,12 +8471,12 @@
 </tr>
 <tr>
 <td>hbmMask</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hbmColor</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8504,12 +8504,12 @@
 </tr>
 <tr>
 <td>adapterName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>]&nbsp;<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>description</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">132</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">132</span>]&nbsp;<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8519,7 +8519,7 @@
 </tr>
 <tr>
 <td>address</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">8</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">8</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8597,7 +8597,7 @@
 <table class="table-enumeration">
 <tr>
 <td>str</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">16</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">16</span>]&nbsp;<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8863,7 +8863,7 @@
 <table class="table-enumeration">
 <tr>
 <td>hwnd</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9000,7 +9000,7 @@
 </tr>
 <tr>
 <td>hWnd</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9020,12 +9020,12 @@
 </tr>
 <tr>
 <td>hIcon</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>szTip</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">128</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9040,7 +9040,7 @@
 </tr>
 <tr>
 <td>szInfo</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">256</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9050,7 +9050,7 @@
 </tr>
 <tr>
 <td>szInfoTitle</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">64</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9065,7 +9065,7 @@
 </tr>
 <tr>
 <td>hBalloonIcon</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9088,7 +9088,7 @@
 </tr>
 <tr>
 <td>hWnd</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9108,12 +9108,12 @@
 </tr>
 <tr>
 <td>hIcon</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>szTip</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">128</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9128,7 +9128,7 @@
 </tr>
 <tr>
 <td>szInfo</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">256</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9138,7 +9138,7 @@
 </tr>
 <tr>
 <td>szInfoTitle</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">64</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9153,7 +9153,7 @@
 </tr>
 <tr>
 <td>hBalloonIcon</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9207,7 +9207,7 @@
 <table class="table-enumeration">
 <tr>
 <td>hdc</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9232,7 +9232,7 @@
 </tr>
 <tr>
 <td>rgbReserved</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9273,12 +9273,12 @@
 <table class="table-enumeration">
 <tr>
 <td>hProcess</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hThread</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9607,7 +9607,7 @@
 <table class="table-enumeration">
 <tr>
 <td>hIcon</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9622,12 +9622,12 @@
 </tr>
 <tr>
 <td>szDisplayName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>szTypeName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">80</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">80</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9645,7 +9645,7 @@
 <table class="table-enumeration">
 <tr>
 <td>hIcon</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9660,12 +9660,12 @@
 </tr>
 <tr>
 <td>szDisplayName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>szTypeName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">80</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">80</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10075,7 +10075,7 @@
 </tr>
 <tr>
 <td>SIID_SETTINGS</td>
-<td>Settings  107-131 are internal Vista RTM icons  132-159 for SP1 icons. </td>
+<td>Settings. </td>
 </tr>
 <tr>
 <td>SIID_DRIVEHDDVD</td>
@@ -10111,7 +10111,7 @@
 </tr>
 <tr>
 <td>SIID_CLUSTEREDDRIVE</td>
-<td>Clustered disk  160+ are for Windows 7 icons. </td>
+<td>Clustered disk. </td>
 </tr>
 <tr>
 <td>SIID_MAX_ICONS</td>
@@ -10137,7 +10137,7 @@
 </tr>
 <tr>
 <td>hIcon</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10152,7 +10152,7 @@
 </tr>
 <tr>
 <td>szPath</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10278,17 +10278,17 @@
 </tr>
 <tr>
 <td>hStdInput</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hStdOutput</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hStdError</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10381,17 +10381,17 @@
 </tr>
 <tr>
 <td>hStdInput</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hStdOutput</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hStdError</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -11028,12 +11028,12 @@
 </tr>
 <tr>
 <td>cFileName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>cAlternateFileName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">14</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">14</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -11106,12 +11106,12 @@
 </tr>
 <tr>
 <td>cFileName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>cAlternateFileName</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">14</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">14</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -11144,12 +11144,12 @@
 <table class="table-enumeration">
 <tr>
 <td>hwnd</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hwndInsertAfter</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -11197,7 +11197,7 @@
 </tr>
 <tr>
 <td>lpfnWndProc</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -11217,27 +11217,27 @@
 </tr>
 <tr>
 <td>hIcon</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hCursor</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hbrBackground</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>lpszMenuName</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>lpszClassName</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -11260,7 +11260,7 @@
 </tr>
 <tr>
 <td>lpfnWndProc</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -11280,27 +11280,27 @@
 </tr>
 <tr>
 <td>hIcon</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hCursor</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hbrBackground</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>lpszMenuName</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>lpszClassName</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>

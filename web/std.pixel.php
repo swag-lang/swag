@@ -2471,7 +2471,7 @@
 </tr>
 <tr>
 <td>using params</td>
-<td class="code-type"><span class="SCde">{clear:{color:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>},drawTriangles:{start:<span class="STpe">u32</span>,count:<span class="STpe">u32</span>},transform:{tr:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>},clippingRect:{rect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>},clippingRegion:{mode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ClippingMode">ClippingMode</a></span>},font:{fontRef:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>},blendingMode:{mode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span>},textureFont:{font:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>,atlasIndex:<span class="STpe">s32</span>},colorMask:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span>,renderTgt:{tgt:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>,paintAlpha:<span class="STpe">bool</span>},shader:{shader:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span>},shaderParam:{param:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>,type:<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>,_f32:<span class="STpe">f32</span>,_s32:<span class="STpe">s32</span>},texture0:{boundRect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>,textureRect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>,type:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span>,hatch:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>,uvMode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span>,interpolationMode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span>,texture:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>}}</span></td>
+<td class="code-type"><span class="SCde">{clear:{color:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>},drawTriangles:{start:<span class="STpe">u32</span>,count:<span class="STpe">u32</span>},transform:{tr:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>},clippingRect:{rect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>},clippingRegion:{mode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ClippingMode">ClippingMode</a></span>},font:{fontRef:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>},blendingMode:{mode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span>},textureFont:{font:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>,atlasIndex:<span class="STpe">s32</span>},colorMask:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span>,renderTgt:{tgt:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>,paintAlpha:<span class="STpe">bool</span>},shader:{shader:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span>},shaderParam:{param:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>,type:<span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>,_f32:<span class="STpe">f32</span>,_s32:<span class="STpe">s32</span>},texture0:{boundRect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>,textureRect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>,type:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span>,hatch:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>,uvMode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span>,interpolationMode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span>,texture:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>}}</span></td>
 <td></td>
 </tr>
 </table>
@@ -2845,12 +2845,12 @@
 </tr>
 <tr>
 <td>asciiRef</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">128</span>]&nbsp;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>unicodeRef</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">rune</span>, *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">rune</span>,&nbsp;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3060,7 +3060,7 @@
 </tr>
 <tr>
 <td>faces</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">4</span>] <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyleEnumerate">FontFamilyStyleEnumerate</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">4</span>]&nbsp;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyleEnumerate">FontFamilyStyleEnumerate</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3538,12 +3538,12 @@
 <table class="table-enumeration">
 <tr>
 <td>canDecode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>,&nbsp;<span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>decode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>,&nbsp;<span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="STpe">u8</span>,&nbsp;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3562,12 +3562,12 @@
 <table class="table-enumeration">
 <tr>
 <td>canEncode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>,&nbsp;<span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>encode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>, *<span class="SCst">Core</span>.<span class="SCst">ConcatBuffer</span>, <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>, <span class="STpe">any</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>,&nbsp;*<span class="SCst">Core</span>.<span class="SCst">ConcatBuffer</span>,&nbsp;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>,&nbsp;<span class="STpe">any</span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5164,7 +5164,7 @@
 <tr>
 <td>serial</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td>Flatten infos. </td>
+<td></td>
 </tr>
 <tr>
 <td>flattenQuality</td>
@@ -7653,7 +7653,7 @@
 </tr>
 <tr>
 <td>border</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">2</span>] *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">2</span>]&nbsp;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7787,22 +7787,22 @@
 <table class="table-enumeration">
 <tr>
 <td>constrainedEdge</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>]&nbsp;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>delaunayEdge</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>]&nbsp;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>points</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>]&nbsp;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>neighbors</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>]&nbsp;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7826,7 +7826,7 @@
 <tr>
 <td>points</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>)</span></td>
-<td>Fill with a call to compute(). </td>
+<td></td>
 </tr>
 <tr>
 <td>isClockwise</td>
@@ -8091,7 +8091,7 @@
 </tr>
 <tr>
 <td>hatchTextures</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">36</span>] <span class="SCst">Ogl</span>.<span class="SCst">GLuint</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">36</span>]&nbsp;<span class="SCst">Ogl</span>.<span class="SCst">GLuint</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8671,12 +8671,12 @@
 <table class="table-enumeration">
 <tr>
 <td>hDC</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hRC</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8730,7 +8730,7 @@
 <tr>
 <td>colorIdx</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td>From <span class="code-inline">computeLayout</span>. </td>
+<td></td>
 </tr>
 <tr>
 <td>boundRect</td>
@@ -8972,7 +8972,7 @@
 </tr>
 <tr>
 <td>palette</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">4</span>] <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">4</span>]&nbsp;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9843,7 +9843,7 @@
 </tr>
 <tr>
 <td>aa</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">12</span>] <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">12</span>]&nbsp;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>

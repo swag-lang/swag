@@ -1709,11 +1709,11 @@
 <tr>
 <td id="Core_Env_EndLine">EndLine</td>
 <td class="code-type"><span class="STpe">string</span></td>
-<td>The system font directory. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Core_Latin1_CharProperties">CharProperties</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">256</span>] <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>.<span class="SCst"><a href="#Core_Latin1_CharAttribute">CharAttribute</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[<span class="SNum">256</span>]&nbsp;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>.<span class="SCst"><a href="#Core_Latin1_CharAttribute">CharAttribute</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -1729,7 +1729,7 @@
 <tr>
 <td id="Core_Path_VolumeSeparatorChar">VolumeSeparatorChar</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td>Returns true if the given character is a directory separator. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Core_Random_NN">NN</td>
@@ -1743,7 +1743,7 @@
 </tr>
 <tr>
 <td id="Core_Time_DayOfWeekNames">DayOfWeekNames</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">7</span>] <span class="STpe">string</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[<span class="SNum">7</span>]&nbsp;<span class="STpe">string</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -1788,12 +1788,12 @@
 </tr>
 <tr>
 <td id="Core_Time_DaysToMonth365">DaysToMonth365</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">13</span>] <span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[<span class="SNum">13</span>]&nbsp;<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Core_Time_DaysToMonth366">DaysToMonth366</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">13</span>] <span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[<span class="SNum">13</span>]&nbsp;<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -1804,7 +1804,7 @@
 <tr>
 <td id="Core_Time_MaxMillis">MaxMillis</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>Returns the current time expressed in milliseconds. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Core_Time_MaxTicks">MaxTicks</td>
@@ -1833,7 +1833,7 @@
 </tr>
 <tr>
 <td id="Core_Time_MonthNames">MonthNames</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">12</span>] <span class="STpe">string</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[<span class="SNum">12</span>]&nbsp;<span class="STpe">string</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -1884,7 +1884,7 @@
 <tr>
 <td id="Core_Utf16_SurrSelf">SurrSelf</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>Get the unicode character pointed by <span class="code-inline">buffer</span>, and the number of u16 to encode it  Will return <span class="code-inline">RuneError</span> for an invalid utf16 sequence. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Core_Utf8_MaxRunes">MaxRunes</td>
@@ -1926,18 +1926,18 @@
 <table class="table-enumeration">
 <tr>
 <td id="Core_Env_ProcessHandle">ProcessHandle</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Core_File_FileHandle">FileHandle</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Core_Input_VirtualKey">VirtualKey</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>Represents a virtual system key. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Core_Math_ConstF32">ConstF32</td>
@@ -1951,7 +1951,7 @@
 </tr>
 <tr>
 <td id="Core_Threading_ThreadHandle">ThreadHandle</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -1961,7 +1961,7 @@
 </tr>
 <tr>
 <td id="Core_Time_TimerHandle">TimerHandle</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3590,7 +3590,7 @@
 <table class="table-enumeration">
 <tr>
 <td>readBuffer</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -4120,7 +4120,7 @@
 <table class="table-enumeration">
 <tr>
 <td>stream</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -5831,7 +5831,7 @@
 <table class="table-enumeration">
 <tr>
 <td>handle</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -6716,7 +6716,7 @@
 </tr>
 <tr>
 <td>handle</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6905,7 +6905,7 @@
 <table class="table-enumeration">
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7588,12 +7588,12 @@
 <tr>
 <td>negativeSign</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td>The byte that denotes that the associated number is positive. The default is "+". </td>
+<td></td>
 </tr>
 <tr>
 <td>positiveSign</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td>The byte to use as the decimal separator in numeric values. The default is ".". </td>
+<td></td>
 </tr>
 <tr>
 <td>decimalSeparator</td>
@@ -7953,7 +7953,7 @@
 <table class="table-enumeration">
 <tr>
 <td>compute</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span> *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Hash">Hash</a></span>.<span class="SCst"><a href="#Core_Hash_IHash32">IHash32</a></span>)-&gt;<span class="STpe">u32</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span>&nbsp;*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Hash">Hash</a></span>.<span class="SCst"><a href="#Core_Hash_IHash32">IHash32</a></span>)-&gt;<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7971,22 +7971,22 @@
 <table class="table-enumeration">
 <tr>
 <td>padding</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">64</span>]&nbsp;<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>state</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">4</span>] <span class="STpe">u32</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">4</span>]&nbsp;<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>count</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">2</span>] <span class="STpe">u32</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">2</span>]&nbsp;<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>buffer</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">64</span>]&nbsp;<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8092,12 +8092,12 @@
 <table class="table-enumeration">
 <tr>
 <td>data</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">64</span>]&nbsp;<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>state</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">8</span>] <span class="STpe">u32</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">8</span>]&nbsp;<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8591,7 +8591,7 @@
 </tr>
 <tr>
 <td>table</td>
-<td class="code-type"><span class="SCde">^<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst">K</span>, <span class="SCst">V</span>)</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst">K</span>,&nbsp;<span class="SCst">V</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8861,7 +8861,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SCst">Core</span>.__hashtable_tpl3_35'(<span class="SCst">K</span>, <span class="SCst">V</span>))</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SCst">Core</span>.__hashtable_tpl3_34'(<span class="SCst">K</span>, <span class="SCst">V</span>))</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9006,7 +9006,7 @@
 <table class="table-enumeration">
 <tr>
 <td>print</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ILogWriter">ILogWriter</a></span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ILogWriter">ILogWriter</a></span>,&nbsp;<span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -9109,12 +9109,12 @@
 <tr>
 <td>currentState</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Input">Input</a></span>.<span class="SCst"><a href="#Core_Input_GamePadState">GamePadState</a></span></span></td>
-<td>The pad index associated with that GamePad instance. </td>
+<td></td>
 </tr>
 <tr>
 <td>padIndex</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>true if the corresponding padIndex is connected. </td>
+<td></td>
 </tr>
 <tr>
 <td>connected</td>
@@ -9413,12 +9413,12 @@
 <table class="table-enumeration">
 <tr>
 <td>pressed</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">25</span>] <span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">25</span>]&nbsp;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>position</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">25</span>] <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">25</span>]&nbsp;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10283,23 +10283,23 @@
 </tr>
 <tr>
 <td>pressedRepeat</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">188</span>] <span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">188</span>]&nbsp;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>pressedTime</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">188</span>] <span class="STpe">u32</span></span></td>
-<td>Delay, in milliseconds, before a repeated key stroke starts. </td>
+<td class="code-type"><span class="SCde">[<span class="SNum">188</span>]&nbsp;<span class="STpe">u32</span></span></td>
+<td></td>
 </tr>
 <tr>
 <td>pressedRepeatStartTimeMs</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>Delay, in miliseconds, between two repeated key strokes. </td>
+<td></td>
 </tr>
 <tr>
 <td>pressedRepeatTimeMs</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>Allow key stroke repetition if true. </td>
+<td></td>
 </tr>
 <tr>
 <td>canRepeat</td>
@@ -10504,7 +10504,7 @@
 </tr>
 <tr>
 <td>pressed</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">188</span>] <span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">188</span>]&nbsp;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10559,7 +10559,7 @@
 <table class="table-enumeration">
 <tr>
 <td>nativeState</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">256</span>]&nbsp;<span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10588,7 +10588,7 @@
 </tr>
 <tr>
 <td>dblClk</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">5</span>]&nbsp;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10823,17 +10823,17 @@
 <table class="table-enumeration">
 <tr>
 <td>pressed</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">5</span>]&nbsp;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>pressedTime</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="STpe">u32</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">5</span>]&nbsp;<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>pressedPos</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">5</span>]&nbsp;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -11050,7 +11050,7 @@
 <tr>
 <td>data</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
-<td>Internal state. </td>
+<td></td>
 </tr>
 <tr>
 <td>state</td>
@@ -11108,7 +11108,7 @@
 </tr>
 <tr>
 <td>buffer</td>
-<td class="code-type"><span class="SCde">[..] <span class="SCst">T</span></span></td>
+<td class="code-type"><span class="SCde">[..]&nbsp;<span class="SCst">T</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13012,7 +13012,7 @@
 <table class="table-enumeration">
 <tr>
 <td>m</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>,<span class="SNum">3</span>] <span class="STpe">f32</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>,<span class="SNum">3</span>]&nbsp;<span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -13049,7 +13049,7 @@
 <table class="table-enumeration">
 <tr>
 <td>m</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">4</span>,<span class="SNum">4</span>] <span class="STpe">f32</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">4</span>,<span class="SNum">4</span>]&nbsp;<span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -13087,7 +13087,7 @@
 <table class="table-enumeration">
 <tr>
 <td>buf</td>
-<td class="code-type"><span class="SCde">[?] <span class="SCst">T</span></span></td>
+<td class="code-type"><span class="SCde">[?]&nbsp;<span class="SCst">T</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -14159,7 +14159,7 @@
 </tr>
 <tr>
 <td>m</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">2</span>,<span class="SNum">2</span>] <span class="STpe">f32</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">2</span>,<span class="SNum">2</span>]&nbsp;<span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -14276,12 +14276,12 @@
 <table class="table-enumeration">
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>buffer</td>
-<td class="code-type"><span class="SCde">[?] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[?]&nbsp;<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -17503,7 +17503,7 @@
 <table class="table-enumeration">
 <tr>
 <td>q</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">4096</span>] <span class="STpe">u32</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">4096</span>]&nbsp;<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -17629,7 +17629,7 @@
 <table class="table-enumeration">
 <tr>
 <td>mt</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">312</span>] <span class="STpe">u64</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">312</span>]&nbsp;<span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -18752,11 +18752,11 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Decoder"><span class="SCst">Decoder</span></a></td>
-<td></td>
+<td>Serialization decoder. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Encoder"><span class="SCst">Encoder</span></a></td>
-<td></td>
+<td>Serialization encoder. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Serializer"><span class="SCst">Serializer</span></a></td>
@@ -18830,6 +18830,7 @@
 </tr>
 </table>
 </p>
+<p>Serialization decoder. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Serialization_Decoder">Decoder</a></span>(<span class="SCst">T</span>)</span></div>
 <table class="table-enumeration">
 <tr>
@@ -18843,6 +18844,10 @@
 <td></td>
 </tr>
 </table>
+<p>This is a high level decoder that needs a specific implementation like <a href="#Core_Serialization_Read_TagBin">Core.Serialization.Read.TagBin</a> or <a href="#Core_Serialization_Read_JSon">Core.Serialization.Read.JSon</a>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> res = <span class="SCst">File</span>.<span class="SFct">readAllBytes</span>(file)
+<span class="SKwd">var</span> decoder: <span class="SCst">Decoder</span>'<span class="SCst">Read</span>.<span class="SCst">TagBin</span>
+<span class="SKwd">let</span> myStruct = <span class="SKwd">catch</span> decoder.<span class="SFct">readAll</span>'<span class="SCst">MyStruct</span>(res.<span class="SFct">toSlice</span>())</span></div>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -19201,6 +19206,7 @@
 </tr>
 </table>
 </p>
+<p>Serialization encoder. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Serialization_Encoder">Encoder</a></span>(<span class="SCst">T</span>)</span></div>
 <table class="table-enumeration">
 <tr>
@@ -19214,6 +19220,25 @@
 <td>If true, an error will be raised if a type cannot be saved. The field will be ignored if set to false. </td>
 </tr>
 </table>
+<p>This is a high level encoder that needs a specific implementation like <a href="#Core_Serialization_Write_TagBin">Core.Serialization.Write.TagBin</a> or <a href="#Core_Serialization_Write_JSon">Core.Serialization.Write.JSon</a>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> buf:     <span class="SCst">ConcatBuffer</span>
+<span class="SKwd">var</span> encoder: <span class="SCst">Encoder</span>'<span class="SCst">Write</span>.<span class="SCst">TagBin</span>
+encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
+<span class="SCst">File</span>.<span class="SFct">writeAllBytes</span>(file, buf)</span></div>
+<p>Can be serialized: </p>
+<ul>
+<li>All simple types: <span class="code-inline">bool/u8/u16/u32/u64/s8/s16/s32/s64/rune/f32/f64</span></li>
+<li>A type value <span class="code-inline">typeinfo</span>, which will be saved as a crc32.</li>
+<li>An interface. Will be stored as a type and a typed value.</li>
+<li>A struct.</li>
+<li>A <span class="code-inline">Core.String</span>.</li>
+<li>A <span class="code-inline">Core.Array</span> of valid values.</li>
+<li>A static array of valid values.</li>
+</ul>
+<div class="blockquote blockquote-note">
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> Type <span class="code-inline">string</span> is not supported. Consider using <a href="#Core_String">Core.String</a> instead. </p>
+</div>
+<p>A struct can implement the <span class="code-inline">ISerialize</span> interface in order to have a specific serialization. If not defined, then the struct will be saved field by field. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -19562,32 +19587,32 @@
 <table class="table-enumeration">
 <tr>
 <td>start</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>,&nbsp;<span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="STpe">u8</span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>end</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>beginField</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>,&nbsp;<span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>endField</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>beginSection</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>endSection</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -19597,67 +19622,67 @@
 </tr>
 <tr>
 <td>read</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, *<span class="STpe">void</span>, <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>,&nbsp;*<span class="STpe">void</span>,&nbsp;<span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readBufferU8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="STpe">u64</span>)-&gt;*<span class="STpe">u8</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>,&nbsp;<span class="STpe">u64</span>)-&gt;*<span class="STpe">u8</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readBool</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readS8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s8</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s8</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readS16</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s16</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s16</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readS32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s32</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readS64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s64</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s64</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readU8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u8</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u8</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readU16</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u16</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u16</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readU32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u32</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u32</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readU64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u64</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readF32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">f32</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readF64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">f64</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">f64</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -19915,97 +19940,97 @@
 <table class="table-enumeration">
 <tr>
 <td>start</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>end</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>beginField</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>endField</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>beginSection</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>endSection</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>write</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> ^<span class="STpe">void</span>, <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span>,&nbsp;<span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeBufferU8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> ^<span class="STpe">u8</span>, <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="SKwd">const</span>&nbsp;^<span class="STpe">u8</span>,&nbsp;<span class="STpe">u64</span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeBool</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">bool</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="STpe">bool</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeS8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s8</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="STpe">s8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeS16</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s16</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="STpe">s16</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeS32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeS64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s64</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="STpe">s64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeU8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeU16</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u16</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="STpe">u16</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeU32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeU64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeF32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeF64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">f64</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>,&nbsp;<span class="STpe">f64</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -20251,27 +20276,27 @@
 <table class="table-enumeration">
 <tr>
 <td>read</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>write</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readElement</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>,&nbsp;<span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>,&nbsp;*<span class="STpe">void</span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeElement</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, <span class="SKwd">const</span> *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>,&nbsp;<span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>,&nbsp;<span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>postSerialize</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>,&nbsp;*<span class="STpe">void</span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -20382,7 +20407,7 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Read_TagBin"><span class="SCst">TagBin</span></a></td>
-<td></td>
+<td>Binary serializer with forward/backward compatibility. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Read_TagBinOptions"><span class="SCst">TagBinOptions</span></a></td>
@@ -20728,6 +20753,7 @@
 </tr>
 </table>
 </p>
+<p>Binary serializer with forward/backward compatibility. </p>
 <table class="table-enumeration">
 <tr>
 <td>stream</td>
@@ -20751,7 +20777,7 @@
 </tr>
 <tr>
 <td>convertNextNative</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoNative</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfoNative</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -20765,6 +20791,27 @@
 <td></td>
 </tr>
 </table>
+<p>Changes that are supported from V to V+1 are : </p>
+<ul>
+<li>Add a new field. The new field will stay at the default value.</li>
+<li>Remove a field. It will just be ignored.</li>
+<li>Reorder of fields, as long as their name/type are the same.</li>
+<li>Rename a field with <span class="code-inline">Serialization.Alias</span>.</li>
+</ul>
+<p>Supported type changes are : </p>
+<ul>
+<li>Conversion from integer/float/rune/bool to integer/float/rune/bool.</li>
+<li>Change the size of a static array.</li>
+<li>Conversion from a static array to a dynamic <span class="code-inline">Core.Array</span>, and vice versa.</li>
+<li>Conversion from a single value to a static array or <span class="code-inline">Core.Array</span>, and vice versa.</li>
+</ul>
+<p>Supported attributes are : </p>
+<ul>
+<li><span class="code-inline">Serialisation.Version</span>. If version is specified, then loading will not have versioning if versions are the same</li>
+<li><span class="code-inline">Serialization.Alias</span>. To rename a field. Multiple aliases are supported.</li>
+<li><span class="code-inline">Serialization.Final</span>. The struct will be loaded/saved without versioning (faster and lower serialization size)</li>
+<li><span class="code-inline">Serialization.PodFinal</span>. The struct will be loaded/saved in place without versioning</li>
+</ul>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -21056,7 +21103,7 @@
 <table class="table-enumeration">
 <tr>
 <td>mapSeek</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTable">HashTable</a></span>'(<span class="STpe">u32</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTable">HashTable</a></span>'(<span class="STpe">u32</span>,&nbsp;<span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -21910,7 +21957,7 @@
 </tr>
 <tr>
 <td>mapSeek</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTable">HashTable</a></span>'(<span class="STpe">u32</span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTable">HashTable</a></span>'(<span class="STpe">u32</span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -22275,7 +22322,7 @@
 <table class="table-enumeration">
 <tr>
 <td>buffer</td>
-<td class="code-type"><span class="SCde">[?] <span class="SCst">T</span></span></td>
+<td class="code-type"><span class="SCde">[?]&nbsp;<span class="SCst">T</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -23353,7 +23400,7 @@
 <table class="table-enumeration">
 <tr>
 <td>convert</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_IConvert">IConvert</a></span>, *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, <span class="SKwd">const</span> *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_IConvert">IConvert</a></span>,&nbsp;*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>,&nbsp;<span class="SKwd">const</span>&nbsp;*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>,&nbsp;<span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -23371,7 +23418,7 @@
 <table class="table-enumeration">
 <tr>
 <td>poke</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_IPokeValue">IPokeValue</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_IPokeValue">IPokeValue</a></span>,&nbsp;<span class="STpe">string</span>)-&gt;<span class="STpe">string</span>&nbsp;<span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -24101,7 +24148,7 @@
 </tr>
 <tr>
 <td>padding</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">16</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">16</span>]&nbsp;<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -24994,7 +25041,7 @@
 <table class="table-enumeration">
 <tr>
 <td>handle</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -25467,7 +25514,7 @@
 </tr>
 <tr>
 <td>handle</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -26794,7 +26841,7 @@
 </tr>
 <tr>
 <td>handle</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -27178,7 +27225,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using uuid</td>
-<td class="code-type"><span class="SCde">{val8:[<span class="SNum">16</span>] <span class="STpe">u8</span>,val64:[<span class="SNum">2</span>] <span class="STpe">u64</span>}</span></td>
+<td class="code-type"><span class="SCde">{val8:[<span class="SNum">16</span>]&nbsp;<span class="STpe">u8</span>,val64:[<span class="SNum">2</span>]&nbsp;<span class="STpe">u64</span>}</span></td>
 <td></td>
 </tr>
 </table>

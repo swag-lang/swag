@@ -217,7 +217,8 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
         repl.replace(">", "&gt;");
     }
 
-    repl.replace(" ", "&nbsp;");
+    if (flags.has(GENDOC_CODE_NBSP))
+        repl.replace(" ", "&nbsp;");
 
     // Syntax coloration
     Utf8 codeText;
@@ -1385,7 +1386,7 @@ Utf8 GenDoc::getTocTitleRef() const
     return ref;
 }
 
-void GenDoc::addTocTitle(const Utf8& name, const Utf8& title, int titleLevel)
+void GenDoc::addTocTitle(const Utf8& name, const Utf8& title, uint32_t titleLevel)
 {
     if (tocLastTitleLevel < titleLevel)
     {
