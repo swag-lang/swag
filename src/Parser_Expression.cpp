@@ -246,6 +246,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, form("to end the [[%s]] expression", parent->token.c_str())));
             else
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
+            (*result)->inheritFormatFromAfter(prevTokenParse);
             break;
         }
 

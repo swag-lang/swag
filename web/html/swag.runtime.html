@@ -3754,12 +3754,12 @@
 <tr>
 <td>getMessage</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;<span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></td>
-<td></td>
+<td>Returns the compiler message in a <span class="code-inline">#message</span> function. </td>
 </tr>
 <tr>
 <td>getBuildCfg</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfg">BuildCfg</a></span></span></td>
-<td></td>
+<td>Returns the build configuration of the current module. </td>
 </tr>
 <tr>
 <td>compileString</td>

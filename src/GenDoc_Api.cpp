@@ -85,8 +85,14 @@ Utf8 GenDoc::getDocComment(const AstNode* node)
         node->is(AstNodeKind::NameAlias) ||
         node->is(AstNodeKind::VarDecl))
     {
-        if (node->hasExtMisc())
-            return node->extMisc()->commentAfterSameLine;
+        auto scan = node;
+        while (scan)
+        {
+            if (scan->hasExtMisc() && !scan->extMisc()->commentAfterSameLine.empty())
+                return scan->extMisc()->commentAfterSameLine;
+            scan = scan->lastChild();
+        }
+
         return "";
     }
 

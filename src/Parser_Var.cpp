@@ -381,8 +381,6 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         SWAG_CHECK(eatToken());
     }
 
-    (*result)->inheritFormatFromAfter(prevTokenParse);
-
     if (!forStruct || tokenParse.isNot(TokenId::SymRightCurly))
     {
         if (!parent || parent->isNot(AstNodeKind::If))
