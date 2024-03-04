@@ -206,8 +206,12 @@ bool Parser::doNamespace(AstNode* parent, AstNode** result)
 
 bool Parser::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing)
 {
+    auto savedToken = tokenParse;
     SWAG_CHECK(eatToken());
-    return doNamespaceOnName(parent, result, forGlobal, forUsing);
+    SWAG_CHECK(doNamespaceOnName(parent, result, forGlobal, forUsing));
+    if (*result)
+        (*result)->inheritFormatFromBefore(savedToken);
+    return true;
 }
 
 bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, const Token* privName)
@@ -305,17 +309,16 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         currentScope = newScope;
     }
 
-    currentScope   = oldScope;
-    auto openCurly = tokenParse;
+    currentScope       = oldScope;
+    auto     openCurly = tokenParse;
+    AstNode* fakeResul = nullptr;
 
     if (forGlobal)
     {
         SWAG_CHECK(eatSemiCol("[[#global namespace]]"));
         Scoped scoped(this, newScope);
         while (tokenParse.isNot(TokenId::EndOfFile))
-        {
-            SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
-        }
+            SWAG_CHECK(doTopLevelInstruction(namespaceNode, &fakeResul));
     }
     else
     {
@@ -328,16 +331,13 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
             Scoped scoped(this, newScope);
             while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
-            {
-                SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
-            }
-
+                SWAG_CHECK(doTopLevelInstruction(namespaceNode, &fakeResul));
             SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the namespace body"));
         }
         else
         {
             Scoped scoped(this, newScope);
-            SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
+            SWAG_CHECK(doTopLevelInstruction(namespaceNode, &fakeResul));
         }
     }
 
