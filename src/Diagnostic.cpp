@@ -395,7 +395,7 @@ void Diagnostic::collectSourceCode()
 
     // Remove blanks on the left, but keep indentation
     auto pz = lineCode.c_str();
-    if (*pz && *pz != '\n' && *pz != '\r')
+    if (*pz && SWAG_IS_NOT_WIN_EOL(*pz) && SWAG_IS_NOT_EOL(*pz))
     {
         uint32_t countBlanks = 0;
         while (SWAG_IS_BLANK(*pz))
@@ -422,7 +422,7 @@ void Diagnostic::printSourceCode() const
     cxt.mode = SyntaxColorMode::ForLog;
 
     const auto pz = lineCode.c_str();
-    if (*pz == 0 || *pz == '\n' || *pz == '\r')
+    if (*pz == 0 || SWAG_IS_WIN_EOL(*pz) || SWAG_IS_EOL(*pz))
         return;
     printMargin(false, true, lineCodeNum);
 

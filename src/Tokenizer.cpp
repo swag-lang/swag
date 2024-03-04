@@ -224,7 +224,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
 
         // End of line
         ///////////////////////////////////////////
-        if (SWAG_IS_EOL(c))
+        if (SWAG_IS_EOL(c) || SWAG_IS_WIN_EOL(c))
         {
             if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
             {
@@ -234,7 +234,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
             }
             else
                 tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
-            if (SWAG_IS_WIN_EOL(curBuffer[0]))
+            if (SWAG_IS_WIN_EOL(c) && SWAG_IS_EOL(curBuffer[0]))
                 readChar();
             continue;
         }

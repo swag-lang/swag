@@ -271,16 +271,6 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
 
 void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, bool shortDesc)
 {
-    // Remove trailing '\r'
-    for (auto& l : lines)
-    {
-        if (!l.length())
-            continue;
-        if (l.back() == '\r')
-            l.removeBack();
-        l.replace("\\|", "&vert;");
-    }
-
     uint32_t start = 0;
     while (start < lines.size())
     {
@@ -623,7 +613,7 @@ void GenDoc::computeUserComments(UserComment& result, const Utf8& txt, bool shor
         return;
 
     Vector<Utf8> lines;
-    Utf8::tokenize(txt, '\n', lines);
+    Utf8::tokenize(txt, '\n', lines, true, true);
     computeUserComments(result, lines, shortDesc);
 }
 

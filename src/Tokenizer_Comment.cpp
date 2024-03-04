@@ -8,7 +8,7 @@ bool Tokenizer::doSingleLineComment(TokenParse& tokenParse)
     startTokenName = curBuffer;
 
     tokenParse.flags.remove(TOKEN_PARSE_EOL_BEFORE);
-    while (curBuffer[0] && SWAG_IS_NOT_EOL(curBuffer[0]))
+    while (curBuffer[0] && SWAG_IS_NOT_WIN_EOL(curBuffer[0]) && SWAG_IS_NOT_EOL(curBuffer[0]))
         readChar();
 
     if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
@@ -72,6 +72,7 @@ bool Tokenizer::doMultiLineComment(TokenParse& tokenParse)
         appendTokenName(tokenParse);
         tokenParse.token.text.removeBack();
         tokenParse.token.text.removeBack();
+        tokenParse.token.text.replace("\r", "");
         tokenParse.comments.justBefore.push_back({tokenParse.token.text, false});
     }
 
