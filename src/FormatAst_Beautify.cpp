@@ -8,13 +8,19 @@ void FormatAst::beautifyComment(const Vector<TokenComment>& comments) const
 {
     for (const auto& v : comments)
     {
+        if(v.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
+        {
+            concat->addBlankLine();
+            concat->addIndent(indent);
+        }
+        
         Utf8 cmt;
-        if (!v.isOneLine)
+        if (!v.flags.has(TOKEN_PARSE_ONE_LINE_COMMENT))
             cmt += "/*";
         else
             cmt += "//";
         cmt += v.comment;
-        if (!v.isOneLine)
+        if (!v.flags.has(TOKEN_PARSE_ONE_LINE_COMMENT))
             cmt += "*/";
 
         concat->addString(cmt);

@@ -14,9 +14,15 @@ bool Tokenizer::doSingleLineComment(TokenParse& tokenParse)
     if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
     {
         appendTokenName(tokenParse);
-        tokenParse.comments.justBefore.push_back({tokenParse.token.text, true});
+
+        TokenComment cmt;
+        cmt.comment = tokenParse.token.text;
+        cmt.flags   = tokenParse.flags;
+        cmt.flags.add(TOKEN_PARSE_ONE_LINE_COMMENT);
+        tokenParse.comments.justBefore.push_back(cmt);
     }
 
+    tokenParse.flags.remove(TOKEN_PARSE_BLANK_LINE_BEFORE);
     return true;
 }
 
@@ -73,8 +79,13 @@ bool Tokenizer::doMultiLineComment(TokenParse& tokenParse)
         tokenParse.token.text.removeBack();
         tokenParse.token.text.removeBack();
         tokenParse.token.text.replace("\r", "");
-        tokenParse.comments.justBefore.push_back({tokenParse.token.text, false});
+
+        TokenComment cmt;
+        cmt.comment = tokenParse.token.text;
+        cmt.flags   = tokenParse.flags;
+        tokenParse.comments.justBefore.push_back(cmt);
     }
 
+    tokenParse.flags.remove(TOKEN_PARSE_BLANK_LINE_BEFORE);
     return true;
 }

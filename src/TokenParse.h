@@ -7,7 +7,7 @@ struct SourceFile;
 struct TypeInfo;
 struct ErrorContext;
 
-using TokenParseFlags = Flags<uint8_t>;
+using TokenParseFlags = Flags<uint32_t>;
 
 enum class LiteralType : uint8_t
 {
@@ -41,16 +41,17 @@ enum class LiteralType : uint8_t
     TypeMax,
 };
 
-constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE        = 0x01;
-constexpr TokenParseFlags TOKEN_PARSE_EOL_AFTER         = 0x02;
-constexpr TokenParseFlags TOKEN_PARSE_BLANK_BEFORE      = 0x04;
-constexpr TokenParseFlags TOKEN_PARSE_BLANK_AFTER       = 0x08;
-constexpr TokenParseFlags TOKEN_PARSE_BLANK_LINE_BEFORE = 0x10;
+constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE        = 0x00000001;
+constexpr TokenParseFlags TOKEN_PARSE_EOL_AFTER         = 0x00000002;
+constexpr TokenParseFlags TOKEN_PARSE_BLANK_BEFORE      = 0x00000004;
+constexpr TokenParseFlags TOKEN_PARSE_BLANK_AFTER       = 0x00000008;
+constexpr TokenParseFlags TOKEN_PARSE_BLANK_LINE_BEFORE = 0x00000010;
+constexpr TokenParseFlags TOKEN_PARSE_ONE_LINE_COMMENT  = 0x00000020;
 
 struct TokenComment
 {
-    Utf8 comment;
-    bool isOneLine;
+    Utf8            comment;
+    TokenParseFlags flags = 0;
 };
 
 struct TokenComments
@@ -84,6 +85,6 @@ struct TokenParse
     Token           token;
     TokenComments   comments;
     Register        literalValue;
-    LiteralType     literalType = static_cast<LiteralType>(0);
     TokenParseFlags flags       = 0;
+    LiteralType     literalType = static_cast<LiteralType>(0);
 };
