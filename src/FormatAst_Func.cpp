@@ -155,7 +155,11 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
     }
 
     if (!node->content)
+    {
+        concat->addChar(';');
+        concat->addEol();
         return true;
+    }
 
     // Content, normal function
     concat->addEol();
