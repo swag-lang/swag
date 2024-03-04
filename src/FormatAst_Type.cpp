@@ -74,7 +74,7 @@ bool FormatAst::outputType(const AstTypeExpression* node)
 
         concat->addChar(']');
         concat->addBlank();
-        SWAG_CHECK(outputNode(node->firstChild()));
+        SWAG_CHECK(outputNode(node->secondChild()));
         return true;
     }
 
