@@ -29,16 +29,14 @@ bool FormatAst::outputType(const AstTypeExpression* node)
                 {
                     if (id->hasAstFlag(AST_GENERATED))
                     {
-                        CONCAT_FIXED_STR(concat, " = {");
-                        SWAG_CHECK(outputNode(id->callParameters));
-                        concat->addChar('}');
+                        concat->addBlank();
+                        concat->addChar('=');
+                        concat->addBlank();
                     }
-                    else
-                    {
-                        concat->addChar('{');
-                        SWAG_CHECK(outputNode(id->callParameters));
-                        concat->addChar('}');
-                    }
+
+                    concat->addChar('{');
+                    SWAG_CHECK(outputNode(id->callParameters));
+                    concat->addChar('}');
                 }
             }
 
@@ -47,11 +45,15 @@ bool FormatAst::outputType(const AstTypeExpression* node)
     }
 
     if (node->typeFlags.has(TYPEFLAG_IS_CONST))
-        CONCAT_FIXED_STR(concat, "const ");
+    {
+        CONCAT_FIXED_STR(concat, "const");
+        concat->addBlank();
+    }
 
     if (node->arrayDim == UINT8_MAX)
     {
-        CONCAT_FIXED_STR(concat, "[] ");
+        CONCAT_FIXED_STR(concat, "[]");
+        concat->addBlank();
         SWAG_CHECK(outputNode(node->firstChild()));
         return true;
     }
@@ -62,18 +64,24 @@ bool FormatAst::outputType(const AstTypeExpression* node)
         for (int i = 0; i < node->arrayDim; i++)
         {
             if (i)
-                CONCAT_FIXED_STR(concat, ", ");
+            {
+                concat->addChar(',');
+                concat->addBlank();
+            }
+
             SWAG_CHECK(outputNode(node->children[i]));
         }
 
-        CONCAT_FIXED_STR(concat, "] ");
+        concat->addChar(']');
+        concat->addBlank();
         SWAG_CHECK(outputNode(node->firstChild()));
         return true;
     }
 
     if (node->typeFlags.has(TYPEFLAG_IS_SLICE))
     {
-        CONCAT_FIXED_STR(concat, "[..] ");
+        CONCAT_FIXED_STR(concat, "[..]");
+        concat->addBlank();
         SWAG_CHECK(outputNode(node->firstChild()));
         return true;
     }
