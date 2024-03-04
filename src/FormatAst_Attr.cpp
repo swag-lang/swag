@@ -73,7 +73,7 @@ bool FormatAst::outputAttributesUsage(const TypeInfoFuncAttr* typeFunc) const
         if (typeFunc->attributeUsage.has(__f))           \
         {                                                \
             if (!first)                                  \
-                CONCAT_FIXED_STR(concat, "|");           \
+                concat->addChar('|');                    \
             first = false;                               \
             CONCAT_FIXED_STR(concat, "AttributeUsage."); \
             CONCAT_FIXED_STR(concat, __n);               \
@@ -176,7 +176,6 @@ bool FormatAst::outputAttributes(const TypeInfo* typeInfo, const AttributeList& 
 
 bool FormatAst::outputAttributesGlobalUsing(const AstNode* node) const
 {
-    // Global using
     bool outputUsing = true;
     if (node->hasAstFlag(AST_STRUCT_MEMBER))
         outputUsing = false;
@@ -196,7 +195,8 @@ bool FormatAst::outputAttributesGlobalUsing(const AstNode* node) const
             }
             else
             {
-                CONCAT_FIXED_STR(concat, ", ");
+                concat->addChar(',');
+                concat->addBlank();
             }
 
             concat->addString(p->getFullName());
