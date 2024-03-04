@@ -40,7 +40,7 @@ struct CommandLine
     // Input
     Path workspacePath;
     Path cachePath;
-    Utf8 scriptName;
+    Utf8 fileName;
     Utf8 moduleName;
     Utf8 testFilter;
 
@@ -57,10 +57,8 @@ struct CommandLine
     bool dbgDevMode    = false;
 
 #ifdef SWAG_DEV_MODE
-    bool devModeCheckAst = true;
-    bool devModeWriteAst = false;
-    bool randomize       = false;
-    int  randSeed        = 0;
+    bool randomize = false;
+    int  randSeed  = 0;
 #endif
 
     // User arguments

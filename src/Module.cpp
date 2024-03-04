@@ -163,7 +163,7 @@ void Module::release()
 
 void Module::computePublicPath()
 {
-    if (is(ModuleKind::BootStrap) || is(ModuleKind::Runtime))
+    if (is(ModuleKind::BootStrap) || is(ModuleKind::Runtime) || is(ModuleKind::Fake))
         return;
     if (path.empty())
         return;

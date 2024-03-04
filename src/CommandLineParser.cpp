@@ -5,6 +5,52 @@
 #include "Log.h"
 #include "Report.h"
 
+CommandLineArgument::CommandLineArgument(const char* commands, CommandLineType type, void* buffer, const char* param, const char* help) :
+    buffer{buffer},
+    param{param},
+    help{help},
+    type{type}
+{
+    Vector<Utf8> all;
+    Utf8::tokenize(commands, ' ', all);
+
+    for (auto& p : all)
+    {
+        if (p == "all" || p == "bu")
+            cmdSet.insert("build");
+
+        if (p == "all" || p == "bu")
+            cmdSet.insert("run");
+
+        if (p == "all" || p == "sc")
+            cmdSet.insert("script");
+
+        if (p == "all" || p == "bu" || p == "te")
+            cmdSet.insert("test");
+
+        if (p == "all" || p == "cl")
+            cmdSet.insert("clean");
+
+        if (p == "all" || p == "ne")
+            cmdSet.insert("new");
+
+        if (p == "all" || p == "li")
+            cmdSet.insert("list");
+
+        if (p == "all" || p == "ge")
+            cmdSet.insert("get");
+
+        if (p == "all" || p == "ru")
+            cmdSet.insert("run");
+
+        if (p == "all" || p == "doc")
+            cmdSet.insert("doc");
+
+        if (p == "all" || p == "fmt")
+            cmdSet.insert("format");
+    }
+}
+
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
     addArg("all", "--silent", "-s", CommandLineType::Bool, &cmdLine->silent, nullptr, "do not log messages");
@@ -25,13 +71,13 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("bu ne cl li ge doc", "--workspace", "-w", CommandLineType::StringPath, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne doc", "--module", "-m", CommandLineType::String, &cmdLine->moduleName, nullptr, "module name");
-    addArg("ne sc", "--file", "-f", CommandLineType::String, &cmdLine->scriptName, nullptr, "script file name");
+    addArg("ne sc fmt", "--file", "-f", CommandLineType::String, &cmdLine->fileName, nullptr, "file name");
     addArg("ne", "--test", nullptr, CommandLineType::Bool, &cmdLine->test, nullptr, "create a test module");
 
     addArg("all", "--cache", "-t", CommandLineType::StringPath, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
     addArg("all", "--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
 
-    addArg("bu", "--output", "-o", CommandLineType::Bool, &cmdLine->output, nullptr, "output backend");
+    addArg("bu fmt", "--output", "-o", CommandLineType::Bool, &cmdLine->output, nullptr, "output backend");
     addArg("bu", "--output-legit", "-ol", CommandLineType::Bool, &cmdLine->outputLegit, nullptr, "output legit backend");
     addArg("bu", "--output-test", "-ot", CommandLineType::Bool, &cmdLine->outputTest, nullptr, "output test backend");
     addArg("doc", "--output-doc", "-od", CommandLineType::Bool, &cmdLine->outputDoc, nullptr, "output the generated documentation");
@@ -50,10 +96,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc", "--dbg-main", nullptr, CommandLineType::Bool, &cmdLine->dbgMain, nullptr, "open bytecode debugger (bcdbg) at the start of #main");
     addArg("bu sc", "--dbg-off", nullptr, CommandLineType::Bool, &cmdLine->dbgOff, nullptr, "disable @breakpoint() instruction");
     addArg("bu sc doc", "--callstack", nullptr, CommandLineType::Bool, &cmdLine->dbgCallStack, nullptr, "display callstacks in case of errors");
-    
+
 #ifdef SWAG_DEV_MODE
-    addArg("bu sc doc", "--devmode-check-ast", nullptr, CommandLineType::Bool, &cmdLine->devModeCheckAst, nullptr, "");
-    addArg("bu sc doc", "--devmode-write-ast", nullptr, CommandLineType::Bool, &cmdLine->devModeWriteAst, nullptr, "");
     addArg("bu sc doc", "--print-bc-ext", nullptr, CommandLineType::Bool, &cmdLine->dbgPrintBcExt, nullptr, "print more bytecode information");
     addArg("bu sc doc", "--randomize", nullptr, CommandLineType::Bool, &cmdLine->randomize, nullptr, "[devmode] randomize behavior");
     addArg("bu sc doc", "--seed", nullptr, CommandLineType::Int, &cmdLine->randSeed, nullptr, "[devmode] set seed for randomize behavior");

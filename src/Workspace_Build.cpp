@@ -812,7 +812,7 @@ bool Workspace::build()
         else
         {
             const auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
-            const Path p              = g_CommandLine.scriptName;
+            const Path p              = g_CommandLine.fileName;
             g_Log.messageHeaderCentered("Script", form("%s [%s]", p.filename().c_str(), targetFullName.c_str()));
         }
 

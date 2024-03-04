@@ -591,6 +591,7 @@
     <ClCompile Include="..\src\TypeMatch.cpp" />
     <ClCompile Include="..\src\Workspace_Build.cpp" />
     <ClCompile Include="..\src\Workspace_Clean.cpp" />
+    <ClCompile Include="..\src\Workspace_Format.cpp" />
     <ClCompile Include="..\src\Workspace_New.cpp" />
     <ClCompile Include="..\src\Workspace_Script.cpp" />
     <ClCompile Include="..\src\Workspace_Tags.cpp" />

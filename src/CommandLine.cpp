@@ -70,12 +70,12 @@ bool CommandLine::check()
     }
 
     // Add/check script file extension
-    if (!g_CommandLine.scriptName.empty())
+    if (g_CommandLine.scriptCommand && !g_CommandLine.fileName.empty())
     {
-        const Path p = g_CommandLine.scriptName;
+        const Path p = g_CommandLine.fileName;
         if (p.extension().empty())
         {
-            g_CommandLine.scriptName += ".swgs";
+            g_CommandLine.fileName += ".swgs";
         }
         else if (p.extension() != ".swgs")
         {

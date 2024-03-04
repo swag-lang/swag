@@ -38,7 +38,7 @@ int main(int argc, const char* argv[])
     if (p.extension() == ".swgs")
     {
         command                  = "script";
-        g_CommandLine.scriptName = argv[1];
+        g_CommandLine.fileName = argv[1];
     }
 
     // Command
@@ -51,6 +51,7 @@ int main(int argc, const char* argv[])
         command != "list" &&
         command != "get" &&
         command != "version" &&
+        command != "format" &&
         command != "script")
     {
         Report::error(formErr(Fat0026, argv[1]));
@@ -126,6 +127,10 @@ int main(int argc, const char* argv[])
     else if (command == "new")
     {
         g_Workspace->newCommand();
+    }
+    else if (command == "format")
+    {
+        g_Workspace->formatCommand();
     }
     else if (command == "version")
     {

@@ -40,9 +40,9 @@ void Workspace::setup()
         OS::exit(-1);
     }
 
-    if (g_CommandLine.scriptCommand && !std::filesystem::exists(g_CommandLine.scriptName.c_str(), err))
+    if (g_CommandLine.scriptCommand && !std::filesystem::exists(g_CommandLine.fileName.c_str(), err))
     {
-        Report::error(formErr(Fat0030, g_CommandLine.scriptName.c_str()));
+        Report::error(formErr(Fat0030, g_CommandLine.fileName.c_str()));
         OS::exit(-1);
     }
 

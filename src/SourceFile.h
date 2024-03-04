@@ -41,6 +41,8 @@ struct SourceFile
     void addFlag(FileFlags fl) { flags.add(fl); }
     void removeFlag(FileFlags fl) { flags.remove(fl); }
 
+    bool acceptsInternalStuff() const;
+
     SharedMutex            mutex;
     Vector<Utf8>           allLines;
     VectorNative<Scope*>   globalUsing;

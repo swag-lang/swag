@@ -34,22 +34,14 @@ JobResult SyntaxJob::execute()
     ParseFlags parseFlags = 0;
     if (g_CommandLine.genDoc)
         parseFlags.add(PARSER_TRACK_COMMENTS);
-    if (g_CommandLine.devModeWriteAst)
-        parseFlags.add(PARSER_TRACK_COMMENTS);
     parser.setup(&context, sourceFile->module, sourceFile, parseFlags);
     parser.generateAst();
 
 #ifdef SWAG_DEV_MODE
-    if (!sourceFile->numErrors && g_CommandLine.devModeCheckAst)
+    if (!sourceFile->numErrors)
     {
         FormatAst fmt;
-        fmt.fmtFlags.add(FORMAT_FOR_BEAUTIFY);
         fmt.outputNode(sourceFile->astRoot);
-        if (g_CommandLine.devModeWriteAst)
-        {
-            const Path path = R"(c:/temp/)" + sourceFile->path.filename();
-            fmt.concat->flushToFile(path);
-        }
     }
 #endif
 

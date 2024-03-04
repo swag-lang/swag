@@ -348,11 +348,11 @@ JobResult EnumerateModuleJob::execute()
         enumerateModules(g_Workspace->dependenciesPath);
 
         // If we are in script mode, then we add one single module with the script file
-        const auto parentFolder = Path(g_CommandLine.scriptName.c_str()).parent_path();
+        const auto parentFolder = Path(g_CommandLine.fileName.c_str()).parent_path();
         const auto file         = Allocator::alloc<SourceFile>();
-        file->name              = Path(g_CommandLine.scriptName).filename().replace_extension();
+        file->name              = Path(g_CommandLine.fileName).filename().replace_extension();
         const auto scriptModule = g_Workspace->createOrUseModule(file->name, parentFolder, ModuleKind::Script);
-        file->path              = g_CommandLine.scriptName;
+        file->path              = g_CommandLine.fileName;
         file->module            = scriptModule;
         file->addFlag(FILE_IS_SCRIPT_FILE);
         scriptModule->isScriptFile = true;

@@ -98,6 +98,7 @@ enum class ModuleKind
     Runtime,
     Config,
     Script,
+    Fake,
 };
 
 struct ExecuteNodeParams

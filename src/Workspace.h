@@ -76,6 +76,7 @@ struct Workspace
     void        cleanCommand();
     void        newModule(const Utf8& moduleName) const;
     void        newCommand();
+    static void        formatCommand();
     static void scriptCommand();
 
     Path                  workspacePath;

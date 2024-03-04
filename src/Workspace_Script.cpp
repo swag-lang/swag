@@ -39,20 +39,20 @@ void Workspace::setScriptWorkspace(const Utf8& name)
 
 void Workspace::scriptCommand()
 {
-    if (g_CommandLine.scriptName.empty())
+    if (g_CommandLine.fileName.empty())
     {
-        Report::error(formErr(Fat0031, g_CommandLine.scriptName.c_str()));
+        Report::error(formErr(Fat0031, g_CommandLine.fileName.c_str()));
         OS::exit(-1);
     }
 
     // Script filename
-    Path pathF               = g_CommandLine.scriptName;
+    Path pathF               = g_CommandLine.fileName;
     pathF                    = std::filesystem::absolute(pathF);
-    g_CommandLine.scriptName = pathF;
+    g_CommandLine.fileName = pathF;
     std::error_code err;
-    if (!std::filesystem::exists(g_CommandLine.scriptName.c_str(), err))
+    if (!std::filesystem::exists(g_CommandLine.fileName.c_str(), err))
     {
-        Report::error(formErr(Fat0030, g_CommandLine.scriptName.c_str()));
+        Report::error(formErr(Fat0030, g_CommandLine.fileName.c_str()));
         OS::exit(-1);
     }
 

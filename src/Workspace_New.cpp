@@ -8,10 +8,10 @@
 
 void newScriptFile()
 {
-    std::ofstream file(g_CommandLine.scriptName);
+    std::ofstream file(g_CommandLine.fileName);
     if (!file.is_open())
     {
-        Report::errorOS(formErr(Fat0020, g_CommandLine.scriptName.c_str()));
+        Report::errorOS(formErr(Fat0020, g_CommandLine.fileName.c_str()));
         OS::exit(-1);
     }
 
@@ -32,8 +32,8 @@ void newScriptFile()
 
     file << content;
 
-    g_Log.messageInfo(form("=> script file [[%s]] has been created", g_CommandLine.scriptName.c_str()));
-    g_Log.messageInfo(form("=> type [[swag script -f:%s]] or [[swag %s]] to run that script", g_CommandLine.scriptName.c_str(), g_CommandLine.scriptName.c_str()));
+    g_Log.messageInfo(form("=> script file [[%s]] has been created", g_CommandLine.fileName.c_str()));
+    g_Log.messageInfo(form("=> type [[swag script -f:%s]] or [[swag %s]] to run that script", g_CommandLine.fileName.c_str(), g_CommandLine.fileName.c_str()));
 }
 
 void Workspace::newModule(const Utf8& moduleName) const
@@ -129,7 +129,7 @@ void Workspace::newModule(const Utf8& moduleName) const
 void Workspace::newCommand()
 {
     // Create a script file
-    if (workspacePath.empty() && !g_CommandLine.scriptName.empty())
+    if (workspacePath.empty() && !g_CommandLine.fileName.empty())
     {
         newScriptFile();
         OS::exit(0);

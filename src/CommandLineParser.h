@@ -15,6 +15,8 @@ enum class CommandLineType
 
 struct CommandLineArgument
 {
+    CommandLineArgument(const char* commands, CommandLineType type, void* buffer, const char* param, const char* help);
+
     SetUtf8         cmdSet;
     Utf8            longName;
     Utf8            shortName;
@@ -22,51 +24,6 @@ struct CommandLineArgument
     const char*     param;
     const char*     help;
     CommandLineType type;
-
-    CommandLineArgument(const char* commands, CommandLineType type, void* buffer, const char* param, const char* help) :
-        buffer{buffer},
-        param{param},
-        help{help},
-        type{type}
-    {
-        Vector<Utf8> all;
-        Utf8::tokenize(commands, ' ', all);
-
-        for (auto& p : all)
-        {
-            if (p == "all" || p == "bu")
-            {
-                cmdSet.insert("build");
-                cmdSet.insert("run");
-            }
-
-            if (p == "all" || p == "sc")
-            {
-                cmdSet.insert("script");
-            }
-
-            if (p == "all" || p == "bu" || p == "te")
-                cmdSet.insert("test");
-
-            if (p == "all" || p == "cl")
-                cmdSet.insert("clean");
-
-            if (p == "all" || p == "ne")
-                cmdSet.insert("new");
-
-            if (p == "all" || p == "li")
-                cmdSet.insert("list");
-
-            if (p == "all" || p == "ge")
-                cmdSet.insert("get");
-
-            if (p == "all" || p == "ru")
-                cmdSet.insert("run");
-
-            if (p == "all" || p == "doc")
-                cmdSet.insert("doc");
-        }
-    }
 };
 
 struct CommandLineParser

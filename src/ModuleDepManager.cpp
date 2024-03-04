@@ -435,7 +435,7 @@ bool ModuleDepManager::execute()
     else
     {
         const auto file = Allocator::alloc<SourceFile>();
-        file->path      = g_CommandLine.scriptName;
+        file->path      = g_CommandLine.fileName;
         file->name      = file->path.filename();
         file->addFlag(FILE_IS_CFG_FILE | FILE_IS_SCRIPT_FILE);
         registerCfgFile(file);

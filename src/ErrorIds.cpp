@@ -51,14 +51,14 @@ void initErrors()
     SWAG_ERROR(Fat0027, "[fatal] invalid workspace [[%s]]; missing [[modules/]] or [[tests/]] sub-folder");
     SWAG_ERROR(Fat0028, "[fatal] module [[%s]] already exists in [[/modules]]");
     SWAG_ERROR(Fat0029, "[fatal] module [[%s]] can't be found in that workspace");
-    SWAG_ERROR(Fat0030, "[fatal] script file [[%s]] not found");
+    SWAG_ERROR(Fat0030, "[fatal] file [[%s]] not found");
     SWAG_ERROR(Fat0031, "[fatal] script file missing (use [[--file:<filename>.swgs]])");
     SWAG_ERROR(Fat0032, "[fatal] unexpected compile tag value [[%s]] (use [[--tag:%s]])");
     SWAG_ERROR(Fat0033, "[fatal] unknown compile tag type [[%s]] (use [[--tag:%s]])");
     SWAG_ERROR(Fat0034, "[fatal] workspace folder [[%s]] already exists");
     SWAG_ERROR(Fat0035, "[fatal] workspace folder [[%s]] not found");
     SWAG_ERROR(Fat0036, "[fatal] unable to locate the windows sdk folder");
-
+    
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

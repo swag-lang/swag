@@ -257,7 +257,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
-        if (!sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) && !sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+        if (!sourceFile->acceptsInternalStuff())
             SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(tokenParse.token, formErr(Err0618, tokenParse.token.c_str())));
 
         // Add/Get namespace

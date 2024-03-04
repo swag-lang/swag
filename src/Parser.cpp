@@ -411,7 +411,7 @@ bool Parser::generateAst()
     auto parentScope = module->scopeRoot;
 
     // Creates a top namespace with the module namespace name
-    if (module->isNot(ModuleKind::BootStrap) && module->isNot(ModuleKind::Runtime))
+    if (parentScope && module->isNot(ModuleKind::BootStrap) && module->isNot(ModuleKind::Runtime))
     {
         const auto moduleForNp = sourceFile->imported ? sourceFile->imported : sourceFile->module;
 

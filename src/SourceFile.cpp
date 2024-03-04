@@ -193,3 +193,14 @@ void SourceFile::addGlobalUsing(Scope* scope)
 
     globalUsing.push_back(scope);
 }
+
+bool SourceFile::acceptsInternalStuff() const
+{
+    if (hasFlag(FILE_IS_BOOTSTRAP_FILE))
+        return true;
+    if (hasFlag(FILE_IS_RUNTIME_FILE))
+        return true;
+    if (module && module->is(ModuleKind::Fake))
+        return true;
+    return false;
+}
