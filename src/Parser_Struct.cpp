@@ -533,8 +533,11 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         default:
         {
             SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse.token, formErr(Err0293, tokenParse.token.c_str())));
+            TokenParse  savedToken = tokenParse;
             ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
             SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
+            if (*result)
+                (*result)->inheritFormatFromBefore(savedToken);
             break;
         }
     }
