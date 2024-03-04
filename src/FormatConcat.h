@@ -15,7 +15,7 @@ struct FormatConcat : Concat
     void addStringFormat(const char* format, ...);
     void addChar(char c);
 
-    uint32_t eol   = 0;
+    uint32_t eol   = 1;
     uint32_t blank = 0;
 };
 
