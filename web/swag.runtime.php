@@ -677,7 +677,7 @@
 </p>
 <p>Returns a system allocated memory block of <span class="code-inline">size</span> bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@alloc</span>(size: <span class="STpe">u64</span>)-&gt;^<span class="STpe">void</span></span></div>
-<p> Use <a href="#@free">@free</a> to release the allocated memory. </p>
+<p>Use <a href="#@free">@free</a> to release the allocated memory. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2067,26 +2067,26 @@
 <td>Alignement constraint. </td>
 </tr>
 </table>
-<p> To allocate: </p>
+<p>To allocate: </p>
 <ul>
 <li><span class="code-inline">mode</span> must be <b>AllocatorMode.Alloc</b></li>
 <li><span class="code-inline">size</span> must be the size in bytes to allocate</li>
 <li><span class="code-inline">alignement</span> must be the alignement constraint in bytes (or 0)</li>
 <li><span class="code-inline">address</span> will be the returned allocated memory address</li>
 </ul>
-<p> To free: </p>
+<p>To free: </p>
 <ul>
 <li><span class="code-inline">mode</span> must be <b>AllocatorMode.Free</b></li>
 <li><span class="code-inline">size</span> must be the original allocated size in bytes of <span class="code-inline">address</span></li>
 <li><span class="code-inline">address</span> must be the memory address to release</li>
 </ul>
-<p> To reallocate: </p>
+<p>To reallocate: </p>
 <ul>
 <li><span class="code-inline">mode</span> must be <b>AllocatorMode.Realloc</b></li>
 <li><span class="code-inline">size</span> must be the original allocated size in bytes of <span class="code-inline">address</span></li>
 <li><span class="code-inline">address</span> must be the memory address to reallocate</li>
 </ul>
-<p> See <a href="#Swag_IAllocator">IAllocator</a> </p>
+<p>See <a href="#Swag_IAllocator">IAllocator</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2446,7 +2446,7 @@
 <td>Parameters for document generation. </td>
 </tr>
 </table>
-<p> See <a href="#Swag_ICompiler">ICompiler</a> </p>
+<p>See <a href="#Swag_ICompiler">ICompiler</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2564,7 +2564,7 @@
 <td>Optim for size level 2. </td>
 </tr>
 </table>
-<p> Only <span class="code-inline">LLVM</span> backend uses this, as the <span class="code-inline">X86_64</span> backend does not have an optimization pass. </p>
+<p>Only <span class="code-inline">LLVM</span> backend uses this, as the <span class="code-inline">X86_64</span> backend does not have an optimization pass. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2599,7 +2599,7 @@
 <td></td>
 </tr>
 </table>
-<p> Under windows, by default, the application will be compiled to make a <span class="code-inline">windowed</span> application. But you can  change it and force the application to behave like a <span class="code-inline">console</span> one. </p>
+<p>Under windows, by default, the application will be compiled to make a <span class="code-inline">windowed</span> application. But you can change it and force the application to behave like a <span class="code-inline">console</span> one. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2860,7 +2860,7 @@
 <td>Kind of the message. </td>
 </tr>
 </table>
-<p> In a <span class="code-inline">#message</span> function, you can retreive the associated message by calling <span class="code-inline">getMessage</span> of the  interface returned by <a href="#@compiler">@compiler</a> </p>
+<p>In a <span class="code-inline">#message</span> function, you can retreive the associated message by calling <span class="code-inline">getMessage</span> of the interface returned by <a href="#@compiler">@compiler</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2957,7 +2957,7 @@
 <td></td>
 </tr>
 </table>
-<p> The function could be called for more than one reason, as this is a mask. </p>
+<p>The function could be called for more than one reason, as this is a mask. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3213,7 +3213,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_assertIsAllocated">assertIsAllocated</a></span></td>
-<td>This function will assert if the given user address is not conform  to an allocated block. </td>
+<td>This function will assert if the given user address is not conform to an allocated block. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_checkAllMemory">checkAllMemory</a></span></td>
@@ -3310,7 +3310,7 @@
 </tr>
 </table>
 </p>
-<p>This function will assert if the given user address is not conform  to an allocated block. </p>
+<p>This function will assert if the given user address is not conform to an allocated block. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">assertIsAllocated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, addr: *<span class="STpe">void</span>, callerLoc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
@@ -3767,7 +3767,7 @@
 <td></td>
 </tr>
 </table>
-<p> The intrinsic <span class="code-inline">@compiler</span> will return that interface at compile-time, and <span class="code-inline">null</span> at runtime. </p>
+<p>The intrinsic <span class="code-inline">@compiler</span> will return that interface at compile-time, and <span class="code-inline">null</span> at runtime. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4000,7 +4000,7 @@
 <div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NoInline">NoInline</a></span></span></div>
-<p> This is a hint for the <span class="code-inline">llvm</span> backend. </p>
+<p>This is a hint for the <span class="code-inline">llvm</span> backend. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4031,7 +4031,7 @@
 <div class="api-additional-infos"><b>Usage</b>: struct-var 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Offset">Offset</a></span>(name: <span class="STpe">string</span>)</span></div>
-<p> The field offset in the struct should be the same as the variable <span class="code-inline">name</span> </p>
+<p>The field offset in the struct should be the same as the variable <span class="code-inline">name</span> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4062,12 +4062,12 @@
 <div class="api-additional-infos"><b>Usage</b>: function multi 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Optim">Optim</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></div>
-<p> Options are: </p>
+<p>Options are: </p>
 <table class="table-markdown">
 <tr><td> <span class="code-inline">bytecode</span>   </td><td> Enable/Disable bytecode optimization for the function</td></tr>
 <tr><td> <span class="code-inline">backend</span>    </td><td> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
 </table>
-<p> If <span class="code-inline">what</span> is null or empty, every options will be affected. </p>
+<p>If <span class="code-inline">what</span> is null or empty, every options will be affected. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4238,10 +4238,10 @@
 <div class="api-additional-infos"><b>Usage</b>: all multi 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Safety">Safety</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></div>
-<p> For example: </p>
+<p>For example: </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Safety("", false)]</span>                    <span class="SCmt">// Disable all</span>
- <span class="SAtr">#[Swag.Safety("boundcheck|nan", false)]</span>      <span class="SCmt">// Disable 'boundcheck' and 'nan' checks</span></span></div>
-<p> Safety checks are: </p>
+<span class="SAtr">#[Swag.Safety("boundcheck|nan", false)]</span>      <span class="SCmt">// Disable 'boundcheck' and 'nan' checks</span></span></div>
+<p>Safety checks are: </p>
 <table class="table-markdown">
 <tr><td> <span class="code-inline">boundcheck</span>   </td><td> Check out of bound access</td></tr>
 <tr><td> <span class="code-inline">overflow</span>     </td><td> Check type conversion lost of bits or precision</td></tr>
@@ -4254,7 +4254,7 @@
 <tr><td> <span class="code-inline">sanity</span>       </td><td> Do a <span class="code-inline">sanity</span> check (per function)</td></tr>
 <tr><td> <span class="code-inline">null</span>         </td><td> Panic on derefencing some null pointers</td></tr>
 </table>
-<p> If <span class="code-inline">what</span> is null or empty, every options are will be affected. </p>
+<p>If <span class="code-inline">what</span> is null or empty, every options are will be affected. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4332,7 +4332,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_setCapacity">setCapacity</a></span></td>
-<td>This will call <span class="code-inline">release</span> prior to changing the capacity, so this must  be called at an early stage. </td>
+<td>This will call <span class="code-inline">release</span> prior to changing the capacity, so this must be called at an early stage. </td>
 </tr>
 </table>
 <p>
@@ -4475,7 +4475,7 @@
 </tr>
 </table>
 </p>
-<p>This will call <span class="code-inline">release</span> prior to changing the capacity, so this must  be called at an early stage. </p>
+<p>This will call <span class="code-inline">release</span> prior to changing the capacity, so this must be called at an early stage. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCapacity</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>, allocator: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -4516,7 +4516,7 @@
 <td>End column. </td>
 </tr>
 </table>
-<p> This is typically what will be returned by <span class="code-inline">#location</span> or <span class="code-inline">#callerlocation</span>. </p>
+<p>This is typically what will be returned by <span class="code-inline">#location</span> or <span class="code-inline">#callerlocation</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4649,7 +4649,7 @@
 <div class="api-additional-infos"><b>Usage</b>: global-var 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Tls">Tls</a></span></span></div>
-<p> A copy of the variable will be available for each thread. </p>
+<p>A copy of the variable will be available for each thread. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5178,7 +5178,7 @@
 <td></td>
 </tr>
 </table>
-<p> If the <span class="code-inline">kind</span> of the type is <span class="code-inline">TypeInfoKind.Native</span>, then this is the real native type. </p>
+<p>If the <span class="code-inline">kind</span> of the type is <span class="code-inline">TypeInfoKind.Native</span>, then this is the real native type. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5430,11 +5430,11 @@
 <div class="api-additional-infos"><b>Usage</b>: all multi 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Warn">Warn</a></span>(what: <span class="STpe">string</span>, level: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_WarnLevel">WarnLevel</a></span>)</span></div>
-<p> For example: </p>
+<p>For example: </p>
 <div class="code-block"><span class="SAtr">#[Swag.Warn("Wrn0006", Swag.WarnLevel.Error)
- #[Swag.Warn("Wrn0002|Wrn0006", Swag.WarnLevel.Disable)
- #global #[Swag.Warn("Wrn0005", Swag.WarnLevel.Enable)]</span></div>
-<p> You can also change the warning behaviors for the whole module in your <a href="#Swag_BuildCfg">BuildCfg</a> </p>
+#[Swag.Warn("Wrn0002|Wrn0006", Swag.WarnLevel.Disable)
+#global #[Swag.Warn("Wrn0005", Swag.WarnLevel.Enable)]</span></div>
+<p>You can also change the warning behaviors for the whole module in your <a href="#Swag_BuildCfg">BuildCfg</a> </p>
 <p>
 <table class="api-item">
 <tr>

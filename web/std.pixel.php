@@ -2351,8 +2351,8 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRgb</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rgb: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></div>
 <p>Just set r, g and b components. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRgb</span>(<span class="SKwd">self</span>, r: <span class="STpe">u8</span>, g: <span class="STpe">u8</span>, b: <span class="STpe">u8</span>)</span></div>
-<p> Alpha will be opaque. </p>
-<p> Alpha will be opaque. </p>
+<p>Alpha will be opaque. </p>
+<p>Alpha will be opaque. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2366,7 +2366,7 @@
 </p>
 <p>Set r,g,b with floats in the range [0 1]. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRgbf</span>(<span class="SKwd">self</span>, r: <span class="STpe">f32</span>, g: <span class="STpe">f32</span>, b: <span class="STpe">f32</span>)</span></div>
-<p> Alpha will be opaque. </p>
+<p>Alpha will be opaque. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3014,7 +3014,7 @@
 </p>
 <p>Get the font corresponding to the style. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, style: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></div>
-<p> If not evailable, get another one. </p>
+<p>If not evailable, get another one. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3151,7 +3151,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_getNumFrames">getNumFrames</a></span></td>
-<td>Returns the number of frames  As Gif does not store it, we need to go threw all images (!). </td>
+<td>Returns the number of frames As Gif does not store it, we need to go threw all images (!). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_init">init</a></span></td>
@@ -3214,7 +3214,7 @@
 </tr>
 </table>
 </p>
-<p>Returns the number of frames  As Gif does not store it, we need to go threw all images (!). </p>
+<p>Returns the number of frames As Gif does not store it, we need to go threw all images (!). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNumFrames</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -3754,7 +3754,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_init">init</a></span></td>
-<td>Initialize image informations  <span class="code-inline">pixels</span> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </td>
+<td>Initialize image informations <span class="code-inline">pixels</span> is set to null, and must be initialized after a call to that function This gives the opportunity to set the pixels with an external buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_invert">invert</a></span></td>
@@ -3786,7 +3786,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_resize">resize</a></span></td>
-<td>Resize image  Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </td>
+<td>Resize image Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_save">save</a></span></td>
@@ -3842,7 +3842,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_toResize">toResize</a></span></td>
-<td>Resize image  Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </td>
+<td>Resize image Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_toSetPixelFormat">toSetPixelFormat</a></span></td>
@@ -4566,7 +4566,7 @@
 </tr>
 </table>
 </p>
-<p>Initialize image informations  <span class="code-inline">pixels</span> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </p>
+<p>Initialize image informations <span class="code-inline">pixels</span> is set to null, and must be initialized after a call to that function This gives the opportunity to set the pixels with an external buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, pf: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -4683,7 +4683,7 @@
 </tr>
 </table>
 </p>
-<p>Resize image  Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </p>
+<p>Resize image Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newWidth: <span class="STpe">s32</span>, newHeight: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span>.<span class="SCst">Raw</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4853,7 +4853,7 @@
 </tr>
 </table>
 </p>
-<p>Resize image  Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </p>
+<p>Resize image Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toResize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, newWidth: <span class="STpe">s32</span>, newHeight: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span>.<span class="SCst">Raw</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
@@ -4908,7 +4908,7 @@
 <p>Macro to visit all pixels of the image in parallel chunks. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">visitPixels</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stride: <span class="STpe">s32</span> = <span class="SNum">1</span>, stmt: <span class="STpe">code</span>)</span></div>
-<p> Exported variables: </p>
+<p>Exported variables: </p>
 <table class="table-markdown">
 <tr><td> pix       </td><td> address of the pixel</td></tr>
 <tr><td> image     </td><td> the processed image</td></tr>
@@ -5237,7 +5237,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_close">close</a></span></td>
-<td>Close the figure  Will add a line or a curve to the first point if necessary. </td>
+<td>Close the figure Will add a line or a curve to the first point if necessary. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_curveTo">curveTo</a></span></td>
@@ -5328,7 +5328,7 @@
 </tr>
 </table>
 </p>
-<p>Close the figure  Will add a line or a curve to the first point if necessary. </p>
+<p>Close the figure Will add a line or a curve to the first point if necessary. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">close</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -5479,7 +5479,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_clean">clean</a></span></td>
-<td>Clean all paths  They must before be flattened. </td>
+<td>Clean all paths They must before be flattened. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_clear">clear</a></span></td>
@@ -5499,11 +5499,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_offset">offset</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
-<td>Call fast offset on all paths  They must before be flattened. </td>
+<td>Call fast offset on all paths They must before be flattened. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_offset">offset</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="SCst">JoinStyle</span>, <span class="STpe">f32</span>)</span></td>
-<td>Call quality offset on all paths  They must before be flattened. </td>
+<td>Call quality offset on all paths They must before be flattened. </td>
 </tr>
 </table>
 <p>
@@ -5517,7 +5517,7 @@
 </tr>
 </table>
 </p>
-<p>Clean all paths  They must before be flattened. </p>
+<p>Clean all paths They must before be flattened. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clean</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -5581,9 +5581,9 @@
 </tr>
 </table>
 </p>
-<p>Call fast offset on all paths  They must before be flattened. </p>
+<p>Call fast offset on all paths They must before be flattened. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
-<p>Call quality offset on all paths  They must before be flattened. </p>
+<p>Call quality offset on all paths They must before be flattened. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>, joinStyle: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_JoinStyle">JoinStyle</a></span>, toler: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></div>
 <p>
 <table class="api-item">
@@ -6069,7 +6069,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPath">fillPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> &<span class="SCst">Brush</span>)</span></td>
-<td>Fill the list of paths  clockwise = fill, anti-clockwise = hole. </td>
+<td>Fill the list of paths clockwise = fill, anti-clockwise = hole. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPath">fillPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> &<span class="SCst">Color</span>)</span></td>
@@ -6363,7 +6363,7 @@
 <li><span class="code-inline">lineSize</span> is the supposed line drawing size</li>
 <li><span class="code-inline">capScale</span> is the supposed LineCapStyle scale</li>
 </ul>
-<p> Returns the width and the length. </p>
+<p>Returns the width and the length. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -6495,7 +6495,7 @@
 </p>
 <p>Draw a rich string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawRichString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, text: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichString">RichString</a></span>, format: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span>, forceCompute = <span class="SKwd">false</span>)</span></div>
-<p> A rich string can be multiline, and accepts  The layout will be computed at the first call, and each time <span class="code-inline">pos</span> has changed </p>
+<p>A rich string can be multiline, and accepts The layout will be computed at the first call, and each time <span class="code-inline">pos</span> has changed </p>
 <p>
 <table class="api-item">
 <tr>
@@ -6628,7 +6628,7 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></div>
 <p>Fill the line path. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></div>
-<p>Fill the list of paths  clockwise = fill, anti-clockwise = hole. </p>
+<p>Fill the list of paths clockwise = fill, anti-clockwise = hole. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pathList: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></div>
 <p>Fill the line path. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pathList: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></div>
@@ -6981,7 +6981,7 @@
 </p>
 <p>Set the paint rotation. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotateTransformInPlace</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, angle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>)</span></div>
-<p> Will rotate around the current transformation position. </p>
+<p>Will rotate around the current transformation position. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -7875,7 +7875,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_compute">compute</a></span></td>
-<td>Compute internal values, like convex/clockwise  Call it once the polygon contains all its points. </td>
+<td>Compute internal values, like convex/clockwise Call it once the polygon contains all its points. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_getClean">getClean</a></span></td>
@@ -7956,7 +7956,7 @@
 </tr>
 </table>
 </p>
-<p>Compute internal values, like convex/clockwise  Call it once the polygon contains all its points. </p>
+<p>Compute internal values, like convex/clockwise Call it once the polygon contains all its points. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -8178,7 +8178,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_getRenderTarget">getRenderTarget</a></span></td>
-<td>Get a render target of the given size  releaseRenderTarget must be called to release it. </td>
+<td>Get a render target of the given size releaseRenderTarget must be called to release it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_getTargetSize">getTargetSize</a></span></td>
@@ -8395,7 +8395,7 @@
 </tr>
 </table>
 </p>
-<p>Get a render target of the given size  releaseRenderTarget must be called to release it. </p>
+<p>Get a render target of the given size releaseRenderTarget must be called to release it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></div>
 <p>
 <table class="api-item">
@@ -8792,11 +8792,11 @@
 <td>If dirty, <span class="code-inline">Compute</span>. </td>
 </tr>
 </table>
-<p> This kind of string is a specific version of [Core.String] but specific for painting. It can contains  some special markers to change it's appearence. </p>
+<p>This kind of string is a specific version of [Core.String] but specific for painting. It can contains some special markers to change it's appearence. </p>
 <div class="code-block"><span class="SCde">&lt;b&gt; this <span class="SInv">is</span> bold&lt;b&gt;
- &lt;p1&gt; this will have special color <span class="SNum">1</span>&lt;p1&gt;
- ...</span></div>
-<p> See <a href="#Pixel_RichString_set">RichString.set</a> for a list of available markers. </p>
+&lt;p1&gt; this will have special color <span class="SNum">1</span>&lt;p1&gt;
+...</span></div>
+<p>See <a href="#Pixel_RichString_set">RichString.set</a> for a list of available markers. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -8848,7 +8848,7 @@
 </p>
 <p>Compute layout. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, force = <span class="SKwd">false</span>)</span></div>
-<p> This will transform the string in a serie of chunks, each chunk having its one style. The string  will only be recomputed if it's dirty (the text has changed) or if <span class="code-inline">force</span> is true. </p>
+<p>This will transform the string in a serie of chunks, each chunk having its one style. The string will only be recomputed if it's dirty (the text has changed) or if <span class="code-inline">force</span> is true. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8862,7 +8862,7 @@
 </p>
 <p>Transform the given string to a naked one. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNaked</span>(str: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></div>
-<p> Will return the string without the format markers. </p>
+<p>Will return the string without the format markers. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8938,7 +8938,7 @@
 </p>
 <p>Associate a string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>)</span></div>
-<p> The string can have multiple lines.  Accepted markers are: </p>
+<p>The string can have multiple lines. Accepted markers are: </p>
 <ul>
 <li><span class="code-inline">&lt;u&gt;</span> =&gt; underline</li>
 <li><span class="code-inline">&lt;b&gt;</span> =&gt; bold</li>

@@ -1681,8 +1681,8 @@
 <div class="right">
 <div class="right-page">
 <h1>Swag Std.Core</h1>
-<p> The <span class="code-inline">Std.core</span> module contains basic types and algorithms.  It is the base of all other modules of the standard <span class="code-inline">Std</span> workspace. </p>
-<p> You will find collections like <a href="#Core_Array">Array</a> or <a href="#Core_HashTable">HashTable</a>, a dynamic <a href="#Core_String">String</a> and so on. </p>
+<p>The <span class="code-inline">Std.core</span> module contains basic types and algorithms. It is the base of all other modules of the standard <span class="code-inline">Std</span> workspace. </p>
+<p>You will find collections like <a href="#Core_Array">Array</a> or <a href="#Core_HashTable">HashTable</a>, a dynamic <a href="#Core_String">String</a> and so on. </p>
 <h1>Content</h1>
 <p>
 <table class="api-item">
@@ -2044,11 +2044,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceAddress">emplaceAddress</a></span></td>
-<td>Reserve room at the end of the array for <span class="code-inline">num</span> elements, but does not  initialize them. Returns the address of the first element. </td>
+<td>Reserve room at the end of the array for <span class="code-inline">num</span> elements, but does not initialize them. Returns the address of the first element. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceAt">emplaceAt</a></span></td>
-<td>Move some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the values are moved at the end of the array.  Order is preserved. </td>
+<td>Move some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are moved at the end of the array. Order is preserved. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceInitAddress">emplaceInitAddress</a></span></td>
@@ -2072,15 +2072,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, &&<span class="SCst">T</span>)</span></td>
-<td>Move a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the value is added at the end of the array.  Order is preserved. </td>
+<td>Move a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="SCst">T</span>)</span></td>
-<td>Insert a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the value is added at the end of the array.  Order is preserved. </td>
+<td>Insert a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
-<td>Insert some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the values are added at the end of the array.  Order is preserved. </td>
+<td>Insert some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are added at the end of the array. Order is preserved. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_isEmpty">isEmpty</a></span></td>
@@ -2104,7 +2104,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">V</span>)</span></td>
-<td>Remove the given <span class="code-inline">value</span>  If not found, does nothing. </td>
+<td>Remove the given <span class="code-inline">value</span> If not found, does nothing. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
@@ -2124,7 +2124,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_removeOrdered">removeOrdered</a></span></td>
-<td>Remove the given <span class="code-inline">value</span>  If not found, does nothing. </td>
+<td>Remove the given <span class="code-inline">value</span> If not found, does nothing. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_reserve">reserve</a></span></td>
@@ -2333,7 +2333,7 @@
 </tr>
 </table>
 </p>
-<p>Reserve room at the end of the array for <span class="code-inline">num</span> elements, but does not  initialize them. Returns the address of the first element. </p>
+<p>Reserve room at the end of the array for <span class="code-inline">num</span> elements, but does not initialize them. Returns the address of the first element. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
@@ -2346,7 +2346,7 @@
 </tr>
 </table>
 </p>
-<p>Move some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the values are moved at the end of the array.  Order is preserved. </p>
+<p>Move some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are moved at the end of the array. Order is preserved. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, values: [..] <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2361,7 +2361,7 @@
 </p>
 <p>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst">T</span></span></div>
-<p> Returns the address of the first element </p>
+<p>Returns the address of the first element </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2414,7 +2414,7 @@
 </p>
 <p>Ensure the Array is big enough to store at least <span class="code-inline">newCount</span> elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
-<p> The number of valid elements does not change. </p>
+<p>The number of valid elements does not change. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2426,11 +2426,11 @@
 </tr>
 </table>
 </p>
-<p>Move a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the value is added at the end of the array.  Order is preserved. </p>
+<p>Move a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: &&<span class="SCst">T</span>)</span></div>
-<p>Insert a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the value is added at the end of the array.  Order is preserved. </p>
+<p>Insert a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">T</span>)</span></div>
-<p>Insert some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the values are added at the end of the array.  Order is preserved. </p>
+<p>Insert some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are added at the end of the array. Order is preserved. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2582,7 +2582,7 @@
 <p>Visit every elements of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
-<p> Visiting by address and in reverse order is supported. </p>
+<p>Visiting by address and in reverse order is supported. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2621,7 +2621,7 @@
 </p>
 <p>Returns a reference to a value given coordinate. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref1</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">u64</span>)-&gt;&<span class="SCst">T</span></span></div>
-<p> This is to use the array as an array with 2 dimensions. </p>
+<p>This is to use the array as an array with 2 dimensions. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2635,7 +2635,7 @@
 </p>
 <p>Returns a reference to a value given 2 coordinates and a width. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref2</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">u64</span>, y: <span class="STpe">u64</span>, w: <span class="STpe">u64</span>)-&gt;&<span class="SCst">T</span></span></div>
-<p> This is to use the array as an array with 2 dimensions. </p>
+<p>This is to use the array as an array with 2 dimensions. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2647,7 +2647,7 @@
 </tr>
 </table>
 </p>
-<p>Remove the given <span class="code-inline">value</span>  If not found, does nothing. </p>
+<p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">V</span>)</span></div>
 <p>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, num: <span class="STpe">u64</span>)</span></div>
@@ -2664,7 +2664,7 @@
 </p>
 <p>Remove an element at <span class="code-inline">index</span> by replacing it with the last element. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)</span></div>
-<p> Order is <b>not preserved</b> </p>
+<p>Order is <b>not preserved</b> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2678,7 +2678,7 @@
 </p>
 <p>Remove <span class="code-inline">numValues</span> elements at <span class="code-inline">index</span> by shifting all others. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
-<p> Order is preserved </p>
+<p>Order is preserved </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2703,7 +2703,7 @@
 </tr>
 </table>
 </p>
-<p>Remove the given <span class="code-inline">value</span>  If not found, does nothing. </p>
+<p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2718,7 +2718,7 @@
 </p>
 <p>Reserve room for <span class="code-inline">newCapacity</span> elements without changing the array count. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
-<p> The number of valid elements does not change. </p>
+<p>The number of valid elements does not change. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3293,7 +3293,7 @@
 </tr>
 </table>
 </p>
-<p>Manages a compact array of bit values, which are represented as booleans, where <span class="code-inline">true</span> indicates that  the bit is on (1) and <span class="code-inline">false</span> indicates the bit is off (0). </p>
+<p>Manages a compact array of bit values, which are represented as booleans, where <span class="code-inline">true</span> indicates that the bit is on (1) and <span class="code-inline">false</span> indicates the bit is off (0). </p>
 <table class="table-enumeration">
 <tr>
 <td>buffer</td>
@@ -3399,7 +3399,7 @@
 </p>
 <p>Performs the bitwise AND operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">andWith</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></div>
-<p> The current <span class="code-inline">BitArray</span> will be modified to store the result of the bitwise AND operation. </p>
+<p>The current <span class="code-inline">BitArray</span> will be modified to store the result of the bitwise AND operation. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3519,7 +3519,7 @@
 </p>
 <p>Performs the bitwise OR operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">orWith</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></div>
-<p> The current BitArray will be modified to store the result of the bitwise OR operation. </p>
+<p>The current BitArray will be modified to store the result of the bitwise OR operation. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3535,7 +3535,7 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, maxBits: <span class="STpe">u64</span>)</span></div>
 <p>Reserve the given amount of bits and set an initial value to all bits. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, maxBits: <span class="STpe">u64</span>, initialValue: <span class="STpe">bool</span>)</span></div>
-<p> The bits will <b>not</b> be initialized. </p>
+<p>The bits will <b>not</b> be initialized. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3575,7 +3575,7 @@
 </p>
 <p>Performs the bitwise XOR operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xorWith</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></div>
-<p> The current BitArray will be modified to store the result of the bitwise XOR operation. </p>
+<p>The current BitArray will be modified to store the result of the bitwise XOR operation. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3945,7 +3945,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_CommandLine_splitArguments">splitArguments</a></span></td>
-<td>Clean and split a list of arguments  -option:value or -option=value =&gt; -option value. </td>
+<td>Clean and split a list of arguments -option:value or -option=value =&gt; -option value. </td>
 </tr>
 </table>
 <h3>Attributes</h3>
@@ -3982,8 +3982,8 @@
 </p>
 <p>The <span class="code-inline">IsSet</span> generic struct is a mirror of the user input struct. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_CommandLine_IsSet">IsSet</a></span>(<span class="SCst">T</span>)</span></div>
-<p> Each field has the same name as the original one, but with a <span class="code-inline">bool</span> type. </p>
-<p> It will indicate, after the command line parsing, that the corresponding argument has been  specified or not by the user. </p>
+<p>Each field has the same name as the original one, but with a <span class="code-inline">bool</span> type. </p>
+<p>It will indicate, after the command line parsing, that the corresponding argument has been specified or not by the user. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4076,7 +4076,7 @@
 </tr>
 </table>
 </p>
-<p>Clean and split a list of arguments  -option:value or -option=value =&gt; -option value. </p>
+<p>Clean and split a list of arguments -option:value or -option=value =&gt; -option value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitArguments</span>(args: <span class="SKwd">const</span> [..] <span class="STpe">string</span>, options: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_CommandLine">CommandLine</a></span>.<span class="SCst"><a href="#Core_CommandLine_ParseOptions">ParseOptions</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4406,7 +4406,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_Deflate_init">init</a></span></td>
-<td>Initialize the compressor  Can be called multiple times. </td>
+<td>Initialize the compressor Can be called multiple times. </td>
 </tr>
 </table>
 <p>
@@ -4524,7 +4524,7 @@
 </tr>
 </table>
 </p>
-<p>Initialize the compressor  Can be called multiple times. </p>
+<p>Initialize the compressor Can be called multiple times. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, level = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span>.<span class="SCst">Default</span>, strategy = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionStrategy">CompressionStrategy</a></span>.<span class="SCst">Default</span>, flags = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionFlags">CompressionFlags</a></span>.<span class="SCst">Default</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4616,7 +4616,7 @@
 </tr>
 </table>
 </p>
-<p>Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when  the buffer needs to increase its size. This is the main difference with Array. </p>
+<p>Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when the buffer needs to increase its size. This is the main difference with Array. </p>
 <table class="table-enumeration">
 <tr>
 <td>allocator</td>
@@ -4663,7 +4663,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_addBytes">addBytes</a></span></td>
-<td>Append a slice of bytes to the buffer  If <span class="code-inline">contiguous</span> is false, the slice will be divided in chunks if necessary. </td>
+<td>Append a slice of bytes to the buffer If <span class="code-inline">contiguous</span> is false, the slice will be divided in chunks if necessary. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_addNative">addNative</a></span></td>
@@ -4760,7 +4760,7 @@
 </tr>
 </table>
 </p>
-<p>Append a slice of bytes to the buffer  If <span class="code-inline">contiguous</span> is false, the slice will be divided in chunks if necessary. </p>
+<p>Append a slice of bytes to the buffer If <span class="code-inline">contiguous</span> is false, the slice will be divided in chunks if necessary. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBytes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, bytes: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, contiguous = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4892,7 +4892,7 @@
 </p>
 <p>Move the content of the buffer to the String if possible. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveToString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p> If a direct move is not possible because the buffer contains more than on bucket, then a copy will be made instead. </p>
+<p>If a direct move is not possible because the buffer contains more than on bucket, then a copy will be made instead. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4945,7 +4945,7 @@
 </p>
 <p>Associate an allocator with the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAllocator</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span>)</span></div>
-<p> The allocator can only be changed if the buffer has no pending buckets. </p>
+<p>The allocator can only be changed if the buffer has no pending buckets. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5011,7 +5011,7 @@
 </p>
 <p>Convert to a slice <i>only</i> if the buffer is linear, or return null. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] <span class="STpe">u8</span></span></div>
-<p> See <a href="#Core_ConcatBuffer_makeLinear">ConcatBuffer.makeLinear</a> </p>
+<p>See <a href="#Core_ConcatBuffer_makeLinear">ConcatBuffer.makeLinear</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5025,7 +5025,7 @@
 </p>
 <p>Convert the buffer to a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p> A copy will be made, so the buffer is still valid after the call.  See <a href="#Core_ConcatBuffer_moveToString">ConcatBuffer.moveToString</a> </p>
+<p>A copy will be made, so the buffer is still valid after the call. See <a href="#Core_ConcatBuffer_moveToString">ConcatBuffer.moveToString</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5107,7 +5107,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Console_fatal">fatal</a></span></td>
-<td>Fatal error  Exit the process with code -1. </td>
+<td>Fatal error Exit the process with code -1. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Console_lock">lock</a></span></td>
@@ -5143,7 +5143,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Console_silent">silent</a></span></td>
-<td>Disable console output. This is a counter, so can be called  multiple times with the same <span class="code-inline">value</span>  Like any other console functions, this is not thread-safe  =&gt; call <span class="code-inline">lock</span> before if necessary, and <span class="code-inline">unlock</span> after. </td>
+<td>Disable console output. This is a counter, so can be called multiple times with the same <span class="code-inline">value</span> Like any other console functions, this is not thread-safe =&gt; call <span class="code-inline">lock</span> before if necessary, and <span class="code-inline">unlock</span> after. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Console_unlock">unlock</a></span></td>
@@ -5234,7 +5234,7 @@
 </tr>
 </table>
 </p>
-<p>Fatal error  Exit the process with code -1. </p>
+<p>Fatal error Exit the process with code -1. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fatal</span>(msg: <span class="STpe">string</span>, args: ...)</span></div>
 <p>
 <table class="api-item">
@@ -5249,7 +5249,7 @@
 </p>
 <p>Use to access console with multiple threads. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lock</span>()</span></div>
-<p> No console function is thread safe, so it is the user responsability  to lock the console when necessary </p>
+<p>No console function is thread safe, so it is the user responsability to lock the console when necessary </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5352,7 +5352,7 @@
 </tr>
 </table>
 </p>
-<p>Disable console output. This is a counter, so can be called  multiple times with the same <span class="code-inline">value</span>  Like any other console functions, this is not thread-safe  =&gt; call <span class="code-inline">lock</span> before if necessary, and <span class="code-inline">unlock</span> after. </p>
+<p>Disable console output. This is a counter, so can be called multiple times with the same <span class="code-inline">value</span> Like any other console functions, this is not thread-safe =&gt; call <span class="code-inline">lock</span> before if necessary, and <span class="code-inline">unlock</span> after. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">silent</span>(value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
@@ -5455,7 +5455,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Debugger_attach">attach</a></span></td>
-<td>Try to attach to a debugger by calling "vsjitdebugger.exe"  If it works, it will open a dialog box to pickup a visual studio instance. </td>
+<td>Try to attach to a debugger by calling "vsjitdebugger.exe" If it works, it will open a dialog box to pickup a visual studio instance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Debugger_debugBreak">debugBreak</a></span></td>
@@ -5481,7 +5481,7 @@
 </tr>
 </table>
 </p>
-<p>Try to attach to a debugger by calling "vsjitdebugger.exe"  If it works, it will open a dialog box to pickup a visual studio instance. </p>
+<p>Try to attach to a debugger by calling "vsjitdebugger.exe" If it works, it will open a dialog box to pickup a visual studio instance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">attach</span>() <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -6328,7 +6328,7 @@
 </p>
 <p>Make a string persistent for errors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mkString</span>(str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
-<p> That kind of string can be stored in an error struct. </p>
+<p>That kind of string can be stored in an error struct. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -7061,7 +7061,7 @@
 </p>
 <p>Read one line of text. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: &<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span>)-&gt;<span class="STpe">bool</span></span></div>
-<p> Returns false if the end of the stream has been reached. </p>
+<p>Returns false if the end of the stream has been reached. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -7460,7 +7460,7 @@
 </p>
 <p>Count the number of valid <span class="code-inline">%</span> placeholders in the string format. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">countPercent</span>(fmt: <span class="STpe">string</span>)-&gt;<span class="STpe">u32</span></span></div>
-<p> Note that <span class="code-inline">%%</span> will not be counted, as this represents the <span class="code-inline">%</span> character </p>
+<p>Note that <span class="code-inline">%%</span> will not be counted, as this represents the <span class="code-inline">%</span> character </p>
 <p>
 <table class="api-item">
 <tr>
@@ -7474,7 +7474,7 @@
 </p>
 <p>Format a string in <span class="code-inline">dest</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">replaceString</span>(dest: *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span>, fmt: <span class="STpe">string</span>, values: ...)</span></div>
-<p> Can be a lot faster than the convenient version which returns a String. </p>
+<p>Can be a lot faster than the convenient version which returns a String. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -7492,7 +7492,7 @@
 <p>String interpolation. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">toInterp</span>(exp: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p> Format is <span class="code-inline">{&lt;value to interpolate&gt;:format}</span> </p>
+<p>Format is <span class="code-inline">{&lt;value to interpolate&gt;:format}</span> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -7506,9 +7506,9 @@
 </p>
 <p>Format a string and returns the result as a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(fmt: <span class="STpe">string</span>, values: ...)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p> Use <span class="code-inline">%</span> as a place holder for a value. </p>
+<p>Use <span class="code-inline">%</span> as a place holder for a value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">let</span> x = <span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"my life is %"</span>, myLife)</span></div>
-<p> <span class="code-inline">%</span> can be followed by a format option between <span class="code-inline">{}</span>. </p>
+<p><span class="code-inline">%</span> can be followed by a format option between <span class="code-inline">{}</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">let</span> x = <span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"my life in hexadecimal is %{X}"</span>, myLife)</span></div>
 <ul>
 <li>See <a href="#Core_StrConv_ConvertFormatInt_setFormat">ConvertFormatInt.setFormat</a> for some valid format options</li>
@@ -8719,8 +8719,8 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">K</span>, value: &&<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst">K</span>, <span class="SCst">V</span>)</span></div>
 <p>Add a new key value pair. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">K</span>, value: <span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst">K</span>, <span class="SCst">V</span>)</span></div>
-<p> If the key already exists, then the value will be replaced if <span class="code-inline">updateValue</span> is true. </p>
-<p> If the key already exists, then the value will be replaced if <span class="code-inline">updateValue</span> is true. </p>
+<p>If the key already exists, then the value will be replaced if <span class="code-inline">updateValue</span> is true. </p>
+<p>If the key already exists, then the value will be replaced if <span class="code-inline">updateValue</span> is true. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8773,7 +8773,7 @@
 </p>
 <p>Find the given key, and returns the corresponding entry. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">find</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, key: <span class="SCst">K</span>)-&gt;*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst">K</span>, <span class="SCst">V</span>)</span></div>
-<p> Returns null if the key is not there. </p>
+<p>Returns null if the key is not there. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8813,7 +8813,7 @@
 </p>
 <p>Find the given key, and returns the corresponding value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, key: <span class="SCst">K</span>, val: <span class="SCst">V</span>)-&gt;<span class="SCst">V</span></span></div>
-<p> If the key does not exist, then it will return <span class="code-inline">val</span> instead </p>
+<p>If the key does not exist, then it will return <span class="code-inline">val</span> instead </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8861,7 +8861,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SCst">Core</span>.__hashtable_tpl3_34'(<span class="SCst">K</span>, <span class="SCst">V</span>))</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SCst">Core</span>.__hashtable_tpl3_33'(<span class="SCst">K</span>, <span class="SCst">V</span>))</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9027,7 +9027,7 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Input_GamePadState"><span class="SCst">GamePadState</span></a></td>
-<td>Represents specific information about the state of the controller,  including the current state of buttons and sticks. </td>
+<td>Represents specific information about the state of the controller, including the current state of buttons and sticks. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Input_Keyboard"><span class="SCst">Keyboard</span></a></td>
@@ -9409,7 +9409,7 @@
 </tr>
 </table>
 </p>
-<p>Represents specific information about the state of the controller,  including the current state of buttons and sticks. </p>
+<p>Represents specific information about the state of the controller, including the current state of buttons and sticks. </p>
 <table class="table-enumeration">
 <tr>
 <td>pressed</td>
@@ -11162,7 +11162,7 @@
 <p>Do a for loop in parallel chunks. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">parallelFor</span>(count: <span class="STpe">u32</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stmt: <span class="STpe">code</span>)</span></div>
-<p> Exposed variables:  - #alias0: current loop index  - #alias1: userData as passed to the macro </p>
+<p>Exposed variables: - #alias0: current loop index - #alias1: userData as passed to the macro </p>
 <p>
 <table class="api-item">
 <tr>
@@ -11177,7 +11177,7 @@
 <p>Operate on a range in parallel chunks. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">parallelVisit</span>(range: [..] <span class="SCst">T</span>, offset: <span class="STpe">u32</span> = <span class="SNum">1</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stmt: <span class="STpe">code</span>)</span></div>
-<p> Exposed variables:  - buffer: address of the element of the range to process  - data:   userData as passed to the macro </p>
+<p>Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro </p>
 <p>
 <table class="api-item">
 <tr>
@@ -11250,11 +11250,11 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Latin1_compare">compare</a></span></td>
-<td>Compare two utf8 strings, dealing only with latin1 table  Returns -1, 0 or 1. </td>
+<td>Compare two utf8 strings, dealing only with latin1 table Returns -1, 0 or 1. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Latin1_compareNatural">compareNatural</a></span></td>
-<td>Compare two utf8 strings in a natural way, dealing only with latin1 table  Returns -1, 0 or 1. </td>
+<td>Compare two utf8 strings in a natural way, dealing only with latin1 table Returns -1, 0 or 1. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Latin1_isAscii">isAscii</a></span></td>
@@ -11417,7 +11417,7 @@
 </tr>
 </table>
 </p>
-<p>Compare two utf8 strings, dealing only with latin1 table  Returns -1, 0 or 1. </p>
+<p>Compare two utf8 strings, dealing only with latin1 table Returns -1, 0 or 1. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compare</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, dst: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, ignoreCase = <span class="SKwd">false</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
@@ -11430,9 +11430,9 @@
 </tr>
 </table>
 </p>
-<p>Compare two utf8 strings in a natural way, dealing only with latin1 table  Returns -1, 0 or 1. </p>
+<p>Compare two utf8 strings in a natural way, dealing only with latin1 table Returns -1, 0 or 1. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compareNatural</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, dst: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, ignoreCase = <span class="SKwd">false</span>)-&gt;<span class="STpe">s32</span></span></div>
-<p> :LICENCE  This code is based on <span class="code-inline">natsort</span> by Martin Pool (https://github.com/sourcefrog/natsort)  The original code has been modified for Swag  See LICENCE.md for the corresponding licence. </p>
+<p>:LICENCE This code is based on <span class="code-inline">natsort</span> by Martin Pool (https://github.com/sourcefrog/natsort) The original code has been modified for Swag See LICENCE.md for the corresponding licence. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -11845,7 +11845,7 @@
 <li><span class="code-inline">#alias1</span> is the node</li>
 <li><span class="code-inline">#alias2</span> is the index</li>
 </ul>
-<p> Visiting by pointer and in reverse order is supported </p>
+<p>Visiting by pointer and in reverse order is supported </p>
 <p>
 <table class="api-item">
 <tr>
@@ -12430,15 +12430,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_makeRepeat16">makeRepeat16</a></span></td>
-<td>Make a 16 bits by repeating a given byte  0x20 =&gt; 0x2020. </td>
+<td>Make a 16 bits by repeating a given byte 0x20 =&gt; 0x2020. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_makeRepeat32">makeRepeat32</a></span></td>
-<td>Make a 32 bits by repeating a given byte  0x20 =&gt; 0x20202020. </td>
+<td>Make a 32 bits by repeating a given byte 0x20 =&gt; 0x20202020. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_makeRepeat64">makeRepeat64</a></span></td>
-<td>Make a 64 bits by repeating a given byte  0x20 =&gt; 0x20202020_20202020. </td>
+<td>Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_map">map</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
@@ -13547,7 +13547,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_constrainIn">constrainIn</a></span></td>
-<td>Constrain the rectangle to be inside another one, without changing its size  (so the other rectangle must be bigger). </td>
+<td>Constrain the rectangle to be inside another one, without changing its size (so the other rectangle must be bigger). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
@@ -13761,7 +13761,7 @@
 </tr>
 </table>
 </p>
-<p>Constrain the rectangle to be inside another one, without changing its size  (so the other rectangle must be bigger). </p>
+<p>Constrain the rectangle to be inside another one, without changing its size (so the other rectangle must be bigger). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">constrainIn</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -13836,7 +13836,7 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>Creates a rectangle that represents the intersetion between <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(a: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>, b: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
-<p> If there is no intersection, Zero is returned. </p>
+<p>If there is no intersection, Zero is returned. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14302,7 +14302,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_get">get</a></span></td>
-<td>Get the variant value of the given type  Will assert if the current type does not match. </td>
+<td>Get the variant value of the given type Will assert if the current type does not match. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_set">set</a></span></td>
@@ -14372,7 +14372,7 @@
 </tr>
 </table>
 </p>
-<p>Get the variant value of the given type  Will assert if the current type does not match. </p>
+<p>Get the variant value of the given type Will assert if the current type does not match. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">TN</span></span></div>
 <p>
 <table class="api-item">
@@ -14594,7 +14594,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_polyContains">polyContains</a></span></td>
-<td>Returns true if the given point is inside the polygon  PNPoly by W. Randolph Franklin. </td>
+<td>Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_rotate">rotate</a></span></td>
@@ -14723,7 +14723,7 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Returns the perpendicular vector in the 2D plane. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, axis: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
-<p> <span class="code-inline">axis</span> will give the sign of the result </p>
+<p><span class="code-inline">axis</span> will give the sign of the result </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14958,12 +14958,12 @@
 </p>
 <p>Returns the minimal segment between two segments (and the minimal distance). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nearestPointsSegSeg</span>(p0: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, p1: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, q0: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, q1: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;{a:<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>,b:<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>,dist:<span class="STpe">f32</span>}</span></div>
-<p style="white-space: break-spaces"> David Eberly, Geometric Tools, Redmond WA 98052
- Copyright (c) 1998-2022
- Distributed under the Boost Software License, Version 1.0.
- https://www.boost.org/LICENSE_1_0.txt
- https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt
- https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
+<p style="white-space: break-spaces">David Eberly, Geometric Tools, Redmond WA 98052
+Copyright (c) 1998-2022
+Distributed under the Boost Software License, Version 1.0.
+https://www.boost.org/LICENSE_1_0.txt
+https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt
+https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <p>
 <table class="api-item">
 <tr>
@@ -15064,7 +15064,7 @@
 </tr>
 </table>
 </p>
-<p>Returns true if the given point is inside the polygon  PNPoly by W. Randolph Franklin. </p>
+<p>Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">polyContains</span>(poly: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>), pt: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -16138,7 +16138,7 @@
 </tr>
 </table>
 </p>
-<p>Make a 16 bits by repeating a given byte  0x20 =&gt; 0x2020. </p>
+<p>Make a 16 bits by repeating a given byte 0x20 =&gt; 0x2020. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeRepeat16</span>(v: <span class="STpe">u8</span>)-&gt;<span class="STpe">u16</span></span></div>
 <p>
 <table class="api-item">
@@ -16151,7 +16151,7 @@
 </tr>
 </table>
 </p>
-<p>Make a 32 bits by repeating a given byte  0x20 =&gt; 0x20202020. </p>
+<p>Make a 32 bits by repeating a given byte 0x20 =&gt; 0x20202020. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeRepeat32</span>(v: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
@@ -16164,7 +16164,7 @@
 </tr>
 </table>
 </p>
-<p>Make a 64 bits by repeating a given byte  0x20 =&gt; 0x20202020_20202020. </p>
+<p>Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeRepeat64</span>(v: <span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -16941,7 +16941,7 @@
 <tr><td> .                </td><td> any rune</td></tr>
 <tr><td> ^&lt;expr&gt;          </td><td> start of buffer</td></tr>
 <tr><td> &lt;expr&gt;$          </td><td> end of buffer</td></tr>
-<tr><td> a&vert;b             </td><td> a or b</td></tr>
+<tr><td> a<br/></td><td>b             </td></tr>
 <tr><td> [abc]            </td><td> match any in list</td></tr>
 <tr><td> [a-zA-Z]         </td><td> match any in range</td></tr>
 <tr><td> [[:digit:]]      </td><td> [0-9]</td></tr>
@@ -17138,7 +17138,7 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">match</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Compile and match the expression. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">match</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, expr: <span class="STpe">string</span>, str: <span class="STpe">string</span>, ignoreCase = <span class="SKwd">false</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
-<p> Should have been compiled before. </p>
+<p>Should have been compiled before. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -17152,7 +17152,7 @@
 </p>
 <p>You can get a capture group value by using the derefence syntax. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span></span></div>
-<p> Returns <span class="code-inline">null</span> if the capture group does not exist </p>
+<p>Returns <span class="code-inline">null</span> if the capture group does not exist </p>
 <p>
 <table class="api-item">
 <tr>
@@ -17166,7 +17166,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_combine">combine</a></span></td>
-<td>Combine multiple paths into one, by adding a directory separator  between them if necessary. </td>
+<td>Combine multiple paths into one, by adding a directory separator between them if necessary. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_equals">equals</a></span></td>
@@ -17182,11 +17182,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_getExtension">getExtension</a></span></td>
-<td>Returns the file name extension, including the <span class="code-inline">.</span> character  Returns null if no extension was found. </td>
+<td>Returns the file name extension, including the <span class="code-inline">.</span> character Returns null if no extension was found. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_getExtensionLowerCase">getExtensionLowerCase</a></span></td>
-<td>Returns the file name extension, including the <span class="code-inline">.</span> character, in lower case  Returns null if no extension was found. </td>
+<td>Returns the file name extension, including the <span class="code-inline">.</span> character, in lower case Returns null if no extension was found. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_getFileName">getFileName</a></span></td>
@@ -17218,7 +17218,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_isRooted">isRooted</a></span></td>
-<td>Tests if the given path contains a root. A path is considered rooted  if it starts with a directory separator or a drive letter and a colon. </td>
+<td>Tests if the given path contains a root. A path is considered rooted if it starts with a directory separator or a drive letter and a colon. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_isValidFileName">isValidFileName</a></span></td>
@@ -17230,7 +17230,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_normalize">normalize</a></span></td>
-<td>Normalize path  <span class="code-inline">' are replaced with </span>/' as this is the std norm for paths. </td>
+<td>Normalize path <span class="code-inline">' are replaced with </span>/' as this is the std norm for paths. </td>
 </tr>
 </table>
 <p>
@@ -17244,7 +17244,7 @@
 </tr>
 </table>
 </p>
-<p>Combine multiple paths into one, by adding a directory separator  between them if necessary. </p>
+<p>Combine multiple paths into one, by adding a directory separator between them if necessary. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">combine</span>(fullnames: <span class="STpe">string</span>...)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
@@ -17296,7 +17296,7 @@
 </tr>
 </table>
 </p>
-<p>Returns the file name extension, including the <span class="code-inline">.</span> character  Returns null if no extension was found. </p>
+<p>Returns the file name extension, including the <span class="code-inline">.</span> character Returns null if no extension was found. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getExtension</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -17309,7 +17309,7 @@
 </tr>
 </table>
 </p>
-<p>Returns the file name extension, including the <span class="code-inline">.</span> character, in lower case  Returns null if no extension was found. </p>
+<p>Returns the file name extension, including the <span class="code-inline">.</span> character, in lower case Returns null if no extension was found. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getExtensionLowerCase</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
@@ -17413,7 +17413,7 @@
 </tr>
 </table>
 </p>
-<p>Tests if the given path contains a root. A path is considered rooted  if it starts with a directory separator or a drive letter and a colon. </p>
+<p>Tests if the given path contains a root. A path is considered rooted if it starts with a directory separator or a drive letter and a colon. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isRooted</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -17452,7 +17452,7 @@
 </tr>
 </table>
 </p>
-<p>Normalize path  <span class="code-inline">' are replaced with </span>/' as this is the std norm for paths. </p>
+<p>Normalize path <span class="code-inline">' are replaced with </span>/' as this is the std norm for paths. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(fullname: *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -17714,7 +17714,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF32">nextF32</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
-<td>Returns a float value in a given range  <span class="code-inline">max</span> is excluded. </td>
+<td>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF64">nextF64</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
@@ -17722,7 +17722,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF64">nextF64</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
-<td>Returns a float value in a given range  <span class="code-inline">max</span> is excluded. </td>
+<td>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS32">nextS32</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
@@ -17730,7 +17730,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS32">nextS32</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></td>
-<td>Returns a signed random value in a given range  <span class="code-inline">max</span> is excluded. </td>
+<td>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS64">nextS64</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
@@ -17738,7 +17738,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS64">nextS64</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">s64</span>, <span class="STpe">s64</span>)</span></td>
-<td>Returns a signed random value in a given range  <span class="code-inline">max</span> is excluded. </td>
+<td>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU32">nextU32</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
@@ -17746,7 +17746,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU32">nextU32</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
-<td>Returns an unsigned random value in a given range  <span class="code-inline">max</span> is excluded. </td>
+<td>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU64">nextU64</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
@@ -17754,7 +17754,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU64">nextU64</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
-<td>Returns an unsigned random value in a given range  <span class="code-inline">max</span> is excluded. </td>
+<td>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_seedNow">seedNow</a></span></td>
@@ -17799,7 +17799,7 @@
 </p>
 <p>Range is [0..1[, so 1.0 will never be returned. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
-<p>Returns a float value in a given range  <span class="code-inline">max</span> is excluded. </p>
+<p>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
@@ -17814,7 +17814,7 @@
 </p>
 <p>Range is [0..1[, so 1.0 will never be returned. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f64</span></span></div>
-<p>Returns a float value in a given range  <span class="code-inline">max</span> is excluded. </p>
+<p>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">f64</span>, max: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
@@ -17829,7 +17829,7 @@
 </p>
 <p>Returns a signed 32 bits random value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span></span></div>
-<p>Returns a signed random value in a given range  <span class="code-inline">max</span> is excluded. </p>
+<p>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">s32</span>, max: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
@@ -17844,7 +17844,7 @@
 </p>
 <p>Returns a signed 64 bits random value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s64</span></span></div>
-<p>Returns a signed random value in a given range  <span class="code-inline">max</span> is excluded. </p>
+<p>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">s64</span>, max: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
@@ -17859,7 +17859,7 @@
 </p>
 <p>Returns an unsigned 32 bits random value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
-<p>Returns an unsigned random value in a given range  <span class="code-inline">max</span> is excluded. </p>
+<p>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">u32</span>, max: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
@@ -17874,7 +17874,7 @@
 </p>
 <p>Returns an unsigned 64 bits random value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
-<p>Returns an unsigned random value in a given range  <span class="code-inline">max</span> is excluded. </p>
+<p>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">u64</span>, max: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -17994,15 +17994,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Reflection_getEnumName">getEnumName</a></span></td>
-<td>Returns the enum value name corresponding to the value pointed by <span class="code-inline">valueAddr</span>  Can have multiple names if the enum is tagged with #[Swag.EnumFlags]. </td>
+<td>Returns the enum value name corresponding to the value pointed by <span class="code-inline">valueAddr</span> Can have multiple names if the enum is tagged with #[Swag.EnumFlags]. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Reflection_getEnumValue">getEnumValue</a></span></td>
-<td>Get information about a specific value in a given enum  Returns null if the value does not exist. </td>
+<td>Get information about a specific value in a given enum Returns null if the value does not exist. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Reflection_getField">getField</a></span></td>
-<td>Get information about a specific field in a given struct  Returns null if the field does not exist. </td>
+<td>Get information about a specific field in a given struct Returns null if the field does not exist. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Reflection_getFieldValue">getFieldValue</a></span></td>
@@ -18010,7 +18010,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Reflection_getMethod">getMethod</a></span></td>
-<td>Get information about a specific mtd in a given struct  Returns null if the mtd does not exist. </td>
+<td>Get information about a specific mtd in a given struct Returns null if the mtd does not exist. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Reflection_hasAttribute">hasAttribute</a></span><span class="SCde">(<span class="SKwd">const</span> *<span class="SCst">TypeInfo</span>, <span class="SKwd">const</span> *<span class="SCst">TypeInfo</span>)</span></td>
@@ -18150,7 +18150,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Reflection_roomInArray">roomInArray</a></span></td>
-<td>Used to add an element in a <span class="code-inline">Core.Array</span> without knowing the type of the element at compile time  but knowing it at runtime (valueType). </td>
+<td>Used to add an element in a <span class="code-inline">Core.Array</span> without knowing the type of the element at compile time but knowing it at runtime (valueType). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Reflection_setFieldValue">setFieldValue</a></span></td>
@@ -18252,7 +18252,7 @@
 </tr>
 </table>
 </p>
-<p>Returns the enum value name corresponding to the value pointed by <span class="code-inline">valueAddr</span>  Can have multiple names if the enum is tagged with #[Swag.EnumFlags]. </p>
+<p>Returns the enum value name corresponding to the value pointed by <span class="code-inline">valueAddr</span> Can have multiple names if the enum is tagged with #[Swag.EnumFlags]. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getEnumName</span>(type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, valueAddr: <span class="SKwd">const</span> *<span class="STpe">void</span>, fullname = <span class="SKwd">true</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
@@ -18265,7 +18265,7 @@
 </tr>
 </table>
 </p>
-<p>Get information about a specific value in a given enum  Returns null if the value does not exist. </p>
+<p>Get information about a specific value in a given enum Returns null if the value does not exist. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getEnumValue</span>(type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, name: <span class="STpe">string</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeValue</span></span></div>
 <p>
 <table class="api-item">
@@ -18278,7 +18278,7 @@
 </tr>
 </table>
 </p>
-<p>Get information about a specific field in a given struct  Returns null if the field does not exist. </p>
+<p>Get information about a specific field in a given struct Returns null if the field does not exist. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getField</span>(type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, name: <span class="STpe">string</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeValue</span></span></div>
 <p>
 <table class="api-item">
@@ -18304,7 +18304,7 @@
 </tr>
 </table>
 </p>
-<p>Get information about a specific mtd in a given struct  Returns null if the mtd does not exist. </p>
+<p>Get information about a specific mtd in a given struct Returns null if the mtd does not exist. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMethod</span>(type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, name: <span class="STpe">string</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeValue</span></span></div>
 <p>
 <table class="api-item">
@@ -18724,7 +18724,7 @@
 </tr>
 </table>
 </p>
-<p>Used to add an element in a <span class="code-inline">Core.Array</span> without knowing the type of the element at compile time  but knowing it at runtime (valueType). </p>
+<p>Used to add an element in a <span class="code-inline">Core.Array</span> without knowing the type of the element at compile time but knowing it at runtime (valueType). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">roomInArray</span>(addr: *<span class="STpe">void</span>, valueType: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>)-&gt;*<span class="STpe">void</span></span></div>
 <p>
 <table class="api-item">
@@ -19531,7 +19531,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Write a full struct. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>) <span class="SKwd">throw</span></span></div>
-<p> Will call <a href="#Core_Serialization_Encoder_start">Encoder.start</a>, <a href="#Core_Serialization_Encoder_writeValue">Encoder.writeValue</a> and <a href="#Core_Serialization_Encoder_end">Encoder.end</a> </p>
+<p>Will call <a href="#Core_Serialization_Encoder_start">Encoder.start</a>, <a href="#Core_Serialization_Encoder_writeValue">Encoder.writeValue</a> and <a href="#Core_Serialization_Encoder_end">Encoder.end</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22069,7 +22069,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Slice_nextPermutation">nextPermutation</a></span></td>
-<td>Get a permutation of the slice  Shuffle the slice until no more permutation is possible, and then returns <span class="code-inline">false</span>.  To obtain all permutations, the slice must be sorted the first time. </td>
+<td>Get a permutation of the slice Shuffle the slice until no more permutation is possible, and then returns <span class="code-inline">false</span>. To obtain all permutations, the slice must be sorted the first time. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Slice_noneOf">noneOf</a></span></td>
@@ -22085,11 +22085,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Slice_sort">sort</a></span><span class="SCde">([..] <span class="SCst">T</span>, <span class="STpe">bool</span>)</span></td>
-<td>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </td>
+<td>Sort the slice, by picking the right algorithm depending on the type and the number of elements. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Slice_sort">sort</a></span><span class="SCde">([..] <span class="SCst">T</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)-><span class="STpe">s32</span>)</span></td>
-<td>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </td>
+<td>Sort the slice, by picking the right algorithm depending on the type and the number of elements. </td>
 </tr>
 </table>
 <p>
@@ -22144,7 +22144,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Returns true if the given slice contains the <span class="code-inline">value</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">containsSorted</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
-<p> The slice must be sorted in ascending order </p>
+<p>The slice must be sorted in ascending order </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22171,7 +22171,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Find <span class="code-inline">value</span> in a slice by performing a linear search. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">findLinear</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">u64</span></span></div>
-<p> O^n, but slice does not have to be sorted.  Returns Swag.U64.Max if not found. </p>
+<p>O^n, but slice does not have to be sorted. Returns Swag.U64.Max if not found. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22185,7 +22185,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Find <span class="code-inline">value</span> in a slice by performing a binary search. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">findSorted</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">u64</span></span></div>
-<p> The slice must be sorted in ascending order  Returns Swag.U64.Max if not found. </p>
+<p>The slice must be sorted in ascending order Returns Swag.U64.Max if not found. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22251,7 +22251,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Get a permutation of the slice  Shuffle the slice until no more permutation is possible, and then returns <span class="code-inline">false</span>.  To obtain all permutations, the slice must be sorted the first time. </p>
+<p>Get a permutation of the slice Shuffle the slice until no more permutation is possible, and then returns <span class="code-inline">false</span>. To obtain all permutations, the slice must be sorted the first time. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">nextPermutation</span>(arr: [..] <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -22303,9 +22303,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </p>
+<p>Sort the slice, by picking the right algorithm depending on the type and the number of elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sort</span>(values: [..] <span class="SCst">T</span>, bigFirst = <span class="SKwd">false</span>)</span></div>
-<p>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </p>
+<p>Sort the slice, by picking the right algorithm depending on the type and the number of elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sort</span>(values: [..] <span class="SCst">T</span>, cb: <span class="SKwd">closure</span>(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
@@ -22411,7 +22411,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">V</span>)</span></td>
-<td>Remove the given <span class="code-inline">value</span>  If not found, does nothing. </td>
+<td>Remove the given <span class="code-inline">value</span> If not found, does nothing. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
@@ -22431,7 +22431,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeOrdered">removeOrdered</a></span></td>
-<td>Remove the given <span class="code-inline">value</span>  If not found, does nothing. </td>
+<td>Remove the given <span class="code-inline">value</span> If not found, does nothing. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_resize">resize</a></span></td>
@@ -22600,7 +22600,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst">T</span></span></div>
-<p> Does not initialize them. Returns the address of the first element </p>
+<p>Does not initialize them. Returns the address of the first element </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22614,7 +22614,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Move some values at the given index. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, values: [..] <span class="SCst">T</span>)</span></div>
-<p> If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are moved at the end of the array.  Order is preserved. </p>
+<p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are moved at the end of the array. Order is preserved. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22628,7 +22628,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst">T</span></span></div>
-<p> Returns the address of the first element </p>
+<p>Returns the address of the first element </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22685,9 +22685,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">T</span>)</span></div>
 <p>Insert some values at the given index. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></div>
-<p> If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array.  Order is preserved. </p>
-<p> If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array.  Order is preserved. </p>
-<p> If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are added at the end of the array.  Order is preserved. </p>
+<p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
+<p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
+<p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are added at the end of the array. Order is preserved. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22826,7 +22826,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Visit every elements of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
-<p> Visiting by pointer and in reverse order is supported </p>
+<p>Visiting by pointer and in reverse order is supported </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22851,7 +22851,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Remove the given <span class="code-inline">value</span>  If not found, does nothing. </p>
+<p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">V</span>)</span></div>
 <p>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, num: <span class="STpe">u64</span>)</span></div>
@@ -22868,7 +22868,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Remove an element at <span class="code-inline">index</span> by replacing it with the last element. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)</span></div>
-<p> Order is not preserved </p>
+<p>Order is not preserved </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22882,7 +22882,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Remove <span class="code-inline">numValues</span> elements at <span class="code-inline">index</span> by shifting all others. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
-<p> Order is preserved </p>
+<p>Order is preserved </p>
 <p>
 <table class="api-item">
 <tr>
@@ -22907,7 +22907,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Remove the given <span class="code-inline">value</span>  If not found, does nothing. </p>
+<p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
@@ -23246,14 +23246,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Set some format options with a given user string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
-<p> Format is <span class="code-inline">[+][fmt][precision]</span> </p>
+<p>Format is <span class="code-inline">[+][fmt][precision]</span> </p>
 <div class="description-list-title"><p><span class="code-inline">+</span></p></div>
 <div class="description-list-block">
-<p> To force the positive sign if the number is positive </p>
 </div>
-<div class="description-list-title"><p><span class="code-inline">fmt</span></p></div>
-<div class="description-list-block">
-<p> This is the output format: </p>
+<p>To force the positive sign if the number is positive + <span class="code-inline">fmt</span> This is the output format: </p>
 <table class="table-markdown">
 <tr><td> e </td><td> -d.dddde±dd, a decimal exponent</td></tr>
 <tr><td> E </td><td> -d.ddddE±dd, a decimal exponent</td></tr>
@@ -23261,11 +23258,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr><td> g </td><td> <span class="code-inline">e</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
 <tr><td> G </td><td> <span class="code-inline">E</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
 </table>
-</div>
 <div class="description-list-title"><p><span class="code-inline">precision</span></p></div>
 <div class="description-list-block">
-<p> A number which is the precision of the fractional part </p>
 </div>
+<p>A number which is the precision of the fractional part </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23305,7 +23301,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 </table>
-<p> If <span class="code-inline">signed</span> is <span class="code-inline">true</span>, the value to convert must be stored in <span class="code-inline">signedValue</span>, otherwise it must  be stored in <span class="code-inline">unsignedValue</span>. </p>
+<p>If <span class="code-inline">signed</span> is <span class="code-inline">true</span>, the value to convert must be stored in <span class="code-inline">signedValue</span>, otherwise it must be stored in <span class="code-inline">unsignedValue</span>. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -23326,28 +23322,20 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Set some format options with a given user string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
-<p> The format is <span class="code-inline">[+][fmt][padding][width]</span> </p>
+<p>The format is <span class="code-inline">[+][fmt][padding][width]</span> </p>
 <div class="description-list-title"><p><span class="code-inline">+</span></p></div>
 <div class="description-list-block">
-<p> To force the positive sign if the number is positive </p>
 </div>
-<div class="description-list-title"><p><span class="code-inline">fmt</span></p></div>
-<div class="description-list-block">
-<p> This is the output format: </p>
+<p>To force the positive sign if the number is positive + <span class="code-inline">fmt</span> This is the output format: </p>
 <table class="table-markdown">
 <tr><td> B </td><td> Binary</td></tr>
 <tr><td> D </td><td> Decimal</td></tr>
 <tr><td> X </td><td> Hexadecimal</td></tr>
 </table>
-</div>
 <div class="description-list-title"><p><span class="code-inline">padding</span></p></div>
 <div class="description-list-block">
-<p> The padding character, in ascii. It's mandatory before the next field </p>
 </div>
-<div class="description-list-title"><p><span class="code-inline">width</span></p></div>
-<div class="description-list-block">
-<p> The width of the output, in number of characters </p>
-</div>
+<p>The padding character, in ascii. It's mandatory before the next field + <span class="code-inline">width</span> The width of the output, in number of characters </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23377,7 +23365,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert of floating value to a string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(buf: *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, val: <span class="STpe">f64</span>, fmt: <span class="STpe">u8</span>, precision: <span class="STpe">s64</span>, forceSign: <span class="STpe">bool</span>)</span></div>
-<p> The format <span class="code-inline">fmt</span> is one of: </p>
+<p>The format <span class="code-inline">fmt</span> is one of: </p>
 <table class="table-markdown">
 <tr><td> e </td><td> -d.dddde±dd, a decimal exponent</td></tr>
 <tr><td> E </td><td> -d.ddddE±dd, a decimal exponent</td></tr>
@@ -23385,7 +23373,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr><td> g </td><td> <span class="code-inline">e</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
 <tr><td> G </td><td> <span class="code-inline">E</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
 </table>
-<p> A negative precision means <i>only as much as needed to be exact</i> </p>
+<p>A negative precision means <i>only as much as needed to be exact</i> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23738,7 +23726,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert an utf8 buffer in binary to an unsigned integer value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseB64</span>(str: <span class="STpe">string</span>)-&gt;{value:<span class="STpe">u64</span>,eat:<span class="STpe">u32</span>,ovf:<span class="STpe">bool</span>} <span class="SKwd">throw</span></span></div>
-<p> Returns the value and the number of bytes used to make the conversion.  <span class="code-inline">ovf</span> will be true in case of overflow </p>
+<p>Returns the value and the number of bytes used to make the conversion. <span class="code-inline">ovf</span> will be true in case of overflow </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23752,7 +23740,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert an utf8 buffer to a boolean. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseBool</span>(str: <span class="STpe">string</span>)-&gt;{value:<span class="STpe">bool</span>,eat:<span class="STpe">u32</span>} <span class="SKwd">throw</span></span></div>
-<p> Returns the value and the number of bytes used to make the conversion </p>
+<p>Returns the value and the number of bytes used to make the conversion </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23766,7 +23754,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert an utf8 buffer to a floating point value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseF32</span>(str: <span class="STpe">string</span>)-&gt;{value:<span class="STpe">f32</span>,eat:<span class="STpe">u32</span>,ovf:<span class="STpe">bool</span>} <span class="SKwd">throw</span></span></div>
-<p> Returns the value and the number of bytes used to make the conversion.  <span class="code-inline">ovf</span> will be true in case of overflow </p>
+<p>Returns the value and the number of bytes used to make the conversion. <span class="code-inline">ovf</span> will be true in case of overflow </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23854,7 +23842,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert an utf8 buffer to an signed integer value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseS8</span>(str: <span class="STpe">string</span>)-&gt;{value:<span class="STpe">s8</span>,eat:<span class="STpe">u32</span>,ovf:<span class="STpe">bool</span>} <span class="SKwd">throw</span></span></div>
-<p> Returns the value and the number of bytes used to make the conversion.  <span class="code-inline">ovf</span> will be true in case of overflow </p>
+<p>Returns the value and the number of bytes used to make the conversion. <span class="code-inline">ovf</span> will be true in case of overflow </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23868,7 +23856,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert an utf8 buffer to a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseString</span>(str: <span class="STpe">string</span>)-&gt;{value:<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span>,eat:<span class="STpe">u32</span>} <span class="SKwd">throw</span></span></div>
-<p> String in the buffer can be quoted (but the result will not be in that case) </p>
+<p>String in the buffer can be quoted (but the result will not be in that case) </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23918,7 +23906,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert an utf8 buffer in decimal to an unsigned integer value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseU8</span>(str: <span class="STpe">string</span>)-&gt;{value:<span class="STpe">u8</span>,eat:<span class="STpe">u32</span>,ovf:<span class="STpe">bool</span>} <span class="SKwd">throw</span></span></div>
-<p> Returns the value and the number of bytes used to make the conversion.  <span class="code-inline">ovf</span> will be true in case of overflow </p>
+<p>Returns the value and the number of bytes used to make the conversion. <span class="code-inline">ovf</span> will be true in case of overflow </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23932,14 +23920,14 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>This function will parse the string <span class="code-inline">buf</span> and decode the corresponding value in <span class="code-inline">addr</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseValue</span>(addr: *<span class="STpe">void</span>, type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, buf: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
-<p> <span class="code-inline">addr</span> must point to an initialized memory location that can hold <span class="code-inline">type</span> </p>
-<p> Accepted types are : </p>
+<p><span class="code-inline">addr</span> must point to an initialized memory location that can hold <span class="code-inline">type</span> </p>
+<p>Accepted types are : </p>
 <ul>
 <li><span class="code-inline">s8, s16, s32, s64, u8, u16, u32, u64, rune, bool, f32, f64</span></li>
 <li><span class="code-inline">Core.String</span>  literal strings are not supported as <span class="code-inline">buf</span> is supposed to be transient</li>
 <li>enum           with or without <span class="code-inline">Swag.EnumFlags</span> attribute</li>
 </ul>
-<p> <span class="code-inline">buf</span> can contain multiple values separated with blanks if <span class="code-inline">type</span> is: </p>
+<p><span class="code-inline">buf</span> can contain multiple values separated with blanks if <span class="code-inline">type</span> is: </p>
 <ul>
 <li>a static array of the types above</li>
 <li>a dynamic <span class="code-inline">Core.Array</span> of the types above</li>
@@ -23957,7 +23945,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert an utf8 buffer in hexadecimal to an unsigned integer value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseX64</span>(str: <span class="STpe">string</span>)-&gt;{value:<span class="STpe">u64</span>,eat:<span class="STpe">u32</span>,ovf:<span class="STpe">bool</span>} <span class="SKwd">throw</span></span></div>
-<p> Returns the value and the number of bytes used to make the conversion.  <span class="code-inline">ovf</span> will be true in case of overflow </p>
+<p>Returns the value and the number of bytes used to make the conversion. <span class="code-inline">ovf</span> will be true in case of overflow </p>
 <p>
 <table class="api-item">
 <tr>
@@ -24236,7 +24224,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_String_joinWith">joinWith</a></span></td>
-<td>Join an list of strings to make a unique one, by using a given <span class="code-inline">separator</span>  between them. </td>
+<td>Join an list of strings to make a unique one, by using a given <span class="code-inline">separator</span> between them. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_String_makeLower">makeLower</a></span></td>
@@ -24387,7 +24375,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_String_opVisitRunes">opVisitRunes</a></span></td>
-<td>Visit the String runes  See <a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a> for aliases. </td>
+<td>Visit the String runes See <a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a> for aliases. </td>
 </tr>
 </table>
 <p>
@@ -24604,7 +24592,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Join an list of strings to make a unique one, by using a given <span class="code-inline">separator</span>  between them. </p>
+<p>Join an list of strings to make a unique one, by using a given <span class="code-inline">separator</span> between them. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">joinWith</span>(separator: <span class="STpe">string</span>, values: <span class="STpe">string</span>...)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
@@ -24812,7 +24800,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Visit the String runes  See <a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a> for aliases. </p>
+<p>Visit the String runes See <a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a> for aliases. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>
@@ -25544,7 +25532,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_safeForceEnd">safeForceEnd</a></span></td>
-<td>Force the thread to safely exist  User code needs to check for <span class="code-inline">requestEnd</span>. </td>
+<td>Force the thread to safely exist User code needs to check for <span class="code-inline">requestEnd</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_setPriority">setPriority</a></span></td>
@@ -25560,7 +25548,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_wait">wait</a></span></td>
-<td>Wait for the given thread to be done, and close it  After that call, isValid() will return false. </td>
+<td>Wait for the given thread to be done, and close it After that call, isValid() will return false. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_yield">yield</a></span></td>
@@ -25617,7 +25605,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Force the thread to safely exist  User code needs to check for <span class="code-inline">requestEnd</span>. </p>
+<p>Force the thread to safely exist User code needs to check for <span class="code-inline">requestEnd</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">safeForceEnd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -25669,7 +25657,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Wait for the given thread to be done, and close it  After that call, isValid() will return false. </p>
+<p>Wait for the given thread to be done, and close it After that call, isValid() will return false. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wait</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -25936,8 +25924,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr><td> <span class="code-inline">e</span> </td><td> <span class="code-inline">DateTimeFormat.IsoHM</span></td></tr>
 </table>
 <div class="code-block"><span class="SCde"><span class="SKwd">let</span> myDate = <span class="SCst">DateTime</span>.<span class="SFct">now</span>()
- <span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"%{a}"</span>, myDate))</span></div>
-<p> See <a href="#Core_Time_DateTimeFormat">Core.Time.DateTimeFormat</a> </p>
+<span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"%{a}"</span>, myDate))</span></div>
+<p>See <a href="#Core_Time_DateTimeFormat">Core.Time.DateTimeFormat</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -27071,23 +27059,23 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_split">split</a></span><span class="SCde">(<span class="STpe">string</span>, <span class="STpe">rune</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>)</span></td>
-<td>Split string into sub strings, given a rune separator  Note that this returns an array of native strings, not copies.  All strings will be invalid if <span class="code-inline">src</span> is destroyed. </td>
+<td>Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_split">split</a></span><span class="SCde">(<span class="STpe">string</span>, <span class="STpe">string</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>)</span></td>
-<td>Split string into sub strings, given a string separator  Note that this returns an array of native strings, not copies.  All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
+<td>Split string into sub strings, given a string separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_split">split</a></span><span class="SCde">(<span class="STpe">string</span>, <span class="STpe">u8</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>)</span></td>
-<td>Split string into sub strings, given a byte separator  Note that this returns an array of native strings, not copies.  All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
+<td>Split string into sub strings, given a byte separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_splitAny">splitAny</a></span></td>
-<td>Split string into sub strings, given an array of rune separators  Note that this returns an array of native strings, not copies.  All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
+<td>Split string into sub strings, given an array of rune separators Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_splitLines">splitLines</a></span></td>
-<td>Split the string into an array of lines  Note that this returns an array of native strings, not copies.  All strings will be invalid if <span class="code-inline">src</span> is destroyed. </td>
+<td>Split the string into an array of lines Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </td>
 </tr>
 </table>
 <p>
@@ -27179,11 +27167,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Split string into sub strings, given a rune separator  Note that this returns an array of native strings, not copies.  All strings will be invalid if <span class="code-inline">src</span> is destroyed. </p>
+<p>Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">rune</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
-<p>Split string into sub strings, given a string separator  Note that this returns an array of native strings, not copies.  All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
+<p>Split string into sub strings, given a string separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">string</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
-<p>Split string into sub strings, given a byte separator  Note that this returns an array of native strings, not copies.  All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
+<p>Split string into sub strings, given a byte separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">u8</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
@@ -27196,7 +27184,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Split string into sub strings, given an array of rune separators  Note that this returns an array of native strings, not copies.  All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
+<p>Split string into sub strings, given an array of rune separators Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitAny</span>(src: <span class="STpe">string</span>, separators: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
@@ -27209,7 +27197,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Split the string into an array of lines  Note that this returns an array of native strings, not copies.  All strings will be invalid if <span class="code-inline">src</span> is destroyed. </p>
+<p>Split the string into an array of lines Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitLines</span>(src: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
@@ -27345,7 +27333,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Unicode_fromUtf8">fromUtf8</a></span><span class="SCde">([..] <span class="STpe">rune</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
-<td>Convert an utf8 buffer to a character sequence, and returns the  number of valid elements in the destination buffer. </td>
+<td>Convert an utf8 buffer to a character sequence, and returns the number of valid elements in the destination buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Unicode_fromUtf8">fromUtf8</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
@@ -27439,7 +27427,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Convert an utf8 buffer to a character sequence, and returns the  number of valid elements in the destination buffer. </p>
+<p>Convert an utf8 buffer to a character sequence, and returns the number of valid elements in the destination buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf8</span>(dest: [..] <span class="STpe">rune</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>Convert an utf8 buffer to a character sequence. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf8</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">rune</span>)</span></div>
@@ -27686,15 +27674,15 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf16_decodeRune">decodeRune</a></span></td>
-<td>Get the unicode character pointed by <span class="code-inline">buffer</span>, and the number of u16 to encode it  Will return <span class="code-inline">RuneError</span> for an invalid utf16 sequence. </td>
+<td>Get the unicode character pointed by <span class="code-inline">buffer</span>, and the number of u16 to encode it Will return <span class="code-inline">RuneError</span> for an invalid utf16 sequence. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf16_encodeRune">encodeRune</a></span></td>
-<td>Convert unicode character <span class="code-inline">src</span> to an utf16 sequence, and returns  the number of u16 that were needed to make the conversion.  <span class="code-inline">dest</span> must be at least 2 u16 long. </td>
+<td>Convert unicode character <span class="code-inline">src</span> to an utf16 sequence, and returns the number of u16 that were needed to make the conversion. <span class="code-inline">dest</span> must be at least 2 u16 long. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf16_fromUnicode">fromUnicode</a></span><span class="SCde">([..] <span class="STpe">u16</span>, <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
-<td>Convert a character array (32 bits unicode) to an utf16 buffer  Returns the number of bytes written in the destination buffer  <span class="code-inline">dest</span> must be at least 2 bytes long. </td>
+<td>Convert a character array (32 bits unicode) to an utf16 buffer Returns the number of bytes written in the destination buffer <span class="code-inline">dest</span> must be at least 2 bytes long. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf16_fromUnicode">fromUnicode</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
@@ -27702,7 +27690,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf16_fromUtf8">fromUtf8</a></span><span class="SCde">([..] <span class="STpe">u16</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
-<td>Convert an utf8 buffer to a utf16 buffer, and returns the  number of valid elements in the destination buffer. </td>
+<td>Convert an utf8 buffer to a utf16 buffer, and returns the number of valid elements in the destination buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf16_fromUtf8">fromUtf8</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
@@ -27728,7 +27716,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Get the unicode character pointed by <span class="code-inline">buffer</span>, and the number of u16 to encode it  Will return <span class="code-inline">RuneError</span> for an invalid utf16 sequence. </p>
+<p>Get the unicode character pointed by <span class="code-inline">buffer</span>, and the number of u16 to encode it Will return <span class="code-inline">RuneError</span> for an invalid utf16 sequence. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decodeRune</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u16</span>)-&gt;{c:<span class="STpe">rune</span>,eat:<span class="STpe">u32</span>}</span></div>
 <p>
 <table class="api-item">
@@ -27741,7 +27729,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Convert unicode character <span class="code-inline">src</span> to an utf16 sequence, and returns  the number of u16 that were needed to make the conversion.  <span class="code-inline">dest</span> must be at least 2 u16 long. </p>
+<p>Convert unicode character <span class="code-inline">src</span> to an utf16 sequence, and returns the number of u16 that were needed to make the conversion. <span class="code-inline">dest</span> must be at least 2 u16 long. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">encodeRune</span>(dest: [..] <span class="STpe">u16</span>, src: <span class="STpe">rune</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
@@ -27754,7 +27742,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Convert a character array (32 bits unicode) to an utf16 buffer  Returns the number of bytes written in the destination buffer  <span class="code-inline">dest</span> must be at least 2 bytes long. </p>
+<p>Convert a character array (32 bits unicode) to an utf16 buffer Returns the number of bytes written in the destination buffer <span class="code-inline">dest</span> must be at least 2 bytes long. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUnicode</span>(dest: [..] <span class="STpe">u16</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Convert a character array (32 bits unicode) to an utf16 sequence. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUnicode</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u16</span>)</span></div>
@@ -27769,7 +27757,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Convert an utf8 buffer to a utf16 buffer, and returns the  number of valid elements in the destination buffer. </p>
+<p>Convert an utf8 buffer to a utf16 buffer, and returns the number of valid elements in the destination buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf8</span>(dest: [..] <span class="STpe">u16</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Convert an utf8 buffer to an utf16 sequence. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf8</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u16</span>)</span></div>
@@ -27847,7 +27835,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_decodeLastRune">decodeLastRune</a></span></td>
-<td>Get the last unicode rune of the utf8 slice, and the number of  bytes to encode it. </td>
+<td>Get the last unicode rune of the utf8 slice, and the number of bytes to encode it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_decodeRune">decodeRune</a></span></td>
@@ -27855,7 +27843,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_encodeRune">encodeRune</a></span></td>
-<td>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns  the number of bytes that were needed to make the conversion. </td>
+<td>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns the number of bytes that were needed to make the conversion. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_endsWith">endsWith</a></span></td>
@@ -28019,7 +28007,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Returns the number of bytes to encode the first rune of the utf8 buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">countBytesAt</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
-<p> If it's an invalid encoding, returns 1. </p>
+<p>If it's an invalid encoding, returns 1. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28044,7 +28032,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Get the last unicode rune of the utf8 slice, and the number of  bytes to encode it. </p>
+<p>Get the last unicode rune of the utf8 slice, and the number of bytes to encode it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decodeLastRune</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;{c:<span class="STpe">rune</span>,eat:<span class="STpe">u32</span>}</span></div>
 <p>
 <table class="api-item">
@@ -28059,7 +28047,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Get the unicode rune pointed by <span class="code-inline">buffer</span>, and the number of bytes to encode it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decodeRune</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;{c:<span class="STpe">rune</span>,eat:<span class="STpe">u32</span>}</span></div>
-<p> Will return <span class="code-inline">RuneError</span> for an invalid utf8 sequence </p>
+<p>Will return <span class="code-inline">RuneError</span> for an invalid utf8 sequence </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28071,9 +28059,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns  the number of bytes that were needed to make the conversion. </p>
+<p>Convert rune <span class="code-inline">src</span> to an utf8 sequence, and returns the number of bytes that were needed to make the conversion. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">encodeRune</span>(dest: [..] <span class="STpe">u8</span>, src: <span class="STpe">rune</span>)-&gt;<span class="STpe">u32</span></span></div>
-<p> <span class="code-inline">dest</span> must be at least 4 bytes long </p>
+<p><span class="code-inline">dest</span> must be at least 4 bytes long </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28115,7 +28103,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUnicode</span>(dest: [..] <span class="STpe">u8</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Convert an unicode buffer to a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUnicode</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p> Returns the number of bytes written in the destination buffer  <span class="code-inline">dest</span> must be at least 4 bytes long </p>
+<p>Returns the number of bytes written in the destination buffer <span class="code-inline">dest</span> must be at least 4 bytes long </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28131,7 +28119,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf16</span>(dest: [..] <span class="STpe">u8</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u16</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Convert an utf16 buffer to a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf16</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u16</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p> Returns the number of bytes written in the destination buffer.  <span class="code-inline">dest</span> must be at least 4 bytes long </p>
+<p>Returns the number of bytes written in the destination buffer. <span class="code-inline">dest</span> must be at least 4 bytes long </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28147,7 +28135,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Find the given string, and returns the byte index of it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="STpe">string</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">u64</span></span></div>
-<p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
+<p>Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28163,7 +28151,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOfAny</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Find one of the runes in <span class="code-inline">what</span>, and returns the byte index of it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOfAny</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
-<p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
+<p>Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28205,8 +28193,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lastIndexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="STpe">rune</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Returns the last index (in bytes) of a string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lastIndexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">u64</span></span></div>
-<p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
-<p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
+<p>Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
+<p>Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28222,8 +28210,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lastIndexOfAny</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Returns the last index (in bytes) of a any of the bytes in <span class="code-inline">what</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lastIndexOfAny</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span></span></div>
-<p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
-<p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
+<p>Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
+<p>Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
 <p>
 <table class="api-item">
 <tr>

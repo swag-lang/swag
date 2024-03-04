@@ -238,7 +238,7 @@
 <td></td>
 </tr>
 </table>
-<p> A <a href="#Audio_Voice">Voice</a> can be assigned to one or more buses. If you then change some parameters of the bus (like the volume), then all the voices assigned to it will be impacted. </p>
+<p>A <a href="#Audio_Voice">Voice</a> can be assigned to one or more buses. If you then change some parameters of the bus (like the volume), then all the voices assigned to it will be impacted. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -279,7 +279,7 @@
 </p>
 <p>Creates an audio bus. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(numChannels: <span class="STpe">u32</span>, parent: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> <span class="SKwd">throw</span></span></div>
-<p> You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a>  Note that you can have a graph of buses, because a bus can have another bus as <span class="code-inline">parent</span>. </p>
+<p>You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a> Note that you can have a graph of buses, because a bus can have another bus as <span class="code-inline">parent</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -487,7 +487,7 @@
 <td>Number of valid bits per sample (&lt;= bitsPerSample). </td>
 </tr>
 </table>
-<p> The <span class="code-inline">SoundFile</span> is not necessary fully loaded in memory, in case we want it to be streamed. </p>
+<p>The <span class="code-inline">SoundFile</span> is not necessary fully loaded in memory, in case we want it to be streamed. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -508,7 +508,7 @@
 </p>
 <p>Load a <span class="code-inline">SoundFile</span> from disk. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>)-&gt;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span> <span class="SKwd">throw</span></span></div>
-<p> Will load the sound datas if <span class="code-inline">loadDatas</span> is true.  Will load the sound metadatas if <span class="code-inline">loadMetaData</span> is true. </p>
+<p>Will load the sound datas if <span class="code-inline">loadDatas</span> is true. Will load the sound metadatas if <span class="code-inline">loadMetaData</span> is true. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -685,7 +685,7 @@
 </p>
 <p>Creates a new voice for a given sound file. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></div>
-<p> A voice is what will be actually played. You can have as many voices as you want for one unique <a href="#Audio_SoundFile">SoundFile</a>. </p>
+<p>A voice is what will be actually played. You can have as many voices as you want for one unique <a href="#Audio_SoundFile">SoundFile</a>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -766,8 +766,8 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></div>
 <p>Plays a voice. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Zero</span>) <span class="SKwd">throw</span></span></div>
-<p> By default, the voice will be destroyed when stopped or finished. </p>
-<p> By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <span class="code-inline">DestroyOnStop</span> flag in <span class="code-inline">playFlags</span>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
+<p>By default, the voice will be destroyed when stopped or finished. </p>
+<p>By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <span class="code-inline">DestroyOnStop</span> flag in <span class="code-inline">playFlags</span>. See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -781,7 +781,7 @@
 </p>
 <p>Set the playing pitch. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrequencyRatio</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ratio: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></div>
-<p> The voice should have been created with <span class="code-inline">VoiceCreateFlags.AcceptPitch</span>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
+<p>The voice should have been created with <span class="code-inline">VoiceCreateFlags.AcceptPitch</span>. See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -795,7 +795,7 @@
 </p>
 <p>Root a voice to a given list of buses. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRooting</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buses: <span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span>) <span class="SKwd">throw</span></span></div>
-<p> You can also set <span class="code-inline">buses</span> to null if you want to root the voice only to the  main bus (which is the default). </p>
+<p>You can also set <span class="code-inline">buses</span> to null if you want to root the voice only to the main bus (which is the default). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -1003,7 +1003,7 @@
 </p>
 <p>Creates the audio engine. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createEngine</span>() <span class="SKwd">throw</span></span></div>
-<p> Must be called once, before anything else. </p>
+<p>Must be called once, before anything else. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -1017,7 +1017,7 @@
 </p>
 <p>Destroy the audio engine. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroyEngine</span>()</span></div>
-<p> Must be called at the end, when engine is no more used. </p>
+<p>Must be called at the end, when engine is no more used. </p>
 <p>
 <table class="api-item">
 <tr>

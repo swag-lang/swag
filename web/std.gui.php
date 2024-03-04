@@ -1241,7 +1241,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Application_destroyWnd">destroyWnd</a></span></td>
-<td>Destroy a window  To cleanly close a window, you should call wnd.destroy(). </td>
+<td>Destroy a window To cleanly close a window, you should call wnd.destroy(). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Application_doModalLoop">doModalLoop</a></span></td>
@@ -1418,7 +1418,7 @@
 </tr>
 </table>
 </p>
-<p>Destroy a window  To cleanly close a window, you should call wnd.destroy(). </p>
+<p>Destroy a window To cleanly close a window, you should call wnd.destroy(). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroyWnd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -5390,7 +5390,7 @@
 </p>
 <p>Set the wnd associated with the given <span class="code-inline">col</span> and <span class="code-inline">row</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColRowChild</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, child: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, col: <span class="STpe">s32</span>, row: <span class="STpe">s32</span>, spanH: <span class="STpe">s32</span> = <span class="SNum">1</span>, spanV: <span class="STpe">s32</span> = <span class="SNum">1</span>)</span></div>
-<p> Window can cover multiple columns and rows. </p>
+<p>Window can cover multiple columns and rows. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -7406,7 +7406,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_getSelectedLine">getSelectedLine</a></span></td>
-<td>Returns a selected line  Mostly for singlesel mode. </td>
+<td>Returns a selected line Mostly for singlesel mode. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_getSelectedLines">getSelectedLines</a></span></td>
@@ -7446,7 +7446,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_sort">sort</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></td>
-<td>Sort the list by a given column  If <span class="code-inline">persistent</span> is true, then the sorted column will be displayed in the  header (if it exists). </td>
+<td>Sort the list by a given column If <span class="code-inline">persistent</span> is true, then the sorted column will be displayed in the header (if it exists). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_toggleExpand">toggleExpand</a></span></td>
@@ -7689,7 +7689,7 @@
 </tr>
 </table>
 </p>
-<p>Returns a selected line  Mostly for singlesel mode. </p>
+<p>Returns a selected line Mostly for singlesel mode. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
 <p>
 <table class="api-item">
@@ -7808,7 +7808,7 @@
 </p>
 <p>Sort list as before. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
-<p>Sort the list by a given column  If <span class="code-inline">persistent</span> is true, then the sorted column will be displayed in the  header (if it exists). </p>
+<p>Sort the list by a given column If <span class="code-inline">persistent</span> is true, then the sorted column will be displayed in the header (if it exists). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, descentOrder = <span class="SKwd">false</span>, persistent = <span class="SKwd">false</span>)</span></div>
 <p>
 <table class="api-item">
@@ -8306,7 +8306,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_doModal">doModal</a></span></td>
-<td>Make the popup menu modal  Will return the selected id. </td>
+<td>Make the popup menu modal Will return the selected id. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_updateState">updateState</a></span></td>
@@ -8439,7 +8439,7 @@
 </tr>
 </table>
 </p>
-<p>Make the popup menu modal  Will return the selected id. </p>
+<p>Make the popup menu modal Will return the selected id. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, surfacePos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>, pos = <span class="SCst"><a href="#Gui_PopupPos">PopupPos</a></span>.<span class="SCst">TopLeft</span>, autoDestroy: <span class="STpe">bool</span> = <span class="SKwd">false</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
@@ -18467,7 +18467,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getWndAt">getWndAt</a></span></td>
-<td>Get the child window at the given coordinate  Coordinate is expressed in the parent system. </td>
+<td>Get the child window at the given coordinate Coordinate is expressed in the parent system. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_hasFocus">hasFocus</a></span></td>
@@ -18619,11 +18619,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setMargin">setMargin</a></span></td>
-<td>Set margin for childs  If a value is Swag.F32.Inf, then it won't be changed. </td>
+<td>Set margin for childs If a value is Swag.F32.Inf, then it won't be changed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setPadding">setPadding</a></span></td>
-<td>Set padding for childs  If a value is Swag.F32.Inf, then it won't be changed. </td>
+<td>Set padding for childs If a value is Swag.F32.Inf, then it won't be changed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setParent">setParent</a></span></td>
@@ -19318,7 +19318,7 @@
 </tr>
 </table>
 </p>
-<p>Get the child window at the given coordinate  Coordinate is expressed in the parent system. </p>
+<p>Get the child window at the given coordinate Coordinate is expressed in the parent system. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWndAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, getDisabled = <span class="SKwd">false</span>, getHidden = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
@@ -19638,7 +19638,7 @@
 </p>
 <p>Send the command event with the given id to the window. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendCommandEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmdId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></div>
-<p> The command will be updated first, and if it is not disabled, it will be sent. </p>
+<p>The command will be updated first, and if it is not disabled, it will be sent. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -19652,7 +19652,7 @@
 </p>
 <p>Send the command state event with the given id to the window. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendComputeCommandStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmdId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span></span></div>
-<p> Returns the updated command state. </p>
+<p>Returns the updated command state. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -19763,7 +19763,7 @@
 </tr>
 </table>
 </p>
-<p>Set margin for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
+<p>Set margin for childs If a value is Swag.F32.Inf, then it won't be changed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMargin</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, top: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, right: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, bottom: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>)</span></div>
 <p>
 <table class="api-item">
@@ -19776,7 +19776,7 @@
 </tr>
 </table>
 </p>
-<p>Set padding for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
+<p>Set padding for childs If a value is Swag.F32.Inf, then it won't be changed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, top: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, right: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, bottom: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>)</span></div>
 <p>
 <table class="api-item">
@@ -19845,7 +19845,7 @@
 </p>
 <p>Main function to update command state of various windows/widgets. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">updateCommandState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
-<p> This will update the state of this window, and all of its childs </p>
+<p>This will update the state of this window, and all of its childs </p>
 <p>
 <table class="api-item">
 <tr>
