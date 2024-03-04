@@ -4,7 +4,7 @@
 #include "Parser.h"
 #include "TypeManager.h"
 
-void Ast::initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, AstNode* parent)
+void Ast::initNewNode(AstNodeKind kind, AstNode* node, Parser* parser, AstNode* parent)
 {
     node->kind   = kind;
     node->parent = parent;
@@ -13,8 +13,11 @@ void Ast::initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, Ast
     {
         node->token = parser->tokenParse.token;
         node->inheritOwnersAndFlags(parser);
-        node->inheritFormatFromBefore(parser->tokenParse);
-        node->inheritFormatFromAfter(parser->tokenParse);
+        if (!parser->freezeFormat)
+        {
+            node->inheritFormatFromBefore(parser->tokenParse);
+            node->inheritFormatFromAfter(parser->tokenParse);
+        }
     }
     else if (parent)
     {

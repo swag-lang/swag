@@ -264,7 +264,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
 
 bool Parser::doVarDecl(AstNode* parent, AstNode** result)
 {
-    const TokenParse savedTokenParse = tokenParse;
+    TokenParse savedTokenParse = tokenParse;
     AstNodeKind      kind;
     bool             isLet = false;
 
@@ -349,7 +349,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         }
 
         // Treat all
+        freezeFormat++;
         SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, result, forLet));
+        freezeFormat--;
         leftNode->release();
 
         // If we have a type, and that type has parameters (struct construction), then we need to evaluate and push the parameters

@@ -246,7 +246,8 @@ struct Parser
     AstInline*          currentInline          = nullptr;
     AstNodeFlags        currentAstNodeFlags    = 0;
 
-    ParseFlags parseFlags = 0;
+    ParseFlags parseFlags   = 0;
+    uint32_t   freezeFormat = 0;
 
     bool afterGlobal = false;
 };

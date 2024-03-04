@@ -13,6 +13,43 @@ Utf8 FormatAst::getUtf8() const
     return concat->getUtf8();
 }
 
+void FormatAst::beautifyComment(const Vector<std::pair<Utf8, bool>>& comments) const
+{
+    for (const auto& v : comments)
+    {
+        Utf8 cmt;
+        if (!v.second)
+            cmt += "/*";
+        else
+            cmt += "//";
+        cmt += v.first;
+        if (!v.second)
+            cmt += "*/";
+
+        concat->addString(cmt);
+        concat->addEol();
+        concat->addIndent(indent);
+    }
+}
+
+void FormatAst::beautifyCommentBefore(const AstNode* node) const
+{
+    if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
+        return;
+    if (!node->hasExtMisc() || node->extMisc()->comments.before.empty())
+        return;
+    beautifyComment(node->extMisc()->comments.before);
+}
+
+void FormatAst::beautifyCommentJustBefore(const AstNode* node) const
+{
+    if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
+        return;
+    if (!node->hasExtMisc() || node->extMisc()->comments.justBefore.empty())
+        return;
+    beautifyComment(node->extMisc()->comments.justBefore);
+}
+
 void FormatAst::beautifyBlankLine(const AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))

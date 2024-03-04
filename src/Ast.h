@@ -22,7 +22,7 @@ namespace Ast
         NoChildren,
     };
 
-    void initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, AstNode* parent);
+    void initNewNode(AstNodeKind kind, AstNode* node, Parser* parser, AstNode* parent);
     void removeFromParent(AstNode* child);
     void insertChild(AstNode* parent, AstNode* child, uint32_t index);
     void addChildBack(AstNode* parent, AstNode* child);

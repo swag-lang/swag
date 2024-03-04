@@ -659,7 +659,7 @@ void AstNode::inheritOwners(const AstNode* from)
     }
 }
 
-void AstNode::inheritFormatFromBefore(const TokenParse& tokenParse)
+void AstNode::inheritFormatFromBefore(TokenParse& tokenParse)
 {
     formatFlags.remove(FMTFLAG_BLANK_LINE_BEFORE);
     if (tokenParse.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
@@ -668,22 +668,22 @@ void AstNode::inheritFormatFromBefore(const TokenParse& tokenParse)
     if (!tokenParse.comments.before.empty())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->comments.before = tokenParse.comments.before;
+        extMisc()->comments.before = std::move(tokenParse.comments.before);
     }
     
     if (!tokenParse.comments.justBefore.empty())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->comments.justBefore = tokenParse.comments.justBefore;
+        extMisc()->comments.justBefore = std::move(tokenParse.comments.justBefore);
     }
 }
 
-void AstNode::inheritFormatFromAfter(const TokenParse& tokenParse)
+void AstNode::inheritFormatFromAfter(TokenParse& tokenParse)
 {
     if (!tokenParse.comments.afterSameLine.empty())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->comments.afterSameLine = tokenParse.comments.afterSameLine;
+        extMisc()->comments.afterSameLine = std::move(tokenParse.comments.afterSameLine);
     }
 }
 

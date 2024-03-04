@@ -35,6 +35,9 @@ struct FormatAst
     }
 
     void clear() const;
+    void beautifyComment(const Vector<std::pair<Utf8, bool>> &comments) const;
+    void beautifyCommentBefore(const AstNode* node) const;
+    void beautifyCommentJustBefore(const AstNode* node) const;
     void beautifyBlankLine(const AstNode* node) const;
     Utf8 getUtf8() const;
 

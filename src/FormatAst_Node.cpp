@@ -13,7 +13,9 @@ bool FormatAst::outputNode(const AstNode* node)
     if (!node)
         return true;
 
+    beautifyCommentBefore(node);
     beautifyBlankLine(node);
+    beautifyCommentJustBefore(node);
 
     // Prepend some stuff
     const auto isNamed = node->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
