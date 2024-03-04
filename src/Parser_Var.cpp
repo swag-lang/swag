@@ -264,9 +264,9 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
 
 bool Parser::doVarDecl(AstNode* parent, AstNode** result)
 {
-    TokenParse savedTokenParse = tokenParse;
-    AstNodeKind      kind;
-    bool             isLet = false;
+    TokenParse  savedTokenParse = tokenParse;
+    AstNodeKind kind;
+    bool        isLet = false;
 
     if (tokenParse.is(TokenId::KwdConst))
     {

@@ -37,7 +37,7 @@ int main(int argc, const char* argv[])
     const Path p       = argv[1];
     if (p.extension() == ".swgs")
     {
-        command                  = "script";
+        command                = "script";
         g_CommandLine.fileName = argv[1];
     }
 

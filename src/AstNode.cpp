@@ -670,7 +670,7 @@ void AstNode::inheritFormatFromBefore(TokenParse& tokenParse)
         allocateExtension(ExtensionKind::Misc);
         extMisc()->comments.before = std::move(tokenParse.comments.before);
     }
-    
+
     if (!tokenParse.comments.justBefore.empty())
     {
         allocateExtension(ExtensionKind::Misc);

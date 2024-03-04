@@ -172,7 +172,7 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doExpression(enumValue, EXPR_FLAG_NONE, &dummyResult));
     }
-    
+
     if (tokenParse.is(TokenId::SymComma))
         SWAG_CHECK(eatToken());
     else if (tokenParse.isNot(TokenId::SymRightCurly))

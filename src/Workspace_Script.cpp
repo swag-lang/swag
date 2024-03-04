@@ -46,8 +46,8 @@ void Workspace::scriptCommand()
     }
 
     // Script filename
-    Path pathF               = g_CommandLine.fileName;
-    pathF                    = std::filesystem::absolute(pathF);
+    Path pathF             = g_CommandLine.fileName;
+    pathF                  = std::filesystem::absolute(pathF);
     g_CommandLine.fileName = pathF;
     std::error_code err;
     if (!std::filesystem::exists(g_CommandLine.fileName.c_str(), err))
