@@ -168,7 +168,6 @@ bool Tokenizer::doAfterToken(TokenParse& tokenParse)
             curBuffer++;
             TokenParse tmp;
             SWAG_CHECK(doSingleLineComment(tmp));
-            tokenParse.flags.add(TOKEN_PARSE_EOL_AFTER);
             tokenParse.comments.afterSameLine.push_back(std::move(tmp.comments.justBefore.front()));
         }
         else if (curBuffer[0] == '/' && curBuffer[1] == '*')

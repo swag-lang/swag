@@ -186,6 +186,7 @@ bool FormatAst::outputEnum(const AstEnum* node)
         if (!child->is(AstNodeKind::EnumValue))
             continue;
 
+        beautifyBlankLine(child);
         concat->addIndent(indent);
 
         if (child->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
