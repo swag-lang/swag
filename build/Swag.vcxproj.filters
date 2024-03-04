@@ -722,6 +722,9 @@
     <ClCompile Include="..\src\FormatAst_Identifier.cpp">
       <Filter>Format</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\FormatAst_Beautify.cpp">
+      <Filter>Format</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">

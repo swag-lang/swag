@@ -47,22 +47,28 @@ constexpr TokenParseFlags TOKEN_PARSE_BLANK_BEFORE      = 0x04;
 constexpr TokenParseFlags TOKEN_PARSE_BLANK_AFTER       = 0x08;
 constexpr TokenParseFlags TOKEN_PARSE_BLANK_LINE_BEFORE = 0x10;
 
+struct TokenComment
+{
+    Utf8 comment;
+    bool isOneLine;
+};
+
 struct TokenComments
 {
-    Vector<std::pair<Utf8, bool>> before;
-    Vector<std::pair<Utf8, bool>> justBefore;
-    Vector<std::pair<Utf8, bool>> afterSameLine;
+    Vector<TokenComment> before;
+    Vector<TokenComment> justBefore;
+    Vector<TokenComment> afterSameLine;
 
-    static Utf8 toString(const Vector<std::pair<Utf8, bool>>& other)
+    static Utf8 toString(const Vector<TokenComment>& other)
     {
         Utf8 result;
 
         bool first = true;
-        for (const auto& key : other | std::views::keys)
+        for (const auto& cmt : other)
         {
             if (!first)
                 result += '\n';
-            result += key;
+            result += cmt.comment;
             first = false;
         }
 

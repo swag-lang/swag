@@ -11,6 +11,7 @@ struct AttributeList;
 struct ComputedValue;
 struct FormatConcat;
 struct Scope;
+struct TokenComment;
 struct TypeInfo;
 struct TypeInfoEnum;
 struct TypeInfoFuncAttr;
@@ -35,10 +36,6 @@ struct FormatAst
     }
 
     void clear() const;
-    void beautifyComment(const Vector<std::pair<Utf8, bool>> &comments) const;
-    void beautifyCommentBefore(const AstNode* node) const;
-    void beautifyCommentJustBefore(const AstNode* node) const;
-    void beautifyBlankLine(const AstNode* node) const;
     Utf8 getUtf8() const;
 
     static const AstNode* convertNode(const AstNode* node);
@@ -46,6 +43,11 @@ struct FormatAst
     bool                  outputCommaChildren(const AstNode* node, uint32_t start = 0);
     bool                  outputStatement(const AstNode* node);
     bool                  outputDoStatement(const AstNode* node);
+
+    void beautifyComment(const Vector<TokenComment>& comments) const;
+    void beautifyCommentBefore(const AstNode* node) const;
+    void beautifyCommentJustBefore(const AstNode* node) const;
+    void beautifyBlankLine(const AstNode* node) const;
 
     bool outputLambdaExpression(const AstNode* node);
     bool outputEnum(const AstEnum* node);

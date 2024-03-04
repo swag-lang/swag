@@ -353,6 +353,7 @@
     <ClCompile Include="..\src\Ast_New.cpp" />
     <ClCompile Include="..\src\BackendLinker_Coff.cpp" />
     <ClCompile Include="..\src\FormatAst_Attr.cpp" />
+    <ClCompile Include="..\src\FormatAst_Beautify.cpp" />
     <ClCompile Include="..\src\FormatAst_Compiler.cpp" />
     <ClCompile Include="..\src\FormatAst_Func.cpp" />
     <ClCompile Include="..\src\FormatAst_Identifier.cpp" />
