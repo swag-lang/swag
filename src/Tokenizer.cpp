@@ -166,17 +166,17 @@ bool Tokenizer::doAfterToken(TokenParse& tokenParse)
         if (curBuffer[0] == '/' && curBuffer[1] == '/')
         {
             curBuffer++;
-            auto copy = tokenParse;
-            SWAG_CHECK(doSingleLineComment(copy));
+            TokenParse tmp;
+            SWAG_CHECK(doSingleLineComment(tmp));
             tokenParse.flags.add(TOKEN_PARSE_EOL_AFTER);
-            tokenParse.commentAfterSameLine = std::move(copy.commentJustBefore);
+            tokenParse.comments.afterSameLine.push_back(std::move(tmp.comments.justBefore.front()));
         }
         else if (curBuffer[0] == '/' && curBuffer[1] == '*')
         {
             curBuffer++;
-            auto copy = tokenParse;
-            SWAG_CHECK(doMultiLineComment(copy));
-            tokenParse.commentAfterSameLine = std::move(copy.commentJustBefore);
+            TokenParse tmp;
+            SWAG_CHECK(doMultiLineComment(tmp));
+            tokenParse.comments.afterSameLine.push_back(std::move(tmp.comments.justBefore.front()));
         }
 
         return true;
@@ -192,8 +192,8 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
 
     tokenParse.literalType      = LiteralType::TypeMax;
     tokenParse.token.sourceFile = sourceFile;
-    tokenParse.commentJustBefore.clear();
-    tokenParse.commentAfterSameLine.clear();
+    tokenParse.comments.justBefore.clear();
+    tokenParse.comments.afterSameLine.clear();
 
     tokenParse.flags.remove(TOKEN_PARSE_BLANK_BEFORE);
     if (tokenParse.flags.has(TOKEN_PARSE_BLANK_AFTER))
@@ -228,8 +228,8 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         {
             if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
             {
-                tokenParse.commentBefore += tokenParse.commentJustBefore;
-                tokenParse.commentJustBefore.clear();
+                tokenParse.comments.before.append(tokenParse.comments.justBefore);
+                tokenParse.comments.justBefore.clear();
                 tokenParse.flags.add(TOKEN_PARSE_BLANK_LINE_BEFORE);
             }
             else

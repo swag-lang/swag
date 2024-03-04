@@ -665,25 +665,25 @@ void AstNode::inheritFormatFromBefore(const TokenParse& tokenParse)
     if (tokenParse.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
         formatFlags.add(FMTFLAG_BLANK_LINE_BEFORE);
 
-    if (!tokenParse.commentBefore.empty())
+    if (!tokenParse.comments.before.empty())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->commentBefore = tokenParse.commentBefore;
+        extMisc()->comments.before = tokenParse.comments.before;
     }
     
-    if (!tokenParse.commentJustBefore.empty())
+    if (!tokenParse.comments.justBefore.empty())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->commentJustBefore = tokenParse.commentJustBefore;
+        extMisc()->comments.justBefore = tokenParse.comments.justBefore;
     }
 }
 
 void AstNode::inheritFormatFromAfter(const TokenParse& tokenParse)
 {
-    if (!tokenParse.commentAfterSameLine.empty())
+    if (!tokenParse.comments.afterSameLine.empty())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->commentAfterSameLine = tokenParse.commentAfterSameLine;
+        extMisc()->comments.afterSameLine = tokenParse.comments.afterSameLine;
     }
 }
 

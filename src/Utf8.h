@@ -16,6 +16,7 @@ struct SwagSlice;
 #define SWAG_IS_EOL(__c)         ((__c) == '\n')
 #define SWAG_IS_NOT_EOL(__c)     ((__c) != '\n')
 #define SWAG_IS_WIN_EOL(__c)     ((__c) == '\r')
+#define SWAG_IS_NOT_WIN_EOL(__c) ((__c) != '\r')
 #define SWAG_IS_AL_NUM(__c)      (SWAG_IS_ALPHA(__c) || SWAG_IS_DIGIT(__c))
 
 struct Utf8

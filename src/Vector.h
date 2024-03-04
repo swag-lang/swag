@@ -44,6 +44,11 @@ struct Vector : std::vector<T, StdAllocator<T>>
         this->~Vector<T>();
         ::new (this) Vector;
     }
+
+    void append(const Vector<T> &other)
+    {
+        this->insert(this->end(), other.begin(), other.end());
+    }
 };
 
 template<typename K, typename V>

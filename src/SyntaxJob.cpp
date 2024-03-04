@@ -34,6 +34,8 @@ JobResult SyntaxJob::execute()
     ParseFlags parseFlags = 0;
     if (g_CommandLine.genDoc)
         parseFlags.add(PARSER_TRACK_COMMENTS);
+    if (g_CommandLine.devModeWriteAst)
+        parseFlags.add(PARSER_TRACK_COMMENTS);
     parser.setup(&context, sourceFile->module, sourceFile, parseFlags);
     parser.generateAst();
 

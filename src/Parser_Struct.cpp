@@ -190,12 +190,6 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgTypeDecl;
 
-    if (!tokenParse.commentJustBefore.empty())
-    {
-        structNode->allocateExtension(ExtensionKind::Misc);
-        structNode->extMisc()->commentJustBefore = std::move(tokenParse.commentJustBefore);
-    }
-
     // Special case
     auto structType = SyntaxStructType::Struct;
     if (tokenParse.is(TokenId::KwdInterface))
@@ -530,13 +524,6 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             }
 
             varNode->addExtraPointer(ExtraPointerKind::ExportNode, funcNode);
-
-            if (!tokenParse.commentJustBefore.empty())
-            {
-                varNode->allocateExtension(ExtensionKind::Misc);
-                varNode->extMisc()->commentJustBefore = std::move(tokenParse.commentJustBefore);
-            }
-
             SWAG_CHECK(eatSemiCol("interface function definition"));
             *result = varNode;
             break;

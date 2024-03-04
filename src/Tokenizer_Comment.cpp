@@ -14,8 +14,7 @@ bool Tokenizer::doSingleLineComment(TokenParse& tokenParse)
     if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
     {
         appendTokenName(tokenParse);
-        tokenParse.commentJustBefore += tokenParse.token.text;
-        tokenParse.commentJustBefore += "\n";
+        tokenParse.comments.justBefore.push_back({tokenParse.token.text, true});
     }
 
     return true;
@@ -71,9 +70,9 @@ bool Tokenizer::doMultiLineComment(TokenParse& tokenParse)
     if (tokenizeFlags.has(TOKENIZER_TRACK_COMMENTS))
     {
         appendTokenName(tokenParse);
-        tokenParse.commentJustBefore += tokenParse.token.text;
-        tokenParse.commentJustBefore.removeBack();
-        tokenParse.commentJustBefore.removeBack();
+        tokenParse.token.text.removeBack();
+        tokenParse.token.text.removeBack();
+        tokenParse.comments.justBefore.push_back({tokenParse.token.text, false});
     }
 
     return true;
