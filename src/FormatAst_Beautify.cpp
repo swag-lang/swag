@@ -1,19 +1,27 @@
 #include "pch.h"
-#include "FormatAst.h"
 #include "AstFlags.h"
+#include "FormatAst.h"
 #include "Semantic.h"
 #include "TokenParse.h"
 
 void FormatAst::beautifyComment(const Vector<TokenComment>& comments) const
 {
+    bool first = true;
     for (const auto& v : comments)
     {
-        if(v.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
+        if (!first)
+        {
+            concat->addEol();
+            concat->addIndent(indent);
+        }
+        first = false;
+
+        if (v.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
         {
             concat->addBlankLine();
             concat->addIndent(indent);
         }
-        
+
         Utf8 cmt;
         if (!v.flags.has(TOKEN_PARSE_ONE_LINE_COMMENT))
             cmt += "/*";
@@ -24,8 +32,6 @@ void FormatAst::beautifyComment(const Vector<TokenComment>& comments) const
             cmt += "*/";
 
         concat->addString(cmt);
-        concat->addEol();
-        concat->addIndent(indent);
     }
 }
 
@@ -36,6 +42,8 @@ void FormatAst::beautifyCommentBefore(const AstNode* node) const
     if (!node->hasExtMisc() || node->extMisc()->comments.before.empty())
         return;
     beautifyComment(node->extMisc()->comments.before);
+    concat->addEol();
+    concat->addIndent(indent);
 }
 
 void FormatAst::beautifyCommentJustBefore(const AstNode* node) const
@@ -45,6 +53,8 @@ void FormatAst::beautifyCommentJustBefore(const AstNode* node) const
     if (!node->hasExtMisc() || node->extMisc()->comments.justBefore.empty())
         return;
     beautifyComment(node->extMisc()->comments.justBefore);
+    concat->addEol();
+    concat->addIndent(indent);
 }
 
 void FormatAst::beautifyBlankLine(const AstNode* node) const

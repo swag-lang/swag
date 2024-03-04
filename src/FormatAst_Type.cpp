@@ -197,14 +197,7 @@ bool FormatAst::outputEnum(const AstEnum* node)
         }
         else
         {
-            concat->addString(child->token.text);
-            if (!child->children.empty())
-            {
-                concat->addBlank();
-                concat->addChar('=');
-                concat->addBlank();
-                SWAG_CHECK(outputNode(child->firstChild()));
-            }
+            SWAG_CHECK(outputNode(child));
         }
 
         concat->addEol();

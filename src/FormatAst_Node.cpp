@@ -200,6 +200,16 @@ bool FormatAst::outputNode(const AstNode* node)
             if (!node->children.empty())
                 SWAG_CHECK(outputNode(node->firstChild()));
             break;
+        case AstNodeKind::EnumValue:
+            concat->addString(node->token.text);
+            if (node->childCount())
+            {
+                concat->addBlank();
+                concat->addChar('=');
+                concat->addBlank();
+                SWAG_CHECK(outputNode(node->firstChild()));
+            }
+            break;
 
         case AstNodeKind::EnumDecl:
             SWAG_CHECK(outputEnum(castAst<AstEnum>(node, AstNodeKind::EnumDecl)));
