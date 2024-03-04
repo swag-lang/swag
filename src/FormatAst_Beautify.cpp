@@ -58,3 +58,13 @@ void FormatAst::beautifyBlankLine(const AstNode* node) const
         concat->addIndent(indent);
     }
 }
+
+void FormatAst::beautifyCommentAfterSameLine(const AstNode* node) const
+{
+    if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
+        return;
+    if (!node->hasExtMisc() || node->extMisc()->comments.afterSameLine.empty())
+        return;
+    concat->addBlank();
+    beautifyComment(node->extMisc()->comments.afterSameLine);
+}

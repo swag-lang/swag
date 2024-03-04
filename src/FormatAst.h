@@ -47,6 +47,7 @@ struct FormatAst
     void beautifyComment(const Vector<TokenComment>& comments) const;
     void beautifyCommentBefore(const AstNode* node) const;
     void beautifyCommentJustBefore(const AstNode* node) const;
+    void beautifyCommentAfterSameLine(const AstNode* node) const;
     void beautifyBlankLine(const AstNode* node) const;
 
     bool outputLambdaExpression(const AstNode* node);

@@ -675,5 +675,6 @@ bool FormatAst::outputNode(const AstNode* node)
             return Report::internalError(const_cast<AstNode*>(node), "FormatAst::outputNode, unknown node kind");
     }
 
+    beautifyCommentAfterSameLine(node);
     return true;
 }
