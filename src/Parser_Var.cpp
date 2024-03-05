@@ -83,6 +83,70 @@ bool Parser::checkIsValidVarName(AstNode* node) const
     return error(node->token, formErr(Err0407, node->token.c_str()));
 }
 
+bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref)
+{
+    auto parentNode = parent;
+    if (acceptDeref || parent->is(AstNodeKind::AttrUse))
+    {
+        parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent);
+        *result    = parentNode;
+    }
+
+    // Declare first variable, and affect it
+    const auto front = castAst<AstIdentifierRef>(leftNode->firstChild(), AstNodeKind::IdentifierRef);
+
+    // Then declare all other variables, and assign them to the first one
+    bool firstDone = false;
+    for (const auto child : leftNode->children)
+    {
+        SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
+        const auto identifier = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+        identifier->computeName();
+        SWAG_CHECK(checkIsValidVarName(identifier));
+
+        AstVarDecl* varNode  = Ast::newVarDecl(identifier->token.text, this, parentNode);
+        varNode->kind        = kind;
+        varNode->token       = identifier->token;
+        varNode->token.id    = identifier->token.id;
+        varNode->assignToken = assignToken.token;
+        varNode->addAstFlag(AST_R_VALUE);
+        varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
+
+        if (!firstDone)
+        {
+            firstDone = true;
+            Ast::addChildBack(varNode, type);
+            Ast::addChildBack(varNode, assign);
+            varNode->type       = type;
+            varNode->assignment = assign;
+        }
+
+        // We are supposed to be constexpr, so we need to duplicate the assignment instead of generating an
+        // affectation to the first variable. If there's no assignment, then just declare the variable
+        // without the affectation to avoid a useless copy (and a postCopy in case of structs)
+        else if (!acceptDeref ||
+                 assign == nullptr ||
+                 assign->is(AstNodeKind::ExplicitNoInit) ||
+                 assign->is(AstNodeKind::Literal))
+        {
+            varNode->type = Ast::clone(type, varNode);
+            if (assign)
+                varNode->assignment = Ast::clone(assign, varNode);
+        }
+        else
+        {
+            varNode->assignment = Ast::newIdentifierRef(front->token.text, this, varNode);
+        }
+
+        Semantic::setVarDeclResolve(varNode);
+
+        if (currentScope->isGlobalOrImpl())
+            SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
+    }
+
+    return true;
+}
+
 bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet)
 {
     bool acceptDeref = true;
@@ -92,64 +156,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
     // Multiple affectation
     if (leftNode->is(AstNodeKind::MultiIdentifier))
     {
-        auto parentNode = parent;
-        if (acceptDeref || parent->is(AstNodeKind::AttrUse))
-        {
-            parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent);
-            *result    = parentNode;
-        }
-
-        // Declare first variable, and affect it
-        const auto front = castAst<AstIdentifierRef>(leftNode->firstChild(), AstNodeKind::IdentifierRef);
-
-        // Then declare all other variables, and assign them to the first one
-        bool firstDone = false;
-        for (const auto child : leftNode->children)
-        {
-            SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
-            const auto identifier = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
-            identifier->computeName();
-            SWAG_CHECK(checkIsValidVarName(identifier));
-
-            AstVarDecl* varNode  = Ast::newVarDecl(identifier->token.text, this, parentNode);
-            varNode->kind        = kind;
-            varNode->token       = identifier->token;
-            varNode->token.id    = identifier->token.id;
-            varNode->assignToken = assignToken.token;
-            varNode->addAstFlag(AST_R_VALUE);
-            varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
-
-            if (!firstDone)
-            {
-                firstDone = true;
-                Ast::addChildBack(varNode, type);
-                Ast::addChildBack(varNode, assign);
-                varNode->type       = type;
-                varNode->assignment = assign;
-            }
-
-            // We are supposed to be constexpr, so we need to duplicate the assignment instead of generating an
-            // affectation to the first variable. If there's no assignment, then just declare the variable
-            // without the affectation to avoid a useless copy (and a postCopy in case of structs)
-            else if (!acceptDeref ||
-                     assign == nullptr ||
-                     assign->is(AstNodeKind::ExplicitNoInit) ||
-                     assign->is(AstNodeKind::Literal))
-            {
-                varNode->type = Ast::clone(type, varNode);
-                if (assign)
-                    varNode->assignment = Ast::clone(assign, varNode);
-            }
-            else
-            {
-                varNode->assignment = Ast::newIdentifierRef(front->token.text, this, varNode);
-            }
-
-            Semantic::setVarDeclResolve(varNode);
-
-            if (currentScope->isGlobalOrImpl())
-                SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
-        }
+        SWAG_CHECK(doVarDeclMultiIdentifier(parent, leftNode, type, assign, assignToken, kind, result, forLet, acceptDeref));
     }
 
     // Tuple dereference

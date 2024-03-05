@@ -108,6 +108,7 @@ struct Parser
     bool        testIsValidUserName(const AstNode* node) const;
     bool        checkIsValidUserName(AstNode* node, const Token* loc = nullptr) const;
     bool        checkIsValidVarName(AstNode* node) const;
+    bool        doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref);
     bool        doCheckPublicInternalPrivate(const Token& tokenAttr) const;
     void        registerSubDecl(AstNode* subDecl);
     static void isForceTakeAddress(AstNode* node);
