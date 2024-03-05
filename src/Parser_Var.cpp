@@ -147,6 +147,113 @@ bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNod
     return true;
 }
 
+bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref)
+{
+    SWAG_VERIFY(acceptDeref, error(leftNode, formErr(Err0511, Naming::aKindName(currentScope->kind).c_str())));
+
+    const auto parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent);
+    *result               = parentNode;
+
+    // Generate an expression of the form "var __tmp_0 = assignment"
+    const auto  tmpVarName  = form("__5tmp_%d", g_UniqueID.fetch_add(1));
+    AstVarDecl* orgVarNode  = Ast::newVarDecl(tmpVarName, this, parentNode);
+    orgVarNode->kind        = kind;
+    orgVarNode->assignToken = assignToken.token;
+    orgVarNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
+
+    // This will avoid to initialize the tuple before the affectation
+    orgVarNode->addAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
+    orgVarNode->addAstFlag(AST_R_VALUE);
+
+    Ast::addChildBack(orgVarNode, type);
+    orgVarNode->type = type;
+    Ast::addChildBack(orgVarNode, assign);
+    orgVarNode->assignment = assign;
+    if (orgVarNode->assignment)
+        orgVarNode->assignment->addAstFlag(AST_NO_LEFT_DROP);
+    Semantic::setVarDeclResolve(orgVarNode);
+
+    // Must be done after 'setVarDeclResolve', because 'semanticAfterFct' is already affected
+    orgVarNode->token.startLocation = leftNode->firstChild()->token.startLocation;
+    orgVarNode->token.endLocation   = leftNode->lastChild()->token.endLocation;
+    orgVarNode->allocateExtension(ExtensionKind::Semantic);
+    orgVarNode->extSemantic()->semanticAfterFct = Semantic::resolveTupleUnpackBeforeVar;
+
+    if (currentScope->isGlobalOrImpl())
+        SWAG_CHECK(currentScope->symTable.registerSymbolName(context, orgVarNode, SymbolKind::Variable));
+
+    // And reference that variable, in the form value = __tmp_0.item?
+    orgVarNode->publicName = "(";
+
+    int idx = 0;
+    for (uint32_t i = 0; i < leftNode->childCount(); i++)
+    {
+        const auto child = leftNode->children[i];
+
+        // Ignore field if '?', otherwise check that this is a valid variable name
+        SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
+        if (child->firstChild()->token.text == '?')
+        {
+            Ast::removeFromParent(child);
+            Ast::addChildBack(parentNode, child);
+            child->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
+            i--;
+            idx++;
+            continue;
+        }
+
+        SWAG_CHECK(checkIsValidUserName(child));
+        auto identifier = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+        identifier->computeName();
+        SWAG_CHECK(checkIsValidVarName(identifier));
+
+        if (idx)
+            orgVarNode->publicName += ", ";
+        orgVarNode->publicName += identifier->token.text;
+
+        const auto varNode   = Ast::newVarDecl(identifier->token.text, this, parentNode);
+        varNode->kind        = kind;
+        varNode->token       = identifier->token;
+        varNode->assignToken = assignToken.token;
+        varNode->addAstFlag(AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
+        varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
+        varNode->addSpecFlag(AstVarDecl::SPEC_FLAG_TUPLE_AFFECT);
+        if (currentScope->isGlobalOrImpl())
+            SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
+        identifier          = Ast::newMultiIdentifierRef(form("%s.item%u", tmpVarName.c_str(), idx++), this, varNode);
+        varNode->assignment = identifier;
+        Semantic::setVarDeclResolve(varNode);
+        varNode->assignment->addAstFlag(AST_TUPLE_UNPACK);
+    }
+
+    orgVarNode->publicName += ")";
+    return true;
+}
+
+bool Parser::doVarDeclSingleIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet)
+{
+    SWAG_CHECK(checkIsSingleIdentifier(leftNode, "as a variable name"));
+    const auto identifier = leftNode->lastChild();
+    SWAG_CHECK(checkIsValidVarName(identifier));
+    AstVarDecl* varNode = Ast::newVarDecl(identifier->token.text, this, parent);
+    *result             = varNode;
+    varNode->kind       = kind;
+    varNode->inheritTokenLocation(leftNode->token);
+    varNode->assignToken = assignToken.token;
+    varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
+
+    Ast::addChildBack(varNode, type);
+    varNode->type = type;
+    Ast::addChildBack(varNode, assign);
+    varNode->assignment = assign;
+    Semantic::setVarDeclResolve(varNode);
+    varNode->addAstFlag(AST_R_VALUE);
+
+    if (currentScope->isGlobalOrImpl())
+        SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
+    return true;
+}
+
 bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet)
 {
     bool acceptDeref = true;
@@ -162,108 +269,13 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
     // Tuple dereference
     else if (leftNode->is(AstNodeKind::MultiIdentifierTuple))
     {
-        SWAG_VERIFY(acceptDeref, error(leftNode, formErr(Err0511, Naming::aKindName(currentScope->kind).c_str())));
-
-        const auto parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent);
-        *result               = parentNode;
-
-        // Generate an expression of the form "var __tmp_0 = assignment"
-        const auto  tmpVarName  = form("__5tmp_%d", g_UniqueID.fetch_add(1));
-        AstVarDecl* orgVarNode  = Ast::newVarDecl(tmpVarName, this, parentNode);
-        orgVarNode->kind        = kind;
-        orgVarNode->assignToken = assignToken.token;
-        orgVarNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
-
-        // This will avoid to initialize the tuple before the affectation
-        orgVarNode->addAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
-        orgVarNode->addAstFlag(AST_R_VALUE);
-
-        Ast::addChildBack(orgVarNode, type);
-        orgVarNode->type = type;
-        Ast::addChildBack(orgVarNode, assign);
-        orgVarNode->assignment = assign;
-        if (orgVarNode->assignment)
-            orgVarNode->assignment->addAstFlag(AST_NO_LEFT_DROP);
-        Semantic::setVarDeclResolve(orgVarNode);
-
-        // Must be done after 'setVarDeclResolve', because 'semanticAfterFct' is already affected
-        orgVarNode->token.startLocation = leftNode->firstChild()->token.startLocation;
-        orgVarNode->token.endLocation   = leftNode->lastChild()->token.endLocation;
-        orgVarNode->allocateExtension(ExtensionKind::Semantic);
-        orgVarNode->extSemantic()->semanticAfterFct = Semantic::resolveTupleUnpackBeforeVar;
-
-        if (currentScope->isGlobalOrImpl())
-            SWAG_CHECK(currentScope->symTable.registerSymbolName(context, orgVarNode, SymbolKind::Variable));
-
-        // And reference that variable, in the form value = __tmp_0.item?
-        orgVarNode->publicName = "(";
-
-        int idx = 0;
-        for (uint32_t i = 0; i < leftNode->childCount(); i++)
-        {
-            const auto child = leftNode->children[i];
-
-            // Ignore field if '?', otherwise check that this is a valid variable name
-            SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
-            if (child->firstChild()->token.text == '?')
-            {
-                Ast::removeFromParent(child);
-                Ast::addChildBack(parentNode, child);
-                child->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
-                i--;
-                idx++;
-                continue;
-            }
-
-            SWAG_CHECK(checkIsValidUserName(child));
-            auto identifier = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
-            identifier->computeName();
-            SWAG_CHECK(checkIsValidVarName(identifier));
-
-            if (idx)
-                orgVarNode->publicName += ", ";
-            orgVarNode->publicName += identifier->token.text;
-
-            const auto varNode   = Ast::newVarDecl(identifier->token.text, this, parentNode);
-            varNode->kind        = kind;
-            varNode->token       = identifier->token;
-            varNode->assignToken = assignToken.token;
-            varNode->addAstFlag(AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
-            varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
-            varNode->addSpecFlag(AstVarDecl::SPEC_FLAG_TUPLE_AFFECT);
-            if (currentScope->isGlobalOrImpl())
-                SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
-            identifier          = Ast::newMultiIdentifierRef(form("%s.item%u", tmpVarName.c_str(), idx++), this, varNode);
-            varNode->assignment = identifier;
-            Semantic::setVarDeclResolve(varNode);
-            varNode->assignment->addAstFlag(AST_TUPLE_UNPACK);
-        }
-
-        orgVarNode->publicName += ")";
+        SWAG_CHECK(doVarDeclMultiIdentifierTuple(parent, leftNode, type, assign, assignToken, kind, result, forLet, acceptDeref));
     }
 
     // Single declaration/affectation
     else
     {
-        SWAG_CHECK(checkIsSingleIdentifier(leftNode, "as a variable name"));
-        const auto identifier = leftNode->lastChild();
-        SWAG_CHECK(checkIsValidVarName(identifier));
-        AstVarDecl* varNode = Ast::newVarDecl(identifier->token.text, this, parent);
-        *result             = varNode;
-        varNode->kind       = kind;
-        varNode->inheritTokenLocation(leftNode->token);
-        varNode->assignToken = assignToken.token;
-        varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
-
-        Ast::addChildBack(varNode, type);
-        varNode->type = type;
-        Ast::addChildBack(varNode, assign);
-        varNode->assignment = assign;
-        Semantic::setVarDeclResolve(varNode);
-        varNode->addAstFlag(AST_R_VALUE);
-
-        if (currentScope->isGlobalOrImpl())
-            SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
+        SWAG_CHECK(doVarDeclSingleIdentifier(parent, leftNode, type, assign, assignToken, kind, result, forLet));
     }
 
     return true;

@@ -108,7 +108,6 @@ struct Parser
     bool        testIsValidUserName(const AstNode* node) const;
     bool        checkIsValidUserName(AstNode* node, const Token* loc = nullptr) const;
     bool        checkIsValidVarName(AstNode* node) const;
-    bool        doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref);
     bool        doCheckPublicInternalPrivate(const Token& tokenAttr) const;
     void        registerSubDecl(AstNode* subDecl);
     static void isForceTakeAddress(AstNode* node);
@@ -142,6 +141,9 @@ struct Parser
     bool doCompilerImport(AstNode* parent);
     bool doCompilerPlaceHolder(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent, AstNode** result);
+    bool doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref);
+    bool doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref);
+    bool doVarDeclSingleIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet);
     bool doVarDecl(AstNode* parent, AstNode** result);
     bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct = false, bool forLet = false);
     bool doTypeAlias(AstNode* parent, AstNode** result);
