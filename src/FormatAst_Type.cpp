@@ -104,6 +104,18 @@ bool FormatAst::outputType(const AstTypeExpression* node)
     {
         SWAG_CHECK(outputNode(node->identifier));
     }
+    else if (node->literalType == LiteralType::TypeType)
+    {
+        CONCAT_FIXED_STR(concat, "typeinfo");
+        if (node->childCount())
+            SWAG_CHECK(outputNode(node->firstChild()));
+    }
+    else if (node->typeFromLiteral == g_TypeMgr->typeInfoVariadic)
+    {
+        if (node->childCount())
+            SWAG_CHECK(outputNode(node->firstChild()));
+        CONCAT_FIXED_STR(concat, "...");
+    }    
     else
     {
         auto typeFromLiteral = node->typeFromLiteral;
@@ -112,6 +124,8 @@ bool FormatAst::outputType(const AstTypeExpression* node)
         SWAG_ASSERT(typeFromLiteral);
         SWAG_ASSERT(!typeFromLiteral->name.empty());
         concat->addString(typeFromLiteral->name);
+        if (node->childCount())
+            SWAG_CHECK(outputNode(node->firstChild()));
     }
 
     return true;
