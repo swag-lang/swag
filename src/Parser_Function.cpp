@@ -615,7 +615,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     // Name
     if (funcForCompiler)
     {
-        int id = g_UniqueID.fetch_add(1);
+        uint32_t id = g_UniqueID.fetch_add(1);
         switch (typeFuncId)
         {
             case TokenId::CompilerFuncTest:
@@ -1022,7 +1022,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     funcNode->semanticFct         = Semantic::resolveFuncDecl;
     funcNode->addAstFlag(AST_GENERATED);
 
-    const int id         = g_UniqueID.fetch_add(1);
+    const uint32_t id    = g_UniqueID.fetch_add(1);
     funcNode->token.text = "__lambda" + std::to_string(id);
 
     const auto typeInfo = makeType<TypeInfoFuncAttr>();

@@ -434,7 +434,7 @@ namespace
         }
     }
 
-    int getBadParamIdx(const OneTryMatch& oneTry, const AstNode* callParameters)
+    uint32_t getBadParamIdx(const OneTryMatch& oneTry, const AstNode* callParameters)
     {
         const BadSignatureInfos& bi = oneTry.symMatchContext.badSignatureInfos;
 
@@ -453,7 +453,7 @@ namespace
             badParamIdx--;
 
         // This is a closure with a generated first parameter
-        if (oneTry.symMatchContext.matchFlags & SymbolMatchContext::MATCH_CLOSURE_PARAM)
+        if (badParamIdx && oneTry.symMatchContext.matchFlags & SymbolMatchContext::MATCH_CLOSURE_PARAM)
             badParamIdx--;
 
         return badParamIdx;
@@ -479,7 +479,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     // Get the call parameter that failed
     const auto callParameters = oneTry.callParameters;
     errorParam.badParamIdx    = getBadParamIdx(oneTry, callParameters);
-    if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < callParameters->childCount())
+    if (oneTry.callParameters && errorParam.badParamIdx < callParameters->childCount())
         errorParam.failedParam = castAst<AstFuncCallParam>(callParameters->children[errorParam.badParamIdx]);
     errorParam.badParamIdx += 1;
 

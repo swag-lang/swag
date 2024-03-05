@@ -346,7 +346,7 @@ namespace
         return false;
     }
 
-    bool dealWithWarning(Diagnostic& err, Vector<const Diagnostic*>& notes)
+    bool dealWithWarning(Diagnostic& err)
     {
         if (err.errorLevel != DiagnosticLevel::Warning)
             return true;
@@ -492,7 +492,7 @@ namespace
         for (auto note : inDiag.notes)
             copyNotes.push_back(note);
 
-        if (!dealWithWarning(*copyDiag, copyNotes))
+        if (!dealWithWarning(*copyDiag))
             return true;
 
         auto&       err   = *copyDiag;

@@ -372,7 +372,7 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
                 // Example 4506.
                 if (nodeFunc->makePointerLambda)
                 {
-                    const int id = g_UniqueID.fetch_add(1);
+                    const uint32_t id = g_UniqueID.fetch_add(1);
                     sub->token.text += std::to_string(id);
                     const auto idRef  = castAst<AstIdentifier>(nodeFunc->makePointerLambda->firstChild()->lastChild(), AstNodeKind::Identifier);
                     idRef->token.text = sub->token.text;
@@ -635,7 +635,8 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
     return newNode;
 }
 
-AstScopeBreakable::AstScopeBreakable()
+AstScopeBreakable::AstScopeBreakable() :
+    block{nullptr}
 {
     breakableFlags.remove(BREAKABLE_CAN_HAVE_INDEX);
 }
@@ -731,7 +732,8 @@ AstNode* AstVisit::clone(CloneContext& context)
     return newNode;
 }
 
-AstSwitch::AstSwitch()
+AstSwitch::AstSwitch() :
+    expression{nullptr}
 {
     breakableFlags.remove(BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE);
 }
@@ -1198,8 +1200,8 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         // We also want to replace the name of the function (and the reference to it) in case
         // the block is in a mixin block, because in that case the function can be registered
         // more than once in the same scope.
-        const int  id      = g_UniqueID.fetch_add(1);
-        const Utf8 newName = R"(__cmpfunc)" + std::to_string(id);
+        const uint32_t id      = g_UniqueID.fetch_add(1);
+        const Utf8     newName = R"(__cmpfunc)" + std::to_string(id);
 
         const auto func  = castAst<AstFuncDecl>(newNode->firstChild(), AstNodeKind::FuncDecl);
         func->token.text = newName;

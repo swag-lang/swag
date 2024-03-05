@@ -130,7 +130,7 @@ int main(int argc, const char* argv[])
     }
     else if (command == "format")
     {
-        g_Workspace->formatCommand();
+        Workspace::formatCommand();
     }
     else if (command == "version")
     {

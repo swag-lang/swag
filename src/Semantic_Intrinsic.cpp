@@ -171,7 +171,7 @@ bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node
     return true;
 }
 
-bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node)
 {
     auto first  = node->firstChild();
     auto second = node->lastChild();
@@ -957,7 +957,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
         {
             const auto expr = node->firstChild();
             SWAG_CHECK(checkIsConcrete(context, expr));
-            SWAG_CHECK(resolveIntrinsicMakeAny(context, node, expr->typeInfo));
+            SWAG_CHECK(resolveIntrinsicMakeAny(context, node));
             break;
         }
 

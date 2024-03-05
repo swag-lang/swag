@@ -269,7 +269,7 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
         helpContent += "</div>\n";
 }
 
-void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, bool shortDesc)
+void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, const Vector<Utf8>& lines, bool shortDesc)
 {
     uint32_t start = 0;
     while (start < lines.size())
