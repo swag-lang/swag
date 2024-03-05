@@ -168,14 +168,14 @@ bool Tokenizer::doAfterToken(TokenParse& tokenParse)
             curBuffer++;
             TokenParse tmp;
             SWAG_CHECK(doSingleLineComment(tmp));
-            tokenParse.comments.afterSameLine.push_back(std::move(tmp.comments.justBefore.front()));
+            tokenParse.comments.commentAfterSameLine.push_back(std::move(tmp.comments.commentJustBefore.front()));
         }
         else if (curBuffer[0] == '/' && curBuffer[1] == '*')
         {
             curBuffer++;
             TokenParse tmp;
             SWAG_CHECK(doMultiLineComment(tmp));
-            tokenParse.comments.afterSameLine.push_back(std::move(tmp.comments.justBefore.front()));
+            tokenParse.comments.commentAfterSameLine.push_back(std::move(tmp.comments.commentJustBefore.front()));
         }
 
         return true;
@@ -191,8 +191,8 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
 
     tokenParse.literalType      = LiteralType::TypeMax;
     tokenParse.token.sourceFile = sourceFile;
-    tokenParse.comments.justBefore.clear();
-    tokenParse.comments.afterSameLine.clear();
+    tokenParse.comments.commentJustBefore.clear();
+    tokenParse.comments.commentAfterSameLine.clear();
 
     tokenParse.flags.remove(TOKEN_PARSE_BLANK_BEFORE);
     if (tokenParse.flags.has(TOKEN_PARSE_BLANK_AFTER))
@@ -227,8 +227,8 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         {
             if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
             {
-                tokenParse.comments.before.append(tokenParse.comments.justBefore);
-                tokenParse.comments.justBefore.clear();
+                tokenParse.comments.commentBefore.append(tokenParse.comments.commentJustBefore);
+                tokenParse.comments.commentJustBefore.clear();
                 tokenParse.flags.add(TOKEN_PARSE_BLANK_LINE_BEFORE);
             }
             else

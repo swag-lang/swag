@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "FormatAst.h"
+#include "Ast.h"
 #include "AstFlags.h"
 #include "Semantic.h"
 
@@ -73,6 +74,34 @@ bool FormatAst::outputCommaChildren(const AstNode* node, uint32_t start)
 
 bool FormatAst::outputStatement(const AstNode* node)
 {
+    const auto stmt = castAst<AstStatement>(node, AstNodeKind::Statement);
+
+    // Multi affectation a, b = ? is a syntax sugar for a special statement block
+    if (stmt->hasSpecFlag(AstStatement::SPEC_FLAG_MULTI_AFFECT))
+    {
+        bool first = true;
+        for (const auto c : stmt->children)
+        {
+            if (!first)
+            {
+                concat->addChar(',');
+                concat->addBlank();
+            }
+
+            first = false;
+            const auto op = castAst<AstOp>(c, AstNodeKind::AffectOp);
+            concat->addString(op->firstChild()->token.text);
+        }
+
+        concat->addBlank();
+        const auto firstOp = castAst<AstOp>(stmt->firstChild(), AstNodeKind::AffectOp);
+        concat->addString(firstOp->token.text);
+        concat->addBlank();
+        SWAG_CHECK(outputNode(firstOp->secondChild()));
+        concat->addEol();
+        return true;
+    }
+
     concat->addEol();
     concat->addIndent(indent);
     concat->addChar('{');

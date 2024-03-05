@@ -88,21 +88,21 @@ Utf8 GenDoc::getDocComment(const AstNode* node)
         auto scan = node;
         while (scan)
         {
-            if (scan->hasExtMisc() && !scan->extMisc()->comments.afterSameLine.empty())
-                return TokenComments::toString(scan->extMisc()->comments.afterSameLine);
+            if (scan->hasExtMisc() && !scan->extMisc()->format.commentAfterSameLine.empty())
+                return TokenFormat::toString(scan->extMisc()->format.commentAfterSameLine);
             scan = scan->lastChild();
         }
 
         return "";
     }
 
-    if (node->hasExtMisc() && !node->extMisc()->comments.justBefore.empty())
-        return TokenComments::toString(node->extMisc()->comments.justBefore);
+    if (node->hasExtMisc() && !node->extMisc()->format.commentJustBefore.empty())
+        return TokenFormat::toString(node->extMisc()->format.commentJustBefore);
 
     while (node->parent && node->parent->is(AstNodeKind::AttrUse))
     {
-        if (node->parent->hasExtMisc() && !node->parent->extMisc()->comments.justBefore.empty())
-            return TokenComments::toString(node->parent->extMisc()->comments.justBefore);
+        if (node->parent->hasExtMisc() && !node->parent->extMisc()->format.commentJustBefore.empty())
+            return TokenFormat::toString(node->parent->extMisc()->format.commentJustBefore);
         node = node->parent;
     }
 

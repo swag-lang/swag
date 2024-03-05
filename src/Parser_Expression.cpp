@@ -1352,6 +1352,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 {
                     multi = Ast::newNode<AstNode>(AstNodeKind::MultiIdentifier, this, parent);
                     Ast::addChildBack(multi, exprNode);
+                    multi->inheritFormatFromBefore(exprNode);
                 }
             }
 
@@ -1419,6 +1420,8 @@ bool Parser::doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode*
     savedToken.token.startLocation = tokenParse.token.startLocation;
     const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
     *result                        = parentNode;
+    parentNode->addSpecFlag(AstStatement::SPEC_FLAG_MULTI_AFFECT);
+    parentNode->inheritFormatFromBefore(leftNode);
 
     // Generate an expression of the form "var firstVar = assignment", and "secondVar = firstVar" for the rest
     // This will avoid to do the right expression multiple times (if this is a function call for example).
@@ -1437,7 +1440,6 @@ bool Parser::doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode*
         const auto child      = leftNode->firstChild();
         const auto affectNode = Ast::newAffectOp(opFlags, opAttrFlags, nullptr, parentNode);
         affectNode->token     = savedToken.token;
-        affectNode->token.id  = savedToken.token.id;
         Ast::removeFromParent(child);
         Ast::addChildBack(affectNode, child);
         isForceTakeAddress(child);

@@ -659,31 +659,58 @@ void AstNode::inheritOwners(const AstNode* from)
     }
 }
 
-void AstNode::inheritFormatFromBefore(TokenParse& tokenParse)
+void AstNode::inheritFormatFromBefore(const AstNode* other)
 {
-    formatFlags.remove(FMTFLAG_BLANK_LINE_BEFORE);
-    if (tokenParse.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
-        formatFlags.add(FMTFLAG_BLANK_LINE_BEFORE);
+    if (!other->hasExtMisc())
+        return;
 
-    if (!tokenParse.comments.before.empty())
+    if (other->extMisc()->format.flags != 0)
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->comments.before = std::move(tokenParse.comments.before);
+        extMisc()->format.flags        = other->extMisc()->format.flags;
+        other->extMisc()->format.flags = 0;
     }
 
-    if (!tokenParse.comments.justBefore.empty())
+    if (!other->extMisc()->format.commentBefore.empty())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->comments.justBefore = std::move(tokenParse.comments.justBefore);
+        extMisc()->format.commentBefore = std::move(other->extMisc()->format.commentBefore);
+    }
+
+    if (!other->extMisc()->format.commentJustBefore.empty())
+    {
+        allocateExtension(ExtensionKind::Misc);
+        extMisc()->format.commentJustBefore = std::move(other->extMisc()->format.commentJustBefore);
+    }
+}
+
+void AstNode::inheritFormatFromBefore(TokenParse& tokenParse)
+{
+    if (tokenParse.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
+    {
+        allocateExtension(ExtensionKind::Misc);
+        extMisc()->format.flags = tokenParse.flags;
+    }
+
+    if (!tokenParse.comments.commentBefore.empty())
+    {
+        allocateExtension(ExtensionKind::Misc);
+        extMisc()->format.commentBefore = std::move(tokenParse.comments.commentBefore);
+    }
+
+    if (!tokenParse.comments.commentJustBefore.empty())
+    {
+        allocateExtension(ExtensionKind::Misc);
+        extMisc()->format.commentJustBefore = std::move(tokenParse.comments.commentJustBefore);
     }
 }
 
 void AstNode::inheritFormatFromAfter(TokenParse& tokenParse)
 {
-    if (!tokenParse.comments.afterSameLine.empty())
+    if (!tokenParse.comments.commentAfterSameLine.empty())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->comments.afterSameLine = std::move(tokenParse.comments.afterSameLine);
+        extMisc()->format.commentAfterSameLine = std::move(tokenParse.comments.commentAfterSameLine);
     }
 }
 

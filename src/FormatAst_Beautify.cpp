@@ -39,9 +39,9 @@ void FormatAst::beautifyCommentBefore(const AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
-    if (!node->hasExtMisc() || node->extMisc()->comments.before.empty())
+    if (!node->hasExtMisc() || node->extMisc()->format.commentBefore.empty())
         return;
-    beautifyComment(node->extMisc()->comments.before);
+    beautifyComment(node->extMisc()->format.commentBefore);
     concat->addEol();
     concat->addIndent(indent);
 }
@@ -50,9 +50,9 @@ void FormatAst::beautifyCommentJustBefore(const AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
-    if (!node->hasExtMisc() || node->extMisc()->comments.justBefore.empty())
+    if (!node->hasExtMisc() || node->extMisc()->format.commentJustBefore.empty())
         return;
-    beautifyComment(node->extMisc()->comments.justBefore);
+    beautifyComment(node->extMisc()->format.commentJustBefore);
     concat->addEol();
     concat->addIndent(indent);
 }
@@ -62,7 +62,7 @@ void FormatAst::beautifyBlankLine(const AstNode* node) const
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
 
-    if (node->formatFlags.has(FMTFLAG_BLANK_LINE_BEFORE))
+    if (node->hasExtMisc() && node->extMisc()->format.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
     {
         concat->addBlankLine();
         concat->addIndent(indent);
@@ -73,8 +73,8 @@ void FormatAst::beautifyCommentAfterSameLine(const AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
-    if (!node->hasExtMisc() || node->extMisc()->comments.afterSameLine.empty())
+    if (!node->hasExtMisc() || node->extMisc()->format.commentAfterSameLine.empty())
         return;
     concat->addBlank();
-    beautifyComment(node->extMisc()->comments.afterSameLine);
+    beautifyComment(node->extMisc()->format.commentAfterSameLine);
 }

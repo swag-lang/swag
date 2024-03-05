@@ -304,6 +304,7 @@ struct AstNode
     void inheritTokenName(Token& tkn);
     void inheritTokenLocation(const Token& tkn);
     void inheritOwners(const AstNode* from);
+    void inheritFormatFromBefore(const AstNode* other);
     void inheritFormatFromBefore(TokenParse& tokenParse);
     void inheritFormatFromAfter(TokenParse& tokenParse);
     void inheritOwnersAndFlags(const Parser* parser);
@@ -417,7 +418,7 @@ struct AstNode
         VectorNative<AlternativeScope>     alternativeScopes;
         VectorNative<AlternativeScopeVar>  alternativeScopesVars;
         VectorNative<uint32_t>             registersToRelease;
-        TokenComments                      comments;
+        TokenFormat                        format;
         VectorMap<ExtraPointerKind, void*> extraPointers;
 
         RegisterList additionalRegisterRC;
@@ -506,7 +507,7 @@ struct AstNode
     AstNodeKind         kind;
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
-    AstFormatFlags      formatFlags;
+    uint8_t             padding0;
 
     mutable SharedMutex    mutex;
     VectorNative<AstNode*> children;
@@ -1190,8 +1191,9 @@ struct AstLiteral : AstNode
 
 struct AstStatement : AstNode
 {
-    static constexpr SpecFlags SPEC_FLAG_NEED_SCOPE = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_CURLY      = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_NEED_SCOPE   = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_CURLY        = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_MULTI_AFFECT = 0x0004;
 
     ~        AstStatement();
     AstNode* clone(CloneContext& context);
