@@ -1,4 +1,5 @@
 #pragma once
+#include "AstNode.h"
 #include "ErrorContext.h"
 #include "Scope.h"
 #include "Tokenizer.h"
@@ -223,6 +224,9 @@ struct Parser
     bool doLeftInstruction(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
     bool doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags = 0, const AstWith* withNode = nullptr);
     bool doLeftExpressionAffect(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
+    bool doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, AttributeFlags opAttrFlags, TokenParse& savedToken);
+    bool doTupleUnpacking(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, AttributeFlags opAttrFlags, TokenParse& savedToken);
+    bool doSingleIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, AttributeFlags opAttrFlags, const TokenParse& savedToken);
     bool doInit(AstNode* parent, AstNode** result);
     bool doDropCopyMove(AstNode* parent, AstNode** result);
     bool doRange(AstNode* parent, AstNode* expression, AstNode** result);

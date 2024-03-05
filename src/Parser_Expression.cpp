@@ -1414,6 +1414,148 @@ bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, const Ast
     }
 }
 
+bool Parser::doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, AttributeFlags opAttrFlags, TokenParse& savedToken)
+{
+    savedToken.token.startLocation = tokenParse.token.startLocation;
+    const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
+    *result                        = parentNode;
+
+    // Generate an expression of the form "var firstVar = assignment", and "secondVar = firstVar" for the rest
+    // This will avoid to do the right expression multiple times (if this is a function call for example).
+    //
+    // If this is not the '=' operator, then we have to duplicate the affectation for each variable
+    // If the affect expression is a literal, it's better to duplicate also
+    AstNode*   affectExpression = nullptr;
+    bool       firstDone        = false;
+    const auto front            = castAst<AstIdentifierRef>(leftNode->firstChild(), AstNodeKind::IdentifierRef);
+    front->computeName();
+
+    const auto cloneFront = Ast::clone(front, nullptr);
+
+    while (!leftNode->children.empty())
+    {
+        const auto child      = leftNode->firstChild();
+        const auto affectNode = Ast::newAffectOp(opFlags, opAttrFlags, nullptr, parentNode);
+        affectNode->token     = savedToken.token;
+        affectNode->token.id  = savedToken.token.id;
+        Ast::removeFromParent(child);
+        Ast::addChildBack(affectNode, child);
+        isForceTakeAddress(child);
+
+        // First create 'firstVar = assignment'
+        if (!firstDone)
+        {
+            firstDone = true;
+            if (affectNode->token.is(TokenId::SymEqual))
+                SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->token.id, affectNode, EXPR_FLAG_NONE, &affectExpression));
+            else
+                SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &affectExpression));
+        }
+
+        // This is not an initialization, so we need to duplicate the right expression
+        else if (affectNode->token.isNot(TokenId::SymEqual) || affectExpression->is(AstNodeKind::Literal))
+        {
+            const auto newAffect = Ast::clone(affectExpression, affectNode);
+            newAffect->inheritTokenLocation(affectExpression->token);
+        }
+
+        // In case of an affectation, create 'otherVar = firstVar'
+        else
+        {
+            Ast::clone(cloneFront, affectNode);
+        }
+    }
+
+    cloneFront->release();
+    leftNode->release();
+    return true;
+}
+
+bool Parser::doTupleUnpacking(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, AttributeFlags opAttrFlags, TokenParse& savedToken)
+{
+    savedToken.token.startLocation = tokenParse.token.startLocation;
+    const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
+    *result                        = parentNode;
+
+    // Get right side
+    AstNode* assignment;
+    SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &assignment));
+
+    tokenParse.token.startLocation = savedToken.token.startLocation;
+    tokenParse.token.endLocation   = savedToken.token.endLocation;
+
+    // Generate an expression of the form "var __tmp_0 = assignment"
+    const auto  tmpVarName = form("__4tmp_%d", g_UniqueID.fetch_add(1));
+    AstVarDecl* varNode    = Ast::newVarDecl(tmpVarName, this, parentNode);
+    varNode->addAstFlag(AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
+    Ast::addChildBack(varNode, assignment);
+    assignment->inheritOwners(varNode);
+    varNode->assignment = assignment;
+    varNode->assignment->addAstFlag(AST_NO_LEFT_DROP);
+
+    varNode->token.startLocation = leftNode->firstChild()->token.startLocation;
+    varNode->token.endLocation   = leftNode->lastChild()->token.endLocation;
+    varNode->allocateExtension(ExtensionKind::Semantic);
+    varNode->extSemantic()->semanticAfterFct = Semantic::resolveTupleUnpackBefore;
+
+    // And reference that variable, in the form value = __tmp_0.item?
+    int idx = 0;
+    while (!leftNode->children.empty())
+    {
+        const auto child = leftNode->firstChild();
+
+        // Ignore field if '?', otherwise check that this is a valid variable name
+        if (child->firstChild()->token.text == '?')
+        {
+            idx++;
+            Ast::removeFromParent(child);
+            Ast::addChildBack(parentNode, child);
+            child->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
+            continue;
+        }
+
+        const auto affectNode  = Ast::newAffectOp(opFlags, opAttrFlags, nullptr, parentNode);
+        affectNode->token.id   = savedToken.token.id;
+        affectNode->token.text = savedToken.token.text;
+        Ast::removeFromParent(child);
+        Ast::addChildBack(affectNode, child);
+        isForceTakeAddress(child);
+        const auto idRef = Ast::newMultiIdentifierRef(form("%s.item%u", tmpVarName.c_str(), idx++), this, affectNode);
+
+        // Force a move between the generated temporary variable and the real var
+        idRef->addAstFlag(AST_FORCE_MOVE);
+    }
+
+    leftNode->release();
+    return true;
+}
+
+bool Parser::doSingleIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, AttributeFlags opAttrFlags, const TokenParse& savedToken)
+{
+    const auto affectNode = Ast::newAffectOp(opFlags, opAttrFlags, this, parent);
+    affectNode->token     = savedToken.token;
+
+    Ast::addChildBack(affectNode, leftNode);
+    isForceTakeAddress(leftNode);
+
+    if (affectNode->token.is(TokenId::SymEqual))
+        SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->token.id, affectNode, EXPR_FLAG_NONE, &dummyResult));
+    else
+        SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &dummyResult));
+
+    // :DeduceLambdaType
+    const auto back = affectNode->lastChild();
+    if (back->is(AstNodeKind::MakePointerLambda) && back->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE))
+    {
+        const auto front = affectNode->firstChild();
+        front->allocateExtension(ExtensionKind::Semantic);
+        front->extSemantic()->semanticAfterFct = Semantic::resolveAfterKnownType;
+    }
+
+    *result = affectNode;
+    return true;
+}
+
 bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith* withNode)
 {
     AstNode* leftNode;
@@ -1455,143 +1597,19 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         // like in a, b, c = 0
         if (leftNode->is(AstNodeKind::MultiIdentifier))
         {
-            savedtoken.token.startLocation = tokenParse.token.startLocation;
-            const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
-            *result                        = parentNode;
-
-            // Generate an expression of the form "var firstVar = assignment", and "secondVar = firstVar" for the rest
-            // This will avoid to do the right expression multiple times (if this is a function call for example).
-            //
-            // If this is not the '=' operator, then we have to duplicate the affectation for each variable
-            // If the affect expression is a literal, it's better to duplicate also
-            AstNode*   affectExpression = nullptr;
-            bool       firstDone        = false;
-            const auto front            = castAst<AstIdentifierRef>(leftNode->firstChild(), AstNodeKind::IdentifierRef);
-            front->computeName();
-
-            const auto cloneFront = Ast::clone(front, nullptr);
-
-            while (!leftNode->children.empty())
-            {
-                const auto child      = leftNode->firstChild();
-                const auto affectNode = Ast::newAffectOp(opFlags, opAttrFlags, nullptr, parentNode);
-                affectNode->token     = savedtoken.token;
-                affectNode->token.id  = savedtoken.token.id;
-                Ast::removeFromParent(child);
-                Ast::addChildBack(affectNode, child);
-                isForceTakeAddress(child);
-
-                // First create 'firstVar = assignment'
-                if (!firstDone)
-                {
-                    firstDone = true;
-                    if (affectNode->token.is(TokenId::SymEqual))
-                        SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->token.id, affectNode, EXPR_FLAG_NONE, &affectExpression));
-                    else
-                        SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &affectExpression));
-                }
-
-                // This is not an initialization, so we need to duplicate the right expression
-                else if (affectNode->token.isNot(TokenId::SymEqual) || affectExpression->is(AstNodeKind::Literal))
-                {
-                    const auto newAffect = Ast::clone(affectExpression, affectNode);
-                    newAffect->inheritTokenLocation(affectExpression->token);
-                }
-
-                // In case of an affectation, create 'otherVar = firstVar'
-                else
-                {
-                    Ast::clone(cloneFront, affectNode);
-                }
-            }
-
-            cloneFront->release();
-            leftNode->release();
+            SWAG_CHECK(doMultiIdentifierAffect(parent, result, leftNode, opFlags, opAttrFlags, savedtoken));
         }
 
         // Tuple unpacking
         else if (leftNode->is(AstNodeKind::MultiIdentifierTuple))
         {
-            savedtoken.token.startLocation = tokenParse.token.startLocation;
-            const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
-            *result                        = parentNode;
-
-            // Get right side
-            AstNode* assignment;
-            SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &assignment));
-
-            tokenParse.token.startLocation = savedtoken.token.startLocation;
-            tokenParse.token.endLocation   = savedtoken.token.endLocation;
-
-            // Generate an expression of the form "var __tmp_0 = assignment"
-            const auto  tmpVarName = form("__4tmp_%d", g_UniqueID.fetch_add(1));
-            AstVarDecl* varNode    = Ast::newVarDecl(tmpVarName, this, parentNode);
-            varNode->addAstFlag(AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
-            Ast::addChildBack(varNode, assignment);
-            assignment->inheritOwners(varNode);
-            varNode->assignment = assignment;
-            varNode->assignment->addAstFlag(AST_NO_LEFT_DROP);
-
-            varNode->token.startLocation = leftNode->firstChild()->token.startLocation;
-            varNode->token.endLocation   = leftNode->lastChild()->token.endLocation;
-            varNode->allocateExtension(ExtensionKind::Semantic);
-            varNode->extSemantic()->semanticAfterFct = Semantic::resolveTupleUnpackBefore;
-
-            // And reference that variable, in the form value = __tmp_0.item?
-            int idx = 0;
-            while (!leftNode->children.empty())
-            {
-                const auto child = leftNode->firstChild();
-
-                // Ignore field if '?', otherwise check that this is a valid variable name
-                if (child->firstChild()->token.text == '?')
-                {
-                    idx++;
-                    Ast::removeFromParent(child);
-                    Ast::addChildBack(parentNode, child);
-                    child->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
-                    continue;
-                }
-
-                const auto affectNode  = Ast::newAffectOp(opFlags, opAttrFlags, nullptr, parentNode);
-                affectNode->token.id   = savedtoken.token.id;
-                affectNode->token.text = savedtoken.token.text;
-                Ast::removeFromParent(child);
-                Ast::addChildBack(affectNode, child);
-                isForceTakeAddress(child);
-                const auto idRef = Ast::newMultiIdentifierRef(form("%s.item%u", tmpVarName.c_str(), idx++), this, affectNode);
-
-                // Force a move between the generated temporary variable and the real var
-                idRef->addAstFlag(AST_FORCE_MOVE);
-            }
-
-            leftNode->release();
+            SWAG_CHECK(doTupleUnpacking(parent, result, leftNode, opFlags, opAttrFlags, savedtoken));
         }
 
         // One normal simple affectation
         else
         {
-            const auto affectNode = Ast::newAffectOp(opFlags, opAttrFlags, this, parent);
-            affectNode->token     = savedtoken.token;
-
-            Ast::addChildBack(affectNode, leftNode);
-            isForceTakeAddress(leftNode);
-
-            if (affectNode->token.is(TokenId::SymEqual))
-                SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->token.id, affectNode, EXPR_FLAG_NONE, &dummyResult));
-            else
-                SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &dummyResult));
-
-            // :DeduceLambdaType
-            const auto back = affectNode->lastChild();
-            if (back->is(AstNodeKind::MakePointerLambda) && back->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE))
-            {
-                const auto front = affectNode->firstChild();
-                front->allocateExtension(ExtensionKind::Semantic);
-                front->extSemantic()->semanticAfterFct = Semantic::resolveAfterKnownType;
-            }
-
-            *result = affectNode;
+            SWAG_CHECK(doSingleIdentifierAffect(parent, result, leftNode, opFlags, opAttrFlags, savedtoken));
         }
     }
     else
