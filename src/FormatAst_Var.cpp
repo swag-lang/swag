@@ -22,13 +22,19 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
             if (!isSelf)
             {
                 if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME))
-                    CONCAT_FIXED_STR(concat, ": ");
+                {
+                    concat->addChar(':');
+                    concat->addBlank();
+                }
+                
                 SWAG_CHECK(outputNode(varNode->type));
             }
         }
         else
         {
-            CONCAT_FIXED_STR(concat, " = ");
+            concat->addBlank();
+            concat->addChar('=');
+            concat->addBlank();
             const auto typeExpr = castAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
             SWAG_ASSERT(!varNode->assignment);
             SWAG_ASSERT(typeExpr->identifier);
@@ -42,7 +48,9 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
 
     if (varNode->assignment)
     {
-        CONCAT_FIXED_STR(concat, " = ");
+        concat->addBlank();
+        concat->addChar('=');
+        concat->addBlank();
         SWAG_CHECK(outputNode(varNode->assignment));
     }
 
@@ -52,24 +60,30 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
 bool FormatAst::outputVar(const AstVarDecl* varNode)
 {
     if (varNode->hasAstFlag(AST_DECL_USING))
-        CONCAT_FIXED_STR(concat, "using ");
+    {
+        CONCAT_FIXED_STR(concat, "using");
+        concat->addBlank();
+    }
 
     if (varNode->is(AstNodeKind::ConstDecl))
     {
-        CONCAT_FIXED_STR(concat, "const ");
+        CONCAT_FIXED_STR(concat, "const");
+        concat->addBlank();
     }
     else if (varNode->isNot(AstNodeKind::FuncDeclParam) && !varNode->hasAstFlag(AST_STRUCT_MEMBER))
     {
         if (varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
-            CONCAT_FIXED_STR(concat, "let ");
+            CONCAT_FIXED_STR(concat, "let");
         else
-            CONCAT_FIXED_STR(concat, "var ");
+            CONCAT_FIXED_STR(concat, "var");
+        concat->addBlank();
     }
 
     const bool isSelf = varNode->token.text == g_LangSpec->name_self;
     if (isSelf && varNode->type && castAst<AstTypeExpression>(varNode->type)->typeFlags.has(TYPEFLAG_IS_CONST))
     {
-        CONCAT_FIXED_STR(concat, "const ");
+        CONCAT_FIXED_STR(concat, "const");
+        concat->addBlank();
     }
 
     SWAG_CHECK(outputVarDecl(varNode, isSelf));
