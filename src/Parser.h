@@ -116,6 +116,7 @@ struct Parser
     bool doCompilerScopeBreakable(AstNode* parent, AstNode** result);
     bool doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result);
     bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
+    bool doFuncDeclParameterSelf(AstVarDecl* paramNode);
     bool doIntrinsicTag(AstNode* parent, AstNode** result);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result);

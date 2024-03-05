@@ -174,6 +174,58 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
     return true;
 }
 
+bool Parser::doFuncDeclParameterSelf(AstVarDecl* paramNode)
+{
+    bool isConst = false;
+    if (tokenParse.is(TokenId::KwdConst))
+    {
+        const auto constToken = tokenParse;
+        isConst               = true;
+        SWAG_CHECK(eatToken());
+        SWAG_VERIFY(tokenParse.is(TokenId::Identifier) && tokenParse.token.text == g_LangSpec->name_self, error(constToken.token, formErr(Err0457, tokenParse.token.c_str())));
+        paramNode->token.text = g_LangSpec->name_self;
+    }
+
+    SWAG_VERIFY(paramNode->ownerStructScope, error(tokenParse.token, toErr(Err0470)));
+    SWAG_CHECK(eatToken());
+
+    // For an enum, 'self' is replaced with the type itself, not a pointer to the type like for a struct
+    if (paramNode->ownerStructScope->is(ScopeKind::Enum))
+    {
+        const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
+        typeNode->typeFlags.add(TYPEFLAG_IS_SELF);
+        if (paramNode->hasAstFlag(AST_DECL_USING))
+            typeNode->typeFlags.add(TYPEFLAG_HAS_USING);
+        typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode);
+        paramNode->type      = typeNode;
+    }
+    else
+    {
+        SWAG_VERIFY(paramNode->ownerStructScope->is(ScopeKind::Struct), error(tokenParse.token, toErr(Err0470)));
+        const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
+        typeNode->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
+        typeNode->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
+        if (paramNode->hasAstFlag(AST_DECL_USING))
+            typeNode->typeFlags.add(TYPEFLAG_HAS_USING);
+        typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode);
+        paramNode->type      = typeNode;
+    }
+
+    if (tokenParse.is(TokenId::SymEqual))
+    {
+        const Diagnostic err(paramNode, tokenParse.token, toErr(Err0252));
+        return context->report(err);
+    }
+
+    if (tokenParse.is(TokenId::SymColon))
+    {
+        const Diagnostic err(paramNode, tokenParse.token, toErr(Err0701));
+        return context->report(err);
+    }
+
+    return true;
+}
+
 bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* hasMissingType)
 {
     // Attribute
@@ -210,52 +262,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
     // 'self'
     if (tokenParse.is(TokenId::KwdConst) || paramNode->token.text == g_LangSpec->name_self)
     {
-        bool isConst = false;
-        if (tokenParse.is(TokenId::KwdConst))
-        {
-            const auto constToken = tokenParse;
-            isConst               = true;
-            SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.is(TokenId::Identifier) && tokenParse.token.text == g_LangSpec->name_self, error(constToken.token, formErr(Err0457, tokenParse.token.c_str())));
-            paramNode->token.text = g_LangSpec->name_self;
-        }
-
-        SWAG_VERIFY(paramNode->ownerStructScope, error(tokenParse.token, toErr(Err0470)));
-        SWAG_CHECK(eatToken());
-
-        // For an enum, 'self' is replaced with the type itself, not a pointer to the type like for a struct
-        if (paramNode->ownerStructScope->is(ScopeKind::Enum))
-        {
-            const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
-            typeNode->typeFlags.add(TYPEFLAG_IS_SELF);
-            if (paramNode->hasAstFlag(AST_DECL_USING))
-                typeNode->typeFlags.add(TYPEFLAG_HAS_USING);
-            typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode);
-            paramNode->type      = typeNode;
-        }
-        else
-        {
-            SWAG_VERIFY(paramNode->ownerStructScope->is(ScopeKind::Struct), error(tokenParse.token, toErr(Err0470)));
-            const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
-            typeNode->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
-            typeNode->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
-            if (paramNode->hasAstFlag(AST_DECL_USING))
-                typeNode->typeFlags.add(TYPEFLAG_HAS_USING);
-            typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode);
-            paramNode->type      = typeNode;
-        }
-
-        if (tokenParse.is(TokenId::SymEqual))
-        {
-            const Diagnostic err(paramNode, tokenParse.token, toErr(Err0252));
-            return context->report(err);
-        }
-
-        if (tokenParse.is(TokenId::SymColon))
-        {
-            const Diagnostic err(paramNode, tokenParse.token, toErr(Err0701));
-            return context->report(err);
-        }
+        SWAG_CHECK(doFuncDeclParameterSelf(paramNode));
     }
     else
     {
@@ -381,10 +388,9 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                     err.addNote(sourceFile, paramNode->token.startLocation, otherVariables.back()->token.endLocation, toNte(Nte0168));
                 return context->report(err);
             }
+
             if (hasMissingType)
-            {
                 *hasMissingType = true;
-            }
         }
 
         // Add attribute as the last child, to avoid messing around with the first FuncDeclParam node.
@@ -402,14 +408,9 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             cloneContext.parent = one;
 
             if (paramNode->type)
-            {
                 one->type = castAst<AstTypeExpression>(paramNode->type->clone(cloneContext));
-            }
-
             if (paramNode->assignment)
-            {
                 one->assignment = paramNode->assignment->clone(cloneContext);
-            }
 
             if (paramNode->attrUse)
             {
