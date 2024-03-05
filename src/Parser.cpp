@@ -389,7 +389,7 @@ void Parser::setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file, ParseF
     sourceFile = file;
 
     parseFlags = flags;
-    if (parseFlags.has(PARSER_TRACK_COMMENTS))
+    if (parseFlags.has(PARSER_TRACK_FORMAT))
         tokenizer.tokenizeFlags.add(TOKENIZER_TRACK_COMMENTS);
 }
 

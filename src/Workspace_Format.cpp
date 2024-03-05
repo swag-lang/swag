@@ -46,7 +46,7 @@ void Workspace::formatCommand()
     SyntaxContext context;
     Parser        parser;
     ParseFlags    parseFlags = 0;
-    parseFlags.add(PARSER_TRACK_COMMENTS);
+    parseFlags.add(PARSER_TRACK_FORMAT);
     parser.setup(&context, &module, &file, parseFlags);
     if (!parser.generateAst())
         return;

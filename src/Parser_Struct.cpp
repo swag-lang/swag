@@ -537,7 +537,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
             SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
             if (*result)
-                (*result)->inheritFormatFromBefore(savedToken);
+                (*result)->inheritFormatFromBefore(this, savedToken);
             break;
         }
     }

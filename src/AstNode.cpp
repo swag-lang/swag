@@ -659,54 +659,45 @@ void AstNode::inheritOwners(const AstNode* from)
     }
 }
 
-void AstNode::inheritFormatFromBefore(const AstNode* other)
+void AstNode::inheritFormatFromBefore(const Parser* parser, const AstNode* other)
 {
+    if (!parser->parseFlags.has(PARSER_TRACK_FORMAT))
+        return;
     if (!other->hasExtMisc())
         return;
 
-    if (other->extMisc()->format.flags != 0)
+    if (other->extMisc()->format.flags != 0 ||
+        !other->extMisc()->format.commentBefore.empty() ||
+        !other->extMisc()->format.commentJustBefore.empty())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->format.flags        = other->extMisc()->format.flags;
-        other->extMisc()->format.flags = 0;
-    }
-
-    if (!other->extMisc()->format.commentBefore.empty())
-    {
-        allocateExtension(ExtensionKind::Misc);
-        extMisc()->format.commentBefore = std::move(other->extMisc()->format.commentBefore);
-    }
-
-    if (!other->extMisc()->format.commentJustBefore.empty())
-    {
-        allocateExtension(ExtensionKind::Misc);
+        extMisc()->format.flags             = other->extMisc()->format.flags;
+        extMisc()->format.commentBefore     = std::move(other->extMisc()->format.commentBefore);
         extMisc()->format.commentJustBefore = std::move(other->extMisc()->format.commentJustBefore);
     }
 }
 
-void AstNode::inheritFormatFromBefore(TokenParse& tokenParse)
+void AstNode::inheritFormatFromBefore(const Parser* parser, TokenParse& tokenParse)
 {
-    if (tokenParse.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
-    {
-        allocateExtension(ExtensionKind::Misc);
-        extMisc()->format.flags = tokenParse.flags;
-    }
+    if (!parser->parseFlags.has(PARSER_TRACK_FORMAT))
+        return;
 
-    if (!tokenParse.comments.commentBefore.empty())
+    if (tokenParse.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE) ||
+        !tokenParse.comments.commentBefore.empty() ||
+        !tokenParse.comments.commentJustBefore.empty())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->format.commentBefore = std::move(tokenParse.comments.commentBefore);
-    }
-
-    if (!tokenParse.comments.commentJustBefore.empty())
-    {
-        allocateExtension(ExtensionKind::Misc);
+        extMisc()->format.flags             = tokenParse.flags;
+        extMisc()->format.commentBefore     = std::move(tokenParse.comments.commentBefore);
         extMisc()->format.commentJustBefore = std::move(tokenParse.comments.commentJustBefore);
     }
 }
 
-void AstNode::inheritFormatFromAfter(TokenParse& tokenParse)
+void AstNode::inheritFormatFromAfter(const Parser* parser, TokenParse& tokenParse)
 {
+    if (!parser->parseFlags.has(PARSER_TRACK_FORMAT))
+        return;
+
     if (!tokenParse.comments.commentAfterSameLine.empty())
     {
         allocateExtension(ExtensionKind::Misc);

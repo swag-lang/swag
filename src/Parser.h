@@ -76,8 +76,8 @@ constexpr ExprFlags EXPR_FLAG_TYPE_EXPR             = 0x00000080;
 constexpr ExprFlags EXPR_FLAG_IN_VAR_DECL_WITH_TYPE = 0x00000100;
 constexpr ExprFlags EXPR_FLAG_NAMED_PARAM           = 0x00000200;
 
-constexpr ParseFlags PARSER_DEFAULT        = 0x00000000;
-constexpr ParseFlags PARSER_TRACK_COMMENTS = 0x00000001;
+constexpr ParseFlags PARSER_DEFAULT      = 0x00000000;
+constexpr ParseFlags PARSER_TRACK_FORMAT = 0x00000001;
 
 constexpr uint32_t CONTEXT_FLAG_EXPRESSION = 0x00000001;
 

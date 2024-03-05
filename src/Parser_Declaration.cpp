@@ -210,7 +210,7 @@ bool Parser::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doNamespaceOnName(parent, result, forGlobal, forUsing));
     if (*result)
-        (*result)->inheritFormatFromBefore(savedToken);
+        (*result)->inheritFormatFromBefore(this, savedToken);
     return true;
 }
 

@@ -246,7 +246,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, form("to end the [[%s]] expression", parent->token.c_str())));
             else
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
-            (*result)->inheritFormatFromAfter(prevTokenParse);
+            (*result)->inheritFormatFromAfter(this, prevTokenParse);
             break;
         }
 
@@ -1352,7 +1352,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 {
                     multi = Ast::newNode<AstNode>(AstNodeKind::MultiIdentifier, this, parent);
                     Ast::addChildBack(multi, exprNode);
-                    multi->inheritFormatFromBefore(exprNode);
+                    multi->inheritFormatFromBefore(this, exprNode);
                 }
             }
 
@@ -1421,7 +1421,7 @@ bool Parser::doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode*
     const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
     *result                        = parentNode;
     parentNode->addSpecFlag(AstStatement::SPEC_FLAG_MULTI_AFFECT);
-    parentNode->inheritFormatFromBefore(leftNode);
+    parentNode->inheritFormatFromBefore(this, leftNode);
 
     // Generate an expression of the form "var firstVar = assignment", and "secondVar = firstVar" for the rest
     // This will avoid to do the right expression multiple times (if this is a function call for example).
