@@ -269,24 +269,31 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         // Multiple declaration
         VectorNative<AstVarDecl*> otherVariables;
         SWAG_CHECK(eatToken());
-        while (tokenParse.is(TokenId::SymComma))
+
+        if (tokenParse.is(TokenId::SymComma))
         {
-            SWAG_CHECK(eatToken());
-            AstVarDecl* otherVarNode = Ast::newVarDecl(tokenParse.token.text, this, parent, AstNodeKind::FuncDeclParam);
-
-            // :QuestionAsParam
-            if (tokenParse.is(TokenId::SymQuestion) && acceptMissingType)
+            paramNode->multiNames.push_back(paramNode->token.text);
+            while (tokenParse.is(TokenId::SymComma))
             {
-                tokenParse.token.id   = TokenId::Identifier;
-                tokenParse.token.text = form("__%d", g_UniqueID.fetch_add(1));
-                otherVarNode->addSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED);
-                unnamedTokens.push_back(tokenParse.token);
-            }
+                SWAG_CHECK(eatToken());
+                AstVarDecl* otherVarNode = Ast::newVarDecl(tokenParse.token.text, this, parent, AstNodeKind::FuncDeclParam);
+                otherVarNode->addAstFlag(AST_GENERATED);
 
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse.token, formErr(Err0131, tokenParse.token.c_str())));
-            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0356, tokenParse.token.c_str())));
-            SWAG_CHECK(eatToken());
-            otherVariables.push_back(otherVarNode);
+                // :QuestionAsParam
+                if (tokenParse.is(TokenId::SymQuestion) && acceptMissingType)
+                {
+                    tokenParse.token.id   = TokenId::Identifier;
+                    tokenParse.token.text = form("__%d", g_UniqueID.fetch_add(1));
+                    otherVarNode->addSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED);
+                    unnamedTokens.push_back(tokenParse.token);
+                }
+
+                SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse.token, formErr(Err0131, tokenParse.token.c_str())));
+                SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0356, tokenParse.token.c_str())));
+                SWAG_CHECK(eatToken());
+                otherVariables.push_back(otherVarNode);
+                paramNode->multiNames.push_back(otherVarNode->token.text);
+            }
         }
 
         bool hasType       = false;
