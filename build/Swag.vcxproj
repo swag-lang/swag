@@ -225,6 +225,7 @@
     <ClInclude Include="..\src\ByteCode_Math.h" />
     <ClInclude Include="..\src\Flags.h" />
     <ClInclude Include="..\src\FormatConcat.h" />
+    <ClInclude Include="..\src\FormatJob.h" />
     <ClInclude Include="..\src\LLVMDebug.h" />
     <ClInclude Include="..\src\LLVM_Macros.h" />
     <ClInclude Include="../src/BackendLinker.h" />
@@ -365,6 +366,7 @@
     <ClCompile Include="..\src\FormatAst_Type.cpp" />
     <ClCompile Include="..\src\FormatAst_Var.cpp" />
     <ClCompile Include="..\src\FormatConcat.cpp" />
+    <ClCompile Include="..\src\FormatJob.cpp" />
     <ClCompile Include="..\src\LLVM_Call.cpp" />
     <ClCompile Include="..\src\LLVM_Data.cpp" />
     <ClCompile Include="..\src\LLVMDebug.cpp" />

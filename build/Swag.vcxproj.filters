@@ -728,6 +728,9 @@
     <ClCompile Include="..\src\Workspace_Format.cpp">
       <Filter>Wmf</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\FormatJob.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -1105,6 +1108,9 @@
     </ClInclude>
     <ClInclude Include="..\src\FormatConcat.h">
       <Filter>Format</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\FormatJob.h">
+      <Filter>Jobs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
