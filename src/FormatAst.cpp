@@ -175,15 +175,24 @@ bool FormatAst::outputNamespace(const AstNode* node)
         concat->addString(node->token.text);
     }
 
-    concat->addEol();
-    concat->addIndent(indent);
-    concat->addChar('{');
-    concat->addEol();
-    indent++;
-    outputChildren(node);
-    indent--;
-    concat->addIndent(indent);
-    concat->addChar('}');
-    concat->addEol();
+    if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_NO_CURLY))
+    {
+        concat->addBlank();
+        outputNode(node->firstChild());
+    }
+    else
+    {
+        concat->addEol();
+        concat->addIndent(indent);
+        concat->addChar('{');
+        concat->addEol();
+        indent++;
+        outputChildren(node);
+        indent--;
+        concat->addIndent(indent);
+        concat->addChar('}');
+        concat->addEol();
+    }
+
     return true;
 }

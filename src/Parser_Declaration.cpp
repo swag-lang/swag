@@ -229,7 +229,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         currentScope = g_Workspace->bootstrapModule->files[0]->astRoot->ownerScope;
 
     AstNode*   firstNameSpace = nullptr;
-    const bool scopeFilePriv  = privName != nullptr;
+    const bool forPrivate     = privName != nullptr;
     while (true)
     {
         namespaceNode = Ast::newNode<AstNameSpace>(AstNodeKind::Namespace, this, parent);
@@ -247,13 +247,13 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             case TokenId::Identifier:
                 break;
             case TokenId::SymLeftCurly:
-                if (!privName)
+                if (!forPrivate)
                     return error(tokenParse.token, formErr(Err0079, "{"));
                 break;
             case TokenId::SymSemiColon:
                 return error(tokenParse.token, formErr(Err0079, ";"));
             default:
-                if (!privName)
+                if (!forPrivate)
                     return error(tokenParse.token, formErr(Err0330, tokenParse.token.c_str()));
                 break;
         }
@@ -271,7 +271,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
                 const auto typeInfo = makeType<TypeInfoNamespace>();
                 typeInfo->name      = namespaceNode->token.text;
                 newScope            = Ast::newScope(namespaceNode, namespaceNode->token.text, ScopeKind::Namespace, currentScope);
-                if (scopeFilePriv)
+                if (forPrivate)
                     newScope->flags.add(SCOPE_FILE_PRIVATE);
                 typeInfo->scope         = newScope;
                 namespaceNode->typeInfo = typeInfo;
@@ -290,9 +290,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
                 newScope = castTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
         }
 
-        if (privName)
-            privName = nullptr;
-        else
+        if (!forPrivate)
             SWAG_CHECK(eatToken());
 
         if (tokenParse.isNot(TokenId::SymDot))
@@ -329,7 +327,6 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         if (tokenParse.is(TokenId::SymLeftCurly))
         {
             eatToken();
-
             Scoped scoped(this, newScope);
             while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
                 SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
@@ -339,6 +336,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         {
             Scoped scoped(this, newScope);
             SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
+            firstNameSpace->addSpecFlag(AstNameSpace::SPEC_FLAG_NO_CURLY);
         }
     }
 

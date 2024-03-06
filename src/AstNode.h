@@ -1087,6 +1087,7 @@ struct AstNameSpace : AstNode
 {
     static constexpr SpecFlags SPEC_FLAG_GENERATED_TOP_LEVEL = 0x0001;
     static constexpr SpecFlags SPEC_FLAG_PRIVATE             = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_NO_CURLY            = 0x0004;
 
     AstNode* clone(CloneContext& context);
 };
