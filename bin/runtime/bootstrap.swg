@@ -319,7 +319,7 @@ namespace Swag
     // To allocate:
     // * 'mode' must be **AllocatorMode.Alloc**
     // * 'size' must be the size in bytes to allocate
-    // * 'alignement' must be the alignement constraint in bytes (or 0)
+    // * 'alignment' must be the alignment constraint in bytes (or 0)
     // * 'address' will be the returned allocated memory address
     //
     // To free:
@@ -341,7 +341,7 @@ namespace Swag
         size:       u64                     // The requested size or the size to deal with.
         oldSize:    u64                     // When reallocating.
         mode =      AllocatorMode.Alloc     // Alloc, free, reallocate...
-        alignement: u32                     // Alignement constraint.
+        alignment: u32                     // Alignment constraint.
     }
 
     interface IAllocator

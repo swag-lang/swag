@@ -9,10 +9,10 @@ impl ScratchAllocator
         size:   u64
     }
 
-    // Adapt the value depending on the requested alignement
-    func align(value: u64, alignement: u32)->u64
+    // Adapt the value depending on the requested alignment
+    func align(value: u64, alignment: u32)->u64
     {
-        let toAlign = alignement orelse @sizeof(*void)
+        let toAlign = alignment orelse @sizeof(*void)
         var result = value & ~(toAlign - 1)
         if result < value do
             result += toAlign
@@ -31,13 +31,13 @@ impl ScratchAllocator
     }
 
     // Allocate a block
-    mtd alloc(size: u64, alignement: u32 = 0)->*void
+    mtd alloc(size: u64, alignment: u32 = 0)->*void
     {
         @assert(allocator != null)
         var req: AllocatorRequest
         req.mode = .Alloc
         req.size = size
-        req.alignement = alignement
+        req.alignment = alignment
         allocator.req(&req)
         return req.address
     }
@@ -135,7 +135,7 @@ impl IAllocator for ScratchAllocator
         }
 
         // Allocate in the buffer if there is enough room
-        let usedAlign = align(used, request.alignement)
+        let usedAlign = align(used, request.alignment)
         if usedAlign + request.size <= capacity
         {
             let oldAddress = request.address
@@ -151,7 +151,7 @@ impl IAllocator for ScratchAllocator
         // We prepend a LeakHeader to the user block, and linked it in
         // the chained list of leak allocations (at the first position)
         let totalSize = request.size + @sizeof(LeakHeader)
-        let ptr = cast(^LeakHeader) alloc(totalSize, request.alignement)
+        let ptr = cast(^LeakHeader) alloc(totalSize, request.alignment)
         let leak = cast(^LeakHeader) firstLeak
         if leak do leak.prev = ptr
         ptr.prev = null

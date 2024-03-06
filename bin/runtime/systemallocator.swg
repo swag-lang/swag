@@ -18,9 +18,9 @@ impl IAllocator for SystemAllocator
     mtd impl req(request: *AllocatorRequest)
     {
         // We are considering that the default system heap alloc does not align
-        // So we need to trick it to respect the user wanted alignement.
+        // So we need to trick it to respect the user wanted alignment.
         // -> store the real system alloc returned pointer before the user (aligned) pointer
-        // -> allocate more space to be able to store that pointer, and to respect the alignement
+        // -> allocate more space to be able to store that pointer, and to respect the alignment
         // So this involves extra space !
         switch request.mode
         {
@@ -43,16 +43,16 @@ impl IAllocator for SystemAllocator
 
             var size = request.size
             size += @sizeof(*void)
-            let alignement = request.alignement orelse @sizeof(*void)
-            size += alignement - 1
+            let alignment = request.alignment orelse @sizeof(*void)
+            size += alignment - 1
 
             var storePtr = cast(^^void) request.address
             let realPtr = cast(^u8) @realloc(storePtr ? storePtr[cast,bit(u64) -1's64] : null, size)
 
             var userPtr = realPtr + @sizeof(*void)
-            userPtr = cast(^u8) (cast(u64) userPtr & ~(cast(u64) alignement - 1))
+            userPtr = cast(^u8) (cast(u64) userPtr & ~(cast(u64) alignment - 1))
             if userPtr != realPtr + @sizeof(*void) do
-                userPtr += alignement
+                userPtr += alignment
 
             storePtr = cast(^^void) userPtr
             storePtr[cast,bit(u64) -1's64] = realPtr

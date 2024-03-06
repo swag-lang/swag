@@ -83,9 +83,9 @@ impl DebugAllocator
         @print(sizeAlloc, " Tb")
     }
 
-    func memAlign(value: u64, alignement: u32)->u64
+    func memAlign(value: u64, alignment: u32)->u64
     {
-        let toAlign = (alignement orelse @sizeof(*void)) - 1
+        let toAlign = (alignment orelse @sizeof(*void)) - 1
         return (value + toAlign) & ~toAlign
     }
 
@@ -383,9 +383,9 @@ impl IAllocator for DebugAllocator
         }
 
         // Adapt sizeAlloc to be able to store additional informations
-        // Take care of alignement request, because we need to be sure
+        // Take care of alignment request, because we need to be sure
         // that the returned memory block is well aligned
-        let toAddAlign = memAlign(@sizeof(DebugAllocatorHeader), request.alignement)
+        let toAddAlign = memAlign(@sizeof(DebugAllocatorHeader), request.alignment)
 
         // Make the real allocation
         copyReq.size += toAddAlign + @sizeof(DebugAllocatorFooter)

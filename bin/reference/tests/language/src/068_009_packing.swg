@@ -61,7 +61,7 @@ You can *reduce* the packing of the fields with `#[Swag.Pack]`.
 }
 
 /**
-The total struct size is always a multiple of the biggest alignement of the fields.
+The total struct size is always a multiple of the biggest alignment of the fields.
 */
 #test
 {
@@ -76,7 +76,7 @@ The total struct size is always a multiple of the biggest alignement of the fiel
 }
 
 /**
-You can force the struct alignement with `#[Swag.Align]`.
+You can force the struct alignment with `#[Swag.Align]`.
 */
 #test
 {
