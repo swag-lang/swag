@@ -88,7 +88,7 @@ bool FormatAst::outputStatement(const AstNode* node)
                 concat->addBlank();
             }
 
-            first = false;
+            first         = false;
             const auto op = castAst<AstOp>(c, AstNodeKind::AffectOp);
             concat->addString(op->firstChild()->token.text);
         }
@@ -163,9 +163,18 @@ bool FormatAst::outputNamespace(const AstNode* node)
     }
 
     concat->addIndent(indent);
-    CONCAT_FIXED_STR(concat, "namespace");
-    concat->addBlank();
-    concat->addString(node->token.text);
+
+    if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_PRIVATE))
+    {
+        CONCAT_FIXED_STR(concat, "private");
+    }
+    else
+    {
+        CONCAT_FIXED_STR(concat, "namespace");
+        concat->addBlank();
+        concat->addString(node->token.text);
+    }
+
     concat->addEol();
     concat->addIndent(indent);
     concat->addChar('{');

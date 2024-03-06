@@ -107,7 +107,7 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
     auto       privName = tokenParse;
     const auto attrUse  = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
     *result             = attrUse;
-    attrUse->addAstFlag(AST_GENERATED);
+    attrUse->addAstFlag(AST_GENERATED | AST_GENERATED_USER);
     attrUse->attributeFlags = ATTRIBUTE_PRIVATE;
     SWAG_CHECK(eatToken());
 
@@ -116,11 +116,13 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
     if (!sourceFile->privateId)
         sourceFile->privateId = g_UniqueID.fetch_add(1);
     privName.token.text = form("__private%d", sourceFile->privateId);
-    AstNode* namespc;
-    SWAG_CHECK(doNamespaceOnName(attrUse, &namespc, false, true, &privName.token));
-    namespc->addAstFlag(AST_GENERATED);
 
-    attrUse->content = namespc;
+    AstNode* namespaceNode;
+    SWAG_CHECK(doNamespaceOnName(attrUse, &namespaceNode, false, true, &privName.token));
+    namespaceNode->addAstFlag(AST_GENERATED | AST_GENERATED_USER);
+    namespaceNode->addSpecFlag(AstNameSpace::SPEC_FLAG_PRIVATE);
+
+    attrUse->content = namespaceNode;
     attrUse->content->setOwnerAttrUse(attrUse);
 
     return true;
