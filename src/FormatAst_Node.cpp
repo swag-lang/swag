@@ -529,9 +529,11 @@ bool FormatAst::outputNode(const AstNode* node)
 
         case AstNodeKind::Return:
             CONCAT_FIXED_STR(concat, "return");
-            concat->addBlank();
             if (!node->children.empty())
+            {
+                concat->addBlank();
                 SWAG_CHECK(outputNode(node->firstChild()));
+            }
             break;
 
         case AstNodeKind::IntrinsicDefined:
