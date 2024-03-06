@@ -226,15 +226,15 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
     if (sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && tokenParse.token.text == g_LangSpec->name_Swag)
         currentScope = g_Workspace->bootstrapModule->files[0]->astRoot->ownerScope;
 
-    const bool scopeFilePriv = privName != nullptr;
+    AstNode*   firstNameSpace = nullptr;
+    const bool scopeFilePriv  = privName != nullptr;
     while (true)
     {
         namespaceNode = Ast::newNode<AstNameSpace>(AstNodeKind::Namespace, this, parent);
         if (privName)
             namespaceNode->token.text = privName->text;
-
-        if (first)
-            *result = namespaceNode;
+        if (!firstNameSpace)
+            firstNameSpace = namespaceNode;
         if (forGlobal)
             namespaceNode->addAstFlag(AST_GLOBAL_NODE);
         namespaceNode->addAttribute(sourceFile->globalAttr);
@@ -309,16 +309,15 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         currentScope = newScope;
     }
 
-    currentScope       = oldScope;
-    auto     openCurly = tokenParse;
-    AstNode* fakeResul = nullptr;
+    currentScope   = oldScope;
+    auto openCurly = tokenParse;
 
     if (forGlobal)
     {
         SWAG_CHECK(eatSemiCol("[[#global namespace]]"));
         Scoped scoped(this, newScope);
         while (tokenParse.isNot(TokenId::EndOfFile))
-            SWAG_CHECK(doTopLevelInstruction(namespaceNode, &fakeResul));
+            SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
     }
     else
     {
@@ -331,16 +330,17 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
             Scoped scoped(this, newScope);
             while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
-                SWAG_CHECK(doTopLevelInstruction(namespaceNode, &fakeResul));
+                SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
             SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the namespace body"));
         }
         else
         {
             Scoped scoped(this, newScope);
-            SWAG_CHECK(doTopLevelInstruction(namespaceNode, &fakeResul));
+            SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
         }
     }
 
+    *result = firstNameSpace;
     return true;
 }
 
