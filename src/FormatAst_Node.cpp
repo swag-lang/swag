@@ -312,16 +312,28 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::Break:
+        {
+            const auto breakNode = castAst<AstBreakContinue>(node, AstNodeKind::Break);
             CONCAT_FIXED_STR(concat, "break");
-            concat->addBlank();
-            concat->addString(castAst<AstBreakContinue>(node, AstNodeKind::Break)->label.text);
+            if (!breakNode->label.text.empty())
+            {
+                concat->addBlank();
+                concat->addString(breakNode->label.text);
+            }
             break;
+        }
 
         case AstNodeKind::Continue:
+        {
+            const auto continueNode = castAst<AstBreakContinue>(node, AstNodeKind::Continue);
             CONCAT_FIXED_STR(concat, "continue");
-            concat->addBlank();
-            concat->addString(castAst<AstBreakContinue>(node, AstNodeKind::Continue)->label.text);
+            if (!continueNode->label.text.empty())
+            {
+                concat->addBlank();
+                concat->addString(continueNode->label.text);
+            }
             break;
+        }
 
         case AstNodeKind::MakePointer:
             concat->addChar('&');
