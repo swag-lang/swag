@@ -96,7 +96,7 @@ bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNod
     const auto front = castAst<AstIdentifierRef>(leftNode->firstChild(), AstNodeKind::IdentifierRef);
 
     // Then declare all other variables, and assign them to the first one
-    bool firstDone = false;
+    AstVarDecl* orgVarNode = nullptr;
     for (const auto child : leftNode->children)
     {
         SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
@@ -112,9 +112,16 @@ bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNod
         varNode->addAstFlag(AST_R_VALUE);
         varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
 
-        if (!firstDone)
+        if (orgVarNode)
         {
-            firstDone = true;
+            varNode->addAstFlag(AST_GENERATED);
+            orgVarNode->multiNames.push_back(varNode->token.text);
+        }
+
+        if (!orgVarNode)
+        {
+            orgVarNode = varNode;
+            orgVarNode->multiNames.push_back(varNode->token.text);
             Ast::addChildBack(varNode, type);
             Ast::addChildBack(varNode, assign);
             varNode->type       = type;
@@ -183,7 +190,7 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
         SWAG_CHECK(currentScope->symTable.registerSymbolName(context, orgVarNode, SymbolKind::Variable));
 
     // And reference that variable, in the form value = __tmp_0.item?
-    orgVarNode->publicName = "(";
+    orgVarNode->addAstFlag(AST_IN_ATOMIC_EXPR);
 
     int idx = 0;
     for (uint32_t i = 0; i < leftNode->childCount(); i++)
@@ -207,9 +214,7 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
         identifier->computeName();
         SWAG_CHECK(checkIsValidVarName(identifier));
 
-        if (idx)
-            orgVarNode->publicName += ", ";
-        orgVarNode->publicName += identifier->token.text;
+        orgVarNode->multiNames.push_back(identifier->token.text);
 
         const auto varNode   = Ast::newVarDecl(identifier->token.text, this, parentNode);
         varNode->kind        = kind;
@@ -226,7 +231,6 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
         varNode->assignment->addAstFlag(AST_TUPLE_UNPACK);
     }
 
-    orgVarNode->publicName += ")";
     return true;
 }
 

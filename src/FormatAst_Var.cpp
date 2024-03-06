@@ -9,8 +9,26 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
 {
     if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME))
     {
-        if (!varNode->publicName.empty())
-            concat->addString(varNode->publicName);
+        if (!varNode->multiNames.empty())
+        {
+            if (varNode->hasAstFlag(AST_IN_ATOMIC_EXPR))
+                concat->addChar('(');
+
+            bool first = true;
+            for (const auto& name : varNode->multiNames)
+            {
+                if (!first)
+                {
+                    concat->addChar(',');
+                    concat->addBlank();
+                }
+                first = false;
+                concat->addString(name);
+            }
+
+            if (varNode->hasAstFlag(AST_IN_ATOMIC_EXPR))
+                concat->addChar(')');
+        }
         else
             concat->addString(varNode->token.text);
     }
@@ -26,7 +44,7 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
                     concat->addChar(':');
                     concat->addBlank();
                 }
-                
+
                 SWAG_CHECK(outputNode(varNode->type));
             }
         }

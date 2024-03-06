@@ -15,7 +15,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstVarDecl>();
     newNode->copyFrom(context, this);
-    newNode->publicName  = publicName;
+    newNode->multiNames  = multiNames;
     newNode->attributes  = attributes;
     newNode->assignToken = assignToken;
     if (newNode->attrUse)

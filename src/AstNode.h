@@ -569,7 +569,7 @@ struct AstVarDecl : AstNode
     bool     isConstDecl() const;
 
     AttributeList attributes;
-    Utf8          publicName;
+    Vector<Utf8>  multiNames;
     Token         assignToken;
     AstNode*      type;
     AstNode*      assignment;
