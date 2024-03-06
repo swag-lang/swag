@@ -17,37 +17,34 @@ CommandLineArgument::CommandLineArgument(const char* commands, CommandLineType t
     for (auto& p : all)
     {
         if (p == "all" || p == "bu")
-            cmdSet.insert("build");
+            cmdSet.push_back("build");
 
-        if (p == "all" || p == "bu")
-            cmdSet.insert("run");
+        if (p == "all" || p == "bu" || p == "ru")
+            cmdSet.push_back("run");
 
         if (p == "all" || p == "sc")
-            cmdSet.insert("script");
+            cmdSet.push_back("script");
 
         if (p == "all" || p == "bu" || p == "te")
-            cmdSet.insert("test");
+            cmdSet.push_back("test");
 
         if (p == "all" || p == "cl")
-            cmdSet.insert("clean");
+            cmdSet.push_back("clean");
 
         if (p == "all" || p == "ne")
-            cmdSet.insert("new");
+            cmdSet.push_back("new");
 
         if (p == "all" || p == "li")
-            cmdSet.insert("list");
+            cmdSet.push_back("list");
 
         if (p == "all" || p == "ge")
-            cmdSet.insert("get");
-
-        if (p == "all" || p == "ru")
-            cmdSet.insert("run");
+            cmdSet.push_back("get");
 
         if (p == "all" || p == "doc")
-            cmdSet.insert("doc");
+            cmdSet.push_back("doc");
 
         if (p == "all" || p == "fmt")
-            cmdSet.insert("format");
+            cmdSet.push_back("format");
     }
 }
 
@@ -56,7 +53,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("all", "--silent", "-s", CommandLineType::Bool, &cmdLine->silent, nullptr, "do not log messages");
     addArg("all", "--log-colors", nullptr, CommandLineType::Bool, &cmdLine->logColors, nullptr, "output to console can be colored");
     addArg("all", "--log-ascii", nullptr, CommandLineType::Bool, &cmdLine->logAscii, nullptr, "output to console only use ascii characters (no unicode)");
-    addArg("all", "--ignore-bad-params", nullptr, CommandLineType::Bool, &cmdLine->ignoreBadParams, nullptr, "ignore unknown params instead of raising an error");
+    addArg("all", "--ignore-bad-params", nullptr, CommandLineType::Bool, &cmdLine->ignoreBadParams, nullptr, "ignore unknown command line parameters instead of raising an error");
 
     addArg("all", "--verbose-cmdline", nullptr, CommandLineType::Bool, &cmdLine->verboseCmdLine, nullptr, "log swag command line");
     addArg("bu sc doc", "--verbose-path", nullptr, CommandLineType::Bool, &cmdLine->verbosePath, nullptr, "log global paths");
@@ -71,15 +68,15 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("bu ne cl li ge doc", "--workspace", "-w", CommandLineType::StringPath, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne doc", "--module", "-m", CommandLineType::String, &cmdLine->moduleName, nullptr, "module name");
-    addArg("ne sc fmt", "--file", "-f", CommandLineType::String, &cmdLine->fileName, nullptr, "file name");
+    addArg("ne sc fmt", "--file", "-f", CommandLineType::String, &cmdLine->fileName, nullptr, "the script file name|format:the source file to reformat");
     addArg("ne", "--test", nullptr, CommandLineType::Bool, &cmdLine->test, nullptr, "create a test module");
 
     addArg("all", "--cache", "-t", CommandLineType::StringPath, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
-    addArg("all", "--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
+    addArg("all", "--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "maximum number of cpu to use (0 = automatic)");
 
-    addArg("bu fmt", "--output", "-o", CommandLineType::Bool, &cmdLine->output, nullptr, "output backend");
-    addArg("bu", "--output-legit", "-ol", CommandLineType::Bool, &cmdLine->outputLegit, nullptr, "output legit backend");
-    addArg("bu", "--output-test", "-ot", CommandLineType::Bool, &cmdLine->outputTest, nullptr, "output test backend");
+    addArg("bu fmt", "--output", "-o", CommandLineType::Bool, &cmdLine->output, nullptr, "output backend|format:output the reformatted files");
+    addArg("bu", "--output-legit", "-ol", CommandLineType::Bool, &cmdLine->outputLegit, nullptr, "output the legit backend");
+    addArg("bu", "--output-test", "-ot", CommandLineType::Bool, &cmdLine->outputTest, nullptr, "output the test backend");
     addArg("doc", "--output-doc", "-od", CommandLineType::Bool, &cmdLine->outputDoc, nullptr, "output the generated documentation");
 
     addArg("te", "--test-bytecode", "-tb", CommandLineType::Bool, &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");
@@ -195,8 +192,7 @@ namespace
 
 void CommandLineParser::logArguments(const Utf8& cmd) const
 {
-    Utf8 line0, line1;
-
+    Utf8   line0, line1;
     size_t columns[10] = {4};
 
     static constexpr size_t SPACE = 4;
@@ -220,8 +216,6 @@ void CommandLineParser::logArguments(const Utf8& cmd) const
         getArgValue(oneArg, value, defaultVal);
         columns[2] = max(columns[2], value.length() + SPACE);
         columns[3] = max(columns[3], defaultVal.length() + SPACE);
-
-        columns[4] = max(columns[4], strlen(oneArg->help) + SPACE);
     }
 
     size_t total = 0;
@@ -290,7 +284,26 @@ void CommandLineParser::logArguments(const Utf8& cmd) const
             total += columns[3];
             while (line0.length() < total)
                 line0 += " ";
-            line0 += oneArg->help;
+
+            Vector<Utf8> tokensHelp;
+            Utf8::tokenize(oneArg->help, '|', tokensHelp);
+            if (tokensHelp.size() == 1)
+                line0 += tokensHelp[0];
+            else
+            {
+                bool done = false;
+                for (const auto& v : tokensHelp)
+                {
+                    if (v.find(cmd) == 0 && v[cmd.length()] == ':')
+                    {
+                        line0 += v.c_str() + cmd.length() + 1;
+                        done = true;
+                        break;
+                    }
+                }
+                if (!done)
+                    line0 += tokensHelp[0];
+            }
         }
 
         g_Log.messageInfo(line0);

@@ -17,7 +17,7 @@ struct CommandLineArgument
 {
     CommandLineArgument(const char* commands, CommandLineType type, void* buffer, const char* param, const char* help);
 
-    SetUtf8         cmdSet;
+    Vector<Utf8>    cmdSet;
     Utf8            longName;
     Utf8            shortName;
     void*           buffer;

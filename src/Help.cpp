@@ -151,6 +151,18 @@ void help(const CommandLineParser& cmdParser, const Utf8& cmd)
         g_Log.messageInfo("\n");
         cmdParser.logArguments(cmd);
     }
+
+    ////////////////////////////////////////////////////////
+    if (cmd == "format")
+    {
+        g_Log.messageInfo("\n");
+        g_Log.messageInfo("Command 'format' will format the specified file or folder.\n");
+
+        printExamples();
+        g_Log.messageInfo("swag format --file:c:/myFolder/myFile.swg\n");
+        g_Log.messageInfo("\n");
+        cmdParser.logArguments(cmd);
+    }    
 }
 
 void help()
@@ -171,7 +183,8 @@ void help()
     g_Log.messageInfo("        get          synchronize dependencies\n");
     g_Log.messageInfo("        list         list all modules and their dependencies\n");
     g_Log.messageInfo("        script       build and run a script file\n");
-    g_Log.messageInfo("        doc          generates the documentation of all library modules\n");
+    g_Log.messageInfo("        doc          generates the documentation of the specified workspace\n");
+    g_Log.messageInfo("        format       format the source code of the specified file or folder\n");
 
     g_Log.messageInfo("\n");
     g_Log.messageInfo("To get the list of all arguments for a given command, type 'swag <command> --help'\n");
