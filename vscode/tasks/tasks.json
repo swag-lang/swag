@@ -1,8 +1,18 @@
 {
-  // See https://go.microsoft.com/fwlink/?LinkId=733558 
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
   // for the documentation about the tasks.json format
   "version": "2.0.0",
   "tasks": [
+    {
+        "label": "swag format",
+        "type": "process",
+        "command": "${env:SWAG_FOLDER}\\swag.exe",
+        "args": [
+            "format",
+            "--file:${file}"
+        ],
+        "problemMatcher": []
+    },
     {
       "label": "build test [fast]",
       "type": "shell",
@@ -47,6 +57,6 @@
         "panel": "shared",
         "clear": true
       }
-    }    
+    }
   ]
 }

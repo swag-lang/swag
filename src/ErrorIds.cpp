@@ -58,7 +58,8 @@ void initErrors()
     SWAG_ERROR(Fat0034, "[fatal] workspace folder [[%s]] already exists");
     SWAG_ERROR(Fat0035, "[fatal] workspace folder [[%s]] not found");
     SWAG_ERROR(Fat0036, "[fatal] unable to locate the windows sdk folder");
-    SWAG_ERROR(Fat0037, "[fatal] missing file or folder to format");
+    SWAG_ERROR(Fat0037, "[fatal] missing file or folder to format (use [[--file]])");
+    SWAG_ERROR(Fat0038, "[fatal] [[%s]] is not a valid swag file");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
