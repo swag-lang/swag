@@ -59,16 +59,20 @@ bool FormatAst::outputLoop(const AstNode* node)
     CONCAT_FIXED_STR(concat, "loop");
     if (loopNode->hasSpecFlag(AstLoop::SPEC_FLAG_BACK))
         CONCAT_FIXED_STR(concat, ",back");
-    concat->addBlank();
 
     if (loopNode->specificName)
     {
+        concat->addBlank();
         concat->addString(loopNode->specificName->token.text);
         concat->addChar(':');
-        concat->addBlank();
     }
 
-    SWAG_CHECK(outputNode(loopNode->expression));
+    if (loopNode->expression)
+    {
+        concat->addBlank();
+        SWAG_CHECK(outputNode(loopNode->expression));
+    }
+
     SWAG_CHECK(outputDoStatement(loopNode->block));
     return true;
 }
