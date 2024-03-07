@@ -74,7 +74,7 @@ using Core, Pixel, Gui
 /**
 # Entry point
 
-The '#main' special function is usually the entry point of an executable. It's equivalent to the well known `main()` function, but without arguments. In the case if a script, this special function will be executed by the compiler as the program entry point.
+The '#main' special function is usually the entry point of an executable. It's equivalent to the well known `main()` function, but without arguments. In the case of a script, this special function will be executed by the compiler as the program entry point.
 
 > NOTE:
 > You might observe that the arrangement of global declarations doesn't make a difference, as we're using the 'onEvent' function before even defining it. Swag does not bother about the global declaration order.
@@ -85,7 +85,7 @@ The '#main' special function is usually the entry point of an executable. It's e
     assume Audio.createEngine()
 
     // Thanks to 'defer', the audio engine will be destroyed when
-    // leaving this scope, i.e. when exiting the '#run' function.
+    // leaving this scope, i.e. when exiting the '#main' function.
     defer Audio.destroyEngine()
 
     // From the command line, if the script is run with '--arg:swag.test', then we force the application
@@ -127,7 +127,7 @@ var g_Pipes:     Array'Pipe
 var g_Rect:      Math.Rectangle
 
 /**
-Here is a bunch of global variables. All of them are initialized to 0 by default.
+Here are a bunch of global variables. All of them are **initialized to 0** by default.
 */
 var g_Dt:        f32
 var g_Time:      f32
@@ -234,7 +234,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         // This is the elapsed time between two 'frames', in seconds.
         g_Dt = wnd.getApp().getDt()
 
-        input(wnd)          // IO (keyword test)
+        input(wnd)          // IO (keyboard test)
         paint(painter)      // Paint game
         move()              // Update game
 

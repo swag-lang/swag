@@ -39,7 +39,7 @@ bool GenDoc::generatePages()
         filePath.append(path.filename());
 
         Utf8 extName = getFileExtension(module);
-        fullFileName = filePath;
+        fullFileName = filePath.replace_extension(extName);
 
         // Write for output
         FILE* f = nullptr;
