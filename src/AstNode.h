@@ -1207,3 +1207,10 @@ struct AstFile : AstNode
 
     uint32_t stackSize;
 };
+
+struct AstCompilerImport : AstNode
+{
+    AstNode* clone(CloneContext& context);
+    Token    tokenLocation;
+    Token    tokenVersion;
+};

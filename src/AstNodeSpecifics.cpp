@@ -1393,3 +1393,12 @@ AstNode* AstFile::clone(CloneContext& context)
     newNode->stackSize = stackSize;
     return newNode;
 }
+
+AstNode* AstCompilerImport::clone(CloneContext& context)
+{
+    const auto newNode = Ast::newNode<AstCompilerImport>();
+    newNode->copyFrom(context, this);
+    newNode->tokenLocation = tokenLocation;
+    newNode->tokenVersion  = tokenVersion;
+    return newNode;
+}

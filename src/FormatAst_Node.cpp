@@ -71,11 +71,37 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::CompilerImport:
+        {
+            const auto decl = castAst<AstCompilerImport>(node, AstNodeKind::CompilerImport);
             CONCAT_FIXED_STR(concat, "#import");
             concat->addBlank();
+            concat->addChar('"');
             concat->addString(node->token.text);
+            concat->addChar('"');
+
+            if (!decl->tokenLocation.text.empty())
+            {
+                concat->addBlank();
+                CONCAT_FIXED_STR(concat, "location");
+                concat->addChar('=');
+                concat->addChar('"');
+                concat->addString(decl->tokenLocation.text);
+                concat->addChar('"');
+            }
+
+            if (!decl->tokenVersion.text.empty())
+            {
+                concat->addBlank();
+                CONCAT_FIXED_STR(concat, "version");
+                concat->addChar('=');
+                concat->addChar('"');
+                concat->addString(decl->tokenVersion.text);
+                concat->addChar('"');
+            }
+
             concat->addEol();
             break;
+        }
 
         case AstNodeKind::FallThrough:
             CONCAT_FIXED_STR(concat, "fallthrough");
