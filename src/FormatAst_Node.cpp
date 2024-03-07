@@ -548,10 +548,23 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::Using:
+        {
+            const auto decl = castAst<AstUsing>(node, AstNodeKind::Using);
             CONCAT_FIXED_STR(concat, "using");
             concat->addBlank();
-            SWAG_CHECK(outputCommaChildren(node));
+            bool first = true;
+            for (const auto &n: decl->multiNames)
+            {
+                if(!first)
+                {
+                    concat->addChar(',');
+                    concat->addBlank();
+                }
+                first = false;
+                concat->addString(n);
+            }
             break;
+        }
 
         case AstNodeKind::Return:
             CONCAT_FIXED_STR(concat, "return");
@@ -702,15 +715,8 @@ bool FormatAst::outputNode(const AstNode* node)
         case AstNodeKind::CompilerDependencies:
             CONCAT_FIXED_STR(concat, "#dependencies");
             concat->addEol();
-            concat->addChar('{');
-            concat->addEol();
-            indent++;
             SWAG_CHECK(outputChildren(node));
-            indent--;
-            concat->addIndent(indent);
-            concat->addChar('}');
             concat->addEol();
-            concat->addIndent(indent);
             break;
 
         case AstNodeKind::Impl:

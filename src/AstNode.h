@@ -1211,6 +1211,13 @@ struct AstFile : AstNode
 struct AstCompilerImport : AstNode
 {
     AstNode* clone(CloneContext& context);
-    Token    tokenLocation;
-    Token    tokenVersion;
+
+    Token tokenLocation;
+    Token tokenVersion;
+};
+
+struct AstUsing : AstNode
+{
+    AstNode*     clone(CloneContext& context);
+    Vector<Utf8> multiNames;
 };

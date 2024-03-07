@@ -1402,3 +1402,11 @@ AstNode* AstCompilerImport::clone(CloneContext& context)
     newNode->tokenVersion  = tokenVersion;
     return newNode;
 }
+
+AstNode* AstUsing::clone(CloneContext& context)
+{
+    const auto newNode = Ast::newNode<AstUsing>();
+    newNode->copyFrom(context, this);
+    newNode->multiNames = multiNames;
+    return newNode;
+}

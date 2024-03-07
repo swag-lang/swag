@@ -130,7 +130,9 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
 
 bool Parser::doUsing(AstNode* parent, AstNode** result)
 {
+    auto savedToken = tokenParse;
     SWAG_CHECK(eatToken());
+
     switch (tokenParse.token.id)
     {
         case TokenId::KwdNamespace:
@@ -142,7 +144,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
             AstNode* varNode;
             SWAG_CHECK(doVarDecl(parent, &varNode));
 
-            const auto node   = Ast::newNode<AstNode>(AstNodeKind::Using, this, parent);
+            const auto node   = Ast::newNode<AstUsing>(AstNodeKind::Using, this, parent);
             *result           = node;
             node->semanticFct = Semantic::resolveUsing;
             Ast::newIdentifierRef(varNode->token.text, this, node);
@@ -179,13 +181,26 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
         }
     }
 
+    AstUsing* orgNode = nullptr;
     while (true)
     {
-        const auto node   = Ast::newNode<AstNode>(AstNodeKind::Using, this, parent);
+        const auto node   = Ast::newNode<AstUsing>(AstNodeKind::Using, this, parent);
         *result           = node;
         node->semanticFct = Semantic::resolveUsing;
 
         SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
+
+        if (!orgNode)
+        {
+            orgNode = node;
+            orgNode->inheritFormatFromBefore(this, savedToken);
+            node->multiNames.push_back(node->token.text);
+        }
+        else
+        {
+            node->addAstFlag(AST_GENERATED);
+            orgNode->multiNames.push_back(node->token.text);
+        }
 
         if (tokenParse.isNot(TokenId::SymComma))
         {

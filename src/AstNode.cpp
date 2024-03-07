@@ -391,6 +391,9 @@ void AstNode::release()
         case AstNodeKind::CompilerImport:
             Allocator::free<AstCompilerImport>(this);
             break;
+        case AstNodeKind::Using:
+            Allocator::free<AstUsing>(this);
+            break;
         default:
             Allocator::free<AstNode>(this);
             break;
@@ -527,6 +530,8 @@ AstNode* AstNode::clone(CloneContext& context)
             return clone<AstFile>(this, context);
         case AstNodeKind::CompilerImport:
             return clone<AstCompilerImport>(this, context);
+        case AstNodeKind::Using:
+            return clone<AstUsing>(this, context);
 
         default:
         {
