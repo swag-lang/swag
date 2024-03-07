@@ -681,7 +681,7 @@ bool ModuleDepManager::execute()
         }
 
         g_ThreadMgr.waitEndJobs();
-        ok = g_Workspace->numErrors.load() == 0;
+        ok = ok && g_Workspace->numErrors.load() == 0;
     }
 
     // For each modules, flatten all dependencies

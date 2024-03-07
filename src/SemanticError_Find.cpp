@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Ast.h"
 #include "LanguageSpec.h"
 #include "Scope.h"
 #include "SemanticError.h"

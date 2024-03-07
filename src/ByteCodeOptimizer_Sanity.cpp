@@ -436,7 +436,7 @@ namespace
         return raiseError(cxt, toErr(San0001));
     }
 
-    bool checkEscapeFrame(const Context& cxt, uint64_t stackOffset, const SymbolOverload* overload = nullptr)
+    bool checkEscapeFrame(const Context& cxt, [[maybe_unused]] uint64_t stackOffset, const SymbolOverload* overload = nullptr)
     {
         SWAG_ASSERT(stackOffset < UINT32_MAX);
         if (overload)

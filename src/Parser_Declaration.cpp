@@ -236,7 +236,6 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
     AstNode* namespaceNode;
     Scope*   oldScope = currentScope;
     Scope*   newScope = nullptr;
-    bool     first    = true;
 
     // There is only one swag namespace, defined in the bootstrap. So if we redeclared it
     // in runtime, use the one from the bootstrap
@@ -255,7 +254,6 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         if (forGlobal)
             namespaceNode->addAstFlag(AST_GLOBAL_NODE);
         namespaceNode->addAttribute(sourceFile->globalAttr);
-        first = false;
 
         switch (tokenParse.token.id)
         {
@@ -533,10 +531,10 @@ bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
 
 void Parser::registerSubDecl(AstNode* subDecl)
 {
-    // When we are in format mode, no need to move the sub declaration at the top level. We keep it where it is 
+    // When we are in format mode, no need to move the sub declaration at the top level. We keep it where it is
     if (parserFlags.has(PARSER_TRACK_FORMAT))
         return;
-    
+
     SWAG_ASSERT(subDecl->ownerFct);
     const auto orgSubDecl = subDecl;
     subDecl->ownerFct->subDecl.push_back(subDecl);

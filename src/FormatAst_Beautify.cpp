@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "AstFlags.h"
 #include "FormatAst.h"
 #include "Semantic.h"
 #include "TokenParse.h"

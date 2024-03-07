@@ -617,7 +617,7 @@ void GenDoc::computeUserComments(UserComment& result, const Utf8& txt, bool shor
     computeUserComments(result, lines, shortDesc);
 }
 
-void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc)
+void GenDoc::computeUserComments(UserComment& result, const Vector<Utf8>& lines, bool shortDesc)
 {
     computeUserBlocks(result.blocks, lines, shortDesc);
 

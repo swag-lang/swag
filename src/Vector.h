@@ -45,7 +45,7 @@ struct Vector : std::vector<T, StdAllocator<T>>
         ::new (this) Vector;
     }
 
-    void append(const Vector<T>& other)
+    void append(const Vector& other)
     {
         this->insert(this->end(), other.begin(), other.end());
     }

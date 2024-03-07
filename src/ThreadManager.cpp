@@ -254,7 +254,7 @@ namespace
             g_Log.printHeaderDot("current module", job->baseContext->sourceFile->module->name, LogColor::White, LogColor::White, " ");
         }
 
-        if (job->nodes.size())
+        if (!job->nodes.empty())
         {
             const auto node = job->nodes.back();
             g_Log.printHeaderDot("current node", node->token.text, LogColor::White, LogColor::White, " ");

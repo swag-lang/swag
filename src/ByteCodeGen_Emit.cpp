@@ -149,7 +149,7 @@ ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(const ByteCodeGenContext* conte
     return nullptr;
 }
 
-ByteCodeInstruction* ByteCodeGen::emitInstruction(const ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const char* file, uint32_t line)
+ByteCodeInstruction* ByteCodeGen::emitInstruction(const ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, [[maybe_unused]] const char* file, [[maybe_unused]] uint32_t line)
 {
     AstNode*   node = context->node;
     const auto bc   = context->bc;

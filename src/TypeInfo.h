@@ -543,7 +543,7 @@ struct TypeInfoCode final : TypeInfo
 };
 
 template<typename T>
-T* castTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
+T* castTypeInfo(TypeInfo* ptr, [[maybe_unused]] TypeInfoKind kind)
 {
     SWAG_ASSERT(ptr);
     T* casted = static_cast<T*>(ptr->getConstAlias());
@@ -552,7 +552,7 @@ T* castTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
 }
 
 template<typename T>
-T* castTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
+T* castTypeInfo(TypeInfo* ptr, [[maybe_unused]] TypeInfoKind kind1, [[maybe_unused]] TypeInfoKind kind2)
 {
     SWAG_ASSERT(ptr);
     T* casted = static_cast<T*>(ptr->getConstAlias());
@@ -561,7 +561,7 @@ T* castTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
 }
 
 template<typename T>
-const T* castTypeInfo(const TypeInfo* ptr, TypeInfoKind kind)
+const T* castTypeInfo(const TypeInfo* ptr, [[maybe_unused]] TypeInfoKind kind)
 {
     SWAG_ASSERT(ptr);
     const T* casted = static_cast<const T*>(ptr->getConstAlias());
@@ -570,7 +570,7 @@ const T* castTypeInfo(const TypeInfo* ptr, TypeInfoKind kind)
 }
 
 template<typename T>
-const T* castTypeInfo(const TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
+const T* castTypeInfo(const TypeInfo* ptr, [[maybe_unused]] TypeInfoKind kind1, [[maybe_unused]] TypeInfoKind kind2)
 {
     SWAG_ASSERT(ptr);
     const T* casted = static_cast<const T*>(ptr->getConstAlias());

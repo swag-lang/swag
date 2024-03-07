@@ -65,7 +65,7 @@ struct GenDoc
     Utf8               findReference(const Utf8& name);
     static void        computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc = true);
     static void        computeUserBlocks(Vector<UserBlock*>& blocks, const Vector<Utf8>& lines, bool shortDesc);
-    static void        computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
+    static void        computeUserComments(UserComment& result, const Vector<Utf8>& lines, bool shortDesc = true);
     static const char* tokenizeReference(const char* pz, Utf8& name, Utf8& link, bool acceptLink = true);
     Utf8               getFormattedText(const Utf8& user);
     void               outputCode(const Utf8& code, GenDocFlags flags);

@@ -83,7 +83,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
     context->pushAlt<uint32_t>(popParamsOnRet * sizeof(void*) + incSPPostCall);
 }
 
-SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, ByteCode* bc)
+SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, [[maybe_unused]] ByteCode* bc)
 {
     if (--context->curRC != UINT32_MAX)
     {

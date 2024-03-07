@@ -36,7 +36,7 @@ void operator delete(void* block) noexcept
     Allocator::free(p, *p);
 }
 
-void* Allocator::alloc(size_t size, size_t align)
+void* Allocator::alloc(size_t size, [[maybe_unused]] size_t align)
 {
 #ifdef SWAG_CHECK_MEMORY
     auto result = mi_malloc_aligned(size + 3 * sizeof(uint64_t), align);
