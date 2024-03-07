@@ -119,7 +119,22 @@ bool FormatAst::outputFuncSignature(const AstNode* node, const AstNode* genericP
 
 bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
 {
-    SWAG_CHECK(outputFuncSignature(node, node->genericParameters, node->parameters, nullptr));
+    if (node->hasAttribute(ATTRIBUTE_AST_FUNC))
+        CONCAT_FIXED_STR(concat, "#ast");
+    else if (node->hasAttribute(ATTRIBUTE_RUN_FUNC))
+        CONCAT_FIXED_STR(concat, "#run");
+    else if (node->hasAttribute(ATTRIBUTE_TEST_FUNC))
+        CONCAT_FIXED_STR(concat, "#test");
+    else if (node->hasAttribute(ATTRIBUTE_MAIN_FUNC))
+        CONCAT_FIXED_STR(concat, "#main");
+    else if (node->hasAttribute(ATTRIBUTE_INIT_FUNC))
+        CONCAT_FIXED_STR(concat, "#init");
+    else if (node->hasAttribute(ATTRIBUTE_DROP_FUNC))
+        CONCAT_FIXED_STR(concat, "#drop");
+    else if (node->hasAttribute(ATTRIBUTE_PREMAIN_FUNC))
+        CONCAT_FIXED_STR(concat, "#premain");
+    else
+        SWAG_CHECK(outputFuncSignature(node, node->genericParameters, node->parameters, nullptr));
 
     // Content, short lambda
     if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
