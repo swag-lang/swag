@@ -533,6 +533,10 @@ bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
 
 void Parser::registerSubDecl(AstNode* subDecl)
 {
+    // When we are in format mode, no need to move the sub declaration at the top level. We keep it where it is 
+    if (parseFlags.has(PARSER_TRACK_FORMAT))
+        return;
+    
     SWAG_ASSERT(subDecl->ownerFct);
     const auto orgSubDecl = subDecl;
     subDecl->ownerFct->subDecl.push_back(subDecl);

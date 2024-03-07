@@ -23,6 +23,7 @@ const AstNode* FormatAst::convertNode(const AstNode* node)
         node = subExportNode;
     if (node->hasAstFlag(AST_GENERATED) && !node->hasAstFlag(AST_GENERATED_USER))
         return nullptr;
+
     return node;
 }
 

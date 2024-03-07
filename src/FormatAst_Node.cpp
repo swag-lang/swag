@@ -553,9 +553,9 @@ bool FormatAst::outputNode(const AstNode* node)
             CONCAT_FIXED_STR(concat, "using");
             concat->addBlank();
             bool first = true;
-            for (const auto &n: decl->multiNames)
+            for (const auto& n : decl->multiNames)
             {
-                if(!first)
+                if (!first)
                 {
                     concat->addChar(',');
                     concat->addBlank();
