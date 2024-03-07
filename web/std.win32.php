@@ -8777,7 +8777,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKELANGID</span>(p: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>, s: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>)-&gt;<span class="STpe">u16</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKELANGID</span>(p, s: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>)-&gt;<span class="STpe">u16</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8980,7 +8980,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MoveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, bRepaint: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MoveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x, y, nWidth, nHeight: <span class="STpe">s32</span>, bRepaint: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10642,7 +10642,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursorPos</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursorPos</span>(x, y: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10762,7 +10762,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowPos</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hWndInsertAfter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, cx: <span class="STpe">s32</span>, cy: <span class="STpe">s32</span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowPos</span>(hWnd, hWndInsertAfter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x, y, cx, cy: <span class="STpe">s32</span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10870,7 +10870,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ToUnicode</span>(wVirtKey: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wScanCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, lpKeyState: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, pwszBuff: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBuff: <span class="STpe">s32</span>, wFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ToUnicode</span>(wVirtKey, wScanCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, lpKeyState: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, pwszBuff: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBuff: <span class="STpe">s32</span>, wFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11390,7 +11390,7 @@
 <p>Throw a <a href="swag.runtime.php#Swag_SystemError">Swag.SystemError</a>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">throwWinError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 04-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
+Generated on 07-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
 </div>
 </div>
 </div>

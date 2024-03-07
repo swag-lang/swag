@@ -164,7 +164,7 @@
 <p>The <span class="code-inline">gui</span> module depends on <span class="code-inline">pixel</span> which depends on <span class="code-inline">core</span>. So we bring all the three namespaces into the file scope. Note that we keep <span class="code-inline">Audio</span> as it is. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></div>
 <h1 id="">Entry point </h1>
-<p>The <span class="code-inline">#main</span> special function is usually the entry point of an executable. It's equivalent to the well known <span class="code-inline">main()</span> function, but without arguments. In the case if a script, this special function will be executed by the compiler as the program entry point. </p>
+<p>The <span class="code-inline">#main</span> special function is usually the entry point of an executable. It's equivalent to the well known <span class="code-inline">main()</span> function, but without arguments. In the case of a script, this special function will be executed by the compiler as the program entry point. </p>
 <div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <span class="code-inline">onEvent</span> function before even defining it. Swag does not bother about the global declaration order. </p>
 </div>
@@ -174,7 +174,7 @@
     <span class="SKwd">assume</span> <span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
 
     <span class="SCmt">// Thanks to 'defer', the audio engine will be destroyed when</span>
-    <span class="SCmt">// leaving this scope, i.e. when exiting the '#run' function.</span>
+    <span class="SCmt">// leaving this scope, i.e. when exiting the '#main' function.</span>
     <span class="SLgc">defer</span> <span class="SCst">Audio</span>.<span class="SFct">destroyEngine</span>()
 
     <span class="SCmt">// From the command line, if the script is run with '--arg:swag.test', then we force the application</span>
@@ -199,7 +199,7 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Pipes:     <span class="SCst">Array</span>'<span class="SCst">Pipe</span></span></div>
 <p><span class="code-inline">Math</span> is a namespace part of the <span class="code-inline">Core</span> module. We could have specified a global <span class="code-inline">using Core.Math</span> at the top of the script file, but here, we prefer the explicit reference. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Rect:      <span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
-<p>Here is a bunch of global variables. All of them are initialized to 0 by default. </p>
+<p>Here are a bunch of global variables. All of them are <b>initialized to 0</b> by default. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Dt:        <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_Time:      <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_BasePos:   <span class="STpe">f32</span>
@@ -282,7 +282,7 @@
         <span class="SCmt">// This is the elapsed time between two 'frames', in seconds.</span>
         g_Dt = wnd.<span class="SFct">getApp</span>().<span class="SFct">getDt</span>()
 
-        <span class="SFct">input</span>(wnd)          <span class="SCmt">// IO (keyword test)</span>
+        <span class="SFct">input</span>(wnd)          <span class="SCmt">// IO (keyboard test)</span>
         <span class="SFct">paint</span>(painter)      <span class="SCmt">// Paint game</span>
         <span class="SFct">move</span>()              <span class="SCmt">// Update game</span>
 
@@ -556,7 +556,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 23-02-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.29.0</div>
+Generated on 07-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
 </div>
 </div>
 </div>

@@ -1393,7 +1393,7 @@
 </table>
 </p>
 <p>Creates a new surface. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">OverlappedWindow</span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y, width, height: <span class="STpe">s32</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">OverlappedWindow</span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1723,7 +1723,7 @@
 </table>
 </p>
 <p>Create a main surface, and run. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">runSurface</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, borders = <span class="SKwd">true</span>, canSize = <span class="SKwd">true</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>, init: <span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>) = <span class="SKwd">null</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">runSurface</span>(x, y, width, height: <span class="STpe">s32</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, borders = <span class="SKwd">true</span>, canSize = <span class="SKwd">true</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>, init: <span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>) = <span class="SKwd">null</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2506,7 +2506,7 @@
 </table>
 </p>
 <p>Change one component, HSL or alpha. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">change</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, h: <span class="STpe">f32</span> = -<span class="SNum">1</span>, s: <span class="STpe">f32</span> = -<span class="SNum">1</span>, l: <span class="STpe">f32</span> = -<span class="SNum">1</span>, a: <span class="STpe">f32</span> = -<span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">change</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, h, s, l, a: <span class="STpe">f32</span> = -<span class="SNum">1</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3625,7 +3625,7 @@
 </table>
 </p>
 <p>Creates an associated surface. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width = <span class="SNum">512</span>, height = <span class="SNum">300</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, x, y: <span class="STpe">s32</span>, width = <span class="SNum">512</span>, height = <span class="SNum">300</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4087,7 +4087,7 @@
 </table>
 </p>
 <p>Set current selection. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start: <span class="STpe">u64</span>, end: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start, end: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5145,7 +5145,7 @@
 </table>
 </p>
 <p>Set the frame wnd flags. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrameFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add = <span class="SCst"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span>.<span class="SCst">Zero</span>, remove = <span class="SCst"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span>.<span class="SCst">Zero</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrameFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add, remove = <span class="SCst"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span>.<span class="SCst">Zero</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5376,7 +5376,7 @@
 </table>
 </p>
 <p>Create a layout control. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, numColumns: <span class="STpe">s32</span>, numRows: <span class="STpe">s32</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_GridLayoutCtrl">GridLayoutCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, numColumns, numRows: <span class="STpe">s32</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_GridLayoutCtrl">GridLayoutCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5389,7 +5389,7 @@
 </table>
 </p>
 <p>Set the wnd associated with the given <span class="code-inline">col</span> and <span class="code-inline">row</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColRowChild</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, child: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, col: <span class="STpe">s32</span>, row: <span class="STpe">s32</span>, spanH: <span class="STpe">s32</span> = <span class="SNum">1</span>, spanV: <span class="STpe">s32</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColRowChild</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, child: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, col, row: <span class="STpe">s32</span>, spanH, spanV: <span class="STpe">s32</span> = <span class="SNum">1</span>)</span></div>
 <p>Window can cover multiple columns and rows. </p>
 <p>
 <table class="api-item">
@@ -6113,7 +6113,7 @@
 </table>
 </p>
 <p>Initialize the icon from an image list. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(imageList: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>, index: <span class="STpe">s32</span>, sizeX: <span class="STpe">f32</span> = <span class="SNum">0</span>, sizeY: <span class="STpe">f32</span> = <span class="SNum">0</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(imageList: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>, index: <span class="STpe">s32</span>, sizeX, sizeY: <span class="STpe">f32</span> = <span class="SNum">0</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6138,7 +6138,7 @@
 </table>
 </p>
 <p>Paint icon at the given position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span> = <span class="SCst">Argb</span>.<span class="SCst">White</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, x, y: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span> = <span class="SCst">Argb</span>.<span class="SCst">White</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6151,7 +6151,7 @@
 </table>
 </p>
 <p>Initialize the icon from an image list. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, imageList: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>, index: <span class="STpe">s32</span>, sizeX: <span class="STpe">f32</span> = <span class="SNum">0</span>, sizeY: <span class="STpe">f32</span> = <span class="SNum">0</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, imageList: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>, index: <span class="STpe">s32</span>, sizeX, sizeY: <span class="STpe">f32</span> = <span class="SNum">0</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6293,7 +6293,7 @@
 </table>
 </p>
 <p>Change bar flags. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIconBarFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add = <span class="SCst"><a href="#Gui_IconBarFlags">IconBarFlags</a></span>.<span class="SCst">Zero</span>, remove = <span class="SCst"><a href="#Gui_IconBarFlags">IconBarFlags</a></span>.<span class="SCst">Zero</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIconBarFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add, remove = <span class="SCst"><a href="#Gui_IconBarFlags">IconBarFlags</a></span>.<span class="SCst">Zero</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6767,7 +6767,7 @@
 </table>
 </p>
 <p>Initialize image list. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst">Texture</span>, fsx: <span class="STpe">s32</span> = <span class="SNum">0</span>, fsy: <span class="STpe">s32</span> = <span class="SNum">0</span>, cpt: <span class="STpe">s32</span> = <span class="SNum">0</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst">Texture</span>, fsx, fsy: <span class="STpe">s32</span> = <span class="SNum">0</span>, cpt: <span class="STpe">s32</span> = <span class="SNum">0</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7755,7 +7755,7 @@
 </table>
 </p>
 <p>Select a range of lines. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectLines</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start: <span class="STpe">u32</span>, end: <span class="STpe">u32</span>, select: <span class="STpe">bool</span> = <span class="SKwd">true</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectLines</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start, end: <span class="STpe">u32</span>, select: <span class="STpe">bool</span> = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7809,7 +7809,7 @@
 <p>Sort list as before. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>Sort the list by a given column If <span class="code-inline">persistent</span> is true, then the sorted column will be displayed in the header (if it exists). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, descentOrder = <span class="SKwd">false</span>, persistent = <span class="SKwd">false</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, descentOrder, persistent = <span class="SKwd">false</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9119,7 +9119,7 @@
 <p>Draw to an image by calling the closure. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">draw</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, call: <span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>, *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>))-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></div>
 <p>One shot paint to image. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">draw</span>(w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>, call: <span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>, *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>))-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">draw</span>(w, h: <span class="STpe">s32</span>, call: <span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>, *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>))-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9132,7 +9132,7 @@
 </table>
 </p>
 <p>First init the PaintImage instance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w, h: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9258,7 +9258,7 @@
 </table>
 </p>
 <p>Add a range of changing <span class="code-inline">hue</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addHueColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, sat: <span class="STpe">f32</span>, lum: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addHueColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, sat, lum: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9435,7 +9435,7 @@
 </table>
 </p>
 <p>Show popup. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">show</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, width: <span class="STpe">f32</span> = <span class="SNum">10</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">show</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>, width: <span class="STpe">f32</span> = <span class="SNum">10</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9879,7 +9879,7 @@
 <p>Native float edit width a slider. </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_EditSlider">EditSlider</a></span>(min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_EditSlider">EditSlider</a></span>(min, max: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11988,7 +11988,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>, end: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start, end: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12137,7 +12137,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, linePrev: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, line: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, lineNext: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, linePrev, line, lineNext: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12646,7 +12646,7 @@
 </p>
 <p>Set the current scroll position. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScrollPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pt: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)</span></div>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScrollPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScrollPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12659,7 +12659,7 @@
 </table>
 </p>
 <p>Set the scroll size (window virtual size). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScrollSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScrollSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13240,7 +13240,7 @@
 </table>
 </p>
 <p>Set the <span class="code-inline">min</span>, <span class="code-inline">max</span> and <span class="code-inline">steps</span> values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMax</span>(<span class="SKwd">self</span>, min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>, steps: <span class="STpe">f32</span> = <span class="SNum">0</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMax</span>(<span class="SKwd">self</span>, min, max: <span class="STpe">f32</span>, steps: <span class="STpe">f32</span> = <span class="SNum">0</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13253,7 +13253,7 @@
 </table>
 </p>
 <p>Set left and right values, for a range. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRangeValues</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, right: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRangeValues</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left, right: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13400,7 +13400,7 @@
 </table>
 </p>
 <p>Set a f32 range. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxF32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxF32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min, max: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13413,7 +13413,7 @@
 </table>
 </p>
 <p>Set a f64 range. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">s64</span>, max: <span class="STpe">s64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min, max: <span class="STpe">s64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13426,7 +13426,7 @@
 </table>
 </p>
 <p>Set a u64 range. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">u64</span>, max: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min, max: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14083,7 +14083,7 @@
 </table>
 </p>
 <p>Creates the surface. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(surface: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, flags: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>, mainSurface: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(surface: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, x, y, width, height: <span class="STpe">s32</span>, flags: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>, mainSurface: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14239,7 +14239,7 @@
 </table>
 </p>
 <p>Change flag surfaces. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSurfaceFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>, remove = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSurfaceFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add, remove = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19056,7 +19056,7 @@
 </table>
 </p>
 <p>Be sure rect is fully inside the parent rectangle (if possible). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fitPosInParent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, marginW: <span class="STpe">f32</span> = <span class="SNum">0</span>, marginH: <span class="STpe">f32</span> = <span class="SNum">0</span>, simX = <span class="SKwd">false</span>, simY = <span class="SKwd">false</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fitPosInParent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, marginW, marginH: <span class="STpe">f32</span> = <span class="SNum">0</span>, simX, simY = <span class="SKwd">false</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19319,7 +19319,7 @@
 </table>
 </p>
 <p>Get the child window at the given coordinate Coordinate is expressed in the parent system. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWndAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, getDisabled = <span class="SKwd">false</span>, getHidden = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWndAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>, getDisabled, getHidden = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19450,7 +19450,7 @@
 </table>
 </p>
 <p>Move the wnd. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">move</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">move</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19611,7 +19611,7 @@
 </table>
 </p>
 <p>Resize the wnd. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, computeLayout = <span class="SKwd">true</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width, height: <span class="STpe">f32</span>, computeLayout = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19764,7 +19764,7 @@
 </table>
 </p>
 <p>Set margin for childs If a value is Swag.F32.Inf, then it won't be changed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMargin</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, top: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, right: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, bottom: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMargin</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left, top, right, bottom: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19777,7 +19777,7 @@
 </table>
 </p>
 <p>Set padding for childs If a value is Swag.F32.Inf, then it won't be changed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, top: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, right: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, bottom: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left, top, right, bottom: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19805,7 +19805,7 @@
 <p>Move and size the wnd. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, computeLayout = <span class="SKwd">true</span>)</span></div>
 <p>Move and size the wnd. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, w: <span class="STpe">f32</span>, h: <span class="STpe">f32</span>, computeLayout = <span class="SKwd">true</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y, w, h: <span class="STpe">f32</span>, computeLayout = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19979,7 +19979,7 @@
 <p>Create a layout control. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
-Generated on 04-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
+Generated on 07-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
 </div>
 </div>
 </div>

@@ -1151,7 +1151,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_IMAGE_TAG</span>(x1: <span class="STpe">u32</span>, x2: <span class="STpe">u32</span>, x3: <span class="STpe">u32</span>, x4: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_IMAGE_TAG</span>(x1, x2, x3, x4: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1535,7 +1535,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Outline_Translate</span>(outline: <span class="SKwd">const</span> *<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, xOffset: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Pos">FT_Pos</a></span>, yOffset: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Pos">FT_Pos</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Outline_Translate</span>(outline: <span class="SKwd">const</span> *<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, xOffset, yOffset: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Pos">FT_Pos</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1645,7 +1645,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Set_Pixel_Sizes</span>(face: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, pixel_width: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span>, pixel_height: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Set_Pixel_Sizes</span>(face: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, pixel_width, pixel_height: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1794,7 +1794,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 04-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
+Generated on 07-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
 </div>
 </div>
 </div>

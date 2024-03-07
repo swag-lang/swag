@@ -1105,7 +1105,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BitBlt</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, cx: <span class="STpe">s32</span>, cy: <span class="STpe">s32</span>, hdcSrc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x1: <span class="STpe">s32</span>, y1: <span class="STpe">s32</span>, rop: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BitBlt</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x, y, cx, cy: <span class="STpe">s32</span>, hdcSrc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x1, y1: <span class="STpe">s32</span>, rop: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1129,7 +1129,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateCompatibleBitmap</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, cx: <span class="STpe">s32</span>, cy: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HBITMAP</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateCompatibleBitmap</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, cx, cy: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HBITMAP</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1425,7 +1425,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetPixel</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">COLORREF</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetPixel</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x, y: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">COLORREF</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2048,7 +2048,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RGB</span>(r: <span class="STpe">s32</span>, g: <span class="STpe">s32</span>, b: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">COLORREF</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RGB</span>(r, g, b: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">COLORREF</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2093,7 +2093,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Rectangle</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, left: <span class="STpe">s32</span>, top: <span class="STpe">s32</span>, right: <span class="STpe">s32</span>, bottom: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Rectangle</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, left, top, right, bottom: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2429,7 +2429,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TextOutW</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, lpString: <span class="SCst">Win32</span>.<span class="SCst">LPCWSTR</span>, c: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></div>
 <div class="swag-watermark">
-Generated on 04-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
+Generated on 07-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
 </div>
 </div>
 </div>

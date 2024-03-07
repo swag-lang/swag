@@ -4148,7 +4148,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct3</span>.y) == <span class="SNum">4</span>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct3</span>)     == <span class="SNum">12</span>
 }</span></div>
-<p>The total struct size is always a multiple of the biggest alignement of the fields. </p>
+<p>The total struct size is always a multiple of the biggest alignment of the fields. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
@@ -4160,7 +4160,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">8</span>
 }</span></div>
-<p>You can force the struct alignement with <span class="code-inline">#[Swag.Align]</span>. </p>
+<p>You can force the struct alignment with <span class="code-inline">#[Swag.Align]</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
@@ -7469,7 +7469,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation_md__231_003_Pages_md">Pages.md</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 04-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
+Generated on 07-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
 </div>
 </div>
 </div>
