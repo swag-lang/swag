@@ -613,7 +613,12 @@ bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
 
 bool Parser::doCompilerDependencies(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->hasFlag(FILE_IS_CFG_FILE) || sourceFile->hasFlag(FILE_IS_SCRIPT_FILE), context->report({sourceFile, tokenParse.token, toErr(Err0432)}));
+    if (!sourceFile->hasFlag(FILE_IS_CFG_FILE) && !sourceFile->hasFlag(FILE_IS_SCRIPT_FILE))
+    {
+        const Diagnostic err{sourceFile, tokenParse.token, toErr(Err0432)};
+        return context->report(err);
+    }
+
     SWAG_VERIFY(parent->is(AstNodeKind::File), context->report({sourceFile, tokenParse.token, toErr(Err0433)}));
 
     const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerDependencies, this, parent);

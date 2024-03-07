@@ -7,30 +7,32 @@
 
 JobResult FormatJob::execute()
 {
-    Module     module;
-    SourceFile file;
+    Module     tmpModule;
+    SourceFile tmpFile;
 
-    module.kind = ModuleKind::Fake;
-    module.setup("<format>", "<format>");
-    file.path   = fileName;
-    file.module = &module;
+    tmpModule.kind = ModuleKind::Fake;
+    tmpModule.setup("<fake>", "<fake>");
+    tmpFile.path   = fileName;
+    tmpFile.module = &tmpModule;
+    if (tmpFile.path.extension() == ".swgs")
+        tmpFile.flags.add(FILE_IS_SCRIPT_FILE);
 
-    file.load();
+    tmpFile.load();
+    if (tmpFile.numErrors)
+        return JobResult::ReleaseJob;
 
     SyntaxContext context;
     Parser        parser;
-    ParseFlags    parseFlags = 0;
-    parseFlags.add(PARSER_TRACK_FORMAT);
-    parser.setup(&context, &module, &file, parseFlags);
+    parser.setup(&context, &tmpModule, &tmpFile, PARSER_TRACK_FORMAT);
     if (!parser.generateAst())
         return JobResult::ReleaseJob;
 
     FormatAst fmt;
     fmt.fmtFlags.add(FORMAT_FOR_BEAUTIFY);
-    fmt.outputNode(file.astRoot);
+    fmt.outputNode(tmpFile.astRoot);
 
     if (g_CommandLine.output)
-        fmt.concat->flushToFile(file.path);
+        fmt.concat->flushToFile(tmpFile.path);
 
     return JobResult::ReleaseJob;
 }

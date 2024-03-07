@@ -4,5 +4,5 @@
 struct FormatJob final : Job
 {
     JobResult execute() override;
-    Utf8      fileName;
+    Path      fileName;
 };
