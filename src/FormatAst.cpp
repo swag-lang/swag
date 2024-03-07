@@ -90,7 +90,7 @@ bool FormatAst::outputStatement(const AstNode* node)
 
             first         = false;
             const auto op = castAst<AstOp>(c, AstNodeKind::AffectOp);
-            concat->addString(op->firstChild()->token.text);
+            SWAG_CHECK(outputNode(op->firstChild()));
         }
 
         concat->addBlank();
