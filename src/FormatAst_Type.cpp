@@ -61,7 +61,8 @@ bool FormatAst::outputType(const AstTypeExpression* node)
     if (node->arrayDim)
     {
         CONCAT_FIXED_STR(concat, "[");
-        for (int i = 0; i < node->arrayDim; i++)
+        uint32_t i = 0;
+        for (; i < node->arrayDim; i++)
         {
             if (i)
             {
@@ -74,7 +75,7 @@ bool FormatAst::outputType(const AstTypeExpression* node)
 
         concat->addChar(']');
         concat->addBlank();
-        SWAG_CHECK(outputNode(node->secondChild()));
+        SWAG_CHECK(outputNode(node->children[i]));
         return true;
     }
 
@@ -115,7 +116,7 @@ bool FormatAst::outputType(const AstTypeExpression* node)
         if (node->childCount())
             SWAG_CHECK(outputNode(node->firstChild()));
         CONCAT_FIXED_STR(concat, "...");
-    }    
+    }
     else
     {
         auto typeFromLiteral = node->typeFromLiteral;
