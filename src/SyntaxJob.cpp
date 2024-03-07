@@ -30,10 +30,10 @@ JobResult SyntaxJob::execute()
         return JobResult::KeepJobAlive;
     }
 
-    Parser     parser;
-    ParseFlags parseFlags = 0;
+    Parser      parser;
+    ParserFlags parseFlags = 0;
     if (g_CommandLine.genDoc)
-        parseFlags.add(PARSER_TRACK_FORMAT);
+        parseFlags.add(PARSER_TRACK_DOCUMENTATION);
     parser.setup(&context, sourceFile->module, sourceFile, parseFlags);
     parser.generateAst();
 

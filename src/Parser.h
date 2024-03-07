@@ -32,7 +32,7 @@ using AstNodeFlags    = Flags<uint64_t>;
 using ModifierFlags   = Flags<uint32_t>;
 using IdentifierFlags = Flags<uint32_t>;
 using ExprFlags       = Flags<uint32_t>;
-using ParseFlags      = Flags<uint32_t>;
+using ParserFlags     = Flags<uint32_t>;
 
 enum class InvalidTokenError
 {
@@ -76,14 +76,15 @@ constexpr ExprFlags EXPR_FLAG_TYPE_EXPR             = 0x00000080;
 constexpr ExprFlags EXPR_FLAG_IN_VAR_DECL_WITH_TYPE = 0x00000100;
 constexpr ExprFlags EXPR_FLAG_NAMED_PARAM           = 0x00000200;
 
-constexpr ParseFlags PARSER_DEFAULT      = 0x00000000;
-constexpr ParseFlags PARSER_TRACK_FORMAT = 0x00000001;
+constexpr ParserFlags PARSER_DEFAULT             = 0x00000000;
+constexpr ParserFlags PARSER_TRACK_DOCUMENTATION = 0x00000001;
+constexpr ParserFlags PARSER_TRACK_FORMAT        = 0x00000002;
 
 constexpr uint32_t CONTEXT_FLAG_EXPRESSION = 0x00000001;
 
 struct Parser
 {
-    void setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file, ParseFlags flags);
+    void setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file, ParserFlags flags);
     bool generateAst();
 
     static bool saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path& tmpFilePath, Utf8& tmpFileName, uint32_t& previousLogLine);
@@ -254,8 +255,8 @@ struct Parser
     AstInline*          currentInline          = nullptr;
     AstNodeFlags        currentAstNodeFlags    = 0;
 
-    ParseFlags parseFlags   = 0;
-    uint32_t   freezeFormat = 0;
+    ParserFlags parserFlags  = 0;
+    uint32_t    freezeFormat = 0;
 
     bool afterGlobal = false;
 };

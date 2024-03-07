@@ -382,14 +382,14 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     return true;
 }
 
-void Parser::setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file, ParseFlags flags)
+void Parser::setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file, ParserFlags flags)
 {
     context    = errorCxt;
     module     = mdl;
     sourceFile = file;
 
-    parseFlags = flags;
-    if (parseFlags.has(PARSER_TRACK_FORMAT))
+    parserFlags = flags;
+    if (parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION))
         tokenizer.tokenizeFlags.add(TOKENIZER_TRACK_COMMENTS);
 }
 

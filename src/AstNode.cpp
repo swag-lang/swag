@@ -671,7 +671,7 @@ void AstNode::inheritOwners(const AstNode* from)
 
 void AstNode::inheritFormatFromBefore(const Parser* parser, const AstNode* other)
 {
-    if (!parser->parseFlags.has(PARSER_TRACK_FORMAT))
+    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
     if (!other->hasExtMisc())
         return;
@@ -689,7 +689,7 @@ void AstNode::inheritFormatFromBefore(const Parser* parser, const AstNode* other
 
 void AstNode::inheritFormatFromBefore(const Parser* parser, TokenParse& tokenParse)
 {
-    if (!parser->parseFlags.has(PARSER_TRACK_FORMAT))
+    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
 
     if (tokenParse.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE) ||
@@ -705,7 +705,7 @@ void AstNode::inheritFormatFromBefore(const Parser* parser, TokenParse& tokenPar
 
 void AstNode::inheritFormatFromAfter(const Parser* parser, TokenParse& tokenParse)
 {
-    if (!parser->parseFlags.has(PARSER_TRACK_FORMAT))
+    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
 
     if (!tokenParse.comments.commentAfterSameLine.empty())
