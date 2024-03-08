@@ -92,7 +92,7 @@ struct FormatAst
     bool outputIdentifier(const AstNode* node);
     bool outputIdentifierRef(const AstNode* node);
 
-    bool outputNode(const AstNode* node);
+    bool outputNode(const AstNode* node, bool cmtAfter = true);
 
     FormatConcat  inConcat;
     FormatConcat* concat   = nullptr;

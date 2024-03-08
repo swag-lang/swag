@@ -7,7 +7,7 @@
 #include "Report.h"
 #include "Semantic.h"
 
-bool FormatAst::outputNode(const AstNode* node)
+bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
 {
     node = convertNode(node);
     if (!node)
@@ -735,6 +735,7 @@ bool FormatAst::outputNode(const AstNode* node)
             return Report::internalError(const_cast<AstNode*>(node), "FormatAst::outputNode, unknown node kind");
     }
 
-    beautifyCommentAfterSameLine(node);
+    if (cmtAfter)
+        beautifyCommentAfterSameLine(node);
     return true;
 }

@@ -29,9 +29,13 @@ bool FormatAst::outputIdentifier(const AstNode* node)
         concat->addChar('\'');
         if (identifier->genericParameters->hasAstFlag(AST_EXPR_IN_PARENTS))
             concat->addChar('(');
-        SWAG_CHECK(outputNode(identifier->genericParameters));
+
+        SWAG_CHECK(outputNode(identifier->genericParameters, false));
+
         if (identifier->genericParameters->hasAstFlag(AST_EXPR_IN_PARENTS))
             concat->addChar(')');
+
+        beautifyCommentAfterSameLine(identifier->genericParameters);
     }
 
     if (identifier->callParameters)
@@ -41,7 +45,7 @@ bool FormatAst::outputIdentifier(const AstNode* node)
         else
             concat->addChar('(');
 
-        SWAG_CHECK(outputNode(identifier->callParameters));
+        SWAG_CHECK(outputNode(identifier->callParameters, false));
 
         if (identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
             concat->addChar('}');
@@ -49,6 +53,8 @@ bool FormatAst::outputIdentifier(const AstNode* node)
             concat->addChar(')');
         else if (identifier->callParameters->lastChild()->lastChild()->isNot(AstNodeKind::CompilerCode))
             concat->addChar(')');
+        
+        beautifyCommentAfterSameLine(identifier->callParameters);
     }
 
     return true;
