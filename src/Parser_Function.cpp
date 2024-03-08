@@ -1257,7 +1257,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         isForceTakeAddress(identifierRef);
 
         // Create the capture block (a tuple)
-        const auto nameCaptureBlock = form("__captureblock%d", g_UniqueID.fetch_add(1));
+        const auto nameCaptureBlock = form(R"(__captureblock%d)", g_UniqueID.fetch_add(1));
         const auto block            = Ast::newVarDecl(nameCaptureBlock, this, exprNode);
         block->inheritTokenLocation(lambdaDecl->captureParameters->token);
         block->addAstFlag(AST_GENERATED);
