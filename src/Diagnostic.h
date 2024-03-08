@@ -115,6 +115,7 @@ struct Diagnostic
         setup();
     }
 
+    // ReSharper disable once CppNonExplicitConvertingConstructor
     Diagnostic(Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
         textMsg{std::move(msg)},
         errorLevel{level}

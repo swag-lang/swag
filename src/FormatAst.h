@@ -30,7 +30,7 @@ struct FormatAst
         concat->init(4 * 1024);
     }
 
-    FormatAst(FormatConcat& c) :
+    explicit FormatAst(FormatConcat& c) :
         concat{&c}
     {
     }

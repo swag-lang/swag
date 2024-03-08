@@ -476,7 +476,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 
         addrB = addrLine;
         addrB += static_cast<int64_t>(min(count, perLine)) * (fmt.bitCount / 8);
-        count -= static_cast<int64_t>(min(count, perLine));
+        count -= min(count, perLine);
         if (!count)
             break;
     }

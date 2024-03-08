@@ -1978,11 +1978,11 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         // First element is always the "default" one
         uint8_t*   addrCompiler        = nullptr;
         const auto offsetTableCompiler = context->module->compilerSegment.reserve((static_cast<uint32_t>(range) + 1) * sizeof(uint32_t), &addrCompiler);
-        const auto patchCompiler       = reinterpret_cast<int32_t*>(addrCompiler);
+        const auto patchCompiler       = reinterpret_cast<uint32_t*>(addrCompiler);
 
         // Set table to default jump
         for (uint32_t i = 0; i < range + 1; i++)
-            patchCompiler[i] = static_cast<int32_t>(defaultIp - ipStart) - 1;
+            patchCompiler[i] = static_cast<uint32_t>(defaultIp - ipStart) - 1;
 
         // Then register each value
         for (const auto& it : context->map6432)
