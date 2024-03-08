@@ -324,7 +324,6 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isUnion)
     structNode->addSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS);
     if (isUnion)
         structNode->addSpecFlag(AstStruct::SPEC_FLAG_UNION);
-    structNode->addExtraPointer(ExtraPointerKind::ExportNode, structNode);
 
     const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::TupleContent, this, structNode);
     structNode->content    = contentNode;
@@ -372,6 +371,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isUnion)
     // Reference to that struct
     const auto idRef = Ast::newIdentifierRef(structNode->token.text, this, parent);
     *result          = idRef;
+    idRef->addExtraPointer(ExtraPointerKind::ExportNode, contentNode);
 
     idRef->lastChild()->addAstFlag(AST_GENERATED);
     Ast::removeFromParent(structNode);
