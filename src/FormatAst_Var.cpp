@@ -29,6 +29,8 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
             if (varNode->hasAstFlag(AST_EXPR_IN_PARENTS))
                 concat->addChar(')');
         }
+        else if (varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED))
+            concat->addChar('?');
         else
             concat->addString(varNode->token.text);
     }

@@ -261,7 +261,8 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
     }
 
     // Parameters
-    concat->addChar('(');
+    SWAG_CHECK(outputNode(funcDecl->parameters));
+    /*concat->addChar('(');
     if (funcDecl->parameters && !funcDecl->parameters->children.empty())
     {
         bool first = true;
@@ -303,7 +304,7 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
         }
     }
 
-    concat->addChar(')');
+    concat->addChar(')');*/
 
     if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
     {
