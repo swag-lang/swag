@@ -613,7 +613,7 @@ bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
 
 bool Parser::doCompilerDependencies(AstNode* parent)
 {
-    if (!sourceFile->hasFlag(FILE_IS_CFG_FILE) && !sourceFile->hasFlag(FILE_IS_SCRIPT_FILE))
+    if (!sourceFile->acceptsInternalStuff())
     {
         const Diagnostic err{sourceFile, tokenParse.token, toErr(Err0432)};
         return context->report(err);
@@ -682,7 +682,10 @@ bool Parser::doCompilerLoad(AstNode* parent)
 
 bool Parser::doCompilerImport(AstNode* parent)
 {
-    if (!sourceFile->hasFlag(FILE_IS_GENERATED) && !sourceFile->hasFlag(FILE_IS_CFG_FILE) && !sourceFile->hasFlag(FILE_IS_SCRIPT_FILE))
+    if (!sourceFile->hasFlag(FILE_IS_GENERATED) &&
+        !sourceFile->hasFlag(FILE_IS_CFG_FILE) &&
+        !sourceFile->hasFlag(FILE_IS_SCRIPT_FILE) &&
+        !sourceFile->acceptsInternalStuff())
     {
         const Diagnostic err{sourceFile, tokenParse.token, toErr(Err0439)};
         return context->report(err);
@@ -703,7 +706,9 @@ bool Parser::doCompilerImport(AstNode* parent)
     SWAG_CHECK(eatToken());
 
     // Specific dependency stuff
-    if (sourceFile->hasFlag(FILE_IS_CFG_FILE) || sourceFile->hasFlag(FILE_IS_SCRIPT_FILE))
+    if (sourceFile->hasFlag(FILE_IS_CFG_FILE) ||
+        sourceFile->hasFlag(FILE_IS_SCRIPT_FILE) ||
+        sourceFile->acceptsInternalStuff())
     {
         while (true)
         {

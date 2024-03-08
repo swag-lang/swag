@@ -260,51 +260,7 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
         CONCAT_FIXED_STR(concat, "func");
     }
 
-    // Parameters
     SWAG_CHECK(outputNode(funcDecl->parameters));
-    /*concat->addChar('(');
-    if (funcDecl->parameters && !funcDecl->parameters->children.empty())
-    {
-        bool first = true;
-        for (const auto it : funcDecl->parameters->children)
-        {
-            const auto child = convertNode(it);
-            if (!child)
-                continue;
-
-            if (!first)
-            {
-                concat->addChar(',');
-                concat->addBlank();
-            }
-
-            first = false;
-
-            const auto param = castAst<AstVarDecl>(child, AstNodeKind::FuncDeclParam);
-            if (param->hasSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED))
-                concat->addChar('?');
-            else
-            {
-                concat->addString(child->token.text);
-                if (!child->children.empty())
-                {
-                    concat->addChar(':');
-                    concat->addBlank();
-                    SWAG_CHECK(outputNode(child->firstChild()));
-                }
-
-                if (param->assignment)
-                {
-                    concat->addBlank();
-                    concat->addChar('=');
-                    concat->addBlank();
-                    SWAG_CHECK(outputNode(param->assignment));
-                }
-            }
-        }
-    }
-
-    concat->addChar(')');*/
 
     if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
     {
