@@ -608,7 +608,7 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::ConditionalExpression:
-            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+            if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
                 concat->addChar('(');
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addBlank();
@@ -619,7 +619,7 @@ bool FormatAst::outputNode(const AstNode* node)
             concat->addChar(':');
             concat->addBlank();
             SWAG_CHECK(outputNode(node->children[2]));
-            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+            if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
                 concat->addChar(')');
             break;
 
@@ -634,7 +634,7 @@ bool FormatAst::outputNode(const AstNode* node)
             break;
 
         case AstNodeKind::FactorOp:
-            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+            if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
                 concat->addChar('(');
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addBlank();
@@ -643,19 +643,19 @@ bool FormatAst::outputNode(const AstNode* node)
                 CONCAT_FIXED_STR(concat, ",over");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
-            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+            if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
                 concat->addChar(')');
             break;
 
         case AstNodeKind::BinaryOp:
-            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+            if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
                 concat->addChar('(');
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addBlank();
             concat->addString(node->token.text);
             concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
-            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+            if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
                 concat->addChar(')');
             break;
 

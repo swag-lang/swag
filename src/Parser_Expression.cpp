@@ -241,7 +241,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(startLoc, tokenParse.token.endLocation, toErr(Err0679)));
             SWAG_CHECK(doExpression(parent, exprFlags, result));
-            (*result)->addAstFlag(AST_IN_ATOMIC_EXPR);
+            (*result)->addAstFlag(AST_EXPR_IN_PARENTS);
             if (parent)
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, form("to end the [[%s]] expression", parent->token.c_str())));
             else
@@ -817,7 +817,7 @@ namespace
         auto right = factor->secondChild();
         SWAG_CHECK(doOperatorPrecedence(&right));
 
-        if ((right->is(AstNodeKind::FactorOp) || right->is(AstNodeKind::BinaryOp)) && !right->hasAstFlag(AST_IN_ATOMIC_EXPR))
+        if ((right->is(AstNodeKind::FactorOp) || right->is(AstNodeKind::BinaryOp)) && !right->hasAstFlag(AST_EXPR_IN_PARENTS))
         {
             const auto myPrecedence    = getPrecedence(factor->token.id);
             const auto rightPrecedence = getPrecedence(right->token.id);
@@ -846,8 +846,8 @@ namespace
                 //   *   C
                 //  / \
                 // A   B
-                const auto atom = factor->hasAstFlag(AST_IN_ATOMIC_EXPR);
-                factor->removeAstFlag(AST_IN_ATOMIC_EXPR);
+                const auto atom = factor->hasAstFlag(AST_EXPR_IN_PARENTS);
+                factor->removeAstFlag(AST_EXPR_IN_PARENTS);
 
                 const auto leftRight = right->firstChild();
                 Ast::removeFromParent(right);
@@ -866,7 +866,7 @@ namespace
                 factor = right; // new root
 
                 if (atom)
-                    factor->addAstFlag(AST_IN_ATOMIC_EXPR);
+                    factor->addAstFlag(AST_EXPR_IN_PARENTS);
             }
         }
 

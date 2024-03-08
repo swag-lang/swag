@@ -20,6 +20,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
     if (tokenParse.is(TokenId::SymLeftParen))
     {
         multi = true;
+        callParams->addAstFlag(AST_EXPR_IN_PARENTS);
         SWAG_CHECK(eatToken());
     }
 

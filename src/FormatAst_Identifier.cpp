@@ -27,9 +27,11 @@ bool FormatAst::outputIdentifier(const AstNode* node)
     if (identifier->genericParameters)
     {
         concat->addChar('\'');
-        concat->addChar('(');
+        if (identifier->genericParameters->hasAstFlag(AST_EXPR_IN_PARENTS))
+            concat->addChar('(');
         SWAG_CHECK(outputNode(identifier->genericParameters));
-        concat->addChar(')');
+        if (identifier->genericParameters->hasAstFlag(AST_EXPR_IN_PARENTS))
+            concat->addChar(')');
     }
 
     if (identifier->callParameters)

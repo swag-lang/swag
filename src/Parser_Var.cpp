@@ -190,7 +190,7 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
         SWAG_CHECK(currentScope->symTable.registerSymbolName(context, orgVarNode, SymbolKind::Variable));
 
     // And reference that variable, in the form value = __tmp_0.item?
-    orgVarNode->addAstFlag(AST_IN_ATOMIC_EXPR);
+    orgVarNode->addAstFlag(AST_EXPR_IN_PARENTS);
 
     int idx = 0;
     for (uint32_t i = 0; i < leftNode->childCount(); i++)

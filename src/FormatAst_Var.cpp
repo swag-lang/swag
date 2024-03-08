@@ -11,7 +11,7 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
     {
         if (!varNode->multiNames.empty())
         {
-            if (varNode->hasAstFlag(AST_IN_ATOMIC_EXPR))
+            if (varNode->hasAstFlag(AST_EXPR_IN_PARENTS))
                 concat->addChar('(');
 
             bool first = true;
@@ -26,7 +26,7 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
                 concat->addString(name);
             }
 
-            if (varNode->hasAstFlag(AST_IN_ATOMIC_EXPR))
+            if (varNode->hasAstFlag(AST_EXPR_IN_PARENTS))
                 concat->addChar(')');
         }
         else
