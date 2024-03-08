@@ -506,18 +506,6 @@ bool FormatAst::outputNode(const AstNode* node)
             SWAG_CHECK(outputCompilerSpecialValue(node));
             break;
 
-        case AstNodeKind::ConditionalExpression:
-            SWAG_CHECK(outputNode(node->firstChild()));
-            concat->addBlank();
-            concat->addChar('?');
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->secondChild()));
-            concat->addBlank();
-            concat->addChar(':');
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->children[2]));
-            break;
-
         case AstNodeKind::TypeAlias:
             CONCAT_FIXED_STR(concat, "typealias");
             concat->addBlank();
@@ -617,6 +605,22 @@ bool FormatAst::outputNode(const AstNode* node)
             CONCAT_FIXED_STR(concat, "orelse");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
+            break;
+
+        case AstNodeKind::ConditionalExpression:
+            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+                concat->addChar('(');
+            SWAG_CHECK(outputNode(node->firstChild()));
+            concat->addBlank();
+            concat->addChar('?');
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->secondChild()));
+            concat->addBlank();
+            concat->addChar(':');
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->children[2]));
+            if (node->hasAstFlag(AST_IN_ATOMIC_EXPR))
+                concat->addChar(')');
             break;
 
         case AstNodeKind::AffectOp:
