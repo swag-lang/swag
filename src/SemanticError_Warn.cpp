@@ -71,9 +71,9 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
         return true;
     if (!one->node || !one->node->token.sourceFile || !one->node->resolvedSymbolName())
         return true;
-    if (one->node->token.sourceFile->hasFlag(FILE_IS_EMBEDDED) || one->node->token.sourceFile->hasFlag(FILE_IS_EXTERNAL) || one->node->token.sourceFile->imported)
+    if (one->node->token.sourceFile->hasFlag(FILE_EMBEDDED) || one->node->token.sourceFile->hasFlag(FILE_EXTERNAL) || one->node->token.sourceFile->imported)
         return true;
-    if (one->node->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) || one->node->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (one->node->token.sourceFile->hasFlag(FILE_RUNTIME) || one->node->token.sourceFile->hasFlag(FILE_BOOTSTRAP))
         return true;
     if (one->node->token.sourceFile->hasFlag(FILE_FORCE_EXPORT) || one->node->token.sourceFile->globalAttr.has(ATTRIBUTE_PUBLIC))
         return true;

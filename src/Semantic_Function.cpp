@@ -207,7 +207,7 @@ bool Semantic::sendCompilerMsgFuncDecl(SemanticContext* context)
     // Filter what we send
     if (module->is(ModuleKind::BootStrap) || module->is(ModuleKind::Runtime))
         return true;
-    if (sourceFile->imported && !sourceFile->hasFlag(FILE_IS_EMBEDDED))
+    if (sourceFile->imported && !sourceFile->hasFlag(FILE_EMBEDDED))
         return true;
     if (!context->node->ownerScope->isGlobalOrImpl())
         return true;
@@ -869,7 +869,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     }
 
     // Register runtime libc function type, by name
-    if (funcNode->token.sourceFile && funcNode->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && funcNode->isEmptyFct())
+    if (funcNode->token.sourceFile && funcNode->token.sourceFile->hasFlag(FILE_RUNTIME) && funcNode->isEmptyFct())
     {
         ScopedLock lk(funcNode->token.sourceFile->module->mutexFile);
         funcNode->token.sourceFile->module->mapRuntimeFctTypes[funcNode->token.text] = typeInfo;

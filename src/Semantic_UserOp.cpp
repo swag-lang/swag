@@ -311,7 +311,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
     }
-    else if (name == g_LangSpec->name_opInit && node->token.sourceFile->hasFlag(FILE_IS_GENERATED))
+    else if (name == g_LangSpec->name_opInit && node->token.sourceFile->hasFlag(FILE_GENERATED))
     {
     }
     else

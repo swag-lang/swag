@@ -46,9 +46,9 @@ bool Semantic::canInheritAccess(const AstNode* node)
 {
     if (!node->parent)
         return false;
-    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->node->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->node->token.sourceFile->hasFlag(FILE_RUNTIME))
         return false;
-    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->node->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->node->token.sourceFile->hasFlag(FILE_BOOTSTRAP))
         return false;
 
     // Content of the function will propagate only if the function is inlined or generic
@@ -158,9 +158,9 @@ void Semantic::setDefaultAccess(AstNode* node)
         return;
     if (node->hasAttribute(ATTRIBUTE_ACCESS_MASK))
         return;
-    if (node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_BOOTSTRAP))
         return;
-    if (node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+    if (node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_RUNTIME))
         return;
     if (node->hasAstFlag(AST_STRUCT_MEMBER))
         return;

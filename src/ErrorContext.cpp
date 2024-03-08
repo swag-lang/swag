@@ -161,7 +161,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
         const auto note = Diagnostic::note(sourceNode->token.sourceFile->fromNode, toNte(Nte0098));
         notes.push_back(note);
     }
-    else if (diagnostic.sourceFile && diagnostic.sourceFile->hasFlag(FILE_IS_EXTERNAL) && diagnostic.sourceFile->hasFlag(FILE_IS_FROM_AST) && sourceNode)
+    else if (diagnostic.sourceFile && diagnostic.sourceFile->hasFlag(FILE_EXTERNAL) && diagnostic.sourceFile->hasFlag(FILE_FROM_AST) && sourceNode)
     {
         const auto note = Diagnostic::note(sourceNode, toNte(Nte0098));
         notes.push_back(note);

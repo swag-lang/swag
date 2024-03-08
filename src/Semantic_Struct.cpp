@@ -520,7 +520,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
     }
 
     // We are parsing the swag module
-    if (sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (sourceFile->hasFlag(FILE_BOOTSTRAP))
         g_Workspace->swagScope.registerType(node->typeInfo);
 
     return true;
@@ -830,7 +830,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     }
 
     // Check 'opaque' attribute
-    if (!sourceFile->hasFlag(FILE_IS_GENERATED))
+    if (!sourceFile->hasFlag(FILE_GENERATED))
     {
         if (node->hasAttribute(ATTRIBUTE_OPAQUE))
         {
@@ -1227,7 +1227,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     }
 
     // We are parsing the swag module
-    if (sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (sourceFile->hasFlag(FILE_BOOTSTRAP))
         g_Workspace->swagScope.registerType(node->typeInfo);
 
     // Generate all functions associated with a struct

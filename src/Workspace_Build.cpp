@@ -143,7 +143,7 @@ void Workspace::addBootstrap()
     file->path.append("runtime");
     file->path.append("bootstrap.swg");
     file->module = bootstrapModule;
-    file->addFlag(FILE_IS_BOOTSTRAP_FILE);
+    file->addFlag(FILE_BOOTSTRAP);
     bootstrapModule->addFile(file);
 }
 
@@ -155,7 +155,7 @@ void Workspace::addRuntimeFile(const char* fileName) const
     file->path.append("runtime");
     file->path.append(fileName);
     file->module = runtimeModule;
-    file->addFlag(FILE_IS_RUNTIME_FILE);
+    file->addFlag(FILE_RUNTIME);
     runtimeModule->addFile(file);
 }
 

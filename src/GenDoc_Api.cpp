@@ -66,9 +66,9 @@ namespace
                 return false;
         }
 
-        if (node->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+        if (node->token.sourceFile->hasFlag(FILE_RUNTIME))
             return true;
-        if (node->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+        if (node->token.sourceFile->hasFlag(FILE_BOOTSTRAP))
             return true;
         if (!node->token.sourceFile->hasFlag(FILE_FORCE_EXPORT) && !node->hasAttribute(ATTRIBUTE_PUBLIC))
             return false;

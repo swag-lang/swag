@@ -303,7 +303,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
 
     sourceFile = Allocator::alloc<SourceFile>();
     sourceFile->setExternalBuffer(content);
-    sourceFile->addFlag(FILE_IS_FROM_AST);
+    sourceFile->addFlag(FILE_FROM_AST);
     sourceFile->module = parent->token.sourceFile->module;
     sourceFile->name   = tmpFileName;
     sourceFile->path   = tmpFilePath;
@@ -461,14 +461,14 @@ bool Parser::generateAst()
     sourceFile->scopeFile->flags.add(SCOPE_FILE);
 
     // By default, everything is internal if it comes from the test folder, or from the configuration file
-    if (sourceFile->hasFlag(FILE_FROM_TESTS) || sourceFile->hasFlag(FILE_IS_CFG_FILE))
+    if (sourceFile->hasFlag(FILE_FROM_TESTS) || sourceFile->hasFlag(FILE_CFG))
         currentScope = sourceFile->scopeFile;
     else
         currentScope = parentScope;
     sourceFile->astRoot->ownerScope = currentScope;
 
     // Make a copy of all #global using of the config file
-    if (!sourceFile->hasFlag(FILE_IS_CFG_FILE) && !sourceFile->imported && !sourceFile->hasFlag(FILE_IS_EMBEDDED))
+    if (!sourceFile->hasFlag(FILE_CFG) && !sourceFile->imported && !sourceFile->hasFlag(FILE_EMBEDDED))
     {
         for (const auto s : module->buildParameters.globalUsing)
         {
@@ -480,7 +480,7 @@ bool Parser::generateAst()
             node->token.sourceFile = sourceFile;
         }
     }
-    else if (sourceFile->hasFlag(FILE_IS_EMBEDDED))
+    else if (sourceFile->hasFlag(FILE_EMBEDDED))
     {
         for (const auto s : sourceFile->globalUsingEmbedded)
         {

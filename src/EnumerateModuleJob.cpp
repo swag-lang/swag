@@ -208,7 +208,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
         cfgFile.append(SWAG_CFG_FILE);
         const auto writeTime = OS::getFileWriteTime(cfgFile);
         const auto file      = addFileToModule(theModule, allFiles, cfgFile.parent_path(), SWAG_CFG_FILE, writeTime, nullptr, nullptr, false);
-        file->addFlag(FILE_IS_CFG_FILE);
+        file->addFlag(FILE_CFG);
     }
 
     // Sort files, and register them in a constant order
@@ -354,7 +354,7 @@ JobResult EnumerateModuleJob::execute()
         const auto scriptModule = g_Workspace->createOrUseModule(file->name, parentFolder, ModuleKind::Script);
         file->path              = g_CommandLine.fileName;
         file->module            = scriptModule;
-        file->addFlag(FILE_IS_SCRIPT_FILE);
+        file->addFlag(FILE_SCRIPT);
         scriptModule->isScriptFile = true;
         scriptModule->addFile(file);
         g_Workspace->runModule = scriptModule;
@@ -385,10 +385,10 @@ JobResult EnumerateModuleJob::execute()
 
             for (const auto f : mod->files)
             {
-                if (f->hasFlag(FILE_IS_CFG_FILE))
+                if (f->hasFlag(FILE_CFG))
                     continue;
                 const auto newFile = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod, false);
-                newFile->addFlag(FILE_IS_EMBEDDED);
+                newFile->addFlag(FILE_EMBEDDED);
                 newFile->globalUsingEmbedded = mod->buildParameters.globalUsing;
             }
 

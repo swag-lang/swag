@@ -134,7 +134,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
     }
 
     // Register runtime function type, by name
-    if (context->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+    if (context->sourceFile->hasFlag(FILE_RUNTIME))
     {
         ScopedLock lk(context->sourceFile->module->mutexFile);
         context->sourceFile->module->mapRuntimeFct[context->bc->getCallName()] = context->bc;
@@ -271,7 +271,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
             extension->bc->typeInfoFunc = funcDecl ? castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo) : nullptr;
             if (node->hasAstFlag(AST_DEFINED_INTRINSIC))
                 extension->bc->name = node->token.text;
-            else if (node->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+            else if (node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 extension->bc->name = node->token.text;
             else
             {

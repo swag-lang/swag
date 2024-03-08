@@ -110,7 +110,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
         node->ownerScope->addPublicNode(node);
 
     // We are parsing the swag module
-    if (node->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (node->token.sourceFile->hasFlag(FILE_BOOTSTRAP))
         g_Workspace->swagScope.registerType(node->typeInfo);
 
     return true;
@@ -125,7 +125,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     SWAG_CHECK(collectAttributes(context, enumNode, &typeInfo->attributes));
 
     // Hardcoded swag enums
-    if (context->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (context->sourceFile->hasFlag(FILE_BOOTSTRAP))
     {
         if (enumNode->token.text == g_LangSpec->name_AttributeUsage)
             enumNode->addAttribute(ATTRIBUTE_ENUM_FLAGS);

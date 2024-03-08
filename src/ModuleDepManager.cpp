@@ -41,7 +41,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
     auto kind = ModuleKind::Module;
 
     const auto parentFolder = file->path.parent_path();
-    if (file->hasFlag(FILE_IS_SCRIPT_FILE))
+    if (file->hasFlag(FILE_SCRIPT))
     {
         moduleName   = file->path.filename().replace_extension();
         moduleFolder = parentFolder;
@@ -51,7 +51,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
 
     const auto cfgModule    = Allocator::alloc<Module>();
     cfgModule->kind         = ModuleKind::Config;
-    cfgModule->isScriptFile = file->hasFlag(FILE_IS_SCRIPT_FILE);
+    cfgModule->isScriptFile = file->hasFlag(FILE_SCRIPT);
     cfgModule->setup(moduleName, moduleFolder);
     cfgModule->addFile(file);
 
@@ -78,7 +78,7 @@ void ModuleDepManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dir
 {
     const auto file = Allocator::alloc<SourceFile>();
     file->name      = fileName;
-    file->addFlag(FILE_IS_CFG_FILE);
+    file->addFlag(FILE_CFG);
     Path pathFile = dirName;
     pathFile.append(fileName);
     file->path = pathFile;
@@ -437,7 +437,7 @@ bool ModuleDepManager::execute()
         const auto file = Allocator::alloc<SourceFile>();
         file->path      = g_CommandLine.fileName;
         file->name      = file->path.filename();
-        file->addFlag(FILE_IS_CFG_FILE | FILE_IS_SCRIPT_FILE);
+        file->addFlag(FILE_CFG | FILE_SCRIPT);
         registerCfgFile(file);
     }
 
@@ -535,7 +535,7 @@ bool ModuleDepManager::execute()
             cfgModule->files.push_back(file);
 
             file->name = cfgFileName;
-            file->addFlag(FILE_IS_CFG_FILE);
+            file->addFlag(FILE_CFG);
             file->module  = cfgModule;
             Path pathFile = cfgFilePath;
             pathFile.append(cfgFileName);

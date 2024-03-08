@@ -64,7 +64,7 @@ Utf8 ByteCode::getCallName()
     // If this is an intrinsic that can be called by the compiler itself, it should not
     // have overloads, and the name will be the name alone (without the node address which is
     // used to differentiate overloads)
-    if (node && node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && !node->ownerStructScope)
+    if (node && node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_RUNTIME) && !node->ownerStructScope)
     {
         const auto symbolName = node->resolvedSymbolName();
         if (symbolName && symbolName->cptOverloadsInit == 1)
@@ -206,7 +206,7 @@ bool ByteCode::canEmit() const
     if (!funcNode->content && !funcNode->isSpecialFunctionGenerated())
         return false;
 
-    if (funcNode->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) || funcNode->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+    if (funcNode->token.sourceFile->hasFlag(FILE_BOOTSTRAP) || funcNode->token.sourceFile->hasFlag(FILE_RUNTIME))
         return true;
     if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_TEST_FUNC))
         return true;

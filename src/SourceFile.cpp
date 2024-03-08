@@ -59,12 +59,12 @@ void SourceFile::setExternalBuffer(const Utf8& content)
     externalContent = content;
     buffer          = const_cast<char*>(externalContent.c_str());
     bufferSize      = externalContent.length();
-    addFlag(FILE_IS_EXTERNAL);
+    addFlag(FILE_EXTERNAL);
 }
 
 bool SourceFile::load()
 {
-    if (hasFlag(FILE_IS_EXTERNAL))
+    if (hasFlag(FILE_EXTERNAL))
         return true;
     if (buffer)
         return true;
@@ -129,7 +129,7 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
     // This is slow, but this is ok, as getLine is not called in normal situations
     if (allLines.empty())
     {
-        if (hasFlag(FILE_IS_EXTERNAL) && !fileForSourceLocation)
+        if (hasFlag(FILE_EXTERNAL) && !fileForSourceLocation)
         {
             auto pz = static_cast<const char*>(buffer);
             Utf8 line;
@@ -196,7 +196,7 @@ void SourceFile::addGlobalUsing(Scope* scope)
 
 bool SourceFile::acceptsInternalStuff() const
 {
-    if (hasFlag(FILE_IS_BOOTSTRAP_FILE | FILE_IS_RUNTIME_FILE | FILE_IS_GENERATED))
+    if (hasFlag(FILE_BOOTSTRAP | FILE_RUNTIME | FILE_GENERATED | FILE_FOR_FORMAT))
         return true;
     if (module && module->is(ModuleKind::Fake))
         return true;

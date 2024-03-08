@@ -129,7 +129,7 @@ JobResult ByteCodeGenJob::execute()
 
     if (pass == Pass::Generate)
     {
-        if (sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+        if (sourceFile->hasFlag(FILE_RUNTIME))
         {
             context.result = ContextResult::Done;
             if (!ByteCodeGen::setupRuntime(&context, originalNode))

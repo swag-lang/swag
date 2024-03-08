@@ -15,7 +15,8 @@ JobResult FormatJob::execute()
     tmpFile.path   = fileName;
     tmpFile.module = &tmpModule;
     if (tmpFile.path.extension() == ".swgs")
-        tmpFile.flags.add(FILE_IS_SCRIPT_FILE);
+        tmpFile.flags.add(FILE_SCRIPT);
+    tmpFile.flags.add(FILE_FOR_FORMAT);
 
     tmpFile.load();
     if (tmpFile.numErrors)

@@ -14,19 +14,20 @@ struct Scope;
 using AttributeFlags = Flags<uint64_t>;
 
 using FileFlags                              = Flags<uint32_t>;
-constexpr FileFlags FILE_IS_EXTERNAL         = 0x00000001;
-constexpr FileFlags FILE_IS_FROM_AST         = 0x00000002;
-constexpr FileFlags FILE_IS_CFG_FILE         = 0x00000004;
-constexpr FileFlags FILE_IS_GENERATED        = 0x00000008;
-constexpr FileFlags FILE_IS_BOOTSTRAP_FILE   = 0x00000010;
-constexpr FileFlags FILE_IS_RUNTIME_FILE     = 0x00000020;
-constexpr FileFlags FILE_IS_SCRIPT_FILE      = 0x00000040;
-constexpr FileFlags FILE_IS_EMBEDDED         = 0x00000080;
+constexpr FileFlags FILE_EXTERNAL            = 0x00000001;
+constexpr FileFlags FILE_FROM_AST            = 0x00000002;
+constexpr FileFlags FILE_CFG                 = 0x00000004;
+constexpr FileFlags FILE_GENERATED           = 0x00000008;
+constexpr FileFlags FILE_BOOTSTRAP           = 0x00000010;
+constexpr FileFlags FILE_RUNTIME             = 0x00000020;
+constexpr FileFlags FILE_SCRIPT              = 0x00000040;
+constexpr FileFlags FILE_EMBEDDED            = 0x00000080;
 constexpr FileFlags FILE_SHOULD_HAVE_ERROR   = 0x00000100;
 constexpr FileFlags FILE_SHOULD_HAVE_WARNING = 0x00000200;
 constexpr FileFlags FILE_FROM_TESTS          = 0x00000400;
 constexpr FileFlags FILE_FORCE_EXPORT        = 0x00000800;
 constexpr FileFlags FILE_MARK_DOWN           = 0x00001000;
+constexpr FileFlags FILE_FOR_FORMAT          = 0x00002000;
 
 struct SourceFile
 {

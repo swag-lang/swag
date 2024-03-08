@@ -239,7 +239,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
     // There is only one swag namespace, defined in the bootstrap. So if we redeclared it
     // in runtime, use the one from the bootstrap
-    if (sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && tokenParse.token.text == g_LangSpec->name_Swag)
+    if (sourceFile->hasFlag(FILE_RUNTIME) && tokenParse.token.text == g_LangSpec->name_Swag)
         currentScope = g_Workspace->bootstrapModule->files[0]->astRoot->ownerScope;
 
     AstNode*   firstNameSpace = nullptr;

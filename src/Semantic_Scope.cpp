@@ -575,7 +575,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
     addAlternativeScope(toProcess, g_Workspace->bootstrapModule->scopeRoot);
 
     // Add runtime, except for the bootstrap
-    if (!sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (!sourceFile->hasFlag(FILE_BOOTSTRAP))
     {
         SWAG_ASSERT(g_Workspace->runtimeModule);
         addAlternativeScope(scopes, g_Workspace->runtimeModule->scopeRoot);
