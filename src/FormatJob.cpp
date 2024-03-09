@@ -55,6 +55,9 @@ JobResult FormatJob::execute()
     {
         l.trimRight();
         (void) fwrite(l.data(), 1, l.length(), f);
+#ifdef _WIN32
+        (void) fputc('\r', f);
+#endif
         (void) fputc('\n', f);
     }
 
