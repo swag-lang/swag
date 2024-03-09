@@ -342,7 +342,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
 
         // tls section
         /////////////////////////////////////////////
-        pp.sectionIndexTLS = secIndex;
+        pp.sectionIndexTLS = secIndex++;
         concat.addStringN(".data\0\0\0", 8);                       // .Name
         concat.addU32(0);                                          // .VirtualSize
         concat.addU32(0);                                          // .VirtualAddress

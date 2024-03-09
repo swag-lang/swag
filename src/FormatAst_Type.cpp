@@ -101,6 +101,20 @@ bool FormatAst::outputType(const AstTypeExpression* node)
         return true;
     }
 
+    if (node->typeFlags.has(TYPEFLAG_IS_REF) && node->typeFlags.has(TYPEFLAG_IS_MOVE_REF))
+    {
+        CONCAT_FIXED_STR(concat, "&&");
+        SWAG_CHECK(outputNode(node->firstChild()));
+        return true;
+    }
+
+    if (node->typeFlags.has(TYPEFLAG_IS_REF))
+    {
+        concat->addChar('&');
+        SWAG_CHECK(outputNode(node->firstChild()));
+        return true;
+    }
+
     if (node->identifier)
     {
         SWAG_CHECK(outputNode(node->identifier));

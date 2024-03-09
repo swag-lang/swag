@@ -371,14 +371,10 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::NoDrop:
-            CONCAT_FIXED_STR(concat, "nodrop");
-            concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
 
         case AstNodeKind::Move:
-            CONCAT_FIXED_STR(concat, "move");
-            concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
 
@@ -624,14 +620,32 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::AffectOp:
+        {
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addBlank();
             concat->addString(node->token.text);
+
             if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
                 CONCAT_FIXED_STR(concat, ",over");
+            if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
+                CONCAT_FIXED_STR(concat, ",up");
+
+            auto checkChild = node->secondChild();
+            if (checkChild->is(AstNodeKind::NoDrop))
+            {
+                CONCAT_FIXED_STR(concat, ",nodrop");
+                checkChild = checkChild->firstChild();
+            }
+
+            if (checkChild->is(AstNodeKind::Move) && checkChild->firstChild()->is(AstNodeKind::NoDrop))
+                CONCAT_FIXED_STR(concat, ",moveraw");
+            else if (checkChild->is(AstNodeKind::Move))
+                CONCAT_FIXED_STR(concat, ",move");
+
             concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
             break;
+        }
 
         case AstNodeKind::FactorOp:
             if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
@@ -641,6 +655,8 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             concat->addString(node->token.text);
             if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
                 CONCAT_FIXED_STR(concat, ",over");
+            if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
+                CONCAT_FIXED_STR(concat, ",up");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
             if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
