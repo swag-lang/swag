@@ -94,8 +94,14 @@ bool FormatAst::outputExpressionList(const AstNode* node)
     else
         concat->addChar('[');
 
+    concat->addEol();
+    indent++;
+    concat->addIndent(indent);
     SWAG_CHECK(outputCommaChildren(exprNode));
-
+    indent--;
+    concat->addEol();
+    concat->addIndent(indent);
+    
     if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
         concat->addChar('}');
     else

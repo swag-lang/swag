@@ -165,11 +165,7 @@ bool FormatAst::outputNamespace(const AstNode* node)
 
     concat->addIndent(indent);
 
-    if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_PRIVATE))
-    {
-        CONCAT_FIXED_STR(concat, "private");
-    }
-    else
+    if (!node->hasSpecFlag(AstNameSpace::SPEC_FLAG_PRIVATE))
     {
         CONCAT_FIXED_STR(concat, "namespace");
         concat->addBlank();
