@@ -28,7 +28,18 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
     {
         case AstNodeKind::SwitchCaseBlock:
         case AstNodeKind::StatementNoScope:
+            SWAG_CHECK(outputChildren(node));
+            break;
+
         case AstNodeKind::File:
+            if (node->token.sourceFile->flags.has(FILE_FORCE_EXPORT))
+            {
+                CONCAT_FIXED_STR(concat, "#global");
+                concat->addBlank();
+                CONCAT_FIXED_STR(concat, "export");
+                concat->addEol();
+            }
+
             SWAG_CHECK(outputChildren(node));
             break;
 
@@ -360,14 +371,6 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             SWAG_CHECK(outputLambdaExpression(castAst<AstMakePointer>(node, AstNodeKind::MakePointerLambda)->lambda));
             break;
 
-        case AstNodeKind::NoDrop:
-            SWAG_CHECK(outputNode(node->firstChild()));
-            break;
-
-        case AstNodeKind::Move:
-            SWAG_CHECK(outputNode(node->firstChild()));
-            break;
-
         case AstNodeKind::ArrayPointerSlicing:
         {
             const auto arrayNode = castAst<AstArrayPointerSlicing>(node, AstNodeKind::ArrayPointerSlicing);
@@ -609,6 +612,29 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
                 concat->addChar(')');
             break;
 
+        case AstNodeKind::NoDrop:
+            CONCAT_FIXED_STR(concat, ",nodrop");
+            if (!node->firstChild()->is(AstNodeKind::Move))
+                concat->addBlank();
+            SWAG_CHECK(outputNode(node->firstChild()));
+            break;
+
+        case AstNodeKind::Move:
+            if (node->firstChild()->is(AstNodeKind::NoDrop))
+            {
+                CONCAT_FIXED_STR(concat, ",moveraw");
+                concat->addBlank();
+                SWAG_CHECK(outputNode(node->firstChild()->firstChild()));
+            }
+            else
+            {
+                CONCAT_FIXED_STR(concat, ",move");
+                concat->addBlank();
+                SWAG_CHECK(outputNode(node->firstChild()));
+            }
+
+            break;
+
         case AstNodeKind::AffectOp:
         {
             SWAG_CHECK(outputNode(node->firstChild()));
@@ -620,20 +646,13 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
                 CONCAT_FIXED_STR(concat, ",up");
 
-            auto checkChild = node->secondChild();
-            if (checkChild->is(AstNodeKind::NoDrop))
+            if (node->secondChild()->is(AstNodeKind::NoDrop) || node->secondChild()->is(AstNodeKind::Move))
+                SWAG_CHECK(outputNode(node->secondChild()));
+            else
             {
-                CONCAT_FIXED_STR(concat, ",nodrop");
-                checkChild = checkChild->firstChild();
+                concat->addBlank();
+                SWAG_CHECK(outputNode(node->secondChild()));
             }
-
-            if (checkChild->is(AstNodeKind::Move) && checkChild->firstChild()->is(AstNodeKind::NoDrop))
-                CONCAT_FIXED_STR(concat, ",moveraw");
-            else if (checkChild->is(AstNodeKind::Move))
-                CONCAT_FIXED_STR(concat, ",move");
-
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->secondChild()));
             break;
         }
 

@@ -70,7 +70,8 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
     {
         concat->addBlank();
         concat->addChar('=');
-        concat->addBlank();
+        if (!varNode->assignment->is(AstNodeKind::Move) && !varNode->assignment->is(AstNodeKind::NoDrop))
+            concat->addBlank();
         SWAG_CHECK(outputNode(varNode->assignment));
     }
 
