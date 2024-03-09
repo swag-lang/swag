@@ -49,7 +49,7 @@ JobResult FormatJob::execute()
 
     const auto   content = fmt.concat->getUtf8();
     Vector<Utf8> lines;
-    Utf8::tokenize(content, '\n', lines);
+    Utf8::tokenize(content, '\n', lines, true);
 
     for (auto& l : lines)
     {
