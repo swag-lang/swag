@@ -2,6 +2,7 @@
 #include "FormatConcat.h"
 #include "Job.h"
 
+struct AstAttrUse;
 struct AstEnum;
 struct AstNode;
 struct AstStruct;
@@ -54,6 +55,7 @@ struct FormatAst
     bool outputEnum(const AstEnum* node);
     bool outputFuncDecl(const AstFuncDecl* node);
     bool outputAttrUse(const AstNode* node, bool& hasSomething);
+    bool outputAttrUse(const AstAttrUse* node);
     bool outputFuncCallParams(const AstNode* node);
     bool outputTypeLambda(const AstNode* node);
     bool outputFuncDeclParameters(const AstNode* parameters, bool isMethod);

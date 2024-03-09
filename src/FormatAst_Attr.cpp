@@ -61,6 +61,78 @@ bool FormatAst::outputAttrUse(const AstNode* node, bool& hasSomething)
     return true;
 }
 
+bool FormatAst::outputAttrUse(const AstAttrUse* node)
+{
+    if (node->attributeFlags.has(ATTRIBUTE_PUBLIC))
+    {
+        if (node->hasAstFlag(AST_GLOBAL_NODE))
+        {
+            CONCAT_FIXED_STR(concat, "#global");
+            concat->addBlank();
+            CONCAT_FIXED_STR(concat, "public");
+            concat->addEol();
+            concat->addIndent(indent);
+            SWAG_CHECK(outputChildren(node->content));
+        }
+        else
+        {
+            CONCAT_FIXED_STR(concat, "public");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->content));
+        }
+        return true;
+    }
+
+    if (node->attributeFlags.has(ATTRIBUTE_PRIVATE))
+    {
+        if (node->hasAstFlag(AST_GLOBAL_NODE))
+        {
+            CONCAT_FIXED_STR(concat, "#global");
+            concat->addBlank();
+            CONCAT_FIXED_STR(concat, "private");
+            concat->addEol();
+            concat->addIndent(indent);
+            SWAG_CHECK(outputChildren(node->content));
+        }
+        else
+        {
+            CONCAT_FIXED_STR(concat, "private");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->content));
+        }
+        return true;
+    }
+
+    if (node->attributeFlags.has(ATTRIBUTE_INTERNAL))
+    {
+        if (node->hasAstFlag(AST_GLOBAL_NODE))
+        {
+            CONCAT_FIXED_STR(concat, "#global");
+            concat->addBlank();
+            CONCAT_FIXED_STR(concat, "internal");
+            concat->addEol();
+            concat->addIndent(indent);
+            SWAG_CHECK(outputChildren(node->content));
+        }
+        else
+        {
+            CONCAT_FIXED_STR(concat, "internal");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->content));
+        }
+        return true;
+    }    
+
+    bool hasSomething = true;
+    SWAG_CHECK(outputAttrUse(node, hasSomething));
+    if (!hasSomething)
+        return true;
+    concat->addEol();
+    concat->addIndent(indent);
+    SWAG_CHECK(outputNode(node->content));
+    return true;
+}
+
 bool FormatAst::outputAttributesUsage(const TypeInfoFuncAttr* typeFunc) const
 {
     bool first = true;
