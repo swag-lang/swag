@@ -121,7 +121,19 @@ bool FormatAst::outputAttrUse(const AstAttrUse* node)
             SWAG_CHECK(outputNode(node->content));
         }
         return true;
-    }    
+    }
+
+    if (node->hasAstFlag(AST_GLOBAL_NODE))
+    {
+        CONCAT_FIXED_STR(concat, "#global");
+        concat->addBlank();
+        bool hasSomething = true;
+        SWAG_CHECK(outputAttrUse(node, hasSomething));
+        concat->addEol();
+        concat->addIndent(indent);
+        SWAG_CHECK(outputChildren(node->content));
+        return true;
+    }
 
     bool hasSomething = true;
     SWAG_CHECK(outputAttrUse(node, hasSomething));
