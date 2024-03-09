@@ -3,7 +3,7 @@
 #include "Semantic.h"
 #include "TokenParse.h"
 
-void FormatAst::beautifyComment(const Vector<TokenComment>& comments) const
+void FormatAst::beautifyComment(Vector<TokenComment>& comments) const
 {
     bool first = true;
     for (const auto& v : comments)
@@ -32,6 +32,15 @@ void FormatAst::beautifyComment(const Vector<TokenComment>& comments) const
 
         concat->addString(cmt);
     }
+
+    comments.clear();
+}
+
+void FormatAst::beautifyBefore(const AstNode* node) const
+{
+    beautifyCommentBefore(node);
+    beautifyBlankLine(node);
+    beautifyCommentJustBefore(node);
 }
 
 void FormatAst::beautifyCommentBefore(const AstNode* node) const
@@ -63,12 +72,13 @@ void FormatAst::beautifyBlankLine(const AstNode* node) const
 
     if (node->hasExtMisc() && node->extMisc()->format.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
     {
+        node->extMisc()->format.flags.remove(TOKEN_PARSE_BLANK_LINE_BEFORE);
         concat->addBlankLine();
         concat->addIndent(indent);
     }
 }
 
-void FormatAst::beautifyCommentAfterSameLine(const AstNode* node) const
+void FormatAst::beautifyAfter(const AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;

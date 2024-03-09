@@ -13,9 +13,7 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
     if (!node)
         return true;
 
-    beautifyCommentBefore(node);
-    beautifyBlankLine(node);
-    beautifyCommentJustBefore(node);
+    beautifyBefore(node);
 
     // Prepend some stuff
     const auto isNamed = node->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
@@ -331,26 +329,26 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
 
         case AstNodeKind::Break:
         {
-                const auto breakNode = castAst<AstBreakContinue>(node, AstNodeKind::Break);
-                CONCAT_FIXED_STR(concat, "break");
-                if (!breakNode->label.text.empty())
-                {
-                    concat->addBlank();
-                    concat->addString(breakNode->label.text);
-                }
-                break;
+            const auto breakNode = castAst<AstBreakContinue>(node, AstNodeKind::Break);
+            CONCAT_FIXED_STR(concat, "break");
+            if (!breakNode->label.text.empty())
+            {
+                concat->addBlank();
+                concat->addString(breakNode->label.text);
+            }
+            break;
         }
 
         case AstNodeKind::Continue:
         {
-                const auto continueNode = castAst<AstBreakContinue>(node, AstNodeKind::Continue);
-                CONCAT_FIXED_STR(concat, "continue");
-                if (!continueNode->label.text.empty())
-                {
-                    concat->addBlank();
-                    concat->addString(continueNode->label.text);
-                }
-                break;
+            const auto continueNode = castAst<AstBreakContinue>(node, AstNodeKind::Continue);
+            CONCAT_FIXED_STR(concat, "continue");
+            if (!continueNode->label.text.empty())
+            {
+                concat->addBlank();
+                concat->addString(continueNode->label.text);
+            }
+            break;
         }
 
         case AstNodeKind::MakePointer:
@@ -372,51 +370,51 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
 
         case AstNodeKind::ArrayPointerSlicing:
         {
-                const auto arrayNode = castAst<AstArrayPointerSlicing>(node, AstNodeKind::ArrayPointerSlicing);
-                SWAG_CHECK(outputNode(arrayNode->array));
-                concat->addChar('[');
-                SWAG_CHECK(outputNode(arrayNode->lowerBound));
-                if (arrayNode->hasSpecFlag(AstArrayPointerSlicing::SPEC_FLAG_EXCLUDE_UP))
-                    CONCAT_FIXED_STR(concat, "..<");
-                else
-                    CONCAT_FIXED_STR(concat, "..");
-                SWAG_CHECK(outputNode(arrayNode->upperBound));
-                concat->addChar(']');
-                break;
+            const auto arrayNode = castAst<AstArrayPointerSlicing>(node, AstNodeKind::ArrayPointerSlicing);
+            SWAG_CHECK(outputNode(arrayNode->array));
+            concat->addChar('[');
+            SWAG_CHECK(outputNode(arrayNode->lowerBound));
+            if (arrayNode->hasSpecFlag(AstArrayPointerSlicing::SPEC_FLAG_EXCLUDE_UP))
+                CONCAT_FIXED_STR(concat, "..<");
+            else
+                CONCAT_FIXED_STR(concat, "..");
+            SWAG_CHECK(outputNode(arrayNode->upperBound));
+            concat->addChar(']');
+            break;
         }
 
         case AstNodeKind::ArrayPointerIndex:
         {
-                const auto arrayNode = castAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
-                if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
-                {
-                    CONCAT_FIXED_STR(concat, "dref");
-                    concat->addBlank();
-                    SWAG_CHECK(outputNode(arrayNode->array));
-                }
-                else
-                {
-                    SWAG_CHECK(outputNode(arrayNode->array));
-                    concat->addChar('[');
-                    SWAG_CHECK(outputNode(arrayNode->access));
-                    concat->addChar(']');
-                }
-                break;
+            const auto arrayNode = castAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
+            if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
+            {
+                CONCAT_FIXED_STR(concat, "dref");
+                concat->addBlank();
+                SWAG_CHECK(outputNode(arrayNode->array));
+            }
+            else
+            {
+                SWAG_CHECK(outputNode(arrayNode->array));
+                concat->addChar('[');
+                SWAG_CHECK(outputNode(arrayNode->access));
+                concat->addChar(']');
+            }
+            break;
         }
 
         case AstNodeKind::ExpressionList:
         {
-                const auto exprNode = castAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
-                if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
-                    concat->addChar('{');
-                else
-                    concat->addChar('[');
-                SWAG_CHECK(outputCommaChildren(exprNode));
-                if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
-                    concat->addChar('}');
-                else
-                    concat->addChar(']');
-                break;
+            const auto exprNode = castAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
+            if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
+                concat->addChar('{');
+            else
+                concat->addChar('[');
+            SWAG_CHECK(outputCommaChildren(exprNode));
+            if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
+                concat->addChar('}');
+            else
+                concat->addChar(']');
+            break;
         }
 
         case AstNodeKind::CompilerRun:
@@ -525,21 +523,21 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
 
         case AstNodeKind::Using:
         {
-                const auto decl = castAst<AstUsing>(node, AstNodeKind::Using);
-                CONCAT_FIXED_STR(concat, "using");
-                concat->addBlank();
-                bool first = true;
-                for (const auto& n : decl->multiNames)
+            const auto decl = castAst<AstUsing>(node, AstNodeKind::Using);
+            CONCAT_FIXED_STR(concat, "using");
+            concat->addBlank();
+            bool first = true;
+            for (const auto& n : decl->multiNames)
+            {
+                if (!first)
                 {
-                    if (!first)
-                    {
-                        concat->addChar(',');
-                        concat->addBlank();
-                    }
-                    first = false;
-                    concat->addString(n);
+                    concat->addChar(',');
+                    concat->addBlank();
                 }
-                break;
+                first = false;
+                concat->addString(n);
+            }
+            break;
         }
 
         case AstNodeKind::Return:
@@ -613,30 +611,30 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
 
         case AstNodeKind::AffectOp:
         {
-                SWAG_CHECK(outputNode(node->firstChild()));
-                concat->addBlank();
-                concat->addString(node->token.text);
+            SWAG_CHECK(outputNode(node->firstChild()));
+            concat->addBlank();
+            concat->addString(node->token.text);
 
-                if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
-                    CONCAT_FIXED_STR(concat, ",over");
-                if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
-                    CONCAT_FIXED_STR(concat, ",up");
+            if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
+                CONCAT_FIXED_STR(concat, ",over");
+            if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
+                CONCAT_FIXED_STR(concat, ",up");
 
-                auto checkChild = node->secondChild();
-                if (checkChild->is(AstNodeKind::NoDrop))
-                {
-                    CONCAT_FIXED_STR(concat, ",nodrop");
-                    checkChild = checkChild->firstChild();
-                }
+            auto checkChild = node->secondChild();
+            if (checkChild->is(AstNodeKind::NoDrop))
+            {
+                CONCAT_FIXED_STR(concat, ",nodrop");
+                checkChild = checkChild->firstChild();
+            }
 
-                if (checkChild->is(AstNodeKind::Move) && checkChild->firstChild()->is(AstNodeKind::NoDrop))
-                    CONCAT_FIXED_STR(concat, ",moveraw");
-                else if (checkChild->is(AstNodeKind::Move))
-                    CONCAT_FIXED_STR(concat, ",move");
+            if (checkChild->is(AstNodeKind::Move) && checkChild->firstChild()->is(AstNodeKind::NoDrop))
+                CONCAT_FIXED_STR(concat, ",moveraw");
+            else if (checkChild->is(AstNodeKind::Move))
+                CONCAT_FIXED_STR(concat, ",move");
 
-                concat->addBlank();
-                SWAG_CHECK(outputNode(node->secondChild()));
-                break;
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->secondChild()));
+            break;
         }
 
         case AstNodeKind::FactorOp:
@@ -744,6 +742,6 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
     }
 
     if (cmtAfter)
-        beautifyCommentAfterSameLine(node);
+        beautifyAfter(node);
     return true;
 }

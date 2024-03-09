@@ -38,7 +38,7 @@ bool FormatAst::outputIdentifier(const AstNode* node)
         if (identifier->genericParameters->hasAstFlag(AST_EXPR_IN_PARENTS))
             concat->addChar(')');
 
-        beautifyCommentAfterSameLine(identifier->genericParameters);
+        beautifyAfter(identifier->genericParameters);
     }
 
     if (identifier->callParameters)
@@ -57,7 +57,7 @@ bool FormatAst::outputIdentifier(const AstNode* node)
         else if (identifier->callParameters->lastChild()->lastChild()->isNot(AstNodeKind::CompilerCode))
             concat->addChar(')');
 
-        beautifyCommentAfterSameLine(identifier->callParameters);
+        beautifyAfter(identifier->callParameters);
     }
 
     return true;

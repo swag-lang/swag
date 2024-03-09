@@ -28,12 +28,13 @@ bool FormatAst::outputIf(const Utf8& name, const AstNode* node)
     {
         if (ifNode->elseBlock->is(AstNodeKind::If))
         {
-            concat->addEol();
+            beautifyBefore(ifNode->elseBlock);
             concat->addIndent(indent);
             SWAG_CHECK(outputIf("elif", ifNode->elseBlock));
         }
         else
         {
+            beautifyBefore(ifNode->elseBlock);
             concat->addIndent(indent);
             CONCAT_FIXED_STR(concat, "else");
             SWAG_CHECK(outputDoStatement(ifNode->elseBlock));

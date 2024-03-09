@@ -45,10 +45,11 @@ struct FormatAst
     bool                  outputStatement(const AstNode* node);
     bool                  outputDoStatement(const AstNode* node);
 
-    void beautifyComment(const Vector<TokenComment>& comments) const;
+    void beautifyComment(Vector<TokenComment>& comments) const;
+    void beautifyBefore(const AstNode* node) const;
     void beautifyCommentBefore(const AstNode* node) const;
     void beautifyCommentJustBefore(const AstNode* node) const;
-    void beautifyCommentAfterSameLine(const AstNode* node) const;
+    void beautifyAfter(const AstNode* node) const;
     void beautifyBlankLine(const AstNode* node) const;
 
     bool outputLambdaExpression(const AstNode* node);
