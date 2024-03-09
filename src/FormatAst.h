@@ -57,6 +57,7 @@ struct FormatAst
     bool outputFuncCallParams(const AstNode* node);
     bool outputTypeLambda(const AstNode* node);
     bool outputFuncDeclParameters(const AstNode* parameters, bool isMethod);
+    bool outputFuncReturnType(const AstFuncDecl* funcNode);
     bool outputFuncSignature(const AstNode* node, const AstNode* genericParameters, const AstNode* parameters, const AstNode* validIf);
     bool outputGenericParameters(const AstNode* node);
     bool outputAttributesUsage(const TypeInfoFuncAttr* typeFunc) const;

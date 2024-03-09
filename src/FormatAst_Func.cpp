@@ -19,6 +19,28 @@ bool FormatAst::outputFuncDeclParameters(const AstNode* parameters, bool isMetho
     return true;
 }
 
+bool FormatAst::outputFuncReturnType(const AstFuncDecl* funcNode)
+{
+    const auto typeFunc = funcNode->typeInfo ? castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure) : nullptr;
+
+    auto returnNode = funcNode->returnType;
+    if (returnNode && !returnNode->children.empty())
+        returnNode = returnNode->firstChild();
+
+    if (typeFunc && typeFunc->returnType && !typeFunc->returnType->isVoid())
+    {
+        CONCAT_FIXED_STR(concat, "->");
+        SWAG_CHECK(outputType(returnNode, typeFunc->returnType));
+    }
+    else if (funcNode->returnType && funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
+    {
+        CONCAT_FIXED_STR(concat, "->");
+        SWAG_CHECK(outputNode(returnNode));
+    }
+
+    return true;
+}
+
 bool FormatAst::outputFuncSignature(const AstNode* node, const AstNode* genericParameters, const AstNode* parameters, const AstNode* validIf)
 {
     bool isMethod = false;
@@ -74,22 +96,7 @@ bool FormatAst::outputFuncSignature(const AstNode* node, const AstNode* genericP
     if (node->is(AstNodeKind::FuncDecl))
     {
         const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        const auto typeFunc = node->typeInfo ? castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure) : nullptr;
-
-        auto returnNode = funcNode->returnType;
-        if (returnNode && !returnNode->children.empty())
-            returnNode = returnNode->firstChild();
-
-        if (typeFunc && typeFunc->returnType && !typeFunc->returnType->isVoid())
-        {
-            CONCAT_FIXED_STR(concat, "->");
-            SWAG_CHECK(outputType(returnNode, typeFunc->returnType));
-        }
-        else if (funcNode->returnType && funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
-        {
-            CONCAT_FIXED_STR(concat, "->");
-            SWAG_CHECK(outputNode(returnNode));
-        }
+        SWAG_CHECK(outputFuncReturnType(funcNode));
     }
 
     // Throw
@@ -261,6 +268,7 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
     }
 
     SWAG_CHECK(outputNode(funcDecl->parameters));
+    SWAG_CHECK(outputFuncReturnType(funcDecl));
 
     if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
     {
