@@ -85,3 +85,20 @@ bool FormatAst::outputLiteral(const AstNode* node, TypeInfo* typeInfo, const Com
 
     return true;
 }
+
+bool FormatAst::outputExpressionList(const AstNode* node)
+{
+    const auto exprNode = castAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
+    if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
+        concat->addChar('{');
+    else
+        concat->addChar('[');
+
+    SWAG_CHECK(outputCommaChildren(exprNode));
+
+    if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
+        concat->addChar('}');
+    else
+        concat->addChar(']');
+    return true;
+}

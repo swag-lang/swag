@@ -71,6 +71,7 @@ struct FormatAst
     bool outputCompilerIf(const Utf8& name, const AstNode* node);
     bool outputCompilerExpr(const AstNode* node);
     bool outputCompilerMixin(const AstNode* node);
+    bool outputExpressionList(const AstNode* node);
     bool outputLiteral(const AstNode* node);
     bool outputLiteral(const AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
     bool outputVarDecl(const AstVarDecl* varNode, bool isSelf);

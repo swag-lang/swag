@@ -406,19 +406,8 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
         }
 
         case AstNodeKind::ExpressionList:
-        {
-            const auto exprNode = castAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
-            if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
-                concat->addChar('{');
-            else
-                concat->addChar('[');
-            SWAG_CHECK(outputCommaChildren(exprNode));
-            if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
-                concat->addChar('}');
-            else
-                concat->addChar(']');
+            SWAG_CHECK(outputExpressionList(node));
             break;
-        }
 
         case AstNodeKind::CompilerRun:
         case AstNodeKind::CompilerRunExpression:
