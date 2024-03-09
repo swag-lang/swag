@@ -917,8 +917,9 @@ struct AstTypeLambda : AstType
 
 struct AstArrayPointerIndex : AstNode
 {
-    static constexpr SpecFlags SPEC_FLAG_SERIAL   = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_IS_DEREF = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_SERIAL       = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_IS_DEREF     = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_MULTI_ACCESS = 0x0004;
 
     AstNode* clone(CloneContext& context);
 

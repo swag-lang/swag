@@ -120,6 +120,9 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
 
             Ast::addChildBack(arrayNode, *exprNode);
             arrayNode->array = *exprNode;
+            if (arrayNode->array->is(AstNodeKind::ArrayPointerIndex))
+                arrayNode->array->addSpecFlag(AstArrayPointerIndex::SPEC_FLAG_MULTI_ACCESS);
+
             if (firstExpr)
             {
                 arrayNode->access = firstExpr;

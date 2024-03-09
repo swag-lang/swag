@@ -398,9 +398,16 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             else
             {
                 SWAG_CHECK(outputNode(arrayNode->array));
-                concat->addChar('[');
+                if (!arrayNode->array->is(AstNodeKind::ArrayPointerIndex) || !arrayNode->array->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_MULTI_ACCESS))
+                    concat->addChar('[');
                 SWAG_CHECK(outputNode(arrayNode->access));
-                concat->addChar(']');
+                if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_MULTI_ACCESS))
+                {
+                    concat->addChar(',');
+                    concat->addBlank();
+                }
+                else
+                    concat->addChar(']');
             }
             break;
         }
