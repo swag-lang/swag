@@ -145,6 +145,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             identifier->token.text = currentSelfStructScope->name;
         else
             identifier->token.text = parent->ownerStructScope->name;
+        identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_SELF);
     }
 
     // Generic arguments

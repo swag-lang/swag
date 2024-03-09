@@ -611,9 +611,15 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
                 result += identifier;
                 result += getColor(mode, SyntaxColor::SyntaxDefault);
             }
-            else if (identifier == g_LangSpec->name_self || identifier == g_LangSpec->name_Self)
+            else if (identifier == g_LangSpec->name_self)
             {
                 result += getColor(mode, SyntaxColor::SyntaxKeyword);
+                result += identifier;
+                result += getColor(mode, SyntaxColor::SyntaxDefault);
+            }
+            else if (identifier == g_LangSpec->name_Self)
+            {
+                result += getColor(mode, SyntaxColor::SyntaxType);
                 result += identifier;
                 result += getColor(mode, SyntaxColor::SyntaxDefault);
             }

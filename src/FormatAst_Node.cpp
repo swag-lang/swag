@@ -279,13 +279,28 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
 
         case AstNodeKind::AttrUse:
         {
-            bool hasSomething = true;
-            SWAG_CHECK(outputAttrUse(node, hasSomething));
-            if (!hasSomething)
-                break;
-            concat->addEol();
-            concat->addIndent(indent);
-            SWAG_CHECK(outputNode(castAst<AstAttrUse>(node, AstNodeKind::AttrUse)->content));
+            const auto attrDecl = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
+            if (attrDecl->attributeFlags.has(ATTRIBUTE_PUBLIC))
+            {
+                CONCAT_FIXED_STR(concat, "public");
+                concat->addBlank();
+            }
+            else if (attrDecl->attributeFlags.has(ATTRIBUTE_PRIVATE))
+            {
+                CONCAT_FIXED_STR(concat, "private");
+                concat->addBlank();
+            }
+            else
+            {
+                bool hasSomething = true;
+                SWAG_CHECK(outputAttrUse(node, hasSomething));
+                if (!hasSomething)
+                    break;
+                concat->addEol();
+                concat->addIndent(indent);
+            }
+
+            SWAG_CHECK(outputNode(attrDecl->content));
             break;
         }
 

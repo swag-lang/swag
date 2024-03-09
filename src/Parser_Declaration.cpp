@@ -70,7 +70,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     Scoped     scoped(this, newScope);
     const auto attrUse = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
     *result            = attrUse;
-    attrUse->addAstFlag(AST_GENERATED);
+    attrUse->addAstFlag(AST_GENERATED | AST_GENERATED_USER);
     attrUse->attributeFlags = attr;
     SWAG_CHECK(eatToken());
 
