@@ -315,9 +315,13 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             const auto arrayNode = castAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
             if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
             {
+                if (arrayNode->parent->hasAstFlag(AST_EXPR_IN_PARENTS))
+                    concat->addChar('(');
                 CONCAT_FIXED_STR(concat, "dref");
                 concat->addBlank();
                 SWAG_CHECK(outputNode(arrayNode->array));
+                if (arrayNode->parent->hasAstFlag(AST_EXPR_IN_PARENTS))
+                    concat->addChar(')');
             }
             else
             {
@@ -492,11 +496,7 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
 
         case AstNodeKind::SingleOp:
             concat->addString(node->token.text);
-            if (node->firstChild()->hasAstFlag(AST_EXPR_IN_PARENTS))
-                concat->addChar('(');
             SWAG_CHECK(outputNode(node->firstChild()));
-            if (node->firstChild()->hasAstFlag(AST_EXPR_IN_PARENTS))
-                concat->addChar(')');
             break;
 
         case AstNodeKind::NullConditionalExpression:
