@@ -30,7 +30,8 @@ bool FormatAst::outputCompilerIf(const Utf8& name, const AstNode* node)
         concat->addIndent(indent);
         SWAG_CHECK(outputNode(ifNode->ifBlock));
     }
-    else if (ifNode->ifBlock->firstChild()->isNot(AstNodeKind::Statement))
+    else if ((ifNode->ifBlock->firstChild()->is(AstNodeKind::Statement) && !ifNode->ifBlock->firstChild()->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY)) ||
+             ifNode->ifBlock->firstChild()->isNot(AstNodeKind::Statement))
     {
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "#do");
@@ -66,7 +67,8 @@ bool FormatAst::outputCompilerIf(const Utf8& name, const AstNode* node)
     {
         concat->addIndent(indent);
         CONCAT_FIXED_STR(concat, "#else");
-        if (ifNode->elseBlock->firstChild()->isNot(AstNodeKind::Statement))
+        if ((ifNode->elseBlock->firstChild()->is(AstNodeKind::Statement) && !ifNode->elseBlock->firstChild()->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY)) ||
+            ifNode->elseBlock->firstChild()->isNot(AstNodeKind::Statement))
         {
             concat->addBlank();
             CONCAT_FIXED_STR(concat, "#do");

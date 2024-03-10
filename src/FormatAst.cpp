@@ -73,7 +73,6 @@ bool FormatAst::outputCommaChildren(const AstNode* node, uint32_t start)
     return true;
 }
 
-#pragma optimize("", off)
 bool FormatAst::outputStatement(const AstNode* node)
 {
     const auto stmt = castAst<AstStatement>(node, AstNodeKind::Statement);
@@ -141,16 +140,25 @@ bool FormatAst::outputStatement(const AstNode* node)
         return true;
     }
 
-    concat->addEol();
-    concat->addIndent(indent);
-    concat->addChar('{');
-    concat->addEol();
-    indent++;
-    SWAG_CHECK(outputChildren(node));
-    indent--;
-    concat->addIndent(indent);
-    concat->addChar('}');
-    concat->addEol();
+    if (node->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY))
+    {
+        concat->addEol();
+        concat->addIndent(indent);
+        concat->addChar('{');
+        concat->addEol();
+        indent++;
+        SWAG_CHECK(outputChildren(node));
+        indent--;
+        concat->addIndent(indent);
+        concat->addChar('}');
+        concat->addEol();
+    }
+    else
+    {
+        SWAG_CHECK(outputNode(node->firstChild()));
+        concat->addEol();
+    }
+
     return true;
 }
 

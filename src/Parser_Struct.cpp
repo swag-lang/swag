@@ -351,6 +351,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     {
         const auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
         *result         = stmt;
+        stmt->addSpecFlag(AstStatement::SPEC_FLAG_CURLY);
         SWAG_CHECK(eatToken());
         while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(stmt, structType, &dummyResult));
