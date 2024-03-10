@@ -997,6 +997,8 @@ struct AstEnumValue : AstNode
 
 struct AstImpl : AstNode
 {
+    static constexpr SpecFlags SPEC_FLAG_ENUM = 0x0001;
+
     ~        AstImpl();
     AstNode* clone(CloneContext& context);
 

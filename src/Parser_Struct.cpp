@@ -23,6 +23,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     switch (tokenParse.token.id)
     {
         case TokenId::KwdEnum:
+            implNode->addSpecFlag(AstImpl::SPEC_FLAG_ENUM);
             scopeKind = ScopeKind::Enum;
             SWAG_CHECK(eatToken());
             break;
