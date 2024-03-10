@@ -317,7 +317,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** /*result*/, 
 bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isUnion)
 {
     const auto structNode = Ast::newStructDecl(this, parent);
-    structNode->addAstFlag(AST_INTERNAL | AST_GENERATED);
+    structNode->addAstFlag(AST_INTERNAL | AST_GENERATED | AST_GENERATED_USER);
     structNode->originalParent = parent;
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;
@@ -325,7 +325,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isUnion)
     if (isUnion)
         structNode->addSpecFlag(AstStruct::SPEC_FLAG_UNION);
 
-    const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::TupleContent, this, structNode);
+    const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::StructContent, this, structNode);
     structNode->content    = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
@@ -371,7 +371,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isUnion)
     // Reference to that struct
     const auto idRef = Ast::newIdentifierRef(structNode->token.text, this, parent);
     *result          = idRef;
-    idRef->addExtraPointer(ExtraPointerKind::ExportNode, contentNode);
+    idRef->addExtraPointer(ExtraPointerKind::ExportNode, structNode);
 
     idRef->lastChild()->addAstFlag(AST_GENERATED);
     Ast::removeFromParent(structNode);
