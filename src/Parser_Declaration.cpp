@@ -32,6 +32,7 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
         case TokenId::KwdTypeAlias:
         case TokenId::KwdNameAlias:
         case TokenId::KwdNamespace:
+        case TokenId::CompilerGlobal:
             break;
         case TokenId::SymAttrStart:
             return error(tokenParse.token, formErr(Err0494, tokenAttr.c_str(), tokenAttr.c_str()));

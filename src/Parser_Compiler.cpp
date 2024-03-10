@@ -429,9 +429,18 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else if (tokenParse.is(TokenId::KwdPublic) || tokenParse.is(TokenId::KwdInternal))
     {
-        SWAG_CHECK(doPublicInternal(parent, result, true));
-        if (*result)
-            (*result)->inheritFormatFromBefore(this, savedToken);
+        if (parserFlags.has(PARSER_TRACK_FORMAT))
+        {
+            const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
+            globalDecl->inheritFormatFromBefore(this, savedToken);
+            Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(eatSemiCol("[[#global public/internal]]"));
+        }
+        else
+        {
+            SWAG_CHECK(doPublicInternal(parent, result, true));
+        }
     }
 
     /////////////////////////////////
