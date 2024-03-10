@@ -22,7 +22,7 @@ void Semantic::allocateOnStack(AstNode* node, const TypeInfo* typeInfo)
 
 bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
-    if (!parameters || funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
+    if (!parameters || funcNode->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
         return true;
 
     bool     defaultValueDone = false;
@@ -499,7 +499,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     }
 
     // If this is a #message function, we must have a flag mask as parameters
-    if (funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC) && funcNode->parameters)
+    if (funcNode->hasAttribute(ATTRIBUTE_MESSAGE_FUNC) && funcNode->parameters)
     {
         auto       parameters = funcNode->parameters;
         const auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);

@@ -624,7 +624,7 @@ namespace
     {
         if (!decl->parameters)
             return;
-        if (decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
+        if (decl->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
             return;
 
         const auto countParams = decl->parameters->childCount();
@@ -751,7 +751,7 @@ namespace
     {
         if (!decl->captureParameters)
             return;
-        if (decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
+        if (decl->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
             return;
 
         const auto countParams = decl->captureParameters->childCount();

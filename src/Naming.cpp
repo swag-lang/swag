@@ -535,7 +535,7 @@ Utf8 Naming::funcToName(const AstFuncDecl* node)
         return "[[#test]] block";
     if (node->hasAttribute(ATTRIBUTE_MAIN_FUNC))
         return "[[#main]] block";
-    if (node->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
+    if (node->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
         return "[[#message]] block";
     if (node->hasAttribute(ATTRIBUTE_INIT_FUNC))
         return "[[#init]] block";

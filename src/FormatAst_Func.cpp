@@ -140,6 +140,13 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
         CONCAT_FIXED_STR(concat, "#drop");
     else if (node->hasAttribute(ATTRIBUTE_PREMAIN_FUNC))
         CONCAT_FIXED_STR(concat, "#premain");
+    else if (node->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
+    {
+        CONCAT_FIXED_STR(concat, "#message");
+        concat->addChar('(');
+        SWAG_CHECK(outputNode(node->parameters));
+        concat->addChar(')');
+    }
     else
         SWAG_CHECK(outputFuncSignature(node, node->genericParameters, node->parameters, nullptr));
 

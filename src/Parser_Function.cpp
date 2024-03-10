@@ -671,9 +671,9 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 funcNode->addAttribute(ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::CompilerFuncMessage:
-                funcNode->token.text = "__compiler" + std::to_string(id);
+                funcNode->token.text = "__message" + std::to_string(id);
                 funcNode->tokenName  = funcNode->token;
-                funcNode->addAttribute(ATTRIBUTE_COMPILER_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
+                funcNode->addAttribute(ATTRIBUTE_MESSAGE_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
                 ++module->numCompilerFunctions;
                 break;
             case TokenId::CompilerAst:
@@ -788,7 +788,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     }
 
     // #message has an expression has parameters
-    else if (funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
+    else if (funcNode->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);

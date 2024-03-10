@@ -116,7 +116,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
         return true;
 
     // Register function in compiler list, now that we are done
-    if (node->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
+    if (node->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
         context->sourceFile->module->addCompilerFunc(context->bc);
 
     // #ast/#run etc... can have a #[Swag.PrintBc]. We need to print it now, because it's compile time, and the legit

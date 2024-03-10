@@ -464,7 +464,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
     const bool                      isDebug        = buildParameters.isDebug();
 
     // Allocate some temporary variables linked to parameters
-    if (decl && decl->parameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
+    if (decl && decl->parameters && !decl->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
     {
         countParams = decl->parameters->childCount();
         allocaParams.reserve(static_cast<uint32_t>(countParams));
@@ -526,7 +526,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
         }
     }
 
-    if (decl && decl->parameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
+    if (decl && decl->parameters && !decl->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
     {
         // Variadic. Pass as first parameters, but get type at the end
         if (typeFunc->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
