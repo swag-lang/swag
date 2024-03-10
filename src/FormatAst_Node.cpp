@@ -32,14 +32,6 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::File:
-            if (node->token.sourceFile->flags.has(FILE_FORCE_EXPORT))
-            {
-                CONCAT_FIXED_STR(concat, "#global");
-                concat->addBlank();
-                CONCAT_FIXED_STR(concat, "export");
-                concat->addEol();
-            }
-
             SWAG_CHECK(outputChildren(node));
             break;
 
@@ -521,23 +513,10 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::Using:
-        {
-            const auto decl = castAst<AstUsing>(node, AstNodeKind::Using);
             CONCAT_FIXED_STR(concat, "using");
             concat->addBlank();
-            bool first = true;
-            for (const auto& n : decl->multiNames)
-            {
-                if (!first)
-                {
-                    concat->addChar(',');
-                    concat->addBlank();
-                }
-                first = false;
-                concat->addString(n);
-            }
+            SWAG_CHECK(outputCommaChildren(node));
             break;
-        }
 
         case AstNodeKind::Return:
             CONCAT_FIXED_STR(concat, "return");
@@ -698,11 +677,11 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             concat->addChar('(');
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addChar(')');
-        
+
             concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
             break;
-        
+
         case AstNodeKind::TypeExpression:
             if (node->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
             {
@@ -755,6 +734,13 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
 
         case AstNodeKind::Namespace:
             SWAG_CHECK(outputNamespace(node));
+            break;
+
+        case AstNodeKind::CompilerGlobal:
+            CONCAT_FIXED_STR(concat, "#global");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->firstChild()));
+            concat->addEol();
             break;
 
         default:

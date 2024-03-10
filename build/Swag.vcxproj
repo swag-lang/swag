@@ -345,10 +345,12 @@
     <ClCompile Include="../src/Assert.cpp" />
     <ClCompile Include="../src/Ast.cpp" />
     <ClCompile Include="../src/AstNode.cpp" />
+    <ClCompile Include="..\src\AstNode_Clone.cpp" />
+    <ClCompile Include="..\src\AstNode_Free.cpp" />
+    <ClCompile Include="..\src\AstNode_Specifics.cpp" />
     <ClCompile Include="..\src\FormatAst.cpp" />
     <ClCompile Include="../src/Attribute.cpp" />
     <ClCompile Include="../src/Backend.cpp" />
-    <ClCompile Include="..\src\AstNodeSpecifics.cpp" />
     <ClCompile Include="..\src\Ast_Convert.cpp" />
     <ClCompile Include="..\src\Ast_Generate.cpp" />
     <ClCompile Include="..\src\Ast_New.cpp" />

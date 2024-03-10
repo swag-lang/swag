@@ -9,158 +9,127 @@
 #global #[Swag.Overflow(true)]
 using Core.Errors
 
-private {
-
-const PackedCodeSizeSymsSwizzle: [] u8 = [
-    16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
-]
-
-const Bitmasks: [17] u32 = [
-    0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 0x003F, 0x007F, 0x00FF, 0x01FF, 0x03FF, 0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF, 0xFFFF
-]
-
-const LenExtra: [256] u8 = [
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0
-]
-
-const LenSym: [256] u16 = [
-    257, 258, 259, 260, 261, 262, 263, 264, 265, 265, 266, 266, 267, 267, 268, 268, 269, 269, 269, 269, 270, 270, 270, 270, 271, 271, 271, 271, 272, 272, 272, 272,
-    273, 273, 273, 273, 273, 273, 273, 273, 274, 274, 274, 274, 274, 274, 274, 274, 275, 275, 275, 275, 275, 275, 275, 275, 276, 276, 276, 276, 276, 276, 276, 276,
-    277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278,
-    279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280,
-    281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281,
-    282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282,
-    283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283,
-    284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 285
-]
-
-const SmallDistSym: [512] u8 = [
-    0, 1, 2, 3, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11,
-    11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13,
-    13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
-    14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
-    14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-    15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
-    16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
-    16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
-    16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
-    17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
-    17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
-    17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17
-]
-
-const SmallDistExtra: [512] u8 = [
-    0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5,
-    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-    7, 7, 7, 7, 7, 7, 7, 7
-]
-
-const LargeDistExtra: [128] u8 = [
-    0, 0, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-    12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
-    13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
-]
-
-const LargeDistSym: [128] u8 = [
-    0, 0, 18, 19, 20, 20, 21, 21, 22, 22, 22, 22, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26,
-    26, 26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28,
-    28, 28, 28, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29
-]
-
-const NumProbes: [11] u32 = [
-    0, 1, 6, 32, 16, 32, 128, 256, 512, 768, 1500
-]
-
-const MaxSupportedHuffCodeSize  = 32
-const MaxHuffTables             = 3
-const MaxHuffSymbols0           = 288'u32
-const MaxHuffSymbols1           = 32'u32
-const MaxHuffSymbols2           = 19'u32
-const LzDictSize                = 32768
-const LzDictSizeMask            = LzDictSize - 1
-const MinMatchLen               = 3
-const MaxMatchLen               = 258
-
-const LzCodeBufSize    = 24 * 1024
-const LzHashBits       = 12
-//const LzCodeBufSize  = 64 * 1024
-//const LzHashBits     = 15
-
-const OutBufSize          = (LzCodeBufSize * 13) / 10
-const MaxHuffSymbols      = 288
-const Level1HashSizeMask  = 4095
-const LzHashShift         = (LzHashBits + 2) / 3
-const LzHashSize          = 1 << LzHashBits
-
-const GreedyParsing             = 0x04000
-const NonDeterministicParsing   = 0x08000
-const RleMatches                = 0x10000
-const FilterMatches             = 0x20000
-const ForceAllStaticBlocks      = 0x40000
-const ForceAllRawBlocks         = 0x80000
-
-const HuffmanOnly       = 0
-const DefaultMaxProbes  = 128
-const MaxProbesMask     = 0xFFF
-
-struct SymFreq
+private
 {
-    key:      u16
-    symIndex: u16
-}
 
-struct Compressor
-{
-    compressFlags:      u32
-    maxProbes:          [2] u32
-    greedyParsing:      bool
-    lookaheadPos:       u32
-    lookaheadSize:      u32
-    dictSize:           u32
-    lzCodeBufAddr:      ^u8
-    lzFlags:            *u8
-    outputBufAddr:      ^u8
-    outputBufEndAddr:   ^u8
-    numFlagsLeft:       u32
-    totalLzBytes:       u32
-    lzCodeBufDictPos:   u32
-    bitsIn:             u32
-    bitBuffer:          u32
-    savedMatchDist:     u32
-    savedMatchLen:      u32
-    savedLit:           u32
-    outputFlushOfs:     u32
-    blockIndex:         u32
-    inBuf:              const ^u8
-    inSrc:              const ^u8
-    srcBufLeft:         u64
-    outBufOfs:          u64
-    dict:               [LzDictSize + MaxMatchLen - 1] u8
-    huffCount:          [MaxHuffTables, MaxHuffSymbols] u16
-    huffCodes:          [MaxHuffTables, MaxHuffSymbols] u16
-    huffCodeSizes:      [MaxHuffTables, MaxHuffSymbols] u8
-    lzCodeBuf:          [LzCodeBufSize] u8
-    next:               [LzDictSize] u16
-    hash:               [LzHashSize] u16
-    outputBuf:          [OutBufSize] u8
-    result:             *Array'u8
-}
+    const PackedCodeSizeSymsSwizzle: [] u8 = [
+        16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
+    ]
+
+    const Bitmasks: [17] u32 = [
+        0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 0x003F, 0x007F, 0x00FF, 0x01FF, 0x03FF, 0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF, 0xFFFF
+    ]
+
+    const LenExtra: [256] u8 = [
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0
+    ]
+
+    const LenSym: [256] u16 = [
+        257, 258, 259, 260, 261, 262, 263, 264, 265, 265, 266, 266, 267, 267, 268, 268, 269, 269, 269, 269, 270, 270, 270, 270, 271, 271, 271, 271, 272, 272, 272, 272, 273, 273, 273, 273, 273, 273, 273, 273, 274, 274, 274, 274, 274, 274, 274, 274, 275, 275, 275, 275, 275, 275, 275, 275, 276, 276, 276, 276, 276, 276, 276, 276, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 279, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 281, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 285
+    ]
+
+    const SmallDistSym: [512] u8 = [
+        0, 1, 2, 3, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17
+    ]
+
+    const SmallDistExtra: [512] u8 = [
+        0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
+    ]
+
+    const LargeDistExtra: [128] u8 = [
+        0, 0, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
+    ]
+
+    const LargeDistSym: [128] u8 = [
+        0, 0, 18, 19, 20, 20, 21, 21, 22, 22, 22, 22, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29
+    ]
+
+    const NumProbes: [11] u32 = [
+        0, 1, 6, 32, 16, 32, 128, 256, 512, 768, 1500
+    ]
+
+    const MaxSupportedHuffCodeSize = 32
+    const MaxHuffTables = 3
+    const MaxHuffSymbols0 = 288'u32
+    const MaxHuffSymbols1 = 32'u32
+    const MaxHuffSymbols2 = 19'u32
+    const LzDictSize = 32768
+    const LzDictSizeMask = LzDictSize - 1
+    const MinMatchLen = 3
+    const MaxMatchLen = 258
+
+    const LzCodeBufSize = 24 * 1024
+    const LzHashBits = 12
+    //const LzCodeBufSize  = 64 * 1024
+    //const LzHashBits     = 15
+
+    const OutBufSize = (LzCodeBufSize * 13) / 10
+    const MaxHuffSymbols = 288
+    const Level1HashSizeMask = 4095
+    const LzHashShift = (LzHashBits + 2) / 3
+    const LzHashSize = 1 << LzHashBits
+
+    const GreedyParsing = 0x04000
+    const NonDeterministicParsing = 0x08000
+    const RleMatches = 0x10000
+    const FilterMatches = 0x20000
+    const ForceAllStaticBlocks = 0x40000
+    const ForceAllRawBlocks = 0x80000
+
+    const HuffmanOnly = 0
+    const DefaultMaxProbes = 128
+    const MaxProbesMask = 0xFFF
+
+    struct SymFreq
+    {
+        key: u16
+        symIndex: u16
+    }
+
+    struct Compressor
+    {
+        compressFlags: u32
+        maxProbes: [2] u32
+        greedyParsing: bool
+        lookaheadPos: u32
+        lookaheadSize: u32
+        dictSize: u32
+        lzCodeBufAddr: ^u8
+        lzFlags: *u8
+        outputBufAddr: ^u8
+        outputBufEndAddr: ^u8
+        numFlagsLeft: u32
+        totalLzBytes: u32
+        lzCodeBufDictPos: u32
+        bitsIn: u32
+        bitBuffer: u32
+        savedMatchDist: u32
+        savedMatchLen: u32
+        savedLit: u32
+        outputFlushOfs: u32
+        blockIndex: u32
+        inBuf: const ^u8
+        inSrc: const ^u8
+        srcBufLeft: u64
+        outBufOfs: u64
+        dict: [LzDictSize + MaxMatchLen - 1] u8
+        huffCount: [MaxHuffTables, MaxHuffSymbols] u16
+        huffCodes: [MaxHuffTables, MaxHuffSymbols] u16
+        huffCodeSizes: [MaxHuffTables, MaxHuffSymbols] u8
+        lzCodeBuf: [LzCodeBufSize] u8
+        next: [LzDictSize] u16
+        hash: [LzHashSize] u16
+        outputBuf: [OutBufSize] u8
+        result: *Array'u8
+    }
 }
 
 #[Swag.Opaque]
 public struct Deflate
 {
-    state:      *Compressor
-    adler:      Hash.Adler32
-    initFlags:  CompressionFlags = Default
+    state: *Compressor
+    adler: Hash.Adler32
+    initFlags: CompressionFlags = Default
 }
 
 impl Deflate
@@ -176,7 +145,7 @@ impl Deflate
             compFlags |= ForceAllRawBlocks
         elif strategy == .Filtered do
             compFlags |= FilterMatches
-        elif strategy ==. HuffmanOnly do
+        elif strategy == .HuffmanOnly do
             compFlags &= ~MaxProbesMask
         elif strategy == .Fixed do
             compFlags |= ForceAllStaticBlocks
@@ -471,7 +440,7 @@ impl Deflate
 
         var total = 0'u32
         for var i = cast(s32) maxCodeSize; i > 0; i -= 1 do
-            total += ((cast(u32) numCodes[i]) << (maxCodeSize - i))
+            total += (cast(u32) numCodes[i] << (maxCodeSize - i))
 
         while total != (1'u32 << maxCodeSize)
         {
@@ -672,7 +641,6 @@ impl Deflate
                 numPackedCodeSizes += 1
                 packedCodeSizes[numPackedCodeSizes] = cast(u8) (rleZCount - 11)
                 numPackedCodeSizes += 1
-
             }
 
             rleZCount = 0
@@ -683,11 +651,11 @@ impl Deflate
     {
         let d = state
 
-        var codeSizesToPack:  [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = undefined
-        var packedCodeSizes:  [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = undefined
+        var codeSizesToPack: [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = undefined
+        var packedCodeSizes: [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = undefined
         var prevCodeSize = 0xFF'u8
 
-        d.huffCount[0, 256] = 1;
+        d.huffCount[0, 256] = 1
 
         optimizeHuffmanTable(0, MaxHuffSymbols0, 15, false)
         optimizeHuffmanTable(1, MaxHuffSymbols1, 15, false)
@@ -789,7 +757,9 @@ impl Deflate
             putBits(cast(u32) d.huffCodes[2, cde], cast(u32) d.huffCodeSizes[2, cde])
             if cde >= 16
             {
-                const p = [2, 3, 7]
+                const p = [
+                    2, 3, 7
+                ]
                 putBits(cast(u32) packedCodeSizes[packedCodeSizesIndex], cast(u32) p[cde - 16])
                 packedCodeSizesIndex += 1
             }
@@ -804,7 +774,7 @@ impl Deflate
         {
             if flags == 1
             {
-                flags = cast(u32) (dref lzCodes) | 0x100
+                flags = cast(u32) dref lzCodes | 0x100
                 lzCodes += 1
             }
 
@@ -883,8 +853,7 @@ impl Deflate
         if !useRawBlock do
             compBlockSucceeded = compressBlock((d.compressFlags & ForceAllStaticBlocks) or (d.totalLzBytes < 48))
 
-        if ((useRawBlock or (d.totalLzBytes and ((d.outputBufAddr - savedOutputBuf + 1) >= d.totalLzBytes))) and
-            ((d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize))
+        if ((useRawBlock or (d.totalLzBytes and ((d.outputBufAddr - savedOutputBuf + 1) >= d.totalLzBytes))) and ((d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize))
         {
             d.outputBufAddr = savedOutputBuf
             d.bitBuffer = savedBitBuf
@@ -957,7 +926,7 @@ impl Deflate
             {
                 var dstPos: u32 = (d.lookaheadPos + d.lookaheadSize) & LzDictSizeMask
                 var insPos: u32 = d.lookaheadPos + d.lookaheadSize - 2
-                var hash:   u32 = (cast(u32) d.dict[insPos & LzDictSizeMask] << LzHashShift)
+                var hash: u32 = (cast(u32) d.dict[insPos & LzDictSizeMask] << LzHashShift)
                 hash ^= d.dict[(insPos + 1) & LzDictSizeMask]
 
                 let numBytesToProcess = cast(u32) Math.min(cast(u32) srcBufLeft, cast(u32) (MaxMatchLen - d.lookaheadSize))
@@ -970,7 +939,7 @@ impl Deflate
                 {
                     let c = dref pSrc
                     pSrc += 1
-                    d.dict[dstPos] = c;
+                    d.dict[dstPos] = c
                     if dstPos < (MaxMatchLen - 1) do
                         d.dict[LzDictSize + dstPos] = c
                     hash = ((hash << LzHashShift) ^ c) & (LzHashSize - 1)
@@ -1013,7 +982,7 @@ impl Deflate
             let curPos: u32 = d.lookaheadPos & LzDictSizeMask
             if d.compressFlags & (RleMatches | ForceAllRawBlocks)
             {
-                if (d.dictSize) and !(d.compressFlags & ForceAllRawBlocks)
+                if d.dictSize and !(d.compressFlags & ForceAllRawBlocks)
                 {
                     let c = d.dict[(curPos - 1) & LzDictSizeMask]
                     curMatchLen = 0
@@ -1034,9 +1003,7 @@ impl Deflate
                 findMatch(d.lookaheadPos, d.dictSize, d.lookaheadSize, &curMatchDist, &curMatchLen)
             }
 
-            if  ((curMatchLen == MinMatchLen) and (curMatchDist >= 8 * 1024)) or
-                (curPos == curMatchDist) or
-                ((d.compressFlags & FilterMatches) and (curMatchLen <= 5))
+            if ((curMatchLen == MinMatchLen) and (curMatchDist >= 8 * 1024)) or (curPos == curMatchDist) or ((d.compressFlags & FilterMatches) and (curMatchLen <= 5))
             {
                 curMatchDist, curMatchLen = 0
             }
@@ -1062,8 +1029,8 @@ impl Deflate
                 else
                 {
                     recordMatch(d.savedMatchLen, d.savedMatchDist)
-                    lenToMove = d.savedMatchLen - 1;
-                    d.savedMatchLen = 0;
+                    lenToMove = d.savedMatchLen - 1
+                    d.savedMatchLen = 0
                 }
             }
             elif !curMatchDist
@@ -1087,8 +1054,7 @@ impl Deflate
             d.lookaheadSize -= lenToMove
             d.dictSize = Math.min(d.dictSize + lenToMove, cast(u32) LzDictSize)
 
-            if (d.lzCodeBufAddr > &d.lzCodeBuf[LzCodeBufSize - 8]) or
-                ((d.totalLzBytes > 31 * 1024) and ((((cast(u32) (d.lzCodeBufAddr - &d.lzCodeBuf[0]) * 115) >> 7) >= d.totalLzBytes) or (d.compressFlags & ForceAllRawBlocks)))
+            if (d.lzCodeBufAddr > &d.lzCodeBuf[LzCodeBufSize - 8]) or ((d.totalLzBytes > 31 * 1024) and ((((cast(u32) (d.lzCodeBufAddr - &d.lzCodeBuf[0]) * 115) >> 7) >= d.totalLzBytes) or (d.compressFlags & ForceAllRawBlocks)))
             {
                 d.inSrc = pSrc
                 d.srcBufLeft = srcBufLeft
@@ -1114,9 +1080,9 @@ public impl Deflate
     #[Swag.Incomplete]
     enum CompressionLevel : u32
     {
-        NoCompression   = 0
-        BestSpeed       = 1
-        Default         = 6
+        NoCompression = 0
+        BestSpeed = 1
+        Default = 6
         BestCompression = 9
         UberCompression = 10
     }
@@ -1154,13 +1120,13 @@ public impl Deflate
         if @countof(src) > Swag.U32.Max do
             throw UnsupportedFormatError{"source buffer too big"}
 
-        Debug.assert(state  != null, "'init' not called")
+        Debug.assert(state != null, "'init' not called")
 
-        state.result     = result
-        state.inBuf      = @dataof(src)
-        state.inSrc      = @dataof(src)
+        state.result = result
+        state.inBuf = @dataof(src)
+        state.inSrc = @dataof(src)
         state.srcBufLeft = @countof(src)
-        state.outBufOfs  = result.count
+        state.outBufOfs = result.count
 
         compress()
         flushBlock(true)

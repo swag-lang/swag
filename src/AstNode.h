@@ -215,6 +215,7 @@ enum class AstNodeKind : uint8_t
     CompilerPlaceHolder,
     CompilerSpecialValue,
     CompilerForeignLib,
+    CompilerGlobal,
     IntrinsicDefined,
     CompilerInclude,
     IntrinsicLocation,
@@ -1220,6 +1221,10 @@ struct AstCompilerImport : AstNode
 
 struct AstUsing : AstNode
 {
-    AstNode*     clone(CloneContext& context);
-    Vector<Utf8> multiNames;
+    AstNode* clone(CloneContext& context);
+};
+
+struct AstCompilerGlobal : AstNode
+{
+    AstNode* clone(CloneContext& context);
 };

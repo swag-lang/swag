@@ -1407,6 +1407,12 @@ AstNode* AstUsing::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstUsing>();
     newNode->copyFrom(context, this);
-    newNode->multiNames = multiNames;
+    return newNode;
+}
+
+AstNode* AstCompilerGlobal::clone(CloneContext& context)
+{
+    const auto newNode = Ast::newNode<AstCompilerGlobal>();
+    newNode->copyFrom(context, this);
     return newNode;
 }

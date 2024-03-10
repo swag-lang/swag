@@ -166,6 +166,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
                 case AstNodeKind::IdentifierRef:
                 case AstNodeKind::Namespace:
                 case AstNodeKind::CompilerDependencies:
+                case AstNodeKind::CompilerGlobal:
                     break;
                 case AstNodeKind::AttrUse:
                     if (child->hasSpecFlag(AstAttrUse::SPEC_FLAG_GLOBAL))
@@ -194,12 +195,10 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
         {
             orgNode = node;
             orgNode->inheritFormatFromBefore(this, savedToken);
-            node->multiNames.push_back(node->token.text);
         }
         else
         {
             node->addAstFlag(AST_GENERATED);
-            orgNode->multiNames.push_back(node->token.text);
         }
 
         if (tokenParse.isNot(TokenId::SymComma))

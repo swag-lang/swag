@@ -354,11 +354,17 @@ bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
 bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(!afterGlobal, error(tokenParse.token, toErr(Err0438)));
+    auto savedToken = tokenParse;
     SWAG_CHECK(eatToken());
 
     /////////////////////////////////
     if (tokenParse.token.text == g_LangSpec->name_export)
     {
+        const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
+        globalDecl->inheritFormatFromBefore(this, savedToken);
+        const auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+        idRef->addAstFlag(AST_NO_SEMANTIC);
+
         if (!sourceFile->imported)
         {
             SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(tokenParse.token, toErr(Err0004)));
@@ -373,6 +379,11 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else if (tokenParse.token.text == g_LangSpec->name_generated)
     {
+        const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
+        globalDecl->inheritFormatFromBefore(this, savedToken);
+        const auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+        idRef->addAstFlag(AST_NO_SEMANTIC);
+
         sourceFile->addFlag(FILE_GENERATED);
         if (sourceFile->imported)
             sourceFile->imported->isSwag = true;
@@ -386,6 +397,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         const auto node = Ast::newNode<AstIf>(AstNodeKind::CompilerIf, this, parent);
         *result         = node;
         node->addAstFlag(AST_GLOBAL_NODE);
+        node->inheritFormatFromBefore(this, savedToken);
 
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
@@ -410,41 +422,62 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     else if (tokenParse.is(TokenId::KwdNamespace))
     {
         SWAG_CHECK(doNamespace(parent, result, true, false));
+        if (*result)
+            (*result)->inheritFormatFromBefore(this, savedToken);
     }
 
     /////////////////////////////////
     else if (tokenParse.is(TokenId::KwdPublic) || tokenParse.is(TokenId::KwdInternal))
     {
         SWAG_CHECK(doPublicInternal(parent, result, true));
+        if (*result)
+            (*result)->inheritFormatFromBefore(this, savedToken);
     }
 
     /////////////////////////////////
     else if (tokenParse.token.text == g_LangSpec->name_skip)
     {
+        const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
+        globalDecl->inheritFormatFromBefore(this, savedToken);
+        const auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+        idRef->addAstFlag(AST_NO_SEMANTIC);
         sourceFile->buildPass = BuildPass::Lexer;
     }
 
     /////////////////////////////////
     else if (tokenParse.token.text == g_LangSpec->name_testpass)
     {
+        const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
+        globalDecl->inheritFormatFromBefore(this, savedToken);
+        auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+        idRef->addAstFlag(AST_NO_SEMANTIC);
+
         SWAG_CHECK(eatToken());
         if (tokenParse.token.text == g_LangSpec->name_lexer)
         {
+            idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+            idRef->addAstFlag(AST_NO_SEMANTIC);
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Lexer;
         }
         else if (tokenParse.token.text == g_LangSpec->name_syntax)
         {
+            idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+            idRef->addAstFlag(AST_NO_SEMANTIC);
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Syntax;
         }
         else if (tokenParse.token.text == g_LangSpec->name_semantic)
         {
+            idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+            idRef->addAstFlag(AST_NO_SEMANTIC);
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Semantic;
         }
         else if (tokenParse.token.text == g_LangSpec->name_backend)
         {
+            idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+            idRef->addAstFlag(AST_NO_SEMANTIC);
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Backend;
         }
@@ -484,6 +517,11 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             module = newModule;
         }
 
+        const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
+        globalDecl->inheritFormatFromBefore(this, savedToken);
+        const auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+        idRef->addAstFlag(AST_NO_SEMANTIC);
+
         if (tokenParse.token.text == g_LangSpec->name_testerror)
         {
             SWAG_VERIFY(sourceFile->module->is(ModuleKind::Test), context->report({sourceFile, tokenParse.token, toErr(Err0435)}));
@@ -493,6 +531,8 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             sourceFile->addFlag(FILE_SHOULD_HAVE_ERROR);
             module->shouldHaveError = true;
             sourceFile->shouldHaveErrorString.push_back(tokenParse.token.text);
+            const auto literal = Ast::newNode<AstLiteral>(AstNodeKind::Literal, this, globalDecl);
+            literal->addAstFlag(AST_NO_SEMANTIC);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(eatSemiCol("[[#global testerror]]"));
         }
@@ -505,6 +545,8 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             sourceFile->addFlag(FILE_SHOULD_HAVE_WARNING);
             module->shouldHaveWarning = true;
             sourceFile->shouldHaveWarningString.push_back(tokenParse.token.text);
+            const auto literal = Ast::newNode<AstLiteral>(AstNodeKind::Literal, this, globalDecl);
+            literal->addAstFlag(AST_NO_SEMANTIC);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(eatSemiCol("[[#global testwarning]]"));
         }
@@ -514,23 +556,28 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     else if (tokenParse.is(TokenId::SymAttrStart))
     {
         AstNode* resultNode;
-        SWAG_CHECK(doAttrUse(nullptr, &resultNode, true));
+        SWAG_CHECK(doAttrUse(parent, &resultNode, true));
 
-        // We need to be sure that our parent is in the sourceFile->astAttrUse hierarchy.
-        // If #global #[???] has a #global protected before (for example), this is not the case.
-        if (sourceFile->astAttrUse)
+        if (!parserFlags.has(PARSER_TRACK_FORMAT))
         {
-            parent = sourceFile->astAttrUse;
-            Ast::addChildBack(parent, resultNode);
-        }
-        else
-        {
-            parent = sourceFile->astRoot;
+            Ast::removeFromParent(resultNode);
 
-            // Add front in case astRoot already has some children (if the #global comes after another one).
-            // We need #global attributes to be first in the file, before other #globals (namespaces, public etc...).
-            // Otherwise we can have a race condition between multiple globals.
-            Ast::addChildFront(parent, resultNode);
+            // We need to be sure that our parent is in the sourceFile->astAttrUse hierarchy.
+            // If #global #[???] has a #global protected before (for example), this is not the case.
+            if (sourceFile->astAttrUse)
+            {
+                parent = sourceFile->astAttrUse;
+                Ast::addChildBack(parent, resultNode);
+            }
+            else
+            {
+                parent = sourceFile->astRoot;
+
+                // Add front in case astRoot already has some children (if the #global comes after another one).
+                // We need #global attributes to be first in the file, before other #globals (namespaces, public etc...).
+                // Otherwise we can have a race condition between multiple globals.
+                Ast::addChildFront(parent, resultNode);
+            }
         }
 
         const auto attrUse = castAst<AstAttrUse>(resultNode);
