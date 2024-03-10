@@ -130,13 +130,13 @@ bool FormatAst::outputImpl(const AstNode* node)
     concat->addIndent(indent);
     CONCAT_FIXED_STR(concat, "impl");
     concat->addBlank();
-    concat->addString(nodeImpl->identifier->token.text);
+    SWAG_CHECK(outputNode(nodeImpl->identifier));
     if (nodeImpl->identifierFor)
     {
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "for");
         concat->addBlank();
-        concat->addString(nodeImpl->identifierFor->token.text);
+        SWAG_CHECK(outputNode(nodeImpl->identifierFor));
     }
     else if (nodeImpl->scope && nodeImpl->scope->kind == ScopeKind::Enum)
     {
