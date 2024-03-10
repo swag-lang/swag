@@ -73,6 +73,7 @@ bool FormatAst::outputCommaChildren(const AstNode* node, uint32_t start)
     return true;
 }
 
+#pragma optimize("", off)
 bool FormatAst::outputStatement(const AstNode* node)
 {
     const auto stmt = castAst<AstStatement>(node, AstNodeKind::Statement);
@@ -99,6 +100,43 @@ bool FormatAst::outputStatement(const AstNode* node)
         concat->addString(firstOp->token.text);
         concat->addBlank();
         SWAG_CHECK(outputNode(firstOp->secondChild()));
+        concat->addEol();
+        return true;
+    }
+
+    // Tuple unpacking (a, b) = ? is a syntax sugar for a special statement block
+    if (stmt->hasSpecFlag(AstStatement::SPEC_FLAG_TUPLE_UNPACKING))
+    {
+        concat->addChar('(');
+
+        bool first = true;
+        for (uint32_t it = 1; it < stmt->children.size(); it++)
+        {
+            if (!first)
+            {
+                concat->addChar(',');
+                concat->addBlank();
+            }
+
+            first            = false;
+            const auto child = stmt->children[it];
+            if (child->is(AstNodeKind::AffectOp))
+            {
+                const auto op = castAst<AstOp>(child, AstNodeKind::AffectOp);
+                SWAG_CHECK(outputNode(op->firstChild()));
+            }
+            else if (child->is(AstNodeKind::IdentifierRef))
+                SWAG_CHECK(outputNode(child));
+            else
+                SWAG_ASSERT(false);
+        }
+
+        concat->addChar(')');
+        concat->addBlank();
+        concat->addChar('=');
+        concat->addBlank();
+        const auto firstOp = castAst<AstVarDecl>(stmt->firstChild(), AstNodeKind::VarDecl);
+        SWAG_CHECK(outputNode(firstOp->firstChild()));
         concat->addEol();
         return true;
     }

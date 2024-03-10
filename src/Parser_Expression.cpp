@@ -1481,6 +1481,8 @@ bool Parser::doTupleUnpacking(AstNode* parent, AstNode** result, AstNode* leftNo
     savedToken.token.startLocation = tokenParse.token.startLocation;
     const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
     *result                        = parentNode;
+    parentNode->addSpecFlag(AstStatement::SPEC_FLAG_TUPLE_UNPACKING);
+    parentNode->inheritFormatFromBefore(this, leftNode);
 
     // Get right side
     AstNode* assignment;
@@ -1525,9 +1527,9 @@ bool Parser::doTupleUnpacking(AstNode* parent, AstNode** result, AstNode* leftNo
         Ast::removeFromParent(child);
         Ast::addChildBack(affectNode, child);
         isForceTakeAddress(child);
-        const auto idRef = Ast::newMultiIdentifierRef(form("%s.item%u", tmpVarName.c_str(), idx++), this, affectNode);
 
         // Force a move between the generated temporary variable and the real var
+        const auto idRef = Ast::newMultiIdentifierRef(form("%s.item%u", tmpVarName.c_str(), idx++), this, affectNode);
         idRef->addAstFlag(AST_FORCE_MOVE);
     }
 

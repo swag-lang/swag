@@ -1196,9 +1196,10 @@ struct AstLiteral : AstNode
 
 struct AstStatement : AstNode
 {
-    static constexpr SpecFlags SPEC_FLAG_NEED_SCOPE   = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_CURLY        = 0x0002;
-    static constexpr SpecFlags SPEC_FLAG_MULTI_AFFECT = 0x0004;
+    static constexpr SpecFlags SPEC_FLAG_NEED_SCOPE      = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_CURLY           = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_MULTI_AFFECT    = 0x0004;
+    static constexpr SpecFlags SPEC_FLAG_TUPLE_UNPACKING = 0x0008;
 
     ~        AstStatement();
     AstNode* clone(CloneContext& context);
