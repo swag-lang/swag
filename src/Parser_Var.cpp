@@ -201,6 +201,8 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
         SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
         if (child->firstChild()->token.text == '?')
         {
+            orgVarNode->multiNames.push_back("?");
+            child->addAstFlag(AST_GENERATED);
             Ast::removeFromParent(child);
             Ast::addChildBack(parentNode, child);
             child->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
