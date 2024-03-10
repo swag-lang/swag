@@ -459,7 +459,8 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         {
             SWAG_VERIFY(structType == SyntaxStructType::Interface, error(tokenParse.token, toErr(Err0503)));
 
-            const auto kind = tokenParse.token.id;
+            auto       savedToken = tokenParse;
+            const auto kind       = tokenParse.token.id;
             SWAG_CHECK(eatToken());
 
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse.token, toErr(Err0685)));
@@ -475,6 +476,9 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             }
 
             const auto funcNode = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, nullptr);
+            if (kind == TokenId::KwdMethod)
+                funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD);
+            funcNode->inheritFormatFromBefore(this, savedToken);
 
             SWAG_CHECK(checkIsValidUserName(funcNode));
             SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0295, tokenParse.token.c_str())));

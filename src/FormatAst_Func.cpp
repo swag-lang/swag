@@ -149,8 +149,12 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "=>");
         concat->addBlank();
-        SWAG_ASSERT(node->content->is(AstNodeKind::Return) || node->content->is(AstNodeKind::Try));
-        SWAG_CHECK(outputNode(node->content->firstChild()));
+        if (node->content->is(AstNodeKind::Return))
+            SWAG_CHECK(outputNode(node->content->firstChild()));
+        else if (node->content->is(AstNodeKind::Try))
+            SWAG_CHECK(outputNode(node->content->firstChild()->firstChild()));
+        else
+            SWAG_ASSERT(false);
         concat->addEol();
         return true;
     }
