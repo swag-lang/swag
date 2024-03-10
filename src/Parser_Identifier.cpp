@@ -280,7 +280,7 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags 
 
 bool Parser::doDiscard(AstNode* parent, AstNode** result)
 {
-    const auto discardToken = tokenParse;
+    auto discardToken = tokenParse;
     SWAG_CHECK(eatToken());
 
     AstNode* idRef;
@@ -311,6 +311,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
 
     // For export
     idRef->addAstFlag(AST_DISCARD);
+    idRef->inheritFormatFromBefore(this, discardToken);
 
     // Mark the identifier with AST_DISCARD
     while (idRef && idRef->isNot(AstNodeKind::IdentifierRef))
