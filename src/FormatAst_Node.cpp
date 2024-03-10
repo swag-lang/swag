@@ -564,11 +564,15 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::NullConditionalExpression:
+            if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
+                concat->addChar('(');
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addBlank();
             CONCAT_FIXED_STR(concat, "orelse");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
+            if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
+                concat->addChar(')');
             break;
 
         case AstNodeKind::ConditionalExpression:
