@@ -692,12 +692,17 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
                 CONCAT_FIXED_STR(concat, ",over");
             if (node->hasSpecFlag(AstCast::SPEC_FLAG_BIT))
                 CONCAT_FIXED_STR(concat, ",bit");
+            if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
+                CONCAT_FIXED_STR(concat, ",unconst");
+
             concat->addChar('(');
             SWAG_CHECK(outputNode(node->firstChild()));
-            CONCAT_FIXED_STR(concat, ") ");
+            concat->addChar(')');
+        
+            concat->addBlank();
             SWAG_CHECK(outputNode(node->secondChild()));
             break;
-
+        
         case AstNodeKind::TypeExpression:
             if (node->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
             {

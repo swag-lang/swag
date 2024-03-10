@@ -117,10 +117,31 @@ bool FormatAst::outputFor(const AstNode* node)
 {
     const auto forNode = castAst<AstFor>(node, AstNodeKind::For);
     CONCAT_FIXED_STR(concat, "for");
-    concat->addBlank();
-    SWAG_CHECK(outputNode(forNode->preExpression));
-    concat->addChar(';');
-    concat->addBlank();
+
+    if (forNode->preExpression && forNode->preExpression->is(AstNodeKind::Statement))
+    {
+        concat->addBlank();
+        concat->addChar('{');
+        concat->addBlank();
+
+        for (const auto c : forNode->preExpression->children)
+        {
+            SWAG_CHECK(outputNode(c));
+            concat->addChar(';');
+            concat->addBlank();
+        }
+
+        concat->addChar('}');
+        concat->addBlank();
+    }
+    else
+    {
+        concat->addBlank();
+        SWAG_CHECK(outputNode(forNode->preExpression));
+        concat->addChar(';');
+        concat->addBlank();
+    }
+
     SWAG_CHECK(outputNode(forNode->boolExpression));
     concat->addChar(';');
     concat->addBlank();
