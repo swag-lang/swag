@@ -65,7 +65,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
                 {
                     tokenizer.restoreState(tokenParse);
                     Ast::removeFromParent(param->lastChild());
-                    SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &dummyResult));
+                    SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_IN_GENERIC_PARAMS, &dummyResult));
                 }
                 break;
             }
@@ -74,13 +74,13 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
             {
                 SWAG_CHECK(eatToken());
                 AstNode* resNode;
-                SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &resNode));
+                SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_IN_GENERIC_PARAMS, &resNode));
                 resNode->addSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE);
                 break;
             }
 
             default:
-                SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &dummyResult));
+                SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_IN_GENERIC_PARAMS, &dummyResult));
                 break;
         }
 

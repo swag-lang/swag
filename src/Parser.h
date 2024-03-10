@@ -75,6 +75,7 @@ constexpr ExprFlags EXPR_FLAG_IN_VAR_DECL           = 0x00000040;
 constexpr ExprFlags EXPR_FLAG_TYPE_EXPR             = 0x00000080;
 constexpr ExprFlags EXPR_FLAG_IN_VAR_DECL_WITH_TYPE = 0x00000100;
 constexpr ExprFlags EXPR_FLAG_NAMED_PARAM           = 0x00000200;
+constexpr ExprFlags EXPR_FLAG_IN_GENERIC_PARAMS     = 0x00000400;
 
 constexpr ParserFlags PARSER_DEFAULT             = 0x00000000;
 constexpr ParserFlags PARSER_TRACK_DOCUMENTATION = 0x00000001;
@@ -113,7 +114,7 @@ struct Parser
     void        registerSubDecl(AstNode* subDecl);
     static void isForceTakeAddress(AstNode* node);
 
-    bool doAnonymousStruct(AstNode* parent, AstNode** result, bool isUnion);
+    bool doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags exprFlags, bool isUnion);
     bool doCompilerScopeBreakable(AstNode* parent, AstNode** result);
     bool doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result);
     bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);

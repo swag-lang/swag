@@ -314,7 +314,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** /*result*/, 
     return true;
 }
 
-bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isUnion)
+bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags exprFlags, bool isUnion)
 {
     const auto structNode = Ast::newStructDecl(this, parent);
     structNode->addAstFlag(AST_INTERNAL | AST_GENERATED | AST_GENERATED_EXCEPT_EXPORT);
@@ -324,6 +324,8 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isUnion)
     structNode->addSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS);
     if (isUnion)
         structNode->addSpecFlag(AstStruct::SPEC_FLAG_UNION);
+    if(exprFlags.has(EXPR_FLAG_IN_GENERIC_PARAMS))
+        structNode->addSpecFlag(AstStruct::SPEC_FLAG_GENERIC_PARAM);
 
     const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::StructContent, this, structNode);
     structNode->content    = contentNode;
@@ -422,16 +424,16 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* /*parent*/
 
         case TokenId::KwdStruct:
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, false));
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, exprFlags, false));
             return true;
 
         case TokenId::KwdUnion:
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, true));
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, exprFlags, true));
             return true;
 
         case TokenId::SymLeftCurly:
-            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, false));
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, exprFlags, false));
             return true;
 
         case TokenId::KwdFunc:

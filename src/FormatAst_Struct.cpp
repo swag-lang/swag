@@ -28,6 +28,12 @@ bool FormatAst::outputTupleDeclContent(const AstNode* node)
 
 bool FormatAst::outputStructDecl(const AstStruct* node)
 {
+    if (node->hasSpecFlag(AstStruct::SPEC_FLAG_GENERIC_PARAM))
+    {
+        SWAG_CHECK(outputTupleDeclContent(node->content));
+        return true;
+    }
+
     // If we need to export as opaque, and the struct has init values, then we add the
     // #[Swag.ExportType] attribute
     if (node->hasAttribute(ATTRIBUTE_OPAQUE))
