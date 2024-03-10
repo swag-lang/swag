@@ -77,12 +77,20 @@ bool FormatAst::outputIdentifierRef(const AstNode* node)
     }
 
     bool first = true;
-    for (const auto child : node->children)
+    for (const auto it : node->children)
     {
+        const auto child = convertNode(it);
+        if (!child)
+        {
+            first = false;
+            continue;
+        }
+
         if (!first)
             concat->addChar('.');
-        SWAG_CHECK(outputNode(child));
         first = false;
+
+        SWAG_CHECK(outputNode(child));
     }
 
     return true;

@@ -291,8 +291,6 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
     }
     else
     {
-        concat->addEol();
-        concat->addIndent(indent);
         SWAG_CHECK(outputNode(funcDecl->content));
     }
 

@@ -396,9 +396,9 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
 
 bool Parser::doWith(AstNode* parent, AstNode** result)
 {
-    SWAG_CHECK(eatToken());
     const auto node = Ast::newNode<AstWith>(AstNodeKind::With, this, parent);
     *result         = node;
+    SWAG_CHECK(eatToken());
 
     AstNode* id = nullptr;
     if (tokenParse.is(TokenId::KwdVar) || tokenParse.is(TokenId::KwdLet))

@@ -627,6 +627,7 @@ bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     if (tokenParse.isNot(TokenId::SymLeftCurly))
     {
+        labelNode->addSpecFlag(AstScopeBreakable::SPEC_FLAG_NAMED);
         SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0144, tokenParse.token.c_str())));
         labelNode->inheritTokenName(tokenParse.token);
         labelNode->inheritTokenLocation(tokenParse.token);
@@ -907,10 +908,13 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         {
             const auto withNode = parent->findParent(AstNodeKind::With);
             SWAG_VERIFY(withNode, error(tokenParse.token, toErr(Err0507)));
-            auto tokenDot = tokenParse.token;
+            auto tokenDot = tokenParse;
             eatToken();
             SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0367, tokenParse.token.c_str())));
-            return doLeftInstruction(parent, result, castAst<AstWith>(withNode, AstNodeKind::With));
+            SWAG_CHECK(doLeftInstruction(parent, result, castAst<AstWith>(withNode, AstNodeKind::With)));
+            if (*result)
+                (*result)->inheritFormatFromBefore(this, tokenDot);
+            return true;
         }
 
         case TokenId::NativeType:

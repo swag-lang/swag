@@ -5,6 +5,7 @@
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Report.h"
+#include "Scoped.h"
 #include "Semantic.h"
 
 bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
@@ -701,13 +702,20 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::ScopeBreakable:
+        {
+            const auto scopeDecl = castAst<AstScopeBreakable>(node, AstNodeKind::ScopeBreakable);
             CONCAT_FIXED_STR(concat, "#scope");
-            concat->addBlank();
-            concat->addString(node->token.text);
+            if (scopeDecl->hasSpecFlag(AstScopeBreakable::SPEC_FLAG_NAMED))
+            {
+                concat->addBlank();
+                concat->addString(node->token.text);
+            }
+
             concat->addEol();
             concat->addIndent(indent);
-            SWAG_CHECK(outputNode(node->firstChild()));
+            SWAG_CHECK(outputNode(scopeDecl->block));
             break;
+        }
 
         case AstNodeKind::Range:
             SWAG_CHECK(outputNode(node->firstChild()));

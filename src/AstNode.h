@@ -784,6 +784,8 @@ struct AstBreakable : AstNode
 
 struct AstScopeBreakable : AstBreakable
 {
+    static constexpr SpecFlags SPEC_FLAG_NAMED = 0x0001;
+
              AstScopeBreakable();
     AstNode* clone(CloneContext& context);
 
