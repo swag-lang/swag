@@ -350,6 +350,7 @@ bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
     *result         = node;
+    node->addSpecFlag(AstStatement::SPEC_FLAG_CURLY);
 
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the statement block"));
