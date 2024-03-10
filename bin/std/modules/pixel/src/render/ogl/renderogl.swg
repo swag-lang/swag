@@ -151,7 +151,7 @@ internal impl RenderOgl
         m[3,3] = 1;
     }
 
-    mtd buidModelMatrix(modelTransform: Transform2)
+    mtd buildModelMatrix(modelTransform: Transform2)
     {
         var tr = worldTransform
         tr.multiply(modelTransform)
@@ -596,7 +596,7 @@ impl RenderOgl
 	    glViewport(0, 0, width, height)
 
         // Draw matrix
-        buidModelMatrix(Transform2.Identity)
+        buildModelMatrix(Transform2.Identity)
         glUniformMatrix4fv(cast(GLint) mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
     }
 
@@ -623,7 +623,7 @@ impl RenderOgl
 
         case Transform:
             let params = &cmd.transform
-            buidModelMatrix(params.tr)
+            buildModelMatrix(params.tr)
             glUniformMatrix4fv(cast(GLint) curShader.mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
         case StartClippingRegion:

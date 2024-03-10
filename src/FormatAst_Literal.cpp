@@ -94,7 +94,7 @@ bool FormatAst::outputExpressionList(const AstNode* node)
     else
         concat->addChar('[');
 
-    if (node->findParent(AstNodeKind::FuncCallParam))
+    if (node->findParent(AstNodeKind::FuncCallParam) || node->findParent(AstNodeKind::Return))
     {
         SWAG_CHECK(outputCommaChildren(exprNode));
     }
