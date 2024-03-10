@@ -114,47 +114,50 @@ bool Semantic::resolveWith(SemanticContext* context)
 
 bool Semantic::resolveUsing(SemanticContext* context)
 {
-    auto       node  = context->node;
-    const auto idref = castAst<AstIdentifierRef>(node->firstChild(), AstNodeKind::IdentifierRef);
-    node->addAstFlag(AST_NO_BYTECODE);
-
-    SWAG_ASSERT(idref->resolvedSymbolName());
-    if (idref->resolvedSymbolName()->is(SymbolKind::Variable))
+    auto node = castAst<AstUsing>(context->node, AstNodeKind::Using);
+    for (const auto child : node->children)
     {
-        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload()->typeInfo));
-        return true;
+        const auto idRef = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+        node->addAstFlag(AST_NO_BYTECODE);
+
+        SWAG_ASSERT(idRef->resolvedSymbolName());
+        if (idRef->resolvedSymbolName()->is(SymbolKind::Variable))
+        {
+            SWAG_CHECK(resolveUsingVar(context, idRef, idRef->resolvedSymbolOverload()->typeInfo));
+            continue;
+        }
+
+        Scope*     scope;
+        const auto typeResolved = idRef->resolvedSymbolOverload()->typeInfo;
+        switch (typeResolved->kind)
+        {
+            case TypeInfoKind::Namespace:
+            {
+                const auto typeInfo = castTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
+                scope               = typeInfo->scope;
+                break;
+            }
+            case TypeInfoKind::Enum:
+            {
+                const auto typeInfo = castTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
+                scope               = typeInfo->scope;
+                break;
+            }
+            case TypeInfoKind::Struct:
+            {
+                const auto typeInfo = castTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
+                scope               = typeInfo->scope;
+                break;
+            }
+            default:
+                return context->report({node, formErr(Err0472, typeResolved->getDisplayNameC())});
+        }
+
+        node->parent->addAlternativeScope(scope, ALT_SCOPE_USING);
+
+        if (!idRef->ownerFct)
+            node->parent->token.sourceFile->addGlobalUsing(scope);
     }
-
-    Scope*     scope;
-    const auto typeResolved = idref->resolvedSymbolOverload()->typeInfo;
-    switch (typeResolved->kind)
-    {
-        case TypeInfoKind::Namespace:
-        {
-            const auto typeInfo = castTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
-            scope               = typeInfo->scope;
-            break;
-        }
-        case TypeInfoKind::Enum:
-        {
-            const auto typeInfo = castTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
-            scope               = typeInfo->scope;
-            break;
-        }
-        case TypeInfoKind::Struct:
-        {
-            const auto typeInfo = castTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
-            scope               = typeInfo->scope;
-            break;
-        }
-        default:
-            return context->report({node, formErr(Err0472, typeResolved->getDisplayNameC())});
-    }
-
-    node->parent->addAlternativeScope(scope, ALT_SCOPE_USING);
-
-    if (!idref->ownerFct)
-        node->parent->token.sourceFile->addGlobalUsing(scope);
 
     return true;
 }

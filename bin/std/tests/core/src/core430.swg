@@ -1,4 +1,4 @@
-using Core, Serialization
+using Core, Core.Serialization
 
 #test
 {
@@ -7,8 +7,8 @@ using Core, Serialization
         toto: s32
     }
 
-    const str = """  
-       a {{"toto" : 666}}      
+    const str = """
+       a {{"toto" : 666}}
     """
 
     var rea: Decoder'Read.JSon

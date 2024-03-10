@@ -1,5 +1,5 @@
 #global testerror "Err0002"
-using Core, Math
+using Core, Core.Math
 
 //#[Swag.PrintBc]
 #test

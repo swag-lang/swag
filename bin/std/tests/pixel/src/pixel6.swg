@@ -1,4 +1,4 @@
-using Core, Pixel, Threading
+using Core, Pixel, Core.Threading
 
 struct TH
 {

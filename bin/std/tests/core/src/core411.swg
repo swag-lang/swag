@@ -1,7 +1,7 @@
 #global testerror "Err0002"
 
 //#global skip
-using Core, StrConv
+using Core, Core.StrConv
 
 //#[Swag.PrintBc]
 #test

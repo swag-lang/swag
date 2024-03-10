@@ -1,4 +1,4 @@
-using Core, Serialization, Math
+using Core, Core.Serialization, Core.Math
 
 //#[Swag.PrintBc]
 #test

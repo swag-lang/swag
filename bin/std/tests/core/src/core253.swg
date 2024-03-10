@@ -1,5 +1,5 @@
 #global #[Swag.Safety("nan", false)]
-using Core, StrConv
+using Core, Core.StrConv
 
 struct atofTest
 {

@@ -1,4 +1,4 @@
-using Core, Serialization
+using Core, Core.Serialization
 
 enum ARGB { A; R; G; B; }
 

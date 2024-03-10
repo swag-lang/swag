@@ -1,4 +1,4 @@
-using Core, Time
+using Core, Core.Time
 
 //#[Swag.PrintBc]
 #test

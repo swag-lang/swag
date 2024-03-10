@@ -1,5 +1,5 @@
 #global #if #os == Swag.TargetOs.Windows
-using Core, Pixel, Gui, Math
+using Core, Pixel, Gui, Core.Math
 
 const W = 1024
 const H = 1024

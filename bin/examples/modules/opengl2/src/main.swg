@@ -1,5 +1,5 @@
 #global #if #os == Swag.TargetOs.Windows
-using Core, Win32, Ogl, Gdi32, Time
+using Core, Win32, Ogl, Gdi32, Core.Time
 
 var g_HDC:            HDC
 var g_VertexBuffer:   GLuint

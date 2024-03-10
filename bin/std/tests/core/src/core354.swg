@@ -1,4 +1,4 @@
-using Core, Serialization
+using Core, Core.Serialization
 
 struct V2 { x, y: f32; }
 

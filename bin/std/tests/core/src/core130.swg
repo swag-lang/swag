@@ -1,5 +1,5 @@
 
-using Core, Utf8
+using Core, Core.Utf8
 
 #test
 {

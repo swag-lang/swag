@@ -182,24 +182,14 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
         }
     }
 
-    AstUsing* orgNode = nullptr;
+    const auto node   = Ast::newNode<AstUsing>(AstNodeKind::Using, this, parent);
+    *result           = node;
+    node->semanticFct = Semantic::resolveUsing;
+    node->inheritFormatFromBefore(this, savedToken);
+
     while (true)
     {
-        const auto node   = Ast::newNode<AstUsing>(AstNodeKind::Using, this, parent);
-        *result           = node;
-        node->semanticFct = Semantic::resolveUsing;
-
         SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
-
-        if (!orgNode)
-        {
-            orgNode = node;
-            orgNode->inheritFormatFromBefore(this, savedToken);
-        }
-        else
-        {
-            node->addAstFlag(AST_GENERATED);
-        }
 
         if (tokenParse.isNot(TokenId::SymComma))
         {

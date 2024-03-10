@@ -1,5 +1,5 @@
 
-using Core, File
+using Core, Core.File
 
 #test
 {

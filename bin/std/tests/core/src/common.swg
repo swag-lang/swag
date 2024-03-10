@@ -1,4 +1,4 @@
-using Core, Memory
+using Core, Core.Memory
 
 internal func dataPath()->String
 {

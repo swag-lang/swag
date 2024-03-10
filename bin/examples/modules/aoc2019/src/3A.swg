@@ -41,7 +41,7 @@ U98,R91,D20,R16,D67,R40,U7,R15,U6,R7 = distance 135
 What is the Manhattan distance from the central port to the closest intersection?
 */
 
-using Core, Math
+using Core, Core.Math
 
 func day3A()
 {

@@ -1,5 +1,5 @@
 #global #[Swag.Overflow(true)]
-using Core, StrConv
+using Core, Core.StrConv
 
 struct Test
 {

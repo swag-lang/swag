@@ -1,4 +1,4 @@
-using Core, StrConv
+using Core, Core.StrConv
 
 struct(T) AA
 {

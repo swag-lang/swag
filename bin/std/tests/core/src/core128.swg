@@ -1,5 +1,5 @@
 
-using Core, StrConv
+using Core, Core.StrConv
 
 #test
 {

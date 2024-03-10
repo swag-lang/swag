@@ -1,5 +1,5 @@
 
-using Core, Directory
+using Core, Core.Directory
 
 //#[Swag.PrintBc]
 #test

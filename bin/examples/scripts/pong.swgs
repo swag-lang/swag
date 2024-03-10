@@ -5,7 +5,7 @@
     #import "gui" location="swag@std"
 }
 
-using Core, Gui, Pixel, Math
+using Core, Gui, Pixel, Core.Math
 
 const BallRadius  = 10'f32
 const PaddleWidth = 8'f32

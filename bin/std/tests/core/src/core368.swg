@@ -1,4 +1,4 @@
-using Core, Serialization, Math
+using Core, Core.Serialization, Core.Math
 
 #[Version(1)]
 struct Toto1

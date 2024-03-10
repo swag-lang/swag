@@ -1,5 +1,5 @@
 
-using Core, Utf8, Tokenize
+using Core, Core.Utf8, Core.Tokenize
 
 //#[Swag.PrintBc]
 #test

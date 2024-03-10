@@ -1,5 +1,5 @@
 #global public
-using Swag, Core, Core.Errors, StrConv
+using Swag, Core, Core.Errors, Core.StrConv
 
 #[ConstExpr]
 struct Color

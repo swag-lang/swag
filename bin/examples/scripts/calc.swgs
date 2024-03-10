@@ -3,7 +3,7 @@
     #import "gui" location="swag@std"
 }
 
-using Core, Gui, Pixel, Math
+using Core, Gui, Pixel, Core.Math
 const Div = "\u00F7"
 const Mul = "\u00D7"
 

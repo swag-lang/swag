@@ -1,4 +1,4 @@
-using Swag, Core, StrConv
+using Swag, Core, Core.StrConv
 
 #[AttrUsage(AttributeUsage.Struct|AttributeUsage.Gen)]
 attr GenOpEquals();

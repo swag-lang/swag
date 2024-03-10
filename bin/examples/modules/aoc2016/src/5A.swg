@@ -18,7 +18,7 @@ Given the actual Door ID, what is the password?
 Your puzzle input is reyedfim.
 */
 
-using Core, Hash
+using Core, Core.Hash
 
 func day5A()
 {

@@ -2,7 +2,7 @@
 //#global skip
 //#global #[Swag.PrintBc]
 
-using Core, StrConv
+using Core, Core.StrConv
 
 #[Swag.ConstExpr]
 func get()->String

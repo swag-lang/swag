@@ -1,5 +1,5 @@
 //#global skip
-using Core, StrConv
+using Core, Core.StrConv
 
 #[Swag.Macro]
 func(str: string) interpol()->String

@@ -3,7 +3,7 @@
     #import "gui" location="swag@std"
 }
 
-using Gui, Core, Pixel, Math
+using Gui, Core, Pixel, Core.Math
 
 const ElemSize   = 40
 const SnakeTime  = 150

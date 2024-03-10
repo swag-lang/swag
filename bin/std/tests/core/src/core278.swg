@@ -1,4 +1,4 @@
-using Core, Math
+using Core, Core.Math
 
 #test
 {

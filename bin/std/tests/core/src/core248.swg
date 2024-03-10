@@ -1,4 +1,4 @@
-using Core, Hash
+using Core, Core.Hash
 
 #test
 {

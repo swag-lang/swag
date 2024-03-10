@@ -1,5 +1,5 @@
 #global public
-using Swag, Core, Serialization
+using Swag, Core, Core.Serialization
 
 // An image buffer, in various pixel formats.
 struct Image

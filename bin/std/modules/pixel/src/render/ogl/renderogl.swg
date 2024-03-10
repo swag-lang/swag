@@ -1,5 +1,5 @@
 #global public
-using Swag, Core, Ogl, Math
+using Swag, Core, Ogl, Core.Math
 
 
 internal

@@ -1,4 +1,4 @@
-using Core, Serialization
+using Core, Core.Serialization
 
 struct Toto1
 {
