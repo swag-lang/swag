@@ -370,3 +370,20 @@ bool FormatAst::outputTypeLambda(const AstNode* node)
 
     return true;
 }
+
+bool FormatAst::outputSpecCall(const Utf8& name, const AstNode* node)
+{
+    concat->addString(name);
+    concat->addChar('(');
+
+    SWAG_CHECK(outputNode(node->firstChild()));
+    if (node->childCount() == 2)
+    {
+        concat->addChar(',');
+        concat->addBlank();
+        SWAG_CHECK(outputNode(node->lastChild()));
+    }
+
+    concat->addChar(')');
+    return true;
+}

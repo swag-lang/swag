@@ -29,9 +29,6 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
     {
         case AstNodeKind::SwitchCaseBlock:
         case AstNodeKind::StatementNoScope:
-            SWAG_CHECK(outputChildren(node));
-            break;
-
         case AstNodeKind::File:
             SWAG_CHECK(outputChildren(node));
             break;
@@ -39,11 +36,9 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
         case AstNodeKind::ExplicitNoInit:
             CONCAT_FIXED_STR(concat, "undefined");
             break;
-
         case AstNodeKind::Index:
             CONCAT_FIXED_STR(concat, "#index");
             break;
-
         case AstNodeKind::GetErr:
             CONCAT_FIXED_STR(concat, "@err");
             break;
@@ -53,63 +48,38 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
-
         case AstNodeKind::CompilerInclude:
             CONCAT_FIXED_STR(concat, "#include");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
-
+        case AstNodeKind::CompilerGlobal:
+            CONCAT_FIXED_STR(concat, "#global");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->firstChild()));
+            concat->addEol();
+            break;
         case AstNodeKind::KeepRef:
             CONCAT_FIXED_STR(concat, "ref");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
-
         case AstNodeKind::MoveRef:
             CONCAT_FIXED_STR(concat, "moveref");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
 
-        case AstNodeKind::CompilerImport:
-        {
-            const auto decl = castAst<AstCompilerImport>(node, AstNodeKind::CompilerImport);
-            CONCAT_FIXED_STR(concat, "#import");
-            concat->addBlank();
-            concat->addChar('"');
+        case AstNodeKind::Throw:
             concat->addString(node->token.text);
-            concat->addChar('"');
-
-            if (!decl->tokenLocation.text.empty())
-            {
-                concat->addBlank();
-                CONCAT_FIXED_STR(concat, "location");
-                concat->addChar('=');
-                concat->addChar('"');
-                concat->addString(decl->tokenLocation.text);
-                concat->addChar('"');
-            }
-
-            if (!decl->tokenVersion.text.empty())
-            {
-                concat->addBlank();
-                CONCAT_FIXED_STR(concat, "version");
-                concat->addChar('=');
-                concat->addChar('"');
-                concat->addString(decl->tokenVersion.text);
-                concat->addChar('"');
-            }
-
-            concat->addEol();
+            concat->addBlank();
+            SWAG_CHECK(outputNode(node->firstChild()));
             break;
-        }
 
         case AstNodeKind::FallThrough:
             CONCAT_FIXED_STR(concat, "fallthrough");
             concat->addEol();
             break;
-
         case AstNodeKind::Unreachable:
             CONCAT_FIXED_STR(concat, "unreachable");
             concat->addEol();
@@ -121,12 +91,15 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             concat->addString(node->token.text);
             concat->addEol();
             break;
-
         case AstNodeKind::CompilerForeignLib:
             CONCAT_FIXED_STR(concat, "#foreignlib");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
             concat->addEol();
+            break;
+
+        case AstNodeKind::CompilerImport:
+            SWAG_CHECK(outputCompilerExport(node));
             break;
 
         case AstNodeKind::CompilerCode:
@@ -151,12 +124,6 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             concat->addEol();
             concat->addIndent(indent);
             SWAG_CHECK(outputNode(node->secondChild()));
-            break;
-
-        case AstNodeKind::Throw:
-            concat->addString(node->token.text);
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->firstChild()));
             break;
 
         case AstNodeKind::Try:
@@ -284,51 +251,16 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::Init:
-            CONCAT_FIXED_STR(concat, "@init(");
-            SWAG_CHECK(outputNode(node->firstChild()));
-            if (node->childCount() == 2)
-            {
-                concat->addChar(',');
-                concat->addBlank();
-                SWAG_CHECK(outputNode(node->lastChild()));
-            }
-            concat->addChar(')');
+            SWAG_CHECK(outputSpecCall("@init", node));
             break;
-
         case AstNodeKind::Drop:
-            CONCAT_FIXED_STR(concat, "@drop(");
-            SWAG_CHECK(outputNode(node->firstChild()));
-            if (node->childCount() == 2)
-            {
-                concat->addChar(',');
-                concat->addBlank();
-                SWAG_CHECK(outputNode(node->lastChild()));
-            }
-            concat->addChar(')');
+            SWAG_CHECK(outputSpecCall("@drop", node));
             break;
-
         case AstNodeKind::PostMove:
-            CONCAT_FIXED_STR(concat, "@postmove(");
-            SWAG_CHECK(outputNode(node->firstChild()));
-            if (node->childCount() == 2)
-            {
-                concat->addChar(',');
-                concat->addBlank();
-                SWAG_CHECK(outputNode(node->lastChild()));
-            }
-            concat->addChar(')');
+            SWAG_CHECK(outputSpecCall("@postmove", node));
             break;
-
         case AstNodeKind::PostCopy:
-            CONCAT_FIXED_STR(concat, "@postcopy(");
-            SWAG_CHECK(outputNode(node->firstChild()));
-            if (node->childCount() == 2)
-            {
-                concat->addChar(',');
-                concat->addBlank();
-                SWAG_CHECK(outputNode(node->lastChild()));
-            }
-            concat->addChar(')');
+            SWAG_CHECK(outputSpecCall("@postcopy", node));
             break;
 
         case AstNodeKind::Break:
@@ -359,7 +291,6 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             concat->addChar('&');
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
-
         case AstNodeKind::MakePointerLambda:
             SWAG_CHECK(outputLambdaExpression(castAst<AstMakePointer>(node, AstNodeKind::MakePointerLambda)->lambda));
             break;
@@ -750,13 +681,6 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
 
         case AstNodeKind::Namespace:
             SWAG_CHECK(outputNamespace(node));
-            break;
-
-        case AstNodeKind::CompilerGlobal:
-            CONCAT_FIXED_STR(concat, "#global");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->firstChild()));
-            concat->addEol();
             break;
 
         default:
