@@ -20,7 +20,12 @@ const AstNode* FormatAst::convertNode(const AstNode* node)
         return nullptr;
 
     if (const auto subExportNode = node->extraPointer<AstNode>(ExtraPointerKind::ExportNode))
+    {
         node = subExportNode;
+        if (node->hasAstFlag(AST_GENERATED_EXCEPT_EXPORT))
+            return node;
+    }
+
     if (node->hasAstFlag(AST_GENERATED) && !node->hasAstFlag(AST_GENERATED_USER))
         return nullptr;
 

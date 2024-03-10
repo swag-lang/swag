@@ -64,6 +64,7 @@ constexpr AstNodeFlags AST_SPEC_SEMANTIC1             = 0x01000000'00000000;
 constexpr AstNodeFlags AST_SPEC_SEMANTIC2             = 0x02000000'00000000;
 constexpr AstNodeFlags AST_SPEC_SEMANTIC3             = 0x04000000'00000000;
 constexpr AstNodeFlags AST_FUNC_CALL                  = 0x08000000'00000000;
+constexpr AstNodeFlags AST_GENERATED_EXCEPT_EXPORT    = 0x10000000'00000000;
 
 constexpr AstSemFlags SEMFLAG_VAR_DECL_STRUCT_PARAMETERS = 0x00000000'00000001;
 constexpr AstSemFlags SEMFLAG_VAR_DECL_REF_CALL          = 0x00000000'00000002;
