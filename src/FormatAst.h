@@ -100,7 +100,11 @@ struct FormatAst
     bool outputIdentifierRef(const AstNode* node);
     bool outputArrayPointerSlicing(const AstNode* node);
     bool outputArrayPointerIndex(const AstNode* node);
-
+    bool outputAffectOp(const AstNode* node);
+    bool outputFactorOp(const AstNode* node);
+    bool outputBinaryOp(const AstNode* node);
+    bool outputNullConditionalExpression(const AstNode* node);
+    bool outputConditionalExpression(const AstNode* node);
     bool outputNode(const AstNode* node, bool cmtAfter = true);
 
     FormatConcat  inConcat;

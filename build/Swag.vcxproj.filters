@@ -737,6 +737,12 @@
     <ClCompile Include="..\src\AstNode_Specifics.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\FormatAst_Block.cpp">
+      <Filter>Format</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FormatAst_Expression.cpp">
+      <Filter>Format</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
