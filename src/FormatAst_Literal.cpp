@@ -94,22 +94,7 @@ bool FormatAst::outputExpressionList(const AstNode* node)
     else
         concat->addChar('[');
 
-    if (node->findParent(AstNodeKind::FuncCallParam) ||
-        node->findParent(AstNodeKind::Return) ||
-        node->findParent(AstNodeKind::FuncDeclParam))
-    {
-        SWAG_CHECK(outputCommaChildren(exprNode));
-    }
-    else
-    {
-        concat->addEol();
-        indent++;
-        concat->addIndent(indent);
-        SWAG_CHECK(outputCommaChildren(exprNode));
-        indent--;
-        concat->addEol();
-        concat->addIndent(indent);
-    }
+    SWAG_CHECK(outputCommaChildren(exprNode));
 
     if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
         concat->addChar('}');
