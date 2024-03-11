@@ -272,15 +272,22 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
 
 bool Parser::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
 {
+    auto savedToken = tokenParse;
     SWAG_CHECK(eatToken());
+
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
-        SWAG_CHECK(doFuncDecl(parent, result, TokenId::CompilerRun));
+        AstNode* funcDecl;
+        SWAG_CHECK(doFuncDecl(parent, &funcDecl, TokenId::CompilerRun));
+        *result = funcDecl;
+        funcDecl->inheritFormatFromBefore(this, savedToken);
         return true;
     }
 
     const auto node = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerRun, this, parent);
     *result         = node;
+    node->inheritFormatFromBefore(this, savedToken);
+
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
     node->semanticFct = Semantic::resolveCompilerRun;
     SWAG_CHECK(doEmbeddedInstruction(node, &dummyResult));
