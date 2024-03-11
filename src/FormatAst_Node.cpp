@@ -54,11 +54,9 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
         case AstNodeKind::CompilerGlobal:
-            CONCAT_FIXED_STR(concat, "#global");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->firstChild()));
-            concat->addEol();
+            SWAG_CHECK(outputCompilerGlobal(node));
             break;
+
         case AstNodeKind::KeepRef:
             CONCAT_FIXED_STR(concat, "ref");
             concat->addBlank();

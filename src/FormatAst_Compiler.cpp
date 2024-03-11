@@ -248,3 +248,18 @@ bool FormatAst::outputCompilerCode(const AstNode* node)
     concat->addIndent(indent);
     return true;
 }
+
+bool FormatAst::outputCompilerGlobal(const AstNode* node)
+{
+    CONCAT_FIXED_STR(concat, "#global");
+    concat->addBlank();
+    SWAG_CHECK(outputNode(node->firstChild()));
+    if (node->secondChild())
+    {
+        concat->addBlank();
+        SWAG_CHECK(outputNode(node->secondChild()));
+    }
+    
+    concat->addEol();
+    return true;
+}

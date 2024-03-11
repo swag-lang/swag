@@ -511,7 +511,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     else if (tokenParse.token.text == g_LangSpec->name_testerror || tokenParse.token.text == g_LangSpec->name_testwarning)
     {
         // Put the file in its own module, because of errors/warnings
-        if (!sourceFile->module->isErrorModule)
+        if (!sourceFile->module->isErrorModule && !parserFlags.has(PARSER_TRACK_FORMAT))
         {
             const auto newModule = g_Workspace->createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind, true);
             const auto oldModule = sourceFile->module;
@@ -540,28 +540,30 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 
         if (tokenParse.token.text == g_LangSpec->name_testerror)
         {
-            SWAG_VERIFY(sourceFile->module->is(ModuleKind::Test), context->report({sourceFile, tokenParse.token, toErr(Err0435)}));
+            SWAG_VERIFY(sourceFile->module->is(ModuleKind::Test) || sourceFile->hasFlag(FILE_FOR_FORMAT), context->report({sourceFile, tokenParse.token, toErr(Err0435)}));
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), context->report({sourceFile, tokenParse.token, formErr(Err0518, tokenParse.token.c_str())}));
             sourceFile->tokenHasError = tokenParse.token;
             sourceFile->addFlag(FILE_SHOULD_HAVE_ERROR);
             module->shouldHaveError = true;
             sourceFile->shouldHaveErrorString.push_back(tokenParse.token.text);
-            const auto literal = Ast::newNode<AstLiteral>(AstNodeKind::Literal, this, globalDecl);
+            const auto literal   = Ast::newNode<AstLiteral>(AstNodeKind::Literal, this, globalDecl);
+            literal->literalType = LiteralType::TypeString;
             literal->addAstFlag(AST_NO_SEMANTIC);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(eatSemiCol("[[#global testerror]]"));
         }
         else
         {
-            SWAG_VERIFY(sourceFile->module->is(ModuleKind::Test), context->report({sourceFile, tokenParse.token, toErr(Err0436)}));
+            SWAG_VERIFY(sourceFile->module->is(ModuleKind::Test) || sourceFile->hasFlag(FILE_FOR_FORMAT), context->report({sourceFile, tokenParse.token, toErr(Err0436)}));
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), context->report({sourceFile, tokenParse.token, formErr(Err0519, tokenParse.token.c_str())}));
             sourceFile->tokenHasWarning = tokenParse.token;
             sourceFile->addFlag(FILE_SHOULD_HAVE_WARNING);
             module->shouldHaveWarning = true;
             sourceFile->shouldHaveWarningString.push_back(tokenParse.token.text);
-            const auto literal = Ast::newNode<AstLiteral>(AstNodeKind::Literal, this, globalDecl);
+            const auto literal   = Ast::newNode<AstLiteral>(AstNodeKind::Literal, this, globalDecl);
+            literal->literalType = LiteralType::TypeString;
             literal->addAstFlag(AST_NO_SEMANTIC);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(eatSemiCol("[[#global testwarning]]"));

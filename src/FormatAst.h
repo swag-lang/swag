@@ -73,6 +73,7 @@ struct FormatAst
     bool outputCompilerExpr(const AstNode* node);
     bool outputCompilerExport(const AstNode* node) const;
     bool outputCompilerCode(const AstNode* node);
+    bool outputCompilerGlobal(const AstNode* node);
     bool outputCompilerMixin(const AstNode* node);
     bool outputExpressionList(const AstNode* node);
     bool outputLiteral(const AstNode* node);
