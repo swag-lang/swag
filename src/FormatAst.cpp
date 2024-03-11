@@ -214,10 +214,9 @@ bool FormatAst::outputNamespace(const AstNode* node)
         return true;
     }
 
-    concat->addIndent(indent);
-
     if (!node->hasSpecFlag(AstNameSpace::SPEC_FLAG_PRIVATE))
     {
+        concat->addIndent(indent);
         CONCAT_FIXED_STR(concat, "namespace");
         concat->addBlank();
         concat->addString(node->token.text);
@@ -225,8 +224,7 @@ bool FormatAst::outputNamespace(const AstNode* node)
 
     if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_NO_CURLY))
     {
-        concat->addBlank();
-        outputNode(node->firstChild());
+        outputChildren(node);
     }
     else
     {
