@@ -200,8 +200,10 @@ bool FormatAst::outputEnum(const AstEnum* node)
     concat->addString(node->token.text);
 
     // Raw type
+    uint32_t first = 0;
     if (node->firstChild() && node->firstChild()->childCount())
     {
+        first = 1;
         concat->addBlank();
         concat->addChar(':');
         concat->addBlank();
@@ -215,12 +217,10 @@ bool FormatAst::outputEnum(const AstEnum* node)
     concat->addEol();
 
     indent++;
-    for (const auto it : node->children)
+    for (uint32_t it = first; it < node->children.size(); it++)
     {
-        const auto child = convertNode(it);
+        const auto child = convertNode(node->children[it]);
         if (!child)
-            continue;
-        if (!child->is(AstNodeKind::EnumValue))
             continue;
 
         beautifyBlankLine(child);
