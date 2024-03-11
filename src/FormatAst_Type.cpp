@@ -6,6 +6,18 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
+bool FormatAst::outputTypeExpression(const AstNode* node)
+{
+    if (node->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
+    {
+        CONCAT_FIXED_STR(concat, "#type");
+        concat->addBlank();
+    }
+
+    SWAG_CHECK(outputType(castAst<AstTypeExpression>(node)));
+    return true;
+}
+
 bool FormatAst::outputType(const AstTypeExpression* node)
 {
     if (node->typeFlags.has(TYPEFLAG_IS_RETVAL))

@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "FormatAst.h"
 #include "Ast.h"
 #include "AstFlags.h"
+#include "FormatAst.h"
 #include "Semantic.h"
 
 bool FormatAst::outputStatement(const AstNode* node)
@@ -166,5 +166,66 @@ bool FormatAst::outputNamespace(const AstNode* node)
         concat->addEol();
     }
 
+    return true;
+}
+
+bool FormatAst::outputDefer(const AstNode* node)
+{
+    const auto deferNode = castAst<AstDefer>(node, AstNodeKind::Defer);
+
+    CONCAT_FIXED_STR(concat, "defer");
+    switch (deferNode->deferKind)
+    {
+        case DeferKind::Error:
+            concat->addChar('(');
+            CONCAT_FIXED_STR(concat, "err");
+            concat->addChar(')');
+            break;
+        case DeferKind::NoError:
+            concat->addChar('(');
+            CONCAT_FIXED_STR(concat, "noerr");
+            concat->addChar(')');
+            break;
+    }
+
+    concat->addBlank();
+    SWAG_CHECK(outputNode(node->firstChild()));
+    concat->addEol();
+    return true;
+}
+
+bool FormatAst::outputTryAssume(const AstNode* node)
+{
+    if (node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED) && node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK))
+    {
+        indent++;
+        outputChildren(node->firstChild());
+        indent--;
+        return true;
+    }
+
+    if (node->hasAstFlag(AST_DISCARD))
+    {
+        CONCAT_FIXED_STR(concat, "discard");
+        concat->addBlank();
+    }
+
+    concat->addString(node->token.text);
+    concat->addBlank();
+    SWAG_CHECK(outputNode(node->firstChild()));
+    return true;
+}
+
+bool FormatAst::outputCatch(const AstNode* node)
+{
+    if (node->hasAstFlag(AST_DISCARD))
+    {
+        CONCAT_FIXED_STR(concat, "discard");
+        concat->addBlank();
+    }
+
+    concat->addString(node->token.text);
+    concat->addBlank();
+    SWAG_CHECK(outputNode(node->firstChild()));
     return true;
 }

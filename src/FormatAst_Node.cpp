@@ -103,18 +103,7 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::CompilerCode:
-            concat->addChar(')');
-            concat->addEol();
-            concat->addIndent(indent);
-            concat->addChar('{');
-            concat->addEol();
-            concat->addIndent(indent);
-            SWAG_CHECK(outputNode(node->firstChild()));
-            concat->addEol();
-            concat->addIndent(indent);
-            concat->addChar('}');
-            concat->addEol();
-            concat->addIndent(indent);
+            SWAG_CHECK(outputCompilerCode(node));
             break;
 
         case AstNodeKind::With:
@@ -128,37 +117,12 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
 
         case AstNodeKind::Try:
         case AstNodeKind::Assume:
-            if (node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED) && node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK))
-            {
-                indent++;
-                outputChildren(node->firstChild());
-                indent--;
-            }
-            else
-            {
-                if (node->hasAstFlag(AST_DISCARD))
-                {
-                    CONCAT_FIXED_STR(concat, "discard");
-                    concat->addBlank();
-                }
-
-                concat->addString(node->token.text);
-                concat->addBlank();
-                SWAG_CHECK(outputNode(node->firstChild()));
-            }
+            SWAG_CHECK(outputTryAssume(node));
             break;
 
         case AstNodeKind::Catch:
         case AstNodeKind::TryCatch:
-            if (node->hasAstFlag(AST_DISCARD))
-            {
-                CONCAT_FIXED_STR(concat, "discard");
-                concat->addBlank();
-            }
-
-            concat->addString(node->token.text);
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->firstChild()));
+            SWAG_CHECK(outputCatch(node));
             break;
 
         case AstNodeKind::FuncCallParam:
@@ -223,28 +187,8 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::Defer:
-        {
-            const auto deferNode = castAst<AstDefer>(node, AstNodeKind::Defer);
-            CONCAT_FIXED_STR(concat, "defer");
-            switch (deferNode->deferKind)
-            {
-                case DeferKind::Error:
-                    concat->addChar('(');
-                    CONCAT_FIXED_STR(concat, "err");
-                    concat->addChar(')');
-                    break;
-                case DeferKind::NoError:
-                    concat->addChar('(');
-                    CONCAT_FIXED_STR(concat, "noerr");
-                    concat->addChar(')');
-                    break;
-            }
-
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->firstChild()));
-            concat->addEol();
+            SWAG_CHECK(outputDefer(node));
             break;
-        }
 
         case AstNodeKind::AttrUse:
             SWAG_CHECK(outputAttrUse(castAst<AstAttrUse>(node, AstNodeKind::AttrUse)));
@@ -292,8 +236,11 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             SWAG_CHECK(outputNode(node->firstChild()));
             break;
         case AstNodeKind::MakePointerLambda:
-            SWAG_CHECK(outputLambdaExpression(castAst<AstMakePointer>(node, AstNodeKind::MakePointerLambda)->lambda));
+        {
+            const auto lambdaDecl = castAst<AstMakePointer>(node, AstNodeKind::MakePointerLambda);
+            SWAG_CHECK(outputLambdaExpression(lambdaDecl->lambda));
             break;
+        }
 
         case AstNodeKind::ArrayPointerSlicing:
             SWAG_CHECK(outputArrayPointerSlicing(node));
@@ -518,30 +465,11 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::Cast:
-            CONCAT_FIXED_STR(concat, "cast");
-            if (node->hasSpecFlag(AstCast::SPEC_FLAG_OVERFLOW))
-                CONCAT_FIXED_STR(concat, ",over");
-            if (node->hasSpecFlag(AstCast::SPEC_FLAG_BIT))
-                CONCAT_FIXED_STR(concat, ",bit");
-            if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
-                CONCAT_FIXED_STR(concat, ",unconst");
-
-            concat->addChar('(');
-            SWAG_CHECK(outputNode(node->firstChild()));
-            concat->addChar(')');
-
-            concat->addBlank();
-            SWAG_CHECK(outputNode(node->secondChild()));
+            SWAG_CHECK(outputCast(node));
             break;
 
         case AstNodeKind::TypeExpression:
-            if (node->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
-            {
-                CONCAT_FIXED_STR(concat, "#type");
-                concat->addBlank();
-            }
-
-            SWAG_CHECK(outputType(castAst<AstTypeExpression>(node)));
+            SWAG_CHECK(outputTypeExpression(node));
             break;
 
         case AstNodeKind::Literal:

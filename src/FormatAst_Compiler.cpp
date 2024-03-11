@@ -199,7 +199,7 @@ bool FormatAst::outputCompilerExpr(const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputCompilerExport(const AstNode* node)
+bool FormatAst::outputCompilerExport(const AstNode* node) const
 {
     const auto decl = castAst<AstCompilerImport>(node, AstNodeKind::CompilerImport);
     CONCAT_FIXED_STR(concat, "#import");
@@ -229,5 +229,22 @@ bool FormatAst::outputCompilerExport(const AstNode* node)
     }
 
     concat->addEol();
+    return true;
+}
+
+bool FormatAst::outputCompilerCode(const AstNode* node)
+{
+    concat->addChar(')');
+    concat->addEol();
+    concat->addIndent(indent);
+    concat->addChar('{');
+    concat->addEol();
+    concat->addIndent(indent);
+    SWAG_CHECK(outputNode(node->firstChild()));
+    concat->addEol();
+    concat->addIndent(indent);
+    concat->addChar('}');
+    concat->addEol();
+    concat->addIndent(indent);
     return true;
 }

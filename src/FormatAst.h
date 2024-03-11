@@ -71,7 +71,8 @@ struct FormatAst
     bool outputCompilerSpecialValue(const AstNode* node) const;
     bool outputCompilerIf(const Utf8& name, const AstNode* node);
     bool outputCompilerExpr(const AstNode* node);
-    bool outputCompilerExport(const AstNode* node);
+    bool outputCompilerExport(const AstNode* node) const;
+    bool outputCompilerCode(const AstNode* node);
     bool outputCompilerMixin(const AstNode* node);
     bool outputExpressionList(const AstNode* node);
     bool outputLiteral(const AstNode* node);
@@ -82,6 +83,7 @@ struct FormatAst
     bool outputTupleDeclContent(const AstNode* node);
     bool outputStructDecl(const AstStruct* node);
     bool outputTypeTuple(TypeInfo* typeInfo);
+    bool outputTypeExpression(const AstNode* node);
     bool outputType(const AstTypeExpression* node);
     bool outputType(const AstNode* node, TypeInfo* typeInfo);
     bool outputScopeContent(const Module* module, const Scope* scope);
@@ -95,6 +97,9 @@ struct FormatAst
     bool outputSwitch(const AstNode* node);
     bool outputIf(const Utf8& name, const AstNode* node);
     bool outputNamespace(const AstNode* node);
+    bool outputDefer(const AstNode* node);
+    bool outputTryAssume(const AstNode* node);
+    bool outputCatch(const AstNode* node);
     bool outputImpl(const AstNode* node);
     bool outputIdentifier(const AstNode* node);
     bool outputIdentifierRef(const AstNode* node);
@@ -105,6 +110,7 @@ struct FormatAst
     bool outputBinaryOp(const AstNode* node);
     bool outputNullConditionalExpression(const AstNode* node);
     bool outputConditionalExpression(const AstNode* node);
+    bool outputCast(const AstNode* node);
     bool outputNode(const AstNode* node, bool cmtAfter = true);
 
     FormatConcat  inConcat;

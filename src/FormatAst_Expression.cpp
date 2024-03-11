@@ -149,3 +149,22 @@ bool FormatAst::outputConditionalExpression(const AstNode* node)
         concat->addChar(')');
     return true;
 }
+
+bool FormatAst::outputCast(const AstNode* node)
+{
+    CONCAT_FIXED_STR(concat, "cast");
+    if (node->hasSpecFlag(AstCast::SPEC_FLAG_OVERFLOW))
+        CONCAT_FIXED_STR(concat, ",over");
+    if (node->hasSpecFlag(AstCast::SPEC_FLAG_BIT))
+        CONCAT_FIXED_STR(concat, ",bit");
+    if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
+        CONCAT_FIXED_STR(concat, ",unconst");
+
+    concat->addChar('(');
+    SWAG_CHECK(outputNode(node->firstChild()));
+    concat->addChar(')');
+
+    concat->addBlank();
+    SWAG_CHECK(outputNode(node->secondChild()));
+    return true;
+}
