@@ -61,10 +61,10 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc", "--verbose-ctypes", nullptr, CommandLineType::Bool, &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
     addArg("bu sc te doc", "--verbose-stages", nullptr, CommandLineType::Bool, &cmdLine->verboseStages, nullptr, "log compiler stages");
 
-    addArg("bu sc doc", "--error-one-line", "-el", CommandLineType::Bool, &cmdLine->errorOneLine, nullptr, "display errors in a single line");
-    addArg("bu sc doc", "--error-absolute", "-ea", CommandLineType::Bool, &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
-    addArg("bu sc doc", "--error-syntax-color", "-es", CommandLineType::Bool, &cmdLine->errorSyntaxColor, nullptr, "syntax color code when an error is raised");
-    addArg("bu sc doc", "--error-syntax-color-lum", nullptr, CommandLineType::Bool, &cmdLine->errorSyntaxColorLum, nullptr, "syntax color luminosity factor [0..1]");
+    addArg("bu sc doc fmt", "--error-one-line", "-el", CommandLineType::Bool, &cmdLine->errorOneLine, nullptr, "display errors in a single line");
+    addArg("bu sc doc fmt", "--error-absolute", "-ea", CommandLineType::Bool, &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
+    addArg("bu sc doc fmt", "--error-syntax-color", "-es", CommandLineType::Bool, &cmdLine->errorSyntaxColor, nullptr, "syntax color code when an error is raised");
+    addArg("bu sc doc fmt", "--error-syntax-color-lum", nullptr, CommandLineType::Bool, &cmdLine->errorSyntaxColorLum, nullptr, "syntax color luminosity factor [0..1]");
 
     addArg("bu ne cl li ge doc", "--workspace", "-w", CommandLineType::StringPath, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne doc", "--module", "-m", CommandLineType::String, &cmdLine->moduleName, nullptr, "module name");
