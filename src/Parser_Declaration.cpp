@@ -129,7 +129,7 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doUsing(AstNode* parent, AstNode** result)
+bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
 {
     auto savedToken = tokenParse;
     SWAG_CHECK(eatToken());
@@ -183,8 +183,10 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
         }
     }
 
-    const auto node   = Ast::newNode<AstUsing>(AstNodeKind::Using, this, parent);
-    *result           = node;
+    const auto node = Ast::newNode<AstUsing>(AstNodeKind::Using, this, parent);
+    *result         = node;
+    if (isGlobal)
+        node->addAstFlag(AST_GLOBAL_NODE);
     node->semanticFct = Semantic::resolveUsing;
     node->inheritFormatFromBefore(this, savedToken);
 
@@ -797,7 +799,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken());
             break;
         case TokenId::KwdUsing:
-            SWAG_CHECK(doUsing(parent, result));
+            SWAG_CHECK(doUsing(parent, result, false));
             break;
         case TokenId::KwdWith:
             SWAG_CHECK(doWith(parent, result));
@@ -987,7 +989,7 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
             SWAG_CHECK(doAttrDecl(parent, result));
             break;
         case TokenId::KwdUsing:
-            SWAG_CHECK(doUsing(parent, result));
+            SWAG_CHECK(doUsing(parent, result, false));
             break;
         case TokenId::SymAttrStart:
         {

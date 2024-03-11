@@ -449,6 +449,12 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::Using:
+            if (node->hasAstFlag(AST_GLOBAL_NODE))
+            {
+                CONCAT_FIXED_STR(concat, "#global");
+                concat->addBlank();
+            }
+
             CONCAT_FIXED_STR(concat, "using");
             concat->addBlank();
             SWAG_CHECK(outputCommaChildren(node));
