@@ -154,7 +154,8 @@ struct Parser
     bool doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result);
     bool doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result);
     bool doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl = false);
-    bool doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl);
+    bool doLambdaClosureType(AstTypeLambda* node, bool inTypeVarDecl);
+    bool doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, AstNode* params);
     bool doDefer(AstNode* parent, AstNode** result);
     bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet = false);
     bool doAffectExpression(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
