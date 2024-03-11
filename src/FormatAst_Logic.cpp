@@ -82,10 +82,16 @@ bool FormatAst::outputVisit(const AstNode* node)
 {
     const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
     CONCAT_FIXED_STR(concat, "visit");
+    if (!visitNode->extraNameToken.text.empty())
+    {
+        concat->addChar(':');
+        concat->addString(visitNode->extraNameToken.text);
+    }
+
     if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
         CONCAT_FIXED_STR(concat, ",back");
-    concat->addBlank();
 
+    concat->addBlank();
     if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         concat->addChar('&');
 
