@@ -3533,7 +3533,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">returnY</span>(<span class="SKwd">self</span>)       =&gt; <span class="SKwd">self</span>.y
 
     <span class="SCmt">// 'Self' is the corresponding type, in that case 'MyStruct'</span>
-    <span class="SKwd">func</span> <span class="SFct">returnZ</span>(me: <span class="SKwd">Self</span>)   =&gt; me.z
+    <span class="SKwd">func</span> <span class="SFct">returnZ</span>(me: <span class="STpe">Self</span>)   =&gt; me.z
 }</span></div>
 <p>If you declare your function with <span class="code-inline">mtd</span> (method) instead of <span class="code-inline">func</span>, then the first parameter is forced to be <span class="code-inline">using self</span>. If you declare your function with <span class="code-inline">mtd const</span> (method const) instead of <span class="code-inline">func</span>, then the first parameter is forced to be <span class="code-inline">const using self</span>. Other than that, it's exactly the same. So this is just <b>syntaxic sugar</b> to avoid repeating the <span class="code-inline">using self</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
@@ -3671,14 +3671,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Generic function, can be overloaded</span>
     <span class="SCmt">// Called by '+', '-', '*', '/', '%', '|', '&', '^', '&lt;&lt;', '&gt;&gt;'</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="SKwd">Self</span>     { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">Self</span>     { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="SKwd">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
 
     <span class="SCmt">// Unary operator. 'op' generic argument contains the operator string (see below)</span>
     <span class="SCmt">// Generic function</span>
     <span class="SCmt">// Called by '!', '-', '~'</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
 
     <span class="SCmt">// Affect operator. 'op' generic argument contains the operator string (see below)</span>
     <span class="SCmt">// Generic function, can be overloaded</span>
@@ -7469,7 +7469,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation_md__231_003_Pages_md">Pages.md</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 07-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
+Generated on 11-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
 </div>
 </div>
 </div>
