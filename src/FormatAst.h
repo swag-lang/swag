@@ -98,6 +98,8 @@ struct FormatAst
     bool outputImpl(const AstNode* node);
     bool outputIdentifier(const AstNode* node);
     bool outputIdentifierRef(const AstNode* node);
+    bool outputArrayPointerSlicing(const AstNode* node);
+    bool outputArrayPointerIndex(const AstNode* node);
 
     bool outputNode(const AstNode* node, bool cmtAfter = true);
 
