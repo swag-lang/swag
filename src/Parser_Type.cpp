@@ -243,59 +243,55 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
 
 bool Parser::doLambdaClosureType(AstTypeLambda* node, bool inTypeVarDecl)
 {
+    SWAG_ASSERT(tokenParse.token.id == TokenId::KwdClosure || tokenParse.token.id == TokenId::KwdFunc);
+
     AstTypeExpression* firstAddedType = nullptr;
     AstNode*           params         = nullptr;
 
-    switch (tokenParse.token.id)
+    if (tokenParse.token.id == TokenId::KwdFunc)
     {
-        case TokenId::KwdClosure:
-            node->kind = AstNodeKind::TypeClosure;
-            SWAG_CHECK(eatToken());
-
-            // :ClosureForceFirstParam
-            // A closure always has at least one parameter : the capture context
-            params                   = Ast::newNode<AstNode>(AstNodeKind::FuncDeclParams, this, node);
-            node->parameters         = params;
-            firstAddedType           = Ast::newTypeExpression(nullptr, params);
-            firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-            firstAddedType->addAstFlag(AST_NO_SEMANTIC | AST_GENERATED);
-            break;
-
-        case TokenId::KwdFunc:
-            node->kind = AstNodeKind::TypeLambda;
-            SWAG_CHECK(eatToken());
-            break;
-
-        default:
-            SWAG_ASSERT(false);
-            break;
+        node->kind = AstNodeKind::TypeLambda;
+        SWAG_CHECK(eatToken());
     }
-
-    // If we are in a type declaration, then this must be a FuncDeclParam and not a TypeExpression
-    if (inTypeVarDecl && firstAddedType)
+    else if (tokenParse.token.id == TokenId::KwdClosure)
     {
-        Utf8 nameVar;
-        if (firstAddedType->typeFlags.has(TYPEFLAG_IS_SELF))
+        node->kind = AstNodeKind::TypeClosure;
+        SWAG_CHECK(eatToken());
+
+        // :ClosureForceFirstParam
+        // A closure always has at least one parameter : the capture context
+        params                   = Ast::newNode<AstNode>(AstNodeKind::FuncDeclParams, this, node);
+        node->parameters         = params;
+        firstAddedType           = Ast::newTypeExpression(nullptr, params);
+        firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
+        firstAddedType->addAstFlag(AST_NO_SEMANTIC | AST_GENERATED);
+    
+        // If we are in a type declaration, then this must be a FuncDeclParam and not a TypeExpression
+        if (inTypeVarDecl)
         {
-            firstAddedType->token.text = g_LangSpec->name_self;
-            nameVar                    = g_LangSpec->name_self;
+            Utf8 nameVar;
+            if (firstAddedType->typeFlags.has(TYPEFLAG_IS_SELF))
+            {
+                firstAddedType->token.text = g_LangSpec->name_self;
+                nameVar                    = g_LangSpec->name_self;
+            }
+            else
+            {
+                nameVar = form("__%d", g_UniqueID.fetch_add(1));
+            }
+
+            const auto param = Ast::newVarDecl(nameVar, this, params, AstNodeKind::FuncDeclParam);
+            if (firstAddedType->typeFlags.has(TYPEFLAG_IS_SELF))
+                param->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
+
+            param->addExtraPointer(ExtraPointerKind::ExportNode, firstAddedType);
+            param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+
+            Ast::removeFromParent(firstAddedType);
+            Ast::addChildBack(param, firstAddedType);
+            param->type = firstAddedType;
+            param->inheritTokenLocation(firstAddedType->token);
         }
-        else
-        {
-            nameVar = form("__%d", g_UniqueID.fetch_add(1));
-        }
-
-        const auto param = Ast::newVarDecl(nameVar, this, params, AstNodeKind::FuncDeclParam);
-        if (firstAddedType->typeFlags.has(TYPEFLAG_IS_SELF))
-            param->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
-
-        param->addExtraPointer(ExtraPointerKind::ExportNode, firstAddedType);
-        param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
-
-        Ast::removeFromParent(firstAddedType);
-        Ast::addChildBack(param, firstAddedType);
-        param->type = firstAddedType;
-        param->inheritTokenLocation(firstAddedType->token);
     }
 
     // Parameters
