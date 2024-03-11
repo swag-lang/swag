@@ -278,7 +278,7 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
         CONCAT_FIXED_STR(concat, "func");
     }
 
-    SWAG_CHECK(outputNode(funcDecl->parameters));
+    SWAG_CHECK(outputFuncDeclParameters(funcDecl->parameters, false));
     SWAG_CHECK(outputFuncReturnType(funcDecl));
 
     if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
