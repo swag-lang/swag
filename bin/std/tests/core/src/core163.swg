@@ -1,4 +1,4 @@
-﻿
+﻿//toto
 using Core.File
 
 //#[Swag.PrintBc]
@@ -8,7 +8,7 @@ using Core.File
     var res = catch readAllLines(loc.fileName)
     @assert(@err() == null)
     @assert(res.count > 5)
-    @assert(res[0] == "")
+    @assert(res[0] == "//toto")
 
     /*visit l: res.lines
     {
