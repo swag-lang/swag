@@ -235,7 +235,7 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
     return true;
 }
 
-bool FormatAst::outputClosureArguments(const AstFuncDecl* funcNode) const
+bool FormatAst::outputClosureArguments(const AstFuncDecl* funcNode)
 {
     concat->addChar('|');
 
@@ -266,7 +266,7 @@ bool FormatAst::outputClosureArguments(const AstFuncDecl* funcNode) const
             child = child->firstChild();
         }
 
-        concat->addString(child->token.text);
+        SWAG_CHECK(outputNode(child));
     }
 
     concat->addChar('|');

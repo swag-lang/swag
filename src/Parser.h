@@ -112,7 +112,7 @@ struct Parser
     bool        checkIsValidVarName(AstNode* node) const;
     bool        doCheckPublicInternalPrivate(const Token& tokenAttr) const;
     void        registerSubDecl(AstNode* subDecl);
-    static void isForceTakeAddress(AstNode* node);
+    static void setForceTakeAddress(AstNode* node);
 
     bool doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags exprFlags, bool isUnion);
     bool doCompilerScopeBreakable(AstNode* parent, AstNode** result);

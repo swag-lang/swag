@@ -1090,7 +1090,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
                 SWAG_CHECK(doIdentifierRef(parentId, &idRef, IDENTIFIER_NO_PARAMS));
 
                 if (byRef)
-                    isForceTakeAddress(idRef);
+                    setForceTakeAddress(idRef);
 
                 if (tokenParse.is(TokenId::SymVertical))
                     break;
@@ -1200,8 +1200,8 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         deduceMissingType = true;
     }
 
-    // We accept missing types if lambda is in a variable declaration with a type, because we can deduce them from the
-    // type
+    // We accept missing types if lambda is in a variable declaration with a type, because we can deduce
+    // them from the type
     else if (exprFlags.has(EXPR_FLAG_IN_VAR_DECL_WITH_TYPE))
     {
         acceptMissingType = true;
@@ -1254,7 +1254,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         AstNode* identifierRef = Ast::newIdentifierRef(lambda->token.text, this, exprNode);
         identifierRef->inheritTokenLocation(lambda->token);
         identifierRef->lastChild()->inheritTokenLocation(lambda->token);
-        isForceTakeAddress(identifierRef);
+        setForceTakeAddress(identifierRef);
 
         // Create the capture block (a tuple)
         const auto nameCaptureBlock = form(R"(__captureblock%d)", g_UniqueID.fetch_add(1));
@@ -1277,7 +1277,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         identifierRef = Ast::newIdentifierRef(nameCaptureBlock, this, exprNode);
         identifierRef->inheritTokenLocation(lambdaDecl->captureParameters->token);
         identifierRef->lastChild()->inheritTokenLocation(lambdaDecl->captureParameters->token);
-        isForceTakeAddress(identifierRef);
+        setForceTakeAddress(identifierRef);
     }
     else
     {
@@ -1285,7 +1285,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         AstNode* identifierRef = Ast::newIdentifierRef(lambda->token.text, this, exprNode);
         identifierRef->inheritTokenLocation(lambda->token);
         identifierRef->lastChild()->inheritTokenLocation(lambda->token);
-        isForceTakeAddress(identifierRef);
+        setForceTakeAddress(identifierRef);
     }
 
     // :DeduceLambdaType
