@@ -248,7 +248,7 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
         bool first = true;
         for (const auto it : funcDecl->captureParameters->children)
         {
-            const auto child = convertNode(it);
+            auto child = convertNode(it);
             if (!child)
                 continue;
 
@@ -262,13 +262,17 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
 
             if (child->is(AstNodeKind::MakePointer))
             {
-                concat->addChar('&');
-                concat->addString(child->firstChild()->token.text);
+                if (child->hasSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF))
+                {
+                    CONCAT_FIXED_STR(concat, "ref");
+                    concat->addBlank();
+                }
+                else
+                    concat->addChar('&');
+                child = child->firstChild();
             }
-            else
-            {
-                concat->addString(child->token.text);
-            }
+
+            concat->addString(child->token.text);
         }
 
         concat->addChar('|');
