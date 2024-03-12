@@ -235,6 +235,44 @@ bool FormatAst::outputFuncDecl(const AstFuncDecl* node)
     return true;
 }
 
+bool FormatAst::outputClosureArguments(const AstFuncDecl* funcNode) const
+{
+    concat->addChar('|');
+
+    bool first = true;
+    for (const auto it : funcNode->captureParameters->children)
+    {
+        auto child = convertNode(it);
+        if (!child)
+            continue;
+
+        if (!first)
+        {
+            concat->addChar(',');
+            concat->addBlank();
+        }
+
+        first = false;
+
+        if (child->is(AstNodeKind::MakePointer))
+        {
+            if (child->hasSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF))
+            {
+                CONCAT_FIXED_STR(concat, "ref");
+                concat->addBlank();
+            }
+            else
+                concat->addChar('&');
+            child = child->firstChild();
+        }
+
+        concat->addString(child->token.text);
+    }
+
+    concat->addChar('|');
+    return true;
+}
+
 bool FormatAst::outputLambdaExpression(const AstNode* node)
 {
     const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
@@ -243,39 +281,7 @@ bool FormatAst::outputLambdaExpression(const AstNode* node)
     if (funcDecl->captureParameters)
     {
         CONCAT_FIXED_STR(concat, "closure");
-        concat->addChar('|');
-
-        bool first = true;
-        for (const auto it : funcDecl->captureParameters->children)
-        {
-            auto child = convertNode(it);
-            if (!child)
-                continue;
-
-            if (!first)
-            {
-                concat->addChar(',');
-                concat->addBlank();
-            }
-
-            first = false;
-
-            if (child->is(AstNodeKind::MakePointer))
-            {
-                if (child->hasSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF))
-                {
-                    CONCAT_FIXED_STR(concat, "ref");
-                    concat->addBlank();
-                }
-                else
-                    concat->addChar('&');
-                child = child->firstChild();
-            }
-
-            concat->addString(child->token.text);
-        }
-
-        concat->addChar('|');
+        SWAG_CHECK(outputClosureArguments(funcDecl));
     }
     else
     {

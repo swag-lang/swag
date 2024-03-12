@@ -52,6 +52,7 @@ struct FormatAst
     void beautifyAfter(const AstNode* node) const;
     void beautifyBlankLine(const AstNode* node) const;
 
+    bool outputClosureArguments(const AstFuncDecl* funcNode) const;
     bool outputLambdaExpression(const AstNode* node);
     bool outputEnum(const AstEnum* node);
     bool outputFuncDecl(const AstFuncDecl* node);
