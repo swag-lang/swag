@@ -181,9 +181,6 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             else
                 param->inheritTokenLocation(typeExpr->token);
 
-            if (namedParam)
-                param->addExtraPointer(ExtraPointerKind::IsNamed, namedParam);
-
             if (tokenParse.is(TokenId::SymEqual))
             {
                 thisIsAType = false;
