@@ -37,7 +37,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 
     // Parameters
     {
-        Scoped scoped(this, newScope);
+        ParserPushScope scoped(this, newScope);
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }

@@ -1058,9 +1058,9 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
     {
         case TokenId::CompilerRun:
         {
-            ScopedFlags sf(this, AST_IN_RUN_BLOCK);
-            const auto  node  = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerRunExpression, this, nullptr);
-            node->semanticFct = Semantic::resolveCompilerRun;
+            ParserPushAstFlags sf(this, AST_IN_RUN_BLOCK);
+            const auto         node = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerRunExpression, this, nullptr);
+            node->semanticFct       = Semantic::resolveCompilerRun;
             SWAG_CHECK(eatToken());
 
             // :RunGeneratedExp

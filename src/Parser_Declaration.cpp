@@ -68,9 +68,9 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
         newScope = newScope->parentScope;
 
     SWAG_ASSERT(newScope);
-    Scoped     scoped(this, newScope);
-    const auto attrUse = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
-    *result            = attrUse;
+    ParserPushScope scoped(this, newScope);
+    const auto      attrUse = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
+    *result                 = attrUse;
     attrUse->addAstFlag(AST_GENERATED | AST_GENERATED_USER);
     attrUse->attributeFlags = attr;
     SWAG_CHECK(eatToken());
@@ -320,7 +320,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
     if (forGlobal)
     {
         SWAG_CHECK(eatSemiCol("[[#global namespace]]"));
-        Scoped scoped(this, newScope);
+        ParserPushScope scoped(this, newScope);
         while (tokenParse.isNot(TokenId::EndOfFile))
             SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
     }
@@ -332,14 +332,14 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         if (tokenParse.is(TokenId::SymLeftCurly))
         {
             eatToken();
-            Scoped scoped(this, newScope);
+            ParserPushScope scoped(this, newScope);
             while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
                 SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
             SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the namespace body"));
         }
         else
         {
-            Scoped scoped(this, newScope);
+            ParserPushScope scoped(this, newScope);
             SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
             firstNameSpace->addSpecFlag(AstNameSpace::SPEC_FLAG_NO_CURLY);
         }
@@ -395,8 +395,8 @@ bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 
 bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind)
 {
-    const auto newScope = Ast::newScope(parent, "", scopeKind, currentScope);
-    Scoped     scoped(this, newScope);
+    const auto      newScope = Ast::newScope(parent, "", scopeKind, currentScope);
+    ParserPushScope scoped(this, newScope);
 
     AstNode* node;
     SWAG_CHECK(doCurlyStatement(parent, &node));
@@ -446,9 +446,9 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
 
         const auto newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
 
-        Scoped   scoped(this, newScope);
-        AstNode* statement = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
-        *result            = statement;
+        ParserPushScope scoped(this, newScope);
+        AstNode*        statement = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
+        *result                   = statement;
 
         statement->allocateExtension(ExtensionKind::Semantic);
         statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
@@ -636,7 +636,7 @@ bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
     }
 
-    ScopedBreakable scoped(this, labelNode);
+    ParserPushBreakable scoped(this, labelNode);
     SWAG_CHECK(doEmbeddedInstruction(labelNode, &labelNode->block));
     return true;
 }

@@ -5,16 +5,16 @@ struct AstFuncDecl;
 struct AstCompilerIfBlock;
 struct AstTryCatchAssume;
 
-struct Scoped
+struct ParserPushScope
 {
-    Scoped(Parser* parser, Scope* newScope) :
+    explicit ParserPushScope(Parser* parser, Scope* newScope) :
         savedParser(parser)
     {
         savedScope                = parser->currentScope;
         savedParser->currentScope = newScope;
     }
 
-    ~Scoped()
+    ~ParserPushScope()
     {
         savedParser->currentScope = savedScope;
     }
@@ -23,16 +23,16 @@ struct Scoped
     Scope*  savedScope;
 };
 
-struct ScopedBreakable
+struct ParserPushBreakable
 {
-    ScopedBreakable(Parser* parser, AstBreakable* newNode) :
+    explicit ParserPushBreakable(Parser* parser, AstBreakable* newNode) :
         savedParser(parser)
     {
         savedNode                     = parser->currentBreakable;
         savedParser->currentBreakable = newNode;
     }
 
-    ~ScopedBreakable()
+    ~ParserPushBreakable()
     {
         savedParser->currentBreakable = savedNode;
     }
@@ -41,16 +41,16 @@ struct ScopedBreakable
     AstBreakable* savedNode;
 };
 
-struct ScopedTryCatchAssume
+struct ParserPushTryCatchAssume
 {
-    ScopedTryCatchAssume(Parser* parser, AstTryCatchAssume* newNode) :
+    explicit ParserPushTryCatchAssume(Parser* parser, AstTryCatchAssume* newNode) :
         savedParser(parser)
     {
         savedNode                          = parser->currentTryCatchAssume;
         savedParser->currentTryCatchAssume = newNode;
     }
 
-    ~ScopedTryCatchAssume()
+    ~ParserPushTryCatchAssume()
     {
         savedParser->currentTryCatchAssume = savedNode;
     }
@@ -59,16 +59,16 @@ struct ScopedTryCatchAssume
     AstTryCatchAssume* savedNode;
 };
 
-struct ScopedFct
+struct ParserPushCurrentFct
 {
-    ScopedFct(Parser* parser, AstFuncDecl* newFct) :
+    explicit ParserPushCurrentFct(Parser* parser, AstFuncDecl* newFct) :
         savedParser(parser)
     {
         savedFct                = parser->currentFct;
         savedParser->currentFct = newFct;
     }
 
-    ~ScopedFct()
+    ~ParserPushCurrentFct()
     {
         savedParser->currentFct = savedFct;
     }
@@ -77,16 +77,16 @@ struct ScopedFct
     AstFuncDecl* savedFct;
 };
 
-struct ScopedCompilerIfBlock
+struct ParserPushCompilerIfBlock
 {
-    ScopedCompilerIfBlock(Parser* parser, AstCompilerIfBlock* newIf) :
+    explicit ParserPushCompilerIfBlock(Parser* parser, AstCompilerIfBlock* newIf) :
         savedParser(parser)
     {
         savedIf                        = parser->currentCompilerIfBlock;
         parser->currentCompilerIfBlock = newIf;
     }
 
-    ~ScopedCompilerIfBlock()
+    ~ParserPushCompilerIfBlock()
     {
         savedParser->currentCompilerIfBlock = savedIf;
     }
@@ -95,16 +95,16 @@ struct ScopedCompilerIfBlock
     AstCompilerIfBlock* savedIf;
 };
 
-struct ScopedFlags
+struct ParserPushAstFlags
 {
-    ScopedFlags(Parser* parser, AstNodeFlags newFlags) :
+    explicit ParserPushAstFlags(Parser* parser, AstNodeFlags newFlags) :
         savedParser(parser)
     {
         savedFlags = parser->currentAstNodeFlags;
         savedParser->currentAstNodeFlags.add(newFlags);
     }
 
-    ~ScopedFlags()
+    ~ParserPushAstFlags()
     {
         savedParser->currentAstNodeFlags = savedFlags;
     }
@@ -113,16 +113,16 @@ struct ScopedFlags
     AstNodeFlags savedFlags;
 };
 
-struct ScopedStruct
+struct ParserPushStructScope
 {
-    ScopedStruct(Parser* parser, Scope* structScope) :
+    explicit ParserPushStructScope(Parser* parser, Scope* structScope) :
         savedParser(parser)
     {
         savedStruct                     = parser->currentStructScope;
         savedParser->currentStructScope = structScope;
     }
 
-    ~ScopedStruct()
+    ~ParserPushStructScope()
     {
         savedParser->currentStructScope = savedStruct;
     }
@@ -131,16 +131,16 @@ struct ScopedStruct
     Scope*  savedStruct;
 };
 
-struct ScopedSelfStruct
+struct ParserPushSelfStructScope
 {
-    ScopedSelfStruct(Parser* parser, Scope* structScope) :
+    explicit ParserPushSelfStructScope(Parser* parser, Scope* structScope) :
         savedParser(parser)
     {
         savedStruct                         = parser->currentSelfStructScope;
         savedParser->currentSelfStructScope = structScope;
     }
 
-    ~ScopedSelfStruct()
+    ~ParserPushSelfStructScope()
     {
         savedParser->currentSelfStructScope = savedStruct;
     }
@@ -149,15 +149,15 @@ struct ScopedSelfStruct
     Scope*  savedStruct;
 };
 
-struct ScopedFreezeFormat
+struct ParserPushFreezeFormat
 {
-    ScopedFreezeFormat(Parser* parser) :
+    explicit ParserPushFreezeFormat(Parser* parser) :
         savedParser(parser)
     {
         savedParser->freezeFormat++;
     }
 
-    ~ScopedFreezeFormat()
+    ~ParserPushFreezeFormat()
     {
         SWAG_ASSERT(savedParser->freezeFormat);
         savedParser->freezeFormat--;

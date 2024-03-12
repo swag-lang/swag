@@ -17,9 +17,9 @@ bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeV
 
     if (inTypeVarDecl)
     {
-        const auto  newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
-        Scoped      scoped(this, newScope);
-        ScopedFlags sf(this, AST_IN_TYPE_VAR_DECLARATION);
+        const auto         newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
+        ParserPushScope    scoped(this, newScope);
+        ParserPushAstFlags sf(this, AST_IN_TYPE_VAR_DECLARATION);
         SWAG_CHECK(doLambdaClosureType(node, inTypeVarDecl));
     }
     else
@@ -355,9 +355,9 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags expr
     structNode->scope   = newScope;
 
     {
-        ScopedSelfStruct sf(this, parent->ownerStructScope);
-        Scoped           sc(this, structNode->scope);
-        ScopedStruct     ss(this, structNode->scope);
+        ParserPushSelfStructScope sf(this, parent->ownerStructScope);
+        ParserPushScope           sc(this, structNode->scope);
+        ParserPushStructScope     ss(this, structNode->scope);
 
         const auto startLoc = tokenParse.token.startLocation;
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[tuple]] body"));

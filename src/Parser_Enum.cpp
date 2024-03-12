@@ -76,8 +76,8 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     }
 
     // Content of enum
-    Scoped     scoped(this, newScope);
-    const auto startLoc = tokenParse.token.startLocation;
+    ParserPushScope scoped(this, newScope);
+    const auto      startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[enum]] body"));
     while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
         SWAG_CHECK(doEnumContent(enumNode, &dummyResult));
@@ -174,7 +174,7 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
     }
 
     enumValue->inheritFormatFromAfter(this, tokenParse);
-    
+
     if (tokenParse.is(TokenId::SymComma))
         SWAG_CHECK(eatToken());
     else if (tokenParse.isNot(TokenId::SymRightCurly))

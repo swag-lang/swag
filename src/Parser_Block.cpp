@@ -21,8 +21,8 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
     {
         node->addSpecFlag(AstIf::SPEC_FLAG_ASSIGN);
 
-        const auto newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
-        Scoped     scoped(this, newScope);
+        const auto      newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+        ParserPushScope scoped(this, newScope);
 
         AstNode* varDecl;
         SWAG_CHECK(doVarDecl(node, &varDecl));
@@ -79,7 +79,7 @@ bool Parser::doWhile(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     {
-        ScopedBreakable scoped(this, node);
+        ParserPushBreakable scoped(this, node);
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse.token, formErr(Err0539, tokenParse.token.c_str())));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
@@ -154,8 +154,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
         // Content
         {
-            const auto newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
-            Scoped     scoped(this, newScope);
+            const auto      newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
+            ParserPushScope scoped(this, newScope);
 
             const auto statement = Ast::newNode<AstSwitchCaseBlock>(AstNodeKind::SwitchCaseBlock, this, caseNode);
             statement->allocateExtension(ExtensionKind::Semantic);
@@ -166,7 +166,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             newScope->owner                             = statement;
 
             // Instructions
-            ScopedBreakable scopedBreakable(this, switchNode);
+            ParserPushBreakable scopedBreakable(this, switchNode);
             if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
                 return error(prevToken, isDefault ? toErr(Err0074) : toErr(Err0073), toNte(Nte0029));
             if (tokenParse.is(TokenId::SymRightCurly))
@@ -190,8 +190,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
 bool Parser::doFor(AstNode* parent, AstNode** result)
 {
-    const auto newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
-    Scoped     scoped(this, newScope);
+    const auto      newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+    ParserPushScope scoped(this, newScope);
 
     const auto node = Ast::newNode<AstFor>(AstNodeKind::For, this, parent);
     node->allocateExtension(ExtensionKind::Semantic);
@@ -201,7 +201,7 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
 
-    ScopedBreakable scopedBreakable(this, node);
+    ParserPushBreakable scopedBreakable(this, node);
 
     // Pre statement. Do not call doScopedCurlyStatement in order to avoid
     // creating a new scope in the case of for { var i = 0; var j = 0 } for example
@@ -304,8 +304,8 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 
 bool Parser::doLoop(AstNode* parent, AstNode** result)
 {
-    const auto newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
-    Scoped     scoped(this, newScope);
+    const auto      newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+    ParserPushScope scoped(this, newScope);
 
     const auto node = Ast::newNode<AstLoop>(AstNodeKind::Loop, this, parent);
     node->allocateExtension(ExtensionKind::Semantic);
@@ -316,7 +316,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
 
-    ScopedBreakable scopedBreakable(this, node);
+    ParserPushBreakable scopedBreakable(this, node);
 
     // loop can be empty for an infinite loop
     if (tokenParse.is(TokenId::SymLeftCurly))
@@ -489,7 +489,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[defer]] argument"));
     }
 
-    ScopedFlags scopedFlags(this, AST_IN_DEFER);
+    ParserPushAstFlags scopedFlags(this, AST_IN_DEFER);
     SWAG_CHECK(doScopedStatement(node, node->token, &dummyResult, false));
     return true;
 }

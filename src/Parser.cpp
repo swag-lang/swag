@@ -345,7 +345,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     if (logGenerated)
         scopeFlags.add(AST_GENERATED_USER);
 
-    ScopedFlags scopedFlags(this, scopeFlags);
+    ParserPushAstFlags scopedFlags(this, scopeFlags);
     SWAG_CHECK(eatToken());
 
     if (!result)
