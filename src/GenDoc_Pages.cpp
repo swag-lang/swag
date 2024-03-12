@@ -41,37 +41,14 @@ bool GenDoc::generatePages()
         Utf8 extName = getFileExtension(module);
         fullFileName = filePath.replace_extension(extName);
 
-        // Write for output
-        FILE* f = nullptr;
-        if (fopen_s(&f, fullFileName, "wb"))
-        {
-            Report::errorOS(formErr(Err0096, fullFileName.c_str()));
-            return false;
-        }
-
         helpContent.clear();
         helpToc.clear();
         if (path.extension() == ".md")
-        {
-            if (!processMarkDownFile(path, 0))
-                return false;
-        }
+            SWAG_CHECK(processMarkDownFile(path, 0));
         else
-        {
-            if (!processSourceFile(path, 0))
-                return false;
-        }
-        constructPage();
+            SWAG_CHECK(processSourceFile(path, 0));
 
-        // Write and close file
-        if (fwrite(helpOutput, 1, helpOutput.length(), f) != helpOutput.length())
-        {
-            Report::errorOS(formErr(Err0099, fullFileName.c_str()));
-            (void) fclose(f);
-            return false;
-        }
-
-        (void) fclose(f);
+        SWAG_CHECK(constructAndSave());
     }
 
     return true;

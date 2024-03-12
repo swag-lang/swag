@@ -1421,6 +1421,33 @@ Utf8 GenDoc::getFileExtension(const Module* module)
     return extName;
 }
 
+bool GenDoc::constructAndSave()
+{
+    constructPage();
+
+    // Write for output
+    if (g_CommandLine.outputDoc)
+    {
+        FILE* f = nullptr;
+        if (fopen_s(&f, fullFileName, "wb"))
+        {
+            Report::errorOS(formErr(Err0096, fullFileName.c_str()));
+            return false;
+        }
+
+        if (fwrite(helpOutput, 1, helpOutput.length(), f) != helpOutput.length())
+        {
+            Report::errorOS(formErr(Err0099, fullFileName.c_str()));
+            (void) fclose(f);
+            return false;
+        }
+
+        (void) fclose(f);
+    }
+
+    return true;
+}
+
 bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
 {
     module  = mdl;
@@ -1482,36 +1509,13 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     switch (docKind)
     {
         case BuildCfgDocKind::Api:
-            if (!generateApi())
-                return false;
+            SWAG_CHECK(generateApi());
             break;
         case BuildCfgDocKind::Examples:
-            if (!generateExamples())
-                return false;
+            SWAG_CHECK(generateExamples());
             break;
     }
 
-    constructPage();
-
-    // Write for output
-    if (g_CommandLine.outputDoc)
-    {
-        FILE* f = nullptr;
-        if (fopen_s(&f, fullFileName, "wb"))
-        {
-            Report::errorOS(formErr(Err0096, fullFileName.c_str()));
-            return false;
-        }
-
-        if (fwrite(helpOutput, 1, helpOutput.length(), f) != helpOutput.length())
-        {
-            Report::errorOS(formErr(Err0099, fullFileName.c_str()));
-            (void) fclose(f);
-            return false;
-        }
-
-        (void) fclose(f);
-    }
-
+    SWAG_CHECK(constructAndSave());
     return true;
 }
