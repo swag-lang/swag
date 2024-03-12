@@ -17,8 +17,8 @@ bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeV
 
     if (inTypeVarDecl)
     {
-        const auto         newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
-        ParserPushScope    scoped(this, newScope);
+        const auto             newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
+        ParserPushScope        scoped(this, newScope);
         ParserPushAstNodeFlags sf(this, AST_IN_TYPE_VAR_DECLARATION);
         SWAG_CHECK(doLambdaClosureType(node, inTypeVarDecl));
     }
@@ -169,24 +169,28 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
         // If we are in a type declaration, generate a variable and not just a type
         if (inTypeVarDecl)
         {
-            auto nameVar = namedParam ? namedParam->token.text : form("__%d", g_UniqueID.fetch_add(1));
-            auto param   = Ast::newVarDecl(nameVar, this, params, AstNodeKind::FuncDeclParam);
-            param->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+            auto        nameVar = namedParam ? namedParam->token.text : form("__%d", g_UniqueID.fetch_add(1));
+            AstVarDecl* varDecl;
+            {
+                ParserPushFreezeFormat ff(this);
+                varDecl = Ast::newVarDecl(nameVar, this, params, AstNodeKind::FuncDeclParam);
+            }
+            varDecl->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
             Ast::removeFromParent(typeExpr);
-            Ast::addChildBack(param, typeExpr);
-            param->type = typeExpr;
+            Ast::addChildBack(varDecl, typeExpr);
+            varDecl->type = typeExpr;
             if (namedParam)
-                param->inheritTokenLocation(namedParam->token);
+                varDecl->inheritTokenLocation(namedParam->token);
             else
-                param->inheritTokenLocation(typeExpr->token);
+                varDecl->inheritTokenLocation(typeExpr->token);
 
             if (tokenParse.is(TokenId::SymEqual))
             {
                 thisIsAType = false;
                 curIsAlone  = false;
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(doAssignmentExpression(param, &param->assignment));
+                SWAG_CHECK(doAssignmentExpression(varDecl, &varDecl->assignment));
 
                 // Used to automatically solve enums
                 typeExpr->allocateExtension(ExtensionKind::Semantic);
@@ -196,15 +200,19 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
                 // ex: func(x = 1)
                 if (!namedParam)
                 {
-                    param->token.text = param->type->token.text;
-                    Ast::removeFromParent(param->type);
-                    param->type = nullptr;
+                    varDecl->token.text = varDecl->type->token.text;
+                    Ast::removeFromParent(varDecl->type);
+                    varDecl->type = nullptr;
                 }
+            }
+            else if (!namedParam)
+            {
+                varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_PRIVATE_NAME);
             }
 
             if (lastWasAlone && !curIsAlone && !thisIsAType)
             {
-                Token tokenAmb         = param->token;
+                Token tokenAmb         = varDecl->token;
                 tokenAmb.startLocation = lastParameter->token.startLocation;
                 tokenAmb.endLocation   = tokenParse.token.startLocation;
 
@@ -216,7 +224,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             }
 
             lastWasAlone  = curIsAlone;
-            lastParameter = param;
+            lastParameter = varDecl;
         }
         else if (namedParam)
         {
@@ -230,6 +238,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse.token, toErr(Err0131)));
     }
 
+    params->inheritFormatFromAfter(this, tokenParse);
     return true;
 }
 

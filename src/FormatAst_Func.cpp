@@ -16,6 +16,8 @@ bool FormatAst::outputFuncDeclParameters(const AstNode* parameters, bool isMetho
     concat->addChar('(');
     SWAG_CHECK(outputCommaChildren(parameters, isMethod ? 1 : 0));
     concat->addChar(')');
+    beautifyAfter(parameters);
+    
     return true;
 }
 

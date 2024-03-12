@@ -168,6 +168,20 @@ void AstNode::inheritFormatFromBefore(const Parser* parser, TokenParse& tokenPar
     }
 }
 
+void AstNode::inheritFormatFromAfter(const Parser* parser, const AstNode* other)
+{
+    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+        return;
+    if (!other->hasExtMisc())
+        return;
+
+    if (!other->extMisc()->format.commentAfterSameLine.empty())
+    {
+        allocateExtension(ExtensionKind::Misc);
+        extMisc()->format.commentAfterSameLine = std::move(other->extMisc()->format.commentAfterSameLine);
+    }
+}
+
 void AstNode::inheritFormatFromAfter(const Parser* parser, TokenParse& tokenParse)
 {
     if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))

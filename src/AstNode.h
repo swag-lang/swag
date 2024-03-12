@@ -306,6 +306,7 @@ struct AstNode
     void inheritTokenLocation(const Token& tkn);
     void inheritOwners(const AstNode* from);
     void inheritFormatFromBefore(const Parser* parser, const AstNode* other);
+    void inheritFormatFromAfter(const Parser* parser, const AstNode* other);
     void inheritFormatFromBefore(const Parser* parser, TokenParse& tokenParse);
     void inheritFormatFromAfter(const Parser* parser, TokenParse& tokenParse);
     void inheritOwnersAndFlags(const Parser* parser);
@@ -565,6 +566,7 @@ struct AstVarDecl : AstNode
     static constexpr SpecFlags SPEC_FLAG_AUTO_NAME        = 0x0080;
     static constexpr SpecFlags SPEC_FLAG_IS_LET           = 0x0100;
     static constexpr SpecFlags SPEC_FLAG_TUPLE_AFFECT     = 0x0200;
+    static constexpr SpecFlags SPEC_FLAG_PRIVATE_NAME     = 0x0400;
 
     AstNode* clone(CloneContext& context);
     bool     isConstDecl() const;

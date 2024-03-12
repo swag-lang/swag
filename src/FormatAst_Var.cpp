@@ -7,7 +7,7 @@
 
 bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
 {
-    if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME))
+    if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
     {
         if (!varNode->multiNames.empty())
         {
@@ -41,7 +41,7 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
         {
             if (!isSelf)
             {
-                if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME))
+                if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
                 {
                     concat->addChar(':');
                     concat->addBlank();
