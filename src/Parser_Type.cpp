@@ -164,10 +164,6 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             }
         }
 
-        // We have a name
-        if (namedParam)
-            typeExpr->addExtraPointer(ExtraPointerKind::IsNamed, namedParam);
-
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) || inTypeVarDecl, error(tokenParse.token, toErr(Err0253)));
 
         // If we are in a type declaration, generate a variable and not just a type
@@ -175,11 +171,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
         {
             auto nameVar = namedParam ? namedParam->token.text : form("__%d", g_UniqueID.fetch_add(1));
             auto param   = Ast::newVarDecl(nameVar, this, params, AstNodeKind::FuncDeclParam);
-            if (!namedParam)
-                param->addSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED);
-
-            param->addExtraPointer(ExtraPointerKind::ExportNode, typeExpr);
-            param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+            param->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
             Ast::removeFromParent(typeExpr);
             Ast::addChildBack(param, typeExpr);
@@ -220,15 +212,18 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
                 tokenAmb.endLocation   = tokenParse.token.startLocation;
 
                 Diagnostic err{sourceFile, tokenAmb, toErr(Err0022)};
-
-                auto note  = Diagnostic::note(lastParameter, formNte(Nte0008, lastParameter->type->token.c_str()));
-                note->hint = formNte(Nte0189, lastParameter->type->token.c_str());
+                auto       note = Diagnostic::note(lastParameter, formNte(Nte0008, lastParameter->type->token.c_str()));
+                note->hint      = formNte(Nte0189, lastParameter->type->token.c_str());
                 err.addNote(note);
                 return context->report(err);
             }
 
             lastWasAlone  = curIsAlone;
             lastParameter = param;
+        }
+        else if (namedParam)
+        {
+            typeExpr->addExtraPointer(ExtraPointerKind::IsNamed, namedParam);
         }
 
         if (tokenParse.isNot(TokenId::SymComma))
@@ -265,7 +260,7 @@ bool Parser::doLambdaClosureType(AstTypeLambda* node, bool inTypeVarDecl)
         firstAddedType           = Ast::newTypeExpression(nullptr, params);
         firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         firstAddedType->addAstFlag(AST_NO_SEMANTIC | AST_GENERATED);
-    
+
         // If we are in a type declaration, then this must be a FuncDeclParam and not a TypeExpression
         if (inTypeVarDecl)
         {
