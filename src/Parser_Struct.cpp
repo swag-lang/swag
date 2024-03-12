@@ -5,7 +5,7 @@
 #include "ErrorIds.h"
 #include "Module.h"
 #include "Naming.h"
-#include "Parser_Scoped.h"
+#include "Parser_Push.h"
 #include "Semantic.h"
 #include "TypeManager.h"
 
@@ -31,7 +31,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 
     // Identifier
     {
-        ParserPushAstFlags scopedFlags(this, AST_CAN_MATCH_INCOMPLETE);
+        ParserPushAstNodeFlags scopedFlags(this, AST_CAN_MATCH_INCOMPLETE);
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier, IDENTIFIER_NO_PARAMS));
         implNode->addAstFlag(AST_NO_BYTECODE);
     }
@@ -172,7 +172,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     {
         ParserPushScope       scoped(this, parentScope);
         ParserPushStructScope scopedStruct(this, newScope);
-        ParserPushAstFlags    scopedFlags(this, AST_IN_IMPL);
+        ParserPushAstNodeFlags    scopedFlags(this, AST_IN_IMPL);
         while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
         {
             SWAG_CHECK(doTopLevelInstruction(implNode, &dummyResult));
@@ -428,7 +428,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         // Using on a struct member
         case TokenId::KwdUsing:
         {
-            ParserPushAstFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, tokenParse.token, toErr(Err0478)}));
             SWAG_CHECK(eatToken());
             const auto structNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
@@ -442,7 +442,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
         case TokenId::KwdConst:
         {
-            ParserPushAstFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::ConstDecl, true));
             break;
@@ -491,7 +491,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
                 SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, false, nullptr, isMethod, isConstMethod, true));
             }
 
-            ParserPushAstFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             const auto         varNode = Ast::newVarDecl(funcNode->token.text, this, parent);
             varNode->inheritTokenLocation(funcNode->token);
             Semantic::setVarDeclResolve(varNode);
@@ -540,7 +540,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         {
             SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse.token, formErr(Err0293, tokenParse.token.c_str())));
             TokenParse         savedToken = tokenParse;
-            ParserPushAstFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
             if (*result)
                 (*result)->inheritFormatFromBefore(this, savedToken);

@@ -5,7 +5,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Module.h"
-#include "Parser_Scoped.h"
+#include "Parser_Push.h"
 #include "Semantic.h"
 #include "Workspace.h"
 
@@ -45,7 +45,7 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
 
     // Expression
     {
-        ParserPushAstFlags scopedFlags(this, AST_NO_BACKEND);
+        ParserPushAstNodeFlags scopedFlags(this, AST_NO_BACKEND);
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse.token, formErr(Err0520, tokenParse.token.c_str())));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
@@ -157,7 +157,7 @@ bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
     node->semanticFct                      = Semantic::resolveCompilerAssert;
     node->token                            = tokenParse.token;
 
-    ParserPushAstFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
+    ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatSemiCol("[[#assert]] expression"));
@@ -218,7 +218,7 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
         return error(node, formErr(Err0658, parent->token.c_str()));
     }
 
-    ParserPushAstFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_VALIDIF);
+    ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_VALIDIF);
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
         AstNode* funcNode;
@@ -248,7 +248,7 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
     node->semanticFct                      = Semantic::resolveCompilerAstExpression;
     SWAG_CHECK(eatToken());
 
-    ParserPushAstFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
+    ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
         AstNode* funcNode;
@@ -306,7 +306,7 @@ bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     node->token                            = tokenParse.token;
     SWAG_CHECK(eatToken());
 
-    ParserPushAstFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
+    ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
         AstNode* funcNode;
@@ -654,7 +654,7 @@ bool Parser::doIntrinsicLocation(AstNode* parent, AstNode** result)
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0528)));
 
-    ParserPushAstFlags sc(this, AST_SILENT_CHECK);
+    ParserPushAstNodeFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doIdentifierRef(exprNode, &dummyResult, IDENTIFIER_NO_PARAMS));
 
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
@@ -672,7 +672,7 @@ bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0528)));
 
-    ParserPushAstFlags sc(this, AST_SILENT_CHECK);
+    ParserPushAstNodeFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doIdentifierRef(exprNode, &dummyResult, IDENTIFIER_NO_PARAMS));
 
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
@@ -711,7 +711,7 @@ bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
     exprNode->addAstFlag(AST_NO_BYTECODE);
     SWAG_CHECK(eatToken());
 
-    ParserPushAstFlags sc(this, AST_SILENT_CHECK);
+    ParserPushAstNodeFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, &dummyResult));
 
     exprNode->semanticFct = Semantic::resolveCompilerInclude;

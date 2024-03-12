@@ -59,16 +59,16 @@ struct ParserPushTryCatchAssume
     AstTryCatchAssume* savedNode;
 };
 
-struct ParserPushCurrentFct
+struct ParserPushFct
 {
-    explicit ParserPushCurrentFct(Parser* parser, AstFuncDecl* newFct) :
+    explicit ParserPushFct(Parser* parser, AstFuncDecl* newFct) :
         savedParser(parser)
     {
         savedFct                = parser->currentFct;
         savedParser->currentFct = newFct;
     }
 
-    ~ParserPushCurrentFct()
+    ~ParserPushFct()
     {
         savedParser->currentFct = savedFct;
     }
@@ -95,16 +95,16 @@ struct ParserPushCompilerIfBlock
     AstCompilerIfBlock* savedIf;
 };
 
-struct ParserPushAstFlags
+struct ParserPushAstNodeFlags
 {
-    explicit ParserPushAstFlags(Parser* parser, AstNodeFlags newFlags) :
+    explicit ParserPushAstNodeFlags(Parser* parser, AstNodeFlags newFlags) :
         savedParser(parser)
     {
         savedFlags = parser->currentAstNodeFlags;
         savedParser->currentAstNodeFlags.add(newFlags);
     }
 
-    ~ParserPushAstFlags()
+    ~ParserPushAstNodeFlags()
     {
         savedParser->currentAstNodeFlags = savedFlags;
     }

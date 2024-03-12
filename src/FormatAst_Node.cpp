@@ -5,7 +5,7 @@
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Report.h"
-#include "Parser_Scoped.h"
+#include "Parser_Push.h"
 #include "Semantic.h"
 
 bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)

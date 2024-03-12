@@ -4,7 +4,7 @@
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "Parser_Scoped.h"
+#include "Parser_Push.h"
 #include "Semantic.h"
 #include "SourceFile.h"
 #include "TypeManager.h"
@@ -19,7 +19,7 @@ bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeV
     {
         const auto         newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
         ParserPushScope    scoped(this, newScope);
-        ParserPushAstFlags sf(this, AST_IN_TYPE_VAR_DECLARATION);
+        ParserPushAstNodeFlags sf(this, AST_IN_TYPE_VAR_DECLARATION);
         SWAG_CHECK(doLambdaClosureType(node, inTypeVarDecl));
     }
     else

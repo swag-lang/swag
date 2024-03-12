@@ -4,7 +4,7 @@
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "Parser_Scoped.h"
+#include "Parser_Push.h"
 #include "Semantic.h"
 #include "TypeManager.h"
 
@@ -1058,7 +1058,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
     {
         case TokenId::CompilerRun:
         {
-            ParserPushAstFlags sf(this, AST_IN_RUN_BLOCK);
+            ParserPushAstNodeFlags sf(this, AST_IN_RUN_BLOCK);
             const auto         node = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerRunExpression, this, nullptr);
             node->semanticFct       = Semantic::resolveCompilerRun;
             SWAG_CHECK(eatToken());

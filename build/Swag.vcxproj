@@ -286,7 +286,7 @@
     <ClInclude Include="..\src\Naming.h" />
     <ClInclude Include="../src/Runtime.h" />
     <ClInclude Include="../src/Scope.h" />
-    <ClInclude Include="..\src\Parser_Scoped.h" />
+    <ClInclude Include="..\src\Parser_Push.h" />
     <ClInclude Include="..\src\ScopeSwag.h" />
     <ClInclude Include="../src/Timer.h" />
     <ClInclude Include="../src/TokenIds.h" />

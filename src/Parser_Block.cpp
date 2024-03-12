@@ -4,7 +4,7 @@
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "Parser_Scoped.h"
+#include "Parser_Push.h"
 #include "Semantic.h"
 
 bool Parser::doIf(AstNode* parent, AstNode** result)
@@ -489,7 +489,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[defer]] argument"));
     }
 
-    ParserPushAstFlags scopedFlags(this, AST_IN_DEFER);
+    ParserPushAstNodeFlags scopedFlags(this, AST_IN_DEFER);
     SWAG_CHECK(doScopedStatement(node, node->token, &dummyResult, false));
     return true;
 }

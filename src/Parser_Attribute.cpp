@@ -3,7 +3,7 @@
 #include "AstFlags.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "Parser_Scoped.h"
+#include "Parser_Push.h"
 #include "Semantic.h"
 #include "SourceFile.h"
 #include "TypeManager.h"

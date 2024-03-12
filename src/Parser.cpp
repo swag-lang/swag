@@ -7,7 +7,7 @@
 #include "JobThread.h"
 #include "Module.h"
 #include "Naming.h"
-#include "Parser_Scoped.h"
+#include "Parser_Push.h"
 #include "TypeManager.h"
 #ifdef SWAG_STATS
 #include "Timer.h"
@@ -345,7 +345,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     if (logGenerated)
         scopeFlags.add(AST_GENERATED_USER);
 
-    ParserPushAstFlags scopedFlags(this, scopeFlags);
+    ParserPushAstNodeFlags scopedFlags(this, scopeFlags);
     SWAG_CHECK(eatToken());
 
     if (!result)

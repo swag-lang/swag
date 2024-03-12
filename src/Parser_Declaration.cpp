@@ -6,7 +6,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Module.h"
-#include "Parser_Scoped.h"
+#include "Parser_Push.h"
 #include "Semantic.h"
 #include "SemanticError.h"
 #include "TypeManager.h"
