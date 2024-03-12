@@ -7,7 +7,7 @@
 #include "JobThread.h"
 #include "Module.h"
 #include "Naming.h"
-#include "Scoped.h"
+#include "Parser_Scoped.h"
 #include "TypeManager.h"
 #ifdef SWAG_STATS
 #include "Timer.h"

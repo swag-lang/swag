@@ -869,9 +869,6 @@
     <ClInclude Include="../src/SourceFile.h">
       <Filter>Wmf</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Scoped.h">
-      <Filter>Syntax</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Math.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -1123,6 +1120,9 @@
     </ClInclude>
     <ClInclude Include="..\src\FormatJob.h">
       <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Scoped.h">
+      <Filter>Syntax\Parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

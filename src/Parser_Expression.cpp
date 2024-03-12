@@ -4,7 +4,7 @@
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "Scoped.h"
+#include "Parser_Scoped.h"
 #include "Semantic.h"
 #include "TypeManager.h"
 

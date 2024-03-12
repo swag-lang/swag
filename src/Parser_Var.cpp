@@ -5,7 +5,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
-#include "Scoped.h"
+#include "Parser_Scoped.h"
 #include "Semantic.h"
 
 bool Parser::checkIsValidVarName(AstNode* node) const
@@ -374,10 +374,11 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         }
 
         // Treat all
-        freezeFormat++;
-        SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, result, forLet));
-        freezeFormat--;
-        leftNode->release();
+        {
+            ScopedFreezeFormat sc(this);
+            SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, result, forLet));
+            leftNode->release();
+        }
 
         // If we have a type, and that type has parameters (struct construction), then we need to evaluate and push the parameters
         if (type && type->is(AstNodeKind::TypeExpression))
