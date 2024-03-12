@@ -13,7 +13,7 @@ void Ast::initNewNode(AstNodeKind kind, AstNode* node, Parser* parser, AstNode* 
     {
         node->token = parser->tokenParse.token;
         node->inheritOwnersAndFlags(parser);
-        if (!parser->freezeFormat)
+        if (!parser->freezeFormat && !node->flags.has(AST_GENERATED))
         {
             node->inheritFormatFromBefore(parser, parser->tokenParse);
             node->inheritFormatFromAfter(parser, parser->tokenParse);

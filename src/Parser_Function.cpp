@@ -1208,6 +1208,9 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         deduceMissingType = true;
     }
 
+    const auto exprNode   = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointerLambda, this, parent);
+    exprNode->semanticFct = Semantic::resolveMakePointerLambda;
+
     AstNode* lambda         = nullptr;
     bool     hasMissingType = false;
 
@@ -1234,11 +1237,10 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         Ast::addChildBack(sourceFile->astRoot, lambda);
 
     // Retrieve the pointer of the function
-    const auto exprNode = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointerLambda, this, parent);
     exprNode->inheritTokenLocation(lambda->token);
-    exprNode->lambda      = lambdaDecl;
-    exprNode->semanticFct = Semantic::resolveMakePointerLambda;
+    exprNode->lambda = lambdaDecl;
 
+    ScopedFlags sc(this, AST_GENERATED);
     if (lambdaDecl->captureParameters)
     {
         // To solve captured parameters
@@ -1269,9 +1271,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         Semantic::setVarDeclResolve(block);
 
         for (const auto c : lambdaDecl->captureParameters->children)
-        {
             Ast::clone(c, exprList);
-        }
 
         // Reference to the captured block
         identifierRef = Ast::newIdentifierRef(nameCaptureBlock, this, exprNode);
