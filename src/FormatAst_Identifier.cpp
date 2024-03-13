@@ -51,11 +51,16 @@ bool FormatAst::outputIdentifier(const AstNode* node)
         SWAG_CHECK(outputNode(identifier->callParameters, false));
 
         if (identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
+        {
             concat->addChar('}');
-        else if (identifier->callParameters->children.empty() || identifier->callParameters->lastChild()->children.empty())
+        }
+        else if (identifier->callParameters->children.empty() ||
+                 identifier->callParameters->lastChild()->children.empty() ||
+                 identifier->callParameters->lastChild()->lastChild()->isNot(AstNodeKind::CompilerCode) ||
+                 !identifier->callParameters->lastChild()->lastChild()->hasSpecFlag(AstCompilerCode::SPEC_FLAG_FROM_NEXT))
+        {
             concat->addChar(')');
-        else if (identifier->callParameters->lastChild()->lastChild()->isNot(AstNodeKind::CompilerCode))
-            concat->addChar(')');
+        }
 
         beautifyAfter(identifier->callParameters);
     }

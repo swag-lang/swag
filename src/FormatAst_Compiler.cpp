@@ -234,18 +234,29 @@ bool FormatAst::outputCompilerExport(const AstNode* node) const
 
 bool FormatAst::outputCompilerCode(const AstNode* node)
 {
-    concat->addChar(')');
-    concat->addEol();
-    concat->addIndent(indent);
-    concat->addChar('{');
-    concat->addEol();
-    concat->addIndent(indent);
-    SWAG_CHECK(outputNode(node->firstChild()));
-    concat->addEol();
-    concat->addIndent(indent);
-    concat->addChar('}');
-    concat->addEol();
-    concat->addIndent(indent);
+    const auto code = castAst<AstCompilerCode>(node, AstNodeKind::CompilerCode);
+    if (code->hasSpecFlag(AstCompilerCode::SPEC_FLAG_FROM_NEXT))
+    {
+        concat->addChar(')');
+        concat->addEol();
+        concat->addIndent(indent);
+        concat->addChar('{');
+        concat->addEol();
+        concat->addIndent(indent);
+        SWAG_CHECK(outputNode(node->firstChild()));
+        concat->addEol();
+        concat->addIndent(indent);
+        concat->addChar('}');
+        concat->addEol();
+        concat->addIndent(indent);
+    }
+    else
+    {
+        CONCAT_FIXED_STR(concat, "#code");
+        concat->addBlank();
+        SWAG_CHECK(outputNode(node->firstChild()));
+    }
+
     return true;
 }
 
@@ -259,7 +270,7 @@ bool FormatAst::outputCompilerGlobal(const AstNode* node)
         concat->addBlank();
         SWAG_CHECK(outputNode(node->secondChild()));
     }
-    
+
     concat->addEol();
     return true;
 }

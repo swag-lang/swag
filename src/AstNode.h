@@ -1238,3 +1238,10 @@ struct AstCompilerGlobal : AstNode
 {
     AstNode* clone(CloneContext& context);
 };
+
+struct AstCompilerCode : AstNode
+{
+    static constexpr SpecFlags SPEC_FLAG_FROM_NEXT = 0x0001;
+
+    AstNode* clone(CloneContext& context);
+};

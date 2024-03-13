@@ -1101,7 +1101,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
         }
         case TokenId::CompilerCode:
         {
-            const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerCode, this, nullptr);
+            const auto node = Ast::newNode<AstCompilerCode>(AstNodeKind::CompilerCode, this, nullptr);
             SWAG_CHECK(eatToken());
             if (tokenParse.is(TokenId::SymLeftCurly))
                 SWAG_CHECK(doScopedCurlyStatement(node, &dummyResult));

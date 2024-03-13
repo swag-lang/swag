@@ -1121,7 +1121,7 @@
     <ClInclude Include="..\src\FormatJob.h">
       <Filter>Jobs</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Scoped.h">
+    <ClInclude Include="..\src\Parser_Push.h">
       <Filter>Syntax\Parser</Filter>
     </ClInclude>
   </ItemGroup>

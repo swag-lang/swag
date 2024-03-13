@@ -1416,3 +1416,10 @@ AstNode* AstCompilerGlobal::clone(CloneContext& context)
     newNode->copyFrom(context, this);
     return newNode;
 }
+
+AstNode* AstCompilerCode::clone(CloneContext& context)
+{
+    const auto newNode = Ast::newNode<AstCompilerCode>();
+    newNode->copyFrom(context, this);
+    return newNode;
+}

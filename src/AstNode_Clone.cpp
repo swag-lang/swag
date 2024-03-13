@@ -290,7 +290,9 @@ AstNode* AstNode::clone(CloneContext& context)
         case AstNodeKind::Using:
             return clone<AstUsing>(this, context);
         case AstNodeKind::CompilerGlobal:
-            return clone<AstCompilerGlobal>(this, context);        
+            return clone<AstCompilerGlobal>(this, context);
+        case AstNodeKind::CompilerCode:
+            return clone<AstCompilerCode>(this, context);                         
 
         default:
         {

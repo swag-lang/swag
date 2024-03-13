@@ -241,6 +241,9 @@ void AstNode::release()
         case AstNodeKind::CompilerGlobal:
             Allocator::free<AstCompilerGlobal>(this);
             break;
+        case AstNodeKind::CompilerCode:
+            Allocator::free<AstCompilerCode>(this);
+            break;
         default:
             Allocator::free<AstNode>(this);
             break;

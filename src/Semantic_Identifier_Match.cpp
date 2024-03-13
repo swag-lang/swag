@@ -2009,7 +2009,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
 
             // If the last parameter of a function is of type 'code', and the last call parameter is not,
             // then we take the next statement, after the function, and put it as the last parameter
-            SWAG_CHECK(Semantic::appendLastCodeStatement(context, identifier, symbolOverload));
+            SWAG_CHECK(appendLastCodeStatement(context, identifier, symbolOverload));
 
             // This if for a lambda
             bool forLambda = false;
