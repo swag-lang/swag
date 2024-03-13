@@ -86,6 +86,12 @@ bool FormatAst::outputIdentifierRef(const AstNode* node)
             continue;
         }
 
+        if (child->hasSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL))
+        {
+            SWAG_CHECK(outputNode(child));
+            continue;
+        }
+
         if (!first)
             concat->addChar('.');
         first = false;
