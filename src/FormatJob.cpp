@@ -2,6 +2,7 @@
 #include "FormatJob.h"
 #include "ErrorIds.h"
 #include "FormatAst.h"
+#include "Log.h"
 #include "Module.h"
 #include "Parser.h"
 #include "Report.h"
@@ -21,24 +22,44 @@ JobResult FormatJob::execute()
     tmpFile.flags.add(FILE_FOR_FORMAT);
 
     // Load source file
+    if (g_CommandLine.verboseStages)
+        g_Log.messageVerbose(form("[%s] -- loading file", fileName.c_str()));
     if (!tmpFile.load())
         return JobResult::ReleaseJob;
 
     // Generate AST
-    SyntaxContext context;
-    Parser        parser;
-    parser.setup(&context, &tmpModule, &tmpFile, PARSER_TRACK_FORMAT);
-    if (!parser.generateAst())
-        return JobResult::ReleaseJob;
+    {
+        PushSilentError se;
+        SyntaxContext   context;
+        Parser          parser;
+        if (g_CommandLine.verboseStages)
+            g_Log.messageVerbose(form("[%s] -- generating AST", fileName.c_str()));
+        parser.setup(&context, &tmpModule, &tmpFile, PARSER_TRACK_FORMAT);
+        if (!parser.generateAst())
+        {
+            if (g_CommandLine.verboseStages)
+                g_Log.messageVerbose(form("[%s] -- AST has errors ! Cancel", fileName.c_str()));
+            return JobResult::ReleaseJob;
+        }
+    }
 
     // Format
+    if (g_CommandLine.verboseStages)
+        g_Log.messageVerbose(form("[%s] -- formatting", fileName.c_str()));
     FormatAst fmt;
     fmt.fmtFlags.add(FORMAT_FOR_BEAUTIFY);
     fmt.outputNode(tmpFile.astRoot);
 
     // Write to file
     if (!g_CommandLine.output)
+    {
+        if (g_CommandLine.verboseStages)
+            g_Log.messageVerbose(form("[%s] -- Done (commandline --output:false)", fileName.c_str()));
         return JobResult::ReleaseJob;
+    }
+
+    if (g_CommandLine.verboseStages)
+        g_Log.messageVerbose(form("[%s] -- Writing file", fileName.c_str()));
 
     FILE* f = nullptr;
     if (fopen_s(&f, tmpFile.path, "wb"))

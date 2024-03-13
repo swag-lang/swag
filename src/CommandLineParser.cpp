@@ -59,7 +59,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc doc", "--verbose-path", nullptr, CommandLineType::Bool, &cmdLine->verbosePath, nullptr, "log global paths");
     addArg("bu sc", "--verbose-link", nullptr, CommandLineType::Bool, &cmdLine->verboseLink, nullptr, "log linker command line");
     addArg("bu sc", "--verbose-ctypes", nullptr, CommandLineType::Bool, &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
-    addArg("bu sc te doc", "--verbose-stages", nullptr, CommandLineType::Bool, &cmdLine->verboseStages, nullptr, "log compiler stages");
+    addArg("bu sc te doc fmt", "--verbose-stages", nullptr, CommandLineType::Bool, &cmdLine->verboseStages, nullptr, "log compiler stages");
 
     addArg("bu sc doc fmt", "--error-one-line", "-el", CommandLineType::Bool, &cmdLine->errorOneLine, nullptr, "display errors in a single line");
     addArg("bu sc doc fmt", "--error-absolute", "-ea", CommandLineType::Bool, &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
