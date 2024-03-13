@@ -60,6 +60,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc", "--verbose-link", nullptr, CommandLineType::Bool, &cmdLine->verboseLink, nullptr, "log linker command line");
     addArg("bu sc", "--verbose-ctypes", nullptr, CommandLineType::Bool, &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
     addArg("bu sc te doc fmt", "--verbose-stages", nullptr, CommandLineType::Bool, &cmdLine->verboseStages, nullptr, "log compiler stages");
+    addArg("te fmt", "--verbose-errors", "-ve", CommandLineType::Bool, &cmdLine->verboseErrors, nullptr, "log silent errors");
+    addArg("te fmt", "--verbose-errors-filter", "-vef", CommandLineType::String, &cmdLine->verboseErrorsFilter, nullptr, "filter log silent errors");
 
     addArg("bu sc doc fmt", "--error-one-line", "-el", CommandLineType::Bool, &cmdLine->errorOneLine, nullptr, "display errors in a single line");
     addArg("bu sc doc fmt", "--error-absolute", "-ea", CommandLineType::Bool, &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
@@ -82,8 +84,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("te", "--test-bytecode", "-tb", CommandLineType::Bool, &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");
     addArg("te", "--test-native", "-tn", CommandLineType::Bool, &cmdLine->runBackendTests, nullptr, "run #test functions as native");
     addArg("te", "--test-filter", "-tf", CommandLineType::String, &cmdLine->testFilter, nullptr, "will only compile and test files that match the filter");
-    addArg("te", "--test-verbose", "-ve", CommandLineType::Bool, &cmdLine->verboseTestErrors, nullptr, "log errors during test");
-    addArg("te", "--test-verbose-filter", "-vef", CommandLineType::String, &cmdLine->verboseErrorFilter, nullptr, "filter log errors during test");
 
     addArg("bu sc doc", "--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild, nullptr, "full rebuild");
     addArg("bu sc doc", "--rebuild-all", nullptr, CommandLineType::Bool, &cmdLine->rebuildAll, nullptr, "full rebuild (with all dependencies)");

@@ -31,7 +31,7 @@ bool CommandLine::check()
         rebuild = true;
 
     // Force verbose
-    if (verboseCmdLine || verbosePath || verboseLink || verboseTestErrors || verboseConcreteTypes || verboseStages)
+    if (verboseCmdLine || verbosePath || verboseLink || verboseErrors || verboseConcreteTypes || verboseStages)
         verbose = true;
 
     // Check special backend SCBE

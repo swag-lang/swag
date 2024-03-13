@@ -76,11 +76,11 @@ struct CommandLine
     bool verboseCmdLine        = false;
     bool verbosePath           = false;
     bool verboseLink           = false;
-    bool verboseTestErrors     = false;
+    bool verboseErrors         = false;
     bool verboseConcreteTypes  = false;
     bool verboseBackendCommand = false;
     bool verboseStages         = false;
-    Utf8 verboseErrorFilter;
+    Utf8 verboseErrorsFilter;
 
     bool     errorOneLine        = false;
     bool     errorAbsolute       = false;

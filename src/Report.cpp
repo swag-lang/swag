@@ -536,9 +536,9 @@ namespace
 
                     if (dismiss)
                     {
-                        if (g_CommandLine.verboseTestErrors)
+                        if (g_CommandLine.verboseErrors)
                         {
-                            if (g_CommandLine.verboseErrorFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
+                            if (g_CommandLine.verboseErrorsFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorsFilter))
                                 reportInternal(err, notes);
                         }
 
@@ -576,9 +576,9 @@ namespace
 
                     if (dismiss)
                     {
-                        if (g_CommandLine.verboseTestErrors)
+                        if (g_CommandLine.verboseErrors)
                         {
-                            if (g_CommandLine.verboseErrorFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
+                            if (g_CommandLine.verboseErrorsFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorsFilter))
                                 reportInternal(err, notes);
                         }
 

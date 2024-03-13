@@ -29,13 +29,17 @@ JobResult FormatJob::execute()
 
     // Generate AST
     {
-        PushSilentError se;
-        SyntaxContext   context;
-        Parser          parser;
+        if (!g_CommandLine.verboseErrors)
+            g_SilentError++;
+        SyntaxContext context;
+        Parser        parser;
         if (g_CommandLine.verboseStages)
             g_Log.messageVerbose(form("[%s] -- generating AST", fileName.c_str()));
         parser.setup(&context, &tmpModule, &tmpFile, PARSER_TRACK_FORMAT);
-        if (!parser.generateAst())
+        const bool result = parser.generateAst();
+        if (!g_CommandLine.verboseErrors)
+            g_SilentError--;
+        if (!result)
         {
             if (g_CommandLine.verboseStages)
                 g_Log.messageVerbose(form("[%s] -- AST has errors ! Cancel", fileName.c_str()));
