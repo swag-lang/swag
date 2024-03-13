@@ -461,67 +461,6 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
     return true;
 }
 
-bool Parser::doStatement(AstNode* parent, AstNode** result)
-{
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse.token, toErr(Err0264), toNte(Nte0054)));
-
-    if (tokenParse.is(TokenId::SymLeftCurly))
-    {
-        SWAG_CHECK(doCurlyStatement(parent, result));
-    }
-    else
-    {
-        const auto tokenDo = tokenParse;
-        if (tokenParse.isNot(TokenId::CompilerDo))
-        {
-            Diagnostic err{sourceFile, tokenParse.token, formErr(Err0516, tokenParse.token.c_str())};
-            err.addNote(parent->parent, parent->parent->token, formNte(Nte0015, parent->parent->token.c_str()));
-            return context->report(err);
-        }
-
-        SWAG_CHECK(eatToken());
-
-        if (tokenParse.is(TokenId::SymLeftCurly))
-        {
-            const Diagnostic err{sourceFile, tokenDo.token, toErr(Err0434)};
-            return context->report(err);
-        }
-
-        if (currentScope->isGlobalOrImpl())
-        {
-            *result = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
-            SWAG_CHECK(doTopLevelInstruction(*result, &dummyResult));
-        }
-        else
-        {
-            SWAG_CHECK(doEmbeddedInstruction(parent, result));
-        }
-    }
-
-    return true;
-}
-
-bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
-{
-    switch (kind)
-    {
-        case AstNodeKind::Statement:
-            return doStatement(parent, result);
-        case AstNodeKind::EnumDecl:
-            return doEnumContent(parent, &dummyResult);
-        case AstNodeKind::StructDecl:
-            return doStructBody(parent, SyntaxStructType::Struct, &dummyResult);
-        case AstNodeKind::InterfaceDecl:
-            return doStructBody(parent, SyntaxStructType::Interface, &dummyResult);
-
-        default:
-            SWAG_ASSERT(false);
-            break;
-    }
-
-    return true;
-}
-
 void Parser::registerSubDecl(AstNode* subDecl)
 {
     // When we are in format mode, no need to move the sub declaration at the top level. We keep it where it is
