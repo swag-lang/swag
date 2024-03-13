@@ -40,33 +40,34 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
 
     AstVarDecl* lastParameter = nullptr;
     bool        lastWasAlone  = false;
-    bool        curIsAlone    = false;
     bool        thisIsAType   = false;
     while (true)
     {
-        curIsAlone = true;
+        bool curIsAlone = true;
+        bool isConst    = false;
+        bool forceType  = false;
 
-        Token constToken;
-        bool  isConst = false;
         if (tokenParse.is(TokenId::CompilerType))
         {
+            forceType   = true;
             thisIsAType = true;
             curIsAlone  = false;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0527, tokenParse.token.c_str())));
         }
 
+        Token constToken;
         if (tokenParse.is(TokenId::KwdConst))
         {
             curIsAlone = false;
-            constToken = tokenParse.token;
             isConst    = true;
+            constToken = tokenParse.token;
             SWAG_CHECK(eatToken());
         }
 
         // Accept a parameter name
         AstNode* namedParam = nullptr;
-        if (tokenParse.is(TokenId::Identifier))
+        if (!forceType && tokenParse.is(TokenId::Identifier))
         {
             auto tokenName = tokenParse;
             tokenizer.saveState(tokenParse);
@@ -230,6 +231,9 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
         {
             typeExpr->addExtraPointer(ExtraPointerKind::IsNamed, namedParam);
         }
+
+        if (forceType)
+            typeExpr->addSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE);
 
         if (tokenParse.isNot(TokenId::SymComma))
             break;
