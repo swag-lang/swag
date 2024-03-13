@@ -59,7 +59,8 @@ struct FormatAst
     bool outputAttrUse(const AstNode* node, bool& hasSomething);
     bool outputAttrUse(const AstAttrUse* node);
     bool outputFuncCallParams(const AstNode* node);
-    bool outputSpecCall(const Utf8& name, const AstNode* node);
+    bool outputInit(const AstNode* node);
+    bool outputDropCopyMove(const AstNode* node);
     bool outputTypeLambda(const AstNode* node);
     bool outputFuncDeclParameters(const AstNode* parameters, bool isMethod);
     bool outputFuncReturnType(const AstFuncDecl* funcNode);

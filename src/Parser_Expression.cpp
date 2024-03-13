@@ -1690,6 +1690,7 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** /*result*/)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->count));
     }
 
+    node->inheritFormatFromAfter(this, tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     return true;
 }

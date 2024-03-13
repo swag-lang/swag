@@ -4,8 +4,8 @@
 #include "FormatAst.h"
 #include "LanguageSpec.h"
 #include "Module.h"
-#include "Report.h"
 #include "Parser_Push.h"
+#include "Report.h"
 #include "Semantic.h"
 
 bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
@@ -193,16 +193,12 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::Init:
-            SWAG_CHECK(outputSpecCall("@init", node));
+            SWAG_CHECK(outputInit(node));
             break;
         case AstNodeKind::Drop:
-            SWAG_CHECK(outputSpecCall("@drop", node));
-            break;
         case AstNodeKind::PostMove:
-            SWAG_CHECK(outputSpecCall("@postmove", node));
-            break;
         case AstNodeKind::PostCopy:
-            SWAG_CHECK(outputSpecCall("@postcopy", node));
+            SWAG_CHECK(outputDropCopyMove(node));
             break;
 
         case AstNodeKind::Break:

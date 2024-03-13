@@ -17,7 +17,7 @@ bool FormatAst::outputFuncDeclParameters(const AstNode* parameters, bool isMetho
     SWAG_CHECK(outputCommaChildren(parameters, isMethod ? 1 : 0));
     concat->addChar(')');
     beautifyAfter(parameters);
-    
+
     return true;
 }
 
@@ -383,19 +383,57 @@ bool FormatAst::outputTypeLambda(const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputSpecCall(const Utf8& name, const AstNode* node)
+bool FormatAst::outputInit(const AstNode* node)
 {
-    concat->addString(name);
-    concat->addChar('(');
+    const auto init = castAst<AstInit>(node, AstNodeKind::Init);
+    CONCAT_FIXED_STR(concat, "@init");
 
-    SWAG_CHECK(outputNode(node->firstChild()));
-    if (node->childCount() == 2)
+    concat->addChar('(');
+    SWAG_CHECK(outputNode(init->expression));
+    if (init->count)
     {
         concat->addChar(',');
         concat->addBlank();
-        SWAG_CHECK(outputNode(node->lastChild()));
+        SWAG_CHECK(outputNode(init->count));
+    }
+    concat->addChar(')');
+
+    if (init->parameters)
+    {
+        concat->addChar('(');
+        SWAG_CHECK(outputNode(init->parameters, false));
+        concat->addChar(')');
+        beautifyAfter(init->parameters);
     }
 
+    return true;
+}
+
+bool FormatAst::outputDropCopyMove(const AstNode* node)
+{
+    const auto drop = castAst<AstInit>(node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
+    switch (drop->kind)
+    {
+        case AstNodeKind::Drop:
+            CONCAT_FIXED_STR(concat, "@drop");
+            break;
+        case AstNodeKind::PostCopy:
+            CONCAT_FIXED_STR(concat, "@postcopy");
+            break;
+        case AstNodeKind::PostMove:
+            CONCAT_FIXED_STR(concat, "@postmove");
+            break;
+    }
+
+    concat->addChar('(');
+    SWAG_CHECK(outputNode(drop->expression));
+    if (drop->count)
+    {
+        concat->addChar(',');
+        concat->addBlank();
+        SWAG_CHECK(outputNode(drop->count));
+    }
     concat->addChar(')');
+
     return true;
 }
