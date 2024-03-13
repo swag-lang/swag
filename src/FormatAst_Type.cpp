@@ -277,9 +277,20 @@ bool FormatAst::outputGenericParameters(const AstNode* node)
             concat->addBlank();
         }
 
-        concat->addString(child->token.text);
+        const auto varDecl = castAst<AstVarDecl>(child, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+        if (varDecl->hasSpecFlag(AstVarDecl::SPEC_FLAG_FORCE_VAR))
+        {
+            CONCAT_FIXED_STR(concat, "var");
+            concat->addBlank();
+        }
+        else if (varDecl->hasSpecFlag(AstVarDecl::SPEC_FLAG_FORCE_CONST))
+        {
+            CONCAT_FIXED_STR(concat, "const");
+            concat->addBlank();
+        }
 
-        const AstVarDecl* varDecl = castAst<AstVarDecl>(child, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+        concat->addString(varDecl->token.text);
+
         if (varDecl->type)
         {
             concat->addChar(':');
