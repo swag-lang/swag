@@ -63,7 +63,7 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
             node->ownerCompilerIfBlock()->blocks.push_back(block);
 
         ParserPushCompilerIfBlock scopedIf(this, block);
-        SWAG_CHECK(doCompilerIfStatementFor(block, &dummyResult, kind));
+        SWAG_CHECK(doCompilerIfStatementFor(block, &dummyResult, kind, true));
     }
 
     // Else block
@@ -80,15 +80,33 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
         else
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doCompilerIfStatementFor(block, &dummyResult, kind));
+            SWAG_CHECK(doCompilerIfStatementFor(block, &dummyResult, kind, false));
         }
     }
 
     return true;
 }
 
-bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
+bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind, bool forIf)
 {
+    if (tokenParse.is(TokenId::CompilerDo))
+    {
+        SWAG_CHECK(eatToken());
+        if (tokenParse.is(TokenId::SymLeftCurly))
+        {
+            const Diagnostic err{sourceFile, tokenParse.token, formErr(Err0434, tokenParse.token.c_str())};
+            return context->report(err);
+        }
+    }
+    else if (tokenParse.isNot(TokenId::SymLeftCurly))
+    {
+        Diagnostic err{sourceFile, tokenParse.token, formErr(Err0516, tokenParse.token.c_str())};
+        if (forIf)
+            parent = parent->parent;
+        err.addNote(parent, parent->token, formNte(Nte0015, parent->token.c_str()));
+        return context->report(err);
+    }
+
     switch (kind)
     {
         case AstNodeKind::Statement:
@@ -116,33 +134,14 @@ bool Parser::doCompilerIfStatement(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doCurlyStatement(parent, result));
     }
+    else if (currentScope->isGlobalOrImpl())
+    {
+        *result = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
+        SWAG_CHECK(doTopLevelInstruction(*result, &dummyResult));
+    }
     else
     {
-        const auto tokenDo = tokenParse;
-        if (tokenParse.isNot(TokenId::CompilerDo))
-        {
-            Diagnostic err{sourceFile, tokenParse.token, formErr(Err0516, tokenParse.token.c_str())};
-            err.addNote(parent->parent, parent->parent->token, formNte(Nte0015, parent->parent->token.c_str()));
-            return context->report(err);
-        }
-
-        SWAG_CHECK(eatToken());
-
-        if (tokenParse.is(TokenId::SymLeftCurly))
-        {
-            const Diagnostic err{sourceFile, tokenDo.token, toErr(Err0434)};
-            return context->report(err);
-        }
-
-        if (currentScope->isGlobalOrImpl())
-        {
-            *result = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
-            SWAG_CHECK(doTopLevelInstruction(*result, &dummyResult));
-        }
-        else
-        {
-            SWAG_CHECK(doEmbeddedInstruction(parent, result));
-        }
+        SWAG_CHECK(doEmbeddedInstruction(parent, result));
     }
 
     return true;

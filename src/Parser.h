@@ -206,7 +206,7 @@ struct Parser
     bool doAttrUse(AstNode* parent, AstNode** result, bool single = false);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result);
     bool doScopedStatement(AstNode* parent, const Token& forToken, AstNode** result, bool mustHaveDo = true);
-    bool doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind);
+    bool doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind, bool forIf);
     bool doCompilerIfStatement(AstNode* parent, AstNode** result);
     bool doGlobalCurlyStatement(AstNode* parent, AstNode** result);
     bool doCurlyStatement(AstNode* parent, AstNode** result);
