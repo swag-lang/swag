@@ -190,7 +190,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)(global)\\s+(using|export|generated|if|namespace|public|internal|private|skip|testpass|testerror|testerrors|testwarning|testwarnings)\\b",
+          "match": "(#)(global)\\s+(using|export|generated|if|namespace|public|internal|private|skip|testpass|testerror|testerrors|testwarning|testwarnings|skipfmt)\\b",
           "captures": {
             "3": {
               "name": "constant.character.escape"

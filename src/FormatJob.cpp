@@ -47,6 +47,13 @@ JobResult FormatJob::execute()
         }
     }
 
+    if (tmpFile.hasFlag(FILE_NO_FORMAT))
+    {
+        if (g_CommandLine.verboseStages)
+            g_Log.messageVerbose(form("[%s] -- #global skip format detected ! Cancel", fileName.c_str()));
+        return JobResult::ReleaseJob;
+    }
+
     // Format
     if (g_CommandLine.verboseStages)
         g_Log.messageVerbose(form("[%s] -- formatting", fileName.c_str()));

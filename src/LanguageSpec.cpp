@@ -144,6 +144,7 @@ void LanguageSpec::setupNames()
     name_export      = "export";
     name_generated   = "generated";
     name_skip        = "skip";
+    name_skipfmt     = "skipfmt";
     name_testpass    = "testpass";
     name_lexer       = "lexer";
     name_syntax      = "syntax";

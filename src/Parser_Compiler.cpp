@@ -461,6 +461,14 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
+    else if (tokenParse.token.text == g_LangSpec->name_skipfmt)
+    {
+        sourceFile->addFlag(FILE_NO_FORMAT);
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatSemiCol("[[#global noformat]]"));
+    }
+
+    /////////////////////////////////
     else if (tokenParse.token.text == g_LangSpec->name_testpass)
     {
         const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);

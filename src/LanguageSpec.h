@@ -1,3 +1,5 @@
+// ReSharper disable CppInconsistentNaming
+// ReSharper disable IdentifierTypo
 #pragma once
 #include "Flags.h"
 #include "LangHashTable.h"
@@ -166,6 +168,7 @@ struct LanguageSpec
     Utf8 name_export;
     Utf8 name_generated;
     Utf8 name_skip;
+    Utf8 name_skipfmt;
     Utf8 name_testpass;
     Utf8 name_lexer;
     Utf8 name_syntax;

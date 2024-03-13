@@ -28,6 +28,7 @@ constexpr FileFlags FILE_FROM_TESTS          = 0x00000400;
 constexpr FileFlags FILE_FORCE_EXPORT        = 0x00000800;
 constexpr FileFlags FILE_MARK_DOWN           = 0x00001000;
 constexpr FileFlags FILE_FOR_FORMAT          = 0x00002000;
+constexpr FileFlags FILE_NO_FORMAT           = 0x00004000;
 
 struct SourceFile
 {
