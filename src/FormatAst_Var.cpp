@@ -80,6 +80,13 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
 
 bool FormatAst::outputVar(const AstVarDecl* varNode)
 {
+    if (varNode->attrUse)
+    {
+        bool hasSomething = true;
+        SWAG_CHECK(outputAttrUse(varNode->attrUse, hasSomething));
+        concat->addBlank();
+    }
+
     if (varNode->hasAstFlag(AST_DECL_USING))
     {
         CONCAT_FIXED_STR(concat, "using");
