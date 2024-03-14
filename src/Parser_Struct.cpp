@@ -170,9 +170,9 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     }
 
     {
-        ParserPushScope       scoped(this, parentScope);
-        ParserPushStructScope scopedStruct(this, newScope);
-        ParserPushAstNodeFlags    scopedFlags(this, AST_IN_IMPL);
+        ParserPushScope        scoped(this, parentScope);
+        ParserPushStructScope  scopedStruct(this, newScope);
+        ParserPushAstNodeFlags scopedFlags(this, AST_IN_IMPL);
         while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
         {
             SWAG_CHECK(doTopLevelInstruction(implNode, &dummyResult));
@@ -238,8 +238,11 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
     // If name starts with "__", then this is generated, as a user identifier cannot start with those
     // two characters
-    if (structNode->token.text.length() > 2 && structNode->token.text[0] == '_' && structNode->token.text[1] == '_')
-        structNode->addAstFlag(AST_GENERATED);
+    if (!sourceFile->hasFlag(FILE_FOR_FORMAT))
+    {
+        if (structNode->token.text.length() > 2 && structNode->token.text[0] == '_' && structNode->token.text[1] == '_')
+            structNode->addAstFlag(AST_GENERATED);
+    }
 
     // Add struct type and scope
     Scope* newScope = nullptr;
@@ -492,7 +495,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             }
 
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
-            const auto         varNode = Ast::newVarDecl(funcNode->token.text, this, parent);
+            const auto             varNode = Ast::newVarDecl(funcNode->token.text, this, parent);
             varNode->inheritTokenLocation(funcNode->token);
             Semantic::setVarDeclResolve(varNode);
             varNode->addAstFlag(AST_R_VALUE);
@@ -539,7 +542,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         default:
         {
             SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse.token, formErr(Err0293, tokenParse.token.c_str())));
-            TokenParse         savedToken = tokenParse;
+            TokenParse             savedToken = tokenParse;
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
             if (*result)
