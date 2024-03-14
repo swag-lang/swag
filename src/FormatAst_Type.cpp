@@ -22,7 +22,10 @@ bool FormatAst::outputType(const AstTypeExpression* node)
 {
     if (node->typeFlags.has(TYPEFLAG_IS_RETVAL))
     {
-        CONCAT_FIXED_STR(concat, "retval");
+        if (node->firstChild())
+            SWAG_CHECK(outputNode(node->firstChild()));
+        else
+            CONCAT_FIXED_STR(concat, "retval");
         return true;
     }
 
