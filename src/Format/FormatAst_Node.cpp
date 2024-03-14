@@ -1,12 +1,11 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Format/FormatAst.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Wmf/Module.h"
-#include "Syntax/Parser/Parser_Push.h"
 #include "Report/Report.h"
 #include "Semantic/Semantic.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/Module.h"
 
 bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
 {

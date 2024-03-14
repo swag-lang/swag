@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Format/FormatJob.h"
-#include "Report/ErrorIds.h"
 #include "Format/FormatAst.h"
+#include "Report/ErrorIds.h"
 #include "Report/Log.h"
-#include "Wmf/Module.h"
-#include "Syntax/Parser/Parser.h"
 #include "Report/Report.h"
+#include "Syntax/Parser/Parser.h"
 #include "Syntax/SyntaxJob.h"
+#include "Wmf/Module.h"
 
 JobResult FormatJob::execute()
 {

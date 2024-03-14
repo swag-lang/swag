@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Format/FormatAst.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Wmf/Module.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/Module.h"
 
 bool FormatAst::outputAttrUse(const AstNode* node, bool& hasSomething)
 {

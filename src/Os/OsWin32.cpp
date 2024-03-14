@@ -1,12 +1,12 @@
 #include "pch.h"
 #ifdef _WIN32
 #include "Backend/Context.h"
-#include "Report/ErrorIds.h"
-#include "Report/Log.h"
-#include "Os/Os.h"
-#include "Report/Report.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
+#include "Os/Os.h"
+#include "Report/ErrorIds.h"
+#include "Report/Log.h"
+#include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Workspace.h"
 #include <DbgHelp.h>

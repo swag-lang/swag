@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Semantic/ModuleSemanticJob.h"
-#include "Wmf/Module.h"
 #include "Semantic/SemanticJob.h"
+#include "Wmf/Module.h"
 
 JobResult ModuleSemanticJob::execute()
 {

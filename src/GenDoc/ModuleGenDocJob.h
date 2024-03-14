@@ -1,7 +1,7 @@
 #pragma once
-#include "GenDoc.h"
-#include "Threading/Job.h"
 #include "Backend/Runtime.h"
+#include "GenDoc/GenDoc.h"
+#include "Threading/Job.h"
 
 struct ModuleGenDocJob final : Job
 {

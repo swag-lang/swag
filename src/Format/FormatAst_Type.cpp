@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Format/FormatAst.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 
 bool FormatAst::outputTypeExpression(const AstNode* node)
 {

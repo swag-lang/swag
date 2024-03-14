@@ -1,8 +1,8 @@
 #include "pch.h"
+#include "GenDoc/GenDoc.h"
 #include "Report/ErrorIds.h"
-#include "GenDoc.h"
-#include "Wmf/Module.h"
 #include "Report/Report.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 bool GenDoc::generatePages()

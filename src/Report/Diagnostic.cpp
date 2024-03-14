@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Report/Diagnostic.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
-#include "Syntax/Naming.h"
-#include "Wmf/SourceFile.h"
 #include "Semantic/Symbol/Symbol.h"
-#include "Syntax/SyntaxColor.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Naming.h"
+#include "Syntax/SyntaxColor.h"
+#include "Wmf/SourceFile.h"
 
 void Diagnostic::setupColors()
 {

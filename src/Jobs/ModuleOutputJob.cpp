@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "ModuleOutputJob.h"
+#include "Jobs/ModuleOutputJob.h"
 #include "Backend/Backend.h"
-#include "Wmf/Module.h"
-#include "ModuleExportJob.h"
-#include "ModuleGenOutputJob.h"
+#include "Jobs/ModuleExportJob.h"
+#include "Jobs/ModuleGenOutputJob.h"
 #include "Jobs/ModulePrepOutputJob.h"
 #include "Threading/ThreadManager.h"
+#include "Wmf/Module.h"
 
 JobResult ModuleOutputJob::execute()
 {

@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Semantic/DataSegment.h"
-#include "Syntax/AstNode.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Report/ErrorIds.h"
-#include "Wmf/Module.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/AstNode.h"
+#include "Wmf/Module.h"
 
 void DataSegment::setup(SegmentKind myKind, Module* myModule)
 {

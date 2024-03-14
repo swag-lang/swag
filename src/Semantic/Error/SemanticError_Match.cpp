@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Format/FormatAst.h"
-#include "Syntax/Naming.h"
-#include "Semantic/Semantic.h"
 #include "Semantic/Error/SemanticError.h"
+#include "Semantic/Semantic.h"
+#include "Syntax/Ast.h"
+#include "Syntax/Naming.h"
 #include "Syntax/SyntaxColor.h"
 
 namespace

@@ -1,11 +1,11 @@
 #include "pch.h"
 
 #ifdef SWAG_STATS
-#include "Report/Log.h"
-#include "Wmf/Module.h"
-#include "Os/Os.h"
 #include "Main/Statistics.h"
+#include "Os/Os.h"
+#include "Report/Log.h"
 #include "Threading/ThreadManager.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 Stats g_Stats;

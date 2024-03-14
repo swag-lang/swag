@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "CommandLineParser.h"
-#include "Report/Log.h"
+#include "Main/CommandLineParser.h"
 #include "Main/Version.h"
+#include "Report/Log.h"
 
 namespace
 {

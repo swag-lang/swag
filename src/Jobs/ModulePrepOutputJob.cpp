@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Jobs/ModulePrepOutputJob.h"
 #include "Backend/Backend.h"
+#include "Main/Statistics.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Wmf/Module.h"
 #include "Report/Report.h"
-#include "Main/Statistics.h"
+#include "Wmf/Module.h"
 #ifdef SWAG_STATS
 #include "Core/Timer.h"
 #endif

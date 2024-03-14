@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Jobs/EnumerateModuleJob.h"
+#include "Jobs/LoadSourceFileJob.h"
+#include "Os/Os.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Jobs/LoadSourceFileJob.h"
-#include "Wmf/Module.h"
-#include "Wmf/DepManager/ModuleDepManager.h"
-#include "Os/Os.h"
 #include "Report/Report.h"
 #include "Syntax/SyntaxJob.h"
 #include "Threading/ThreadManager.h"
+#include "Wmf/DepManager/ModuleDepManager.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,

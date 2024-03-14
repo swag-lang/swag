@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Format/FormatAst.h"
 #include "Semantic/Semantic.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
 
 bool FormatAst::outputStatement(const AstNode* node)
 {

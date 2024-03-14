@@ -1,7 +1,7 @@
 #pragma once
-#include "Syntax/AstNode.h"
 #include "Core/Flags.h"
 #include "Format/FormatAst.h"
+#include "Syntax/AstNode.h"
 
 struct Scope;
 struct AstStruct;

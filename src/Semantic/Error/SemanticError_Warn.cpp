@@ -1,15 +1,15 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Report/Report.h"
+#include "Semantic/Error/SemanticError.h"
+#include "Semantic/Semantic.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
-#include "Syntax/Naming.h"
-#include "Report/Report.h"
-#include "Semantic/Semantic.h"
-#include "Semantic/Error/SemanticError.h"
 
 bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier)
 {

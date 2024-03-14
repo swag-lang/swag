@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Semantic/Generic/Generic.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Main/CommandLine.h"
 #include "Semantic/Scope.h"
 #include "Semantic/SemanticJob.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
 
 Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, const VectorMap<Utf8, GenericReplaceType>& replaceTypes)
 {

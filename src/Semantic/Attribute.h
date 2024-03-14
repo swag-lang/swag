@@ -1,8 +1,8 @@
 #pragma once
-#include "Syntax/ComputedValue.h"
 #include "Core/Flags.h"
-#include "Threading/RaceCondition.h"
+#include "Syntax/ComputedValue.h"
 #include "Syntax/Tokenizer/Token.h"
+#include "Threading/RaceCondition.h"
 
 struct AstNode;
 struct TypeInfo;

@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Semantic/Symbol/SymTable.h"
+#include "Semantic/Error/SemanticError.h"
+#include "Semantic/Scope.h"
+#include "Semantic/Semantic.h"
+#include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Wmf/Module.h"
-#include "Semantic/Scope.h"
-#include "Semantic/Semantic.h"
-#include "Semantic/Error/SemanticError.h"
-#include "Semantic/Type/TypeManager.h"
 
 void SymTable::release()
 {

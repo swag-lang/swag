@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "GenDoc.h"
+#include "GenDoc/GenDoc.h"
+#include "Main/Version.h"
 #include "Report/ErrorIds.h"
-#include "Wmf/Module.h"
 #include "Report/Report.h"
 #include "Syntax/SyntaxColor.h"
-#include "Main/Version.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 namespace

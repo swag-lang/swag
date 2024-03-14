@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Semantic/Type/TypeInfo.h"
-#include "Syntax/AstNode.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/AstNode.h"
 
 void TypeInfo::clearName()
 {

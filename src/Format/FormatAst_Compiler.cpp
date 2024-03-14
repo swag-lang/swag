@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
 #include "Format/FormatAst.h"
 #include "Report/Report.h"
 #include "Semantic/Semantic.h"
+#include "Syntax/Ast.h"
 
 bool FormatAst::outputCompilerIf(const Utf8& name, const AstNode* node)
 {

@@ -1,11 +1,11 @@
 #include "pch.h"
+#include "GenDoc/GenDoc.h"
+#include "Semantic/Scope.h"
+#include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
-#include "GenDoc.h"
-#include "Wmf/Module.h"
-#include "Semantic/Scope.h"
 #include "Syntax/SyntaxColor.h"
-#include "Semantic/Type/TypeInfo.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 constexpr uint32_t COLLECT_TABLE_ZERO      = 0x00000000;

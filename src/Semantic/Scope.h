@@ -1,8 +1,8 @@
 #pragma once
-#include "Jobs/DependentJobs.h"
 #include "Core/Flags.h"
-#include "Threading/Mutex.h"
+#include "Jobs/DependentJobs.h"
 #include "Semantic/Symbol/SymTable.h"
+#include "Threading/Mutex.h"
 
 struct Scope;
 struct AstNode;

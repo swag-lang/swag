@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Format/FormatAst.h"
-#include "Syntax/AstFlags.h"
 #include "Semantic/Semantic.h"
+#include "Syntax/AstFlags.h"
 
 void FormatAst::clear() const
 {

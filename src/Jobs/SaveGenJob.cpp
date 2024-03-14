@@ -2,8 +2,8 @@
 #include "Jobs/SaveGenJob.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Wmf/Module.h"
 #include "Report/Report.h"
+#include "Wmf/Module.h"
 
 SaveGenJob::SaveGenJob()
 {

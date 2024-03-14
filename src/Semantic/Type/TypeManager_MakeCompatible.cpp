@@ -1,10 +1,10 @@
 #include "pch.h"
+#include "Semantic/Error/SemanticError.h"
+#include "Semantic/Semantic.h"
+#include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Wmf/Module.h"
-#include "Semantic/Semantic.h"
-#include "Semantic/Error/SemanticError.h"
-#include "Semantic/Type/TypeManager.h"
 
 bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, CastFlags castFlags)
 {

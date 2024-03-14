@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Semantic/Scope.h"
 #include "Syntax/Ast.h"
 #include "Threading/Job.h"
-#include "Semantic/Scope.h"
 #include "Wmf/SourceFile.h"
 #include "Wmf/Workspace.h"
 

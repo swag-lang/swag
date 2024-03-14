@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Semantic/Type/TypeMatch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Semantic/Generic/Generic.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Symbol/Symbol.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
 
 namespace
 {

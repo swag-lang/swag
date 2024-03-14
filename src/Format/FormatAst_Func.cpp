@@ -1,9 +1,9 @@
 #include "pch.h"
+#include "Format/FormatAst.h"
+#include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
-#include "Format/FormatAst.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Semantic/Semantic.h"
 
 bool FormatAst::outputFuncDeclParameters(const AstNode* parameters, bool isMethod)
 {

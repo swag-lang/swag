@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
 
 TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
 {

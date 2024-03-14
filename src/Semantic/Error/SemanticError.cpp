@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Semantic/Error/SemanticError.h"
-#include "Syntax/Ast.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Naming.h"
 #include "Semantic/Semantic.h"
+#include "Syntax/Ast.h"
+#include "Syntax/Naming.h"
 
 void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes)
 {

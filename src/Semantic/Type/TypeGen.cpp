@@ -4,10 +4,10 @@
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
-#include "Wmf/Module.h"
-#include "Threading/ThreadManager.h"
 #include "Semantic/Type/TypeGenStructJob.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Threading/ThreadManager.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, GenExportFlags genFlags, TypeInfo** ptrTypeInfo)

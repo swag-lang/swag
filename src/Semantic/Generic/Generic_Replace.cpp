@@ -1,12 +1,11 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/BackendParameters.h"
 #include "Semantic/DataSegment.h"
-#include "Report/Diagnostic.h"
-#include "Syntax/Naming.h"
 #include "Semantic/SemanticJob.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Naming.h"
 
 bool Generic::replaceGenericParameters(OneMatch&                     match,
                                        VectorNative<TypeInfoParam*>& typeGenericParameters,

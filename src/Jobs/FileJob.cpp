@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Jobs/FileJob.h"
-#include "Report/ErrorIds.h"
-#include "Wmf/Module.h"
 #include "Os/Os.h"
+#include "Report/ErrorIds.h"
 #include "Report/Report.h"
+#include "Wmf/Module.h"
 
 CopyFileJob::CopyFileJob()
 {

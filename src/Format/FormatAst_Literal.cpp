@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
 #include "Format/FormatAst.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Wmf/Module.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/Module.h"
 
 bool FormatAst::outputLiteral(const AstNode* node)
 {

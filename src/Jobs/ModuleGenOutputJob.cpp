@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "ModuleGenOutputJob.h"
+#include "Jobs/ModuleGenOutputJob.h"
 #include "Backend/Backend.h"
-#include "Wmf/Module.h"
 #include "Main/Statistics.h"
+#include "Wmf/Module.h"
 #ifdef SWAG_STATS
 #include "Core/Timer.h"
 #endif

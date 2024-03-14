@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Semantic/ScopeSwag.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 
 void ScopeSwag::registerType(TypeInfo* typeInfo)
 {
