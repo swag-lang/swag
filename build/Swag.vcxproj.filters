@@ -1,1236 +1,383 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="../src/ThreadManager.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Main.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Ast.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/SemanticJob.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleSemanticJob.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="../src/pch.cpp" />
-    <ClCompile Include="../src/ByteCode.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/CommandLineParser.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Scope.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/AstNode.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/CommandLine.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Attribute.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Backend.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\LLVM_Setup.cpp">
-      <Filter>Backend\LLVM</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/OsWin32.cpp">
-      <Filter>Os</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/TypeInfo.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TypeInfoSpecifics.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/TypeManager.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TypeManager_Cast.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TypeGen.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TypeGenStructJob.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ByteCodeOptimizer.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Const.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_DeadCode.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_DeadStore.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Dup.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Imm.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Jumps.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_RetCopy.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Reduce.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ByteCodeOptimizerJob.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/BackendLinker.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ModuleDepManager.cpp">
-      <Filter>Wmf\DepManager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FetchModuleFileSystemJob.cpp">
-      <Filter>Wmf\DepManager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RaceCondition.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Tokenizer_Symbol.cpp">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Tokenizer_StringLiteral.cpp">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Tokenizer_NumberLiteral.cpp">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Tokenizer.cpp">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/LanguageSpec.cpp">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FileJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/DependentJobs.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/EnumerateModuleJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleBuildJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Utf8.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Concat.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Workspace.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Workspace_Clean.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Workspace_New.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Workspace_Script.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Module.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/SourceFile.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/DataSegment.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Assert.cpp">
-      <Filter>Report</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Diagnostic.cpp">
-      <Filter>Report</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Log.cpp">
-      <Filter>Report</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Help.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleManager.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ByteCodeStack.cpp">
-      <Filter>Backend\ByteCode\Run</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeRun_FFI.cpp">
-      <Filter>Backend\ByteCode\Run</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ByteCodeRunContext.cpp">
-      <Filter>Backend\ByteCode\Run</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ByteCodeRun.cpp">
-      <Filter>Backend\ByteCode\Run</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ByteCodeGenJob.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeRun_Math.cpp">
-      <Filter>Backend\ByteCode\Run</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp">
-      <Filter>Backend\ByteCode\Run</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Workspace_Build.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Module_Run.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\LoadSourceFileJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Module_CompilerMsg.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\PrepCompilerMsgJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ErrorIds.cpp">
-      <Filter>Report</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\CallConv.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Report.cpp">
-      <Filter>Report</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Allocator.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ErrorContext.cpp">
-      <Filter>Report</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger.cpp">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger_Help.cpp">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger_Eval.cpp">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger_Break.cpp">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger_Value.cpp">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger_Print.cpp">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger_Info.cpp">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger_Trace.cpp">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger_Frame.cpp">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Sanity.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Swap.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleExportJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleGenOutputJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleOutputJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModulePrepOutputJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleRunJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleSaveExportJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Tokenizer_Identifier.cpp">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SaveGenJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Job.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\JobGroup.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/JobThread.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Statistics.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Tokenizer_Comment.cpp">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/SyntaxJob.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Ast_New.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Ast_Generate.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Symbol.cpp">
-      <Filter>Semantic\Symbol</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/SymTable.cpp">
-      <Filter>Semantic\Symbol</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SymTableHash.cpp">
-      <Filter>Semantic\Symbol</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Profiler.cpp">
-      <Filter>Backend\ByteCode\Profiler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Var.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Attribute.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Block.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Compiler.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Declaration.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Enum.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Expression.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Function.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Identifier.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Struct.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Type.cpp">
-      <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ModuleGenDocJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_ReduceX2.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ComputedValue.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SyntaxColor.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\GenDoc.cpp">
-      <Filter>GenDoc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\GenDoc_Api.cpp">
-      <Filter>GenDoc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\GenDoc_Examples.cpp">
-      <Filter>GenDoc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\GenDoc_Pages.cpp">
-      <Filter>GenDoc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Param.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Err.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger_Display.cpp">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger_Set.cpp">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ScopeSwag.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Access.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_AffectExpression.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Attribute.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_BinaryExpression.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Block.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Collect.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_CompareExpression.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Compiler.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Declaration.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Enum.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Expression.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Function.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Identifier.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Intrinsic.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Literal.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_UserOp.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Ref.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Struct.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Type.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_UnaryExpression.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Var.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Wait.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticContext.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TypeManager_Concrete.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TypeManager_Error.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TypeManager_Promote.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TypeManager_Try.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TypeMatch.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Workspace_Tags.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Ref.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Safety.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Struct.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_UnaryOp.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Var.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_AffectOp.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_BinaryOp.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Block.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Cast.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_CompareOp.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Err.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Expression.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Function.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Identifier.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Property.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenContext.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Registers.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGen_Emit.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\static.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Generic.cpp">
-      <Filter>Semantic\Generic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Generic_Function.cpp">
-      <Filter>Semantic\Generic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Generic_Struct.cpp">
-      <Filter>Semantic\Generic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Generic_Deduce.cpp">
-      <Filter>Semantic\Generic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_TryCatch.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Scope.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Generic_Replace.cpp">
-      <Filter>Semantic\Generic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticError.cpp">
-      <Filter>Semantic\Error</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticError_Find.cpp">
-      <Filter>Semantic\Error</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticError_Diag.cpp">
-      <Filter>Semantic\Error</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticError_Warn.cpp">
-      <Filter>Semantic\Error</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticError_Unknown.cpp">
-      <Filter>Semantic\Error</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticError_Match.cpp">
-      <Filter>Semantic\Error</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticError_Ambiguous.cpp">
-      <Filter>Semantic\Error</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\BackendFunctionBodyJob.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_CPU.cpp">
-      <Filter>Backend\SCBE\Encoder</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_X64.cpp">
-      <Filter>Backend\SCBE\Encoder</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/CompilerItf.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Context.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBEDebug.cpp">
-      <Filter>Backend\SCBE\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBEDebug_CodeView.cpp">
-      <Filter>Backend\SCBE\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\LLVM.cpp">
-      <Filter>Backend\LLVM\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\LLVM_Call.cpp">
-      <Filter>Backend\LLVM\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\LLVM_Data.cpp">
-      <Filter>Backend\LLVM\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\LLVM_Emit.cpp">
-      <Filter>Backend\LLVM\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\LLVM_Function.cpp">
-      <Filter>Backend\LLVM\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\LLVM_Main.cpp">
-      <Filter>Backend\LLVM\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE.cpp">
-      <Filter>Backend\SCBE\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_Call.cpp">
-      <Filter>Backend\SCBE\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_Data.cpp">
-      <Filter>Backend\SCBE\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_Emit.cpp">
-      <Filter>Backend\SCBE\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_Function.cpp">
-      <Filter>Backend\SCBE\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_Main.cpp">
-      <Filter>Backend\SCBE\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_SaveObjJob.cpp">
-      <Filter>Backend\SCBE\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_Coff.cpp">
-      <Filter>Backend\SCBE\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Naming.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Ast_Convert.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Identifier_Ufcs.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Identifier_Filter.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Semantic_Identifier_Match.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TypeManager_MakeCompatible.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCode_Print.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\BackendLinker_Coff.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\LLVMDebug.cpp">
-      <Filter>Backend\LLVM\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Node.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Type.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Func.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatConcat.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Scope.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Attr.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Var.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Compiler.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Logic.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Literal.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Struct.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Identifier.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Beautify.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Workspace_Format.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\AstNode_Clone.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\AstNode_Free.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\AstNode_Specifics.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Block.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FormatAst_Expression.cpp">
-      <Filter>Format</Filter>
-    </ClCompile>
+    <ClCompile Include="..\src\Backend\Backend.cpp" />
+    <ClCompile Include="..\src\Backend\BackendFunctionBodyJob.cpp" />
+    <ClCompile Include="..\src\Backend\BackendLinker.cpp" />
+    <ClCompile Include="..\src\Backend\BackendLinker_Coff.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\ByteCode.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\ByteCode_Print.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Break.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Display.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Eval.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Frame.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Help.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Info.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Print.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Set.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Trace.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Value.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGenContext.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGenJob.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_AffectOp.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_BinaryOp.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Block.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Cast.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_CompareOp.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Emit.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Err.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Expression.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Function.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Identifier.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Property.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Ref.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Registers.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Safety.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Struct.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_UnaryOp.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Gen\ByteCodeGen_Var.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizerJob.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Const.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_DeadCode.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_DeadStore.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Dup.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_DupBlocks.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Err.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Imm.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Jumps.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Loop.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Param.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Reduce.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_ReduceX2.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_RetCopy.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Sanity.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Swap.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Profiler\Profiler.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeRun.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeRunContext.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeRun_FFI.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeRun_Math.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeRun_SelectIf.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeStack.cpp" />
+    <ClCompile Include="..\src\Backend\CallConv.cpp" />
+    <ClCompile Include="..\src\Backend\CompilerItf.cpp" />
+    <ClCompile Include="..\src\Backend\Context.cpp" />
+    <ClCompile Include="..\src\Backend\LLVM\Debug\LLVMDebug.cpp" />
+    <ClCompile Include="..\src\Backend\LLVM\LLVM_Setup.cpp" />
+    <ClCompile Include="..\src\Backend\LLVM\Main\LLVM.cpp" />
+    <ClCompile Include="..\src\Backend\LLVM\Main\LLVM_Call.cpp" />
+    <ClCompile Include="..\src\Backend\LLVM\Main\LLVM_Data.cpp" />
+    <ClCompile Include="..\src\Backend\LLVM\Main\LLVM_Emit.cpp" />
+    <ClCompile Include="..\src\Backend\LLVM\Main\LLVM_Function.cpp" />
+    <ClCompile Include="..\src\Backend\LLVM\Main\LLVM_Main.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Debug\SCBEDebug.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Debug\SCBEDebug_CodeView.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_CPU.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_X64.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Main\SCBE.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Main\SCBE_Call.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Main\SCBE_Data.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Main\SCBE_Emit.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Main\SCBE_Function.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Main\SCBE_Main.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Obj\SCBE_Coff.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Obj\SCBE_SaveObjJob.cpp" />
+    <ClCompile Include="..\src\Core\Allocator.cpp" />
+    <ClCompile Include="..\src\Core\Concat.cpp" />
+    <ClCompile Include="..\src\Core\Utf8.cpp" />
+    <ClCompile Include="..\src\Extern\mimalloc\static.c" />
+    <ClCompile Include="..\src\Format\FormatAst.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Attr.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Beautify.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Block.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Compiler.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Expression.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Func.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Identifier.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Literal.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Logic.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Node.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Scope.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Struct.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Type.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Var.cpp" />
+    <ClCompile Include="..\src\Format\FormatConcat.cpp" />
+    <ClCompile Include="..\src\Format\FormatJob.cpp" />
+    <ClCompile Include="..\src\GenDoc\GenDoc.cpp" />
+    <ClCompile Include="..\src\GenDoc\GenDoc_Api.cpp" />
+    <ClCompile Include="..\src\GenDoc\GenDoc_Examples.cpp" />
+    <ClCompile Include="..\src\GenDoc\GenDoc_Pages.cpp" />
+    <ClCompile Include="..\src\GenDoc\ModuleGenDocJob.cpp" />
+    <ClCompile Include="..\src\Jobs\DependentJobs.cpp" />
+    <ClCompile Include="..\src\Jobs\EnumerateModuleJob.cpp" />
+    <ClCompile Include="..\src\Jobs\FileJob.cpp" />
+    <ClCompile Include="..\src\Jobs\LoadSourceFileJob.cpp" />
+    <ClCompile Include="..\src\Jobs\ModuleBuildJob.cpp" />
+    <ClCompile Include="..\src\Jobs\ModuleExportJob.cpp" />
+    <ClCompile Include="..\src\Jobs\ModuleGenOutputJob.cpp" />
+    <ClCompile Include="..\src\Jobs\ModuleOutputJob.cpp" />
+    <ClCompile Include="..\src\Jobs\ModulePrepOutputJob.cpp" />
+    <ClCompile Include="..\src\Jobs\ModuleRunJob.cpp" />
+    <ClCompile Include="..\src\Jobs\ModuleSaveExportJob.cpp" />
+    <ClCompile Include="..\src\Jobs\PrepCompilerMsgJob.cpp" />
+    <ClCompile Include="..\src\Jobs\SaveGenJob.cpp" />
+    <ClCompile Include="..\src\Main\CommandLine.cpp" />
+    <ClCompile Include="..\src\Main\CommandLineParser.cpp" />
+    <ClCompile Include="..\src\Main\Help.cpp" />
+    <ClCompile Include="..\src\Main\Main.cpp" />
+    <ClCompile Include="..\src\Main\Statistics.cpp" />
+    <ClCompile Include="..\src\Os\OsWin32.cpp" />
+    <ClCompile Include="..\src\Report\Assert.cpp" />
+    <ClCompile Include="..\src\Report\Diagnostic.cpp" />
+    <ClCompile Include="..\src\Report\ErrorContext.cpp" />
+    <ClCompile Include="..\src\Report\ErrorIds.cpp" />
+    <ClCompile Include="..\src\Report\Log.cpp" />
+    <ClCompile Include="..\src\Report\Report.cpp" />
+    <ClCompile Include="..\src\Semantic\Attribute.cpp" />
+    <ClCompile Include="..\src\Semantic\DataSegment.cpp" />
+    <ClCompile Include="..\src\Semantic\Error\SemanticError.cpp" />
+    <ClCompile Include="..\src\Semantic\Error\SemanticError_Ambiguous.cpp" />
+    <ClCompile Include="..\src\Semantic\Error\SemanticError_Diag.cpp" />
+    <ClCompile Include="..\src\Semantic\Error\SemanticError_Find.cpp" />
+    <ClCompile Include="..\src\Semantic\Error\SemanticError_Match.cpp" />
+    <ClCompile Include="..\src\Semantic\Error\SemanticError_Unknown.cpp" />
+    <ClCompile Include="..\src\Semantic\Error\SemanticError_Warn.cpp" />
+    <ClCompile Include="..\src\Semantic\Generic\Generic.cpp" />
+    <ClCompile Include="..\src\Semantic\Generic\Generic_Deduce.cpp" />
+    <ClCompile Include="..\src\Semantic\Generic\Generic_Function.cpp" />
+    <ClCompile Include="..\src\Semantic\Generic\Generic_Replace.cpp" />
+    <ClCompile Include="..\src\Semantic\Generic\Generic_Struct.cpp" />
+    <ClCompile Include="..\src\Semantic\ModuleSemanticJob.cpp" />
+    <ClCompile Include="..\src\Semantic\Scope.cpp" />
+    <ClCompile Include="..\src\Semantic\ScopeSwag.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic.cpp" />
+    <ClCompile Include="..\src\Semantic\SemanticContext.cpp" />
+    <ClCompile Include="..\src\Semantic\SemanticJob.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Access.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_AffectExpression.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Attribute.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_BinaryExpression.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Block.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Collect.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_CompareExpression.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Compiler.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Declaration.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Enum.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Expression.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Function.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Identifier.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Identifier_Filter.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Identifier_Match.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Identifier_Ufcs.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Intrinsic.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Literal.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Ref.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Scope.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Struct.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_TryCatch.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Type.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_UnaryExpression.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_UserOp.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Var.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Wait.cpp" />
+    <ClCompile Include="..\src\Semantic\Symbol\Symbol.cpp" />
+    <ClCompile Include="..\src\Semantic\Symbol\SymTable.cpp" />
+    <ClCompile Include="..\src\Semantic\Symbol\SymTableHash.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeGen.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeGenStructJob.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeInfo.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeInfoSpecifics.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeManager.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeManager_Cast.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeManager_Concrete.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeManager_Error.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeManager_MakeCompatible.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeManager_Promote.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeManager_Try.cpp" />
+    <ClCompile Include="..\src\Semantic\Type\TypeMatch.cpp" />
+    <ClCompile Include="..\src\Syntax\Ast.cpp" />
+    <ClCompile Include="..\src\Syntax\AstNode.cpp" />
+    <ClCompile Include="..\src\Syntax\AstNode_Clone.cpp" />
+    <ClCompile Include="..\src\Syntax\AstNode_Free.cpp" />
+    <ClCompile Include="..\src\Syntax\AstNode_Specifics.cpp" />
+    <ClCompile Include="..\src\Syntax\Ast_Convert.cpp" />
+    <ClCompile Include="..\src\Syntax\Ast_Generate.cpp" />
+    <ClCompile Include="..\src\Syntax\Ast_New.cpp" />
+    <ClCompile Include="..\src\Syntax\ComputedValue.cpp" />
+    <ClCompile Include="..\src\Syntax\Naming.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Attribute.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Block.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Compiler.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Declaration.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Enum.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Expression.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Function.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Identifier.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Struct.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Type.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Var.cpp" />
+    <ClCompile Include="..\src\Syntax\SyntaxColor.cpp" />
+    <ClCompile Include="..\src\Syntax\SyntaxJob.cpp" />
+    <ClCompile Include="..\src\Syntax\Tokenizer\LanguageSpec.cpp" />
+    <ClCompile Include="..\src\Syntax\Tokenizer\Tokenizer.cpp" />
+    <ClCompile Include="..\src\Syntax\Tokenizer\Tokenizer_Comment.cpp" />
+    <ClCompile Include="..\src\Syntax\Tokenizer\Tokenizer_Identifier.cpp" />
+    <ClCompile Include="..\src\Syntax\Tokenizer\Tokenizer_NumberLiteral.cpp" />
+    <ClCompile Include="..\src\Syntax\Tokenizer\Tokenizer_StringLiteral.cpp" />
+    <ClCompile Include="..\src\Syntax\Tokenizer\Tokenizer_Symbol.cpp" />
+    <ClCompile Include="..\src\Threading\Job.cpp" />
+    <ClCompile Include="..\src\Threading\JobGroup.cpp" />
+    <ClCompile Include="..\src\Threading\JobThread.cpp" />
+    <ClCompile Include="..\src\Threading\RaceCondition.cpp" />
+    <ClCompile Include="..\src\Threading\ThreadManager.cpp" />
+    <ClCompile Include="..\src\Wmf\DepManager\FetchModuleFileSystemJob.cpp" />
+    <ClCompile Include="..\src\Wmf\DepManager\ModuleDepManager.cpp" />
+    <ClCompile Include="..\src\Wmf\Module.cpp" />
+    <ClCompile Include="..\src\Wmf\ModuleManager.cpp" />
+    <ClCompile Include="..\src\Wmf\Module_CompilerMsg.cpp" />
+    <ClCompile Include="..\src\Wmf\Module_Run.cpp" />
+    <ClCompile Include="..\src\Wmf\SourceFile.cpp" />
+    <ClCompile Include="..\src\Wmf\Workspace.cpp" />
+    <ClCompile Include="..\src\Wmf\Workspace_Build.cpp" />
+    <ClCompile Include="..\src\Wmf\Workspace_Clean.cpp" />
+    <ClCompile Include="..\src\Wmf\Workspace_Format.cpp" />
+    <ClCompile Include="..\src\Wmf\Workspace_New.cpp" />
+    <ClCompile Include="..\src\Wmf\Workspace_Script.cpp" />
+    <ClCompile Include="..\src\Wmf\Workspace_Tags.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="../src/ThreadManager.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/CommandLine.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Ast.h">
-      <Filter>Syntax</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/AstNode.h">
-      <Filter>Syntax</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/SemanticJob.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleSemanticJob.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
     <ClInclude Include="../src/pch.h" />
-    <ClInclude Include="../src/Scope.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ByteCode.h">
-      <Filter>Backend\ByteCode</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/CommandLineParser.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ByteCodeOp.h">
-      <Filter>Backend\ByteCode</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ByteCodeOpList.h">
-      <Filter>Backend\ByteCode</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Version.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Attribute.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Backend.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\AstFlags.h">
-      <Filter>Syntax</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\LLVM_Setup.h">
-      <Filter>Backend\LLVM</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\TypeGenStructJob.h">
-      <Filter>Semantic\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/TypeInfo.h">
-      <Filter>Semantic\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/TypeManager.h">
-      <Filter>Semantic\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\TypeGen.h">
-      <Filter>Semantic\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ByteCodeOptimizer.h">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ByteCodeOptimizerJob.h">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ByteCodeOptContext.h">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/BackendLinker.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ModuleDepManager.h">
-      <Filter>Wmf\DepManager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\FetchModuleFileSystemJob.h">
-      <Filter>Wmf\DepManager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\RaceCondition.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Tokenizer.h">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/TokenIds.h">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/LanguageSpec.h">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\FileJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/DependentJobs.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/EnumerateModuleJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleBuildJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Utf8.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/VectorNative.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Timer.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Concat.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Workspace.h">
-      <Filter>Wmf</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Module.h">
-      <Filter>Wmf</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/SourceFile.h">
-      <Filter>Wmf</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Math.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\LLVM_Inc.h">
-      <Filter>Backend\LLVM</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BackendParameters.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/DataSegment.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Assert.h">
-      <Filter>Report</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Diagnostic.h">
-      <Filter>Report</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Log.h">
-      <Filter>Report</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Os.h">
-      <Filter>Os</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ErrorIds.h">
-      <Filter>Report</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleManager.h">
-      <Filter>Wmf</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ByteCodeStack.h">
-      <Filter>Backend\ByteCode\Run</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ByteCodeRunContext.h">
-      <Filter>Backend\ByteCode\Run</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ByteCodeRun.h">
-      <Filter>Backend\ByteCode\Run</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ByteCodeGenJob.h">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Mutex.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\LoadSourceFileJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\LangHashTable.h">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PrepCompilerMsgJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\MapRegTo.h">
-      <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Crc32.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ByteCodeInstruction.h">
-      <Filter>Backend\ByteCode</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\CallConv.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Report.h">
-      <Filter>Report</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Allocator.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ErrorContext.h">
-      <Filter>Report</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ErrorList.h">
-      <Filter>Report</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ByteCodeDebugger.h">
-      <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Register.h">
-      <Filter>Backend\ByteCode</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Vector.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleExportJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleGenOutputJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleOutputJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModulePrepOutputJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleRunJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleSaveExportJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ComputedValue.h">
-      <Filter>Syntax</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SaveGenJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Job.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\JobGroup.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/JobThread.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Statistics.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/SyntaxJob.h">
-      <Filter>Syntax</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Map.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Set.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Path.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Symbol.h">
-      <Filter>Semantic\Symbol</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/SymTable.h">
-      <Filter>Semantic\Symbol</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SymTableHash.h">
-      <Filter>Semantic\Symbol</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Profiler.h">
-      <Filter>Backend\ByteCode\Profiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Parser.h">
-      <Filter>Syntax\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ModuleGenDocJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SyntaxColor.h">
-      <Filter>Syntax</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\GenDoc.h">
-      <Filter>GenDoc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ScopeSwag.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Semantic.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SemanticContext.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\TypeMatch.h">
-      <Filter>Semantic\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ByteCodeGen.h">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ByteCodeGenContext.h">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Generic.h">
-      <Filter>Semantic\Generic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SemanticError.h">
-      <Filter>Semantic\Error</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BackendFunctionBodyJob.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SCBE_X64.h">
-      <Filter>Backend\SCBE\Encoder</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SCBE_CPU.h">
-      <Filter>Backend\SCBE\Encoder</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Runtime.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/CompilerItf.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Context.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SCBEDebug.h">
-      <Filter>Backend\SCBE\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SCBEDebug_CodeView.h">
-      <Filter>Backend\SCBE\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\LLVM.h">
-      <Filter>Backend\LLVM\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\LLVM_Macros.h">
-      <Filter>Backend\LLVM\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SCBE.h">
-      <Filter>Backend\SCBE\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SCBE_Macros.h">
-      <Filter>Backend\SCBE\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SCBE_SaveObjJob.h">
-      <Filter>Backend\SCBE\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SCBE_Coff.h">
-      <Filter>Backend\SCBE\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Naming.h">
-      <Filter>Syntax</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ByteCode_Math.h">
-      <Filter>Backend\ByteCode</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\LLVMDebug.h">
-      <Filter>Backend\LLVM\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Flags.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\TokenParse.h">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Token.h">
-      <Filter>Syntax\Tokenizer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\FormatAst.h">
-      <Filter>Format</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\FormatConcat.h">
-      <Filter>Format</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\FormatJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Parser_Push.h">
-      <Filter>Syntax\Parser</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Main">
-      <UniqueIdentifier>{ec1ce4ee-f636-49c8-b14c-ba31cc1e1e91}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Semantic">
-      <UniqueIdentifier>{5f62a50f-54d2-4ca7-be2f-7fba0994f861}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend">
-      <UniqueIdentifier>{7fe556f7-f7f6-4fd4-b6f3-8b9e91dc51de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\LLVM">
-      <UniqueIdentifier>{c60a90b2-c79e-4690-938f-f6f4ab31461c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\ByteCode">
-      <UniqueIdentifier>{5facb5bb-a2a0-45dd-aa6c-20852346b20a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\ByteCode\Optimize">
-      <UniqueIdentifier>{78754e10-947b-4b7b-bdfa-8eb19470f27d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\ByteCode\Run">
-      <UniqueIdentifier>{6addfd73-dbad-40f7-b7cb-5bbaa1cde9cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\ByteCode\Gen">
-      <UniqueIdentifier>{6af8e653-2a30-49e1-a10c-e6fd51ae7787}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\ByteCode\Debugger">
-      <UniqueIdentifier>{5d64ad0d-846a-4092-a35f-d23655afc3d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core">
-      <UniqueIdentifier>{b65399cb-c115-4690-a5a5-21fe88ba8747}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Jobs">
-      <UniqueIdentifier>{1bc332e2-b846-4939-bd77-130255d62a18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Os">
-      <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Report">
-      <UniqueIdentifier>{70f7c54c-e50c-4523-895c-c808e6cb62b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Threading">
-      <UniqueIdentifier>{e8e10c82-0958-4dec-b1a7-7925f336a87c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Wmf">
-      <UniqueIdentifier>{68a1bb4f-01bc-4d77-9593-917fdde3fe6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Syntax">
-      <UniqueIdentifier>{2ec0b045-bdd6-4a7a-a120-2c91b7025073}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Syntax\Tokenizer">
-      <UniqueIdentifier>{6e271899-858e-4671-8537-9246b9a196ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Semantic\Type">
-      <UniqueIdentifier>{5d3754c6-5cd6-4c17-beb5-5141ff0d58e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Extern">
-      <UniqueIdentifier>{c9693071-61f7-47a0-91a4-00e7adb04d7a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Extern\mimalloc">
-      <UniqueIdentifier>{49f77145-13a7-4961-8ecf-c11c327ef4a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Semantic\Symbol">
-      <UniqueIdentifier>{a6739d74-e799-42d8-8050-176675ae95f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\ByteCode\Profiler">
-      <UniqueIdentifier>{bafae39e-037a-4deb-9b09-3c970c4ff63d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Syntax\Parser">
-      <UniqueIdentifier>{5bad38d1-b614-4137-9547-ef563589813e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GenDoc">
-      <UniqueIdentifier>{d2110678-479a-4478-8f76-2eb5853fe96c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Wmf\DepManager">
-      <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Semantic\Generic">
-      <UniqueIdentifier>{f5e6288c-de4e-4778-8540-d85f85c3251f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Semantic\Error">
-      <UniqueIdentifier>{af92c054-3e94-448e-a2c0-bd00870ba138}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\SCBE">
-      <UniqueIdentifier>{8a2a36d9-44c6-423d-8d02-ff5e04508f18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\SCBE\Encoder">
-      <UniqueIdentifier>{cf0fe3a7-5c87-4647-aa5e-c94b12fee9af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\SCBE\Debug">
-      <UniqueIdentifier>{b28422c8-2f49-43b1-b9a6-a4bd13417541}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\LLVM\Debug">
-      <UniqueIdentifier>{17aeccd5-174b-441a-9ec9-f75478e99431}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\LLVM\Main">
-      <UniqueIdentifier>{1cb6b8d2-f779-49e8-84a3-7d89d0891b58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\SCBE\Main">
-      <UniqueIdentifier>{24d808cc-e601-49c5-b178-22d4017d8451}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\SCBE\Obj">
-      <UniqueIdentifier>{5b17cb69-4d96-4b78-aeea-02449687dd00}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Format">
-      <UniqueIdentifier>{ba5b3615-f7de-4534-9914-d4c5b73355a4}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="..\src\Backend\Backend.h" />
+    <ClInclude Include="..\src\Backend\BackendFunctionBodyJob.h" />
+    <ClInclude Include="..\src\Backend\BackendLinker.h" />
+    <ClInclude Include="..\src\Backend\BackendParameters.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\ByteCode.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\ByteCodeInstruction.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\ByteCodeOp.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\ByteCodeOpList.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\ByteCode_Math.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Gen\ByteCodeGen.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Gen\ByteCodeGenContext.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptContext.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizerJob.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Optimize\MapRegTo.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Profiler\Profiler.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Register.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Run\ByteCodeRun.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Run\ByteCodeRunContext.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Run\ByteCodeStack.h" />
+    <ClInclude Include="..\src\Backend\CallConv.h" />
+    <ClInclude Include="..\src\Backend\CompilerItf.h" />
+    <ClInclude Include="..\src\Backend\Context.h" />
+    <ClInclude Include="..\src\Backend\LLVM\Debug\LLVMDebug.h" />
+    <ClInclude Include="..\src\Backend\LLVM\LLVM_Inc.h" />
+    <ClInclude Include="..\src\Backend\LLVM\LLVM_Setup.h" />
+    <ClInclude Include="..\src\Backend\LLVM\Main\LLVM.h" />
+    <ClInclude Include="..\src\Backend\LLVM\Main\LLVM_Macros.h" />
+    <ClInclude Include="..\src\Backend\Runtime.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Debug\SCBEDebug.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Debug\SCBEDebug_CodeView.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_CPU.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_X64.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Main\SCBE.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Main\SCBE_Macros.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_Coff.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_SaveObjJob.h" />
+    <ClInclude Include="..\src\Core\Allocator.h" />
+    <ClInclude Include="..\src\Core\Concat.h" />
+    <ClInclude Include="..\src\Core\Crc32.h" />
+    <ClInclude Include="..\src\Core\Flags.h" />
+    <ClInclude Include="..\src\Core\Map.h" />
+    <ClInclude Include="..\src\Core\Math.h" />
+    <ClInclude Include="..\src\Core\Path.h" />
+    <ClInclude Include="..\src\Core\Set.h" />
+    <ClInclude Include="..\src\Core\Timer.h" />
+    <ClInclude Include="..\src\Core\Utf8.h" />
+    <ClInclude Include="..\src\Core\Vector.h" />
+    <ClInclude Include="..\src\Core\VectorNative.h" />
+    <ClInclude Include="..\src\Format\FormatAst.h" />
+    <ClInclude Include="..\src\Format\FormatConcat.h" />
+    <ClInclude Include="..\src\Format\FormatJob.h" />
+    <ClInclude Include="..\src\GenDoc\GenDoc.h" />
+    <ClInclude Include="..\src\GenDoc\ModuleGenDocJob.h" />
+    <ClInclude Include="..\src\Jobs\DependentJobs.h" />
+    <ClInclude Include="..\src\Jobs\EnumerateModuleJob.h" />
+    <ClInclude Include="..\src\Jobs\FileJob.h" />
+    <ClInclude Include="..\src\Jobs\LoadSourceFileJob.h" />
+    <ClInclude Include="..\src\Jobs\ModuleBuildJob.h" />
+    <ClInclude Include="..\src\Jobs\ModuleExportJob.h" />
+    <ClInclude Include="..\src\Jobs\ModuleGenOutputJob.h" />
+    <ClInclude Include="..\src\Jobs\ModuleOutputJob.h" />
+    <ClInclude Include="..\src\Jobs\ModulePrepOutputJob.h" />
+    <ClInclude Include="..\src\Jobs\ModuleRunJob.h" />
+    <ClInclude Include="..\src\Jobs\ModuleSaveExportJob.h" />
+    <ClInclude Include="..\src\Jobs\PrepCompilerMsgJob.h" />
+    <ClInclude Include="..\src\Jobs\SaveGenJob.h" />
+    <ClInclude Include="..\src\Main\CommandLine.h" />
+    <ClInclude Include="..\src\Main\CommandLineParser.h" />
+    <ClInclude Include="..\src\Main\Statistics.h" />
+    <ClInclude Include="..\src\Main\Version.h" />
+    <ClInclude Include="..\src\Os\Os.h" />
+    <ClInclude Include="..\src\Report\Assert.h" />
+    <ClInclude Include="..\src\Report\Diagnostic.h" />
+    <ClInclude Include="..\src\Report\ErrorContext.h" />
+    <ClInclude Include="..\src\Report\ErrorIds.h" />
+    <ClInclude Include="..\src\Report\ErrorList.h" />
+    <ClInclude Include="..\src\Report\Log.h" />
+    <ClInclude Include="..\src\Report\Report.h" />
+    <ClInclude Include="..\src\Semantic\Attribute.h" />
+    <ClInclude Include="..\src\Semantic\DataSegment.h" />
+    <ClInclude Include="..\src\Semantic\Error\SemanticError.h" />
+    <ClInclude Include="..\src\Semantic\Generic\Generic.h" />
+    <ClInclude Include="..\src\Semantic\ModuleSemanticJob.h" />
+    <ClInclude Include="..\src\Semantic\Scope.h" />
+    <ClInclude Include="..\src\Semantic\ScopeSwag.h" />
+    <ClInclude Include="..\src\Semantic\Semantic.h" />
+    <ClInclude Include="..\src\Semantic\SemanticContext.h" />
+    <ClInclude Include="..\src\Semantic\SemanticJob.h" />
+    <ClInclude Include="..\src\Semantic\Symbol\Symbol.h" />
+    <ClInclude Include="..\src\Semantic\Symbol\SymTable.h" />
+    <ClInclude Include="..\src\Semantic\Symbol\SymTableHash.h" />
+    <ClInclude Include="..\src\Semantic\Type\TypeGen.h" />
+    <ClInclude Include="..\src\Semantic\Type\TypeGenStructJob.h" />
+    <ClInclude Include="..\src\Semantic\Type\TypeInfo.h" />
+    <ClInclude Include="..\src\Semantic\Type\TypeManager.h" />
+    <ClInclude Include="..\src\Semantic\Type\TypeMatch.h" />
+    <ClInclude Include="..\src\Syntax\Ast.h" />
+    <ClInclude Include="..\src\Syntax\AstFlags.h" />
+    <ClInclude Include="..\src\Syntax\AstNode.h" />
+    <ClInclude Include="..\src\Syntax\ComputedValue.h" />
+    <ClInclude Include="..\src\Syntax\Naming.h" />
+    <ClInclude Include="..\src\Syntax\Parser\Parser.h" />
+    <ClInclude Include="..\src\Syntax\Parser\Parser_Push.h" />
+    <ClInclude Include="..\src\Syntax\SyntaxColor.h" />
+    <ClInclude Include="..\src\Syntax\SyntaxJob.h" />
+    <ClInclude Include="..\src\Syntax\Tokenizer\LangHashTable.h" />
+    <ClInclude Include="..\src\Syntax\Tokenizer\LanguageSpec.h" />
+    <ClInclude Include="..\src\Syntax\Tokenizer\Token.h" />
+    <ClInclude Include="..\src\Syntax\Tokenizer\TokenIds.h" />
+    <ClInclude Include="..\src\Syntax\Tokenizer\Tokenizer.h" />
+    <ClInclude Include="..\src\Syntax\Tokenizer\TokenParse.h" />
+    <ClInclude Include="..\src\Threading\Job.h" />
+    <ClInclude Include="..\src\Threading\JobGroup.h" />
+    <ClInclude Include="..\src\Threading\JobThread.h" />
+    <ClInclude Include="..\src\Threading\Mutex.h" />
+    <ClInclude Include="..\src\Threading\RaceCondition.h" />
+    <ClInclude Include="..\src\Threading\ThreadManager.h" />
+    <ClInclude Include="..\src\Wmf\DepManager\FetchModuleFileSystemJob.h" />
+    <ClInclude Include="..\src\Wmf\DepManager\ModuleDepManager.h" />
+    <ClInclude Include="..\src\Wmf\Module.h" />
+    <ClInclude Include="..\src\Wmf\ModuleManager.h" />
+    <ClInclude Include="..\src\Wmf\SourceFile.h" />
+    <ClInclude Include="..\src\Wmf\Workspace.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Gen\Backend/ByteCode/Gen/ByteCodeGenJob.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />

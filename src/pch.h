@@ -19,7 +19,7 @@
 #endif
 
 ////////////////////////////
-#include "LLVM_Inc.h"
+#include "Backend/LLVM/LLVM_Inc.h"
 
 ////////////////////////////
 
@@ -54,9 +54,9 @@
 
 ////////////////////////////
 
-#include "Allocator.h"
-#include "Map.h"
-#include "Set.h"
-#include "Utf8.h"
-#include "Vector.h"
-#include "VectorNative.h"
+#include "Core/Allocator.h"
+#include "Core/Map.h"
+#include "Core/Set.h"
+#include "Core/Utf8.h"
+#include "Core/Vector.h"
+#include "Core/VectorNative.h"
