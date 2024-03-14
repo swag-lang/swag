@@ -60,7 +60,7 @@ bool FormatAst::outputStructDecl(const AstStruct* node)
             CONCAT_FIXED_STR(concat, "struct");
     }
 
-    if (node->genericParameters)
+    if (node->genericParameters && !node->genericParameters->hasAstFlag(AST_GENERATED))
         SWAG_CHECK(outputGenericParameters(node->genericParameters));
 
     if (!node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))

@@ -221,6 +221,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
         {
             structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode, AST_GENERATED_GENERIC_PARAM);
             structNode->addAstFlag(AST_IS_GENERIC | AST_NO_BYTECODE);
+            structNode->genericParameters->addAstFlag(AST_GENERATED);
         }
     }
 
