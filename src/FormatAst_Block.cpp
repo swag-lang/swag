@@ -140,15 +140,16 @@ bool FormatAst::outputNamespace(const AstNode* node)
         return true;
     }
 
-    if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_USING))
-    {
-        CONCAT_FIXED_STR(concat, "using");
-        concat->addBlank();
-    }
-
     if (!node->hasSpecFlag(AstNameSpace::SPEC_FLAG_PRIVATE))
     {
         concat->addIndent(indent);
+
+        if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_USING))
+        {
+            CONCAT_FIXED_STR(concat, "using");
+            concat->addBlank();
+        }
+
         CONCAT_FIXED_STR(concat, "namespace");
         concat->addBlank();
         concat->addString(node->token.text);
