@@ -58,6 +58,11 @@ bool FormatAst::outputNode(const AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::KeepRef:
+            if (node->hasAstFlag(AST_IS_CONST))
+            {
+                CONCAT_FIXED_STR(concat, "const");
+                concat->addBlank();
+            }
             CONCAT_FIXED_STR(concat, "ref");
             concat->addBlank();
             SWAG_CHECK(outputNode(node->firstChild()));
