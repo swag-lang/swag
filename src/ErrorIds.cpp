@@ -432,7 +432,7 @@ void initErrors()
     SWAG_ERROR(Err0306, "invalid generic parameter                         $ the special function [[%s]] expects a literal as a generic parameter, got type [[%s]] instead");
     SWAG_ERROR(Err0307, "invalid generic parameter name                    $ expected an identifier as the generic name, found [[%s]] instead");
     SWAG_ERROR(Err0308, "invalid hexadecimal number format                 $ hexadecimal literals can only contain digits [[0-9]], [[A-F]], and [[a-f]], found [[%s]] instead");
-    SWAG_ERROR(Err0309, nullptr);
+    SWAG_ERROR(Err0309, "invalid namespace body                            $ missing the namespace body or instruction instead of [[;]]");
     SWAG_ERROR(Err0310, "invalid identifier                                $ expected an identifier, found [[%s]] instead");
     SWAG_ERROR(Err0311, "invalid identifier list                           $ [[with]] does not support multiple identifiers");
     SWAG_ERROR(Err0312, "invalid import version                            $ the [[#import]] version format is invalid");

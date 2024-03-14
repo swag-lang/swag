@@ -337,6 +337,10 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
                 SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
             SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the namespace body"));
         }
+        else if (tokenParse.is(TokenId::SymSemiColon))
+        {
+            return error(tokenParse.token, toErr(Err0309));
+        }
         else
         {
             ParserPushScope scoped(this, newScope);
