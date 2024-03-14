@@ -245,6 +245,8 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             firstNameSpace = namespaceNode;
         if (forGlobal)
             namespaceNode->addAstFlag(AST_GLOBAL_NODE);
+        if (forUsing)
+            namespaceNode->addSpecFlag(AstNameSpace::SPEC_FLAG_USING);
         namespaceNode->addAttribute(sourceFile->globalAttr);
 
         switch (tokenParse.token.id)

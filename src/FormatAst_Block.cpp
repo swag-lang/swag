@@ -140,6 +140,12 @@ bool FormatAst::outputNamespace(const AstNode* node)
         return true;
     }
 
+    if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_USING))
+    {
+        CONCAT_FIXED_STR(concat, "using");
+        concat->addBlank();
+    }
+
     if (!node->hasSpecFlag(AstNameSpace::SPEC_FLAG_PRIVATE))
     {
         concat->addIndent(indent);
