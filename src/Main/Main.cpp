@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Main/CommandLine.h"
 #include "Main/CommandLineParser.h"
+#include "Main/Statistics.h"
 #include "Main/Version.h"
 #include "Os/Os.h"
 #include "Report/ErrorIds.h"

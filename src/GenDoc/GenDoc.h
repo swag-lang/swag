@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Flags.h"
 #include "Format/FormatAst.h"
 #include "Syntax/AstNode.h"
 

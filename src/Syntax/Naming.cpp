@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Syntax/Naming.h"
+#include "Semantic/Scope.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"

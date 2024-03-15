@@ -1,12 +1,13 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Naming.h"
+#include "Semantic/Scope.h"
 #include "Semantic/SemanticJob.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Naming.h"
 
 bool Semantic::canTryUFCS(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* nodeUFCS, bool nodeIsExplicit)
 {

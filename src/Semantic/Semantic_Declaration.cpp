@@ -1,14 +1,15 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Naming.h"
-#include "Semantic/Semantic.h"
 #include "Semantic/Error/SemanticError.h"
-#include "Wmf/SourceFile.h"
+#include "Semantic/Scope.h"
+#include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Naming.h"
+#include "Wmf/SourceFile.h"
 
 bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
 {

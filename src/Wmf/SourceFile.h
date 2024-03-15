@@ -1,6 +1,5 @@
 #pragma once
 #include "Main/CommandLine.h"
-#include "Core/Flags.h"
 #include "Threading/Mutex.h"
 #include "Syntax/Tokenizer/Token.h"
 

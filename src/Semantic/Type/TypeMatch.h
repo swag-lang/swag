@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Flags.h"
 #include "Semantic/Generic/Generic.h"
 
 struct AstNode;

@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Flags.h"
 
 struct AstArrayPointerSlicing;
 struct AstFuncCallParam;

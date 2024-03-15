@@ -18,7 +18,7 @@ void SCBE::emitOS(const BuildParameters& buildParameters) const
     {
         // :ChkStk Stack probing
         // See SWAG_LIMIT_PAGE_STACK
-        const auto symbolFuncIndex = pp.getOrAddSymbol("__chkstk", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+        const auto symbolFuncIndex = pp.getOrAddSymbol(R"(__chkstk)", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
         const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
         SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X86_64);
         cpuFct->startAddress = concat.totalCount();

@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Flags.h"
 
 using AstNodeFlags = Flags<uint64_t>;
 using AstSemFlags  = Flags<uint64_t>;

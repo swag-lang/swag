@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Flags.h"
 #include "Jobs/DependentJobs.h"
 #include "Semantic/Symbol/SymTable.h"
 #include "Threading/Mutex.h"

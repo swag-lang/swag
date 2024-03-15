@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Flags.h"
 
 struct AstFuncDecl;
 struct AstNode;

@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Flags.h"
 #include "Threading/Job.h"
 
 struct AstFuncDecl;

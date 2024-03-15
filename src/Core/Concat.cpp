@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Core/Concat.h"
+#include "Main/Statistics.h"
 #include "Os/Os.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"

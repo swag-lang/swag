@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Flags.h"
 #include "Syntax/Tokenizer/Token.h"
 #include "Syntax/Tokenizer/TokenParse.h"
 

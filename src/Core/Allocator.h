@@ -1,9 +1,14 @@
 #pragma once
-#include "Main/Statistics.h"
+#include "Flags.h"
 
 #define MK_ALIGN16(__s) \
     if ((__s) % 16)     \
     (__s) += 16 - ((__s) % 16)
+
+using AllocFlags = Flags<uint32_t>;
+
+constexpr AllocFlags ALLOC_STD = 0x00000001;
+constexpr AllocFlags ALLOC_NEW = 0x00000002;
 
 struct Allocator
 {
@@ -46,8 +51,8 @@ struct Allocator
         free(ptr, alignSize(sizeof(T)));
     }
 
-    static void* alloc(size_t size, size_t align = sizeof(void*));
-    static void  free(void*, size_t size);
+    static void* alloc(size_t size, size_t align = sizeof(void*), AllocFlags flags = 0);
+    static void  free(void*, size_t size, AllocFlags flags = 0);
 
     static size_t   alignSize(size_t size) { return size + 7 & ~7; }
     static uint32_t alignSize(uint32_t size) { return size + 7 & ~7; }
@@ -70,21 +75,6 @@ struct StdAllocator
 
     StdAllocator() = default;
 
-    static T* allocate(size_t n)
-    {
-        const auto size = Allocator::alignSize(n * sizeof(T));
-#ifdef SWAG_STATS
-        g_Stats.memStd += size;
-#endif
-        return static_cast<T*>(Allocator::alloc(size));
-    }
-
-    static void deallocate(T* p, size_t n)
-    {
-        const auto size = n * sizeof(T);
-#ifdef SWAG_STATS
-        g_Stats.memStd -= size;
-#endif
-        Allocator::free(p, Allocator::alignSize(size));
-    }
+    static T*   allocate(size_t n) { return static_cast<T*>(Allocator::alloc(n * sizeof(T), sizeof(void*), ALLOC_STD)); }
+    static void deallocate(T* p, size_t n) { Allocator::free(p, Allocator::alignSize(n * sizeof(T)), ALLOC_STD); }
 };

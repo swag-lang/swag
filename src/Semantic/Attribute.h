@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Flags.h"
 #include "Syntax/ComputedValue.h"
 #include "Syntax/Tokenizer/Token.h"
 #include "Threading/RaceCondition.h"

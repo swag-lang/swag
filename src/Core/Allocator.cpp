@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Core/Allocator.h"
 #include "Extern/mimalloc/mimalloc.h"
+#include "Main/Statistics.h"
 
 #ifdef SWAG_CHECK_MEMORY
 constexpr uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
@@ -11,13 +12,8 @@ constexpr uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 void* operator new(size_t size)
 {
     size         = Allocator::alignSize(static_cast<int>(size) + 2 * sizeof(uint64_t));
-    const auto p = static_cast<uint64_t*>(Allocator::alloc(size, 2 * sizeof(uint64_t)));
+    const auto p = static_cast<uint64_t*>(Allocator::alloc(size, 2 * sizeof(uint64_t), ALLOC_NEW));
     *p           = size;
-
-#ifdef SWAG_STATS
-    g_Stats.memNew += size;
-#endif
-
     return p + 2;
 }
 
@@ -28,15 +24,10 @@ void operator delete(void* block) noexcept
         return;
     auto p = static_cast<uint64_t*>(block);
     p -= 2;
-
-#ifdef SWAG_STATS
-    g_Stats.memNew -= *p;
-#endif
-
-    Allocator::free(p, *p);
+    Allocator::free(p, *p, ALLOC_NEW);
 }
 
-void* Allocator::alloc(size_t size, [[maybe_unused]] size_t align)
+void* Allocator::alloc(size_t size, [[maybe_unused]] size_t align, [[maybe_unused]] AllocFlags flags)
 {
 #ifdef SWAG_CHECK_MEMORY
     auto result = mi_malloc_aligned(size + 3 * sizeof(uint64_t), align);
@@ -47,6 +38,10 @@ void* Allocator::alloc(size_t size, [[maybe_unused]] size_t align)
 
 #ifdef SWAG_STATS
     g_Stats.allocatedMemory += size;
+    if (flags.has(ALLOC_STD))
+        g_Stats.memStd += size;
+    if (flags.has(ALLOC_NEW))
+        g_Stats.memNew += size;
     auto prevValue = g_Stats.maxAllocatedMemory.load();
     while (prevValue < g_Stats.allocatedMemory.load() && !g_Stats.maxAllocatedMemory.compare_exchange_weak(prevValue, g_Stats.allocatedMemory.load()))
     {
@@ -56,7 +51,7 @@ void* Allocator::alloc(size_t size, [[maybe_unused]] size_t align)
     return result;
 }
 
-void Allocator::free(void* ptr, size_t size)
+void Allocator::free(void* ptr, size_t size, [[maybe_unused]] AllocFlags flags)
 {
     if (!ptr || !size)
         return;
@@ -68,6 +63,10 @@ void Allocator::free(void* ptr, size_t size)
 
 #ifdef SWAG_STATS
     g_Stats.allocatedMemory -= size;
+    if (flags.has(ALLOC_STD))
+        g_Stats.memStd -= size;
+    if (flags.has(ALLOC_NEW))
+        g_Stats.memNew -= size;
 #endif
 
     mi_free(ptr);

@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "Semantic/SemanticJob.h"
-#include "Syntax/AstFlags.h"
-#include "Wmf/Module.h"
+#include "Main/Statistics.h"
 #include "Semantic/Scope.h"
+#include "Syntax/AstFlags.h"
 #include "Threading/ThreadManager.h"
+#include "Wmf/Module.h"
 #ifdef SWAG_STATS
 #include "Core/Timer.h"
 #endif

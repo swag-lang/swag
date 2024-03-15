@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Flags.h"
 #include "Main/Statistics.h"
 #include "Semantic/Type/TypeInfo.h"
 

@@ -1,13 +1,14 @@
 #pragma once
-#include "Semantic/Scope.h"
 
 struct AstFuncDecl;
 struct AstNode;
 struct SymbolName;
 struct SymbolOverload;
 struct TypeInfo;
+using OverloadFlags = Flags<uint32_t>;
 enum class SymbolKind : uint8_t;
 enum class TokenId : uint16_t;
+enum class ScopeKind : uint8_t;
 
 namespace Naming
 {

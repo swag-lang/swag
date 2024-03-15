@@ -3,6 +3,7 @@
 #include "Core/Timer.h"
 #include "FetchModuleFileSystemJob.h"
 #include "Jobs/ModuleBuildJob.h"
+#include "Main/Statistics.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"

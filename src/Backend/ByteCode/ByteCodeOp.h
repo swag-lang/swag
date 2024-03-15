@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Flags.h"
 
 using OpFlags                          = Flags<uint32_t>;
 constexpr OpFlags OPFLAG_WRITE_A       = 0x00000001;

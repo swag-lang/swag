@@ -1,6 +1,5 @@
 #pragma once
 #include "Backend/ByteCode/Register.h"
-#include "Core/Flags.h"
 #include "Jobs/DependentJobs.h"
 #include "Semantic/Attribute.h"
 #include "Semantic/Symbol/Symbol.h"
