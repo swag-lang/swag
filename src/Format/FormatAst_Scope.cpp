@@ -7,7 +7,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool FormatAst::outputScopeContent(const Module* module, const Scope* scope)
+bool FormatAst::outputScopeContent(FormatContext& context, const Module* module, const Scope* scope)
 {
     const auto publicSet = scope->publicSet;
     if (!publicSet)
@@ -19,9 +19,9 @@ bool FormatAst::outputScopeContent(const Module* module, const Scope* scope)
         for (const auto one : publicSet->publicNodes)
         {
             concat->addBlankLine();
-            SWAG_CHECK(outputAttributes(one, one->typeInfo));
-            concat->addIndent(indent);
-            SWAG_CHECK(outputNode(one));
+            SWAG_CHECK(outputAttributes(context, one, one->typeInfo));
+            concat->addIndent(context.indent);
+            SWAG_CHECK(outputNode(context, one));
             concat->addEol();
             concat->addBlankLine();
         }
@@ -41,12 +41,12 @@ bool FormatAst::outputScopeContent(const Module* module, const Scope* scope)
             // Remap special functions to their generated equivalent
             AstFuncDecl* funcNode = castAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
             funcNode->computeFullNameForeignExport();
-            concat->addIndent(indent);
+            concat->addIndent(context.indent);
             concat->addStringFormat(R"(#[Foreign("%s", "%s")])", module->name.c_str(), funcNode->fullnameForeignExport.c_str());
             concat->addEol();
-            SWAG_CHECK(outputAttributes(funcNode, funcNode->typeInfo));
+            SWAG_CHECK(outputAttributes(context, funcNode, funcNode->typeInfo));
 
-            concat->addIndent(indent);
+            concat->addIndent(context.indent);
             if (funcNode->token.text == g_LangSpec->name_opInitGenerated)
             {
                 CONCAT_FIXED_STR(concat, "func opInit(using self);");
@@ -69,7 +69,7 @@ bool FormatAst::outputScopeContent(const Module* module, const Scope* scope)
             }
             else
             {
-                SWAG_CHECK(outputFuncSignature(funcNode, nullptr, funcNode->parameters, funcNode->validIf));
+                SWAG_CHECK(outputFuncSignature(context, funcNode, nullptr, funcNode->parameters, funcNode->validIf));
                 concat->addChar(';');
                 concat->addEol();
             }
@@ -86,9 +86,9 @@ bool FormatAst::outputScopeContent(const Module* module, const Scope* scope)
             concat->addBlankLine();
             const auto              node     = castAst<AstAttrDecl>(one, AstNodeKind::AttrDecl);
             const TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            SWAG_CHECK(outputAttributesUsage(typeFunc));
-            concat->addIndent(indent);
-            SWAG_CHECK(outputFuncSignature(node, nullptr, node->parameters, nullptr));
+            SWAG_CHECK(outputAttributesUsage(context, typeFunc));
+            concat->addIndent(context.indent);
+            SWAG_CHECK(outputFuncSignature(context, node, nullptr, node->parameters, nullptr));
             concat->addEol();
             concat->addBlankLine();
         }
@@ -97,29 +97,29 @@ bool FormatAst::outputScopeContent(const Module* module, const Scope* scope)
     return true;
 }
 
-bool FormatAst::outputScopeContentAndChilds(Module* module, const Scope* scope)
+bool FormatAst::outputScopeContentAndChilds(FormatContext& context, Module* module, const Scope* scope)
 {
-    SWAG_CHECK(outputScopeContent(module, scope));
+    SWAG_CHECK(outputScopeContent(context, module, scope));
     for (const auto oneScope : scope->childScopes)
-        SWAG_CHECK(outputScope(module, oneScope));
+        SWAG_CHECK(outputScope(context, module, oneScope));
     return true;
 }
 
-bool FormatAst::outputScopeBlock(Module* module, const Scope* scope)
+bool FormatAst::outputScopeBlock(FormatContext& context, Module* module, const Scope* scope)
 {
-    concat->addIndent(indent);
+    concat->addIndent(context.indent);
     concat->addChar('{');
     concat->addEol();
-    indent++;
-    SWAG_CHECK(outputScopeContentAndChilds(module, scope));
-    indent--;
-    concat->addIndent(indent);
+    context.indent++;
+    SWAG_CHECK(outputScopeContentAndChilds(context, module, scope));
+    context.indent--;
+    concat->addIndent(context.indent);
     concat->addChar('}');
     concat->addEol();
     return true;
 }
 
-bool FormatAst::outputScope(Module* module, Scope* scope)
+bool FormatAst::outputScope(FormatContext& context, Module* module, Scope* scope)
 {
     SWAG_ASSERT(module);
     if (!scope->flags.has(SCOPE_FLAG_HAS_EXPORTS))
@@ -135,17 +135,17 @@ bool FormatAst::outputScope(Module* module, Scope* scope)
         if (!scope->flags.has(SCOPE_AUTO_GENERATED))
         {
             concat->addBlankLine();
-            concat->addIndent(indent);
+            concat->addIndent(context.indent);
             CONCAT_FIXED_STR(concat, "namespace");
             concat->addBlank();
             concat->addString(scope->name);
             concat->addEol();
-            outputScopeBlock(module, scope);
+            outputScopeBlock(context, module, scope);
             concat->addBlankLine();
         }
         else
         {
-            SWAG_CHECK(outputScopeContentAndChilds(module, scope));
+            SWAG_CHECK(outputScopeContentAndChilds(context, module, scope));
         }
     }
 
@@ -153,7 +153,7 @@ bool FormatAst::outputScope(Module* module, Scope* scope)
     else if (!scope->isGlobal() && scope->isGlobalOrImpl() && !scope->name.empty())
     {
         concat->addBlankLine();
-        concat->addIndent(indent);
+        concat->addIndent(context.indent);
         if (scope->is(ScopeKind::Impl))
         {
             const auto nodeImpl = castAst<AstImpl>(scope->owner, AstNodeKind::Impl);
@@ -184,21 +184,21 @@ bool FormatAst::outputScope(Module* module, Scope* scope)
             concat->addEol();
         }
 
-        concat->addIndent(indent);
+        concat->addIndent(context.indent);
         concat->addChar('{');
         concat->addEol();
 
-        indent++;
-        SWAG_CHECK(outputScopeContent(module, scope));
+        context.indent++;
+        SWAG_CHECK(outputScopeContent(context, module, scope));
         for (const auto oneScope : scope->childScopes)
         {
             if (oneScope->is(ScopeKind::Impl))
                 continue;
-            SWAG_CHECK(outputScope(module, oneScope));
+            SWAG_CHECK(outputScope(context, module, oneScope));
         }
 
-        indent--;
-        concat->addIndent(indent);
+        context.indent--;
+        concat->addIndent(context.indent);
         concat->addChar('}');
         concat->addEol();
 
@@ -206,7 +206,7 @@ bool FormatAst::outputScope(Module* module, Scope* scope)
         {
             if (oneScope->isNot(ScopeKind::Impl))
                 continue;
-            SWAG_CHECK(outputScope(module, oneScope));
+            SWAG_CHECK(outputScope(context, module, oneScope));
         }
 
         concat->addBlankLine();
@@ -216,14 +216,14 @@ bool FormatAst::outputScope(Module* module, Scope* scope)
     else if (!scope->name.empty())
     {
         concat->addBlankLine();
-        outputScopeBlock(module, scope);
+        outputScopeBlock(context, module, scope);
         concat->addBlankLine();
     }
 
     // Unnamed scope
     else
     {
-        SWAG_CHECK(outputScopeContentAndChilds(module, scope));
+        SWAG_CHECK(outputScopeContentAndChilds(context, module, scope));
     }
 
     return true;

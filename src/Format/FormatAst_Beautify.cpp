@@ -3,7 +3,7 @@
 #include "Semantic/Semantic.h"
 #include "Syntax/Tokenizer/TokenParse.h"
 
-void FormatAst::beautifyComment(Vector<TokenComment>& comments) const
+void FormatAst::beautifyComment(FormatContext& context, Vector<TokenComment>& comments) const
 {
     bool first = true;
     for (const auto& v : comments)
@@ -11,14 +11,14 @@ void FormatAst::beautifyComment(Vector<TokenComment>& comments) const
         if (!first)
         {
             concat->addEol();
-            concat->addIndent(indent);
+            concat->addIndent(context.indent);
         }
         first = false;
 
         if (v.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
         {
             concat->addBlankLine();
-            concat->addIndent(indent);
+            concat->addIndent(context.indent);
         }
 
         Utf8 cmt;
@@ -36,36 +36,36 @@ void FormatAst::beautifyComment(Vector<TokenComment>& comments) const
     comments.clear();
 }
 
-void FormatAst::beautifyBefore(const AstNode* node) const
+void FormatAst::beautifyBefore(FormatContext& context, const AstNode* node) const
 {
-    beautifyCommentBefore(node);
-    beautifyBlankLine(node);
-    beautifyCommentJustBefore(node);
+    beautifyCommentBefore(context, node);
+    beautifyBlankLine(context, node);
+    beautifyCommentJustBefore(context, node);
 }
 
-void FormatAst::beautifyCommentBefore(const AstNode* node) const
+void FormatAst::beautifyCommentBefore(FormatContext& context, const AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
     if (!node->hasExtMisc() || node->extMisc()->format.commentBefore.empty())
         return;
-    beautifyComment(node->extMisc()->format.commentBefore);
+    beautifyComment(context, node->extMisc()->format.commentBefore);
     concat->addEol();
-    concat->addIndent(indent);
+    concat->addIndent(context.indent);
 }
 
-void FormatAst::beautifyCommentJustBefore(const AstNode* node) const
+void FormatAst::beautifyCommentJustBefore(FormatContext& context, const AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
     if (!node->hasExtMisc() || node->extMisc()->format.commentJustBefore.empty())
         return;
-    beautifyComment(node->extMisc()->format.commentJustBefore);
+    beautifyComment(context, node->extMisc()->format.commentJustBefore);
     concat->addEol();
-    concat->addIndent(indent);
+    concat->addIndent(context.indent);
 }
 
-void FormatAst::beautifyBlankLine(const AstNode* node) const
+void FormatAst::beautifyBlankLine(FormatContext& context, const AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
@@ -74,16 +74,16 @@ void FormatAst::beautifyBlankLine(const AstNode* node) const
     {
         node->extMisc()->format.flags.remove(TOKEN_PARSE_BLANK_LINE_BEFORE);
         concat->addBlankLine();
-        concat->addIndent(indent);
+        concat->addIndent(context.indent);
     }
 }
 
-void FormatAst::beautifyAfter(const AstNode* node) const
+void FormatAst::beautifyAfter(FormatContext& context, const AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
     if (!node->hasExtMisc() || node->extMisc()->format.commentAfterSameLine.empty())
         return;
     concat->addBlank();
-    beautifyComment(node->extMisc()->format.commentAfterSameLine);
+    beautifyComment(context, node->extMisc()->format.commentAfterSameLine);
 }

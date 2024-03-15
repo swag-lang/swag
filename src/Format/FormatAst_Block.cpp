@@ -4,7 +4,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 
-bool FormatAst::outputStatement(const AstNode* node)
+bool FormatAst::outputStatement(FormatContext& context, const AstNode* node)
 {
     const auto stmt = castAst<AstStatement>(node, AstNodeKind::Statement);
 
@@ -22,14 +22,14 @@ bool FormatAst::outputStatement(const AstNode* node)
 
             first         = false;
             const auto op = castAst<AstOp>(c, AstNodeKind::AffectOp);
-            SWAG_CHECK(outputNode(op->firstChild()));
+            SWAG_CHECK(outputNode(context, op->firstChild()));
         }
 
         concat->addBlank();
         const auto firstOp = castAst<AstOp>(stmt->firstChild(), AstNodeKind::AffectOp);
         concat->addString(firstOp->token.text);
         concat->addBlank();
-        SWAG_CHECK(outputNode(firstOp->secondChild()));
+        SWAG_CHECK(outputNode(context, firstOp->secondChild()));
         concat->addEol();
         return true;
     }
@@ -53,10 +53,10 @@ bool FormatAst::outputStatement(const AstNode* node)
             if (child->is(AstNodeKind::AffectOp))
             {
                 const auto op = castAst<AstOp>(child, AstNodeKind::AffectOp);
-                SWAG_CHECK(outputNode(op->firstChild()));
+                SWAG_CHECK(outputNode(context, op->firstChild()));
             }
             else if (child->is(AstNodeKind::IdentifierRef))
-                SWAG_CHECK(outputNode(child));
+                SWAG_CHECK(outputNode(context, child));
             else
                 SWAG_ASSERT(false);
         }
@@ -66,7 +66,7 @@ bool FormatAst::outputStatement(const AstNode* node)
         concat->addChar('=');
         concat->addBlank();
         const auto firstOp = castAst<AstVarDecl>(stmt->firstChild(), AstNodeKind::VarDecl);
-        SWAG_CHECK(outputNode(firstOp->firstChild()));
+        SWAG_CHECK(outputNode(context, firstOp->firstChild()));
         concat->addEol();
         return true;
     }
@@ -74,57 +74,57 @@ bool FormatAst::outputStatement(const AstNode* node)
     if (node->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY))
     {
         concat->addEol();
-        concat->addIndent(indent);
+        concat->addIndent(context.indent);
         concat->addChar('{');
         concat->addEol();
-        indent++;
-        SWAG_CHECK(outputChildren(node));
-        indent--;
-        concat->addIndent(indent);
+        context.indent++;
+        SWAG_CHECK(outputChildren(context, node));
+        context.indent--;
+        concat->addIndent(context.indent);
         concat->addChar('}');
         concat->addEol();
     }
     else
     {
-        SWAG_CHECK(outputNode(node->firstChild()));
+        SWAG_CHECK(outputNode(context, node->firstChild()));
         concat->addEol();
     }
 
     return true;
 }
 
-bool FormatAst::outputDoStatement(const AstNode* node)
+bool FormatAst::outputDoStatement(FormatContext& context, const AstNode* node)
 {
     if (!node->childCount())
     {
         concat->addEol();
-        concat->addIndent(indent);
-        SWAG_CHECK(outputNode(node));
+        concat->addIndent(context.indent);
+        SWAG_CHECK(outputNode(context, node));
     }
     else if (node->is(AstNodeKind::Statement) && !node->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY))
     {
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "do");
         concat->addEol();
-        indent++;
-        concat->addIndent(indent);
-        SWAG_CHECK(outputNode(node->firstChild()));
-        indent--;
+        context.indent++;
+        concat->addIndent(context.indent);
+        SWAG_CHECK(outputNode(context, node->firstChild()));
+        context.indent--;
         concat->addEol();
     }
     else
     {
-        outputNode(node);
+        outputNode(context, node);
     }
 
     return true;
 }
 
-bool FormatAst::outputNamespace(const AstNode* node)
+bool FormatAst::outputNamespace(FormatContext& context, const AstNode* node)
 {
     if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
     {
-        SWAG_CHECK(outputChildren(node));
+        SWAG_CHECK(outputChildren(context, node));
         return true;
     }
 
@@ -136,13 +136,13 @@ bool FormatAst::outputNamespace(const AstNode* node)
         concat->addBlank();
         concat->addString(node->token.text);
         concat->addEol();
-        outputChildren(node);
+        outputChildren(context, node);
         return true;
     }
 
     if (!node->hasSpecFlag(AstNameSpace::SPEC_FLAG_PRIVATE))
     {
-        concat->addIndent(indent);
+        concat->addIndent(context.indent);
 
         if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_USING))
         {
@@ -157,18 +157,18 @@ bool FormatAst::outputNamespace(const AstNode* node)
 
     if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_NO_CURLY))
     {
-        outputChildren(node);
+        outputChildren(context, node);
     }
     else
     {
         concat->addEol();
-        concat->addIndent(indent);
+        concat->addIndent(context.indent);
         concat->addChar('{');
         concat->addEol();
-        indent++;
-        outputChildren(node);
-        indent--;
-        concat->addIndent(indent);
+        context.indent++;
+        outputChildren(context, node);
+        context.indent--;
+        concat->addIndent(context.indent);
         concat->addChar('}');
         concat->addEol();
     }
@@ -176,7 +176,7 @@ bool FormatAst::outputNamespace(const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputDefer(const AstNode* node)
+bool FormatAst::outputDefer(FormatContext& context, const AstNode* node)
 {
     const auto deferNode = castAst<AstDefer>(node, AstNodeKind::Defer);
 
@@ -196,18 +196,18 @@ bool FormatAst::outputDefer(const AstNode* node)
     }
 
     concat->addBlank();
-    SWAG_CHECK(outputNode(node->firstChild()));
+    SWAG_CHECK(outputNode(context, node->firstChild()));
     concat->addEol();
     return true;
 }
 
-bool FormatAst::outputTryAssume(const AstNode* node)
+bool FormatAst::outputTryAssume(FormatContext& context, const AstNode* node)
 {
     if (node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED) && node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK))
     {
-        indent++;
-        outputChildren(node->firstChild());
-        indent--;
+        context.indent++;
+        outputChildren(context, node->firstChild());
+        context.indent--;
         return true;
     }
 
@@ -219,11 +219,11 @@ bool FormatAst::outputTryAssume(const AstNode* node)
 
     concat->addString(node->token.text);
     concat->addBlank();
-    SWAG_CHECK(outputNode(node->firstChild()));
+    SWAG_CHECK(outputNode(context, node->firstChild()));
     return true;
 }
 
-bool FormatAst::outputCatch(const AstNode* node)
+bool FormatAst::outputCatch(FormatContext& context, const AstNode* node)
 {
     if (node->hasAstFlag(AST_DISCARD))
     {
@@ -233,6 +233,6 @@ bool FormatAst::outputCatch(const AstNode* node)
 
     concat->addString(node->token.text);
     concat->addBlank();
-    SWAG_CHECK(outputNode(node->firstChild()));
+    SWAG_CHECK(outputNode(context, node->firstChild()));
     return true;
 }

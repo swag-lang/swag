@@ -110,7 +110,8 @@ namespace
                 note->textMsg = addMsg[0];
         }
 
-        FormatAst fmtAst;
+        FormatAst     fmtAst;
+        FormatContext fmtContext;
         for (uint32_t i = 0; i < maxOverloads; i++)
         {
             // Output the function signature
@@ -118,13 +119,13 @@ namespace
             if (tryResult[i]->overload->node->is(AstNodeKind::FuncDecl))
             {
                 const auto funcNode = castAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
-                fmtAst.outputFuncSignature(funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
+                fmtAst.outputFuncSignature(fmtContext, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
             }
             else if (tryResult[i]->overload->node->is(AstNodeKind::VarDecl))
             {
                 const auto varNode = castAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
                 const auto lambda  = castAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
-                fmtAst.outputFuncSignature(varNode, nullptr, lambda->parameters, nullptr);
+                fmtAst.outputFuncSignature(fmtContext, varNode, nullptr, lambda->parameters, nullptr);
             }
             else
             {

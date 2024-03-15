@@ -57,9 +57,10 @@ JobResult FormatJob::execute()
     // Format
     if (g_CommandLine.verboseStages)
         g_Log.messageVerbose(form("[%s] -- formatting", fileName.c_str()));
-    FormatAst fmt;
+    FormatAst     fmt;
+    FormatContext context;
     fmt.fmtFlags.add(FORMAT_FOR_BEAUTIFY);
-    fmt.outputNode(tmpFile.astRoot);
+    fmt.outputNode(context, tmpFile.astRoot);
 
     // Write to file
     if (!g_CommandLine.output)

@@ -322,7 +322,8 @@ Utf8 GenDoc::getOutputNode(const AstNode* node)
     if (!node)
         return "";
     fmtAst.clear();
-    fmtAst.outputNode(node);
+    FormatContext fmtCxt;
+    fmtAst.outputNode(fmtCxt, node);
     return fmtAst.getUtf8();
 }
 

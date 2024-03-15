@@ -1,16 +1,16 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Format/FormatAst.h"
+#include "Semantic/Error/SemanticError.h"
+#include "Semantic/Semantic.h"
+#include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Parser/Parser.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
-#include "Syntax/Parser/Parser.h"
-#include "Semantic/Semantic.h"
-#include "Semantic/Error/SemanticError.h"
-#include "Semantic/Type/TypeManager.h"
 
 bool Semantic::resolveIf(SemanticContext* context)
 {
@@ -677,9 +677,10 @@ bool Semantic::resolveVisit(SemanticContext* context)
     Utf8 content;
 
     // Get back the expression string
-    FormatAst fmtAst{context->tmpConcat};
+    FormatAst     fmtAst{context->tmpConcat};
+    FormatContext fmtCxt;
     context->tmpConcat.init(1024);
-    SWAG_CHECK(fmtAst.outputNode(node->expression));
+    SWAG_CHECK(fmtAst.outputNode(fmtCxt, node->expression));
     Utf8 result = fmtAst.getUtf8();
 
     AstNode* newVar        = nullptr;

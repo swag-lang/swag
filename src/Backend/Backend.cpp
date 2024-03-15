@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Backend/Backend.h"
-#include "BackendFunctionBodyJob.h"
 #include "Backend/BackendLinker.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/CallConv.h"
 #include "Backend/LLVM/LLVM_Setup.h"
-#include "Wmf/Module.h"
+#include "BackendFunctionBodyJob.h"
 #include "Jobs/ModuleSaveExportJob.h"
-#include "Os/Os.h"
 #include "Main/Version.h"
+#include "Os/Os.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 Backend::Backend(Module* mdl) :
@@ -307,8 +307,9 @@ JobResult Backend::generateExportFile(Job* ownerJob)
         bufferSwg.addEol();
 
         // Emit everything that's public
-        FormatAst fmtAst{bufferSwg};
-        if (!fmtAst.outputScope(module, module->scopeRoot))
+        FormatAst     fmtAst{bufferSwg};
+        FormatContext fmtCxt;
+        if (!fmtAst.outputScope(fmtCxt, module, module->scopeRoot))
             return JobResult::ReleaseJob;
     }
 

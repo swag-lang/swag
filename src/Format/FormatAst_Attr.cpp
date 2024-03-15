@@ -8,7 +8,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool FormatAst::outputAttrUse(const AstNode* node, bool& hasSomething)
+bool FormatAst::outputAttrUse(FormatContext& context, const AstNode* node, bool& hasSomething)
 {
     const auto nodeAttr = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
 
@@ -52,7 +52,7 @@ bool FormatAst::outputAttrUse(const AstNode* node, bool& hasSomething)
             concat->addBlank();
         }
 
-        SWAG_CHECK(outputNode(s));
+        SWAG_CHECK(outputNode(context, s));
     }
 
     if (!first)
@@ -61,7 +61,7 @@ bool FormatAst::outputAttrUse(const AstNode* node, bool& hasSomething)
     return true;
 }
 
-bool FormatAst::outputAttrUse(const AstAttrUse* node)
+bool FormatAst::outputAttrUse(FormatContext& context, const AstAttrUse* node)
 {
     if (node->attributeFlags.has(ATTRIBUTE_PUBLIC))
     {
@@ -71,14 +71,14 @@ bool FormatAst::outputAttrUse(const AstAttrUse* node)
             concat->addBlank();
             CONCAT_FIXED_STR(concat, "public");
             concat->addEol();
-            concat->addIndent(indent);
-            SWAG_CHECK(outputChildren(node->content));
+            concat->addIndent(context.indent);
+            SWAG_CHECK(outputChildren(context, node->content));
         }
         else
         {
             CONCAT_FIXED_STR(concat, "public");
             concat->addBlank();
-            SWAG_CHECK(outputNode(node->content));
+            SWAG_CHECK(outputNode(context, node->content));
         }
         return true;
     }
@@ -91,14 +91,14 @@ bool FormatAst::outputAttrUse(const AstAttrUse* node)
             concat->addBlank();
             CONCAT_FIXED_STR(concat, "private");
             concat->addEol();
-            concat->addIndent(indent);
-            SWAG_CHECK(outputChildren(node->content));
+            concat->addIndent(context.indent);
+            SWAG_CHECK(outputChildren(context, node->content));
         }
         else
         {
             CONCAT_FIXED_STR(concat, "private");
             concat->addBlank();
-            SWAG_CHECK(outputNode(node->content));
+            SWAG_CHECK(outputNode(context, node->content));
         }
         return true;
     }
@@ -111,14 +111,14 @@ bool FormatAst::outputAttrUse(const AstAttrUse* node)
             concat->addBlank();
             CONCAT_FIXED_STR(concat, "internal");
             concat->addEol();
-            concat->addIndent(indent);
-            SWAG_CHECK(outputChildren(node->content));
+            concat->addIndent(context.indent);
+            SWAG_CHECK(outputChildren(context, node->content));
         }
         else
         {
             CONCAT_FIXED_STR(concat, "internal");
             concat->addBlank();
-            SWAG_CHECK(outputNode(node->content));
+            SWAG_CHECK(outputNode(context, node->content));
         }
         return true;
     }
@@ -128,27 +128,27 @@ bool FormatAst::outputAttrUse(const AstAttrUse* node)
         CONCAT_FIXED_STR(concat, "#global");
         concat->addBlank();
         bool hasSomething = true;
-        SWAG_CHECK(outputAttrUse(node, hasSomething));
+        SWAG_CHECK(outputAttrUse(context, node, hasSomething));
         concat->addEol();
-        concat->addIndent(indent);
-        SWAG_CHECK(outputChildren(node->content));
+        concat->addIndent(context.indent);
+        SWAG_CHECK(outputChildren(context, node->content));
         return true;
     }
 
     bool hasSomething = true;
-    SWAG_CHECK(outputAttrUse(node, hasSomething));
+    SWAG_CHECK(outputAttrUse(context, node, hasSomething));
     if (!hasSomething)
         return true;
     concat->addEol();
-    concat->addIndent(indent);
-    SWAG_CHECK(outputNode(node->content));
+    concat->addIndent(context.indent);
+    SWAG_CHECK(outputNode(context, node->content));
     return true;
 }
 
-bool FormatAst::outputAttributesUsage(const TypeInfoFuncAttr* typeFunc) const
+bool FormatAst::outputAttributesUsage(FormatContext& context, const TypeInfoFuncAttr* typeFunc) const
 {
     bool first = true;
-    concat->addIndent(indent);
+    concat->addIndent(context.indent);
     concat->addString("#[AttrUsage(");
 
 #define ADD_ATTR_USAGE(__f, __n)                         \
@@ -183,7 +183,7 @@ bool FormatAst::outputAttributesUsage(const TypeInfoFuncAttr* typeFunc) const
     return true;
 }
 
-bool FormatAst::outputAttributes(const TypeInfo* typeInfo, const AttributeList& attributes)
+bool FormatAst::outputAttributes(FormatContext& context, const TypeInfo* typeInfo, const AttributeList& attributes)
 {
     const auto attr = &attributes;
     if (attr->empty())
@@ -209,9 +209,9 @@ bool FormatAst::outputAttributes(const TypeInfo* typeInfo, const AttributeList& 
             if (done.contains(one.node))
                 continue;
             done.insert(one.node);
-            concat->addIndent(indent);
+            concat->addIndent(context.indent);
             bool hasSomething = true;
-            SWAG_CHECK(outputAttrUse(one.node, hasSomething));
+            SWAG_CHECK(outputAttrUse(context, one.node, hasSomething));
             concat->addEol();
             continue;
         }
@@ -224,7 +224,7 @@ bool FormatAst::outputAttributes(const TypeInfo* typeInfo, const AttributeList& 
         else
         {
             first = false;
-            concat->addIndent(indent);
+            concat->addIndent(context.indent);
             CONCAT_FIXED_STR(concat, "#[");
         }
 
@@ -242,7 +242,7 @@ bool FormatAst::outputAttributes(const TypeInfo* typeInfo, const AttributeList& 
                     concat->addBlank();
                 }
 
-                SWAG_CHECK(outputLiteral(one.node, oneParam.typeInfo, oneParam.value));
+                SWAG_CHECK(outputLiteral(context, one.node, oneParam.typeInfo, oneParam.value));
             }
 
             concat->addChar(')');
@@ -258,7 +258,7 @@ bool FormatAst::outputAttributes(const TypeInfo* typeInfo, const AttributeList& 
     return true;
 }
 
-bool FormatAst::outputAttributesGlobalUsing(const AstNode* node) const
+bool FormatAst::outputAttributesGlobalUsing(FormatContext& context, const AstNode* node) const
 {
     bool outputUsing = true;
     if (node->hasAstFlag(AST_STRUCT_MEMBER))
@@ -273,7 +273,7 @@ bool FormatAst::outputAttributesGlobalUsing(const AstNode* node) const
 
             if (!one)
             {
-                concat->addIndent(indent);
+                concat->addIndent(context.indent);
                 CONCAT_FIXED_STR(concat, "#[Using(");
                 one = true;
             }
@@ -296,7 +296,7 @@ bool FormatAst::outputAttributesGlobalUsing(const AstNode* node) const
     return true;
 }
 
-bool FormatAst::outputAttributes(const AstNode* node, TypeInfo* typeInfo)
+bool FormatAst::outputAttributes(FormatContext& context, const AstNode* node, TypeInfo* typeInfo)
 {
     switch (node->kind)
     {
@@ -305,7 +305,7 @@ bool FormatAst::outputAttributes(const AstNode* node, TypeInfo* typeInfo)
             return true;
     }
 
-    SWAG_CHECK(outputAttributesGlobalUsing(node));
+    SWAG_CHECK(outputAttributesGlobalUsing(context, node));
 
     const AttributeList* attr = nullptr;
     switch (typeInfo->kind)
@@ -333,7 +333,7 @@ bool FormatAst::outputAttributes(const AstNode* node, TypeInfo* typeInfo)
 
     if (!attr)
         return true;
-    SWAG_CHECK(outputAttributes(typeInfo, *attr));
+    SWAG_CHECK(outputAttributes(context, typeInfo, *attr));
 
     return true;
 }

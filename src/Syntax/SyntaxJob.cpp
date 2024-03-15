@@ -40,8 +40,9 @@ JobResult SyntaxJob::execute()
 #ifdef SWAG_DEV_MODE
     if (!sourceFile->numErrors)
     {
-        FormatAst fmt;
-        fmt.outputNode(sourceFile->astRoot);
+        FormatAst     fmt;
+        FormatContext fmtCxt;
+        fmt.outputNode(fmtCxt, sourceFile->astRoot);
     }
 #endif
 

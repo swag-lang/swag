@@ -4,7 +4,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 
-bool FormatAst::outputIdentifier(const AstNode* node)
+bool FormatAst::outputIdentifier(FormatContext& context, const AstNode* node)
 {
     const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
 
@@ -33,12 +33,12 @@ bool FormatAst::outputIdentifier(const AstNode* node)
         if (identifier->genericParameters->hasAstFlag(AST_EXPR_IN_PARENTS))
             concat->addChar('(');
 
-        SWAG_CHECK(outputNode(identifier->genericParameters, false));
+        SWAG_CHECK(outputNode(context, identifier->genericParameters, false));
 
         if (identifier->genericParameters->hasAstFlag(AST_EXPR_IN_PARENTS))
             concat->addChar(')');
 
-        beautifyAfter(identifier->genericParameters);
+        beautifyAfter(context, identifier->genericParameters);
     }
 
     if (identifier->callParameters)
@@ -48,7 +48,7 @@ bool FormatAst::outputIdentifier(const AstNode* node)
         else
             concat->addChar('(');
 
-        SWAG_CHECK(outputNode(identifier->callParameters, false));
+        SWAG_CHECK(outputNode(context, identifier->callParameters, false));
 
         if (identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         {
@@ -62,13 +62,13 @@ bool FormatAst::outputIdentifier(const AstNode* node)
             concat->addChar(')');
         }
 
-        beautifyAfter(identifier->callParameters);
+        beautifyAfter(context, identifier->callParameters);
     }
 
     return true;
 }
 
-bool FormatAst::outputIdentifierRef(const AstNode* node)
+bool FormatAst::outputIdentifierRef(FormatContext& context, const AstNode* node)
 {
     if (node->hasAstFlag(AST_DISCARD))
     {
@@ -84,7 +84,7 @@ bool FormatAst::outputIdentifierRef(const AstNode* node)
     bool first = true;
     for (const auto it : node->children)
     {
-        const auto child = convertNode(it);
+        const auto child = convertNode(context, it);
         if (!child)
         {
             first = false;
@@ -93,7 +93,7 @@ bool FormatAst::outputIdentifierRef(const AstNode* node)
 
         if (child->hasSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL))
         {
-            SWAG_CHECK(outputNode(child));
+            SWAG_CHECK(outputNode(context, child));
             continue;
         }
 
@@ -101,7 +101,7 @@ bool FormatAst::outputIdentifierRef(const AstNode* node)
             concat->addChar('.');
         first = false;
 
-        SWAG_CHECK(outputNode(child));
+        SWAG_CHECK(outputNode(context, child));
     }
 
     return true;

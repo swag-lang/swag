@@ -5,7 +5,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
-bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
+bool FormatAst::outputVarDecl(FormatContext& context, const AstVarDecl* varNode, bool isSelf)
 {
     if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
     {
@@ -47,7 +47,7 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
                     concat->addBlank();
                 }
 
-                SWAG_CHECK(outputNode(varNode->type));
+                SWAG_CHECK(outputNode(context, varNode->type));
             }
         }
         else
@@ -61,7 +61,7 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
             SWAG_ASSERT(varNode->type->typeInfo && varNode->type->typeInfo->isTuple());
             const auto id = castAst<AstIdentifier>(typeExpr->identifier->lastChild(), AstNodeKind::Identifier);
             concat->addChar('{');
-            SWAG_CHECK(outputNode(id->callParameters));
+            SWAG_CHECK(outputNode(context, id->callParameters));
             concat->addChar('}');
         }
     }
@@ -72,18 +72,18 @@ bool FormatAst::outputVarDecl(const AstVarDecl* varNode, bool isSelf)
         concat->addChar('=');
         if (!varNode->assignment->is(AstNodeKind::Move) && !varNode->assignment->is(AstNodeKind::NoDrop))
             concat->addBlank();
-        SWAG_CHECK(outputNode(varNode->assignment));
+        SWAG_CHECK(outputNode(context, varNode->assignment));
     }
 
     return true;
 }
 
-bool FormatAst::outputVar(const AstVarDecl* varNode)
+bool FormatAst::outputVar(FormatContext& context, const AstVarDecl* varNode)
 {
     if (varNode->attrUse)
     {
         bool hasSomething = true;
-        SWAG_CHECK(outputAttrUse(varNode->attrUse, hasSomething));
+        SWAG_CHECK(outputAttrUse(context, varNode->attrUse, hasSomething));
         concat->addBlank();
     }
 
@@ -114,6 +114,6 @@ bool FormatAst::outputVar(const AstVarDecl* varNode)
         concat->addBlank();
     }
 
-    SWAG_CHECK(outputVarDecl(varNode, isSelf));
+    SWAG_CHECK(outputVarDecl(context, varNode, isSelf));
     return true;
 }

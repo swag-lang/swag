@@ -4,7 +4,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
-bool FormatAst::outputIf(const Utf8& name, const AstNode* node)
+bool FormatAst::outputIf(FormatContext& context, const Utf8& name, const AstNode* node)
 {
     const auto ifNode = castAst<AstIf>(node, AstNodeKind::If);
     concat->addString(name);
@@ -18,43 +18,43 @@ bool FormatAst::outputIf(const Utf8& name, const AstNode* node)
         else
             CONCAT_FIXED_STR(concat, "var");
         concat->addBlank();
-        SWAG_CHECK(outputVarDecl(varNode, false));
+        SWAG_CHECK(outputVarDecl(context, varNode, false));
     }
     else
-        SWAG_CHECK(outputNode(ifNode->boolExpression));
+        SWAG_CHECK(outputNode(context, ifNode->boolExpression));
 
-    SWAG_CHECK(outputDoStatement(ifNode->ifBlock));
+    SWAG_CHECK(outputDoStatement(context, ifNode->ifBlock));
     if (ifNode->elseBlock)
     {
         if (ifNode->elseBlock->is(AstNodeKind::If))
         {
-            beautifyBefore(ifNode->elseBlock);
-            concat->addIndent(indent);
-            SWAG_CHECK(outputIf("elif", ifNode->elseBlock));
+            beautifyBefore(context, ifNode->elseBlock);
+            concat->addIndent(context.indent);
+            SWAG_CHECK(outputIf(context, "elif", ifNode->elseBlock));
         }
         else
         {
-            beautifyBefore(ifNode->elseBlock);
-            concat->addIndent(indent);
+            beautifyBefore(context, ifNode->elseBlock);
+            concat->addIndent(context.indent);
             CONCAT_FIXED_STR(concat, "else");
-            SWAG_CHECK(outputDoStatement(ifNode->elseBlock));
+            SWAG_CHECK(outputDoStatement(context, ifNode->elseBlock));
         }
     }
 
     return true;
 }
 
-bool FormatAst::outputWhile(const AstNode* node)
+bool FormatAst::outputWhile(FormatContext& context, const AstNode* node)
 {
     const auto whileNode = castAst<AstWhile>(node, AstNodeKind::While);
     CONCAT_FIXED_STR(concat, "while");
     concat->addBlank();
-    SWAG_CHECK(outputNode(whileNode->boolExpression));
-    SWAG_CHECK(outputDoStatement(whileNode->block));
+    SWAG_CHECK(outputNode(context, whileNode->boolExpression));
+    SWAG_CHECK(outputDoStatement(context, whileNode->block));
     return true;
 }
 
-bool FormatAst::outputLoop(const AstNode* node)
+bool FormatAst::outputLoop(FormatContext& context, const AstNode* node)
 {
     const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
     CONCAT_FIXED_STR(concat, "loop");
@@ -71,14 +71,14 @@ bool FormatAst::outputLoop(const AstNode* node)
     if (loopNode->expression)
     {
         concat->addBlank();
-        SWAG_CHECK(outputNode(loopNode->expression));
+        SWAG_CHECK(outputNode(context, loopNode->expression));
     }
 
-    SWAG_CHECK(outputDoStatement(loopNode->block));
+    SWAG_CHECK(outputDoStatement(context, loopNode->block));
     return true;
 }
 
-bool FormatAst::outputVisit(const AstNode* node)
+bool FormatAst::outputVisit(FormatContext& context, const AstNode* node)
 {
     const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
     CONCAT_FIXED_STR(concat, "visit");
@@ -114,12 +114,12 @@ bool FormatAst::outputVisit(const AstNode* node)
         concat->addBlank();
     }
 
-    SWAG_CHECK(outputNode(visitNode->expression));
-    SWAG_CHECK(outputDoStatement(visitNode->block));
+    SWAG_CHECK(outputNode(context, visitNode->expression));
+    SWAG_CHECK(outputDoStatement(context, visitNode->block));
     return true;
 }
 
-bool FormatAst::outputFor(const AstNode* node)
+bool FormatAst::outputFor(FormatContext& context, const AstNode* node)
 {
     const auto forNode = castAst<AstFor>(node, AstNodeKind::For);
     CONCAT_FIXED_STR(concat, "for");
@@ -132,7 +132,7 @@ bool FormatAst::outputFor(const AstNode* node)
 
         for (const auto c : forNode->preExpression->children)
         {
-            SWAG_CHECK(outputNode(c));
+            SWAG_CHECK(outputNode(context, c));
             concat->addChar(';');
             concat->addBlank();
         }
@@ -143,42 +143,42 @@ bool FormatAst::outputFor(const AstNode* node)
     else
     {
         concat->addBlank();
-        SWAG_CHECK(outputNode(forNode->preExpression));
+        SWAG_CHECK(outputNode(context, forNode->preExpression));
         concat->addChar(';');
         concat->addBlank();
     }
 
-    SWAG_CHECK(outputNode(forNode->boolExpression));
+    SWAG_CHECK(outputNode(context, forNode->boolExpression));
     concat->addChar(';');
     concat->addBlank();
-    SWAG_CHECK(outputNode(forNode->postExpression));
+    SWAG_CHECK(outputNode(context, forNode->postExpression));
 
-    SWAG_CHECK(outputDoStatement(forNode->block));
+    SWAG_CHECK(outputDoStatement(context, forNode->block));
     return true;
 }
 
-bool FormatAst::outputSwitch(const AstNode* node)
+bool FormatAst::outputSwitch(FormatContext& context, const AstNode* node)
 {
     const auto nodeSwitch = castAst<AstSwitch>(node, AstNodeKind::Switch);
     CONCAT_FIXED_STR(concat, "switch");
     concat->addBlank();
-    SWAG_CHECK(outputNode(nodeSwitch->expression));
+    SWAG_CHECK(outputNode(context, nodeSwitch->expression));
     concat->addEol();
-    concat->addIndent(indent);
+    concat->addIndent(context.indent);
     concat->addChar('{');
     concat->addEol();
 
     for (const auto c : nodeSwitch->cases)
     {
-        concat->addIndent(indent);
+        concat->addIndent(context.indent);
         if (c->expressions.empty())
         {
-            beautifyBlankLine(c);
+            beautifyBlankLine(context, c);
             CONCAT_FIXED_STR(concat, "default");
         }
         else
         {
-            beautifyBlankLine(c);
+            beautifyBlankLine(context, c);
             CONCAT_FIXED_STR(concat, "case");
             concat->addBlank();
             bool first = true;
@@ -190,20 +190,20 @@ bool FormatAst::outputSwitch(const AstNode* node)
                     concat->addBlank();
                 }
 
-                SWAG_CHECK(outputNode(it));
+                SWAG_CHECK(outputNode(context, it));
                 first = false;
             }
         }
 
         concat->addChar(':');
         concat->addEol();
-        indent++;
-        SWAG_CHECK(outputNode(c->block));
+        context.indent++;
+        SWAG_CHECK(outputNode(context, c->block));
         concat->addEol();
-        indent--;
+        context.indent--;
     }
 
-    concat->addIndent(indent);
+    concat->addIndent(context.indent);
     concat->addChar('}');
     concat->addEol();
     return true;

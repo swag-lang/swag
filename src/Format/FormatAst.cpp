@@ -13,7 +13,7 @@ Utf8 FormatAst::getUtf8() const
     return concat->getUtf8();
 }
 
-const AstNode* FormatAst::convertNode(const AstNode* node)
+const AstNode* FormatAst::convertNode(FormatContext& context, const AstNode* node)
 {
     if (!node)
         return nullptr;
@@ -31,7 +31,7 @@ const AstNode* FormatAst::convertNode(const AstNode* node)
     return node;
 }
 
-bool FormatAst::outputChildren(const AstNode* node, uint32_t start)
+bool FormatAst::outputChildren(FormatContext& context, const AstNode* node, uint32_t start)
 {
     if (!node)
         return true;
@@ -39,19 +39,19 @@ bool FormatAst::outputChildren(const AstNode* node, uint32_t start)
     for (uint32_t i = start; i < node->childCount(); i++)
     {
         const auto it    = node->children[i];
-        const auto child = convertNode(it);
+        const auto child = convertNode(context, it);
         if (!child)
             continue;
 
-        concat->addIndent(indent);
-        SWAG_CHECK(outputNode(child));
+        concat->addIndent(context.indent);
+        SWAG_CHECK(outputNode(context, child));
         concat->addEol();
     }
 
     return true;
 }
 
-bool FormatAst::outputCommaChildren(const AstNode* node, uint32_t start)
+bool FormatAst::outputCommaChildren(FormatContext& context, const AstNode* node, uint32_t start)
 {
     if (!node)
         return true;
@@ -60,7 +60,7 @@ bool FormatAst::outputCommaChildren(const AstNode* node, uint32_t start)
     for (uint32_t i = start; i < node->childCount(); i++)
     {
         const auto it    = node->children[i];
-        const auto child = convertNode(it);
+        const auto child = convertNode(context, it);
         if (!child)
             continue;
 
@@ -70,7 +70,7 @@ bool FormatAst::outputCommaChildren(const AstNode* node, uint32_t start)
             concat->addBlank();
         }
 
-        SWAG_CHECK(outputNode(child));
+        SWAG_CHECK(outputNode(context, child));
         first = false;
     }
 

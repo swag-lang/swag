@@ -1,14 +1,14 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Format/FormatAst.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Wmf/Module.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 #define CHECK_SAFETY_NAME(__name, __flag)                                        \
@@ -570,9 +570,10 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
     }
     else if (expr->typeInfo->isCode())
     {
-        FormatAst  fmtAst;
-        const auto typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
-        fmtAst.outputNode(typeCode->content);
+        FormatAst     fmtAst;
+        FormatContext fmtCxt;
+        const auto    typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
+        fmtAst.outputNode(fmtCxt, typeCode->content);
         node->computedValue()->text = fmtAst.getUtf8();
     }
     else if (expr->resolvedSymbolName())

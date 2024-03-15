@@ -6,7 +6,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool FormatAst::outputLiteral(const AstNode* node)
+bool FormatAst::outputLiteral(FormatContext& context, const AstNode* node)
 {
     const auto literalNode = castAst<AstLiteral>(node, AstNodeKind::Literal);
     if (literalNode->literalType == LiteralType::TypeStringRaw)
@@ -32,13 +32,13 @@ bool FormatAst::outputLiteral(const AstNode* node)
     if (!node->children.empty())
     {
         concat->addChar('\'');
-        SWAG_CHECK(outputNode(node->firstChild()));
+        SWAG_CHECK(outputNode(context, node->firstChild()));
     }
 
     return true;
 }
 
-bool FormatAst::outputLiteral(const AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
+bool FormatAst::outputLiteral(FormatContext& context, const AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
 {
     if (typeInfo->isPointerNull())
     {
@@ -48,7 +48,7 @@ bool FormatAst::outputLiteral(const AstNode* node, TypeInfo* typeInfo, const Com
 
     if (typeInfo->isListTuple() || typeInfo->isListArray())
     {
-        SWAG_CHECK(outputNode(node));
+        SWAG_CHECK(outputNode(context, node));
         return true;
     }
 
@@ -86,7 +86,7 @@ bool FormatAst::outputLiteral(const AstNode* node, TypeInfo* typeInfo, const Com
     return true;
 }
 
-bool FormatAst::outputExpressionList(const AstNode* node)
+bool FormatAst::outputExpressionList(FormatContext& context, const AstNode* node)
 {
     const auto exprNode = castAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
     if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
@@ -94,7 +94,7 @@ bool FormatAst::outputExpressionList(const AstNode* node)
     else
         concat->addChar('[');
 
-    SWAG_CHECK(outputCommaChildren(exprNode));
+    SWAG_CHECK(outputCommaChildren(context, exprNode));
 
     if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
         concat->addChar('}');
