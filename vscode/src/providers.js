@@ -6,11 +6,11 @@ const { execSync } = require('child_process');
 
 let buildTasks = [];
 
-function registerTask(cmdLine, name)
+function registerTask(cmdLine, name, taskGroup)
 {
     var execution = new vscode.ShellExecution(cmdLine);
     let task = new vscode.Task({type: "swag-build", cmdLine: cmdLine}, vscode.TaskScope.Workspace, name, "swag", execution, '$swag');
-    task.group = vscode.TaskGroup.Build;
+    task.group = taskGroup;
     task.presentationOptions.clear = true;
     buildTasks.push(task);
 }
@@ -19,16 +19,16 @@ class TaskProvider
 {
     provideTasks()
     {
-        registerTask("swag test -w:${workspaceFolder} -o:false",    "build fast");
-        registerTask("swag test -w:${workspaceFolder}",             "build full");
-        registerTask("swag test -w:${workspaceFolder} --rebuild",   "rebuild all");
+        registerTask("swag build -w:${workspaceFolder}",             "build",        vscode.TaskGroup.Build);
+        registerTask("swag build -w:${workspaceFolder} --rebuild",   "rebuild",      vscode.TaskGroup.Rebuild);
+        registerTask("swag format -f:${file}",                       "swag format",   vscode.TaskGroup.Clean);
         return buildTasks;
     }
 
-    resolveTask(task) 
+    resolveTask(task)
     {
         return task;
-    }    
+    }
 }
 
 function launchBackgroundTasks()
