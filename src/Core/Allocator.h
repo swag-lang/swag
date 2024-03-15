@@ -75,6 +75,6 @@ struct StdAllocator
 
     StdAllocator() = default;
 
-    static T*   allocate(size_t n) { return static_cast<T*>(Allocator::alloc(n * sizeof(T), sizeof(void*), ALLOC_STD)); }
+    static T*   allocate(size_t n) { return static_cast<T*>(Allocator::alloc(Allocator::alignSize(n * sizeof(T)), sizeof(void*), ALLOC_STD)); }
     static void deallocate(T* p, size_t n) { Allocator::free(p, Allocator::alignSize(n * sizeof(T)), ALLOC_STD); }
 };
