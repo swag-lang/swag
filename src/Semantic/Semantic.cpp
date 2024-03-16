@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Semantic/Semantic.h"
+#include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Wmf/Module.h"
-#include "Semantic/Type/TypeManager.h"
 
 void Semantic::start(SemanticContext* context, SourceFile* sourceFile, AstNode* originalNode)
 {

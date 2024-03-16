@@ -1,10 +1,9 @@
 #include "pch.h"
+#include "Semantic/SemanticJob.h"
+#include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Syntax/Naming.h"
-#include "Semantic/SemanticJob.h"
-#include "Semantic/Type/TypeManager.h"
 
 namespace
 {

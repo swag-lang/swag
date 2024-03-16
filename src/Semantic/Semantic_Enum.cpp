@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Semantic.h"
-#include "Wmf/SourceFile.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/SourceFile.h"
 #include "Wmf/Workspace.h"
 
 bool Semantic::resolveEnum(SemanticContext* context)

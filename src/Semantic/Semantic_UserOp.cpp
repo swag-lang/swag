@@ -1,15 +1,15 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Report/Report.h"
+#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Semantic.h"
-#include "Semantic/Error/SemanticError.h"
-#include "Wmf/SourceFile.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/SourceFile.h"
 
 bool Semantic::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {
