@@ -1220,6 +1220,16 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 auto ownerFct   = getFunctionForReturn(node);
                 auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 auto returnType = typeFunc->concreteReturnType();
+
+                // If the function return type is not yet defined (short lambda), then we take are type as
+                // the requested return type (as we are a retval, they should match)
+                if (returnType->isVoid())
+                {
+                    typeFunc             = castTypeInfo<TypeInfoFuncAttr>(typeFunc->clone(), TypeInfoKind::FuncAttr);
+                    typeFunc->returnType = node->type->typeInfo;
+                    returnType           = node->type->typeInfo;
+                }
+
                 waitStructGenerated(context->baseJob, returnType);
                 YIELD();
 
