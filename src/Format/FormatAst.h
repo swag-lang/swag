@@ -93,7 +93,6 @@ struct FormatAst
     bool outputTypeTuple(FormatContext& context, TypeInfo* typeInfo);
     bool outputTypeExpression(FormatContext& context, const AstNode* node);
     bool outputType(FormatContext& context, const AstTypeExpression* node);
-    bool outputType(FormatContext& context, const AstNode* node, TypeInfo* typeInfo);
     
     bool outputScopeContent(FormatContext& context, const Module* module, const Scope* scope);
     bool outputScopeContentAndChilds(FormatContext& context, Module* module, const Scope* scope);

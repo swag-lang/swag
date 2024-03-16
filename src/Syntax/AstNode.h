@@ -895,6 +895,7 @@ constexpr TypeFlags TYPEFLAG_IS_PTR            = 0x0400;
 constexpr TypeFlags TYPEFLAG_IS_PTR_ARITHMETIC = 0x0800;
 constexpr TypeFlags TYPEFLAG_IS_SUB_TYPE       = 0x1000;
 constexpr TypeFlags TYPEFLAG_HAS_LOC_CONST     = 0x2000;
+constexpr TypeFlags TYPEFLAG_IS_RETVAL_TYPE    = 0x4000;
 
 struct AstTypeExpression : AstType
 {

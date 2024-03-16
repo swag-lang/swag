@@ -24,6 +24,6 @@ enum UVMode
 
 impl Texture
 {
-    mtd const getByteSize() => width * height * pf.bpp() / 8
-    mtd const isValid()     => handle != InvalidTextureHandle
+    mtd const getByteSize()->s32 => width * height * pf.bpp() / 8
+    mtd const isValid()->bool    => handle != InvalidTextureHandle
 }

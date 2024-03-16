@@ -1043,7 +1043,7 @@ impl Wnd
     }
 
     // Returns true if the window has the keyboard focus
-    mtd hasFocus() => surface.app.keybFocusWnd == self
+    mtd hasFocus()->bool => surface.app.keybFocusWnd == self
 
     // Register a keyboard shortcut
     mtd registerKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)

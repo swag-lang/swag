@@ -119,10 +119,10 @@ func setState(job: *Job, state: JobState)   = Atomic.logicOr(cast(*u32) &job.sta
 func testState(job: *Job, state: JobState)  => Atomic.get(cast(*u32) &job.state) & cast(u32) state != 0
 
 // Returns true is the job system has been initialized
-public func isSynchrone() => g_numWorkers == 0
+public func isSynchrone()->bool => g_numWorkers == 0
 
 // Returns number of threads in the job system
-public func getNumWorkers() => cast(u32) g_numWorkers
+public func getNumWorkers()->u32 => cast(u32) g_numWorkers
 
 // Set the number of worker threads. Must be done once
 public func setNumWorkers(numWorkers: u32 = 0) throw

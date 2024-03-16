@@ -920,6 +920,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             registersRC[ip->a.u32] = context->registersRR[0];
             break;
         case ByteCodeOp::CopyRRtoRA:
+            SWAG_ASSERT(context->bc->registerStoreRR != UINT32_MAX);
             registersRC[ip->a.u32].pointer = registersRC[context->bc->registerStoreRR].pointer + ip->b.u64;
             break;
         case ByteCodeOp::CopyRT2toRARB:

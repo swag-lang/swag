@@ -85,13 +85,13 @@ impl Vector3
     }
 
     // Return sthe length of the vector
-    mtd const length() => sqrt((x * x) + (y * y) + (z * z))
+    mtd const length()->f32 => sqrt((x * x) + (y * y) + (z * z))
 
     // Returns the squared length of the vector
-    mtd const lengthSquared() => (x * x) + (y * y) + (z * z)
+    mtd const lengthSquared()->f32 => (x * x) + (y * y) + (z * z)
 
     // Returns the dot product between two vectors
-    mtd const dot(other: Self) => (x * other.x) + (y * other.y) + (z * other.z)
+    mtd const dot(other: Self)->f32 => (x * other.x) + (y * other.y) + (z * other.z)
 
     // Set the vector to zero
     mtd clear()

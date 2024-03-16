@@ -23,18 +23,11 @@ bool FormatAst::outputFuncDeclParameters(FormatContext& context, const AstNode* 
 
 bool FormatAst::outputFuncReturnType(FormatContext& context, const AstFuncDecl* funcNode)
 {
-    const auto typeFunc = funcNode->typeInfo ? castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure) : nullptr;
-
     auto returnNode = funcNode->returnType;
     if (returnNode && !returnNode->children.empty())
         returnNode = returnNode->firstChild();
 
-    if (typeFunc && typeFunc->returnType && !typeFunc->returnType->isVoid())
-    {
-        CONCAT_FIXED_STR(concat, "->");
-        SWAG_CHECK(outputType(context, returnNode, typeFunc->returnType));
-    }
-    else if (funcNode->returnType && funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
+    if (funcNode->returnType && funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
     {
         CONCAT_FIXED_STR(concat, "->");
         SWAG_CHECK(outputNode(context, returnNode));
@@ -151,7 +144,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, const AstFuncDecl* node)
     }
     else
         SWAG_CHECK(outputFuncSignature(context, node, node->genericParameters, node->parameters, nullptr));
-
+    
     // Content, short lambda
     if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
     {

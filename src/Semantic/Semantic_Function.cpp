@@ -1,16 +1,16 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Os/Os.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Wmf/Module.h"
-#include "Syntax/Naming.h"
-#include "Os/Os.h"
 #include "Semantic/Error/SemanticError.h"
 #include "Semantic/SemanticJob.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Naming.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/Module.h"
 
 void Semantic::allocateOnStack(AstNode* node, const TypeInfo* typeInfo)
 {
@@ -303,6 +303,8 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     // An inline function will not have bytecode, so need to register public by hand now
     if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && funcNode->hasAttribute(ATTRIBUTE_INLINE) && !funcNode->hasAstFlag(AST_FROM_GENERIC))
         funcNode->ownerScope->addPublicNode(funcNode);
+    else if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
+        SWAG_VERIFY(funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED), context->report({funcNode, funcNode->getTokenName(), toErr(Err0750)}));
 
     funcNode->byteCodeFct = ByteCodeGen::emitLocalFuncDecl;
     typeInfo->stackSize   = funcNode->stackSize;

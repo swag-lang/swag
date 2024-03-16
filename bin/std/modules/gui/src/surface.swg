@@ -125,7 +125,10 @@ impl Surface
     }
 
     // Returns inside view
-    mtd getView() => wnd.view
+    mtd getView()->*Wnd
+    {
+        return wnd.view
+    }
 
     // Set the surface icon
     mtd setIcon(icon: Icon)

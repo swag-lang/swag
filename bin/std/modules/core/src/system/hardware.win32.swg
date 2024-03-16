@@ -3,7 +3,7 @@
 using Win32
 
 // Number of processors
-public func getProcessorCount() => cast(u32) Env.g_SysInfo.dwNumberOfProcessors
+public func getProcessorCount()->u32 => cast(u32) Env.g_SysInfo.dwNumberOfProcessors
 
 // Max address
 public func getMacAddress()->u64

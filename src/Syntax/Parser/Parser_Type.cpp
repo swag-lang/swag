@@ -613,7 +613,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
         *result           = node;
         node->semanticFct = Semantic::resolveRetVal;
         node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
-        node->typeFlags.add(TYPEFLAG_IS_RETVAL);
+        node->typeFlags.add(TYPEFLAG_IS_RETVAL | TYPEFLAG_IS_RETVAL_TYPE);
 
         // retval type can be followed by structure initializer, like a normal struct
         // In that case, we want the identifier pipeline to be called on it (to check

@@ -125,11 +125,11 @@ impl TimeSpan
             remove(cast(u32) -milliSeconds, 1)
     }
 
-    mtd totalDays()         => ticks * (1.0'f64 / TicksPerDay)
-    mtd totalHours()        => ticks * (1.0'f64 / TicksPerHour)
-    mtd totalMinutes()      => ticks * (1.0'f64 / TicksPerMinute)
-    mtd totalSeconds()      => ticks * (1.0'f64 / TicksPerSecond)
-    mtd totalMilliSeconds() => ticks * (1.0'f64 / TicksPerMilliSecond)
+    mtd totalDays()->f64         => ticks * (1.0'f64 / TicksPerDay)
+    mtd totalHours()->f64        => ticks * (1.0'f64 / TicksPerHour)
+    mtd totalMinutes()->f64      => ticks * (1.0'f64 / TicksPerMinute)
+    mtd totalSeconds()->f64      => ticks * (1.0'f64 / TicksPerSecond)
+    mtd totalMilliSeconds()->f64 => ticks * (1.0'f64 / TicksPerMilliSecond)
 
     internal mtd add(value: u32, scale: u64)
     {

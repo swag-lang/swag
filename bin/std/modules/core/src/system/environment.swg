@@ -2,7 +2,7 @@
 #global namespace Env
 
 // Get the program command line arguments as a [..] string
-func getArgs() => g_CmdLineArgs
+func getArgs()->const [..] string => g_CmdLineArgs
 
 // Get a given argument, or null
 func getArg(idx: u32)->string

@@ -424,7 +424,7 @@ public impl RichEditCtrl
     }
 
     // Get the full text with the associated styles per character
-    mtd getTextAndStyles()->{text: Array'rune, styles: Array'u8}
+    mtd getTextAndStyles()->{text: Core.Array'rune, styles: Core.Array'u8}
     {
         var sel0: RichEditCursor
         var sel1: RichEditCursor

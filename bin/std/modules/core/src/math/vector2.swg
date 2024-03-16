@@ -82,13 +82,13 @@ impl Vector2
     }
 
     // Return sthe length of the vector
-    mtd const length() => sqrt((x * x) + (y * y))
+    mtd const length()->f32 => sqrt((x * x) + (y * y))
 
     // Returns the squared length of the vector
-    mtd const lengthSquared() => (x * x) + (y * y)
+    mtd const lengthSquared()->f32 => (x * x) + (y * y)
 
     // Returns the dot product between two vectors
-    mtd const dot(other: Self) => (x * other.x) + (y * other.y)
+    mtd const dot(other: Self)->f32 => (x * other.x) + (y * other.y)
 
     // Returns the perpendicular vector in the 2D plane.
     // 'axis' will give the sign of the result

@@ -4,7 +4,7 @@
 using Win32, StrConv
 
 // Exit the current process
-func exit(exitCode: u32) => ExitProcess(exitCode)
+func exit(exitCode: u32) = ExitProcess(exitCode)
 
 // Starts a new process with arguments
 #[Swag.Overload]

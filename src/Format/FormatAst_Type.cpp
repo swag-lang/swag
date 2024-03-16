@@ -3,7 +3,6 @@
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
 bool FormatAst::outputTypeExpression(FormatContext& context, const AstNode* node)
@@ -20,43 +19,19 @@ bool FormatAst::outputTypeExpression(FormatContext& context, const AstNode* node
 
 bool FormatAst::outputType(FormatContext& context, const AstTypeExpression* node)
 {
-    if (node->typeFlags.has(TYPEFLAG_IS_RETVAL))
+    if (node->typeFlags.has(TYPEFLAG_IS_CODE))
+    {
+        CONCAT_FIXED_STR(concat, "code");
+        return true;
+    }
+
+    if (node->typeFlags.has(TYPEFLAG_IS_RETVAL_TYPE))
     {
         if (node->firstChild())
             SWAG_CHECK(outputNode(context, node->firstChild()));
         else
             CONCAT_FIXED_STR(concat, "retval");
         return true;
-    }
-
-    if (node->typeInfo)
-    {
-        // Identifier can have an export node, so in that case we need to export by node, not by type, in
-        // order to export the real node (for example for an array of lambdas/closures)
-        if (!node->identifier || !node->identifier->hasExtraPointer(ExtraPointerKind::ExportNode))
-        {
-            SWAG_CHECK(outputType(context, node, node->typeInfo));
-
-            if (node->identifier)
-            {
-                const auto id = castAst<AstIdentifier>(node->identifier->lastChild(), AstNodeKind::Identifier);
-                if (id->callParameters)
-                {
-                    if (id->hasAstFlag(AST_GENERATED))
-                    {
-                        concat->addBlank();
-                        concat->addChar('=');
-                        concat->addBlank();
-                    }
-
-                    concat->addChar('{');
-                    SWAG_CHECK(outputNode(context, id->callParameters));
-                    concat->addChar('}');
-                }
-            }
-
-            return true;
-        }
     }
 
     if (node->typeFlags.has(TYPEFLAG_IS_CONST))
@@ -140,10 +115,13 @@ bool FormatAst::outputType(FormatContext& context, const AstTypeExpression* node
         if (node->childCount())
             SWAG_CHECK(outputNode(context, node->firstChild()));
     }
-    else if (node->typeFromLiteral == g_TypeMgr->typeInfoVariadic)
+    else if (node->typeFromLiteral && node->typeFromLiteral->isTypedVariadic())
     {
-        if (node->childCount())
-            SWAG_CHECK(outputNode(context, node->firstChild()));
+        SWAG_CHECK(outputNode(context, node->firstChild()));
+        CONCAT_FIXED_STR(concat, "...");
+    }
+    else if (node->typeFromLiteral && node->typeFromLiteral->isVariadic())
+    {
         CONCAT_FIXED_STR(concat, "...");
     }
     else
@@ -157,52 +135,6 @@ bool FormatAst::outputType(FormatContext& context, const AstTypeExpression* node
         if (node->childCount())
             SWAG_CHECK(outputNode(context, node->firstChild()));
     }
-
-    return true;
-}
-
-bool FormatAst::outputType(FormatContext& context, const AstNode* /*node*/, TypeInfo* typeInfo)
-{
-    // Lambda
-    /////////////////////////////////
-    if (typeInfo->isLambdaClosure())
-    {
-        SWAG_ASSERT(typeInfo->declNode && typeInfo->declNode->is(AstNodeKind::TypeLambda));
-        SWAG_CHECK(outputNode(context, typeInfo->declNode));
-        return true;
-    }
-
-    // Tuple
-    /////////////////////////////////
-    if (typeInfo->isTuple())
-    {
-        SWAG_CHECK(outputTypeTuple(context, typeInfo));
-        return true;
-    }
-
-    // Other types
-    /////////////////////////////////
-
-    // When this is a reference, take the original (struct) type instead
-    if (typeInfo->isAutoConstPointerRef())
-    {
-        const auto typeRef = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        typeInfo           = typeRef->pointedType;
-    }
-
-    if (typeInfo->isSelf())
-    {
-        if (typeInfo->isConst())
-            CONCAT_FIXED_STR(concat, "const self");
-        else
-            CONCAT_FIXED_STR(concat, "self");
-        return true;
-    }
-
-    // Export type name
-    typeInfo->computeScopedNameExport();
-    SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
-    concat->addString(typeInfo->scopedNameExport);
 
     return true;
 }

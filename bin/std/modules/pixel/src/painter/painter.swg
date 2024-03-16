@@ -104,8 +104,8 @@ struct Command
     {
         clear:          struct{color: Color}
         drawTriangles:  struct{start: u32, count: u32}
-        transform:      struct{tr: Transform2}
-        clippingRect:   struct{rect: Rectangle}
+        transform:      struct{tr: Core.Math.Transform2}
+        clippingRect:   struct{rect: Core.Math.Rectangle}
         clippingRegion: struct{mode: ClippingMode = undefined}
         font:           struct{fontRef: *Font}
         blendingMode:   struct{mode: BlendingMode = undefined}
@@ -124,8 +124,8 @@ struct Command
 
         texture0: struct
                 {
-                    boundRect:          Vector4
-                    textureRect:        Vector4
+                    boundRect:          Core.Math.Vector4
+                    textureRect:        Core.Math.Vector4
                     type:               BrushType = undefined
                     hatch:              HatchStyle = undefined
                     uvMode:             UVMode = undefined
@@ -146,7 +146,7 @@ struct Painter
     sharedSolidBrush:   Brush
     sharedLinePath:     LinePath
     sharedLinePathList: LinePathList
-    sharedRoundTmp:     Array'{factor: f32, pos: Math.Vector2}
+    sharedRoundTmp:     Array'{factor: f32, pos: Core.Math.Vector2}
 
     curState:           PaintState
     stackState:         Array'PaintState

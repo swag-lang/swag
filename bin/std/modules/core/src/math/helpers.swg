@@ -3,7 +3,7 @@
 using Swag
 
 #[ConstExpr, Inline]
-func(T) clamp(x, low, up: T) => @max(@min(x, up), low)
+func(T) clamp(x, low, up: T)->T => @max(@min(x, up), low)
 
 #[ConstExpr, Inline, Overload]
 {

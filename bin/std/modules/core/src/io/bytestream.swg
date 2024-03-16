@@ -144,5 +144,5 @@ public impl ByteStream
     }
 
     // Returns the seek value
-    mtd const getSeek() => seek
+    mtd const getSeek()->u64 => seek
 }

@@ -809,8 +809,8 @@ impl Application
         endModalExit = exitId
     }
 
-    mtd getFileIcon(name: string, small = true)      => getFileDirectoryIcon(name, false, small)
-    mtd getDirectoryIcon(name: string, small = true) => getFileDirectoryIcon(name, true, small)
+    mtd getFileIcon(name: string, small = true)->Icon      => getFileDirectoryIcon(name, false, small)
+    mtd getDirectoryIcon(name: string, small = true)->Icon => getFileDirectoryIcon(name, true, small)
 
     // Register a global os key action
     #[Swag.Overload]

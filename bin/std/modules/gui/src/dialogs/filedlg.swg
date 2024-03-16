@@ -24,7 +24,7 @@ struct FileDlgOptions
     drivePane   = true
     mode:       FileDlgMode = SelectOneFile
     filters:    Array'{name: string, extensions: string}
-    shortcuts:  Array'{type: Env.SpecialDirectory, name: string}
+    shortcuts:  Array'{type: Core.Env.SpecialDirectory, name: string}
     state:      *FileDlgState
 }
 
