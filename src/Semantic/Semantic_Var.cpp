@@ -534,6 +534,104 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
     return true;
 }
 
+bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDecl* node, OverloadFlags overFlags, TypeInfo* concreteNodeType, bool isCompilerConstant)
+{
+    // A constant must be initialized
+    if (isCompilerConstant && !node->hasFlagComputedValue())
+        return context->report({node, toErr(Err0562)});
+
+    // A constant variable must be initialized
+    if (overFlags.has(OVERLOAD_CONST_ASSIGN) && node->isNot(AstNodeKind::FuncDeclParam))
+    {
+        if (overFlags.has(OVERLOAD_IS_LET))
+            return context->report({node, toErr(Err0564)});
+        return context->report({node, toErr(Err0565)});
+    }
+
+    // A reference must be initialized
+    if (concreteNodeType &&
+        concreteNodeType->isPointerRef() &&
+        node->isNot(AstNodeKind::FuncDeclParam) &&
+        !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
+    {
+        return context->report({node, toErr(Err0563)});
+    }
+
+    // Check an enum variable without initialization
+    if (concreteNodeType &&
+        concreteNodeType->isEnum() &&
+        node->isNot(AstNodeKind::FuncDeclParam) &&
+        !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
+    {
+        const auto                  concreteTypeEnum = castTypeInfo<TypeInfoEnum>(concreteNodeType, TypeInfoKind::Enum);
+        VectorNative<TypeInfoEnum*> collect;
+        concreteTypeEnum->collectEnums(collect);
+
+        bool ok = false;
+        for (const auto typeEnum : collect)
+        {
+            if (ok)
+                break;
+
+            const auto rawType = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
+            if (rawType->isNativeFloat() || rawType->isNativeIntegerOrRune() || rawType->isBool())
+            {
+                for (const auto p : typeEnum->values)
+                {
+                    if (!p->value)
+                        continue;
+                    if (!p->value->reg.u64)
+                    {
+                        ok = true;
+                        break;
+                    }
+                }
+            }
+            else if (rawType->isString())
+            {
+                for (const auto p : typeEnum->values)
+                {
+                    if (!p->value)
+                        continue;
+                    if (!p->value->text.buffer)
+                    {
+                        ok = true;
+                        break;
+                    }
+                }
+            }
+            else if (rawType->isSlice())
+            {
+                for (const auto p : typeEnum->values)
+                {
+                    if (!p->value)
+                        continue;
+                    const auto slice = static_cast<SwagSlice*>(p->value->getStorageAddr());
+                    if (!slice->buffer && !slice->count)
+                    {
+                        ok = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                ok = true;
+                break;
+            }
+        }
+
+        if (!ok)
+        {
+            Diagnostic err{node, formErr(Err0566, node->token.c_str(), concreteTypeEnum->getDisplayNameC())};
+            err.addNote(Diagnostic::hereIs(concreteNodeType->declNode));
+            return context->report(err);
+        }
+    }
+
+    return true;
+}
+
 bool Semantic::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
@@ -650,96 +748,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     // This is ok to not have an initialization for structs, as they are initialized by default
     if (!node->assignment && (!node->type || !concreteNodeType->isStruct()))
     {
-        // A constant must be initialized
-        if (isCompilerConstant && !node->hasFlagComputedValue())
-            return context->report({node, toErr(Err0562)});
-
-        // A constant variable must be initialized
-        if (overFlags.has(OVERLOAD_CONST_ASSIGN) && node->isNot(AstNodeKind::FuncDeclParam))
-        {
-            if (overFlags.has(OVERLOAD_IS_LET))
-                return context->report({node, toErr(Err0564)});
-            return context->report({node, toErr(Err0565)});
-        }
-
-        // A reference must be initialized
-        if (concreteNodeType &&
-            concreteNodeType->isPointerRef() &&
-            node->isNot(AstNodeKind::FuncDeclParam) &&
-            !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
-            return context->report({node, toErr(Err0563)});
-
-        // Check an enum variable without initialization
-        if (concreteNodeType &&
-            concreteNodeType->isEnum() &&
-            node->isNot(AstNodeKind::FuncDeclParam) &&
-            !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
-        {
-            auto                        concreteTypeEnum = castTypeInfo<TypeInfoEnum>(concreteNodeType, TypeInfoKind::Enum);
-            VectorNative<TypeInfoEnum*> collect;
-            concreteTypeEnum->collectEnums(collect);
-
-            bool ok = false;
-            for (auto typeEnum : collect)
-            {
-                if (ok)
-                    break;
-
-                auto rawType = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
-                if (rawType->isNativeFloat() || rawType->isNativeIntegerOrRune() || rawType->isBool())
-                {
-                    for (auto p : typeEnum->values)
-                    {
-                        if (!p->value)
-                            continue;
-                        if (!p->value->reg.u64)
-                        {
-                            ok = true;
-                            break;
-                        }
-                    }
-                }
-                else if (rawType->isString())
-                {
-                    for (auto p : typeEnum->values)
-                    {
-                        if (!p->value)
-                            continue;
-                        if (!p->value->text.buffer)
-                        {
-                            ok = true;
-                            break;
-                        }
-                    }
-                }
-                else if (rawType->isSlice())
-                {
-                    for (auto p : typeEnum->values)
-                    {
-                        if (!p->value)
-                            continue;
-                        auto slice = static_cast<SwagSlice*>(p->value->getStorageAddr());
-                        if (!slice->buffer && !slice->count)
-                        {
-                            ok = true;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    ok = true;
-                    break;
-                }
-            }
-
-            if (!ok)
-            {
-                Diagnostic err{node, formErr(Err0566, node->token.c_str(), concreteTypeEnum->getDisplayNameC())};
-                err.addNote(Diagnostic::hereIs(concreteNodeType->declNode));
-                return context->report(err);
-            }
-        }
+        SWAG_CHECK(checkForMissingInitialization(context, node, overFlags, concreteNodeType, isCompilerConstant));
     }
 
     bool thisIsAGenericType = !node->type && !node->assignment;
