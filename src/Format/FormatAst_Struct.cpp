@@ -28,7 +28,7 @@ bool FormatAst::outputTupleDeclContent(FormatContext& context, const AstNode* no
 
 bool FormatAst::outputStructDecl(FormatContext& context, const AstStruct* node)
 {
-    if (node->hasSpecFlag(AstStruct::SPEC_FLAG_GENERIC_PARAM))
+    if (node->hasSpecFlag(AstStruct::SPEC_FLAG_GENERIC_PARAM) || node->hasAstFlag(AST_GENERATED))
     {
         SWAG_CHECK(outputTupleDeclContent(context, node->content));
         return true;
