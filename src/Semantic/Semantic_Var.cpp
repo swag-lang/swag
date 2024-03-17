@@ -1283,23 +1283,6 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // Force a constant to have a constant type, to avoid modifying a type that is in fact stored in the data segment,
-    // and has an address
-    if (isCompilerConstant && !node->hasAstFlag(AST_FROM_GENERIC))
-    {
-        if (overFlags.has(OVERLOAD_VAR_GLOBAL) || isLocalConstant)
-        {
-            if (node->typeInfo->isStruct() ||
-                node->typeInfo->isArray() ||
-                node->typeInfo->isClosure())
-            {
-                node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
-            }
-        }
-    }
-
-    const auto typeInfo = TypeManager::concreteType(node->typeInfo);
-
     // In case of a struct (or array of structs), be sure struct is now completed before
     // Otherwise there's a chance, for example, that 'sizeof' is 0, which can lead to various
     // problems.
@@ -1307,6 +1290,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         if (isCompilerConstant || overFlags.has(OVERLOAD_VAR_GLOBAL) || overFlags.has(OVERLOAD_VAR_LOCAL))
         {
+            const auto typeInfo = TypeManager::concreteType(node->typeInfo);
             waitTypeCompleted(context->baseJob, typeInfo);
             YIELD();
         }
@@ -1316,6 +1300,21 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     DataSegment* storageSegment = nullptr;
     if (isCompilerConstant)
     {
+        // Force a constant to have a constant type, to avoid modifying a type that is in fact stored in the data segment,
+        // and has an address
+        if (!node->hasAstFlag(AST_FROM_GENERIC))
+        {
+            if (overFlags.has(OVERLOAD_VAR_GLOBAL) || isLocalConstant)
+            {
+                if (node->typeInfo->isStruct() ||
+                    node->typeInfo->isArray() ||
+                    node->typeInfo->isClosure())
+                {
+                    node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
+                }
+            }
+        }
+
         node->addAstFlag(AST_NO_BYTECODE | AST_R_VALUE);
         if (!isGeneric)
         {
@@ -1338,11 +1337,13 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
     else if (overFlags.has(OVERLOAD_VAR_LOCAL))
     {
+        const auto typeInfo = TypeManager::concreteType(node->typeInfo);
         SWAG_CHECK(resolveLocalVar(context, node, overFlags, typeInfo, storageOffset));
         YIELD();
     }
     else if (overFlags.has(OVERLOAD_VAR_FUNC_PARAM))
     {
+        const auto typeInfo = TypeManager::concreteType(node->typeInfo);
         node->addAstFlag(AST_R_VALUE);
         TypeManager::convertStructParamToRef(node, typeInfo);
     }
