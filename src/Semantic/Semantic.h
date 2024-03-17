@@ -133,6 +133,7 @@ namespace Semantic
     TypeInfo*      getDeducedLambdaType(SemanticContext* context, const AstMakePointer* node);
     TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
     Utf8           getSpecialOpSignature(const AstFuncDecl* node);
+    bool           resolveGlobalVar(SemanticContext* context, AstVarDecl* node, OverloadFlags& overFlags, DataSegment*& storageSegment, uint32_t& storageOffset);
     bool           resolveLocalVar(SemanticContext* context, AstVarDecl* node, OverloadFlags& overFlags, const TypeInfo* typeInfo, uint32_t& storageOffset);
     bool           appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, const SymbolOverload* overload);
     bool           boundCheck(SemanticContext* context, const TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount);

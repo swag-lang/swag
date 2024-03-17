@@ -643,8 +643,8 @@ bool Semantic::resolveTypeConstraint(SemanticContext* context, const AstVarDecl*
         return context->report(err);
     }
 
-    SWAG_CHECK(Semantic::checkIsConstExpr(context, node->typeConstraint, toErr(Err0044)));
-    SWAG_CHECK(Semantic::evaluateConstExpression(context, node->typeConstraint));
+    SWAG_CHECK(checkIsConstExpr(context, node->typeConstraint, toErr(Err0044)));
+    SWAG_CHECK(evaluateConstExpression(context, node->typeConstraint));
     YIELD();
     SWAG_ASSERT(node->typeConstraint->hasFlagComputedValue());
     if (!node->typeConstraint->computedValue()->reg.b)
@@ -730,7 +730,7 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
     // For a struct, need to wait for special functions to be found
     if (typeInfo->isStruct() || typeInfo->isArrayOfStruct())
     {
-        SWAG_CHECK(Semantic::waitForStructUserOps(context, node));
+        SWAG_CHECK(waitForStructUserOps(context, node));
         YIELD();
     }
 
@@ -749,7 +749,7 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
         const auto typeExpr = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         if (typeExpr->typeFlags.has(TYPEFLAG_IS_RETVAL))
         {
-            const auto ownerFct   = Semantic::getFunctionForReturn(node);
+            const auto ownerFct   = getFunctionForReturn(node);
             auto       typeFunc   = castTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
             auto       returnType = typeFunc->concreteReturnType();
 
@@ -822,6 +822,87 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
     node->setBcNotifyBefore(ByteCodeGen::emitLocalVarDeclBefore);
     node->byteCodeFct = ByteCodeGen::emitLocalVarDecl;
     node->addAstFlag(AST_R_VALUE);
+    return true;
+}
+
+bool Semantic::resolveGlobalVar(SemanticContext* context, AstVarDecl* node, OverloadFlags& overFlags, DataSegment*& storageSegment, uint32_t& storageOffset)
+{
+    const auto sourceFile = context->sourceFile;
+    const auto module     = sourceFile->module;
+
+    // Variable is still generic. Try to find default generic parameters to instantiate it
+    if (node->typeInfo->isGeneric())
+    {
+        SWAG_CHECK(Generic::instantiateDefaultGenericVar(context, node));
+        YIELD();
+    }
+
+    // Register global variable in the list of global variables to drop if the variable is
+    // a struct with a 'opDrop' function
+    auto isGlobalToDrop = false;
+    if (node->typeInfo)
+    {
+        auto typeNode = node->typeInfo;
+        if (typeNode->isStruct() || typeNode->isArrayOfStruct())
+        {
+            waitStructGeneratedAlloc(context->baseJob, typeNode);
+            YIELD();
+            if (typeNode->isArrayOfStruct())
+                typeNode = castTypeInfo<TypeInfoArray>(typeNode)->finalType;
+            const TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
+            if (typeStruct->opDrop || typeStruct->opUserDropFct)
+                isGlobalToDrop = true;
+        }
+    }
+
+    if (node->hasAttribute(ATTRIBUTE_PUBLIC))
+    {
+        Diagnostic err{node, node->getTokenName(), toErr(Err0479)};
+        err.addNote(Diagnostic::hereIs(node->findParent(TokenId::KwdPublic)));
+        return context->report(err);
+    }
+
+    node->addAstFlag(AST_R_VALUE);
+    storageSegment = getSegmentForVar(context, node);
+    switch (storageSegment->kind)
+    {
+        case SegmentKind::Compiler:
+            overFlags.add(OVERLOAD_VAR_COMPILER);
+            break;
+        case SegmentKind::Bss:
+            overFlags.add(OVERLOAD_VAR_BSS);
+            break;
+    }
+
+    if (node->hasExtraPointer(ExtraPointerKind::UserOp))
+    {
+        storageOffset = 0;
+        overFlags.add(OVERLOAD_INCOMPLETE);
+    }
+    else
+    {
+        SWAG_CHECK(collectAssignment(context, storageSegment, storageOffset, node));
+    }
+
+    // Register global variable
+    if (!overFlags.has(OVERLOAD_VAR_COMPILER))
+    {
+        if (node->hasAttribute(ATTRIBUTE_GLOBAL))
+        {
+            if (node->ownerFct)
+                node->ownerFct->localGlobalVars.push_back(context->node);
+        }
+        else
+        {
+            module->addGlobalVar(node, overFlags.has(OVERLOAD_VAR_BSS) ? GlobalVarKind::Bss : GlobalVarKind::Mutable);
+        }
+
+        // Register global variable in the list of global variables to drop if the variable is
+        // a struct with a 'opDrop' function
+        if (isGlobalToDrop)
+            module->addGlobalVarToDrop(node, storageOffset, storageSegment);
+    }
+
     return true;
 }
 
@@ -1252,80 +1333,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
     else if (overFlags.has(OVERLOAD_VAR_GLOBAL))
     {
-        // Variable is still generic. Try to find default generic parameters to instantiate it
-        if (node->typeInfo->isGeneric())
-        {
-            SWAG_CHECK(Generic::instantiateDefaultGenericVar(context, node));
-            YIELD();
-        }
-
-        // Register global variable in the list of global variables to drop if the variable is
-        // a struct with a 'opDrop' function
-        auto isGlobalToDrop = false;
-        if (node->typeInfo)
-        {
-            auto typeNode = node->typeInfo;
-            if (typeNode->isStruct() || typeNode->isArrayOfStruct())
-            {
-                waitStructGeneratedAlloc(context->baseJob, typeNode);
-                YIELD();
-                if (typeNode->isArrayOfStruct())
-                    typeNode = castTypeInfo<TypeInfoArray>(typeNode)->finalType;
-                const TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
-                if (typeStruct->opDrop || typeStruct->opUserDropFct)
-                    isGlobalToDrop = true;
-            }
-        }
-
-        if (node->hasAttribute(ATTRIBUTE_PUBLIC))
-        {
-            Diagnostic err{node, node->getTokenName(), toErr(Err0479)};
-            err.addNote(Diagnostic::hereIs(node->findParent(TokenId::KwdPublic)));
-            return context->report(err);
-        }
-
-        node->addAstFlag(AST_R_VALUE);
-        storageSegment = getSegmentForVar(context, node);
-        switch (storageSegment->kind)
-        {
-            case SegmentKind::Compiler:
-                overFlags.add(OVERLOAD_VAR_COMPILER);
-                break;
-            case SegmentKind::Bss:
-                overFlags.add(OVERLOAD_VAR_BSS);
-                break;
-            default:
-                break;
-        }
-
-        if (node->hasExtraPointer(ExtraPointerKind::UserOp))
-        {
-            storageOffset = 0;
-            overFlags.add(OVERLOAD_INCOMPLETE);
-        }
-        else
-        {
-            SWAG_CHECK(collectAssignment(context, storageSegment, storageOffset, node));
-        }
-
-        // Register global variable
-        if (!overFlags.has(OVERLOAD_VAR_COMPILER))
-        {
-            if (node->hasAttribute(ATTRIBUTE_GLOBAL))
-            {
-                if (node->ownerFct)
-                    node->ownerFct->localGlobalVars.push_back(context->node);
-            }
-            else
-            {
-                module->addGlobalVar(node, overFlags.has(OVERLOAD_VAR_BSS) ? GlobalVarKind::Bss : GlobalVarKind::Mutable);
-            }
-
-            // Register global variable in the list of global variables to drop if the variable is
-            // a struct with a 'opDrop' function
-            if (isGlobalToDrop)
-                module->addGlobalVarToDrop(node, storageOffset, storageSegment);
-        }
+        SWAG_CHECK(resolveGlobalVar(context, node, overFlags, storageSegment, storageOffset));
+        YIELD();
     }
     else if (overFlags.has(OVERLOAD_VAR_LOCAL))
     {
