@@ -484,14 +484,13 @@ bool Semantic::resolveInterface(SemanticContext* context)
     {
         auto typeParam      = TypeManager::makeParam();
         typeParam->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-        typeParam->offset   = 0;
         typeInterface->fields.push_back(typeParam);
         typeInterface->sizeOf += sizeof(void*);
 
         typeParam           = TypeManager::makeParam();
-        typeParam->typeInfo = typeITable;
-        typeParam->offset   = sizeof(void*);
+        typeParam->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         typeParam->index    = 1;
+        typeParam->offset   = sizeof(void*);
         typeInterface->fields.push_back(typeParam);
         typeInterface->sizeOf += sizeof(void*);
     }
