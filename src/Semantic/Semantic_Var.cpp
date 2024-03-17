@@ -632,7 +632,7 @@ bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDec
     return true;
 }
 
-bool Semantic::evaluateTypeConstraint(SemanticContext* context, const AstVarDecl* node)
+bool Semantic::resolveTypeConstraint(SemanticContext* context, const AstVarDecl* node)
 {
     SWAG_ASSERT(node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_TYPE));
 
@@ -668,15 +668,8 @@ bool Semantic::evaluateTypeConstraint(SemanticContext* context, const AstVarDecl
     return true;
 }
 
-bool Semantic::resolveVarDecl(SemanticContext* context)
+bool Semantic::checkMixinAlias(SemanticContext* context, AstVarDecl* node)
 {
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto node       = castAst<AstVarDecl>(context->node);
-
-    bool isCompilerConstant = node->is(AstNodeKind::ConstDecl);
-    bool isLocalConstant    = false;
-
     // Check #mixin
     if (!node->hasAstFlag(AST_GENERATED) && !node->hasOwnerInline() && node->token.text.find(g_LangSpec->name_atmixin) == 0)
     {
@@ -715,13 +708,26 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    return true;
+}
+
+bool Semantic::resolveVarDecl(SemanticContext* context)
+{
+    auto node = castAst<AstVarDecl>(context->node);
+
+    SWAG_CHECK(checkMixinAlias(context, node));
+
     if (node->assignment && node->assignment->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
     {
         if (!node->type || !node->type->typeInfo->isStruct())
             return context->report({node->assignment->firstChild(), formErr(Err0403, node->assignment->firstChild()->token.c_str())});
     }
 
-    OverloadFlags overFlags = 0;
+    const auto    sourceFile         = context->sourceFile;
+    const auto    module             = sourceFile->module;
+    bool          isCompilerConstant = node->is(AstNodeKind::ConstDecl);
+    bool          isLocalConstant    = false;
+    OverloadFlags overFlags          = 0;
 
     // Transform let to constant if possible
     if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
@@ -763,7 +769,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     if (node->assignment)
         overFlags.add(OVERLOAD_VAR_HAS_ASSIGN);
 
-    auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_FORCE_ALIAS) : nullptr;
+    const auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_FORCE_ALIAS) : nullptr;
 
     // Register public global constant
     if (isCompilerConstant && node->hasAttribute(ATTRIBUTE_PUBLIC))
@@ -775,7 +781,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     if (node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !concreteNodeType->isLambdaClosure())
     {
         Diagnostic err{node, node->token, formErr(Err0489, concreteNodeType->getDisplayNameC())};
-        auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
+        const auto attr = node->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
         err.addNote(attr, formNte(Nte0063, "attribute"));
         return context->report(err);
     }
@@ -791,7 +797,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     bool isGeneric          = false;
     if (node->hasAstFlag(AST_STRUCT_MEMBER))
     {
-        auto p = node->findParent(AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+        const auto p = node->findParent(AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
         SWAG_ASSERT(p);
         isGeneric = p->hasAstFlag(AST_IS_GENERIC);
     }
@@ -799,7 +805,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     // Evaluate type constraint
     if (node->hasAstFlag(AST_FROM_GENERIC) && node->typeConstraint)
     {
-        SWAG_CHECK(evaluateTypeConstraint(context, node));
+        SWAG_CHECK(resolveTypeConstraint(context, node));
         YIELD();
     }
 
@@ -840,7 +846,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             if (node->assignment->typeInfo->isLambdaClosure())
             {
                 SWAG_VERIFY(!isCompilerConstant, context->report({node->assignment, toErr(Err0213)}));
-                auto funcNode = castAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
+                const auto funcNode = castAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
                 SWAG_CHECK(checkCanMakeFuncPointer(context, funcNode, node->assignment));
             }
             else
@@ -853,7 +859,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     // Be sure that an array without a size has an initializer, to deduce its size
     if (concreteNodeType && concreteNodeType->isArray())
     {
-        auto typeArray = castTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
+        const auto typeArray = castTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         if (typeArray->count == UINT32_MAX && !node->assignment)
             return context->report({node->type, toErr(Err0212)});
 
@@ -891,8 +897,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         SWAG_ASSERT(node->type->typeInfo);
 
-        auto leftConcreteType  = node->type->typeInfo;
-        auto rightConcreteType = TypeManager::concretePtrRefType(node->assignment->typeInfo);
+        const auto leftConcreteType  = node->type->typeInfo;
+        const auto rightConcreteType = TypeManager::concretePtrRefType(node->assignment->typeInfo);
 
         // Do not cast for structs, as we can have special assignment with different types
         // Except if this is an initializer list {...}
@@ -905,8 +911,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 YIELD();
             }
 
-            auto castFlags = CAST_FLAG_TRY_COERCE | CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_PTR_REF | CAST_FLAG_FOR_AFFECT | CAST_FLAG_FOR_VAR_INIT |
-                             CAST_FLAG_ACCEPT_PENDING;
+            constexpr auto castFlags = CAST_FLAG_TRY_COERCE | CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_PTR_REF | CAST_FLAG_FOR_AFFECT | CAST_FLAG_FOR_VAR_INIT | CAST_FLAG_ACCEPT_PENDING;
             if (node->type->hasAstFlag(AST_FROM_GENERIC_REPLACE) || (node->type->children.count && node->type->lastChild()->hasAstFlag(AST_FROM_GENERIC_REPLACE)))
                 SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
             else
@@ -965,15 +970,15 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         {
             if (node->assignment->typeInfo->isFuncAttr() && node->assignment->resolvedSymbolOverload())
             {
-                auto nodeWhere = node->assignment;
-                auto over      = nodeWhere->resolvedSymbolOverload();
+                auto       nodeWhere = node->assignment;
+                const auto over      = nodeWhere->resolvedSymbolOverload();
                 if (nodeWhere->is(AstNodeKind::IdentifierRef))
                     nodeWhere = nodeWhere->lastChild();
-                Diagnostic err{nodeWhere, nodeWhere->token, toErr(Err0371)};
+                const Diagnostic err{nodeWhere, nodeWhere->token, toErr(Err0371)};
                 return context->report(err, Diagnostic::hereIs(over));
             }
 
-            Diagnostic err{node->assignment, toErr(Err0386)};
+            const Diagnostic err{node->assignment, toErr(Err0386)};
             return context->report(err);
         }
 
@@ -992,8 +997,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         // :ConcreteRef
         if (node->typeInfo->isPointerRef() && setUnRef(node->assignment))
         {
-            auto typePointer = castTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
-            node->typeInfo   = typePointer->pointedType;
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
+            node->typeInfo         = typePointer->pointedType;
         }
     }
 
@@ -1067,7 +1072,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         while (typeExpression->typeFlags.has(TYPEFLAG_IS_SUB_TYPE))
             typeExpression = castAst<AstTypeExpression>(typeExpression->lastChild(), AstNodeKind::TypeExpression);
-        auto identifier = castAst<AstIdentifier>(typeExpression->identifier->lastChild(), AstNodeKind::Identifier);
+        const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->lastChild(), AstNodeKind::Identifier);
 
         TypeInfoStruct* typeStruct = nullptr;
         if (node->typeInfo->isStruct())
@@ -1103,7 +1108,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    auto typeInfo = TypeManager::concreteType(node->typeInfo);
+    const auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
     // In case of a struct (or array of structs), be sure struct is now completed before
     // Otherwise there's a chance, for example, that 'sizeof' is 0, which can lead to various
@@ -1157,7 +1162,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 YIELD();
                 if (typeNode->isArrayOfStruct())
                     typeNode = castTypeInfo<TypeInfoArray>(typeNode)->finalType;
-                TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
+                const TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
                 if (typeStruct->opDrop || typeStruct->opUserDropFct)
                     isGlobalToDrop = true;
             }
@@ -1234,12 +1239,12 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         // Do not allocate space on the stack for a 'retval' variable, because it's not really a variable
         if (node->type && node->type->is(AstNodeKind::TypeExpression))
         {
-            auto typeExpr = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+            const auto typeExpr = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
             if (typeExpr->typeFlags.has(TYPEFLAG_IS_RETVAL))
             {
-                auto ownerFct   = getFunctionForReturn(node);
-                auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-                auto returnType = typeFunc->concreteReturnType();
+                const auto ownerFct   = getFunctionForReturn(node);
+                auto       typeFunc   = castTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                auto       returnType = typeFunc->concreteReturnType();
 
                 // If the function return type is not yet defined (short lambda), then we take are type as
                 // the requested return type (as we are a retval, they should match)
@@ -1266,7 +1271,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             SWAG_ASSERT(node->assignment->is(AstNodeKind::IdentifierRef));
             overFlags.add(OVERLOAD_TUPLE_UNPACK);
             storageOffset = 0;
-            for (auto& c : node->assignment->children)
+            for (const auto& c : node->assignment->children)
             {
                 SWAG_ASSERT(c->resolvedSymbolOverload());
                 storageOffset += c->resolvedSymbolOverload()->computedValue.storageOffset;
@@ -1294,7 +1299,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             }
             else
             {
-                auto alignOf = Semantic::alignOf(node);
+                const auto alignOf = Semantic::alignOf(node);
 
                 // Because of 'visit' (at least), it can happen that this is not up to date because of order of evaluation.
                 // So update it just in case (5294 bug)
@@ -1333,7 +1338,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     toAdd.storageOffset  = storageOffset;
     toAdd.storageSegment = storageSegment;
 
-    auto overload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
+    const auto overload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(overload);
     node->setResolvedSymbolOverload(overload);
     return true;

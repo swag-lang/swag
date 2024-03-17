@@ -87,6 +87,8 @@ namespace Semantic
     bool checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
+    bool checkForMissingInitialization(SemanticContext* context, AstVarDecl* node, OverloadFlags overFlags, TypeInfo* concreteNodeType, bool isCompilerConstant);
+    bool checkMixinAlias(SemanticContext* context, AstVarDecl* node);
 
     bool hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, TypeInfoParam* parentField, VectorNative<FindUserOp>& result);
     bool hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result);
@@ -140,8 +142,7 @@ namespace Semantic
     bool           computeExpressionListTupleType(SemanticContext* context, AstNode* node);
     bool           convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, OverloadFlags overFlags, CastFlags castFlags = 0);
     bool           deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType);
-    bool           checkForMissingInitialization(SemanticContext* context, AstVarDecl* node, OverloadFlags overFlags, TypeInfo* concreteNodeType, bool isCompilerConstant);
-    bool           evaluateTypeConstraint(SemanticContext* context, const AstVarDecl* node);
+    bool           resolveTypeConstraint(SemanticContext* context, const AstVarDecl* node);
     bool           derefConstant(SemanticContext* context, uint8_t* ptr, const SymbolOverload* overload, DataSegment* storageSegment);
     bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);
     bool           doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
