@@ -920,7 +920,6 @@ void GenDoc::generateContent()
     }
 }
 
-#pragma optimize("", off)
 bool GenDoc::generateApi()
 {
     // Collect content
