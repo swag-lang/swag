@@ -1002,15 +1002,18 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         overFlags.add(OVERLOAD_GENERIC);
         if (thisIsAGenericType && node->assignment)
         {
-            auto typeGeneric     = makeType<TypeInfoGeneric>();
-            typeGeneric->name    = node->token.text;
-            typeGeneric->rawType = node->typeInfo;
-            node->typeInfo       = typeGeneric;
+            const auto typeGeneric = makeType<TypeInfoGeneric>();
+            typeGeneric->name      = node->token.text;
+            typeGeneric->declNode  = node;
+            typeGeneric->rawType   = node->typeInfo;
+            node->typeInfo         = typeGeneric;
         }
         else if (!node->typeInfo)
         {
-            node->typeInfo       = makeType<TypeInfoGeneric>();
-            node->typeInfo->name = node->token.text;
+            const auto typeGeneric = makeType<TypeInfoGeneric>();
+            typeGeneric->name      = node->token.text;
+            typeGeneric->declNode  = node;
+            node->typeInfo         = typeGeneric;
         }
     }
 

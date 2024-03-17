@@ -1,4 +1,6 @@
 #include "pch.h"
+
+#include "Semantic/Scope.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
@@ -399,11 +401,6 @@ bool TypeInfoVariadic::isSame(const TypeInfo* to, CastFlags castFlags) const
     if (rawType == other->rawType)
         return true;
     return rawType->isSame(other->rawType, castFlags);
-}
-
-void TypeInfoGeneric::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
-{
-    TypeInfo::computeWhateverName(resName, nameKind);
 }
 
 TypeInfo* TypeInfoGeneric::clone()

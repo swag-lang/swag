@@ -393,9 +393,10 @@ bool Semantic::resolveType(SemanticContext* context)
     if (!typeNode->typeInfo && typeNode->identifier && typeNode->identifier->resolvedSymbolOverload()->hasFlag(OVERLOAD_GENERIC))
     {
         typeNode->setResolvedSymbol(typeNode->identifier->resolvedSymbolName(), typeNode->identifier->resolvedSymbolOverload());
-        typeNode->typeInfo       = makeType<TypeInfoGeneric>();
-        typeNode->typeInfo->name = typeNode->resolvedSymbolName()->name;
-        typeNode->typeInfo       = typeNode->typeInfo;
+        const auto typeGeneric = makeType<TypeInfoGeneric>();
+        typeGeneric->name      = typeNode->resolvedSymbolName()->name;
+        typeGeneric->declNode  = typeNode;
+        typeNode->typeInfo     = typeGeneric;
     }
 
     // Otherwise, this is strange, we should have a type

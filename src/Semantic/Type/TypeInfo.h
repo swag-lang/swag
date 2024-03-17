@@ -433,7 +433,6 @@ struct TypeInfoGeneric final : TypeInfo
 
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
-    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
 
     TypeInfo* rawType = nullptr;
 };

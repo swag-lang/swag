@@ -270,9 +270,7 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
     {
         const auto typeInfo = val.typeInfoReplace;
         const auto declNode = typeInfo->declNode;
-        if (!declNode)
-            continue;
-        if (!declNode->resolvedSymbolOverload())
+        if (!declNode || !declNode->resolvedSymbolOverload())
             continue;
         if (declNode->resolvedSymbolOverload()->symbol == match.symbolName)
             continue;
@@ -290,8 +288,6 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
         waitOverloadCompleted(context->baseJob, declNode->resolvedSymbolOverload());
         if (context->result == ContextResult::Pending)
             return;
-
-        SWAG_ASSERT(typeInfo->sizeOf > 0);
     }
 }
 
