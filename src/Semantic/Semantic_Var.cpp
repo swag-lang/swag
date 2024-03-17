@@ -711,17 +711,26 @@ bool Semantic::checkMixinAlias(SemanticContext* context, AstVarDecl* node)
     return true;
 }
 
+bool Semantic::checkTypeSuffix(SemanticContext* context, const AstVarDecl* node)
+{
+    if (node->assignment && node->assignment->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
+    {
+        if (!node->type || !node->type->typeInfo->isStruct())
+        {
+            const Diagnostic err{node->assignment->firstChild(), formErr(Err0403, node->assignment->firstChild()->token.c_str())};
+            return context->report(err);
+        }
+    }
+
+    return true;
+}
+
 bool Semantic::resolveVarDecl(SemanticContext* context)
 {
     auto node = castAst<AstVarDecl>(context->node);
 
     SWAG_CHECK(checkMixinAlias(context, node));
-
-    if (node->assignment && node->assignment->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
-    {
-        if (!node->type || !node->type->typeInfo->isStruct())
-            return context->report({node->assignment->firstChild(), formErr(Err0403, node->assignment->firstChild()->token.c_str())});
-    }
+    SWAG_CHECK(checkTypeSuffix(context, node));
 
     const auto    sourceFile         = context->sourceFile;
     const auto    module             = sourceFile->module;
