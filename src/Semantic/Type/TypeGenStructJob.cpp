@@ -133,15 +133,10 @@ bool TypeGenStructJob::computeStruct()
     concreteType->generics.count  = realType->genericParameters.size();
     if (concreteType->generics.count)
     {
-        const uint32_t count = static_cast<uint32_t>(concreteType->generics.count);
-        uint32_t       storageArray;
-        const auto     addrArray = static_cast<ExportedTypeValue*>(TypeGen::genExportedSlice(baseContext,
-                                                                                             count * sizeof(ExportedTypeValue),
-                                                                                             exportedTypeInfoValue,
-                                                                                             storageSegment,
-                                                                                             storageOffset,
-                                                                                             &concreteType->generics.buffer,
-                                                                                             storageArray));
+        uint32_t   storageArray;
+        const auto count     = static_cast<uint32_t>(concreteType->generics.count);
+        const auto genSlice  = TypeGen::genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
+        const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
         for (uint32_t param = 0; param < concreteType->generics.count; param++)
         {
             SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], genFlags));
@@ -157,15 +152,10 @@ bool TypeGenStructJob::computeStruct()
         concreteType->fields.count = realType->fields.size();
         if (concreteType->fields.count)
         {
-            const uint32_t count = static_cast<uint32_t>(concreteType->fields.count);
-            uint32_t       storageArray;
-            const auto     addrArray = static_cast<ExportedTypeValue*>(TypeGen::genExportedSlice(baseContext,
-                                                                                                 count * sizeof(ExportedTypeValue),
-                                                                                                 exportedTypeInfoValue,
-                                                                                                 storageSegment,
-                                                                                                 storageOffset,
-                                                                                                 &concreteType->fields.buffer,
-                                                                                                 storageArray));
+            uint32_t   storageArray;
+            const auto count     = static_cast<uint32_t>(concreteType->fields.count);
+            const auto genSlice  = TypeGen::genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
+            const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
             for (uint32_t param = 0; param < concreteType->fields.count; param++)
             {
                 SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], genFlags));
@@ -177,34 +167,26 @@ bool TypeGenStructJob::computeStruct()
     // Methods
     concreteType->methods.buffer = nullptr;
     concreteType->methods.count  = 0;
-    if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
+    if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL) && attributes.has(ATTRIBUTE_EXPORT_TYPE_METHODS))
     {
-        if (attributes.has(ATTRIBUTE_EXPORT_TYPE_METHODS))
+        concreteType->methods.count = realType->methods.size();
+        if (concreteType->methods.count)
         {
-            concreteType->methods.count = realType->methods.size();
-            if (concreteType->methods.count)
+            uint32_t   storageArray;
+            const auto count     = static_cast<uint32_t>(concreteType->methods.count);
+            const auto genSlice  = TypeGen::genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
+            const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
+            for (uint32_t param = 0; param < concreteType->methods.count; param++)
             {
-                const uint32_t count = static_cast<uint32_t>(concreteType->methods.count);
-                uint32_t       storageArray;
-                const auto     addrArray = static_cast<ExportedTypeValue*>(TypeGen::genExportedSlice(baseContext,
-                                                                                                     count * sizeof(ExportedTypeValue),
-                                                                                                     exportedTypeInfoValue,
-                                                                                                     storageSegment,
-                                                                                                     storageOffset,
-                                                                                                     &concreteType->methods.buffer,
-                                                                                                     storageArray));
-                for (uint32_t param = 0; param < concreteType->methods.count; param++)
-                {
-                    SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], genFlags));
+                SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], genFlags));
 
-                    // 'value' will contain a pointer to the lambda.
-                    // Register it for later patches
-                    uint32_t     fieldOffset = storageArray + offsetof(ExportedTypeValue, value);
-                    AstFuncDecl* funcNode    = castAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
-                    patchMethods.push_back({funcNode, fieldOffset});
+                // 'value' will contain a pointer to the lambda.
+                // Register it for later patches
+                uint32_t     fieldOffset = storageArray + offsetof(ExportedTypeValue, value);
+                AstFuncDecl* funcNode    = castAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
+                patchMethods.push_back({funcNode, fieldOffset});
 
-                    storageArray += sizeof(ExportedTypeValue);
-                }
+                storageArray += sizeof(ExportedTypeValue);
             }
         }
     }
@@ -217,15 +199,10 @@ bool TypeGenStructJob::computeStruct()
         concreteType->interfaces.count = realType->interfaces.size();
         if (concreteType->interfaces.count)
         {
-            const uint32_t count = static_cast<uint32_t>(concreteType->interfaces.count);
-            uint32_t       storageArray;
-            const auto     addrArray = static_cast<ExportedTypeValue*>(TypeGen::genExportedSlice(baseContext,
-                                                                                                 count * sizeof(ExportedTypeValue),
-                                                                                                 exportedTypeInfoValue,
-                                                                                                 storageSegment,
-                                                                                                 storageOffset,
-                                                                                                 &concreteType->interfaces.buffer,
-                                                                                                 storageArray));
+            uint32_t   storageArray;
+            const auto count     = static_cast<uint32_t>(concreteType->interfaces.count);
+            const auto genSlice  = TypeGen::genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
+            const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
             for (uint32_t param = 0; param < concreteType->interfaces.count; param++)
             {
                 SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], genFlags));
