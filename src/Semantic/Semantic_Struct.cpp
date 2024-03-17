@@ -619,6 +619,21 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
     if (!parent)
         return true;
 
+    // The generated struct could need the user attributes of the original struct or function where it belongs.
+    // So we must be sure that the original parent has collect its attributes.
+    if (parent->ownerStructScope)
+    {
+        // :BecauseOfThat
+        const auto parentStructNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+        ScopedLock lk(parentStructNode->mutex);
+        if (!parentStructNode->resolvedSymbolOverload())
+        {
+            parentStructNode->dependentJobs.add(context->baseJob);
+            context->baseJob->setPending(JobWaitKind::WaitStructSymbol, parentStructNode->resolvedSymbolName(), parentStructNode, nullptr);
+            return true;
+        }
+    }
+
     if (!structNode->genericParameters)
     {
         // We convert the {...} expression to a structure. As the structure can contain generic parameters,

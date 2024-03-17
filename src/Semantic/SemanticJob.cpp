@@ -133,7 +133,8 @@ JobResult SemanticJob::execute()
                     context.result = ContextResult::Done;
                     if (!node->extSemantic()->semanticBeforeFct(&context))
                         return JobResult::ReleaseJob;
-                    SWAG_ASSERT(context.result != ContextResult::Pending);
+                    if (context.result == ContextResult::Pending)
+                        return JobResult::KeepJobAlive;
                     SWAG_ASSERT(context.result != ContextResult::NewChildren);
                 }
 
