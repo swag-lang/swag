@@ -906,6 +906,39 @@ bool Semantic::resolveGlobalVar(SemanticContext* context, AstVarDecl* node, Over
     return true;
 }
 
+bool Semantic::resolveConstantVar(SemanticContext* context, AstVarDecl* node, OverloadFlags overFlags, DataSegment*& storageSegment, uint32_t& storageOffset, bool isLocalConstant, bool isGeneric)
+{
+    const auto sourceFile = context->sourceFile;
+    const auto module     = sourceFile->module;
+
+    // Force a constant to have a constant type, to avoid modifying a type that is in fact stored in the data segment,
+    // and has an address
+    if (!node->hasAstFlag(AST_FROM_GENERIC))
+    {
+        if (overFlags.has(OVERLOAD_VAR_GLOBAL) || isLocalConstant)
+        {
+            if (node->typeInfo->isStruct() ||
+                node->typeInfo->isArray() ||
+                node->typeInfo->isClosure())
+            {
+                node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
+            }
+        }
+    }
+
+    node->addAstFlag(AST_NO_BYTECODE | AST_R_VALUE);
+    if (!isGeneric)
+    {
+        SWAG_CHECK(collectConstantAssignment(context, &storageSegment, &storageOffset, overFlags));
+        if (node->ownerFct)
+            node->ownerFct->localConstants.push_back(node);
+        else
+            module->addGlobalVar(node, GlobalVarKind::Constant);
+    }
+
+    return true;
+}
+
 bool Semantic::resolveVarDecl(SemanticContext* context)
 {
     auto node = castAst<AstVarDecl>(context->node);
@@ -1298,32 +1331,11 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
     uint32_t     storageOffset  = UINT32_MAX;
     DataSegment* storageSegment = nullptr;
+
     if (isCompilerConstant)
     {
-        // Force a constant to have a constant type, to avoid modifying a type that is in fact stored in the data segment,
-        // and has an address
-        if (!node->hasAstFlag(AST_FROM_GENERIC))
-        {
-            if (overFlags.has(OVERLOAD_VAR_GLOBAL) || isLocalConstant)
-            {
-                if (node->typeInfo->isStruct() ||
-                    node->typeInfo->isArray() ||
-                    node->typeInfo->isClosure())
-                {
-                    node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
-                }
-            }
-        }
-
-        node->addAstFlag(AST_NO_BYTECODE | AST_R_VALUE);
-        if (!isGeneric)
-        {
-            SWAG_CHECK(collectConstantAssignment(context, &storageSegment, &storageOffset, overFlags));
-            if (node->ownerFct)
-                node->ownerFct->localConstants.push_back(node);
-            else
-                module->addGlobalVar(node, GlobalVarKind::Constant);
-        }
+        SWAG_CHECK(resolveConstantVar(context, node, overFlags, storageSegment, storageOffset, isLocalConstant, isGeneric));
+        YIELD();
     }
     else if (overFlags.has(OVERLOAD_VAR_STRUCT))
     {
