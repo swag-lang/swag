@@ -250,6 +250,25 @@ bool Semantic::resolveFuncDeclAfterSI(SemanticContext* context)
     return true;
 }
 
+bool Semantic::preResolveFuncDecl(SemanticContext* context)
+{
+    const auto funcNode = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+
+    {
+        ScopedLock lkT(typeInfo->mutex);
+        SWAG_CHECK(collectAttributes(context, funcNode, &typeInfo->attributes));
+    }
+
+    {
+        ScopedLock lk(funcNode->mutex);
+        funcNode->addSemFlag(SEMFLAG_PRE_RESOLVE);
+        funcNode->dependentJobs.setRunning();
+    }
+
+    return true;
+}
+
 bool Semantic::resolveFuncDecl(SemanticContext* context)
 {
     const auto sourceFile = context->sourceFile;
@@ -542,12 +561,10 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    // Collect function attributes
+    // Treat function attributes
     const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     ScopedLock lkT(typeInfo->mutex);
-
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChildren);
-    SWAG_CHECK(collectAttributes(context, funcNode, &typeInfo->attributes));
 
     // Check attributes
     if (funcNode->hasAttribute(ATTRIBUTE_CONSTEXPR))

@@ -243,6 +243,7 @@ namespace Semantic
     bool preResolveIdentifierRef(SemanticContext* context);
     bool preResolveStructContent(SemanticContext* context);
     bool preResolveSubstBreakContinue(SemanticContext* context);
+    bool preResolveFuncDecl(SemanticContext* context);
 
     bool resolveAffect(SemanticContext* context);
     bool resolveAfterKnownType(SemanticContext* context);

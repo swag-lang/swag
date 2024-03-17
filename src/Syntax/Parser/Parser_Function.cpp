@@ -1,14 +1,14 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Wmf/Module.h"
-#include "Syntax/Parser/Parser_Push.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Parser/Parser_Push.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/Module.h"
 
 bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result)
 {
@@ -600,11 +600,13 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
     ParserPushTryCatchAssume sct(this, nullptr);
-    auto                     funcNode = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, parent);
-    *result                           = funcNode;
-    funcNode->semanticFct             = Semantic::resolveFuncDecl;
+
+    auto funcNode         = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, parent);
+    *result               = funcNode;
+    funcNode->semanticFct = Semantic::resolveFuncDecl;
     funcNode->allocateExtension(ExtensionKind::Semantic);
-    funcNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgFuncDecl;
+    funcNode->extSemantic()->semanticBeforeFct = Semantic::preResolveFuncDecl;
+    funcNode->extSemantic()->semanticAfterFct  = Semantic::sendCompilerMsgFuncDecl;
 
     bool isMethod = tokenParse.is(TokenId::KwdMethod);
     if (isMethod)

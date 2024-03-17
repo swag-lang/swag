@@ -516,6 +516,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
 
     // :BecauseOfThat
     ScopedLock lk(node->mutex);
+    node->addSemFlag(SEMFLAG_PRE_RESOLVE);
     node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
     SWAG_CHECK(node->resolvedSymbolOverload());
     node->dependentJobs.setRunning();
@@ -623,23 +624,34 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
     // So we must be sure that the original parent has collect its attributes.
     if (parent->ownerStructScope)
     {
-        // :BecauseOfThat
-        const auto parentStructNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-        ScopedLock lk(parentStructNode->mutex);
-        if (!parentStructNode->resolvedSymbolOverload())
+        const auto parentStruct = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+        ScopedLock lk(parentStruct->mutex);
+        if (!parentStruct->hasSemFlag(SEMFLAG_PRE_RESOLVE))
         {
-            parentStructNode->dependentJobs.add(context->baseJob);
-            context->baseJob->setPending(JobWaitKind::WaitStructSymbol, parentStructNode->resolvedSymbolName(), parentStructNode, nullptr);
+            parentStruct->dependentJobs.add(context->baseJob);
+            context->baseJob->setPending(JobWaitKind::WaitPreResolve, parentStruct->resolvedSymbolName(), parentStruct, nullptr);
             return true;
         }
     }
 
+    if (parent->ownerFct)
+    {
+        const auto parentFunc = castAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
+        ScopedLock lk(parentFunc->mutex);
+        if (!parentFunc->hasSemFlag(SEMFLAG_PRE_RESOLVE))
+        {
+            parentFunc->dependentJobs.add(context->baseJob);
+            context->baseJob->setPending(JobWaitKind::WaitPreResolve, parentFunc->resolvedSymbolName(), parentFunc, nullptr);
+            return true;
+        }
+    }
+
+    // We convert the {...} expression to a structure. As the structure can contain generic parameters,
+    // we need to copy them. But from the function or the structure ?
+    // For now, we give the priority to the generic parameters from the function, if there are any
+    // But this will not work in all cases
     if (!structNode->genericParameters)
     {
-        // We convert the {...} expression to a structure. As the structure can contain generic parameters,
-        // we need to copy them. But from the function or the structure ?
-        // For now, we give the priority to the generic parameters from the function, if there are any
-        // But this will not work in all cases
         if (parent->ownerFct)
         {
             const auto parentFunc = castAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
@@ -738,6 +750,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
 
     // :BecauseOfThat
     ScopedLock lk(node->mutex);
+    node->addSemFlag(SEMFLAG_PRE_RESOLVE);
     node->setResolvedSymbol(toAdd.symbolName, node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
     SWAG_CHECK(node->resolvedSymbolOverload());
     node->dependentJobs.setRunning();
@@ -1233,7 +1246,15 @@ bool Semantic::resolveStruct(SemanticContext* context)
     toAdd.node     = node;
     toAdd.typeInfo = node->typeInfo;
     toAdd.kind     = SymbolKind::Struct;
-    node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
+
+    {
+        // :BecauseOfThat
+        ScopedLock lk(node->mutex);
+        node->addSemFlag(SEMFLAG_PRE_RESOLVE);
+        node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
+        SWAG_CHECK(node->resolvedSymbolOverload());
+        node->dependentJobs.setRunning();
+    }
 
     // We are parsing the swag module
     if (sourceFile->hasFlag(FILE_BOOTSTRAP))
