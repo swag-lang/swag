@@ -510,17 +510,15 @@ bool Semantic::resolveInterface(SemanticContext* context)
     toAdd.typeInfo = node->typeInfo;
     toAdd.kind     = SymbolKind::Interface;
 
-    {
-        // :BecauseOfThat
-        ScopedLock lk(node->mutex);
-        node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
-        SWAG_CHECK(node->resolvedSymbolOverload());
-        node->dependentJobs.setRunning();
-    }
-
     // We are parsing the swag module
     if (sourceFile->hasFlag(FILE_BOOTSTRAP))
         g_Workspace->swagScope.registerType(node->typeInfo);
+
+    // :BecauseOfThat
+    ScopedLock lk(node->mutex);
+    node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
+    SWAG_CHECK(node->resolvedSymbolOverload());
+    node->dependentJobs.setRunning();
 
     return true;
 }
@@ -620,37 +618,38 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
     const auto parent     = structNode->originalParent;
     if (!parent)
         return true;
-    if (structNode->genericParameters)
-        return true;
 
-    // We convert the {...} expression to a structure. As the structure can contain generic parameters,
-    // we need to copy them. But from the function or the structure ?
-    // For now, we give the priority to the generic parameters from the function, if there are any
-    // But this will not work in all cases
-    if (parent->ownerFct)
+    if (!structNode->genericParameters)
     {
-        const auto parentFunc = castAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
-        if (parentFunc->genericParameters)
-            structNode->genericParameters = Ast::clone(parentFunc->genericParameters, nullptr, AST_GENERATED_GENERIC_PARAM);
-    }
+        // We convert the {...} expression to a structure. As the structure can contain generic parameters,
+        // we need to copy them. But from the function or the structure ?
+        // For now, we give the priority to the generic parameters from the function, if there are any
+        // But this will not work in all cases
+        if (parent->ownerFct)
+        {
+            const auto parentFunc = castAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
+            if (parentFunc->genericParameters)
+                structNode->genericParameters = Ast::clone(parentFunc->genericParameters, nullptr, AST_GENERATED_GENERIC_PARAM);
+        }
 
-    if (parent->ownerStructScope && !structNode->genericParameters)
-    {
-        const auto parentStruct = castAst<AstStruct>(parent->ownerStructScope->owner);
-        if (parentStruct->genericParameters)
-            structNode->genericParameters = Ast::clone(parentStruct->genericParameters, nullptr, AST_GENERATED_GENERIC_PARAM);
-    }
+        if (parent->ownerStructScope)
+        {
+            const auto parentStruct = castAst<AstStruct>(parent->ownerStructScope->owner);
+            if (parentStruct->genericParameters)
+                structNode->genericParameters = Ast::clone(parentStruct->genericParameters, nullptr, AST_GENERATED_GENERIC_PARAM);
+        }
 
-    if (structNode->genericParameters)
-    {
-        Ast::addChildFront(structNode, structNode->genericParameters);
+        if (structNode->genericParameters)
+        {
+            Ast::addChildFront(structNode, structNode->genericParameters);
 
-        Ast::visit(structNode->genericParameters, [&](AstNode* n) {
-            n->inheritOwners(structNode);
-            n->ownerStructScope = structNode->scope;
-            n->ownerScope       = structNode->scope;
-            n->addAstFlag(AST_IS_GENERIC);
-        });
+            Ast::visit(structNode->genericParameters, [&](AstNode* n) {
+                n->inheritOwners(structNode);
+                n->ownerStructScope = structNode->scope;
+                n->ownerScope       = structNode->scope;
+                n->addAstFlag(AST_IS_GENERIC);
+            });
+        }
     }
 
     return true;
@@ -722,8 +721,11 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     toAdd.kind     = symbolKind;
     toAdd.flags    = overFlags | OVERLOAD_INCOMPLETE;
 
+    // :BecauseOfThat
+    ScopedLock lk(node->mutex);
     node->setResolvedSymbol(toAdd.symbolName, node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
     SWAG_CHECK(node->resolvedSymbolOverload());
+    node->dependentJobs.setRunning();
 
     return true;
 }
@@ -1216,14 +1218,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     toAdd.node     = node;
     toAdd.typeInfo = node->typeInfo;
     toAdd.kind     = SymbolKind::Struct;
-
-    {
-        // :BecauseOfThat
-        ScopedLock lk(node->mutex);
-        node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
-        SWAG_CHECK(node->resolvedSymbolOverload());
-        node->dependentJobs.setRunning();
-    }
+    node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
 
     // We are parsing the swag module
     if (sourceFile->hasFlag(FILE_BOOTSTRAP))
