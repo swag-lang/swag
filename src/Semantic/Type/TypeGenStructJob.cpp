@@ -134,8 +134,8 @@ bool TypeGenStructJob::computeStruct()
     if (concreteType->generics.count)
     {
         uint32_t   storageArray;
-        const auto count     = static_cast<uint32_t>(concreteType->generics.count);
-        const auto genSlice  = TypeGen::genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
+        const auto count     = static_cast<uint32_t>(concreteType->generics.count * sizeof(ExportedTypeValue));
+        const auto genSlice  = TypeGen::genExportedSlice(baseContext, count, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
         const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
         for (uint32_t param = 0; param < concreteType->generics.count; param++)
         {
@@ -153,8 +153,8 @@ bool TypeGenStructJob::computeStruct()
         if (concreteType->fields.count)
         {
             uint32_t   storageArray;
-            const auto count     = static_cast<uint32_t>(concreteType->fields.count);
-            const auto genSlice  = TypeGen::genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
+            const auto count     = static_cast<uint32_t>(concreteType->fields.count * sizeof(ExportedTypeValue));
+            const auto genSlice  = TypeGen::genExportedSlice(baseContext, count, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
             const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
             for (uint32_t param = 0; param < concreteType->fields.count; param++)
             {
@@ -173,8 +173,8 @@ bool TypeGenStructJob::computeStruct()
         if (concreteType->methods.count)
         {
             uint32_t   storageArray;
-            const auto count     = static_cast<uint32_t>(concreteType->methods.count);
-            const auto genSlice  = TypeGen::genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
+            const auto count     = static_cast<uint32_t>(concreteType->methods.count * sizeof(ExportedTypeValue));
+            const auto genSlice  = TypeGen::genExportedSlice(baseContext, count, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
             const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
             for (uint32_t param = 0; param < concreteType->methods.count; param++)
             {
@@ -200,8 +200,8 @@ bool TypeGenStructJob::computeStruct()
         if (concreteType->interfaces.count)
         {
             uint32_t   storageArray;
-            const auto count     = static_cast<uint32_t>(concreteType->interfaces.count);
-            const auto genSlice  = TypeGen::genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
+            const auto count     = static_cast<uint32_t>(concreteType->interfaces.count * sizeof(ExportedTypeValue));
+            const auto genSlice  = TypeGen::genExportedSlice(baseContext, count, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
             const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
             for (uint32_t param = 0; param < concreteType->interfaces.count; param++)
             {
