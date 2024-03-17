@@ -632,6 +632,42 @@ bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDec
     return true;
 }
 
+bool Semantic::evaluateTypeConstraint(SemanticContext* context, const AstVarDecl* node)
+{
+    SWAG_ASSERT(node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_TYPE));
+
+    const auto typeRet = TypeManager::concreteType(node->typeConstraint->typeInfo, CONCRETE_ALL | CONCRETE_FUNC);
+    if (!typeRet->isBool())
+    {
+        const Diagnostic err{node->typeConstraint, formErr(Err0398, typeRet->getDisplayNameC())};
+        return context->report(err);
+    }
+
+    SWAG_CHECK(Semantic::checkIsConstExpr(context, node->typeConstraint, toErr(Err0044)));
+    SWAG_CHECK(Semantic::evaluateConstExpression(context, node->typeConstraint));
+    YIELD();
+    SWAG_ASSERT(node->typeConstraint->hasFlagComputedValue());
+    if (!node->typeConstraint->computedValue()->reg.b)
+    {
+        Diagnostic err(node->typeConstraint, formErr(Err0088, node->typeInfo->getDisplayNameC()));
+        if (node->genTypeComesFrom && node->typeConstraint->is(AstNodeKind::IdentifierRef))
+        {
+            err.addNote(node->genTypeComesFrom, formNte(Nte0139, node->typeInfo->getDisplayNameC(), node->typeConstraint->token.c_str()));
+            return context->report(err);
+        }
+
+        if (node->genTypeComesFrom)
+        {
+            err.addNote(node->genTypeComesFrom, formNte(Nte0140, node->typeInfo->getDisplayNameC()));
+            return context->report(err);
+        }
+
+        return context->report(err);
+    }
+
+    return true;
+}
+
 bool Semantic::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
@@ -763,36 +799,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     // Evaluate type constraint
     if (node->hasAstFlag(AST_FROM_GENERIC) && node->typeConstraint)
     {
-        SWAG_ASSERT(node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_TYPE));
-
-        auto typeRet = TypeManager::concreteType(node->typeConstraint->typeInfo, CONCRETE_ALL | CONCRETE_FUNC);
-        if (!typeRet->isBool())
-        {
-            Diagnostic err{node->typeConstraint, formErr(Err0398, typeRet->getDisplayNameC())};
-            return context->report(err);
-        }
-
-        SWAG_CHECK(checkIsConstExpr(context, node->typeConstraint, toErr(Err0044)));
-        SWAG_CHECK(evaluateConstExpression(context, node->typeConstraint));
+        SWAG_CHECK(evaluateTypeConstraint(context, node));
         YIELD();
-        SWAG_ASSERT(node->typeConstraint->hasFlagComputedValue());
-        if (!node->typeConstraint->computedValue()->reg.b)
-        {
-            Diagnostic err(node->typeConstraint, formErr(Err0088, node->typeInfo->getDisplayNameC()));
-            if (node->genTypeComesFrom && node->typeConstraint->is(AstNodeKind::IdentifierRef))
-            {
-                err.addNote(node->genTypeComesFrom, formNte(Nte0139, node->typeInfo->getDisplayNameC(), node->typeConstraint->token.c_str()));
-                return context->report(err);
-            }
-
-            if (node->genTypeComesFrom)
-            {
-                err.addNote(node->genTypeComesFrom, formNte(Nte0140, node->typeInfo->getDisplayNameC()));
-                return context->report(err);
-            }
-
-            return context->report(err);
-        }
     }
 
     // Value
