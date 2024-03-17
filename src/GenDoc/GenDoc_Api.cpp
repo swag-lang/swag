@@ -139,8 +139,8 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
     for (auto& val : symbolsMap | std::views::values)
         symbols.append(val);
     std::ranges::sort(symbols, [](const AstNode* a, const AstNode* b) {
-        const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
-        const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+        const auto a0 = a->typeInfo->computeWhateverName(ComputeNameKind::ScopedName);
+        const auto b0 = b->typeInfo->computeWhateverName(ComputeNameKind::ScopedName);
         return strcmp(a0, b0) < 0;
     });
 
@@ -970,8 +970,8 @@ bool GenDoc::generateApi()
         }
 
         std::ranges::sort(oneRef.nodes, [](const AstNode* a, const AstNode* b) {
-            const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
-            const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+            const auto a0 = a->typeInfo->computeWhateverName(ComputeNameKind::ScopedName);
+            const auto b0 = b->typeInfo->computeWhateverName(ComputeNameKind::ScopedName);
             return strcmp(a0, b0) < 0;
         });
         allNodes.push_back(oneRef);

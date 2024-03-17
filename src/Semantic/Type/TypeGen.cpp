@@ -17,7 +17,6 @@ bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataS
     return genExportedTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, genFlags, ptrTypeInfo);
 }
 
-#pragma optimize("", off)
 bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
                                         ExportedTypeInfo** result,
                                         TypeInfo*          typeInfo,

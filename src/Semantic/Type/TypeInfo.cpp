@@ -15,7 +15,7 @@ void TypeInfo::clearName()
 void TypeInfo::forceComputeName()
 {
     clearName();
-    computeWhateverName(COMPUTE_NAME);
+    computeWhateverName(ComputeNameKind::Name);
 }
 
 void TypeInfo::computeScopedName(Utf8& newName) const
@@ -31,7 +31,7 @@ void TypeInfo::computeScopedName(Utf8& newName) const
 Utf8 TypeInfo::getName()
 {
     ScopedLock lk(mutex);
-    computeWhateverNameNoLock(COMPUTE_NAME);
+    computeWhateverNameNoLock(ComputeNameKind::Name);
     SWAG_ASSERT(!name.empty());
     return name;
 }
@@ -47,7 +47,7 @@ Utf8 TypeInfo::getTypeName(bool forceNoScope)
 Utf8 TypeInfo::getDisplayName()
 {
     Utf8 str;
-    computeWhateverName(str, COMPUTE_DISPLAY_NAME);
+    computeWhateverName(str, ComputeNameKind::DisplayName);
     return str.empty() ? name : str;
 }
 
@@ -57,48 +57,48 @@ const char* TypeInfo::getDisplayNameC()
     return _strdup(res.c_str()); // Leak and slow, but only for messages
 }
 
-const Utf8& TypeInfo::computeWhateverName(uint32_t nameType)
+const Utf8& TypeInfo::computeWhateverName(ComputeNameKind nameKind)
 {
     ScopedLock lk(mutex);
-    return computeWhateverNameNoLock(nameType);
+    return computeWhateverNameNoLock(nameKind);
 }
 
-const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
+const Utf8& TypeInfo::computeWhateverNameNoLock(ComputeNameKind nameKind)
 {
     Utf8 str;
-    switch (nameType)
+    switch (nameKind)
     {
-        case COMPUTE_NAME:
+        case ComputeNameKind::Name:
             if (name.empty())
             {
-                computeWhateverName(str, nameType);
+                computeWhateverName(str, nameKind);
                 SWAG_RACE_CONDITION_WRITE(raceName);
                 name = std::move(str);
             }
             return name;
 
-        case COMPUTE_DISPLAY_NAME:
+        case ComputeNameKind::DisplayName:
             if (displayName.empty())
             {
-                computeWhateverName(str, nameType);
+                computeWhateverName(str, nameKind);
                 SWAG_RACE_CONDITION_WRITE(raceName);
                 displayName = std::move(str);
             }
             return displayName;
 
-        case COMPUTE_SCOPED_NAME:
+        case ComputeNameKind::ScopedName:
             if (scopedName.empty())
             {
-                computeWhateverName(str, nameType);
+                computeWhateverName(str, nameKind);
                 SWAG_RACE_CONDITION_WRITE(raceName);
                 scopedName = std::move(str);
             }
             return scopedName;
 
-        case COMPUTE_SCOPED_NAME_EXPORT:
+        case ComputeNameKind::ScopedNameExport:
             if (scopedNameExport.empty())
             {
-                computeWhateverName(str, nameType);
+                computeWhateverName(str, nameKind);
                 SWAG_RACE_CONDITION_WRITE(raceName);
                 scopedNameExport = std::move(str);
             }
@@ -109,17 +109,17 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
     return name;
 }
 
-void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameType)
+void TypeInfo::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
-    switch (nameType)
+    switch (nameKind)
     {
-        case COMPUTE_NAME:
-        case COMPUTE_DISPLAY_NAME:
+        case ComputeNameKind::Name:
+        case ComputeNameKind::DisplayName:
             resName = name;
             break;
 
-        case COMPUTE_SCOPED_NAME:
-        case COMPUTE_SCOPED_NAME_EXPORT:
+        case ComputeNameKind::ScopedName:
+        case ComputeNameKind::ScopedNameExport:
             computeScopedName(resName);
             resName += name;
             break;

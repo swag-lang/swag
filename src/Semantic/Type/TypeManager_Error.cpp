@@ -188,8 +188,8 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     else if (toType->isTuple() && fromType->isTuple())
     {
         Utf8 toName, fromName;
-        toType->computeWhateverName(toName, COMPUTE_DISPLAY_NAME);
-        fromType->computeWhateverName(fromName, COMPUTE_DISPLAY_NAME);
+        toType->computeWhateverName(toName, ComputeNameKind::DisplayName);
+        fromType->computeWhateverName(fromName, ComputeNameKind::DisplayName);
         remarks.push_back(form("source type is %s", fromName.c_str()));
         remarks.push_back(form("requested type is %s", toName.c_str()));
 

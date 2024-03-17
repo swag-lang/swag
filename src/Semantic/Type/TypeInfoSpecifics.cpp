@@ -71,17 +71,17 @@ TypeInfo* TypeInfoAlias::clone()
     return newType;
 }
 
-void TypeInfoAlias::computeWhateverName(Utf8& resName, uint32_t nameType)
+void TypeInfoAlias::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
-    if (nameType == COMPUTE_DISPLAY_NAME && flags.has(TYPEINFO_CONST_ALIAS))
+    if (nameKind == ComputeNameKind::DisplayName && flags.has(TYPEINFO_CONST_ALIAS))
     {
         if (isConst())
             resName += "const ";
-        resName += rawType->computeWhateverName(nameType);
+        resName += rawType->computeWhateverName(nameKind);
     }
     else
     {
-        TypeInfo::computeWhateverName(resName, nameType);
+        TypeInfo::computeWhateverName(resName, nameKind);
     }
 }
 
@@ -122,11 +122,11 @@ Utf8 TypeInfoPointer::getDisplayName()
         return pointedType->getDisplayName();
 
     Utf8 str;
-    computeWhateverName(str, COMPUTE_DISPLAY_NAME);
+    computeWhateverName(str, ComputeNameKind::DisplayName);
     return str;
 }
 
-void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
+void TypeInfoPointer::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
     if (hasFlag(TYPEINFO_C_STRING))
     {
@@ -140,7 +140,7 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
         return;
     }
 
-    if (!hasFlag(TYPEINFO_POINTER_AUTO_REF) || (nameType != COMPUTE_DISPLAY_NAME && nameType != COMPUTE_SCOPED_NAME_EXPORT))
+    if (!hasFlag(TYPEINFO_POINTER_AUTO_REF) || (nameKind != ComputeNameKind::DisplayName && nameKind != ComputeNameKind::ScopedNameExport))
     {
         if (isConst())
             resName += "const ";
@@ -156,7 +156,7 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
             resName += "*";
     }
 
-    resName += pointedType->computeWhateverName(nameType);
+    resName += pointedType->computeWhateverName(nameKind);
 }
 
 bool TypeInfoPointer::isSame(const TypeInfo* to, CastFlags castFlags) const
@@ -235,7 +235,7 @@ bool TypeInfoArray::isSame(const TypeInfo* to, CastFlags castFlags) const
     return true;
 }
 
-void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
+void TypeInfoArray::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
     if (flags.has(TYPEINFO_CONST))
         resName += "const ";
@@ -266,15 +266,15 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
             resName += " ";
     }
 
-    resName += finalType->computeWhateverName(nameType);
+    resName += finalType->computeWhateverName(nameKind);
 }
 
-void TypeInfoSlice::computeWhateverName(Utf8& resName, uint32_t nameType)
+void TypeInfoSlice::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
     if (isConst())
         resName += "const ";
     resName += "[..] ";
-    resName += pointedType->computeWhateverName(nameType);
+    resName += pointedType->computeWhateverName(nameKind);
 }
 
 TypeInfo* TypeInfoSlice::clone()
@@ -295,7 +295,7 @@ bool TypeInfoSlice::isSame(const TypeInfo* to, CastFlags castFlags) const
     return pointedType->isSame(castedFrom->pointedType, castFlags);
 }
 
-void TypeInfoList::computeWhateverName(Utf8& resName, uint32_t nameType)
+void TypeInfoList::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
     if (kind == TypeInfoKind::TypeListArray)
     {
@@ -304,13 +304,13 @@ void TypeInfoList::computeWhateverName(Utf8& resName, uint32_t nameType)
         resName += form("[%u] ", subTypes.size());
         if (!subTypes.empty())
         {
-            subTypes[0]->typeInfo->computeWhateverName(nameType);
+            subTypes[0]->typeInfo->computeWhateverName(nameKind);
             resName += subTypes[0]->typeInfo->name;
         }
     }
     else
     {
-        resName = TypeInfoStruct::computeTupleDisplayName(subTypes, nameType);
+        resName = TypeInfoStruct::computeTupleDisplayName(subTypes, nameKind);
     }
 }
 
@@ -374,7 +374,7 @@ TypeInfo* TypeInfoVariadic::clone()
     return newType;
 }
 
-void TypeInfoVariadic::computeWhateverName(Utf8& resName, uint32_t nameType)
+void TypeInfoVariadic::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
     if (kind == TypeInfoKind::CVariadic)
     {
@@ -383,7 +383,7 @@ void TypeInfoVariadic::computeWhateverName(Utf8& resName, uint32_t nameType)
     }
 
     if (rawType)
-        resName += rawType->computeWhateverName(nameType);
+        resName += rawType->computeWhateverName(nameKind);
     resName += "...";
 }
 
@@ -399,6 +399,11 @@ bool TypeInfoVariadic::isSame(const TypeInfo* to, CastFlags castFlags) const
     if (rawType == other->rawType)
         return true;
     return rawType->isSame(other->rawType, castFlags);
+}
+
+void TypeInfoGeneric::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
+{
+    TypeInfo::computeWhateverName(resName, nameKind);
 }
 
 TypeInfo* TypeInfoGeneric::clone()
@@ -425,7 +430,7 @@ bool TypeInfoGeneric::isSame(const TypeInfo* to, CastFlags castFlags) const
 Utf8 TypeInfoEnum::getDisplayName()
 {
     Utf8 str;
-    computeWhateverName(str, COMPUTE_DISPLAY_NAME);
+    computeWhateverName(str, ComputeNameKind::DisplayName);
     return form("enum %s", str.c_str());
 }
 
@@ -543,12 +548,12 @@ TypeInfo* TypeInfoFuncAttr::clone()
 
 namespace
 {
-    void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericParameters, Utf8& resName, uint32_t nameType)
+    void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericParameters, Utf8& resName, ComputeNameKind nameKind)
     {
         if (genericParameters.empty())
             return;
 
-        if (nameType != COMPUTE_DISPLAY_NAME || genericParameters.size() > 1)
+        if (nameKind != ComputeNameKind::DisplayName || genericParameters.size() > 1)
             resName += "'(";
         else
             resName += "'";
@@ -573,22 +578,22 @@ namespace
             else if (genParam->flags.has(TYPEINFOPARAM_GENERIC_CONSTANT))
                 resName += genParam->name;
             else if (genParam->typeInfo)
-                resName += genParam->typeInfo->computeWhateverName(nameType);
+                resName += genParam->typeInfo->computeWhateverName(nameKind);
             else
                 resName += genParam->name;
         }
 
-        if (nameType != COMPUTE_DISPLAY_NAME || genericParameters.size() > 1)
+        if (nameKind != ComputeNameKind::DisplayName || genericParameters.size() > 1)
             resName += ")";
     }
 }
 
-void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
+void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
     bool addedName = false;
     if (kind != TypeInfoKind::LambdaClosure)
     {
-        if (nameType == COMPUTE_SCOPED_NAME || nameType == COMPUTE_SCOPED_NAME_EXPORT)
+        if (nameKind == ComputeNameKind::ScopedName || nameKind == ComputeNameKind::ScopedNameExport)
         {
             computeScopedName(resName);
             SWAG_ASSERT(declNode);
@@ -607,7 +612,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
             resName += "func";
     }
 
-    computeNameGenericParameters(genericParameters, resName, nameType);
+    computeNameGenericParameters(genericParameters, resName, nameKind);
 
     // Parameters
     resName += "(";
@@ -621,7 +626,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
         if (!first)
             resName += ", ";
         first = false;
-        resName += parameters[i]->typeInfo->computeWhateverName(nameType);
+        resName += parameters[i]->typeInfo->computeWhateverName(nameKind);
     }
 
     resName += ")";
@@ -630,7 +635,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
     if (returnType && !returnType->isVoid())
     {
         resName += "->";
-        resName += returnType->computeWhateverName(nameType);
+        resName += returnType->computeWhateverName(nameKind);
     }
 
     if (hasFlag(TYPEINFO_CAN_THROW))
@@ -1195,13 +1200,13 @@ Utf8 TypeInfoStruct::getDisplayName()
         return form("union %s", name.c_str());
 
     Utf8 str;
-    computeWhateverName(str, COMPUTE_DISPLAY_NAME);
+    computeWhateverName(str, ComputeNameKind::DisplayName);
     if (isTuple())
         return form("%s", str.c_str());
     return form("struct %s", str.c_str());
 }
 
-Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, uint32_t nameType)
+Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, ComputeNameKind nameKind)
 {
     Utf8 resName = "{";
     bool first   = true;
@@ -1211,7 +1216,7 @@ Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>&
             resName += ",";
         first = false;
 
-        if (nameType == COMPUTE_DISPLAY_NAME)
+        if (nameKind == ComputeNameKind::DisplayName)
         {
             if (resName.length() > 20)
             {
@@ -1226,23 +1231,23 @@ Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>&
             resName += ":";
         }
 
-        resName += param->typeInfo->computeWhateverName(nameType);
+        resName += param->typeInfo->computeWhateverName(nameKind);
     }
 
     resName += "}";
     return resName;
 }
 
-void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
+void TypeInfoStruct::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
-    if (isTuple() && nameType != COMPUTE_NAME)
+    if (isTuple() && nameKind != ComputeNameKind::Name)
     {
-        resName = computeTupleDisplayName(fields, nameType);
+        resName = computeTupleDisplayName(fields, nameKind);
         return;
     }
 
-    if (nameType != COMPUTE_NAME && nameType != COMPUTE_DISPLAY_NAME)
+    if (nameKind != ComputeNameKind::Name && nameKind != ComputeNameKind::DisplayName)
         computeScopedName(resName);
     resName += structName;
-    computeNameGenericParameters(genericParameters, resName, nameType);
+    computeNameGenericParameters(genericParameters, resName, nameKind);
 }

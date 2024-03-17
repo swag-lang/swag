@@ -26,11 +26,6 @@ struct TypeInfoStruct;
 using TypeInfoFlags  = Flags<uint64_t>;
 using TypeParamFlags = Flags<uint32_t>;
 
-constexpr int COMPUTE_NAME               = 0;
-constexpr int COMPUTE_SCOPED_NAME        = 1;
-constexpr int COMPUTE_SCOPED_NAME_EXPORT = 2;
-constexpr int COMPUTE_DISPLAY_NAME       = 3;
-
 constexpr TypeInfoFlags TYPEINFO_SELF                     = 0x00000000'00000001;
 constexpr TypeInfoFlags TYPEINFO_UNTYPED_BIN_HEX          = 0x00000000'00000002;
 constexpr TypeInfoFlags TYPEINFO_INTEGER                  = 0x00000000'00000004;
@@ -92,6 +87,14 @@ constexpr TypeParamFlags TYPEINFOPARAM_AUTO_NAME        = 0x00000004;
 constexpr TypeParamFlags TYPEINFOPARAM_GENERIC_TYPE     = 0x00000008;
 constexpr TypeParamFlags TYPEINFOPARAM_GENERIC_CONSTANT = 0x00000010;
 constexpr TypeParamFlags TYPEINFOPARAM_FROM_GENERIC     = 0x00000020;
+
+enum class ComputeNameKind
+{
+    Name,
+    ScopedName,
+    ScopedNameExport,
+    DisplayName,
+};
 
 struct TypeInfo
 {
@@ -185,15 +188,15 @@ struct TypeInfo
     virtual TypeInfo* clone() = 0;
     virtual uint32_t  numRegisters() const;
     virtual Utf8      getDisplayName();
-    virtual void      computeWhateverName(Utf8& resName, uint32_t nameType);
+    virtual void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind);
 
     const char* getDisplayNameC();
     void        copyFrom(const TypeInfo* from);
     void        setConst();
 
-    void computeName() { computeWhateverName(COMPUTE_NAME); }
-    void computeScopedName() { computeWhateverName(COMPUTE_SCOPED_NAME); }
-    void computeScopedNameExport() { computeWhateverName(COMPUTE_SCOPED_NAME_EXPORT); }
+    void computeName() { computeWhateverName(ComputeNameKind::Name); }
+    void computeScopedName() { computeWhateverName(ComputeNameKind::ScopedName); }
+    void computeScopedNameExport() { computeWhateverName(ComputeNameKind::ScopedNameExport); }
 
     void        removeGenericFlag();
     void        clearName();
@@ -201,8 +204,8 @@ struct TypeInfo
     void        computeScopedName(Utf8& newName) const;
     Utf8        getName();
     Utf8        getTypeName(bool forceNoScope);
-    const Utf8& computeWhateverName(uint32_t nameType);
-    const Utf8& computeWhateverNameNoLock(uint32_t nameType);
+    const Utf8& computeWhateverName(ComputeNameKind nameKind);
+    const Utf8& computeWhateverNameNoLock(ComputeNameKind nameKind);
 
     mutable SharedMutex mutex;
 
@@ -310,13 +313,9 @@ struct TypeInfoFuncAttr final : TypeInfo
     {
     }
 
-    uint32_t numRegisters() const override
-    {
-        return 1;
-    }
-
+    uint32_t  numRegisters() const override { return 1; }
     TypeInfo* clone() override;
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 
     bool            isSame(const TypeInfoFuncAttr* other, CastFlags castFlags, BadSignatureInfos& bi) const;
@@ -353,7 +352,7 @@ struct TypeInfoPointer final : TypeInfo
     {
     }
 
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
     Utf8      getDisplayName() override;
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
@@ -368,12 +367,8 @@ struct TypeInfoArray final : TypeInfo
     {
     }
 
-    uint32_t numRegisters() const override
-    {
-        return 1;
-    }
-
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    uint32_t  numRegisters() const override { return 1; }
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
 
@@ -393,7 +388,7 @@ struct TypeInfoSlice final : TypeInfo
         sizeOf = 2 * sizeof(void*);
     }
 
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
 
@@ -404,14 +399,10 @@ struct TypeInfoList final : TypeInfo
 {
     TypeInfoList() = default;
 
-    uint32_t numRegisters() const override
-    {
-        return 1;
-    }
-
+    uint32_t  numRegisters() const override { return 1; }
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
 
     VectorNative<TypeInfoParam*> subTypes;
 
@@ -427,7 +418,7 @@ struct TypeInfoVariadic final : TypeInfo
 
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
 
     TypeInfo* rawType = nullptr;
 };
@@ -442,6 +433,7 @@ struct TypeInfoGeneric final : TypeInfo
 
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
 
     TypeInfo* rawType = nullptr;
 };
@@ -463,12 +455,12 @@ struct TypeInfoStruct final : TypeInfo
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
     Utf8      getDisplayName() override;
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
 
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName) const;
     TypeInfoParam* hasInterface(const TypeInfoStruct* itf) const;
     TypeInfoParam* hasInterfaceNoLock(const TypeInfoStruct* itf) const;
-    static Utf8    computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, uint32_t nameType);
+    static Utf8    computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, ComputeNameKind nameKind);
     bool           canRawCopy() const;
     bool           isPlainOldData() const;
     void           flattenUsingFields();
@@ -517,7 +509,7 @@ struct TypeInfoAlias final : TypeInfo
     {
     }
 
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
 

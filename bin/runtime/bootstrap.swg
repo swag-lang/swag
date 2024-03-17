@@ -542,7 +542,7 @@ namespace Swag
         pointedType:    const *TypeInfo         // Type of the value
         value:          const *void             // Pointer to the constant value
         attributes:     const [..] Attribute    // Associated attributes
-        offset:         u32                     // Offset, in bytes.
+        offset:         u32                     // Offset, in bytes
         crc32:          u32                     // Unique crc32
     }
 

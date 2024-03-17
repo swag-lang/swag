@@ -765,7 +765,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     typeInfo->name.clear();
     typeInfo->displayName.clear();
-    typeInfo->computeWhateverNameNoLock(COMPUTE_NAME);
+    typeInfo->computeWhateverNameNoLock(ComputeNameKind::Name);
 
     // Special functions registration
     if (funcNode->parameters && funcNode->parameters->childCount() == 1)
