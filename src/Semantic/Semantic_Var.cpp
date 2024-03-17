@@ -725,6 +725,106 @@ bool Semantic::checkTypeSuffix(SemanticContext* context, const AstVarDecl* node)
     return true;
 }
 
+bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, OverloadFlags& overFlags, const TypeInfo* typeInfo, uint32_t& storageOffset)
+{
+    // For a struct, need to wait for special functions to be found
+    if (typeInfo->isStruct() || typeInfo->isArrayOfStruct())
+    {
+        SWAG_CHECK(Semantic::waitForStructUserOps(context, node));
+        YIELD();
+    }
+
+    // Variable is still generic. Try to find default generic parameters to instantiate it
+    if (node->typeInfo->isGeneric())
+    {
+        SWAG_CHECK(Generic::instantiateDefaultGenericVar(context, node));
+        YIELD();
+    }
+
+    SWAG_ASSERT(node->ownerScope);
+
+    // Do not allocate space on the stack for a 'retval' variable, because it's not really a variable
+    if (node->type && node->type->is(AstNodeKind::TypeExpression))
+    {
+        const auto typeExpr = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+        if (typeExpr->typeFlags.has(TYPEFLAG_IS_RETVAL))
+        {
+            const auto ownerFct   = Semantic::getFunctionForReturn(node);
+            auto       typeFunc   = castTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+            auto       returnType = typeFunc->concreteReturnType();
+
+            // If the function return type is not yet defined (short lambda), then we take are type as
+            // the requested return type (as we are a retval, they should match)
+            if (returnType->isVoid())
+            {
+                typeFunc             = castTypeInfo<TypeInfoFuncAttr>(typeFunc->clone(), TypeInfoKind::FuncAttr);
+                typeFunc->returnType = node->type->typeInfo;
+                returnType           = node->type->typeInfo;
+            }
+
+            waitStructGenerated(context->baseJob, returnType);
+            YIELD();
+
+            if (!CallConv::returnStructByValue(typeFunc))
+                overFlags.add(OVERLOAD_RETVAL);
+        }
+    }
+
+    // If this is a tuple unpacking, then we just compute the stack offset of the item
+    // inside the tuple, so we do not have to generate bytecode !
+    if (node->assignment && node->assignment->hasAstFlag(AST_TUPLE_UNPACK))
+    {
+        node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+        SWAG_ASSERT(node->assignment->is(AstNodeKind::IdentifierRef));
+        overFlags.add(OVERLOAD_TUPLE_UNPACK);
+        storageOffset = 0;
+        for (const auto& c : node->assignment->children)
+        {
+            SWAG_ASSERT(c->resolvedSymbolOverload());
+            storageOffset += c->resolvedSymbolOverload()->computedValue.storageOffset;
+        }
+    }
+
+    // Reserve room on the stack, except for a retval
+    else if (!overFlags.has(OVERLOAD_RETVAL))
+    {
+        auto assignment = node->assignment;
+        if (assignment && (assignment->is(AstNodeKind::Catch) || assignment->is(AstNodeKind::Try) || assignment->is(AstNodeKind::Assume)))
+            assignment = assignment->firstChild();
+
+        // :DirectInlineLocalVar
+        if (assignment &&
+            assignment->is(AstNodeKind::IdentifierRef) &&
+            !assignment->lastChild()->children.empty() &&
+            assignment->typeInfo == node->typeInfo &&
+            assignment->lastChild()->lastChild()->is(AstNodeKind::Inline) &&
+            assignment->lastChild()->lastChild()->hasAstFlag(AST_TRANSIENT))
+        {
+            SWAG_ASSERT(assignment->lastChild()->lastChild()->computedValue());
+            storageOffset = assignment->lastChild()->lastChild()->computedValue()->storageOffset;
+            node->addSpecFlag(AstVarDecl::SPEC_FLAG_INLINE_STORAGE);
+        }
+        else
+        {
+            const auto alignOf = Semantic::alignOf(node);
+
+            // Because of 'visit' (at least), it can happen that this is not up to date because of order of evaluation.
+            // So update it just in case (5294)
+            node->ownerScope->startStackSize = max(node->ownerScope->startStackSize, node->ownerScope->parentScope->startStackSize);
+
+            node->ownerScope->startStackSize = static_cast<uint32_t>(TypeManager::align(node->ownerScope->startStackSize, alignOf));
+            storageOffset                    = node->ownerScope->startStackSize;
+            node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
+            setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+        }
+    }
+
+    node->setBcNotifyBefore(ByteCodeGen::emitLocalVarDeclBefore);
+    node->byteCodeFct = ByteCodeGen::emitLocalVarDecl;
+    node->addAstFlag(AST_R_VALUE);
+    return true;
+}
+
 bool Semantic::resolveVarDecl(SemanticContext* context)
 {
     auto node = castAst<AstVarDecl>(context->node);
@@ -1229,101 +1329,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
     else if (overFlags.has(OVERLOAD_VAR_LOCAL))
     {
-        // For a struct, need to wait for special functions to be found
-        if (typeInfo->isStruct() || typeInfo->isArrayOfStruct())
-        {
-            SWAG_CHECK(waitForStructUserOps(context, node));
-            YIELD();
-        }
-
-        // Variable is still generic. Try to find default generic parameters to instantiate it
-        if (node->typeInfo->isGeneric())
-        {
-            SWAG_CHECK(Generic::instantiateDefaultGenericVar(context, node));
-            YIELD();
-        }
-
-        SWAG_ASSERT(node->ownerScope);
-
-        // Do not allocate space on the stack for a 'retval' variable, because it's not really a variable
-        if (node->type && node->type->is(AstNodeKind::TypeExpression))
-        {
-            const auto typeExpr = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-            if (typeExpr->typeFlags.has(TYPEFLAG_IS_RETVAL))
-            {
-                const auto ownerFct   = getFunctionForReturn(node);
-                auto       typeFunc   = castTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-                auto       returnType = typeFunc->concreteReturnType();
-
-                // If the function return type is not yet defined (short lambda), then we take are type as
-                // the requested return type (as we are a retval, they should match)
-                if (returnType->isVoid())
-                {
-                    typeFunc             = castTypeInfo<TypeInfoFuncAttr>(typeFunc->clone(), TypeInfoKind::FuncAttr);
-                    typeFunc->returnType = node->type->typeInfo;
-                    returnType           = node->type->typeInfo;
-                }
-
-                waitStructGenerated(context->baseJob, returnType);
-                YIELD();
-
-                if (!CallConv::returnStructByValue(typeFunc))
-                    overFlags.add(OVERLOAD_RETVAL);
-            }
-        }
-
-        // If this is a tuple unpacking, then we just compute the stack offset of the item
-        // inside the tuple, so we do not have to generate bytecode !
-        if (node->assignment && node->assignment->hasAstFlag(AST_TUPLE_UNPACK))
-        {
-            node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
-            SWAG_ASSERT(node->assignment->is(AstNodeKind::IdentifierRef));
-            overFlags.add(OVERLOAD_TUPLE_UNPACK);
-            storageOffset = 0;
-            for (const auto& c : node->assignment->children)
-            {
-                SWAG_ASSERT(c->resolvedSymbolOverload());
-                storageOffset += c->resolvedSymbolOverload()->computedValue.storageOffset;
-            }
-        }
-
-        // Reserve room on the stack, except for a retval
-        else if (!overFlags.has(OVERLOAD_RETVAL))
-        {
-            auto assignment = node->assignment;
-            if (assignment && (assignment->is(AstNodeKind::Catch) || assignment->is(AstNodeKind::Try) || assignment->is(AstNodeKind::Assume)))
-                assignment = assignment->firstChild();
-
-            // :DirectInlineLocalVar
-            if (assignment &&
-                assignment->is(AstNodeKind::IdentifierRef) &&
-                !assignment->lastChild()->children.empty() &&
-                assignment->typeInfo == node->typeInfo &&
-                assignment->lastChild()->lastChild()->is(AstNodeKind::Inline) &&
-                assignment->lastChild()->lastChild()->hasAstFlag(AST_TRANSIENT))
-            {
-                SWAG_ASSERT(assignment->lastChild()->lastChild()->computedValue());
-                storageOffset = assignment->lastChild()->lastChild()->computedValue()->storageOffset;
-                node->addSpecFlag(AstVarDecl::SPEC_FLAG_INLINE_STORAGE);
-            }
-            else
-            {
-                const auto alignOf = Semantic::alignOf(node);
-
-                // Because of 'visit' (at least), it can happen that this is not up to date because of order of evaluation.
-                // So update it just in case (5294 bug)
-                node->ownerScope->startStackSize = max(node->ownerScope->startStackSize, node->ownerScope->parentScope->startStackSize);
-
-                node->ownerScope->startStackSize = static_cast<uint32_t>(TypeManager::align(node->ownerScope->startStackSize, alignOf));
-                storageOffset                    = node->ownerScope->startStackSize;
-                node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
-                setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
-            }
-        }
-
-        node->setBcNotifyBefore(ByteCodeGen::emitLocalVarDeclBefore);
-        node->byteCodeFct = ByteCodeGen::emitLocalVarDecl;
-        node->addAstFlag(AST_R_VALUE);
+        SWAG_CHECK(resolveLocalVar(context, node, overFlags, typeInfo, storageOffset));
+        YIELD();
     }
     else if (overFlags.has(OVERLOAD_VAR_FUNC_PARAM))
     {
