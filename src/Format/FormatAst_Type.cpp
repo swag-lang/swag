@@ -5,7 +5,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
-bool FormatAst::outputTypeExpression(FormatContext& context, const AstNode* node)
+bool FormatAst::outputTypeExpression(FormatContext& context, AstNode* node)
 {
     if (node->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
     {
@@ -17,7 +17,7 @@ bool FormatAst::outputTypeExpression(FormatContext& context, const AstNode* node
     return true;
 }
 
-bool FormatAst::outputType(FormatContext& context, const AstTypeExpression* node)
+bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 {
     if (node->typeFlags.has(TYPEFLAG_IS_CODE))
     {
@@ -139,7 +139,7 @@ bool FormatAst::outputType(FormatContext& context, const AstTypeExpression* node
     return true;
 }
 
-bool FormatAst::outputEnum(FormatContext& context, const AstEnum* node)
+bool FormatAst::outputEnum(FormatContext& context, AstEnum* node)
 {
     concat->addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "enum");
@@ -195,7 +195,7 @@ bool FormatAst::outputEnum(FormatContext& context, const AstEnum* node)
     return true;
 }
 
-bool FormatAst::outputGenericParameters(FormatContext& context, const AstNode* node)
+bool FormatAst::outputGenericParameters(FormatContext& context, AstNode* node)
 {
     concat->addChar('(');
 

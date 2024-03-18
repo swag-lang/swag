@@ -6,7 +6,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool FormatAst::outputLiteral(FormatContext& context, const AstNode* node)
+bool FormatAst::outputLiteral(FormatContext& context, AstNode* node)
 {
     const auto literalNode = castAst<AstLiteral>(node, AstNodeKind::Literal);
     if (literalNode->literalType == LiteralType::TypeStringRaw)
@@ -38,7 +38,7 @@ bool FormatAst::outputLiteral(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputLiteral(FormatContext& context, const AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
+bool FormatAst::outputLiteral(FormatContext& context, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
 {
     if (typeInfo->isPointerNull())
     {
@@ -86,7 +86,7 @@ bool FormatAst::outputLiteral(FormatContext& context, const AstNode* node, TypeI
     return true;
 }
 
-bool FormatAst::outputExpressionList(FormatContext& context, const AstNode* node)
+bool FormatAst::outputExpressionList(FormatContext& context, AstNode* node)
 {
     const auto exprNode = castAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
     if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))

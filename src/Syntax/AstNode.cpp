@@ -134,21 +134,21 @@ void AstNode::inheritOwners(const AstNode* from)
     }
 }
 
-void AstNode::inheritFormatFromBefore(const Parser* parser, const AstNode* other)
+void AstNode::inheritFormatFromBefore(const Parser* parser, AstNode* other)
 {
     if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
     if (!other->hasExtMisc())
         return;
 
-    if (other->extMisc()->format.flags != 0 ||
-        !other->extMisc()->format.commentBefore.empty() ||
-        !other->extMisc()->format.commentJustBefore.empty())
+    const auto to = other->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
+    if (to)
     {
-        allocateExtension(ExtensionKind::Misc);
-        extMisc()->format.flags             = other->extMisc()->format.flags;
-        extMisc()->format.commentBefore     = std::move(other->extMisc()->format.commentBefore);
-        extMisc()->format.commentJustBefore = std::move(other->extMisc()->format.commentJustBefore);
+        const auto tp                  = Allocator::alloc<TokenParse>();
+        tp->flags                      = to->flags;
+        tp->comments.commentBefore     = std::move(to->comments.commentBefore);
+        tp->comments.commentJustBefore = std::move(to->comments.commentJustBefore);
+        addExtraPointer(ExtraPointerKind::TokenParse, tp);
     }
 }
 
@@ -161,24 +161,27 @@ void AstNode::inheritFormatFromBefore(const Parser* parser, TokenParse& tokenPar
         !tokenParse.comments.commentBefore.empty() ||
         !tokenParse.comments.commentJustBefore.empty())
     {
-        allocateExtension(ExtensionKind::Misc);
-        extMisc()->format.flags             = tokenParse.flags;
-        extMisc()->format.commentBefore     = std::move(tokenParse.comments.commentBefore);
-        extMisc()->format.commentJustBefore = std::move(tokenParse.comments.commentJustBefore);
+        const auto tp                  = Allocator::alloc<TokenParse>();
+        tp->flags                      = tokenParse.flags;
+        tp->comments.commentBefore     = std::move(tokenParse.comments.commentBefore);
+        tp->comments.commentJustBefore = std::move(tokenParse.comments.commentJustBefore);
+        addExtraPointer(ExtraPointerKind::TokenParse, tp);
     }
 }
 
-void AstNode::inheritFormatFromAfter(const Parser* parser, const AstNode* other)
+void AstNode::inheritFormatFromAfter(const Parser* parser, AstNode* other)
 {
     if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
     if (!other->hasExtMisc())
         return;
 
-    if (!other->extMisc()->format.commentAfterSameLine.empty())
+    const auto to = other->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
+    if (to)
     {
-        allocateExtension(ExtensionKind::Misc);
-        extMisc()->format.commentAfterSameLine = std::move(other->extMisc()->format.commentAfterSameLine);
+        const auto tp                     = Allocator::alloc<TokenParse>();
+        tp->comments.commentAfterSameLine = std::move(to->comments.commentAfterSameLine);
+        addExtraPointer(ExtraPointerKind::TokenParse, tp);
     }
 }
 
@@ -189,8 +192,9 @@ void AstNode::inheritFormatFromAfter(const Parser* parser, TokenParse& tokenPars
 
     if (!tokenParse.comments.commentAfterSameLine.empty())
     {
-        allocateExtension(ExtensionKind::Misc);
-        extMisc()->format.commentAfterSameLine = std::move(tokenParse.comments.commentAfterSameLine);
+        const auto tp                     = Allocator::alloc<TokenParse>();
+        tp->comments.commentAfterSameLine = std::move(tokenParse.comments.commentAfterSameLine);
+        addExtraPointer(ExtraPointerKind::TokenParse, tp);
     }
 }
 

@@ -112,7 +112,7 @@ struct GenDoc
     void        collectNode(AstNode* node);
     void        collectScopes(Scope* root);
     static Utf8 getDocComment(const AstNode* node);
-    Utf8        getOutputNode(const AstNode* node);
+    Utf8        getOutputNode(AstNode* node);
     void        outputType(AstNode* node);
     void        outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags);
     void        outputTitle(OneRef& c);

@@ -36,54 +36,60 @@ void FormatAst::beautifyComment(FormatContext& context, Vector<TokenComment>& co
     comments.clear();
 }
 
-void FormatAst::beautifyBefore(FormatContext& context, const AstNode* node) const
+void FormatAst::beautifyBefore(FormatContext& context, AstNode* node) const
 {
     beautifyCommentBefore(context, node);
     beautifyBlankLine(context, node);
     beautifyCommentJustBefore(context, node);
 }
 
-void FormatAst::beautifyCommentBefore(FormatContext& context, const AstNode* node) const
+void FormatAst::beautifyCommentBefore(FormatContext& context, AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
-    if (!node->hasExtMisc() || node->extMisc()->format.commentBefore.empty())
+    const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
+    if (!to || to->comments.commentBefore.empty())
         return;
-    beautifyComment(context, node->extMisc()->format.commentBefore);
+
+    beautifyComment(context, to->comments.commentBefore);
     concat->addEol();
     concat->addIndent(context.indent);
 }
 
-void FormatAst::beautifyCommentJustBefore(FormatContext& context, const AstNode* node) const
+void FormatAst::beautifyCommentJustBefore(FormatContext& context, AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
-    if (!node->hasExtMisc() || node->extMisc()->format.commentJustBefore.empty())
+    const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
+    if (!to || to->comments.commentJustBefore.empty())
         return;
-    beautifyComment(context, node->extMisc()->format.commentJustBefore);
+
+    beautifyComment(context, to->comments.commentJustBefore);
     concat->addEol();
     concat->addIndent(context.indent);
 }
 
-void FormatAst::beautifyBlankLine(FormatContext& context, const AstNode* node) const
+void FormatAst::beautifyBlankLine(const FormatContext& context, AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
+    const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
+    if (!to || !to->flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
+        return;
 
-    if (node->hasExtMisc() && node->extMisc()->format.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
-    {
-        node->extMisc()->format.flags.remove(TOKEN_PARSE_BLANK_LINE_BEFORE);
-        concat->addBlankLine();
-        concat->addIndent(context.indent);
-    }
+    to->flags.remove(TOKEN_PARSE_BLANK_LINE_BEFORE);
+    concat->addBlankLine();
+    concat->addIndent(context.indent);
 }
 
-void FormatAst::beautifyAfter(FormatContext& context, const AstNode* node) const
+void FormatAst::beautifyAfter(FormatContext& context, AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
-    if (!node->hasExtMisc() || node->extMisc()->format.commentAfterSameLine.empty())
+    const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
+    if (!to || to->comments.commentAfterSameLine.empty())
         return;
+
     concat->addBlank();
-    beautifyComment(context, node->extMisc()->format.commentAfterSameLine);
+    beautifyComment(context, to->comments.commentAfterSameLine);
 }

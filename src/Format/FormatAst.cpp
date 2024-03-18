@@ -13,7 +13,7 @@ Utf8 FormatAst::getUtf8() const
     return concat->getUtf8();
 }
 
-const AstNode* FormatAst::convertNode(FormatContext& context, const AstNode* node)
+AstNode* FormatAst::convertNode(FormatContext&, AstNode* node)
 {
     if (!node)
         return nullptr;
@@ -31,7 +31,7 @@ const AstNode* FormatAst::convertNode(FormatContext& context, const AstNode* nod
     return node;
 }
 
-bool FormatAst::outputChildren(FormatContext& context, const AstNode* node, uint32_t start)
+bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t start)
 {
     if (!node)
         return true;
@@ -51,7 +51,7 @@ bool FormatAst::outputChildren(FormatContext& context, const AstNode* node, uint
     return true;
 }
 
-bool FormatAst::outputCommaChildren(FormatContext& context, const AstNode* node, uint32_t start)
+bool FormatAst::outputCommaChildren(FormatContext& context, AstNode* node, uint32_t start)
 {
     if (!node)
         return true;

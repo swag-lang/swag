@@ -4,7 +4,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 
-bool FormatAst::outputIdentifier(FormatContext& context, const AstNode* node)
+bool FormatAst::outputIdentifier(FormatContext& context, AstNode* node)
 {
     const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
 
@@ -68,7 +68,7 @@ bool FormatAst::outputIdentifier(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputIdentifierRef(FormatContext& context, const AstNode* node)
+bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
 {
     if (node->hasAstFlag(AST_DISCARD))
     {

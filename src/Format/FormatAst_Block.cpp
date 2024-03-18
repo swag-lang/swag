@@ -4,7 +4,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 
-bool FormatAst::outputStatement(FormatContext& context, const AstNode* node)
+bool FormatAst::outputStatement(FormatContext& context, AstNode* node)
 {
     const auto stmt = castAst<AstStatement>(node, AstNodeKind::Statement);
 
@@ -93,7 +93,7 @@ bool FormatAst::outputStatement(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputDoStatement(FormatContext& context, const AstNode* node)
+bool FormatAst::outputDoStatement(FormatContext& context, AstNode* node)
 {
     if (!node->childCount())
     {
@@ -120,7 +120,7 @@ bool FormatAst::outputDoStatement(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputNamespace(FormatContext& context, const AstNode* node)
+bool FormatAst::outputNamespace(FormatContext& context, AstNode* node)
 {
     if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
     {
@@ -176,7 +176,7 @@ bool FormatAst::outputNamespace(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputDefer(FormatContext& context, const AstNode* node)
+bool FormatAst::outputDefer(FormatContext& context, AstNode* node)
 {
     const auto deferNode = castAst<AstDefer>(node, AstNodeKind::Defer);
 
@@ -201,7 +201,7 @@ bool FormatAst::outputDefer(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputTryAssume(FormatContext& context, const AstNode* node)
+bool FormatAst::outputTryAssume(FormatContext& context, AstNode* node)
 {
     if (node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED) && node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK))
     {
@@ -223,7 +223,7 @@ bool FormatAst::outputTryAssume(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputCatch(FormatContext& context, const AstNode* node)
+bool FormatAst::outputCatch(FormatContext& context, AstNode* node)
 {
     if (node->hasAstFlag(AST_DISCARD))
     {

@@ -7,7 +7,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool FormatAst::outputNode(FormatContext& context, const AstNode* node, bool cmtAfter)
+bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
 {
     node = convertNode(context, node);
     if (!node)

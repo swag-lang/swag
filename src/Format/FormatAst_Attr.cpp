@@ -8,7 +8,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool FormatAst::outputAttrUse(FormatContext& context, const AstNode* node, bool& hasSomething)
+bool FormatAst::outputAttrUse(FormatContext& context, AstNode* node, bool& hasSomething)
 {
     const auto nodeAttr = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
 
@@ -61,7 +61,7 @@ bool FormatAst::outputAttrUse(FormatContext& context, const AstNode* node, bool&
     return true;
 }
 
-bool FormatAst::outputAttrUse(FormatContext& context, const AstAttrUse* node)
+bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
 {
     if (node->attributeFlags.has(ATTRIBUTE_PUBLIC))
     {
@@ -258,7 +258,7 @@ bool FormatAst::outputAttributes(FormatContext& context, const TypeInfo* typeInf
     return true;
 }
 
-bool FormatAst::outputAttributesGlobalUsing(FormatContext& context, const AstNode* node) const
+bool FormatAst::outputAttributesGlobalUsing(FormatContext& context, AstNode* node) const
 {
     bool outputUsing = true;
     if (node->hasAstFlag(AST_STRUCT_MEMBER))
@@ -296,7 +296,7 @@ bool FormatAst::outputAttributesGlobalUsing(FormatContext& context, const AstNod
     return true;
 }
 
-bool FormatAst::outputAttributes(FormatContext& context, const AstNode* node, TypeInfo* typeInfo)
+bool FormatAst::outputAttributes(FormatContext& context, AstNode* node, TypeInfo* typeInfo)
 {
     switch (node->kind)
     {

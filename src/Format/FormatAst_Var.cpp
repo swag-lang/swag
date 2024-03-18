@@ -5,7 +5,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
-bool FormatAst::outputVarDecl(FormatContext& context, const AstVarDecl* varNode, bool isSelf)
+bool FormatAst::outputVarDecl(FormatContext& context, AstVarDecl* varNode, bool isSelf)
 {
     if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
     {
@@ -78,7 +78,7 @@ bool FormatAst::outputVarDecl(FormatContext& context, const AstVarDecl* varNode,
     return true;
 }
 
-bool FormatAst::outputVar(FormatContext& context, const AstVarDecl* varNode)
+bool FormatAst::outputVar(FormatContext& context, AstVarDecl* varNode)
 {
     if (varNode->attrUse)
     {

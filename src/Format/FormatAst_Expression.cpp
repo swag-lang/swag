@@ -4,7 +4,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 
-bool FormatAst::outputArrayPointerSlicing(FormatContext& context, const AstNode* node)
+bool FormatAst::outputArrayPointerSlicing(FormatContext& context, AstNode* node)
 {
     const auto arrayNode = castAst<AstArrayPointerSlicing>(node, AstNodeKind::ArrayPointerSlicing);
     SWAG_CHECK(outputNode(context, arrayNode->array));
@@ -19,7 +19,7 @@ bool FormatAst::outputArrayPointerSlicing(FormatContext& context, const AstNode*
     return true;
 }
 
-bool FormatAst::outputArrayPointerIndex(FormatContext& context, const AstNode* node)
+bool FormatAst::outputArrayPointerIndex(FormatContext& context, AstNode* node)
 {
     const auto arrayNode = castAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
 
@@ -54,7 +54,7 @@ bool FormatAst::outputArrayPointerIndex(FormatContext& context, const AstNode* n
     return true;
 }
 
-bool FormatAst::outputAffectOp(FormatContext& context, const AstNode* node)
+bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node)
 {
     SWAG_CHECK(outputNode(context, node->firstChild()));
     concat->addBlank();
@@ -76,7 +76,7 @@ bool FormatAst::outputAffectOp(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
+bool FormatAst::outputFactorOp(FormatContext& context, AstNode* node)
 {
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
         concat->addChar('(');
@@ -97,7 +97,7 @@ bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputBinaryOp(FormatContext& context, const AstNode* node)
+bool FormatAst::outputBinaryOp(FormatContext& context, AstNode* node)
 {
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
         concat->addChar('(');
@@ -114,7 +114,7 @@ bool FormatAst::outputBinaryOp(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputNullConditionalExpression(FormatContext& context, const AstNode* node)
+bool FormatAst::outputNullConditionalExpression(FormatContext& context, AstNode* node)
 {
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
         concat->addChar('(');
@@ -130,7 +130,7 @@ bool FormatAst::outputNullConditionalExpression(FormatContext& context, const As
     return true;
 }
 
-bool FormatAst::outputConditionalExpression(FormatContext& context, const AstNode* node)
+bool FormatAst::outputConditionalExpression(FormatContext& context, AstNode* node)
 {
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
         concat->addChar('(');

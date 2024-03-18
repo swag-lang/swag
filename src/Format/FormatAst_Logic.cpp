@@ -4,7 +4,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
-bool FormatAst::outputIf(FormatContext& context, const Utf8& name, const AstNode* node)
+bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node)
 {
     const auto ifNode = castAst<AstIf>(node, AstNodeKind::If);
     concat->addString(name);
@@ -44,7 +44,7 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, const AstNode
     return true;
 }
 
-bool FormatAst::outputWhile(FormatContext& context, const AstNode* node)
+bool FormatAst::outputWhile(FormatContext& context, AstNode* node)
 {
     const auto whileNode = castAst<AstWhile>(node, AstNodeKind::While);
     CONCAT_FIXED_STR(concat, "while");
@@ -54,7 +54,7 @@ bool FormatAst::outputWhile(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputLoop(FormatContext& context, const AstNode* node)
+bool FormatAst::outputLoop(FormatContext& context, AstNode* node)
 {
     const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
     CONCAT_FIXED_STR(concat, "loop");
@@ -78,7 +78,7 @@ bool FormatAst::outputLoop(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputVisit(FormatContext& context, const AstNode* node)
+bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
 {
     const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
     CONCAT_FIXED_STR(concat, "visit");
@@ -119,7 +119,7 @@ bool FormatAst::outputVisit(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputFor(FormatContext& context, const AstNode* node)
+bool FormatAst::outputFor(FormatContext& context, AstNode* node)
 {
     const auto forNode = castAst<AstFor>(node, AstNodeKind::For);
     CONCAT_FIXED_STR(concat, "for");
@@ -157,7 +157,7 @@ bool FormatAst::outputFor(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputSwitch(FormatContext& context, const AstNode* node)
+bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
 {
     const auto nodeSwitch = castAst<AstSwitch>(node, AstNodeKind::Switch);
     CONCAT_FIXED_STR(concat, "switch");

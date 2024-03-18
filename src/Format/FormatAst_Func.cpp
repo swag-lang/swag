@@ -5,7 +5,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
-bool FormatAst::outputFuncDeclParameters(FormatContext& context, const AstNode* parameters, bool isMethod)
+bool FormatAst::outputFuncDeclParameters(FormatContext& context, AstNode* parameters, bool isMethod)
 {
     if (!parameters)
     {
@@ -21,7 +21,7 @@ bool FormatAst::outputFuncDeclParameters(FormatContext& context, const AstNode* 
     return true;
 }
 
-bool FormatAst::outputFuncReturnType(FormatContext& context, const AstFuncDecl* funcNode)
+bool FormatAst::outputFuncReturnType(FormatContext& context, AstFuncDecl* funcNode)
 {
     auto returnNode = funcNode->returnType;
     if (returnNode && !returnNode->children.empty())
@@ -36,7 +36,7 @@ bool FormatAst::outputFuncReturnType(FormatContext& context, const AstFuncDecl* 
     return true;
 }
 
-bool FormatAst::outputFuncSignature(FormatContext& context, const AstNode* node, const AstNode* genericParameters, const AstNode* parameters, const AstNode* validIf)
+bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf)
 {
     bool isMethod = false;
 
@@ -119,7 +119,7 @@ bool FormatAst::outputFuncSignature(FormatContext& context, const AstNode* node,
     return true;
 }
 
-bool FormatAst::outputFuncDecl(FormatContext& context, const AstFuncDecl* node)
+bool FormatAst::outputFuncDecl(FormatContext& context, AstFuncDecl* node)
 {
     if (node->hasAttribute(ATTRIBUTE_AST_FUNC))
         CONCAT_FIXED_STR(concat, "#ast");
@@ -144,7 +144,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, const AstFuncDecl* node)
     }
     else
         SWAG_CHECK(outputFuncSignature(context, node, node->genericParameters, node->parameters, nullptr));
-    
+
     // Content, short lambda
     if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
     {
@@ -230,7 +230,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, const AstFuncDecl* node)
     return true;
 }
 
-bool FormatAst::outputClosureArguments(FormatContext& context, const AstFuncDecl* funcNode)
+bool FormatAst::outputClosureArguments(FormatContext& context, AstFuncDecl* funcNode)
 {
     concat->addChar('|');
 
@@ -268,9 +268,9 @@ bool FormatAst::outputClosureArguments(FormatContext& context, const AstFuncDecl
     return true;
 }
 
-bool FormatAst::outputLambdaExpression(FormatContext& context, const AstNode* node)
+bool FormatAst::outputLambdaExpression(FormatContext& context, AstNode* node)
 {
-    const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+    AstFuncDecl* funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 
     // Closure capture parameters
     if (funcDecl->captureParameters)
@@ -309,7 +309,7 @@ bool FormatAst::outputLambdaExpression(FormatContext& context, const AstNode* no
     return true;
 }
 
-bool FormatAst::outputFuncCallParams(FormatContext& context, const AstNode* node)
+bool FormatAst::outputFuncCallParams(FormatContext& context, AstNode* node)
 {
     const auto funcCallParams = castAst<AstFuncCallParams>(node, AstNodeKind::FuncCallParams);
 
@@ -339,7 +339,7 @@ bool FormatAst::outputFuncCallParams(FormatContext& context, const AstNode* node
     return true;
 }
 
-bool FormatAst::outputTypeLambda(FormatContext& context, const AstNode* node)
+bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
 {
     const auto typeNode = castAst<AstTypeLambda>(node);
 
@@ -376,7 +376,7 @@ bool FormatAst::outputTypeLambda(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputInit(FormatContext& context, const AstNode* node)
+bool FormatAst::outputInit(FormatContext& context, AstNode* node)
 {
     const auto init = castAst<AstInit>(node, AstNodeKind::Init);
     CONCAT_FIXED_STR(concat, "@init");
@@ -402,7 +402,7 @@ bool FormatAst::outputInit(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputDropCopyMove(FormatContext& context, const AstNode* node)
+bool FormatAst::outputDropCopyMove(FormatContext& context, AstNode* node)
 {
     const auto drop = castAst<AstInit>(node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     switch (drop->kind)

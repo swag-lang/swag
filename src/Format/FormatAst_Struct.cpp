@@ -5,7 +5,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
-bool FormatAst::outputStructDeclContent(FormatContext& context, const AstNode* node)
+bool FormatAst::outputStructDeclContent(FormatContext& context, AstNode* node)
 {
     concat->addChar('{');
     concat->addEol();
@@ -18,7 +18,7 @@ bool FormatAst::outputStructDeclContent(FormatContext& context, const AstNode* n
     return true;
 }
 
-bool FormatAst::outputTupleDeclContent(FormatContext& context, const AstNode* node)
+bool FormatAst::outputTupleDeclContent(FormatContext& context, AstNode* node)
 {
     concat->addChar('{');
     outputCommaChildren(context, node);
@@ -26,7 +26,7 @@ bool FormatAst::outputTupleDeclContent(FormatContext& context, const AstNode* no
     return true;
 }
 
-bool FormatAst::outputStructDecl(FormatContext& context, const AstStruct* node)
+bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
 {
     if (node->hasSpecFlag(AstStruct::SPEC_FLAG_GENERIC_PARAM) || node->hasAstFlag(AST_GENERATED))
     {
@@ -129,7 +129,7 @@ bool FormatAst::outputTypeTuple(FormatContext& context, TypeInfo* typeInfo)
     return true;
 }
 
-bool FormatAst::outputImpl(FormatContext& context, const AstNode* node)
+bool FormatAst::outputImpl(FormatContext& context, AstNode* node)
 {
     const auto nodeImpl = castAst<AstImpl>(node, AstNodeKind::Impl);
 

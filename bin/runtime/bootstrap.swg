@@ -152,7 +152,7 @@ namespace Swag
     // | 'bool'         | Panic if a 'bool' does not have a valid value ('true' or 'false')
     // | 'nan'          | Panic if a 'nan' is used in a float arithmetic operation
     // | 'sanity'       | Do a 'sanity' check (per function)
-    // | 'null'         | Panic on derefencing some null pointers
+    // | 'null'         | Panic on dereferencing some null pointers
     // If 'what' is null or empty, every options are will be affected.
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     #[AttrMulti]
@@ -277,14 +277,14 @@ namespace Swag
     // Process Infos
     // #########################################################
 
-    // Defined some informations about a loaded module
+    // Defined some information about a loaded module
     struct Module
     {
         name:   string                      // Name of the module
         types:  const [..] const *TypeInfo  // All exported types
     }
 
-    // Defined some informations about the current process
+    // Defined some information about the current process
     struct ProcessInfos
     {
         modules: const [..] Module          // The list of all modules
@@ -397,7 +397,7 @@ namespace Swag
         errorID:    u64
     }
 
-    // Store a 'throw' error informations
+    // Store a 'throw' error information
     struct ErrorValue
     {
         value:          any // Error value (or null)
@@ -806,8 +806,8 @@ namespace Swag
 
         backendKind               = BuildCfgBackendKind.Executable  // Backend type (executable, dynamic lib...)
         backendSubKind            = BuildCfgBackendSubKind.Console  // Backend sub kind
-        backendDebugInformations  = false                           // Output debug informations if 'true'
-        backendDebugInline        = false                           // Generate specific line informations for inline code
+        backendDebugInformations  = false                           // Output debug information if 'true'
+        backendDebugInline        = false                           // Generate specific line information for inline code
         backendOptimize           = BuildCfgBackendOptim.O0         // Backend optimization level
         backendNumCU              = 0'u32
 
@@ -903,7 +903,7 @@ func @breakpoint();
 func @getcontext()->*Swag.Context;
 // Replace the current thread context.
 func @setcontext(context: const *Swag.Context);
-// Get informations about the current process.
+// Get information about the current process.
 func @pinfos()->*Swag.ProcessInfos;
 // Returns 'true' is the current execution is bytecode.
 func @isbytecode()->bool;

@@ -276,7 +276,8 @@ enum class ExtraPointerKind
     CollectTypeInfo,
     AlternativeNode,
     IsNamed,
-    UserOp
+    UserOp,
+    TokenParse
 };
 
 struct AstNode
@@ -304,8 +305,8 @@ struct AstNode
     void inheritTokenName(Token& tkn);
     void inheritTokenLocation(const Token& tkn);
     void inheritOwners(const AstNode* from);
-    void inheritFormatFromBefore(const Parser* parser, const AstNode* other);
-    void inheritFormatFromAfter(const Parser* parser, const AstNode* other);
+    void inheritFormatFromBefore(const Parser* parser, AstNode* other);
+    void inheritFormatFromAfter(const Parser* parser, AstNode* other);
     void inheritFormatFromBefore(const Parser* parser, TokenParse& tokenParse);
     void inheritFormatFromAfter(const Parser* parser, TokenParse& tokenParse);
     void inheritOwnersAndFlags(const Parser* parser);
@@ -419,7 +420,6 @@ struct AstNode
         VectorNative<AlternativeScope>     alternativeScopes;
         VectorNative<AlternativeScopeVar>  alternativeScopesVars;
         VectorNative<uint32_t>             registersToRelease;
-        TokenFormat                        format;
         VectorMap<ExtraPointerKind, void*> extraPointers;
 
         RegisterList additionalRegisterRC;

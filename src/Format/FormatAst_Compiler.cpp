@@ -4,7 +4,7 @@
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
 
-bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, const AstNode* node)
+bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, AstNode* node)
 {
     const auto ifNode = castAst<AstIf>(node, AstNodeKind::CompilerIf);
 
@@ -90,7 +90,7 @@ bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, const
     return true;
 }
 
-bool FormatAst::outputCompilerSpecialValue(FormatContext& context, const AstNode* node) const
+bool FormatAst::outputCompilerSpecialValue(FormatContext& context, AstNode* node) const
 {
     switch (node->token.id)
     {
@@ -131,7 +131,7 @@ bool FormatAst::outputCompilerSpecialValue(FormatContext& context, const AstNode
     return true;
 }
 
-bool FormatAst::outputCompilerMixin(FormatContext& context, const AstNode* node)
+bool FormatAst::outputCompilerMixin(FormatContext& context, AstNode* node)
 {
     const auto compilerMixin = castAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
     CONCAT_FIXED_STR(concat, "#mixin");
@@ -170,7 +170,7 @@ bool FormatAst::outputCompilerMixin(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
+bool FormatAst::outputCompilerExpr(FormatContext& context, AstNode* node)
 {
     if (node->is(AstNodeKind::CompilerRun) || node->is(AstNodeKind::CompilerRunExpression))
         CONCAT_FIXED_STR(concat, "#run");
@@ -199,7 +199,7 @@ bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputCompilerExport(FormatContext& context, const AstNode* node) const
+bool FormatAst::outputCompilerExport(FormatContext& context, AstNode* node) const
 {
     const auto decl = castAst<AstCompilerImport>(node, AstNodeKind::CompilerImport);
     CONCAT_FIXED_STR(concat, "#import");
@@ -232,7 +232,7 @@ bool FormatAst::outputCompilerExport(FormatContext& context, const AstNode* node
     return true;
 }
 
-bool FormatAst::outputCompilerCode(FormatContext& context, const AstNode* node)
+bool FormatAst::outputCompilerCode(FormatContext& context, AstNode* node)
 {
     const auto code = castAst<AstCompilerCode>(node, AstNodeKind::CompilerCode);
     if (code->hasSpecFlag(AstCompilerCode::SPEC_FLAG_FROM_NEXT))
@@ -260,7 +260,7 @@ bool FormatAst::outputCompilerCode(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputCompilerGlobal(FormatContext& context, const AstNode* node)
+bool FormatAst::outputCompilerGlobal(FormatContext& context, AstNode* node)
 {
     CONCAT_FIXED_STR(concat, "#global");
     concat->addBlank();
