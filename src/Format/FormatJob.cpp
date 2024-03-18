@@ -8,7 +8,44 @@
 #include "Syntax/SyntaxJob.h"
 #include "Wmf/Module.h"
 
-JobResult FormatJob::execute()
+bool FormatJob::writeResult(const Path& fileName, const Utf8& content)
+{
+    if (!g_CommandLine.output)
+    {
+        if (g_CommandLine.verboseStages)
+            g_Log.messageVerbose(form("[%s] -- Done (commandline --output:false)", fileName.c_str()));
+        return true;
+    }
+
+    if (g_CommandLine.verboseStages)
+        g_Log.messageVerbose(form("[%s] -- Writing file", fileName.c_str()));
+
+    FILE* f = nullptr;
+    if (fopen_s(&f, fileName, "wb"))
+    {
+        Report::errorOS(formErr(Err0096, fileName.c_str()));
+        return false;
+    }
+
+    Vector<Utf8> lines;
+    Utf8::tokenize(content, '\n', lines, true);
+
+    for (auto& l : lines)
+    {
+        l.trimRight();
+        (void) fwrite(l.data(), 1, l.length(), f);
+#ifdef _WIN32
+        (void) fputc('\r', f);
+#endif
+        (void) fputc('\n', f);
+    }
+
+    (void) fflush(f);
+    (void) fclose(f);
+    return true;
+}
+
+bool FormatJob::getFormattedCode(const Path& fileName, Utf8& result)
 {
     Module     tmpModule;
     SourceFile tmpFile;
@@ -25,7 +62,7 @@ JobResult FormatJob::execute()
     if (g_CommandLine.verboseStages)
         g_Log.messageVerbose(form("[%s] -- loading file", fileName.c_str()));
     if (!tmpFile.load())
-        return JobResult::ReleaseJob;
+        return false;
 
     // Generate AST
     {
@@ -36,14 +73,14 @@ JobResult FormatJob::execute()
         if (g_CommandLine.verboseStages)
             g_Log.messageVerbose(form("[%s] -- generating AST", fileName.c_str()));
         parser.setup(&context, &tmpModule, &tmpFile, PARSER_TRACK_FORMAT);
-        const bool result = parser.generateAst();
+        const bool ok = parser.generateAst();
         if (!g_CommandLine.verboseErrors)
             g_SilentError--;
-        if (!result)
+        if (!ok)
         {
             if (g_CommandLine.verboseStages)
                 g_Log.messageVerbose(form("[%s] -- AST has errors ! Cancel", fileName.c_str()));
-            return JobResult::ReleaseJob;
+            return false;
         }
     }
 
@@ -51,51 +88,34 @@ JobResult FormatJob::execute()
     {
         if (g_CommandLine.verboseStages)
             g_Log.messageVerbose(form("[%s] -- #global skip format detected ! Cancel", fileName.c_str()));
-        return JobResult::ReleaseJob;
+        return false;
     }
 
-    // Format
     if (g_CommandLine.verboseStages)
         g_Log.messageVerbose(form("[%s] -- formatting", fileName.c_str()));
+
+    // Format
     FormatAst     fmt;
     FormatContext context;
     fmt.fmtFlags.add(FORMAT_FOR_BEAUTIFY);
     fmt.outputNode(context, tmpFile.astRoot);
 
-    // Write to file
-    if (!g_CommandLine.output)
-    {
-        if (g_CommandLine.verboseStages)
-            g_Log.messageVerbose(form("[%s] -- Done (commandline --output:false)", fileName.c_str()));
+    // Get result
+    result = fmt.concat->getUtf8();
+    return true;
+}
+
+JobResult FormatJob::execute()
+{
+    Utf8 result;
+
+    // Do it !
+    if (!getFormattedCode(fileName, result))
         return JobResult::ReleaseJob;
-    }
 
-    if (g_CommandLine.verboseStages)
-        g_Log.messageVerbose(form("[%s] -- Writing file", fileName.c_str()));
-
-    FILE* f = nullptr;
-    if (fopen_s(&f, tmpFile.path, "wb"))
-    {
-        Report::errorOS(formErr(Err0096, tmpFile.path.c_str()));
+    // Write file
+    if (!writeResult(fileName, result))
         return JobResult::ReleaseJob;
-    }
-
-    const auto   content = fmt.concat->getUtf8();
-    Vector<Utf8> lines;
-    Utf8::tokenize(content, '\n', lines, true);
-
-    for (auto& l : lines)
-    {
-        l.trimRight();
-        (void) fwrite(l.data(), 1, l.length(), f);
-#ifdef _WIN32
-        (void) fputc('\r', f);
-#endif
-        (void) fputc('\n', f);
-    }
-
-    (void) fflush(f);
-    (void) fclose(f);
 
     return JobResult::ReleaseJob;
 }

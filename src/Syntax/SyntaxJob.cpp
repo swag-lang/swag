@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Syntax/SyntaxJob.h"
 #include "Format/FormatAst.h"
+#include "Format/FormatJob.h"
 #include "Jobs/LoadSourceFileJob.h"
 #include "Syntax/Parser/Parser.h"
 #include "Wmf/SourceFile.h"
@@ -30,21 +31,26 @@ JobResult SyntaxJob::execute()
         return JobResult::KeepJobAlive;
     }
 
+#ifdef SWAG_DEV_MODE
+    if (g_CommandLine.forceFormat)
+    {
+        Utf8 result;
+        if (FormatJob::getFormattedCode(sourceFile->path, result))
+        {
+            sourceFile->buffer            = result.buffer;
+            sourceFile->bufferSize        = result.count;
+            sourceFile->offsetStartBuffer = 0;
+            result.buffer                 = nullptr;
+        }
+    }
+#endif
+
     Parser      parser;
     ParserFlags parseFlags = 0;
     if (g_CommandLine.genDoc)
         parseFlags.add(PARSER_TRACK_DOCUMENTATION);
     parser.setup(&context, sourceFile->module, sourceFile, parseFlags);
     parser.generateAst();
-
-#ifdef SWAG_DEV_MODE
-    if (!sourceFile->numErrors)
-    {
-        FormatAst     fmt;
-        FormatContext fmtCxt;
-        fmt.outputNode(fmtCxt, sourceFile->astRoot);
-    }
-#endif
 
     return JobResult::ReleaseJob;
 }

@@ -98,6 +98,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc doc", "--print-bc-ext", nullptr, CommandLineType::Bool, &cmdLine->dbgPrintBcExt, nullptr, "print more bytecode information");
     addArg("bu sc doc", "--randomize", nullptr, CommandLineType::Bool, &cmdLine->randomize, nullptr, "[devmode] randomize behavior");
     addArg("bu sc doc", "--seed", nullptr, CommandLineType::Int, &cmdLine->randSeed, nullptr, "[devmode] set seed for randomize behavior");
+    addArg("bu sc doc", "--force-format", nullptr, CommandLineType::Bool, &cmdLine->forceFormat, nullptr, "[devmode] force code to be reformatted before parsing");
 #else
     addArg("bu sc doc", "--devmode", nullptr, CommandLineType::Bool, &cmdLine->dbgDevMode, nullptr, "message box in case of exception");
 #endif

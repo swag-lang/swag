@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Syntax/Parser/Parser_Push.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Parser/Parser_Push.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 
 bool Parser::doLiteral(AstNode* parent, AstNode** result)
 {
@@ -1059,8 +1059,9 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
         case TokenId::CompilerRun:
         {
             ParserPushAstNodeFlags sf(this, AST_IN_RUN_BLOCK);
-            const auto         node = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerRunExpression, this, nullptr);
-            node->semanticFct       = Semantic::resolveCompilerRun;
+
+            const auto node   = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerRunExpression, this, nullptr);
+            node->semanticFct = Semantic::resolveCompilerRun;
             SWAG_CHECK(eatToken());
 
             // :RunGeneratedExp
@@ -1632,9 +1633,10 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
     return true;
 }
 
-bool Parser::doInit(AstNode* parent, AstNode** /*result*/)
+bool Parser::doInit(AstNode* parent, AstNode** result)
 {
     const auto node   = Ast::newNode<AstInit>(AstNodeKind::Init, this, parent);
+    *result           = node;
     node->semanticFct = Semantic::resolveInit;
     SWAG_CHECK(eatToken());
 
@@ -1659,9 +1661,10 @@ bool Parser::doInit(AstNode* parent, AstNode** /*result*/)
     return true;
 }
 
-bool Parser::doDropCopyMove(AstNode* parent, AstNode** /*result*/)
+bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstDropCopyMove>(AstNodeKind::Drop, this, parent);
+    *result         = node;
     switch (tokenParse.token.id)
     {
         case TokenId::IntrinsicDrop:

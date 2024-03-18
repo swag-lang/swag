@@ -57,8 +57,9 @@ struct CommandLine
     bool dbgDevMode    = false;
 
 #ifdef SWAG_DEV_MODE
-    bool randomize = false;
-    int  randSeed  = 0;
+    bool forceFormat = false;
+    bool randomize   = false;
+    int  randSeed    = 0;
 #endif
 
     // User arguments
