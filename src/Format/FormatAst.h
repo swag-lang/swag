@@ -50,11 +50,11 @@ struct FormatAst
     bool     outputStatement(FormatContext& context, AstNode* node);
     bool     outputDoStatement(FormatContext& context, AstNode* node);
 
-    void beautifyComment(FormatContext& context, Vector<TokenComment>& comments) const;
-    void beautifyBefore(FormatContext& context, AstNode* node) const;
-    void beautifyCommentBefore(FormatContext& context, AstNode* node) const;
-    void beautifyCommentJustBefore(FormatContext& context, AstNode* node) const;
-    void beautifyAfter(FormatContext& context, AstNode* node) const;
+    void beautifyComment(const FormatContext& context, Vector<TokenComment>& comments) const;
+    void beautifyBefore(const FormatContext& context, AstNode* node) const;
+    void beautifyCommentBefore(const FormatContext& context, AstNode* node) const;
+    void beautifyCommentJustBefore(const FormatContext& context, AstNode* node) const;
+    void beautifyAfter(const FormatContext& context, AstNode* node) const;
     void beautifyBlankLine(const FormatContext& context, AstNode* node) const;
 
     bool outputClosureArguments(FormatContext& context, AstFuncDecl* funcNode);

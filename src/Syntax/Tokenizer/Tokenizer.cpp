@@ -168,14 +168,14 @@ bool Tokenizer::doAfterToken(TokenParse& tokenParse)
             curBuffer++;
             TokenParse tmp;
             SWAG_CHECK(doSingleLineComment(tmp));
-            tokenParse.comments.commentAfterSameLine.push_back(std::move(tmp.comments.commentJustBefore.front()));
+            tokenParse.comments.commentJustAfter.push_back(std::move(tmp.comments.commentJustBefore.front()));
         }
         else if (curBuffer[0] == '/' && curBuffer[1] == '*')
         {
             curBuffer++;
             TokenParse tmp;
             SWAG_CHECK(doMultiLineComment(tmp));
-            tokenParse.comments.commentAfterSameLine.push_back(std::move(tmp.comments.commentJustBefore.front()));
+            tokenParse.comments.commentJustAfter.push_back(std::move(tmp.comments.commentJustBefore.front()));
         }
 
         return true;
@@ -189,10 +189,10 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
     ++g_Stats.numTokens;
 #endif
 
-    tokenParse.literalType      = LiteralType::TypeMax;
-    tokenParse.token.sourceFile = sourceFile;
-    tokenParse.comments.commentJustBefore.clear();
-    tokenParse.comments.commentAfterSameLine.clear();
+    tokenParse.literalType                = LiteralType::TypeMax;
+    tokenParse.token.sourceFile           = sourceFile;
+    tokenParse.comments.commentJustBefore = tokenParse.comments.commentJustAfter;
+    tokenParse.comments.commentJustAfter.clear();
 
     tokenParse.flags.remove(TOKEN_PARSE_BLANK_BEFORE);
     if (tokenParse.flags.has(TOKEN_PARSE_BLANK_AFTER))
@@ -225,6 +225,9 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         ///////////////////////////////////////////
         if (SWAG_IS_EOL(c) || SWAG_IS_WIN_EOL(c))
         {
+            if (!tokenParse.comments.commentJustBefore.empty())
+                tokenParse.comments.commentJustBefore.back().flags.add(TOKEN_PARSE_EOL_AFTER);
+
             if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
             {
                 tokenParse.comments.commentBefore.append(tokenParse.comments.commentJustBefore);
@@ -232,7 +235,10 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
                 tokenParse.flags.add(TOKEN_PARSE_BLANK_LINE_BEFORE);
             }
             else
+            {
                 tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE);
+            }
+
             if (SWAG_IS_WIN_EOL(c) && SWAG_IS_EOL(curBuffer[0]))
                 readChar();
             continue;

@@ -3,18 +3,10 @@
 #include "Semantic/Semantic.h"
 #include "Syntax/Tokenizer/TokenParse.h"
 
-void FormatAst::beautifyComment(FormatContext& context, Vector<TokenComment>& comments) const
+void FormatAst::beautifyComment(const FormatContext& context, Vector<TokenComment>& comments) const
 {
-    bool first = true;
     for (const auto& v : comments)
     {
-        if (!first)
-        {
-            concat->addEol();
-            concat->addIndent(context.indent);
-        }
-        first = false;
-
         if (v.flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
         {
             concat->addBlankLine();
@@ -31,19 +23,25 @@ void FormatAst::beautifyComment(FormatContext& context, Vector<TokenComment>& co
             cmt += "*/";
 
         concat->addString(cmt);
+
+        if(v.flags.has(TOKEN_PARSE_EOL_AFTER))
+        {
+            concat->addEol();
+            concat->addIndent(context.indent);
+        }
     }
 
     comments.clear();
 }
 
-void FormatAst::beautifyBefore(FormatContext& context, AstNode* node) const
+void FormatAst::beautifyBefore(const FormatContext& context, AstNode* node) const
 {
     beautifyCommentBefore(context, node);
     beautifyBlankLine(context, node);
     beautifyCommentJustBefore(context, node);
 }
 
-void FormatAst::beautifyCommentBefore(FormatContext& context, AstNode* node) const
+void FormatAst::beautifyCommentBefore(const FormatContext& context, AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
@@ -52,11 +50,11 @@ void FormatAst::beautifyCommentBefore(FormatContext& context, AstNode* node) con
         return;
 
     beautifyComment(context, to->comments.commentBefore);
-    concat->addEol();
-    concat->addIndent(context.indent);
+//    concat->addEol();
+//    concat->addIndent(context.indent);
 }
 
-void FormatAst::beautifyCommentJustBefore(FormatContext& context, AstNode* node) const
+void FormatAst::beautifyCommentJustBefore(const FormatContext& context, AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
@@ -65,8 +63,8 @@ void FormatAst::beautifyCommentJustBefore(FormatContext& context, AstNode* node)
         return;
 
     beautifyComment(context, to->comments.commentJustBefore);
-    concat->addEol();
-    concat->addIndent(context.indent);
+//    concat->addEol();
+//    concat->addIndent(context.indent);
 }
 
 void FormatAst::beautifyBlankLine(const FormatContext& context, AstNode* node) const
@@ -82,14 +80,14 @@ void FormatAst::beautifyBlankLine(const FormatContext& context, AstNode* node) c
     concat->addIndent(context.indent);
 }
 
-void FormatAst::beautifyAfter(FormatContext& context, AstNode* node) const
+void FormatAst::beautifyAfter(const FormatContext& context, AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
-    if (!to || to->comments.commentAfterSameLine.empty())
+    if (!to || to->comments.commentJustAfter.empty())
         return;
 
     concat->addBlank();
-    beautifyComment(context, to->comments.commentAfterSameLine);
+    beautifyComment(context, to->comments.commentJustAfter);
 }

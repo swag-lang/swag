@@ -198,6 +198,7 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
         concat->addChar(':');
         concat->addEol();
         context.indent++;
+        concat->addIndent(context.indent);
         SWAG_CHECK(outputNode(context, c->block));
         concat->addEol();
         context.indent--;

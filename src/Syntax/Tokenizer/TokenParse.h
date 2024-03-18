@@ -73,7 +73,7 @@ struct TokenFormat
 
     Vector<TokenComment> commentBefore;
     Vector<TokenComment> commentJustBefore;
-    Vector<TokenComment> commentAfterSameLine;
+    Vector<TokenComment> commentJustAfter;
     TokenParseFlags      flags = 0;
 };
 

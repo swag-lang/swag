@@ -89,8 +89,8 @@ Utf8 GenDoc::getDocComment(const AstNode* node)
         while (scan)
         {
             const auto to = scan->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
-            if (to && !to->comments.commentAfterSameLine.empty())
-                return TokenFormat::toString(to->comments.commentAfterSameLine);
+            if (to && !to->comments.commentJustAfter.empty())
+                return TokenFormat::toString(to->comments.commentJustAfter);
             scan = scan->lastChild();
         }
 

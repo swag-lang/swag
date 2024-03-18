@@ -180,7 +180,7 @@ void AstNode::inheritFormatFromAfter(const Parser* parser, AstNode* other)
     if (to)
     {
         const auto tp                     = Allocator::alloc<TokenParse>();
-        tp->comments.commentAfterSameLine = std::move(to->comments.commentAfterSameLine);
+        tp->comments.commentJustAfter = std::move(to->comments.commentJustAfter);
         addExtraPointer(ExtraPointerKind::TokenParse, tp);
     }
 }
@@ -190,10 +190,10 @@ void AstNode::inheritFormatFromAfter(const Parser* parser, TokenParse& tokenPars
     if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
 
-    if (!tokenParse.comments.commentAfterSameLine.empty())
+    if (!tokenParse.comments.commentJustAfter.empty())
     {
         const auto tp                     = Allocator::alloc<TokenParse>();
-        tp->comments.commentAfterSameLine = std::move(tokenParse.comments.commentAfterSameLine);
+        tp->comments.commentJustAfter = std::move(tokenParse.comments.commentJustAfter);
         addExtraPointer(ExtraPointerKind::TokenParse, tp);
     }
 }
