@@ -346,7 +346,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                     Ast::removeFromParent(typeExpression);
                     const auto newTypeExpression         = Ast::newTypeExpression(nullptr, paramNode);
                     paramNode->type                      = newTypeExpression;
-                    newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
+                    newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoTypedVariadic;
                     newTypeExpression->token.endLocation = tokenParse.token.endLocation;
                     SWAG_CHECK(eatToken());
                     Ast::addChildBack(paramNode->type, typeExpression);

@@ -43,6 +43,11 @@ void TypeManager::setup()
     typeInfoVariadic->name.setView("...", 3);
     typeInfoVariadic->sizeOf = 2 * sizeof(Register);
 
+    typeInfoTypedVariadic       = new TypeInfoVariadic();
+    typeInfoTypedVariadic->kind = TypeInfoKind::TypedVariadic;
+    typeInfoTypedVariadic->name.setView("?...", 4);
+    typeInfoTypedVariadic->sizeOf = 2 * sizeof(Register);
+
     typeInfoCVariadic       = new TypeInfoVariadic();
     typeInfoCVariadic->kind = TypeInfoKind::CVariadic;
     typeInfoCVariadic->name.setView("cvarargs", 8);

@@ -377,10 +377,10 @@ bool Semantic::resolveType(SemanticContext* context)
         typeNode->typeInfo = typeNode->typeFromLiteral;
 
         // Typed variadic ?
-        if (typeNode->typeInfo->isVariadic() && !typeNode->children.empty())
+        if (typeNode->typeInfo->isTypedVariadic())
         {
+            SWAG_ASSERT(!typeNode->children.empty());
             const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(typeNode->typeInfo->clone());
-            typeVariadic->kind      = TypeInfoKind::TypedVariadic;
             typeVariadic->rawType   = typeNode->firstChild()->typeInfo;
             typeVariadic->addFlag(typeVariadic->rawType->flags.mask(TYPEINFO_GENERIC));
             typeVariadic->forceComputeName();

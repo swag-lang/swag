@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Syntax/Parser/Parser_Push.h"
 #include "Semantic/Semantic.h"
-#include "Wmf/SourceFile.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Parser/Parser_Push.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/SourceFile.h"
 
 bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
@@ -150,7 +150,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
                 curIsAlone = false;
                 Ast::removeFromParent(typeExpr);
                 auto newTypeExpression               = Ast::newTypeExpression(nullptr, params);
-                newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
+                newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoTypedVariadic;
                 newTypeExpression->token.endLocation = tokenParse.token.endLocation;
                 SWAG_CHECK(eatToken());
                 Ast::addChildBack(newTypeExpression, typeExpr);
