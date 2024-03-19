@@ -123,6 +123,7 @@
 <tr><td> <a href="std.win32.php">std.win32</a>       </td><td> Windows <span class="code-inline">win32</span> wrapper (kernel32, user32...)</td></tr>
 <tr><td> <a href="std.gdi32.php">std.gdi32</a>       </td><td> Windows <span class="code-inline">gdi32</span> wrapper</td></tr>
 <tr><td> <a href="std.xinput.php">std.xinput</a>     </td><td> Windows 'direct X input' wrapper</td></tr>
+<tr><td> <a href="std.xaudio2.php">std.xaudio2</a>   </td><td> <span class="code-inline">xaudio2</span> wrapper</td></tr>
 </table>
 <div class="swag-watermark">
 Generated on 19-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>

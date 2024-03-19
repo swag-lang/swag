@@ -18,3 +18,4 @@ Those other modules are just wrappers to external libraries.
 | [std.win32](std.win32.php)       | Windows 'win32' wrapper (kernel32, user32...)
 | [std.gdi32](std.gdi32.php)       | Windows 'gdi32' wrapper
 | [std.xinput](std.xinput.php)     | Windows 'direct X input' wrapper
+| [std.xaudio2](std.xaudio2.php)   | 'xaudio2' wrapper
