@@ -726,187 +726,187 @@
 <table class="table-enumeration">
 <tr>
 <td id="Libc_clock_t">clock_t</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_clock_t">clock_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_double_t">double_t</td>
-<td class="code-type"><span class="STpe">f64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_double_t">double_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_float_t">float_t</td>
-<td class="code-type"><span class="STpe">f32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_float_t">float_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_fpos_t">fpos_t</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_fpos_t">fpos_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int16_t">int16_t</td>
-<td class="code-type"><span class="STpe">s16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int16_t">int16_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int32_t">int32_t</td>
-<td class="code-type"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int32_t">int32_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int64_t">int64_t</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int64_t">int64_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int8_t">int8_t</td>
-<td class="code-type"><span class="STpe">s8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int8_t">int8_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int_fast16_t">int_fast16_t</td>
-<td class="code-type"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int_fast16_t">int_fast16_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int_fast32_t">int_fast32_t</td>
-<td class="code-type"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int_fast32_t">int_fast32_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int_fast64_t">int_fast64_t</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int_fast64_t">int_fast64_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int_fast8_t">int_fast8_t</td>
-<td class="code-type"><span class="STpe">s8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int_fast8_t">int_fast8_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int_least16_t">int_least16_t</td>
-<td class="code-type"><span class="STpe">s16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int_least16_t">int_least16_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int_least32_t">int_least32_t</td>
-<td class="code-type"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int_least32_t">int_least32_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int_least64_t">int_least64_t</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int_least64_t">int_least64_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_int_least8_t">int_least8_t</td>
-<td class="code-type"><span class="STpe">s8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_int_least8_t">int_least8_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_intmax_t">intmax_t</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_intmax_t">intmax_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_intptr_t">intptr_t</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_intptr_t">intptr_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_ptrdiff_t">ptrdiff_t</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_ptrdiff_t">ptrdiff_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_size_t">size_t</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_size_t">size_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_time_t">time_t</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_time_t">time_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint16_t">uint16_t</td>
-<td class="code-type"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint16_t">uint16_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint32_t">uint32_t</td>
-<td class="code-type"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint32_t">uint32_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint64_t">uint64_t</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint64_t">uint64_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint8_t">uint8_t</td>
-<td class="code-type"><span class="STpe">u8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint8_t">uint8_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint_fast16_t">uint_fast16_t</td>
-<td class="code-type"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint_fast16_t">uint_fast16_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint_fast32_t">uint_fast32_t</td>
-<td class="code-type"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint_fast32_t">uint_fast32_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint_fast64_t">uint_fast64_t</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint_fast64_t">uint_fast64_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint_fast8_t">uint_fast8_t</td>
-<td class="code-type"><span class="STpe">u8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint_fast8_t">uint_fast8_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint_least16_t">uint_least16_t</td>
-<td class="code-type"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint_least16_t">uint_least16_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint_least32_t">uint_least32_t</td>
-<td class="code-type"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint_least32_t">uint_least32_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint_least64_t">uint_least64_t</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint_least64_t">uint_least64_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uint_least8_t">uint_least8_t</td>
-<td class="code-type"><span class="STpe">u8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uint_least8_t">uint_least8_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uintmax_t">uintmax_t</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uintmax_t">uintmax_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_uintptr_t">uintptr_t</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_uintptr_t">uintptr_t</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_va_list">va_list</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">CVaList</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_va_list">va_list</a></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Libc_wchar_t">wchar_t</td>
-<td class="code-type"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><a href="#Libc_wchar_t">wchar_t</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -1016,7 +1016,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acrt_iob_func</span>(index: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acrt_iob_func</span>(index: <span class="STpe">u32</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1304,7 +1304,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clock</span>()-&gt;<span class="SCst">Libc</span>.<a href="#Libc_clock_t">clock_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clock</span>()-&gt;<span class="SCst"></span><a href="#Libc_clock_t">clock_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1412,7 +1412,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">div</span>(numer, denom: <span class="STpe">s32</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_div_t">div_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">div</span>(numer, denom: <span class="STpe">s32</span>)-&gt;<span class="SCst"></span><a href="#Libc_div_t">div_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1831,7 +1831,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fopen</span>(filename, mode: <span class="STpe">cstring</span>)-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fopen</span>(filename, mode: <span class="STpe">cstring</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1891,7 +1891,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fread</span>(ptr: *<span class="STpe">void</span>, size: <a href="#Libc_size_t">size_t</a>, stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fread</span>(ptr: *<span class="STpe">void</span>, size: <a href="#Libc_size_t">size_t</a>, stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="SCst"></span><a href="#Libc_size_t">size_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1915,7 +1915,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">freopen</span>(filename, mode: <span class="STpe">cstring</span>, stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">freopen</span>(filename, mode: <span class="STpe">cstring</span>, stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1999,7 +1999,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fwrite</span>(ptr: *<span class="STpe">void</span>, size: <a href="#Libc_size_t">size_t</a>, nmemb: <a href="#Libc_size_t">size_t</a>, stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fwrite</span>(ptr: *<span class="STpe">void</span>, size: <a href="#Libc_size_t">size_t</a>, nmemb: <a href="#Libc_size_t">size_t</a>, stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="SCst"></span><a href="#Libc_size_t">size_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2047,7 +2047,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">gmtime</span>(timer: *<a href="#Libc_time_t">time_t</a>)-&gt;*<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">gmtime</span>(timer: *<a href="#Libc_time_t">time_t</a>)-&gt;*<span class="SCst"></span><a href="#Libc_tm">tm</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2417,7 +2417,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ldiv</span>(numer, denom: <span class="STpe">s32</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_ldiv_t">ldiv_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ldiv</span>(numer, denom: <span class="STpe">s32</span>)-&gt;<span class="SCst"></span><a href="#Libc_ldiv_t">ldiv_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2488,7 +2488,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lldiv</span>(numer, denom: <span class="STpe">s64</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_lldiv_t">lldiv_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lldiv</span>(numer, denom: <span class="STpe">s64</span>)-&gt;<span class="SCst"></span><a href="#Libc_lldiv_t">lldiv_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2571,7 +2571,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">localtime</span>(timer: *<a href="#Libc_time_t">time_t</a>)-&gt;*<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">localtime</span>(timer: *<a href="#Libc_time_t">time_t</a>)-&gt;*<span class="SCst"></span><a href="#Libc_tm">tm</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2775,7 +2775,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mbstowcs</span>(pwcs: *<a href="#Libc_wchar_t">wchar_t</a>, s: <span class="STpe">cstring</span>, n: <a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mbstowcs</span>(pwcs: *<a href="#Libc_wchar_t">wchar_t</a>, s: <span class="STpe">cstring</span>, n: <a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst"></span><a href="#Libc_size_t">size_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2859,7 +2859,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mktime</span>(timeptr: *<a href="#Libc_tm">tm</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mktime</span>(timeptr: *<a href="#Libc_tm">tm</a>)-&gt;<span class="SCst"></span><a href="#Libc_time_t">time_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3556,7 +3556,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcspn</span>(str1, str2: <span class="STpe">cstring</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcspn</span>(str1, str2: <span class="STpe">cstring</span>)-&gt;<span class="SCst"></span><a href="#Libc_size_t">size_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3580,7 +3580,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strftime</span>(s: *<span class="STpe">u8</span>, maxsize: <a href="#Libc_size_t">size_t</a>, format: <span class="SKwd">const</span> *<span class="STpe">u8</span>, timeptr: *<a href="#Libc_tm">tm</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strftime</span>(s: *<span class="STpe">u8</span>, maxsize: <a href="#Libc_size_t">size_t</a>, format: <span class="SKwd">const</span> *<span class="STpe">u8</span>, timeptr: *<a href="#Libc_tm">tm</a>)-&gt;<span class="SCst"></span><a href="#Libc_size_t">size_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3592,7 +3592,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strlen</span>(s: <span class="STpe">cstring</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strlen</span>(s: <span class="STpe">cstring</span>)-&gt;<span class="SCst"></span><a href="#Libc_size_t">size_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3664,7 +3664,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strspn</span>(str1, str2: <span class="STpe">cstring</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strspn</span>(str1, str2: <span class="STpe">cstring</span>)-&gt;<span class="SCst"></span><a href="#Libc_size_t">size_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3772,7 +3772,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strxfrm</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>, num: <a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strxfrm</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>, num: <a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst"></span><a href="#Libc_size_t">size_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3868,7 +3868,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">time</span>(timer: *<a href="#Libc_time_t">time_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">time</span>(timer: *<a href="#Libc_time_t">time_t</a>)-&gt;<span class="SCst"></span><a href="#Libc_time_t">time_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3938,7 +3938,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tmpfile</span>()-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tmpfile</span>()-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4132,7 +4132,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wcstombs</span>(s: *<span class="STpe">u8</span>, pwcs: *<a href="#Libc_wchar_t">wchar_t</a>, n: <a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wcstombs</span>(s: *<span class="STpe">u8</span>, pwcs: *<a href="#Libc_wchar_t">wchar_t</a>, n: <a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst"></span><a href="#Libc_size_t">size_t</a></span></div>
 <p>
 <table class="api-item">
 <tr>

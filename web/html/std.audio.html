@@ -210,12 +210,12 @@
 <table class="table-enumeration">
 <tr>
 <td id="Audio_BusHandle">BusHandle</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SubmixVoice</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Audio_BusHandle">BusHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Audio_VoiceHandle">VoiceHandle</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SourceVoice</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Audio_VoiceHandle">VoiceHandle</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -234,7 +234,7 @@
 <table class="table-enumeration">
 <tr>
 <td>handle</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SubmixVoice</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Audio_BusHandle">BusHandle</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -278,7 +278,7 @@
 </table>
 </p>
 <p>Creates an audio bus. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(numChannels: <span class="STpe">u32</span>, parent: *<span class="SCst"><a href="#Audio_Bus">Bus</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(numChannels: <span class="STpe">u32</span>, parent: *<span class="SCst"><a href="#Audio_Bus">Bus</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Audio_Bus">Bus</a></span> <span class="SKwd">throw</span></span></div>
 <p>You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a> Note that you can have a graph of buses, because a bus can have another bus as <span class="code-inline">parent</span>. </p>
 <p>
 <table class="api-item">
@@ -360,17 +360,17 @@
 <table class="table-enumeration">
 <tr>
 <td>srcEncoding</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
 <td>The original encoding. </td>
 </tr>
 <tr>
 <td>dstEncoding</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
 <td>The requested encoding. </td>
 </tr>
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfoStruct</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoStruct</span></span></td>
 <td>The real type of the codec. </td>
 </tr>
 </table>
@@ -389,22 +389,22 @@
 <table class="table-enumeration">
 <tr>
 <td>canEncode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>,&nbsp;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SCst"></span><span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>canDecode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>,&nbsp;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SCst"></span><span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>init</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>,&nbsp;^<span class="STpe">void</span>,&nbsp;<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>&nbsp;<span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>decode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>,&nbsp;^<span class="STpe">void</span>,&nbsp;<span class="STpe">u64</span>,&nbsp;^<span class="STpe">void</span>,&nbsp;<span class="STpe">u64</span>)-&gt;{write:<span class="STpe">u64</span>,read:<span class="STpe">u64</span>}&nbsp;<span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;{write:<span class="STpe">u64</span>,read:<span class="STpe">u64</span>} <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -448,12 +448,12 @@
 </tr>
 <tr>
 <td>encoding</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
 <td>Encoding type of the datas. </td>
 </tr>
 <tr>
 <td>validity</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></span></span></td>
 <td>What informations in this struct are valid. </td>
 </tr>
 <tr>
@@ -507,7 +507,7 @@
 </table>
 </p>
 <p>Load a <span class="code-inline">SoundFile</span> from disk. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>)-&gt;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span> <span class="SKwd">throw</span></span></div>
 <p>Will load the sound datas if <span class="code-inline">loadDatas</span> is true. Will load the sound metadatas if <span class="code-inline">loadMetaData</span> is true. </p>
 <p>
 <table class="api-item">
@@ -684,7 +684,7 @@
 </table>
 </p>
 <p>Creates a new voice for a given sound file. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(file: *<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(file: *<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></div>
 <p>A voice is what will be actually played. You can have as many voices as you want for one unique <a href="#Audio_SoundFile">SoundFile</a>. </p>
 <p>
 <table class="api-item">
@@ -763,7 +763,7 @@
 </table>
 </p>
 <p>Creates a voice and plays it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(file: *<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(file: *<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></div>
 <p>Plays a voice. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Zero</span>) <span class="SKwd">throw</span></span></div>
 <p>By default, the voice will be destroyed when stopped or finished. </p>

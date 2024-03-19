@@ -2130,12 +2130,12 @@
 <table class="table-enumeration">
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>params</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AttributeParam">AttributeParam</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AttributeParam">AttributeParam</a></span></span></td>
 <td>Attribute parameters. </td>
 </tr>
 </table>
@@ -2792,7 +2792,7 @@
 <table class="table-enumeration">
 <tr>
 <td>buf</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">2048</span>]&nbsp;<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">2048</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2851,7 +2851,7 @@
 </tr>
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>Depends on <span class="code-inline">kind</span>. </td>
 </tr>
 <tr>
@@ -3053,12 +3053,12 @@
 </tr>
 <tr>
 <td>traces</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">32</span>]&nbsp;<span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
 <td>Stack trace, in case of errors. </td>
 </tr>
 <tr>
 <td>errors</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">32</span>]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ErrorValue">ErrorValue</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ErrorValue">ErrorValue</a></span></span></td>
 <td>All errors. </td>
 </tr>
 <tr>
@@ -3068,12 +3068,12 @@
 </tr>
 <tr>
 <td>exceptionParams</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">4</span>]&nbsp;<span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">4</span>] <span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td>When an exception is raised, this are the parameters. </td>
 </tr>
 <tr>
 <td>panic</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="STpe">string</span>,&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="STpe">string</span>, <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></td>
 <td>A function to call if there's a panic. </td>
 </tr>
 <tr>
@@ -3480,7 +3480,7 @@
 </tr>
 <tr>
 <td>stack</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">16</span>]&nbsp;*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">16</span>] *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3722,7 +3722,7 @@
 <table class="table-enumeration">
 <tr>
 <td>req</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>,&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>, *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -3753,7 +3753,7 @@
 <table class="table-enumeration">
 <tr>
 <td>getMessage</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;<span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></td>
 <td>Returns the compiler message in a <span class="code-inline">#message</span> function. </td>
 </tr>
 <tr>
@@ -3763,7 +3763,7 @@
 </tr>
 <tr>
 <td>compileString</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>,&nbsp;<span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>, <span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -3868,7 +3868,7 @@
 </tr>
 <tr>
 <td>itable</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;^^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^^<span class="STpe">void</span></span></td>
 <td>Pointer to the virtual table. </td>
 </tr>
 </table>
@@ -3936,7 +3936,7 @@
 </tr>
 <tr>
 <td>types</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>All exported types. </td>
 </tr>
 </table>
@@ -4157,7 +4157,7 @@
 <table class="table-enumeration">
 <tr>
 <td>modules</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Module">Module</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Module">Module</a></span></span></td>
 <td>The list of all modules. </td>
 </tr>
 <tr>
@@ -4716,7 +4716,7 @@
 </tr>
 <tr>
 <td>padding</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>]&nbsp;<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4739,7 +4739,7 @@
 </tr>
 <tr>
 <td>rawType</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 </table>
@@ -4762,12 +4762,12 @@
 </tr>
 <tr>
 <td>pointedType</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 <tr>
 <td>finalType</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>If this is an array with multiple dimensions, this will be the final type. </td>
 </tr>
 <tr>
@@ -4800,17 +4800,17 @@
 </tr>
 <tr>
 <td>values</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the values. </td>
 </tr>
 <tr>
 <td>rawType</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying enum type. </td>
 </tr>
 <tr>
 <td>attributes</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>All the attributes. </td>
 </tr>
 </table>
@@ -4919,22 +4919,22 @@
 </tr>
 <tr>
 <td>generics</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>Generic parameters. </td>
 </tr>
 <tr>
 <td>parameters</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>Parameters. </td>
 </tr>
 <tr>
 <td>returnType</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The return type, or <span class="code-inline">null</span>. </td>
 </tr>
 <tr>
 <td>attributes</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>All the attributes. </td>
 </tr>
 </table>
@@ -4957,7 +4957,7 @@
 </tr>
 <tr>
 <td>rawType</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5198,7 +5198,7 @@
 </tr>
 <tr>
 <td>pointedType</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The pointed type. </td>
 </tr>
 </table>
@@ -5221,7 +5221,7 @@
 </tr>
 <tr>
 <td>pointedType</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 </table>
@@ -5269,32 +5269,32 @@
 </tr>
 <tr>
 <td>fromGeneric</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>If it comes from a generic instantiation, this is the original generic struct. </td>
 </tr>
 <tr>
 <td>generics</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>Generic parameters. </td>
 </tr>
 <tr>
 <td>fields</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the fields. </td>
 </tr>
 <tr>
 <td>methods</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the methods, if exported. </td>
 </tr>
 <tr>
 <td>interfaces</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the interfaces. </td>
 </tr>
 <tr>
 <td>attributes</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>All the attributes. </td>
 </tr>
 </table>
@@ -5317,7 +5317,7 @@
 </tr>
 <tr>
 <td>rawType</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 </table>
@@ -5341,17 +5341,17 @@
 </tr>
 <tr>
 <td>pointedType</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>Type of the value. </td>
 </tr>
 <tr>
 <td>value</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td>Pointer to the constant value. </td>
 </tr>
 <tr>
 <td>attributes</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>Associated attributes. </td>
 </tr>
 <tr>

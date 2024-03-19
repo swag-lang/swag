@@ -242,37 +242,37 @@
 <table class="table-enumeration">
 <tr>
 <td>wButtons</td>
-<td class="code-type"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">WORD</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>bLeftTrigger</td>
-<td class="code-type"><span class="STpe">u8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>bRightTrigger</td>
-<td class="code-type"><span class="STpe">u8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sThumbLX</td>
-<td class="code-type"><span class="STpe">s16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">SHORT</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sThumbLY</td>
-<td class="code-type"><span class="STpe">s16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">SHORT</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sThumbRX</td>
-<td class="code-type"><span class="STpe">s16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">SHORT</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sThumbRY</td>
-<td class="code-type"><span class="STpe">s16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">SHORT</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -290,12 +290,12 @@
 <table class="table-enumeration">
 <tr>
 <td>dwPacketNumber</td>
-<td class="code-type"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>Gamepad</td>
-<td class="code-type"><span class="SCde"><span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -313,12 +313,12 @@
 <table class="table-enumeration">
 <tr>
 <td>wLeftMotorSpeed</td>
-<td class="code-type"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">WORD</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>wRightMotorSpeed</td>
-<td class="code-type"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">WORD</span></span></td>
 <td></td>
 </tr>
 </table>

@@ -952,27 +952,27 @@
 <table class="table-enumeration">
 <tr>
 <td id="Gui_Clipboard_Format">Format</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Gui_FrameCallback">FrameCallback</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameCallback">FrameCallback</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Gui_HookEvent">HookEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Gui_RichEditStyleRef">RichEditStyleRef</td>
-<td class="code-type"><span class="STpe">u8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Gui_WndId">WndId</td>
-<td class="code-type"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -990,12 +990,12 @@
 <table class="table-enumeration">
 <tr>
 <td>wnd</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>id</td>
-<td class="code-type"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1046,12 +1046,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using native</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ApplicationNative">ApplicationNative</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ApplicationNative">ApplicationNative</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigFrame</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Application">Application</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
@@ -1066,12 +1066,12 @@
 </tr>
 <tr>
 <td>theme</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Theme">Theme</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Theme">Theme</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>style</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -1086,37 +1086,37 @@
 </tr>
 <tr>
 <td>mainSurface</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>postedEvents</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>surfaces</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Surface">Surface</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>postDestroy</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>hookEvents</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>cursorStack</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Cursor">Cursor</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_Cursor">Cursor</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>endModalExit</td>
-<td class="code-type"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -1166,47 +1166,47 @@
 </tr>
 <tr>
 <td>timers</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Timer">Timer</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>timersToAdd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Timer">Timer</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>timersToDelete</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Timer">Timer</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameEvents</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>modalSurfaces</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Surface">Surface</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>toDelete</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({ptr:*<span class="STpe">void</span>,type:<span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>})</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({ptr:*<span class="STpe">void</span>,type:<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>})</span></td>
 <td></td>
 </tr>
 <tr>
 <td>mouseEnterWnd</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>mouseCaptureWnd</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>keybFocusWnd</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -1221,7 +1221,7 @@
 </tr>
 <tr>
 <td>hotKeys</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyShortcut">KeyShortcut</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_KeyShortcut">KeyShortcut</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -1380,7 +1380,7 @@
 </table>
 </p>
 <p>Register a new timer for the given <span class="code-inline">target</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addTimer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, time: <span class="SCst">Time</span>.<span class="SCst">Duration</span>, target: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addTimer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, time: <span class="SCst">Time</span>.<span class="SCst">Duration</span>, target: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1393,7 +1393,7 @@
 </table>
 </p>
 <p>Creates a new surface. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y, width, height: <span class="STpe">s32</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">OverlappedWindow</span>, view: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, hook: <span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y, width, height: <span class="STpe">s32</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">OverlappedWindow</span>, view: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, hook: <span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Surface">Surface</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1431,7 +1431,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModalLoop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, surface: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, cb: <span class="SKwd">closure</span>(*<span class="SCst"><a href="#Gui_Application">Application</a></span>) = <span class="SKwd">null</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModalLoop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, surface: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, cb: <span class="SKwd">closure</span>(*<span class="SCst"><a href="#Gui_Application">Application</a></span>) = <span class="SKwd">null</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1456,7 +1456,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDirectoryIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, small = <span class="SKwd">true</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDirectoryIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, small = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1480,7 +1480,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFileIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, small = <span class="SKwd">true</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFileIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, small = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1493,7 +1493,7 @@
 </table>
 </p>
 <p>Get the id associated with a shortcut. null if none. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getHotKeyShortcut</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Input</span>.<span class="SCst">Key</span>)-&gt;{id:<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>,wnd:*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getHotKeyShortcut</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Input</span>.<span class="SCst">Key</span>)-&gt;{id:<span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span>,wnd:*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1543,7 +1543,7 @@
 </table>
 </p>
 <p>Return the captured wnd for mouse. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMouseCapture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMouseCapture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1568,7 +1568,7 @@
 </table>
 </p>
 <p>Returns the window under the given point. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWndAtMouse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWndAtMouse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1833,12 +1833,12 @@
 </tr>
 <tr>
 <td>fileSmallIconsImageList</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>mapFileSmallIcons</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">string</span>,&nbsp;<span class="STpe">s32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">string</span>, <span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -1848,12 +1848,12 @@
 </tr>
 <tr>
 <td>fileBigIconsImageList</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>mapFileBigIcons</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">string</span>,&nbsp;<span class="STpe">s32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">string</span>, <span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -1983,22 +1983,22 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>icon</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigPressed</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Button">Button</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigRightPressed</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Button">Button</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2061,22 +2061,22 @@
 <table class="table-enumeration">
 <tr>
 <td>using button</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>checked</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ButtonCheckState">ButtonCheckState</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ButtonCheckState">ButtonCheckState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>checkButtonFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CheckButtonFlags">CheckButtonFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_CheckButtonFlags">CheckButtonFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CheckButton">CheckButton</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_CheckButton">CheckButton</a></span>))</span></td>
 <td></td>
 </tr>
 </table>
@@ -2122,7 +2122,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CheckButton">CheckButton</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_CheckButton">CheckButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2329,7 +2329,7 @@
 </table>
 </p>
 <p>Register a new format. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerFormat</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerFormat</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2344,7 +2344,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -2384,12 +2384,12 @@
 </tr>
 <tr>
 <td>mode</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerMode">ColorPickerMode</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ColorPickerMode">ColorPickerMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2518,7 +2518,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2572,12 +2572,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerCtrl">ColorPickerCtrl</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ColorPickerCtrl">ColorPickerCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2597,82 +2597,82 @@
 </tr>
 <tr>
 <td>mode</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerViewMode">ColorPickerViewMode</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ColorPickerViewMode">ColorPickerViewMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>staticRes</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>pickBox</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>pickBar</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>pickAlpha</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>editR</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>editG</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>editB</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>editA</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>editH</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>radioH</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>radioL</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>radioS</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>radioR</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>radioG</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>radioB</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2718,7 +2718,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerCtrl">ColorPickerCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ColorPickerCtrl">ColorPickerCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2902,12 +2902,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>kind</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBoxKind">ComboBoxKind</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ComboBoxKind">ComboBoxKind</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -2922,12 +2922,12 @@
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span>,&nbsp;<span class="STpe">u32</span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span>, <span class="STpe">u32</span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>editBox</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -2937,7 +2937,7 @@
 </tr>
 <tr>
 <td>popup</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -2952,17 +2952,17 @@
 </tr>
 <tr>
 <td>aniBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniText</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3041,7 +3041,7 @@
 </table>
 </p>
 <p>Add a new item. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, userData0: *<span class="STpe">void</span> = <span class="SKwd">null</span>, userData1: *<span class="STpe">void</span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, userData0: *<span class="STpe">void</span> = <span class="SKwd">null</span>, userData1: *<span class="STpe">void</span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3079,7 +3079,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, kind = <span class="SCst"><a href="#Gui_ComboBoxKind">ComboBoxKind</a></span>.<span class="SCst">Select</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, kind = <span class="SCst"><a href="#Gui_ComboBoxKind">ComboBoxKind</a></span>.<span class="SCst">Select</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3092,7 +3092,7 @@
 </table>
 </p>
 <p>Returns the selected item. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3120,7 +3120,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Item">Item</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Item">Item</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3168,7 +3168,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3183,12 +3183,12 @@
 </tr>
 <tr>
 <td>label</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>combo</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3222,7 +3222,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboCtrl">ComboCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ComboCtrl">ComboCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3237,17 +3237,17 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>id</td>
-<td class="code-type"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>source</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3265,22 +3265,22 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>id</td>
-<td class="code-type"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>source</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>icon</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3305,7 +3305,7 @@
 </tr>
 <tr>
 <td>setFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>.<span class="SCst">SetFlags</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>.<span class="SCst">SetFlags</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3338,7 +3338,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3356,7 +3356,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using native</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NativeCursor">NativeCursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_NativeCursor">NativeCursor</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3414,7 +3414,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(shape: <span class="SCst"><a href="#Gui_CursorShape">CursorShape</a></span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Cursor">Cursor</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(shape: <span class="SCst"><a href="#Gui_CursorShape">CursorShape</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_Cursor">Cursor</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3503,7 +3503,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3521,22 +3521,22 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>wndBottom</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StackLayoutCtrl">StackLayoutCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_StackLayoutCtrl">StackLayoutCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>buttons</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PushButton">PushButton</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_PushButton">PushButton</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigPressedButton</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>,&nbsp;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>, <span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3599,7 +3599,7 @@
 </table>
 </p>
 <p>Add a button. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addButton</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span>, isDefault: <span class="STpe">bool</span> = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PushButton">PushButton</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addButton</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span>, isDefault: <span class="STpe">bool</span> = <span class="SKwd">false</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_PushButton">PushButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3612,7 +3612,7 @@
 </table>
 </p>
 <p>Creates a simple dialog box. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createDialog</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, width = <span class="SNum">512</span>, height = <span class="SNum">300</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createDialog</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, width = <span class="SNum">512</span>, height = <span class="SNum">300</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3625,7 +3625,7 @@
 </table>
 </p>
 <p>Creates an associated surface. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, x, y: <span class="STpe">s32</span>, width = <span class="SNum">512</span>, height = <span class="SNum">300</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, x, y: <span class="STpe">s32</span>, width = <span class="SNum">512</span>, height = <span class="SNum">300</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3714,12 +3714,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>icon</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3729,17 +3729,17 @@
 </tr>
 <tr>
 <td>form</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxForm">EditBoxForm</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_EditBoxForm">EditBoxForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>editBoxFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxFlags">EditBoxFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_EditBoxFlags">EditBoxFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>inputMode</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxInputMode">EditBoxInputMode</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_EditBoxInputMode">EditBoxInputMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3754,27 +3754,27 @@
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigLoseFocus</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigEnterPressed</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigEscapePressed</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigCheckContent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxCheckResult">EditBoxCheckResult</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBoxCheckResult">EditBoxCheckResult</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3784,12 +3784,12 @@
 </tr>
 <tr>
 <td>aniBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3819,7 +3819,7 @@
 </tr>
 <tr>
 <td>timerCaret</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3970,7 +3970,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, content: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, content: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4244,7 +4244,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -4259,12 +4259,12 @@
 </tr>
 <tr>
 <td>label</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>edit</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4299,7 +4299,7 @@
 </table>
 </p>
 <p>Create the popup list, but do not display it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, text: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, flags: <span class="SCst"><a href="#Gui_EditBoxFlags">EditBoxFlags</a></span> = <span class="SCst">Zero</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditCtrl">EditCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, text: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, flags: <span class="SCst"><a href="#Gui_EditBoxFlags">EditBoxFlags</a></span> = <span class="SCst">Zero</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditCtrl">EditCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4314,22 +4314,22 @@
 <table class="table-enumeration">
 <tr>
 <td>using dialog</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>label</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>edit</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>richEdit</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4368,7 +4368,7 @@
 </table>
 </p>
 <p>Creates the message box. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createMultiLine</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, heightEdit = <span class="SNum">150</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditDlg">EditDlg</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createMultiLine</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, heightEdit = <span class="SNum">150</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditDlg">EditDlg</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4381,7 +4381,7 @@
 </table>
 </p>
 <p>Creates the message box. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSingleLine</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditDlg">EditDlg</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSingleLine</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditDlg">EditDlg</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4435,12 +4435,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>label</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4463,7 +4463,7 @@
 </table>
 </p>
 <p>Create the popup list, but do not display it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, kind: <span class="SCst"><a href="#Gui_EmbInfoCtrlKind">EmbInfoCtrlKind</a></span>, height = <span class="SNum">40</span>, top = <span class="SKwd">true</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EmbInfoCtrl">EmbInfoCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, kind: <span class="SCst"><a href="#Gui_EmbInfoCtrlKind">EmbInfoCtrlKind</a></span>, height = <span class="SNum">40</span>, top = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_EmbInfoCtrl">EmbInfoCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4499,17 +4499,17 @@
 <table class="table-enumeration">
 <tr>
 <td>kind</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EventKind">EventKind</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_EventKind">EventKind</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>target</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -4709,12 +4709,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using dialog</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>treeCtrl</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -4724,12 +4724,12 @@
 </tr>
 <tr>
 <td>listCtrl</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>comboPath</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -4739,17 +4739,17 @@
 </tr>
 <tr>
 <td>editFile</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>comboType</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>dlgOptions</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FileDlgOptions">FileDlgOptions</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FileDlgOptions">FileDlgOptions</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -4802,7 +4802,7 @@
 </table>
 </p>
 <p>Creates the message box. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, opt: <span class="SCst"><a href="#Gui_FileDlgOptions">FileDlgOptions</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FileDlg">FileDlg</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, opt: <span class="SCst"><a href="#Gui_FileDlgOptions">FileDlgOptions</a></span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_FileDlg">FileDlg</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4897,7 +4897,7 @@
 </tr>
 <tr>
 <td>mode</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FileDlgMode">FileDlgMode</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FileDlgMode">FileDlgMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -4912,7 +4912,7 @@
 </tr>
 <tr>
 <td>state</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FileDlgState">FileDlgState</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_FileDlgState">FileDlgState</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4953,12 +4953,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>other</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4997,7 +4997,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -5020,27 +5020,27 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>view</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameForm</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWndForm">FrameWndForm</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWndForm">FrameWndForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>anchor</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWndAnchor">FrameWndAnchor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWndAnchor">FrameWndAnchor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -5272,12 +5272,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>gridLayoutFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_GridLayoutCtrlFlags">GridLayoutCtrlFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_GridLayoutCtrlFlags">GridLayoutCtrlFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -5302,7 +5302,7 @@
 </tr>
 <tr>
 <td>layout</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5376,7 +5376,7 @@
 </table>
 </p>
 <p>Create a layout control. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, numColumns, numRows: <span class="STpe">s32</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_GridLayoutCtrl">GridLayoutCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, numColumns, numRows: <span class="STpe">s32</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_GridLayoutCtrl">GridLayoutCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5460,17 +5460,17 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>form</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderForm">HeaderForm</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_HeaderForm">HeaderForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>headerFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderFlags">HeaderFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_HeaderFlags">HeaderFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -5480,12 +5480,12 @@
 </tr>
 <tr>
 <td>sigLayoutChanged</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Header">Header</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Header">Header</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigClicked</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Header">Header</a></span>,&nbsp;<span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Header">Header</a></span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5619,7 +5619,7 @@
 </table>
 </p>
 <p>Add a new view. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tabName: <span class="STpe">string</span>, width = <span class="SNum">100</span>'<span class="STpe">f32</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tabName: <span class="STpe">string</span>, width = <span class="SNum">100</span>'<span class="STpe">f32</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5631,7 +5631,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Header">Header</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Header">Header</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5644,7 +5644,7 @@
 </table>
 </p>
 <p>Returns the given item, by index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5657,7 +5657,7 @@
 </table>
 </p>
 <p>Returns the given item, by column. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemByCol</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemByCol</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5814,7 +5814,7 @@
 </tr>
 <tr>
 <td>icon</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -5867,17 +5867,17 @@
 <table class="table-enumeration">
 <tr>
 <td>accept</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>,&nbsp;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ActionContext">ActionContext</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>, <span class="SCst"></span><span class="SCst"><a href="#Gui_ActionContext">ActionContext</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>update</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>,&nbsp;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ActionContext">ActionContext</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>, <span class="SCst"></span><span class="SCst"><a href="#Gui_ActionContext">ActionContext</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>execute</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>,&nbsp;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ActionContext">ActionContext</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>, <span class="SCst"></span><span class="SCst"><a href="#Gui_ActionContext">ActionContext</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5895,17 +5895,17 @@
 <table class="table-enumeration">
 <tr>
 <td>setup</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>insertRune</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>,&nbsp;<span class="STpe">rune</span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>, <span class="STpe">rune</span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>compute</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -5923,112 +5923,112 @@
 <table class="table-enumeration">
 <tr>
 <td>onEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onHookEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onCreateEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CreateEvent">CreateEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_CreateEvent">CreateEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onDestroyEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_DestroyEvent">DestroyEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_DestroyEvent">DestroyEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onStateEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StateEvent">StateEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_StateEvent">StateEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onResizeEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onPrePaintEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onPaintEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onPostPaintEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onKeyEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onMouseEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onSysCommandEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onSysUserEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysUserEvent">SysUserEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_SysUserEvent">SysUserEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onSetThemeEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SetThemeEvent">SetThemeEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_SetThemeEvent">SetThemeEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onTimerEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TimerEvent">TimerEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_TimerEvent">TimerEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onFocusEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FocusEvent">FocusEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_FocusEvent">FocusEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onCommandEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandEvent">CommandEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_CommandEvent">CommandEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onComputeStateEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onApplyStateEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onFrameEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameEvent">FrameEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_FrameEvent">FrameEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onSerializeStateEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SerializeStateEvent">SerializeStateEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_SerializeStateEvent">SerializeStateEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onNotifyEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -6046,7 +6046,7 @@
 <table class="table-enumeration">
 <tr>
 <td>imageList</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6113,7 +6113,7 @@
 </table>
 </p>
 <p>Initialize the icon from an image list. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(imageList: *<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>, index: <span class="STpe">s32</span>, sizeX, sizeY: <span class="STpe">f32</span> = <span class="SNum">0</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(imageList: *<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>, index: <span class="STpe">s32</span>, sizeX, sizeY: <span class="STpe">f32</span> = <span class="SNum">0</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6166,12 +6166,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>iconBarFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconBarFlags">IconBarFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_IconBarFlags">IconBarFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6186,12 +6186,12 @@
 </tr>
 <tr>
 <td>sigUpdateState</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigCheckChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
 <td></td>
 </tr>
 </table>
@@ -6242,7 +6242,7 @@
 </table>
 </p>
 <p>Add a new checkable button. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addCheckableItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addCheckableItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6255,7 +6255,7 @@
 </table>
 </p>
 <p>Add a new checkable button. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addCheckableToggleItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addCheckableToggleItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6268,7 +6268,7 @@
 </table>
 </p>
 <p>Add a new button. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, iconBtnFlags = <span class="SCst"><a href="#Gui_IconButtonFlags">IconButtonFlags</a></span>.<span class="SCst">Zero</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, iconBtnFlags = <span class="SCst"><a href="#Gui_IconButtonFlags">IconButtonFlags</a></span>.<span class="SCst">Zero</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6280,7 +6280,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, iconSize: <span class="STpe">f32</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconBar">IconBar</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, iconSize: <span class="STpe">f32</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconBar">IconBar</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6329,57 +6329,57 @@
 <table class="table-enumeration">
 <tr>
 <td>using button</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>form</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonForm">IconButtonForm</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_IconButtonForm">IconButtonForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>iconBtnFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonFlags">IconButtonFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_IconButtonFlags">IconButtonFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>checkedForm</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonCheckedForm">IconButtonCheckedForm</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_IconButtonCheckedForm">IconButtonCheckedForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>arrowPos</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonArrowPos">IconButtonArrowPos</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_IconButtonArrowPos">IconButtonArrowPos</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>textPos</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonTextPos">IconButtonTextPos</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_IconButtonTextPos">IconButtonTextPos</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigHidePopup</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigShowPopup</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigCheckChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigPaintIcon</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintContext">PaintContext</a></span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_PaintContext">PaintContext</a></span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6389,7 +6389,7 @@
 </tr>
 <tr>
 <td>popup</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -6491,7 +6491,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6782,12 +6782,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>movie</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Movie">Movie</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Movie">Movie</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6862,7 +6862,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageRect">ImageRect</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ImageRect">ImageRect</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6925,12 +6925,12 @@
 </tr>
 <tr>
 <td>icon</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>id</td>
-<td class="code-type"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6958,7 +6958,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7001,12 +7001,12 @@
 </tr>
 <tr>
 <td>id</td>
-<td class="code-type"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>target</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7024,12 +7024,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>icon</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7039,7 +7039,7 @@
 </tr>
 <tr>
 <td>labelFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_LabelFlags">LabelFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_LabelFlags">LabelFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7111,7 +7111,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Label">Label</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7181,7 +7181,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7211,12 +7211,12 @@
 </tr>
 <tr>
 <td>listFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListFlags">ListFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ListFlags">ListFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>selectionMode</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListSelectionMode">ListSelectionMode</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ListSelectionMode">ListSelectionMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7226,72 +7226,72 @@
 </tr>
 <tr>
 <td>sigSelChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigCheckChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigRightClick</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigLeftDoubleClick</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigExpand</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigCollapse</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigKeyPressed</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigVirtualFill</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>,&nbsp;<span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigSort</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>,&nbsp;<span class="STpe">u32</span>,&nbsp;<span class="STpe">bool</span>)-&gt;<span class="STpe">s32</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>)-&gt;<span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>toFreeLines</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>lines</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>idxLineToIdxList</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">u32</span>,&nbsp;<span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>selModel</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SelModel">SelModel</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SelModel">SelModel</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>checkModel</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SelModel">SelModel</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SelModel">SelModel</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7306,17 +7306,17 @@
 </tr>
 <tr>
 <td>scrollWnd</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>listView</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListView">ListView</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListView">ListView</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>header</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Header">Header</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Header">Header</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7534,9 +7534,9 @@
 </table>
 </p>
 <p>Add one new line. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, parentLine: *<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, parentLine: *<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
 <p>Add one line, and set first column. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, parentLine: *<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, parentLine: *<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7548,7 +7548,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createMultiColumns</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createMultiColumns</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7560,7 +7560,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSimple</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSimple</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7599,7 +7599,7 @@
 </table>
 </p>
 <p>Get all the checked lines. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCheckedLines</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCheckedLines</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7625,7 +7625,7 @@
 </table>
 </p>
 <p>Get the line with the keyboard focus. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFocusLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFocusLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7651,7 +7651,7 @@
 </table>
 </p>
 <p>Get a line by index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7690,7 +7690,7 @@
 </table>
 </p>
 <p>Returns a selected line Mostly for singlesel mode. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7703,7 +7703,7 @@
 </table>
 </p>
 <p>Get all the selected lines. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedLines</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedLines</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7988,12 +7988,12 @@
 </tr>
 <tr>
 <td>lines</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>parent</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8055,7 +8055,7 @@
 </table>
 </p>
 <p>Get an item by index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListItem">ListItem</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListItem">ListItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8080,7 +8080,7 @@
 </table>
 </p>
 <p>Initialize a given column item. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, name: <span class="STpe">string</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListItem">ListItem</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, name: <span class="STpe">string</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListItem">ListItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8120,12 +8120,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>list</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8196,22 +8196,22 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>onValidateResult</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span>,&nbsp;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span>, <span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>onComputeItem</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupMenuItem">PopupMenuItem</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_PopupMenuItem">PopupMenuItem</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>menuCtrlFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrlFlags">MenuCtrlFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_MenuCtrlFlags">MenuCtrlFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8241,22 +8241,22 @@
 </tr>
 <tr>
 <td>endModalResult</td>
-<td class="code-type"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>ownerMenu</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>subVisible</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>timer</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8415,7 +8415,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createBar</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, pos: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, owner: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createBar</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, pos: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, owner: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8427,7 +8427,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createPopup</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, owner: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createPopup</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, owner: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8440,7 +8440,7 @@
 </table>
 </p>
 <p>Make the popup menu modal Will return the selected id. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, surfacePos: <span class="SCst">Math</span>.<span class="SCst">Point</span>, pos = <span class="SCst"><a href="#Gui_PopupPos">PopupPos</a></span>.<span class="SCst">TopLeft</span>, autoDestroy: <span class="STpe">bool</span> = <span class="SKwd">false</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, surfacePos: <span class="SCst">Math</span>.<span class="SCst">Point</span>, pos = <span class="SCst"><a href="#Gui_PopupPos">PopupPos</a></span>.<span class="SCst">TopLeft</span>, autoDestroy: <span class="STpe">bool</span> = <span class="SKwd">false</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8488,17 +8488,17 @@
 <table class="table-enumeration">
 <tr>
 <td>using dialog</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>labelIcon</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>label</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8557,7 +8557,7 @@
 </table>
 </p>
 <p>Message box to <span class="code-inline">confirm</span> something. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">confirm</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, question: <span class="STpe">string</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">confirm</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, question: <span class="STpe">string</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8570,7 +8570,7 @@
 </table>
 </p>
 <p>Creates the message box. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MessageDlg">MessageDlg</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_MessageDlg">MessageDlg</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8622,7 +8622,7 @@
 </table>
 </p>
 <p>Message box with a <span class="code-inline">ok</span> and <span class="code-inline">cancel</span> button. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">okCancel</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">okCancel</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8661,7 +8661,7 @@
 </table>
 </p>
 <p>Message box with a <span class="code-inline">yes</span> and <span class="code-inline">no</span> button. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNo</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnNo</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNo</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnNo</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8674,7 +8674,7 @@
 </table>
 </p>
 <p>Message box with a <span class="code-inline">yes</span> and <span class="code-inline">no</span> button. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNoCancel</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNoCancel</span>(from: *<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8689,7 +8689,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8727,7 +8727,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8770,7 +8770,7 @@
 </tr>
 <tr>
 <td>sigFrameChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Movie">Movie</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Movie">Movie</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8790,12 +8790,12 @@
 </tr>
 <tr>
 <td>source</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MovieSource">MovieSource</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_MovieSource">MovieSource</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>imgList</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8973,7 +8973,7 @@
 <table class="table-enumeration">
 <tr>
 <td>cursor</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">HCURSOR</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8991,12 +8991,12 @@
 <table class="table-enumeration">
 <tr>
 <td>hWnd</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">HWND</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>lastDeadChar</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">WPARAM</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9014,17 +9014,17 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>ntfyKind</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>.<span class="SCst">Kind</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>.<span class="SCst">Kind</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>from</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9070,12 +9070,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>bc</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintContext">PaintContext</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_PaintContext">PaintContext</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9147,7 +9147,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9177,7 +9177,7 @@
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PalettePicker">PalettePicker</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_PalettePicker">PalettePicker</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9296,7 +9296,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PalettePicker">PalettePicker</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_PalettePicker">PalettePicker</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9311,7 +9311,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9346,7 +9346,7 @@
 </tr>
 <tr>
 <td>sigSelected</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span>,&nbsp;<span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9356,7 +9356,7 @@
 </tr>
 <tr>
 <td>scrollWnd</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9422,7 +9422,7 @@
 </table>
 </p>
 <p>Create the popup list, but do not display it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(owner: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(owner: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9450,7 +9450,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Item">Item</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Item">Item</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9460,17 +9460,17 @@
 </tr>
 <tr>
 <td>aniSel</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniText</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniCheck</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9488,12 +9488,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>list</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9557,7 +9557,7 @@
 </tr>
 <tr>
 <td>popup</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9592,17 +9592,17 @@
 </tr>
 <tr>
 <td>aniSel</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniText</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniRightText</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9645,12 +9645,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>prgBarFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ProgressBarFlags">ProgressBarFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ProgressBarFlags">ProgressBarFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9693,7 +9693,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ProgressBar">ProgressBar</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ProgressBar">ProgressBar</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9742,7 +9742,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9782,7 +9782,7 @@
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyList">PropertyList</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_PropertyList">PropertyList</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9802,17 +9802,17 @@
 </tr>
 <tr>
 <td>scrollWnd</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>edView</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyListView">PropertyListView</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_PropertyListView">PropertyListView</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>categs</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({item:*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyListItem">PropertyListItem</a></span>,lvl:<span class="STpe">s32</span>})</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({item:*<span class="SCst"></span><span class="SCst"><a href="#Gui_PropertyListItem">PropertyListItem</a></span>,lvl:<span class="STpe">s32</span>})</span></td>
 <td></td>
 </tr>
 </table>
@@ -9935,7 +9935,7 @@
 </table>
 </p>
 <p>Creates a new PropertyList instance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyList">PropertyList</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_PropertyList">PropertyList</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9976,22 +9976,22 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>splitter</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SplitterCtrl">SplitterCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_SplitterCtrl">SplitterCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>list</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>prop</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyList">PropertyList</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_PropertyList">PropertyList</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10031,7 +10031,7 @@
 </table>
 </p>
 <p>Creates a new PropertyList instance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyListCtrl">PropertyListCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_PropertyListCtrl">PropertyListCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10051,7 +10051,7 @@
 </tr>
 <tr>
 <td>line</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10061,7 +10061,7 @@
 </tr>
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10071,52 +10071,52 @@
 </tr>
 <tr>
 <td>forceShow</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>label</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>labelDesc</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>editBox</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>checkBox</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CheckButton">CheckButton</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_CheckButton">CheckButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>comboBox</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sliderBox</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>onResize</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyListItem">PropertyListItem</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_PropertyListItem">PropertyListItem</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniFocusBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniFocusBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10150,27 +10150,27 @@
 <table class="table-enumeration">
 <tr>
 <td>using button</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>form</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PushButtonForm">PushButtonForm</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_PushButtonForm">PushButtonForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniText</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10216,7 +10216,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PushButton">PushButton</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_PushButton">PushButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10260,7 +10260,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10283,7 +10283,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using button</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10293,12 +10293,12 @@
 </tr>
 <tr>
 <td>radioButtonFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButtonFlags">RadioButtonFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RadioButtonFlags">RadioButtonFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span>))</span></td>
 <td></td>
 </tr>
 </table>
@@ -10348,7 +10348,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10397,7 +10397,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10613,12 +10613,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>richEdFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditFlags">RichEditFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditFlags">RichEditFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10648,27 +10648,27 @@
 </tr>
 <tr>
 <td>lexer</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>form</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditForm">RichEditForm</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditForm">RichEditForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigIsReadOnly</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="STpe">bool</span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="STpe">bool</span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigModified</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
@@ -10678,42 +10678,42 @@
 </tr>
 <tr>
 <td>styles</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">256</span>]&nbsp;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>stylesSelect</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">2</span>]&nbsp;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">2</span>] <span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>cursorPos</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>selBeg</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>lines</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>freeLines</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>scrollWnd</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>edView</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditView">RichEditView</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditView">RichEditView</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10753,17 +10753,17 @@
 </tr>
 <tr>
 <td>undoMgr</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditUndo">RichEditUndo</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditUndo">RichEditUndo</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>toUndo</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditUndo">RichEditUndo</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditUndo">RichEditUndo</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>mapping</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditMapping">RichEditMapping</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditMapping">RichEditMapping</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -10803,17 +10803,17 @@
 </tr>
 <tr>
 <td>clipFormat</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>cursorPosUndo</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>selBegUndo</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -11262,7 +11262,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11409,7 +11409,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBegSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBegSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11445,7 +11445,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCursorPosFromPoint</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pt: <span class="SCst">Math</span>.<span class="SCst">Point</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCursorPosFromPoint</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pt: <span class="SCst">Math</span>.<span class="SCst">Point</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11457,7 +11457,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getEndSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getEndSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11469,7 +11469,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMappingCommand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">Input</span>.<span class="SCst">Key</span>, mdf: <span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCommand">RichEditCommand</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMappingCommand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">Input</span>.<span class="SCst">Key</span>, mdf: <span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCommand">RichEditCommand</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11482,7 +11482,7 @@
 </table>
 </p>
 <p>Get the rune at the given cursor pos. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRune</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;{char:<span class="STpe">rune</span>,style:<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRune</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;{char:<span class="STpe">rune</span>,style:<span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12117,12 +12117,12 @@
 <table class="table-enumeration">
 <tr>
 <td>mapStyles</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">256</span>]&nbsp;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>mapWords</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">string</span>,&nbsp;<span class="STpe">s32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">string</span>, <span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -12197,7 +12197,7 @@
 </tr>
 <tr>
 <td>command</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCommand">RichEditCommand</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCommand">RichEditCommand</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -12248,7 +12248,7 @@
 <table class="table-enumeration">
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditUndoType">RichEditUndoType</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditUndoType">RichEditUndoType</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -12258,12 +12258,12 @@
 </tr>
 <tr>
 <td>selBeg</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>cursorPos</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -12288,22 +12288,22 @@
 </tr>
 <tr>
 <td>begSelectionBefore</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>endSelectionBefore</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>begSelectionAfter</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>endSelectionAfter</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -12365,7 +12365,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -12385,22 +12385,22 @@
 </tr>
 <tr>
 <td>scrollWndFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWndFlags">ScrollWndFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ScrollWndFlags">ScrollWndFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigScrollPosChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigScrollSizeChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>,&nbsp;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>oldMouseCapture</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -12525,22 +12525,22 @@
 </tr>
 <tr>
 <td>aniBkBarV</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniBkBarH</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniBoxV</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniBoxH</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -12830,7 +12830,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -12853,17 +12853,17 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>style</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>parent</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -12882,7 +12882,7 @@
 <table class="table-enumeration">
 <tr>
 <td>arr</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>.<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>.<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -13008,7 +13008,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13038,22 +13038,22 @@
 </tr>
 <tr>
 <td>sliderFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SliderFlags">SliderFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SliderFlags">SliderFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigStartChange</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Slider">Slider</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Slider">Slider</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Slider">Slider</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Slider">Slider</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigEndChange</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Slider">Slider</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Slider">Slider</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
@@ -13098,22 +13098,22 @@
 </tr>
 <tr>
 <td>aniMark1</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniMark2</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniStep1</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniStep2</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -13191,7 +13191,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, range = <span class="SKwd">false</span>, vertical = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Slider">Slider</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, range = <span class="SKwd">false</span>, vertical = <span class="SKwd">false</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Slider">Slider</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13306,7 +13306,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13321,22 +13321,22 @@
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>label</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>slider</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Slider">Slider</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Slider">Slider</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>edit</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -13387,7 +13387,7 @@
 </table>
 </p>
 <p>Create the popup list, but do not display it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13487,12 +13487,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using frameWnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>splitterFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SplitterFlags">SplitterFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SplitterFlags">SplitterFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13583,7 +13583,7 @@
 </table>
 </p>
 <p>Add a new pane. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addPane</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pane: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, paneSize: <span class="STpe">f32</span> = <span class="SNum">100</span>, title = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SplitterItem">SplitterItem</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addPane</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pane: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, paneSize: <span class="STpe">f32</span> = <span class="SNum">100</span>, title = <span class="SKwd">false</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_SplitterItem">SplitterItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13596,7 +13596,7 @@
 </table>
 </p>
 <p>Creates a new SplitterCtrl instance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, vertical = <span class="SKwd">false</span>, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SplitterCtrl">SplitterCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, vertical = <span class="SKwd">false</span>, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_SplitterCtrl">SplitterCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13661,7 +13661,7 @@
 <table class="table-enumeration">
 <tr>
 <td>view</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13681,7 +13681,7 @@
 </tr>
 <tr>
 <td>label</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13691,7 +13691,7 @@
 </tr>
 <tr>
 <td>aniBar</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -13709,12 +13709,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>layoutKind</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StackLayoutKind">StackLayoutKind</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_StackLayoutKind">StackLayoutKind</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13771,7 +13771,7 @@
 </table>
 </p>
 <p>Create a layout control. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, kind: <span class="SCst"><a href="#Gui_StackLayoutKind">StackLayoutKind</a></span> = .<span class="SCst">Top</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StackLayoutCtrl">StackLayoutCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, kind: <span class="SCst"><a href="#Gui_StackLayoutKind">StackLayoutKind</a></span> = .<span class="SCst">Top</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_StackLayoutCtrl">StackLayoutCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13835,7 +13835,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -13853,17 +13853,17 @@
 <table class="table-enumeration">
 <tr>
 <td>using native</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NativeSurface">NativeSurface</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_NativeSurface">NativeSurface</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>app</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Application">Application</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>wnd</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceWnd">SurfaceWnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_SurfaceWnd">SurfaceWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13898,7 +13898,7 @@
 </tr>
 <tr>
 <td>flags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13933,7 +13933,7 @@
 </tr>
 <tr>
 <td>using state</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceState">SurfaceState</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SurfaceState">SurfaceState</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -14135,7 +14135,7 @@
 </table>
 </p>
 <p>Returns inside view. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14429,27 +14429,27 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>icon</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>minimizeBtn</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>maximizeBtn</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>closeBtn</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -14459,7 +14459,7 @@
 </tr>
 <tr>
 <td>sizingBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SizingBorder">SizingBorder</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SizingBorder">SizingBorder</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -14482,12 +14482,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sysKind</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span>.<span class="SCst">Kind</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span>.<span class="SCst">Kind</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -14505,7 +14505,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -14538,42 +14538,42 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>barForm</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabBarForm">TabBarForm</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_TabBarForm">TabBarForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>viewForm</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabViewForm">TabViewForm</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_TabViewForm">TabViewForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>barLayout</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabBarLayout">TabBarLayout</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_TabBarLayout">TabBarLayout</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sigSelChanged</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Tab">Tab</a></span>))</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Tab">Tab</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
 <td>buttonPopup</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>views</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabItem">TabItem</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_TabItem">TabItem</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>popup</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -14693,7 +14693,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Tab">Tab</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Tab">Tab</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14823,17 +14823,17 @@
 </tr>
 <tr>
 <td>view</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniImg</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniText</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -14910,22 +14910,22 @@
 </tr>
 <tr>
 <td>res</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeResources">ThemeResources</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeResources">ThemeResources</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>rects</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRects">ThemeImageRects</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRects">ThemeImageRects</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>metrics</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeMetrics">ThemeMetrics</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeMetrics">ThemeMetrics</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>colors</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeColors">ThemeColors</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeColors">ThemeColors</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -15026,7 +15026,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getIcon24</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="SCst"><a href="#Gui_ThemeIcons24">ThemeIcons24</a></span>, size = <span class="SNum">24</span>'<span class="STpe">f32</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getIcon24</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="SCst"><a href="#Gui_ThemeIcons24">ThemeIcons24</a></span>, size = <span class="SNum">24</span>'<span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15038,7 +15038,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getIcon64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="SCst"><a href="#Gui_ThemeIcons64">ThemeIcons64</a></span>, size = <span class="SNum">64</span>'<span class="STpe">f32</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getIcon64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="SCst"><a href="#Gui_ThemeIcons64">ThemeIcons64</a></span>, size = <span class="SNum">64</span>'<span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16718,527 +16718,527 @@
 <table class="table-enumeration">
 <tr>
 <td>surfaceWnd_Shadow</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>wnd_Border</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>wnd_Caption</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>wnd_CaptionSmall</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>dlg_BtnBar</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnPush_Normal</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnPush_NormalBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnPush_Hot</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnPush_HotBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnPush_Pressed</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnPush_PressedBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnPush_Disabled</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnPush_DisabledBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_SquareBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_RoundBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_RoundSquareBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_CheckedBottom</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_CheckedTop</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_CheckedLeft</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_CheckedRight</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_CheckedFull</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_ArrowDown</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_ArrowLeft</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_ArrowUp</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnIcon_ArrowRight</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnCheck_Normal</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnCheck_NormalBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnCheck_Undefined</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnCheck_UndefinedBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnCheck_UndefinedMark</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnCheck_Checked</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnCheck_CheckedBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnCheck_CheckedMark</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnRadio_NormalBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnRadio_Normal</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnRadio_CheckedBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnRadio_Checked</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnRadio_CheckedMark</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>edit_SquareBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>edit_SquareBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>edit_RoundBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>edit_RoundBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>edit_FlatBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>edit_FlatBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnToggle_Bk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnToggle_Border</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>btnToggle_Mark</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>slider_BkLeft</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>slider_BkMiddle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>slider_BkRight</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>slider_BkLeftVert</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>slider_BkMiddleVert</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>slider_BkRightVert</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>slider_Mark</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>slider_Step</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>tabItem_FlatSelected</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>tabItem_RoundSelected</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>tabItem_RoundHot</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>tabItem_ButtonSelected</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>tabItem_ButtonHot</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>tabBar_FlatBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>tabBar_FlatRoundBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>tabBar_RoundBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>tabView_FlatBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>tabView_RoundBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>menuPopup_Shadow</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>menuPopup_Bk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>menuPopup_Border</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>menuPopup_HotBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>menuBar_Bk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>menuBar_Border</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>menuBar_SelectedBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>menuItem_CheckedMark</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>scrollBar_BkV</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>scrollBar_BkH</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>scrollBar_BoxV</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>scrollBar_BoxH</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>scrollBar_Corner</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_SmallShadow</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_SquareBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_SquareBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_RoundBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_RoundBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_AnchorTop</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_AnchorTopBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_AnchorBottom</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_AnchorBottomBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_AnchorRight</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_AnchorRightBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_AnchorLeft</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>frameWnd_AnchorLeftBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>header_FlatBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>header_RoundBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>selectionBox_Bk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>splitView_HorzBarBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>splitView_HorzBarHotBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>splitView_VertBarBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>splitView_VertBarHotBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>progressBar_Bk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>progressBar_Border</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>progressBar_Mark</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>colorPicker_RoundPick</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>colorPicker_SquarePick</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>colorPicker_Bk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>colorPicker_Border</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -17679,17 +17679,17 @@
 </tr>
 <tr>
 <td>icons24</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>icons64</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>spin</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -17757,7 +17757,7 @@
 <table class="table-enumeration">
 <tr>
 <td>refr</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyleRef">ThemeStyleRef</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeStyleRef">ThemeStyleRef</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -17948,7 +17948,7 @@
 <table class="table-enumeration">
 <tr>
 <td>theme</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Theme">Theme</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Theme">Theme</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -17976,7 +17976,7 @@
 </tr>
 <tr>
 <td>target</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -18023,12 +18023,12 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>timer</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -18046,7 +18046,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using button</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -18056,22 +18056,22 @@
 </tr>
 <tr>
 <td>sigChanged</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ToggleButton">ToggleButton</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_ToggleButton">ToggleButton</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>aniMark</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -18117,7 +18117,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ToggleButton">ToggleButton</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ToggleButton">ToggleButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18178,27 +18178,27 @@
 <table class="table-enumeration">
 <tr>
 <td>itf</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_IWnd">IWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>surface</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>style</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>wndFlags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndFlags">WndFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_WndFlags">WndFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -18233,17 +18233,17 @@
 </tr>
 <tr>
 <td>parent</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>owner</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>childs</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18253,12 +18253,12 @@
 </tr>
 <tr>
 <td>id</td>
-<td class="code-type"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>cursor</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Cursor">Cursor</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Cursor">Cursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -18268,12 +18268,12 @@
 </tr>
 <tr>
 <td>keyShortcuts</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyShortcut">KeyShortcut</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_KeyShortcut">KeyShortcut</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>actions</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18288,22 +18288,22 @@
 </tr>
 <tr>
 <td>dockStyle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_DockStyle">DockStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_DockStyle">DockStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>anchorStyle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_AnchorStyle">AnchorStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_AnchorStyle">AnchorStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>focusStrategy</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FocusStategy">FocusStategy</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_FocusStategy">FocusStategy</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>backgroundStyle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BackgroundStyle">BackgroundStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BackgroundStyle">BackgroundStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -18323,7 +18323,7 @@
 </tr>
 <tr>
 <td>hookOnEvent</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>,&nbsp;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -19068,7 +19068,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getApp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getApp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Application">Application</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19081,7 +19081,7 @@
 </table>
 </p>
 <p>Retrieve the child with the given id. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getChildById</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, childId: <span class="STpe">string</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getChildById</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, childId: <span class="STpe">string</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19120,7 +19120,7 @@
 </table>
 </p>
 <p>Get the window with the keyboard focus. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19145,7 +19145,7 @@
 </table>
 </p>
 <p>Get the id associated with a shortcut. null if none. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getKeyShortcut</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Input</span>.<span class="SCst">Key</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getKeyShortcut</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Input</span>.<span class="SCst">Key</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19170,7 +19170,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMouseCapture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMouseCapture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19183,7 +19183,7 @@
 </table>
 </p>
 <p>Get the owner of the window. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOwner</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOwner</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19196,7 +19196,7 @@
 </table>
 </p>
 <p>Retrieve the parent with the given id. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getParentById</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, parentId: <span class="STpe">string</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getParentById</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, parentId: <span class="STpe">string</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19234,7 +19234,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTheme</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Theme">Theme</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTheme</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Theme">Theme</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19246,7 +19246,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeColors">ThemeColors</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeColors">ThemeColors</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19258,7 +19258,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeMetrics</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeMetrics">ThemeMetrics</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeMetrics</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeMetrics">ThemeMetrics</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19270,7 +19270,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeRects</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRects">ThemeImageRects</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeRects</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_ThemeImageRects">ThemeImageRects</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19294,7 +19294,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTopView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTopView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19306,7 +19306,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTopWnd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceWnd">SurfaceWnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTopWnd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_SurfaceWnd">SurfaceWnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19319,7 +19319,7 @@
 </table>
 </p>
 <p>Get the child window at the given coordinate Coordinate is expressed in the parent system. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWndAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>, getDisabled, getHidden = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWndAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>, getDisabled, getHidden = <span class="SKwd">false</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19651,7 +19651,7 @@
 </table>
 </p>
 <p>Send the command state event with the given id to the window. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendComputeCommandStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmdId: <span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendComputeCommandStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmdId: <span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span></span></div>
 <p>Returns the updated command state. </p>
 <p>
 <table class="api-item">
@@ -19905,7 +19905,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using wnd</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -19977,7 +19977,7 @@
 </table>
 </p>
 <p>Create a layout control. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
 Generated on 19-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
 </div>

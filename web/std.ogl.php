@@ -8607,107 +8607,107 @@
 <table class="table-enumeration">
 <tr>
 <td id="Ogl_GLbitfield">GLbitfield</td>
-<td class="code-type"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLbitfield">GLbitfield</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLboolean">GLboolean</td>
-<td class="code-type"><span class="STpe">u8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLbyte">GLbyte</td>
-<td class="code-type"><span class="STpe">s8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLbyte">GLbyte</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLchar">GLchar</td>
-<td class="code-type"><span class="STpe">u8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLclampd">GLclampd</td>
-<td class="code-type"><span class="STpe">f64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLclampd">GLclampd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLclampf">GLclampf</td>
-<td class="code-type"><span class="STpe">f32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLclampf">GLclampf</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLdouble">GLdouble</td>
-<td class="code-type"><span class="STpe">f64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLdouble">GLdouble</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLenum">GLenum</td>
-<td class="code-type"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLfloat">GLfloat</td>
-<td class="code-type"><span class="STpe">f32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLfloat">GLfloat</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLint">GLint</td>
-<td class="code-type"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLint">GLint</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLint64">GLint64</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLint64">GLint64</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLintptr">GLintptr</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLintptr">GLintptr</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLshort">GLshort</td>
-<td class="code-type"><span class="STpe">s16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLshort">GLshort</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLsizei">GLsizei</td>
-<td class="code-type"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLsizeiptr">GLsizeiptr</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLsizeiptr">GLsizeiptr</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLubyte">GLubyte</td>
-<td class="code-type"><span class="STpe">u8</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLubyte">GLubyte</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLuint">GLuint</td>
-<td class="code-type"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLuint64">GLuint64</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLuint64">GLuint64</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLushort">GLushort</td>
-<td class="code-type"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLushort">GLushort</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_GLvoid">GLvoid</td>
-<td class="code-type"><span class="STpe">void</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLvoid">GLvoid</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Ogl_HGLRC">HGLRC</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_HGLRC">HGLRC</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8758,7 +8758,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glAreTexturesResident</span>(n: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, textures: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, residences: *<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glAreTexturesResident</span>(n: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, textures: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, residences: *<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9094,7 +9094,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glCheckFramebufferStatus</span>(target: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glCheckFramebufferStatus</span>(target: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9850,7 +9850,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glCreateProgram</span>()-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glCreateProgram</span>()-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9862,7 +9862,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glCreateShader</span>(type: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glCreateShader</span>(type: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10738,7 +10738,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGenLists</span>(range: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGenLists</span>(range: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10834,7 +10834,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetAttribLocation</span>(program: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, name: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLint">GLint</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetAttribLocation</span>(program: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, name: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLint">GLint</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10954,7 +10954,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetError</span>()-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetError</span>()-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10978,7 +10978,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetFragDataLocation</span>(program: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, name: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLint">GLint</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetFragDataLocation</span>(program: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, name: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLint">GLint</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11014,7 +11014,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetGraphicsResetStatus</span>()-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetGraphicsResetStatus</span>()-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11338,7 +11338,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetString</span>(name: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SKwd">const</span> *<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLubyte">GLubyte</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetString</span>(name: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLubyte">GLubyte</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11350,7 +11350,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetStringi</span>(name: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, index: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SKwd">const</span> *<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLubyte">GLubyte</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetStringi</span>(name: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, index: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLubyte">GLubyte</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11518,7 +11518,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetUniformLocation</span>(program: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, name: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLint">GLint</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetUniformLocation</span>(program: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, name: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLint">GLint</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11854,7 +11854,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsBuffer</span>(buffer: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsBuffer</span>(buffer: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11866,7 +11866,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsEnabled</span>(cap: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsEnabled</span>(cap: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11878,7 +11878,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsEnabledi</span>(cap: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, index: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsEnabledi</span>(cap: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, index: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11890,7 +11890,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsFramebuffer</span>(framebuffer: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsFramebuffer</span>(framebuffer: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11902,7 +11902,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsList</span>(list: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsList</span>(list: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11914,7 +11914,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsNamedStringARB</span>(namelen: <span class="SCst"><a href="#Ogl_GLint">GLint</a></span>, name: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsNamedStringARB</span>(namelen: <span class="SCst"><a href="#Ogl_GLint">GLint</a></span>, name: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11926,7 +11926,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsProgram</span>(program: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsProgram</span>(program: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11938,7 +11938,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsQuery</span>(id: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsQuery</span>(id: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11950,7 +11950,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsRenderbuffer</span>(renderbuffer: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsRenderbuffer</span>(renderbuffer: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11962,7 +11962,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsShader</span>(shader: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsShader</span>(shader: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11974,7 +11974,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsTexture</span>(texture: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glIsTexture</span>(texture: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13786,7 +13786,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glRenderMode</span>(mode: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLint">GLint</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glRenderMode</span>(mode: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLint">GLint</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15298,7 +15298,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glUnmapBuffer</span>(target: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glUnmapBuffer</span>(target: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16546,7 +16546,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wglCreateContext</span>(hDc: <span class="SCst">HDC</span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_HGLRC">HGLRC</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wglCreateContext</span>(hDc: <span class="SCst">HDC</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_HGLRC">HGLRC</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>

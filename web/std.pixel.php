@@ -659,27 +659,27 @@
 </tr>
 <tr>
 <td id="Pixel_InvalidRenderTargetHandle">InvalidRenderTargetHandle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTargetHandle">RenderTargetHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_InvalidRenderTargetSurfaceHandle">InvalidRenderTargetSurfaceHandle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTargetSurfaceHandle">RenderTargetSurfaceHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_InvalidShaderHandle">InvalidShaderHandle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderHandle">ShaderHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_InvalidShaderParamHandle">InvalidShaderParamHandle</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_InvalidTextureHandle">InvalidTextureHandle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_TextureHandle">TextureHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -702,32 +702,32 @@
 <table class="table-enumeration">
 <tr>
 <td id="Pixel_Clipper_CInt">CInt</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Clipper">Clipper</a></span>.<span class="SCst"><a href="#Pixel_Clipper_CInt">CInt</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_RenderTargetHandle">RenderTargetHandle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTargetHandle">RenderTargetHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_RenderTargetSurfaceHandle">RenderTargetSurfaceHandle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTargetSurfaceHandle">RenderTargetSurfaceHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_ShaderHandle">ShaderHandle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderHandle">ShaderHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_ShaderParamHandle">ShaderParamHandle</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_TextureHandle">TextureHandle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_TextureHandle">TextureHandle</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1320,7 +1320,7 @@
 </table>
 </p>
 <p>Get the Argb value that matches <span class="code-inline">name</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromName</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Argb">Argb</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromName</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Argb">Argb</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1420,7 +1420,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1559,27 +1559,27 @@
 <table class="table-enumeration">
 <tr>
 <td>color</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hatch</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>texture</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>uvMode</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -1619,7 +1619,7 @@
 </table>
 </p>
 <p>Returns a hatch brush. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createHatch</span>(style: <span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createHatch</span>(style: <span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1632,7 +1632,7 @@
 </table>
 </p>
 <p>Returns a solid color brush. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSolid</span>(color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSolid</span>(color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1645,7 +1645,7 @@
 </table>
 </p>
 <p>Returns a full texture brush. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTexture</span>(texture: <span class="SCst"><a href="#Pixel_Texture">Texture</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTexture</span>(texture: <span class="SCst"><a href="#Pixel_Texture">Texture</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1658,7 +1658,7 @@
 </table>
 </p>
 <p>Returns a tiled texture brush. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTiled</span>(texture: <span class="SCst"><a href="#Pixel_Texture">Texture</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTiled</span>(texture: <span class="SCst"><a href="#Pixel_Texture">Texture</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1795,12 +1795,12 @@
 <table class="table-enumeration">
 <tr>
 <td>x</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Clipper">Clipper</a></span>.<span class="SCst"><a href="#Pixel_Clipper_CInt">CInt</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>y</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Clipper">Clipper</a></span>.<span class="SCst"><a href="#Pixel_Clipper_CInt">CInt</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2107,7 +2107,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromAbgr</span>(abgr: <span class="STpe">u32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromAbgr</span>(abgr: <span class="STpe">u32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2120,13 +2120,13 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>Create a new Color with specified values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="STpe">u32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="STpe">u32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>Create a new Color with specified values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(alpha: <span class="STpe">u8</span>, argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(alpha: <span class="STpe">u8</span>, argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>Create a new Color with specified values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(a, r, g, b: <span class="STpe">u8</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(a, r, g, b: <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2139,7 +2139,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgbf</span>(a, r, g, b: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgbf</span>(a, r, g, b: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2152,7 +2152,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromHsl</span>(h, s, l: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromHsl</span>(h, s, l: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2165,7 +2165,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromRgb</span>(r, g, b: <span class="STpe">u8</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromRgb</span>(r, g, b: <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2178,7 +2178,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromRgbf</span>(r, g, b: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromRgbf</span>(r, g, b: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2191,7 +2191,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromVector4</span>(vec: <span class="SCst">Math</span>.<span class="SCst">Vector4</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromVector4</span>(vec: <span class="SCst">Math</span>.<span class="SCst">Vector4</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2204,7 +2204,7 @@
 </table>
 </p>
 <p>Blend two colors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBlend</span>(col0, col1: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBlend</span>(col0, col1: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2217,7 +2217,7 @@
 </table>
 </p>
 <p>Blend two colors, keeping the alpha channel of <span class="code-inline">col0</span> untouched. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBlendKeepAlpha</span>(col0, col1: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBlendKeepAlpha</span>(col0, col1: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2230,7 +2230,7 @@
 </table>
 </p>
 <p>Returns a darker color. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDarker</span>(col: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDarker</span>(col: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2256,7 +2256,7 @@
 </table>
 </p>
 <p>Returns a lighter color. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLighter</span>(col: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLighter</span>(col: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2466,12 +2466,12 @@
 <table class="table-enumeration">
 <tr>
 <td>id</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_CommandId">CommandId</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_CommandId">CommandId</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>using params</td>
-<td class="code-type"><span class="SCde">{clear:{color:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>},drawTriangles:{start:<span class="STpe">u32</span>,count:<span class="STpe">u32</span>},transform:{tr:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>},clippingRect:{rect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>},clippingRegion:{mode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ClippingMode">ClippingMode</a></span>},font:{fontRef:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>},blendingMode:{mode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span>},textureFont:{font:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>,atlasIndex:<span class="STpe">s32</span>},colorMask:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span>,renderTgt:{tgt:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>,paintAlpha:<span class="STpe">bool</span>},shader:{shader:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span>},shaderParam:{param:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>,type:<span class="SKwd">const</span>&nbsp;*<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>,_f32:<span class="STpe">f32</span>,_s32:<span class="STpe">s32</span>},texture0:{boundRect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>,textureRect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>,type:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span>,hatch:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>,uvMode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span>,interpolationMode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span>,texture:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>}}</span></td>
+<td class="code-type"><span class="SCde">{clear:{color:<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span>},drawTriangles:{start:<span class="STpe">u32</span>,count:<span class="STpe">u32</span>},transform:{tr:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>},clippingRect:{rect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>},clippingRegion:{mode:<span class="SCst"></span><span class="SCst"><a href="#Pixel_ClippingMode">ClippingMode</a></span>},font:{fontRef:*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Font">Font</a></span>},blendingMode:{mode:<span class="SCst"></span><span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span>},textureFont:{font:*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Font">Font</a></span>,atlasIndex:<span class="STpe">s32</span>},colorMask:<span class="SCst"></span><span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span>,renderTgt:{tgt:*<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>,paintAlpha:<span class="STpe">bool</span>},shader:{shader:*<span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span>},shaderParam:{param:<span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>,type:<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>,_f32:<span class="STpe">f32</span>,_s32:<span class="STpe">s32</span>},texture0:{boundRect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>,textureRect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>,type:<span class="SCst"></span><span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span>,hatch:<span class="SCst"></span><span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>,uvMode:<span class="SCst"></span><span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span>,interpolationMode:<span class="SCst"></span><span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span>,texture:<span class="SCst"></span><span class="SCst"><a href="#Pixel_Texture">Texture</a></span>}}</span></td>
 <td></td>
 </tr>
 </table>
@@ -2724,7 +2724,7 @@
 <table class="table-enumeration">
 <tr>
 <td>type</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ElementType">ElementType</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ElementType">ElementType</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -2830,7 +2830,7 @@
 </tr>
 <tr>
 <td>typeFace</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -2840,17 +2840,17 @@
 </tr>
 <tr>
 <td>atlases</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphAtlas">GlyphAtlas</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_GlyphAtlas">GlyphAtlas</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>asciiRef</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">128</span>]&nbsp;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst"></span><span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>unicodeRef</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">rune</span>,&nbsp;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">rune</span>, *<span class="SCst"></span><span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2890,9 +2890,9 @@
 </table>
 </p>
 <p>Creates a new Font of the given typeface and size. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(typeFace: *<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span>, size: <span class="STpe">u32</span>, forceBold, forceItalic = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(typeFace: *<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span>, size: <span class="STpe">u32</span>, forceBold, forceItalic = <span class="SKwd">false</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Font">Font</a></span></span></div>
 <p>Creates a new Font with the given filename and size. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(fullname: <span class="STpe">string</span>, size: <span class="STpe">u32</span>, forceBold, forceItalic = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(fullname: <span class="STpe">string</span>, size: <span class="STpe">u32</span>, forceBold, forceItalic = <span class="SKwd">false</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Font">Font</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2905,7 +2905,7 @@
 </table>
 </p>
 <p>Returns the glyph descriptor of a given rune. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphDesc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, c: <span class="STpe">rune</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphDesc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, c: <span class="STpe">rune</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2933,22 +2933,22 @@
 <table class="table-enumeration">
 <tr>
 <td>regular</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>bold</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>italic</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>boldItalic</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2987,7 +2987,7 @@
 </table>
 </p>
 <p>Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTypeFace</span>(enumerate: <span class="SCst"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span>, style: <span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTypeFace</span>(enumerate: <span class="SCst"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span>, style: <span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3000,7 +3000,7 @@
 </table>
 </p>
 <p>Enumerate the font families available in the os. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateFromOs</span>()-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateFromOs</span>()-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3013,7 +3013,7 @@
 </table>
 </p>
 <p>Get the font corresponding to the style. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, style: <span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, style: <span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Font">Font</a></span></span></div>
 <p>If not evailable, get another one. </p>
 <p>
 <table class="api-item">
@@ -3027,7 +3027,7 @@
 </table>
 </p>
 <p>Get a FontFamilyEnumerate from a font family name. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFromOs</span>(fontFamily: <span class="STpe">string</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFromOs</span>(fontFamily: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3060,7 +3060,7 @@
 </tr>
 <tr>
 <td>faces</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">4</span>]&nbsp;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyleEnumerate">FontFamilyStyleEnumerate</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">4</span>] <span class="SCst"></span><span class="SCst"><a href="#Pixel_FontFamilyStyleEnumerate">FontFamilyStyleEnumerate</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3189,7 +3189,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3269,7 +3269,7 @@
 <table class="table-enumeration">
 <tr>
 <td>texture</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3538,12 +3538,12 @@
 <table class="table-enumeration">
 <tr>
 <td>canDecode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>,&nbsp;<span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>decode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>,&nbsp;<span class="SKwd">const</span>&nbsp;[..]&nbsp;<span class="STpe">u8</span>,&nbsp;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>&nbsp;<span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="SCst"></span><span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3562,12 +3562,12 @@
 <table class="table-enumeration">
 <tr>
 <td>canEncode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>,&nbsp;<span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>encode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>,&nbsp;*<span class="SCst">Core</span>.<span class="SCst">ConcatBuffer</span>,&nbsp;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>,&nbsp;<span class="STpe">any</span>)&nbsp;<span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>, *<span class="SCst">Core</span>.<span class="SCst">ConcatBuffer</span>, <span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span>, <span class="STpe">any</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3611,7 +3611,7 @@
 </tr>
 <tr>
 <td>pf</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span></span></td>
 <td>Format of one pixel. </td>
 </tr>
 <tr>
@@ -3626,7 +3626,7 @@
 </tr>
 <tr>
 <td>workingBuffer</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></td>
 <td>Temporary buffer for filters and transformations. </td>
 </tr>
 </table>
@@ -4370,7 +4370,7 @@
 </table>
 </p>
 <p>Creates a new image. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(width, height: <span class="STpe">s32</span>, pf: <span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(width, height: <span class="STpe">s32</span>, pf: <span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4397,7 +4397,7 @@
 </table>
 </p>
 <p>Decode the given image buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(fileName: <span class="STpe">string</span>, bytes: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span> = {})-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(fileName: <span class="STpe">string</span>, bytes: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span> = {})-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4500,9 +4500,9 @@
 </table>
 </p>
 <p>Creates an image from a windows HBITMAP. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(hbitmap: <span class="SCst">HBITMAP</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(hbitmap: <span class="SCst">HBITMAP</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
 <p>Creates an image from a windows HICON. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(hicon: <span class="SCst">HICON</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(hicon: <span class="SCst">HICON</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4528,7 +4528,7 @@
 </table>
 </p>
 <p>Returns the color at the given coordinate. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPixelColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pixX, pixY: <span class="STpe">s32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPixelColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pixX, pixY: <span class="STpe">s32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4619,7 +4619,7 @@
 </table>
 </p>
 <p>Load the given image file. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fileName: <span class="STpe">string</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span> = {})-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fileName: <span class="STpe">string</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span> = {})-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4762,7 +4762,7 @@
 </table>
 </p>
 <p>Apply a kernel to the image. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toApplyKernel</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kernel: <span class="SCst"><a href="#Pixel_Image_Kernel">Kernel</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toApplyKernel</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kernel: <span class="SCst"><a href="#Pixel_Image_Kernel">Kernel</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4775,8 +4775,8 @@
 </table>
 </p>
 <p>Crop image. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toCrop</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, cropRect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>
-<span class="SKwd">func</span> <span class="SFct">toCrop</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y, w, h: <span class="STpe">s32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toCrop</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, cropRect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span>
+<span class="SKwd">func</span> <span class="SFct">toCrop</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y, w, h: <span class="STpe">s32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4789,7 +4789,7 @@
 </table>
 </p>
 <p>Flip image vertically. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toFlip</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toFlip</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4815,7 +4815,7 @@
 </table>
 </p>
 <p>Divide image size by 2 with a bilinear 2x2 filter. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toHalfSize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toHalfSize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4828,7 +4828,7 @@
 </table>
 </p>
 <p>Flip image horizontally. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMirror</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMirror</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4841,7 +4841,7 @@
 </table>
 </p>
 <p>Mix with another image. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMix</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, srcImage: <span class="SCst"><a href="#Pixel_Image">Image</a></span>, x, y: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_MixMode">MixMode</a></span>.<span class="SCst">Copy</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMix</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, srcImage: <span class="SCst"><a href="#Pixel_Image">Image</a></span>, x, y: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_MixMode">MixMode</a></span>.<span class="SCst">Copy</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4854,7 +4854,7 @@
 </table>
 </p>
 <p>Resize image Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toResize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, newWidth, newHeight: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span>.<span class="SCst">Raw</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toResize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, newWidth, newHeight: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span>.<span class="SCst">Raw</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4867,7 +4867,7 @@
 </table>
 </p>
 <p>Change image pixel format. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSetPixelFormat</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, newPf: <span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSetPixelFormat</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, newPf: <span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4880,7 +4880,7 @@
 </table>
 </p>
 <p>Turn image by a given predefined angle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toTurn</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, angle: <span class="SCst"><a href="#Pixel_Image_TurnAngle">TurnAngle</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toTurn</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, angle: <span class="SCst"><a href="#Pixel_Image_TurnAngle">TurnAngle</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5029,7 +5029,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5138,7 +5138,7 @@
 <table class="table-enumeration">
 <tr>
 <td>elements</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Element">Element</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_Element">Element</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5168,7 +5168,7 @@
 </tr>
 <tr>
 <td>flattenQuality</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -5198,22 +5198,22 @@
 </tr>
 <tr>
 <td>polygon</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Polygon">Polygon</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Polygon">Polygon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>points</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>triangles</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>edgeList</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -5461,7 +5461,7 @@
 <table class="table-enumeration">
 <tr>
 <td>paths</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5569,7 +5569,7 @@
 </table>
 </p>
 <p>Returns a new path. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">newPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">newPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5630,8 +5630,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createContext</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hdc: <span class="SCst">HDC</span>, width, height: <span class="STpe">s32</span>, mainRC: <span class="SCst">HGLRC</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span> <span class="SKwd">throw</span>
-<span class="SKwd">func</span> <span class="SFct">createContext</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hWnd: <span class="SCst">HWND</span>, width, height: <span class="STpe">s32</span>, mainRC: <span class="SCst">HGLRC</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createContext</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hdc: <span class="SCst">HDC</span>, width, height: <span class="STpe">s32</span>, mainRC: <span class="SCst">HGLRC</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span> <span class="SKwd">throw</span>
+<span class="SKwd">func</span> <span class="SFct">createContext</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hWnd: <span class="SCst">HWND</span>, width, height: <span class="STpe">s32</span>, mainRC: <span class="SCst">HGLRC</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5728,12 +5728,12 @@
 <table class="table-enumeration">
 <tr>
 <td>paintParams</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>paintQuality</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -5743,12 +5743,12 @@
 </tr>
 <tr>
 <td>blendingMode</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>interpolationMode</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -5768,7 +5768,7 @@
 </tr>
 <tr>
 <td>colorMask</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5786,12 +5786,12 @@
 <table class="table-enumeration">
 <tr>
 <td>commandBuffer</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Command">Command</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_Command">Command</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>vertexBuffer</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_VertexLayout">VertexLayout</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_VertexLayout">VertexLayout</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5806,22 +5806,22 @@
 </tr>
 <tr>
 <td>sharedSolidPen</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sharedSolidBrush</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sharedLinePath</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sharedLinePathList</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -5831,12 +5831,12 @@
 </tr>
 <tr>
 <td>curState</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintState">PaintState</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_PaintState">PaintState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>stackState</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintState">PaintState</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_PaintState">PaintState</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5846,22 +5846,22 @@
 </tr>
 <tr>
 <td>lastTexture0Type</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>stackRT</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>curRT</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>lastTexture0Handle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_TextureHandle">TextureHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6704,9 +6704,9 @@
 </table>
 </p>
 <p>Returns all the glyphs for a given string and font. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphs</span>(text: <span class="SCst">Array</span>'<span class="STpe">rune</span>, font: *<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphs</span>(text: <span class="SCst">Array</span>'<span class="STpe">rune</span>, font: *<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></div>
 <p>Returns all the glyphs for a given string and font. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphs</span>(text: <span class="STpe">string</span>, font: *<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphs</span>(text: <span class="STpe">string</span>, font: *<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6718,7 +6718,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getParams</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getParams</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6730,7 +6730,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getQuality</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getQuality</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6782,9 +6782,9 @@
 </table>
 </p>
 <p>Returns the bounding rectangle if a given text, at a given position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">measureString</span>(text: <span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>))-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringMetrics">StringMetrics</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">measureString</span>(text: <span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>))-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_StringMetrics">StringMetrics</a></span></span></div>
 <p>Returns the metrics of a given text. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">measureString</span>(text: <span class="STpe">string</span>, font: *<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringMetrics">StringMetrics</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">measureString</span>(text: <span class="STpe">string</span>, font: *<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_StringMetrics">StringMetrics</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7251,7 +7251,7 @@
 </tr>
 <tr>
 <td>brush</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7261,17 +7261,17 @@
 </tr>
 <tr>
 <td>dashBeginCapStyle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>dashEndCapStyle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>borderPos</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BorderPos">BorderPos</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_BorderPos">BorderPos</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7306,22 +7306,22 @@
 </tr>
 <tr>
 <td>dashStyle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DashStyle">DashStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_DashStyle">DashStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>beginCapStyle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>endCapStyle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>joinStyle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_JoinStyle">JoinStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_JoinStyle">JoinStyle</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7352,7 +7352,7 @@
 </table>
 </p>
 <p>Returns a dash pen. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createDash</span>(style: <span class="SCst"><a href="#Pixel_DashStyle">DashStyle</a></span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, size: <span class="STpe">f32</span> = <span class="SNum">1</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createDash</span>(style: <span class="SCst"><a href="#Pixel_DashStyle">DashStyle</a></span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, size: <span class="STpe">f32</span> = <span class="SNum">1</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7365,7 +7365,7 @@
 </table>
 </p>
 <p>Return a predefined hatch pen. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createHatch</span>(type: <span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, size: <span class="STpe">f32</span> = <span class="SNum">1</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createHatch</span>(type: <span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, size: <span class="STpe">f32</span> = <span class="SNum">1</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7378,7 +7378,7 @@
 </table>
 </p>
 <p>Returns a solid color pen. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSolid</span>(color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, size: <span class="STpe">f32</span> = <span class="SNum">1</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSolid</span>(color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, size: <span class="STpe">f32</span> = <span class="SNum">1</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7519,7 +7519,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7620,12 +7620,12 @@
 <table class="table-enumeration">
 <tr>
 <td>p</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>q</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7648,12 +7648,12 @@
 </tr>
 <tr>
 <td>edgeList</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>border</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">2</span>]&nbsp;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">2</span>] *<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7746,7 +7746,7 @@
 </table>
 </p>
 <p>Returns the list of triangles. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTriangles</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTriangles</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] *<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7787,22 +7787,22 @@
 <table class="table-enumeration">
 <tr>
 <td>constrainedEdge</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>]&nbsp;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>delaunayEdge</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>]&nbsp;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>points</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>]&nbsp;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>neighbors</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>]&nbsp;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7970,7 +7970,7 @@
 </table>
 </p>
 <p>Clean polygon by removing bad/unecessary points. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClean</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClean</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7983,7 +7983,7 @@
 </table>
 </p>
 <p>Slow but quality offset with a joinStyle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOffset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>, joinStyle: <span class="SCst"><a href="#Pixel_JoinStyle">JoinStyle</a></span>, toler: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOffset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>, joinStyle: <span class="SCst"><a href="#Pixel_JoinStyle">JoinStyle</a></span>, toler: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8041,32 +8041,32 @@
 <table class="table-enumeration">
 <tr>
 <td>using native</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_NativeRenderOgl">NativeRenderOgl</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_NativeRenderOgl">NativeRenderOgl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>vertexbuffer</td>
-<td class="code-type"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Ogl</span>.<span class="SCst">GLuint</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>shaderSimple</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderSimple">ShaderSimple</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderSimple">ShaderSimple</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>shaderAA</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderAA">ShaderAA</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderAA">ShaderAA</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>shaderBlur</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBlur">ShaderBlur</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderBlur">ShaderBlur</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>shaderFont</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderFont">ShaderFont</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderFont">ShaderFont</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8086,42 +8086,42 @@
 </tr>
 <tr>
 <td>whiteTexture</td>
-<td class="code-type"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Ogl</span>.<span class="SCst">GLuint</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hatchTextures</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">36</span>]&nbsp;<span class="SCst">Ogl</span>.<span class="SCst">GLuint</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">36</span>] <span class="SCst">Ogl</span>.<span class="SCst">GLuint</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>blendingMode</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>curRC</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>stackReleasedRT</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>stackRT</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>curRT</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>curShader</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8265,9 +8265,9 @@
 </table>
 </p>
 <p>Register an image for rendering. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: <span class="SCst"><a href="#Pixel_Image">Image</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: <span class="SCst"><a href="#Pixel_Image">Image</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></div>
 <p>Load and register an image for rendering. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fullName: <span class="STpe">string</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fullName: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Texture">Texture</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8331,7 +8331,7 @@
 </table>
 </p>
 <p>Create a render target. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w, h: <span class="STpe">s32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w, h: <span class="STpe">s32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8396,7 +8396,7 @@
 </table>
 </p>
 <p>Get a render target of the given size releaseRenderTarget must be called to release it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w, h: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w, h: <span class="STpe">s32</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8605,7 +8605,7 @@
 </table>
 </p>
 <p>Get current render target pixels. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unbindRenderTargetToImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y, w, h: <span class="STpe">s32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unbindRenderTargetToImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y, w, h: <span class="STpe">s32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8633,17 +8633,17 @@
 <table class="table-enumeration">
 <tr>
 <td>handle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTargetHandle">RenderTargetHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>colorBuffer</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>depthStencil</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTargetSurfaceHandle">RenderTargetSurfaceHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8671,12 +8671,12 @@
 <table class="table-enumeration">
 <tr>
 <td>hDC</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">HDC</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>hRC</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span>&nbsp;*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Ogl</span>.<span class="SCst">HGLRC</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8709,7 +8709,7 @@
 </tr>
 <tr>
 <td>fontStyle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8744,12 +8744,12 @@
 </tr>
 <tr>
 <td>font</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>under</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8773,7 +8773,7 @@
 </tr>
 <tr>
 <td>chunks</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichChunk">RichChunk</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_RichChunk">RichChunk</a></span>)</span></td>
 <td>The corresponding list of chunks. </td>
 </tr>
 <tr>
@@ -8962,32 +8962,32 @@
 <table class="table-enumeration">
 <tr>
 <td>font</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamily">FontFamily</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_FontFamily">FontFamily</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>fontStyle</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>palette</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">4</span>]&nbsp;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">4</span>] <span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>brush</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>horzAlignment</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringHorzAlignment">StringHorzAlignment</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_StringHorzAlignment">StringHorzAlignment</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>vertAlignment</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringVertAlignment">StringVertAlignment</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_StringVertAlignment">StringVertAlignment</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8997,7 +8997,7 @@
 </tr>
 <tr>
 <td>flags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringFormatFlags">StringFormatFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_StringFormatFlags">StringFormatFlags</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9015,7 +9015,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9033,47 +9033,47 @@
 <table class="table-enumeration">
 <tr>
 <td>handle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderHandle">ShaderHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>mvp</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>mdl</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>boundRect</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>textureRect</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>uvMode</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>copyMode</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>textureW</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>textureH</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9091,17 +9091,17 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>radius</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>axis</td>
-<td class="code-type"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9119,7 +9119,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9137,7 +9137,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9246,12 +9246,12 @@
 <table class="table-enumeration">
 <tr>
 <td>str</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichString">RichString</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_RichString">RichString</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>fmt</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9399,12 +9399,12 @@
 <table class="table-enumeration">
 <tr>
 <td>handle</td>
-<td class="code-type"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_TextureHandle">TextureHandle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>pf</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9512,7 +9512,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9572,7 +9572,7 @@
 </tr>
 <tr>
 <td>face</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst">FT_FaceRec</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst">FT_Face</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9646,7 +9646,7 @@
 </table>
 </p>
 <p>Get or create a new typeface from a memory buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(fullname: <span class="STpe">string</span>, bytes: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(fullname: <span class="STpe">string</span>, bytes: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9659,7 +9659,7 @@
 </table>
 </p>
 <p>Create a new typeface from a HFONT. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createFromHFONT</span>(fullname: <span class="STpe">string</span>, hf: <span class="SCst">HFONT</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createFromHFONT</span>(fullname: <span class="STpe">string</span>, hf: <span class="SCst">HFONT</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9737,7 +9737,7 @@
 </table>
 </p>
 <p>Get or load a new typeface. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9843,7 +9843,7 @@
 </tr>
 <tr>
 <td>aa</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">12</span>]&nbsp;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">12</span>] <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
