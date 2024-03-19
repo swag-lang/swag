@@ -12,7 +12,6 @@ using GenDocFlags = Flags<uint32_t>;
 static constexpr GenDocFlags GENDOC_CODE_REFS       = 0x00000001;
 static constexpr GenDocFlags GENDOC_CODE_BLOCK      = 0x00000002;
 static constexpr GenDocFlags GENDOC_CODE_SYNTAX_COL = 0x00000004;
-static constexpr GenDocFlags GENDOC_CODE_NBSP       = 0x00000008;
 
 struct GenDoc
 {

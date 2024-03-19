@@ -217,9 +217,6 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
         repl.replace(">", "&gt;");
     }
 
-    if (flags.has(GENDOC_CODE_NBSP))
-        repl.replace(" ", "&nbsp;");
-
     // Syntax coloration
     Utf8 codeText;
     if (flags.has(GENDOC_CODE_SYNTAX_COL))
@@ -251,7 +248,12 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
                     nameToRef += *pz++;
 
                 auto ref = findReference(nameToRef);
-                if (ref.empty())
+                if(ref.empty() && nameToRef.compareNoCase(module->name) && !strncmp(pz, "</span>.", 8))
+                {
+                    repl += "</span>";
+                    pz += 8;
+                }
+                else if (ref.empty())
                     repl += nameToRef;
                 else
                     repl += ref;
