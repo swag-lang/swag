@@ -976,7 +976,7 @@
 </table>
 </p>
 <p>Raise a compiler error at the given source location. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@compilererror</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@compilererror</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -989,7 +989,7 @@
 </table>
 </p>
 <p>Raise a compiler warning at the given source location. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@compilerwarning</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@compilerwarning</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1143,7 +1143,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@itftableof</span>(structType, itfType: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span>)-&gt;<span class="SKwd">const</span> *<span class="STpe">void</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@itftableof</span>(structType, itfType: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span>)-&gt;<span class="SKwd">const</span> *<span class="STpe">void</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1316,7 +1316,7 @@
 </table>
 </p>
 <p>Stop the execution and panic. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@panic</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@panic</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1328,7 +1328,7 @@
 </tr>
 </table>
 </p>
-<p>Get informations about the current process. </p>
+<p>Get information about the current process. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@pinfos</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ProcessInfos">ProcessInfos</a></span></span></div>
 <p>
 <table class="api-item">
@@ -1579,7 +1579,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@typecmp</span>(typeA, typeB: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span>, cmpFlags: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeCmpFlags">TypeCmpFlags</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@typecmp</span>(typeA, typeB: <span class="STpe">typeinfo</span>, cmpFlags: <span class="SCst"><a href="#Swag_TypeCmpFlags">TypeCmpFlags</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1649,7 +1649,7 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_ErrorValue"><span class="SCst">ErrorValue</span></a></td>
-<td>Store a <span class="code-inline">throw</span> error informations. </td>
+<td>Store a <span class="code-inline">throw</span> error information. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_Gvtd"><span class="SCst">Gvtd</span></a></td>
@@ -1661,11 +1661,11 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_Module"><span class="SCst">Module</span></a></td>
-<td>Defined some informations about a loaded module. </td>
+<td>Defined some information about a loaded module. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_ProcessInfos"><span class="SCst">ProcessInfos</span></a></td>
-<td>Defined some informations about the current process. </td>
+<td>Defined some information about the current process. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_ScratchAllocator"><span class="SCst">ScratchAllocator</span></a></td>
@@ -2115,7 +2115,7 @@
 <p>Hardcoded usage. </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AttrUsage">AttrUsage</a></span>(usage: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AttributeUsage">AttributeUsage</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AttrUsage">AttrUsage</a></span>(usage: <span class="SCst"><a href="#Swag_AttributeUsage">AttributeUsage</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2403,12 +2403,12 @@
 <tr>
 <td>backendDebugInformations</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td>Output debug informations if <span class="code-inline">true</span>. </td>
+<td>Output debug information if <span class="code-inline">true</span>. </td>
 </tr>
 <tr>
 <td>backendDebugInline</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td>Generate specific line informations for inline code. </td>
+<td>Generate specific line information for inline code. </td>
 </tr>
 <tr>
 <td>backendOptimize</td>
@@ -3262,7 +3262,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3274,7 +3274,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3298,7 +3298,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3336,7 +3336,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsAllocated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>, callerLoc = <span class="SCmp">#callerlocation</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsAllocated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>, callerLoc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3348,7 +3348,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsFreed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsFreed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3410,7 +3410,7 @@
 </table>
 </p>
 <p>Setup the allocator. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, allocator: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, allocator: <span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3570,7 +3570,7 @@
 </tr>
 </table>
 </p>
-<p>Store a <span class="code-inline">throw</span> error informations. </p>
+<p>Store a <span class="code-inline">throw</span> error information. </p>
 <table class="table-enumeration">
 <tr>
 <td>value</td>
@@ -3737,7 +3737,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3927,7 +3927,7 @@
 </tr>
 </table>
 </p>
-<p>Defined some informations about a loaded module. </p>
+<p>Defined some information about a loaded module. </p>
 <table class="table-enumeration">
 <tr>
 <td>name</td>
@@ -4153,7 +4153,7 @@
 </tr>
 </table>
 </p>
-<p>Defined some informations about the current process. </p>
+<p>Defined some information about the current process. </p>
 <table class="table-enumeration">
 <tr>
 <td>modules</td>
@@ -4252,7 +4252,7 @@
 <tr><td> <span class="code-inline">bool</span>         </td><td> Panic if a <span class="code-inline">bool</span> does not have a valid value (<span class="code-inline">true</span> or <span class="code-inline">false</span>)</td></tr>
 <tr><td> <span class="code-inline">nan</span>          </td><td> Panic if a <span class="code-inline">nan</span> is used in a float arithmetic operation</td></tr>
 <tr><td> <span class="code-inline">sanity</span>       </td><td> Do a <span class="code-inline">sanity</span> check (per function)</td></tr>
-<tr><td> <span class="code-inline">null</span>         </td><td> Panic on derefencing some null pointers</td></tr>
+<tr><td> <span class="code-inline">null</span>         </td><td> Panic on dereferencing some null pointers</td></tr>
 </table>
 <p>If <span class="code-inline">what</span> is null or empty, every options are will be affected. </p>
 <p>
@@ -4346,7 +4346,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4358,7 +4358,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4370,7 +4370,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4476,7 +4476,7 @@
 </table>
 </p>
 <p>This will call <span class="code-inline">release</span> prior to changing the capacity, so this must be called at an early stage. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCapacity</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>, allocator: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCapacity</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>, allocator: <span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4553,7 +4553,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4565,7 +4565,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5414,7 +5414,7 @@
 </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Using">Using</a></span>(what: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span>...)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Using">Using</a></span>(what: <span class="STpe">typeinfo</span>...)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5429,7 +5429,7 @@
 <p>Change the behavior of a given warning or list of warnings. </p>
 <div class="api-additional-infos"><b>Usage</b>: all multi 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Warn">Warn</a></span>(what: <span class="STpe">string</span>, level: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_WarnLevel">WarnLevel</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Warn">Warn</a></span>(what: <span class="STpe">string</span>, level: <span class="SCst"><a href="#Swag_WarnLevel">WarnLevel</a></span>)</span></div>
 <p>For example: </p>
 <div class="code-block"><span class="SAtr">#[Swag.Warn("Wrn0006", Swag.WarnLevel.Error)
 #[Swag.Warn("Wrn0002|Wrn0006", Swag.WarnLevel.Disable)
@@ -5462,7 +5462,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 12-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.30.0</div>
+Generated on 19-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
 </div>
 </div>
 </div>
