@@ -163,19 +163,25 @@ bool Tokenizer::doAfterToken(TokenParse& tokenParse)
             tokenParse.flags.add(TOKEN_PARSE_BLANK_AFTER);
         }
 
+        if (SWAG_IS_EOL(curBuffer[0]))
+            return true;
+
         if (curBuffer[0] == '/' && curBuffer[1] == '/')
         {
             curBuffer++;
             TokenParse tmp;
             SWAG_CHECK(doSingleLineComment(tmp));
             tokenParse.comments.commentJustAfter.push_back(std::move(tmp.comments.commentJustBefore.front()));
+            return true;
         }
-        else if (curBuffer[0] == '/' && curBuffer[1] == '*')
+
+        if (curBuffer[0] == '/' && curBuffer[1] == '*')
         {
             curBuffer++;
             TokenParse tmp;
             SWAG_CHECK(doMultiLineComment(tmp));
             tokenParse.comments.commentJustAfter.push_back(std::move(tmp.comments.commentJustBefore.front()));
+            continue;
         }
 
         return true;
