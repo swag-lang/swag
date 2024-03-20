@@ -249,7 +249,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, form("to end the [[%s]] expression", parent->token.c_str())));
             else
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
-            (*result)->inheritFormatFromAfter(this, prevTokenParse);
+            (*result)->inheritFormatFromAfter(this, &prevTokenParse);
             break;
         }
 
@@ -1693,7 +1693,7 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->count));
     }
 
-    node->inheritFormatFromAfter(this, tokenParse);
+    node->inheritFormatFromAfter(this, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     return true;
 }

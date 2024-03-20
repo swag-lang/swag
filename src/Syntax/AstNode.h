@@ -307,8 +307,8 @@ struct AstNode
     void inheritOwners(const AstNode* from);
     void inheritFormatFromBefore(const Parser* parser, AstNode* other);
     void inheritFormatFromAfter(const Parser* parser, AstNode* other);
-    void inheritFormatFromBefore(const Parser* parser, TokenParse& tokenParse);
-    void inheritFormatFromAfter(const Parser* parser, TokenParse& tokenParse);
+    void inheritFormatFromBefore(const Parser* parser, TokenParse* tokenParse);
+    void inheritFormatFromAfter(const Parser* parser, TokenParse* tokenParse);
     void inheritOwnersAndFlags(const Parser* parser);
 
     void allocateComputedValue();
@@ -500,8 +500,9 @@ struct AstNode
         return it->second != nullptr;
     }
 
-    void setOwnerAttrUse(AstAttrUse* attrUse);
-    void setOwnerBreakable(AstBreakable* bkp);
+    TokenParse* getTokenParse();
+    void        setOwnerAttrUse(AstAttrUse* attrUse);
+    void        setOwnerBreakable(AstBreakable* bkp);
 
     Token               token;
     SpecFlags           specFlags;

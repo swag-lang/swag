@@ -167,7 +167,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
         }
     }
 
-    callParams->inheritFormatFromAfter(this, tokenParse);
+    callParams->inheritFormatFromAfter(this, &tokenParse);
     if (callParams->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         SWAG_CHECK(eatToken(closeToken, "to close struct initialization parameters"));
     else

@@ -311,7 +311,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
 
     // For export
     idRef->addAstFlag(AST_DISCARD);
-    idRef->inheritFormatFromBefore(this, discardToken);
+    idRef->inheritFormatFromBefore(this, &discardToken);
 
     // Mark the identifier with AST_DISCARD
     while (idRef && idRef->isNot(AstNodeKind::IdentifierRef))
