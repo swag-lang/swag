@@ -29,11 +29,18 @@ void FormatConcat::addString(const char* v, uint32_t len)
     blank = 0;
 }
 
-void FormatConcat::addBlank(bool test)
+void FormatConcat::addBlank()
 {
-    if (!test)
-        return;
     addChar(' ');
+}
+
+void FormatConcat::alignBlanks(uint32_t curCol, uint32_t destCol)
+{
+    while (curCol < destCol)
+    {
+        addChar(' ');
+        curCol++;
+    }
 }
 
 void FormatConcat::addEol()

@@ -141,7 +141,8 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 
 bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node)
 {
-    if (node->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
+    const auto enumNode = castAst<AstEnumValue>(node, AstNodeKind::EnumValue);
+    if (enumNode->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
     {
         CONCAT_FIXED_STR(concat, "using");
         concat->addBlank();
@@ -153,10 +154,18 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node)
 
     if (node->childCount())
     {
+        concat->alignBlanks(node->token.text.length(), context.equalIndent);
         concat->addBlank();
         concat->addChar('=');
         concat->addBlank();
         SWAG_CHECK(outputNode(context, node->firstChild()));
+        concat->addBlank();
+        beautifyAfter(context, node);
+    }
+    else
+    {
+        concat->alignBlanks(node->token.text.length(), context.equalIndent);
+        beautifyAfter(context, node);
     }
 
     return true;

@@ -5,7 +5,8 @@ struct FormatConcat : Concat
 {
     Utf8 getUtf8() const;
 
-    void addBlank(bool test = true);
+    void addBlank();
+    void alignBlanks(uint32_t curCol, uint32_t destCol);
     void addIndent(uint32_t num);
     void addBlankLine();
     void addEol();
