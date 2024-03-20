@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Report/Log.h"
-#include "Wmf/Module.h"
-#include "Syntax/Tokenizer/Tokenizer.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Syntax/Ast.h"
+#include "Syntax/Tokenizer/Tokenizer.h"
+#include "Wmf/Module.h"
 
 Utf8 ByteCode::getPrintName()
 {

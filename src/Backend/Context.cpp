@@ -3,8 +3,8 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Report/Diagnostic.h"
-#include "Wmf/Module.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/Module.h"
 #ifdef SWAG_DEV_MODE
 #include "Wmf/ModuleManager.h"
 #endif

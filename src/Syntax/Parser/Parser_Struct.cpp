@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Wmf/Module.h"
-#include "Syntax/Naming.h"
-#include "Syntax/Parser/Parser_Push.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Naming.h"
+#include "Syntax/Parser/Parser_Push.h"
+#include "Wmf/Module.h"
 
 bool Parser::doImpl(AstNode* parent, AstNode** result)
 {

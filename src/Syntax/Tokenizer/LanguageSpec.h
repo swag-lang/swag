@@ -1,8 +1,8 @@
 // ReSharper disable CppInconsistentNaming
 // ReSharper disable IdentifierTypo
 #pragma once
-#include "Syntax/Tokenizer/LangHashTable.h"
 #include "Syntax/Parser/Parser.h"
+#include "Syntax/Tokenizer/LangHashTable.h"
 #include "Syntax/Tokenizer/Token.h"
 
 struct TypeInfoNative;

@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Syntax/AstNode.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Syntax/AstNode.h"
 
 namespace
 {

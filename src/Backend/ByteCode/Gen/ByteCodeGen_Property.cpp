@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/ByteCode/Gen/ByteCodeGenContext.h"
 #include "Report/Report.h"
 #include "Semantic/Symbol/Symbol.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)

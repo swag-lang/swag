@@ -162,7 +162,7 @@ void help(const CommandLineParser& cmdParser, const Utf8& cmd)
         g_Log.messageInfo("swag format --file:c:/myFolder/myFile.swg\n");
         g_Log.messageInfo("\n");
         cmdParser.logArguments(cmd);
-    }    
+    }
 }
 
 void help()

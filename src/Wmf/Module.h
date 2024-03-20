@@ -2,13 +2,13 @@
 #include "Backend/BackendParameters.h"
 #include "Backend/ByteCode/Run/ByteCodeRun.h"
 #include "Backend/ByteCode/Run/ByteCodeRunContext.h"
-#include "Semantic/DataSegment.h"
-#include "Jobs/DependentJobs.h"
-#include "Threading/JobGroup.h"
 #include "Core/Path.h"
+#include "Jobs/DependentJobs.h"
+#include "Semantic/DataSegment.h"
 #include "Semantic/Symbol/SymTable.h"
-#include "Syntax/Tokenizer/Token.h"
 #include "Semantic/Type/TypeGen.h"
+#include "Syntax/Tokenizer/Token.h"
+#include "Threading/JobGroup.h"
 
 enum class ModuleBuildPass
 {

@@ -1,14 +1,14 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/ByteCode/Gen/ByteCodeGenContext.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Semantic.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 
 bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 {

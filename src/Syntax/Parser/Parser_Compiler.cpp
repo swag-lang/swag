@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Semantic/Semantic.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Parser/Parser_Push.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
-#include "Syntax/Parser/Parser_Push.h"
-#include "Semantic/Semantic.h"
 #include "Wmf/Workspace.h"
 
 bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)

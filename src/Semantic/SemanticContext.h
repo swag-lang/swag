@@ -1,9 +1,9 @@
 #pragma once
-#include "Syntax/AstNode.h"
 #include "Format/FormatConcat.h"
 #include "Semantic/Generic/Generic.h"
-#include "Threading/Job.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Syntax/AstNode.h"
+#include "Threading/Job.h"
 
 struct AstFuncCallParam;
 struct SymbolName;

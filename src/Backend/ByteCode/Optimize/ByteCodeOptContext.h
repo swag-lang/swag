@@ -1,7 +1,7 @@
 #pragma once
 #include "Backend/ByteCode/ByteCode.h"
-#include "Threading/Job.h"
 #include "MapRegTo.h"
+#include "Threading/Job.h"
 
 struct ByteCode;
 struct ByteCodeGenContext;

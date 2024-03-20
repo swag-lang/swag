@@ -2,8 +2,8 @@
 #include "Backend/BackendLinker.h"
 #include "Backend/Backend.h"
 #include "Report/Log.h"
-#include "Wmf/Module.h"
 #include "Threading/ThreadManager.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 #ifdef SWAG_DEV_MODE
 #include "Os/Os.h"

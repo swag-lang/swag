@@ -2,9 +2,9 @@
 #include "Wmf/ModuleManager.h"
 #include "Backend/Backend.h"
 #include "Backend/Context.h"
+#include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
-#include "Semantic/Type/TypeInfo.h"
 #include "Wmf/Workspace.h"
 
 #ifdef SWAG_DEV_MODE

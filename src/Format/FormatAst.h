@@ -45,10 +45,10 @@ struct FormatAst
     Utf8 getUtf8() const;
 
     static AstNode* convertNode(FormatContext& context, AstNode* node);
-    auto     outputChildren(FormatContext& context, AstNode* node, uint32_t start = 0) -> bool;
-    bool     outputCommaChildren(FormatContext& context, AstNode* node, uint32_t start = 0);
-    bool     outputStatement(FormatContext& context, AstNode* node);
-    bool     outputDoStatement(FormatContext& context, AstNode* node);
+    auto            outputChildren(FormatContext& context, AstNode* node, uint32_t start = 0) -> bool;
+    bool            outputCommaChildren(FormatContext& context, AstNode* node, uint32_t start = 0);
+    bool            outputStatement(FormatContext& context, AstNode* node);
+    bool            outputDoStatement(FormatContext& context, AstNode* node);
 
     void beautifyComment(const FormatContext& context, Vector<TokenComment>& comments) const;
     void beautifyBefore(const FormatContext& context, AstNode* node) const;

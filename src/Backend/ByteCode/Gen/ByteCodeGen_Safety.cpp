@@ -3,8 +3,8 @@
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/ByteCode/Gen/ByteCodeGenContext.h"
 #include "Report/ErrorIds.h"
-#include "Wmf/Module.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Wmf/Module.h"
 
 thread_local Utf8 g_TypedMsg[static_cast<int>(SafetyMsg::Count)][static_cast<int>(NativeTypeKind::Count)][static_cast<int>(NativeTypeKind::Count)];
 

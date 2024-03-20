@@ -1,17 +1,17 @@
 #include "pch.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Backend/SCBE/Main/SCBE.h"
+#include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Report/Report.h"
+#include "SCBE_Macros.h"
+#include "Semantic/Type/TypeManager.h"
+#include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
-#include "Report/Report.h"
-#include "Backend/SCBE/Main/SCBE.h"
-#include "Backend/SCBE/Obj/SCBE_Coff.h"
-#include "SCBE_Macros.h"
-#include "Semantic/Type/TypeManager.h"
 
 void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
                          const VectorNative<uint32_t>&    unwindOffsetRegs,

@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Syntax/AstFlags.h"
-#include "Syntax/AstNode.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Report/ErrorIds.h"
-#include "Wmf/Module.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/AstNode.h"
+#include "Wmf/Module.h"
 
 bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
 {

@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 #include "Backend/ByteCode/ByteCode_Math.h"
+#include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 
 void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {

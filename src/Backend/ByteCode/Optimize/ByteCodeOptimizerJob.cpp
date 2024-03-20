@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "ByteCodeOptimizerJob.h"
-#include "Syntax/AstNode.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
-#include "Wmf/Module.h"
 #include "Main/Statistics.h"
+#include "Syntax/AstNode.h"
+#include "Wmf/Module.h"
 #ifdef SWAG_STATS
 #include "Core/Timer.h"
 #endif

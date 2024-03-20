@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/ByteCode/Gen/ByteCodeGenContext.h"
@@ -9,6 +7,8 @@
 #include "Report/Report.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
 
 bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, const RegisterList& dstReg, const RegisterList& srcReg, AstNode* from)
 {

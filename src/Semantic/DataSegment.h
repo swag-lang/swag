@@ -1,6 +1,6 @@
 #pragma once
-#include "Threading/RaceCondition.h"
 #include "Backend/ByteCode/Register.h"
+#include "Threading/RaceCondition.h"
 
 struct AstFuncDecl;
 struct ComputedValue;

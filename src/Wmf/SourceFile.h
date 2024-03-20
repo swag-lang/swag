@@ -1,7 +1,7 @@
 #pragma once
 #include "Main/CommandLine.h"
-#include "Threading/Mutex.h"
 #include "Syntax/Tokenizer/Token.h"
+#include "Threading/Mutex.h"
 
 struct AstAttrUse;
 struct AstIdentifierRef;

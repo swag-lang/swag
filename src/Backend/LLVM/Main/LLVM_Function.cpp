@@ -1,16 +1,16 @@
 #include "pch.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Backend/LLVM/Debug/LLVMDebug.h"
+#include "Backend/LLVM/Main/LLVM.h"
+#include "Backend/LLVM/Main/LLVM_Macros.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Backend/LLVM/Main/LLVM.h"
-#include "Backend/LLVM/Debug/LLVMDebug.h"
-#include "Backend/LLVM/Main/LLVM_Macros.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Wmf/Module.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/Module.h"
 
 bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
 {

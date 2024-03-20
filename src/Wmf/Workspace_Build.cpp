@@ -4,7 +4,6 @@
 #include "Core/Timer.h"
 #include "Jobs/EnumerateModuleJob.h"
 #include "Jobs/ModuleBuildJob.h"
-#include "Wmf/ModuleManager.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
@@ -17,6 +16,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/DepManager/ModuleDepManager.h"
+#include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
 
 void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)

@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Scope.h"
 #include "Semantic/SemanticJob.h"
-#include "Wmf/SourceFile.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Wmf/SourceFile.h"
 
 std::atomic<uint32_t> g_UniqueID;
 

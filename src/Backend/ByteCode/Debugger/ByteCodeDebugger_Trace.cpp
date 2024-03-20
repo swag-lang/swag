@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Syntax/AstNode.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
+#include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
 
 BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const BcDbgCommandArg& arg)

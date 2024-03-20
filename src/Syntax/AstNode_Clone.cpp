@@ -292,7 +292,7 @@ AstNode* AstNode::clone(CloneContext& context)
         case AstNodeKind::CompilerGlobal:
             return clone<AstCompilerGlobal>(this, context);
         case AstNodeKind::CompilerCode:
-            return clone<AstCompilerCode>(this, context);                         
+            return clone<AstCompilerCode>(this, context);
 
         default:
         {

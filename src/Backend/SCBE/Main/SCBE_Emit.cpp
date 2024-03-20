@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCode_Math.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Backend/SCBE/Main/SCBE.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 
 void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
 {

@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Parser/Parser.h"
 #include "Semantic/SemanticJob.h"
-#include "Wmf/SourceFile.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/Parser/Parser.h"
+#include "Wmf/SourceFile.h"
 
 bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight)
 {

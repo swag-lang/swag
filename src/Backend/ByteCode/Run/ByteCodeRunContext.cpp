@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Backend/ByteCode/Run/ByteCodeRunContext.h"
-#include "Syntax/AstNode.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
-#include "Report/ErrorIds.h"
-#include "Wmf/Module.h"
-#include "Os/Os.h"
 #include "Main/Statistics.h"
+#include "Os/Os.h"
+#include "Report/ErrorIds.h"
+#include "Syntax/AstNode.h"
+#include "Wmf/Module.h"
 
 Mutex g_FreeStackMutex;
 void* g_FirstFreeStack = nullptr;

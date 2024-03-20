@@ -1,7 +1,7 @@
 #pragma once
-#include "Syntax/Ast.h"
 #include "Backend/BackendParameters.h"
 #include "Format/FormatAst.h"
+#include "Syntax/Ast.h"
 
 struct AstFuncDecl;
 struct AstNode;

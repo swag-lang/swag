@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
-#include "Syntax/AstFlags.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Report/Log.h"
-#include "Wmf/Module.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/SemanticJob.h"
+#include "Syntax/AstFlags.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 ByteCodeDebugger g_ByteCodeDebugger;

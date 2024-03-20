@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Backend/Backend.h"
 #include "Backend/BackendLinker.h"
-#include "Wmf/Module.h"
 #include "Threading/ThreadManager.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vector<Utf8>& arguments, BuildCfgOutputKind outputKind)

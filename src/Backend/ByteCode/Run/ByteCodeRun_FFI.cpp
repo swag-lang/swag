@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Os/Os.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
-#include "Os/Os.h"
-#include "Semantic/Type/TypeManager.h"
 
 void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, const ByteCodeInstruction* ip)
 {

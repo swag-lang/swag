@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Core/Crc32.h"
 #include "Report/Log.h"
-#include "Wmf/Module.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
+#include "Wmf/Module.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op, __flags, __dis) {__flags, static_cast<uint32_t>(strlen(#__op)), #__op, __dis},

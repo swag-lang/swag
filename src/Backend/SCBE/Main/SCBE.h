@@ -1,8 +1,8 @@
 #pragma once
 #include "Backend/Backend.h"
 #include "Backend/BackendParameters.h"
-#include "Semantic/DataSegment.h"
 #include "Backend/SCBE/Encoder/SCBE_X64.h"
+#include "Semantic/DataSegment.h"
 
 struct Module;
 struct BuildParameters;

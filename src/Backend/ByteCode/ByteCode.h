@@ -1,10 +1,10 @@
 #pragma once
 #include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/ByteCode/ByteCodeOp.h"
-#include "Threading/Mutex.h"
 #include "Backend/ByteCode/Profiler/Profiler.h"
-#include "Threading/RaceCondition.h"
 #include "Backend/ByteCode/Register.h"
+#include "Threading/Mutex.h"
+#include "Threading/RaceCondition.h"
 
 struct AstNode;
 struct SourceFile;

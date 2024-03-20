@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Syntax/AstFlags.h"
+#include "Backend/ByteCode/ByteCodeOp.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/ByteCode/Gen/ByteCodeGenContext.h"
-#include "Backend/ByteCode/ByteCodeOp.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/AstFlags.h"
 
 bool ByteCodeGen::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
 {

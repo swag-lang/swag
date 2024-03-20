@@ -1,7 +1,7 @@
 #pragma once
-#include "Syntax/AstNode.h"
 #include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Core/Math.h"
+#include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
 

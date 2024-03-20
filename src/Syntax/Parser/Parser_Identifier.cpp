@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Semantic/Error/SemanticError.h"
+#include "Semantic/Semantic.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
 #include "Syntax/Parser/Parser.h"
 #include "Syntax/Parser/Parser_Push.h"
-#include "Semantic/Semantic.h"
-#include "Semantic/Error/SemanticError.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/SourceFile.h"
 
 bool Parser::testIsSingleIdentifier(const AstNode* node)

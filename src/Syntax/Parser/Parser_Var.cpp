@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
-#include "Syntax/AstFlags.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Semantic/Semantic.h"
+#include "Syntax/Ast.h"
+#include "Syntax/AstFlags.h"
 #include "Syntax/Naming.h"
 #include "Syntax/Parser/Parser_Push.h"
-#include "Semantic/Semantic.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 
 bool Parser::checkIsValidVarName(AstNode* node) const
 {

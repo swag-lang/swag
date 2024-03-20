@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Backend/SCBE/Main/SCBE.h"
-#include "Report/ErrorIds.h"
-#include "Wmf/Module.h"
-#include "Os/Os.h"
-#include "Report/Report.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Backend/SCBE/Obj/SCBE_SaveObjJob.h"
+#include "Os/Os.h"
+#include "Report/ErrorIds.h"
+#include "Report/Report.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 SCBE::SCBE(Module* mdl) :

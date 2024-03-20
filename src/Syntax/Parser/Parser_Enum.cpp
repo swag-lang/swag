@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Naming.h"
-#include "Syntax/Parser/Parser_Push.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/Naming.h"
+#include "Syntax/Parser/Parser_Push.h"
 
 bool Parser::doEnum(AstNode* parent, AstNode** result)
 {

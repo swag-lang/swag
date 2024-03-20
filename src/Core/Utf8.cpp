@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Core/Crc32.h"
 #include "Backend/Runtime.h"
+#include "Core/Crc32.h"
 #include "Main/Statistics.h"
 
 Utf8::~Utf8()

@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Syntax/AstNode.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
+#include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
 
 // Eliminate unnecessary jumps

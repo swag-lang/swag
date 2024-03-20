@@ -1,6 +1,6 @@
 #pragma once
-#include "Syntax/AstNode.h"
 #include "Backend/ByteCode/ByteCodeInstruction.h"
+#include "Syntax/AstNode.h"
 #include "Threading/Job.h"
 
 static constexpr uint32_t BCC_FLAG_NO_LOCATION  = 0x00000001;

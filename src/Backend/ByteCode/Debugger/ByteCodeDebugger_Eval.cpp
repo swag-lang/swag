@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Backend/ByteCode/Gen/ByteCodeGenContext.h"
@@ -8,12 +7,13 @@
 #include "Backend/Context.h"
 #include "Report/Diagnostic.h"
 #include "Report/Log.h"
-#include "Wmf/Module.h"
-#include "Syntax/Parser/Parser.h"
 #include "Report/Report.h"
 #include "Semantic/SemanticJob.h"
-#include "Threading/ThreadManager.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
+#include "Syntax/Parser/Parser.h"
+#include "Threading/ThreadManager.h"
+#include "Wmf/Module.h"
 
 bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& inExpr, EvaluateResult& res, CompilerAstKind kind, bool silent) const
 {

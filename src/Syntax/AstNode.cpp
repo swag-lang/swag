@@ -179,7 +179,7 @@ void AstNode::inheritFormatFromAfter(const Parser* parser, AstNode* other)
     const auto to = other->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
     if (to)
     {
-        const auto tp                     = Allocator::alloc<TokenParse>();
+        const auto tp                 = Allocator::alloc<TokenParse>();
         tp->comments.commentJustAfter = std::move(to->comments.commentJustAfter);
         addExtraPointer(ExtraPointerKind::TokenParse, tp);
     }
@@ -192,7 +192,7 @@ void AstNode::inheritFormatFromAfter(const Parser* parser, TokenParse& tokenPars
 
     if (!tokenParse.comments.commentJustAfter.empty())
     {
-        const auto tp                     = Allocator::alloc<TokenParse>();
+        const auto tp                 = Allocator::alloc<TokenParse>();
         tp->comments.commentJustAfter = std::move(tokenParse.comments.commentJustAfter);
         addExtraPointer(ExtraPointerKind::TokenParse, tp);
     }

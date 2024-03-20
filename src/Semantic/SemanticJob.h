@@ -1,6 +1,6 @@
 #pragma once
-#include "Threading/Job.h"
 #include "Semantic/Semantic.h"
+#include "Threading/Job.h"
 
 struct SourceFile;
 struct AstNode;

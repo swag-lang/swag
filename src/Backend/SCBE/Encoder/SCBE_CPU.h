@@ -1,9 +1,9 @@
 #pragma once
 #include "Backend/Backend.h"
 #include "Backend/CallConv.h"
+#include "Backend/SCBE/Debug/SCBEDebug.h"
 #include "Core/Concat.h"
 #include "Semantic/DataSegment.h"
-#include "Backend/SCBE/Debug/SCBEDebug.h"
 
 struct AstNode;
 

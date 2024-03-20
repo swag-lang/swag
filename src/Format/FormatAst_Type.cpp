@@ -150,7 +150,7 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node)
     }
 
     concat->addString(node->token.text);
-    
+
     if (node->childCount())
     {
         concat->addBlank();
@@ -158,7 +158,7 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node)
         concat->addBlank();
         SWAG_CHECK(outputNode(context, node->firstChild()));
     }
-    
+
     return true;
 }
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "Threading/Job.h"
 #include "Backend/ByteCode/Register.h"
+#include "Threading/Job.h"
 #include "Wmf/SourceFile.h"
 
 struct SemanticContext;

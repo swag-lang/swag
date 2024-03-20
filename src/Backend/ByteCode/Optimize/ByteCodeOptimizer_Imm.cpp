@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Syntax/AstNode.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
+#include "Syntax/AstNode.h"
 
 // If an instruction can have an immediate form, then transform it if the corresponding
 // register is a constant.

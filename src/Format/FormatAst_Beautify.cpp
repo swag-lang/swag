@@ -24,7 +24,7 @@ void FormatAst::beautifyComment(const FormatContext& context, Vector<TokenCommen
 
         concat->addString(cmt);
 
-        if(v.flags.has(TOKEN_PARSE_EOL_AFTER))
+        if (v.flags.has(TOKEN_PARSE_EOL_AFTER))
         {
             concat->addEol();
             concat->addIndent(context.indent);
@@ -50,8 +50,8 @@ void FormatAst::beautifyCommentBefore(const FormatContext& context, AstNode* nod
         return;
 
     beautifyComment(context, to->comments.commentBefore);
-//    concat->addEol();
-//    concat->addIndent(context.indent);
+    //    concat->addEol();
+    //    concat->addIndent(context.indent);
 }
 
 void FormatAst::beautifyCommentJustBefore(const FormatContext& context, AstNode* node) const
@@ -63,8 +63,8 @@ void FormatAst::beautifyCommentJustBefore(const FormatContext& context, AstNode*
         return;
 
     beautifyComment(context, to->comments.commentJustBefore);
-//    concat->addEol();
-//    concat->addIndent(context.indent);
+    //    concat->addEol();
+    //    concat->addIndent(context.indent);
 }
 
 void FormatAst::beautifyBlankLine(const FormatContext& context, AstNode* node) const

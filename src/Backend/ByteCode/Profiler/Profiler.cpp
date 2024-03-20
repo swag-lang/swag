@@ -2,9 +2,9 @@
 
 #ifdef SWAG_STATS
 #include "Backend/ByteCode/ByteCode.h"
+#include "Os/Os.h"
 #include "Report/Log.h"
 #include "Wmf/Module.h"
-#include "Os/Os.h"
 #include "Wmf/Workspace.h"
 
 constexpr int COL1 = 12;

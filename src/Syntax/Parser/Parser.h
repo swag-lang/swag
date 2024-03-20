@@ -1,7 +1,7 @@
 #pragma once
-#include "Syntax/AstNode.h"
 #include "Report/ErrorContext.h"
 #include "Semantic/Scope.h"
+#include "Syntax/AstNode.h"
 #include "Syntax/Tokenizer/Tokenizer.h"
 
 struct AstAttrUse;

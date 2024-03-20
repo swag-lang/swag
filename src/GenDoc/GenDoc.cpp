@@ -248,7 +248,7 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
                     nameToRef += *pz++;
 
                 auto ref = findReference(nameToRef);
-                if(ref.empty() && nameToRef.compareNoCase(module->name) && !strncmp(pz, "</span>.", 8))
+                if (ref.empty() && nameToRef.compareNoCase(module->name) && !strncmp(pz, "</span>.", 8))
                 {
                     repl += "</span>";
                     pz += 8;

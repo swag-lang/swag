@@ -1,18 +1,18 @@
 #include "pch.h"
 #include "Backend/ByteCode/Run/ByteCodeRun.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/ByteCode/ByteCode_Math.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
-#include "Backend/ByteCode/ByteCode_Math.h"
 #include "Backend/CompilerItf.h"
 #include "Backend/Context.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Wmf/Module.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
 #define IMMA_U8(ip)  ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u8 : registersRC[(ip)->a.u32].u8)
@@ -3304,7 +3304,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) += IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpPlusEqS8_SSSafe:
-            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) += *reinterpret_cast<int8_t*>(context->bp + ip->b.u32);  // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) += *reinterpret_cast<int8_t*>(context->bp + ip->b.u32); // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
             break;
 
         case ByteCodeOp::AffectOpPlusEqS16:
@@ -3319,7 +3319,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) += IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpPlusEqS16_SSSafe:
-            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) += *reinterpret_cast<int16_t*>(context->bp + ip->b.u32);  // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) += *reinterpret_cast<int16_t*>(context->bp + ip->b.u32); // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
             break;
 
         case ByteCodeOp::AffectOpPlusEqS32:
@@ -3446,7 +3446,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) -= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpMinusEqS8_SSSafe:
-            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) -= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32);  // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) -= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32); // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
             break;
 
         case ByteCodeOp::AffectOpMinusEqS16:
@@ -3461,7 +3461,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) -= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpMinusEqS16_SSSafe:
-            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) -= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32);  // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) -= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32); // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
             break;
 
         case ByteCodeOp::AffectOpMinusEqS32:
@@ -3588,7 +3588,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) *= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS8_SSSafe:
-            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) *= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32);    // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) *= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32); // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
             break;
 
         case ByteCodeOp::AffectOpMulEqS16:
@@ -3603,7 +3603,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) *= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS16_SSSafe:
-            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) *= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32);    // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) *= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32); // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
             break;
 
         case ByteCodeOp::AffectOpMulEqS32:
@@ -3725,7 +3725,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) /= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpDivEqS8_SS:
-            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) /= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32);    // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) /= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32); // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
             break;
 
         case ByteCodeOp::AffectOpDivEqS16:
@@ -3735,7 +3735,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) /= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpDivEqS16_SS:
-            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) /= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32);    // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) /= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32); // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
             break;
 
         case ByteCodeOp::AffectOpDivEqS32:
@@ -3827,7 +3827,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) %= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpModuloEqS8_SS:
-            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) %= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32);    // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+            *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) %= *reinterpret_cast<int8_t*>(context->bp + ip->b.u32); // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
             break;
 
         case ByteCodeOp::AffectOpModuloEqS16:
@@ -3837,7 +3837,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) %= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpModuloEqS16_SS:
-            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) %= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32);    // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+            *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) %= *reinterpret_cast<int16_t*>(context->bp + ip->b.u32); // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
             break;
 
         case ByteCodeOp::AffectOpModuloEqS32:

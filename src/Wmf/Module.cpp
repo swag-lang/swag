@@ -5,8 +5,6 @@
 #include "Backend/LLVM/Main/LLVM.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Jobs/SaveGenJob.h"
-#include "Wmf/ModuleManager.h"
-#include "Syntax/Parser/Parser.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
@@ -14,8 +12,10 @@
 #include "Semantic/Error/SemanticError.h"
 #include "Semantic/SemanticJob.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Parser/Parser.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Threading/ThreadManager.h"
+#include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
 
 void Module::setup(const Utf8& moduleName, const Path& modulePath)
