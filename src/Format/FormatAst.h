@@ -59,6 +59,7 @@ struct FormatAst
 
     bool outputClosureArguments(FormatContext& context, AstFuncDecl* funcNode);
     bool outputLambdaExpression(FormatContext& context, AstNode* node);
+    bool outputEnumValue(FormatContext& context, AstNode* node);
     bool outputEnum(FormatContext& context, AstEnum* node);
     bool outputFuncDecl(FormatContext& context, AstFuncDecl* node);
     bool outputAttrUse(FormatContext& context, AstNode* node, bool& hasSomething);
@@ -107,7 +108,7 @@ struct FormatAst
     bool outputIf(FormatContext& context, const Utf8& name, AstNode* node);
     bool outputNamespace(FormatContext& context, AstNode* node);
     bool outputDefer(FormatContext& context, AstNode* node);
-    bool outputTryAssume(FormatContext& context, AstNode* node);
+    bool outputTryAssume(FormatContext& context, const AstNode* node);
     bool outputCatch(FormatContext& context, AstNode* node);
     bool outputImpl(FormatContext& context, AstNode* node);
     bool outputIdentifier(FormatContext& context, AstNode* node);

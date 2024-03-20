@@ -139,6 +139,29 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
     return true;
 }
 
+bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node)
+{
+    if (node->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
+    {
+        CONCAT_FIXED_STR(concat, "using");
+        concat->addBlank();
+        SWAG_CHECK(outputNode(context, node->firstChild()));
+        return true;
+    }
+
+    concat->addString(node->token.text);
+    
+    if (node->childCount())
+    {
+        concat->addBlank();
+        concat->addChar('=');
+        concat->addBlank();
+        SWAG_CHECK(outputNode(context, node->firstChild()));
+    }
+    
+    return true;
+}
+
 bool FormatAst::outputEnum(FormatContext& context, AstEnum* node)
 {
     concat->addIndent(context.indent);
@@ -162,36 +185,12 @@ bool FormatAst::outputEnum(FormatContext& context, AstEnum* node)
     concat->addIndent(context.indent);
     concat->addChar('{');
     concat->addEol();
-
     context.indent++;
-    for (uint32_t it = first; it < node->children.size(); it++)
-    {
-        const auto child = convertNode(context, node->children[it]);
-        if (!child)
-            continue;
-
-        beautifyBlankLine(context, child);
-        concat->addIndent(context.indent);
-
-        if (child->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
-        {
-            CONCAT_FIXED_STR(concat, "using");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(context, child->firstChild()));
-        }
-        else
-        {
-            SWAG_CHECK(outputNode(context, child));
-        }
-
-        concat->addEol();
-    }
-
+    SWAG_CHECK(outputChildren(context, node, first));
     context.indent--;
     concat->addIndent(context.indent);
     concat->addChar('}');
     concat->addEol();
-
     return true;
 }
 

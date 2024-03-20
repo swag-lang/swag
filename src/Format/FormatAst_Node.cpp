@@ -162,16 +162,8 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
                 SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
         case AstNodeKind::EnumValue:
-            concat->addString(node->token.text);
-            if (node->childCount())
-            {
-                concat->addBlank();
-                concat->addChar('=');
-                concat->addBlank();
-                SWAG_CHECK(outputNode(context, node->firstChild()));
-            }
+            SWAG_CHECK(outputEnumValue(context, node));
             break;
-
         case AstNodeKind::EnumDecl:
             SWAG_CHECK(outputEnum(context, castAst<AstEnum>(node, AstNodeKind::EnumDecl)));
             break;

@@ -201,7 +201,7 @@ bool FormatAst::outputDefer(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputTryAssume(FormatContext& context, AstNode* node)
+bool FormatAst::outputTryAssume(FormatContext& context, const AstNode* node)
 {
     if (node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED) && node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK))
     {
