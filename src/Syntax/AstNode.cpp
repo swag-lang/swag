@@ -138,18 +138,18 @@ void AstNode::inheritFormatFromBefore(const Parser* parser, AstNode* other)
 {
     if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
-    if (!other->hasExtMisc())
-        return;
-
     const auto to = other->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
     if (to)
-    {
-        const auto tp                  = Allocator::alloc<TokenParse>();
-        tp->flags                      = to->flags;
-        tp->comments.commentBefore     = std::move(to->comments.commentBefore);
-        tp->comments.commentJustBefore = std::move(to->comments.commentJustBefore);
-        addExtraPointer(ExtraPointerKind::TokenParse, tp);
-    }
+        inheritFormatFromBefore(parser, *to);
+}
+
+void AstNode::inheritFormatFromAfter(const Parser* parser, AstNode* other)
+{
+    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+        return;
+    const auto to = other->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
+    if (to)
+        inheritFormatFromAfter(parser, *to);
 }
 
 void AstNode::inheritFormatFromBefore(const Parser* parser, TokenParse& tokenParse)
@@ -165,22 +165,6 @@ void AstNode::inheritFormatFromBefore(const Parser* parser, TokenParse& tokenPar
         tp->flags                      = tokenParse.flags;
         tp->comments.commentBefore     = std::move(tokenParse.comments.commentBefore);
         tp->comments.commentJustBefore = std::move(tokenParse.comments.commentJustBefore);
-        addExtraPointer(ExtraPointerKind::TokenParse, tp);
-    }
-}
-
-void AstNode::inheritFormatFromAfter(const Parser* parser, AstNode* other)
-{
-    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
-        return;
-    if (!other->hasExtMisc())
-        return;
-
-    const auto to = other->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
-    if (to)
-    {
-        const auto tp                 = Allocator::alloc<TokenParse>();
-        tp->comments.commentJustAfter = std::move(to->comments.commentJustAfter);
         addExtraPointer(ExtraPointerKind::TokenParse, tp);
     }
 }
