@@ -167,10 +167,12 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
     currentScope->symTable.registerSymbolName(context, enumValue, SymbolKind::EnumValue);
 
     SWAG_CHECK(eatToken());
+
+    AstNode* expression = nullptr;
     if (tokenParse.is(TokenId::SymEqual))
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doExpression(enumValue, EXPR_FLAG_NONE, &dummyResult));
+        SWAG_CHECK(doExpression(enumValue, EXPR_FLAG_NONE, &expression));
     }
 
     if (tokenParse.is(TokenId::SymComma))
@@ -178,9 +180,14 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
         enumValue->inheritFormatFromAfter(this, &tokenParse);
         SWAG_CHECK(eatToken());
     }
-    else if (tokenParse.isNot(TokenId::SymRightCurly))
+    else
     {
-        SWAG_CHECK(eatSemiCol("enum value"));
+        if (expression)
+            enumValue->inheritFormatFromAfter(this, expression);
+        if (tokenParse.isNot(TokenId::SymRightCurly))
+        {
+            SWAG_CHECK(eatSemiCol("enum value"));
+        }
     }
 
     return true;

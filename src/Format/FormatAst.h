@@ -26,7 +26,6 @@ constexpr FormatFlags FORMAT_FOR_BEAUTIFY = 0x00000002;
 struct FormatContext
 {
     uint32_t indent           = 0;
-    uint32_t equalIndent      = 0;
     bool     outputComments   = true;
     bool     outputBlankLines = true;
 };

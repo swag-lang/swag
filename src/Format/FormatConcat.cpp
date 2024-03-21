@@ -5,11 +5,13 @@ void FormatConcat::addChar(char c)
 {
     ensureSpace(1);
     *currentSP++ = c;
+    column++;
 
     if (SWAG_IS_EOL(c))
     {
         eol++;
-        blank = 0;
+        blank  = 0;
+        column = 0;
     }
     else if (!SWAG_IS_BLANK(c))
     {
@@ -27,6 +29,7 @@ void FormatConcat::addString(const char* v, uint32_t len)
     currentSP += len;
     eol   = 0;
     blank = 0;
+    column += len;
 }
 
 void FormatConcat::addBlank()
@@ -34,13 +37,10 @@ void FormatConcat::addBlank()
     addChar(' ');
 }
 
-void FormatConcat::alignBlanks(uint32_t curCol, uint32_t destCol)
+void FormatConcat::alignToColumn(uint32_t destCol)
 {
-    while (curCol < destCol)
-    {
+    while (column < destCol)
         addChar(' ');
-        curCol++;
-    }
 }
 
 void FormatConcat::addEol()
@@ -98,5 +98,13 @@ Utf8 FormatConcat::getUtf8() const
     Utf8 result;
     for (auto b = firstBucket; b; b = b->nextBucket)
         result.append(reinterpret_cast<const char*>(b->data), bucketCount(b));
+    return result;
+}
+
+uint32_t FormatConcat::length() const
+{
+    uint32_t result = 0;
+    for (auto b = firstBucket; b; b = b->nextBucket)
+        result += bucketCount(b);
     return result;
 }

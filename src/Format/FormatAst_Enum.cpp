@@ -43,21 +43,19 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
             {
                 tmpConcat.clear();
                 SWAG_CHECK(outputNode(cxt, child->firstChild()));
-                maxLenValue = max(maxLenValue, tmpConcat.totalCount());
+                maxLenValue = max(maxLenValue, tmpConcat.length());
             }
         }
 
         concat = saveConcat;
     }
 
-    context.equalIndent = maxLenName;
     for (const auto child : nodes)
     {
         concat->addIndent(context.indent);
         SWAG_CHECK(outputEnumValue(context, child, maxLenName, maxLenValue));
         concat->addEol();
     }
-    context.equalIndent = 0;
 
     return true;
 }
@@ -75,8 +73,9 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
     }
 
     beautifyBefore(context, node);
+    const auto startCol = concat->column;
     concat->addString(node->token.text);
-    concat->alignBlanks(node->token.text.length(), maxLenName);
+    concat->alignToColumn(startCol + maxLenName);
 
     if (node->childCount())
     {
@@ -84,9 +83,11 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
         concat->addChar('=');
         concat->addBlank();
         SWAG_CHECK(outputNode(context, node->firstChild()));
-        concat->addBlank();
     }
 
+    if (maxLenValue)
+        maxLenValue += 3;
+    concat->alignToColumn(startCol + maxLenName + maxLenValue);
     beautifyAfter(context, node);
     return true;
 }
