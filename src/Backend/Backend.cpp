@@ -5,6 +5,7 @@
 #include "Backend/CallConv.h"
 #include "Backend/LLVM/LLVM_Setup.h"
 #include "BackendFunctionBodyJob.h"
+#include "Format/FormatAst.h"
 #include "Jobs/ModuleSaveExportJob.h"
 #include "Main/Version.h"
 #include "Os/Os.h"

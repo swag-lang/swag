@@ -25,17 +25,36 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
     if (!processed)
         return true;
 
-    uint32_t maxLen = 0;
-    for (const auto s : nodes)
+    uint32_t maxLenName  = 0;
+    uint32_t maxLenValue = 0;
+
     {
-        maxLen = max(maxLen, s->token.text.length());
+        FormatContext cxt{context};
+        cxt.outputComments    = false;
+        cxt.outputBlankLines  = false;
+        const auto saveConcat = concat;
+        concat                = &tmpConcat;
+
+        for (const auto child : nodes)
+        {
+            maxLenName = max(maxLenName, child->token.text.length());
+
+            if (child->childCount())
+            {
+                tmpConcat.clear();
+                SWAG_CHECK(outputNode(cxt, child->firstChild()));
+                maxLenValue = max(maxLenValue, tmpConcat.totalCount());
+            }
+        }
+
+        concat = saveConcat;
     }
 
-    context.equalIndent = maxLen;
-    for (const auto s : nodes)
+    context.equalIndent = maxLenName;
+    for (const auto child : nodes)
     {
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputEnumValue(context, s));
+        SWAG_CHECK(outputEnumValue(context, child, maxLenName, maxLenValue));
         concat->addEol();
     }
     context.equalIndent = 0;
@@ -43,35 +62,32 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
     return true;
 }
 
-bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node)
+bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t maxLenName, uint32_t maxLenValue)
 {
     const auto enumNode = castAst<AstEnumValue>(node, AstNodeKind::EnumValue);
     if (enumNode->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
     {
+        beautifyBefore(context, node);
         CONCAT_FIXED_STR(concat, "using");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, node->firstChild()));
         return true;
     }
 
+    beautifyBefore(context, node);
     concat->addString(node->token.text);
+    concat->alignBlanks(node->token.text.length(), maxLenName);
 
     if (node->childCount())
     {
-        concat->alignBlanks(node->token.text.length(), context.equalIndent);
         concat->addBlank();
         concat->addChar('=');
         concat->addBlank();
         SWAG_CHECK(outputNode(context, node->firstChild()));
         concat->addBlank();
-        beautifyAfter(context, node);
-    }
-    else
-    {
-        concat->alignBlanks(node->token.text.length(), context.equalIndent);
-        beautifyAfter(context, node);
     }
 
+    beautifyAfter(context, node);
     return true;
 }
 

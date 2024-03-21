@@ -25,8 +25,10 @@ constexpr FormatFlags FORMAT_FOR_BEAUTIFY = 0x00000002;
 
 struct FormatContext
 {
-    uint32_t indent      = 0;
-    uint32_t equalIndent = 0;
+    uint32_t indent           = 0;
+    uint32_t equalIndent      = 0;
+    bool     outputComments   = true;
+    bool     outputBlankLines = true;
 };
 
 struct FormatAst
@@ -35,11 +37,13 @@ struct FormatAst
     {
         concat = &inConcat;
         concat->init(4 * 1024);
+        tmpConcat.init(1024);
     }
 
     explicit FormatAst(FormatConcat& c) :
         concat{&c}
     {
+        tmpConcat.init(1024);
     }
 
     void clear() const;
@@ -61,7 +65,7 @@ struct FormatAst
     bool outputClosureArguments(FormatContext& context, AstFuncDecl* funcNode);
     bool outputLambdaExpression(FormatContext& context, AstNode* node);
     bool outputChildrenEnumValues(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
-    bool outputEnumValue(FormatContext& context, AstNode* node);
+    bool outputEnumValue(FormatContext& context, AstNode* node, uint32_t maxLenName = 0, uint32_t maxLenValue = 0);
     bool outputEnum(FormatContext& context, AstEnum* node);
     bool outputFuncDecl(FormatContext& context, AstFuncDecl* node);
     bool outputAttrUse(FormatContext& context, AstNode* node, bool& hasSomething);
@@ -126,6 +130,7 @@ struct FormatAst
     bool outputNode(FormatContext& context, AstNode* node, bool cmtAfter = true);
 
     FormatConcat  inConcat;
+    FormatConcat  tmpConcat;
     FormatConcat* concat   = nullptr;
     FormatFlags   fmtFlags = 0;
 };

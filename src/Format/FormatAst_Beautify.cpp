@@ -45,32 +45,37 @@ void FormatAst::beautifyCommentBefore(const FormatContext& context, AstNode* nod
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
+    if (!context.outputComments)
+        return;
+
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
     if (!to || to->comments.commentBefore.empty())
         return;
 
     beautifyComment(context, to->comments.commentBefore);
-    //    concat->addEol();
-    //    concat->addIndent(context.indent);
 }
 
 void FormatAst::beautifyCommentJustBefore(const FormatContext& context, AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
+    if (!context.outputComments)
+        return;
+
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
     if (!to || to->comments.commentJustBefore.empty())
         return;
 
     beautifyComment(context, to->comments.commentJustBefore);
-    //    concat->addEol();
-    //    concat->addIndent(context.indent);
 }
 
 void FormatAst::beautifyBlankLine(const FormatContext& context, AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
+    if (!context.outputBlankLines)
+        return;
+
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
     if (!to || !to->flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
         return;
@@ -84,6 +89,9 @@ void FormatAst::beautifyAfter(const FormatContext& context, AstNode* node) const
 {
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
+    if (!context.outputComments)
+        return;
+
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
     if (!to || to->comments.commentJustAfter.empty())
         return;
