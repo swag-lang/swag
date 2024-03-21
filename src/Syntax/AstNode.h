@@ -501,6 +501,7 @@ struct AstNode
     }
 
     TokenParse* getTokenParse();
+    TokenParse* getOrCreateTokenParse();
     void        setOwnerAttrUse(AstAttrUse* attrUse);
     void        setOwnerBreakable(AstBreakable* bkp);
 

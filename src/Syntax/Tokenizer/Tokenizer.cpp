@@ -163,8 +163,10 @@ bool Tokenizer::doAfterToken(TokenParse& tokenParse)
             tokenParse.flags.add(TOKEN_PARSE_BLANK_AFTER);
         }
 
-        if (SWAG_IS_EOL(curBuffer[0]))
+        if (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_WIN_EOL(curBuffer[0]))
+        {
             return true;
+        }
 
         if (curBuffer[0] == '/' && curBuffer[1] == '/')
         {
