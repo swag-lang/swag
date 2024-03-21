@@ -60,6 +60,7 @@ struct FormatAst
 
     bool outputClosureArguments(FormatContext& context, AstFuncDecl* funcNode);
     bool outputLambdaExpression(FormatContext& context, AstNode* node);
+    bool outputChildrenEnumValues(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
     bool outputEnumValue(FormatContext& context, AstNode* node);
     bool outputEnum(FormatContext& context, AstEnum* node);
     bool outputFuncDecl(FormatContext& context, AstFuncDecl* node);
