@@ -133,3 +133,21 @@ struct FormatAst
     FormatConcat* concat   = nullptr;
     FormatFlags   fmtFlags = 0;
 };
+
+struct PushFormatTmp
+{
+    explicit PushFormatTmp(FormatAst* ast)
+    {
+        savedAst         = ast;
+        savedConcat      = savedAst->concat;
+        savedAst->concat = &savedAst->tmpConcat;
+    }
+
+    ~PushFormatTmp()
+    {
+        savedAst->concat = savedConcat;
+    }
+
+    FormatAst*    savedAst    = nullptr;
+    FormatConcat* savedConcat = nullptr;
+};

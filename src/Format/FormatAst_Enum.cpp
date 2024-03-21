@@ -29,11 +29,10 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
     uint32_t maxLenValue = 0;
 
     {
+        PushFormatTmp fmt{this};
         FormatContext cxt{context};
-        cxt.outputComments    = false;
-        cxt.outputBlankLines  = false;
-        const auto saveConcat = concat;
-        concat                = &tmpConcat;
+        cxt.outputComments   = false;
+        cxt.outputBlankLines = false;
 
         for (const auto child : nodes)
         {
@@ -46,8 +45,6 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
                 maxLenValue = max(maxLenValue, tmpConcat.length());
             }
         }
-
-        concat = saveConcat;
     }
 
     for (const auto child : nodes)
