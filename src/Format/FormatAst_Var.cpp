@@ -40,6 +40,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
             const auto var = castAst<AstVarDecl>(child);
             if (var->type)
             {
+                maxLenName = max(maxLenName, child->token.text.length() + 1); // +1 because of ':'
                 tmpConcat.clear();
                 SWAG_CHECK(outputNode(cxt, var->type));
                 maxLenType = max(maxLenType, tmpConcat.length());
@@ -121,7 +122,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
                 if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
                 {
                     concat->addChar(':');
-                    concat->alignToColumn(startColumn + maxLenName + 1);
+                    concat->alignToColumn(startColumn + maxLenName);
                     concat->addBlank();
                 }
 
@@ -146,8 +147,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
 
     if (varNode->assignment)
     {
-        if (!varNode->type)
-            concat->alignToColumn(startColumn + maxLenName + 1);
+        concat->alignToColumn(startColumn + maxLenName);
         concat->addBlank();
         concat->addChar('=');
         if (!varNode->assignment->is(AstNodeKind::Move) && !varNode->assignment->is(AstNodeKind::NoDrop))
@@ -156,7 +156,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
     }
 
     if (maxLenType)
-        maxLenType += 2;
+        maxLenType += 1;
     if (maxLenAssign)
         maxLenAssign += 3;
 
@@ -168,8 +168,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
 
 bool FormatAst::outputVar(FormatContext& context, AstNode* node, uint32_t maxLenName, uint32_t maxLenType, uint32_t maxLenAssign)
 {
-    const auto varNode     = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-    const auto startColumn = concat->column;
+    const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
 
     if (varNode->attrUse)
     {
@@ -205,6 +204,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, uint32_t maxLen
         concat->addBlank();
     }
 
+    const auto startColumn = concat->column;
     SWAG_CHECK(outputVar(context, varNode, isSelf, startColumn, maxLenName, maxLenType, maxLenAssign));
     return true;
 }
