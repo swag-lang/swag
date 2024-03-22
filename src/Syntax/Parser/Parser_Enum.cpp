@@ -182,8 +182,6 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
     }
     else
     {
-        if (expression)
-            enumValue->inheritFormatFromAfter(this, expression);
         if (tokenParse.isNot(TokenId::SymRightCurly))
         {
             SWAG_CHECK(eatSemiCol("enum value"));

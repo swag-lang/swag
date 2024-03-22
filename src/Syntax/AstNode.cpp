@@ -153,6 +153,8 @@ TokenParse* AstNode::getOrCreateTokenParse()
 
 void AstNode::inheritFormatFromBefore(const Parser* parser, AstNode* other)
 {
+    if (other == this || !other)
+        return;
     if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
     inheritFormatFromBefore(parser, other->getTokenParse());
@@ -160,7 +162,9 @@ void AstNode::inheritFormatFromBefore(const Parser* parser, AstNode* other)
 
 void AstNode::inheritFormatFromAfter(const Parser* parser, AstNode* other)
 {
-    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+    if (other == this || !other)
+        return;
+    if (parser && !parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
     inheritFormatFromAfter(parser, other->getTokenParse());
 }
@@ -187,7 +191,7 @@ void AstNode::inheritFormatFromAfter(const Parser* parser, TokenParse* tokenPars
 {
     if (!tokenParse)
         return;
-    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+    if (parser && !parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
 
     if (tokenParse->flags.has(TOKEN_PARSE_EOL_AFTER) ||

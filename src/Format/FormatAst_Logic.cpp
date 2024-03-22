@@ -18,7 +18,7 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
         else
             CONCAT_FIXED_STR(concat, "var");
         concat->addBlank();
-        SWAG_CHECK(outputVarDecl(context, varNode, false));
+        SWAG_CHECK(outputVar(context, varNode, false));
     }
     else
         SWAG_CHECK(outputNode(context, ifNode->boolExpression));

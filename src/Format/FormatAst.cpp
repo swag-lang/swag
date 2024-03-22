@@ -54,6 +54,17 @@ bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t s
             }
         }
 
+        if (child->kind == AstNodeKind::VarDecl || child->kind == AstNodeKind::ConstDecl)
+        {
+            uint32_t processed = 0;
+            SWAG_CHECK(outputChildrenVar(context, node, i, processed));
+            if (processed)
+            {
+                i += processed - 1;
+                continue;
+            }
+        }        
+
         concat->addIndent(context.indent);
         SWAG_CHECK(outputNode(context, child));
         concat->addEol();

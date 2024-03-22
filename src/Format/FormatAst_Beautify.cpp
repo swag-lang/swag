@@ -87,6 +87,8 @@ void FormatAst::beautifyBlankLine(const FormatContext& context, AstNode* node) c
 
 void FormatAst::beautifyAfter(const FormatContext& context, AstNode* node) const
 {
+    if (!node)
+        return;
     if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
         return;
     if (!context.outputComments)

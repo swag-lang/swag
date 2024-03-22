@@ -91,8 +91,9 @@ struct FormatAst
     bool outputExpressionList(FormatContext& context, AstNode* node);
     bool outputLiteral(FormatContext& context, AstNode* node);
     bool outputLiteral(FormatContext& context, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
-    bool outputVarDecl(FormatContext& context, AstVarDecl* varNode, bool isSelf);
-    bool outputVar(FormatContext& context, AstVarDecl* varNode);
+    bool outputChildrenVar(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
+    bool outputVar(FormatContext& context, AstNode* node, bool isSelf, uint32_t startColumn = 0, uint32_t maxLenName = 0, uint32_t maxLenType = 0, uint32_t maxLenAssign = 0);
+    bool outputVar(FormatContext& context, AstNode* node, uint32_t maxLenName = 0, uint32_t maxLenType = 0, uint32_t maxLenAssign = 0);
     bool outputStructDeclContent(FormatContext& context, AstNode* node);
     bool outputTupleDeclContent(FormatContext& context, AstNode* node);
     bool outputStructDecl(FormatContext& context, AstStruct* node);
