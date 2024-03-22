@@ -7,20 +7,29 @@
 
 bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
+    processed = 0;
+    if (fmtFlags.has(FORMAT_FOR_EXPORT))
+        return true;
+
     VectorNative<AstNode*> nodes;
     for (uint32_t i = start; i < node->childCount(); i++)
     {
         const auto it    = node->children[i];
         const auto child = convertNode(context, it);
         if (!child)
+        {
+            processed++;
             continue;
+        }
+        
         if (child->kind != AstNodeKind::VarDecl && child->kind != AstNodeKind::ConstDecl)
             break;
+        
+        processed++;
         nodes.push_back(child);
     }
 
-    processed = nodes.size();
-    if (!processed)
+    if (nodes.empty())
         return true;
 
     uint32_t maxLenName = 0;

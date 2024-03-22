@@ -3,6 +3,7 @@
 
 struct FormatConcat : Concat
 {
+    void     clear();
     Utf8     getUtf8() const;
     uint32_t length() const;
 

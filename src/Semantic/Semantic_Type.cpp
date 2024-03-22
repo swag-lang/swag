@@ -629,6 +629,7 @@ bool Semantic::resolveTypeAlias(SemanticContext* context)
     typeInfo->addFlag(typeInfo->rawType->flags.mask(TYPEINFO_GENERIC));
     typeInfo->addFlag(typeInfo->rawType->flags.mask(TYPEINFO_CONST));
     typeInfo->computeName();
+    SWAG_ASSERT(node->resolvedSymbolOverload());
     OverloadFlags overFlags = node->resolvedSymbolOverload()->flags.maskInvert(OVERLOAD_INCOMPLETE);
     if (typeInfo->isGeneric())
         overFlags.add(OVERLOAD_GENERIC);

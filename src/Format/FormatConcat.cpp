@@ -93,6 +93,14 @@ void FormatConcat::addU32Str(uint32_t value)
         addString(std::to_string(value));
 }
 
+void FormatConcat::clear()
+{
+    Concat::clear();
+    eol    = 0;
+    blank  = 0;
+    column = 0;
+}
+
 Utf8 FormatConcat::getUtf8() const
 {
     Utf8 result;
@@ -104,7 +112,7 @@ Utf8 FormatConcat::getUtf8() const
 uint32_t FormatConcat::length() const
 {
     uint32_t result = 0;
-    for (auto b = firstBucket; b; b = b->nextBucket)
+    for (auto b = firstBucket; b != lastBucket->nextBucket; b = b->nextBucket)
         result += bucketCount(b);
     return result;
 }
