@@ -23,9 +23,8 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
     if (!processed)
         return true;
 
-    uint32_t maxLenName   = 0;
-    uint32_t maxLenType   = 0;
-    uint32_t maxLenAssign = 0;
+    uint32_t maxLenName = 0;
+    uint32_t maxLenType = 0;
 
     {
         PushFormatTmp fmt{this};
@@ -37,38 +36,42 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
         {
             maxLenName = max(maxLenName, child->token.text.length());
 
-            const auto var = castAst<AstVarDecl>(child);
+            const auto var     = castAst<AstVarDecl>(child);
+            uint32_t   lenType = 0;
+
             if (var->type)
             {
                 maxLenName = max(maxLenName, child->token.text.length() + 1); // +1 because of ':'
                 tmpConcat.clear();
                 SWAG_CHECK(outputNode(cxt, var->type));
-                maxLenType = max(maxLenType, tmpConcat.length());
+                lenType += tmpConcat.length();
             }
 
             if (var->assignment)
             {
                 tmpConcat.clear();
                 SWAG_CHECK(outputNode(cxt, var->assignment));
-                if (!var->type)
-                    maxLenType = max(maxLenType, tmpConcat.length() + 2);
-                else
-                    maxLenAssign = max(maxLenAssign, tmpConcat.length());
+                lenType += tmpConcat.length();
+                lenType += 2; // Because of '= '
+                if (var->type)
+                    lenType++; // Because of the blank after the type, and before '='
             }
+
+            maxLenType = max(maxLenType, lenType);
         }
     }
 
     for (const auto child : nodes)
     {
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputVar(context, child, maxLenName, maxLenType, maxLenAssign));
+        SWAG_CHECK(outputVar(context, child, maxLenName, maxLenType));
         concat->addEol();
     }
 
     return true;
 }
 
-bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, uint32_t startColumn, uint32_t maxLenName, uint32_t maxLenType, uint32_t maxLenAssign)
+bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, uint32_t startColumn, uint32_t maxLenName, uint32_t maxLenType)
 {
     const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
 
@@ -157,16 +160,14 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
 
     if (maxLenType)
         maxLenType += 1;
-    if (maxLenAssign)
-        maxLenAssign += 3;
 
-    concat->alignToColumn(startColumn + maxLenName + maxLenType + maxLenAssign);
+    concat->alignToColumn(startColumn + maxLenName + maxLenType);
     beautifyAfter(context, varNode);
 
     return true;
 }
 
-bool FormatAst::outputVar(FormatContext& context, AstNode* node, uint32_t maxLenName, uint32_t maxLenType, uint32_t maxLenAssign)
+bool FormatAst::outputVar(FormatContext& context, AstNode* node, uint32_t maxLenName, uint32_t maxLenType)
 {
     const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
 
@@ -205,6 +206,6 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, uint32_t maxLen
     }
 
     const auto startColumn = concat->column;
-    SWAG_CHECK(outputVar(context, varNode, isSelf, startColumn, maxLenName, maxLenType, maxLenAssign));
+    SWAG_CHECK(outputVar(context, varNode, isSelf, startColumn, maxLenName, maxLenType));
     return true;
 }
