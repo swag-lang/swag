@@ -31,9 +31,9 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
         {
             if (const auto parse = child->getTokenParse())
             {
-                if (!parse->format.commentBefore.empty())
+                if (!parse->comments.before.empty())
                     break;
-                if (!parse->format.commentJustBefore.empty())
+                if (!parse->comments.justBefore.empty())
                     break;
             }
         }
@@ -85,7 +85,7 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
     while (scan)
     {
         const auto to = scan->getTokenParse();
-        if (to && !to->format.commentJustAfter.empty())
+        if (to && !to->comments.after.empty())
         {
             node->inheritFormatFromAfter(nullptr, scan);
             break;

@@ -501,8 +501,8 @@ bool Parser::generateAst()
     SWAG_CHECK(eatToken());
 
     // Module global comment must be put in module.swg
-    if (!tokenParse.format.commentJustBefore.empty() && sourceFile->module->is(ModuleKind::Config))
-        module->docComment = TokenFormat::toString(tokenParse.format.commentJustBefore);
+    if (!tokenParse.comments.justBefore.empty() && sourceFile->module->is(ModuleKind::Config))
+        module->docComment = TokenComments::toString(tokenParse.comments.justBefore);
 
     // Parse !!!
     while (tokenParse.isNot(TokenId::EndOfFile))

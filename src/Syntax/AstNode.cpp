@@ -139,6 +139,11 @@ TokenParse* AstNode::getTokenParse()
     return extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
 }
 
+const TokenParse* AstNode::getTokenParse() const
+{
+    return extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
+}
+
 TokenParse* AstNode::getOrCreateTokenParse()
 {
     TokenParse* tp = getTokenParse();
@@ -177,13 +182,14 @@ void AstNode::inheritFormatFromBefore(const Parser* parser, TokenParse* tokenPar
         return;
 
     if (tokenParse->flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE) ||
-        !tokenParse->format.commentBefore.empty() ||
-        !tokenParse->format.commentJustBefore.empty())
+        tokenParse->flags.has(TOKEN_PARSE_EOL_BEFORE) ||
+        !tokenParse->comments.before.empty() ||
+        !tokenParse->comments.justBefore.empty())
     {
         const auto tp = getOrCreateTokenParse();
         tp->flags.add(tokenParse->flags);
-        tp->format.commentBefore     = std::move(tokenParse->format.commentBefore);
-        tp->format.commentJustBefore = std::move(tokenParse->format.commentJustBefore);
+        tp->comments.before     = std::move(tokenParse->comments.before);
+        tp->comments.justBefore = std::move(tokenParse->comments.justBefore);
     }
 }
 
@@ -195,11 +201,11 @@ void AstNode::inheritFormatFromAfter(const Parser* parser, TokenParse* tokenPars
         return;
 
     if (tokenParse->flags.has(TOKEN_PARSE_EOL_AFTER) ||
-        !tokenParse->format.commentJustAfter.empty())
+        !tokenParse->comments.after.empty())
     {
         const auto tp = getOrCreateTokenParse();
         tp->flags.add(tokenParse->flags);
-        tp->format.commentJustAfter = std::move(tokenParse->format.commentJustAfter);
+        tp->comments.after = std::move(tokenParse->comments.after);
     }
 }
 

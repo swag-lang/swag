@@ -54,7 +54,7 @@ bool FormatAst::outputArrayPointerIndex(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node)
+bool FormatAst::outputAffectOp(FormatContext& context, const AstNode* node)
 {
     SWAG_CHECK(outputNode(context, node->firstChild()));
     concat->addBlank();
@@ -76,7 +76,7 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputFactorOp(FormatContext& context, AstNode* node)
+bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
 {
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
         concat->addChar('(');
@@ -97,15 +97,26 @@ bool FormatAst::outputFactorOp(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputBinaryOp(FormatContext& context, AstNode* node)
+bool FormatAst::outputBinaryOp(FormatContext& context, const AstNode* node)
 {
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
         concat->addChar('(');
 
+    const auto curColumn = concat->column;
     SWAG_CHECK(outputNode(context, node->firstChild()));
     concat->addBlank();
     concat->addString(node->token.text);
     concat->addBlank();
+
+    if (const auto parse = node->secondChild()->getTokenParse())
+    {
+        if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE))
+        {
+            concat->addEol();
+            concat->alignToColumn(curColumn);
+        }
+    }
+
     SWAG_CHECK(outputNode(context, node->secondChild()));
 
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
@@ -114,7 +125,7 @@ bool FormatAst::outputBinaryOp(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputNullConditionalExpression(FormatContext& context, AstNode* node)
+bool FormatAst::outputNullConditionalExpression(FormatContext& context, const AstNode* node)
 {
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
         concat->addChar('(');

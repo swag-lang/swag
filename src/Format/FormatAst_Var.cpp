@@ -29,9 +29,9 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
         {
             if (const auto parse = child->getTokenParse())
             {
-                if (!parse->format.commentBefore.empty())
+                if (!parse->comments.before.empty())
                     break;
-                if (!parse->format.commentJustBefore.empty())
+                if (!parse->comments.justBefore.empty())
                     break;
             }
         }
@@ -106,7 +106,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
     while (scan)
     {
         const auto to = scan->getTokenParse();
-        if (to && !to->format.commentJustAfter.empty())
+        if (to && !to->comments.after.empty())
         {
             node->inheritFormatFromAfter(nullptr, scan);
             break;

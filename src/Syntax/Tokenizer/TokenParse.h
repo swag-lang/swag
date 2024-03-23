@@ -53,7 +53,7 @@ struct TokenComment
     TokenParseFlags flags = 0;
 };
 
-struct TokenFormat
+struct TokenComments
 {
     static Utf8 toString(const Vector<TokenComment>& other)
     {
@@ -71,10 +71,9 @@ struct TokenFormat
         return result;
     }
 
-    Vector<TokenComment> commentBefore;
-    Vector<TokenComment> commentJustBefore;
-    Vector<TokenComment> commentJustAfter;
-    TokenParseFlags      flags = 0;
+    Vector<TokenComment> before;
+    Vector<TokenComment> justBefore;
+    Vector<TokenComment> after;
 };
 
 struct TokenParse
@@ -83,7 +82,7 @@ struct TokenParse
     bool isNot(TokenId what) const { return token.id != what; }
 
     Token           token;
-    TokenFormat     format;
+    TokenComments   comments;
     Register        literalValue;
     TokenParseFlags flags       = 0;
     LiteralType     literalType = static_cast<LiteralType>(0);

@@ -500,10 +500,11 @@ struct AstNode
         return it->second != nullptr;
     }
 
-    TokenParse* getTokenParse();
-    TokenParse* getOrCreateTokenParse();
-    void        setOwnerAttrUse(AstAttrUse* attrUse);
-    void        setOwnerBreakable(AstBreakable* bkp);
+    TokenParse*       getTokenParse();
+    const TokenParse* getTokenParse() const;
+    TokenParse*       getOrCreateTokenParse();
+    void              setOwnerAttrUse(AstAttrUse* attrUse);
+    void              setOwnerBreakable(AstBreakable* bkp);
 
     Token               token;
     SpecFlags           specFlags;

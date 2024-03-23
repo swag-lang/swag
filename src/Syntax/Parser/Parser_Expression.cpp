@@ -991,7 +991,12 @@ bool Parser::doBoolExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doBoolExpression(binaryNode, EXPR_FLAG_NONE, &dummyResult));
+
+        auto     savedToken = tokenParse;
+        AstNode* expr;
+        SWAG_CHECK(doBoolExpression(binaryNode, EXPR_FLAG_NONE, &expr));
+        expr->inheritFormatFromBefore(this, &savedToken);
+
         leftNode = binaryNode;
         isBinary = true;
     }

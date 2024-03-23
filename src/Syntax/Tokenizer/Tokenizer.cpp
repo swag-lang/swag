@@ -173,7 +173,7 @@ bool Tokenizer::doAfterToken(TokenParse& tokenParse)
             curBuffer++;
             TokenParse tmp;
             SWAG_CHECK(doSingleLineComment(tmp));
-            tokenParse.format.commentJustAfter.push_back(std::move(tmp.format.commentJustBefore.front()));
+            tokenParse.comments.after.push_back(std::move(tmp.comments.justBefore.front()));
             return true;
         }
 
@@ -182,7 +182,7 @@ bool Tokenizer::doAfterToken(TokenParse& tokenParse)
             curBuffer++;
             TokenParse tmp;
             SWAG_CHECK(doMultiLineComment(tmp));
-            tokenParse.format.commentJustAfter.push_back(std::move(tmp.format.commentJustBefore.front()));
+            tokenParse.comments.after.push_back(std::move(tmp.comments.justBefore.front()));
             continue;
         }
 
@@ -199,8 +199,8 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
 
     tokenParse.literalType                = LiteralType::TypeMax;
     tokenParse.token.sourceFile           = sourceFile;
-    tokenParse.format.commentJustBefore = tokenParse.format.commentJustAfter;
-    tokenParse.format.commentJustAfter.clear();
+    tokenParse.comments.justBefore = tokenParse.comments.after;
+    tokenParse.comments.after.clear();
 
     tokenParse.flags.remove(TOKEN_PARSE_BLANK_BEFORE);
     if (tokenParse.flags.has(TOKEN_PARSE_BLANK_AFTER))
@@ -233,13 +233,13 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         ///////////////////////////////////////////
         if (SWAG_IS_EOL(c) || SWAG_IS_WIN_EOL(c))
         {
-            if (!tokenParse.format.commentJustBefore.empty())
-                tokenParse.format.commentJustBefore.back().flags.add(TOKEN_PARSE_EOL_AFTER);
+            if (!tokenParse.comments.justBefore.empty())
+                tokenParse.comments.justBefore.back().flags.add(TOKEN_PARSE_EOL_AFTER);
 
             if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
             {
-                tokenParse.format.commentBefore.append(tokenParse.format.commentJustBefore);
-                tokenParse.format.commentJustBefore.clear();
+                tokenParse.comments.before.append(tokenParse.comments.justBefore);
+                tokenParse.comments.justBefore.clear();
                 tokenParse.flags.add(TOKEN_PARSE_BLANK_LINE_BEFORE);
             }
             else

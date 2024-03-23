@@ -89,8 +89,8 @@ Utf8 GenDoc::getDocComment(const AstNode* node)
         while (scan)
         {
             const auto to = scan->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
-            if (to && !to->format.commentJustAfter.empty())
-                return TokenFormat::toString(to->format.commentJustAfter);
+            if (to && !to->comments.after.empty())
+                return TokenComments::toString(to->comments.after);
             scan = scan->lastChild();
         }
 
@@ -98,14 +98,14 @@ Utf8 GenDoc::getDocComment(const AstNode* node)
     }
 
     auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
-    if (to && !to->format.commentJustBefore.empty())
-        return TokenFormat::toString(to->format.commentJustBefore);
+    if (to && !to->comments.justBefore.empty())
+        return TokenComments::toString(to->comments.justBefore);
 
     while (node->parent && node->parent->is(AstNodeKind::AttrUse))
     {
         to = node->parent->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
-        if (to && !to->format.commentJustBefore.empty())
-            return TokenFormat::toString(to->format.commentJustBefore);
+        if (to && !to->comments.justBefore.empty())
+            return TokenComments::toString(to->comments.justBefore);
         node = node->parent;
     }
 

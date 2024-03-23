@@ -122,10 +122,10 @@ struct FormatAst
     bool outputIdentifierRef(FormatContext& context, AstNode* node);
     bool outputArrayPointerSlicing(FormatContext& context, AstNode* node);
     bool outputArrayPointerIndex(FormatContext& context, AstNode* node);
-    bool outputAffectOp(FormatContext& context, AstNode* node);
-    bool outputFactorOp(FormatContext& context, AstNode* node);
-    bool outputBinaryOp(FormatContext& context, AstNode* node);
-    bool outputNullConditionalExpression(FormatContext& context, AstNode* node);
+    bool outputAffectOp(FormatContext& context, const AstNode* node);
+    bool outputFactorOp(FormatContext& context, const AstNode* node);
+    bool outputBinaryOp(FormatContext& context, const AstNode* node);
+    bool outputNullConditionalExpression(FormatContext& context, const AstNode* node);
     bool outputConditionalExpression(FormatContext& context, AstNode* node);
     bool outputCast(FormatContext& context, const AstNode* node);
     bool outputNode(FormatContext& context, AstNode* node, bool cmtAfter = true);
