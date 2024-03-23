@@ -33,6 +33,8 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
                     break;
                 if (!parse->comments.justBefore.empty())
                     break;
+                if (parse->flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
+                    break;
             }
         }
 

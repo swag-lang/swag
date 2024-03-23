@@ -319,7 +319,7 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
     var sym:           [@sizeof(SYMBOL_INFO) + SYM_LEN_NAME * @sizeof(CHAR)] u8
     var displacement:  ULONG64
 
-    let psym           = cast(*SYMBOL_INFO) sym
+    let psym = cast(*SYMBOL_INFO) sym
     psym.SizeOfStruct = @sizeof(SYMBOL_INFO)
     psym.MaxNameLen = SYM_LEN_NAME
 

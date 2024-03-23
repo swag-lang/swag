@@ -17,7 +17,7 @@ func __strcat(start: ^u8, max: s32, src: string)
 #[Discardable, Safety("", false)]
 func __itoa(result: ^u8, value: s64)->^u8
 {
-    const conv   = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
+    const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
     var ptr      = result
     var orgValue = value
@@ -57,7 +57,7 @@ func __itoa(result: ^u8, value: s64)->^u8
 #[Discardable, Safety("", false)]
 func __utoa(result: ^u8, value: u64)->^u8
 {
-    const conv   = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
+    const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
     var ptr      = result
     var orgValue = value
@@ -94,7 +94,7 @@ func __ftoa(result: ^u8, value: f64)
     var ipart = cast(s64) value
     var fpart = value - cast(f64) ipart
 
-    var n     = result
+    var n = result
     if ipart == 0
     {
         if value < 0
