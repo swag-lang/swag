@@ -186,6 +186,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
 bool FormatAst::outputVarHeader(FormatContext& context, AstNode* node)
 {
     const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+    beautifyBefore(context, node);
 
     if (varNode->attrUse)
     {
