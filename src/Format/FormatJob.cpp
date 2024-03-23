@@ -45,7 +45,7 @@ bool FormatJob::writeResult(const Path& fileName, const Utf8& content)
     return true;
 }
 
-bool FormatJob::getFormattedCode(const Path& fileName, Utf8& result)
+bool FormatJob::getFormattedCode(const FormatOptions& options, const Path& fileName, Utf8& result)
 {
     Module     tmpModule;
     SourceFile tmpFile;
@@ -95,7 +95,9 @@ bool FormatJob::getFormattedCode(const Path& fileName, Utf8& result)
         g_Log.messageVerbose(form("[%s] -- formatting", fileName.c_str()));
 
     // Format
-    FormatAst     fmt;
+    FormatAst fmt;
+    fmt.options = options;
+
     FormatContext context;
     fmt.fmtFlags.add(FORMAT_FOR_BEAUTIFY);
     fmt.outputNode(context, tmpFile.astRoot);
@@ -110,7 +112,7 @@ JobResult FormatJob::execute()
     Utf8 result;
 
     // Do it !
-    if (!getFormattedCode(fileName, result))
+    if (!getFormattedCode(options, fileName, result))
         return JobResult::ReleaseJob;
 
     // Write file

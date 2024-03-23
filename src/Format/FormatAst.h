@@ -25,8 +25,18 @@ constexpr FormatFlags FORMAT_FOR_BEAUTIFY = 0x00000002;
 
 struct FormatOptions
 {
-    uint32_t alignLastLineCommentsAddBlanks = 4;
-    uint32_t alignStructVarTypeAddBlanks       = 4;
+    bool     alignVarDecl                   = false;
+    bool     alignEnumValue                 = false;
+    uint32_t addBlanksBeforeAlignedLastLineComments = 0;
+    uint32_t alignStructVarTypeAddBlanks    = 0;
+
+    void setDefaultBeautify()
+    {
+        alignVarDecl                   = true;
+        alignEnumValue                 = true;
+        addBlanksBeforeAlignedLastLineComments = 4;
+        alignStructVarTypeAddBlanks    = 4;
+    }
 };
 
 struct FormatContext

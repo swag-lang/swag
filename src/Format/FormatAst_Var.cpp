@@ -8,7 +8,7 @@
 bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
     processed = 0;
-    if (fmtFlags.has(FORMAT_FOR_EXPORT))
+    if (!options.alignVarDecl)
         return true;
 
     VectorNative<AstNode*> nodes;
@@ -183,7 +183,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
     if (maxLenType)
         maxLenType += 1;
 
-    concat->alignToColumn(startColumn + maxLenName + maxLenType + alignTypeBanks + options.alignLastLineCommentsAddBlanks);
+    concat->alignToColumn(startColumn + maxLenName + maxLenType + alignTypeBanks + options.addBlanksBeforeAlignedLastLineComments);
     beautifyAfter(context, varNode);
 
     return true;

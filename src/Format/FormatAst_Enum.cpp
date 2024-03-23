@@ -8,7 +8,7 @@
 bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
     processed = 0;
-    if (fmtFlags.has(FORMAT_FOR_EXPORT))
+    if (!options.alignEnumValue)
         return true;
 
     VectorNative<AstNode*> nodes;
@@ -97,7 +97,7 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
     beautifyBefore(context, node);
     const auto startColumn = concat->column;
     concat->addString(node->token.text);
-    concat->alignToColumn(startColumn + maxLenName + options.alignStructVarTypeAddBlanks);
+    concat->alignToColumn(startColumn + maxLenName);
 
     if (node->childCount())
     {
@@ -109,7 +109,7 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
 
     if (maxLenValue)
         maxLenValue += 3;
-    concat->alignToColumn(startColumn + maxLenName + maxLenValue + options.alignStructVarTypeAddBlanks + options.alignLastLineCommentsAddBlanks);
+    concat->alignToColumn(startColumn + maxLenName + maxLenValue + options.addBlanksBeforeAlignedLastLineComments);
     beautifyAfter(context, node);
     return true;
 }

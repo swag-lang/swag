@@ -2,20 +2,20 @@ namespace Swag
 {
     enum AttributeUsage : u32
     {
-        Enum                  = 0x00000001     // Attribute can be used on an enum
-        EnumValue             = 0x00000002     // Attribute can be used on an enum value
-        StructVariable        = 0x00000004     // Attribute can be used on an struct member
-        GlobalVariable        = 0x00000008     // Attribute can be used on a global variable
-        Variable              = 0x00000010     // Attribute can be used on any variable
-        Struct                = 0x00000020     // Attribute can be used on a struct
-        Function              = 0x00000040     // Attribute can be used on a function
-        FunctionParameter     = 0x00000080     // Attribute can be used on a struct parameter
-        File                  = 0x00000100     // Attribute can be used with '#global'
-        Constant              = 0x00000200     // Attribute can be used on a constant
+        Enum              = 0x00000001     // Attribute can be used on an enum
+        EnumValue         = 0x00000002     // Attribute can be used on an enum value
+        StructVariable    = 0x00000004     // Attribute can be used on an struct member
+        GlobalVariable    = 0x00000008     // Attribute can be used on a global variable
+        Variable          = 0x00000010     // Attribute can be used on any variable
+        Struct            = 0x00000020     // Attribute can be used on a struct
+        Function          = 0x00000040     // Attribute can be used on a function
+        FunctionParameter = 0x00000080     // Attribute can be used on a struct parameter
+        File              = 0x00000100     // Attribute can be used with '#global'
+        Constant          = 0x00000200     // Attribute can be used on a constant
 
-        Multi                 = 0x01000000     // Attribute can be used more than once
-        Gen                   = 0x02000000
-        All                   = 0x04000000
+        Multi             = 0x01000000     // Attribute can be used more than once
+        Gen               = 0x02000000
+        All               = 0x04000000
     }
 
     // #########################################################
@@ -171,9 +171,9 @@ namespace Swag
     // Warning behavior for [[Warn]] attribute
     enum WarnLevel : u8
     {
-        Enable          // Enable the given warning
-        Disable         // Disable the given warning
-        Error           // Force the given warning to be raised as an error
+        Enable      // Enable the given warning
+        Disable     // Disable the given warning
+        Error       // Force the given warning to be raised as an error
     }
 
     // Change the behavior of a given warning or list of warnings.
@@ -304,11 +304,11 @@ namespace Swag
     // The 'mode' of an [[AllocatorRequest]].
     enum AllocatorMode
     {
-        Alloc                     // Allocate a block of memory
-        Free                      // Free a block of memory
-        Realloc                   // Reallocate a block of memory
-        FreeAll                   // Free all memory allocated with the underlying allocator (ff possible).
-        AssertIsAllocated         // The allocator must assert if the address is not currently allocated (if possible).
+        Alloc                 // Allocate a block of memory
+        Free                  // Free a block of memory
+        Realloc               // Reallocate a block of memory
+        FreeAll               // Free all memory allocated with the underlying allocator (ff possible).
+        AssertIsAllocated     // The allocator must assert if the address is not currently allocated (if possible).
     }
 
     // Represents the request for a given allocator.
@@ -365,10 +365,10 @@ namespace Swag
     #[Swag.EnumFlags]
     enum ContextFlags : u64
     {
-        None                       = 0x00000000_00000000
-        Test                       = 0x00000000_00000001
-        ByteCode                   = 0x00000000_00000002
-        PostCopyResetAllocator     = 0x00000000_00000004
+        None                   = 0x00000000_00000000
+        Test                   = 0x00000000_00000001
+        ByteCode               = 0x00000000_00000002
+        PostCopyResetAllocator = 0x00000000_00000004
     }
 
     enum ExceptionKind
@@ -438,33 +438,33 @@ namespace Swag
     #[EnumFlags]
     enum TypeCmpFlags
     {
-        Strict      = 0
-        CastAny     = 1
+        Strict  = 0
+        CastAny = 1
     }
 
     // The kind of the typeinfo.
     enum TypeInfoKind : u8
     {
         Invalid
-        Native                // The typeinfo is a [[TypeInfoNative]]. See [[TypeInfoNativeKind]] for the underlying type.
-        Namespace             // The typeinfo is a [[TypeInfoNamespace]]
-        Enum                  // The typeinfo is a [[TypeInfoEnum]]
-        Func                  // The typeinfo is a [[TypeInfoFunc]]
-        Lambda                // The typeinfo is a [[TypeInfoFunc]], but this is a lambda or a closure
-        Pointer               // The typeinfo is a [[TypeInfoPointer]]
-        Array                 // The typeinfo is a [[TypeInfoArray]]
-        Slice                 // The typeinfo is a [[TypeInfoSlice]]
-        TypeListTuple         // The typeinfo is a [[TypeInfoStruct]]
-        TypeListArray         // The typeinfo is a [[TypeInfoArray]]
-        Variadic              // The typeinfo is a [[TypeInfoVariadic]]
-        TypedVariadic         // The typeinfo is a [[TypeInfoVariadic]]
-        CVariadic             // The typeinfo is a [[TypeInfoVariadic]]
-        Struct                // The typeinfo is a [[TypeInfoStruct]]
-        Generic               // The typeinfo is a [[TypeInfoGeneric]]
-        Alias                 // The typeinfo is a [[TypeInfoAlias]]
-        Code                  // The typeinfo is a [[TypeInfo]]
-        Interface             // The typeinfo is a [[TypeInfoStruct]], but this is an interface
-        Attribute             // The typeinfo is a [[TypeInfoFunc]], but this is an attribute
+        Native            // The typeinfo is a [[TypeInfoNative]]. See [[TypeInfoNativeKind]] for the underlying type.
+        Namespace         // The typeinfo is a [[TypeInfoNamespace]]
+        Enum              // The typeinfo is a [[TypeInfoEnum]]
+        Func              // The typeinfo is a [[TypeInfoFunc]]
+        Lambda            // The typeinfo is a [[TypeInfoFunc]], but this is a lambda or a closure
+        Pointer           // The typeinfo is a [[TypeInfoPointer]]
+        Array             // The typeinfo is a [[TypeInfoArray]]
+        Slice             // The typeinfo is a [[TypeInfoSlice]]
+        TypeListTuple     // The typeinfo is a [[TypeInfoStruct]]
+        TypeListArray     // The typeinfo is a [[TypeInfoArray]]
+        Variadic          // The typeinfo is a [[TypeInfoVariadic]]
+        TypedVariadic     // The typeinfo is a [[TypeInfoVariadic]]
+        CVariadic         // The typeinfo is a [[TypeInfoVariadic]]
+        Struct            // The typeinfo is a [[TypeInfoStruct]]
+        Generic           // The typeinfo is a [[TypeInfoGeneric]]
+        Alias             // The typeinfo is a [[TypeInfoAlias]]
+        Code              // The typeinfo is a [[TypeInfo]]
+        Interface         // The typeinfo is a [[TypeInfoStruct]], but this is an interface
+        Attribute         // The typeinfo is a [[TypeInfoFunc]], but this is an attribute
     }
 
     // The native type if the type is... native.
@@ -494,24 +494,24 @@ namespace Swag
     #[Swag.EnumFlags]
     enum TypeInfoFlags : u32
     {
-        Zero                  = 0x00000000
-        PointerTypeInfo       = 0x00000001     // This is a pointer to a [[TypeInfo]] struct
-        Integer               = 0x00000002     // This is a native integer
-        Float                 = 0x00000004     // This is a native float
-        Unsigned              = 0x00000008     // This is a native unsigned integer
-        HasPostCopy           = 0x00000010     // This is a struct with a 'opPostCopy'
-        HasPostMove           = 0x00000020     // This is a struct with a 'opPostMove'
-        HasDrop               = 0x00000040     // This is a struct with a 'opDrop'
-        Strict                = 0x00000080     // This is a typealias with the Swag.Strict attribute
-        CanCopy               = 0x00000100     // This is a struct that can be copied
-        Tuple                 = 0x00000200     // This is a tuple
-        CString               = 0x00000400     // This is a 'cstring'
-        Generic               = 0x00000800     // This is a generic type
-        PointerRef            = 0x00001000     // This is a reference
-        PointerMoveRef        = 0x00002000     // This is a move reference
-        PointerArithmetic     = 0x00004000     // This is a pointer to multiple values
-        Character             = 0x00008000     // This is a 32 bits character
-        Const                 = 0x00010000     // This is const
+        Zero              = 0x00000000
+        PointerTypeInfo   = 0x00000001     // This is a pointer to a [[TypeInfo]] struct
+        Integer           = 0x00000002     // This is a native integer
+        Float             = 0x00000004     // This is a native float
+        Unsigned          = 0x00000008     // This is a native unsigned integer
+        HasPostCopy       = 0x00000010     // This is a struct with a 'opPostCopy'
+        HasPostMove       = 0x00000020     // This is a struct with a 'opPostMove'
+        HasDrop           = 0x00000040     // This is a struct with a 'opDrop'
+        Strict            = 0x00000080     // This is a typealias with the Swag.Strict attribute
+        CanCopy           = 0x00000100     // This is a struct that can be copied
+        Tuple             = 0x00000200     // This is a tuple
+        CString           = 0x00000400     // This is a 'cstring'
+        Generic           = 0x00000800     // This is a generic type
+        PointerRef        = 0x00001000     // This is a reference
+        PointerMoveRef    = 0x00002000     // This is a move reference
+        PointerArithmetic = 0x00004000     // This is a pointer to multiple values
+        Character         = 0x00008000     // This is a 32 bits character
+        Const             = 0x00010000     // This is const
     }
 
     struct Interface
@@ -645,8 +645,8 @@ namespace Swag
     #[EnumFlags]
     enum RuntimeFlags : u64
     {
-        Zero             = 0
-        FromCompiler     = 1
+        Zero         = 0
+        FromCompiler = 1
     }
 
     // Target processor
@@ -658,17 +658,17 @@ namespace Swag
     // The 'OS' to target when generating native code
     enum TargetOs
     {
-        Windows         // Windows 10/11
-        Linux           // Linux (**unsupported**)
-        MaxOSX          // MacOS (**unsupported**)
+        Windows     // Windows 10/11
+        Linux       // Linux (**unsupported**)
+        MaxOSX      // MacOS (**unsupported**)
     }
 
     // The type of backend to use
     enum Backend
     {
-        ByteCode         // Bytecode
-        SCBE             // SCBE backend (SwagCustomBackEnd)
-        LLVM             // LLVM backend
+        ByteCode     // Bytecode
+        SCBE         // SCBE backend (SwagCustomBackEnd)
+        LLVM         // LLVM backend
     }
 
     const SafetyBoundCheck  = 0x0001
@@ -704,10 +704,10 @@ namespace Swag
     // The kind of native backend to generate.
     enum BuildCfgBackendKind
     {
-        None               // Nothing
-        Export             // The module is an 'export' module which does not have its own code.
-        Executable         // The module needs to be compiled to an executable application.
-        Library            // The module needs to be compiled as a library.
+        None           // Nothing
+        Export         // The module is an 'export' module which does not have its own code.
+        Executable     // The module needs to be compiled to an executable application.
+        Library        // The module needs to be compiled as a library.
     }
 
     // The native backend sub category.
@@ -723,20 +723,20 @@ namespace Swag
     // Only 'LLVM' backend uses this, as the 'X86_64' backend does not have an optimization pass.
     enum BuildCfgBackendOptim
     {
-        O0         // No optimization
-        O1         // Optimizations level 1
-        O2         // Optimizations level 2
-        O3         // Optimizations level 3
-        Os         // Optim for size level 1
-        Oz         // Optim for size level 2
+        O0     // No optimization
+        O1     // Optimizations level 1
+        O2     // Optimizations level 2
+        O3     // Optimizations level 3
+        Os     // Optim for size level 1
+        Oz     // Optim for size level 2
     }
 
     enum BuildCfgDocKind
     {
-        None             // Do not generate documentation for that module
-        Api              // Generate 'api like' documentation
-        Examples         // Generate 'examples like' documentation
-        Pages            // Generate one page per file
+        None         // Do not generate documentation for that module
+        Api          // Generate 'api like' documentation
+        Examples     // Generate 'examples like' documentation
+        Pages        // Generate one page per file
     }
 
     // This contains all options when generating documentation.
@@ -824,13 +824,13 @@ namespace Swag
     // The kind of message in [[CompilerMessage]]
     enum CompilerMsgKind : u32
     {
-        PassAfterSemantic             // Called once the program semantic has been done
-        PassBeforeRunByteCode         // Called just before running bytecode
-        PassBeforeOutput              // Called just before generating the native code
-        PassAllDone                   // Called when everything has be done
-        SemFunctions                  // Called for each function in the module
-        SemTypes                      // Called for each type in the module
-        SemGlobals                    // Called for each global variable in the module
+        PassAfterSemantic         // Called once the program semantic has been done
+        PassBeforeRunByteCode     // Called just before running bytecode
+        PassBeforeOutput          // Called just before generating the native code
+        PassAllDone               // Called when everything has be done
+        SemFunctions              // Called for each function in the module
+        SemTypes                  // Called for each type in the module
+        SemGlobals                // Called for each global variable in the module
         AttributeGen
     }
 
@@ -840,15 +840,15 @@ namespace Swag
     #[EnumFlags]
     enum CompilerMsgMask : u64
     {
-        PassAfterSemantic     = 1 << cast(u32) CompilerMsgKind.PassAfterSemantic
-        PassBeforeRun         = 1 << cast(u32) CompilerMsgKind.PassBeforeRunByteCode
-        PassBeforeOutput      = 1 << cast(u32) CompilerMsgKind.PassBeforeOutput
-        PassAllDone           = 1 << cast(u32) CompilerMsgKind.PassAllDone
-        SemFunctions          = 1 << cast(u32) CompilerMsgKind.SemFunctions
-        SemTypes              = 1 << cast(u32) CompilerMsgKind.SemTypes
-        SemGlobals            = 1 << cast(u32) CompilerMsgKind.SemGlobals
-        AttributeGen          = 1 << cast(u32) CompilerMsgKind.AttributeGen
-        All                   = 0xFFFFFFFF_FFFFFFFF
+        PassAfterSemantic = 1 << cast(u32) CompilerMsgKind.PassAfterSemantic
+        PassBeforeRun     = 1 << cast(u32) CompilerMsgKind.PassBeforeRunByteCode
+        PassBeforeOutput  = 1 << cast(u32) CompilerMsgKind.PassBeforeOutput
+        PassAllDone       = 1 << cast(u32) CompilerMsgKind.PassAllDone
+        SemFunctions      = 1 << cast(u32) CompilerMsgKind.SemFunctions
+        SemTypes          = 1 << cast(u32) CompilerMsgKind.SemTypes
+        SemGlobals        = 1 << cast(u32) CompilerMsgKind.SemGlobals
+        AttributeGen      = 1 << cast(u32) CompilerMsgKind.AttributeGen
+        All               = 0xFFFFFFFF_FFFFFFFF
     }
 
     // A message received in a '#message' function.
