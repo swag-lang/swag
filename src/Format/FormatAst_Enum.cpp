@@ -21,11 +21,22 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
             processed++;
             continue;
         }
-        
+
         if (child->kind != AstNodeKind::EnumValue)
             break;
         if (child->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
             break;
+
+        if (!nodes.empty())
+        {
+            if (const auto parse = child->getTokenParse())
+            {
+                if (!parse->format.commentBefore.empty())
+                    break;
+                if (!parse->format.commentJustBefore.empty())
+                    break;
+            }
+        }
 
         processed++;
         nodes.push_back(child);
@@ -74,7 +85,7 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
     while (scan)
     {
         const auto to = scan->getTokenParse();
-        if (to && !to->comments.commentJustAfter.empty())
+        if (to && !to->format.commentJustAfter.empty())
         {
             node->inheritFormatFromAfter(nullptr, scan);
             break;

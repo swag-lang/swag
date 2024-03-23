@@ -83,7 +83,7 @@ struct TokenParse
     bool isNot(TokenId what) const { return token.id != what; }
 
     Token           token;
-    TokenFormat     comments;
+    TokenFormat     format;
     Register        literalValue;
     TokenParseFlags flags       = 0;
     LiteralType     literalType = static_cast<LiteralType>(0);

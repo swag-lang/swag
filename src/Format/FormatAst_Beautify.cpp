@@ -49,10 +49,10 @@ void FormatAst::beautifyCommentBefore(const FormatContext& context, AstNode* nod
         return;
 
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
-    if (!to || to->comments.commentBefore.empty())
+    if (!to || to->format.commentBefore.empty())
         return;
 
-    beautifyComment(context, to->comments.commentBefore);
+    beautifyComment(context, to->format.commentBefore);
 }
 
 void FormatAst::beautifyCommentJustBefore(const FormatContext& context, AstNode* node) const
@@ -63,10 +63,10 @@ void FormatAst::beautifyCommentJustBefore(const FormatContext& context, AstNode*
         return;
 
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
-    if (!to || to->comments.commentJustBefore.empty())
+    if (!to || to->format.commentJustBefore.empty())
         return;
 
-    beautifyComment(context, to->comments.commentJustBefore);
+    beautifyComment(context, to->format.commentJustBefore);
 }
 
 void FormatAst::beautifyBlankLine(const FormatContext& context, AstNode* node) const
@@ -95,9 +95,9 @@ void FormatAst::beautifyAfter(const FormatContext& context, AstNode* node) const
         return;
 
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
-    if (!to || to->comments.commentJustAfter.empty())
+    if (!to || to->format.commentJustAfter.empty())
         return;
 
     concat->addBlank();
-    beautifyComment(context, to->comments.commentJustAfter);
+    beautifyComment(context, to->format.commentJustAfter);
 }

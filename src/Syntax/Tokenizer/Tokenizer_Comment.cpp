@@ -19,7 +19,7 @@ bool Tokenizer::doSingleLineComment(TokenParse& tokenParse)
         cmt.comment = tokenParse.token.text;
         cmt.flags   = tokenParse.flags;
         cmt.flags.add(TOKEN_PARSE_ONE_LINE_COMMENT);
-        tokenParse.comments.commentJustBefore.push_back(cmt);
+        tokenParse.format.commentJustBefore.push_back(cmt);
     }
 
     tokenParse.flags.remove(TOKEN_PARSE_BLANK_LINE_BEFORE);
@@ -83,7 +83,7 @@ bool Tokenizer::doMultiLineComment(TokenParse& tokenParse)
         TokenComment cmt;
         cmt.comment = tokenParse.token.text;
         cmt.flags   = tokenParse.flags;
-        tokenParse.comments.commentJustBefore.push_back(cmt);
+        tokenParse.format.commentJustBefore.push_back(cmt);
     }
 
     tokenParse.flags.remove(TOKEN_PARSE_BLANK_LINE_BEFORE);

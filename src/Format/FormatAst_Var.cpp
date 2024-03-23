@@ -21,10 +21,21 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
             processed++;
             continue;
         }
-        
+
         if (child->kind != AstNodeKind::VarDecl && child->kind != AstNodeKind::ConstDecl)
             break;
-        
+
+        if (!nodes.empty())
+        {
+            if (const auto parse = child->getTokenParse())
+            {
+                if (!parse->format.commentBefore.empty())
+                    break;
+                if (!parse->format.commentJustBefore.empty())
+                    break;
+            }
+        }
+
         processed++;
         nodes.push_back(child);
     }
@@ -95,7 +106,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
     while (scan)
     {
         const auto to = scan->getTokenParse();
-        if (to && !to->comments.commentJustAfter.empty())
+        if (to && !to->format.commentJustAfter.empty())
         {
             node->inheritFormatFromAfter(nullptr, scan);
             break;
@@ -186,7 +197,6 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
 bool FormatAst::outputVarHeader(FormatContext& context, AstNode* node)
 {
     const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-    beautifyBefore(context, node);
 
     if (varNode->attrUse)
     {
@@ -227,6 +237,8 @@ bool FormatAst::outputVarHeader(FormatContext& context, AstNode* node)
 
 bool FormatAst::outputVar(FormatContext& context, AstNode* node, uint32_t maxLenName, uint32_t maxLenType)
 {
+    beautifyBefore(context, node);
+
     const auto startColumn = concat->column;
     SWAG_CHECK(outputVarHeader(context, node));
 
