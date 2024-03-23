@@ -869,8 +869,8 @@ namespace Swag
     // The intrinsic '@compiler' will return that interface at compile-time, and 'null' at runtime.
     interface ICompiler
     {
-        mtd getMessage()->const *CompilerMessage // Returns the compiler message in a '#message' function;
-        mtd getBuildCfg()->*BuildCfg // Returns the build configuration of the current module;
+        mtd getMessage()->const *CompilerMessage; // Returns the compiler message in a '#message' function
+        mtd getBuildCfg()->*BuildCfg; // Returns the build configuration of the current module
         mtd compileString(str: string);
     }
 

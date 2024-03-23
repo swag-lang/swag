@@ -177,7 +177,7 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
 
     if (tokenParse.is(TokenId::SymComma))
     {
-        enumValue->inheritFormatFromAfter(this, &tokenParse);
+        enumValue->inheritFormatAfter(this, &tokenParse);
         SWAG_CHECK(eatToken());
     }
     else

@@ -40,7 +40,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
             auto tokenElse = tokenParse;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doScopedStatement(node, tokenElse.token, reinterpret_cast<AstNode**>(&node->elseBlock)));
-            node->elseBlock->inheritFormatFromBefore(this, &tokenElse);
+            node->elseBlock->inheritFormatBefore(this, &tokenElse);
         }
         else if (tokenParse.is(TokenId::KwdElif))
         {
@@ -59,7 +59,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
             auto tokenElse = tokenParse;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doScopedStatement(node, tokenElse.token, reinterpret_cast<AstNode**>(&node->elseBlock)));
-            node->elseBlock->inheritFormatFromBefore(this, &tokenElse);
+            node->elseBlock->inheritFormatBefore(this, &tokenElse);
         }
         else if (tokenParse.is(TokenId::KwdElif))
         {

@@ -242,7 +242,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse.token, toErr(Err0131)));
     }
 
-    params->inheritFormatFromAfter(this, &tokenParse);
+    params->inheritFormatAfter(this, &tokenParse);
     return true;
 }
 

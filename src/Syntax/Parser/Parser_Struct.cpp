@@ -482,7 +482,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             const auto funcNode = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, nullptr);
             if (kind == TokenId::KwdMethod)
                 funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD);
-            funcNode->inheritFormatFromBefore(this, &savedToken);
+            funcNode->inheritFormatBefore(this, &savedToken);
 
             SWAG_CHECK(checkIsValidUserName(funcNode));
             SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0295, tokenParse.token.c_str())));
@@ -547,7 +547,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
             if (*result)
-                (*result)->inheritFormatFromBefore(this, &savedToken);
+                (*result)->inheritFormatBefore(this, &savedToken);
             break;
         }
     }

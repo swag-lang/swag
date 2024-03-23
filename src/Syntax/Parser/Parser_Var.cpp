@@ -311,7 +311,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
     if (*result)
-        (*result)->inheritFormatFromBefore(this, &savedTokenParse);
+        (*result)->inheritFormatBefore(this, &savedTokenParse);
 
     return true;
 }

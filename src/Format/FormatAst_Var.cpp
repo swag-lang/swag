@@ -101,19 +101,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
 bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, uint32_t startColumn, uint32_t maxLenName, uint32_t maxLenType)
 {
     const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-
-    AstNode* scan = varNode;
-    while (scan)
-    {
-        const auto to = scan->getTokenParse();
-        if (to && !to->comments.after.empty())
-        {
-            node->inheritFormatFromAfter(nullptr, scan);
-            break;
-        }
-
-        scan = scan->lastChild();
-    }
+    varNode->inheritLastFormatAfter(nullptr);
 
     if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
     {

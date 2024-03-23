@@ -156,25 +156,41 @@ TokenParse* AstNode::getOrCreateTokenParse()
     return tp;
 }
 
-void AstNode::inheritFormatFromBefore(const Parser* parser, AstNode* other)
+void AstNode::inheritLastFormatAfter(const Parser* parser)
+{
+    auto scan = this;
+    while (scan)
+    {
+        const auto to = scan->getTokenParse();
+        if (to && !to->comments.after.empty())
+        {
+            inheritFormatAfter(parser, scan);
+            break;
+        }
+
+        scan = scan->lastChild();
+    }
+}
+
+void AstNode::inheritFormatBefore(const Parser* parser, AstNode* other)
 {
     if (other == this || !other)
         return;
     if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
-    inheritFormatFromBefore(parser, other->getTokenParse());
+    inheritFormatBefore(parser, other->getTokenParse());
 }
 
-void AstNode::inheritFormatFromAfter(const Parser* parser, AstNode* other)
+void AstNode::inheritFormatAfter(const Parser* parser, AstNode* other)
 {
     if (other == this || !other)
         return;
     if (parser && !parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
-    inheritFormatFromAfter(parser, other->getTokenParse());
+    inheritFormatAfter(parser, other->getTokenParse());
 }
 
-void AstNode::inheritFormatFromBefore(const Parser* parser, TokenParse* tokenParse)
+void AstNode::inheritFormatBefore(const Parser* parser, TokenParse* tokenParse)
 {
     if (!tokenParse)
         return;
@@ -193,7 +209,7 @@ void AstNode::inheritFormatFromBefore(const Parser* parser, TokenParse* tokenPar
     }
 }
 
-void AstNode::inheritFormatFromAfter(const Parser* parser, TokenParse* tokenParse)
+void AstNode::inheritFormatAfter(const Parser* parser, TokenParse* tokenParse)
 {
     if (!tokenParse)
         return;

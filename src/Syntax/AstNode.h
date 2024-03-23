@@ -305,11 +305,13 @@ struct AstNode
     void inheritTokenName(Token& tkn);
     void inheritTokenLocation(const Token& tkn);
     void inheritOwners(const AstNode* from);
-    void inheritFormatFromBefore(const Parser* parser, AstNode* other);
-    void inheritFormatFromAfter(const Parser* parser, AstNode* other);
-    void inheritFormatFromBefore(const Parser* parser, TokenParse* tokenParse);
-    void inheritFormatFromAfter(const Parser* parser, TokenParse* tokenParse);
     void inheritOwnersAndFlags(const Parser* parser);
+
+    void inheritLastFormatAfter(const Parser* parser);
+    void inheritFormatBefore(const Parser* parser, AstNode* other);
+    void inheritFormatAfter(const Parser* parser, AstNode* other);
+    void inheritFormatBefore(const Parser* parser, TokenParse* tokenParse);
+    void inheritFormatAfter(const Parser* parser, TokenParse* tokenParse);
 
     void allocateComputedValue();
     void releaseComputedValue();

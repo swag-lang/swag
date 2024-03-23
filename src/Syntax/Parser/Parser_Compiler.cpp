@@ -340,13 +340,13 @@ bool Parser::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
         AstNode* funcDecl;
         SWAG_CHECK(doFuncDecl(parent, &funcDecl, TokenId::CompilerRun));
         *result = funcDecl;
-        funcDecl->inheritFormatFromBefore(this, &savedToken);
+        funcDecl->inheritFormatBefore(this, &savedToken);
         return true;
     }
 
     const auto node = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerRun, this, parent);
     *result         = node;
-    node->inheritFormatFromBefore(this, &savedToken);
+    node->inheritFormatBefore(this, &savedToken);
 
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
     node->semanticFct = Semantic::resolveCompilerRun;
@@ -428,7 +428,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     if (tokenParse.token.text == g_LangSpec->name_export)
     {
         const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
-        globalDecl->inheritFormatFromBefore(this, &savedToken);
+        globalDecl->inheritFormatBefore(this, &savedToken);
         const auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
         idRef->addAstFlag(AST_NO_SEMANTIC);
 
@@ -447,7 +447,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     else if (tokenParse.token.text == g_LangSpec->name_generated)
     {
         const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
-        globalDecl->inheritFormatFromBefore(this, &savedToken);
+        globalDecl->inheritFormatBefore(this, &savedToken);
         const auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
         idRef->addAstFlag(AST_NO_SEMANTIC);
 
@@ -464,7 +464,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         const auto node = Ast::newNode<AstIf>(AstNodeKind::CompilerIf, this, parent);
         *result         = node;
         node->addAstFlag(AST_GLOBAL_NODE);
-        node->inheritFormatFromBefore(this, &savedToken);
+        node->inheritFormatBefore(this, &savedToken);
 
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
@@ -490,7 +490,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doNamespace(parent, result, true, false));
         if (*result)
-            (*result)->inheritFormatFromBefore(this, &savedToken);
+            (*result)->inheritFormatBefore(this, &savedToken);
     }
 
     /////////////////////////////////
@@ -499,7 +499,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (parserFlags.has(PARSER_TRACK_FORMAT))
         {
             const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
-            globalDecl->inheritFormatFromBefore(this, &savedToken);
+            globalDecl->inheritFormatBefore(this, &savedToken);
             Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(eatSemiCol("[[#global public/internal]]"));
@@ -514,7 +514,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     else if (tokenParse.token.text == g_LangSpec->name_skip)
     {
         const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
-        globalDecl->inheritFormatFromBefore(this, &savedToken);
+        globalDecl->inheritFormatBefore(this, &savedToken);
         const auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
         idRef->addAstFlag(AST_NO_SEMANTIC);
         sourceFile->buildPass = BuildPass::Lexer;
@@ -532,7 +532,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     else if (tokenParse.token.text == g_LangSpec->name_testpass)
     {
         const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
-        globalDecl->inheritFormatFromBefore(this, &savedToken);
+        globalDecl->inheritFormatBefore(this, &savedToken);
         auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
         idRef->addAstFlag(AST_NO_SEMANTIC);
 
@@ -602,7 +602,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
-        globalDecl->inheritFormatFromBefore(this, &savedToken);
+        globalDecl->inheritFormatBefore(this, &savedToken);
         const auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
         idRef->addAstFlag(AST_NO_SEMANTIC);
 

@@ -15,8 +15,8 @@ void Ast::initNewNode(AstNodeKind kind, AstNode* node, Parser* parser, AstNode* 
         node->inheritOwnersAndFlags(parser);
         if (!parser->freezeFormat && !node->flags.has(AST_GENERATED))
         {
-            node->inheritFormatFromBefore(parser, &parser->tokenParse);
-            node->inheritFormatFromAfter(parser, &parser->tokenParse);
+            node->inheritFormatBefore(parser, &parser->tokenParse);
+            node->inheritFormatAfter(parser, &parser->tokenParse);
         }
     }
     else if (parent)

@@ -121,6 +121,9 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
 
 bool FormatAst::outputFuncDecl(FormatContext& context, AstFuncDecl* node)
 {
+    if (!node->content)
+        node->inheritLastFormatAfter(nullptr);
+
     if (node->hasAttribute(ATTRIBUTE_AST_FUNC))
         CONCAT_FIXED_STR(concat, "#ast");
     else if (node->hasAttribute(ATTRIBUTE_RUN_FUNC))
@@ -185,6 +188,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstFuncDecl* node)
     if (!node->content)
     {
         concat->addChar(';');
+        beautifyAfter(context, node);
         concat->addEol();
         return true;
     }

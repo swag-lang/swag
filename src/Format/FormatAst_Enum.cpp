@@ -87,7 +87,7 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
         const auto to = scan->getTokenParse();
         if (to && !to->comments.after.empty())
         {
-            node->inheritFormatFromAfter(nullptr, scan);
+            node->inheritFormatAfter(nullptr, scan);
             break;
         }
 
