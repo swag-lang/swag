@@ -215,12 +215,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstFuncDecl* node)
             concat->addEol();
         }
 
-        for (const auto c : node->content->children)
-        {
-            concat->addIndent(context.indent);
-            SWAG_CHECK(outputNode(context, c));
-            concat->addEol();
-        }
+        SWAG_CHECK(outputChildren(context, node->content));
     }
 
     context.indent--;
