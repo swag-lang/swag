@@ -63,7 +63,7 @@ bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t s
                 i += processed - 1;
                 continue;
             }
-        }        
+        }
 
         concat->addIndent(context.indent);
         SWAG_CHECK(outputNode(context, child));

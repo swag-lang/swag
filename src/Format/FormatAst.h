@@ -25,17 +25,17 @@ constexpr FormatFlags FORMAT_FOR_BEAUTIFY = 0x00000002;
 
 struct FormatOptions
 {
-    bool     alignVarDecl                   = false;
-    bool     alignEnumValue                 = false;
+    bool     alignVarDecl                           = false;
+    bool     alignEnumValue                         = false;
     uint32_t addBlanksBeforeAlignedLastLineComments = 0;
-    uint32_t alignStructVarTypeAddBlanks    = 0;
+    uint32_t alignStructVarTypeAddBlanks            = 0;
 
     void setDefaultBeautify()
     {
-        alignVarDecl                   = true;
-        alignEnumValue                 = true;
+        alignVarDecl                           = true;
+        alignEnumValue                         = true;
         addBlanksBeforeAlignedLastLineComments = 4;
-        alignStructVarTypeAddBlanks    = 4;
+        alignStructVarTypeAddBlanks            = 4;
     }
 };
 
@@ -77,7 +77,7 @@ struct FormatAst
     void beautifyAfter(const FormatContext& context, AstNode* node) const;
     void beautifyBlankLine(const FormatContext& context, AstNode* node) const;
 
-    bool outputClosureArguments(FormatContext& context, AstFuncDecl* funcNode);
+    bool outputClosureArguments(FormatContext& context, const AstFuncDecl* funcNode);
     bool outputLambdaExpression(FormatContext& context, AstNode* node);
     bool outputChildrenEnumValues(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
     bool outputEnumValue(FormatContext& context, AstNode* node, uint32_t maxLenName = 0, uint32_t maxLenValue = 0);
@@ -90,19 +90,19 @@ struct FormatAst
     bool outputDropCopyMove(FormatContext& context, AstNode* node);
     bool outputTypeLambda(FormatContext& context, AstNode* node);
     bool outputFuncDeclParameters(FormatContext& context, AstNode* parameters, bool isMethod);
-    bool outputFuncReturnType(FormatContext& context, AstFuncDecl* funcNode);
-    bool outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf);
+    bool outputFuncReturnType(FormatContext& context, const AstFuncDecl* funcNode);
+    bool outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const AstNode* validIf);
     bool outputGenericParameters(FormatContext& context, AstNode* node);
-    bool outputAttributesUsage(FormatContext& context, const TypeInfoFuncAttr* typeFunc) const;
+    bool outputAttributesUsage(const FormatContext& context, const TypeInfoFuncAttr* typeFunc) const;
     bool outputAttributes(FormatContext& context, const TypeInfo* typeInfo, const AttributeList& attributes);
     bool outputAttributes(FormatContext& context, AstNode* node, TypeInfo* typeInfo);
-    bool outputAttributesGlobalUsing(FormatContext& context, AstNode* node) const;
+    bool outputAttributesGlobalUsing(const FormatContext& context, const AstNode* node) const;
     bool outputCompilerSpecialValue(FormatContext& context, AstNode* node) const;
     bool outputCompilerIf(FormatContext& context, const Utf8& name, AstNode* node);
-    bool outputCompilerExpr(FormatContext& context, AstNode* node);
+    bool outputCompilerExpr(FormatContext& context, const AstNode* node);
     bool outputCompilerExport(FormatContext& context, AstNode* node) const;
     bool outputCompilerCode(FormatContext& context, AstNode* node);
-    bool outputCompilerGlobal(FormatContext& context, AstNode* node);
+    bool outputCompilerGlobal(FormatContext& context, const AstNode* node);
     bool outputCompilerMixin(FormatContext& context, AstNode* node);
     bool outputExpressionList(FormatContext& context, AstNode* node);
     bool outputLiteral(FormatContext& context, AstNode* node);
@@ -132,7 +132,7 @@ struct FormatAst
     bool outputNamespace(FormatContext& context, AstNode* node);
     bool outputDefer(FormatContext& context, AstNode* node);
     bool outputTryAssume(FormatContext& context, const AstNode* node);
-    bool outputCatch(FormatContext& context, AstNode* node);
+    bool outputCatch(FormatContext& context, const AstNode* node);
     bool outputImpl(FormatContext& context, AstNode* node);
     bool outputIdentifier(FormatContext& context, AstNode* node);
     bool outputIdentifierRef(FormatContext& context, AstNode* node);

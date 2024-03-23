@@ -170,7 +170,7 @@ bool FormatAst::outputCompilerMixin(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputCompilerExpr(FormatContext& context, AstNode* node)
+bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
 {
     if (node->is(AstNodeKind::CompilerRun) || node->is(AstNodeKind::CompilerRunExpression))
         CONCAT_FIXED_STR(concat, "#run");
@@ -260,7 +260,7 @@ bool FormatAst::outputCompilerCode(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputCompilerGlobal(FormatContext& context, AstNode* node)
+bool FormatAst::outputCompilerGlobal(FormatContext& context, const AstNode* node)
 {
     CONCAT_FIXED_STR(concat, "#global");
     concat->addBlank();

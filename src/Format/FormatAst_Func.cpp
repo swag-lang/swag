@@ -21,7 +21,7 @@ bool FormatAst::outputFuncDeclParameters(FormatContext& context, AstNode* parame
     return true;
 }
 
-bool FormatAst::outputFuncReturnType(FormatContext& context, AstFuncDecl* funcNode)
+bool FormatAst::outputFuncReturnType(FormatContext& context, const AstFuncDecl* funcNode)
 {
     auto returnNode = funcNode->returnType;
     if (returnNode && !returnNode->children.empty())
@@ -36,7 +36,7 @@ bool FormatAst::outputFuncReturnType(FormatContext& context, AstFuncDecl* funcNo
     return true;
 }
 
-bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf)
+bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const AstNode* validIf)
 {
     bool isMethod = false;
 
@@ -229,7 +229,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstFuncDecl* node)
     return true;
 }
 
-bool FormatAst::outputClosureArguments(FormatContext& context, AstFuncDecl* funcNode)
+bool FormatAst::outputClosureArguments(FormatContext& context, const AstFuncDecl* funcNode)
 {
     concat->addChar('|');
 

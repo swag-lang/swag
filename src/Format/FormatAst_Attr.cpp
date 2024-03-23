@@ -145,7 +145,7 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
     return true;
 }
 
-bool FormatAst::outputAttributesUsage(FormatContext& context, const TypeInfoFuncAttr* typeFunc) const
+bool FormatAst::outputAttributesUsage(const FormatContext& context, const TypeInfoFuncAttr* typeFunc) const
 {
     bool first = true;
     concat->addIndent(context.indent);
@@ -258,7 +258,7 @@ bool FormatAst::outputAttributes(FormatContext& context, const TypeInfo* typeInf
     return true;
 }
 
-bool FormatAst::outputAttributesGlobalUsing(FormatContext& context, AstNode* node) const
+bool FormatAst::outputAttributesGlobalUsing(const FormatContext& context, const AstNode* node) const
 {
     bool outputUsing = true;
     if (node->hasAstFlag(AST_STRUCT_MEMBER))

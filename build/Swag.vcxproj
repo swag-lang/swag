@@ -446,7 +446,7 @@
         <ClCompile Include="..\src\Format\FormatAst_Beautify.cpp"/>
         <ClCompile Include="..\src\Format\FormatAst_Block.cpp"/>
         <ClCompile Include="..\src\Format\FormatAst_Compiler.cpp"/>
-        <ClCompile Include="..\src\Format\FormatAst_Enum.cpp" />
+        <ClCompile Include="..\src\Format\FormatAst_Enum.cpp"/>
         <ClCompile Include="..\src\Format\FormatAst_Expression.cpp"/>
         <ClCompile Include="..\src\Format\FormatAst_Func.cpp"/>
         <ClCompile Include="..\src\Format\FormatAst_Identifier.cpp"/>

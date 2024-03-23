@@ -197,8 +197,8 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
     ++g_Stats.numTokens;
 #endif
 
-    tokenParse.literalType                = LiteralType::TypeMax;
-    tokenParse.token.sourceFile           = sourceFile;
+    tokenParse.literalType         = LiteralType::TypeMax;
+    tokenParse.token.sourceFile    = sourceFile;
     tokenParse.comments.justBefore = tokenParse.comments.after;
     tokenParse.comments.after.clear();
 

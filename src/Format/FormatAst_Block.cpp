@@ -223,7 +223,7 @@ bool FormatAst::outputTryAssume(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputCatch(FormatContext& context, AstNode* node)
+bool FormatAst::outputCatch(FormatContext& context, const AstNode* node)
 {
     if (node->hasAstFlag(AST_DISCARD))
     {
