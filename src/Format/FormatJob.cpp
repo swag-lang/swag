@@ -99,7 +99,6 @@ bool FormatJob::getFormattedCode(const FormatOptions& options, const Path& fileN
     fmt.options = options;
 
     FormatContext context;
-    fmt.fmtFlags.add(FORMAT_FOR_BEAUTIFY);
     fmt.outputNode(context, tmpFile.astRoot);
 
     // Get result

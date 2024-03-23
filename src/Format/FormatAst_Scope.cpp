@@ -127,8 +127,6 @@ bool FormatAst::outputScope(FormatContext& context, Module* module, Scope* scope
     if (scope->flags.has(SCOPE_IMPORTED))
         return true;
 
-    fmtFlags.add(FORMAT_FOR_EXPORT);
-
     // Namespace
     if (scope->is(ScopeKind::Namespace) && !scope->name.empty())
     {

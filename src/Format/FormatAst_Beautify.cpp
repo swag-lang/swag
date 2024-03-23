@@ -43,9 +43,7 @@ void FormatAst::beautifyBefore(const FormatContext& context, AstNode* node) cons
 
 void FormatAst::beautifyCommentBefore(const FormatContext& context, AstNode* node) const
 {
-    if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
-        return;
-    if (!context.outputComments)
+    if (!options.outputComments || !context.outputComments)
         return;
 
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
@@ -57,9 +55,7 @@ void FormatAst::beautifyCommentBefore(const FormatContext& context, AstNode* nod
 
 void FormatAst::beautifyCommentJustBefore(const FormatContext& context, AstNode* node) const
 {
-    if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
-        return;
-    if (!context.outputComments)
+    if (!options.outputComments || !context.outputComments)
         return;
 
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
@@ -71,9 +67,7 @@ void FormatAst::beautifyCommentJustBefore(const FormatContext& context, AstNode*
 
 void FormatAst::beautifyBlankLine(const FormatContext& context, AstNode* node) const
 {
-    if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
-        return;
-    if (!context.outputBlankLines)
+    if (!options.outputBlankLines || !context.outputBlankLines)
         return;
 
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
@@ -89,9 +83,7 @@ void FormatAst::beautifyAfter(const FormatContext& context, AstNode* node) const
 {
     if (!node)
         return;
-    if (!fmtFlags.has(FORMAT_FOR_BEAUTIFY))
-        return;
-    if (!context.outputComments)
+    if (!options.outputComments || !context.outputComments)
         return;
 
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);

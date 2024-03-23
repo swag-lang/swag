@@ -20,11 +20,11 @@ struct TypeInfoFuncAttr;
 enum class ScopeKind : uint8_t;
 using FormatFlags = Flags<uint32_t>;
 
-constexpr FormatFlags FORMAT_FOR_EXPORT   = 0x00000001;
-constexpr FormatFlags FORMAT_FOR_BEAUTIFY = 0x00000002;
-
 struct FormatOptions
 {
+    bool outputComments   = false;
+    bool outputBlankLines = false;
+
     bool     alignVarDecl                           = false;
     bool     alignEnumValue                         = false;
     uint32_t addBlanksBeforeAlignedLastLineComments = 0;
@@ -32,6 +32,8 @@ struct FormatOptions
 
     void setDefaultBeautify()
     {
+        outputComments                         = true;
+        outputBlankLines                       = true;
         alignVarDecl                           = true;
         alignEnumValue                         = true;
         addBlanksBeforeAlignedLastLineComments = 4;
@@ -149,8 +151,7 @@ struct FormatAst
     FormatConcat  inConcat;
     FormatConcat  tmpConcat;
     FormatOptions options;
-    FormatConcat* concat   = nullptr;
-    FormatFlags   fmtFlags = 0;
+    FormatConcat* concat = nullptr;
 };
 
 struct PushFormatTmp
