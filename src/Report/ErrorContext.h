@@ -47,18 +47,15 @@ struct ErrorContext
     void reset()
     {
         errCxtSteps.clear();
-        sourceFile  = nullptr;
-        node        = nullptr;
-        hasError    = false;
-        silentError = 0;
+        sourceFile = nullptr;
+        node       = nullptr;
+        hasError   = false;
     }
 
     Vector<ErrorCxtStep> errCxtSteps;
 
     SourceFile* sourceFile = nullptr;
     AstNode*    node       = nullptr;
-
-    uint32_t silentError = false;
 
     bool hasError = false;
 };

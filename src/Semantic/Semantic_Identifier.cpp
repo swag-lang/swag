@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Report/Report.h"
 #include "Semantic/Error/SemanticError.h"
 #include "Semantic/Scope.h"
 #include "Semantic/SemanticJob.h"
@@ -349,9 +350,9 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
         const auto idref = castAst<AstIdentifierRef>(fctCallParam->parent->parent->parent, AstNodeKind::IdentifierRef);
         const auto id    = castAst<AstIdentifier>(fctCallParam->parent->parent, AstNodeKind::Identifier);
 
-        context->silentError++;
+        g_SilentError++;
         const auto found = findIdentifierInScopes(context, symbolMatch, idref, id);
-        context->silentError--;
+        g_SilentError--;
         YIELD();
 
         if (!found || symbolMatch.empty())

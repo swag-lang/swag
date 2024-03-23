@@ -170,7 +170,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
 
 bool ErrorContext::report(const Diagnostic& err, const Vector<const Diagnostic*>& notes)
 {
-    if (silentError)
+    if (g_SilentError)
         return false;
 
     auto copyDiag  = err;
