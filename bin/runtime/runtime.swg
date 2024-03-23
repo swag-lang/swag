@@ -20,7 +20,7 @@ func __concreteAlias(type1: typeinfo)->typeinfo
 
 func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 {
-    if cast(const*u8) typeA == cast(const*u8) typeB do
+    if cast(const *u8) typeA == cast(const *u8) typeB do
         return true
     if !typeA and !typeB do
         return true
@@ -78,12 +78,11 @@ func @itftableof(structType, itfType: const *TypeInfoStruct)->const *void
     return null
 }
 
-
 ////////////////////////////////////////////////////////////
 
 const __MAX_ARGUMENTS = 512
-var __argv: [__MAX_ARGUMENTS] string
-var __argc = 0'u32
+var __argv:           [__MAX_ARGUMENTS] string
+var __argc            = 0'u32
 
 func __convertArgcArgv(args: const ^u8)
 {
@@ -91,28 +90,34 @@ func __convertArgcArgv(args: const ^u8)
     __argc = 0
     while dref cmdLine
     {
-        while dref cmdLine == ` ` do cmdLine += 1
-        if dref cmdLine == 0 do break
+        while dref cmdLine == ` ` do
+            cmdLine += 1
+        if dref cmdLine == 0 do
+            break
 
         if dref cmdLine == `"`
         {
             cmdLine += 1
             let start = cmdLine
-            while dref cmdLine and dref cmdLine != `"` do cmdLine += 1
+            while dref cmdLine and dref cmdLine != `"` do
+                cmdLine += 1
             __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
-            if dref cmdLine do cmdLine += 1
+            if dref cmdLine do
+                cmdLine += 1
         }
         else
         {
             let start = cmdLine
-            while dref cmdLine and dref cmdLine != ` ` do cmdLine += 1
+            while dref cmdLine and dref cmdLine != ` ` do
+                cmdLine += 1
             __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
         }
 
         __argc += 1
         if __argc == __MAX_ARGUMENTS do
             return
-        while dref cmdLine and dref cmdLine == ` ` do cmdLine += 1
+        while dref cmdLine and dref cmdLine == ` ` do
+            cmdLine += 1
     }
 }
 
@@ -134,7 +139,7 @@ var __sysAlloc: SystemAllocator
 // Make a build configuration copy
 const __buildCfg = #run dref @compiler().getBuildCfg()
 
-func @rtflags()  => @getcontext().runtimeFlags
+func @rtflags() => @getcontext().runtimeFlags
 func @dbgalloc() => cast(*DebugAllocator) @getcontext().debugAllocator
 func @sysalloc() => &__sysAlloc
 
@@ -151,7 +156,7 @@ func __setupRuntime(flags: RuntimeFlags)
         let alloc: *DebugAllocator = @alloc(@sizeof(DebugAllocator))
         @init(alloc, 1)
         alloc.captureAllocStack = __buildCfg.debugAllocatorCaptureStack
-        alloc.detectLeaks       = __buildCfg.debugAllocatorLeaks
+        alloc.detectLeaks = __buildCfg.debugAllocatorLeaks
         alloc.setup(cxt.allocator)
         cxt.allocator = dref alloc
         cxt.debugAllocator = alloc

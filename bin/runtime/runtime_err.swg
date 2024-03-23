@@ -27,7 +27,7 @@ func __setErr(err: any)
 
     let data = @dataof(err)
     let type = cast(const *Swag.TypeInfoStruct) @kindof(err)
-    let ptr = cxt.errorAllocator.alloc(cast(u64) type.sizeof)
+    let ptr  = cxt.errorAllocator.alloc(cast(u64) type.sizeof)
     @memcpy(ptr, data, cast(u64) type.sizeof)
     if type.opPostCopy do
         type.opPostCopy(ptr)
@@ -39,7 +39,7 @@ func __pushErr()
 {
     let cxt = @getcontext()
     cxt.errors[cxt.errorIndex].pushTraceIndex = cast(u32) cxt.traceIndex
-    cxt.errors[cxt.errorIndex].pushUsedAlloc  = cast(u32) cxt.errorAllocator.used
+    cxt.errors[cxt.errorIndex].pushUsedAlloc = cast(u32) cxt.errorAllocator.used
 
     cxt.hasError = 0
     cxt.errorIndex += 1
@@ -54,8 +54,8 @@ func __popErr()
     cxt.errorIndex -= 1
     cxt.hasError = 1
 
-    cxt.curError            = cxt.errors[cxt.errorIndex].value
-    cxt.traceIndex          = cast(u32) cxt.errors[cxt.errorIndex].pushTraceIndex
+    cxt.curError = cxt.errors[cxt.errorIndex].value
+    cxt.traceIndex = cast(u32) cxt.errors[cxt.errorIndex].pushTraceIndex
     cxt.errorAllocator.used = cast(u32) cxt.errors[cxt.errorIndex].pushUsedAlloc
 }
 
@@ -66,7 +66,7 @@ func __catchErr()
         cxt.curError = null
     else do
         cxt.curError = cxt.errors[cxt.errorIndex].value
-    cxt.errorAllocator.used = cxt.errorIndex ? cxt.errors[cxt.errorIndex-1].pushUsedAlloc : 0
+    cxt.errorAllocator.used = cxt.errorIndex ? cxt.errors[cxt.errorIndex - 1].pushUsedAlloc : 0
     cxt.hasError = 0
 }
 
@@ -79,22 +79,26 @@ func @err()->any
 
 func __failedAssume(loc: SourceCodeLocation)
 {
-    let cxt = @getcontext()
+    let cxt  = @getcontext()
     let type = @kindof(cxt.errors[cxt.errorIndex].value)
 
     var str: [512] u8
     var len: u64
 
-    const U = "uncatched runtime error "
+    const U  = "uncatched runtime error "
     @memcpy(&str[len], @dataof(U), @countof(U))
     len += @countof(U)
     var maxLen = @min(@countof(type.fullname), 128)
-    str[len] = `[`; len += 1
-    str[len] = `[`; len += 1
+    str[len] = `[`
+    len += 1
+    str[len] = `[`
+    len += 1
     @memcpy(&str[len], @dataof(type.fullname), maxLen)
     len += maxLen
-    str[len] = `]`; len += 1
-    str[len] = `]`; len += 1
+    str[len] = `]`
+    len += 1
+    str[len] = `]`
+    len += 1
 
     if type.kind == TypeInfoKind.Struct
     {
@@ -103,11 +107,12 @@ func __failedAssume(loc: SourceCodeLocation)
            (type == Swag.BaseError)
         {
             let data = @dataof(cxt.errors[cxt.errorIndex].value)
-            let val = cast(const *Swag.BaseError) data
+            let val  = cast(const *Swag.BaseError) data
             maxLen = @min(@countof(val.message), 128)
             if maxLen
             {
-                str[len] = `$`; len += 1
+                str[len] = `$`
+                len += 1
                 @memcpy(&str[len], @dataof(val.message), maxLen)
                 len += maxLen
             }
@@ -214,7 +219,7 @@ func @panic(message: string, loc: SourceCodeLocation)
     // Print the calling stack trace
     @print("[runtime callstack]", "\n")
     var arr: [64] *void
-    let nb = __captureStack(1, arr)
+    let nb   = __captureStack(1, arr)
     __logStackTrace(@mkslice(&arr[0], nb))
     @print("\n")
 
@@ -229,9 +234,10 @@ func @panic(message: string, loc: SourceCodeLocation)
     if message != null
     {
         len = @countof(message)
-        if len > 512 do len = 512
+        if len > 512 do
+            len = 512
         @memcpy(&str[0], @dataof(message), len)
-        str[len]     = `\n`
+        str[len] = `\n`
         str[len + 1] = `\n`
         len += 2
     }
@@ -249,11 +255,10 @@ func @panic(message: string, loc: SourceCodeLocation)
 
     // Message to the user
     const title = "Swag Panic !"
-    const info = """\
-      - Press Cancel to exit
-      - Press Retry to debug
-      - Press Continue to ignore
-      """
+    const info  = """- Press Cancel to exit
+- Press Retry to debug
+- Press Continue to ignore
+"""
 
     @memcpy(&str[len], @dataof(info), @countof(info))
     len += @countof(info)

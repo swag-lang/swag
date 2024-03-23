@@ -4,16 +4,16 @@ impl ScratchAllocator
 {
     struct LeakHeader
     {
-        prev:   *LeakHeader
-        next:   *LeakHeader
-        size:   u64
+        prev: *LeakHeader
+        next: *LeakHeader
+        size: u64
     }
 
     // Adapt the value depending on the requested alignment
     func align(value: u64, alignment: u32)->u64
     {
         let toAlign = alignment orelse @sizeof(*void)
-        var result = value & ~(toAlign - 1)
+        var result  = value & ~(toAlign - 1)
         if result < value do
             result += toAlign
         return result
@@ -151,9 +151,10 @@ impl IAllocator for ScratchAllocator
         // We prepend a LeakHeader to the user block, and linked it in
         // the chained list of leak allocations (at the first position)
         let totalSize = request.size + @sizeof(LeakHeader)
-        let ptr = cast(^LeakHeader) alloc(totalSize, request.alignment)
-        let leak = cast(^LeakHeader) firstLeak
-        if leak do leak.prev = ptr
+        let ptr       = cast(^LeakHeader) alloc(totalSize, request.alignment)
+        let leak      = cast(^LeakHeader) firstLeak
+        if leak do
+            leak.prev = ptr
         ptr.prev = null
         ptr.next = firstLeak
         firstLeak = ptr

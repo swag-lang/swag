@@ -3,51 +3,51 @@
 // Will be put just before the returned address
 struct DebugAllocatorHeader
 {
-    loc:            SourceCodeLocation
-    allocAddr:      ^void
-    allocSize:      u64
-    userSize:       u64
-    hint:           string
-    prev:           *DebugAllocatorHeader
-    next:           *DebugAllocatorHeader
-    stack:          [16] *void
-    stackCount:     u32
-    magic:          u32
-    allocId:        u32
+    loc:        SourceCodeLocation
+    allocAddr:  ^void
+    allocSize:  u64
+    userSize:   u64
+    hint:       string
+    prev:       *DebugAllocatorHeader
+    next:       *DebugAllocatorHeader
+    stack:      [16] *void
+    stackCount: u32
+    magic:      u32
+    allocId:    u32
 }
 
 // Will be put just after the returned address
 struct DebugAllocatorFooter
 {
-    magic:  u32
+    magic: u32
 }
 
 struct DebugAllocator
 {
     allocator:  IAllocator
     mutex:      MutexRW
-    firstAlloc: *DebugAllocatorHeader   // First allocated block
-    firstFree:  *DebugAllocatorHeader   // First freed block
-    lastFree:   *DebugAllocatorHeader   // Last freed block
-    sizeAlloc:  u64                     // Total allocated memory, in bytes
-    sizeFree:   u64                     // Total of free blocks in quarantine
-    countAlloc: u32                     // Number of allocated blocks
-    nextId:     u32                     // The next allocated id to assign
+    firstAlloc: *DebugAllocatorHeader // First allocated block
+    firstFree:  *DebugAllocatorHeader // First freed block
+    lastFree:   *DebugAllocatorHeader // Last freed block
+    sizeAlloc:  u64                   // Total allocated memory, in bytes
+    sizeFree:   u64                   // Total of free blocks in quarantine
+    countAlloc: u32                   // Number of allocated blocks
+    nextId:     u32                   // The next allocated id to assign
 
     // Debug/behaviour parameters
-    maxFreeSize:        u64 = 4*1024    // Maximum total size (in kbs) of free blocks in quarantine
-    breakOnAllocId:     u32             // Will @assert when the current allocation id reaches that value
-    showMaxLeaks:       u32 = 100       // Maximum number of memory leaks to show
-    captureAllocStack   = true          // For each allocation, capture stack
-    detectLeaks         = true          // Detect memory leaks if true
+    maxFreeSize:      u64 = 4 * 1024 // Maximum total size (in kbs) of free blocks in quarantine
+    breakOnAllocId:   u32            // Will @assert when the current allocation id reaches that value
+    showMaxLeaks:     u32 = 100      // Maximum number of memory leaks to show
+    captureAllocStack = true         // For each allocation, capture stack
+    detectLeaks       = true         // Detect memory leaks if true
 }
 
 impl DebugAllocator
 {
-    const MagicAlloc = 0xC0DEC0DE   // Before and after the user memory
-    const MagicFree  = 0xCAFECAFE   // Before and after the user memory
-    const AllocByte  = 0xAB         // Fill memory when allocated
-    const FreeByte   = 0xFB         // Fill memory when deleted
+    const MagicAlloc = 0xC0DEC0DE // Before and after the user memory
+    const MagicFree  = 0xCAFECAFE // Before and after the user memory
+    const AllocByte  = 0xAB       // Fill memory when allocated
+    const FreeByte   = 0xFB       // Fill memory when deleted
 
     func printDisplaySize(value: u64)
     {
@@ -91,7 +91,7 @@ impl DebugAllocator
 
     mtd checkIsFreed(ptrHeader: ^DebugAllocatorHeader)
     {
-        let ptrEnd = cast(^u8) (ptrHeader + 1)
+        let ptrEnd    = cast(^u8) (ptrHeader + 1)
         let ptrFooter = cast(*DebugAllocatorFooter) (ptrEnd + ptrHeader.userSize)
 
         if (ptrHeader.magic != MagicFree or ptrFooter.magic != MagicFree)
@@ -114,7 +114,7 @@ impl DebugAllocator
 
     mtd checkIsAllocated(ptrHeader: ^DebugAllocatorHeader, callerLoc = #callerlocation)
     {
-        let ptrEnd = cast(^u8) (ptrHeader + 1)
+        let ptrEnd    = cast(^u8) (ptrHeader + 1)
         let ptrFooter = cast(*DebugAllocatorFooter) (ptrEnd + ptrHeader.userSize)
 
         if (ptrHeader.magic != MagicAlloc and ptrHeader.magic != MagicFree) or
@@ -257,7 +257,7 @@ impl IAllocator for DebugAllocator
 
         assertIsAllocated(request.address, request.callerLoc)
 
-        let userAddr = cast(^u8) request.address
+        let userAddr  = cast(^u8) request.address
         let ptrHeader = cast(*DebugAllocatorHeader) (userAddr - @sizeof(DebugAllocatorHeader))
         let ptrFooter = cast(*DebugAllocatorFooter) (userAddr + ptrHeader.userSize)
 
@@ -277,7 +277,7 @@ impl IAllocator for DebugAllocator
         @assert(sizeAlloc >= ptrHeader.userSize)
         let userSize = ptrHeader.userSize
         sizeAlloc -= userSize
-        sizeFree  += userSize
+        sizeFree += userSize
 
         // Fill the user memory area with garbage
         @memset(userAddr, FreeByte, userSize)
@@ -360,8 +360,8 @@ impl IAllocator for DebugAllocator
 
         // In case of a reallocation, get the previous allocated user sizeAlloc
         // This will be used to fill with garbage the difference
-        var copyReq = dref request
-        var prevSize = 0'u64
+        var copyReq    = dref request
+        var prevSize   = 0'u64
         var prevHeader = cast(^DebugAllocatorHeader) request.address
         if request.mode == AllocatorMode.Realloc and request.address
         {

@@ -14,13 +14,12 @@ func __strcat(start: ^u8, max: s32, src: string)
     start[dstLen + srcLen] = 0
 }
 
-#[Discardable]
-#[Safety("", false)]
+#[Discardable, Safety("", false)]
 func __itoa(result: ^u8, value: s64)->^u8
 {
-    const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
+    const conv   = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
-    var ptr = result
+    var ptr      = result
     var orgValue = value
     loop
     {
@@ -39,26 +38,28 @@ func __itoa(result: ^u8, value: s64)->^u8
     }
 
     let retVal = ptr
-    dref ptr = 0; ptr -= 1
+    dref ptr = 0
+    ptr -= 1
 
     var ptr1 = result
     while ptr1 < ptr
     {
         let tmpChar = dref ptr
-        dref ptr  = dref ptr1; ptr -= 1
-        dref ptr1 = tmpChar; ptr1 += 1
+        dref ptr = dref ptr1
+        ptr -= 1
+        dref ptr1 = tmpChar
+        ptr1 += 1
     }
 
     return retVal
 }
 
-#[Discardable]
-#[Safety("", false)]
+#[Discardable, Safety("", false)]
 func __utoa(result: ^u8, value: u64)->^u8
 {
-    const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
+    const conv   = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
-    var ptr = result
+    var ptr      = result
     var orgValue = value
     loop
     {
@@ -71,14 +72,17 @@ func __utoa(result: ^u8, value: u64)->^u8
     }
 
     let retVal = ptr
-    dref ptr = 0; ptr -= 1
+    dref ptr = 0
+    ptr -= 1
 
     var ptr1 = result
     while ptr1 < ptr
     {
         let tmpChar = dref ptr
-        dref ptr  = dref ptr1; ptr -= 1
-        dref ptr1 = tmpChar; ptr1 += 1
+        dref ptr = dref ptr1
+        ptr -= 1
+        dref ptr1 = tmpChar
+        ptr1 += 1
     }
 
     return retVal
@@ -90,7 +94,7 @@ func __ftoa(result: ^u8, value: f64)
     var ipart = cast(s64) value
     var fpart = value - cast(f64) ipart
 
-    var n = result
+    var n     = result
     if ipart == 0
     {
         if value < 0
@@ -109,7 +113,7 @@ func __ftoa(result: ^u8, value: f64)
     n += 1
 
     const AfterFracN = 8
-    var afterPoint = AfterFracN
+    var afterPoint   = AfterFracN
     if fpart < 0 do
         fpart = -fpart
 
@@ -133,7 +137,8 @@ func __ftoa(result: ^u8, value: f64)
     }
 
     ipart = cast(s64) fpart
-    if fpart - ipart > 0.5 do ipart += 1
+    if fpart - ipart > 0.5 do
+        ipart += 1
     __itoa(n, ipart)
 }
 
@@ -166,7 +171,7 @@ func @print(params: ...)
 {
     visit it: params
     {
-        var v = it
+        var v  = it
         var ko = @kindof(v)
 
         if ko.flags & TypeInfoFlags.PointerRef
@@ -203,21 +208,36 @@ func @print(params: ...)
 
         switch ko
         {
-        case s8:        __printS64(cast(s8) v)
-        case s16:       __printS64(cast(s16) v)
-        case s32:       __printS64(cast(s32) v)
-        case s64:       __printS64(v)
-        case s64:       __printS64(cast(s64) v)
-        case u8:        __printU64(cast(u8) v)
-        case u16:       __printU64(cast(u16) v)
-        case u32:       __printU64(cast(u32) v)
-        case rune:      __printU64(cast(rune) v)
-        case u64:       __printU64(v)
-        case f32:       __printF64(cast(f32) v)
-        case f64:       __printF64(cast(f64) v)
-        case string:    __printString(cast(string) v)
-        case bool:      __printString(cast(bool) v ? "true" : "false")
-        default:        __printString("?")
+        case s8:
+            __printS64(cast(s8) v)
+        case s16:
+            __printS64(cast(s16) v)
+        case s32:
+            __printS64(cast(s32) v)
+        case s64:
+            __printS64(v)
+        case s64:
+            __printS64(cast(s64) v)
+        case u8:
+            __printU64(cast(u8) v)
+        case u16:
+            __printU64(cast(u16) v)
+        case u32:
+            __printU64(cast(u32) v)
+        case rune:
+            __printU64(cast(rune) v)
+        case u64:
+            __printU64(v)
+        case f32:
+            __printF64(cast(f32) v)
+        case f64:
+            __printF64(cast(f64) v)
+        case string:
+            __printString(cast(string) v)
+        case bool:
+            __printString(cast(bool) v ? "true" : "false")
+        default:
+            __printString("?")
         }
     }
 }

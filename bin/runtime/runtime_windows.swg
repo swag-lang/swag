@@ -7,80 +7,80 @@
 ////////////////////////////////////////////////////////////
 namespace __Win32RT
 {
-    typealias HANDLE  = *void
-    typealias DWORD   = u32
+    typealias HANDLE = *void
+    typealias DWORD = u32
     typealias SRWLOCK = *void
-    typealias USHORT  = u16
-    typealias ULONG   = u32
+    typealias USHORT = u16
+    typealias ULONG = u32
     typealias ULONG64 = u64
-    typealias CHAR    = u8
-    typealias WCHAR   = u16
-    typealias BOOL    = u8
+    typealias CHAR = u8
+    typealias WCHAR = u16
+    typealias BOOL = u8
 
-    const STD_OUTPUT_HANDLE     = cast,bit(u32) -11
-    const MB_CANCELTRYCONTINUE  = 0x00000006
-    const MB_ICONERROR          = 0x00000010
-    const IDCANCEL    = 2
-    const IDTRYAGAIN  = 10
-    const IDCONTINUE  = 11
-    const FALSE: BOOL = 0
-    const TRUE:  BOOL = 1
-    const SRWLOCK_INIT = cast(SRWLOCK) null
+    const STD_OUTPUT_HANDLE    = cast,bit(u32) -11
+    const MB_CANCELTRYCONTINUE = 0x00000006
+    const MB_ICONERROR         = 0x00000010
+    const IDCANCEL             = 2
+    const IDTRYAGAIN           = 10
+    const IDCONTINUE           = 11
+    const FALSE:               BOOL = 0
+    const TRUE:                BOOL = 1
+    const SRWLOCK_INIT         = cast(SRWLOCK) null
 
     struct SYMBOL_INFO
     {
-        SizeOfStruct:   ULONG
-        TypeIndex:      ULONG           // Type Index of symbol
-        Reserved:       [2] ULONG64
-        Index:          ULONG
-        Size:           ULONG
-        ModBase:        ULONG64         // Base Address of module comtaining this symbol
-        Flags:          ULONG
-        Value:          ULONG64         // Value of symbol, ValuePresent should be 1
-        Address:        ULONG64         // Address of symbol including base address of module
-        Register:       ULONG           // register holding value or pointer to value
-        Scope:          ULONG           // scope of the symbol
-        Tag:            ULONG           // pdb classification
-        NameLen:        ULONG           // Actual length of name
-        MaxNameLen:     ULONG
-        Name:           [1] CHAR        // Name of symbol
+        SizeOfStruct: ULONG
+        TypeIndex:    ULONG       // Type Index of symbol
+        Reserved:     [2] ULONG64
+        Index:        ULONG
+        Size:         ULONG
+        ModBase:      ULONG64     // Base Address of module comtaining this symbol
+        Flags:        ULONG
+        Value:        ULONG64     // Value of symbol, ValuePresent should be 1
+        Address:      ULONG64     // Address of symbol including base address of module
+        Register:     ULONG       // register holding value or pointer to value
+        Scope:        ULONG       // scope of the symbol
+        Tag:          ULONG       // pdb classification
+        NameLen:      ULONG       // Actual length of name
+        MaxNameLen:   ULONG
+        Name:         [1] CHAR    // Name of symbol
     }
 
     struct SYMBOL_INFOW
     {
-        SizeOfStruct:   ULONG
-        TypeIndex:      ULONG           // Type Index of symbol
-        Reserved:       [2] ULONG64
-        Index:          ULONG
-        Size:           ULONG
-        ModBase:        ULONG64         // Base Address of module comtaining this symbol
-        Flags:          ULONG
-        Value:          ULONG64         // Value of symbol, ValuePresent should be 1
-        Address:        ULONG64         // Address of symbol including base address of module
-        Register:       ULONG           // register holding value or pointer to value
-        Scope:          ULONG           // scope of the symbol
-        Tag:            ULONG           // pdb classification
-        NameLen:        ULONG           // Actual length of name
-        MaxNameLen:     ULONG
-        Name:           [1] WCHAR        // Name of symbol
+        SizeOfStruct: ULONG
+        TypeIndex:    ULONG       // Type Index of symbol
+        Reserved:     [2] ULONG64
+        Index:        ULONG
+        Size:         ULONG
+        ModBase:      ULONG64     // Base Address of module comtaining this symbol
+        Flags:        ULONG
+        Value:        ULONG64     // Value of symbol, ValuePresent should be 1
+        Address:      ULONG64     // Address of symbol including base address of module
+        Register:     ULONG       // register holding value or pointer to value
+        Scope:        ULONG       // scope of the symbol
+        Tag:          ULONG       // pdb classification
+        NameLen:      ULONG       // Actual length of name
+        MaxNameLen:   ULONG
+        Name:         [1] WCHAR   // Name of symbol
     }
 
     struct IMAGEHLP_LINE64
     {
-        SizeOfStruct:   DWORD       // set to sizeof(IMAGEHLP_LINE64)
-        Key:            *void       // internal
-        LineNumber:     DWORD       // line number in file
-        FileName:       ^CHAR       // full filename
-        Address:        ULONG64     // first instruction of line
+        SizeOfStruct: DWORD   // set to sizeof(IMAGEHLP_LINE64)
+        Key:          *void   // internal
+        LineNumber:   DWORD   // line number in file
+        FileName:     ^CHAR   // full filename
+        Address:      ULONG64 // first instruction of line
     }
 
     struct IMAGEHLP_LINEW64
     {
-        SizeOfStruct:   DWORD       // set to sizeof(IMAGEHLP_LINEW64)
-        Key:            *void       // internal
-        LineNumber:     DWORD       // line number in file
-        FileName:       ^WCHAR      // full filename
-        Address:        ULONG64     // first instruction of line
+        SizeOfStruct: DWORD   // set to sizeof(IMAGEHLP_LINEW64)
+        Key:          *void   // internal
+        LineNumber:   DWORD   // line number in file
+        FileName:     ^WCHAR  // full filename
+        Address:      ULONG64 // first instruction of line
     }
 
     #[Swag.Foreign("DbgHelp")]
@@ -255,19 +255,20 @@ func __raiseException666(message: string, loc: Swag.SourceCodeLocation, kind: Sw
 }
 
 ////////////////////////////////////////////////////////////
-func __getCommandLine()                     => __Win32RT.GetCommandLineA()
-func __loaddll(name: string)                => __Win32RT.LoadLibraryA(@dataof(name))
-func __exit()                               => __Win32RT.ExitProcess(0)
-func __tlsAlloc()                           => cast(u64) __Win32RT.TlsAlloc()
-func __tlsSetValue(id: u64, value: *void)   => __Win32RT.TlsSetValue(cast(u32) id, value)
-func __tlsGetValue(id: u64)->*void          => __Win32RT.TlsGetValue(cast(u32) id)
+func __getCommandLine() => __Win32RT.GetCommandLineA()
+func __loaddll(name: string) => __Win32RT.LoadLibraryA(@dataof(name))
+func __exit() => __Win32RT.ExitProcess(0)
+func __tlsAlloc() => cast(u64) __Win32RT.TlsAlloc()
+func __tlsSetValue(id: u64, value: *void) => __Win32RT.TlsSetValue(cast(u32) id, value)
+func __tlsGetValue(id: u64)->*void => __Win32RT.TlsGetValue(cast(u32) id)
 
 ////////////////////////////////////////////////////////////
 func __tlsGetPtr(id: u64, size: u64, init: const *void)->*void
 {
     using __Win32RT
     var ptr = TlsGetValue(cast(u32) id)
-    if ptr do return ptr
+    if ptr do
+        return ptr
     ptr = @alloc(size)
     @memcpy(ptr, init, size)
     TlsSetValue(cast(u32) id, ptr)
@@ -298,7 +299,7 @@ func __panicBox(msg, title: string)
 func __captureStack(skip: u32, where: [..] *void)->u32
 {
     using __Win32RT
-    let nb = RtlCaptureStackBackTrace(skip+1, acast @countof(where), acast @dataof(where), null)
+    let nb = RtlCaptureStackBackTrace(skip + 1, acast @countof(where), acast @dataof(where), null)
     return nb
 }
 
@@ -315,10 +316,10 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
     }
 
     const SYM_LEN_NAME = 128
-    var sym: [@sizeof(SYMBOL_INFO) + SYM_LEN_NAME * @sizeof(CHAR)] u8
-    var displacement: ULONG64
+    var sym:           [@sizeof(SYMBOL_INFO) + SYM_LEN_NAME * @sizeof(CHAR)] u8
+    var displacement:  ULONG64
 
-    let psym = cast(*SYMBOL_INFO) sym
+    let psym           = cast(*SYMBOL_INFO) sym
     psym.SizeOfStruct = @sizeof(SYMBOL_INFO)
     psym.MaxNameLen = SYM_LEN_NAME
 
@@ -330,8 +331,8 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
     loop i: where
     {
         let hasSymbol = SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], &displacement, psym)
-        let hasLine = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], acast &displacement, &line)
-        let fileName = hasLine ? @mkstring(line.FileName, @strlen(line.FileName)) : null
+        let hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], acast &displacement, &line)
+        let fileName  = hasLine ? @mkstring(line.FileName, @strlen(line.FileName)) : null
         if !hasLine and !printNoLine do
             continue
 
@@ -339,21 +340,28 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
         // For DebugAllocator leaks
         if !hasStarted and startAfter
         {
-            if !hasLine or !fileName do continue
-            if startAfter.lineStart+1 != line.LineNumber  do continue
-            if @countof(fileName) != @countof(startAfter.fileName) do continue
+            if !hasLine or !fileName do
+                continue
+            if startAfter.lineStart + 1 != line.LineNumber do
+                continue
+            if @countof(fileName) != @countof(startAfter.fileName) do
+                continue
 
             var samePath = true
             loop it: @countof(fileName)
             {
-                if fileName[it] == startAfter.fileName[it] do continue
-                if fileName[it] == `\\` and startAfter.fileName[it] == `/` do continue
-                if fileName[it] == `/` and startAfter.fileName[it] == `\\` do continue
+                if fileName[it] == startAfter.fileName[it] do
+                    continue
+                if fileName[it] == `\\` and startAfter.fileName[it] == `/` do
+                    continue
+                if fileName[it] == `/` and startAfter.fileName[it] == `\\` do
+                    continue
                 samePath = false
                 break
             }
 
-            if !samePath do continue
+            if !samePath do
+                continue
             hasStarted = true
             continue
         }
