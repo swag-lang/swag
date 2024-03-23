@@ -291,10 +291,10 @@ namespace Swag
     // Defined a global variable that needs to be dropped when exiting
     struct Gvtd
     {
-        ptr:        *void              // Pointer to the global variable memory
-        opDrop:     func(*void   )     // The 'opDrop' function to call when the process must exit
-        sizeOf:     u32                // Size of one element
-        count:      u32                // Number of elements to drop
+        ptr:        *void           // Pointer to the global variable memory
+        opDrop:     func(*void)     // The 'opDrop' function to call when the process must exit
+        sizeOf:     u32             // Size of one element
+        count:      u32             // Number of elements to drop
     }
 
     // #########################################################
@@ -424,7 +424,7 @@ namespace Swag
         errors:              [MaxErrors] ErrorValue                    // All errors
         exceptionLoc:        SourceCodeLocation                        // When an exception is raised, this is the code location
         exceptionParams:     [4] const *void                           // When an exception is raised, this are the parameters
-        panic:               func(string  , SourceCodeLocation)        // A function to call if there's a panic
+        panic:               func(string, SourceCodeLocation)          // A function to call if there's a panic
         curError:            any                                       // The current raised error returns by @err()
         errorIndex:          u32                                       // Number of errors in the array
         traceIndex:          u32                                       // Number of traces in the array
@@ -576,10 +576,10 @@ namespace Swag
     struct TypeInfoStruct
     {
         using base:      TypeInfo
-        opInit:          func(*void   )           // Pointer to the function to initialize an instance of that struct
-        opDrop:          func(*void   )           // Pointer to the function to drop an instance of that struct
-        opPostCopy:      func(*void   )           // Pointer to the function to call after a copy
-        opPostMove:      func(*void   )           // Pointer to the function to call after a move
+        opInit:          func(*void)              // Pointer to the function to initialize an instance of that struct
+        opDrop:          func(*void)              // Pointer to the function to drop an instance of that struct
+        opPostCopy:      func(*void)              // Pointer to the function to call after a copy
+        opPostMove:      func(*void)              // Pointer to the function to call after a move
         structName:      string                   // User name of the struct
         fromGeneric:     const *TypeInfo          // If it comes from a generic instantiation, this is the original generic struct
         generics:        const [..] TypeValue     // Generic parameters

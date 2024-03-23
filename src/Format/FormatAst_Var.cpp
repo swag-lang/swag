@@ -181,9 +181,12 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
     }
 
     if (maxLenType)
+    {
         maxLenType += 1;
+        maxLenType += alignTypeBanks;
+    }
 
-    concat->alignToColumn(startColumn + maxLenName + maxLenType + alignTypeBanks + options.addBlanksBeforeAlignedLastLineComments);
+    concat->alignToColumn(startColumn + maxLenName + maxLenType + options.addBlanksBeforeAlignedLastLineComments);
     beautifyAfter(context, varNode);
 
     return true;
