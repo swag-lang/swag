@@ -23,6 +23,12 @@ using FormatFlags = Flags<uint32_t>;
 constexpr FormatFlags FORMAT_FOR_EXPORT   = 0x00000001;
 constexpr FormatFlags FORMAT_FOR_BEAUTIFY = 0x00000002;
 
+struct FormatOptions
+{
+    uint32_t alignLastLineCommentsAddBlanks = 4;
+    uint32_t alignStructVarTypeAddBlanks       = 4;
+};
+
 struct FormatContext
 {
     uint32_t indent           = 0;
@@ -132,6 +138,7 @@ struct FormatAst
 
     FormatConcat  inConcat;
     FormatConcat  tmpConcat;
+    FormatOptions options;
     FormatConcat* concat   = nullptr;
     FormatFlags   fmtFlags = 0;
 };

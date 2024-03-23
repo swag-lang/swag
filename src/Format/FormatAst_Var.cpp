@@ -42,8 +42,11 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
         nodes.push_back(child);
     }
 
-    if (nodes.empty())
+    if (nodes.size() <= 1)
+    {
+        processed = 0;
         return true;
+    }
 
     uint32_t maxLenName = 0;
     uint32_t maxLenType = 0;
@@ -105,6 +108,8 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
     const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
     varNode->inheritLastFormatAfter(nullptr);
 
+    const uint32_t alignTypeBanks = node->hasAstFlag(AST_STRUCT_MEMBER) ? options.alignStructVarTypeAddBlanks : 0;
+
     if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
     {
         if (!varNode->multiNames.empty())
@@ -142,7 +147,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
                 if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
                 {
                     concat->addChar(':');
-                    concat->alignToColumn(startColumn + maxLenName);
+                    concat->alignToColumn(startColumn + maxLenName + alignTypeBanks);
                     concat->addBlank();
                 }
 
@@ -167,7 +172,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
 
     if (varNode->assignment)
     {
-        concat->alignToColumn(startColumn + maxLenName);
+        concat->alignToColumn(startColumn + maxLenName + alignTypeBanks);
         concat->addBlank();
         concat->addChar('=');
         if (!varNode->assignment->is(AstNodeKind::Move) && !varNode->assignment->is(AstNodeKind::NoDrop))
@@ -178,7 +183,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
     if (maxLenType)
         maxLenType += 1;
 
-    concat->alignToColumn(startColumn + maxLenName + maxLenType);
+    concat->alignToColumn(startColumn + maxLenName + maxLenType + alignTypeBanks + options.alignLastLineCommentsAddBlanks);
     beautifyAfter(context, varNode);
 
     return true;

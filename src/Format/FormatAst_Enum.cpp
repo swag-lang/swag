@@ -42,8 +42,11 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
         nodes.push_back(child);
     }
 
-    if (nodes.empty())
+    if (nodes.size() <= 1)
+    {
+        processed = 0;
         return true;
+    }
 
     uint32_t maxLenName  = 0;
     uint32_t maxLenValue = 0;
@@ -80,19 +83,7 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
 bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t maxLenName, uint32_t maxLenValue)
 {
     const auto enumNode = castAst<AstEnumValue>(node, AstNodeKind::EnumValue);
-
-    AstNode* scan = enumNode;
-    while (scan)
-    {
-        const auto to = scan->getTokenParse();
-        if (to && !to->comments.after.empty())
-        {
-            node->inheritFormatAfter(nullptr, scan);
-            break;
-        }
-
-        scan = scan->lastChild();
-    }
+    enumNode->inheritLastFormatAfter(nullptr);
 
     if (enumNode->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
     {
@@ -106,7 +97,7 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
     beautifyBefore(context, node);
     const auto startColumn = concat->column;
     concat->addString(node->token.text);
-    concat->alignToColumn(startColumn + maxLenName);
+    concat->alignToColumn(startColumn + maxLenName + options.alignStructVarTypeAddBlanks);
 
     if (node->childCount())
     {
@@ -118,7 +109,7 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
 
     if (maxLenValue)
         maxLenValue += 3;
-    concat->alignToColumn(startColumn + maxLenName + maxLenValue);
+    concat->alignToColumn(startColumn + maxLenName + maxLenValue + options.alignStructVarTypeAddBlanks + options.alignLastLineCommentsAddBlanks);
     beautifyAfter(context, node);
     return true;
 }

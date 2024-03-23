@@ -2,20 +2,20 @@ namespace Swag
 {
     enum AttributeUsage : u32
     {
-        Enum              = 0x00000001 // Attribute can be used on an enum
-        EnumValue         = 0x00000002 // Attribute can be used on an enum value
-        StructVariable    = 0x00000004 // Attribute can be used on an struct member
-        GlobalVariable    = 0x00000008 // Attribute can be used on a global variable
-        Variable          = 0x00000010 // Attribute can be used on any variable
-        Struct            = 0x00000020 // Attribute can be used on a struct
-        Function          = 0x00000040 // Attribute can be used on a function
-        FunctionParameter = 0x00000080 // Attribute can be used on a struct parameter
-        File              = 0x00000100 // Attribute can be used with '#global'
-        Constant          = 0x00000200 // Attribute can be used on a constant
+        Enum                  = 0x00000001     // Attribute can be used on an enum
+        EnumValue             = 0x00000002     // Attribute can be used on an enum value
+        StructVariable        = 0x00000004     // Attribute can be used on an struct member
+        GlobalVariable        = 0x00000008     // Attribute can be used on a global variable
+        Variable              = 0x00000010     // Attribute can be used on any variable
+        Struct                = 0x00000020     // Attribute can be used on a struct
+        Function              = 0x00000040     // Attribute can be used on a function
+        FunctionParameter     = 0x00000080     // Attribute can be used on a struct parameter
+        File                  = 0x00000100     // Attribute can be used with '#global'
+        Constant              = 0x00000200     // Attribute can be used on a constant
 
-        Multi             = 0x01000000 // Attribute can be used more than once
-        Gen               = 0x02000000
-        All               = 0x04000000
+        Multi                 = 0x01000000     // Attribute can be used more than once
+        Gen                   = 0x02000000
+        All                   = 0x04000000
     }
 
     // #########################################################
@@ -171,9 +171,9 @@ namespace Swag
     // Warning behavior for [[Warn]] attribute
     enum WarnLevel : u8
     {
-        Enable  // Enable the given warning
-        Disable // Disable the given warning
-        Error   // Force the given warning to be raised as an error
+        Enable          // Enable the given warning
+        Disable         // Disable the given warning
+        Error           // Force the given warning to be raised as an error
     }
 
     // Change the behavior of a given warning or list of warnings.
@@ -224,8 +224,8 @@ namespace Swag
 
     namespace U8
     {
-        const Min = 0'u8    // Min 'u8' value
-        const Max = 0xFF'u8 // Max 'u8' value
+        const Min = 0'u8        // Min 'u8' value
+        const Max = 0xFF'u8     // Max 'u8' value
     }
 
     namespace U16
@@ -277,24 +277,24 @@ namespace Swag
     // Defined some information about a loaded module
     struct Module
     {
-        name:  string                     // Name of the module
-        types: const [..] const *TypeInfo // All exported types
+        name:      string                         // Name of the module
+        types:     const [..] const *TypeInfo     // All exported types
     }
 
     // Defined some information about the current process
     struct ProcessInfos
     {
-        modules: const [..] Module // The list of all modules
-        args:    string            // The application arguments, as returned by [[@args]]
+        modules:     const [..] Module     // The list of all modules
+        args:        string                // The application arguments, as returned by [[@args]]
     }
 
     // Defined a global variable that needs to be dropped when exiting
     struct Gvtd
     {
-        ptr:    *void       // Pointer to the global variable memory
-        opDrop: func(*void) // The 'opDrop' function to call when the process must exit
-        sizeOf: u32         // Size of one element
-        count:  u32         // Number of elements to drop
+        ptr:        *void              // Pointer to the global variable memory
+        opDrop:     func(*void   )     // The 'opDrop' function to call when the process must exit
+        sizeOf:     u32                // Size of one element
+        count:      u32                // Number of elements to drop
     }
 
     // #########################################################
@@ -304,11 +304,11 @@ namespace Swag
     // The 'mode' of an [[AllocatorRequest]].
     enum AllocatorMode
     {
-        Alloc             // Allocate a block of memory
-        Free              // Free a block of memory
-        Realloc           // Reallocate a block of memory
-        FreeAll           // Free all memory allocated with the underlying allocator (ff possible).
-        AssertIsAllocated // The allocator must assert if the address is not currently allocated (if possible).
+        Alloc                     // Allocate a block of memory
+        Free                      // Free a block of memory
+        Realloc                   // Reallocate a block of memory
+        FreeAll                   // Free all memory allocated with the underlying allocator (ff possible).
+        AssertIsAllocated         // The allocator must assert if the address is not currently allocated (if possible).
     }
 
     // Represents the request for a given allocator.
@@ -332,13 +332,13 @@ namespace Swag
     // See [[IAllocator]]
     struct AllocatorRequest
     {
-        callerLoc: SourceCodeLocation    // The caller code, to help tracking leaks. Optional.
-        hint:      string                // A hint message, to help tracking leaks. Optional.
-        address:   *void                 // The returned address or the address to deal with.
-        size:      u64                   // The requested size or the size to deal with.
-        oldSize:   u64                   // When reallocating.
-        mode       = AllocatorMode.Alloc // Alloc, free, reallocate...
-        alignment: u32                   // Alignment constraint.
+        callerLoc:     SourceCodeLocation        // The caller code, to help tracking leaks. Optional.
+        hint:          string                    // A hint message, to help tracking leaks. Optional.
+        address:       *void                     // The returned address or the address to deal with.
+        size:          u64                       // The requested size or the size to deal with.
+        oldSize:       u64                       // When reallocating.
+        mode           = AllocatorMode.Alloc     // Alloc, free, reallocate...
+        alignment:     u32                       // Alignment constraint.
     }
 
     interface IAllocator
@@ -348,14 +348,14 @@ namespace Swag
 
     struct ScratchAllocator
     {
-        allocator: IAllocator
-        block:     ^u8
-        capacity:  u64
-        used:      u64
-        maxUsed:   u64
-        firstLeak: *void
-        totalLeak: u64
-        maxLeak:   u64
+        allocator:     IAllocator
+        block:         ^u8
+        capacity:      u64
+        used:          u64
+        maxUsed:       u64
+        firstLeak:     *void
+        totalLeak:     u64
+        maxLeak:       u64
     }
 
     // #########################################################
@@ -365,10 +365,10 @@ namespace Swag
     #[Swag.EnumFlags]
     enum ContextFlags : u64
     {
-        None                   = 0x00000000_00000000
-        Test                   = 0x00000000_00000001
-        ByteCode               = 0x00000000_00000002
-        PostCopyResetAllocator = 0x00000000_00000004
+        None                       = 0x00000000_00000000
+        Test                       = 0x00000000_00000001
+        ByteCode                   = 0x00000000_00000002
+        PostCopyResetAllocator     = 0x00000000_00000004
     }
 
     enum ExceptionKind
@@ -378,8 +378,8 @@ namespace Swag
         Warning
     }
 
-    const MaxErrors = 32 // Maximum nested errors
-    const MaxTraces = 32 // Maximum error traces
+    const MaxErrors = 32     // Maximum nested errors
+    const MaxTraces = 32     // Maximum error traces
 
     // This is the base of all errors
     struct BaseError
@@ -390,16 +390,16 @@ namespace Swag
     // An error raised by the system
     struct SystemError
     {
-        using base: Swag.BaseError
-        errorID:    u64
+        using base:     Swag.BaseError
+        errorID:        u64
     }
 
     // Store a 'throw' error information
     struct ErrorValue
     {
-        value:          any // Error value (or null)
-        pushUsedAlloc:  u32 // Internal
-        pushTraceIndex: u32 // Internal
+        value:              any     // Error value (or null)
+        pushUsedAlloc:      u32     // Internal
+        pushTraceIndex:     u32     // Internal
     }
 
     // Thread context as returned by [@context].
@@ -407,28 +407,28 @@ namespace Swag
     {
         // Must stay first, in that order, for backend generation
 
-        allocator: IAllocator          // The current allocator interface
-        flags      = ContextFlags.None // Context flags
+        allocator:     IAllocator              // The current allocator interface
+        flags          = ContextFlags.None     // Context flags
 
         // Other fields, can be in any order
 
-        tempAllocator:   ScratchAllocator                      // A temporary allocator for the user
-        errorAllocator:  ScratchAllocator                      // A temporary allocator to store the error values
-        debugAllocator:  *void                                 // If defined, the used debug allocator
-        runtimeFlags:    RuntimeFlags                          // As initialized by the runtime
-        user0:           u64                                   // For user usage
-        user1:           u64                                   // For user usage
-        user2:           u64                                   // For user usage
-        user3:           u64                                   // For user usage
-        traces:          [MaxTraces] const *SourceCodeLocation // Stack trace, in case of errors
-        errors:          [MaxErrors] ErrorValue                // All errors
-        exceptionLoc:    SourceCodeLocation                    // When an exception is raised, this is the code location
-        exceptionParams: [4] const *void                       // When an exception is raised, this are the parameters
-        panic:           func(string, SourceCodeLocation)      // A function to call if there's a panic
-        curError:        any                                   // The current raised error returns by @err()
-        errorIndex:      u32                                   // Number of errors in the array
-        traceIndex:      u32                                   // Number of traces in the array
-        hasError:        u32                                   // <> 0 if an error is raised
+        tempAllocator:       ScratchAllocator                          // A temporary allocator for the user
+        errorAllocator:      ScratchAllocator                          // A temporary allocator to store the error values
+        debugAllocator:      *void                                     // If defined, the used debug allocator
+        runtimeFlags:        RuntimeFlags                              // As initialized by the runtime
+        user0:               u64                                       // For user usage
+        user1:               u64                                       // For user usage
+        user2:               u64                                       // For user usage
+        user3:               u64                                       // For user usage
+        traces:              [MaxTraces] const *SourceCodeLocation     // Stack trace, in case of errors
+        errors:              [MaxErrors] ErrorValue                    // All errors
+        exceptionLoc:        SourceCodeLocation                        // When an exception is raised, this is the code location
+        exceptionParams:     [4] const *void                           // When an exception is raised, this are the parameters
+        panic:               func(string  , SourceCodeLocation)        // A function to call if there's a panic
+        curError:            any                                       // The current raised error returns by @err()
+        errorIndex:          u32                                       // Number of errors in the array
+        traceIndex:          u32                                       // Number of traces in the array
+        hasError:            u32                                       // <> 0 if an error is raised
     }
 
     // #########################################################
@@ -438,33 +438,33 @@ namespace Swag
     #[EnumFlags]
     enum TypeCmpFlags
     {
-        Strict  = 0
-        CastAny = 1
+        Strict      = 0
+        CastAny     = 1
     }
 
     // The kind of the typeinfo.
     enum TypeInfoKind : u8
     {
         Invalid
-        Native        // The typeinfo is a [[TypeInfoNative]]. See [[TypeInfoNativeKind]] for the underlying type.
-        Namespace     // The typeinfo is a [[TypeInfoNamespace]]
-        Enum          // The typeinfo is a [[TypeInfoEnum]]
-        Func          // The typeinfo is a [[TypeInfoFunc]]
-        Lambda        // The typeinfo is a [[TypeInfoFunc]], but this is a lambda or a closure
-        Pointer       // The typeinfo is a [[TypeInfoPointer]]
-        Array         // The typeinfo is a [[TypeInfoArray]]
-        Slice         // The typeinfo is a [[TypeInfoSlice]]
-        TypeListTuple // The typeinfo is a [[TypeInfoStruct]]
-        TypeListArray // The typeinfo is a [[TypeInfoArray]]
-        Variadic      // The typeinfo is a [[TypeInfoVariadic]]
-        TypedVariadic // The typeinfo is a [[TypeInfoVariadic]]
-        CVariadic     // The typeinfo is a [[TypeInfoVariadic]]
-        Struct        // The typeinfo is a [[TypeInfoStruct]]
-        Generic       // The typeinfo is a [[TypeInfoGeneric]]
-        Alias         // The typeinfo is a [[TypeInfoAlias]]
-        Code          // The typeinfo is a [[TypeInfo]]
-        Interface     // The typeinfo is a [[TypeInfoStruct]], but this is an interface
-        Attribute     // The typeinfo is a [[TypeInfoFunc]], but this is an attribute
+        Native                // The typeinfo is a [[TypeInfoNative]]. See [[TypeInfoNativeKind]] for the underlying type.
+        Namespace             // The typeinfo is a [[TypeInfoNamespace]]
+        Enum                  // The typeinfo is a [[TypeInfoEnum]]
+        Func                  // The typeinfo is a [[TypeInfoFunc]]
+        Lambda                // The typeinfo is a [[TypeInfoFunc]], but this is a lambda or a closure
+        Pointer               // The typeinfo is a [[TypeInfoPointer]]
+        Array                 // The typeinfo is a [[TypeInfoArray]]
+        Slice                 // The typeinfo is a [[TypeInfoSlice]]
+        TypeListTuple         // The typeinfo is a [[TypeInfoStruct]]
+        TypeListArray         // The typeinfo is a [[TypeInfoArray]]
+        Variadic              // The typeinfo is a [[TypeInfoVariadic]]
+        TypedVariadic         // The typeinfo is a [[TypeInfoVariadic]]
+        CVariadic             // The typeinfo is a [[TypeInfoVariadic]]
+        Struct                // The typeinfo is a [[TypeInfoStruct]]
+        Generic               // The typeinfo is a [[TypeInfoGeneric]]
+        Alias                 // The typeinfo is a [[TypeInfoAlias]]
+        Code                  // The typeinfo is a [[TypeInfo]]
+        Interface             // The typeinfo is a [[TypeInfoStruct]], but this is an interface
+        Attribute             // The typeinfo is a [[TypeInfoFunc]], but this is an attribute
     }
 
     // The native type if the type is... native.
@@ -494,143 +494,143 @@ namespace Swag
     #[Swag.EnumFlags]
     enum TypeInfoFlags : u32
     {
-        Zero              = 0x00000000
-        PointerTypeInfo   = 0x00000001 // This is a pointer to a [[TypeInfo]] struct
-        Integer           = 0x00000002 // This is a native integer
-        Float             = 0x00000004 // This is a native float
-        Unsigned          = 0x00000008 // This is a native unsigned integer
-        HasPostCopy       = 0x00000010 // This is a struct with a 'opPostCopy'
-        HasPostMove       = 0x00000020 // This is a struct with a 'opPostMove'
-        HasDrop           = 0x00000040 // This is a struct with a 'opDrop'
-        Strict            = 0x00000080 // This is a typealias with the Swag.Strict attribute
-        CanCopy           = 0x00000100 // This is a struct that can be copied
-        Tuple             = 0x00000200 // This is a tuple
-        CString           = 0x00000400 // This is a 'cstring'
-        Generic           = 0x00000800 // This is a generic type
-        PointerRef        = 0x00001000 // This is a reference
-        PointerMoveRef    = 0x00002000 // This is a move reference
-        PointerArithmetic = 0x00004000 // This is a pointer to multiple values
-        Character         = 0x00008000 // This is a 32 bits character
-        Const             = 0x00010000 // This is const
+        Zero                  = 0x00000000
+        PointerTypeInfo       = 0x00000001     // This is a pointer to a [[TypeInfo]] struct
+        Integer               = 0x00000002     // This is a native integer
+        Float                 = 0x00000004     // This is a native float
+        Unsigned              = 0x00000008     // This is a native unsigned integer
+        HasPostCopy           = 0x00000010     // This is a struct with a 'opPostCopy'
+        HasPostMove           = 0x00000020     // This is a struct with a 'opPostMove'
+        HasDrop               = 0x00000040     // This is a struct with a 'opDrop'
+        Strict                = 0x00000080     // This is a typealias with the Swag.Strict attribute
+        CanCopy               = 0x00000100     // This is a struct that can be copied
+        Tuple                 = 0x00000200     // This is a tuple
+        CString               = 0x00000400     // This is a 'cstring'
+        Generic               = 0x00000800     // This is a generic type
+        PointerRef            = 0x00001000     // This is a reference
+        PointerMoveRef        = 0x00002000     // This is a move reference
+        PointerArithmetic     = 0x00004000     // This is a pointer to multiple values
+        Character             = 0x00008000     // This is a 32 bits character
+        Const                 = 0x00010000     // This is const
     }
 
     struct Interface
     {
-        obj:    *void        // Pointer to the associated struct instance
-        itable: const ^^void // Pointer to the virtual table
+        obj:        *void            // Pointer to the associated struct instance
+        itable:     const ^^void     // Pointer to the virtual table
     }
 
     struct AttributeParam
     {
-        name:  string // Name of the attribute parameter
-        value: any    // Optional default value
+        name:      string     // Name of the attribute parameter
+        value:     any        // Optional default value
     }
 
     struct Attribute
     {
-        type:   const *TypeInfo
-        params: const [..] AttributeParam // Attribute parameters
+        type:       const *TypeInfo
+        params:     const [..] AttributeParam     // Attribute parameters
     }
 
     // Represents a value, like a function parameter or an enum value
     struct TypeValue
     {
-        name:        string               // Name of the value
-        pointedType: const *TypeInfo      // Type of the value
-        value:       const *void          // Pointer to the constant value
-        attributes:  const [..] Attribute // Associated attributes
-        offset:      u32                  // Offset, in bytes
-        crc32:       u32                  // Unique crc32
+        name:            string                   // Name of the value
+        pointedType:     const *TypeInfo          // Type of the value
+        value:           const *void              // Pointer to the constant value
+        attributes:      const [..] Attribute     // Associated attributes
+        offset:          u32                      // Offset, in bytes
+        crc32:           u32                      // Unique crc32
     }
 
     // Will be available for all types
     struct TypeInfo
     {
-        fullname: string                 // The full scoped name of the type
-        name:     string                 // The unscoped name
-        sizeof:   u32                    // Size in bytes
-        crc32:    u32                    // A unique CRC to identify the type
-        flags     = TypeInfoFlags.Zero   // Some additional flags
-        kind      = TypeInfoKind.Invalid // The kind of the type
-        padding:  [3] u8
+        fullname:     string                     // The full scoped name of the type
+        name:         string                     // The unscoped name
+        sizeof:       u32                        // Size in bytes
+        crc32:        u32                        // A unique CRC to identify the type
+        flags         = TypeInfoFlags.Zero       // Some additional flags
+        kind          = TypeInfoKind.Invalid     // The kind of the type
+        padding:      [3] u8
     }
 
     struct TypeInfoNative
     {
-        using base: TypeInfo
-        nativeKind: TypeInfoNativeKind = TypeInfoNativeKind.Void
+        using base:     TypeInfo
+        nativeKind:     TypeInfoNativeKind = TypeInfoNativeKind.Void
     }
 
     struct TypeInfoPointer
     {
-        using base:  TypeInfo
-        pointedType: const *TypeInfo // The pointed type
+        using base:      TypeInfo
+        pointedType:     const *TypeInfo     // The pointed type
     }
 
     struct TypeInfoAlias
     {
-        using base: TypeInfo
-        rawType:    const *TypeInfo // The underlying type
+        using base:     TypeInfo
+        rawType:        const *TypeInfo     // The underlying type
     }
 
     struct TypeInfoStruct
     {
-        using base:  TypeInfo
-        opInit:      func(*void)          // Pointer to the function to initialize an instance of that struct
-        opDrop:      func(*void)          // Pointer to the function to drop an instance of that struct
-        opPostCopy:  func(*void)          // Pointer to the function to call after a copy
-        opPostMove:  func(*void)          // Pointer to the function to call after a move
-        structName:  string               // User name of the struct
-        fromGeneric: const *TypeInfo      // If it comes from a generic instantiation, this is the original generic struct
-        generics:    const [..] TypeValue // Generic parameters
-        fields:      const [..] TypeValue // All the fields
-        methods:     const [..] TypeValue // All the methods, if exported
-        interfaces:  const [..] TypeValue // All the interfaces
-        attributes:  const [..] Attribute // All the attributes
+        using base:      TypeInfo
+        opInit:          func(*void   )           // Pointer to the function to initialize an instance of that struct
+        opDrop:          func(*void   )           // Pointer to the function to drop an instance of that struct
+        opPostCopy:      func(*void   )           // Pointer to the function to call after a copy
+        opPostMove:      func(*void   )           // Pointer to the function to call after a move
+        structName:      string                   // User name of the struct
+        fromGeneric:     const *TypeInfo          // If it comes from a generic instantiation, this is the original generic struct
+        generics:        const [..] TypeValue     // Generic parameters
+        fields:          const [..] TypeValue     // All the fields
+        methods:         const [..] TypeValue     // All the methods, if exported
+        interfaces:      const [..] TypeValue     // All the interfaces
+        attributes:      const [..] Attribute     // All the attributes
     }
 
     struct TypeInfoFunc
     {
-        using base: TypeInfo
-        generics:   const [..] TypeValue // Generic parameters
-        parameters: const [..] TypeValue // Parameters
-        returnType: const *TypeInfo      // The return type, or 'null'
-        attributes: const [..] Attribute // All the attributes
+        using base:     TypeInfo
+        generics:       const [..] TypeValue     // Generic parameters
+        parameters:     const [..] TypeValue     // Parameters
+        returnType:     const *TypeInfo          // The return type, or 'null'
+        attributes:     const [..] Attribute     // All the attributes
     }
 
     struct TypeInfoEnum
     {
-        using base: TypeInfo
-        values:     const [..] TypeValue // All the values
-        rawType:    const *TypeInfo      // The underlying enum type
-        attributes: const [..] Attribute // All the attributes
+        using base:     TypeInfo
+        values:         const [..] TypeValue     // All the values
+        rawType:        const *TypeInfo          // The underlying enum type
+        attributes:     const [..] Attribute     // All the attributes
     }
 
     struct TypeInfoArray
     {
-        using base:  TypeInfo
-        pointedType: const *TypeInfo // The underlying type
-        finalType:   const *TypeInfo // If this is an array with multiple dimensions, this will be the final type
-        count:       u64             // Number of elements in the array
-        totalCount:  u64             // The total number of elements in case this has multiple dimensions
+        using base:      TypeInfo
+        pointedType:     const *TypeInfo     // The underlying type
+        finalType:       const *TypeInfo     // If this is an array with multiple dimensions, this will be the final type
+        count:           u64                 // Number of elements in the array
+        totalCount:      u64                 // The total number of elements in case this has multiple dimensions
     }
 
     struct TypeInfoSlice
     {
-        using base:  TypeInfo
-        pointedType: const *TypeInfo // The underlying type
+        using base:      TypeInfo
+        pointedType:     const *TypeInfo     // The underlying type
     }
 
     struct TypeInfoVariadic
     {
-        using base: TypeInfo
-        rawType:    const *TypeInfo // The underlying type
+        using base:     TypeInfo
+        rawType:        const *TypeInfo     // The underlying type
     }
 
     struct TypeInfoGeneric
     {
-        using base: TypeInfo
-        rawType:    const *TypeInfo
+        using base:     TypeInfo
+        rawType:        const *TypeInfo
     }
 
     struct TypeInfoNamespace
@@ -645,8 +645,8 @@ namespace Swag
     #[EnumFlags]
     enum RuntimeFlags : u64
     {
-        Zero         = 0
-        FromCompiler = 1
+        Zero             = 0
+        FromCompiler     = 1
     }
 
     // Target processor
@@ -658,17 +658,17 @@ namespace Swag
     // The 'OS' to target when generating native code
     enum TargetOs
     {
-        Windows // Windows 10/11
-        Linux   // Linux (**unsupported**)
-        MaxOSX  // MacOS (**unsupported**)
+        Windows         // Windows 10/11
+        Linux           // Linux (**unsupported**)
+        MaxOSX          // MacOS (**unsupported**)
     }
 
     // The type of backend to use
     enum Backend
     {
-        ByteCode // Bytecode
-        SCBE     // SCBE backend (SwagCustomBackEnd)
-        LLVM     // LLVM backend
+        ByteCode         // Bytecode
+        SCBE             // SCBE backend (SwagCustomBackEnd)
+        LLVM             // LLVM backend
     }
 
     const SafetyBoundCheck  = 0x0001
@@ -687,14 +687,13 @@ namespace Swag
     // 'LLVM' backend specific options
     struct BuildCfgBackendLLVM
     {
-        outputIR: bool = false // Output IR in a file
-
-        fpMathFma:          bool = false // true in 'release'
-        fpMathNoNaN:        bool = false // true in 'release'
-        fpMathNoInf:        bool = false // true in 'release'
-        fpMathNoSignedZero: bool = false // true in 'release'
-        fpMathUnsafe:       bool = false
-        fpMathApproxFunc:   bool = false
+        outputIR:               bool = false     // Output IR in a file
+        fpMathFma:              bool = false     // true in 'release'
+        fpMathNoNaN:            bool = false     // true in 'release'
+        fpMathNoInf:            bool = false     // true in 'release'
+        fpMathNoSignedZero:     bool = false     // true in 'release'
+        fpMathUnsafe:           bool = false
+        fpMathApproxFunc:       bool = false
     }
 
     // 'SCBE' backend specific options
@@ -705,10 +704,10 @@ namespace Swag
     // The kind of native backend to generate.
     enum BuildCfgBackendKind
     {
-        None       // Nothing
-        Export     // The module is an 'export' module which does not have its own code.
-        Executable // The module needs to be compiled to an executable application.
-        Library    // The module needs to be compiled as a library.
+        None               // Nothing
+        Export             // The module is an 'export' module which does not have its own code.
+        Executable         // The module needs to be compiled to an executable application.
+        Library            // The module needs to be compiled as a library.
     }
 
     // The native backend sub category.
@@ -724,94 +723,94 @@ namespace Swag
     // Only 'LLVM' backend uses this, as the 'X86_64' backend does not have an optimization pass.
     enum BuildCfgBackendOptim
     {
-        O0 // No optimization
-        O1 // Optimizations level 1
-        O2 // Optimizations level 2
-        O3 // Optimizations level 3
-        Os // Optim for size level 1
-        Oz // Optim for size level 2
+        O0         // No optimization
+        O1         // Optimizations level 1
+        O2         // Optimizations level 2
+        O3         // Optimizations level 3
+        Os         // Optim for size level 1
+        Oz         // Optim for size level 2
     }
 
     enum BuildCfgDocKind
     {
-        None     // Do not generate documentation for that module
-        Api      // Generate 'api like' documentation
-        Examples // Generate 'examples like' documentation
-        Pages    // Generate one page per file
+        None             // Do not generate documentation for that module
+        Api              // Generate 'api like' documentation
+        Examples         // Generate 'examples like' documentation
+        Pages            // Generate one page per file
     }
 
     // This contains all options when generating documentation.
     struct BuildCfgGenDoc
     {
-        kind                 = BuildCfgDocKind.None // The kind of documentation to generate
-        outputName:          string                 // The name of the output file (without extension)
-        outputExtension:     string                 // The output extension
-        titleToc:            string                 // Title for the table of content
-        titleContent:        string                 // Title for the main document content
-        css:                 string                 // The 'css' file to include in generated documentations
-        icon:                string                 // The icon path of the page
-        startHead:           string                 // Content to insert at the start of the <head> section
-        endHead:             string                 // Content to insert at the end of the <head> section
-        startBody:           string                 // Content to insert at the start of the <body> section
-        endBody:             string                 // Content to insert at the end of the <body> section
-        morePages:           string                 // Additional external file pages to process (separated with ';')
-        quoteIconNote:       string                 // The icon for the note blockquote
-        quoteIconTip:        string                 // The icon for the tip blockquote
-        quoteIconWarning:    string                 // The icon for the warning blockquote
-        quoteIconAttention:  string                 // The icon for the attention blockquote
-        quoteIconExample:    string                 // The icon for the example blockquote
-        quoteTitleNote:      string                 // The title for the note blockquote
-        quoteTitleTip:       string                 // The title for the tip blockquote
-        quoteTitleWarning:   string                 // The title for the warning blockquote
-        quoteTitleAttention: string                 // The title for the attention blockquote
-        quoteTitleExample:   string                 // The title for the example blockquote
-        syntaxDefaultColor:  u32 = 0x00222222       // Code syntax default color (if not colorized)
-        syntaxColorLum:      f32 = 0.5              // Code syntax color luminosity in range ]0, 1]
-        hasFontAwesome       = true                 // Generate a reference to the FontAwesome script (icons)
-        hasStyleSection      = true                 // Generate a default <style> section
-        hasSwagWatermark     = true                 // Generate a swag watermark at the bottom of each page
+        kind                     = BuildCfgDocKind.None     // The kind of documentation to generate
+        outputName:              string                     // The name of the output file (without extension)
+        outputExtension:         string                     // The output extension
+        titleToc:                string                     // Title for the table of content
+        titleContent:            string                     // Title for the main document content
+        css:                     string                     // The 'css' file to include in generated documentations
+        icon:                    string                     // The icon path of the page
+        startHead:               string                     // Content to insert at the start of the <head> section
+        endHead:                 string                     // Content to insert at the end of the <head> section
+        startBody:               string                     // Content to insert at the start of the <body> section
+        endBody:                 string                     // Content to insert at the end of the <body> section
+        morePages:               string                     // Additional external file pages to process (separated with ';')
+        quoteIconNote:           string                     // The icon for the note blockquote
+        quoteIconTip:            string                     // The icon for the tip blockquote
+        quoteIconWarning:        string                     // The icon for the warning blockquote
+        quoteIconAttention:      string                     // The icon for the attention blockquote
+        quoteIconExample:        string                     // The icon for the example blockquote
+        quoteTitleNote:          string                     // The title for the note blockquote
+        quoteTitleTip:           string                     // The title for the tip blockquote
+        quoteTitleWarning:       string                     // The title for the warning blockquote
+        quoteTitleAttention:     string                     // The title for the attention blockquote
+        quoteTitleExample:       string                     // The title for the example blockquote
+        syntaxDefaultColor:      u32 = 0x00222222           // Code syntax default color (if not colorized)
+        syntaxColorLum:          f32 = 0.5                  // Code syntax color luminosity in range ]0, 1]
+        hasFontAwesome           = true                     // Generate a reference to the FontAwesome script (icons)
+        hasStyleSection          = true                     // Generate a default <style> section
+        hasSwagWatermark         = true                     // Generate a swag watermark at the bottom of each page
     }
 
     // The current module build configuration.
     // See [[ICompiler]]
     struct BuildCfg
     {
-        moduleVersion:   u32 = 0 // The module version
-        moduleRevision:  u32 = 0 // The module revision
-        moduleBuildNum:  u32 = 0 // The module build value
-        moduleNamespace: string  // The namespace name of the module
-        embeddedImports  = false // Module should embed all its dependencies
+        moduleVersion:       u32 = 0     // The module version
+        moduleRevision:      u32 = 0     // The module revision
+        moduleBuildNum:      u32 = 0     // The module build value
+        moduleNamespace:     string      // The namespace name of the module
+        embeddedImports      = false     // Module should embed all its dependencies
 
-        tempAllocatorCapacity      = 4'u32 * 1024 * 1024 // Default capacity of the 'temp' allocator (in bytes)
-        errorAllocatorCapacity     = 16'u32 * 1024       // Default capacity of the 'error' allocator (in bytes)
-        safetyGuards:              u16 = SafetyAll       // Activate specific safety checks
-        debugAllocator             = true                // Use Swag.DebugAllocator by default
-        debugAllocatorCaptureStack = true                // Capture the call stack for each allocation
-        debugAllocatorLeaks        = true                // Detect memory leaks
-        errorStackTrace            = true                // Add stack trace in case a 'throw' is raised
+        tempAllocatorCapacity          = 4'u32 * 1024 * 1024     // Default capacity of the 'temp' allocator (in bytes)
+        errorAllocatorCapacity         = 16'u32 * 1024           // Default capacity of the 'error' allocator (in bytes)
+        safetyGuards:                  u16 = SafetyAll           // Activate specific safety checks
+        debugAllocator                 = true                    // Use Swag.DebugAllocator by default
+        debugAllocatorCaptureStack     = true                    // Capture the call stack for each allocation
+        debugAllocatorLeaks            = true                    // Detect memory leaks
+        errorStackTrace                = true                    // Add stack trace in case a 'throw' is raised
 
-        warnAsErrors:        string // Force some warnings to be treated as errors. Format is "WrnXXXX|WrnXXXX..."
-        warnAsWarning:       string // Override 'warnAsErrors', restoring warnings as warnings
-        warnAsDisabled:      string // Disable some specific warnings
-        warnDefaultDisabled: bool   // All warnings are disabled, except those specified above
-        warnDefaultErrors:   bool   // All warnings are treated as errors, except those specified above
+        warnAsErrors:            string     // Force some warnings to be treated as errors. Format is "WrnXXXX|WrnXXXX..."
+        warnAsWarning:           string     // Override 'warnAsErrors', restoring warnings as warnings
+        warnAsDisabled:          string     // Disable some specific warnings
+        warnDefaultDisabled:     bool       // All warnings are disabled, except those specified above
+        warnDefaultErrors:       bool       // All warnings are treated as errors, except those specified above
 
-        byteCodeOptimizeLevel = 1    // Optimization level of bytecode [0, 1 or 2]
-        byteCodeEmitAssume    = true // 'assume' will panic if an error is raised
-        byteCodeInline        = true // Enable bytecode inlining with #[Swag.Inline]
-        byteCodeAutoInline    = true // Automatic inlining of some other functions
+        byteCodeOptimizeLevel     = 1        // Optimization level of bytecode [0, 1 or 2]
+        byteCodeEmitAssume        = true     // 'assume' will panic if an error is raised
+        byteCodeInline            = true     // Enable bytecode inlining with #[Swag.Inline]
+        byteCodeAutoInline        = true     // Automatic inlining of some other functions
 
-        backendKind              = BuildCfgBackendKind.Executable // Backend type (executable, dynamic lib...)
-        backendSubKind           = BuildCfgBackendSubKind.Console // Backend sub kind
-        backendDebugInformations = false                          // Output debug information if 'true'
-        backendDebugInline       = false                          // Generate specific line information for inline code
-        backendOptimize          = BuildCfgBackendOptim.O0        // Backend optimization level
-        backendNumCU             = 0'u32
+        backendKind                  = BuildCfgBackendKind.Executable     // Backend type (executable, dynamic lib...)
+        backendSubKind               = BuildCfgBackendSubKind.Console     // Backend sub kind
+        backendDebugInformations     = false                              // Output debug information if 'true'
+        backendDebugInline           = false                              // Generate specific line information for inline code
+        backendOptimize              = BuildCfgBackendOptim.O0            // Backend optimization level
+        backendNumCU                 = 0'u32
 
         linkerArgs: string // Additional linker arguments
 
-        backendLLVM: BuildCfgBackendLLVM // Specific LLVM options
-        backendSCBE: BuildCfgBackendSCBE // Specific SCBE options
+        backendLLVM:     BuildCfgBackendLLVM     // Specific LLVM options
+        backendSCBE:     BuildCfgBackendSCBE     // Specific SCBE options
 
         repoPath: string // Repository access path to the module
 
@@ -825,13 +824,13 @@ namespace Swag
     // The kind of message in [[CompilerMessage]]
     enum CompilerMsgKind : u32
     {
-        PassAfterSemantic     // Called once the program semantic has been done
-        PassBeforeRunByteCode // Called just before running bytecode
-        PassBeforeOutput      // Called just before generating the native code
-        PassAllDone           // Called when everything has be done
-        SemFunctions          // Called for each function in the module
-        SemTypes              // Called for each type in the module
-        SemGlobals            // Called for each global variable in the module
+        PassAfterSemantic             // Called once the program semantic has been done
+        PassBeforeRunByteCode         // Called just before running bytecode
+        PassBeforeOutput              // Called just before generating the native code
+        PassAllDone                   // Called when everything has be done
+        SemFunctions                  // Called for each function in the module
+        SemTypes                      // Called for each type in the module
+        SemGlobals                    // Called for each global variable in the module
         AttributeGen
     }
 
@@ -841,15 +840,15 @@ namespace Swag
     #[EnumFlags]
     enum CompilerMsgMask : u64
     {
-        PassAfterSemantic = 1 << cast(u32) CompilerMsgKind.PassAfterSemantic
-        PassBeforeRun     = 1 << cast(u32) CompilerMsgKind.PassBeforeRunByteCode
-        PassBeforeOutput  = 1 << cast(u32) CompilerMsgKind.PassBeforeOutput
-        PassAllDone       = 1 << cast(u32) CompilerMsgKind.PassAllDone
-        SemFunctions      = 1 << cast(u32) CompilerMsgKind.SemFunctions
-        SemTypes          = 1 << cast(u32) CompilerMsgKind.SemTypes
-        SemGlobals        = 1 << cast(u32) CompilerMsgKind.SemGlobals
-        AttributeGen      = 1 << cast(u32) CompilerMsgKind.AttributeGen
-        All               = 0xFFFFFFFF_FFFFFFFF
+        PassAfterSemantic     = 1 << cast(u32) CompilerMsgKind.PassAfterSemantic
+        PassBeforeRun         = 1 << cast(u32) CompilerMsgKind.PassBeforeRunByteCode
+        PassBeforeOutput      = 1 << cast(u32) CompilerMsgKind.PassBeforeOutput
+        PassAllDone           = 1 << cast(u32) CompilerMsgKind.PassAllDone
+        SemFunctions          = 1 << cast(u32) CompilerMsgKind.SemFunctions
+        SemTypes              = 1 << cast(u32) CompilerMsgKind.SemTypes
+        SemGlobals            = 1 << cast(u32) CompilerMsgKind.SemGlobals
+        AttributeGen          = 1 << cast(u32) CompilerMsgKind.AttributeGen
+        All                   = 0xFFFFFFFF_FFFFFFFF
     }
 
     // A message received in a '#message' function.
@@ -858,10 +857,10 @@ namespace Swag
     // interface returned by [[@compiler]]
     struct CompilerMessage
     {
-        moduleName: string                      // Name of the module for which the message is sent.
-        name:       string                      // Depends on 'kind'
-        type:       const *TypeInfo             // Depends on 'kind'
-        kind:       CompilerMsgKind = undefined // Kind of the message
+        moduleName:     string                          // Name of the module for which the message is sent.
+        name:           string                          // Depends on 'kind'
+        type:           const *TypeInfo                 // Depends on 'kind'
+        kind:           CompilerMsgKind = undefined     // Kind of the message
     }
 
     // This is the interface to communicate with the compiler.
@@ -879,11 +878,11 @@ namespace Swag
     // This is typically what will be returned by '#location' or '#callerlocation'.
     struct SourceCodeLocation
     {
-        fileName:  string // Full path name of the source file
-        lineStart: u32    // Start line (starts at 0)
-        colStart:  u32    // Start column
-        lineEnd:   u32    // End line
-        colEnd:    u32    // End column
+        fileName:      string     // Full path name of the source file
+        lineStart:     u32        // Start line (starts at 0)
+        colStart:      u32        // Start column
+        lineEnd:       u32        // End line
+        colEnd:        u32        // End column
     }
 
     struct CVaList

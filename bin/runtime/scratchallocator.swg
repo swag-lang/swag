@@ -4,9 +4,9 @@ impl ScratchAllocator
 {
     struct LeakHeader
     {
-        prev: *LeakHeader
-        next: *LeakHeader
-        size: u64
+        prev:     *LeakHeader
+        next:     *LeakHeader
+        size:     u64
     }
 
     // Adapt the value depending on the requested alignment
