@@ -20,10 +20,11 @@ struct TypeInfoFuncAttr;
 enum class ScopeKind : uint8_t;
 using FormatFlags = Flags<uint32_t>;
 
-struct FormatOptions
+struct FormatContext
 {
-    bool outputComments   = false;
-    bool outputBlankLines = false;
+    uint32_t indent           = 0;
+    bool     outputComments   = false;
+    bool     outputBlankLines = false;
 
     bool     alignVarDecl                           = false;
     bool     alignEnumValue                         = false;
@@ -39,13 +40,6 @@ struct FormatOptions
         addBlanksBeforeAlignedLastLineComments = 4;
         alignStructVarTypeAddBlanks            = 4;
     }
-};
-
-struct FormatContext
-{
-    uint32_t indent           = 0;
-    bool     outputComments   = true;
-    bool     outputBlankLines = true;
 };
 
 struct FormatAst
@@ -150,20 +144,19 @@ struct FormatAst
 
     FormatConcat  inConcat;
     FormatConcat  tmpConcat;
-    FormatOptions options;
     FormatConcat* concat = nullptr;
 };
 
-struct PushFormatTmp
+struct PushConcatFormatTmp
 {
-    explicit PushFormatTmp(FormatAst* ast)
+    explicit PushConcatFormatTmp(FormatAst* ast)
     {
         savedAst         = ast;
         savedConcat      = savedAst->concat;
         savedAst->concat = &savedAst->tmpConcat;
     }
 
-    ~PushFormatTmp()
+    ~PushConcatFormatTmp()
     {
         savedAst->concat = savedConcat;
     }

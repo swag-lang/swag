@@ -8,7 +8,7 @@
 bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
     processed = 0;
-    if (!options.alignEnumValue)
+    if (!context.alignEnumValue)
         return true;
 
     VectorNative<AstNode*> nodes;
@@ -52,8 +52,8 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
     uint32_t maxLenValue = 0;
 
     {
-        PushFormatTmp fmt{this};
-        FormatContext cxt{context};
+        PushConcatFormatTmp fmt{this};
+        FormatContext       cxt{context};
         cxt.outputComments   = false;
         cxt.outputBlankLines = false;
 
@@ -109,7 +109,7 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
 
     if (maxLenValue)
         maxLenValue += 3;
-    concat->alignToColumn(startColumn + maxLenName + maxLenValue + options.addBlanksBeforeAlignedLastLineComments);
+    concat->alignToColumn(startColumn + maxLenName + maxLenValue + context.addBlanksBeforeAlignedLastLineComments);
     beautifyAfter(context, node);
     return true;
 }

@@ -10,14 +10,6 @@
 #include "Threading/ThreadManager.h"
 #include "Wmf/Workspace.h"
 
-namespace
-{
-    void getFormatOptionsForFile(const Path&, FormatOptions& options)
-    {
-        options.setDefaultBeautify();
-    }
-}
-
 void Workspace::formatCommand()
 {
     if (g_CommandLine.fileName.empty())
@@ -59,7 +51,6 @@ void Workspace::formatCommand()
         }
 
         FormatJob job;
-        getFormatOptionsForFile(filePath, job.options);
         job.fileName = filePath;
         job.execute();
     }
@@ -73,7 +64,6 @@ void Workspace::formatCommand()
             if (n.extension() != ".swg" && n.extension() != ".swgs")
                 return;
             const auto job = Allocator::alloc<FormatJob>();
-            getFormatOptionsForFile(fileName, job->options);
             job->fileName = fileName;
             g_ThreadMgr.addJob(job);
         });

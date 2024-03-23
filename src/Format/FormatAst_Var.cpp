@@ -8,7 +8,7 @@
 bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
     processed = 0;
-    if (!options.alignVarDecl)
+    if (!context.alignVarDecl)
         return true;
 
     VectorNative<AstNode*> nodes;
@@ -52,8 +52,8 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
     uint32_t maxLenType = 0;
 
     {
-        PushFormatTmp fmt{this};
-        FormatContext cxt{context};
+        PushConcatFormatTmp fmt{this};
+        FormatContext       cxt{context};
         cxt.outputComments   = false;
         cxt.outputBlankLines = false;
 
@@ -108,7 +108,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
     const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
     varNode->inheritLastFormatAfter(nullptr);
 
-    const uint32_t alignTypeBanks = node->hasAstFlag(AST_STRUCT_MEMBER) ? options.alignStructVarTypeAddBlanks : 0;
+    const uint32_t alignTypeBanks = node->hasAstFlag(AST_STRUCT_MEMBER) ? context.alignStructVarTypeAddBlanks : 0;
 
     if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
     {
@@ -186,7 +186,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
         maxLenType += alignTypeBanks;
     }
 
-    concat->alignToColumn(startColumn + maxLenName + maxLenType + options.addBlanksBeforeAlignedLastLineComments);
+    concat->alignToColumn(startColumn + maxLenName + maxLenType + context.addBlanksBeforeAlignedLastLineComments);
     beautifyAfter(context, varNode);
 
     return true;

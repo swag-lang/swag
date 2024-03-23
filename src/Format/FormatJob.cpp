@@ -45,7 +45,7 @@ bool FormatJob::writeResult(const Path& fileName, const Utf8& content)
     return true;
 }
 
-bool FormatJob::getFormattedCode(const FormatOptions& options, const Path& fileName, Utf8& result)
+bool FormatJob::getFormattedCode(FormatContext& context, const Path& fileName, Utf8& result)
 {
     Module     tmpModule;
     SourceFile tmpFile;
@@ -68,11 +68,11 @@ bool FormatJob::getFormattedCode(const FormatOptions& options, const Path& fileN
     {
         if (!g_CommandLine.verboseErrors)
             g_SilentError++;
-        SyntaxContext context;
+        SyntaxContext synContext;
         Parser        parser;
         if (g_CommandLine.verboseStages)
             g_Log.messageVerbose(form("[%s] -- generating AST", fileName.c_str()));
-        parser.setup(&context, &tmpModule, &tmpFile, PARSER_TRACK_FORMAT);
+        parser.setup(&synContext, &tmpModule, &tmpFile, PARSER_TRACK_FORMAT);
         const bool ok = parser.generateAst();
         if (!g_CommandLine.verboseErrors)
             g_SilentError--;
@@ -96,9 +96,6 @@ bool FormatJob::getFormattedCode(const FormatOptions& options, const Path& fileN
 
     // Format
     FormatAst fmt;
-    fmt.options = options;
-
-    FormatContext context;
     fmt.outputNode(context, tmpFile.astRoot);
 
     // Get result
@@ -108,10 +105,12 @@ bool FormatJob::getFormattedCode(const FormatOptions& options, const Path& fileN
 
 JobResult FormatJob::execute()
 {
-    Utf8 result;
+    Utf8          result;
+    FormatContext context;
+    context.setDefaultBeautify();
 
     // Do it !
-    if (!getFormattedCode(options, fileName, result))
+    if (!getFormattedCode(context, fileName, result))
         return JobResult::ReleaseJob;
 
     // Write file

@@ -34,11 +34,11 @@ JobResult SyntaxJob::execute()
 #ifdef SWAG_DEV_MODE
     if (g_CommandLine.forceFormat)
     {
-        FormatOptions options;
-        options.setDefaultBeautify();
+        FormatContext fmtContext;
+        fmtContext.setDefaultBeautify();
 
         Utf8 result;
-        if (FormatJob::getFormattedCode(options, sourceFile->path, result))
+        if (FormatJob::getFormattedCode(fmtContext, sourceFile->path, result))
         {
             sourceFile->buffer            = result.buffer;
             sourceFile->bufferSize        = result.count;
