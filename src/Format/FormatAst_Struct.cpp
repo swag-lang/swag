@@ -18,7 +18,7 @@ bool FormatAst::outputStructDeclContent(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputTupleDeclContent(FormatContext& context, AstNode* node)
+bool FormatAst::outputTupleDeclContent(const FormatContext& context, AstNode* node)
 {
     concat->addChar('{');
     outputCommaChildren(context, node);
@@ -50,23 +50,51 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
 
     concat->addIndent(context.indent);
     if (node->is(AstNodeKind::InterfaceDecl))
+    {
         CONCAT_FIXED_STR(concat, "interface");
+    }
     else
     {
         SWAG_ASSERT(node->is(AstNodeKind::StructDecl));
-        if (const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl); structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
-            CONCAT_FIXED_STR(concat, "union");
-        else
-            CONCAT_FIXED_STR(concat, "struct");
+        if (node->hasSpecFlag(AstStruct::SPEC_FLAG_SPECIFIED_TYPE) || !node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))
+        {
+            if (const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl); structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
+                CONCAT_FIXED_STR(concat, "union");
+            else
+                CONCAT_FIXED_STR(concat, "struct");
+        }
     }
 
     if (node->genericParameters && !node->genericParameters->hasAstFlag(AST_GENERATED))
+    {
         SWAG_CHECK(outputGenericParameters(context, node->genericParameters));
+    }
 
     if (!node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))
     {
         concat->addBlank();
         concat->addString(node->token.text);
+    }
+    else
+    {
+        bool sameLine = true;
+        for (const auto s : node->content->children)
+        {
+            if (const auto parse = s->getTokenParse())
+            {
+                if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE | TOKEN_PARSE_EOL_AFTER))
+                {
+                    sameLine = false;
+                    break;
+                }
+            }
+        }
+
+        if (sameLine)
+        {
+            SWAG_CHECK(outputTupleDeclContent(context, node->content));
+            return true;
+        }
     }
 
     concat->addEol();

@@ -73,16 +73,19 @@ bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t s
     return true;
 }
 
-bool FormatAst::outputCommaChildren(FormatContext& context, AstNode* node, uint32_t start)
+bool FormatAst::outputCommaChildren(const FormatContext& context, AstNode* node, uint32_t start)
 {
     if (!node)
         return true;
+
+    FormatContext cxt{context};
+    cxt.alignStructVarTypeAddBlanks = 0;
 
     bool first = true;
     for (uint32_t i = start; i < node->childCount(); i++)
     {
         const auto it    = node->children[i];
-        const auto child = convertNode(context, it);
+        const auto child = convertNode(cxt, it);
         if (!child)
             continue;
 
@@ -92,7 +95,7 @@ bool FormatAst::outputCommaChildren(FormatContext& context, AstNode* node, uint3
             concat->addBlank();
         }
 
-        SWAG_CHECK(outputNode(context, child));
+        SWAG_CHECK(outputNode(cxt, child));
         first = false;
     }
 

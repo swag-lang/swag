@@ -62,7 +62,7 @@ struct FormatAst
 
     static AstNode* convertNode(FormatContext& context, AstNode* node);
     auto            outputChildren(FormatContext& context, AstNode* node, uint32_t start = 0) -> bool;
-    bool            outputCommaChildren(FormatContext& context, AstNode* node, uint32_t start = 0);
+    bool            outputCommaChildren(const FormatContext& context, AstNode* node, uint32_t start = 0);
     bool            outputStatement(FormatContext& context, AstNode* node);
     bool            outputDoStatement(FormatContext& context, AstNode* node);
 
@@ -81,17 +81,17 @@ struct FormatAst
     bool outputFuncDecl(FormatContext& context, AstFuncDecl* node);
     bool outputAttrUse(FormatContext& context, AstNode* node, bool& hasSomething);
     bool outputAttrUse(FormatContext& context, AstAttrUse* node);
-    bool outputFuncCallParams(FormatContext& context, AstNode* node);
+    bool outputFuncCallParams(const FormatContext& context, AstNode* node);
     bool outputInit(FormatContext& context, AstNode* node);
     bool outputDropCopyMove(FormatContext& context, AstNode* node);
     bool outputTypeLambda(FormatContext& context, AstNode* node);
-    bool outputFuncDeclParameters(FormatContext& context, AstNode* parameters, bool isMethod);
+    bool outputFuncDeclParameters(const FormatContext& context, AstNode* parameters, bool isMethod);
     bool outputFuncReturnType(FormatContext& context, const AstFuncDecl* funcNode);
     bool outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const AstNode* validIf);
     bool outputGenericParameters(FormatContext& context, AstNode* node);
     bool outputAttributesUsage(const FormatContext& context, const TypeInfoFuncAttr* typeFunc) const;
     bool outputAttributes(FormatContext& context, const TypeInfo* typeInfo, const AttributeList& attributes);
-    bool outputAttributes(FormatContext& context, AstNode* node, TypeInfo* typeInfo);
+    bool outputAttributes(FormatContext& context, const AstNode* node, TypeInfo* typeInfo);
     bool outputAttributesGlobalUsing(const FormatContext& context, const AstNode* node) const;
     bool outputCompilerSpecialValue(FormatContext& context, AstNode* node) const;
     bool outputCompilerIf(FormatContext& context, const Utf8& name, AstNode* node);
@@ -100,7 +100,7 @@ struct FormatAst
     bool outputCompilerCode(FormatContext& context, AstNode* node);
     bool outputCompilerGlobal(FormatContext& context, const AstNode* node);
     bool outputCompilerMixin(FormatContext& context, AstNode* node);
-    bool outputExpressionList(FormatContext& context, AstNode* node);
+    bool outputExpressionList(const FormatContext& context, AstNode* node);
     bool outputLiteral(FormatContext& context, AstNode* node);
     bool outputLiteral(FormatContext& context, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
     bool outputChildrenVar(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
@@ -108,7 +108,7 @@ struct FormatAst
     bool outputVarHeader(FormatContext& context, AstNode* node);
     bool outputVar(FormatContext& context, AstNode* node, uint32_t maxLenName = 0, uint32_t maxLenType = 0);
     bool outputStructDeclContent(FormatContext& context, AstNode* node);
-    bool outputTupleDeclContent(FormatContext& context, AstNode* node);
+    bool outputTupleDeclContent(const FormatContext& context, AstNode* node);
     bool outputStructDecl(FormatContext& context, AstStruct* node);
     bool outputTypeTuple(FormatContext& context, TypeInfo* typeInfo);
     bool outputTypeExpression(FormatContext& context, AstNode* node);

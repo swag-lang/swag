@@ -114,7 +114,7 @@ struct Parser
     void        registerSubDecl(AstNode* subDecl);
     static void setForceTakeAddress(AstNode* node);
 
-    bool doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags exprFlags, bool isUnion);
+    bool doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags exprFlags, bool typeSpecified, bool isUnion);
     bool doCompilerScopeBreakable(AstNode* parent, AstNode** result);
     bool doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result);
     bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);

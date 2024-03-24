@@ -86,7 +86,7 @@ bool FormatAst::outputLiteral(FormatContext& context, AstNode* node, TypeInfo* t
     return true;
 }
 
-bool FormatAst::outputExpressionList(FormatContext& context, AstNode* node)
+bool FormatAst::outputExpressionList(const FormatContext& context, AstNode* node)
 {
     const auto exprNode = castAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
     if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))

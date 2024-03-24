@@ -323,7 +323,7 @@ bool Parser::doLambdaClosureType(AstTypeLambda* node, bool inTypeVarDecl)
     return true;
 }
 
-bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags exprFlags, bool isUnion)
+bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags exprFlags, bool typeSpecified, bool isUnion)
 {
     const auto structNode = Ast::newStructDecl(this, parent);
     structNode->addAstFlag(AST_INTERNAL | AST_GENERATED | AST_GENERATED_EXCEPT_EXPORT);
@@ -331,6 +331,9 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags expr
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;
     structNode->addSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS);
+
+    if (typeSpecified)
+        structNode->addSpecFlag(AstStruct::SPEC_FLAG_SPECIFIED_TYPE);
     if (isUnion)
         structNode->addSpecFlag(AstStruct::SPEC_FLAG_UNION);
     if (exprFlags.has(EXPR_FLAG_IN_GENERIC_PARAMS))
@@ -433,16 +436,16 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* /*parent*/
 
         case TokenId::KwdStruct:
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, exprFlags, false));
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, exprFlags, true, false));
             return true;
 
         case TokenId::KwdUnion:
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, exprFlags, true));
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, exprFlags, true, true));
             return true;
 
         case TokenId::SymLeftCurly:
-            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, exprFlags, false));
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, exprFlags, false, false));
             return true;
 
         case TokenId::KwdFunc:

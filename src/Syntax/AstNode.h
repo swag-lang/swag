@@ -969,10 +969,11 @@ struct AstExpressionList : AstNode
 
 struct AstStruct : AstNode
 {
-    static constexpr SpecFlags SPEC_FLAG_HAS_USING     = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_UNION         = 0x0002;
-    static constexpr SpecFlags SPEC_FLAG_ANONYMOUS     = 0x0004;
-    static constexpr SpecFlags SPEC_FLAG_GENERIC_PARAM = 0x0008;
+    static constexpr SpecFlags SPEC_FLAG_HAS_USING      = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_UNION          = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_ANONYMOUS      = 0x0004;
+    static constexpr SpecFlags SPEC_FLAG_GENERIC_PARAM  = 0x0008;
+    static constexpr SpecFlags SPEC_FLAG_SPECIFIED_TYPE = 0x0010;
 
     ~        AstStruct();
     AstNode* clone(CloneContext& context);

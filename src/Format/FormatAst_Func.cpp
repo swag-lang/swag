@@ -5,7 +5,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
-bool FormatAst::outputFuncDeclParameters(FormatContext& context, AstNode* parameters, bool isMethod)
+bool FormatAst::outputFuncDeclParameters(const FormatContext& context, AstNode* parameters, bool isMethod)
 {
     if (!parameters)
     {
@@ -308,7 +308,7 @@ bool FormatAst::outputLambdaExpression(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputFuncCallParams(FormatContext& context, AstNode* node)
+bool FormatAst::outputFuncCallParams(const FormatContext& context, AstNode* node)
 {
     const auto funcCallParams = castAst<AstFuncCallParams>(node, AstNodeKind::FuncCallParams);
 

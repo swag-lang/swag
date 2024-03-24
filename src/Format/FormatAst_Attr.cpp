@@ -296,7 +296,7 @@ bool FormatAst::outputAttributesGlobalUsing(const FormatContext& context, const 
     return true;
 }
 
-bool FormatAst::outputAttributes(FormatContext& context, AstNode* node, TypeInfo* typeInfo)
+bool FormatAst::outputAttributes(FormatContext& context, const AstNode* node, TypeInfo* typeInfo)
 {
     switch (node->kind)
     {
