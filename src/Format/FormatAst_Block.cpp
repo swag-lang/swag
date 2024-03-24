@@ -274,7 +274,7 @@ bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t s
         if (child->kind == AstNodeKind::AffectOp && child->token.text == "=")
         {
             uint32_t processed = 0;
-            SWAG_CHECK(outputChildrenAffectOp(context, node, i, processed));
+            SWAG_CHECK(outputChildrenAffectEqual(context, node, i, processed));
             if (processed)
             {
                 i += processed - 1;
@@ -314,6 +314,63 @@ bool FormatAst::outputCommaChildren(const FormatContext& context, AstNode* node,
 
         SWAG_CHECK(outputNode(cxt, child));
         first = false;
+    }
+
+    return true;
+}
+
+bool FormatAst::collectChildrenToAlign(FormatContext&                       context,
+                                       CollectFlags                         flags,
+                                       AstNode*                             node,
+                                       uint32_t                             start,
+                                       VectorNative<AstNode*>&              nodes,
+                                       uint32_t&                            processed,
+                                       const std::function<bool(AstNode*)>& stopFn)
+{
+    nodes.clear();
+    processed = 0;
+
+    for (uint32_t i = start; i < node->childCount(); i++)
+    {
+        const auto it    = node->children[i];
+        const auto child = convertNode(context, it);
+        if (!child)
+        {
+            processed++;
+            continue;
+        }
+
+        if (stopFn(child))
+            break;
+
+        if (!nodes.empty())
+        {
+            if (const auto parse = getTokenParse(child))
+            {
+                if (flags.has(STOP_CMT_BEFORE))
+                {
+                    if (!parse->comments.before.empty())
+                        break;
+                    if (!parse->comments.justBefore.empty())
+                        break;
+                }
+
+                if (flags.has(STOP_EMPTY_LINE_BEFORE))
+                {
+                    if (parse->flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
+                        break;
+                }
+            }
+        }
+
+        processed++;
+        nodes.push_back(child);
+    }
+
+    if (nodes.size() <= 1)
+    {
+        processed = 0;
+        return false;
     }
 
     return true;

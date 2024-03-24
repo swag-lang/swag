@@ -20,7 +20,11 @@ struct TypeInfoEnum;
 struct TypeInfoFuncAttr;
 
 enum class ScopeKind : uint8_t;
-using FormatFlags = Flags<uint32_t>;
+using FormatFlags  = Flags<uint32_t>;
+using CollectFlags = Flags<uint32_t>;
+
+constexpr CollectFlags STOP_CMT_BEFORE        = 0x00000001;
+constexpr CollectFlags STOP_EMPTY_LINE_BEFORE = 0x00000002;
 
 struct FormatContext
 {
@@ -30,6 +34,7 @@ struct FormatContext
 
     bool     alignVarDecl                           = false;
     bool     alignEnumValue                         = false;
+    bool     alignAffectEqual                       = false;
     uint32_t addBlanksBeforeAlignedLastLineComments = 0;
     uint32_t alignStructVarTypeAddBlanks            = 0;
 
@@ -39,6 +44,7 @@ struct FormatContext
         outputBlankLines                       = true;
         alignVarDecl                           = true;
         alignEnumValue                         = true;
+        alignAffectEqual                       = true;
         addBlanksBeforeAlignedLastLineComments = 4;
         alignStructVarTypeAddBlanks            = 4;
     }
@@ -76,6 +82,7 @@ struct FormatAst
     bool            outputCommaChildren(const FormatContext& context, AstNode* node, uint32_t start = 0);
     bool            outputStatement(FormatContext& context, AstNode* node);
     bool            outputDoStatement(FormatContext& context, AstNode* node);
+    static bool     collectChildrenToAlign(FormatContext& context, CollectFlags flags, AstNode* node, uint32_t start, VectorNative<AstNode*>& nodes, uint32_t& processed, const std::function<bool(AstNode*)>& stopFn);
 
     void beautifyComment(const FormatContext& context, Vector<TokenComment>& comments) const;
     void beautifyBefore(const FormatContext& context, AstNode* node) const;
@@ -145,8 +152,8 @@ struct FormatAst
     bool outputIdentifierRef(FormatContext& context, AstNode* node);
     bool outputArrayPointerSlicing(FormatContext& context, AstNode* node);
     bool outputArrayPointerIndex(FormatContext& context, AstNode* node);
-    bool outputChildrenAffectOp(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
-    bool outputAffectOp(FormatContext& context, const AstNode* node, uint32_t maxLenName = 0, uint32_t maxLenValue = 0);
+    bool outputChildrenAffectEqual(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
+    bool outputAffectOp(FormatContext& context, AstNode* node, uint32_t maxLenName = 0);
     bool outputFactorOp(FormatContext& context, const AstNode* node);
     bool outputBinaryOp(FormatContext& context, const AstNode* node);
     bool outputNullConditionalExpression(FormatContext& context, const AstNode* node);

@@ -12,41 +12,12 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
         return true;
 
     VectorNative<AstNode*> nodes;
-    for (uint32_t i = start; i < node->childCount(); i++)
-    {
-        const auto it    = node->children[i];
-        const auto child = convertNode(context, it);
-        if (!child)
-        {
-            processed++;
-            continue;
-        }
-
-        if (child->kind != AstNodeKind::VarDecl && child->kind != AstNodeKind::ConstDecl)
-            break;
-
-        if (!nodes.empty())
-        {
-            if (const auto parse = getTokenParse(child))
-            {
-                if (!parse->comments.before.empty())
-                    break;
-                if (!parse->comments.justBefore.empty())
-                    break;
-                if (parse->flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
-                    break;
-            }
-        }
-
-        processed++;
-        nodes.push_back(child);
-    }
-
-    if (nodes.size() <= 1)
-    {
-        processed = 0;
+    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* node) {
+            if (node->kind != AstNodeKind::VarDecl && node->kind != AstNodeKind::ConstDecl)
+                return true;
+            return false;
+        }))
         return true;
-    }
 
     uint32_t maxLenName = 0;
     uint32_t maxLenType = 0;

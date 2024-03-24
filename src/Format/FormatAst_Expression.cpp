@@ -54,51 +54,21 @@ bool FormatAst::outputArrayPointerIndex(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputChildrenAffectOp(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
+bool FormatAst::outputChildrenAffectEqual(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
     processed = 0;
-    if (!context.alignEnumValue)
+    if (!context.alignAffectEqual)
         return true;
 
     VectorNative<AstNode*> nodes;
-    for (uint32_t i = start; i < node->childCount(); i++)
-    {
-        const auto it    = node->children[i];
-        const auto child = convertNode(context, it);
-        if (!child)
-        {
-            processed++;
-            continue;
-        }
-
-        if (child->kind != AstNodeKind::AffectOp || child->token.text != "=")
-            break;
-
-        if (!nodes.empty())
-        {
-            if (const auto parse = getTokenParse(child->firstChild()))
-            {
-                if (!parse->comments.before.empty())
-                    break;
-                if (!parse->comments.justBefore.empty())
-                    break;
-                if (parse->flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
-                    break;
-            }
-        }
-
-        processed++;
-        nodes.push_back(child);
-    }
-
-    if (nodes.size() <= 1)
-    {
-        processed = 0;
+    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* node) {
+            if (node->kind != AstNodeKind::AffectOp || node->token.text != "=")
+                return true;
+            return false;
+        }))
         return true;
-    }
 
-    uint32_t maxLenName  = 0;
-    uint32_t maxLenValue = 0;
+    uint32_t maxLenName = 0;
 
     {
         PushConcatFormatTmp fmt{this};
@@ -111,25 +81,22 @@ bool FormatAst::outputChildrenAffectOp(FormatContext& context, AstNode* node, ui
             tmpConcat.clear();
             SWAG_CHECK(outputNode(cxt, child->firstChild()));
             maxLenName = max(maxLenName, tmpConcat.length());
-
-            tmpConcat.clear();
-            SWAG_CHECK(outputNode(cxt, child->secondChild()));
-            maxLenValue = max(maxLenValue, tmpConcat.length());
         }
     }
 
     for (const auto child : nodes)
     {
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputAffectOp(context, child, maxLenName, maxLenValue));
+        SWAG_CHECK(outputAffectOp(context, child, maxLenName));
         concat->addEol();
     }
 
     return true;
 }
 
-bool FormatAst::outputAffectOp(FormatContext& context, const AstNode* node, uint32_t maxLenName, uint32_t maxLenValue)
+bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t maxLenName)
 {
+    beautifyBefore(context, node);
     const auto startColumn = concat->column;
     SWAG_CHECK(outputNode(context, node->firstChild()));
     concat->alignToColumn(startColumn + maxLenName);

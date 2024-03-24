@@ -1591,14 +1591,14 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
     {
         SpecFlags      opFlags     = 0;
         AttributeFlags opAttrFlags = 0;
-        auto           savedtoken  = tokenParse;
+        auto           savedToken  = tokenParse;
         SWAG_CHECK(eatToken());
 
         // Modifiers
         ModifierFlags mdfFlags = 0;
-        if (savedtoken.token.isNot(TokenId::SymEqual))
+        if (savedToken.token.isNot(TokenId::SymEqual))
         {
-            SWAG_CHECK(doModifiers(savedtoken.token, savedtoken.token.id, mdfFlags));
+            SWAG_CHECK(doModifiers(savedToken.token, savedToken.token.id, mdfFlags));
         }
 
         if (mdfFlags.has(MODIFIER_OVERFLOW))
@@ -1611,19 +1611,20 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         // like in a, b, c = 0
         if (leftNode->is(AstNodeKind::MultiIdentifier))
         {
-            SWAG_CHECK(doMultiIdentifierAffect(parent, result, leftNode, opFlags, opAttrFlags, savedtoken));
+            SWAG_CHECK(doMultiIdentifierAffect(parent, result, leftNode, opFlags, opAttrFlags, savedToken));
         }
 
         // Tuple unpacking
         else if (leftNode->is(AstNodeKind::MultiIdentifierTuple))
         {
-            SWAG_CHECK(doTupleUnpacking(parent, result, leftNode, opFlags, opAttrFlags, savedtoken));
+            SWAG_CHECK(doTupleUnpacking(parent, result, leftNode, opFlags, opAttrFlags, savedToken));
         }
 
         // One normal simple affectation
         else
         {
-            SWAG_CHECK(doSingleIdentifierAffect(parent, result, leftNode, opFlags, opAttrFlags, savedtoken));
+            SWAG_CHECK(doSingleIdentifierAffect(parent, result, leftNode, opFlags, opAttrFlags, savedToken));
+            FormatAst::inheritFormatBefore(this, *result, leftNode);
         }
     }
     else
