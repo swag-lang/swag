@@ -139,7 +139,7 @@ var __sysAlloc: SystemAllocator
 // Make a build configuration copy
 const __buildCfg = #run dref @compiler().getBuildCfg()
 
-func @rtflags() => @getcontext().runtimeFlags
+func @rtflags()  => @getcontext().runtimeFlags
 func @dbgalloc() => cast(*DebugAllocator) @getcontext().debugAllocator
 func @sysalloc() => &__sysAlloc
 

@@ -255,12 +255,12 @@ func __raiseException666(message: string, loc: Swag.SourceCodeLocation, kind: Sw
 }
 
 ////////////////////////////////////////////////////////////
-func __getCommandLine() => __Win32RT.GetCommandLineA()
-func __loaddll(name: string) => __Win32RT.LoadLibraryA(@dataof(name))
-func __exit() => __Win32RT.ExitProcess(0)
-func __tlsAlloc() => cast(u64) __Win32RT.TlsAlloc()
+func __getCommandLine()                   => __Win32RT.GetCommandLineA()
+func __loaddll(name: string)              => __Win32RT.LoadLibraryA(@dataof(name))
+func __exit()                             => __Win32RT.ExitProcess(0)
+func __tlsAlloc()                         => cast(u64) __Win32RT.TlsAlloc()
 func __tlsSetValue(id: u64, value: *void) => __Win32RT.TlsSetValue(cast(u32) id, value)
-func __tlsGetValue(id: u64)->*void => __Win32RT.TlsGetValue(cast(u32) id)
+func __tlsGetValue(id: u64)->*void        => __Win32RT.TlsGetValue(cast(u32) id)
 
 ////////////////////////////////////////////////////////////
 func __tlsGetPtr(id: u64, size: u64, init: const *void)->*void
