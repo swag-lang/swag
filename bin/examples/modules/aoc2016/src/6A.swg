@@ -31,6 +31,14 @@ using Core, Core.Hash
 
 func day6A() assume
 {
+    day6A0()
+    day6A1()
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day6A0() assume
+{
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
     let lines = File.readAllLines(dataPath)
 
@@ -57,6 +65,34 @@ func day6A() assume
     visit v: best
     {
         pwd += v.val
+    }
+
+    @assert(pwd == "afwlyyyq")
+}
+
+func day6A1() assume
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
+    let lines = File.readAllLines(dataPath)
+
+    var freq: [8, 26] u32
+    var best: [8] u32
+    var pwd: String = "        "
+
+    visit l: lines
+    {
+        visit c, i: l
+        {
+            var v = freq[i, c - `a`]
+            v += 1
+            freq[i, c - `a`] = v
+
+            if v > best[i]
+            {
+                best[i] = v
+                pwd[i] = c
+            }
+        }
     }
 
     @assert(pwd == "afwlyyyq")
