@@ -48,7 +48,25 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         }
     }
 
-    concat->addIndent(context.indent);
+    bool sameLineAnonymous = true;
+    if (node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))
+    {
+        for (const auto s : node->content->children)
+        {
+            if (const auto parse = s->getTokenParse())
+            {
+                if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE | TOKEN_PARSE_EOL_AFTER))
+                {
+                    sameLineAnonymous = false;
+                    break;
+                }
+            }
+        }
+    }
+
+    if (!node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS) || !sameLineAnonymous)
+        concat->addIndent(context.indent);
+
     if (node->is(AstNodeKind::InterfaceDecl))
     {
         CONCAT_FIXED_STR(concat, "interface");
@@ -75,26 +93,10 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         concat->addBlank();
         concat->addString(node->token.text);
     }
-    else
+    else if (sameLineAnonymous)
     {
-        bool sameLine = true;
-        for (const auto s : node->content->children)
-        {
-            if (const auto parse = s->getTokenParse())
-            {
-                if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE | TOKEN_PARSE_EOL_AFTER))
-                {
-                    sameLine = false;
-                    break;
-                }
-            }
-        }
-
-        if (sameLine)
-        {
-            SWAG_CHECK(outputTupleDeclContent(context, node->content));
-            return true;
-        }
+        SWAG_CHECK(outputTupleDeclContent(context, node->content));
+        return true;
     }
 
     concat->addEol();
