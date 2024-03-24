@@ -249,6 +249,17 @@ bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t s
         if (!child)
             continue;
 
+        if (child->kind == AstNodeKind::FuncDecl)
+        {
+            uint32_t processed = 0;
+            SWAG_CHECK(outputChildrenFuncDecl(context, node, i, processed));
+            if (processed)
+            {
+                i += processed - 1;
+                continue;
+            }
+        }
+
         if (child->kind == AstNodeKind::EnumValue)
         {
             uint32_t processed = 0;

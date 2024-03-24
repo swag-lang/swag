@@ -141,7 +141,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::FuncDecl:
-            SWAG_CHECK(outputFuncDecl(context, castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl)));
+            SWAG_CHECK(outputFuncDecl(context, node));
             break;
 
         case AstNodeKind::AttrDecl:

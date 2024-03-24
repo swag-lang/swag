@@ -119,45 +119,51 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
     return true;
 }
 
-bool FormatAst::outputFuncDecl(FormatContext& context, AstFuncDecl* node)
+bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t maxLenSignature)
 {
-    if (!node->content)
-        inheritLastFormatAfter(nullptr, node);
+    beautifyBefore(context, node);
 
-    if (node->hasAttribute(ATTRIBUTE_AST_FUNC))
+    const auto funcDecl    = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+    const auto startColumn = concat->column;
+
+    if (!funcDecl->content)
+        inheritLastFormatAfter(nullptr, funcDecl);
+
+    if (funcDecl->hasAttribute(ATTRIBUTE_AST_FUNC))
         CONCAT_FIXED_STR(concat, "#ast");
-    else if (node->hasAttribute(ATTRIBUTE_RUN_FUNC))
+    else if (funcDecl->hasAttribute(ATTRIBUTE_RUN_FUNC))
         CONCAT_FIXED_STR(concat, "#run");
-    else if (node->hasAttribute(ATTRIBUTE_TEST_FUNC))
+    else if (funcDecl->hasAttribute(ATTRIBUTE_TEST_FUNC))
         CONCAT_FIXED_STR(concat, "#test");
-    else if (node->hasAttribute(ATTRIBUTE_MAIN_FUNC))
+    else if (funcDecl->hasAttribute(ATTRIBUTE_MAIN_FUNC))
         CONCAT_FIXED_STR(concat, "#main");
-    else if (node->hasAttribute(ATTRIBUTE_INIT_FUNC))
+    else if (funcDecl->hasAttribute(ATTRIBUTE_INIT_FUNC))
         CONCAT_FIXED_STR(concat, "#init");
-    else if (node->hasAttribute(ATTRIBUTE_DROP_FUNC))
+    else if (funcDecl->hasAttribute(ATTRIBUTE_DROP_FUNC))
         CONCAT_FIXED_STR(concat, "#drop");
-    else if (node->hasAttribute(ATTRIBUTE_PREMAIN_FUNC))
+    else if (funcDecl->hasAttribute(ATTRIBUTE_PREMAIN_FUNC))
         CONCAT_FIXED_STR(concat, "#premain");
-    else if (node->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
+    else if (funcDecl->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
     {
         CONCAT_FIXED_STR(concat, "#message");
         concat->addChar('(');
-        SWAG_CHECK(outputNode(context, node->parameters));
+        SWAG_CHECK(outputNode(context, funcDecl->parameters));
         concat->addChar(')');
     }
     else
-        SWAG_CHECK(outputFuncSignature(context, node, node->genericParameters, node->parameters, nullptr));
+        SWAG_CHECK(outputFuncSignature(context, funcDecl, funcDecl->genericParameters, funcDecl->parameters, nullptr));
 
     // Content, short lambda
-    if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
+    if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
     {
+        concat->alignToColumn(startColumn + maxLenSignature);
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "=>");
         concat->addBlank();
-        if (node->content->is(AstNodeKind::Return))
-            SWAG_CHECK(outputNode(context, node->content->firstChild()));
-        else if (node->content->is(AstNodeKind::Try))
-            SWAG_CHECK(outputNode(context, node->content->firstChild()->firstChild()));
+        if (funcDecl->content->is(AstNodeKind::Return))
+            SWAG_CHECK(outputNode(context, funcDecl->content->firstChild()));
+        else if (funcDecl->content->is(AstNodeKind::Try))
+            SWAG_CHECK(outputNode(context, funcDecl->content->firstChild()->firstChild()));
         else
             SWAG_ASSERT(false);
         concat->addEol();
@@ -165,30 +171,31 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstFuncDecl* node)
     }
 
     // Content, short form
-    if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM))
+    if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM))
     {
+        concat->alignToColumn(startColumn + maxLenSignature);
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "=");
         concat->addBlank();
-        SWAG_CHECK(outputNode(context, node->content->firstChild()));
+        SWAG_CHECK(outputNode(context, funcDecl->content->firstChild()));
         concat->addEol();
         return true;
     }
 
     // #validifx block
-    if (node->validIf)
+    if (funcDecl->validIf)
     {
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputCompilerExpr(context, node->validIf));
+        SWAG_CHECK(outputCompilerExpr(context, funcDecl->validIf));
         context.indent--;
     }
 
-    if (!node->content)
+    if (!funcDecl->content)
     {
         concat->addChar(';');
-        beautifyAfter(context, node);
+        beautifyAfter(context, funcDecl);
         concat->addEol();
         return true;
     }
@@ -200,17 +207,17 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstFuncDecl* node)
     concat->addEol();
     context.indent++;
 
-    if (node->content->isNot(AstNodeKind::Statement))
+    if (funcDecl->content->isNot(AstNodeKind::Statement))
     {
         concat->addIndent(context.indent);
         context.indent--;
-        SWAG_CHECK(outputNode(context, node->content));
+        SWAG_CHECK(outputNode(context, funcDecl->content));
         context.indent++;
         concat->addEol();
     }
     else
     {
-        for (auto c : node->subDecl)
+        for (auto c : funcDecl->subDecl)
         {
             concat->addIndent(context.indent);
             if (c->parent && c->parent->is(AstNodeKind::AttrUse))
@@ -219,7 +226,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstFuncDecl* node)
             concat->addEol();
         }
 
-        SWAG_CHECK(outputChildren(context, node->content));
+        SWAG_CHECK(outputChildren(context, funcDecl->content));
     }
 
     context.indent--;
@@ -426,6 +433,49 @@ bool FormatAst::outputDropCopyMove(FormatContext& context, AstNode* node)
         SWAG_CHECK(outputNode(context, drop->count));
     }
     concat->addChar(')');
+
+    return true;
+}
+
+bool FormatAst::outputChildrenFuncDecl(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
+{
+    processed = 0;
+    if (!context.alignShortFunc)
+        return true;
+
+    VectorNative<AstNode*> nodes;
+    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* node) {
+            if (node->kind != AstNodeKind::FuncDecl)
+                return true;
+            if (!node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM | AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
+                return true;
+            return false;
+        }))
+        return true;
+
+    uint32_t maxLenSignature = 0;
+
+    {
+        PushConcatFormatTmp fmt{this};
+        FormatContext       cxt{context};
+        cxt.outputComments   = false;
+        cxt.outputBlankLines = false;
+
+        for (const auto child : nodes)
+        {
+            const auto funcDecl = castAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
+            tmpConcat.clear();
+            SWAG_CHECK(outputFuncSignature(cxt, funcDecl, funcDecl->genericParameters, funcDecl->parameters, nullptr));
+            maxLenSignature = max(maxLenSignature, tmpConcat.length());
+        }
+    }
+
+    for (const auto child : nodes)
+    {
+        concat->addIndent(context.indent);
+        SWAG_CHECK(outputFuncDecl(context, child, maxLenSignature));
+        concat->addEol();
+    }
 
     return true;
 }

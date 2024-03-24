@@ -35,6 +35,7 @@ struct FormatContext
     bool     alignVarDecl                           = false;
     bool     alignEnumValue                         = false;
     bool     alignAffectEqual                       = false;
+    bool     alignShortFunc                         = false;
     uint32_t addBlanksBeforeAlignedLastLineComments = 0;
     uint32_t alignStructVarTypeAddBlanks            = 0;
 
@@ -45,6 +46,7 @@ struct FormatContext
         alignVarDecl                           = true;
         alignEnumValue                         = true;
         alignAffectEqual                       = true;
+        alignShortFunc                         = true;
         addBlanksBeforeAlignedLastLineComments = 4;
         alignStructVarTypeAddBlanks            = 4;
     }
@@ -96,10 +98,11 @@ struct FormatAst
     bool outputChildrenEnumValues(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
     bool outputEnumValue(FormatContext& context, AstNode* node, uint32_t maxLenName = 0, uint32_t maxLenValue = 0);
     bool outputEnum(FormatContext& context, AstEnum* node);
-    bool outputFuncDecl(FormatContext& context, AstFuncDecl* node);
+    bool outputFuncDecl(FormatContext& context, AstNode* node, uint32_t maxLenSignature = 0);
     bool outputAttrUse(FormatContext& context, AstNode* node, bool& hasSomething);
     bool outputAttrUse(FormatContext& context, AstAttrUse* node);
     bool outputFuncCallParams(const FormatContext& context, AstNode* node);
+    bool outputChildrenFuncDecl(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
     bool outputInit(FormatContext& context, AstNode* node);
     bool outputDropCopyMove(FormatContext& context, AstNode* node);
     bool outputTypeLambda(FormatContext& context, AstNode* node);
