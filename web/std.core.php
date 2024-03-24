@@ -8861,12 +8861,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SKwd">struct</span>(<span class="SCst">K</span>, <span class="SCst">V</span>)
-{
-    k: <span class="SKwd">self</span>.<span class="SCst">K</span>
-    v: <span class="SKwd">self</span>.<span class="SCst">V</span>
-}
-)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] (<span class="SCst">K</span>, <span class="SCst">V</span>){k: <span class="SKwd">self</span>.<span class="SCst">K</span>, v: <span class="SKwd">self</span>.<span class="SCst">V</span>})</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28362,7 +28357,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 19-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
+Generated on 24-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
 </div>
 </div>
 </div>
