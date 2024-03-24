@@ -29,7 +29,7 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
 
         if (!nodes.empty())
         {
-            if (const auto parse = child->getTokenParse())
+            if (const auto parse = getTokenParse(child))
             {
                 if (!parse->comments.before.empty())
                     break;

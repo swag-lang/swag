@@ -27,7 +27,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
 
         if (!nodes.empty())
         {
-            if (const auto parse = child->getTokenParse())
+            if (const auto parse = getTokenParse(child))
             {
                 if (!parse->comments.before.empty())
                     break;

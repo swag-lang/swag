@@ -76,7 +76,7 @@ bool FormatAst::outputChildrenAffectOp(FormatContext& context, AstNode* node, ui
 
         if (!nodes.empty())
         {
-            if (const auto parse = child->firstChild()->getTokenParse())
+            if (const auto parse = getTokenParse(child->firstChild()))
             {
                 if (!parse->comments.before.empty())
                     break;
@@ -180,7 +180,7 @@ bool FormatAst::outputBinaryOp(FormatContext& context, const AstNode* node)
     concat->addString(node->token.text);
     concat->addBlank();
 
-    if (const auto parse = node->secondChild()->getTokenParse())
+    if (const auto parse = getTokenParse(node->secondChild()))
     {
         if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE))
         {

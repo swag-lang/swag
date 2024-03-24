@@ -37,7 +37,7 @@ void FormatAst::inheritLastFormatAfter(const Parser* parser, AstNode* node)
     auto scan = node;
     while (scan)
     {
-        const auto to = scan->getTokenParse();
+        const auto to = getTokenParse(scan);
         if (to && !to->comments.after.empty())
         {
             inheritFormatAfter(parser, node, scan);
@@ -54,7 +54,7 @@ void FormatAst::inheritFormatBefore(const Parser* parser, AstNode* node, AstNode
         return;
     if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
-    inheritFormatBefore(parser, node, other->getTokenParse());
+    inheritFormatBefore(parser, node, getTokenParse(other));
 }
 
 void FormatAst::inheritFormatAfter(const Parser* parser, AstNode* node, AstNode* other)
@@ -63,12 +63,12 @@ void FormatAst::inheritFormatAfter(const Parser* parser, AstNode* node, AstNode*
         return;
     if (parser && !parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
         return;
-    inheritFormatAfter(parser, node, other->getTokenParse());
+    inheritFormatAfter(parser, node, getTokenParse(other));
 }
 
 void FormatAst::inheritFormatBefore(const Parser* parser, AstNode* node, TokenParse* tokenParse)
 {
-    if(!node)
+    if (!node)
         return;
     if (!tokenParse)
         return;
@@ -80,7 +80,7 @@ void FormatAst::inheritFormatBefore(const Parser* parser, AstNode* node, TokenPa
         !tokenParse->comments.before.empty() ||
         !tokenParse->comments.justBefore.empty())
     {
-        const auto tp = node->getOrCreateTokenParse();
+        const auto tp = getOrCreateTokenParse(node);
         tp->flags.add(tokenParse->flags);
         tp->comments.before     = std::move(tokenParse->comments.before);
         tp->comments.justBefore = std::move(tokenParse->comments.justBefore);
@@ -97,8 +97,30 @@ void FormatAst::inheritFormatAfter(const Parser* parser, AstNode* node, TokenPar
     if (tokenParse->flags.has(TOKEN_PARSE_EOL_AFTER) ||
         !tokenParse->comments.after.empty())
     {
-        const auto tp = node->getOrCreateTokenParse();
+        const auto tp = getOrCreateTokenParse(node);
         tp->flags.add(tokenParse->flags);
         tp->comments.after = std::move(tokenParse->comments.after);
     }
+}
+
+TokenParse* FormatAst::getTokenParse(AstNode* node)
+{
+    return node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
+}
+
+const TokenParse* FormatAst::getTokenParse(const AstNode* node)
+{
+    return node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
+}
+
+TokenParse* FormatAst::getOrCreateTokenParse(AstNode* node)
+{
+    TokenParse* tp = getTokenParse(node);
+    if (!tp)
+    {
+        tp = Allocator::alloc<TokenParse>();
+        node->addExtraPointer(ExtraPointerKind::TokenParse, tp);
+    }
+
+    return tp;
 }

@@ -134,28 +134,6 @@ void AstNode::inheritOwners(const AstNode* from)
     }
 }
 
-TokenParse* AstNode::getTokenParse()
-{
-    return extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
-}
-
-const TokenParse* AstNode::getTokenParse() const
-{
-    return extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
-}
-
-TokenParse* AstNode::getOrCreateTokenParse()
-{
-    TokenParse* tp = getTokenParse();
-    if (!tp)
-    {
-        tp = Allocator::alloc<TokenParse>();
-        addExtraPointer(ExtraPointerKind::TokenParse, tp);
-    }
-
-    return tp;
-}
-
 void AstNode::inheritOwnersAndFlags(const Parser* parser)
 {
     ownerStructScope = parser->currentStructScope;

@@ -53,7 +53,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
     {
         for (const auto s : node->content->children)
         {
-            if (const auto parse = s->getTokenParse())
+            if (const auto parse = getTokenParse(s))
             {
                 if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE | TOKEN_PARSE_EOL_AFTER))
                 {
