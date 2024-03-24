@@ -36,6 +36,7 @@ struct FormatContext
     bool     alignEnumValue                         = false;
     bool     alignAffectEqual                       = false;
     bool     alignShortFunc                         = false;
+    bool     alignTypeAlias                         = false;
     uint32_t addBlanksBeforeAlignedLastLineComments = 0;
     uint32_t alignStructVarTypeAddBlanks            = 0;
 
@@ -47,6 +48,7 @@ struct FormatContext
         alignEnumValue                         = true;
         alignAffectEqual                       = true;
         alignShortFunc                         = true;
+        alignTypeAlias                         = true;
         addBlanksBeforeAlignedLastLineComments = 4;
         alignStructVarTypeAddBlanks            = 4;
     }
@@ -110,6 +112,8 @@ struct FormatAst
     bool outputFuncReturnType(FormatContext& context, const AstFuncDecl* funcNode);
     bool outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const AstNode* validIf);
     bool outputGenericParameters(FormatContext& context, AstNode* node);
+    bool outputChildrenTypeAlias(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
+    bool outputTypeAlias(FormatContext& context, AstNode* node, uint32_t maxLenName = 0);
     bool outputAttributesUsage(const FormatContext& context, const TypeInfoFuncAttr* typeFunc) const;
     bool outputAttributes(FormatContext& context, const TypeInfo* typeInfo, const AttributeList& attributes);
     bool outputAttributes(FormatContext& context, const AstNode* node, TypeInfo* typeInfo);

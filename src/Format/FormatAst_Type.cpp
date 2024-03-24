@@ -197,3 +197,49 @@ bool FormatAst::outputGenericParameters(FormatContext& context, AstNode* node)
     concat->addChar(')');
     return true;
 }
+
+bool FormatAst::outputChildrenTypeAlias(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
+{
+    processed = 0;
+    if (!context.alignTypeAlias)
+        return true;
+
+    VectorNative<AstNode*> nodes;
+    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* node) {
+            if (node->kind != AstNodeKind::TypeAlias)
+                return true;
+            return false;
+        }))
+        return true;
+
+    uint32_t maxLenName = 0;
+    for (const auto child : nodes)
+    {
+        maxLenName = max(maxLenName, child->token.text.length());
+    }
+
+    for (const auto child : nodes)
+    {
+        concat->addIndent(context.indent);
+        SWAG_CHECK(outputTypeAlias(context, child, maxLenName));
+        concat->addEol();
+    }
+
+    return true;
+}
+
+bool FormatAst::outputTypeAlias(FormatContext& context, AstNode* node, uint32_t maxLenName)
+{
+    beautifyBefore(context, node);
+
+    CONCAT_FIXED_STR(concat, "typealias");
+    concat->addBlank();
+    const auto startColumn = concat->column;
+    concat->addString(node->token.text);
+    concat->alignToColumn(startColumn + maxLenName);
+    concat->addBlank();
+    concat->addChar('=');
+    concat->addBlank();
+    SWAG_CHECK(outputNode(context, node->firstChild()));
+    return true;
+}

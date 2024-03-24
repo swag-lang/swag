@@ -320,13 +320,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
             break;
 
         case AstNodeKind::TypeAlias:
-            CONCAT_FIXED_STR(concat, "typealias");
-            concat->addBlank();
-            concat->addString(node->token.text);
-            concat->addBlank();
-            concat->addChar('=');
-            concat->addBlank();
-            SWAG_CHECK(outputNode(context, node->firstChild()));
+            SWAG_CHECK(outputTypeAlias(context, node));
             break;
 
         case AstNodeKind::NameAlias:
