@@ -142,7 +142,8 @@ struct FormatAst
     bool outputIdentifierRef(FormatContext& context, AstNode* node);
     bool outputArrayPointerSlicing(FormatContext& context, AstNode* node);
     bool outputArrayPointerIndex(FormatContext& context, AstNode* node);
-    bool outputAffectOp(FormatContext& context, const AstNode* node);
+    bool outputChildrenAffectOp(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
+    bool outputAffectOp(FormatContext& context, const AstNode* node, uint32_t maxLenName = 0, uint32_t maxLenValue = 0);
     bool outputFactorOp(FormatContext& context, const AstNode* node);
     bool outputBinaryOp(FormatContext& context, const AstNode* node);
     bool outputNullConditionalExpression(FormatContext& context, const AstNode* node);
