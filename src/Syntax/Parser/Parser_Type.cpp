@@ -411,7 +411,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags expr
     return true;
 }
 
-bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* /*parent*/, ExprFlags exprFlags, AstNode** /*result*/)
+bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags)
 {
     const bool inTypeVarDecl = exprFlags.has(EXPR_FLAG_IN_VAR_DECL);
 
@@ -591,7 +591,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
         return true;
     }
 
-    SWAG_CHECK(doSingleTypeExpression(node, parent, exprFlags, &dummyResult));
+    SWAG_CHECK(doSingleTypeExpression(node, exprFlags));
     return true;
 }
 
