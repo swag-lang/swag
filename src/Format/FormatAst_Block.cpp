@@ -236,3 +236,74 @@ bool FormatAst::outputCatch(FormatContext& context, const AstNode* node)
     SWAG_CHECK(outputNode(context, node->firstChild()));
     return true;
 }
+
+bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t start)
+{
+    if (!node)
+        return true;
+
+    for (uint32_t i = start; i < node->childCount(); i++)
+    {
+        const auto it    = node->children[i];
+        const auto child = convertNode(context, it);
+        if (!child)
+            continue;
+
+        if (child->kind == AstNodeKind::EnumValue)
+        {
+            uint32_t processed = 0;
+            SWAG_CHECK(outputChildrenEnumValues(context, node, i, processed));
+            if (processed)
+            {
+                i += processed - 1;
+                continue;
+            }
+        }
+
+        if (child->kind == AstNodeKind::VarDecl || child->kind == AstNodeKind::ConstDecl)
+        {
+            uint32_t processed = 0;
+            SWAG_CHECK(outputChildrenVar(context, node, i, processed));
+            if (processed)
+            {
+                i += processed - 1;
+                continue;
+            }
+        }
+
+        concat->addIndent(context.indent);
+        SWAG_CHECK(outputNode(context, child));
+        concat->addEol();
+    }
+
+    return true;
+}
+
+bool FormatAst::outputCommaChildren(const FormatContext& context, AstNode* node, uint32_t start)
+{
+    if (!node)
+        return true;
+
+    FormatContext cxt{context};
+    cxt.alignStructVarTypeAddBlanks = 0;
+
+    bool first = true;
+    for (uint32_t i = start; i < node->childCount(); i++)
+    {
+        const auto it    = node->children[i];
+        const auto child = convertNode(cxt, it);
+        if (!child)
+            continue;
+
+        if (!first)
+        {
+            concat->addChar(',');
+            concat->addBlank();
+        }
+
+        SWAG_CHECK(outputNode(cxt, child));
+        first = false;
+    }
+
+    return true;
+}

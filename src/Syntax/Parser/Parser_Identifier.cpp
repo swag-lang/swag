@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Error/SemanticError.h"
@@ -311,7 +312,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
 
     // For export
     idRef->addAstFlag(AST_DISCARD);
-    idRef->inheritFormatBefore(this, &discardToken);
+    FormatAst::inheritFormatBefore(this, idRef, &discardToken);
 
     // Mark the identifier with AST_DISCARD
     while (idRef && idRef->isNot(AstNodeKind::IdentifierRef))

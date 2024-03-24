@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Semantic.h"
@@ -482,7 +483,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             const auto funcNode = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, nullptr);
             if (kind == TokenId::KwdMethod)
                 funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD);
-            funcNode->inheritFormatBefore(this, &savedToken);
+            FormatAst::inheritFormatBefore(this, funcNode, &savedToken);
 
             SWAG_CHECK(checkIsValidUserName(funcNode));
             SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0295, tokenParse.token.c_str())));
@@ -546,8 +547,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             TokenParse             savedToken = tokenParse;
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
-            if (*result)
-                (*result)->inheritFormatBefore(this, &savedToken);
+            FormatAst::inheritFormatBefore(this, *result, &savedToken);
             break;
         }
     }

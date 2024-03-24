@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Semantic.h"
@@ -242,7 +243,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse.token, toErr(Err0131)));
     }
 
-    params->inheritFormatAfter(this, &tokenParse);
+    FormatAst::inheritFormatAfter(this, params, &tokenParse);
     return true;
 }
 

@@ -2,6 +2,7 @@
 #include "Format/FormatAst.h"
 #include "Semantic/Semantic.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Parser/Parser.h"
 
 void FormatAst::clear() const
 {
@@ -31,73 +32,73 @@ AstNode* FormatAst::convertNode(FormatContext&, AstNode* node)
     return node;
 }
 
-bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t start)
+void FormatAst::inheritLastFormatAfter(const Parser* parser, AstNode* node)
 {
-    if (!node)
-        return true;
-
-    for (uint32_t i = start; i < node->childCount(); i++)
+    auto scan = node;
+    while (scan)
     {
-        const auto it    = node->children[i];
-        const auto child = convertNode(context, it);
-        if (!child)
-            continue;
-
-        if (child->kind == AstNodeKind::EnumValue)
+        const auto to = scan->getTokenParse();
+        if (to && !to->comments.after.empty())
         {
-            uint32_t processed = 0;
-            SWAG_CHECK(outputChildrenEnumValues(context, node, i, processed));
-            if (processed)
-            {
-                i += processed - 1;
-                continue;
-            }
+            inheritFormatAfter(parser, node, scan);
+            break;
         }
 
-        if (child->kind == AstNodeKind::VarDecl || child->kind == AstNodeKind::ConstDecl)
-        {
-            uint32_t processed = 0;
-            SWAG_CHECK(outputChildrenVar(context, node, i, processed));
-            if (processed)
-            {
-                i += processed - 1;
-                continue;
-            }
-        }
-
-        concat->addIndent(context.indent);
-        SWAG_CHECK(outputNode(context, child));
-        concat->addEol();
+        scan = scan->lastChild();
     }
-
-    return true;
 }
 
-bool FormatAst::outputCommaChildren(const FormatContext& context, AstNode* node, uint32_t start)
+void FormatAst::inheritFormatBefore(const Parser* parser, AstNode* node, AstNode* other)
 {
-    if (!node)
-        return true;
+    if (other == node || !other)
+        return;
+    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+        return;
+    inheritFormatBefore(parser, node, other->getTokenParse());
+}
 
-    FormatContext cxt{context};
-    cxt.alignStructVarTypeAddBlanks = 0;
+void FormatAst::inheritFormatAfter(const Parser* parser, AstNode* node, AstNode* other)
+{
+    if (other == node || !other)
+        return;
+    if (parser && !parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+        return;
+    inheritFormatAfter(parser, node, other->getTokenParse());
+}
 
-    bool first = true;
-    for (uint32_t i = start; i < node->childCount(); i++)
+void FormatAst::inheritFormatBefore(const Parser* parser, AstNode* node, TokenParse* tokenParse)
+{
+    if(!node)
+        return;
+    if (!tokenParse)
+        return;
+    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+        return;
+
+    if (tokenParse->flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE) ||
+        tokenParse->flags.has(TOKEN_PARSE_EOL_BEFORE) ||
+        !tokenParse->comments.before.empty() ||
+        !tokenParse->comments.justBefore.empty())
     {
-        const auto it    = node->children[i];
-        const auto child = convertNode(cxt, it);
-        if (!child)
-            continue;
-
-        if (!first)
-        {
-            concat->addChar(',');
-            concat->addBlank();
-        }
-
-        SWAG_CHECK(outputNode(cxt, child));
-        first = false;
+        const auto tp = node->getOrCreateTokenParse();
+        tp->flags.add(tokenParse->flags);
+        tp->comments.before     = std::move(tokenParse->comments.before);
+        tp->comments.justBefore = std::move(tokenParse->comments.justBefore);
     }
+}
 
-    return true;
+void FormatAst::inheritFormatAfter(const Parser* parser, AstNode* node, TokenParse* tokenParse)
+{
+    if (!tokenParse)
+        return;
+    if (parser && !parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+        return;
+
+    if (tokenParse->flags.has(TOKEN_PARSE_EOL_AFTER) ||
+        !tokenParse->comments.after.empty())
+    {
+        const auto tp = node->getOrCreateTokenParse();
+        tp->flags.add(tokenParse->flags);
+        tp->comments.after = std::move(tokenParse->comments.after);
+    }
 }

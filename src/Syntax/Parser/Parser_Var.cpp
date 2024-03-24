@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Semantic.h"
@@ -310,8 +311,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
-    if (*result)
-        (*result)->inheritFormatBefore(this, &savedTokenParse);
+    FormatAst::inheritFormatBefore(this, *result, &savedTokenParse);
 
     return true;
 }

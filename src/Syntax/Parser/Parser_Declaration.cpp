@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Error/SemanticError.h"
@@ -188,7 +189,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
     if (isGlobal)
         node->addAstFlag(AST_GLOBAL_NODE);
     node->semanticFct = Semantic::resolveUsing;
-    node->inheritFormatBefore(this, &savedToken);
+    FormatAst::inheritFormatBefore(this, node, &savedToken);
 
     while (true)
     {
@@ -218,8 +219,7 @@ bool Parser::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool
     auto savedToken = tokenParse;
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doNamespaceOnName(parent, result, forGlobal, forUsing));
-    if (*result)
-        (*result)->inheritFormatBefore(this, &savedToken);
+    FormatAst::inheritFormatBefore(this, *result, &savedToken);
     return true;
 }
 
@@ -859,8 +859,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
             eatToken();
             SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0367, tokenParse.token.c_str())));
             SWAG_CHECK(doLeftInstruction(parent, result, castAst<AstWith>(withNode, AstNodeKind::With)));
-            if (*result)
-                (*result)->inheritFormatBefore(this, &tokenDot);
+            FormatAst::inheritFormatBefore(this, *result, &tokenDot);
             return true;
         }
 

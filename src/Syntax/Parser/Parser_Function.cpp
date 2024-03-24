@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Semantic.h"
@@ -167,7 +168,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
         }
     }
 
-    callParams->inheritFormatAfter(this, &tokenParse);
+    FormatAst::inheritFormatAfter(this, callParams, &tokenParse);
     if (callParams->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         SWAG_CHECK(eatToken(closeToken, "to close struct initialization parameters"));
     else

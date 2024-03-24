@@ -83,7 +83,7 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
 bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t maxLenName, uint32_t maxLenValue)
 {
     const auto enumNode = castAst<AstEnumValue>(node, AstNodeKind::EnumValue);
-    enumNode->inheritLastFormatAfter(nullptr);
+    inheritLastFormatAfter(nullptr, enumNode);
 
     if (enumNode->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
     {

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Semantic.h"
@@ -177,7 +178,7 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
 
     if (tokenParse.is(TokenId::SymComma))
     {
-        enumValue->inheritFormatAfter(this, &tokenParse);
+        FormatAst::inheritFormatAfter(this, enumValue, &tokenParse);
         SWAG_CHECK(eatToken());
     }
     else

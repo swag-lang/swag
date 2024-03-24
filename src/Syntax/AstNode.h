@@ -307,12 +307,6 @@ struct AstNode
     void inheritOwners(const AstNode* from);
     void inheritOwnersAndFlags(const Parser* parser);
 
-    void inheritLastFormatAfter(const Parser* parser);
-    void inheritFormatBefore(const Parser* parser, AstNode* other);
-    void inheritFormatAfter(const Parser* parser, AstNode* other);
-    void inheritFormatBefore(const Parser* parser, TokenParse* tokenParse);
-    void inheritFormatAfter(const Parser* parser, TokenParse* tokenParse);
-
     void allocateComputedValue();
     void releaseComputedValue();
     void setFlagsValueIsComputed();

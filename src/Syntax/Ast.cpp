@@ -1,6 +1,7 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
+#include "Format/FormatAst.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Parser/Parser.h"
 
@@ -15,8 +16,8 @@ void Ast::initNewNode(AstNodeKind kind, AstNode* node, Parser* parser, AstNode* 
         node->inheritOwnersAndFlags(parser);
         if (!parser->freezeFormat && !node->flags.has(AST_GENERATED))
         {
-            node->inheritFormatBefore(parser, &parser->tokenParse);
-            node->inheritFormatAfter(parser, &parser->tokenParse);
+            FormatAst::inheritFormatBefore(parser, node, &parser->tokenParse);
+            FormatAst::inheritFormatAfter(parser, node, &parser->tokenParse);
         }
     }
     else if (parent)

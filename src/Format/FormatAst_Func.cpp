@@ -122,7 +122,7 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
 bool FormatAst::outputFuncDecl(FormatContext& context, AstFuncDecl* node)
 {
     if (!node->content)
-        node->inheritLastFormatAfter(nullptr);
+        inheritLastFormatAfter(nullptr, node);
 
     if (node->hasAttribute(ATTRIBUTE_AST_FUNC))
         CONCAT_FIXED_STR(concat, "#ast");

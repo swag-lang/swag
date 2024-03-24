@@ -11,8 +11,10 @@ struct AstVarDecl;
 struct AttributeList;
 struct ComputedValue;
 struct FormatConcat;
+struct Parser;
 struct Scope;
 struct TokenComment;
+struct TokenParse;
 struct TypeInfo;
 struct TypeInfoEnum;
 struct TypeInfoFuncAttr;
@@ -59,6 +61,12 @@ struct FormatAst
 
     void clear() const;
     Utf8 getUtf8() const;
+
+    static void inheritLastFormatAfter(const Parser* parser, AstNode* node);
+    static void inheritFormatBefore(const Parser* parser, AstNode* node, AstNode* other);
+    static void inheritFormatAfter(const Parser* parser, AstNode* node, AstNode* other);
+    static void inheritFormatBefore(const Parser* parser, AstNode* node, TokenParse* tokenParse);
+    static void inheritFormatAfter(const Parser* parser, AstNode* node, TokenParse* tokenParse);
 
     static AstNode* convertNode(FormatContext& context, AstNode* node);
     auto            outputChildren(FormatContext& context, AstNode* node, uint32_t start = 0) -> bool;

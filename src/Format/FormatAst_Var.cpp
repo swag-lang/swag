@@ -106,7 +106,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
 bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, uint32_t startColumn, uint32_t maxLenName, uint32_t maxLenType)
 {
     const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-    varNode->inheritLastFormatAfter(nullptr);
+    inheritLastFormatAfter(nullptr, varNode);
 
     const uint32_t alignTypeBanks = node->hasAstFlag(AST_STRUCT_MEMBER) ? context.alignStructVarTypeAddBlanks : 0;
 

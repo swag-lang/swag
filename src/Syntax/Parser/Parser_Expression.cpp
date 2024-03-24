@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Semantic.h"
@@ -249,7 +250,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, form("to end the [[%s]] expression", parent->token.c_str())));
             else
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
-            (*result)->inheritFormatAfter(this, &prevTokenParse);
+            FormatAst::inheritFormatAfter(this, *result, &prevTokenParse);
             break;
         }
 
@@ -995,7 +996,7 @@ bool Parser::doBoolExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
         auto     savedToken = tokenParse;
         AstNode* expr;
         SWAG_CHECK(doBoolExpression(binaryNode, EXPR_FLAG_NONE, &expr));
-        expr->inheritFormatBefore(this, &savedToken);
+        FormatAst::inheritFormatBefore(this, expr, &savedToken);
 
         leftNode = binaryNode;
         isBinary = true;
@@ -1361,7 +1362,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 {
                     multi = Ast::newNode<AstNode>(AstNodeKind::MultiIdentifier, this, parent);
                     Ast::addChildBack(multi, exprNode);
-                    multi->inheritFormatBefore(this, exprNode);
+                    FormatAst::inheritFormatBefore(this, multi, exprNode);
                 }
             }
 
@@ -1430,7 +1431,7 @@ bool Parser::doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode*
     const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
     *result                        = parentNode;
     parentNode->addSpecFlag(AstStatement::SPEC_FLAG_MULTI_AFFECT);
-    parentNode->inheritFormatBefore(this, leftNode);
+    FormatAst::inheritFormatBefore(this, parentNode, leftNode);
 
     // Generate an expression of the form "var firstVar = assignment", and "secondVar = firstVar" for the rest
     // This will avoid to do the right expression multiple times (if this is a function call for example).
@@ -1488,7 +1489,7 @@ bool Parser::doTupleUnpacking(AstNode* parent, AstNode** result, AstNode* leftNo
     const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
     *result                        = parentNode;
     parentNode->addSpecFlag(AstStatement::SPEC_FLAG_TUPLE_UNPACKING);
-    parentNode->inheritFormatBefore(this, leftNode);
+    FormatAst::inheritFormatBefore(this, parentNode, leftNode);
 
     // Get right side
     AstNode* assignment;
@@ -1698,7 +1699,7 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->count));
     }
 
-    node->inheritFormatAfter(this, &tokenParse);
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     return true;
 }
