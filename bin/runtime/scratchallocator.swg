@@ -24,9 +24,9 @@ impl ScratchAllocator
     {
         @assert(allocator != null)
         var req: AllocatorRequest
-        req.mode = .Free
+        req.mode    = .Free
         req.address = addr
-        req.size = size
+        req.size    = size
         allocator.req(&req)
     }
 
@@ -35,8 +35,8 @@ impl ScratchAllocator
     {
         @assert(allocator != null)
         var req: AllocatorRequest
-        req.mode = .Alloc
-        req.size = size
+        req.mode      = .Alloc
+        req.size      = size
         req.alignment = alignment
         allocator.req(&req)
         return req.address
@@ -74,7 +74,7 @@ impl ScratchAllocator
         @assert(#self.allocator != null)
         release()
         self.allocator = #self.allocator
-        capacity = newCapacity
+        capacity       = newCapacity
 
         var req: AllocatorRequest
         req.mode = AllocatorMode.Alloc
@@ -140,8 +140,8 @@ impl IAllocator for ScratchAllocator
         {
             let oldAddress = request.address
             request.address = block + usedAlign
-            used = usedAlign + request.size
-            maxUsed = @max(maxUsed, used)
+            used            = usedAlign + request.size
+            maxUsed         = @max(maxUsed, used)
             if oldAddress do
                 @memcpy(request.address, oldAddress, request.oldSize)
             return
@@ -155,10 +155,10 @@ impl IAllocator for ScratchAllocator
         let leak      = cast(^LeakHeader) firstLeak
         if leak do
             leak.prev = ptr
-        ptr.prev = null
-        ptr.next = firstLeak
-        firstLeak = ptr
-        ptr.size = totalSize
+        ptr.prev        = null
+        ptr.next        = firstLeak
+        firstLeak       = ptr
+        ptr.size        = totalSize
         request.address = ptr + 1 // user block is after the header
         totalLeak += request.size
         maxLeak = @max(maxLeak, totalLeak)

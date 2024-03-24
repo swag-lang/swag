@@ -285,7 +285,7 @@ impl IAllocator for DebugAllocator
         // Change header/footer
         ptrHeader.magic = MagicFree
         ptrFooter.magic = MagicFree
-        ptrHeader.loc = request.callerLoc
+        ptrHeader.loc   = request.callerLoc
 
         // This is the norm...
         request.address = null
@@ -322,7 +322,7 @@ impl IAllocator for DebugAllocator
         if lastFree.prev
         {
             lastFree.prev.next = null
-            lastFree = lastFree.prev
+            lastFree           = lastFree.prev
         }
         else
         {
@@ -341,9 +341,9 @@ impl IAllocator for DebugAllocator
 
         // Really free the memory
         var req: AllocatorRequest
-        req.mode = .Free
+        req.mode    = .Free
         req.address = freeAddr
-        req.size = freeSize
+        req.size    = freeSize
         allocator.req(&req)
     }
 
@@ -367,7 +367,7 @@ impl IAllocator for DebugAllocator
         {
             prevHeader -= 1
             copyReq.address = prevHeader.allocAddr
-            prevSize = prevHeader.userSize
+            prevSize        = prevHeader.userSize
 
             // Unlink now, before the realloc, because that block could
             // become invalid in case of a reallocation
@@ -397,12 +397,12 @@ impl IAllocator for DebugAllocator
 
         // Setup header
         let header = cast(*DebugAllocatorHeader) (userAddr - @sizeof(DebugAllocatorHeader))
-        header.magic = MagicAlloc
-        header.allocAddr = copyReq.address
-        header.allocSize = copyReq.size
-        header.userSize = request.size
-        header.loc = copyReq.callerLoc
-        header.hint = copyReq.hint
+        header.magic      = MagicAlloc
+        header.allocAddr  = copyReq.address
+        header.allocSize  = copyReq.size
+        header.userSize   = request.size
+        header.loc        = copyReq.callerLoc
+        header.hint       = copyReq.hint
         header.stackCount = captureAllocStack ? __captureStack(2, header.stack) : 0
 
         // Setup footer

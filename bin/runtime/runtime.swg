@@ -156,9 +156,9 @@ func __setupRuntime(flags: RuntimeFlags)
         let alloc: *DebugAllocator = @alloc(@sizeof(DebugAllocator))
         @init(alloc, 1)
         alloc.captureAllocStack = __buildCfg.debugAllocatorCaptureStack
-        alloc.detectLeaks = __buildCfg.debugAllocatorLeaks
+        alloc.detectLeaks       = __buildCfg.debugAllocatorLeaks
         alloc.setup(cxt.allocator)
-        cxt.allocator = dref alloc
+        cxt.allocator      = dref alloc
         cxt.debugAllocator = alloc
     }
 }

@@ -246,7 +246,7 @@ func __printString(message: string)
 func __raiseException666(message: string, loc: Swag.SourceCodeLocation, kind: Swag.ExceptionKind)
 {
     let cxt = @getcontext()
-    cxt.exceptionLoc = loc
+    cxt.exceptionLoc       = loc
     cxt.exceptionParams[0] = cast(const *void) &cxt.exceptionLoc
     cxt.exceptionParams[1] = cast(const *void) @dataof(message)
     cxt.exceptionParams[2] = cast(const *void) cast(u64) @countof(message)
@@ -321,7 +321,7 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
 
     let psym = cast(*SYMBOL_INFO) sym
     psym.SizeOfStruct = @sizeof(SYMBOL_INFO)
-    psym.MaxNameLen = SYM_LEN_NAME
+    psym.MaxNameLen   = SYM_LEN_NAME
 
     var line: IMAGEHLP_LINE64
     line.SizeOfStruct = @sizeof(IMAGEHLP_LINE64)

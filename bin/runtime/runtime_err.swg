@@ -32,14 +32,14 @@ func __setErr(err: any)
     if type.opPostCopy do
         type.opPostCopy(ptr)
     cxt.errors[cxt.errorIndex].value = @mkany(ptr, type)
-    cxt.hasError = 1
+    cxt.hasError                     = 1
 }
 
 func __pushErr()
 {
     let cxt = @getcontext()
     cxt.errors[cxt.errorIndex].pushTraceIndex = cast(u32) cxt.traceIndex
-    cxt.errors[cxt.errorIndex].pushUsedAlloc = cast(u32) cxt.errorAllocator.used
+    cxt.errors[cxt.errorIndex].pushUsedAlloc  = cast(u32) cxt.errorAllocator.used
 
     cxt.hasError = 0
     cxt.errorIndex += 1
@@ -54,8 +54,8 @@ func __popErr()
     cxt.errorIndex -= 1
     cxt.hasError = 1
 
-    cxt.curError = cxt.errors[cxt.errorIndex].value
-    cxt.traceIndex = cast(u32) cxt.errors[cxt.errorIndex].pushTraceIndex
+    cxt.curError            = cxt.errors[cxt.errorIndex].value
+    cxt.traceIndex          = cast(u32) cxt.errors[cxt.errorIndex].pushTraceIndex
     cxt.errorAllocator.used = cast(u32) cxt.errors[cxt.errorIndex].pushUsedAlloc
 }
 
@@ -67,7 +67,7 @@ func __catchErr()
     else do
         cxt.curError = cxt.errors[cxt.errorIndex].value
     cxt.errorAllocator.used = cxt.errorIndex ? cxt.errors[cxt.errorIndex - 1].pushUsedAlloc : 0
-    cxt.hasError = 0
+    cxt.hasError            = 0
 }
 
 // Returns the current raised error, or null if none
@@ -237,7 +237,7 @@ func @panic(message: string, loc: SourceCodeLocation)
         if len > 512 do
             len = 512
         @memcpy(&str[0], @dataof(message), len)
-        str[len] = `\n`
+        str[len]     = `\n`
         str[len + 1] = `\n`
         len += 2
     }
