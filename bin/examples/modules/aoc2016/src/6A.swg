@@ -40,7 +40,7 @@ func day6A() assume
 func day6A0() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    let lines = File.readAllLines(dataPath)
+    let lines    = File.readAllLines(dataPath)
 
     var freq: [8, 26] u32
     var best: [8] {val: u8, freq: u32}
@@ -56,7 +56,7 @@ func day6A0() assume
             if v > best[i].freq
             {
                 best[i].freq = v
-                best[i].val = c
+                best[i].val  = c
             }
         }
     }
@@ -73,28 +73,26 @@ func day6A0() assume
 func day6A1() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    let lines = File.readAllLines(dataPath)
+    let lines    = File.readAllLines(dataPath)
 
     var freq: [8, 26] u32
     var best: [8] u32
-    var pwd: String = "        "
+    var pwd:  String = "        "
 
     visit l: lines
     {
         visit c, i: l
         {
-            var v = freq[i, c - `a`]
+            var v = ref &freq[i, c - `a`]
             v += 1
-            freq[i, c - `a`] = v
 
             if v > best[i]
             {
                 best[i] = v
-                pwd[i] = c
+                pwd[i]  = c
             }
         }
     }
 
     @assert(pwd == "afwlyyyq")
 }
-
