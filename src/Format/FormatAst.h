@@ -28,9 +28,13 @@ constexpr CollectFlags STOP_EMPTY_LINE_BEFORE = 0x00000002;
 
 struct FormatContext
 {
-    uint32_t indent           = 0;
-    bool     outputComments   = false;
-    bool     outputBlankLines = false;
+    uint32_t indent              = 0;
+    uint32_t countFactorOp       = 0;
+    uint32_t startFactorOpColumn = 0;
+    uint32_t countBinaryOp       = 0;
+    uint32_t startBinaryOpColumn = 0;
+    bool     outputComments      = false;
+    bool     outputBlankLines    = false;
 
     bool     alignVarDecl                           = false;
     bool     alignEnumValue                         = false;

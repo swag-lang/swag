@@ -923,7 +923,12 @@ bool Parser::doFactorExpression(AstNode** parent, ExprFlags exprFlags, AstNode**
         }
 
         Ast::addChildBack(binaryNode, leftNode);
-        SWAG_CHECK(doFactorExpression(reinterpret_cast<AstNode**>(&binaryNode), exprFlags, &dummyResult));
+
+        auto     savedToken = tokenParse;
+        AstNode* expr;
+        SWAG_CHECK(doFactorExpression(reinterpret_cast<AstNode**>(&binaryNode), exprFlags, &expr));
+        FormatAst::inheritFormatBefore(this, expr, &savedToken);
+
         SWAG_CHECK(doOperatorPrecedence(reinterpret_cast<AstNode**>(&binaryNode)));
         leftNode = binaryNode;
         isBinary = true;
@@ -942,6 +947,7 @@ bool Parser::doFactorExpression(AstNode** parent, ExprFlags exprFlags, AstNode**
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(eatToken());
+
         SWAG_CHECK(doFactorExpression(&binaryNode, exprFlags, &dummyResult));
         SWAG_CHECK(doOperatorPrecedence(&binaryNode));
         leftNode = binaryNode;

@@ -117,6 +117,10 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
 
 bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
 {
+    if (!context.countFactorOp)
+        context.startFactorOpColumn = concat->column;
+    context.countFactorOp++;
+
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
         concat->addChar('(');
 
@@ -128,20 +132,34 @@ bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
         CONCAT_FIXED_STR(concat, ",up");
     concat->addBlank();
+
+    if (const auto parse = getTokenParse(node->secondChild()))
+    {
+        if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE))
+        {
+            concat->addEol();
+            concat->alignToColumn(context.startFactorOpColumn);
+        }
+    }
+
     SWAG_CHECK(outputNode(context, node->secondChild()));
 
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
         concat->addChar(')');
 
+    context.countFactorOp--;
     return true;
 }
 
 bool FormatAst::outputBinaryOp(FormatContext& context, const AstNode* node)
 {
+    if (!context.countBinaryOp)
+        context.startBinaryOpColumn = concat->column;
+    context.countBinaryOp++;
+
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
         concat->addChar('(');
 
-    const auto curColumn = concat->column;
     SWAG_CHECK(outputNode(context, node->firstChild()));
     concat->addBlank();
     concat->addString(node->token.text);
@@ -152,7 +170,7 @@ bool FormatAst::outputBinaryOp(FormatContext& context, const AstNode* node)
         if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE))
         {
             concat->addEol();
-            concat->alignToColumn(curColumn);
+            concat->alignToColumn(context.startBinaryOpColumn);
         }
     }
 
@@ -161,6 +179,7 @@ bool FormatAst::outputBinaryOp(FormatContext& context, const AstNode* node)
     if (node->hasAstFlag(AST_EXPR_IN_PARENTS))
         concat->addChar(')');
 
+    context.countBinaryOp--;
     return true;
 }
 
