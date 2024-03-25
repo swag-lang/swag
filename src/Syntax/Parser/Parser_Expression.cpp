@@ -246,11 +246,11 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(startLoc, tokenParse.token.endLocation, toErr(Err0679)));
             SWAG_CHECK(doExpression(parent, exprFlags, result));
             (*result)->addAstFlag(AST_EXPR_IN_PARENTS);
+            FormatAst::inheritFormatAfter(this, *result, &tokenParse);
             if (parent)
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, form("to end the [[%s]] expression", parent->token.c_str())));
             else
                 SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
-            FormatAst::inheritFormatAfter(this, *result, &prevTokenParse);
             break;
         }
 
