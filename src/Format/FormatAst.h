@@ -125,7 +125,7 @@ struct FormatAst
     bool outputCompilerCode(FormatContext& context, AstNode* node);
     bool outputCompilerGlobal(FormatContext& context, const AstNode* node);
     bool outputCompilerMixin(FormatContext& context, AstNode* node);
-    bool outputExpressionList(const FormatContext& context, AstNode* node);
+    bool outputExpressionList(FormatContext& context, AstNode* node);
     bool outputLiteral(FormatContext& context, AstNode* node);
     bool outputLiteral(FormatContext& context, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
     bool outputChildrenVar(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);

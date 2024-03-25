@@ -86,7 +86,7 @@ bool FormatAst::outputLiteral(FormatContext& context, AstNode* node, TypeInfo* t
     return true;
 }
 
-bool FormatAst::outputExpressionList(const FormatContext& context, AstNode* node)
+bool FormatAst::outputExpressionList(FormatContext& context, AstNode* node)
 {
     const auto exprNode = castAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
     if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
@@ -94,7 +94,51 @@ bool FormatAst::outputExpressionList(const FormatContext& context, AstNode* node
     else
         concat->addChar('[');
 
-    SWAG_CHECK(outputCommaChildren(context, exprNode));
+    bool     first     = true;
+    uint32_t addIndent = 0;
+
+    for (uint32_t i = 0; i < exprNode->childCount(); i++)
+    {
+        const auto it    = exprNode->children[i];
+        const auto child = convertNode(context, it);
+        if (!child)
+            continue;
+
+        if (!first)
+        {
+            concat->addChar(',');
+            concat->addBlank();
+        }
+
+        if (const auto parse = getTokenParse(child))
+        {
+            if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE))
+            {
+                if (first && !child->is(AstNodeKind::ExpressionList))
+                {
+                    context.indent++;
+                    addIndent = 1;
+                }
+
+                concat->addEol();
+                concat->addIndent(context.indent);
+            }
+        }
+
+        SWAG_CHECK(outputNode(context, child));
+        first = false;
+    }
+
+    context.indent -= addIndent;
+
+    if (const auto parse = getTokenParse(exprNode))
+    {
+        if (parse->flags.has(TOKEN_PARSE_EOL_AFTER))
+        {
+            concat->addEol();
+            concat->addIndent(context.indent);
+        }
+    }
 
     if (exprNode->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
         concat->addChar('}');
