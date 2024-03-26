@@ -5,46 +5,46 @@ typealias FrameCallback = closure(*Application)
 
 struct Application
 {
-    using native:     ApplicationNative
-    sigFrame:         SigArray'closure(*Application)
+    using native:           ApplicationNative
+    sigFrame:               SigArray'closure(*Application)
 
-    appIcon:          Pixel.Image
-    renderer:         Pixel.RenderOgl
-    theme:            *Theme
-    style:            ThemeStyle
-    keyb:             Input.Keyboard
-    mouse:            Input.Mouse
-    mainSurface:      *Surface
-    postedEvents:     Array'(*Event)
-    surfaces:         Array'(*Surface)
-    postDestroy:      Array'(*Wnd)
-    hookEvents:       Array'(*Wnd)
-    cursorStack:      Array'(Cursor)
-    endModalExit:     WndId
-    inModalLoop:      u32
-    quitCode:         s32
-    timing:           Time.FrameTiming
+    appIcon:                Pixel.Image
+    renderer:               Pixel.RenderOgl
+    theme:                  *Theme
+    style:                  ThemeStyle
+    keyb:                   Input.Keyboard
+    mouse:                  Input.Mouse
+    mainSurface:            *Surface
+    postedEvents:           Array'(*Event)
+    surfaces:               Array'(*Surface)
+    postDestroy:            Array'(*Wnd)
+    hookEvents:             Array'(*Wnd)
+    cursorStack:            Array'(Cursor)
+    endModalExit:           WndId
+    inModalLoop:            u32
+    quitCode:               s32
+    timing:                 Time.FrameTiming
 
     mustQuit:               bool
     endModal:               bool
     isActivated:            bool
     fadeDisabledSurface     = true
 
-    mutexPostedEvents: Sync.Mutex
+    mutexPostedEvents:      Sync.Mutex
 
-    duringTimerEvents:     bool
-    timers:                Array'(*Timer)
-    timersToAdd:           Array'(*Timer)
-    timersToDelete:        Array'(*Timer)
-    frameEvents:           Array'(*Wnd)
-    modalSurfaces:         Array'(*Surface)
-    toDelete:              Array'{ptr: *void, type: const *Swag.TypeInfo}
-    mouseEnterWnd:         *Wnd
-    mouseCaptureWnd:       *Wnd
-    keybFocusWnd:          *Wnd
-    maxRunFrame:           u32
-    configPath:            String
-    hotKeys:               Array'KeyShortcut
+    duringTimerEvents:      bool
+    timers:                 Array'(*Timer)
+    timersToAdd:            Array'(*Timer)
+    timersToDelete:         Array'(*Timer)
+    frameEvents:            Array'(*Wnd)
+    modalSurfaces:          Array'(*Surface)
+    toDelete:               Array'{ptr: *void, type: const *Swag.TypeInfo}
+    mouseEnterWnd:          *Wnd
+    mouseCaptureWnd:        *Wnd
+    keybFocusWnd:           *Wnd
+    maxRunFrame:            u32
+    configPath:             String
+    hotKeys:                Array'KeyShortcut
 }
 
 internal impl Application

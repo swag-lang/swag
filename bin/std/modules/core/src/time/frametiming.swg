@@ -3,14 +3,14 @@
 
 struct FrameTiming
 {
-    dtMin:     f32 = 1 / 100000.0
-    dtMax:     f32 = 1
+    dtMin:          f32 = 1 / 100000.0
+    dtMax:          f32 = 1
 
-    dt:             f32 = 1 / 60.0     // Current delta time, in seconds
-    frameCount:     u32                // Frame counter
+    dt:             f32 = 1 / 60.0         // Current delta time, in seconds
+    frameCount:     u32                    // Frame counter
 
-    prevTick:     u64
-    paused:       bool
+    prevTick:       u64
+    paused:         bool
 }
 
 impl FrameTiming

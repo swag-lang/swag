@@ -19,7 +19,7 @@ struct ConcatBufferSeek
 // the buffer needs to increase its size. This is the main difference with Array
 struct ConcatBuffer
 {
-    allocator: Swag.IAllocator
+    allocator:           Swag.IAllocator
 
     firstBucket:         *ConcatBufferBucket
     curBucket:           *ConcatBufferBucket

@@ -10,7 +10,7 @@ struct EnumerationOptions
     wantDirectories            = true
     wantSpecialDirectories     = false
 
-    filterLambda: func(File.FileInfo)->bool
+    filterLambda:              func(File.FileInfo)->bool
 }
 
 // Get all the files of the given directory

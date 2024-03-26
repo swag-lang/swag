@@ -7,11 +7,11 @@ struct SliderCtrl
     labelSize:          f32 = 60
     editSize:           f32 = 60
 
-    sigChanged: SigArray'closure(*Self)
+    sigChanged:         SigArray'closure(*Self)
 
-    label:      *Label
-    slider:     *Slider
-    edit:       *EditBox
+    label:              *Label
+    slider:             *Slider
+    edit:               *EditBox
 }
 
 impl IWnd for SliderCtrl

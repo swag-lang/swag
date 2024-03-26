@@ -12,7 +12,7 @@ enum GridLayoutCtrlFlags
 
 struct GridLayoutCtrl
 {
-    using wnd: Wnd
+    using wnd:          Wnd
 
     gridLayoutFlags     = GridLayoutCtrlFlags.Zero
     numColumns:         s32
@@ -20,9 +20,9 @@ struct GridLayoutCtrl
     spacingHorz:        f32 = 5
     spacingVert:        f32 = 5
 
-    layout:       Array'*Wnd
-    colSizes:     Array'f32
-    rowSizes:     Array'f32
+    layout:             Array'*Wnd
+    colSizes:           Array'f32
+    rowSizes:           Array'f32
 }
 
 impl IWnd for GridLayoutCtrl

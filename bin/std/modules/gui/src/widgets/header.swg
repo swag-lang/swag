@@ -30,7 +30,7 @@ enum HeaderFlags
 
 struct Header
 {
-    using wnd: Wnd
+    using wnd:            Wnd
 
     form                  = HeaderForm.Flat
     headerFlags           = HeaderFlags.Clickable
@@ -38,14 +38,14 @@ struct Header
     sigLayoutChanged:     closure(*Self)
     sigClicked:           closure(*Self, u32 )
 
-    items:             ArrayPtr'HeaderItem
-    hotIdx             = Swag.U32.Max
-    hotSeparator:      bool
-    moving:            bool
-    clicked:           bool
-    correctMoving:     f32
-    sortColumn:        u32
-    sortMark:          s32
+    items:                ArrayPtr'HeaderItem
+    hotIdx                = Swag.U32.Max
+    hotSeparator:         bool
+    moving:               bool
+    clicked:              bool
+    correctMoving:        f32
+    sortColumn:           u32
+    sortMark:             s32
 }
 
 impl IWnd for Header

@@ -12,14 +12,14 @@ enum RichEditUndoType
 
 struct RichEditUndo
 {
-    type:            RichEditUndoType = Selection
-    concatChars:     bool
-    selBeg:          RichEditCursor
-    cursorPos:       RichEditCursor
-    runes:           Array'rune
-    styles:          Array'u8
-    serial:          u64
-    hasSelRect:      bool
+    type:                   RichEditUndoType = Selection
+    concatChars:            bool
+    selBeg:                 RichEditCursor
+    cursorPos:              RichEditCursor
+    runes:                  Array'rune
+    styles:                 Array'u8
+    serial:                 u64
+    hasSelRect:             bool
 
     begSelectionBefore:     RichEditCursor
     endSelectionBefore:     RichEditCursor

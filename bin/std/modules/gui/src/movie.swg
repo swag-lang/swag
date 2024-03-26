@@ -16,17 +16,17 @@ struct Movie
     playFreq:            f32 = 0.05
     sigFrameChanged:     SigArray'closure(*Self)
 
-    numFrames:      s32
-    frameIndex:     s32
-    frame:          Image
+    numFrames:           s32
+    frameIndex:          s32
+    frame:               Image
 
-    source:          MovieSource = None
-    imgList:         ImageList
-    gif:             Gif.Decoder
-    bytes:           Array'u8
-    cacheFrames:     Array'Image
-    currentTime:     f32
-    dirtyFrame:      bool
+    source:              MovieSource = None
+    imgList:             ImageList
+    gif:                 Gif.Decoder
+    bytes:               Array'u8
+    cacheFrames:         Array'Image
+    currentTime:         f32
+    dirtyFrame:          bool
 }
 
 internal impl Movie

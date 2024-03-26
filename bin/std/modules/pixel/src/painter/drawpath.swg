@@ -8,20 +8,20 @@ public enum DrawPathListMode
 
 struct Context
 {
-    posBuffer:           Array'Math.Vector2
-    penSize:             f32
-    penSize2:            f32
-    beginLine:           bool
-    firstLine:           bool
-    lastLineInvalid:     bool
-    normalPrev:          Math.Vector2
-    normalFirst:         Math.Vector2
-    normal:              Math.Vector2
-    prim1, prim2:        u64
-    prev:                Math.Vector2
-    path:                const *LinePath
-    pen:                 const *Pen
-    offsetPath:          f32
+    posBuffer:               Array'Math.Vector2
+    penSize:                 f32
+    penSize2:                f32
+    beginLine:               bool
+    firstLine:               bool
+    lastLineInvalid:         bool
+    normalPrev:              Math.Vector2
+    normalFirst:             Math.Vector2
+    normal:                  Math.Vector2
+    prim1, prim2:            u64
+    prev:                    Math.Vector2
+    path:                    const *LinePath
+    pen:                     const *Pen
+    offsetPath:              f32
 
     remainingPatternLen:     f32
     patternTotalLen:         f32

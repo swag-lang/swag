@@ -36,15 +36,15 @@ enum EditBoxFlags
 
 struct EditBox
 {
-    using wnd: Wnd
+    using wnd:            Wnd
 
-    icon:            Icon
-    text:            String
-    form             = EditBoxForm.Square
-    editBoxFlags     = EditBoxFlags.AutoLoseFocus
-    inputMode        = EditBoxInputMode.String
-    maxLength:       s32
-    rightMargin:     f32
+    icon:                 Icon
+    text:                 String
+    form                  = EditBoxForm.Square
+    editBoxFlags          = EditBoxFlags.AutoLoseFocus
+    inputMode             = EditBoxInputMode.String
+    maxLength:            s32
+    rightMargin:          f32
 
     sigChanged:           SigArray'closure(*Self)
     sigLoseFocus:         SigArray'closure(*Self)
@@ -58,19 +58,19 @@ struct EditBox
         minMaxF64:     {min: f64, max: f64} = {-Swag.F64.Max, Swag.F64.Max}
     }
 
-    aniBk:         BlendColor{speed: 4}
-    aniBorder:     BlendColor{speed: 4}
+    aniBk:                BlendColor{speed: 4}
+    aniBorder:            BlendColor{speed: 4}
 
-    isInvalid:        bool
-    isHot:            bool
-    isDragging:       bool
-    selBeg, selEnd:   u64
-    timerCaret:       *Timer
-    visibleCaret:     bool
-    posSelBeg:        f32
-    posSelEnd:        f32
-    scrollPosX:       f32
-    countRunes:       s32
+    isInvalid:            bool
+    isHot:                bool
+    isDragging:           bool
+    selBeg, selEnd:       u64
+    timerCaret:           *Timer
+    visibleCaret:         bool
+    posSelBeg:            f32
+    posSelEnd:            f32
+    scrollPosX:           f32
+    countRunes:           s32
 }
 
 impl IWnd for EditBox

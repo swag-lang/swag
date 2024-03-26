@@ -30,7 +30,7 @@ struct FileDlgOptions
 
 struct FileDlg
 {
-    using dialog: Dialog
+    using dialog:     Dialog
 
     treeCtrl:         *ListCtrl
     treePathStr:      Array'String
@@ -41,8 +41,8 @@ struct FileDlg
     comboType:        *ComboBox
     dlgOptions:       FileDlgOptions
 
-    curFolder:     String
-    curList:       Array'FileInfo
+    curFolder:        String
+    curList:          Array'FileInfo
 }
 
 impl IWnd for FileDlg

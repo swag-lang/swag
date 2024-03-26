@@ -49,22 +49,22 @@ enum IconButtonCheckedForm
 
 struct IconButton
 {
-    using button: Button
+    using button:        Button
 
-    form             = IconButtonForm.Square
-    iconBtnFlags     = IconButtonFlags.Zero
-    checkedForm      = IconButtonCheckedForm.Full
-    arrowPos         = IconButtonArrowPos.None
-    textPos          = IconButtonTextPos.Bottom
+    form                 = IconButtonForm.Square
+    iconBtnFlags         = IconButtonFlags.Zero
+    checkedForm          = IconButtonCheckedForm.Full
+    arrowPos             = IconButtonArrowPos.None
+    textPos              = IconButtonTextPos.Bottom
 
     sigHidePopup:        SigArray'closure(*Self)
     sigShowPopup:        SigArray'closure(*Self)
     sigCheckChanged:     SigArray'closure(*Self)
     sigPaintIcon:        closure(*Self, *PaintContext, Math.Rectangle)
 
-    aniBk:         BlendColor
-    isChecked:     bool
-    popup:         *Wnd
+    aniBk:               BlendColor
+    isChecked:           bool
+    popup:               *Wnd
 }
 
 impl IWnd for IconButton

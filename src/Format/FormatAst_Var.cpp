@@ -12,7 +12,12 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
         return true;
 
     VectorNative<AstNode*> nodes;
-    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* node) {
+
+    CollectFlags flags = STOP_CMT_BEFORE;
+    if (!node->is(AstNodeKind::StructContent))
+        flags.add(STOP_EMPTY_LINE_BEFORE);
+
+    if (!collectChildrenToAlign(context, flags, node, start, nodes, processed, [](const AstNode* node) {
             if (node->kind != AstNodeKind::VarDecl && node->kind != AstNodeKind::ConstDecl)
                 return true;
             return false;

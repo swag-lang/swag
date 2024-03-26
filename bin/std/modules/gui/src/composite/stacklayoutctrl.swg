@@ -16,7 +16,7 @@ enum StackLayoutKind
 
 struct StackLayoutCtrl
 {
-    using wnd: Wnd
+    using wnd:      Wnd
 
     layoutKind:     StackLayoutKind = Top
     spacing:        f32 = 5

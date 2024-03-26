@@ -26,10 +26,10 @@ struct SplitterCtrl
     splitterFlags       = SplitterFlags.Zero
     titleSize:          f32 = 30
 
-    items:             ArrayPtr'SplitterItem
-    correctMoving:     f32
-    hotIdx             = Swag.U32.Max
-    moving:            bool
+    items:              ArrayPtr'SplitterItem
+    correctMoving:      f32
+    hotIdx              = Swag.U32.Max
+    moving:             bool
 }
 
 impl IWnd for SplitterCtrl

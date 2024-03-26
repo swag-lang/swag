@@ -45,26 +45,26 @@ struct ListLine
     separator:           bool
     iconMargin:          bool
 
-    lines:        ArrayPtr'ListLine
-    items:        ArrayPtr'ListItem
-    parent:       *ListLine
-    index:        u32
-    level:        u32
-    expanded:     bool
+    lines:               ArrayPtr'ListLine
+    items:               ArrayPtr'ListItem
+    parent:              *ListLine
+    index:               u32
+    level:               u32
+    expanded:            bool
 }
 
 struct ListCtrl
 {
-    using frameWnd: FrameWnd
+    using frameWnd:         FrameWnd
 
-    horizontalExtent:      f32
-    lineHeight:            f32
-    indentWidth:           f32 = 22
-    iconSize:              f32
-    iconMarginFirstCol     = true
-    listFlags              = ListFlags.Zero
-    selectionMode          = ListSelectionMode.Single
-    leftTextMargin:        f32
+    horizontalExtent:       f32
+    lineHeight:             f32
+    indentWidth:            f32 = 22
+    iconSize:               f32
+    iconMarginFirstCol      = true
+    listFlags               = ListFlags.Zero
+    selectionMode           = ListSelectionMode.Single
+    leftTextMargin:         f32
 
     sigSelChanged:          SigArray'closure(*Self)
     sigCheckChanged:        SigArray'closure(*Self)
@@ -76,18 +76,18 @@ struct ListCtrl
     sigVirtualFill:         func(*Self, *ListLine, u32 )
     sigSort:                func(*ListLine, *ListLine, u32 , bool)->s32
 
-    toFreeLines:          ArrayPtr'ListLine
-    lines:                Array'*ListLine
-    idxLineToIdxList:     HashTable'(u32, u32)
-    selModel:             SelModel
-    checkModel:           SelModel
-    focusIndex            = Swag.U32.Max
-    hotIndex              = Swag.U32.Max
-    scrollWnd:            *ScrollWnd
-    listView:             *ListView
-    header:               *Header
-    virtualCount:         u32
-    isVirtual:            bool
+    toFreeLines:            ArrayPtr'ListLine
+    lines:                  Array'*ListLine
+    idxLineToIdxList:       HashTable'(u32, u32)
+    selModel:               SelModel
+    checkModel:             SelModel
+    focusIndex              = Swag.U32.Max
+    hotIndex                = Swag.U32.Max
+    scrollWnd:              *ScrollWnd
+    listView:               *ListView
+    header:                 *Header
+    virtualCount:           u32
+    isVirtual:              bool
 }
 
 struct ListView

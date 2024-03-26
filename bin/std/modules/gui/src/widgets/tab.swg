@@ -50,7 +50,7 @@ struct TabItem
 
 struct Tab
 {
-    using wnd: Wnd
+    using wnd:                Wnd
 
     barForm                   = TabBarForm.Flat
     itemForm                  = TabItemForm.Flat
@@ -60,16 +60,16 @@ struct Tab
     itemAutoLayoutMargin:     f32 = 25
     itemMinWidth:             f32 = 25
 
-    sigSelChanged: SigArray'closure(*Tab)
+    sigSelChanged:            SigArray'closure(*Tab)
 
-    buttonPopup:         *IconButton
-    views:               ArrayPtr'TabItem
-    popup:               *PopupListCtrl
-    selectedIdx:         u32
-    firstVisibleIdx:     u32 = 0
-    hotIdx:              u32 = Swag.U32.Max
-    barHeight:           f32
-    mostRightPos:        f32
+    buttonPopup:              *IconButton
+    views:                    ArrayPtr'TabItem
+    popup:                    *PopupListCtrl
+    selectedIdx:              u32
+    firstVisibleIdx:          u32 = 0
+    hotIdx:                   u32 = Swag.U32.Max
+    barHeight:                f32
+    mostRightPos:             f32
 }
 
 impl IWnd for Tab

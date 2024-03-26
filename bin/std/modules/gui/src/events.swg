@@ -94,15 +94,15 @@ struct CommandStateEvent
     id:             WndId
     source:         *Wnd
 
-    icon:         Icon
-    name:         String
-    longName:     String
-    shortcut:     String
-    toolTip:      String
-    setFlags:     SetFlags = Zero
-    disabled:     bool
-    checked:      bool
-    hidden:       bool
+    icon:           Icon
+    name:           String
+    longName:       String
+    shortcut:       String
+    toolTip:        String
+    setFlags:       SetFlags = Zero
+    disabled:       bool
+    checked:        bool
+    hidden:         bool
 }
 
 struct TimerEvent

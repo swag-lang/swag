@@ -13,7 +13,7 @@ enum SliderFlags
 
 struct Slider
 {
-    using wnd: Wnd
+    using wnd:          Wnd
 
     value1:             f32
     value2:             f32
@@ -25,19 +25,19 @@ struct Slider
     sigChanged:         SigArray'closure(*Self)
     sigEndChange:       SigArray'closure(*Self)
 
-    isMoving:         bool
-    isPressed1:       bool
-    isPressed2:       bool
-    isHot1:           bool
-    isHot2:           bool
-    hasValue1:        bool
-    hasValue2:        bool
-    correcMoving:     f32
+    isMoving:           bool
+    isPressed1:         bool
+    isPressed2:         bool
+    isHot1:             bool
+    isHot2:             bool
+    hasValue1:          bool
+    hasValue2:          bool
+    correcMoving:       f32
 
-    aniMark1:     BlendColor
-    aniMark2:     BlendColor
-    aniStep1:     BlendColor
-    aniStep2:     BlendColor
+    aniMark1:           BlendColor
+    aniMark2:           BlendColor
+    aniStep1:           BlendColor
+    aniStep2:           BlendColor
 }
 
 impl IWnd for Slider

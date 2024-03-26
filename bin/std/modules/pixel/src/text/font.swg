@@ -35,13 +35,13 @@ public struct Font
     forceBold:         bool
     forceItalic:       bool
 
-    fullname:       String
-    typeFace:       *TypeFace
-    size:           u32
-    atlases:        Array'GlyphAtlas
-    asciiRef:       [128] GlyphDesc
-    unicodeRef:     HashTable'(rune, *GlyphDesc)
-    dirty:          bool
+    fullname:          String
+    typeFace:          *TypeFace
+    size:              u32
+    atlases:           Array'GlyphAtlas
+    asciiRef:          [128] GlyphDesc
+    unicodeRef:        HashTable'(rune, *GlyphDesc)
+    dirty:             bool
 }
 
 internal var g_HashFont: HashTable'(String, *Font)

@@ -12,53 +12,53 @@ public enum ScrollWndFlags
 
 public struct ScrollWnd
 {
-    using frameWnd: FrameWnd
+    using frameWnd:           FrameWnd
 
-    scrollIncrementV:     f32 = 50
-    scrollIncrementH:     f32 = 50
+    scrollIncrementV:         f32 = 50
+    scrollIncrementH:         f32 = 50
 
-    scrollSize:        Math.Point
-    scrollWndFlags     = ScrollWndFlags.Zero
+    scrollSize:               Math.Point
+    scrollWndFlags            = ScrollWndFlags.Zero
 
     sigScrollPosChanged:      SigArray'closure(*Self, Math.Point, Math.Point)
     sigScrollSizeChanged:     SigArray'closure(*Self, Math.Point, Math.Point)
 
-    oldMouseCapture: *Wnd
+    oldMouseCapture:          *Wnd
 
-    scrollSmoothPos:      Math.Point
-    scrollRequestPos:     Math.Point
-    smoothScroll:         bool
+    scrollSmoothPos:          Math.Point
+    scrollRequestPos:         Math.Point
+    smoothScroll:             bool
 
-    showBarV:       bool
-    needV:          bool
-    posBoxV:        f32
-    sizeBoxV:       f32
-    isHotV:         bool
-    isHotBarV:      bool
-    isPressedV:     bool
+    showBarV:                 bool
+    needV:                    bool
+    posBoxV:                  f32
+    sizeBoxV:                 f32
+    isHotV:                   bool
+    isHotBarV:                bool
+    isPressedV:               bool
 
-    showBarH:       bool
-    needH:          bool
-    posBoxH:        f32
-    sizeBoxH:       f32
-    isHotH:         bool
-    isHotBarH:      bool
-    isPressedH:     bool
+    showBarH:                 bool
+    needH:                    bool
+    posBoxH:                  f32
+    sizeBoxH:                 f32
+    isHotH:                   bool
+    isHotBarH:                bool
+    isPressedH:               bool
 
-    isMoving:          bool
-    isGrabbing:        bool
-    correcMoving:      f32
-    offsetClientV:     f32
-    offsetClientH:     f32
-    paddingZ:          f32
-    paddingW:          f32
+    isMoving:                 bool
+    isGrabbing:               bool
+    correcMoving:             f32
+    offsetClientV:            f32
+    offsetClientH:            f32
+    paddingZ:                 f32
+    paddingW:                 f32
 
-    aniBkBarV:     BlendColor
-    aniBkBarH:     BlendColor
-    aniBoxV:       BlendColor
-    aniBoxH:       BlendColor
+    aniBkBarV:                BlendColor
+    aniBkBarH:                BlendColor
+    aniBoxV:                  BlendColor
+    aniBoxH:                  BlendColor
 
-    grabbingPos: Math.Point
+    grabbingPos:              Math.Point
 }
 
 public impl IWnd for ScrollWnd

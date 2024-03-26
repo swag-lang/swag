@@ -3,11 +3,11 @@ using Core, Pixel
 
 struct PropertyListCtrl
 {
-    using frameWnd: FrameWnd
+    using frameWnd:     FrameWnd
 
-    splitter:     *SplitterCtrl
-    list:         *ListCtrl
-    prop:         *PropertyList
+    splitter:           *SplitterCtrl
+    list:               *ListCtrl
+    prop:               *PropertyList
 }
 
 impl PropertyListCtrl

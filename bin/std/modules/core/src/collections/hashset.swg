@@ -15,11 +15,11 @@ struct(K) HashSet
     const HASH_FIRST       = 2'u32
     const HASH_MASK        = 2'u32
 
-    allocator:     IAllocator
-    table:         ^HashSetEntry
-    count:         u64               // Number of valid entries
-    capacity:      u64               // Number of total entries the table can hold
-    deleted:       u64               // Number of deleted entries
+    allocator:             IAllocator
+    table:                 ^HashSetEntry
+    count:                 u64               // Number of valid entries
+    capacity:              u64               // Number of total entries the table can hold
+    deleted:               u64               // Number of deleted entries
 }
 
 impl HashSet

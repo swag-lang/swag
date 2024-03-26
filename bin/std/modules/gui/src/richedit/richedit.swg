@@ -29,29 +29,29 @@ struct RichEditMapping
 
 struct RichEditCtrl
 {
-    using frameWnd:     FrameWnd
-    richEdFlags         = RichEditFlags.Zero
-    lineSpacing:        f32
-    overwriteMode:      bool
-    tabSize:            s32 = 4
-    marginLeft:         f32
-    marginRight:        f32
-    lexer:              IRichEditLexer
-    form                = RichEditForm.RichEditCtrl
-    sigIsReadOnly:      SigArray'closure(*bool)
-    sigChanged:         SigArray'closure(*Self)
-    sigModified:        SigArray'closure(*Self)
-    bkColorModel:       String
+    using frameWnd:              FrameWnd
+    richEdFlags                  = RichEditFlags.Zero
+    lineSpacing:                 f32
+    overwriteMode:               bool
+    tabSize:                     s32 = 4
+    marginLeft:                  f32
+    marginRight:                 f32
+    lexer:                       IRichEditLexer
+    form                         = RichEditForm.RichEditCtrl
+    sigIsReadOnly:               SigArray'closure(*bool)
+    sigChanged:                  SigArray'closure(*Self)
+    sigModified:                 SigArray'closure(*Self)
+    bkColorModel:                String
 
-    styles:           [256] RichEditRuneStyle
-    stylesSelect:     [2] RichEditRuneStyle
-    cursorPos:        RichEditCursor
-    selBeg:           RichEditCursor
-    lines:            ArrayPtr'RichEditLine
-    freeLines:        ArrayPtr'RichEditLine
-    scrollWnd:        *ScrollWnd
-    edView:           *RichEditView
-    selRectangle:     Math.Rectangle
+    styles:                      [256] RichEditRuneStyle
+    stylesSelect:                [2] RichEditRuneStyle
+    cursorPos:                   RichEditCursor
+    selBeg:                      RichEditCursor
+    lines:                       ArrayPtr'RichEditLine
+    freeLines:                   ArrayPtr'RichEditLine
+    scrollWnd:                   *ScrollWnd
+    edView:                      *RichEditView
+    selRectangle:                Math.Rectangle
 
     hasSelRect:                  bool
     modified:                    bool
@@ -60,19 +60,19 @@ struct RichEditCtrl
     forceCaretVisible:           bool
     forceCaretVisibleCenter:     bool
 
-    undoMgr:                  ArrayPtr'RichEditUndo
-    toUndo:                   ArrayPtr'RichEditUndo
-    mapping:                  Array'RichEditMapping
-    currentUndo:              u64
-    undoCounter:              u64
-    modifiedUndoMarker:       u64
-    serialUndo:               u64
-    countVisibleLines:        u64
-    firstVisibleLineView:     u64
-    lastVisibleLineView:      u64
-    clipFormat:               Clipboard.Format
-    cursorPosUndo:            RichEditCursor
-    selBegUndo:               RichEditCursor
+    undoMgr:                     ArrayPtr'RichEditUndo
+    toUndo:                      ArrayPtr'RichEditUndo
+    mapping:                     Array'RichEditMapping
+    currentUndo:                 u64
+    undoCounter:                 u64
+    modifiedUndoMarker:          u64
+    serialUndo:                  u64
+    countVisibleLines:           u64
+    firstVisibleLineView:        u64
+    lastVisibleLineView:         u64
+    clipFormat:                  Clipboard.Format
+    cursorPosUndo:               RichEditCursor
+    selBegUndo:                  RichEditCursor
 }
 
 internal impl RichEditCtrl

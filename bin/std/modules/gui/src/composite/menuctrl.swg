@@ -16,15 +16,15 @@ public enum MenuCtrlFlags
 
 public struct PopupMenuItem
 {
-    using item:     Item
-    rightName:      RichString
-    popup:          *MenuCtrl
-    pos:            f32
-    size:           f32
-    separator:      bool
-    disabled:       bool
-    checked:        bool
-    hidden:         bool
+    using item:       Item
+    rightName:        RichString
+    popup:            *MenuCtrl
+    pos:              f32
+    size:             f32
+    separator:        bool
+    disabled:         bool
+    checked:          bool
+    hidden:           bool
 
     aniSel:           BlendColor{speed: 10}
     aniText:          BlendColor{speed: 10}
@@ -38,18 +38,18 @@ public struct MenuCtrl
     onComputeItem:        func(*MenuCtrl, *PopupMenuItem)
     menuCtrlFlags:        MenuCtrlFlags = Zero
 
-    paddingSel:         f32 = 4
-    items:              ArrayPtr'PopupMenuItem
-    hotIdx:             u32 = Swag.U32.Max
-    selectedIdx:        u32 = Swag.U32.Max
-    bar:                bool
-    endModal:           bool
-    endModalResult:     WndId
-    ownerMenu:          *MenuCtrl
-    subVisible:         *MenuCtrl
-    timer:              *Timer
-    dirtyLayout:        bool
-    paintByFrame:       bool
+    paddingSel:           f32 = 4
+    items:                ArrayPtr'PopupMenuItem
+    hotIdx:               u32 = Swag.U32.Max
+    selectedIdx:          u32 = Swag.U32.Max
+    bar:                  bool
+    endModal:             bool
+    endModalResult:       WndId
+    ownerMenu:            *MenuCtrl
+    subVisible:           *MenuCtrl
+    timer:                *Timer
+    dirtyLayout:          bool
+    paintByFrame:         bool
 }
 
 public impl IWnd for MenuCtrl

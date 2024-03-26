@@ -21,7 +21,7 @@ impl PropertyList
 
 struct PropertyList
 {
-    using frameWnd: FrameWnd
+    using frameWnd:            FrameWnd
 
     nameMarginBefore:          s32 = 25
     nameHeight:                s32 = 25
@@ -31,35 +31,35 @@ struct PropertyList
     maxSizeCombo:              s32 = 200
     maxSizeEditValue:          s32 = 200
 
-    sigChanged: SigArray'closure(*Self)
+    sigChanged:                SigArray'closure(*Self)
 
-    font0:         FontFamily
-    font1:         FontFamily
-    font2:         FontFamily
-    scrollWnd:     *ScrollWnd
-    edView:        *PropertyListView
-    items:         ArrayPtr'PropertyListItem
-    categs:        Array'{item: *PropertyListItem, lvl: s32}
+    font0:                     FontFamily
+    font1:                     FontFamily
+    font2:                     FontFamily
+    scrollWnd:                 *ScrollWnd
+    edView:                    *PropertyListView
+    items:                     ArrayPtr'PropertyListItem
+    categs:                    Array'{item: *PropertyListItem, lvl: s32}
 }
 
 struct PropertyListItem
 {
-    filter:        String
-    line:          *Wnd
-    ptrData:       *u8
-    type:          typeinfo
-    typeValue:     Swag.TypeValue
-    forceShow:     *Wnd
+    filter:             String
+    line:               *Wnd
+    ptrData:            *u8
+    type:               typeinfo
+    typeValue:          Swag.TypeValue
+    forceShow:          *Wnd
 
-    label:         *Label
-    labelDesc:     *Label
+    label:              *Label
+    labelDesc:          *Label
 
-    editBox:       *EditBox
-    checkBox:      *CheckButton
-    comboBox:      *ComboBox
-    sliderBox:     *SliderCtrl
+    editBox:            *EditBox
+    checkBox:           *CheckButton
+    comboBox:           *ComboBox
+    sliderBox:          *SliderCtrl
 
-    onResize: SigArray'closure(*Self)
+    onResize:           SigArray'closure(*Self)
 
     aniFocusBk:         BlendColor
     aniFocusBorder:     BlendColor

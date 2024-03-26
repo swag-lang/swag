@@ -31,11 +31,11 @@ public enum VoiceState
 #[Swag.Opaque]
 public struct Voice
 {
-    handle:     VoiceHandle
-    file:       *SoundFile
+    handle:                     VoiceHandle
+    file:                       *SoundFile
 
-    requestedEncoding     = SoundFileEncoding.Unknown
-    codec:                ICodec
+    requestedEncoding           = SoundFileEncoding.Unknown
+    codec:                      ICodec
 
     playFlags:                  VoicePlayFlags
     state:                      VoiceState

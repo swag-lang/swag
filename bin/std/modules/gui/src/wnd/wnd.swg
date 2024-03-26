@@ -88,45 +88,45 @@ enum WndFlags
 
 struct Wnd
 {
-    itf:          IWnd
-    type:         typeinfo
-    surface:      *Surface
-    style:        ThemeStyle
-    wndFlags      = WndFlags.ClipChildren
-    userData:     *void
+    itf:                   IWnd
+    type:                  typeinfo
+    surface:               *Surface
+    style:                 ThemeStyle
+    wndFlags               = WndFlags.ClipChildren
+    userData:              *void
 
-    position:      Math.Rectangle
-    minSize:       Math.Point
-    maxSize:       Math.Point
-    scrollPos:     Math.Point
+    position:              Math.Rectangle
+    minSize:               Math.Point
+    maxSize:               Math.Point
+    scrollPos:             Math.Point
 
-    invalidatePadding: Math.Vector4
+    invalidatePadding:     Math.Vector4
 
-    parent:     *Wnd
-    owner:      *Wnd
-    childs:     Array'(*Wnd)
+    parent:                *Wnd
+    owner:                 *Wnd
+    childs:                Array'(*Wnd)
 
-    name:        RichString
-    id:          WndId
-    cursor:      Cursor
-    toolTip:     String
+    name:                  RichString
+    id:                    WndId
+    cursor:                Cursor
+    toolTip:               String
 
-    keyShortcuts:     Array'KeyShortcut
-    actions:          Array'IActionUI
+    keyShortcuts:          Array'KeyShortcut
+    actions:               Array'IActionUI
 
-    margin:          Math.Vector4
-    padding:         Math.Vector4
-    dockStyle:       DockStyle = None
-    anchorStyle:     AnchorStyle = None
+    margin:                Math.Vector4
+    padding:               Math.Vector4
+    dockStyle:             DockStyle = None
+    anchorStyle:           AnchorStyle = None
 
-    focusStrategy: FocusStategy = MousePressed
+    focusStrategy:         FocusStategy = MousePressed
 
-    backgroundStyle:      BackgroundStyle = Transparent
-    isAllocated:          bool
-    isPendingDestroy:     bool
-    createEventDone:      bool
+    backgroundStyle:       BackgroundStyle = Transparent
+    isAllocated:           bool
+    isPendingDestroy:      bool
+    createEventDone:       bool
 
-    hookOnEvent: HookEvent
+    hookOnEvent:           HookEvent
 }
 
 impl IWnd for Wnd

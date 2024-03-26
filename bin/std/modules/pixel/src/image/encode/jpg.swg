@@ -27,15 +27,15 @@ private
         width:             u16
         numComponents:     u8
 
-        idy:      u8
-        hvy:      u8
-        qty:      u8
-        idcb:     u8
-        hvcb:     u8
-        qtcb:     u8
-        idcr:     u8
-        hvcr:     u8
-        qtcr:     u8
+        idy:               u8
+        hvy:               u8
+        qty:               u8
+        idcb:              u8
+        hvcb:              u8
+        qtcb:              u8
+        idcr:              u8
+        hvcr:              u8
+        qtcr:              u8
     }
 
     struct SOSInfoType
@@ -44,15 +44,15 @@ private
         length:            u16
         numComponents:     u8
 
-        idy:      u8
-        hty:      u8
-        idcb:     u8
-        htcb:     u8
-        idcr:     u8
-        htcr:     u8
-        ss:       u8
-        se:       u8
-        bf:       u8
+        idy:               u8
+        hty:               u8
+        idcb:              u8
+        htcb:              u8
+        idcr:              u8
+        htcr:              u8
+        ss:                u8
+        se:                u8
+        bf:                u8
     }
 
     struct ColorRGB
@@ -175,33 +175,33 @@ public struct EncodeOptions
 #[Swag.Opaque]
 public struct Encoder
 {
-    imageX:        u16
-    imageY:        u16
-    bufferRGB:     Array'ColorRGB
+    imageX:            u16
+    imageY:            u16
+    bufferRGB:         Array'ColorRGB
 
-    stream:       *ConcatBuffer
-    srcImage:     const *Image
+    stream:            *ConcatBuffer
+    srcImage:          const *Image
 
-    bytenew:     u8
-    bytepos:     s8
+    bytenew:           u8
+    bytepos:           s8
 
-    scaleFactor: u8 = 10
+    scaleFactor:       u8 = 10
 
-    dqtInfo:     DQTInfoType
-    dhtInfo:     DHTInfoType
-    htYDC:       [12] BitString
-    htCbDC:      [12] BitString
-    htYAC:       [256] BitString
-    htCbAC:      [256] BitString
+    dqtInfo:           DQTInfoType
+    dhtInfo:           DHTInfoType
+    htYDC:             [12] BitString
+    htCbDC:            [12] BitString
+    htYAC:             [256] BitString
+    htCbAC:            [256] BitString
 
-    fdtblY:      [64] f32
-    fdtblCb:     [64] f32
+    fdtblY:            [64] f32
+    fdtblCb:           [64] f32
 
-    duY:       [64] s8
-    duCb:      [64] s8
-    duCr:      [64] s8
-    duDct:     [64] s16
-    du:        [64] s16
+    duY:               [64] s8
+    duCb:              [64] s8
+    duCr:              [64] s8
+    duDct:             [64] s16
+    du:                [64] s16
 
     categoryAlloc:     Array'u8
     category:          ^u8

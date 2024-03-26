@@ -10,22 +10,22 @@ enum UpdateCommand
 // The sound driver
 struct Driver
 {
-    using native: DriverNative
+    using native:             DriverNative
 
-    updateTh:                Threading.Thread
-    wakeupUpdate:            Sync.Event
-    mutexVoicesToUpdate:     Sync.Mutex
-    voicesToUpdate:          Array'{voice: *Voice, command: UpdateCommand}
+    updateTh:                 Threading.Thread
+    wakeupUpdate:             Sync.Event
+    mutexVoicesToUpdate:      Sync.Mutex
+    voicesToUpdate:           Array'{voice: *Voice, command: UpdateCommand}
 
     mutexRecycleVoices:       Sync.Mutex
     activeVoices:             Array'(*Voice)
     pendingRecycleVoices:     Array'(*Voice)
     toRecycleVoices:          Array'(*Voice)
 
-    mutexBuses:     Sync.Mutex
-    buses:          Array'(*Bus)
+    mutexBuses:               Sync.Mutex
+    buses:                    Array'(*Bus)
 
-    driverIsClosing: bool
+    driverIsClosing:          bool
 }
 
 private func updateThreadProc(th: Threading.Thread)

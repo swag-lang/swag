@@ -99,9 +99,9 @@ struct ColorMask
 
 struct Command
 {
-    id:  CommandId = undefined
+    id:               CommandId = undefined
 
-    using params: union
+    using params:     union
     {
         clear:              struct{color: Color}
         drawTriangles:      struct{start: u32, count: u32}
@@ -115,7 +115,7 @@ struct Command
         renderTgt:          struct{tgt: *RenderTarget, paintAlpha: bool}
         shader:             struct{shader: *ShaderBase}
 
-        shaderParam: struct
+        shaderParam:        struct
         {
             param:     ShaderParamHandle
             type:      typeinfo
@@ -123,7 +123,7 @@ struct Command
             _s32:      s32
         }
 
-        texture0: struct
+        texture0:           struct
         {
             boundRect:             Vector4
             textureRect:           Vector4
@@ -138,10 +138,10 @@ struct Command
 
 struct Painter
 {
-    commandBuffer:      Array'Command
-    vertexBuffer:       Array'VertexLayout
-    triangulateIdx:     Array's32
-    fake:               bool
+    commandBuffer:          Array'Command
+    vertexBuffer:           Array'VertexLayout
+    triangulateIdx:         Array's32
+    fake:                   bool
 
     sharedSolidPen:         Pen
     sharedSolidBrush:       Brush
@@ -149,20 +149,20 @@ struct Painter
     sharedLinePathList:     LinePathList
     sharedRoundTmp:         Array'{factor: f32, pos: Vector2}
 
-    curState:             PaintState
-    stackState:           Array'PaintState
-    stackTransform:       Array'Transform2
-    lastTexture0Type:     BrushType = SolidColor
+    curState:               PaintState
+    stackState:             Array'PaintState
+    stackTransform:         Array'Transform2
+    lastTexture0Type:       BrushType = SolidColor
 
-    stackRT:     Array'*RenderTarget
-    curRT:       *RenderTarget
+    stackRT:                Array'*RenderTarget
+    curRT:                  *RenderTarget
 
     lastTexture0Handle:     TextureHandle
     hasTextureFont:         bool
 
-    drawingBegin:       bool
-    overlapMode:        bool
-    canSetTexture0:     bool = true
+    drawingBegin:           bool
+    overlapMode:            bool
+    canSetTexture0:         bool = true
 }
 
 impl Painter

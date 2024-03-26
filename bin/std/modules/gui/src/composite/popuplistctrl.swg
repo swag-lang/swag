@@ -6,9 +6,9 @@ struct PopupListCtrlItem
     using base:      Item
     isSeparator:     bool
 
-    aniSel:       BlendColor{speed: 10}
-    aniText:      BlendColor{speed: 10}
-    aniCheck:     BlendColor{speed: 10}
+    aniSel:          BlendColor{speed: 10}
+    aniText:         BlendColor{speed: 10}
+    aniCheck:        BlendColor{speed: 10}
 }
 
 struct PopupListCtrl
@@ -20,12 +20,12 @@ struct PopupListCtrl
     maxHeightPopup:      f32 = 300
     simFitX, simFitY:    bool
 
-    sigSelected: closure(*Self, u32 )
+    sigSelected:         closure(*Self, u32 )
 
-    items:           ArrayPtr'PopupListCtrlItem
-    selectedIdx      = Swag.U32.Max
-    scrollWnd:       *ScrollWnd
-    maxIconSize:     s32
+    items:               ArrayPtr'PopupListCtrlItem
+    selectedIdx          = Swag.U32.Max
+    scrollWnd:           *ScrollWnd
+    maxIconSize:         s32
 }
 
 struct PopupListView

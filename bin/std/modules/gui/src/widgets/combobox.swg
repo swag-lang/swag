@@ -16,23 +16,23 @@ struct ComboBoxItem
 
 struct ComboBox
 {
-    using wnd: Wnd
+    using wnd:          Wnd
 
     kind                = ComboBoxKind.Select
     minWidthPopup:      f32 = 100
     maxHeightPopup:     f32 = 300
     sigChanged:         SigArray'closure(*Self, u32)
 
-    editBox:         *EditBox
-    isHot:           bool
-    popup:           *PopupListCtrl
-    items:           ArrayPtr'ComboBoxItem
-    selectedIdx      = Swag.U32.Max
-    maxIconSize:     s32
+    editBox:            *EditBox
+    isHot:              bool
+    popup:              *PopupListCtrl
+    items:              ArrayPtr'ComboBoxItem
+    selectedIdx         = Swag.U32.Max
+    maxIconSize:        s32
 
-    aniBk:         BlendColor
-    aniBorder:     BlendColor
-    aniText:       BlendColor
+    aniBk:              BlendColor
+    aniBorder:          BlendColor
+    aniText:            BlendColor
 }
 
 impl IWnd for ComboBox

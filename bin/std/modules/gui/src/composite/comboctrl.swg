@@ -7,8 +7,8 @@ struct ComboCtrl
     labelSize:          f32 = 60
     comboSize:          f32 = 60
 
-    label:     *Label
-    combo:     *ComboBox
+    label:              *Label
+    combo:              *ComboBox
 }
 
 impl IWnd for ComboCtrl

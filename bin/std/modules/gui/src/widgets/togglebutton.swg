@@ -3,14 +3,14 @@ using Core, Pixel
 
 struct ToggleButton
 {
-    using button: Button
+    using button:     Button
 
-    isToggled:      bool
-    sigChanged:     func(*Self)
+    isToggled:        bool
+    sigChanged:       func(*Self)
 
-    aniBk:         BlendColor
-    aniBorder:     BlendColor
-    aniMark:       BlendColor
+    aniBk:            BlendColor
+    aniBorder:        BlendColor
+    aniMark:          BlendColor
 }
 
 impl IWnd for ToggleButton

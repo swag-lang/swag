@@ -7,9 +7,9 @@ public struct ApplicationNative
     fileSmallIconsImageList:     ImageList
     mapFileSmallIcons:           HashTable'(string, s32)
 
-    fileBigIconsImage:         Image
-    fileBigIconsImageList:     ImageList
-    mapFileBigIcons:           HashTable'(string, s32)
+    fileBigIconsImage:           Image
+    fileBigIconsImageList:       ImageList
+    mapFileBigIcons:             HashTable'(string, s32)
 }
 
 impl Application

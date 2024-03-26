@@ -18,7 +18,7 @@ enum CheckButtonFlags
 
 struct CheckButton
 {
-    using button: Button
+    using button:        Button
 
     checked              = ButtonCheckState.UnChecked
     checkButtonFlags     = CheckButtonFlags.Zero

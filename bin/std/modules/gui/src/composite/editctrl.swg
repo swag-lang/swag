@@ -7,8 +7,8 @@ struct EditCtrl
     labelSize:          f32 = 60
     editSize:           f32 = 60
 
-    label:     *Label
-    edit:      *EditBox
+    label:              *Label
+    edit:               *EditBox
 }
 
 impl IWnd for EditCtrl

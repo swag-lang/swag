@@ -33,11 +33,11 @@ struct ColorPicker
     mode            = ColorPickerMode.SaturationLightness
     sigChanged:     SigArray'closure(*Self)
 
-    dirty:        bool = true
-    isMoving:     bool
-    img:          Image
-    texture:      Texture
-    xCur, yCur:   s32
+    dirty:          bool = true
+    isMoving:       bool
+    img:            Image
+    texture:        Texture
+    xCur, yCur:     s32
 }
 
 impl IWnd for ColorPicker

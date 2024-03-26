@@ -33,22 +33,22 @@ enum SoundFileEncoding
 // The 'SoundFile' is not necessary fully loaded in memory, in case we want it to be streamed.
 struct SoundFile
 {
-    fullname:     String
-    datas:        Array'u8     // Prefetched datas (in encoding format)
+    fullname:               String
+    datas:                  Array'u8                        // Prefetched datas (in encoding format)
 
-    sampleCount:     u64     // Total number of samples
-    dataSize:        u64     // Total size, in bytes, of datas
-    dataSeek:        u64     // The position in the file where the datas are stored
+    sampleCount:            u64                             // Total number of samples
+    dataSize:               u64                             // Total size, in bytes, of datas
+    dataSeek:               u64                             // The position in the file where the datas are stored
 
-    encoding = SoundFileEncoding.Unknown // Encoding type of the datas
+    encoding                = SoundFileEncoding.Unknown     // Encoding type of the datas
 
-    validity:               SoundFileValidityMask     // What informations in this struct are valid
-    frequency:              u32                       // Sound frequency
-    channelCount:           u32                       // Number of channels (2 for stereo...)
-    channelMask:            u32                       // Identifier of the channels
-    bitsPerSample:          u32                       // Number of bits per sample in the datas
-    duration:               f32                       // Duration, in seconds, of the sound
-    validBitsPerSample:     u16                       // Number of valid bits per sample (<= bitsPerSample)
+    validity:               SoundFileValidityMask           // What informations in this struct are valid
+    frequency:              u32                             // Sound frequency
+    channelCount:           u32                             // Number of channels (2 for stereo...)
+    channelMask:            u32                             // Identifier of the channels
+    bitsPerSample:          u32                             // Number of bits per sample in the datas
+    duration:               f32                             // Duration, in seconds, of the sound
+    validBitsPerSample:     u16                             // Number of valid bits per sample (<= bitsPerSample)
 }
 
 impl SoundFile

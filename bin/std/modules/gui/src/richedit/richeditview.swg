@@ -3,7 +3,7 @@ using Core, Pixel
 #[Swag.Opaque]
 public struct RichEditView
 {
-    using wnd: Wnd
+    using wnd:            Wnd
 
     ed:                   *RichEditCtrl
     visibleCaret:         bool

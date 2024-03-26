@@ -10,26 +10,26 @@ struct SurfaceState
 
 struct Surface
 {
-    using native:     NativeSurface
-    app:              *Application
-    wnd:              *SurfaceWnd
-    painter:          Painter
-    rt:               RenderTarget
-    userData:         *void
+    using native:      NativeSurface
+    app:               *Application
+    wnd:               *SurfaceWnd
+    painter:           Painter
+    rt:                RenderTarget
+    userData:          *void
 
-    rc:          RenderingContext
-    minSize:     Math.Point
-    maxSize:     Math.Point
+    rc:                RenderingContext
+    minSize:           Math.Point
+    maxSize:           Math.Point
 
     flags:             SurfaceFlags = Zero
     dirtyRect:         Math.Rectangle = {Swag.F32.Max, Swag.F32.Max, 0, 0}
     colorDisabled:     Color
 
-    isDirty:         bool
-    isHidden:        bool = true
-    isDisabled:      bool
-    isMinimized:     bool
-    using state:     SurfaceState
+    isDirty:           bool
+    isHidden:          bool = true
+    isDisabled:        bool
+    isMinimized:       bool
+    using state:       SurfaceState
 }
 
 #[Swag.EnumFlags]

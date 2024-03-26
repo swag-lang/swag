@@ -10,7 +10,7 @@ enum ProgressBarFlags
 
 struct ProgressBar
 {
-    using wnd: Wnd
+    using wnd:       Wnd
 
     prgBarFlags      = ProgressBarFlags.Zero
     progression:     f32
