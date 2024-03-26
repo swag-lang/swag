@@ -109,6 +109,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
             concat->addString(varNode->token.text);
     }
 
+    const auto countEol = concat->eol;
     if (varNode->type)
     {
         if (!varNode->type->hasAstFlag(AST_GENERATED) || varNode->type->hasAstFlag(AST_GENERATED_USER))
@@ -157,7 +158,10 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
         maxLenType += alignTypeBanks;
     }
 
-    concat->alignToColumn(startColumn + maxLenName + maxLenType + context.addBlanksBeforeAlignedLastLineComments);
+    // Align comment only if the type didn't output some eol
+    if (concat->eol == countEol)
+        concat->alignToColumn(startColumn + maxLenName + maxLenType + context.addBlanksBeforeAlignedLastLineComments);
+
     beautifyAfter(context, varNode);
 
     return true;

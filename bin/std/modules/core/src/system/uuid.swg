@@ -13,7 +13,7 @@ struct UUID
         val8:      [16] u8
         val64:     [2] u64
     }
-        }
+}
 
 #[Swag.Inline]
 internal func initRng()

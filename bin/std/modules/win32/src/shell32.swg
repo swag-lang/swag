@@ -267,7 +267,7 @@ struct NOTIFYICONDATAA
         uTimeout:     UINT
         uVersion:     UINT
     }
-                                                                                                          szInfoTitle:              [64] CHAR
+    szInfoTitle:              [64] CHAR
     dwInfoFlags:              DWORD
     guidItem:                 GUID
     hBalloonIcon:             HICON
@@ -290,7 +290,7 @@ struct NOTIFYICONDATAW
         uTimeout:     UINT
         uVersion:     UINT
     }
-                                                                                                          szInfoTitle:              [64] WCHAR
+    szInfoTitle:              [64] WCHAR
     dwInfoFlags:              DWORD
     guidItem:                 GUID
     hBalloonIcon:             HICON
