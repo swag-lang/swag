@@ -30,12 +30,12 @@ enum FileMode
 #[Swag.EnumFlags]
 enum FileShare
 {
-    Zero = 0
+    Zero        = 0
     Delete
     Inheritable
     Read
     Write
-    ReadWrite = Read | Write
+    ReadWrite   = Read | Write
 }
 
 // Read a file, and store the result in an utf8 string.
@@ -48,7 +48,7 @@ func readAllText(fullname: string, encoding = TextEncoding.Utf8, normalizeEol = 
     if normalizeEol
     {
         var result: retval
-        var res: String
+        var res:    String
         while textReader.readLine(&res)
         {
             result += res
@@ -68,7 +68,7 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String 
     textReader.open(fullname, encoding)
 
     var result: retval
-    var res: String
+    var res:    String
     while textReader.readLine(&res) do
         result.add(moveref &res)
     return result
@@ -98,7 +98,7 @@ func readAllBytes(fullname: string)->Array'u8 throw
     var stream = openRead(fullname)
 
     var result: retval
-    let len = stream.getSize()
+    let len     = stream.getSize()
     result.reserve(len)
     result.count = stream.read(result.buffer, len)
     return result

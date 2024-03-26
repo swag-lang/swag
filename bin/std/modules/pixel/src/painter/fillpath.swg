@@ -15,8 +15,10 @@ public impl Painter
 
             // "Eat" points, triangles and edges
             p.points =,move t.points
-            p.points.add(t.head); t.head = null
-            p.points.add(t.tail); t.tail = null
+            p.points.add(t.head)
+            t.head = null
+            p.points.add(t.tail)
+            t.tail      = null
             p.triangles =,move t.triangles
             p.edgeList  =,move t.edgeList
 
@@ -39,19 +41,25 @@ public impl Painter
             if curState.paintParams & .Antialiased
             {
                 var e = tri.points[0].border[0]
-                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do
+                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[0].border[1]
-                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do
+                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[1].border[0]
-                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do
+                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[1].border[1]
-                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do
+                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[2].border[0]
-                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do
+                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[2].border[1]
-                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do
+                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
             }
         }
     }
@@ -62,7 +70,7 @@ public impl Painter
     {
         if !pathList.paths.count do
             return
-        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.type  = .SolidColor
         sharedSolidBrush.color = color
         fillPath(pathList, sharedSolidBrush)
     }
@@ -88,9 +96,9 @@ public impl Painter
             // Convex shape : 1 triangle
             if count == 3
             {
-                let v0 = polygon.getPoint(0)
-                let v1 = polygon.getPoint(1)
-                let v2 = polygon.getPoint(2)
+                let v0   = polygon.getPoint(0)
+                let v1   = polygon.getPoint(1)
+                let v2   = polygon.getPoint(2)
                 let prim = pushTriangle(v0, v1, v2, brush.color)
                 if curState.paintParams & .Antialiased
                 {
@@ -103,10 +111,10 @@ public impl Painter
             // Convex shape : 2 triangles
             elif count == 4
             {
-                let v0 = polygon.getPoint(0)
-                let v1 = polygon.getPoint(1)
-                let v2 = polygon.getPoint(2)
-                let v3 = polygon.getPoint(3)
+                let v0    = polygon.getPoint(0)
+                let v1    = polygon.getPoint(1)
+                let v2    = polygon.getPoint(2)
+                let v3    = polygon.getPoint(3)
                 let prim0 = pushTriangle(v0, v1, v2, brush.color)
                 let prim1 = pushTriangle(v0, v2, v3, brush.color)
                 if curState.paintParams & .Antialiased
@@ -129,8 +137,8 @@ public impl Painter
                 var center = Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
                 loop i: count
                 {
-                    let v0 = polygon.getPoint(i)
-                    let v1 = polygon.getPoint((i + 1) % count)
+                    let v0   = polygon.getPoint(i)
+                    let v1   = polygon.getPoint((i + 1) % count)
                     let prim = pushTriangle(center, v0, v1, brush.color)
 
                     if curState.paintParams & .Antialiased
@@ -158,7 +166,7 @@ public impl Painter
     #[Swag.Overload]
     mtd fillPath(path: *LinePath, color: Color)
     {
-        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.type  = .SolidColor
         sharedSolidBrush.color = color
         fillPath(path, sharedSolidBrush)
     }
@@ -175,7 +183,7 @@ public impl Painter
 
         // Everything in the cache ?
         var serial = 0
-        var dirty = false
+        var dirty  = false
         visit p: pathList.paths
         {
             if (p.polygon.isClockwise or serial != p.serial) and flush
@@ -187,7 +195,7 @@ public impl Painter
                 }
 
                 serial = p.serial
-                flush = null
+                flush  = null
             }
 
             if p.polygon.points.count >= 3
@@ -200,7 +208,7 @@ public impl Painter
             dirty = true
 
         serial = 0
-        flush = null
+        flush  = null
 
         // If everything has been computed, then just paint them (no need to generate polylines as 'triangulate' will not use them)
         if !dirty
@@ -241,7 +249,7 @@ public impl Painter
                 {
                     flush = p
                     t.startPolyLine()
-                    loop i: 0 until p.polygon.points.count-1
+                    loop i: 0 until p.polygon.points.count - 1
                     {
                         var pt = p.polygon.getPoint(i)
                         t.addPoint(pt.x, pt.y)
@@ -260,7 +268,7 @@ public impl Painter
     #[Swag.Overload]
     mtd fillPolygon(path: *LinePath, color: Color)
     {
-        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.type  = .SolidColor
         sharedSolidBrush.color = color
         fillPolygon(path, sharedSolidBrush)
     }

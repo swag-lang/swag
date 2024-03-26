@@ -8,35 +8,35 @@ public enum DrawPathListMode
 
 struct Context
 {
-    posBuffer:          Array'Math.Vector2
-    penSize:            f32
-    penSize2:           f32
-    beginLine:          bool
-    firstLine:          bool
-    lastLineInvalid:    bool
-    normalPrev:         Math.Vector2
-    normalFirst:        Math.Vector2
-    normal:             Math.Vector2
-    prim1, prim2:       u64
-    prev:               Math.Vector2
-    path:               const *LinePath
-    pen:                const *Pen
-    offsetPath:         f32
+    posBuffer:           Array'Math.Vector2
+    penSize:             f32
+    penSize2:            f32
+    beginLine:           bool
+    firstLine:           bool
+    lastLineInvalid:     bool
+    normalPrev:          Math.Vector2
+    normalFirst:         Math.Vector2
+    normal:              Math.Vector2
+    prim1, prim2:        u64
+    prev:                Math.Vector2
+    path:                const *LinePath
+    pen:                 const *Pen
+    offsetPath:          f32
 
-    remainingPatternLen: f32
-    patternTotalLen:     f32
-    patternIndex:        s32
-    error:               f32
-    divError:            f32
-    pattern:             const ^f32
-    patternCount:        s32
+    remainingPatternLen:     f32
+    patternTotalLen:         f32
+    patternIndex:            s32
+    error:                   f32
+    divError:                f32
+    pattern:                 const ^f32
+    patternCount:            s32
 }
 
 impl Painter
 {
     mtd drawCapSquare(p, d: Math.Vector2, sens: f32, pen: Pen)
     {
-        let n = Math.Vector2{d.y * sens, -d.x * sens}
+        let n  = Math.Vector2{d.y * sens, -d.x * sens}
         let v0 = Math.Vector2{p.x + d.x, p.y + d.y}
         let v1 = Math.Vector2{p.x - d.x, p.y - d.y}
         let v2 = Math.Vector2{v1.x + n.x, v1.y + n.y}
@@ -57,10 +57,10 @@ impl Painter
 
     mtd drawCapTriangle(p, d: Math.Vector2, sens: f32, pen: Pen)
     {
-        let n = Math.Vector2{d.y * sens, -d.x * sens}
-        let v0 = Math.Vector2{p.x + d.x, p.y + d.y}
-        let v1 = Math.Vector2{p.x - d.x, p.y - d.y}
-        let v2 = Math.Vector2{p.x + n.x, p.y + n.y}
+        let n     = Math.Vector2{d.y * sens, -d.x * sens}
+        let v0    = Math.Vector2{p.x + d.x, p.y + d.y}
+        let v1    = Math.Vector2{p.x - d.x, p.y - d.y}
+        let v2    = Math.Vector2{p.x + n.x, p.y + n.y}
         let prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
 
         if curState.paintParams & .Antialiased
@@ -115,9 +115,9 @@ impl Painter
         let n = Math.Vector2{d.y * sens * sy, -d.x * sens * sy}
         p -= n
 
-        let v0 = Math.Vector2{p.x + d.x, p.y + d.y}
-        let v1 = Math.Vector2{p.x - d.x, p.y - d.y}
-        let v2 = Math.Vector2{p.x + n.x, p.y + n.y}
+        let v0    = Math.Vector2{p.x + d.x, p.y + d.y}
+        let v1    = Math.Vector2{p.x - d.x, p.y - d.y}
+        let v2    = Math.Vector2{p.x + n.x, p.y + n.y}
         let prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
 
         if curState.paintParams & .Antialiased
@@ -197,10 +197,14 @@ impl Painter
         #[Swag.Complete]
         switch capStyle
         {
-        case None:          break
-        case Triangle:      drawCapTriangle(p, d, sens, dref pen)
-        case Round:         drawCapRound(p, d, sens, dref pen)
-        case Square:        drawCapSquare(p, d, sens, dref pen)
+        case None:
+            break
+        case Triangle:
+            drawCapTriangle(p, d, sens, dref pen)
+        case Round:
+            drawCapRound(p, d, sens, dref pen)
+        case Square:
+            drawCapSquare(p, d, sens, dref pen)
         }
     }
 
@@ -234,8 +238,8 @@ impl Painter
         var startPos, endPos: Math.Vector2 = undefined
         startPos.x = center.x + (Math.cos(angle0) * radius)
         startPos.y = center.y + (Math.sin(angle0) * radius)
-        endPos.x = center.x + (Math.cos(angle1) * radius)
-        endPos.y = center.y + (Math.sin(angle1) * radius)
+        endPos.x   = center.x + (Math.cos(angle1) * radius)
+        endPos.y   = center.y + (Math.sin(angle1) * radius)
 
         let minDist = LinePath.getFlattenDistance(curState.paintQuality)
 
@@ -262,7 +266,7 @@ impl Painter
         var v1 = startPos
         loop i: 1 until sharedRoundTmp.count
         {
-            let v2 = sharedRoundTmp[i].pos
+            let v2    = sharedRoundTmp[i].pos
             let prim1 = pushTriangle(center, v1, v2, pen.brush.color)
             if curState.paintParams & .Antialiased do
                 addEdgeAA(prim1, v1, v2)
@@ -353,11 +357,16 @@ impl Painter
         #[Swag.Complete]
         switch pen.joinStyle
         {
-        case None:          break
-        case Bevel:         drawJoinBevel(p, d1, d2, dref pen)
-        case Round:         drawJoinRound(p, d1, d2, dref pen)
-        case Miter:         drawJoinMiter(p, d1, d2, true, dref pen)
-        case MiterBevel:    drawJoinMiter(p, d1, d2, false, dref pen)
+        case None:
+            break
+        case Bevel:
+            drawJoinBevel(p, d1, d2, dref pen)
+        case Round:
+            drawJoinRound(p, d1, d2, dref pen)
+        case Miter:
+            drawJoinMiter(p, d1, d2, true, dref pen)
+        case MiterBevel:
+            drawJoinMiter(p, d1, d2, false, dref pen)
         }
     }
 
@@ -390,7 +399,7 @@ impl Painter
         }
         else
         {
-            prev = pos
+            prev      = pos
             beginLine = true
         }
     }
@@ -399,7 +408,7 @@ impl Painter
     {
         // Compute line (half width on each side)
         var newPos = pos
-        var n = newPos - prev
+        var n      = newPos - prev
 
         // If previous and next point are too close, we will take
         // the last normal
@@ -453,10 +462,11 @@ impl Painter
         }
 
         // To draw end joint
-        if firstLine do normalFirst = normal
+        if firstLine do
+            normalFirst = normal
 
         normalPrev = normal
-        prev = newPos
+        prev       = newPos
         beginLine, firstLine = false
     }
 
@@ -468,21 +478,21 @@ impl Painter
         case None:
             return
         case Pattern:
-            pattern = pen.pattern.buffer
+            pattern      = pen.pattern.buffer
             patternCount = cast(s32) pen.pattern.count
             if patternCount == 0 do
                 fallthrough
         case Dot:
             const P = [1.0, 1.0]
-            pattern = @dataof(P)
+            pattern      = @dataof(P)
             patternCount = 2
         case Dash:
             const P = [2.0, 1.0]
-            pattern = @dataof(P)
+            pattern      = @dataof(P)
             patternCount = 2
         case DashDot:
             const P = [2.0, 1.0, 1.0, 1.0]
-            pattern = @dataof(P)
+            pattern      = @dataof(P)
             patternCount = 4
         }
 
@@ -501,7 +511,7 @@ impl Painter
 
         // First pattern. We start at half the size of the first pattern, in order to not
         // finish on a blank, but with half the size of the first pattern also.
-        patternIndex = 0
+        patternIndex        = 0
         remainingPatternLen = Math.max(pattern[patternIndex], 0.01)
         remainingPatternLen *= pen.size
         if !path.isClosed do
@@ -518,7 +528,7 @@ impl Painter
             return
         }
 
-        var v = pos - prev
+        var v               = pos - prev
         var remainingSegLen = v.length()
         v.normalizeSafe()
 
@@ -556,8 +566,8 @@ impl Painter
 
                 // Start a new fresh pattern index
                 remainingSegLen -= lengthInPattern
-                patternIndex = (patternIndex + 1) % patternCount
-                blankPatternIdx = blankPatternIdx ? false : true
+                patternIndex        = (patternIndex + 1) % patternCount
+                blankPatternIdx     = blankPatternIdx ? false : true
                 remainingPatternLen = Math.max(pattern[patternIndex], 0.01)
                 remainingPatternLen *= pen.size
                 continue
@@ -586,7 +596,7 @@ impl Painter
 
         var v1 = path.polygon.getPoint(0, cxt.offsetPath)
         var v2 = path.polygon.getPoint(1, cxt.offsetPath)
-        var n = v2 - v1
+        var n  = v2 - v1
         n.normalizeSafe()
         var c = n.cross(1)
         c *= penSize2
@@ -600,7 +610,7 @@ impl Painter
 
         var v1 = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
         var v2 = path.polygon.getPoint(path.polygon.points.count - 2, cxt.offsetPath)
-        var n = v1 - v2
+        var n  = v1 - v2
         n.normalizeSafe()
         var c = n.cross(1)
         c *= penSize2
@@ -613,13 +623,13 @@ impl Painter
         if pen.size < 1 or path.polygon.points.count == 0 do
             return
 
-        penSize = pen.size
+        penSize        = pen.size
         cxt.offsetPath = pen.plotOffset
 
-        penSize2    = penSize * 0.5
-        prev        = path.polygon.getPoint(0, cxt.offsetPath)
-        beginLine   = true
-        firstLine   = true
+        penSize2  = penSize * 0.5
+        prev      = path.polygon.getPoint(0, cxt.offsetPath)
+        beginLine = true
+        firstLine = true
 
         var offset0, offsetn: Math.Vector2
 
@@ -636,7 +646,7 @@ impl Painter
         // (because of cap styles)
         if path.polygon.points.count > 2
         {
-            loop i: 1 until path.polygon.points.count-1
+            loop i: 1 until path.polygon.points.count - 1
             {
                 var p = path.polygon.getPoint(i, cxt.offsetPath)
                 drawLine(cxt, p)
@@ -644,7 +654,7 @@ impl Painter
         }
 
         // Last point
-        var p = path.polygon.getPoint(path.polygon.points.count-1, cxt.offsetPath)
+        var p = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
         p -= offsetn
         drawLine(cxt, p)
 
@@ -671,9 +681,9 @@ public impl Painter
     #[Swag.Overload]
     mtd drawPath(path: *LinePath, color: Color, penSize: f32)
     {
-        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.type  = .SolidColor
         sharedSolidPen.brush.color = color
-        sharedSolidPen.size = penSize
+        sharedSolidPen.size        = penSize
         drawPath(path, sharedSolidPen)
     }
 
@@ -687,7 +697,7 @@ public impl Painter
 
         var cxt: Context
         cxt.path = path
-        cxt.pen =  &pen
+        cxt.pen  = &pen
         if pen.dashStyle != .None do
             preparePattern(&cxt)
 
@@ -731,7 +741,7 @@ public impl Painter
         visit p: pathList.paths
         {
             cxt.path = p
-            cxt.pen =  &pen
+            cxt.pen  = &pen
             if pen.dashStyle != .None do
                 preparePattern(&cxt)
             drawPath(&cxt)
@@ -746,9 +756,9 @@ public impl Painter
     {
         if !pathList.paths.count do
             return
-        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.type  = .SolidColor
         sharedSolidPen.brush.color = color
-        sharedSolidPen.size = penSize
+        sharedSolidPen.size        = penSize
         drawPath(pathList, sharedSolidPen, mode)
     }
 
@@ -761,13 +771,20 @@ public impl Painter
         #[Swag.Complete]
         switch capStyle
         {
-        case None:          return {lineSize*0.5, 0}
-        case Triangle:      return {lineSize*0.5, lineSize*0.5}
-        case Round:         return {lineSize*0.5, lineSize*0.5}
-        case Square:        return {lineSize*0.5, lineSize*0.5}
-        case ArrowAnchor:   return {lineSize*0.5 * capScale, 0}
-        case SquareAnchor:  return {lineSize*0.5 * capScale, lineSize*0.5 * capScale}
-        case RoundAnchor:   return {lineSize*0.5 * capScale, lineSize*0.5 * capScale}
+        case None:
+            return {lineSize * 0.5, 0}
+        case Triangle:
+            return {lineSize * 0.5, lineSize * 0.5}
+        case Round:
+            return {lineSize * 0.5, lineSize * 0.5}
+        case Square:
+            return {lineSize * 0.5, lineSize * 0.5}
+        case ArrowAnchor:
+            return {lineSize * 0.5 * capScale, 0}
+        case SquareAnchor:
+            return {lineSize * 0.5 * capScale, lineSize * 0.5 * capScale}
+        case RoundAnchor:
+            return {lineSize * 0.5 * capScale, lineSize * 0.5 * capScale}
         }
 
         return {0, 0}

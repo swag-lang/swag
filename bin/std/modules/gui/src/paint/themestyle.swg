@@ -3,17 +3,17 @@ using Core, Pixel
 
 struct ThemeStyleRef
 {
-    theme:  *Theme
-    count:  u32
+    theme:     *Theme
+    count:     u32
 }
 
 struct ThemeStyle
 {
-    refr:               *ThemeStyleRef
-    dirty:              bool
-    styleSheetMetrics:  String
-    styleSheetColors:   String
-    font:               FontFamily
+    refr:                  *ThemeStyleRef
+    dirty:                 bool
+    styleSheetMetrics:     String
+    styleSheetColors:      String
+    font:                  FontFamily
 }
 
 impl ThemeStyle
@@ -38,11 +38,10 @@ impl ThemeStyle
 
     internal mtd set(theme: *Theme)
     {
-        refr = Memory.new'ThemeStyleRef()
+        refr       = Memory.new'ThemeStyleRef()
         refr.theme = theme
         refr.count = 1
     }
-
 
     // Create a specific style based on the parent
     mtd create(parent: *ThemeStyle)
@@ -77,15 +76,15 @@ impl ThemeStyle
         // Ask user
         var evt = SetThemeEvent{}
         evt.accepted = false
-        evt.style = self
-        evt.parent = parent
+        evt.style    = self
+        evt.parent   = parent
         owner.sendEvent(&evt)
 
         // Nothing to override
         if styleSheetColors.length == 0 and
            styleSheetMetrics.length == 0 and
            font.regular == null and
-           font.bold  == null and
+           font.bold == null and
            font.italic == null and
            font.boldItalic == null and
            !evt.accepted
@@ -122,7 +121,7 @@ impl ThemeStyle
     mtd setStyleSheetColors(str: string)
     {
         styleSheetColors = str
-        dirty = true
+        dirty            = true
     }
 
     mtd addStyleSheetColors(str: string)
@@ -135,7 +134,7 @@ impl ThemeStyle
     mtd setStyleSheetMetrics(str: string)
     {
         styleSheetMetrics = str
-        dirty = true
+        dirty             = true
     }
 
     mtd addStyleSheetMetrics(str: string)
@@ -148,10 +147,10 @@ impl ThemeStyle
     mtd getFont()->FontFamily
     {
         var result: retval
-        let df = &refr.theme.res.fontDefault
-        result.regular    = font.regular    orelse df.regular
-        result.bold       = font.bold       orelse df.bold
-        result.italic     = font.italic     orelse df.italic
+        let df      = &refr.theme.res.fontDefault
+        result.regular    = font.regular orelse df.regular
+        result.bold       = font.bold orelse df.bold
+        result.italic     = font.italic orelse df.italic
         result.boldItalic = font.boldItalic orelse df.boldItalic
         return result
     }
@@ -159,7 +158,7 @@ impl ThemeStyle
     #[Swag.Overload]
     mtd setFont(fnt: FontFamily)
     {
-        font = fnt
+        font  = fnt
         dirty = true
     }
 

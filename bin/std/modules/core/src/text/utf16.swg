@@ -9,7 +9,7 @@ const SurrSelf  = 0x10000
 
 // Get the unicode character pointed by 'buffer', and the number of u16 to encode it
 // Will return 'RuneError' for an invalid utf16 sequence
-func decodeRune(buffer: const [..] u16) -> {c: rune, eat: u32}
+func decodeRune(buffer: const [..] u16)->{c: rune, eat: u32}
 {
     var result: retval
 
@@ -17,12 +17,12 @@ func decodeRune(buffer: const [..] u16) -> {c: rune, eat: u32}
     switch
     {
     case r < Surr1, r >= Surr3:
-        result.c = cast(rune) r
+        result.c   = cast(rune) r
         result.eat = 1
         return result
 
     case Surr1 <= r and r < Surr2 and @countof(buffer) >= 2 and Surr2 <= buffer[1] and buffer[1] < Surr3:
-        result.c = ((r - Surr1) << 10 | (buffer[1] - Surr2)) + SurrSelf
+        result.c   = ((r - Surr1) << 10 | (buffer[1] - Surr2)) + SurrSelf
         result.eat = 2
         return result
 
@@ -61,10 +61,10 @@ func encodeRune(dest: [..] u16, src: rune)->u32
 #[Swag.Overload]
 func fromUtf8(dest: [..] u16, src: const [..] u8)->u64
 {
-    var count = 0'u64
-    var srcPtr = @dataof(src)
-    var destPtr = @dataof(dest)
-    var srcLength = @countof(src)
+    var count      = 0'u64
+    var srcPtr     = @dataof(src)
+    var destPtr    = @dataof(dest)
+    var srcLength  = @countof(src)
     var destLength = @countof(dest)
 
     while srcLength
@@ -128,7 +128,7 @@ func toZeroTerminated(src: string)->Array'u16
 {
     var result: retval
     result.reserve(2 * @countof(src) + 1)
-    result.count = Utf16.fromUtf8(@mkslice(result.buffer, result.capacity), src) + 1
+    result.count             = Utf16.fromUtf8(@mkslice(result.buffer, result.capacity), src) + 1
     result[result.count - 1] = 0
     return result
 }
@@ -136,7 +136,7 @@ func toZeroTerminated(src: string)->Array'u16
 // Compute the string length of a zero terminated utf16 buffer
 func lengthZeroTerminated(buf: const ^u16)->u64
 {
-    var ptr = buf
+    var ptr   = buf
     var count = 0'u64
     while dref ptr do
         ptr, count += 1

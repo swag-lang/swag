@@ -21,8 +21,8 @@ enum Color
     DarkMagenta
 }
 
-internal var g_SilentMode:   s32
-internal var g_lock:         Sync.Mutex
+internal var g_SilentMode: s32
+internal var g_lock: Sync.Mutex
 
 // Use to access console with multiple threads.
 // No console function is thread safe, so it is the user responsability

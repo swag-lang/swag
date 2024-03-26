@@ -1,22 +1,21 @@
 #global public
 using Swag, Core, Ogl, Core.Math
 
-
 internal
 {
-    const BaseVertexShader   = #include "shaders/base.vert"
-    const BasePixelShader    = #include "shaders/base.frag"
+    const BaseVertexShader = #include "shaders/base.vert"
+    const BasePixelShader  = #include "shaders/base.frag"
 
     const VertexShaderSimple = #include "shaders/simple.vert"
     const PixelShaderSimple  = #include "shaders/simple.frag"
 
-    const VertexShaderAA     = #include "shaders/aa.vert"
-    const PixelShaderAA      = #include "shaders/aa.frag"
+    const VertexShaderAA = #include "shaders/aa.vert"
+    const PixelShaderAA  = #include "shaders/aa.frag"
 
-    const PixelShaderBlur    = #include "shaders/blur.frag"
+    const PixelShaderBlur = #include "shaders/blur.frag"
 
-    const VertexShaderFont   = #include "shaders/font.vert"
-    const PixelShaderFont    = #include "shaders/font.frag"
+    const VertexShaderFont = #include "shaders/font.vert"
+    const PixelShaderFont  = #include "shaders/font.frag"
 }
 
 #[Swag.Strict]
@@ -34,33 +33,33 @@ const InvalidRenderTargetSurfaceHandle: RenderTargetSurfaceHandle = acast 0
 #[Swag.NoCopy]
 struct RenderOgl
 {
-    using native:       NativeRenderOgl
-    vertexbuffer:       GLuint
-    shaderSimple:       ShaderSimple
-    shaderAA:           ShaderAA
-    shaderBlur:         ShaderBlur
-    shaderFont:         ShaderFont
-    worldTransform:     Transform2
-    orthoMatrix:        Matrix4x4
-    modelMatrix:        Matrix4x4
-    whiteTexture:       GLuint
-    hatchTextures:      [@countof(HatchStyle)] GLuint
-    blendingMode:       BlendingMode = .Alpha
-    curRC:              RenderingContext
-    stackReleasedRT:    Array'*RenderTarget
-    stackRT:            Array'*RenderTarget
-    curRT:              *RenderTarget
-    curShader:          *ShaderBase
-    overlapMode         = false
+    using native:        NativeRenderOgl
+    vertexbuffer:        GLuint
+    shaderSimple:        ShaderSimple
+    shaderAA:            ShaderAA
+    shaderBlur:          ShaderBlur
+    shaderFont:          ShaderFont
+    worldTransform:      Transform2
+    orthoMatrix:         Matrix4x4
+    modelMatrix:         Matrix4x4
+    whiteTexture:        GLuint
+    hatchTextures:       [@countof(HatchStyle)] GLuint
+    blendingMode:        BlendingMode = .Alpha
+    curRC:               RenderingContext
+    stackReleasedRT:     Array'*RenderTarget
+    stackRT:             Array'*RenderTarget
+    curRT:               *RenderTarget
+    curShader:           *ShaderBase
+    overlapMode          = false
 }
 
 internal impl RenderOgl
 {
     func setShaderCompileError(shaderID: GLuint) throw
     {
-        var result: GLint
-	    var infoLogLength: s32
-        var infoLog: String
+        var result:        GLint
+        var infoLogLength: s32
+        var infoLog:       String
 
         glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result)
         glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength)
@@ -78,43 +77,42 @@ internal impl RenderOgl
     {
         {
             assume createShader(&shaderSimple, VertexShaderSimple, PixelShaderSimple)
-            let text0 = glGetUniformLocation(cast(GLuint) shaderSimple.handle, @dataof("inTexture0"));
+            let text0 = glGetUniformLocation(cast(GLuint) shaderSimple.handle, @dataof("inTexture0"))
             glUseProgram(cast(GLuint) shaderSimple.handle)
-            glUniform1i(text0, 0);
+            glUniform1i(text0, 0)
         }
 
         {
             assume createShader(&shaderAA, VertexShaderAA, PixelShaderAA)
-            let text0 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture0"));
-            let text1 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture1"));
+            let text0 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture0"))
+            let text1 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture1"))
             glUseProgram(cast(GLuint) shaderAA.handle)
-            glUniform1i(text0, 0);
-            glUniform1i(text1, 1);
+            glUniform1i(text0, 0)
+            glUniform1i(text1, 1)
         }
 
         {
             assume createShader(&shaderFont, VertexShaderFont, PixelShaderFont)
-            let text0 = glGetUniformLocation(cast(GLuint) shaderFont.handle, @dataof("inTexture0"));
-            let text1 = glGetUniformLocation(cast(GLuint) shaderFont.handle, @dataof("inTexture1"));
+            let text0 = glGetUniformLocation(cast(GLuint) shaderFont.handle, @dataof("inTexture0"))
+            let text1 = glGetUniformLocation(cast(GLuint) shaderFont.handle, @dataof("inTexture1"))
             glUseProgram(cast(GLuint) shaderFont.handle)
-            glUniform1i(text0, 0);
-            glUniform1i(text1, 1);
+            glUniform1i(text0, 0)
+            glUniform1i(text1, 1)
         }
 
         {
             assume createShader(&shaderBlur, VertexShaderSimple, PixelShaderBlur)
-            let text0 = glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
+            let text0 = glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"))
             glUseProgram(cast(GLuint) shaderBlur.handle)
-            glUniform1i(text0, 0);
-            shaderBlur.axis   = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("axis"));
-            shaderBlur.radius = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("radius"));
+            glUniform1i(text0, 0)
+            shaderBlur.axis   = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("axis"))
+            shaderBlur.radius = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("radius"))
         }
-
     }
 
     func generateTexture(datas: const [..] u8, w, h: s32)->GLuint
     {
-        Debug.assert(@countof(datas) <= 8*8)
+        Debug.assert(@countof(datas) <= 8 * 8)
 
         var arr: [64] u32
         visit p, i: datas do
@@ -128,27 +126,27 @@ internal impl RenderOgl
         return result
     }
 
-    func ortho(b, t, l, r, n, f: f32, m: [4,4] f32)
+    func ortho(b, t, l, r, n, f: f32, m: [4, 4] f32)
     {
-        m[0,0] = 2 / (r - l);
-        m[0,1] = 0;
-        m[0,2] = 0;
-        m[0,3] = 0;
+        m[0, 0] = 2 / (r - l)
+        m[0, 1] = 0
+        m[0, 2] = 0
+        m[0, 3] = 0
 
-        m[1,0] = 0;
-        m[1,1] = 2 / (t - b);
-        m[1,2] = 0;
-        m[1,3] = 0;
+        m[1, 0] = 0
+        m[1, 1] = 2 / (t - b)
+        m[1, 2] = 0
+        m[1, 3] = 0
 
-        m[2,0] = 0;
-        m[2,1] = 0;
-        m[2,2] = -2 / (f - n);
-        m[2,3] = 0;
+        m[2, 0] = 0
+        m[2, 1] = 0
+        m[2, 2] = -2 / (f - n)
+        m[2, 3] = 0
 
-        m[3,0] = -(r + l) / (r - l);
-        m[3,1] = -(t + b) / (t - b);
-        m[3,2] = -(f + n) / (f - n);
-        m[3,3] = 1;
+        m[3, 0] = -(r + l) / (r - l)
+        m[3, 1] = -(t + b) / (t - b)
+        m[3, 2] = -(f + n) / (f - n)
+        m[3, 3] = 1
     }
 
     mtd buildModelMatrix(modelTransform: Transform2)
@@ -296,19 +294,19 @@ impl RenderOgl
         offset += @sizeof(u32)
 
         // aa
-        glVertexAttribPointer(3,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(4,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(5,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(6,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(7,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(8,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(9,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(9, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
         glVertexAttribPointer(10, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
@@ -327,42 +325,42 @@ impl RenderOgl
         // Generate predefined textures
         whiteTexture = generateTexture([1], 1, 1)
         using HatchStyle
-        hatchTextures[Dot] = generateTexture(Hatch.Dot, 8, 8)
-        hatchTextures[Horizontal] = generateTexture(Hatch.Horizontal, 8, 8)
-        hatchTextures[HorizontalLight] = generateTexture(Hatch.HorizontalLight, 8, 8)
-        hatchTextures[HorizontalNarrow] = generateTexture(Hatch.HorizontalNarrow, 8, 8)
-        hatchTextures[Vertical] = generateTexture(Hatch.Vertical, 8, 8)
-        hatchTextures[VerticalLight] = generateTexture(Hatch.VerticalLight, 8, 8)
-        hatchTextures[VerticalNarrow] = generateTexture(Hatch.VerticalNarrow, 8, 8)
-        hatchTextures[SolidDiamond] = generateTexture(Hatch.SolidDiamond, 8, 8)
-        hatchTextures[OutlinedDiamond] = generateTexture(Hatch.OutlinedDiamond, 8, 8)
-        hatchTextures[HorizontalDark] = generateTexture(Hatch.HorizontalDark, 8, 8)
-        hatchTextures[VerticalDark] = generateTexture(Hatch.VerticalDark, 8, 8)
-        hatchTextures[Grid] = generateTexture(Hatch.Grid, 8, 8)
-        hatchTextures[GridLarge] = generateTexture(Hatch.GridLarge, 8, 8)
-        hatchTextures[GridDotted] = generateTexture(Hatch.GridDotted, 8, 8)
-        hatchTextures[Cross] = generateTexture(Hatch.Cross, 8, 8)
-        hatchTextures[CrossLarge] = generateTexture(Hatch.CrossLarge, 8, 8)
-        hatchTextures[Percent5] = generateTexture(Hatch.Percent5, 8, 8)
-        hatchTextures[Percent10] = generateTexture(Hatch.Percent10, 8, 8)
-        hatchTextures[Percent20] = generateTexture(Hatch.Percent20, 8, 8)
-        hatchTextures[Percent25] = generateTexture(Hatch.Percent25, 8, 8)
-        hatchTextures[Percent30] = generateTexture(Hatch.Percent30, 8, 8)
-        hatchTextures[Percent40] = generateTexture(Hatch.Percent40, 8, 8)
-        hatchTextures[Percent50] = generateTexture(Hatch.Percent50, 8, 8)
-        hatchTextures[Percent60] = generateTexture(Hatch.Percent60, 8, 8)
-        hatchTextures[Percent70] = generateTexture(Hatch.Percent70, 8, 8)
-        hatchTextures[Percent75] = generateTexture(Hatch.Percent75, 8, 8)
-        hatchTextures[Percent80] = generateTexture(Hatch.Percent80, 8, 8)
-        hatchTextures[Percent90] = generateTexture(Hatch.Percent90, 8, 8)
-        hatchTextures[CheckBoard] = generateTexture(Hatch.CheckBoard, 8, 8)
-        hatchTextures[CheckBoardLarge] = generateTexture(Hatch.CheckBoardLarge, 8, 8)
-        hatchTextures[Weave] = generateTexture(Hatch.Weave, 8, 8)
-        hatchTextures[DiagonalForward] = generateTexture(Hatch.DiagonalForward, 8, 8)
-        hatchTextures[DiagonalForwardLight] = generateTexture(Hatch.DiagonalForwardLight, 8, 8)
-        hatchTextures[DiagonalBackward] = generateTexture(Hatch.DiagonalBackward, 8, 8)
+        hatchTextures[Dot]                   = generateTexture(Hatch.Dot, 8, 8)
+        hatchTextures[Horizontal]            = generateTexture(Hatch.Horizontal, 8, 8)
+        hatchTextures[HorizontalLight]       = generateTexture(Hatch.HorizontalLight, 8, 8)
+        hatchTextures[HorizontalNarrow]      = generateTexture(Hatch.HorizontalNarrow, 8, 8)
+        hatchTextures[Vertical]              = generateTexture(Hatch.Vertical, 8, 8)
+        hatchTextures[VerticalLight]         = generateTexture(Hatch.VerticalLight, 8, 8)
+        hatchTextures[VerticalNarrow]        = generateTexture(Hatch.VerticalNarrow, 8, 8)
+        hatchTextures[SolidDiamond]          = generateTexture(Hatch.SolidDiamond, 8, 8)
+        hatchTextures[OutlinedDiamond]       = generateTexture(Hatch.OutlinedDiamond, 8, 8)
+        hatchTextures[HorizontalDark]        = generateTexture(Hatch.HorizontalDark, 8, 8)
+        hatchTextures[VerticalDark]          = generateTexture(Hatch.VerticalDark, 8, 8)
+        hatchTextures[Grid]                  = generateTexture(Hatch.Grid, 8, 8)
+        hatchTextures[GridLarge]             = generateTexture(Hatch.GridLarge, 8, 8)
+        hatchTextures[GridDotted]            = generateTexture(Hatch.GridDotted, 8, 8)
+        hatchTextures[Cross]                 = generateTexture(Hatch.Cross, 8, 8)
+        hatchTextures[CrossLarge]            = generateTexture(Hatch.CrossLarge, 8, 8)
+        hatchTextures[Percent5]              = generateTexture(Hatch.Percent5, 8, 8)
+        hatchTextures[Percent10]             = generateTexture(Hatch.Percent10, 8, 8)
+        hatchTextures[Percent20]             = generateTexture(Hatch.Percent20, 8, 8)
+        hatchTextures[Percent25]             = generateTexture(Hatch.Percent25, 8, 8)
+        hatchTextures[Percent30]             = generateTexture(Hatch.Percent30, 8, 8)
+        hatchTextures[Percent40]             = generateTexture(Hatch.Percent40, 8, 8)
+        hatchTextures[Percent50]             = generateTexture(Hatch.Percent50, 8, 8)
+        hatchTextures[Percent60]             = generateTexture(Hatch.Percent60, 8, 8)
+        hatchTextures[Percent70]             = generateTexture(Hatch.Percent70, 8, 8)
+        hatchTextures[Percent75]             = generateTexture(Hatch.Percent75, 8, 8)
+        hatchTextures[Percent80]             = generateTexture(Hatch.Percent80, 8, 8)
+        hatchTextures[Percent90]             = generateTexture(Hatch.Percent90, 8, 8)
+        hatchTextures[CheckBoard]            = generateTexture(Hatch.CheckBoard, 8, 8)
+        hatchTextures[CheckBoardLarge]       = generateTexture(Hatch.CheckBoardLarge, 8, 8)
+        hatchTextures[Weave]                 = generateTexture(Hatch.Weave, 8, 8)
+        hatchTextures[DiagonalForward]       = generateTexture(Hatch.DiagonalForward, 8, 8)
+        hatchTextures[DiagonalForwardLight]  = generateTexture(Hatch.DiagonalForwardLight, 8, 8)
+        hatchTextures[DiagonalBackward]      = generateTexture(Hatch.DiagonalBackward, 8, 8)
         hatchTextures[DiagonalBackwardLight] = generateTexture(Hatch.DiagonalBackwardLight, 8, 8)
-        hatchTextures[DiagonalCross] = generateTexture(Hatch.DiagonalCross, 8, 8)
+        hatchTextures[DiagonalCross]         = generateTexture(Hatch.DiagonalCross, 8, 8)
     }
 
     // Set the current render target
@@ -373,7 +371,7 @@ impl RenderOgl
             return
         if curRT do
             stackRT.add(curRT)
-        curRT = rt
+        curRT            = rt
         curRT.paintAlpha = false
         glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) curRT.handle)
         if vp do
@@ -433,13 +431,13 @@ impl RenderOgl
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
 
         var result: retval
-        result.handle = cast(RenderTargetHandle) fbo
+        result.handle             = cast(RenderTargetHandle) fbo
         result.colorBuffer.handle = cast(TextureHandle) colorID
-        result.colorBuffer.width = w
+        result.colorBuffer.width  = w
         result.colorBuffer.height = h
-        result.colorBuffer.valid = true
-        result.colorBuffer.pf = .RGBA8
-        result.depthStencil = acast(rbo)
+        result.colorBuffer.valid  = true
+        result.colorBuffer.pf     = .RGBA8
+        result.depthStencil       = acast rbo
         return result
     }
 
@@ -459,8 +457,8 @@ impl RenderOgl
         var fb: GLuint = acast rt.handle
         glDeleteFramebuffers(1, &fb)
 
-        rt.handle = InvalidRenderTargetHandle
-        rt.depthStencil = InvalidRenderTargetSurfaceHandle
+        rt.handle            = InvalidRenderTargetHandle
+        rt.depthStencil      = InvalidRenderTargetSurfaceHandle
         rt.colorBuffer.valid = false
     }
 
@@ -475,17 +473,24 @@ impl RenderOgl
     #[Warn("Wrn0006", WarnLevel.Disable), Swag.Overload]
     mtd addImage(image: Image)->Texture
     {
-        if !image.isValid() do return {}
-        var fmt: GLenum = 0
+        if !image.isValid() do
+            return {}
+        var fmt:      GLenum = 0
         var tinternal = GL_RGB
 
         #[Swag.Complete]
         switch image.pf
         {
-        case BGR8:  fmt = GL_BGR
-        case BGRA8: fmt = GL_BGRA; tinternal = GL_RGBA
-        case RGB8:  fmt = GL_RGB
-        case RGBA8: fmt = GL_RGBA; tinternal = GL_RGBA
+        case BGR8:
+            fmt = GL_BGR
+        case BGRA8:
+            fmt       = GL_BGRA
+            tinternal = GL_RGBA
+        case RGB8:
+            fmt = GL_RGB
+        case RGBA8:
+            fmt       = GL_RGBA
+            tinternal = GL_RGBA
         }
 
         var textureID: GLuint
@@ -496,10 +501,10 @@ impl RenderOgl
 
         var result: retval
         result.handle = cast(TextureHandle) textureID
-        result.width = image.width
+        result.width  = image.width
         result.height = image.height
-        result.pf = image.pf
-        result.valid = true
+        result.pf     = image.pf
+        result.valid  = true
         return result
     }
 
@@ -508,19 +513,23 @@ impl RenderOgl
         #[Swag.Complete]
         switch pf
         {
-        case BGR8:  return GL_BGR
-        case BGRA8: return GL_BGRA
-        case RGB8:  return GL_RGB
-        case RGBA8: return GL_RGBA
+        case BGR8:
+            return GL_BGR
+        case BGRA8:
+            return GL_BGRA
+        case RGB8:
+            return GL_RGB
+        case RGBA8:
+            return GL_RGBA
         }
 
         return GL_RGBA
     }
 
     // Update content of texture
-    mtd updateTexture(texture: Texture, pixels: const*u8)
+    mtd updateTexture(texture: Texture, pixels: const *u8)
     {
-        let fmt = pixelFormatToNative(texture.pf)
+        let fmt       = pixelFormatToNative(texture.pf)
         let textureID = cast(GLuint) texture.handle
         glBindTexture(GL_TEXTURE_2D, textureID)
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, cast(s32) texture.width, cast(s32) texture.height, fmt, GL_UNSIGNED_BYTE, pixels)
@@ -545,7 +554,7 @@ impl RenderOgl
     {
         if !texture.valid do
             return
-        glDeleteTextures(1, cast (*GLuint) &texture.handle)
+        glDeleteTextures(1, cast(*GLuint) &texture.handle)
         texture.valid = false
     }
 
@@ -593,7 +602,7 @@ impl RenderOgl
         // View, ortho projection
         ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
         glUniformMatrix4fv(cast(GLint) mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
-	    glViewport(0, 0, width, height)
+        glViewport(0, 0, width, height)
 
         // Draw matrix
         buildModelMatrix(Transform2.Identity)
@@ -616,10 +625,7 @@ impl RenderOgl
 
         case ColorMask:
             let params = &cmd.colorMask
-            glColorMask(params.r ? GL_TRUE : GL_FALSE,
-                        params.g ? GL_TRUE : GL_FALSE,
-                        params.b ? GL_TRUE : GL_FALSE,
-                        params.a ? GL_TRUE : GL_FALSE)
+            glColorMask(params.r ? GL_TRUE : GL_FALSE, params.g ? GL_TRUE : GL_FALSE, params.b ? GL_TRUE : GL_FALSE, params.a ? GL_TRUE : GL_FALSE)
 
         case Transform:
             let params = &cmd.transform
@@ -634,7 +640,7 @@ impl RenderOgl
 
         case SetClippingRegionMode:
             let params = &cmd.clippingRegion
-            let mode = params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
+            let mode   = params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
             glStencilOp(mode, mode, mode)
 
         case EndClippingRegion:
@@ -718,13 +724,14 @@ impl RenderOgl
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
             visit &atlas: font.atlases
             {
-                if !atlas.dirty do continue
+                if !atlas.dirty do
+                    continue
                 atlas.dirty = false
                 if cast(u32) atlas.texture.handle == 0 do
                     glGenTextures(1, cast(*GLuint) &atlas.texture.handle)
-                atlas.texture.width = atlas.width / atlas.bpp
+                atlas.texture.width  = atlas.width / atlas.bpp
                 atlas.texture.height = atlas.height
-                atlas.texture.pf = atlas.bpp == 1 ? .RGBA8 : .RGB8
+                atlas.texture.pf     = atlas.bpp == 1 ? .RGBA8 : .RGB8
                 glBindTexture(GL_TEXTURE_2D, cast(GLuint) atlas.texture.handle)
                 glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
                 let fmt = atlas.bpp == 1 ? GL_RED : GL_RGB
@@ -780,7 +787,7 @@ impl RenderOgl
 
         case BindRenderTarget:
             bindRenderTarget(cmd.renderTgt.tgt)
-            curRT.paintAlpha = cmd.renderTgt.paintAlpha
+            curRT.paintAlpha    = cmd.renderTgt.paintAlpha
             curRT.paintAlphaIdx = cmdIdx
             computeMatrices(curShader.mvp, curShader.mdl)
 
@@ -801,12 +808,7 @@ impl RenderOgl
                     let cmd1 = dc.commandBuffer[i]
                     switch cmd1.id
                     {
-                    case Transform,
-                         ResetTexture0,
-                         BindTexture0,
-                         ResetTextureFont,
-                         BindTextureFont,
-                         DrawTriangles:
+                    case Transform, ResetTexture0, BindTexture0, ResetTextureFont, BindTextureFont, DrawTriangles:
                         executeCommand(dc, cmd1, cast(u64) i, width, height)
                     }
                 }
@@ -844,7 +846,7 @@ impl RenderOgl
             return
 
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
-        glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW)
 
         // Default shader
         setShader(&shaderAA)
@@ -922,21 +924,21 @@ impl RenderOgl
     mtd createShader(base: *ShaderBase, vertex, pixel: const [..] u8) throw
     {
         var buf: String = @mkstring(@dataof(vertex), @countof(vertex))
-        buf.replace("#include base",  @mkstring(@dataof(BaseVertexShader), @countof(BaseVertexShader)))
+        buf.replace("#include base", @mkstring(@dataof(BaseVertexShader), @countof(BaseVertexShader)))
 
-        let vertexShaderID = glCreateShader(GL_VERTEX_SHADER)
+        let vertexShaderID      = glCreateShader(GL_VERTEX_SHADER)
         var vertexSourcePointer = buf.buffer
-        var vertexSourceLength = cast(GLint) buf.length
+        var vertexSourceLength  = cast(GLint) buf.length
         glShaderSource(vertexShaderID, 1, &vertexSourcePointer, &vertexSourceLength)
         glCompileShader(vertexShaderID)
         try setShaderCompileError(vertexShaderID)
 
         buf = @mkstring(@dataof(pixel), @countof(pixel))
-        buf.replace("#include base",  @mkstring(@dataof(BasePixelShader), @countof(BasePixelShader)))
+        buf.replace("#include base", @mkstring(@dataof(BasePixelShader), @countof(BasePixelShader)))
 
-        let fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER)
+        let fragmentShaderID   = glCreateShader(GL_FRAGMENT_SHADER)
         var pixelSourcePointer = buf.buffer
-        var pixelSourceLength = cast(GLint) buf.length
+        var pixelSourceLength  = cast(GLint) buf.length
         glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, &pixelSourceLength)
         glCompileShader(fragmentShaderID)
         try setShaderCompileError(fragmentShaderID)

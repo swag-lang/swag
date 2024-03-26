@@ -4,7 +4,7 @@ using Core
 #[Swag.EnumFlags]
 enum GridLayoutCtrlFlags
 {
-    Zero = 0
+    Zero               = 0
     AdaptSizeToContent
     AdaptColWidth
     AdaptRowHeight
@@ -14,15 +14,15 @@ struct GridLayoutCtrl
 {
     using wnd: Wnd
 
-    gridLayoutFlags = GridLayoutCtrlFlags.Zero
-    numColumns:     s32
-    numRows:        s32
-    spacingHorz:    f32 = 5
-    spacingVert:    f32 = 5
+    gridLayoutFlags     = GridLayoutCtrlFlags.Zero
+    numColumns:         s32
+    numRows:            s32
+    spacingHorz:        f32 = 5
+    spacingVert:        f32 = 5
 
-    layout:     Array'*Wnd
-    colSizes:   Array'f32
-    rowSizes:   Array'f32
+    layout:       Array'*Wnd
+    colSizes:     Array'f32
+    rowSizes:     Array'f32
 }
 
 impl IWnd for GridLayoutCtrl
@@ -66,7 +66,7 @@ impl IWnd for GridLayoutCtrl
                 let colW = forcedW orelse colSizes[i]
                 defer x += colW + spacingHorz
 
-                let idx = i + (j * numColumns)
+                let idx    = i + (j * numColumns)
                 let curWnd = layout[idx]
                 if !curWnd or done.contains(curWnd) do
                     continue
@@ -123,7 +123,7 @@ impl GridLayoutCtrl
 
         let res = Wnd.create'GridLayoutCtrl(parent, position)
         res.numColumns = numColumns
-        res.numRows = numRows
+        res.numRows    = numRows
 
         res.layout.resize(cast(u64) (numColumns * numRows))
         loop numColumns do

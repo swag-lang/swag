@@ -7,10 +7,10 @@ public struct NativeRenderOgl
 
 public struct RenderingContext
 {
-    hDC:    HDC
-    hRC:    HGLRC
-    width:  s32
-    height: s32
+    hDC:        HDC
+    hRC:        HGLRC
+    width:      s32
+    height:     s32
 }
 
 public impl NativeRenderOgl
@@ -25,13 +25,13 @@ public impl NativeRenderOgl
     mtd createContext(hdc: HDC, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
         var result: retval
-        result.hDC = hdc
-        result.width = width
+        result.hDC    = hdc
+        result.width  = width
         result.height = height
 
         var pfd: PIXELFORMATDESCRIPTOR
         pfd.nSize        = @sizeof(pfd)
-        pfd.nVersion     = 1;
+        pfd.nVersion     = 1
         pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
         pfd.iPixelType   = PFD_TYPE_RGBA
         pfd.cStencilBits = 8

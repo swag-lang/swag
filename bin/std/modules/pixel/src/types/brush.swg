@@ -10,12 +10,12 @@ enum BrushType
 
 struct Brush
 {
-    color:      Color = Argb.White
-    type:       BrushType = SolidColor
-    hatch:      HatchStyle = Dot
-    texture:    Texture
-    uvMode:     UVMode = Fill
-    uvRect:     Math.Rectangle
+    color:       Color = Argb.White
+    type:        BrushType = SolidColor
+    hatch:       HatchStyle = Dot
+    texture:     Texture
+    uvMode:      UVMode = Fill
+    uvRect:      Math.Rectangle
 }
 
 impl Brush
@@ -25,7 +25,7 @@ impl Brush
     {
         var result: retval
         result.color = color
-        result.type = .SolidColor
+        result.type  = .SolidColor
         return result
     }
 
@@ -33,10 +33,10 @@ impl Brush
     func createTexture(texture: Texture)->Brush
     {
         var result: retval
-        result.color = Argb.White
-        result.type = BrushType.Texture
+        result.color   = Argb.White
+        result.type    = BrushType.Texture
         result.texture = texture
-        result.uvMode = .Fill
+        result.uvMode  = .Fill
         return result
     }
 
@@ -44,10 +44,10 @@ impl Brush
     func createTiled(texture: Texture)->Brush
     {
         var result: retval
-        result.color = Argb.White
-        result.type = BrushType.Texture
+        result.color   = Argb.White
+        result.type    = BrushType.Texture
         result.texture = texture
-        result.uvMode = .Tile
+        result.uvMode  = .Tile
         return result
     }
 
@@ -55,9 +55,9 @@ impl Brush
     func createHatch(style: HatchStyle, color: Color)->Brush
     {
         var result: retval
-        result.color = color
-        result.type = BrushType.Hatch
-        result.hatch = style
+        result.color  = color
+        result.type   = BrushType.Hatch
+        result.hatch  = style
         result.uvMode = .Tile
         return result
     }

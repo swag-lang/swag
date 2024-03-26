@@ -8,7 +8,7 @@ impl Voice
         // to loop. In that case, we rewind datas to the start
         if streamCurSeek >= file.dataSize
         {
-             if !playFlags.has(.Loop) do
+            if !playFlags.has(.Loop) do
                 return {null, 0}
             rewindData()
         }
@@ -17,7 +17,7 @@ impl Voice
         // prefetched datas
         if streamCurSeek < file.datas.count and file.encoding == requestedEncoding
         {
-            let orgSeek = streamCurSeek
+            let orgSeek  = streamCurSeek
             let readSize = (file.datas.count - streamCurSeek)
             streamCurSeek = file.datas.count
             return {file.datas.buffer + orgSeek, readSize}
@@ -48,7 +48,7 @@ impl Voice
         decoder.srcEncoding = file.encoding
         decoder.dstEncoding = requestedEncoding
         decoder.type        = desc.type
-        codec = @mkinterface(decoder, desc.type, ICodec)
+        codec               = @mkinterface(decoder, desc.type, ICodec)
     }
 
     mtd destroyCodec()
@@ -79,7 +79,7 @@ impl Voice
             assume createCodec()
             streamBuffer.reserve(StreamBufferSize)
             streamBuffer.count = readData(streamBuffer.buffer, StreamBufferSize)
-            streamCurSeek = codec.init(streamBuffer.buffer, streamBuffer.count)
+            streamCurSeek      = codec.init(streamBuffer.buffer, streamBuffer.count)
         }
 
         streamBuffer.count = readData(streamBuffer.buffer, StreamBufferSize)

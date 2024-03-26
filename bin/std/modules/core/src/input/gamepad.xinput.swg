@@ -16,14 +16,17 @@ public impl GamePad
     func setVibration(padIndex: u32, left, right: f32) throw
     {
         var vibration: XINPUT_VIBRATION = undefined
-        vibration.wLeftMotorSpeed = cast(WORD) (0xFFFF * Math.saturate(left))
+        vibration.wLeftMotorSpeed  = cast(WORD) (0xFFFF * Math.saturate(left))
         vibration.wRightMotorSpeed = cast(WORD) (0xFFFF * Math.saturate(right))
         let res = XInputSetState(padIndex, &vibration)
         switch res
         {
-        case ERROR_SUCCESS:                 return
-        case ERROR_DEVICE_NOT_CONNECTED:    throw Swag.SystemError{"not connected"}
-        default:                            Win32.throwWinError(res)
+        case ERROR_SUCCESS:
+            return
+        case ERROR_DEVICE_NOT_CONNECTED:
+            throw Swag.SystemError{"not connected"}
+        default:
+            Win32.throwWinError(res)
         }
     }
 }

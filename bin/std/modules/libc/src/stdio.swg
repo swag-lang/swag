@@ -1,7 +1,9 @@
 #global export
 using Swag
 
-struct FILE {}
+struct FILE
+{
+}
 typealias fpos_t = s64
 
 const _IOFBF = 0x0000
@@ -20,40 +22,40 @@ const TMP_MAX      = 32767
 
 #[Foreign(ForeignLib)]
 {
-	func remove(filename: cstring)->s64;
-	func rename(old, new: cstring)->s64;
-	func tmpfile()->*FILE;
-	func tmpnam(s: *u8)->*u8;
+    func remove(filename: cstring)->s64;
+    func rename(old, new: cstring)->s64;
+    func tmpfile()->*FILE;
+    func tmpnam(s: *u8)->*u8;
 
-	func fclose(stream: *FILE)->s64;
-	func fflush(stream: *FILE)->s64;
-	func fopen(filename, mode: cstring)->*FILE;
-	func freopen(filename, mode: cstring, stream: *FILE)->*FILE;
-	func setbuf(stream: *FILE, buf: *u8);
-	func setvbuf(stream: *FILE, buf: *u8, mode: s64, size: size_t)->s64;
+    func fclose(stream: *FILE)->s64;
+    func fflush(stream: *FILE)->s64;
+    func fopen(filename, mode: cstring)->*FILE;
+    func freopen(filename, mode: cstring, stream: *FILE)->*FILE;
+    func setbuf(stream: *FILE, buf: *u8);
+    func setvbuf(stream: *FILE, buf: *u8, mode: s64, size: size_t)->s64;
 
-	func fgetc(stream: *FILE)->s64;
-	func fgets(s: *u8, n: s64, stream: *FILE)->*u8;
-	func fputc(s: cstring, stream: *FILE)->s64;
-	func getc(stream: *FILE)->s64;
-	func getchar()->s64;
-	func putc(c: s64, stream: *FILE)->s64;
-	func putchar()->s64;
-	func puts(s: cstring)->s64;
-	func ungetc(c: s64, stream: *FILE)->s64;
-	func fread(ptr: *void, size: size_t, stream: *FILE)->size_t;
-	func fwrite(ptr: *void, size: size_t, nmemb: size_t, stream: *FILE)->size_t;
+    func fgetc(stream: *FILE)->s64;
+    func fgets(s: *u8, n: s64, stream: *FILE)->*u8;
+    func fputc(s: cstring, stream: *FILE)->s64;
+    func getc(stream: *FILE)->s64;
+    func getchar()->s64;
+    func putc(c: s64, stream: *FILE)->s64;
+    func putchar()->s64;
+    func puts(s: cstring)->s64;
+    func ungetc(c: s64, stream: *FILE)->s64;
+    func fread(ptr: *void, size: size_t, stream: *FILE)->size_t;
+    func fwrite(ptr: *void, size: size_t, nmemb: size_t, stream: *FILE)->size_t;
 
-	func fgetpos(stream: *FILE, pos: *fpos_t)->s64;
-	func fseek(stream: *FILE, offset: s32, whence: s64)->s64;
-	func fsetpos(stream: *FILE, pos: *fpos_t)->s64;
-	func ftell(stream: *FILE)->s32;
-	func rewind(stream: *FILE);
+    func fgetpos(stream: *FILE, pos: *fpos_t)->s64;
+    func fseek(stream: *FILE, offset: s32, whence: s64)->s64;
+    func fsetpos(stream: *FILE, pos: *fpos_t)->s64;
+    func ftell(stream: *FILE)->s32;
+    func rewind(stream: *FILE);
 
-	func clearerr(stream: *FILE);
-	func feof(stream: *FILE)->s64;
-	func ferror(stream: *FILE)->s64;
-	func perror(s: cstring);
+    func clearerr(stream: *FILE);
+    func feof(stream: *FILE)->s64;
+    func ferror(stream: *FILE)->s64;
+    func perror(s: cstring);
 }
 
 var stdin:  *FILE

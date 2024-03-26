@@ -4,28 +4,28 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum ProgressBarFlags
 {
-    Zero = 0
+    Zero     = 0
     Infinite
 }
 
 struct ProgressBar
 {
-    using wnd:      Wnd
+    using wnd: Wnd
 
-    prgBarFlags     = ProgressBarFlags.Zero
-    progression:    f32
+    prgBarFlags      = ProgressBarFlags.Zero
+    progression:     f32
 }
 
 impl IWnd for ProgressBar
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let bc = evt.bc
+        let bc      = evt.bc
         let painter = bc.painter
-        let theme = getTheme()
+        let theme   = getTheme()
         let metrics = getThemeMetrics()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
 
         var colorBk:     Color = undefined
         var colorBorder: Color = undefined
@@ -34,18 +34,18 @@ impl IWnd for ProgressBar
         switch
         {
         case bc.isDisabled:
-            colorBk       = colors.progressBar_DisabledBk
-            colorBorder   = colors.progressBar_DisabledBorder
-            colorMark     = colors.progressBar_DisabledMark
+            colorBk     = colors.progressBar_DisabledBk
+            colorBorder = colors.progressBar_DisabledBorder
+            colorMark   = colors.progressBar_DisabledMark
         default:
-            colorBk       = colors.progressBar_Bk
-            colorBorder   = colors.progressBar_Border
-            colorMark     = colors.progressBar_Mark
+            colorBk     = colors.progressBar_Bk
+            colorBorder = colors.progressBar_Border
+            colorMark   = colors.progressBar_Mark
         }
 
-        let subRectBk = &rects.progressBar_Bk
+        let subRectBk     = &rects.progressBar_Bk
         let subRectBorder = &rects.progressBar_Border
-        let subRectMark = &rects.progressBar_Mark
+        let subRectMark   = &rects.progressBar_Mark
 
         // Bk
         var clientRect = getClientRect()
@@ -70,7 +70,8 @@ impl IWnd for ProgressBar
 
             // Automatic update of progresssion
             progression += getTiming().dt * metrics.progressBar_SpeedInf
-            if progression > 1 do progression = 0
+            if progression > 1 do
+                progression = 0
             invalidate()
         }
         else

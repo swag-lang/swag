@@ -3,8 +3,8 @@ using Core, Pixel
 #[Swag.Opaque]
 public struct PropertyListView
 {
-    using stackWnd:  StackLayoutCtrl
-    ed: *PropertyList
+    using stackWnd:     StackLayoutCtrl
+    ed:                 *PropertyList
 }
 
 impl IWnd for PropertyListView

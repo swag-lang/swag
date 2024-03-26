@@ -12,11 +12,11 @@ const MaxAAEdge = 12
 #[Swag.Pack(1)]
 struct VertexLayout
 {
-    pos:    Vector2
-    uv:     Vector2
-    color:  u32
-    aa:     [MaxAAEdge] Vector4
-    aanum:  f32
+    pos:       Vector2
+    uv:        Vector2
+    color:     u32
+    aa:        [MaxAAEdge] Vector4
+    aanum:     f32
 }
 
 enum CommandId
@@ -53,7 +53,7 @@ enum PaintParams
 {
     Zero
     Antialiased
-    Default = Zero
+    Default     = Zero
 }
 
 enum PaintQuality
@@ -81,15 +81,15 @@ enum BlendingMode
 
 struct PaintState
 {
-    paintParams:        PaintParams = Default
-    paintQuality:       PaintQuality = Normal
-    transform:          Transform2
-    blendingMode:       BlendingMode = Alpha
-    interpolationMode:  InterpolationMode = Pixel
-    clippingRect:       Rectangle
-    stackClipRect:      Array'Rectangle
-    clippingRectOn:     bool
-    colorMask:          ColorMask
+    paintParams:           PaintParams = Default
+    paintQuality:          PaintQuality = Normal
+    transform:             Transform2
+    blendingMode:          BlendingMode = Alpha
+    interpolationMode:     InterpolationMode = Pixel
+    clippingRect:          Rectangle
+    stackClipRect:         Array'Rectangle
+    clippingRectOn:        bool
+    colorMask:             ColorMask
 }
 
 struct ColorMask
@@ -99,41 +99,41 @@ struct ColorMask
 
 struct Command
 {
-    id: CommandId = undefined
-    using params: union
+    id:               CommandId = undefined
+    using params:     union
     {
-        clear:          struct{color: Color}
-        drawTriangles:  struct{start: u32, count: u32}
-        transform:      struct{tr: Transform2}
-        clippingRect:   struct{rect: Rectangle}
-        clippingRegion: struct{mode: ClippingMode = undefined}
-        font:           struct{fontRef: *Font}
-        blendingMode:   struct{mode: BlendingMode = undefined}
-        textureFont:    struct{font: *Font, atlasIndex: s32}
-        colorMask:      ColorMask
-        renderTgt:      struct{tgt: *RenderTarget, paintAlpha: bool}
-        shader:         struct{shader: *ShaderBase}
+        clear:              struct{color: Color}
+        drawTriangles:      struct{start: u32, count: u32}
+        transform:          struct{tr: Transform2}
+        clippingRect:       struct{rect: Rectangle}
+        clippingRegion:     struct{mode: ClippingMode = undefined}
+        font:               struct{fontRef: *Font}
+        blendingMode:       struct{mode: BlendingMode = undefined}
+        textureFont:        struct{font: *Font, atlasIndex: s32}
+        colorMask:          ColorMask
+        renderTgt:          struct{tgt: *RenderTarget, paintAlpha: bool}
+        shader:             struct{shader: *ShaderBase}
 
         shaderParam: struct
-            {
-                param:  ShaderParamHandle
-                type:   typeinfo
-                _f32:   f32
-                _s32:   s32
-            }
+        {
+            param:     ShaderParamHandle
+            type:      typeinfo
+            _f32:      f32
+            _s32:      s32
+        }
 
         texture0: struct
-                {
-                    boundRect:          Vector4
-                    textureRect:        Vector4
-                    type:               BrushType = undefined
-                    hatch:              HatchStyle = undefined
-                    uvMode:             UVMode = undefined
-                    interpolationMode:  InterpolationMode = undefined
-                    texture:            Texture
-                }
-    }
-}
+        {
+            boundRect:             Vector4
+            textureRect:           Vector4
+            type:                  BrushType = undefined
+            hatch:                 HatchStyle = undefined
+            uvMode:                UVMode = undefined
+            interpolationMode:     InterpolationMode = undefined
+            texture:               Texture
+        }
+            }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
 
 struct Painter
 {
@@ -142,22 +142,22 @@ struct Painter
     triangulateIdx:     Array's32
     fake:               bool
 
-    sharedSolidPen:     Pen
-    sharedSolidBrush:   Brush
-    sharedLinePath:     LinePath
-    sharedLinePathList: LinePathList
-    sharedRoundTmp:     Array'{factor: f32, pos: Vector2}
+    sharedSolidPen:         Pen
+    sharedSolidBrush:       Brush
+    sharedLinePath:         LinePath
+    sharedLinePathList:     LinePathList
+    sharedRoundTmp:         Array'{factor: f32, pos: Vector2}
 
-    curState:           PaintState
-    stackState:         Array'PaintState
-    stackTransform:     Array'Transform2
-    lastTexture0Type:   BrushType = SolidColor
+    curState:             PaintState
+    stackState:           Array'PaintState
+    stackTransform:       Array'Transform2
+    lastTexture0Type:     BrushType = SolidColor
 
-    stackRT:            Array'*RenderTarget
-    curRT:              *RenderTarget
+    stackRT:     Array'*RenderTarget
+    curRT:       *RenderTarget
 
-    lastTexture0Handle: TextureHandle
-    hasTextureFont:     bool
+    lastTexture0Handle:     TextureHandle
+    hasTextureFont:         bool
 
     drawingBegin:       bool
     overlapMode:        bool
@@ -189,7 +189,7 @@ impl Painter
         if lastTexture0Handle or lastTexture0Type != .SolidColor
         {
             lastTexture0Handle = cast(TextureHandle) 0
-            lastTexture0Type = .SolidColor
+            lastTexture0Type   = .SolidColor
             discard newCommand(.ResetTexture0, true)
         }
     }
@@ -204,7 +204,7 @@ impl Painter
             return
         }
 
-        let cmd = newCommand(.BindTexture0, true)
+        let cmd    = newCommand(.BindTexture0, true)
         let params = &cmd.texture0
 
         params.boundRect.x = bvMin.x
@@ -265,11 +265,11 @@ impl Painter
 
     internal mtd setTextureFont(font: *Font, atlasIndex: s32)
     {
-        let cmd = newCommand(.BindTextureFont, true)
+        let cmd    = newCommand(.BindTextureFont, true)
         let params = &cmd.textureFont
-        params.font = font
+        params.font       = font
         params.atlasIndex = atlasIndex
-        hasTextureFont = true
+        hasTextureFont    = true
     }
 
     internal mtd pushTriangleCmd()->*Command
@@ -284,7 +284,7 @@ impl Painter
 
         if !cmd
         {
-            cmd = newCommand(.DrawTriangles)
+            cmd                     = newCommand(.DrawTriangles)
             cmd.drawTriangles.start = cast(u32) vertexBuffer.count
             cmd.drawTriangles.count = 0
         }
@@ -299,11 +299,20 @@ impl Painter
         cmd.drawTriangles.count += 3
 
         var ptr = vertexBuffer.emplaceAddress(3)
-        ptr.pos = p1; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv1
+        ptr.pos   = p1
+        ptr.color = color.argb
+        ptr.aanum = 0
+        ptr.uv    = uv1
         ptr += 1
-        ptr.pos = p2; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv2
+        ptr.pos   = p2
+        ptr.color = color.argb
+        ptr.aanum = 0
+        ptr.uv    = uv2
         ptr += 1
-        ptr.pos = p3; ptr.color = color.argb; ptr.aanum = 0; ptr.uv = uv3
+        ptr.pos   = p3
+        ptr.color = color.argb
+        ptr.aanum = 0
+        ptr.uv    = uv3
 
         return vertexBuffer.count - 3
     }
@@ -315,11 +324,17 @@ impl Painter
         cmd.drawTriangles.count += 3
 
         var ptr = vertexBuffer.emplaceAddress(3)
-        ptr.pos = p1; ptr.color = color.argb; ptr.aanum = 0
+        ptr.pos   = p1
+        ptr.color = color.argb
+        ptr.aanum = 0
         ptr += 1
-        ptr.pos = p2; ptr.color = color.argb; ptr.aanum = 0
+        ptr.pos   = p2
+        ptr.color = color.argb
+        ptr.aanum = 0
         ptr += 1
-        ptr.pos = p3; ptr.color = color.argb; ptr.aanum = 0
+        ptr.pos   = p3
+        ptr.color = color.argb
+        ptr.aanum = 0
 
         return vertexBuffer.count - 3
     }
@@ -341,7 +356,7 @@ impl Painter
         ptr.aanum += 1
 
         ptr += 1
-        ptr1 = &ptr.aa[0] + idx
+        ptr1   = &ptr.aa[0] + idx
         ptr1.x = startx
         ptr1.y = starty
         ptr1.z = endx
@@ -349,7 +364,7 @@ impl Painter
         ptr.aanum += 1
 
         ptr += 1
-        ptr1 = &ptr.aa[0] + idx
+        ptr1   = &ptr.aa[0] + idx
         ptr1.x = startx
         ptr1.y = starty
         ptr1.z = endx
@@ -370,7 +385,7 @@ impl Painter
 
         // Take the previous command if it's the same
         if replaceLast and commandBuffer.count and commandBuffer.buffer[commandBuffer.count - 1].id == cmd do
-            return commandBuffer.buffer + commandBuffer.count - 1;
+            return commandBuffer.buffer + commandBuffer.count - 1
 
         let ptr = commandBuffer.emplaceAddress(1)
         ptr.id = cmd
@@ -379,7 +394,8 @@ impl Painter
 
     internal mtd updateFont(fontRef: *Font)
     {
-        if !fontRef.dirty do return
+        if !fontRef.dirty do
+            return
         let cmd = newCommand(.UpdateFont, false)
         cmd.font.fontRef = fontRef
     }
@@ -443,11 +459,11 @@ impl Painter
     // Reset the current painting state
     mtd resetState()
     {
-        curState.paintParams = .Default
+        curState.paintParams  = .Default
         curState.paintQuality = .Normal
         curState.transform.setIdentity()
         curState.interpolationMode = .Pixel
-        curState.blendingMode = .Alpha
+        curState.blendingMode      = .Alpha
         curState.colorMask.r, curState.colorMask.g, curState.colorMask.b = true
         curState.colorMask.a = false
         resetClippingRect()
@@ -511,7 +527,7 @@ impl Painter
     }
 
     #[Swag.Inline]
-    mtd getParams()  => curState.paintParams
+    mtd getParams() => curState.paintParams
     #[Swag.Inline]
     mtd getQuality() => curState.paintQuality
 
@@ -627,7 +643,7 @@ impl Painter
     {
         if curState.clippingRect == rect and curState.clippingRectOn do
             return
-        curState.clippingRect = rect
+        curState.clippingRect   = rect
         curState.clippingRectOn = true
         let cmd = newCommand(.SetClippingRect, true)
         cmd.clippingRect.rect = curState.clippingRect
@@ -738,7 +754,7 @@ impl Painter
     mtd setColorMask(cm: ColorMask)
     {
         let cmd = newCommand(.ColorMask, true)
-        cmd.colorMask = cm
+        cmd.colorMask      = cm
         curState.colorMask = cm
     }
 
@@ -747,15 +763,15 @@ impl Painter
     mtd setColorMask(r, g, b, a: bool)
     {
         let cmd = newCommand(.ColorMask, true)
-        cmd.colorMask.r = r
-        cmd.colorMask.g = g
-        cmd.colorMask.b = b
-        cmd.colorMask.a = a
+        cmd.colorMask.r    = r
+        cmd.colorMask.g    = g
+        cmd.colorMask.b    = b
+        cmd.colorMask.a    = a
         curState.colorMask = cmd.colorMask
     }
 
     mtd setColorMaskColor() = setColorMask(true, true, true, false)
-    mtd setColorMaskFull() = setColorMask(true, true, true, true)
+    mtd setColorMaskFull()  = setColorMask(true, true, true, true)
     mtd setColorMaskAlpha() = setColorMask(false, false, false, true)
 
     // Bind a render target
@@ -763,7 +779,7 @@ impl Painter
     {
         pushState()
         let cmd = newCommand(.BindRenderTarget, true)
-        cmd.renderTgt.tgt = tgt
+        cmd.renderTgt.tgt        = tgt
         cmd.renderTgt.paintAlpha = paintAlpha
         resetState()
 
@@ -800,7 +816,7 @@ impl Painter
     mtd setShader(shader: *ShaderBase = null)
     {
         let cmd = newCommand(.SetShader, true)
-        cmd.shader.shader = shader;
+        cmd.shader.shader = shader
     }
 
     // Set a shader parameter
@@ -808,9 +824,9 @@ impl Painter
     mtd setShaderParam(param: ShaderParamHandle, val: s32)
     {
         let cmd = newCommand(.SetShaderParam)
-        cmd.shaderParam.param = param;
-        cmd.shaderParam.type = s32;
-        cmd.shaderParam._s32 = val;
+        cmd.shaderParam.param = param
+        cmd.shaderParam.type  = s32
+        cmd.shaderParam._s32  = val
     }
 
     // Set a shader parameter
@@ -818,8 +834,8 @@ impl Painter
     mtd setShaderParam(param: ShaderParamHandle, val: f32)
     {
         let cmd = newCommand(.SetShaderParam)
-        cmd.shaderParam.param = param;
-        cmd.shaderParam.type = f32;
-        cmd.shaderParam._f32 = val;
+        cmd.shaderParam.param = param
+        cmd.shaderParam.type  = f32
+        cmd.shaderParam._f32  = val
     }
 }

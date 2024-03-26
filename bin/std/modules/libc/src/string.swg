@@ -20,7 +20,7 @@ using Swag
 
     func strcspn(str1, str2: cstring)->size_t;
     func strpbrk(str1: *u8, str2: cstring)->*u8;
-    func strrchr(str: *u8 , character: s32)->*u8;
+    func strrchr(str: *u8, character: s32)->*u8;
     func strspn(str1, str2: cstring)->size_t;
     func strstr(str1: *u8, str2: cstring)->*u8;
     func strtok(str: *u8, delimiters: cstring)->*u8;
@@ -30,5 +30,5 @@ using Swag
     func strncmp(str1, str2: cstring, num: u64)->s32;
     func strxfrm(dst: *u8, src: cstring, num: size_t)->size_t;
     func strerror(errnum: s32)->cstring;
-	func strlen(s: cstring)->size_t;
+    func strlen(s: cstring)->size_t;
 }

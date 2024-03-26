@@ -2,9 +2,9 @@ using Core, Pixel
 
 public struct MessageDlg
 {
-    using dialog:   Dialog
-    labelIcon:      *Label
-    label:          *Label
+    using dialog:     Dialog
+    labelIcon:        *Label
+    label:            *Label
 }
 
 public impl MessageDlg
@@ -20,11 +20,11 @@ public impl MessageDlg
         dlg.label = Label.create(srf.getView(), message, {})
         with dlg.label
         {
-            .dockStyle = .Center
+            .dockStyle         = .Center
             .horzAlignmentText = .Justify
-            .padding.x = metrics.dialog_Padding
-            .padding.z = metrics.dialog_Padding
-            .padding.w = metrics.dialog_Padding
+            .padding.x         = metrics.dialog_Padding
+            .padding.z         = metrics.dialog_Padding
+            .padding.w         = metrics.dialog_Padding
         }
 
         dlg.setIcon(icon)
@@ -77,7 +77,7 @@ public impl MessageDlg
             h += metrics.wnd_BigCaptionCY
 
         var pos = surface.position
-        pos.width = w
+        pos.width  = w
         pos.height = h
         let sdw = surface.app.theme.metrics.surfaceWnd_ShadowSize
         pos.width += sdw * 2
@@ -99,14 +99,14 @@ public impl MessageDlg
             return
 
         if !labelIcon do
-            labelIcon = Label.create(surface.wnd.view, "", {0,0,0,icon.sizeX + icon.sizeX * 0.5})
+            labelIcon = Label.create(surface.wnd.view, "", {0, 0, 0, icon.sizeX + icon.sizeX * 0.5})
 
         with labelIcon
         {
             .dockStyle = .Top
             .iconColor = color
             .setAllPaddings(getThemeMetrics().dialog_Padding)
-            .icon = icon
+            .icon              = icon
             .horzAlignmentIcon = .Center
             .vertAlignmentIcon = .Center
         }

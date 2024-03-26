@@ -9,9 +9,9 @@ impl Painter
     {
         if width == 0 or height == 0 or color.a == 0 or penSize == 0 do
             return
-        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.type  = .SolidColor
         sharedSolidPen.brush.color = color
-        sharedSolidPen.size = penSize
+        sharedSolidPen.size        = penSize
         drawRect(left, top, width, height, sharedSolidPen)
     }
 
@@ -41,14 +41,14 @@ impl Painter
             let o = 0.5
             l += o
             t += o
-            w -= 2*o
-            h -= 2*o
+            w -= 2 * o
+            h -= 2 * o
         case Inside:
             let o = 0.5 + pen.size * 0.5
             l += o
             t += o
-            w -= 2*o
-            h -= 2*o
+            w -= 2 * o
+            h -= 2 * o
         }
 
         if aa
@@ -106,7 +106,7 @@ impl Painter
         if width == 0 or height == 0 or color.a == 0 do
             return
         sharedSolidBrush.color = color
-        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.type  = .SolidColor
         fillRect(left, top, width, height, sharedSolidBrush)
     }
 
@@ -122,9 +122,9 @@ impl Painter
     {
         if width == 0 or height == 0 or color.a == 0 or penSize == 0 do
             return
-        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.type  = .SolidColor
         sharedSolidPen.brush.color = color
-        sharedSolidPen.size = penSize
+        sharedSolidPen.size        = penSize
         drawRoundRect(left, top, width, height, radiusX, radiusY, sharedSolidPen)
     }
 
@@ -148,14 +148,14 @@ impl Painter
             let o = 0.5
             l += o
             t += o
-            w -= 2*o
-            h -= 2*o
+            w -= 2 * o
+            h -= 2 * o
         case Inside:
             let o = 0.5 + pen.size * 0.5
             l += o
             t += o
-            w -= 2*o
-            h -= 2*o
+            w -= 2 * o
+            h -= 2 * o
         }
 
         if aa
@@ -179,9 +179,9 @@ impl Painter
     #[Swag.Overload]
     func drawRoundRect(using self, rect: Math.Rectangle, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
     {
-        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.type  = .SolidColor
         sharedSolidPen.brush.color = color
-        sharedSolidPen.size = penSize
+        sharedSolidPen.size        = penSize
         drawRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, sharedSolidPen)
     }
 
@@ -209,7 +209,7 @@ impl Painter
     {
         if width == 0 or height == 0 or color.a == 0 do
             return
-        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.type  = .SolidColor
         sharedSolidBrush.color = color
         fillRoundRect(left, top, width, height, radiusX, radiusY, sharedSolidBrush)
     }

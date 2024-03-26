@@ -3,9 +3,9 @@ using Core, Pixel
 
 struct ImageRect
 {
-    using wnd:      Wnd
-    movie:          Movie
-    textureFrame:   Texture
+    using wnd:        Wnd
+    movie:            Movie
+    textureFrame:     Texture
 }
 
 impl IWnd for ImageRect
@@ -25,7 +25,7 @@ impl IWnd for ImageRect
         }
 
         let painter = evt.bc.painter
-        var rect = getClientRectPadding()
+        var rect    = getClientRectPadding()
 
         var color = getThemeColors().imageRect_Fg
 
@@ -76,8 +76,8 @@ impl ImageRect
         clear()
         var tmp = image
         tmp.totalFrames = 1
-        tmp.frameSizeX = tmp.texture.width
-        tmp.frameSizeY = tmp.texture.height
+        tmp.frameSizeX  = tmp.texture.width
+        tmp.frameSizeY  = tmp.texture.height
         movie.set(tmp)
     }
 
@@ -87,10 +87,10 @@ impl ImageRect
     {
         clear()
         var tmp: ImageList
-        tmp.texture = image
+        tmp.texture     = image
         tmp.totalFrames = 1
-        tmp.frameSizeX = tmp.texture.width
-        tmp.frameSizeY = tmp.texture.height
+        tmp.frameSizeX  = tmp.texture.width
+        tmp.frameSizeY  = tmp.texture.height
         movie.set(tmp)
     }
 
@@ -100,10 +100,10 @@ impl ImageRect
     {
         clear()
         var tmp: ImageList
-        tmp.texture = getApp().renderer.addImage(image)
+        tmp.texture     = getApp().renderer.addImage(image)
         tmp.totalFrames = 1
-        tmp.frameSizeX = tmp.texture.width
-        tmp.frameSizeY = tmp.texture.height
+        tmp.frameSizeX  = tmp.texture.width
+        tmp.frameSizeY  = tmp.texture.height
         movie.set(tmp)
     }
 

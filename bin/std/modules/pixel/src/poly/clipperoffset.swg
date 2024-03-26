@@ -17,20 +17,20 @@ struct DoublePoint
 
 struct Offset
 {
-    miterLimit:     f64 = 2
-    arcTolerance:   f64 = DefaultArcTolerance
-    destPolys:      ClipperPaths
-    srcPoly:        ClipperPath
-    destPoly:       ClipperPath
-    normals:        Array'DoublePoint
-    deltaVal:       f64
-    sinaVal:        f64
-    sinVal:         f64
-    cosVal:         f64
-    miterLim:       f64
-    stepsPerRad:    f64
-    lowest:         IntPoint = {-1, 0}
-    polyNodes:      PolyNode
+    miterLimit:       f64 = 2
+    arcTolerance:     f64 = DefaultArcTolerance
+    destPolys:        ClipperPaths
+    srcPoly:          ClipperPath
+    destPoly:         ClipperPath
+    normals:          Array'DoublePoint
+    deltaVal:         f64
+    sinaVal:          f64
+    sinVal:           f64
+    cosVal:           f64
+    miterLim:         f64
+    stepsPerRad:      f64
+    lowest:           IntPoint = {-1, 0}
+    polyNodes:        PolyNode
 }
 
 impl Offset
@@ -51,7 +51,8 @@ impl Offset
     mtd addPath(path: ClipperPath, joinType: JoinType)
     {
         var highI = path.count - 1
-        if highI < 0 do return
+        if highI < 0 do
+            return
         while highI > 0 and path.buffer[0] == path.buffer[highI] do
             highI -= 1
 
@@ -107,7 +108,7 @@ impl Offset
         }
         else
         {
-            var r = clpr.getBounds()
+            var r      = clpr.getBounds()
             var outer: ClipperPath
             outer.add(IntPoint{r.left - 10, r.bottom + 10})
             outer.add(IntPoint{r.right + 10, r.bottom + 10})
@@ -125,16 +126,17 @@ impl Offset
     func area(poly: ClipperPath)->f64
     {
         let size = cast(s32) poly.count
-        if size < 3 do return 0
+        if size < 3 do
+            return 0
 
-        var a = 0'f64
-        var j = size - 1
+        var a  = 0'f64
+        var j  = size - 1
         var pJ = poly[j]
         loop i: size
         {
             var pI = poly[i]
             a += (cast(f64) pJ.x + pI.x) * (cast(f64) pJ.y - pI.y)
-            j = i
+            j  = i
             pJ = pI
         }
 
@@ -164,7 +166,7 @@ impl Offset
 
         var dx = cast(f64) (pt2.x - pt1.x)
         var dy = cast(f64) (pt2.y - pt1.y)
-        let f = 1.0 / Math.sqrt(dx*dx + dy*dy)
+        let f  = 1.0 / Math.sqrt(dx * dx + dy * dy)
         dx *= f
         dy *= f
         result.x = dy
@@ -205,13 +207,14 @@ impl Offset
 
         const Pi    = ConstF64.Pi
         const TwoPi = ConstF64.TwoPi
-        var steps = Pi / acos(1 - arcT / abs(delta))
+        var steps   = Pi / acos(1 - arcT / abs(delta))
         if steps > abs(delta) * Pi do
             steps = abs(delta) * Pi
-        sinVal = sin(TwoPi / steps)
-        cosVal = cos(TwoPi / steps)
+        sinVal      = sin(TwoPi / steps)
+        cosVal      = cos(TwoPi / steps)
         stepsPerRad = steps / TwoPi
-        if delta < 0.0 do sinVal = -sinVal
+        if delta < 0.0 do
+            sinVal = -sinVal
 
         destPolys.reserve(polyNodes.childs.count * 2)
         visit node, i: polyNodes.childs
@@ -248,9 +251,12 @@ impl Offset
                         let r1 = cround(srcPoly[0].x + x * delta)
                         let r2 = cround(srcPoly[0].y + y * delta)
                         destPoly.add(IntPoint{r1, r2})
-                        if x < 0 do x = 1
-                        elif y < 0 do y = 1
-                        else do x = -1
+                        if x < 0 do
+                            x = 1
+                        elif y < 0 do
+                            y = 1
+                        else do
+                            x = -1
                     }
                 }
 
@@ -349,7 +355,7 @@ impl Offset
         let jN = normals[j]
         let jP = srcPoly[j]
 
-        let q = deltaVal / r
+        let q  = deltaVal / r
         let r1 = cround(jP.x + (kN.x + jN.x) * q)
         let r2 = cround(jP.y + (kN.y + jN.y) * q)
         destPoly.add(IntPoint{r1, r2})
@@ -361,7 +367,7 @@ impl Offset
         var jN = normals[j]
         var jP = srcPoly[j]
 
-        let a = Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y)
+        let a     = Math.atan2(sinaVal, kN.x * jN.x + kN.y * jN.y)
         let steps = Math.max(cast(s32) cround(stepsPerRad * Math.abs(a)), 1)
 
         var x = kN.x

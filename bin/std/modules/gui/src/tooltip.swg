@@ -1,20 +1,20 @@
 #global namespace ToolTip
 
-private {
-
-struct ToolTip
+private
 {
-    owner:      *Wnd
-    surfacePos: Math.Point
-    str:        String
-    delay:      f32
-    startDelay: f32
-}
 
-var g_Pending:      *ToolTip
-var g_Current:      *FrameWnd
-var g_CurrentOwner: *Wnd
+    struct ToolTip
+    {
+        owner:          *Wnd
+        surfacePos:     Math.Point
+        str:            String
+        delay:          f32
+        startDelay:     f32
+    }
 
+    var g_Pending:      *ToolTip
+    var g_Current:      *FrameWnd
+    var g_CurrentOwner: *Wnd
 }
 
 #drop
@@ -43,7 +43,7 @@ public func hide()
     if g_Current do
         g_Current.destroy()
 
-    g_Current = null
+    g_Current      = null
     g_CurrentOwner = null
 
     Memory.delete(g_Pending)
@@ -66,7 +66,7 @@ func resetTimer(mousePos: Math.Point)
     if g_Pending
     {
         g_Pending.surfacePos = mousePos
-        g_Pending.delay = g_Pending.startDelay
+        g_Pending.delay      = g_Pending.startDelay
     }
 }
 
@@ -77,11 +77,11 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     {
         if !g_Pending do
             g_Pending = Memory.new'ToolTip()
-        g_Pending.owner = owner
+        g_Pending.owner      = owner
         g_Pending.surfacePos = surfacePos
-        g_Pending.str = str
+        g_Pending.str        = str
         g_Pending.startDelay = delay.timeInSeconds
-        g_Pending.delay = delay.timeInSeconds
+        g_Pending.delay      = delay.timeInSeconds
         return
     }
 
@@ -99,14 +99,14 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     g_Current.style.addStyleSheetColors("frameWnd_Bk     $toolTip_Bk")
     g_Current.style.addStyleSheetColors("frameWnd_Border $toolTip_Border")
     g_Current.padding = 0
-    g_CurrentOwner = owner
+    g_CurrentOwner    = owner
 
     // View
     let view = g_Current.createView'Wnd()
     view.backgroundStyle = .Transparent
-    view.margin = 0
+    view.margin          = 0
 
-    let colors = top.getThemeColors()
+    let colors  = top.getThemeColors()
     let metrics = top.getThemeMetrics()
 
     // Rich edit
@@ -116,7 +116,7 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     edit.styles[0].colFg = colors.toolTip_Text
     g_Current.sendResizeEvent()
     edit.setText(copy)
-    edit.margin = metrics.toolTip_Padding
+    edit.margin    = metrics.toolTip_Padding
     edit.dockStyle = .Center
 
     // Auto size

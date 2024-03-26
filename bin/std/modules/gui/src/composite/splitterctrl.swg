@@ -4,32 +4,32 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum SplitterFlags
 {
-    Zero = 0
+    Zero     = 0
     Vertical
     HideBars
 }
 
 struct SplitterItem
 {
-    view:               *Wnd
-    size:               f32
-    minSize:            f32 = 5
-    maxSize:            f32 = 0
-    label:              *Label
-    tryPreserveSize:    bool
-    aniBar:             BlendColor
+    view:                *Wnd
+    size:                f32
+    minSize:             f32 = 5
+    maxSize:             f32 = 0
+    label:               *Label
+    tryPreserveSize:     bool
+    aniBar:              BlendColor
 }
 
 struct SplitterCtrl
 {
-    using frameWnd: FrameWnd
-    splitterFlags   = SplitterFlags.Zero
-    titleSize:      f32 = 30
+    using frameWnd:     FrameWnd
+    splitterFlags       = SplitterFlags.Zero
+    titleSize:          f32 = 30
 
-    items:          ArrayPtr'SplitterItem
-    correctMoving:  f32
-    hotIdx          = Swag.U32.Max
-    moving:         bool
+    items:             ArrayPtr'SplitterItem
+    correctMoving:     f32
+    hotIdx             = Swag.U32.Max
+    moving:            bool
 }
 
 impl IWnd for SplitterCtrl
@@ -103,9 +103,9 @@ impl IWnd for SplitterCtrl
     {
         computeLayout()
 
-        var client = getClientRectPadding()
-        var x = client.x
-        var y = client.y
+        var client  = getClientRectPadding()
+        var x       = client.x
+        var y       = client.y
         let barSize = getThemeMetrics().splitView_BarSize
 
         visit item: items
@@ -155,13 +155,13 @@ impl IWnd for SplitterCtrl
             return
 
         let painter = evt.bc.painter
-        let theme = getTheme()
-        let rects = getThemeRects()
-        let colors = getThemeColors()
+        let theme   = getTheme()
+        let rects   = getThemeRects()
+        let colors  = getThemeColors()
 
         loop idx: items.count - 1
         {
-            var rect = getBarRect(cast(u32) idx)
+            var rect  = getBarRect(cast(u32) idx)
             let isHot = hotIdx == idx
             if isHot or !splitterFlags.has(.HideBars)
             {
@@ -269,10 +269,10 @@ internal impl SplitterCtrl
     mtd hitTest(surfacePos: Math.Point)->u32
     {
         var client = getClientRectPadding()
-        var local = surfaceToLocal(surfacePos)
+        var local  = surfaceToLocal(surfacePos)
 
-        var x = client.x
-        var y = client.y
+        var x       = client.x
+        var y       = client.y
         let barSize = getThemeMetrics().splitView_BarSize
 
         visit v, idx: items
@@ -280,7 +280,7 @@ internal impl SplitterCtrl
             var rect = client
             if isVertical()
             {
-                rect.y = y + v.size
+                rect.y      = y + v.size
                 rect.height = barSize
                 if rect.contains(local) do
                     return cast(u32) idx
@@ -288,7 +288,7 @@ internal impl SplitterCtrl
             }
             else
             {
-                rect.x = x + v.size
+                rect.x     = x + v.size
                 rect.width = barSize
                 if rect.contains(local) do
                     return cast(u32) idx
@@ -341,7 +341,7 @@ internal impl SplitterCtrl
         }
 
         let scanLeft = idx == items.count - 1
-        var i = cast(s32) idx
+        var i        = cast(s32) idx
 
         loop
         {
@@ -356,12 +356,12 @@ internal impl SplitterCtrl
             var realDiff = diff
             if realDiff > 0 and otherPane.size - realDiff < otherPane.minSize
             {
-                realDiff = otherPane.size - otherPane.minSize
+                realDiff       = otherPane.size - otherPane.minSize
                 otherPane.size = otherPane.minSize
             }
             elif realDiff < 0 and otherPane.maxSize > 0 and otherPane.size - realDiff > otherPane.maxSize
             {
-                realDiff = otherPane.maxSize - otherPane.size
+                realDiff       = otherPane.maxSize - otherPane.size
                 otherPane.size = otherPane.maxSize
             }
             else
@@ -393,7 +393,6 @@ impl SplitterCtrl
             res.splitterFlags.add(.Vertical)
         return res
     }
-
 
     #[Swag.Inline]
     mtd isVertical() => splitterFlags.has(.Vertical)

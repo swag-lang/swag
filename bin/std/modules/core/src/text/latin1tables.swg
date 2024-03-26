@@ -11,7 +11,7 @@
 #[Swag.EnumFlags]
 enum CharAttribute
 {
-    Zero = 0
+    Zero        = 0
     Control
     Punctuation
     BinDigit
@@ -24,42 +24,68 @@ enum CharAttribute
     Printable
     LowerUtf8
     UpperUtf8
-    Graphical  = Printable | Spacing
-    Letter = Lower | Upper
+    Graphical   = Printable | Spacing
+    Letter      = Lower | Upper
 }
 
 const CharProperties: [256] CharAttribute = [
-    Control, // '\x00'
-    Control, // '\x01'
-    Control, // '\x02'
-    Control, // '\x03'
-    Control, // '\x04'
-    Control, // '\x05'
-    Control, // '\x06'
-    Control, // '\a'
+    Control,
+    // '\x00'
+    Control,
+    // '\x01'
+    Control,
+    // '\x02'
+    Control,
+    // '\x03'
+    Control,
+    // '\x04'
+    Control,
+    // '\x05'
+    Control,
+    // '\x06'
+    Control,
+    // '\a'
     Control, // '\b'
     Spacing | Control, // '\t'
     Spacing | Control, // '\n'
     Spacing | Control, // '\v'
     Spacing | Control, // '\f'
-    Spacing | Control, // '\r'
-    Control, // '\x0e'
-    Control, // '\x0f'
-    Control, // '\x10'
-    Control, // '\x11'
-    Control, // '\x12'
-    Control, // '\x13'
-    Control, // '\x14'
-    Control, // '\x15'
-    Control, // '\x16'
-    Control, // '\x17'
-    Control, // '\x18'
-    Control, // '\x19'
-    Control, // '\x1a'
-    Control, // '\x1b'
-    Control, // '\x1c'
-    Control, // '\x1d'
-    Control, // '\x1e'
+    Spacing | Control,
+    // '\r'
+    Control,
+    // '\x0e'
+    Control,
+    // '\x0f'
+    Control,
+    // '\x10'
+    Control,
+    // '\x11'
+    Control,
+    // '\x12'
+    Control,
+    // '\x13'
+    Control,
+    // '\x14'
+    Control,
+    // '\x15'
+    Control,
+    // '\x16'
+    Control,
+    // '\x17'
+    Control,
+    // '\x18'
+    Control,
+    // '\x19'
+    Control,
+    // '\x1a'
+    Control,
+    // '\x1b'
+    Control,
+    // '\x1c'
+    Control,
+    // '\x1d'
+    Control,
+    // '\x1e'
     Control, // '\x1f'
     Spacing | Printable, // ' '
     Punctuation | Printable, // '!'
@@ -155,7 +181,8 @@ const CharProperties: [256] CharAttribute = [
     Punctuation | Printable, // '{'
     Symbol | Printable, // '|'
     Punctuation | Printable, // '}'
-    Symbol | Printable, // '~'
+    Symbol | Printable,
+    // '~'
     Control, // '\u007f'
     Control | UpperUtf8, // '\u0080'
     Control | UpperUtf8, // '\u0081'
@@ -179,7 +206,8 @@ const CharProperties: [256] CharAttribute = [
     Control | UpperUtf8, // '\u0093'
     Control | UpperUtf8, // '\u0094'
     Control | UpperUtf8, // '\u0095'
-    Control | UpperUtf8, // '\u0096'
+    Control | UpperUtf8,
+    // '\u0096'
     Control, // '\u0097'
     Control | UpperUtf8, // '\u0098'
     Control | UpperUtf8, // '\u0099'
@@ -187,7 +215,8 @@ const CharProperties: [256] CharAttribute = [
     Control | UpperUtf8, // '\u009b'
     Control | UpperUtf8, // '\u009c'
     Control | UpperUtf8, // '\u009d'
-    Control | UpperUtf8, // '\u009e'
+    Control | UpperUtf8,
+    // '\u009e'
     Control, // '\u009f'
     Spacing | LowerUtf8, // '\u00a0'
     Punctuation | Printable | LowerUtf8, // '¡'
@@ -201,7 +230,8 @@ const CharProperties: [256] CharAttribute = [
     Symbol | Printable | LowerUtf8, // '©'
     Letter | Printable | LowerUtf8, // 'ª'
     Punctuation | Printable | LowerUtf8, // '«'
-    Symbol | Printable | LowerUtf8, // '¬'
+    Symbol | Printable | LowerUtf8,
+    // '¬'
     LowerUtf8, // '\u00ad'
     Symbol | Printable | LowerUtf8, // '®'
     Symbol | Printable | LowerUtf8, // '¯'
@@ -284,5 +314,4 @@ const CharProperties: [256] CharAttribute = [
     Lower | Printable, // 'ü'
     Lower | Printable, // 'ý'
     Lower | Printable, // 'þ'
-    Lower | Printable, // 'ÿ'
-]
+    Lower | Printable]

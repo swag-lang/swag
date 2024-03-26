@@ -10,29 +10,29 @@ enum ComboBoxKind
 
 struct ComboBoxItem
 {
-    using base: Item
-    isSeparator: bool
+    using base:      Item
+    isSeparator:     bool
 }
 
 struct ComboBox
 {
     using wnd: Wnd
 
-    kind            = ComboBoxKind.Select
-    minWidthPopup:  f32 = 100
-    maxHeightPopup: f32 = 300
-    sigChanged:     SigArray'closure(*Self, u32)
+    kind                = ComboBoxKind.Select
+    minWidthPopup:      f32 = 100
+    maxHeightPopup:     f32 = 300
+    sigChanged:         SigArray'closure(*Self, u32)
 
-    editBox:        *EditBox
-    isHot:          bool
-    popup:          *PopupListCtrl
-    items:          ArrayPtr'ComboBoxItem
-    selectedIdx     = Swag.U32.Max
-    maxIconSize:    s32
+    editBox:         *EditBox
+    isHot:           bool
+    popup:           *PopupListCtrl
+    items:           ArrayPtr'ComboBoxItem
+    selectedIdx      = Swag.U32.Max
+    maxIconSize:     s32
 
-    aniBk:      BlendColor
-    aniBorder:  BlendColor
-    aniText:    BlendColor
+    aniBk:         BlendColor
+    aniBorder:     BlendColor
+    aniText:       BlendColor
 }
 
 impl IWnd for ComboBox
@@ -41,7 +41,7 @@ impl IWnd for ComboBox
     {
         if editBox
         {
-            let metrics = getThemeMetrics()
+            let metrics    = getThemeMetrics()
             var clientRect = getClientRect()
             clientRect.width -= metrics.comboBox_RightMargin
             clientRect.moveLeft(metrics.comboBox_Padding)
@@ -51,41 +51,41 @@ impl IWnd for ComboBox
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let bc = evt.bc
+        let bc      = evt.bc
         let painter = evt.bc.painter
 
-        let theme = getTheme()
-        let colors = getThemeColors()
+        let theme   = getTheme()
+        let colors  = getThemeColors()
         let metrics = getThemeMetrics()
-        let rects = getThemeRects()
+        let rects   = getThemeRects()
 
-        var subRectBk:      *ThemeImageRect
-        var subRectBorder:  *ThemeImageRect
-        var colorBk:        Color = undefined
-        var colorBorder:    Color = undefined
-        var colorText:      Color = undefined
+        var subRectBk:     *ThemeImageRect
+        var subRectBorder: *ThemeImageRect
+        var colorBk:       Color = undefined
+        var colorBorder:   Color = undefined
+        var colorText:     Color = undefined
 
-        subRectBk = &rects.edit_SquareBk
+        subRectBk     = &rects.edit_SquareBk
         subRectBorder = &rects.edit_SquareBorder
 
         switch
         {
         case bc.isDisabled:
             colorBorder = colors.comboBox_DisabledBorder
-            colorBk = colors.comboBox_DisabledBk
-            colorText = colors.comboBox_DisabledText
+            colorBk     = colors.comboBox_DisabledBk
+            colorText   = colors.comboBox_DisabledText
         case popup != null:
             colorBorder = colors.comboBox_SelectedBorder
-            colorBk = colors.comboBox_SelectedBk
-            colorText = colors.comboBox_SelectedText
+            colorBk     = colors.comboBox_SelectedBk
+            colorText   = colors.comboBox_SelectedText
         case isHot:
             colorBorder = colors.comboBox_HotBorder
-            colorBk = colors.comboBox_HotBk
-            colorText = colors.comboBox_HotText
+            colorBk     = colors.comboBox_HotBk
+            colorText   = colors.comboBox_HotText
         default:
             colorBorder = colors.comboBox_Border
-            colorBk = colors.comboBox_Bk
-            colorText = colors.comboBox_Text
+            colorBk     = colors.comboBox_Bk
+            colorText   = colors.comboBox_Text
         }
 
         aniBk.apply(self, colorBk)
@@ -99,8 +99,8 @@ impl IWnd for ComboBox
         // Item
         if !editBox and selectedIdx < items.count
         {
-            var format: RichStringFormat
-            let item = items[selectedIdx]
+            var format:  RichStringFormat
+            let item     = items[selectedIdx]
             var itemRect = clientRect
             itemRect.width -= metrics.comboBox_RightMargin
             itemRect.moveLeft(metrics.comboBox_Padding)
@@ -113,8 +113,8 @@ impl IWnd for ComboBox
             theme.setTextColors(&format, aniText.cur())
             format.horzAlignment = .Left
             format.vertAlignment = .Center
-            format.flags = .Clip
-            format.font = getFont()
+            format.flags         = .Clip
+            format.font          = getFont()
             painter.drawRichString(itemRect, &item.name, format)
         }
 
@@ -153,11 +153,11 @@ internal impl ComboBox
 {
     mtd showPopup()
     {
-        popup = PopupListCtrl.create(self)
-        popup.minWidthPopup = minWidthPopup
+        popup                = PopupListCtrl.create(self)
+        popup.minWidthPopup  = minWidthPopup
         popup.maxHeightPopup = maxHeightPopup
-        popup.simFitY = true
-        popup.selectedIdx = selectedIdx
+        popup.simFitY        = true
+        popup.selectedIdx    = selectedIdx
 
         visit item: items
         {
@@ -167,7 +167,8 @@ internal impl ComboBox
                 popup.addItem(item.name.raw, item.id, item.icon, item.userData0, item.userData1)
         }
 
-        popup.sigSelected = closure|self|(list, idx) {
+        popup.sigSelected = closure|self|(list, idx)
+        {
             if idx != Swag.U32.Max do
                 self.selectItem(idx)
             self.hidePopup()

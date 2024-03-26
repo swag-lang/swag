@@ -11,7 +11,7 @@ enum IconButtonForm
 #[Swag.EnumFlags]
 enum IconButtonFlags
 {
-    Zero = 0
+    Zero            = 0
     Checkable
     CheckableToggle
     Popup
@@ -51,20 +51,20 @@ struct IconButton
 {
     using button: Button
 
-    form            = IconButtonForm.Square
-    iconBtnFlags    = IconButtonFlags.Zero
-    checkedForm     = IconButtonCheckedForm.Full
-    arrowPos        = IconButtonArrowPos.None
-    textPos         = IconButtonTextPos.Bottom
+    form             = IconButtonForm.Square
+    iconBtnFlags     = IconButtonFlags.Zero
+    checkedForm      = IconButtonCheckedForm.Full
+    arrowPos         = IconButtonArrowPos.None
+    textPos          = IconButtonTextPos.Bottom
 
-    sigHidePopup:       SigArray'closure(*Self)
-    sigShowPopup:       SigArray'closure(*Self)
-    sigCheckChanged:    SigArray'closure(*Self)
-    sigPaintIcon:       closure(*Self, *PaintContext, Math.Rectangle)
+    sigHidePopup:        SigArray'closure(*Self)
+    sigShowPopup:        SigArray'closure(*Self)
+    sigCheckChanged:     SigArray'closure(*Self)
+    sigPaintIcon:        closure(*Self, *PaintContext, Math.Rectangle)
 
-    aniBk:      BlendColor
-    isChecked:  bool
-    popup:      *Wnd
+    aniBk:         BlendColor
+    isChecked:     bool
+    popup:         *Wnd
 }
 
 impl IWnd for IconButton
@@ -77,7 +77,7 @@ impl IWnd for IconButton
         getApp().unregisterHookEvents(self)
         sigHidePopup.call(self)
         popup.destroy()
-        popup = null
+        popup     = null
         isChecked = false
         invalidate()
     }
@@ -115,7 +115,7 @@ impl IWnd for IconButton
         if evt.setFlags.has(.Checked) and isChecked != evt.checked
         {
             evt.accepted = true
-            isChecked = evt.checked
+            isChecked    = evt.checked
             invalidate()
         }
 
@@ -124,17 +124,17 @@ impl IWnd for IconButton
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let bc = evt.bc
-        let theme = getTheme()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let bc      = evt.bc
+        let theme   = getTheme()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
         let metrics = getThemeMetrics()
 
-        var subRectBk:      *ThemeImageRect
-        var colorBk:        Color = undefined
-        var colorIcon:      Color = undefined
-        var colorText:      Color = undefined
-        var colorChecked:   Color = undefined
+        var subRectBk:    *ThemeImageRect
+        var colorBk:      Color = undefined
+        var colorIcon:    Color = undefined
+        var colorText:    Color = undefined
+        var colorChecked: Color = undefined
 
         switch form
         {
@@ -194,7 +194,7 @@ impl IWnd for IconButton
             theme.drawSubRect(bc.painter, clientRect, subRectBk, colorChecked)
         }
 
-        var pos = getClientRectPadding()
+        var pos     = getClientRectPadding()
         let hasIcon = icon.isValid() or sigPaintIcon != null
 
         // Center everything
@@ -216,7 +216,7 @@ impl IWnd for IconButton
             }
 
             let fontR = getFont().regular
-            var sm = Painter.measureString(name.raw.toString(), fontR)
+            var sm    = Painter.measureString(name.raw.toString(), fontR)
             nw += sm.width
             nh += fontR.height
 
@@ -234,9 +234,9 @@ impl IWnd for IconButton
                 }
             }
 
-            pos.x = pos.horzCenter() - nw * 0.5
-            pos.y = pos.vertCenter() - nh * 0.5
-            pos.width = nw
+            pos.x      = pos.horzCenter() - nw * 0.5
+            pos.y      = pos.vertCenter() - nh * 0.5
+            pos.width  = nw
             pos.height = nh
         }
 
@@ -244,62 +244,62 @@ impl IWnd for IconButton
         if arrowPos != .None
         {
             var posArrow = pos
-            let w = metrics.btnIcon_WidthArrow
-            let h = metrics.btnIcon_HeightArrow
+            let w        = metrics.btnIcon_WidthArrow
+            let h        = metrics.btnIcon_HeightArrow
 
             switch arrowPos
             {
             case Left:
-                subRectBk = &rects.btnIcon_ArrowLeft
-                posArrow.width = h
+                subRectBk       = &rects.btnIcon_ArrowLeft
+                posArrow.width  = h
                 posArrow.height = w
-                posArrow.x = pos.x + marginArrow
-                posArrow.y = pos.vertCenter() - w * 0.5
+                posArrow.x      = pos.x + marginArrow
+                posArrow.y      = pos.vertCenter() - w * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
                 pos.moveLeft(marginArrow + w + metrics.btnIcon_SpacingArrowH)
 
             case Top:
-                subRectBk = &rects.btnIcon_ArrowUp
-                posArrow.width = w
+                subRectBk       = &rects.btnIcon_ArrowUp
+                posArrow.width  = w
                 posArrow.height = h
-                posArrow.x = pos.horzCenter() - w * 0.5
-                posArrow.y = pos.y + marginArrow
+                posArrow.x      = pos.horzCenter() - w * 0.5
+                posArrow.y      = pos.y + marginArrow
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
                 pos.moveTop(marginArrow + h + metrics.btnIcon_SpacingArrowV)
 
             case Right:
-                subRectBk = &rects.btnIcon_ArrowRight
-                posArrow.width = h
+                subRectBk       = &rects.btnIcon_ArrowRight
+                posArrow.width  = h
                 posArrow.height = w
-                posArrow.x = pos.right() - w - marginArrow
-                posArrow.y = pos.vertCenter() - h * 0.5
+                posArrow.x      = pos.right() - w - marginArrow
+                posArrow.y      = pos.vertCenter() - h * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
                 pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrowH)
 
             case RightUp:
-                subRectBk = &rects.btnIcon_ArrowUp
-                posArrow.width = w
+                subRectBk       = &rects.btnIcon_ArrowUp
+                posArrow.width  = w
                 posArrow.height = h
-                posArrow.x = pos.right() - w - marginArrow
-                posArrow.y = pos.vertCenter() - h * 0.5
+                posArrow.x      = pos.right() - w - marginArrow
+                posArrow.y      = pos.vertCenter() - h * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
                 pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrowH)
 
             case RightDown:
-                subRectBk = &rects.btnIcon_ArrowDown
-                posArrow.width = w
+                subRectBk       = &rects.btnIcon_ArrowDown
+                posArrow.width  = w
                 posArrow.height = h
-                posArrow.x = pos.right() - w - marginArrow
-                posArrow.y = pos.vertCenter() - h * 0.5
+                posArrow.x      = pos.right() - w - marginArrow
+                posArrow.y      = pos.vertCenter() - h * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
                 pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrowH)
 
             case Bottom:
-                subRectBk = &rects.btnIcon_ArrowDown
-                posArrow.width = w
+                subRectBk       = &rects.btnIcon_ArrowDown
+                posArrow.width  = w
                 posArrow.height = h
-                posArrow.x = pos.horzCenter() - w * 0.5
-                posArrow.y = pos.bottom() - h - marginArrow
+                posArrow.x      = pos.horzCenter() - w * 0.5
+                posArrow.y      = pos.bottom() - h - marginArrow
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
                 pos.setBottom(posArrow.y - metrics.btnIcon_SpacingArrowV)
             }
@@ -310,10 +310,10 @@ impl IWnd for IconButton
         {
             var sf: RichStringFormat
             theme.setTextColors(&sf, colorText)
-            sf.font = getFont()
+            sf.font          = getFont()
             sf.horzAlignment = .Center
             sf.vertAlignment = .Center
-            sf.flags = .DontAdaptSingleLineHeight
+            sf.flags         = .DontAdaptSingleLineHeight
             switch textPos
             {
             case Left:
@@ -333,7 +333,7 @@ impl IWnd for IconButton
                 }
                 else
                 {
-                    pos.x = pos.right() - icon.sizeX
+                    pos.x     = pos.right() - icon.sizeX
                     pos.width = icon.sizeX
                 }
 
@@ -372,7 +372,7 @@ impl IWnd for IconButton
                 }
                 else
                 {
-                    pos.y = pos.bottom() - icon.sizeY
+                    pos.y      = pos.bottom() - icon.sizeY
                     pos.height = icon.sizeY
                 }
 
@@ -481,7 +481,7 @@ impl IconButton
         if pos.width == 0 do
             pos.width = parent.getThemeMetrics().btnPush_Width
         let res = Wnd.create'IconButton(parent, null, pos, id)
-        res.icon = icon
+        res.icon    = icon
         res.padding = res.getThemeMetrics().btnIcon_Padding
         if id != null do
             res.updateCommandState()

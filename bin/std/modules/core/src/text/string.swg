@@ -12,11 +12,11 @@ enum CharacterSet
 
 struct String
 {
-    buffer:     ^u8
-    length:     u64
-    capacity:   u64
-    allocator:  IAllocator
-    padding:    [StringSmallSize] u8
+    buffer:        ^u8
+    length:        u64
+    capacity:      u64
+    allocator:     IAllocator
+    padding:       [StringSmallSize] u8
 }
 
 impl String
@@ -75,7 +75,7 @@ impl String
 
     mtd const opEquals(other: string)->bool
     {
-        if buffer == @dataof(other) do // true if null
+        if buffer == @dataof(other) do
             return true
         if length != @countof(other) do
             return false
@@ -142,7 +142,7 @@ impl String
         if !buffer do
             return
 
-        if(@getcontext().flags & .PostCopyResetAllocator) do
+        if (@getcontext().flags & .PostCopyResetAllocator) do
             allocator = null
 
         if capacity <= StringSmallSize do
@@ -150,7 +150,7 @@ impl String
         else
         {
             let oldBuffer = buffer
-            buffer = null
+            buffer   = null
             capacity = 0
             reserve(length + 1)
             Memory.copy(buffer, oldBuffer, length + 1)
@@ -176,8 +176,10 @@ impl String
     #[Macro]
     mtd(ptr: bool, back: bool) opVisitRunes(stmt: code)
     {
-        #if ptr  #do #error "visiting runes by pointer is not supported"
-        #if back #do #error "visiting runes in reverse order is not supported"
+        #if ptr #do
+            #error "visiting runes by pointer is not supported"
+        #if back #do
+            #error "visiting runes in reverse order is not supported"
         Utf8.visitRunes(|#alias0, #alias1, #alias2| toSlice(), stmt)
     }
 
@@ -280,7 +282,7 @@ impl String
             idx = Utf8.indexOf(toString(), what, idx)
         }
 
-        buffer[length] = 0;
+        buffer[length] = 0
     }
 
     // Replace all occurences of 'what' with 'by'
@@ -306,7 +308,7 @@ impl String
             idx = Utf8.indexOf(toString(), what, idx, comparisonType)
         }
 
-        buffer[length] = 0;
+        buffer[length] = 0
     }
 
     // Get the last byte
@@ -400,7 +402,7 @@ impl String
     {
         Debug.assert(Utf8.isValidRune(value), "invalid rune")
         var tmp: [4] u8
-        let eat = Utf8.encodeRune(tmp, value)
+        let eat  = Utf8.encodeRune(tmp, value)
         grow(length + eat + 1)
         loop i: eat do
             buffer[length + i] = tmp[i]
@@ -419,7 +421,7 @@ impl String
         let newLength = length + concatLength + 1
         grow(newLength)
         Memory.copy(buffer + length, @dataof(value), concatLength)
-        length = newLength - 1
+        length         = newLength - 1
         buffer[length] = 0
     }
 
@@ -473,7 +475,7 @@ impl String
 
             // This is a small string again
             capacity = StringSmallSize
-            buffer = acast &padding[0]
+            buffer   = acast &padding[0]
         }
 
         // We were in small size mode, and we are no more
@@ -488,7 +490,7 @@ impl String
         // We were in dynamic mode, so just realloc memory
         else
         {
-            buffer = acast Memory.realloc(buffer, newCapacity, capacity, allocator)
+            buffer   = acast Memory.realloc(buffer, newCapacity, capacity, allocator)
             capacity = newCapacity
         }
     }
@@ -655,7 +657,7 @@ impl String
 
         // Find 'what', and returns the byte index of it
         mtd const indexOf(what: string, startByteIndex = 0'u64, comparisonType = Utf8.ComparisonType.Latin1)->u64 => Utf8.indexOf(toSlice(), what, startByteIndex, comparisonType)
-        mtd const indexOf(what: rune, startByteIndex = 0'u64)->u64 => Utf8.indexOf(toSlice(), what, startByteIndex)
+        mtd const indexOf(what: rune, startByteIndex = 0'u64)->u64                                                => Utf8.indexOf(toSlice(), what, startByteIndex)
     }
 }
 

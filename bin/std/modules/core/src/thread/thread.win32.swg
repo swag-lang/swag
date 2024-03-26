@@ -67,7 +67,7 @@ impl Thread
         elif tempAllocSize != 0 do
             context.tempAllocator.setCapacity(cast(u64) tempAllocSize, context.allocator)
 
-        handle = try CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
+        handle     = try CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
         userLambda = lambda
         requestEnd = false
 
@@ -96,11 +96,16 @@ impl Thread
         #[Swag.Complete]
         switch newPrio
         {
-            case Lowest:        wprio = THREAD_PRIORITY_LOWEST
-            case BelowNormal:   wprio = THREAD_PRIORITY_BELOW_NORMAL
-            case Normal:        wprio = THREAD_PRIORITY_NORMAL
-            case AboveNormal:   wprio = THREAD_PRIORITY_ABOVE_NORMAL
-            case Highest:       wprio = THREAD_PRIORITY_HIGHEST
+        case Lowest:
+            wprio = THREAD_PRIORITY_LOWEST
+        case BelowNormal:
+            wprio = THREAD_PRIORITY_BELOW_NORMAL
+        case Normal:
+            wprio = THREAD_PRIORITY_NORMAL
+        case AboveNormal:
+            wprio = THREAD_PRIORITY_ABOVE_NORMAL
+        case Highest:
+            wprio = THREAD_PRIORITY_HIGHEST
         }
 
         try SetThreadPriority(handle, THREAD_PRIORITY_LOWEST)

@@ -2,10 +2,10 @@
 
 struct Dialog
 {
-    using wnd:          Wnd
-    wndBottom:          *StackLayoutCtrl
-    buttons:            Array'(*PushButton)
-    sigPressedButton:   closure(self, WndId)->bool
+    using wnd:            Wnd
+    wndBottom:            *StackLayoutCtrl
+    buttons:              Array'(*PushButton)
+    sigPressedButton:     closure(*Dialog, WndId)->bool
 }
 
 impl IWnd for Dialog
@@ -61,8 +61,6 @@ impl IWnd for Dialog
                         break
                     }
                 }
-
-            // Pressing escape validates some specific buttons
             case Escape:
                 visit btn: buttons
                 {
@@ -100,17 +98,17 @@ impl Dialog
     mtd createSurface(from: *Surface, x, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)->*Surface
     {
         let surfaceFlags = SurfaceFlags.BigCaption | SurfaceFlags.Secondary | flags
-        let srf = assume from.app.createSurface(x, y, width, height, surfaceFlags, self)
+        let srf          = assume from.app.createSurface(x, y, width, height, surfaceFlags, self)
         srf.wnd.view.backgroundStyle = .Dialog
 
         let metrics = getThemeMetrics()
-        var h = metrics.btnPush_Height
+        var h       = metrics.btnPush_Height
         h += 2 * metrics.dialog_Padding
         with wndBottom = Wnd.create'StackLayoutCtrl(srf.wnd.view, "", {0, 0, 0, h})
         {
-            .spacing = 10
-            .layoutKind = .HorzCenterVertCenter
-            .dockStyle = .Bottom
+            .spacing         = 10
+            .layoutKind      = .HorzCenterVertCenter
+            .dockStyle       = .Bottom
             .backgroundStyle = .DialogBar
             .setAllPaddings(metrics.dialog_Padding)
         }
@@ -136,7 +134,8 @@ impl Dialog
         {
             .form = isDefault ? .Default : .Strong
 
-            .sigPressed += closure|self|(btn) {
+            .sigPressed += closure|self|(btn )
+            {
                 if !self.sigPressedButton or self.sigPressedButton(self, btn.id) do
                     btn.getApp().exitModal(btn.id)
             }

@@ -1,4 +1,5 @@
-#global namespace Serialization.Read
+#global namespace Serialization
+#global namespace Read
 #global public
 using Swag, Core.Errors
 
@@ -27,27 +28,27 @@ Supported attributes are :
 */
 struct TagBin
 {
-    stream:             ByteStream
-    options:            TagBinOptions
-    freeSections:       ArrayPtr'TagBinSection
-    sections:           ArrayPtr'TagBinSection
-    convertNextNative:  const *Swag.TypeInfoNative
-    convertValToArray:  bool
-    convertArrayToVal:  bool
+    stream:                ByteStream
+    options:               TagBinOptions
+    freeSections:          ArrayPtr'TagBinSection
+    sections:              ArrayPtr'TagBinSection
+    convertNextNative:     const *Swag.TypeInfoNative
+    convertValToArray:     bool
+    convertArrayToVal:     bool
 }
 
 struct TagBinSection
 {
-    mapSeek:        HashTable'(u32, u64)
-    afterFatSeek:   u64
-    version:        u32
-    kind:           SectionKind
-    skipFat:        bool
+    mapSeek:          HashTable'(u32, u64)
+    afterFatSeek:     u64
+    version:          u32
+    kind:             SectionKind
+    skipFat:          bool
 }
 
 struct TagBinOptions
 {
-    tryForward: bool    // Accept to try to read a newest version, otherwise error
+    tryForward: bool // Accept to try to read a newest version, otherwise error
 }
 
 internal impl TagBin
@@ -215,7 +216,7 @@ impl TagBin
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endRoot() throw
     {
-    }
+        }
 
     mtd beginSection(kind: SectionKind, skipFat = false) throw
     {
@@ -229,16 +230,18 @@ impl TagBin
         var sig = stream.readNative'u32()
         if sig != Write.TagBinSignatures.Fat do
             throw SerializationError{"invalid fat signature"}
-        let fatSeek = stream.readNative'u64()
+        let fatSeek  = stream.readNative'u64()
         var fatCount = stream.readNative'u64()
 
         // We have a fat, but we do not want it !
         if skipFat
         {
             sec.afterFatSeek = fatSeek
-            sec.afterFatSeek += @sizeof(u32) // Signature
-            sec.afterFatSeek += fatCount * @sizeof(u32) // Crc
-            sec.afterFatSeek += fatCount * @sizeof(u64) // Element seek
+            sec.afterFatSeek += @sizeof(u32)
+            // Signature
+            sec.afterFatSeek += fatCount * @sizeof(u32)
+            // Crc
+            sec.afterFatSeek += fatCount * @sizeof(u64)
         }
         else
         {
@@ -250,7 +253,7 @@ impl TagBin
 
             while fatCount
             {
-                let crc = stream.readNative'u32()
+                let crc  = stream.readNative'u32()
                 let seek = stream.readNative'u64()
                 sec.mapSeek.add(crc, seek)
                 fatCount -= 1
@@ -275,8 +278,8 @@ impl TagBin
 
     mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool throw
     {
-        if  Reflection.hasAttribute(structType, Serialization.Final) or
-            Reflection.hasAttribute(structType, Serialization.PodFinal)
+        if Reflection.hasAttribute(structType, Serialization.Final) or
+           Reflection.hasAttribute(structType, Serialization.PodFinal)
         {
             beginSection(.Raw)
         }
@@ -322,7 +325,7 @@ impl TagBin
         Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
 
         var reqCrcName = val.crc32
-        let sec = sections.back()
+        let sec        = sections.back()
 
         // If section is raw, then we just have values without versionning
         if sec.kind == .Raw do
@@ -345,7 +348,7 @@ impl TagBin
                     let value = Reflection.getAttributeValue(al, "name")
                     Debug.assert(value != null)
                     reqCrcName = Hash.Crc32.compute(cast(string) value)
-                    ent = sec.mapSeek.find(reqCrcName)
+                    ent        = sec.mapSeek.find(reqCrcName)
                     if ent do
                         break
                 }
@@ -404,22 +407,20 @@ impl TagBin
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd beginValue() throw
     {
-    }
+        }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endValue() throw
     {
-    }
+        }
 
     mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *u64)->bool throw
     {
         let orgCount = dref countElem
-
-        // It's not an array in the stream, but we want one
         if convertValToArray
         {
             convertValToArray = false
-            dref countElem = 1
+            dref countElem    = 1
         }
         else
         {
@@ -477,7 +478,7 @@ impl TagBin
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endSequence() throw
     {
-    }
+        }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd toNextSequenceElement(countElem: *u64)->bool
@@ -504,7 +505,7 @@ impl TagBin
         #if NT == Core.String
         {
             var result: retval
-            let count = cast(u64) stream.readNative'u32()
+            let count   = cast(u64) stream.readNative'u32()
             result.reserve(count)
             stream.readBytes(result.buffer, count)
             result.length = count

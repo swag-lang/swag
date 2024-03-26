@@ -4,18 +4,18 @@ using Core
 struct RichChunk
 {
     // From 'set'
-    slice:          string
-    fontStyle:      FontFamilyStyle = Regular
-    hasFontStyle:   bool
-    isSpace:        bool
-    isEol:          bool
-    colorIdx:       s32
+    slice:            string
+    fontStyle:        FontFamilyStyle = Regular
+    hasFontStyle:     bool
+    isSpace:          bool
+    isEol:            bool
+    colorIdx:         s32
 
     // From 'computeLayout'
-    boundRect:  Math.Rectangle
-    pos:        Math.Point
-    font:       *Font
-    under:      UnderlineStyle = None
+    boundRect:     Math.Rectangle
+    pos:           Math.Point
+    font:          *Font
+    under:         UnderlineStyle = None
 }
 
 // Represents a string with embedded formats.
@@ -29,11 +29,11 @@ struct RichChunk
 // See [[RichString.set]] for a list of available markers.
 struct RichString
 {
-    raw:        String              // The string as passed by the user
-    chunks:     Array'RichChunk     // The corresponding list of chunks
-    layoutRect: Math.Rectangle
-    boundRect:  Math.Rectangle
-    dirty:      bool                // If dirty, 'Compute'
+    raw:            String              // The string as passed by the user
+    chunks:         Array'RichChunk     // The corresponding list of chunks
+    layoutRect:     Math.Rectangle
+    boundRect:      Math.Rectangle
+    dirty:          bool                // If dirty, 'Compute'
 }
 
 impl RichString
@@ -55,26 +55,26 @@ impl RichString
     {
         if idx - startChunk == 0 do
             return
-        chunk.isSpace       = space
-        chunk.isEol         = eol
-        chunk.colorIdx      = colorFg
-        chunk.under         = under
-        chunk.hasFontStyle  = false
+        chunk.isSpace      = space
+        chunk.isEol        = eol
+        chunk.colorIdx     = colorFg
+        chunk.under        = under
+        chunk.hasFontStyle = false
 
         if isBold and isItalic
         {
             chunk.hasFontStyle = true
-            chunk.fontStyle = .BoldItalic
+            chunk.fontStyle    = .BoldItalic
         }
         elif isBold
         {
             chunk.hasFontStyle = true
-            chunk.fontStyle = .Bold
+            chunk.fontStyle    = .Bold
         }
         elif isItalic
         {
             chunk.hasFontStyle = true
-            chunk.fontStyle = .Italic
+            chunk.fontStyle    = .Italic
         }
 
         chunk.slice = @mkstring(raw.buffer + startChunk, idx - startChunk)
@@ -113,7 +113,7 @@ impl RichString
     {
         if raw == text and chunks.count do
             return
-        raw = text
+        raw   = text
         dirty = true
     }
 
@@ -123,7 +123,7 @@ impl RichString
     {
         var result: retval
 
-        var scan = @dataof(str)
+        var scan  = @dataof(str)
         var count = @countof(str)
         result.reserve(count)
 
@@ -132,15 +132,11 @@ impl RichString
             let sl = @mkslice(scan, count)
             switch
             {
-            case Utf8.startsWith(sl, "<u>"),
-                 Utf8.startsWith(sl, "<b>"),
-                 Utf8.startsWith(sl, "<i>"):
+            case Utf8.startsWith(sl, "<u>"), Utf8.startsWith(sl, "<b>"), Utf8.startsWith(sl, "<i>"):
                 scan += 3
                 count -= 3
                 continue
-            case Utf8.startsWith(sl, "<p1>"),
-                 Utf8.startsWith(sl, "<p2>"),
-                 Utf8.startsWith(sl, "<p3>"):
+            case Utf8.startsWith(sl, "<p1>"), Utf8.startsWith(sl, "<p2>"), Utf8.startsWith(sl, "<p3>"):
                 scan += 4
                 count -= 4
                 continue
@@ -170,12 +166,12 @@ impl RichString
             return
 
         var startChunk = 0'u64
-        var chunk: RichChunk
+        var chunk:     RichChunk
 
         var byteIdx = 0'u64
         var isBold, isItalic = false
         var colorFg = 0
-        var under = UnderlineStyle.None
+        var under   = UnderlineStyle.None
 
         var scan = raw.buffer
         while count

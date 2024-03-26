@@ -49,7 +49,7 @@ func getDirectoryName(fullname: string)->string
     Debug.assert(isValidPathName(fullname))
 
     let countof = @countof(fullname)
-    var cpt = countof
+    var cpt     = countof
     while cpt
     {
         cpt -= 1
@@ -76,7 +76,7 @@ func getFileName(fullname: string)->string
     Debug.assert(isValidPathName(fullname))
 
     let countof = @countof(fullname)
-    var cpt = countof
+    var cpt     = countof
     while cpt
     {
         cpt -= 1
@@ -101,8 +101,8 @@ func getFileNameWithoutExtension(fullname: string)->string
     Debug.assert(isValidPathName(fullname))
 
     let countof = @countof(fullname)
-    var cpt = countof
-    var last = countof
+    var cpt     = countof
+    var last    = countof
     while cpt
     {
         cpt -= 1

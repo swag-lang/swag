@@ -6,22 +6,22 @@ using Swag
 {
     #[Inline]
     {
-        func isNative(t: typeinfo)      => t.kind == .Native
-        func isPointer(t: typeinfo)     => t.kind == .Pointer
-        func isEnum(t: typeinfo)        => t.kind == .Enum
-        func isStruct(t: typeinfo)      => t.kind == .Struct
-        func isArray(t: typeinfo)       => t.kind == .Array
-        func isSlice(t: typeinfo)       => t.kind == .Slice
-        func isTypeAlias(t: typeinfo)   => t.kind == .Alias
-        func isInterface(t: typeinfo)   => t.kind == .Interface
+        func isNative(t: typeinfo)    => t.kind == .Native
+        func isPointer(t: typeinfo)   => t.kind == .Pointer
+        func isEnum(t: typeinfo)      => t.kind == .Enum
+        func isStruct(t: typeinfo)    => t.kind == .Struct
+        func isArray(t: typeinfo)     => t.kind == .Array
+        func isSlice(t: typeinfo)     => t.kind == .Slice
+        func isTypeAlias(t: typeinfo) => t.kind == .Alias
+        func isInterface(t: typeinfo) => t.kind == .Interface
 
-        func isInteger(t: typeinfo)            => t.flags & .Integer
-        func isFloat(t: typeinfo)              => t.flags & .Float
-        func isGeneric(t: typeinfo)            => t.flags & .Generic
-        func isTuple(t: typeinfo)              => t.flags & .Tuple
-        func isType(t: typeinfo)               => t.flags & .PointerTypeInfo
-        func isPointerRef(t: typeinfo)         => t.flags & .PointerRef
-        func isPointerArithmetic(t: typeinfo)  => t.flags & .PointerArithmetic
+        func isInteger(t: typeinfo)           => t.flags & .Integer
+        func isFloat(t: typeinfo)             => t.flags & .Float
+        func isGeneric(t: typeinfo)           => t.flags & .Generic
+        func isTuple(t: typeinfo)             => t.flags & .Tuple
+        func isType(t: typeinfo)              => t.flags & .PointerTypeInfo
+        func isPointerRef(t: typeinfo)        => t.flags & .PointerRef
+        func isPointerArithmetic(t: typeinfo) => t.flags & .PointerArithmetic
 
         func isEnumFlags(t: typeinfo)->bool
         {
@@ -80,7 +80,7 @@ using Swag
         if !isStruct(type) do
             return false
 
-        let typeStruct = cast(const* TypeInfoStruct) type
+        let typeStruct = cast(const *TypeInfoStruct) type
         return typeStruct.structName == name
     }
 
@@ -109,12 +109,12 @@ using Swag
 
     // Get information about a specific mtd in a given struct
     // Returns null if the mtd does not exist
-    func getMethod(type: typeinfo, name: string)->const* TypeValue
+    func getMethod(type: typeinfo, name: string)->const *TypeValue
     {
         if !isStruct(type) do
             return null
 
-        let typeStruct = cast(const* TypeInfoStruct) type
+        let typeStruct = cast(const *TypeInfoStruct) type
         visit it: typeStruct.methods
         {
             if it.name == name do
@@ -126,12 +126,12 @@ using Swag
 
     // Get information about a specific field in a given struct
     // Returns null if the field does not exist
-    func getField(type: typeinfo, name: string)->const* TypeValue
+    func getField(type: typeinfo, name: string)->const *TypeValue
     {
         if !isStruct(type) do
             return null
 
-        let typeStruct = cast(const* TypeInfoStruct) type
+        let typeStruct = cast(const *TypeInfoStruct) type
         visit it: typeStruct.fields
         {
             if it.name == name do
@@ -147,21 +147,31 @@ using Swag
         let patch = cast(^u8) src + type.offset
         switch type.pointedType
         {
-        case s8, u8, bool:          dref cast(*u8)  dest = dref cast(*u8)  patch
-        case s16, u16:              dref cast(*u16) dest = dref cast(*u16) patch
-        case s32, u32, f32, rune:   dref cast(*u32) dest = dref cast(*u32) patch
-        case s64, u64, f64:         dref cast(*u64) dest = dref cast(*u64) patch
-        case string:                dref cast(*string) dest = dref cast(*string) patch
+        case s8, u8, bool:
+            dref cast(*u8) dest = dref cast(*u8) patch
+        case s16, u16:
+            dref cast(*u16) dest = dref cast(*u16) patch
+        case s32, u32, f32, rune:
+            dref cast(*u32) dest = dref cast(*u32) patch
+        case s64, u64, f64:
+            dref cast(*u64) dest = dref cast(*u64) patch
+        case string:
+            dref cast(*string) dest = dref cast(*string) patch
         default:
             if !hardCast do
                 Debug.assert(false, "unsupported getFieldValue type")
             switch type.pointedType.sizeof
             {
-            case 1:     dref cast(*u8)  dest = dref cast(*u8)  patch
-            case 2:     dref cast(*u16) dest = dref cast(*u16) patch
-            case 4:     dref cast(*u32) dest = dref cast(*u32) patch
-            case 8:     dref cast(*u64) dest = dref cast(*u64) patch
-            default:    Debug.assert(false, "unsupported getFieldValue type")
+            case 1:
+                dref cast(*u8) dest = dref cast(*u8) patch
+            case 2:
+                dref cast(*u16) dest = dref cast(*u16) patch
+            case 4:
+                dref cast(*u32) dest = dref cast(*u32) patch
+            case 8:
+                dref cast(*u64) dest = dref cast(*u64) patch
+            default:
+                Debug.assert(false, "unsupported getFieldValue type")
             }
         }
     }
@@ -172,21 +182,31 @@ using Swag
         var patch = cast(^u8) dest + type.offset
         switch type.pointedType
         {
-        case s8, u8, bool:          dref cast(*u8)  patch = dref cast(const *u8)  src
-        case s16, u16:              dref cast(*u16) patch = dref cast(const *u16) src
-        case s32, u32, f32, rune:   dref cast(*u32) patch = dref cast(const *u32) src
-        case s64, u64, f64:         dref cast(*u64) patch = dref cast(const *u64) src
-        case string:                dref cast(*string) patch = dref cast(const *string) src
+        case s8, u8, bool:
+            dref cast(*u8) patch = dref cast(const *u8) src
+        case s16, u16:
+            dref cast(*u16) patch = dref cast(const *u16) src
+        case s32, u32, f32, rune:
+            dref cast(*u32) patch = dref cast(const *u32) src
+        case s64, u64, f64:
+            dref cast(*u64) patch = dref cast(const *u64) src
+        case string:
+            dref cast(*string) patch = dref cast(const *string) src
         default:
             if !hardCast do
                 Debug.assert(false, "unsupported setFieldValue type")
             switch type.pointedType.sizeof
             {
-            case 1:     dref cast(*u8)  patch = dref cast(const *u8)  src
-            case 2:     dref cast(*u16) patch = dref cast(const *u16) src
-            case 4:     dref cast(*u32) patch = dref cast(const *u32) src
-            case 8:     dref cast(*u64) patch = dref cast(const *u64) src
-            default:    Debug.assert(false, "unsupported setFieldValue type")
+            case 1:
+                dref cast(*u8) patch = dref cast(const *u8) src
+            case 2:
+                dref cast(*u16) patch = dref cast(const *u16) src
+            case 4:
+                dref cast(*u32) patch = dref cast(const *u32) src
+            case 8:
+                dref cast(*u64) patch = dref cast(const *u64) src
+            default:
+                Debug.assert(false, "unsupported setFieldValue type")
             }
         }
     }
@@ -208,7 +228,7 @@ using Swag
         if !isStruct(type) do
             return false
 
-        let typeStruct = cast(const* TypeInfoStruct) type
+        let typeStruct = cast(const *TypeInfoStruct) type
         visit it: typeStruct.interfaces
         {
             if it.name == itf.fullname do
@@ -363,12 +383,12 @@ using Swag
 
     // Get information about a specific value in a given enum
     // Returns null if the value does not exist
-    func getEnumValue(type: typeinfo, name: string)->const* TypeValue
+    func getEnumValue(type: typeinfo, name: string)->const *TypeValue
     {
         if !isEnum(type) do
             return null
 
-        let typeEnum = cast(const* TypeInfoEnum) type
+        let typeEnum = cast(const *TypeInfoEnum) type
         visit it: typeEnum.values
         {
             if it.name == name do
@@ -380,25 +400,31 @@ using Swag
 
     // Returns the enum value name corresponding to the value pointed by 'valueAddr'
     // Can have multiple names if the enum is tagged with #[Swag.EnumFlags]
-    func getEnumName(type: typeinfo, valueAddr: const* void, fullname = true)->String
+    func getEnumName(type: typeinfo, valueAddr: const *void, fullname = true)->String
     {
         var result: String
         if !isEnum(type) do
             return result
         let typeEnum = cast(const *TypeInfoEnum) type
-        let isFlags = hasAttribute(type, EnumFlags)
+        let isFlags  = hasAttribute(type, EnumFlags)
 
         // Get the user value, as an 'u64' or a string
-        var val1: u64
+        var val1:  u64
         var val1s: string
         switch typeEnum.rawType.sizeof
         {
-        case 1:  val1 = cast(u64) dref cast(const *u8) valueAddr
-        case 2:  val1 = cast(u64) dref cast(const *u16) valueAddr
-        case 4:  val1 = cast(u64) dref cast(const *u32) valueAddr
-        case 8:  val1 = cast(u64) dref cast(const *u64) valueAddr
-        case 16: val1s = dref cast(const *string) valueAddr
-        default: return result
+        case 1:
+            val1 = cast(u64) dref cast(const *u8) valueAddr
+        case 2:
+            val1 = cast(u64) dref cast(const *u16) valueAddr
+        case 4:
+            val1 = cast(u64) dref cast(const *u32) valueAddr
+        case 8:
+            val1 = cast(u64) dref cast(const *u64) valueAddr
+        case 16:
+            val1s = dref cast(const *string) valueAddr
+        default:
+            return result
         }
 
         let simpleName = type.name
@@ -406,15 +432,20 @@ using Swag
         visit it: typeEnum.values
         {
             // Get the enum value, as an 'u64' or a string
-            var val2: u64
+            var val2:  u64
             var val2s: string
             switch typeEnum.rawType.sizeof
             {
-            case 1:  val2 = cast(u64) dref cast(const *u8) it.value
-            case 2:  val2 = cast(u64) dref cast(const *u16) it.value
-            case 4:  val2 = cast(u64) dref cast(const *u32) it.value
-            case 8:  val2 = cast(u64) dref cast(const *u64) it.value
-            case 16: val2s = dref cast(const *string) it.value
+            case 1:
+                val2 = cast(u64) dref cast(const *u8) it.value
+            case 2:
+                val2 = cast(u64) dref cast(const *u16) it.value
+            case 4:
+                val2 = cast(u64) dref cast(const *u32) it.value
+            case 8:
+                val2 = cast(u64) dref cast(const *u64) it.value
+            case 16:
+                val2s = dref cast(const *string) it.value
             }
 
             // For a normal enum, stop if this is a match
@@ -433,7 +464,8 @@ using Swag
             // For a flags enum, just append the name if the bit is set
             if isFlags and (val1 & val2)
             {
-                if !result.isEmpty() do result += " | "
+                if !result.isEmpty() do
+                    result += " | "
 
                 if fullname
                 {
@@ -482,7 +514,7 @@ using Swag
 func roomInArray(addr: *void, valueType: typeinfo)->*void
 {
     // We will treat the array as a buffer of bytes, just to be able to access the fields
-    let arr = cast(*Array'u8) addr
+    let arr       = cast(*Array'u8) addr
     let sizeValue = valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct
@@ -494,7 +526,7 @@ func roomInArray(addr: *void, valueType: typeinfo)->*void
     if arr.count >= arr.capacity
     {
         let newCapacity = Math.max(arr.count + 1, arr.capacity * 2)
-        let newBuffer = cast(^u8) Memory.alloc(newCapacity * sizeValue, arr.allocator)
+        let newBuffer   = cast(^u8) Memory.alloc(newCapacity * sizeValue, arr.allocator)
         Memory.clear(newBuffer, newCapacity * sizeValue)
         arr.capacity = newCapacity
 

@@ -8,12 +8,12 @@ var g_FT: FT_Library
 
 public struct TypeFace
 {
-    fullname:       string
-    buffer:         Array'u8
-    face:           FT_Face
-    forceBoldDiv:   u32 = 11
-    forceItalic:    bool
-    forceBold:      bool
+    fullname:         string
+    buffer:           Array'u8
+    face:             FT_Face
+    forceBoldDiv:     u32 = 11
+    forceItalic:      bool
+    forceBold:        bool
 }
 
 var g_HashTypeFace: HashTable'(String, *TypeFace)
@@ -100,7 +100,7 @@ public impl TypeFace
 
         let tf = Memory.new'TypeFace()
         tf.fullname = fullname
-        tf.buffer = bytes
+        tf.buffer   = bytes
         FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
 
         g_HashTypeFace.add(fullname, tf)
@@ -198,7 +198,7 @@ public impl TypeFace
         try FT_Set_Pixel_Sizes(face, 0, size)
 
         var serial = 0
-        var x = 0
+        var x      = 0
 
         Utf8.visitRunes(|c| text)
         {
@@ -215,7 +215,7 @@ public impl TypeFace
                 loop i: prevIdx until pathList.paths.count
                 {
                     pathList.paths[i].isClosed = true
-                    pathList.paths[i].serial = serial
+                    pathList.paths[i].serial   = serial
                 }
 
                 serial += 1

@@ -3,36 +3,36 @@ using Core, Pixel
 
 struct PopupListCtrlItem
 {
-    using base: Item
-    isSeparator: bool
+    using base:      Item
+    isSeparator:     bool
 
-    aniSel:     BlendColor{speed: 10}
-    aniText:    BlendColor{speed: 10}
-    aniCheck:   BlendColor{speed: 10}
+    aniSel:       BlendColor{speed: 10}
+    aniText:      BlendColor{speed: 10}
+    aniCheck:     BlendColor{speed: 10}
 }
 
 struct PopupListCtrl
 {
-    using frameWnd: FrameWnd
-    heightItem:         f32 = 30
-    heightSeparator:    f32 = 15
-    minWidthPopup:      f32 = 100
-    maxHeightPopup:     f32 = 300
-    simFitX, simFitY:   bool
+    using frameWnd:      FrameWnd
+    heightItem:          f32 = 30
+    heightSeparator:     f32 = 15
+    minWidthPopup:       f32 = 100
+    maxHeightPopup:      f32 = 300
+    simFitX, simFitY:    bool
 
-    sigSelected:    closure(*Self, u32)
+    sigSelected: closure(*Self, u32 )
 
-    items:          ArrayPtr'PopupListCtrlItem
-    selectedIdx     = Swag.U32.Max
-    scrollWnd:      *ScrollWnd
-    maxIconSize:    s32
+    items:           ArrayPtr'PopupListCtrlItem
+    selectedIdx      = Swag.U32.Max
+    scrollWnd:       *ScrollWnd
+    maxIconSize:     s32
 }
 
 struct PopupListView
 {
-    using wnd:  Wnd
-    list:       *PopupListCtrl
-    hotIdx:     u32 = Swag.U32.Max
+    using wnd:     Wnd
+    list:          *PopupListCtrl
+    hotIdx:        u32 = Swag.U32.Max
 }
 
 impl IWnd for PopupListView
@@ -127,23 +127,23 @@ impl IWnd for PopupListView
     {
         let painter = evt.bc.painter
 
-        let theme = getTheme()
-        let colors = getThemeColors()
+        let theme   = getTheme()
+        let colors  = getThemeColors()
         let metrics = getThemeMetrics()
-        let rects = getThemeRects()
+        let rects   = getThemeRects()
 
         var clientRect = getClientRect()
         clientRect.offset(scrollPos)
 
-        var labelPos: Math.Rectangle = undefined
+        var labelPos:  Math.Rectangle = undefined
         var colorText: Color
 
         var y = 0'f32
         visit i, idx: list.items
         {
-            labelPos.x = clientRect.x
-            labelPos.y = y
-            labelPos.width = clientRect.width
+            labelPos.x      = clientRect.x
+            labelPos.y      = y
+            labelPos.width  = clientRect.width
             labelPos.height = list.heightItem
 
             var format: RichStringFormat
@@ -159,7 +159,7 @@ impl IWnd for PopupListView
             }
 
             // Back selection
-            var colorSel: Color
+            var colorSel:  Color
             var colorCheck = colors.popupList_CheckMark
             if hotIdx == idx
             {
@@ -189,16 +189,16 @@ impl IWnd for PopupListView
             theme.setTextColors(&format, i.aniText.cur())
             format.horzAlignment = .Left
             format.vertAlignment = .Center
-            format.flags = .Clip
-            format.font = getFont()
+            format.flags         = .Clip
+            format.font          = getFont()
             painter.drawRichString(labelPos, &i.name, format)
 
             // Check mark
             if idx == list.selectedIdx
             {
-                labelPos.x = labelPos.right()
-                labelPos.y = labelPos.vertCenter() - (fntHeight * 0.5)
-                labelPos.width = fntHeight
+                labelPos.x      = labelPos.right()
+                labelPos.y      = labelPos.vertCenter() - (fntHeight * 0.5)
+                labelPos.width  = fntHeight
                 labelPos.height = fntHeight
                 theme.drawSubRect(painter, labelPos, &rects.btnCheck_CheckedMark, i.aniCheck.cur())
             }
@@ -219,8 +219,8 @@ impl PopupListCtrl
         {
             .setFrameFlags(FrameWndFlags.SmallShadow)
             .setFrameForm(FrameWndForm.Square)
-            .scrollWnd = .createView'ScrollWnd()
-            .scrollWnd.dockStyle = .Center
+            .scrollWnd               = .createView'ScrollWnd()
+            .scrollWnd.dockStyle     = .Center
             .scrollWnd.focusStrategy = .None
             .scrollWnd.scrollWndFlags |= .SmallBar
             let popupView = .scrollWnd.createView'PopupListView()
@@ -235,9 +235,9 @@ impl PopupListCtrl
     {
         scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
 
-        var pt = parent.surfaceToLocal({x, y})
+        var pt  = parent.surfaceToLocal({x, y})
         var pos = Math.Rectangle{pt.x, pt.y, 0, 0}
-        pos.width = Math.max(width, minWidthPopup)
+        pos.width  = Math.max(width, minWidthPopup)
         pos.height = Math.min(scrollWnd.scrollSize.y, maxHeightPopup)
         pos.height += padding.y + padding.w
         setPosition(pos)

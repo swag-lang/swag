@@ -1,4 +1,4 @@
-﻿#global namespace File
+#global namespace File
 
 public enum TextEncoding
 {
@@ -8,12 +8,12 @@ public enum TextEncoding
 
 public struct TextReader
 {
-    stream:         FileStream
-    buffer:         Array'u8
-    encodingType =  TextEncoding.Utf8
-    byteSeek:       u64
-    bufferSize:     u64
-    checkPreamble:  bool
+    stream:            FileStream
+    buffer:            Array'u8
+    encodingType       = TextEncoding.Utf8
+    byteSeek:          u64
+    bufferSize:        u64
+    checkPreamble:     bool
 }
 
 impl TextReader
@@ -32,7 +32,7 @@ impl TextReader
             if encodingType == .Utf8
             {
                 dref cast(*u32) buffer.buffer = 0
-                buffer.count = stream.read(buffer.buffer, buffer.capacity)
+                buffer.count                  = stream.read(buffer.buffer, buffer.capacity)
 
                 // BOM
                 if buffer.count >= 3 and buffer[0] == 0xEF and buffer[1] == 0xBB and buffer[2] == 0xBF do
@@ -56,11 +56,11 @@ public impl TextReader
         stream = try openRead(fullname)
         Debug.assert(stream.isOpen())
 
-        byteSeek = 0
+        byteSeek      = 0
         checkPreamble = true
-        bufferSize = Math.min(stream.getSize(), 64*1024'u64)
-        bufferSize = Math.max(bufferSize, 16)
-        encodingType = encoding;
+        bufferSize    = Math.min(stream.getSize(), 64 * 1024'u64)
+        bufferSize    = Math.max(bufferSize, 16)
+        encodingType  = encoding
     }
 
     // Close the reader.
@@ -85,7 +85,7 @@ public impl TextReader
 
         loop
         {
-            var ptr = buffer.buffer + byteSeek
+            var ptr  = buffer.buffer + byteSeek
             let ptrB = ptr
             let ptrE = buffer.buffer + buffer.count
 

@@ -5,10 +5,10 @@ struct WrapLayoutCtrl
 {
     using wnd: Wnd
 
-    spacing:        f32 = 5
-    wrapWidth:      f32 = 64
-    wrapHeight:     f32 = 64
-    resultHeight:   f32
+    spacing:          f32 = 5
+    wrapWidth:        f32 = 64
+    wrapHeight:       f32 = 64
+    resultHeight:     f32
 }
 
 impl IWnd for WrapLayoutCtrl

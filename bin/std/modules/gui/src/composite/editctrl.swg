@@ -3,12 +3,12 @@ using Core, Pixel
 
 struct EditCtrl
 {
-    using frameWnd: FrameWnd
-    labelSize:      f32 = 60
-    editSize:       f32 = 60
+    using frameWnd:     FrameWnd
+    labelSize:          f32 = 60
+    editSize:           f32 = 60
 
-    label:  *Label
-    edit:   *EditBox
+    label:     *Label
+    edit:      *EditBox
 }
 
 impl IWnd for EditCtrl
@@ -18,7 +18,7 @@ impl IWnd for EditCtrl
         if !label do
             return
 
-        var rect = getClientRect()
+        var rect    = getClientRect()
         let metrics = getThemeMetrics()
 
         label.setPosition(0, 0, labelSize, metrics.editBox_Height)
@@ -29,15 +29,10 @@ impl IWnd for EditCtrl
 impl EditCtrl
 {
     // Create the popup list, but do not display it
-    func create(parent:   *Wnd,
-                name:     string,
-                text:     string,
-                position: Math.Rectangle = {},
-                id:       WndId = null,
-                flags:    EditBoxFlags = Zero)->*EditCtrl
+    func create(parent: *Wnd, name: string, text: string, position: Math.Rectangle = {}, id: WndId = null, flags: EditBoxFlags = Zero)->*EditCtrl
     {
         let metrics = parent.getThemeMetrics()
-        var pos = position
+        var pos     = position
         if pos.width == 0 do
             pos.width = metrics.editBox_Width * 2
         if pos.height == 0 do
@@ -45,10 +40,10 @@ impl EditCtrl
 
         with let ctrl = Wnd.create'EditCtrl(parent, pos, id)
         {
-            .label = Label.create(ctrl, #self.name, {})
+            .label                   = Label.create(ctrl, #self.name, {})
             .label.horzAlignmentText = .Right
 
-            .edit = EditBox.create(ctrl, text, {})
+            .edit              = EditBox.create(ctrl, text, {})
             .edit.editBoxFlags = flags
 
             .sendResizeEvent()

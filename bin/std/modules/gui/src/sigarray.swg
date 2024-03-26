@@ -3,8 +3,8 @@ using Core
 
 struct(T) SigArray
 {
-    arr:        Array'T
-    disabled:   s32
+    arr:          Array'T
+    disabled:     s32
 }
 
 impl SigArray
@@ -39,12 +39,13 @@ impl SigArray
             #ast
             {
                 var sb: StrConv.StringBuilder
-                let ts = @typeof(T)
+                let ts  = @typeof(T)
 
                 sb.appendString("fn(")
                 loop i: ts.parameters
                 {
-                    if i do sb.appendString(",")
+                    if i do
+                        sb.appendString(",")
                     sb.appendFormat("cast(%) params[%]", ts.parameters[i].pointedType.fullname, i)
                 }
 

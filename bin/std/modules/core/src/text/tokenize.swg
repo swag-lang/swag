@@ -5,7 +5,8 @@
 func eatQuotes(str: string)->string
 {
     let countof = @countof(str)
-    if countof < 2 do return str
+    if countof < 2 do
+        return str
     if str[0] == `"` and str[countof - 1] == `"` do
         return @mkstring(@dataof(str) + 1, countof - 2)
     return str
@@ -15,7 +16,7 @@ func eatQuotes(str: string)->string
 func eatCount(str: string, count: u64)->string
 {
     let countof = @countof(str)
-    let cpt = Math.min(count, countof)
+    let cpt     = Math.min(count, countof)
     return @mkstring(@dataof(str) + cpt, countof - cpt)
 }
 
@@ -23,7 +24,8 @@ func eatCount(str: string, count: u64)->string
 func eatSpaces(str: string)->string
 {
     let countof = @countof(str)
-    if !countof do return str
+    if !countof do
+        return str
 
     var cpt = 0'u64
     while cpt < countof and Latin1.isSpace(str[cpt]) do
@@ -34,7 +36,7 @@ func eatSpaces(str: string)->string
 // Split the string into an array of lines
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' is destroyed
-func splitLines(src: string) -> Array'string
+func splitLines(src: string)->Array'string
 {
     var result: retval
     let countof = @countof(src)
@@ -42,8 +44,8 @@ func splitLines(src: string) -> Array'string
         return result
 
     var dataof = @dataof(src)
-    var cpt = 0
-    var end = dataof
+    var cpt    = 0
+    var end    = dataof
     while cpt < countof
     {
         while cpt < countof and dref end != `\r` and dref end != `\n`
@@ -71,7 +73,7 @@ func split(src: string, separator: u8, maxSplit: u32 = 0, removeEmpty = true)->A
 {
     let countof = @countof(src)
 
-    var result: retval
+    var result:       retval
     var startbyteIdx: u64
 
     while !maxSplit or result.count != maxSplit
@@ -98,7 +100,7 @@ func split(src: string, separator: u8, maxSplit: u32 = 0, removeEmpty = true)->A
             endbyteIdx += 1
         }
 
-        result.add(src[startbyteIdx ..< endbyteIdx])
+        result.add(src[startbyteIdx..<endbyteIdx])
         startbyteIdx = endbyteIdx
 
         if startbyteIdx == countof do
@@ -109,7 +111,7 @@ func split(src: string, separator: u8, maxSplit: u32 = 0, removeEmpty = true)->A
 
     // Last split
     if startbyteIdx != countof do
-        result.add(src[startbyteIdx ..< countof])
+        result.add(src[startbyteIdx..<countof])
 
     return result
 }
@@ -122,7 +124,7 @@ func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true
 {
     let countof = @countof(src)
 
-    var result: retval
+    var result:       retval
     var startbyteIdx: u64
 
     while !maxSplit or result.count != maxSplit
@@ -130,7 +132,7 @@ func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true
         // Remove separator at the start
         while startbyteIdx != countof
         {
-            if !Utf8.startsWith(src[startbyteIdx ..< countof], separator) do
+            if !Utf8.startsWith(src[startbyteIdx..<countof], separator) do
                 break
             startbyteIdx += @countof(separator)
             if !removeEmpty do
@@ -144,7 +146,7 @@ func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true
         var endbyteIdx = startbyteIdx
         while endbyteIdx != countof
         {
-            if Utf8.startsWith(src[endbyteIdx ..< countof], separator) do
+            if Utf8.startsWith(src[endbyteIdx..<countof], separator) do
                 break
             endbyteIdx += 1
         }
@@ -152,7 +154,7 @@ func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true
         if startbyteIdx == endbyteIdx do
             result.add("")
         else do
-            result.add(src[startbyteIdx ..< endbyteIdx])
+            result.add(src[startbyteIdx..<endbyteIdx])
 
         startbyteIdx = endbyteIdx
         if startbyteIdx == countof do
@@ -163,7 +165,7 @@ func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true
     if startbyteIdx != countof
     {
         startbyteIdx += @countof(separator)
-        result.add(src[startbyteIdx ..< countof])
+        result.add(src[startbyteIdx..<countof])
     }
 
     return result
@@ -173,7 +175,7 @@ func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' is destroyed
 #[Swag.Overload]
-func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true) -> Array'string
+func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true)->Array'string
 {
     return splitAny(src, [separator], maxSplit, removeEmpty)
 }
@@ -186,7 +188,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
     let countof = @countof(src)
 
     var result: retval
-    var c: rune
+    var c:      rune
     var startbyteIdx, eat: u64
 
     while !maxSplit or result.count != maxSplit
@@ -194,7 +196,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         // Remove separator at the start
         while startbyteIdx != countof
         {
-            (c, eat) = Utf8.decodeRune(src[startbyteIdx ..< countof])
+            (c, eat) = Utf8.decodeRune(src[startbyteIdx..<countof])
             if !Slice.contains(separators, c) do
                 break
             startbyteIdx += eat
@@ -209,7 +211,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         var endbyteIdx = startbyteIdx
         while endbyteIdx != countof
         {
-            (c, eat) = Utf8.decodeRune(src[endbyteIdx ..< countof])
+            (c, eat) = Utf8.decodeRune(src[endbyteIdx..<countof])
             if Slice.contains(separators, c) do
                 break
             endbyteIdx += eat
@@ -218,7 +220,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         if startbyteIdx == endbyteIdx do
             result.add("")
         else do
-            result.add(src[startbyteIdx ..< endbyteIdx])
+            result.add(src[startbyteIdx..<endbyteIdx])
 
         startbyteIdx = endbyteIdx
         if startbyteIdx == countof do
@@ -229,7 +231,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
     if startbyteIdx != countof
     {
         startbyteIdx += eat
-        result.add(src[startbyteIdx ..< countof])
+        result.add(src[startbyteIdx..<countof])
     }
 
     return result
@@ -239,7 +241,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
 func getToSpace(str: string)->string
 {
     let countof = @countof(str)
-    var cpt = 0'u64
+    var cpt     = 0'u64
     while cpt < countof and !Latin1.isSpace(str[cpt]) do
         cpt += 1
     return @mkstring(@dataof(str), cpt)
@@ -249,7 +251,7 @@ func getToSpace(str: string)->string
 func getWhileAlnum(str: string)->string
 {
     let countof = @countof(str)
-    var cpt = 0'u64
+    var cpt     = 0'u64
     while cpt < countof and (Latin1.isDigit(str[cpt]) or Latin1.isLetter(str[cpt])) do
         cpt += 1
     return @mkstring(@dataof(str), cpt)

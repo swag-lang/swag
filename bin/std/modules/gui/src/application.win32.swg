@@ -3,13 +3,13 @@ using Win32, Core, Pixel, Gdi32
 
 public struct ApplicationNative
 {
-    fileSmallIconsImage:     Image
-    fileSmallIconsImageList: ImageList
-    mapFileSmallIcons:       HashTable'(string, s32)
+    fileSmallIconsImage:         Image
+    fileSmallIconsImageList:     ImageList
+    mapFileSmallIcons:           HashTable'(string, s32)
 
-    fileBigIconsImage:      Image
-    fileBigIconsImageList:  ImageList
-    mapFileBigIcons:        HashTable'(string, s32)
+    fileBigIconsImage:         Image
+    fileBigIconsImageList:     ImageList
+    mapFileBigIcons:           HashTable'(string, s32)
 }
 
 impl Application
@@ -126,14 +126,14 @@ impl Application
         {
             index = cast(s32) mapFileSmallIcons.count
             mapFileSmallIcons.add(name, index)
-            curImg = &fileSmallIconsImage
+            curImg     = &fileSmallIconsImage
             curImgList = &fileSmallIconsImageList
         }
         else
         {
             index = cast(s32) mapFileBigIcons.count
             mapFileBigIcons.add(name, index)
-            curImg = &fileBigIconsImage
+            curImg     = &fileBigIconsImage
             curImgList = &fileBigIconsImageList
         }
 
@@ -162,7 +162,7 @@ impl Application
 
     mtd getSpecialDirectoryIcon(what: Env.SpecialDirectory, small = true)->Icon
     {
-        var val = what
+        var val  = what
         let name = Reflection.getEnumName(Env.SpecialDirectory, &val).toString()
 
         if small
@@ -184,13 +184,20 @@ impl Application
         var whatWin = SHSTOCKICONID.SIID_FOLDER
         switch what
         {
-        case Desktop:           whatWin = .SIID_DESKTOPPC
-        case UserVideos:        whatWin = .SIID_VIDEOFILES
-        case UserPictures:      whatWin = .SIID_IMAGEFILES
-        case UserMusic:         whatWin = .SIID_AUDIOFILES
-        case CommonVideos:      whatWin = .SIID_VIDEOFILES
-        case CommonPictures:    whatWin = .SIID_IMAGEFILES
-        case CommonMusic:       whatWin = .SIID_AUDIOFILES
+        case Desktop:
+            whatWin = .SIID_DESKTOPPC
+        case UserVideos:
+            whatWin = .SIID_VIDEOFILES
+        case UserPictures:
+            whatWin = .SIID_IMAGEFILES
+        case UserMusic:
+            whatWin = .SIID_AUDIOFILES
+        case CommonVideos:
+            whatWin = .SIID_VIDEOFILES
+        case CommonPictures:
+            whatWin = .SIID_IMAGEFILES
+        case CommonMusic:
+            whatWin = .SIID_AUDIOFILES
         }
 
         catch SHGetStockIconInfo(whatWin, SHGSI_ICON | (small ? SHGSI_SMALLICON : SHGSI_LARGEICON), &sgi)
@@ -215,7 +222,7 @@ impl Application
         elif ext == ".exe" or ext == ".dll"
         {
             extractFromFile = true
-            ext = name
+            ext             = name
         }
         elif ext == null do
             ext = ".txt"

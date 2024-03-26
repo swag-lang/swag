@@ -6,18 +6,18 @@ impl Vector2
     // Returns true if the point 'pt' is inside an ellipse
     mtd const isInEllipse(center: Vector2, radiusX, radiusY: f32)->bool
     {
-        return (pow((x - center.x), 2) / pow(radiusX, 2)) + (pow((y - center.y), 2) / pow(radiusY, 2)) <= 1;
+        return (pow((x - center.x), 2) / pow(radiusX, 2)) + (pow((y - center.y), 2) / pow(radiusY, 2)) <= 1
     }
 
     // Returns true if the point 'pt' is inside the triangle defined with 'a, b, c'
     mtd const isInTriangle(a, b, c: Vector2)->bool
     {
-        let ax = c.x - b.x
-        let ay = c.y - b.y
-        let bx = a.x - c.x
-        let by = a.y - c.y
-        let cx = b.x - a.x
-        let cy = b.y - a.y
+        let ax  = c.x - b.x
+        let ay  = c.y - b.y
+        let bx  = a.x - c.x
+        let by  = a.y - c.y
+        let cx  = b.x - a.x
+        let cy  = b.y - a.y
         let apx = x - a.x
         let apy = y - a.y
         let bpx = x - b.x
@@ -36,7 +36,7 @@ impl Vector2
     mtd const distanceToLine(a, b: Vector2)->f32
     {
         let toPt = dref self - a
-        var seg = b - a
+        var seg  = b - a
         seg.normalizeSafe()
         let dot = toPt.dot(seg)
         seg *= dot
@@ -59,10 +59,10 @@ impl Vector2
         if abae < 0 do
             return ae.length()
 
-        let x1 = ab.x
-        let y1 = ab.y
-        let x2 = ae.x
-        let y2 = ae.y
+        let x1  = ab.x
+        let y1  = ab.y
+        let x2  = ae.x
+        let y2  = ae.y
         let mod = Math.sqrt(x1 * x1 + y1 * y1)
         return Math.abs(x1 * y2 - y1 * x2) / mod
     }
@@ -82,12 +82,12 @@ impl Vector2
         let p1p0 = p1 - p0
         let q1q0 = q1 - q0
         let p0q0 = p0 - q0
-        let a = p1p0.dot(p1p0)
-        let b = p1p0.dot(q1q0)
-        let c = q1q0.dot(q1q0)
-        let d = p1p0.dot(p0q0)
-        let e = q1q0.dot(p0q0)
-        let det = a * c - b * b
+        let a    = p1p0.dot(p1p0)
+        let b    = p1p0.dot(q1q0)
+        let c    = q1q0.dot(q1q0)
+        let d    = p1p0.dot(p0q0)
+        let e    = q1q0.dot(p0q0)
+        let det  = a * c - b * b
 
         var s, t: f32 = undefined
         if det > 0
@@ -159,7 +159,7 @@ impl Vector2
                         t = 0
                         let nd = -d
                         if nd <= 0 do
-                            s =0
+                            s = 0
                         elif nd >= a do
                             s = 1
                         else do
@@ -167,7 +167,7 @@ impl Vector2
                     }
                     else
                     {
-                        t = ate - btd;
+                        t = ate - btd
                         if t >= det
                         {
                             t = 1
@@ -233,7 +233,7 @@ impl Vector2
 
         let ua = (end1.x - start1.x) * (start0.y - start1.y) - (end1.y - start1.y) * (start0.x - start1.x)
         let ub = (end0.x - start0.x) * (start0.y - start1.y) - (end0.y - start0.y) * (start0.x - start1.x)
-        let d = (end1.y - start1.y) * (end0.x - start0.x) - (end1.x - start1.x) * (end0.y - start0.y)
+        let d  = (end1.y - start1.y) * (end0.x - start0.x) - (end1.x - start1.x) * (end0.y - start0.y)
 
         // Parallel lines
         if Math.abs(d) < epsilon
@@ -243,8 +243,8 @@ impl Vector2
         }
 
         result.yes = true
-        result.d0 = ua / d
-        result.d1 = ub / d
+        result.d0  = ua / d
+        result.d1  = ub / d
         return result
     }
 
@@ -257,7 +257,7 @@ impl Vector2
         if !yes do
             return result
 
-        result.yes = true
+        result.yes   = true
         result.pos.x = start0.x + d0 * (end0.x - start0.x)
         result.pos.y = start0.y + d0 * (end0.y - start0.y)
         return result
@@ -275,7 +275,7 @@ impl Vector2
         if d0 < -epsilon or d0 > 1 + epsilon or d1 < -epsilon or d1 > 1 + epsilon do
             return result
 
-        result.yes = true
+        result.yes   = true
         result.pos.x = start0.x + d0 * (end0.x - start0.x)
         result.pos.y = start0.y + d0 * (end0.y - start0.y)
         return result
@@ -285,9 +285,9 @@ impl Vector2
     // PNPoly by W. Randolph Franklin
     func polyContains(poly: Array'Math.Vector2, pt: Math.Vector2)->bool
     {
-        let i = 0
-        let j = cast(s32) poly.count - 1
-        var c = false
+        let i     = 0
+        let j     = cast(s32) poly.count - 1
+        var c     = false
         var verti = poly.buffer + i
         var vertj = poly.buffer + j
         loop poly.count

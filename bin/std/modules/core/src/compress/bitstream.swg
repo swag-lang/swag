@@ -3,11 +3,11 @@
 
 struct BitStream
 {
-    stream:     const [..] u8
-    curByte:    u64
-    codeBuffer: u32
-    numBits:    u8
-    eof:        bool
+    stream:         const [..] u8
+    curByte:        u64
+    codeBuffer:     u32
+    numBits:        u8
+    eof:            bool
 }
 
 impl BitStream
@@ -22,10 +22,10 @@ impl BitStream
     mtd startPtr() => @dataof(stream)
 
     #[Swag.Inline]
-    mtd curPtr()   => @dataof(stream) + curByte
+    mtd curPtr() => @dataof(stream) + curByte
 
     #[Swag.Inline]
-    mtd size()     => @countof(stream)
+    mtd size() => @countof(stream)
 
     mtd refill(width = 24'u8)
     {
@@ -57,14 +57,15 @@ impl BitStream
     #[Swag.Inline]
     mtd peekBits(width: u8)->u32
     {
-	    if numBits < width do refill()
-    	return codeBuffer & ~(0xffffffff << width)
+        if numBits < width do
+            refill()
+        return codeBuffer & ~(0xffffffff << width)
     }
 
     mtd peekBitsNoRefill(width: u8)->u32
     {
-	    Debug.assert(numBits >= width)
-    	return codeBuffer & ~(0xffffffff << width)
+        Debug.assert(numBits >= width)
+        return codeBuffer & ~(0xffffffff << width)
     }
 
     #[Swag.Inline]
@@ -85,8 +86,8 @@ impl BitStream
     #[Swag.Inline]
     mtd consumeBits(width: u8)
     {
-	    codeBuffer >>= width
-	    numBits -=,over width
+        codeBuffer >>= width
+        numBits -=,over width
     }
 
     #[Swag.Inline]
@@ -99,7 +100,7 @@ impl BitStream
     {
         Debug.assert(!(numBits & 7))
         curByte -= numBits / 8
-        numBits = 0
+        numBits    = 0
         codeBuffer = 0
     }
 

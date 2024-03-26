@@ -5,7 +5,7 @@
 func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 {
     var buffer = @dataof(values)
-    let count = @countof(values)
+    let count  = @countof(values)
 
     for var i = 1'u32; i < count; i += 1
     {
@@ -23,8 +23,8 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
     if count == 0 do
         return
 
-    var begin = 0's64
-    var end = count - 1
+    var begin  = 0's64
+    var end    = count - 1
     var buffer = @dataof(values)
 
     loop
@@ -37,8 +37,8 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
         }
 
         let pivot = begin
-        var low = begin
-        var high = end
+        var low   = begin
+        var high  = end
         loop
         {
             while low < high and cb(buffer[low], buffer[pivot]) <= 0 do
@@ -72,7 +72,7 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
                 end   = high - 1
             }
 
-            quickSort(@mkslice(buffer + first, (last - first) + 1), cb);
+            quickSort(@mkslice(buffer + first, (last - first) + 1), cb)
         }
         elif set1 > 0 do
             end = high - 1

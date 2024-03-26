@@ -5,10 +5,10 @@
 #[Serialization.PodFinal]
 struct Rectangle
 {
-    x:      f32     // Left position
-    y:      f32     // Top position
-    width:  f32     // Rectangle width
-    height: f32     // Rectangle height
+    x:          f32     // Left position
+    y:          f32     // Top position
+    width:      f32     // Rectangle width
+    height:     f32     // Rectangle height
 }
 
 impl Rectangle
@@ -24,9 +24,9 @@ impl Rectangle
     // Initialize the rectangle with two position
     mtd set(topLeft, bottomRight: Math.Point)
     {
-        x = Math.min(topLeft.x, bottomRight.x)
-        y = Math.min(topLeft.y, bottomRight.y)
-        width = Math.abs(bottomRight.x - topLeft.x)
+        x      = Math.min(topLeft.x, bottomRight.x)
+        y      = Math.min(topLeft.y, bottomRight.y)
+        width  = Math.abs(bottomRight.x - topLeft.x)
         height = Math.abs(bottomRight.y - topLeft.y)
     }
 
@@ -210,27 +210,27 @@ impl Rectangle
     // Perform a Math.round operation on all the coordinates
     mtd round()
     {
-        x = acast round(x)
-        y = acast round(y)
-        width = acast round(width)
+        x      = acast round(x)
+        y      = acast round(y)
+        width  = acast round(width)
         height = acast round(height)
     }
 
     // Perform a Math.trunc operation on all the coordinates
     mtd trunc()
     {
-        x = acast trunc(x)
-        y = acast trunc(y)
-        width = acast trunc(width)
+        x      = acast trunc(x)
+        y      = acast trunc(y)
+        width  = acast trunc(width)
         height = acast trunc(height)
     }
 
     // Perform a Math.ceil operation on all the coordinates
     mtd ceil()
     {
-        x = acast ceil(x)
-        y = acast ceil(y)
-        width = acast ceil(width)
+        x      = acast ceil(x)
+        y      = acast ceil(y)
+        width  = acast ceil(width)
         height = acast ceil(height)
     }
 
@@ -273,7 +273,7 @@ impl Rectangle
         let y2 = min(a.y + a.height, b.y + b.height)
         if x2 >= x1 and y2 >= y1 do
             return Rectangle{x1, y1, x2 - x1, y2 - y1}
-        return Zero;
+        return Zero
     }
 
     // Determines if this rectangle intersets with 'rect'

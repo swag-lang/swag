@@ -8,11 +8,11 @@ impl RichEditCtrl
         if !hasSelRect
         {
             // First line
-            var line = lines[start.lineIndex]
+            var line  = lines[start.lineIndex]
             var count = line.length()
             if count
             {
-                let pchar = line.chars.buffer
+                let pchar  = line.chars.buffer
                 let pstyle = line.styles.buffer
                 if start.lineIndex == end.lineIndex do
                     count = end.charPosInLine
@@ -51,11 +51,11 @@ impl RichEditCtrl
             // Last line
             if start.lineIndex != end.lineIndex
             {
-                line = lines[end.lineIndex]
+                line  = lines[end.lineIndex]
                 count = line.length()
                 if count
                 {
-                    let pchar = line.chars.buffer
+                    let pchar  = line.chars.buffer
                     let pstyle = line.styles.buffer
                     for var i = 0; i < end.charPosInLine; i += 1
                     {
@@ -134,8 +134,8 @@ impl RichEditCtrl
         let fontR = getFont().getFont(styles[0].fontMode)
 
         // Do the wrap
-        var curLine = lineIndex
-        var i = 0'u64
+        var curLine    = lineIndex
+        var i          = 0'u64
         var clientRect = edView.getClientRect()
         clientRect.width -= getMarginRight()
 
@@ -144,7 +144,7 @@ impl RichEditCtrl
         var cutAti = i
         while i < lines[curLine].length()
         {
-            let l = lines[curLine]
+            let l  = lines[curLine]
             let ch = l.chars[i]
             str += ch
 
@@ -177,9 +177,9 @@ impl RichEditCtrl
 
                     nl.chars.add(@mkslice(l.chars.buffer + i, l.chars.count - i))
                     nl.styles.add(@mkslice(l.styles.buffer + i, l.chars.count - i))
-                    nl.dirtyStyle = false
+                    nl.dirtyStyle       = false
                     nl.lexerEndingState = l.lexerEndingState
-                    nl.lexerCptCmt = l.lexerCptCmt
+                    nl.lexerCptCmt      = l.lexerCptCmt
                     l.chars.resize(i)
                     l.styles.resize(i)
 
@@ -222,7 +222,7 @@ impl RichEditCtrl
         }
         else
         {
-            let line = lines[cp.lineIndex]
+            let line   = lines[cp.lineIndex]
             let posIns = Math.min(cp.charPosInLine, line.length())
             line.insertRune(posIns, c, txtStyle)
             cp.charPosInLine += 1
@@ -255,7 +255,7 @@ impl RichEditCtrl
             var rankBeg, rankEnd: u64
             loop
             {
-                let line = lines[lineIndex];
+                let line = lines[lineIndex]
                 if rankEnd == runes.count or runes[rankEnd] == `\n`
                 {
                     var posIns = posInLine
@@ -284,7 +284,7 @@ impl RichEditCtrl
                 rankEnd += 1
             }
 
-            cp.lineIndex = lineIndex
+            cp.lineIndex     = lineIndex
             cp.charPosInLine = posInLine + (rankEnd - rankBeg)
         }
 
@@ -395,12 +395,12 @@ public impl RichEditCtrl
         visit l: lines do
             freeLines.add(l)
         lines.clear()
-        countVisibleLines = 0
-        cursorPos = {}
-        selBeg = {}
-        dirtyFirstLineView = true
+        countVisibleLines    = 0
+        cursorPos            = {}
+        selBeg               = {}
+        dirtyFirstLineView   = true
         firstVisibleLineView = 0
-        lastVisibleLineView = 0
+        lastVisibleLineView  = 0
     }
 
     // Get the selected text
@@ -451,7 +451,7 @@ public impl RichEditCtrl
         var cp: RichEditCursor
         if lines.count
         {
-            cp.lineIndex = lines.count - 1
+            cp.lineIndex     = lines.count - 1
             cp.charPosInLine = lines[cp.lineIndex].length()
         }
 
@@ -464,8 +464,8 @@ public impl RichEditCtrl
     mtd insertText(text: string)
     {
         let undo = Memory.new'RichEditUndo()
-        undo.type       = .Insert
-        undo.runes      = Unicode.fromUtf8(text)
+        undo.type  = .Insert
+        undo.runes = Unicode.fromUtf8(text)
         undo.styles.resize(undo.runes.count)
         undo.selBeg     = selBeg
         undo.cursorPos  = cursorPos
@@ -507,8 +507,8 @@ public impl RichEditCtrl
         if cp.charPosInLine > len do
             return result
         if cp.charPosInLine == len do
-            return {`\n`, 0};
-        result.char = lines[cp.lineIndex].chars[cp.charPosInLine]
+            return {`\n`, 0}
+        result.char  = lines[cp.lineIndex].chars[cp.charPosInLine]
         result.style = lines[cp.lineIndex].styles[cp.charPosInLine]
         return result
     }
@@ -520,7 +520,7 @@ public impl RichEditCtrl
 
         // A new undo action needs to be regenerate ?
         var forceUndo = false
-        var pundo = currentUndo ? undoMgr[currentUndo - 1] : null
+        var pundo     = currentUndo ? undoMgr[currentUndo - 1] : null
         if !hasSelRect and !isSelectionEmpty() do
             forceUndo = true
         elif hasSelRect and cursorPos.charPosInLine != selBeg.charPosInLine do
@@ -549,7 +549,7 @@ public impl RichEditCtrl
             // Register action of deletion for overmode
             if overwriteMode and cursorPos.charPosInLine != lines[cursorPos.lineIndex].length()
             {
-                pundo = Memory.new'RichEditUndo()
+                pundo                    = Memory.new'RichEditUndo()
                 pundo.type               = .Delete
                 pundo.concatChars        = true
                 pundo.selBeg             = selBeg
@@ -562,7 +562,7 @@ public impl RichEditCtrl
             }
 
             // Register action of insertion
-            pundo = Memory.new'RichEditUndo()
+            pundo                    = Memory.new'RichEditUndo()
             pundo.type               = .Insert
             pundo.concatChars        = true
             pundo.selBeg             = selBeg
@@ -602,7 +602,7 @@ public impl RichEditCtrl
 
         // Get the style from the previous character
         let line = lines[cursorPos.lineIndex]
-        var st: u8
+        var st:  u8
         if !cursorPos.charPosInLine and line.length() do
             st = line.styles[0]
         elif cursorPos.charPosInLine and cursorPos.charPosInLine - 1 < line.length() do
@@ -693,11 +693,11 @@ public impl RichEditCtrl
     // Delete a given text at the start of each selected line
     mtd deleteBegLine(txt: string, lastLine: bool)
     {
-        var arrR = Unicode.fromUtf8(txt)
-        var first = true
+        var arrR   = Unicode.fromUtf8(txt)
+        var first  = true
         let lenTxt = arrR.count
-        var beg = getBegSelection()
-        var end = getEndSelection()
+        var beg    = getBegSelection()
+        var end    = getEndSelection()
 
         if !lastLine
         {
@@ -710,9 +710,9 @@ public impl RichEditCtrl
         }
 
         let multiline = beg.lineIndex == end.lineIndex ? false : true
-        var size = getXExtent()
-        var savepos0 = selBeg
-        var savepos1 = cursorPos
+        var size      = getXExtent()
+        var savepos0  = selBeg
+        var savepos1  = cursorPos
 
         while beg.lineIndex <= end.lineIndex
         {
@@ -723,7 +723,7 @@ public impl RichEditCtrl
                 while beg.charPosInLine < line.length() and Unicode.isSpace(line.chars[beg.charPosInLine])
                 {
                     if Slice.equals(@mkslice(line.chars.buffer + beg.charPosInLine, lenTxt), arrR.toSlice()) do
-                        break;
+                        break
                     beg.charPosInLine += 1
                 }
             }
@@ -739,7 +739,7 @@ public impl RichEditCtrl
                 {
                     // X is the request position
                     var charPt = getCursorDisplayPos(beg)
-                    var x = cast(f32) getTabOffset(cast(s32) charPt.x)
+                    var x      = cast(f32) getTabOffset(cast(s32) charPt.x)
                     x = (tabSize * size.x) - x
                     if x == 0 do
                         x = tabSize * size.x
@@ -809,7 +809,7 @@ public impl RichEditCtrl
         let fontR = getFont().getFont(styles[0].fontMode)
         visit l: lines
         {
-            let arr = Painter.getGlyphs(l.chars, fontR)
+            let arr     = Painter.getGlyphs(l.chars, fontR)
             let measure = Painter.measureString(arr)
             result.w = Math.max(result.h, measure.width)
         }

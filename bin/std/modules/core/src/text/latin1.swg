@@ -62,9 +62,9 @@ func makeLower(buffer: [..] u8)
 // Returns -1, 0 or 1
 func compare(src, dst: const [..] u8, ignoreCase = false)->s32
 {
-    let length = @countof(src)
+    let length      = @countof(src)
     let otherLength = @countof(dst)
-    let minLen = Math.min(length, otherLength)
+    let minLen      = Math.min(length, otherLength)
 
     var result: s32
     if ignoreCase
@@ -74,7 +74,8 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
         {
             var c1 = src[i]
             var c2 = dst[i]
-            if c1 == c2 do continue
+            if c1 == c2 do
+                continue
 
             c1 += isUpperUtf8(c1) ? 0x20 : 0
             c2 += isUpperUtf8(c2) ? 0x20 : 0
@@ -171,7 +172,7 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
             csrc, cdst -= 1
         }
 
-        return 0;
+        return 0
     }
 
     let dsrc = @dataof(src)
@@ -204,8 +205,8 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         if isDigit(ca) and isDigit(cb)
         {
             var result = 0
-            let sl0 = @mkslice(dsrc + ai, csrc)
-            let sl1 = @mkslice(ddst + bi, cdst)
+            let sl0    = @mkslice(dsrc + ai, csrc)
+            let sl1    = @mkslice(ddst + bi, cdst)
             if ca == `0`'u8 or cb == `0`'u8 do
                 result = compareLeft(sl0, sl1)
             else do
@@ -239,10 +240,10 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
 func trim(str: string)->string
 {
     var countof = @countof(str)
-    var cpt = 0'u64
+    var cpt     = 0'u64
     while cpt < countof and Latin1.isSpace(str[cpt]) do
         cpt += 1
-    while countof and Latin1.isSpace(str[countof-1]) do
+    while countof and Latin1.isSpace(str[countof - 1]) do
         countof -= 1
     return @mkstring(@dataof(str) + cpt, countof - cpt)
 }

@@ -3,23 +3,23 @@ using Core, Pixel
 
 struct PalettePicker
 {
-    using wnd:      Wnd
-    selectedColor:  Color
-    pal:            Array'Color
-    palPos:         Array'Math.Rectangle
-    boxSize:        s32 = 24
-    boxMargin:      s32 = 3
-    sigChanged:     SigArray'closure(*Self)
-    hotIdx:         s32 = Swag.S32.Max
+    using wnd:         Wnd
+    selectedColor:     Color
+    pal:               Array'Color
+    palPos:            Array'Math.Rectangle
+    boxSize:           s32 = 24
+    boxMargin:         s32 = 3
+    sigChanged:        SigArray'closure(*Self)
+    hotIdx:            s32 = Swag.S32.Max
 }
 
 impl IWnd for PalettePicker
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let bc = evt.bc
+        let bc      = evt.bc
         let painter = bc.painter
-        let colors = getThemeColors()
+        let colors  = getThemeColors()
 
         var colorBorder: Color = undefined
 
@@ -53,7 +53,6 @@ impl IWnd for PalettePicker
                 y += boxSize + boxMargin
             }
         }
-
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)

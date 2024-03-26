@@ -10,21 +10,21 @@ enum HeaderForm
 
 struct HeaderItem
 {
-    name:       RichString
-    icon:       Icon
-    width:      f32
-    minWidth:   f32
-    maxWidth:   f32
-    sizeable    = true
-    clickable   = true
-    iconMargin  = false
-    column:     u32
+    name:          RichString
+    icon:          Icon
+    width:         f32
+    minWidth:      f32
+    maxWidth:      f32
+    sizeable       = true
+    clickable      = true
+    iconMargin     = false
+    column:        u32
 }
 
 #[Swag.EnumFlags]
 enum HeaderFlags
 {
-    Zero = 0
+    Zero      = 0
     Clickable
 }
 
@@ -32,20 +32,20 @@ struct Header
 {
     using wnd: Wnd
 
-    form                = HeaderForm.Flat
-    headerFlags         = HeaderFlags.Clickable
-    marginItems:        f32 = 5
-    sigLayoutChanged:   closure(*Self)
-    sigClicked:         closure(*Self, u32)
+    form                  = HeaderForm.Flat
+    headerFlags           = HeaderFlags.Clickable
+    marginItems:          f32 = 5
+    sigLayoutChanged:     closure(*Self)
+    sigClicked:           closure(*Self, u32 )
 
-    items:          ArrayPtr'HeaderItem
-    hotIdx          = Swag.U32.Max
-    hotSeparator:   bool
-    moving:         bool
-    clicked:        bool
-    correctMoving:  f32
-    sortColumn:     u32
-    sortMark:       s32
+    items:             ArrayPtr'HeaderItem
+    hotIdx             = Swag.U32.Max
+    hotSeparator:      bool
+    moving:            bool
+    clicked:           bool
+    correctMoving:     f32
+    sortColumn:        u32
+    sortMark:          s32
 }
 
 impl IWnd for Header
@@ -55,13 +55,13 @@ impl IWnd for Header
         let painter = bc.painter
 
         var clientRect = getClientRect()
-        var labelPos = clientRect
-        labelPos.x = x
+        var labelPos   = clientRect
+        labelPos.x     = x
         labelPos.width = item.width
 
-        let theme = getTheme()
+        let theme   = getTheme()
         let metrics = getThemeMetrics()
-        let colors = getThemeColors()
+        let colors  = getThemeColors()
 
         if hotIdx == idx and !hotSeparator
         {
@@ -106,18 +106,18 @@ impl IWnd for Header
         theme.setTextColors(&format, colorText)
         format.horzAlignment = .Left
         format.vertAlignment = .Center
-        format.flags = .Clip
-        format.font = getFont()
+        format.flags         = .Clip
+        format.font          = getFont()
         Theme.drawIconText(painter, labelPos, item.icon, &item.name, format, metrics.iconText_Margin)
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let painter = evt.bc.painter
-        let theme = getTheme()
+        let theme   = getTheme()
         let metrics = getThemeMetrics()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
 
         // Background bar
         var clientRect = getClientRect()
@@ -129,7 +129,7 @@ impl IWnd for Header
         case Round:
             theme.drawSubRect(painter, clientRect, &rects.header_RoundBk, colors.header_Bk)
         case Transparent:
-            painter.drawLine(clientRect.x, clientRect.bottom()-1, clientRect.right(), clientRect.bottom()-1, colors.headerItem_Separator, 1)
+            painter.drawLine(clientRect.x, clientRect.bottom() - 1, clientRect.right(), clientRect.bottom() - 1, colors.headerItem_Separator, 1)
         }
 
         // Clipping, take care of padding
@@ -155,7 +155,7 @@ impl IWnd for Header
         }
     }
 
-   mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if evt.kind == .MouseReleased and evt.button == .Left
         {
@@ -259,7 +259,7 @@ internal impl Header
     mtd hitTest(surfacePos: Math.Point)->{idx: u32, sep: bool}
     {
         let metrics = getThemeMetrics()
-        var pos = surfaceToLocal(surfacePos)
+        var pos     = surfaceToLocal(surfacePos)
         pos += scrollPos.x
         var x = padding.x
         visit item, idx: items
@@ -284,11 +284,11 @@ impl Header
         Debug.assert(parent != null)
 
         let metrics = parent.getThemeMetrics()
-        var pos = position
+        var pos     = position
         if pos.height == 0 do
             pos.height = metrics.header_Height
         let res = Wnd.create'Header(parent, null, pos, id)
-        res.padding = metrics.header_Padding
+        res.padding       = metrics.header_Padding
         res.focusStrategy = .None
         return res
     }
@@ -298,9 +298,9 @@ impl Header
     mtd addItem(tabName: string, width = 100'f32, icon: Icon = {})->*HeaderItem
     {
         let item = items.newPtr()
-        item.name = tabName
-        item.icon = icon
-        item.width = width
+        item.name   = tabName
+        item.icon   = icon
+        item.width  = width
         item.column = acast items.count
         items.add(item)
         return item

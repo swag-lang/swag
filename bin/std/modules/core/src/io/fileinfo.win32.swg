@@ -6,15 +6,15 @@ using Win32
 // Returns various file informations
 func getInfo(fullname: string)->FileInfo throw
 {
-    var result:     retval
-    var attrDatas:  WIN32_FILE_ATTRIBUTE_DATA
+    var result:    retval
+    var attrDatas: WIN32_FILE_ATTRIBUTE_DATA
 
     var winPath = Utf16.toZeroTerminated(fullname)
     try GetFileAttributesExW(@dataof(winPath), GET_FILEEX_INFO_LEVELS.GetFileExInfoStandard, &attrDatas)
 
-    result.fullname = fullname
+    result.fullname   = fullname
     result.attributes = FileAttributes.fromDWORD(attrDatas.dwFileAttributes)
-    result.size = attrDatas.nFileSizeLow + (cast(u64) attrDatas.nFileSizeHigh << 32)
+    result.size       = attrDatas.nFileSizeLow + (cast(u64) attrDatas.nFileSizeHigh << 32)
 
     var fileTime: SYSTEMTIME
     catch FileTimeToSystemTime(&attrDatas.ftCreationTime, &fileTime)

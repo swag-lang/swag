@@ -53,7 +53,7 @@ impl StringBuilder
     // Append a formatted string
     mtd appendFormat(fmt: string, values: ...)
     {
-        Format.append(&buffer, fmt, values);
+        Format.append(&buffer, fmt, values)
     }
 
     // Force a ending 0

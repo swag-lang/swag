@@ -42,10 +42,10 @@ enum EventKind
 
 struct Event
 {
-    kind:       EventKind = None
-    type:       typeinfo
-    target:     *Wnd
-    accepted:   bool
+    kind:         EventKind = None
+    type:         typeinfo
+    target:       *Wnd
+    accepted:     bool
 }
 
 impl Event
@@ -70,9 +70,9 @@ impl Event
 
 struct CommandEvent
 {
-    using base: Event{kind: EventKind.Command}
-    id:         WndId
-    source:     *Wnd
+    using base:     Event{kind: EventKind.Command}
+    id:             WndId
+    source:         *Wnd
 }
 
 struct CommandStateEvent
@@ -80,7 +80,7 @@ struct CommandStateEvent
     #[Swag.EnumFlags]
     enum SetFlags
     {
-        Zero = 0
+        Zero     = 0
         Disabled
         Icon
         Shortcut
@@ -90,32 +90,31 @@ struct CommandStateEvent
         ToolTip
         Hidden
     }
+    using base:     Event{kind: EventKind.ComputeCommandState}
+    id:             WndId
+    source:         *Wnd
 
-    using base: Event{kind: EventKind.ComputeCommandState}
-    id:         WndId
-    source:     *Wnd
-
-    icon:       Icon
-    name:       String
-    longName:   String
-    shortcut:   String
-    toolTip:    String
-    setFlags:   SetFlags = Zero
-    disabled:   bool
-    checked:    bool
-    hidden:     bool
+    icon:         Icon
+    name:         String
+    longName:     String
+    shortcut:     String
+    toolTip:      String
+    setFlags:     SetFlags = Zero
+    disabled:     bool
+    checked:      bool
+    hidden:       bool
 }
 
 struct TimerEvent
 {
-    using base: Event{kind: EventKind.Timer}
-    timer:      *Timer
+    using base:     Event{kind: EventKind.Timer}
+    timer:          *Timer
 }
 
 struct FrameEvent
 {
-    using base: Event{kind: EventKind.Frame}
-    firstFrame: bool
+    using base:     Event{kind: EventKind.Frame}
+    firstFrame:     bool
 }
 
 struct CreateEvent
@@ -135,57 +134,57 @@ struct DestroyEvent
 
 struct PaintEvent
 {
-    using base: Event{kind: EventKind.Paint}
-    bc: *PaintContext
+    using base:     Event{kind: EventKind.Paint}
+    bc:             *PaintContext
 }
 
 struct ResizeEvent
 {
-    using base: Event{kind: EventKind.Resize}
-    oldSize: Math.Point
+    using base:     Event{kind: EventKind.Resize}
+    oldSize:        Math.Point
 }
 
 struct MoveEvent
 {
-    using base: Event{kind: EventKind.Move}
-    oldPos: Math.Point
+    using base:     Event{kind: EventKind.Move}
+    oldPos:         Math.Point
 }
 
 struct KeyEvent
 {
-    using base: Event
-    modifiers:  Input.KeyModifiers = Zero
-    key:        Input.Key = undefined
-    char:       rune
+    using base:     Event
+    modifiers:      Input.KeyModifiers = Zero
+    key:            Input.Key = undefined
+    char:           rune
 }
 
 struct MouseEvent
 {
-    using base: Event
-    button:     Input.MouseButton = undefined
-    surfacePos: Math.Point
-    move:       Math.Point
-    modifiers:  Input.KeyModifiers = Zero
+    using base:     Event
+    button:         Input.MouseButton = undefined
+    surfacePos:     Math.Point
+    move:           Math.Point
+    modifiers:      Input.KeyModifiers = Zero
 }
 
 struct QuitEvent
 {
-    using base: Event{kind: EventKind.Quit}
-    quitCode: s32
+    using base:     Event{kind: EventKind.Quit}
+    quitCode:       s32
 }
 
 struct FocusEvent
 {
-    using base: Event
-    other:      *Wnd
+    using base:     Event
+    other:          *Wnd
 }
 
 struct SysUserEvent
 {
-    using base: Event{kind: EventKind.SysUser}
-    userMsg:    u64
-    param0:     u64
-    param1:     u64
+    using base:     Event{kind: EventKind.SysUser}
+    userMsg:        u64
+    param0:         u64
+    param1:         u64
 }
 
 struct SysCommandEvent
@@ -206,15 +205,15 @@ struct SysCommandEvent
 
 struct SetThemeEvent
 {
-    using base: Event{kind: EventKind.SetTheme}
-    style:  *ThemeStyle
-    parent: *ThemeStyle
+    using base:     Event{kind: EventKind.SetTheme}
+    style:          *ThemeStyle
+    parent:         *ThemeStyle
 }
 
 struct SerializeStateEvent
 {
-    using base: Event{kind: EventKind.SerializeState}
-    ser: *Serialization.Serializer
+    using base:     Event{kind: EventKind.SerializeState}
+    ser:            *Serialization.Serializer
 }
 
 struct NotifyEvent
@@ -226,6 +225,6 @@ struct NotifyEvent
         ChildFocusChanged
     }
 
-    ntfyKind:   Kind = undefined
-    from:       *Wnd
+    ntfyKind:     Kind = undefined
+    from:         *Wnd
 }

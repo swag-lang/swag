@@ -51,8 +51,8 @@ impl FileStream
         Debug.assert(canSeek)
 
         let hFile = cast(HANDLE) handle
-        var high = 0'u32
-        let low = GetFileSize(hFile, &high)
+        var high  = 0'u32
+        let low   = GetFileSize(hFile, &high)
         Errors.transformWinErrors()
         return low + (cast(u64) high << 32)
     }
@@ -64,8 +64,8 @@ impl FileStream
         Debug.assert(canSeek)
 
         let hFile = cast(HANDLE) handle
-        var high = 0
-        let low = SetFilePointer(hFile, 0, &high, FILE_CURRENT)
+        var high  = 0
+        let low   = SetFilePointer(hFile, 0, &high, FILE_CURRENT)
         Errors.transformWinErrors()
         return low + (cast(u64) high << 32)
     }
@@ -77,15 +77,18 @@ impl FileStream
         Debug.assert(canSeek)
 
         let hFile = cast(HANDLE) handle
-        let low = cast(LONG) (seek & 0xFFFFFFFF)
-        var high = cast(LONG) (seek >> 32)
+        let low   = cast(LONG) (seek & 0xFFFFFFFF)
+        var high  = cast(LONG) (seek >> 32)
 
         var seekMode: DWORD
         switch origin
         {
-        case Begin:      seekMode = FILE_BEGIN
-        case Current:    seekMode = FILE_CURRENT
-        case End:        seekMode = FILE_END
+        case Begin:
+            seekMode = FILE_BEGIN
+        case Current:
+            seekMode = FILE_CURRENT
+        case End:
+            seekMode = FILE_END
         }
 
         SetFilePointer(hFile, low, &high, seekMode)

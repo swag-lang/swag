@@ -2,15 +2,15 @@ using Swag, Core, Core.Errors
 
 struct ImageEncoder
 {
-    type:   const *TypeInfoStruct
-    itf:    IImageEncoder
+    type:     const *TypeInfoStruct
+    itf:      IImageEncoder
 }
 
 // Interface to decode a buffer
 public interface IImageEncoder
 {
-    mtd canEncode(filename: string)->bool
-    mtd encode(buf: *ConcatBuffer, img: Image, opt: any) throw
+    mtd canEncode(filename: string)->bool;
+    mtd encode(buf: *ConcatBuffer, img: Image, opt: any) throw;
 }
 
 public impl Image
@@ -24,7 +24,7 @@ public impl Image
 
         var encoder: ImageEncoder = undefined
         encoder.type = @typeof(T)
-        encoder.itf = @mkinterface(null, @typeof(T), IImageEncoder)
+        encoder.itf  = @mkinterface(null, @typeof(T), IImageEncoder)
         encoders.add(encoder)
     }
 
@@ -69,7 +69,7 @@ public impl Image
         }
 
         // Encode
-        let itf = @mkinterface(ptrEncoder, found.type, IImageEncoder)
+        let itf     = @mkinterface(ptrEncoder, found.type, IImageEncoder)
         var result: ConcatBuffer
         itf.encode(&result, dref self, options)
         File.writeAllBytes(fileName, result)

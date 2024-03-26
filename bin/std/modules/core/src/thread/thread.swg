@@ -17,13 +17,13 @@ struct Thread
 {
     userLambda: closure(Thread)
 
-    context:    Swag.Context
-    userParam:  *void
+    context:       Swag.Context
+    userParam:     *void
 
-    priority =  ThreadPriority.Normal
-    handle:     ThreadHandle
-    id:         u32
-    requestEnd  = false
+    priority       = ThreadPriority.Normal
+    handle:        ThreadHandle
+    id:            u32
+    requestEnd     = false
 }
 
 impl Thread

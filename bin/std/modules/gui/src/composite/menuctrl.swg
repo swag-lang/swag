@@ -10,55 +10,55 @@ public enum PopupPos
 #[Swag.EnumFlags]
 public enum MenuCtrlFlags
 {
-    Zero = 0
+    Zero           = 0
     NoKeyShortcuts
 }
 
 public struct PopupMenuItem
 {
-    using item: Item
-    rightName:  RichString
-    popup:      *MenuCtrl
-    pos:        f32
-    size:       f32
-    separator:  bool
-    disabled:   bool
-    checked:    bool
-    hidden:     bool
+    using item:     Item
+    rightName:      RichString
+    popup:          *MenuCtrl
+    pos:            f32
+    size:           f32
+    separator:      bool
+    disabled:       bool
+    checked:        bool
+    hidden:         bool
 
-    aniSel:         BlendColor{speed: 10}
-    aniText:        BlendColor{speed: 10}
-    aniRightText:   BlendColor{speed: 10}
+    aniSel:           BlendColor{speed: 10}
+    aniText:          BlendColor{speed: 10}
+    aniRightText:     BlendColor{speed: 10}
 }
 
 public struct MenuCtrl
 {
-    using frameWnd:     FrameWnd
-    onValidateResult:   func(self, WndId)
-    onComputeItem:      func(self, *PopupMenuItem)
-    menuCtrlFlags:      MenuCtrlFlags = Zero
+    using frameWnd:       FrameWnd
+    onValidateResult:     func(*MenuCtrl, WndId)
+    onComputeItem:        func(*MenuCtrl, *PopupMenuItem)
+    menuCtrlFlags:        MenuCtrlFlags = Zero
 
-    paddingSel:     f32 = 4
-    items:          ArrayPtr'PopupMenuItem
-    hotIdx:         u32 = Swag.U32.Max
-    selectedIdx:    u32 = Swag.U32.Max
-    bar:            bool
-    endModal:       bool
-    endModalResult: WndId
-    ownerMenu:      *MenuCtrl
-    subVisible:     *MenuCtrl
-    timer:          *Timer
-    dirtyLayout:    bool
-    paintByFrame:   bool
+    paddingSel:         f32 = 4
+    items:              ArrayPtr'PopupMenuItem
+    hotIdx:             u32 = Swag.U32.Max
+    selectedIdx:        u32 = Swag.U32.Max
+    bar:                bool
+    endModal:           bool
+    endModalResult:     WndId
+    ownerMenu:          *MenuCtrl
+    subVisible:         *MenuCtrl
+    timer:              *Timer
+    dirtyLayout:        bool
+    paintByFrame:       bool
 }
 
 public impl IWnd for MenuCtrl
 {
     internal mtd paintBar(painter: *Painter)
     {
-        let theme = getTheme()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let theme   = getTheme()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
         let metrics = getThemeMetrics()
 
         if dirtyLayout
@@ -75,8 +75,8 @@ public impl IWnd for MenuCtrl
             theme.drawSubRect(painter, clientRect, &rects.menuBar_Border, colors.menuBar_Border)
         }
 
-        var labelPos: Math.Rectangle = undefined
-        var colorText: Color
+        var labelPos:       Math.Rectangle = undefined
+        var colorText:      Color
         var colorRightText: Color
 
         visit i, idx: items
@@ -86,21 +86,21 @@ public impl IWnd for MenuCtrl
             if i.separator do
                 continue
 
-            labelPos.x = i.pos
-            labelPos.y = clientRect.y
-            labelPos.width = i.size
+            labelPos.x      = i.pos
+            labelPos.y      = clientRect.y
+            labelPos.width  = i.size
             labelPos.height = clientRect.height
 
             var format: RichStringFormat
-            colorText = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_Text
+            colorText      = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_Text
             colorRightText = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_RightText
 
             // Back selection
             var colorSel: Color
             if !i.disabled and (hotIdx == idx or selectedIdx == idx)
             {
-                colorSel = colors.menuBar_SelectedBk
-                colorText = colors.popupItem_HotText
+                colorSel       = colors.menuBar_SelectedBk
+                colorText      = colors.popupItem_HotText
                 colorRightText = colors.popupItem_HotRightText
             }
 
@@ -124,17 +124,17 @@ public impl IWnd for MenuCtrl
             theme.setTextColors(&format, i.aniText.cur())
             format.horzAlignment = .Left
             format.vertAlignment = .Center
-            format.flags = .Clip
-            format.font = getFont()
+            format.flags         = .Clip
+            format.font          = getFont()
             painter.drawRichString(labelPos, &i.name, format)
         }
     }
 
     internal mtd paintPopup(painter: *Painter)
     {
-        let theme = getTheme()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let theme   = getTheme()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
         let metrics = getThemeMetrics()
 
         // Shadow
@@ -155,8 +155,8 @@ public impl IWnd for MenuCtrl
 
         clientRect.applyPadding(padding)
 
-        var labelPos: Math.Rectangle = undefined
-        var colorText: Color
+        var labelPos:       Math.Rectangle = undefined
+        var colorText:      Color
         var colorRightText: Color
 
         var lastIsSeparator = true
@@ -167,9 +167,9 @@ public impl IWnd for MenuCtrl
             if i.separator and lastIsSeparator do
                 continue
 
-            labelPos.x = clientRect.x
-            labelPos.y = i.pos
-            labelPos.width = clientRect.width
+            labelPos.x      = clientRect.x
+            labelPos.y      = i.pos
+            labelPos.width  = clientRect.width
             labelPos.height = i.size
 
             lastIsSeparator = i.separator
@@ -179,15 +179,15 @@ public impl IWnd for MenuCtrl
                 continue
             }
 
-            colorText = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_Text
+            colorText      = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_Text
             colorRightText = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_RightText
 
             // Back selection
             var colorSel: Color
             if hotIdx == idx and !i.disabled
             {
-                colorSel = colors.popupItem_HotBk
-                colorText = colors.popupItem_HotText
+                colorSel       = colors.popupItem_HotBk
+                colorText      = colors.popupItem_HotText
                 colorRightText = colors.popupItem_HotRightText
             }
 
@@ -224,18 +224,18 @@ public impl IWnd for MenuCtrl
             theme.setTextColors(&format, i.aniText.cur())
             format.horzAlignment = .Left
             format.vertAlignment = .Center
-            format.flags = .Clip
-            format.font = getFont()
+            format.flags         = .Clip
+            format.font          = getFont()
             painter.drawRichString(labelPos, &i.name, format)
 
             // Text right
             if !menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
             {
-                format.palette[0] = i.aniRightText.cur()
+                format.palette[0]    = i.aniRightText.cur()
                 format.horzAlignment = .Right
                 format.vertAlignment = .Center
-                format.flags = .Clip
-                format.font = getFont()
+                format.flags         = .Clip
+                format.font          = getFont()
                 painter.drawRichString(labelPos, &i.rightName, format)
             }
 
@@ -348,7 +348,7 @@ impl MenuCtrl
             p = p.ownerMenu
         }
 
-        p.endModal = true
+        p.endModal       = true
         p.endModalResult = result
 
         if onValidateResult and result != null do
@@ -363,9 +363,9 @@ impl MenuCtrl
 
         if p.bar
         {
-            p.selectedIdx   = Swag.U32.Max
-            p.hotIdx        = Swag.U32.Max
-            p.subVisible    = null
+            p.selectedIdx = Swag.U32.Max
+            p.hotIdx      = Swag.U32.Max
+            p.subVisible  = null
             p.postCommandEvent(result)
         }
     }
@@ -387,7 +387,8 @@ impl MenuCtrl
 
     mtd deleteTimer()
     {
-        if !timer do return
+        if !timer do
+            return
         surface.app.deleteTimer(timer)
         timer = null
     }
@@ -423,10 +424,10 @@ impl MenuCtrl
             .bringToTop()
             .show()
             .captureMouse()
-            .hotIdx = Swag.U32.Max
+            .hotIdx      = Swag.U32.Max
             .selectedIdx = Swag.U32.Max
-            .subVisible = null
-            .timer = null
+            .subVisible  = null
+            .timer       = null
         }
     }
 
@@ -448,8 +449,8 @@ impl MenuCtrl
         subVisible.updateState()
         subVisible.computeLayoutPopup()
         let topView = getTopView()
-        var pt = topView.surfaceToLocal({pos.x, pos.y})
-        var subPos = subVisible.position
+        var pt      = topView.surfaceToLocal({pos.x, pos.y})
+        var subPos  = subVisible.position
         if pt.x + subPos.width > topView.position.width do
             pt.x = topView.position.width - subPos.width
         if pt.y + subPos.height > topView.position.height do
@@ -464,8 +465,8 @@ impl MenuCtrl
         selectedIdx = hotIdx
         let hotItem = items[hotIdx]
 
-        var pos = getSurfaceRect()
-        let sdw = getThemeMetrics().menuPopup_ShadowSize
+        var pos         = getSurfaceRect()
+        let sdw         = getThemeMetrics().menuPopup_ShadowSize
         var surfaceRect = pos
         pos.x = pos.right() - sdw
         pos.y += hotItem.pos
@@ -476,7 +477,7 @@ impl MenuCtrl
         subVisible.updateState()
         subVisible.computeLayoutPopup()
         let topView = getTopView()
-        var pt = topView.surfaceToLocal({pos.x, pos.y})
+        var pt      = topView.surfaceToLocal({pos.x, pos.y})
         pt -= sdw
         var subPos = subVisible.position
         if pt.x + subPos.width > topView.position.width do
@@ -504,10 +505,10 @@ impl MenuCtrl
 
     mtd hitTestBar(surfacePos: Math.Point)->u32
     {
-        var pos = surfaceToLocal(surfacePos)
-        let metrics = getThemeMetrics()
+        var pos        = surfaceToLocal(surfacePos)
+        let metrics    = getThemeMetrics()
         var clientRect = getClientRect()
-        let sl = metrics.menuBar_SpaceBetween
+        let sl         = metrics.menuBar_SpaceBetween
         visit i, idx: items
         {
             var rect = Math.Rectangle{i.pos - sl * 0.5, clientRect.y, i.size + sl, clientRect.height}
@@ -520,10 +521,10 @@ impl MenuCtrl
 
     mtd hitTestPopup(surfacePos: Math.Point)->u32
     {
-        var pos = surfaceToLocal(surfacePos)
-        let metrics = getThemeMetrics()
+        var pos        = surfaceToLocal(surfacePos)
+        let metrics    = getThemeMetrics()
         var clientRect = getClientRect()
-        let sl = metrics.menuPopup_SpaceLines
+        let sl         = metrics.menuPopup_SpaceLines
         visit i, idx: items
         {
             var rect = Math.Rectangle{clientRect.x, i.pos - sl * 0.5, clientRect.width, i.size + sl}
@@ -541,7 +542,7 @@ impl MenuCtrl
 
     mtd computeLayoutBar()
     {
-        let metrics = getThemeMetrics()
+        let metrics    = getThemeMetrics()
         var clientRect = getClientRectPadding()
 
         var x = clientRect.x
@@ -559,7 +560,7 @@ impl MenuCtrl
             i.pos = x + metrics.menuBar_SpaceBetween * 0.5
             fake.drawRichString({0, 0, 512, 0}, &i.name, rsf)
             i.size = i.name.boundRect.width
-            x = i.pos + i.size + metrics.menuBar_SpaceBetween * 0.5
+            x      = i.pos + i.size + metrics.menuBar_SpaceBetween * 0.5
         }
     }
 
@@ -572,7 +573,7 @@ impl MenuCtrl
             clientRect.inflate(-metrics.menuPopup_ShadowSize)
         clientRect.applyPadding(padding)
 
-        position.width = 0
+        position.width  = 0
         position.height = clientRect.y
 
         var fake: Pixel.Painter{fake: true}
@@ -626,7 +627,7 @@ impl MenuCtrl
             position.height += metrics.menuPopup_ShadowSize
 
         // Add padding
-        position.width  += padding.x + padding.z
+        position.width += padding.x + padding.z
         position.height += padding.w
     }
 }
@@ -754,7 +755,7 @@ public impl MenuCtrl
         case AnchorTopCenter:
             pt.y += getThemeMetrics().menuPopup_ShadowSize
             setPosition({pt.x - position.width * 0.5, pt.y, position.width, position.height})
-            anchor = .Top
+            anchor    = .Top
             anchorPos = position.width * 0.5
             setFrameFlags(.Borders | .SmallShadow)
             setFrameForm(.Round)
@@ -764,7 +765,7 @@ public impl MenuCtrl
         case AnchorBottomCenter:
             pt.y -= getThemeMetrics().menuPopup_ShadowSize
             setPosition({pt.x - position.width * 0.5, pt.y - position.height, position.width, position.height})
-            anchor = .Bottom
+            anchor    = .Bottom
             anchorPos = position.width * 0.5
             setFrameFlags(.Borders | .SmallShadow)
             setFrameForm(.Round)
@@ -777,7 +778,7 @@ public impl MenuCtrl
         show()
         captureMouse()
 
-        endModal = false
+        endModal       = false
         endModalResult = null
         while !endModal do
             surface.app.runFrame()

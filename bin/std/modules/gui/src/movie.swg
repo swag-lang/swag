@@ -10,23 +10,23 @@ enum MovieSource
 
 struct Movie
 {
-    enableCache:        bool = true
-    mustLoop:           bool = true
-    inPause:            bool
-    playFreq:           f32 = 0.05
-    sigFrameChanged:    SigArray'closure(*Self)
+    enableCache:         bool = true
+    mustLoop:            bool = true
+    inPause:             bool
+    playFreq:            f32 = 0.05
+    sigFrameChanged:     SigArray'closure(*Self)
 
     numFrames:      s32
     frameIndex:     s32
     frame:          Image
 
-    source:         MovieSource = None
-    imgList:        ImageList
-    gif:            Gif.Decoder
-    bytes:          Array'u8
-    cacheFrames:    Array'Image
-    currentTime:    f32
-    dirtyFrame:     bool
+    source:          MovieSource = None
+    imgList:         ImageList
+    gif:             Gif.Decoder
+    bytes:           Array'u8
+    cacheFrames:     Array'Image
+    currentTime:     f32
+    dirtyFrame:      bool
 }
 
 internal impl Movie
@@ -83,8 +83,8 @@ impl Movie
         bytes.clear()
         source = .None
         frame.release()
-        numFrames = 0
-        frameIndex = 0
+        numFrames   = 0
+        frameIndex  = 0
         currentTime = 0
     }
 
@@ -93,7 +93,7 @@ impl Movie
     mtd set(imageList: ImageList)
     {
         clear()
-        source = .SpriteSheet
+        source    = .SpriteSheet
         imgList   = imageList
         numFrames = imgList.totalFrames
     }
@@ -106,7 +106,7 @@ impl Movie
         if gif.IImageDecoder.canDecode(fileName)
         {
             source = .Gif
-            bytes = File.readAllBytes(fileName)
+            bytes  = File.readAllBytes(fileName)
             gif.init(bytes.toSlice(), true)
             numFrames = gif.getNumFrames()
             gif.getFrame(&frame)
@@ -153,7 +153,7 @@ impl Movie
             frameIndex = Math.min(idx, numFrames)
             if frameIndex < cacheFrames.count
             {
-                frame = cacheFrames[frameIndex]
+                frame      = cacheFrames[frameIndex]
                 dirtyFrame = true
             }
 

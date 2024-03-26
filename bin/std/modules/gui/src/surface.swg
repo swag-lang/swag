@@ -3,40 +3,39 @@ using Core, Pixel, Serialization
 
 struct SurfaceState
 {
-    position:               Math.Rectangle
-    positionNotMaximized:   Math.Rectangle
-    isMaximized:            bool
+    position:                 Math.Rectangle
+    positionNotMaximized:     Math.Rectangle
+    isMaximized:              bool
 }
 
 struct Surface
 {
-    using native:   NativeSurface
-    app:            *Application
-    wnd:            *SurfaceWnd
-    painter:        Painter
-    rt:             RenderTarget
-    userData:       *void
+    using native:     NativeSurface
+    app:              *Application
+    wnd:              *SurfaceWnd
+    painter:          Painter
+    rt:               RenderTarget
+    userData:         *void
 
-    rc:             RenderingContext
-    minSize:        Math.Point
-    maxSize:        Math.Point
+    rc:          RenderingContext
+    minSize:     Math.Point
+    maxSize:     Math.Point
 
-    flags:          SurfaceFlags = Zero
-    dirtyRect:      Math.Rectangle = {Swag.F32.Max, Swag.F32.Max, 0, 0}
-    colorDisabled:  Color
+    flags:             SurfaceFlags = Zero
+    dirtyRect:         Math.Rectangle = {Swag.F32.Max, Swag.F32.Max, 0, 0}
+    colorDisabled:     Color
 
-    isDirty:        bool
-    isHidden:       bool = true
-    isDisabled:     bool
-    isMinimized:    bool
-
-    using state: SurfaceState
+    isDirty:         bool
+    isHidden:        bool = true
+    isDisabled:      bool
+    isMinimized:     bool
+    using state:     SurfaceState
 }
 
 #[Swag.EnumFlags]
 enum SurfaceFlags
 {
-    Zero = 0
+    Zero             = 0
 
     BigCaption
     SmallCaption
@@ -98,12 +97,12 @@ impl Surface
     {
         with surface
         {
-            .flags = flags
-            .wnd = Memory.new'SurfaceWnd()
-            .wnd.isAllocated = true
-            .wnd.itf = cast(IWnd) .wnd
-            .wnd.type = SurfaceWnd
-            .wnd.surface = surface
+            .flags             = flags
+            .wnd               = Memory.new'SurfaceWnd()
+            .wnd.isAllocated   = true
+            .wnd.itf           = cast(IWnd) .wnd
+            .wnd.type          = SurfaceWnd
+            .wnd.surface       = surface
             .wnd.focusStrategy = .None
             .applySurfaceFlags()
         }
@@ -156,7 +155,7 @@ impl Surface
         if !isDirty
         {
             dirtyRect = rect
-            isDirty = true
+            isDirty   = true
             return
         }
 
@@ -223,7 +222,7 @@ impl Surface
         isDirty   = false
 
         var cxt: PaintContext
-        cxt.painter = &painter
+        cxt.painter  = &painter
         cxt.renderer = &app.renderer
         cxt.renderer.begin(rc)
         cxt.painter.begin()
@@ -261,13 +260,13 @@ impl Surface
         if isDisabled and app.fadeDisabledSurface
         {
             colorDisabled = Color.getBlend(colorDisabled, app.theme.colors.surfaceDisabled, app.getDt())
-            color = colorDisabled
-            isDirty = true
+            color         = colorDisabled
+            isDirty       = true
             dirtyRect.clear()
         }
         else
         {
-            color = Argb.White
+            color         = Argb.White
             colorDisabled = Argb.White
         }
 
@@ -281,9 +280,9 @@ impl Surface
 
     internal mtd sendResizeEvent(width, height: f32)
     {
-        rc.width = cast(s32) width
-        rc.height = cast(s32) height
-        position.width = width
+        rc.width        = cast(s32) width
+        rc.height       = cast(s32) height
+        position.width  = width
         position.height = height
 
         let sdw = app.theme.metrics.surfaceWnd_ShadowSize

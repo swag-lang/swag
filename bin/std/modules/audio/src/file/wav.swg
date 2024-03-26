@@ -3,8 +3,8 @@ using Core, Core.Errors, Win32
 
 struct ChunkHeader
 {
-    chunkID:    ChunkID = undefined
-    chunkSize:  u32
+    chunkID:       ChunkID = undefined
+    chunkSize:     u32
 }
 
 #if Core.BIG_ENDIAN
@@ -18,7 +18,7 @@ struct ChunkHeader
     func SND_WAV_FOURCC_MARKER(a, b, c, d: u32) => (a | (b << 8) | (c << 16) | (d << 24))
 }
 
-enum ChunkID: u32
+enum ChunkID : u32
 {
     SND_WAV_FOURCC_RIFF = SND_WAV_FOURCC_MARKER(`R`'u32, `I`'u32, `F`'u32, `F`'u32)
     SND_WAV_FOURCC_RIFX = SND_WAV_FOURCC_MARKER(`R`'u32, `I`'u32, `F`'u32, `X`'u32)
@@ -61,11 +61,11 @@ enum ChunkID: u32
     SND_WAV_FOURCC_ICMT = SND_WAV_FOURCC_MARKER(`I`'u32, `C`'u32, `M`'u32, `T`'u32)
 }
 
-const WAVE_FORMAT_UNKNOWN    = 0x0000 /* Microsoft Corporation */
-const WAVE_FORMAT_PCM        = 0x0001 /* Microsoft Corporation */
-const WAVE_FORMAT_ADPCM      = 0x0002 /* Microsoft Corporation */
-const WAVE_FORMAT_IEEE_FLOAT = 0x0003 /* Microsoft Corporation */
-const WAVE_FORMAT_EXTENSIBLE = 0xFFFE /* Microsoft */
+const WAVE_FORMAT_UNKNOWN    = 0x0000     /* Microsoft Corporation */
+const WAVE_FORMAT_PCM        = 0x0001     /* Microsoft Corporation */
+const WAVE_FORMAT_ADPCM      = 0x0002     /* Microsoft Corporation */
+const WAVE_FORMAT_IEEE_FLOAT = 0x0003     /* Microsoft Corporation */
+const WAVE_FORMAT_EXTENSIBLE = 0xFFFE     /* Microsoft */
 
 const GUID_PCM        = GUID{0x00000001, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
 const GUID_ADPCM      = GUID{0x00000002, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
@@ -74,25 +74,25 @@ const GUID_IEEE_FLOAT = GUID{0x00000003, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa
 #[Swag.Pack(1)]
 struct WAVEFORMAT
 {
-    wFormatTag:      u16     // Format type
-    nChannels:       u16     // Number of nChannels (i.e. mono, stereo, etc.)
-    nSamplesPerSec:  u32     // Sample rate
-    nAvgBytesPerSec: u32     // For buffer estimation
-    nBlockAlign:     u16     // Block size of data
+    wFormatTag:          u16     // Format type
+    nChannels:           u16     // Number of nChannels (i.e. mono, stereo, etc.)
+    nSamplesPerSec:      u32     // Sample rate
+    nAvgBytesPerSec:     u32     // For buffer estimation
+    nBlockAlign:         u16     // Block size of data
 }
 
 #[Swag.Pack(1)]
 struct PCMWAVEFORMAT
 {
-    using wf: WAVEFORMAT
-    wBitsPerSample:  u16
+    using wf:           WAVEFORMAT
+    wBitsPerSample:     u16
 }
 
 #[Swag.Pack(1)]
 struct WAVEFORMATEX
 {
-    using pcmwf: PCMWAVEFORMAT
-    cbSize: u16     // The count in bytes of the size of extra information (after cbSize)
+    using pcmwf:     PCMWAVEFORMAT
+    cbSize:          u16               // The count in bytes of the size of extra information (after cbSize)
 }
 
 #[Swag.Pack(1)]
@@ -102,18 +102,18 @@ struct WAVEFORMATEXTENSIBLE
 
     samples: union
     {
-        wValidBitsPerSample: u16  // Valid bits in each sample container
-        wSamplesPerBlock:    u16  // Samples per block of audio data valid
-        wReserved:           u16  // If wBitsPerSample=0 (but rarely used). Zero if neither case above applies.
+        wValidBitsPerSample:     u16     // Valid bits in each sample container
+        wSamplesPerBlock:        u16     // Samples per block of audio data valid
+        wReserved:               u16     // If wBitsPerSample=0 (but rarely used). Zero if neither case above applies.
     }
 
-    dwChannelMask: u32    // Positions of the audio nChannels
-    subFormat:     GUID   // Format identifier GUID
+    dwChannelMask:     u32      // Positions of the audio nChannels
+    subFormat:         GUID     // Format identifier GUID
 }
 
 func setEncodingFormat(using file: *SoundFile, formatTag: u16) throw
 {
-    switch (formatTag)
+    switch formatTag
     {
     case WAVE_FORMAT_PCM:
         if file.bitsPerSample == 8 do
@@ -186,7 +186,7 @@ func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u
         return
 
     var wfex: WAVEFORMATEXTENSIBLE
-    wfex.fmtex = wfx
+    wfex.fmtex              = wfx
     file.validBitsPerSample = wfex.samples.wValidBitsPerSample
     validity |= .ChannelMask
     validity |= .ValidBitsPerSample
@@ -230,7 +230,13 @@ func readChunkData(using file: *SoundFile, stream: *File.FileStream, chunkSize: 
 // Load a wav file
 public func loadFile(using file: *SoundFile, stream: *File.FileStream, loadDatas = true, loadMetaDatas = false) throw
 {
-    enum Stage{FindRiff, FindFmt, FindData, BreakOnSuccess}
+    enum Stage
+    {
+        FindRiff
+        FindFmt
+        FindData
+        BreakOnSuccess
+    }
     var stage:  Stage = FindRiff
     var header: ChunkHeader
 

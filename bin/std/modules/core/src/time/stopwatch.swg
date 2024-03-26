@@ -3,9 +3,9 @@
 // Provides a set of methods and properties that you can use to accurately measure elapsed time
 public struct Stopwatch
 {
-    isStarted:		bool
-    startTimeStamp:	u64
-    elapsedTicks:	u64
+    isStarted:          bool
+    startTimeStamp:     u64
+    elapsedTicks:       u64
 }
 
 public impl Stopwatch
@@ -15,7 +15,7 @@ public impl Stopwatch
     {
         if !isStarted
         {
-            isStarted = true
+            isStarted      = true
             startTimeStamp = nowPrecise()
         }
     }
@@ -25,7 +25,7 @@ public impl Stopwatch
     {
         if isStarted
         {
-            let endTimeStamp = nowPrecise()
+            let endTimeStamp       = nowPrecise()
             let elapsedTicksPeriod = endTimeStamp - startTimeStamp
             elapsedTicks += elapsedTicksPeriod
             isStarted = false
@@ -35,23 +35,23 @@ public impl Stopwatch
     // Stops time interval measurement and resets the elapsed time to zero
     mtd reset()
     {
-        elapsedTicks = 0
+        elapsedTicks   = 0
         startTimeStamp = 0
-        isStarted = false
+        isStarted      = false
     }
 
     // Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time
     mtd restart()
     {
-        elapsedTicks = 0
+        elapsedTicks   = 0
         startTimeStamp = nowPrecise()
-        isStarted = true
+        isStarted      = true
     }
 
     // Gets the current elapsed time in milliseconds since the start
     mtd elapsedMillisecondsNow()->u32
     {
-        let endTimeStamp = nowPrecise()
+        let endTimeStamp       = nowPrecise()
         let elapsedTicksPeriod = endTimeStamp - startTimeStamp
         return acast ((elapsedTicksPeriod * 1000) / preciseFrequency())
     }
@@ -59,7 +59,7 @@ public impl Stopwatch
     // Gets the current elapsed time in milliseconds since the start
     mtd elapsedMicrosecondsNow()->u32
     {
-        let endTimeStamp = nowPrecise()
+        let endTimeStamp       = nowPrecise()
         let elapsedTicksPeriod = endTimeStamp - startTimeStamp
         return acast ((elapsedTicksPeriod * 1000000) / preciseFrequency())
     }

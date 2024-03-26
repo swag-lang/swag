@@ -4,10 +4,10 @@ using Swag
 // This is a generic dynamic array.
 struct(T) Array
 {
-    allocator:  IAllocator  // Associated allocator
-    buffer:     ^T          // Memory block of all datas
-    count:      u64         // Number of valid datas
-    capacity:   u64         // Number of elements that can be stored in the buffer
+    allocator:     IAllocator     // Associated allocator
+    buffer:        ^T             // Memory block of all datas
+    count:         u64            // Number of valid datas
+    capacity:      u64            // Number of elements that can be stored in the buffer
 }
 
 impl Array
@@ -108,7 +108,8 @@ impl Array
     {
         clear()
         var countof = @countof(arr)
-        if !countof do return
+        if !countof do
+            return
         var dataof = @dataof(arr)
 
         grow(countof)
@@ -174,8 +175,8 @@ impl Array
     #[Inline]
     mtd ref2(x, y, w: u64)->&T
     {
-        Debug.safetyBoundCheck(x + y*w < count, "index out of range")
-        return buffer + x + y*w
+        Debug.safetyBoundCheck(x + y * w < count, "index out of range")
+        return buffer + x + y * w
     }
 
     mtd realloc(newCapacity: u64)
@@ -186,7 +187,7 @@ impl Array
         if newCapacity == 0
         {
             Memory.free(buffer, capacity * @sizeof(T), allocator)
-            buffer = null
+            buffer   = null
             capacity = 0
             return
         }
@@ -203,7 +204,7 @@ impl Array
             }
         }
 
-        buffer = newBuffer
+        buffer   = newBuffer
         capacity = newCapacity
     }
 
@@ -221,7 +222,7 @@ impl Array
 
         Memory.free(buffer, capacity * @sizeof(T), allocator)
         buffer = null
-        count, capacity  = 0
+        count, capacity = 0
     }
 
     // Create a temporary array

@@ -13,27 +13,27 @@ enum ColorPickerViewMode
 
 struct ColorPickerCtrl
 {
-    using frameWnd: FrameWnd
-    sigChanged:     SigArray'closure(*Self)
-    oldColor:       Color
-    color:          Color
-    oldColorDone:   bool
-    mode            = ColorPickerViewMode.SaturationLightness
-    staticRes:      *Wnd
-    pickBox:        *ColorPicker
-    pickBar:        *ColorPicker
-    pickAlpha:      *ColorPicker
-    editR:          *EditBox
-    editG:          *EditBox
-    editB:          *EditBox
-    editA:          *EditBox
-    editH:          *EditBox
-    radioH:         *RadioButton
-    radioL:         *RadioButton
-    radioS:         *RadioButton
-    radioR:         *RadioButton
-    radioG:         *RadioButton
-    radioB:         *RadioButton
+    using frameWnd:     FrameWnd
+    sigChanged:         SigArray'closure(*Self)
+    oldColor:           Color
+    color:              Color
+    oldColorDone:       bool
+    mode                = ColorPickerViewMode.SaturationLightness
+    staticRes:          *Wnd
+    pickBox:            *ColorPicker
+    pickBar:            *ColorPicker
+    pickAlpha:          *ColorPicker
+    editR:              *EditBox
+    editG:              *EditBox
+    editB:              *EditBox
+    editA:              *EditBox
+    editH:              *EditBox
+    radioH:             *RadioButton
+    radioL:             *RadioButton
+    radioS:             *RadioButton
+    radioR:             *RadioButton
+    radioG:             *RadioButton
+    radioB:             *RadioButton
 }
 
 impl IWnd for ColorPickerCtrl
@@ -42,7 +42,7 @@ impl IWnd for ColorPickerCtrl
     {
         frameWnd.IWnd.onPaintEvent(evt)
 
-        var rect = staticRes.position
+        var rect    = staticRes.position
         let painter = evt.bc.painter
 
         var brush = Brush.createHatch(.CheckBoardLarge, getThemeColors().colorPicker_BackAlpha)
@@ -155,14 +155,16 @@ impl ColorPickerCtrl
             .radioG = RadioButton.create(v, "G", {280, 130, 40})
             .radioB = RadioButton.create(v, "B", {280, 160, 40})
 
-            picker.sigPressed += closure|v|(cb) {
+            picker.sigPressed += closure|v|(cb  )
+            {
                 var app = cb.getApp()
                 app.pushCursor(Cursor.from(.Cross))
 
-                var save = v.getColor()
+                var save  = v.getColor()
                 var sfade = app.fadeDisabledSurface
                 app.fadeDisabledSurface = false
-                discard app.doModalLoop(null, closure|v,save|(app) {
+                discard app.doModalLoop(null, closure|v, save|(app )
+                {
                     if app.mouse.isButtonPressed(.Right)
                     {
                         v.setColor(save)
@@ -175,13 +177,15 @@ impl ColorPickerCtrl
 
                     if app.mouse.isButtonPressed(.Left) do
                         app.exitModal()
-                })
+                }
+)
 
                 app.fadeDisabledSurface = sfade
                 app.popCursor()
             }
 
-            .pickBox.sigChanged += closure|v|(cb) {
+            .pickBox.sigChanged += closure|v|(cb  )
+            {
                 switch v.mode
                 {
                 case SaturationLightness:
@@ -214,7 +218,8 @@ impl ColorPickerCtrl
                 v.updateEdits()
             }
 
-            .pickBar.sigChanged += closure|v|(cb) {
+            .pickBar.sigChanged += closure|v|(cb  )
+            {
                 switch v.mode
                 {
                 case SaturationLightness:
@@ -246,14 +251,16 @@ impl ColorPickerCtrl
             }
 
             .pickAlpha.setMode(.AlphaHorz)
-            .pickAlpha.sigChanged += closure|v|(cb) {
+            .pickAlpha.sigChanged += closure|v|(cb  )
+            {
                 v.color.a = cast(u8) (cb.a * 255)
                 v.updateEdits()
             }
 
             .editR.setInputU64(0, 255)
             .editR.maxLength = 3
-            .editR.sigLoseFocus += closure|v|(ed) {
+            .editR.sigLoseFocus += closure|v|(ed  )
+            {
                 var res = catch StrConv.parseU32(ed.text)
                 v.color.r = acast Math.clamp(res.value, 0, 255)
                 v.updateAll()
@@ -261,7 +268,8 @@ impl ColorPickerCtrl
 
             .editG.setInputU64(0, 255)
             .editG.maxLength = 3
-            .editG.sigLoseFocus += closure|v|(ed) {
+            .editG.sigLoseFocus += closure|v|(ed  )
+            {
                 var res = catch StrConv.parseU32(ed.text)
                 v.color.g = acast Math.clamp(res.value, 0, 255)
                 v.updateAll()
@@ -269,7 +277,8 @@ impl ColorPickerCtrl
 
             .editB.setInputU64(0, 255)
             .editB.maxLength = 3
-            .editB.sigLoseFocus += closure|v|(ed) {
+            .editB.sigLoseFocus += closure|v|(ed  )
+            {
                 var res = catch StrConv.parseU32(ed.text)
                 v.color.b = acast Math.clamp(res.value, 0, 255)
                 v.updateAll()
@@ -277,42 +286,50 @@ impl ColorPickerCtrl
 
             .editA.setInputU64(0, 255)
             .editA.maxLength = 3
-            .editA.sigLoseFocus += closure|v|(ed) {
+            .editA.sigLoseFocus += closure|v|(ed  )
+            {
                 var res = catch StrConv.parseU32(ed.text)
                 v.color.a = acast Math.clamp(res.value, 0, 255)
                 v.pickAlpha.setColor(v.color)
                 v.updateEdits()
             }
 
-            .editH.sigLoseFocus += closure|v|(ed) {
+            .editH.sigLoseFocus += closure|v|(ed  )
+            {
                 var res = catch StrConv.parseX64(ed.text)
                 v.color.argb = cast(u32) res.value
                 v.pickAlpha.setColor(v.color)
                 v.updateAll()
             }
 
-            .radioH.sigChanged += closure|v|(bt) {
+            .radioH.sigChanged += closure|v|(bt  )
+            {
                 v.setMode(.SaturationLightness)
                 v.updateAll()
             }
-            .radioS.sigChanged += closure|v|(bt) {
+            .radioS.sigChanged += closure|v|(bt  )
+            {
                 v.setMode(.HueLightness)
                 v.updateAll()
             }
-            .radioL.sigChanged += closure|v|(bt) {
+            .radioL.sigChanged += closure|v|(bt  )
+            {
                 v.setMode(.HueSaturation)
                 v.updateAll()
             }
 
-            .radioR.sigChanged += closure|v|(bt) {
+            .radioR.sigChanged += closure|v|(bt  )
+            {
                 v.setMode(.GreenBlue)
                 v.updateAll()
             }
-            .radioG.sigChanged += closure|v|(bt) {
+            .radioG.sigChanged += closure|v|(bt  )
+            {
                 v.setMode(.RedBlue)
                 v.updateAll()
             }
-            .radioB.sigChanged += closure|v|(bt) {
+            .radioB.sigChanged += closure|v|(bt  )
+            {
                 v.setMode(.RedGreen)
                 v.updateAll()
             }
@@ -364,7 +381,7 @@ impl ColorPickerCtrl
 
         if !oldColorDone
         {
-            oldColor = #self.color
+            oldColor     = #self.color
             oldColorDone = true
         }
 

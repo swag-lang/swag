@@ -3,23 +3,23 @@ using Swag
 
 struct(K) HashSetEntry
 {
-    hash:   u32
-    key:    K
+    hash:     u32
+    key:      K
 }
 
 // A set of unique values.
 struct(K) HashSet
 {
-    const HASH_FREE    = 0'u32
-    const HASH_DELETED = 1'u32
-    const HASH_FIRST   = 2'u32
-    const HASH_MASK    = 2'u32
+    const HASH_FREE        = 0'u32
+    const HASH_DELETED     = 1'u32
+    const HASH_FIRST       = 2'u32
+    const HASH_MASK        = 2'u32
 
-    allocator:  IAllocator
-    table:      ^HashSetEntry
-    count:      u64 // Number of valid entries
-    capacity:   u64 // Number of total entries the table can hold
-    deleted:    u64 // Number of deleted entries
+    allocator:     IAllocator
+    table:         ^HashSetEntry
+    count:         u64               // Number of valid entries
+    capacity:      u64               // Number of total entries the table can hold
+    deleted:       u64               // Number of deleted entries
 }
 
 impl HashSet
@@ -137,7 +137,7 @@ impl HashSet
             return
 
         let oldTable = table
-        count = 0
+        count   = 0
         deleted = 0
         let newCapacityBytes = reqCapacity * @sizeof(HashSetEntry)
 
@@ -169,9 +169,9 @@ impl HashSet
 
     mtd getNewIndex(key: K, idx: u64, hashVal: u64)->u64
     {
-        var firstFree = Swag.U64.Max
+        var firstFree    = Swag.U64.Max
         var firstDeleted = Swag.U64.Max
-        var index = idx
+        var index        = idx
 
         while table[index].hash
         {
@@ -202,7 +202,7 @@ impl HashSet
         grow()
 
         let hashVal = hashKey(key)
-        var index = hashVal % capacity
+        var index   = hashVal % capacity
 
         index = getNewIndex(key, index, hashVal)
         if table[index].hash >= HASH_FIRST do
@@ -231,7 +231,7 @@ impl HashSet
         grow()
 
         let hashVal = hashKey(key)
-        var index = hashVal % capacity
+        var index   = hashVal % capacity
 
         index = getNewIndex(key, index, hashVal)
         if table[index].hash >= HASH_FIRST do
@@ -289,7 +289,7 @@ impl HashSet
             return
 
         let hashVal = hashKey(key)
-        var index = hashVal % capacity
+        var index   = hashVal % capacity
 
         while table[index].hash
         {
@@ -312,7 +312,7 @@ impl HashSet
             return false
 
         let hashVal = hashKey(key)
-        var index = hashVal % capacity
+        var index   = hashVal % capacity
 
         while table[index].hash
         {

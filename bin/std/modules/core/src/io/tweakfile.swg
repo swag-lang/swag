@@ -4,8 +4,8 @@ using Swag, Core.Errors
 
 struct Folder
 {
-    type: typeinfo
-    data: ^void
+    type:     typeinfo
+    data:     ^void
 }
 
 struct TweakFile
@@ -18,14 +18,15 @@ impl TweakFile
     // Register a new structure to be parsed
     mtd(T) registerFolder(folder: *T)
     {
-        #if !Reflection.isStruct(T) #do #error "type should be a struct"
+        #if !Reflection.isStruct(T) #do
+            #error "type should be a struct"
         folders.add({@typeof(T), folder})
     }
 
     // Read and parse a file
     mtd parseFile(fileName: string) throw
     {
-        var buf = try File.readAllBytes(fileName)
+        var buf   = try File.readAllBytes(fileName)
         var lines = Tokenize.splitLines(cast(string) buf.toSlice())
         try parse(lines)
     }
@@ -46,18 +47,20 @@ impl TweakFile
 
         struct Ref
         {
-            folder: *Folder
-            src:    *TypeValue
-            dst:    *TypeValue
+            folder:     *Folder
+            src:        *TypeValue
+            dst:        *TypeValue
         }
 
-        var refs: Array'Ref
+        var refs:          Array'Ref
         var currentFolder: *Folder
         visit oneit, idx: lines
         {
             var one = Tokenize.eatSpaces(oneit)
-            if @countof(one) == 0 do continue
-            if one[0] == `#` do continue // comment
+            if @countof(one) == 0 do
+                continue
+            if one[0] == `#` do
+                continue
 
             // Folder
             if one[0] == `/`
@@ -143,8 +146,8 @@ impl TweakFile
                     {
                         if j == 0 do
                             throw SyntaxError{"tweakfile cycle between '$' references !"}
-                        toDo = j
-                        refr = refs[toDo]
+                        toDo    = j
+                        refr    = refs[toDo]
                         restart = true
                         break
                     }

@@ -2,32 +2,32 @@
 
 struct ConcatBufferBucket
 {
-    datas:          ^u8
-    next:           *ConcatBufferBucket
-    count:          u64
-    size:           u64
-    countBefore:    u64
+    datas:           ^u8
+    next:            *ConcatBufferBucket
+    count:           u64
+    size:            u64
+    countBefore:     u64
 }
 
 struct ConcatBufferSeek
 {
-    bucket: *ConcatBufferBucket
-    sp:     ^u8
+    bucket:     *ConcatBufferBucket
+    sp:         ^u8
 }
 
 // Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
 // the buffer needs to increase its size. This is the main difference with Array
 struct ConcatBuffer
 {
-    allocator:          Swag.IAllocator
+    allocator: Swag.IAllocator
 
-    firstBucket:        *ConcatBufferBucket
-    curBucket:          *ConcatBufferBucket
-    lastBucket:         *ConcatBufferBucket
-    currentSP:          ^u8
-    granularity:        u64 = 1024
-    isAtEnd:            bool = true
-    viewFirstBucket:    ConcatBufferBucket
+    firstBucket:         *ConcatBufferBucket
+    curBucket:           *ConcatBufferBucket
+    lastBucket:          *ConcatBufferBucket
+    currentSP:           ^u8
+    granularity:         u64 = 1024
+    isAtEnd:             bool = true
+    viewFirstBucket:     ConcatBufferBucket
 }
 
 impl ConcatBuffer
@@ -84,7 +84,7 @@ impl ConcatBuffer
             if lastBucket.next and numBytes <= lastBucket.next.size
             {
                 lastBucket.next.countBefore = lastBucket.countBefore + lastBucket.count
-                lastBucket.next.count = 0
+                lastBucket.next.count       = 0
 
                 curBucket, lastBucket = lastBucket.next
                 currentSP = curBucket.datas
@@ -99,7 +99,7 @@ impl ConcatBuffer
 
         if lastBucket
         {
-            newBucket.next = lastBucket.next
+            newBucket.next  = lastBucket.next
             lastBucket.next = newBucket
         }
         else do
@@ -116,7 +116,7 @@ impl ConcatBuffer
         let bsize = Math.max(granularity, numBytes)
         lastBucket.datas = Memory.alloc(bsize, allocator)
         lastBucket.size  = bsize
-        currentSP = lastBucket.datas
+        currentSP        = lastBucket.datas
     }
 
     // Associate an allocator with the buffer.
@@ -124,7 +124,7 @@ impl ConcatBuffer
     mtd setAllocator(alloc: Swag.IAllocator)
     {
         Debug.assert(firstBucket == null, "buffer is not empty")
-        allocator = alloc;
+        allocator = alloc
     }
 
     // Set the granularity of datas when allocated new buckets. Minimum size is 4.
@@ -221,7 +221,7 @@ impl ConcatBuffer
             if !isAtEnd
             {
                 let curCount = cast(u64) (currentSP - curBucket.datas)
-                var remain = curBucket.count - curCount
+                var remain   = curBucket.count - curCount
                 while num > remain
                 {
                     Memory.copy(currentSP, slicePtr, remain)
@@ -241,7 +241,7 @@ impl ConcatBuffer
 
                     curBucket = curBucket.next
                     currentSP = curBucket.datas
-                    remain = curBucket.count
+                    remain    = curBucket.count
                 }
 
                 Memory.copy(currentSP, slicePtr, num)
@@ -257,7 +257,7 @@ impl ConcatBuffer
             else
             {
                 let curCount = cast(u64) (currentSP - lastBucket.datas)
-                var remain = lastBucket.size - curCount
+                var remain   = lastBucket.size - curCount
                 while num > remain
                 {
                     Memory.copy(currentSP, slicePtr, remain)
@@ -294,7 +294,7 @@ impl ConcatBuffer
     {
         var result: retval
         result.bucket = lastBucket
-        result.sp = currentSP
+        result.sp     = currentSP
         return result
     }
 
@@ -313,7 +313,7 @@ impl ConcatBuffer
                     break
                 curBucket = curBucket.next
                 currentSP = curBucket.datas
-                seek = 0
+                seek      = 0
             }
 
             if seek + total <= curBucket.count
@@ -360,17 +360,16 @@ impl ConcatBuffer
         if !seek.bucket
         {
             curBucket, lastBucket = firstBucket
-            currentSP = curBucket.datas
+            currentSP        = curBucket.datas
             lastBucket.count = 0
-            isAtEnd = true
-
+            isAtEnd          = true
         }
         else
         {
             curBucket, lastBucket = seek.bucket
-            currentSP  = seek.sp
+            currentSP        = seek.sp
             lastBucket.count = cast(u64) (seek.sp - seek.bucket.datas)
-            isAtEnd = true
+            isAtEnd          = true
         }
     }
 
@@ -389,7 +388,7 @@ impl ConcatBuffer
         Debug.assert(firstBucket == null)
         @init(&viewFirstBucket, 1)
         viewFirstBucket.datas = @dataof(data)
-        viewFirstBucket.size = @countof(data)
+        viewFirstBucket.size  = @countof(data)
         firstBucket, lastBucket, curBucket = &viewFirstBucket
         currentSP = firstBucket.datas
     }
@@ -421,8 +420,8 @@ impl ConcatBuffer
         // Must be linear ?
         Debug.assert(lastBucket == firstBucket)
 
-        let rdata = firstBucket.datas
-        let rcount = firstBucket.count
+        let rdata     = firstBucket.datas
+        let rcount    = firstBucket.count
         let rcapacity = firstBucket.size
 
         if firstBucket != &viewFirstBucket do
@@ -460,7 +459,7 @@ impl ConcatBuffer
         if lastBucket == firstBucket do
             return
 
-        let total = count()
+        let total    = count()
         let newDatas = cast(^u8) Memory.alloc(total, allocator)
 
         var curPtr = newDatas
@@ -474,12 +473,12 @@ impl ConcatBuffer
         release()
 
         // Make one single bucket
-        firstBucket = Memory.new'ConcatBufferBucket(allocator)
+        firstBucket       = Memory.new'ConcatBufferBucket(allocator)
         firstBucket.datas = newDatas
         firstBucket.size  = total
         firstBucket.count = total
         curBucket, lastBucket = firstBucket
         currentSP = firstBucket.datas + firstBucket.count
-        isAtEnd = true
+        isAtEnd   = true
     }
 }

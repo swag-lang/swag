@@ -8,143 +8,138 @@
 #global namespace Compress
 using Core.Errors
 
-private {
-
-const FastBits           = 9
-const FastMask           = (1 << FastBits) - 1
-const HuffmanMaxBits     = 16
-const HuffmanFastBits    = 9
-
-const LengthBase: [31] u16 = [
-	3, 4, 5, 6, 7, 8, 9, 10,
-    11, 13, 15, 17, 19, 23, 27,
-    31, 35, 43, 51, 59, 67, 83,
-    99, 115, 131, 163, 195, 227, 258,
-    0, 0
-]
-
-const LengthExtra: [31] u8 = [
-	0,0,0,0,0,0,0,0,
-    1,1,1,1,
-    2,2,2,2,
-    3,3,3,3,
-    4,4,4,4,
-    5,5,5,5,0,0,0,
-]
-
-const LengthDezigzag: [] u8 = [
-	16, 17, 18, 0,
-    8, 7, 9, 6, 10,
-    5, 11, 4, 12, 3,
-    13, 2, 14, 1, 15,
-]
-
-const DistBase: [32] u16 = [
-	1,2,3,4,5,7,9,13,17,25,33,49,65,97,129,193,
-	257,385,513,769,1025,1537,2049,3073,4097,6145,8193,12289,16385,24577,0,0,
-]
-
-const DistExtra: [32] u8 = [
-	0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,0,0,
-]
-
-const FixedLength: [288]u8 = [
-	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8, 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
-	9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9, 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
-	9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9, 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
-	9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9, 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
-	7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7, 7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,
-]
-
-const FixedDist: [32]u8 = [
-	5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
-]
-
-#[Swag.Inline]
-func reverse16(n: u16, bits: u8)->u16
+private
 {
-    var r = Math.reverse(n)
-    r >>= 16 - bits
-    return r
-}
 
-struct HuffmanTable
-{
-	fast:        [1 << FastBits] u16
-	firstCode:   [16] u16
-	maxCode:     [17] s64
-	firstSymbol: [16] u16
-	size:        [288] u8
-	value:       [288] u16
-}
+    const FastBits        = 9
+    const FastMask        = (1 << FastBits) - 1
+    const HuffmanMaxBits  = 16
+    const HuffmanFastBits = 9
 
-impl HuffmanTable
-{
-    mtd init(codeLengths: const [..] u8) throw
+    const LengthBase: [31] u16 = [
+        3, 4, 5, 6, 7, 8, 9, 10,
+        11, 13, 15, 17, 19, 23, 27,
+        31, 35, 43, 51, 59, 67, 83,
+        99, 115, 131, 163, 195, 227, 258,
+        0, 0]
+
+    const LengthExtra: [31] u8 = [
+        0, 0, 0, 0, 0, 0, 0, 0,
+        1, 1, 1, 1,
+        2, 2, 2, 2,
+        3, 3, 3, 3,
+        4, 4, 4, 4,
+        5, 5, 5, 5, 0, 0, 0]
+
+    const LengthDezigzag: [] u8 = [
+        16, 17, 18, 0,
+        8, 7, 9, 6, 10,
+        5, 11, 4, 12, 3,
+        13, 2, 14, 1, 15]
+
+    const DistBase: [32] u16 = [
+        1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
+        257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577, 0, 0]
+
+    const DistExtra: [32] u8 = [
+        0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 0, 0]
+
+    const FixedLength: [288] u8 = [
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+        9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+        9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+        9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+        7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8]
+
+    const FixedDist: [32] u8 = [
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+
+    #[Swag.Inline]
+    func reverse16(n: u16, bits: u8)->u16
     {
-        var sizes:    [HuffmanMaxBits + 1] u16
-        var nextCode: [HuffmanMaxBits] u16
+        var r = Math.reverse(n)
+        r >>= 16 - bits
+        return r
+    }
 
-        @init(self, 1)
-        visit v: codeLengths do
-            sizes[v] += 1
-        sizes[0] = 0
+    struct HuffmanTable
+    {
+        fast:            [1 << FastBits] u16
+        firstCode:       [16] u16
+        maxCode:         [17] s64
+        firstSymbol:     [16] u16
+        size:            [288] u8
+        value:           [288] u16
+    }
 
-        loop i: 1 to 16
+    impl HuffmanTable
+    {
+        mtd init(codeLengths: const [..] u8) throw
         {
-            if sizes[i] > (1 << i) do
-                throw InvalidFormatError{"bad huffman sizes"}
-        }
+            var sizes:    [HuffmanMaxBits + 1] u16
+            var nextCode: [HuffmanMaxBits] u16
 
-	    var k, cde = 0'u16
-        loop i: 1 to 15
-        {
-            nextCode[i]    = cde
-            firstCode[i]   = cde
-            firstSymbol[i] = k
-            cde += sizes[i]
-            if sizes[i] != 0 and (cde - 1) >= (1 << i) do
-                throw InvalidFormatError{"huffman bad code lengths"}
-            maxCode[i] = cast(s64) cde << (16 - i)
-            cde <<= 1
-            k += sizes[i]
-        }
+            @init(self, 1)
+            visit v: codeLengths do
+                sizes[v] += 1
+            sizes[0] = 0
 
-        maxCode[16] = 0x10000
-        visit v, ci: codeLengths
-        {
-            if !v do continue
-
-            let c = nextCode[v] - firstCode[v] + firstSymbol[v]
-            let fastv = (cast(u16) v << 9) | cast(u16) ci
-            size[c] = v
-            value[c] = cast(u16) ci
-            if v <= FastBits
+            loop i: 1 to 16
             {
-                var j = reverse16(nextCode[v], v)
-                while j < (1 << FastBits)
-                {
-                    fast[j] = fastv
-                    j += (1'u16 << v)
-                }
+                if sizes[i] > (1 << i) do
+                    throw InvalidFormatError{"bad huffman sizes"}
             }
 
-            nextCode[v] += 1
+            var k, cde = 0'u16
+            loop i: 1 to 15
+            {
+                nextCode[i]    = cde
+                firstCode[i]   = cde
+                firstSymbol[i] = k
+                cde += sizes[i]
+                if sizes[i] != 0 and (cde - 1) >= (1 << i) do
+                    throw InvalidFormatError{"huffman bad code lengths"}
+                maxCode[i] = cast(s64) cde << (16 - i)
+                cde <<= 1
+                k += sizes[i]
+            }
+
+            maxCode[16] = 0x10000
+            visit v, ci: codeLengths
+            {
+                if !v do
+                    continue
+
+                let c     = nextCode[v] - firstCode[v] + firstSymbol[v]
+                let fastv = (cast(u16) v << 9) | cast(u16) ci
+                size[c]  = v
+                value[c] = cast(u16) ci
+                if v <= FastBits
+                {
+                    var j = reverse16(nextCode[v], v)
+                    while j < (1 << FastBits)
+                    {
+                        fast[j] = fastv
+                        j += (1'u16 << v)
+                    }
+                }
+
+                nextCode[v] += 1
+            }
         }
     }
-}
 }
 
 #[Swag.Opaque]
 public struct Inflate
 {
-    stream:     BitStream
-    windowSize: u32
-    adler:      Hash.Adler32
+    stream:         BitStream
+    windowSize:     u32
+    adler:          Hash.Adler32
 }
 
 impl Inflate
@@ -169,10 +164,11 @@ impl Inflate
         }
 
         let cde = cast(u16) stream.peekBits(16)
-	    let k = reverse16(cde, 16)
+        let k   = reverse16(cde, 16)
 
         var s = HuffmanFastBits + 1
-        while k >= ht.maxCode[s] do s += 1
+        while k >= ht.maxCode[s] do
+            s += 1
 
         if s >= 16 do
             throw InvalidFormatError{"bad huffman code"}
@@ -218,7 +214,8 @@ impl Inflate
 
             if dest.count < distance do
                 throw InvalidFormatError{"bad distance"}
-            if length <= 0 do continue
+            if length <= 0 do
+                continue
 
             dest.grow(dest.count + length)
 
@@ -254,25 +251,24 @@ impl Inflate
         adler.init()
         windowSize = Math.min(winSize, InflateMaxDistance)
 
-        var result:        retval
-        var repeatHt:      HuffmanTable
-        var repeatZ:       HuffmanTable
-        var codeLengthHt:  HuffmanTable
+        var result:       retval
+        var repeatHt:     HuffmanTable
+        var repeatZ:      HuffmanTable
+        var codeLengthHt: HuffmanTable
 
         Debug.assert(windowSize > 0)
 
         loop
         {
             let final = stream.readBits(1)
-            let type = stream.readBits(2)
+            let type  = stream.readBits(2)
 
             switch type
             {
-            // Uncompressed block
             case 0:
                 stream.discardToNextByte()
                 let uncompressedLen = cast(u16) stream.readBits(16)
-                let lengthCheck = cast(u16) stream.readBits(16)
+                let lengthCheck     = cast(u16) stream.readBits(16)
                 if ~uncompressedLen != lengthCheck do
                     throw InvalidFormatError{"invalid buffer, length mismatch"}
 
@@ -281,8 +277,6 @@ impl Inflate
                 adler.update(newSlice)
                 result.add(newSlice)
                 stream.curByte += uncompressedLen
-
-            // Fixed length block
             case 1:
                 repeatHt.init(FixedLength)
                 repeatZ.init(FixedDist)
@@ -290,13 +284,11 @@ impl Inflate
 
             case 3:
                 throw InvalidFormatError{"invalid block type"}
-
-            // Dynamic length block
             default:
-                var lenCodes:        [286+32+137] u8
+                var lenCodes:        [286 + 32 + 137] u8
                 var codeLengthSizes: [19] u8
                 stream.refill(14)
-                let hlit = stream.readBitsNoRefill(5) + 257
+                let hlit  = stream.readBitsNoRefill(5) + 257
                 let hdist = stream.readBitsNoRefill(5) + 1
                 let hclen = stream.readBitsNoRefill(4) + 4
                 loop i: hclen
@@ -307,7 +299,7 @@ impl Inflate
 
                 codeLengthHt.init(codeLengthSizes)
                 let ntot = hlit + hdist
-                var n = 0
+                var n    = 0
                 while n < ntot
                 {
                     var c = decode(&codeLengthHt)
@@ -352,8 +344,8 @@ impl Inflate
 
                 if n != ntot do
                     throw InvalidFormatError{"bad code lengths"}
-                repeatHt.init(lenCodes[0..hlit-1])
-                repeatZ.init(lenCodes[hlit..ntot-1])
+                repeatHt.init(lenCodes[0..hlit - 1])
+                repeatZ.init(lenCodes[hlit..ntot - 1])
                 parseBlock(&repeatHt, &repeatZ, &result)
             }
 

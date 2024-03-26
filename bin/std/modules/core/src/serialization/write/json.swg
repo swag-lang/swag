@@ -1,21 +1,22 @@
-#global namespace Serialization.Write
+#global namespace Serialization
+#global namespace Write
 #global public
 using Swag
 
 struct JSonOptions
 {
-    indentLevel: u32 = 4
-    saveBlanks:  bool
+    indentLevel:     u32 = 4
+    saveBlanks:      bool
 }
 
 struct JSon
 {
-    options:        JSonOptions
-    output:         *ConcatBuffer
-    indent:         u32
-    fmtInt:         StrConv.ConvertFormatInt
-    fmtFloat:       StrConv.ConvertFormatFloat{fmt: `g`'u8}
-    lastSeekValue:  ConcatBufferSeek
+    options:           JSonOptions
+    output:            *ConcatBuffer
+    indent:            u32
+    fmtInt:            StrConv.ConvertFormatInt
+    fmtFloat:          StrConv.ConvertFormatFloat{fmt: `g`'u8}
+    lastSeekValue:     ConcatBufferSeek
 }
 
 impl JSon

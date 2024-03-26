@@ -5,8 +5,8 @@
 #[Serialization.PodFinal]
 struct Point
 {
-    x: f32
-    y: f32
+    x:     f32
+    y:     f32
 }
 
 impl Point
@@ -14,7 +14,7 @@ impl Point
     // Represents a Point with all coordinates to zero
     const Zero: Point{0, 0}
     // Represents a Point with all coordinates to one
-    const One:  Point{1, 1}
+    const One: Point{1, 1}
 
     #[Swag.Complete]
     mtd opAffect(value: f32)
@@ -25,52 +25,96 @@ impl Point
     #[Swag.Overload]
     mtd(op: string) opAssign(other: Point)
     {
-        #if   op == "+="    { x += other.x; y += other.y; }
-        #elif op == "-="    { x -= other.x; y -= other.y; }
-        #elif op == "*="    { x *= other.x; y *= other.y; }
-        #elif op == "/="    { x /= other.x; y /= other.y; }
-        #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
+        #if op == "+="
+        {
+            x += other.x
+            y += other.y
+        }
+        #elif op == "-="
+        {
+            x -= other.x
+            y -= other.y
+        }
+        #elif op == "*="
+        {
+            x *= other.x
+            y *= other.y
+        }
+        #elif op == "/="
+        {
+            x /= other.x
+            y /= other.y
+        }
+        #else #do
+            #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload]
     mtd(op: string) opAssign(value: f32)
     {
-        #if   op == "+="    { x += value; y += value; }
-        #elif op == "-="    { x -= value; y -= value; }
-        #elif op == "*="    { x *= value; y *= value; }
-        #elif op == "/="    { x /= value; y /= value; }
-        #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
+        #if op == "+="
+        {
+            x += value
+            y += value
+        }
+        #elif op == "-="
+        {
+            x -= value
+            y -= value
+        }
+        #elif op == "*="
+        {
+            x *= value
+            y *= value
+        }
+        #elif op == "/="
+        {
+            x /= value
+            y /= value
+        }
+        #else #do
+            #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload]
     mtd(op: string) const opBinary(other: Point)->Self
     {
-        #if   op == "+" #do return Point{x + other.x, y + other.y}
-        #elif op == "-" #do return Point{x - other.x, y - other.y}
-        #elif op == "*" #do return Point{x * other.x, y * other.y}
-        #elif op == "/" #do return Point{x / other.x, y / other.y}
-        #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
+        #if op == "+" #do
+            return Point{x + other.x, y + other.y}
+        #elif op == "-" #do
+            return Point{x - other.x, y - other.y}
+        #elif op == "*" #do
+            return Point{x * other.x, y * other.y}
+        #elif op == "/" #do
+            return Point{x / other.x, y / other.y}
+        #else #do
+            #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload]
     mtd(op: string) const opBinary(value: f32)->Self
     {
-        #if   op == "+" #do return Point{x + value, y + value}
-        #elif op == "-" #do return Point{x - value, y - value}
-        #elif op == "*" #do return Point{x * value, y * value}
-        #elif op == "/" #do return Point{x / value, y / value}
-        #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
+        #if op == "+" #do
+            return Point{x + value, y + value}
+        #elif op == "-" #do
+            return Point{x - value, y - value}
+        #elif op == "*" #do
+            return Point{x * value, y * value}
+        #elif op == "/" #do
+            return Point{x / value, y / value}
+        #else #do
+            #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) const opUnary()->Self
     {
         var result: retval
-		#if op == "-"
-		{
-			result.x = -x
-			result.y = -y
-			return result
-		}
+        #if op == "-"
+        {
+            result.x = -x
+            result.y = -y
+            return result
+        }
         #else
         {
             #error "unsupported unary operation [[" ++ op ++ "]]"

@@ -5,8 +5,8 @@ using Math
 // Represents a gamepad
 struct GamePad
 {
-    previousState:  GamePadState
-    currentState:   GamePadState
+    previousState:     GamePadState
+    currentState:      GamePadState
 
     // The pad index associated with that GamePad instance
     padIndex: u32
@@ -23,12 +23,13 @@ impl GamePad
         let newConnected = isConnected(padIndex)
         if !newConnected
         {
-            if connected do clear(self)
+            if connected do
+                clear(self)
             connected = false
         }
         else
         {
-            connected = true
+            connected     = true
             previousState = currentState
             try currentState.update(padIndex)
         }

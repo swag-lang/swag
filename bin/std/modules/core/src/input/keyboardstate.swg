@@ -4,8 +4,8 @@
 // Represents one keyboard state
 struct KeyboardState
 {
-    using native:   KeyboardStateNative
-    pressed:        [@countof(Key)] bool
+    using native:     KeyboardStateNative
+    pressed:          [@countof(Key)] bool
 }
 
 impl KeyboardState

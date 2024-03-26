@@ -11,92 +11,150 @@ using Globalization, Errors
 
 struct Decimal
 {
-	d:          [800] u8  // digits, big-endian representation
-	nd:         s64       // number of digits used
-	dp:         s64       // decimal point
-	neg:        bool      // negative flag
-	bigtrunc:   bool
-    mantissa:   u64
-	trunc:      bool
-    exp:        s64
+    d:            [800] u8     // digits, big-endian representation
+    nd:           s64          // number of digits used
+    dp:           s64          // decimal point
+    neg:          bool         // negative flag
+    bigtrunc:     bool
+    mantissa:     u64
+    trunc:        bool
+    exp:          s64
 }
 
 struct DecimalSlice
 {
-	d:      [..] u8
-	nd, dp: s64
-	neg:    bool
+    d:       [..] u8
+    nd, dp:  s64
+    neg:     bool
 }
 
 struct LeftCheat
 {
-	delta:  s64    // number of new digits
-	cutoff: string // minus one digit if original < a.
+    delta:      s64        // number of new digits
+    cutoff:     string     // minus one digit if original < a.
 }
 
 var LeftCheats: [] LeftCheat = [
-	{0, ""},
-	{1, "5"},                                           // * 2
-	{1, "25"},                                          // * 4
-	{1, "125"},                                         // * 8
-	{2, "625"},                                         // * 16
-	{2, "3125"},                                        // * 32
-	{2, "15625"},                                       // * 64
-	{3, "78125"},                                       // * 128
-	{3, "390625"},                                      // * 256
-	{3, "1953125"},                                     // * 512
-	{4, "9765625"},                                     // * 1024
-	{4, "48828125"},                                    // * 2048
-	{4, "244140625"},                                   // * 4096
-	{4, "1220703125"},                                  // * 8192
-	{5, "6103515625"},                                  // * 16384
-	{5, "30517578125"},                                 // * 32768
-	{5, "152587890625"},                                // * 65536
-	{6, "762939453125"},                                // * 131072
-	{6, "3814697265625"},                               // * 262144
-	{6, "19073486328125"},                              // * 524288
-	{7, "95367431640625"},                              // * 1048576
-	{7, "476837158203125"},                             // * 2097152
-	{7, "2384185791015625"},                            // * 4194304
-	{7, "11920928955078125"},                           // * 8388608
-	{8, "59604644775390625"},                           // * 16777216
-	{8, "298023223876953125"},                          // * 33554432
-	{8, "1490116119384765625"},                         // * 67108864
-	{9, "7450580596923828125"},                         // * 134217728
-	{9, "37252902984619140625"},                        // * 268435456
-	{9, "186264514923095703125"},                       // * 536870912
-	{10, "931322574615478515625"},                      // * 1073741824
-	{10, "4656612873077392578125"},                     // * 2147483648
-	{10, "23283064365386962890625"},                    // * 4294967296
-	{10, "116415321826934814453125"},                   // * 8589934592
-	{11, "582076609134674072265625"},                   // * 17179869184
-	{11, "2910383045673370361328125"},                  // * 34359738368
-	{11, "14551915228366851806640625"},                 // * 68719476736
-	{12, "72759576141834259033203125"},                 // * 137438953472
-	{12, "363797880709171295166015625"},                // * 274877906944
-	{12, "1818989403545856475830078125"},               // * 549755813888
-	{13, "9094947017729282379150390625"},               // * 1099511627776
-	{13, "45474735088646411895751953125"},              // * 2199023255552
-	{13, "227373675443232059478759765625"},             // * 4398046511104
-	{13, "1136868377216160297393798828125"},            // * 8796093022208
-	{14, "5684341886080801486968994140625"},            // * 17592186044416
-	{14, "28421709430404007434844970703125"},           // * 35184372088832
-	{14, "142108547152020037174224853515625"},          // * 70368744177664
-	{15, "710542735760100185871124267578125"},          // * 140737488355328
-	{15, "3552713678800500929355621337890625"},         // * 281474976710656
-	{15, "17763568394002504646778106689453125"},        // * 562949953421312
-	{16, "88817841970012523233890533447265625"},        // * 1125899906842624
-	{16, "444089209850062616169452667236328125"},       // * 2251799813685248
-	{16, "2220446049250313080847263336181640625"},      // * 4503599627370496
-	{16, "11102230246251565404236316680908203125"},     // * 9007199254740992
-	{17, "55511151231257827021181583404541015625"},     // * 18014398509481984
-	{17, "277555756156289135105907917022705078125"},    // * 36028797018963968
-	{17, "1387778780781445675529539585113525390625"},   // * 72057594037927936
-	{18, "6938893903907228377647697925567626953125"},   // * 144115188075855872
-	{18, "34694469519536141888238489627838134765625"},  // * 288230376151711744
-	{18, "173472347597680709441192448139190673828125"}, // * 576460752303423488
-	{19, "867361737988403547205962240695953369140625"}, // * 1152921504606846976
-]
+{0, ""},
+{1, "5"},
+// * 2
+{1, "25"},
+// * 4
+{1, "125"},
+// * 8
+{2, "625"},
+// * 16
+{2, "3125"},
+// * 32
+{2, "15625"},
+// * 64
+{3, "78125"},
+// * 128
+{3, "390625"},
+// * 256
+{3, "1953125"},
+// * 512
+{4, "9765625"},
+// * 1024
+{4, "48828125"},
+// * 2048
+{4, "244140625"},
+// * 4096
+{4, "1220703125"},
+// * 8192
+{5, "6103515625"},
+// * 16384
+{5, "30517578125"},
+// * 32768
+{5, "152587890625"},
+// * 65536
+{6, "762939453125"},
+// * 131072
+{6, "3814697265625"},
+// * 262144
+{6, "19073486328125"},
+// * 524288
+{7, "95367431640625"},
+// * 1048576
+{7, "476837158203125"},
+// * 2097152
+{7, "2384185791015625"},
+// * 4194304
+{7, "11920928955078125"},
+// * 8388608
+{8, "59604644775390625"},
+// * 16777216
+{8, "298023223876953125"},
+// * 33554432
+{8, "1490116119384765625"},
+// * 67108864
+{9, "7450580596923828125"},
+// * 134217728
+{9, "37252902984619140625"},
+// * 268435456
+{9, "186264514923095703125"},
+// * 536870912
+{10, "931322574615478515625"},
+// * 1073741824
+{10, "4656612873077392578125"},
+// * 2147483648
+{10, "23283064365386962890625"},
+// * 4294967296
+{10, "116415321826934814453125"},
+// * 8589934592
+{11, "582076609134674072265625"},
+// * 17179869184
+{11, "2910383045673370361328125"},
+// * 34359738368
+{11, "14551915228366851806640625"},
+// * 68719476736
+{12, "72759576141834259033203125"},
+// * 137438953472
+{12, "363797880709171295166015625"},
+// * 274877906944
+{12, "1818989403545856475830078125"},
+// * 549755813888
+{13, "9094947017729282379150390625"},
+// * 1099511627776
+{13, "45474735088646411895751953125"},
+// * 2199023255552
+{13, "227373675443232059478759765625"},
+// * 4398046511104
+{13, "1136868377216160297393798828125"},
+// * 8796093022208
+{14, "5684341886080801486968994140625"},
+// * 17592186044416
+{14, "28421709430404007434844970703125"},
+// * 35184372088832
+{14, "142108547152020037174224853515625"},
+// * 70368744177664
+{15, "710542735760100185871124267578125"},
+// * 140737488355328
+{15, "3552713678800500929355621337890625"},
+// * 281474976710656
+{15, "17763568394002504646778106689453125"},
+// * 562949953421312
+{16, "88817841970012523233890533447265625"},
+// * 1125899906842624
+{16, "444089209850062616169452667236328125"},
+// * 2251799813685248
+{16, "2220446049250313080847263336181640625"},
+// * 4503599627370496
+{16, "11102230246251565404236316680908203125"},
+// * 9007199254740992
+{17, "55511151231257827021181583404541015625"},
+// * 18014398509481984
+{17, "277555756156289135105907917022705078125"},
+// * 36028797018963968
+{17, "1387778780781445675529539585113525390625"},
+// * 72057594037927936
+{18, "6938893903907228377647697925567626953125"},
+// * 144115188075855872
+{18, "34694469519536141888238489627838134765625"},
+// * 288230376151711744
+{18, "173472347597680709441192448139190673828125"},
+// * 576460752303423488
+{19, "867361737988403547205962240695953369140625"}]
 
 impl Decimal
 {
@@ -105,12 +163,12 @@ impl Decimal
     {
         if nd1 < 0 or nd1 >= nd do
             return false
-        if d[nd1] == `5` and nd1 + 1 == nd  // exactly halfway - round to even
+        if d[nd1] == `5` and nd1 + 1 == nd // exactly halfway - round to even
         {
             // if we truncated, a little higher than what's recorded - always round up
             if trunc do
                 return true
-            return nd1 > 0 and (d[nd1-1] - `0`) % 2 != 0
+            return nd1 > 0 and (d[nd1 - 1] - `0`) % 2 != 0
         }
 
         // not halfway - digit tells all
@@ -160,7 +218,7 @@ impl Decimal
         // Number is all 9s.
         // Change to single 1 with adjusted decimal point.
         d[0] = `1`
-        nd = 1
+        nd   = 1
         dp += 1
     }
 
@@ -198,14 +256,15 @@ impl Decimal
     {
         while nd > 0 and d[nd - 1] == `0` do
             nd -= 1
-        if nd == 0 do dp = 0
+        if nd == 0 do
+            dp = 0
     }
 
     const MaxShift: u32 = 64 - 4
     func rightShift(using self, k: u32)
     {
-        var r = 0 // read pointer
-        var w = 0 // write pointer
+        var r = 0     // read pointer
+        var w = 0     // write pointer
 
         // Pick up enough leading digits to cover first shift.
         var n: u64
@@ -240,7 +299,7 @@ impl Decimal
         // Pick up a digit, put down a digit.
         while r < nd
         {
-            let c = cast(u64) d[r]
+            let c   = cast(u64) d[r]
             let dig = n >> k
             n &= mask
             d[w] = cast(u8) (dig + `0`)
@@ -271,7 +330,7 @@ impl Decimal
         trim()
     }
 
-    func prefixIsLessThan(b: const [..] u8, s: string) -> bool
+    func prefixIsLessThan(b: const [..] u8, s: string)->bool
     {
         for var i = 0; i < @countof(s); i += 1
         {
@@ -290,15 +349,15 @@ impl Decimal
         if prefixIsLessThan(@mkslice(&d[0], nd), LeftCheats[k].cutoff) do
             delta -= 1
 
-        var r = nd         // read index
-        var w = nd + delta // write index
+        var r = nd             // read index
+        var w = nd + delta     // write index
 
         // Pick up a digit, put down a digit.
         var n: u64
         r -= 1
         while r >= 0
         {
-            n += (cast(u64) (d[r]) - `0`) << k
+            n += (cast(u64) d[r] - `0`) << k
             let quo = n / 10
             let rem = n - (10 * quo)
             w -= 1
@@ -348,25 +407,25 @@ impl Decimal
             leftShift(cast(u32) k)
 
         case k < 0:
-            while k < -cast(s32)MaxShift
+            while k < -cast(s32) MaxShift
             {
                 rightShift(MaxShift)
                 k += MaxShift
             }
 
-            rightShift(cast(u32) (-k))
+            rightShift(cast(u32) -k)
         }
     }
 
     func readF64(using self, str: const [..] u8)->u32 throw
     {
-        var cpt = 0'u32
+        var cpt     = 0'u32
         let countof = @countof(str)
-        var buffer = @dataof(str)
+        var buffer  = @dataof(str)
 
-        let negSign = g_CultureInfo.numberFormat.negativeSign
+        let negSign  = g_CultureInfo.numberFormat.negativeSign
         let plusSign = g_CultureInfo.numberFormat.positiveSign
-        let dotSign = g_CultureInfo.numberFormat.decimalSeparator
+        let dotSign  = g_CultureInfo.numberFormat.decimalSeparator
 
         var c = dref buffer
         if c == negSign
@@ -384,10 +443,10 @@ impl Decimal
         }
 
         // digits
-        let maxMantDigits = 19 // 10^19 fits in u64
-        var sawdot = false
-        var sawDigits = false
-        var ndMant = 0
+        let maxMantDigits = 19        // 10^19 fits in u64
+        var sawdot        = false
+        var sawDigits     = false
+        var ndMant        = 0
 
         nd = 0
         dp = 0
@@ -397,9 +456,10 @@ impl Decimal
             c = dref buffer
             if c == dotSign
             {
-                if sawdot do break
+                if sawdot do
+                    break
                 sawdot = true
-                dp = nd
+                dp     = nd
             }
             elif `0` <= c and c <= `9`
             {
@@ -439,7 +499,7 @@ impl Decimal
 
         // Exponent
         c = dref buffer
-        if cpt < countof and (c|32) == `e`
+        if cpt < countof and (c | 32) == `e`
         {
             cpt, buffer += 1
             if cpt >= countof do
@@ -451,7 +511,7 @@ impl Decimal
             {
                 buffer, cpt += 1
                 esign = -1
-                c = dref buffer
+                c     = dref buffer
                 if !Latin1.isDigit(c) and cpt >= countof do
                     throw ParseIncompleteError{}
             }
@@ -473,7 +533,7 @@ impl Decimal
                 if c < `0` or c > `9` do
                     break
                 if e < 10000 do
-                    e = e*10 + (c - `0`)
+                    e = e * 10 + (c - `0`)
                 buffer, cpt += 1
             }
 
@@ -486,10 +546,10 @@ impl Decimal
         return cpt
     }
 
-    func floatBits(using self) -> {b: u64, overflow: bool}
+    func floatBits(using self)->{b: u64, overflow: bool}
     {
         const PowTab: [] s64 = [1, 3, 6, 9, 13, 16, 19, 23, 26]
-        var mant: u64
+        var mant:     u64
 
         // Zero is always a special case.
         var overflow = false
@@ -498,7 +558,7 @@ impl Decimal
             if nd == 0
             {
                 mant = 0
-                exp = Swag.F64.Bias
+                exp  = Swag.F64.Bias
                 break
             }
 
@@ -515,7 +575,7 @@ impl Decimal
             {
                 // zero
                 mant = 0
-                exp = Swag.F64.Bias
+                exp  = Swag.F64.Bias
                 break
             }
 
@@ -528,7 +588,7 @@ impl Decimal
                     n = 27
                 else do
                     n = PowTab[dp]
-                shift(-cast(s32)n)
+                shift(-cast(s32) n)
                 exp += n
             }
 
@@ -587,15 +647,16 @@ impl Decimal
         if overflow
         {
             mant = 0
-            exp = cast(s64) ((1'u64 << Swag.F64.MantBits) - 1 + cast,over(u64) Swag.F64.Bias)
+            exp  = cast(s64) ((1'u64 << Swag.F64.MantBits) - 1 + cast,over(u64) Swag.F64.Bias)
         }
 
         // Assemble bits.
         var result: retval
-        var bits = mant & ((1'u64 << Swag.F64.MantBits) - 1)
+        var bits    = mant & ((1'u64 << Swag.F64.MantBits) - 1)
         bits |= cast(u64) ((exp - Swag.F64.Bias) & ((1's64 << Swag.F64.MantBits) - 1)) << Swag.F64.MantBits
-        if neg do bits |= (1'u64 << 63)
-        result.b = bits
+        if neg do
+            bits |= (1'u64 << 63)
+        result.b        = bits
         result.overflow = overflow
         return result
     }
@@ -609,7 +670,7 @@ impl Decimal
         var n = 0'u64
         while i < dp and i < nd
         {
-            n = (n*10) + cast(u64) (d[i] - `0`)
+            n = (n * 10) + cast(u64) (d[i] - `0`)
             i += 1
         }
 

@@ -18,7 +18,7 @@ struct(T) IsSet
 {
     #ast
     {
-        var str = StrConv.StringBuilder{}
+        var str    = StrConv.StringBuilder{}
         let typeof = @typeof(T)
         visit f: typeof.fields do
             str.appendFormat("%: bool\n", f.name)
@@ -104,7 +104,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             throw SyntaxError{Errors.mkString(Format.toString("missing value for option [[%]]", oneArg))}
     }
 
-    var result:  retval
+    var result: retval
 
     // First pass
     var allArgs = splitArguments(args, options)
@@ -138,11 +138,11 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
 
         // All types supported by 'Parse.pokeValue'
         elif typeField == @typeof(Core.String) or
-                Reflection.isInteger(typeField) or
-                Reflection.isFloat(typeField) or
-                Reflection.isBool(typeField) or
-                Reflection.isRune(typeField) or
-                Reflection.isEnum(typeField)
+             Reflection.isInteger(typeField) or
+             Reflection.isFloat(typeField) or
+             Reflection.isBool(typeField) or
+             Reflection.isRune(typeField) or
+             Reflection.isEnum(typeField)
         {
             try checkNext()
             let rest = catch StrConv.parseValue(addr, typeField, allArgs[itp + 1])

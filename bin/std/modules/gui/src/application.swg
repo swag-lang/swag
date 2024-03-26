@@ -5,46 +5,46 @@ typealias FrameCallback = closure(*Application)
 
 struct Application
 {
-    using native:   ApplicationNative
-    sigFrame:       SigArray'closure(*Application)
+    using native:     ApplicationNative
+    sigFrame:         SigArray'closure(*Application)
 
-    appIcon:        Pixel.Image
-    renderer:       Pixel.RenderOgl
-    theme:          *Theme
-    style:          ThemeStyle
-    keyb:           Input.Keyboard
-    mouse:          Input.Mouse
-    mainSurface:    *Surface
-    postedEvents:   Array'(*Event)
-    surfaces:       Array'(*Surface)
-    postDestroy:    Array'(*Wnd)
-    hookEvents:     Array'(*Wnd)
-    cursorStack:    Array'(Cursor)
-    endModalExit:   WndId
-    inModalLoop:    u32
-    quitCode:       s32
-    timing:         Time.FrameTiming
+    appIcon:          Pixel.Image
+    renderer:         Pixel.RenderOgl
+    theme:            *Theme
+    style:            ThemeStyle
+    keyb:             Input.Keyboard
+    mouse:            Input.Mouse
+    mainSurface:      *Surface
+    postedEvents:     Array'(*Event)
+    surfaces:         Array'(*Surface)
+    postDestroy:      Array'(*Wnd)
+    hookEvents:       Array'(*Wnd)
+    cursorStack:      Array'(Cursor)
+    endModalExit:     WndId
+    inModalLoop:      u32
+    quitCode:         s32
+    timing:           Time.FrameTiming
 
-    mustQuit:           bool
-    endModal:           bool
-    isActivated:        bool
-    fadeDisabledSurface = true
+    mustQuit:               bool
+    endModal:               bool
+    isActivated:            bool
+    fadeDisabledSurface     = true
 
-    mutexPostedEvents:  Sync.Mutex
+    mutexPostedEvents: Sync.Mutex
 
-    duringTimerEvents:  bool
-    timers:             Array'(*Timer)
-    timersToAdd:        Array'(*Timer)
-    timersToDelete:     Array'(*Timer)
-    frameEvents:        Array'(*Wnd)
-    modalSurfaces:      Array'(*Surface)
-    toDelete:           Array'{ptr: *void, type: const *Swag.TypeInfo}
-    mouseEnterWnd:      *Wnd
-    mouseCaptureWnd:    *Wnd
-    keybFocusWnd:       *Wnd
-    maxRunFrame:        u32
-    configPath:         String
-    hotKeys:            Array'KeyShortcut
+    duringTimerEvents:     bool
+    timers:                Array'(*Timer)
+    timersToAdd:           Array'(*Timer)
+    timersToDelete:        Array'(*Timer)
+    frameEvents:           Array'(*Wnd)
+    modalSurfaces:         Array'(*Surface)
+    toDelete:              Array'{ptr: *void, type: const *Swag.TypeInfo}
+    mouseEnterWnd:         *Wnd
+    mouseCaptureWnd:       *Wnd
+    keybFocusWnd:          *Wnd
+    maxRunFrame:           u32
+    configPath:            String
+    hotKeys:               Array'KeyShortcut
 }
 
 internal impl Application
@@ -124,9 +124,9 @@ internal impl Application
         // Accept
         if targetWnd
         {
-            evt.kind = .MouseAccept
+            evt.kind       = .MouseAccept
             evt.surfacePos = targetWnd.screenToSurface(mousePos)
-            evt.target = targetWnd
+            evt.target     = targetWnd
             sendEventPrivate(&evt, mouseEnterWnd)
             targetWnd = evt.target
         }
@@ -137,9 +137,9 @@ internal impl Application
             // Enter
             if targetWnd
             {
-                evt.kind = .MouseEnter
+                evt.kind       = .MouseEnter
                 evt.surfacePos = targetWnd.screenToSurface(mousePos)
-                evt.target = targetWnd
+                evt.target     = targetWnd
                 sendEventPrivate(&evt, mouseEnterWnd)
 
                 if targetWnd.toolTip.length do
@@ -149,9 +149,9 @@ internal impl Application
             // Leave
             if mouseEnterWnd and targetWnd != mouseEnterWnd
             {
-                evt.kind = .MouseLeave
+                evt.kind       = .MouseLeave
                 evt.surfacePos = mouseEnterWnd.screenToSurface(mousePos)
-                evt.target = mouseEnterWnd
+                evt.target     = mouseEnterWnd
                 sendEventPrivate(&evt, mouseCaptureWnd)
 
                 ToolTip.hide(mouseEnterWnd)
@@ -181,7 +181,7 @@ internal impl Application
         loop i: mouse.previousState.pressed
         {
             let lastP = mouse.previousState.pressed[i]
-            let curP = mouse.currentState.pressed[i]
+            let curP  = mouse.currentState.pressed[i]
             if !lastP and curP
             {
                 if mouse.isButtonDoubleClick(cast(Input.MouseButton) i) do
@@ -199,7 +199,7 @@ internal impl Application
             }
             elif lastP and !curP
             {
-                evt.kind = .MouseReleased
+                evt.kind   = .MouseReleased
                 evt.button = cast(Input.MouseButton) i
                 targetWnd.sendEvent(&evt)
             }
@@ -213,7 +213,7 @@ internal impl Application
         if !targetWnd do
             return
 
-        var evt = MouseEvent{kind: EventKind.MouseWheel}
+        var evt      = MouseEvent{kind: EventKind.MouseWheel}
         var mousePos = mouse.getPosition()
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.move.y     = z
@@ -237,11 +237,11 @@ internal impl Application
         loop i: keyb.previousState.pressed
         {
             let lastP = keyb.previousState.pressed[i]
-            let curP = keyb.currentState.pressed[i]
+            let curP  = keyb.currentState.pressed[i]
             if !lastP and curP
             {
                 var evt = KeyEvent{kind: EventKind.KeyPressed}
-                evt.key = cast(Input.Key) i
+                evt.key       = cast(Input.Key) i
                 evt.modifiers = modifiers
                 targetWnd.sendEvent(&evt)
 
@@ -256,7 +256,7 @@ internal impl Application
             elif lastP and !curP
             {
                 var evt = KeyEvent{kind: EventKind.KeyReleased}
-                evt.key = cast(Input.Key) i
+                evt.key       = cast(Input.Key) i
                 evt.modifiers = modifiers
                 targetWnd.sendEvent(&evt)
             }
@@ -271,8 +271,8 @@ internal impl Application
             return
 
         var evt = KeyEvent{kind: EventKind.Rune}
-        evt.char = r
-        evt.key = key
+        evt.char      = r
+        evt.key       = key
         evt.modifiers = keyb.getPressedModifiers()
         targetWnd.sendEvent(&evt)
     }
@@ -448,7 +448,7 @@ internal impl Application
         sigFrame.call(self)
     }
 
-    public mtd doModalLoop(surface: *Surface, cb: closure(self) = null)->WndId
+    public mtd doModalLoop(surface: *Surface, cb: closure(*Application) = null)->WndId
     {
         inModalLoop += 1
         defer inModalLoop -= 1
@@ -520,7 +520,7 @@ impl Application
         mtd getRenderer() => &renderer
         mtd getKeyboard() => &keyb
         mtd getMouse()    => &mouse
-        mtd const getDt()      => timing.dt
+        mtd const getDt() => timing.dt
     }
 
     // Create a main surface, and run
@@ -529,11 +529,14 @@ impl Application
         var app: Application
 
         var flags = SurfaceFlags.OverlappedWindow
-        if !canSize do flags &= ~.Sizeable
-        if !borders do flags &= ~.Border
+        if !canSize do
+            flags &= ~.Sizeable
+        if !borders do
+            flags &= ~.Border
         let surface = assume app.createSurface(x, y, width, height, flags, view, hook)
         surface.setTitle(title)
-        if init do init(&app)
+        if init do
+            init(&app)
         surface.show()
         app.run()
     }
@@ -542,7 +545,7 @@ impl Application
     mtd createSurface(x, y, width, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null)->*Surface throw
     {
         let surface = Memory.new'Surface()
-        surface.app = self
+        surface.app      = self
         surface.position = {x, y, width, height}
 
         if !mainSurface
@@ -567,7 +570,7 @@ impl Application
         {
             .wnd.create(view, hook)
             .wnd.surface = surface
-            .wnd.itf = cast(IWnd) surface.wnd
+            .wnd.itf     = cast(IWnd) surface.wnd
             .wnd.computeStyle()
             .wnd.view.computeStyle()
             .wnd.sendResizeEvent()
@@ -660,7 +663,7 @@ impl Application
     // Returns the window under the given point
     mtd getWndAtMouse()->*Wnd
     {
-        var mousePos = mouse.getPosition()
+        var mousePos      = mouse.getPosition()
         let targetSurface = getSurfaceAt(mousePos.x, mousePos.y)
         if !targetSurface do
             return null
@@ -805,7 +808,7 @@ impl Application
     // End current modal loop
     mtd exitModal(exitId: string = "")
     {
-        endModal = true
+        endModal     = true
         endModalExit = exitId
     }
 
@@ -820,7 +823,7 @@ impl Application
         {
             if c.mdf == mdf and c.key == key
             {
-                c.id = wndId
+                c.id     = wndId
                 c.target = target
                 return
             }
@@ -857,5 +860,4 @@ impl Application
 
         return result
     }
-
 }

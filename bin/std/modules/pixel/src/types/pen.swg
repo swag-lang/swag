@@ -46,26 +46,26 @@ enum BorderPos
 
 struct Pen
 {
-    size:       f32 = 1
-    brush:      Brush
+    size:      f32 = 1
+    brush:     Brush
 
-    pattern:            Array'f32
-    dashBeginCapStyle:  DashCapStyle = None
-    dashEndCapStyle:    DashCapStyle = None
-    borderPos:          BorderPos = None
+    pattern:               Array'f32
+    dashBeginCapStyle:     DashCapStyle = None
+    dashEndCapStyle:       DashCapStyle = None
+    borderPos:             BorderPos = None
 
-    capStartScaleX: f32 = 2
-    capStartScaleY: f32 = 2
-    capEndScaleX:   f32 = 2
-    capEndScaleY:   f32 = 2
+    capStartScaleX:     f32 = 2
+    capStartScaleY:     f32 = 2
+    capEndScaleX:       f32 = 2
+    capEndScaleY:       f32 = 2
 
-    joinMiterLimit: f32 = 3
-    plotOffset:     f32
+    joinMiterLimit:     f32 = 3
+    plotOffset:         f32
 
-    dashStyle:      DashStyle    = None
-    beginCapStyle:  LineCapStyle = Round
-    endCapStyle:    LineCapStyle = Round
-    joinStyle:      JoinStyle    = Miter
+    dashStyle:         DashStyle = None
+    beginCapStyle:     LineCapStyle = Round
+    endCapStyle:       LineCapStyle = Round
+    joinStyle:         JoinStyle = Miter
 }
 
 impl Pen
@@ -75,8 +75,8 @@ impl Pen
     {
         var result: retval
         result.brush.color = color
-        result.brush.type = .SolidColor
-        result.size = size
+        result.brush.type  = .SolidColor
+        result.size        = size
         return result
     }
 
@@ -85,9 +85,9 @@ impl Pen
     {
         var result: retval
         result.brush.color = color
-        result.brush.type = .SolidColor
-        result.dashStyle = style
-        result.size = size
+        result.brush.type  = .SolidColor
+        result.dashStyle   = style
+        result.size        = size
         return result
     }
 
@@ -95,10 +95,10 @@ impl Pen
     func createHatch(type: HatchStyle, color: Color, size: f32 = 1)->Pen
     {
         var result: retval
-        result.brush.color = color
-        result.brush.type = .Hatch
-        result.brush.hatch = type
-        result.size = size
+        result.brush.color  = color
+        result.brush.type   = .Hatch
+        result.brush.hatch  = type
+        result.size         = size
         result.brush.uvMode = .Tile
         return result
     }

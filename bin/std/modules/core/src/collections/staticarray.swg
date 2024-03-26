@@ -3,8 +3,8 @@ using Swag
 
 struct(T, N: u64) StaticArray
 {
-    buffer: [N] T
-    count:  u64
+    buffer:     [N] T
+    count:      u64
 }
 
 impl StaticArray
@@ -397,7 +397,8 @@ impl StaticArray
     #[Overload]
     mtd remove(index, num: u64)
     {
-        if !num do return
+        if !num do
+            return
         Debug.assert(index + num <= count, "index out of range")
 
         #if !Reflection.hasPostMove(T) and !Reflection.hasDrop(T)

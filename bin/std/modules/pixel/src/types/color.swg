@@ -21,16 +21,16 @@ struct Color
 impl Color
 {
     #[Complete, Inline, ConstExpr, Overload]
-    func opAffect(self, argb: u32)    = self.argb = argb
+    func opAffect(self, argb: u32) = self.argb = argb
     #[Complete, Inline, Implicit, ConstExpr, Overload]
-    func opAffect(self, argb: Argb)   = self.argb = cast(u32) argb
+    func opAffect(self, argb: Argb) = self.argb = cast(u32) argb
     #[Complete, Inline, ConstExpr, Overload]
     func opAffect(self, name: string) = self.argb = cast(u32) Argb.fromName(name)
 
     #[Inline, Overload]
-    func opEquals(self, argb: u32)   => self.argb == argb
+    func opEquals(self, argb: u32) => self.argb == argb
     #[Inline, Overload]
-    func opEquals(self, argb: Argb)  => self.argb == cast(u32) argb
+    func opEquals(self, argb: Argb) => self.argb == cast(u32) argb
     #[Inline, Overload]
     func opEquals(self, other: Self) => self.argb == other.argb
 
@@ -91,7 +91,7 @@ impl Color
 
     // Retrieve all components as floating point values between 0 and 1
     #[Inline]
-    func toArgbf(const self) -> {a: f32, r: f32, g: f32, b: f32}
+    func toArgbf(const self)->{a: f32, r: f32, g: f32, b: f32}
     {
         var result: retval = undefined
         result.a = self.a / 255.0
@@ -103,7 +103,7 @@ impl Color
 
     // Get the color as a [Math.Vector4]
     #[Inline]
-    func toVector4(const self) -> Math.Vector4
+    func toVector4(const self)->Math.Vector4
     {
         var result: retval = undefined
         result.w = self.a / 255.0
@@ -115,7 +115,7 @@ impl Color
 
     // Retrieve all components as floating point values between 0 and 1
     #[Inline]
-    func toRgbf(const self) -> {r: f32, g: f32, b: f32}
+    func toRgbf(const self)->{r: f32, g: f32, b: f32}
     {
         var result: retval = undefined
         result.r = self.r / 255.0
@@ -221,8 +221,10 @@ impl Color
         func hueToCol(m1, m2, hue: f32)->u8
         {
             var h = hue
-            if h < 0 do h += 1
-            if h > 1 do h -= 1
+            if h < 0 do
+                h += 1
+            if h > 1 do
+                h -= 1
 
             var v: f32 = undefined
             if 6 * h < 1 do
@@ -258,7 +260,7 @@ impl Color
     }
 
     // Returns hue, saturation, lightness
-    mtd const toHsl() -> {h: f32, s: f32, l: f32}
+    mtd const toHsl()->{h: f32, s: f32, l: f32}
     {
         var result: retval = undefined
 
@@ -339,11 +341,11 @@ impl Color
     // Returns the distance between the other color
     mtd getDistanceRgb(col: Color)->f32
     {
-        let x1 = cast(f32) r - col.r
-        let x2 = cast(f32) g - col.g
-        let x3 = cast(f32) b - col.b
-        var dist = Math.sqrt((x1*x1) + (x2*x2) + (x3*x3))
-        dist /= 255*3
+        let x1   = cast(f32) r - col.r
+        let x2   = cast(f32) g - col.g
+        let x3   = cast(f32) b - col.b
+        var dist = Math.sqrt((x1 * x1) + (x2 * x2) + (x3 * x3))
+        dist /= 255 * 3
         return dist
     }
 }
@@ -359,37 +361,42 @@ impl Core.StrConv.IPokeValue for Color
         if @countof(one) == 0 do
             throw SyntaxError{}
 
-        if buf[0] == `0` and buf[1]|32 == `x`
+        if buf[0] == `0` and buf[1] | 32 == `x`
         {
             (argb, eat, ovf) = try parseU32(one)
-            if ovf do throw OverflowError{}
+            if ovf do
+                throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
         }
         elif Latin1.isDigit(buf[0])
         {
             (a, eat, ovf) = try parseU8(one)
-            if ovf do throw OverflowError{}
+            if ovf do
+                throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (r, eat, ovf) = try parseU8(one)
-            if ovf do throw OverflowError{}
+            if ovf do
+                throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (g, eat, ovf) = try parseU8(one)
-            if ovf do throw OverflowError{}
+            if ovf do
+                throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (b, eat, ovf) = try parseU8(one)
-            if ovf do throw OverflowError{}
+            if ovf do
+                throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
         }
         else
         {
             let id = try parseIdentifier(one)
-            one = Tokenize.eatCount(one, @countof(id))
+            one  = Tokenize.eatCount(one, @countof(id))
             argb = cast(u32) Argb.fromName(id)
         }
 

@@ -31,37 +31,37 @@ typealias FT_Fixed  = s32
 typealias FT_Byte   = u8
 typealias FT_Int32  = s32
 
-const FT_LOAD_DEFAULT                       = 0x0
-const FT_LOAD_NO_SCALE                      = 1 << 0
-const FT_LOAD_NO_HINTING                    = 1 << 1
-const FT_LOAD_RENDER                        = 1 << 2
-const FT_LOAD_NO_BITMAP                     = 1 << 3
-const FT_LOAD_VERTICAL_LAYOUT               = 1 << 4
-const FT_LOAD_FORCE_AUTOHINT                = 1 << 5
-const FT_LOAD_CROP_BITMAP                   = 1 << 6
-const FT_LOAD_PEDANTIC                      = 1 << 7
-const FT_LOAD_ADVANCE_ONLY                  = 1 << 8
-const FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH   = 1 << 9
-const FT_LOAD_NO_RECURSE                    = 1 << 10
-const FT_LOAD_IGNORE_TRANSFORM              = 1 << 11
-const FT_LOAD_MONOCHROME                    = 1 << 12
-const FT_LOAD_LINEAR_DESIGN                 = 1 << 13
-const FT_LOAD_SBITS_ONLY                    = 1 << 14
-const FT_LOAD_NO_AUTOHINT                   = 1 << 15
-const FT_LOAD_COLOR                         = 1 << 20
-const FT_LOAD_COMPUTE_METRICS               = 1 << 21
-const FT_LOAD_BITMAP_METRICS_ONLY           = 1 << 22
+const FT_LOAD_DEFAULT                     = 0x0
+const FT_LOAD_NO_SCALE                    = 1 << 0
+const FT_LOAD_NO_HINTING                  = 1 << 1
+const FT_LOAD_RENDER                      = 1 << 2
+const FT_LOAD_NO_BITMAP                   = 1 << 3
+const FT_LOAD_VERTICAL_LAYOUT             = 1 << 4
+const FT_LOAD_FORCE_AUTOHINT              = 1 << 5
+const FT_LOAD_CROP_BITMAP                 = 1 << 6
+const FT_LOAD_PEDANTIC                    = 1 << 7
+const FT_LOAD_ADVANCE_ONLY                = 1 << 8
+const FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH = 1 << 9
+const FT_LOAD_NO_RECURSE                  = 1 << 10
+const FT_LOAD_IGNORE_TRANSFORM            = 1 << 11
+const FT_LOAD_MONOCHROME                  = 1 << 12
+const FT_LOAD_LINEAR_DESIGN               = 1 << 13
+const FT_LOAD_SBITS_ONLY                  = 1 << 14
+const FT_LOAD_NO_AUTOHINT                 = 1 << 15
+const FT_LOAD_COLOR                       = 1 << 20
+const FT_LOAD_COMPUTE_METRICS             = 1 << 21
+const FT_LOAD_BITMAP_METRICS_ONLY         = 1 << 22
 
 const FT_STYLE_FLAG_ITALIC = 1 << 0
 const FT_STYLE_FLAG_BOLD   = 1 << 1
 
 #[ConstExpr]
 func FT_LOAD_TARGET(x: FT_Int32) => (cast(FT_Int32) (x & 15) << 16)
-const FT_LOAD_TARGET_NORMAL  = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_NORMAL)
-const FT_LOAD_TARGET_LIGHT   = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_LIGHT)
-const FT_LOAD_TARGET_MONO    = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_MONO)
-const FT_LOAD_TARGET_LCD     = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_LCD)
-const FT_LOAD_TARGET_LCD_V   = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_LCD_V)
+const FT_LOAD_TARGET_NORMAL = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_NORMAL)
+const FT_LOAD_TARGET_LIGHT  = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_LIGHT)
+const FT_LOAD_TARGET_MONO   = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_MONO)
+const FT_LOAD_TARGET_LCD    = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_LCD)
+const FT_LOAD_TARGET_LCD_V  = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_LCD_V)
 
 const FT_MAX_MODULES = 32
 
@@ -77,53 +77,53 @@ enum FT_Render_Mode
 
 struct FT_LibraryRec
 {
-    memory:             FT_Memory
-    version_major:      FT_Int
-    version_minor:      FT_Int
-    version_patch:      FT_Int
-    num_modules:        FT_UInt
-    modules:            [FT_MAX_MODULES] FT_Module
-    renderers:          FT_ListRec
-    cur_renderer:       FT_Renderer
-    auto_hinter:        FT_Module
-    debug_hooks:        [4] FT_DebugHook_Func
-    lcd_geometry:       [3] FT_Vector
-    refcount:           FT_Int
+    memory:            FT_Memory
+    version_major:     FT_Int
+    version_minor:     FT_Int
+    version_patch:     FT_Int
+    num_modules:       FT_UInt
+    modules:           [FT_MAX_MODULES] FT_Module
+    renderers:         FT_ListRec
+    cur_renderer:      FT_Renderer
+    auto_hinter:       FT_Module
+    debug_hooks:       [4] FT_DebugHook_Func
+    lcd_geometry:      [3] FT_Vector
+    refcount:          FT_Int
 }
 
 struct FT_FaceRec
 {
-    num_faces:              FT_Long
-    face_index:             FT_Long
-    face_flags:             FT_Long
-    style_flags:            FT_Long
-    num_glyphs:             FT_Long
-    family_name:            ^FT_String
-    style_name:             ^FT_String
-    num_fixed_sizes:        FT_Int
-    available_sizes:        ^FT_Bitmap_Size
-    num_charmaps:           FT_Int
-    charmaps:               ^FT_CharMap
-    generic:                FT_Generic
-    bbox:                   FT_BBox
-    units_per_EM:           FT_UShort
-    ascender:               FT_Short
-    descender:              FT_Short
-    height:                 FT_Short
-    max_advance_width:      FT_Short
-    max_advance_height:     FT_Short
-    underline_position:     FT_Short
-    underline_thickness:    FT_Short
-    glyph:                  FT_GlyphSlot
-    size:                   FT_Size
-    charmap:                FT_CharMap
-    driver:                 FT_Driver
-    memory:                 FT_Memory
-    stream:                 FT_Stream
-    sizes_list:             FT_ListRec
-    autohint:               FT_Generic
-    extensions:             ^void
-    finternal:              FT_Face_Internal
+    num_faces:               FT_Long
+    face_index:              FT_Long
+    face_flags:              FT_Long
+    style_flags:             FT_Long
+    num_glyphs:              FT_Long
+    family_name:             ^FT_String
+    style_name:              ^FT_String
+    num_fixed_sizes:         FT_Int
+    available_sizes:         ^FT_Bitmap_Size
+    num_charmaps:            FT_Int
+    charmaps:                ^FT_CharMap
+    generic:                 FT_Generic
+    bbox:                    FT_BBox
+    units_per_EM:            FT_UShort
+    ascender:                FT_Short
+    descender:               FT_Short
+    height:                  FT_Short
+    max_advance_width:       FT_Short
+    max_advance_height:      FT_Short
+    underline_position:      FT_Short
+    underline_thickness:     FT_Short
+    glyph:                   FT_GlyphSlot
+    size:                    FT_Size
+    charmap:                 FT_CharMap
+    driver:                  FT_Driver
+    memory:                  FT_Memory
+    stream:                  FT_Stream
+    sizes_list:              FT_ListRec
+    autohint:                FT_Generic
+    extensions:              ^void
+    finternal:               FT_Face_Internal
 }
 
 struct FT_BBox
@@ -134,37 +134,37 @@ struct FT_BBox
 
 struct FT_Generic
 {
-    data:       *void
-    finalizer:  *void // FT_Generic_Finalizer
+    data:          *void
+    finalizer:     *void     // FT_Generic_Finalizer
 }
 
 struct FT_CharMapRec
 {
-    face:           FT_Face
-    encoding:       u32   // FT_Encoding
-    platform_id:    FT_UShort
-    encoding_id:    FT_UShort
+    face:            FT_Face
+    encoding:        u32           // FT_Encoding
+    platform_id:     FT_UShort
+    encoding_id:     FT_UShort
 }
 
 struct FT_Bitmap_Size
 {
-    height: FT_Short
-    width:  FT_Short
-    size:   FT_Pos
-    x_ppem: FT_Pos
-    y_ppem: FT_Pos
+    height:     FT_Short
+    width:      FT_Short
+    size:       FT_Pos
+    x_ppem:     FT_Pos
+    y_ppem:     FT_Pos
 }
 
 struct FT_ListRec
 {
-    head: FT_ListNode
-    tail: FT_ListNode
+    head:     FT_ListNode
+    tail:     FT_ListNode
 }
 
 struct FT_Vector
 {
-    x:  FT_Pos
-    y:  FT_Pos
+    x:     FT_Pos
+    y:     FT_Pos
 }
 
 struct FT_Matrix
@@ -175,32 +175,32 @@ struct FT_Matrix
 
 struct FT_GlyphSlotRec
 {
-    library:            FT_Library
-    face:               FT_Face
-    next:               FT_GlyphSlot
-    glyph_index:        FT_UInt
-    generic:            FT_Generic
-    metrics:            FT_Glyph_Metrics
-    linearHoriAdvance:  FT_Fixed
-    linearVertAdvance:  FT_Fixed
-    advance:            FT_Vector
-    format:             FT_Glyph_Format = FT_GLYPH_FORMAT_NONE
-    bitmap:             FT_Bitmap
-    bitmap_left:        FT_Int
-    bitmap_top:         FT_Int
-    outline:            FT_Outline
-    num_subglyphs:      FT_UInt
-    subglyphs:          FT_SubGlyph
-    control_data:       *void
-    control_len:        s32
-    lsb_delta:          FT_Pos
-    rsb_delta:          FT_Pos
-    other:              *void
-    finternal:          FT_Slot_Internal
+    library:               FT_Library
+    face:                  FT_Face
+    next:                  FT_GlyphSlot
+    glyph_index:           FT_UInt
+    generic:               FT_Generic
+    metrics:               FT_Glyph_Metrics
+    linearHoriAdvance:     FT_Fixed
+    linearVertAdvance:     FT_Fixed
+    advance:               FT_Vector
+    format:                FT_Glyph_Format = FT_GLYPH_FORMAT_NONE
+    bitmap:                FT_Bitmap
+    bitmap_left:           FT_Int
+    bitmap_top:            FT_Int
+    outline:               FT_Outline
+    num_subglyphs:         FT_UInt
+    subglyphs:             FT_SubGlyph
+    control_data:          *void
+    control_len:           s32
+    lsb_delta:             FT_Pos
+    rsb_delta:             FT_Pos
+    other:                 *void
+    finternal:             FT_Slot_Internal
 }
 
 #[ConstExpr]
-func FT_IMAGE_TAG(x1, x2, x3, x4: u32)->u32 => (x1 << 24) | (x2 << 16) | (x3 << 8) | (x4)
+func FT_IMAGE_TAG(x1, x2, x3, x4: u32)->u32 => (x1 << 24) | (x2 << 16) | (x3 << 8) | x4
 enum FT_Glyph_Format
 {
     FT_GLYPH_FORMAT_NONE      = 0
@@ -212,14 +212,14 @@ enum FT_Glyph_Format
 
 struct FT_Bitmap
 {
-    rows:           u32
-    width:          u32
-    pitch:          s32
-    buffer:         ^u8
-    num_grays:      u16
-    pixel_mode:     u8
-    palette_mode:   u8
-    palette:        ^void
+    rows:             u32
+    width:            u32
+    pitch:            s32
+    buffer:           ^u8
+    num_grays:        u16
+    pixel_mode:       u8
+    palette_mode:     u8
+    palette:          ^void
 }
 
 struct FT_Outline
@@ -234,53 +234,53 @@ struct FT_Outline
 
 struct FT_Glyph_Metrics
 {
-    width:          FT_Pos
-    height:         FT_Pos
-    horiBearingX:   FT_Pos
-    horiBearingY:   FT_Pos
-    horiAdvance:    FT_Pos
-    vertBearingX:   FT_Pos
-    vertBearingY:   FT_Pos
-    vertAdvance:    FT_Pos
+    width:            FT_Pos
+    height:           FT_Pos
+    horiBearingX:     FT_Pos
+    horiBearingY:     FT_Pos
+    horiAdvance:      FT_Pos
+    vertBearingX:     FT_Pos
+    vertBearingY:     FT_Pos
+    vertAdvance:      FT_Pos
 }
 
 struct FT_SubGlyphRec
 {
-    index:      FT_Int
-    flags:      FT_UShort
-    arg1:       FT_Int
-    arg2:       FT_Int
-    transform:  FT_Matrix
+    index:         FT_Int
+    flags:         FT_UShort
+    arg1:          FT_Int
+    arg2:          FT_Int
+    transform:     FT_Matrix
 }
 
 struct FT_SizeRec
 {
-    face:       FT_Face
-    generic:    FT_Generic
-    metrics:    FT_Size_Metrics
-    sinternal:  FT_Size_Internal
+    face:          FT_Face
+    generic:       FT_Generic
+    metrics:       FT_Size_Metrics
+    sinternal:     FT_Size_Internal
 }
 
 struct FT_Size_Metrics
 {
-    x_ppem:         FT_UShort
-    y_ppem:         FT_UShort
-    x_scale:        FT_Fixed
-    y_scale:        FT_Fixed
-    ascender:       FT_Pos
-    descender:      FT_Pos
-    height:         FT_Pos
-    max_advance:    FT_Pos
+    x_ppem:          FT_UShort
+    y_ppem:          FT_UShort
+    x_scale:         FT_Fixed
+    y_scale:         FT_Fixed
+    ascender:        FT_Pos
+    descender:       FT_Pos
+    height:          FT_Pos
+    max_advance:     FT_Pos
 }
 
 struct FT_Outline_Funcs
- {
-    move_to:    *void // FT_Outline_MoveToFunc
-    line_to:    *void // FT_Outline_LineToFunc
-    conic_to:   *void // FT_Outline_ConicToFunc
-    cubic_to:   *void // FT_Outline_CubicToFunc
-    shift:      s32
-    delta:      FT_Pos
+{
+    move_to:      *void      // FT_Outline_MoveToFunc
+    line_to:      *void      // FT_Outline_LineToFunc
+    conic_to:     *void      // FT_Outline_ConicToFunc
+    cubic_to:     *void      // FT_Outline_CubicToFunc
+    shift:        s32
+    delta:        FT_Pos
 }
 
 enum FT_LcdFilter
@@ -435,66 +435,77 @@ private namespace FreeTypePriv
     func FT_Init_FreeType(alibrary: *FT_Library) throw
     {
         let err = FreeTypePriv.FT_Init_FreeType(alibrary)
-        if err do throw SystemError{Errors[err]}
+        if err do
+            throw SystemError{Errors[err]}
     }
 
     func FT_Done_FreeType(alibrary: FT_Library) throw
     {
         let err = FreeTypePriv.FT_Done_FreeType(alibrary)
-        if err do throw SystemError{Errors[err]}
+        if err do
+            throw SystemError{Errors[err]}
     }
 
     func FT_New_Memory_Face(library: FT_Library, file_base: const *FT_Byte, file_size: FT_Long, face_index: FT_Long, aface: *FT_Face) throw
     {
         let err = FreeTypePriv.FT_New_Memory_Face(library, file_base, file_size, face_index, aface)
-        if err do throw SystemError{Errors[err]}
+        if err do
+            throw SystemError{Errors[err]}
     }
 
     func FT_Set_Pixel_Sizes(face: FT_Face, pixel_width, pixel_height: FT_UInt) throw
     {
         let err = FreeTypePriv.FT_Set_Pixel_Sizes(face, pixel_width, pixel_height)
-        if err do throw SystemError{Errors[err]}
+        if err do
+            throw SystemError{Errors[err]}
     }
 
     func FT_Load_Glyph(face: FT_Face, glyph_index: FT_UInt, load_flags: FT_Int32) throw
     {
         let err = FreeTypePriv.FT_Load_Glyph(face, glyph_index, load_flags)
-        if err do throw SystemError{Errors[err]}
+        if err do
+            throw SystemError{Errors[err]}
     }
 
     func FT_Load_Char(face: FT_Face, char_code: FT_ULong, load_flags: FT_Int32) throw
     {
         let err = FreeTypePriv.FT_Load_Char(face, char_code, load_flags)
-        if err do throw SystemError{Errors[err]}
+        if err do
+            throw SystemError{Errors[err]}
     }
 
     func FT_Render_Glyph(slot: FT_GlyphSlot, render_mode: FT_Render_Mode) throw
     {
         let err = FreeTypePriv.FT_Render_Glyph(slot, render_mode)
-        if err do throw SystemError{Errors[err]}
+        if err do
+            throw SystemError{Errors[err]}
     }
 
     func FT_Outline_Decompose(outline: *FT_Outline, func_interface: const *FT_Outline_Funcs, user: *void) throw
     {
         let err = FreeTypePriv.FT_Outline_Decompose(outline, func_interface, user)
-        if err do throw SystemError{Errors[err]}
+        if err do
+            throw SystemError{Errors[err]}
     }
 
     func FT_Outline_Embolden(outline: *FT_Outline, strength: FT_Pos) throw
     {
         let err = FreeTypePriv.FT_Outline_Embolden(outline, strength)
-        if err do throw SystemError{Errors[err]}
+        if err do
+            throw SystemError{Errors[err]}
     }
 
     func FT_Library_SetLcdFilter(library: FT_Library, filter: FT_LcdFilter) throw
     {
         let err = FreeTypePriv.FT_Library_SetLcdFilter(library, filter)
-        if err do throw SystemError{Errors[err]}
+        if err do
+            throw SystemError{Errors[err]}
     }
 
     func FT_Library_SetLcdFilterWeights(library: FT_Library, weights: const *u8) throw
     {
         let err = FreeTypePriv.FT_Library_SetLcdFilterWeights(library, weights)
-        if err do throw SystemError{Errors[err]}
+        if err do
+            throw SystemError{Errors[err]}
     }
 }

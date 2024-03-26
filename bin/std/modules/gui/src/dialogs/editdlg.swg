@@ -2,10 +2,10 @@ using Core, Pixel
 
 public struct EditDlg
 {
-    using dialog:   Dialog
-    label:          *Label
-    edit:           *EditBox
-    richEdit:       *RichEditCtrl
+    using dialog:     Dialog
+    label:            *Label
+    edit:             *EditBox
+    richEdit:         *RichEditCtrl
 }
 
 public impl EditDlg
@@ -13,15 +13,15 @@ public impl EditDlg
     // Creates the message box
     func createSingleLine(from: *Surface)->*EditDlg
     {
-        let dlg = Wnd.create'EditDlg()
+        let dlg     = Wnd.create'EditDlg()
         let metrics = from.wnd.getThemeMetrics()
-        let srf = dlg.createSurface(from, 0, 0, 450, 210)
+        let srf     = dlg.createSurface(from, 0, 0, 450, 210)
 
         dlg.edit = EditBox.create(srf.getView(), "")
         with dlg.edit
         {
             .dockStyle = .Bottom
-            .margin = metrics.dialog_Padding
+            .margin    = metrics.dialog_Padding
             .style.addStyleSheetColors("edit_Bk $dlg_BtnBarBk")
             .style.addStyleSheetColors("edit_FocusBk $dlg_BtnBarBk")
             .setForm(.Round)
@@ -37,9 +37,9 @@ public impl EditDlg
     // Creates the message box
     func createMultiLine(from: *Surface, heightEdit = 150)->*EditDlg
     {
-        let dlg = Wnd.create'EditDlg()
+        let dlg     = Wnd.create'EditDlg()
         let metrics = from.wnd.getThemeMetrics()
-        let srf = dlg.createSurface(from, 0, 0, 500, 180 + heightEdit, .Sizeable)
+        let srf     = dlg.createSurface(from, 0, 0, 500, 180 + heightEdit, .Sizeable)
         srf.minSize.x = 500
         srf.minSize.y = 180 + heightEdit
 
@@ -47,8 +47,8 @@ public impl EditDlg
         with dlg.richEdit
         {
             .anchorStyle = .Height
-            .dockStyle = .Bottom
-            .margin = metrics.dialog_Padding
+            .dockStyle   = .Bottom
+            .margin      = metrics.dialog_Padding
             .richEdFlags |= .AutoLoseFocus
             .bkColorModel = "$dlg_BtnBarBk"
             .setForm(.Edit)
@@ -88,7 +88,7 @@ public impl EditDlg
             label = Label.create(surface.getView(), message, {0, 0, 0, height})
             with label
             {
-                .dockStyle = .Center
+                .dockStyle         = .Center
                 .vertAlignmentText = .Center
                 .horzAlignmentText = .Center
             }

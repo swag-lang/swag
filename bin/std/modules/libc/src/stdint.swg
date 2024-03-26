@@ -1,13 +1,13 @@
 #global export
 
-typealias int8_t    = s8
-typealias int16_t   = s16
-typealias int32_t   = s32
-typealias int64_t   = s64
-typealias uint8_t   = u8
-typealias uint16_t  = u16
-typealias uint32_t  = u32
-typealias uint64_t  = u64
+typealias int8_t   = s8
+typealias int16_t  = s16
+typealias int32_t  = s32
+typealias int64_t  = s64
+typealias uint8_t  = u8
+typealias uint16_t = u16
+typealias uint32_t = u32
+typealias uint64_t = u64
 
 typealias int_least8_t   = s8
 typealias int_least16_t  = s16
@@ -37,15 +37,15 @@ const SIZE_MAX    = Swag.U64.Max
 const PTRDIFF_MIN = Swag.S64.Min
 const PTRDIFF_MAX = Swag.S64.Max
 
-const INT8_MAX   = Swag.S8.Max
-const INT16_MAX  = Swag.S16.Max
-const INT32_MAX  = Swag.S32.Max
-const INT64_MAX  = Swag.S64.Max
+const INT8_MAX  = Swag.S8.Max
+const INT16_MAX = Swag.S16.Max
+const INT32_MAX = Swag.S32.Max
+const INT64_MAX = Swag.S64.Max
 
-const INT8_MIN   = Swag.S8.Min
-const INT16_MIN  = Swag.S16.Min
-const INT32_MIN  = Swag.S32.Min
-const INT64_MIN  = Swag.S64.Min
+const INT8_MIN  = Swag.S8.Min
+const INT16_MIN = Swag.S16.Min
+const INT32_MIN = Swag.S32.Min
+const INT64_MIN = Swag.S64.Min
 
 const UINT8_MAX  = Swag.U8.Max
 const UINT16_MAX = Swag.U16.Max

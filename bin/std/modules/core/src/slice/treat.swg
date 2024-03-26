@@ -58,7 +58,7 @@ func(T) noneOf(values: const [..] T, cb: closure(T)->bool)->bool
 func(T) reverse(values: [..] T)
 {
     var i = 0'u64
-    var j = @countof(values)-1
+    var j = @countof(values) - 1
     let d = @dataof(values)
     while i < j
     {
@@ -86,8 +86,8 @@ func(T) nextPermutation(arr: [..] T)->bool
         j -= 1
 
     swap(&arr[i], &arr[j])
-    if i+1 != size-1 do
-        reverse(arr[i+1..size-1])
+    if i + 1 != size - 1 do
+        reverse(arr[i + 1..size - 1])
 
     return true
 }

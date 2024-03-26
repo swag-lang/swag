@@ -43,9 +43,9 @@ impl Theme
     {
         var result: retval
         result.imageList = res.icons24
-        result.index = cast(s32) idx
-        result.sizeX = size
-        result.sizeY = size
+        result.index     = cast(s32) idx
+        result.sizeX     = size
+        result.sizeY     = size
         return result
     }
 
@@ -53,9 +53,9 @@ impl Theme
     {
         var result: retval
         result.imageList = res.icons64
-        result.index = cast(s32) idx
-        result.sizeX = size
-        result.sizeY = size
+        result.index     = cast(s32) idx
+        result.sizeX     = size
+        result.sizeY     = size
         return result
     }
 }

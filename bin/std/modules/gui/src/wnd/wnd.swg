@@ -1,7 +1,7 @@
 #global public
 using Core, Pixel
 
-typealias WndId = string
+typealias WndId     = string
 typealias HookEvent = closure(*Wnd, *Event)->bool
 
 enum DockStyle
@@ -41,42 +41,42 @@ enum FocusStategy
 
 struct KeyShortcut
 {
-    mdf:    Input.KeyModifiers = Zero
-    key:    Input.Key = None
-    id:     WndId
-    target: *Wnd
+    mdf:        Input.KeyModifiers = Zero
+    key:        Input.Key = None
+    id:         WndId
+    target:     *Wnd
 }
 
 interface IWnd
 {
-    mtd onEvent(evt: *Event)
-    mtd onHookEvent(evt: *Event)
-    mtd onCreateEvent(evt: *CreateEvent)
-    mtd onDestroyEvent(evt: *DestroyEvent)
-    mtd onStateEvent(evt: *StateEvent)
-    mtd onResizeEvent(evt: *ResizeEvent)
-    mtd onPrePaintEvent(evt: *PaintEvent)
-    mtd onPaintEvent(evt: *PaintEvent)
-    mtd onPostPaintEvent(evt: *PaintEvent)
-    mtd onKeyEvent(evt: *KeyEvent)
-    mtd onMouseEvent(evt: *MouseEvent)
-    mtd onSysCommandEvent(evt: *SysCommandEvent)
-    mtd onSysUserEvent(evt: *SysUserEvent)
-    mtd onSetThemeEvent(evt: *SetThemeEvent)
-    mtd onTimerEvent(evt: *TimerEvent)
-    mtd onFocusEvent(evt: *FocusEvent)
-    mtd onCommandEvent(evt: *CommandEvent)
-    mtd onComputeStateEvent(evt: *CommandStateEvent)
-    mtd onApplyStateEvent(evt: *CommandStateEvent)
-    mtd onFrameEvent(evt: *FrameEvent)
-    mtd onSerializeStateEvent(evt: *SerializeStateEvent)
-    mtd onNotifyEvent(evt: *NotifyEvent)
+    mtd onEvent(evt: *Event);
+    mtd onHookEvent(evt: *Event);
+    mtd onCreateEvent(evt: *CreateEvent);
+    mtd onDestroyEvent(evt: *DestroyEvent);
+    mtd onStateEvent(evt: *StateEvent);
+    mtd onResizeEvent(evt: *ResizeEvent);
+    mtd onPrePaintEvent(evt: *PaintEvent);
+    mtd onPaintEvent(evt: *PaintEvent);
+    mtd onPostPaintEvent(evt: *PaintEvent);
+    mtd onKeyEvent(evt: *KeyEvent);
+    mtd onMouseEvent(evt: *MouseEvent);
+    mtd onSysCommandEvent(evt: *SysCommandEvent);
+    mtd onSysUserEvent(evt: *SysUserEvent);
+    mtd onSetThemeEvent(evt: *SetThemeEvent);
+    mtd onTimerEvent(evt: *TimerEvent);
+    mtd onFocusEvent(evt: *FocusEvent);
+    mtd onCommandEvent(evt: *CommandEvent);
+    mtd onComputeStateEvent(evt: *CommandStateEvent);
+    mtd onApplyStateEvent(evt: *CommandStateEvent);
+    mtd onFrameEvent(evt: *FrameEvent);
+    mtd onSerializeStateEvent(evt: *SerializeStateEvent);
+    mtd onNotifyEvent(evt: *NotifyEvent);
 }
 
 #[Swag.EnumFlags]
 enum WndFlags
 {
-    Zero = 0
+    Zero            = 0
     NoScroll
     ClipChildren
     Disabled
@@ -88,43 +88,43 @@ enum WndFlags
 
 struct Wnd
 {
-    itf:        IWnd
-    type:       typeinfo
-    surface:    *Surface
-    style:      ThemeStyle
-    wndFlags    = WndFlags.ClipChildren
-    userData:   *void
+    itf:          IWnd
+    type:         typeinfo
+    surface:      *Surface
+    style:        ThemeStyle
+    wndFlags      = WndFlags.ClipChildren
+    userData:     *void
 
-    position:       Math.Rectangle
-    minSize:        Math.Point
-    maxSize:        Math.Point
-    scrollPos:      Math.Point
+    position:      Math.Rectangle
+    minSize:       Math.Point
+    maxSize:       Math.Point
+    scrollPos:     Math.Point
 
-    invalidatePadding:  Math.Vector4
+    invalidatePadding: Math.Vector4
 
     parent:     *Wnd
     owner:      *Wnd
     childs:     Array'(*Wnd)
 
-    name:       RichString
-    id:         WndId
-    cursor:     Cursor
-    toolTip:    String
+    name:        RichString
+    id:          WndId
+    cursor:      Cursor
+    toolTip:     String
 
-    keyShortcuts:   Array'KeyShortcut
-    actions:        Array'IActionUI
+    keyShortcuts:     Array'KeyShortcut
+    actions:          Array'IActionUI
 
-    margin:         Math.Vector4
-    padding:        Math.Vector4
-    dockStyle:      DockStyle = None
-    anchorStyle:    AnchorStyle = None
+    margin:          Math.Vector4
+    padding:         Math.Vector4
+    dockStyle:       DockStyle = None
+    anchorStyle:     AnchorStyle = None
 
     focusStrategy: FocusStategy = MousePressed
 
-    backgroundStyle:  BackgroundStyle = Transparent
-    isAllocated:      bool
-    isPendingDestroy: bool
-    createEventDone:  bool
+    backgroundStyle:      BackgroundStyle = Transparent
+    isAllocated:          bool
+    isPendingDestroy:     bool
+    createEventDone:      bool
 
     hookOnEvent: HookEvent
 }
@@ -182,28 +182,81 @@ impl IWnd for Wnd
         }
     }
 
-    mtd impl onCreateEvent(evt: *CreateEvent)                    {}
-    mtd impl onDestroyEvent(evt: *DestroyEvent)                  {}
-    mtd impl onStateEvent(evt: *StateEvent)                      {}
-    mtd impl onResizeEvent(evt: *ResizeEvent)                    {}
-    mtd impl onPrePaintEvent(evt: *PaintEvent)                   {}
-    mtd impl onPaintEvent(evt: *PaintEvent)                      {}
-    mtd impl onPostPaintEvent(evt: *PaintEvent)                  {}
-    mtd impl onSetThemeEvent(evt: *SetThemeEvent)                { invalidate(); sendResizeEvent(); }
-    mtd impl onTimerEvent(evt: *TimerEvent)                      {}
-    mtd impl onHookEvent(evt: *Event)                            {}
-    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)    {}
-    mtd impl onFrameEvent(evt: *FrameEvent)                      {}
+    mtd impl onCreateEvent(evt: *CreateEvent)
+    {
+    }
+    mtd impl onDestroyEvent(evt: *DestroyEvent)
+    {
+    }
+    mtd impl onStateEvent(evt: *StateEvent)
+    {
+    }
+    mtd impl onResizeEvent(evt: *ResizeEvent)
+    {
+    }
+    mtd impl onPrePaintEvent(evt: *PaintEvent)
+    {
+    }
+    mtd impl onPaintEvent(evt: *PaintEvent)
+    {
+    }
+    mtd impl onPostPaintEvent(evt: *PaintEvent)
+    {
+    }
+    mtd impl onSetThemeEvent(evt: *SetThemeEvent)
+    {
+        invalidate()
+        sendResizeEvent()
+    }
+    mtd impl onTimerEvent(evt: *TimerEvent)
+    {
+    }
+    mtd impl onHookEvent(evt: *Event)
+    {
+    }
+    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
+    {
+    }
+    mtd impl onFrameEvent(evt: *FrameEvent)
+    {
+    }
 
-    mtd impl onSysCommandEvent(evt: *SysCommandEvent)        { evt.accepted = false; }
-    mtd impl onSysUserEvent(evt: *SysUserEvent)              { evt.accepted = false; }
-    mtd impl onFocusEvent(evt: *FocusEvent)                  { evt.accepted = false; }
-    mtd impl onKeyEvent(evt: *KeyEvent)                      { evt.accepted = false; }
-    mtd impl onMouseEvent(evt: *MouseEvent)                  { evt.accepted = false; }
-    mtd impl onCommandEvent(evt: *CommandEvent)              { evt.accepted = false; }
-    mtd impl onComputeStateEvent(evt: *CommandStateEvent)    { evt.accepted = false; }
-    mtd impl onApplyStateEvent(evt: *CommandStateEvent)      { evt.accepted = false; }
-    mtd impl onNotifyEvent(evt: *NotifyEvent)                { evt.accepted = false; }
+    mtd impl onSysCommandEvent(evt: *SysCommandEvent)
+    {
+        evt.accepted = false
+    }
+    mtd impl onSysUserEvent(evt: *SysUserEvent)
+    {
+        evt.accepted = false
+    }
+    mtd impl onFocusEvent(evt: *FocusEvent)
+    {
+        evt.accepted = false
+    }
+    mtd impl onKeyEvent(evt: *KeyEvent)
+    {
+        evt.accepted = false
+    }
+    mtd impl onMouseEvent(evt: *MouseEvent)
+    {
+        evt.accepted = false
+    }
+    mtd impl onCommandEvent(evt: *CommandEvent)
+    {
+        evt.accepted = false
+    }
+    mtd impl onComputeStateEvent(evt: *CommandStateEvent)
+    {
+        evt.accepted = false
+    }
+    mtd impl onApplyStateEvent(evt: *CommandStateEvent)
+    {
+        evt.accepted = false
+    }
+    mtd impl onNotifyEvent(evt: *NotifyEvent)
+    {
+        evt.accepted = false
+    }
 }
 
 impl Wnd
@@ -214,15 +267,15 @@ impl Wnd
 
     #[Swag.Inline]
     {
-        mtd getApp()            => surface.app
-        mtd getTopView()        => surface.wnd.view
-        mtd getTopWnd()         => surface.wnd
-        mtd getTheme()          => style.refr.theme
-        mtd getThemeMetrics()   => &style.refr.theme.metrics
-        mtd getThemeColors()    => &style.refr.theme.colors
-        mtd getThemeRects()     => &style.refr.theme.rects
-        mtd getTiming()         => &surface.app.timing
-        mtd getFont()           => style.getFont()
+        mtd getApp()          => surface.app
+        mtd getTopView()      => surface.wnd.view
+        mtd getTopWnd()       => surface.wnd
+        mtd getTheme()        => style.refr.theme
+        mtd getThemeMetrics() => &style.refr.theme.metrics
+        mtd getThemeColors()  => &style.refr.theme.colors
+        mtd getThemeRects()   => &style.refr.theme.rects
+        mtd getTiming()       => &surface.app.timing
+        mtd getFont()         => style.getFont()
     }
 
     #[Swag.Inline, Swag.Overload]
@@ -242,11 +295,11 @@ impl Wnd
     {
         let res = Memory.new'T()
         res.isAllocated = true
-        res.itf = cast(IWnd) dref res
-        res.type = T
-        res.name = name
-        res.id = id
-        res.position = position
+        res.itf         = cast(IWnd) dref res
+        res.type        = T
+        res.name        = name
+        res.id          = id
+        res.position    = position
         res.isAllocated = true
         res.hookOnEvent = hook
 
@@ -466,7 +519,7 @@ impl Wnd
 
         painter.translateTransform(position.x, position.y)
         var curTrs = painter.getTransform()
-        var evt = PaintEvent{}
+        var evt    = PaintEvent{}
         evt.bc = bc
 
         // Pre paint. Clipping is parent. No scroll
@@ -522,7 +575,7 @@ impl Wnd
         }
 
         bc.isDisabled = lastDisabled
-        style.dirty = false
+        style.dirty   = false
     }
 
     // Force the window to be repainted
@@ -612,12 +665,11 @@ impl Wnd
         return result
     }
 
-
     // Get the wnd position in the surface
     mtd getSurfaceRect()->Math.Rectangle
     {
         var result: retval = position
-        var p = parent
+        var p       = parent
         while p
         {
             result.x += p.position.x
@@ -634,7 +686,7 @@ impl Wnd
     mtd getRectIn(wnd: *Wnd)->Math.Rectangle
     {
         var result: retval = position
-        var p = parent
+        var p       = parent
         while p and p != wnd
         {
             result.x += p.position.x
@@ -653,9 +705,9 @@ impl Wnd
         {
             if left != Swag.F32.Inf do
                 .x = left
-            if top    != Swag.F32.Inf do
+            if top != Swag.F32.Inf do
                 .y = top
-            if right  != Swag.F32.Inf do
+            if right != Swag.F32.Inf do
                 .z = right
             if bottom != Swag.F32.Inf do
                 .w = bottom
@@ -666,7 +718,7 @@ impl Wnd
     }
 
     #[Swag.Overload]
-    mtd setAllMargins(value: f32)          = setMargin(value, value, value, value)
+    mtd setAllMargins(value: f32) = setMargin(value, value, value, value)
     #[Swag.Overload]
     mtd setAllMargins(value: Math.Vector4) = setMargin(value.x, value.y, value.z, value.w)
 
@@ -676,11 +728,11 @@ impl Wnd
     {
         with padding
         {
-            if left   != Swag.F32.Inf do
+            if left != Swag.F32.Inf do
                 .x = left
-            if top    != Swag.F32.Inf do
+            if top != Swag.F32.Inf do
                 .y = top
-            if right  != Swag.F32.Inf do
+            if right != Swag.F32.Inf do
                 .z = right
             if bottom != Swag.F32.Inf do
                 .w = bottom
@@ -690,7 +742,7 @@ impl Wnd
     }
 
     #[Swag.Overload]
-    mtd setAllPaddings(value: f32)          = setPadding(value, value, value, value)
+    mtd setAllPaddings(value: f32) = setPadding(value, value, value, value)
     #[Swag.Overload]
     mtd setAllPaddings(value: Math.Vector4) = setPadding(value.x, value.y, value.z, value.w)
 
@@ -778,8 +830,8 @@ impl Wnd
             return
 
         var evt = ResizeEvent{}
-        evt.oldSize = {position.width, position.height}
-        position.width = Math.round(width)
+        evt.oldSize     = {position.width, position.height}
+        position.width  = Math.round(width)
         position.height = Math.round(height)
         clampSize(&position)
 
@@ -802,7 +854,7 @@ impl Wnd
         var clientRect = getClientRectPadding()
 
         var centerLayout = Array.createTemp'(*Wnd)()
-        var oldSizes = Array.createTemp'Math.Point()
+        var oldSizes     = Array.createTemp'Math.Point()
 
         visit c: childs
         {
@@ -927,7 +979,6 @@ impl Wnd
             if c.wndFlags.has(.Disabled) and !getDisabled do
                 continue
 
-
             var pt = Math.Point{x - position.x, y - position.y}
             if !c.wndFlags.has(.NoScroll) do
                 pt += scrollPos
@@ -1028,7 +1079,7 @@ impl Wnd
 
         surface.setFocus()
         var evt = FocusEvent{kind: EventKind.SetFocus}
-        evt.other = last
+        evt.other                = last
         surface.app.keybFocusWnd = self
         sendEvent(&evt)
         invalidate()
@@ -1070,7 +1121,8 @@ impl Wnd
         }
 
         let p = getOwner()
-        if p do return p.getKeyShortcut(mdf, key)
+        if p do
+            return p.getKeyShortcut(mdf, key)
         return null
     }
 
@@ -1088,7 +1140,8 @@ impl Wnd
         }
 
         let p = getOwner()
-        if p do return p.getKeyShortcutNameFor(wndId)
+        if p do
+            return p.getKeyShortcutNameFor(wndId)
         return result
     }
 
@@ -1156,7 +1209,7 @@ impl Wnd
         if cmdId == null do
             return
         let evt = Event.create'CommandEvent()
-        evt.id = cmdId
+        evt.id     = cmdId
         evt.source = self
         postEvent(evt)
     }
@@ -1182,7 +1235,8 @@ impl Wnd
     mtd ownerNotifyEvent(kind: NotifyEvent.Kind)
     {
         let p = getOwner()
-        if !p do return
+        if !p do
+            return
         p.notifyEvent(kind)
     }
 
@@ -1216,8 +1270,8 @@ impl Wnd
         var evtState: retval
 
         // User will fill the state
-        evtState.kind = .ComputeCommandState
-        evtState.id = cmdId
+        evtState.kind   = .ComputeCommandState
+        evtState.id     = cmdId
         evtState.source = self
         sendEvent(&evtState)
 
@@ -1244,7 +1298,7 @@ impl Wnd
         // We first need to be sure that the target can deal with the event
         var evtState = CommandStateEvent{}
         evtState.kind = .ComputeCommandState
-        evtState.id = cmdId
+        evtState.id   = cmdId
         sendEvent(&evtState)
 
         // If it's not disabled, then we can send
@@ -1271,7 +1325,7 @@ impl Wnd
     {
         var cxt: ActionContext
         cxt.wnd = self
-        cxt.id = evt.id
+        cxt.id  = evt.id
 
         visit act: actions
         {
@@ -1290,7 +1344,7 @@ impl Wnd
     {
         var cxt: ActionContext
         cxt.wnd = self
-        cxt.id = evt.id
+        cxt.id  = evt.id
 
         visit act: actions
         {
@@ -1313,8 +1367,8 @@ impl Wnd
     {
         var evt: SerializeStateEvent
         evt.accepted = false
-        evt.ser = ser
-        evt.target = self
+        evt.ser      = ser
+        evt.target   = self
         processEvent(&evt)
 
         if !evt.accepted

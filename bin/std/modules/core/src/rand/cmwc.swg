@@ -4,9 +4,9 @@
 
 struct CMWC4096
 {
-    q: [4096] u32
-    c: u32
-    i: u32 = 4096 // special invalid value (> 4095) to force the seed on first get
+    q:     [4096] u32
+    c:     u32
+    i:     u32 = 4096     // special invalid value (> 4095) to force the seed on first get
 }
 
 impl CMWC4096
@@ -28,16 +28,17 @@ impl CMWC4096
         const r = 0xfffffffe
 
         // Be sure we have seeded
-        if i > 4095 do seedU32(362436)
+        if i > 4095 do
+            seedU32(362436)
 
-	    i = (i + 1) & 4095
-    	let t = a * q[i] + c
-	    c = cast(u32) (t >> 32)
-	    var x = t + c
-	    if x < c do
+        i = (i + 1) & 4095
+        let t = a * q[i] + c
+        c = cast(u32) (t >> 32)
+        var x = t + c
+        if x < c do
             x, c += 1
         let v = cast,bit(u32) (r - x)
         q[i] = v
-	    return v
+        return v
     }
 }

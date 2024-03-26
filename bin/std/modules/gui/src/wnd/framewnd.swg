@@ -11,7 +11,7 @@ enum FrameWndForm
 #[Swag.EnumFlags]
 enum FrameWndFlags
 {
-    Zero = 0
+    Zero        = 0
     Borders
     FocusBorder
     SmallShadow
@@ -30,12 +30,12 @@ struct FrameWnd
 {
     using wnd: Wnd
 
-    view:           *Wnd
-    frameForm       = FrameWndForm.Transparent
-    frameFlags      = FrameWndFlags.Borders
-    anchor          = FrameWndAnchor.None
-    anchorPos:      f32
-    usedColorBk:    Color
+    view:            *Wnd
+    frameForm        = FrameWndForm.Transparent
+    frameFlags       = FrameWndFlags.Borders
+    anchor           = FrameWndAnchor.None
+    anchorPos:       f32
+    usedColorBk:     Color
 }
 
 impl IWnd for FrameWnd
@@ -44,10 +44,10 @@ impl IWnd for FrameWnd
     {
         if frameFlags.has(.SmallShadow)
         {
-            let bc = evt.bc
+            let bc      = evt.bc
             let painter = bc.painter
-            let theme = getTheme()
-            let colors = getThemeColors()
+            let theme   = getTheme()
+            let colors  = getThemeColors()
             let metrics = getThemeMetrics()
 
             var clientRect = getClientRect()
@@ -62,14 +62,14 @@ impl IWnd for FrameWnd
         if frameForm == .Transparent do
             return
 
-        let bc = evt.bc
+        let bc      = evt.bc
         let painter = bc.painter
-        let theme = getTheme()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let theme   = getTheme()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
 
-        var subRectBk:  *ThemeImageRect
-        var colorBk:    Color
+        var subRectBk: *ThemeImageRect
+        var colorBk:   Color
 
         switch frameForm
         {
@@ -110,15 +110,15 @@ impl IWnd for FrameWnd
         if !(frameFlags & .Borders) do
             return
 
-        let bc = evt.bc
+        let bc      = evt.bc
         let painter = bc.painter
-        let theme = getTheme()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let theme   = getTheme()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
         let metrics = getThemeMetrics()
 
-        var subRectBorder:  *ThemeImageRect
-        var colorBorder:    Color = undefined
+        var subRectBorder: *ThemeImageRect
+        var colorBorder:   Color = undefined
 
         switch frameForm
         {
@@ -153,7 +153,7 @@ impl IWnd for FrameWnd
         // Anchor
         if anchor != .None
         {
-            var posA = anchorPos
+            var posA     = anchorPos
             var marginA: f32
             switch frameForm
             {
@@ -166,19 +166,19 @@ impl IWnd for FrameWnd
             switch anchor
             {
             case Top:
-                posA = Math.clamp(posA, marginA, clientRect.width - marginA)
+                posA         = Math.clamp(posA, marginA, clientRect.width - marginA)
                 clientRect.x = clientRect.x + posA - metrics.frameWnd_AnchorWidth * 0.5
                 clientRect.y -= metrics.frameWnd_AnchorHeight
-                clientRect.width = metrics.frameWnd_AnchorWidth
+                clientRect.width  = metrics.frameWnd_AnchorWidth
                 clientRect.height = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorTopBk, usedColorBk)
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorTop, colorBorder, false)
 
             case Bottom:
-                posA = Math.clamp(posA, marginA, clientRect.width - marginA)
-                clientRect.x = clientRect.x + posA - metrics.frameWnd_AnchorWidth * 0.5
-                clientRect.y = clientRect.bottom() - metrics.frameWnd_AnchorOverlap
-                clientRect.width = metrics.frameWnd_AnchorWidth
+                posA              = Math.clamp(posA, marginA, clientRect.width - marginA)
+                clientRect.x      = clientRect.x + posA - metrics.frameWnd_AnchorWidth * 0.5
+                clientRect.y      = clientRect.bottom() - metrics.frameWnd_AnchorOverlap
+                clientRect.width  = metrics.frameWnd_AnchorWidth
                 clientRect.height = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorBottomBk, usedColorBk)
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorBottom, colorBorder, false)
@@ -186,17 +186,17 @@ impl IWnd for FrameWnd
             case Left:
                 posA = Math.clamp(posA, marginA, clientRect.height - marginA)
                 clientRect.x -= metrics.frameWnd_AnchorHeight
-                clientRect.y = clientRect.y + posA - metrics.frameWnd_AnchorHeight * 0.5
-                clientRect.width = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
+                clientRect.y      = clientRect.y + posA - metrics.frameWnd_AnchorHeight * 0.5
+                clientRect.width  = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
                 clientRect.height = metrics.frameWnd_AnchorWidth
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorLeftBk, usedColorBk)
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorLeft, colorBorder, false)
 
             case Right:
-                posA = Math.clamp(posA, marginA, clientRect.height - marginA)
-                clientRect.x = clientRect.right() - metrics.frameWnd_AnchorOverlap
-                clientRect.y = clientRect.y + posA - metrics.frameWnd_AnchorHeight * 0.5
-                clientRect.width = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
+                posA              = Math.clamp(posA, marginA, clientRect.height - marginA)
+                clientRect.x      = clientRect.right() - metrics.frameWnd_AnchorOverlap
+                clientRect.y      = clientRect.y + posA - metrics.frameWnd_AnchorHeight * 0.5
+                clientRect.width  = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
                 clientRect.height = metrics.frameWnd_AnchorWidth
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorRightBk, usedColorBk)
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorRight, colorBorder, false)
@@ -219,7 +219,7 @@ impl FrameWnd
     #[Swag.Discardable]
     mtd(T) createView(hook: HookEvent = null)->*T
     {
-        view = Wnd.create'T(self, "", position, hook: hook)
+        view                 = Wnd.create'T(self, "", position, hook: hook)
         view.backgroundStyle = .Transparent
         sendResizeEvent()
         return cast(*T) view

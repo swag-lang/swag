@@ -3,25 +3,25 @@ using Core, Win32
 #[Swag.EnumFlags]
 public enum VoiceCreateFlags
 {
-    Zero = 0
+    Zero          = 0
     AcceptPitch
     AcceptFilters
-    Default = AcceptFilters | AcceptPitch
+    Default       = AcceptFilters | AcceptPitch
 }
 
 #[Swag.EnumFlags]
 public enum VoicePlayFlags
 {
-    Zero = 0
-    Loop                // Play in loops
-    DestroyOnStop       // Destroy the voice once the sound has been played
-    Default = DestroyOnStop
+    Zero          = 0
+    Loop                              // Play in loops
+    DestroyOnStop                     // Destroy the voice once the sound has been played
+    Default       = DestroyOnStop
 }
 
 #[Swag.EnumFlags]
 public enum VoiceState
 {
-    Zero = 0
+    Zero           = 0
     PlayedOnce
     Playing
     PendingDestroy
@@ -34,22 +34,20 @@ public struct Voice
     handle:     VoiceHandle
     file:       *SoundFile
 
-    requestedEncoding = SoundFileEncoding.Unknown
-    codec: ICodec
+    requestedEncoding     = SoundFileEncoding.Unknown
+    codec:                ICodec
 
-    playFlags:  VoicePlayFlags
-    state:      VoiceState
-    idxInList:  u32
-
-    const StreamBufferSize = 16*1024'u64
-    stream:             File.FileStream
-    streamCurSeek:      u64
-    streamBuffer:       Array'u8
-
-    const NumDecodedBuffers = 3
-    const DecodedBufferSize = 65536'u64
-    decodedBuffers:     [NumDecodedBuffers] Array'u8
-    decodedBufferIdx:   u32
+    playFlags:                  VoicePlayFlags
+    state:                      VoiceState
+    idxInList:                  u32
+    const StreamBufferSize      = 16 * 1024'u64
+    stream:                     File.FileStream
+    streamCurSeek:              u64
+    streamBuffer:               Array'u8
+    const NumDecodedBuffers     = 3
+    const DecodedBufferSize     = 65536'u64
+    decodedBuffers:             [NumDecodedBuffers] Array'u8
+    decodedBufferIdx:           u32
 }
 
 internal impl Voice

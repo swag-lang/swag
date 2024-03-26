@@ -3,12 +3,12 @@ using Core, Pixel
 
 struct ComboCtrl
 {
-    using frameWnd: FrameWnd
-    labelSize:      f32 = 60
-    comboSize:      f32 = 60
+    using frameWnd:     FrameWnd
+    labelSize:          f32 = 60
+    comboSize:          f32 = 60
 
-    label:  *Label
-    combo:  *ComboBox
+    label:     *Label
+    combo:     *ComboBox
 }
 
 impl IWnd for ComboCtrl
@@ -18,7 +18,7 @@ impl IWnd for ComboCtrl
         if !label do
             return
 
-        var rect = getClientRect()
+        var rect    = getClientRect()
         let metrics = getThemeMetrics()
 
         label.setPosition(0, 0, labelSize, metrics.comboBox_Height)
@@ -28,13 +28,10 @@ impl IWnd for ComboCtrl
 
 impl ComboCtrl
 {
-    func create(parent:   *Wnd,
-                name:     string,
-                position: Math.Rectangle = {},
-                id:       WndId = null)->*ComboCtrl
+    func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*ComboCtrl
     {
         let metrics = parent.getThemeMetrics()
-        var pos = position
+        var pos     = position
         if pos.width == 0 do
             pos.width = metrics.comboBox_Width * 2
         if pos.height == 0 do
@@ -42,7 +39,7 @@ impl ComboCtrl
 
         with let ctrl = Wnd.create'ComboCtrl(parent, pos, id)
         {
-            .label = Label.create(ctrl, #self.name)
+            .label                   = Label.create(ctrl, #self.name)
             .label.horzAlignmentText = .Right
 
             .combo = ComboBox.create(ctrl)

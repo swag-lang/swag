@@ -30,12 +30,16 @@ func touch(fullName: string) throw
 // Returns true if the given file exists
 func exists(fullName: string)->bool
 {
-    if fullName == null do return false
-    var winPath = Utf16.toZeroTerminated(fullName)
+    if fullName == null do
+        return false
+    var winPath    = Utf16.toZeroTerminated(fullName)
     let attributes = catch GetFileAttributesW(@dataof(winPath))
-    if @err() != null do return false
-    if attributes == 0xFFFFFFFF do return false
-    if attributes & FILE_ATTRIBUTE_DIRECTORY do return false
+    if @err() != null do
+        return false
+    if attributes == 0xFFFFFFFF do
+        return false
+    if attributes & FILE_ATTRIBUTE_DIRECTORY do
+        return false
     return true
 }
 
@@ -48,12 +52,18 @@ func open(fullName: string, mode: FileMode, access: FileAccess, share: FileShare
     var wMode: DWORD
     switch mode
     {
-    case Append:       wMode = OPEN_EXISTING
-    case Create:       wMode = CREATE_ALWAYS
-    case CreateNew:    wMode = CREATE_NEW
-    case Open:         wMode = OPEN_EXISTING
-    case OpenOrCreate: wMode = OPEN_ALWAYS
-    case Truncate:     wMode = TRUNCATE_EXISTING
+    case Append:
+        wMode = OPEN_EXISTING
+    case Create:
+        wMode = CREATE_ALWAYS
+    case CreateNew:
+        wMode = CREATE_NEW
+    case Open:
+        wMode = OPEN_EXISTING
+    case OpenOrCreate:
+        wMode = OPEN_ALWAYS
+    case Truncate:
+        wMode = TRUNCATE_EXISTING
     }
 
     // Read/Write mode
@@ -80,7 +90,7 @@ func open(fullName: string, mode: FileMode, access: FileAccess, share: FileShare
         wShare |= FILE_SHARE_DELETE
 
     var winPath = Utf16.toZeroTerminated(fullName)
-    let hFile = catch CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
+    let hFile   = catch CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null)
     Errors.transformWinErrors(fullName)
 
     result.name    = fullName

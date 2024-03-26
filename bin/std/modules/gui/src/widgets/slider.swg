@@ -4,7 +4,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum SliderFlags
 {
-    Zero = 0
+    Zero       = 0
     Range
     HilightBar
     Vertical
@@ -15,40 +15,40 @@ struct Slider
 {
     using wnd: Wnd
 
-    value1:         f32
-    value2:         f32
-    min:            f32
-    max:            f32 = 1.0
-    steps:          f32
-    sliderFlags     = SliderFlags.HilightBar
-    sigStartChange: SigArray'closure(*Self)
-    sigChanged:     SigArray'closure(*Self)
-    sigEndChange:   SigArray'closure(*Self)
+    value1:             f32
+    value2:             f32
+    min:                f32
+    max:                f32 = 1.0
+    steps:              f32
+    sliderFlags         = SliderFlags.HilightBar
+    sigStartChange:     SigArray'closure(*Self)
+    sigChanged:         SigArray'closure(*Self)
+    sigEndChange:       SigArray'closure(*Self)
 
-    isMoving:       bool
-    isPressed1:     bool
-    isPressed2:     bool
-    isHot1:         bool
-    isHot2:         bool
-    hasValue1:      bool
-    hasValue2:      bool
-    correcMoving:   f32
+    isMoving:         bool
+    isPressed1:       bool
+    isPressed2:       bool
+    isHot1:           bool
+    isHot2:           bool
+    hasValue1:        bool
+    hasValue2:        bool
+    correcMoving:     f32
 
-    aniMark1:   BlendColor
-    aniMark2:   BlendColor
-    aniStep1:   BlendColor
-    aniStep2:   BlendColor
+    aniMark1:     BlendColor
+    aniMark2:     BlendColor
+    aniStep1:     BlendColor
+    aniStep2:     BlendColor
 }
 
 impl IWnd for Slider
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let bc = evt.bc
-        let theme = getTheme()
+        let bc      = evt.bc
+        let theme   = getTheme()
         let metrics = getThemeMetrics()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
 
         var colorBkLeft:   Color = undefined
         var colorBkMiddle: Color = undefined
@@ -66,7 +66,7 @@ impl IWnd for Slider
         }
         else
         {
-            colorBkRight  = colors.slider_BkRight
+            colorBkRight = colors.slider_BkRight
             if !sliderFlags.has(.Range) and sliderFlags.has(.HilightBar) do
                 colorBkLeft = colors.slider_HilightBk
             else do
@@ -89,7 +89,6 @@ impl IWnd for Slider
                 colorMark2 = colors.slider_HotMark
             else do
                 colorMark2 = colors.slider_Mark
-
         }
 
         // Pos box
@@ -125,7 +124,7 @@ impl IWnd for Slider
 
         // Bar right
         let valueRight = sliderFlags.has(.Range) ? value2 : value1
-        var right = clientRect
+        var right      = clientRect
         if isVertical
         {
             right.y += (clientRect.height * valueRight)
@@ -200,7 +199,7 @@ impl IWnd for Slider
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var pos = surfaceToLocal(evt.surfacePos)
+        var pos        = surfaceToLocal(evt.surfacePos)
         let isVertical = sliderFlags.has(.Vertical)
 
         switch evt.kind
@@ -221,16 +220,16 @@ impl IWnd for Slider
             }
 
             var clientRect = getOffsetedClientRect()
-            var f: f32
+            var f:         f32
             if isVertical
             {
                 let diff = (pos.y - correcMoving) - clientRect.y
-                f    = diff / clientRect.height
+                f = diff / clientRect.height
             }
             else
             {
                 let diff = (pos.x - correcMoving) - clientRect.x
-                f    = diff / clientRect.width
+                f = diff / clientRect.width
             }
 
             if isPressed1 do
@@ -265,7 +264,7 @@ impl IWnd for Slider
                 elif !sliderFlags.has(.Range)
                 {
                     correcMoving = 0
-                    isPressed1 = true
+                    isPressed1   = true
                     var clientRect = getOffsetedClientRect()
                     if isVertical
                     {
@@ -282,7 +281,7 @@ impl IWnd for Slider
                 {
                     correcMoving = 0
                     var clientRect = getOffsetedClientRect()
-                    var f: f32
+                    var f:         f32
                     if isVertical
                     {
                         let diff = pos.y - clientRect.y
@@ -351,7 +350,7 @@ internal impl Slider
         if fc == value1 and hasValue1 do
             return
         hasValue1 = true
-        value1 = fc
+        value1    = fc
         sigChanged.call(self)
         invalidate()
     }
@@ -364,7 +363,7 @@ internal impl Slider
         if fc == value2 and hasValue2 do
             return
         hasValue2 = true
-        value2 = fc
+        value2    = fc
         sigChanged.call(self)
         invalidate()
     }
@@ -459,11 +458,14 @@ internal impl Slider
 
 impl Slider
 {
-    mtd const getValue()->f32        => getValueLeft()
-    mtd const getValueLeft()->f32    => min + (max - min) * value1
-    mtd const getValueRight()->f32   => min + (max - min) * value2
+    mtd const getValue()->f32      => getValueLeft()
+    mtd const getValueLeft()->f32  => min + (max - min) * value1
+    mtd const getValueRight()->f32 => min + (max - min) * value2
 
-    mtd  setValue(f: f32)       { setValueLeft(f); }
+    mtd setValue(f: f32)
+    {
+        setValueLeft(f)
+    }
 
     // Set the left value (in case of a range).
     mtd setValueLeft(f: f32)
@@ -486,8 +488,8 @@ impl Slider
     {
         Debug.assert(min < max)
         Debug.assert(steps < (max - min))
-        self.min = min
-        self.max = max
+        self.min   = min
+        self.max   = max
         self.steps = steps
     }
 

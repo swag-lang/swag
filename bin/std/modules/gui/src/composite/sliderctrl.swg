@@ -3,23 +3,24 @@ using Core, Pixel
 
 struct SliderCtrl
 {
-    using frameWnd: FrameWnd
-    labelSize:      f32 = 60
-    editSize:       f32 = 60
+    using frameWnd:     FrameWnd
+    labelSize:          f32 = 60
+    editSize:           f32 = 60
 
     sigChanged: SigArray'closure(*Self)
 
-    label:  *Label
-    slider: *Slider
-    edit:   *EditBox
+    label:      *Label
+    slider:     *Slider
+    edit:       *EditBox
 }
 
 impl IWnd for SliderCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !label do return
-        var rect = getClientRect()
+        if !label do
+            return
+        var rect    = getClientRect()
         let metrics = getThemeMetrics()
 
         label.setPosition(0, 0, labelSize, rect.height)
@@ -37,7 +38,7 @@ impl SliderCtrl
     func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*SliderCtrl
     {
         let metrics = parent.getThemeMetrics()
-        var pos = position
+        var pos     = position
         if pos.width == 0 do
             pos.width = metrics.slider_Width + metrics.editBox_Width * 2
         if pos.height == 0 do
@@ -45,12 +46,12 @@ impl SliderCtrl
 
         with let ctrl = Wnd.create'SliderCtrl(parent, pos, id)
         {
-            .label = Label.create(ctrl, #self.name, {})
+            .label                   = Label.create(ctrl, #self.name, {})
             .label.vertAlignmentText = .Center
             .label.horzAlignmentText = .Right
 
             .slider = Slider.create(ctrl, {})
-            .slider.sigChanged += closure|ctrl|(wnd)
+            .slider.sigChanged += closure|ctrl|(wnd )
             {
                 var val: String
                 switch ctrl.edit.inputMode

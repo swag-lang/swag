@@ -30,7 +30,7 @@ public impl IImageEncoder for Encoder
         result.addStruct(header)
 
         let align = (header.biWidth * 3) & 3
-        var psrc = image.pixels.buffer
+        var psrc  = image.pixels.buffer
 
         if image.pf == .RGBA8
         {

@@ -44,49 +44,63 @@ impl Theme
             switch i
             {
             case 0:
-                d.width = cxd; d.height = cyd
-                s.width = cx; s.height = cy
+                d.width  = cxd
+                d.height = cyd
+                s.width  = cx
+                s.height = cy
                 painter.drawTexture(d, s, texture, color)
 
             case 1, 7:
-                d.x += cxd; s.x += cx
+                d.x += cxd
+                s.x += cx
                 d.width = dstRect.width - (cxd * 2)
                 s.width = subRect.rect.width - (cx * 2)
                 painter.drawTexture(d, s, texture, color)
 
             case 2, 8:
-                d.x = dstRect.x + dstRect.width - cxd
-                s.x = subRect.rect.x + subRect.rect.width - cx
-                d.width = cxd; s.width = cx
+                d.x     = dstRect.x + dstRect.width - cxd
+                s.x     = subRect.rect.x + subRect.rect.width - cx
+                d.width = cxd
+                s.width = cx
                 painter.drawTexture(d, s, texture, color)
 
             case 3:
-                d.x = dstRect.x; d.y = dstRect.y + cyd
-                s.x = subRect.rect.x; s.y = subRect.rect.y + cy
-                d.width = cxd; s.width = cx;
+                d.x      = dstRect.x
+                d.y      = dstRect.y + cyd
+                s.x      = subRect.rect.x
+                s.y      = subRect.rect.y + cy
+                d.width  = cxd
+                s.width  = cx
                 d.height = dstRect.height - (cyd * 2)
                 s.height = subRect.rect.height - (cy * 2)
                 painter.drawTexture(d, s, texture, color)
 
             case 4:
-                d.x += cxd; s.x += cx
-                d.width = dstRect.width - (cxd * 2)
+                d.x += cxd
+                s.x += cx
+                d.width  = dstRect.width - (cxd * 2)
                 d.height = dstRect.height - (cyd * 2)
-                s.width = subRect.rect.width - (cx * 2)
+                s.width  = subRect.rect.width - (cx * 2)
                 s.height = subRect.rect.height - (cy * 2)
                 if center do
                     painter.drawTexture(d, s, texture, color)
 
             case 5:
-                d.x += d.width; s.x += s.width
-                d.width = cxd; s.width = cx
+                d.x += d.width
+                s.x += s.width
+                d.width = cxd
+                s.width = cx
                 painter.drawTexture(d, s, texture, color)
 
             case 6:
-                d.x = dstRect.x; d.y = dstRect.y + dstRect.height - cyd
-                s.x = subRect.rect.x; s.y = subRect.rect.y + subRect.rect.height - cy
-                d.width = cxd; d.height = cyd
-                s.width = cx; s.height = cy
+                d.x      = dstRect.x
+                d.y      = dstRect.y + dstRect.height - cyd
+                s.x      = subRect.rect.x
+                s.y      = subRect.rect.y + subRect.rect.height - cy
+                d.width  = cxd
+                d.height = cyd
+                s.width  = cx
+                s.height = cy
                 painter.drawTexture(d, s, texture, color)
             }
         }

@@ -3,8 +3,8 @@ using Core
 
 struct StringPainter
 {
-    str: RichString
-    fmt: RichStringFormat
+    str:     RichString
+    fmt:     RichStringFormat
 }
 
 impl StringPainter

@@ -14,7 +14,7 @@ func exists(dirName: string)->bool
 {
     if @countof(dirName) == 0 do
         return false
-    var winPath = Utf16.toZeroTerminated(dirName)
+    var winPath    = Utf16.toZeroTerminated(dirName)
     let attributes = catch GetFileAttributesW(@dataof(winPath))
     if @err() != null do
         return false
@@ -33,10 +33,10 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
     if dirName == null do
         return result
 
-    var findfile:   WIN32_FIND_DATAW
-    var fi:         FileInfo
-    var fileTime:   SYSTEMTIME
-    var stackPath:  Array'String
+    var findfile:  WIN32_FIND_DATAW
+    var fi:        FileInfo
+    var fileTime:  SYSTEMTIME
+    var stackPath: Array'String
 
     let dataof = cast(const ^u16) @dataof(findfile.cFileName)
 
@@ -49,7 +49,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
         var searchPath = Path.combine(toScan.toString(), "*")
 
         var winPath = Utf16.toZeroTerminated(searchPath)
-        let h = try FindFirstFileW(@dataof(winPath), &findfile)
+        let h       = try FindFirstFileW(@dataof(winPath), &findfile)
         if h == INVALID_HANDLE_VALUE do
             continue
 
@@ -103,7 +103,8 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
             }
 
             let next = catch FindNextFileW(h, &findfile)
-            if !next do break
+            if !next do
+                break
         }
 
         assume FindClose(h)
@@ -116,7 +117,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
 func getCurrent()->String throw
 {
     var result: retval
-    let length = GetCurrentDirectoryW(0, null)
+    let length  = GetCurrentDirectoryW(0, null)
 
     var arr16: Array'u16
     arr16.allocator = @getcontext().tempAllocator
@@ -142,7 +143,7 @@ func getDrives()->Array'String throw
 {
     var result: retval
 
-    var volName: [MAX_PATH] u8
+    var volName:   [MAX_PATH] u8
     var driveName: [MAX_PATH] u8
 
     let h = FindFirstVolumeA(volName, MAX_PATH)

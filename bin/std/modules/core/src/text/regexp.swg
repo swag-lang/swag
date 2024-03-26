@@ -1,66 +1,66 @@
 #global namespace Parser
 using Errors
 
-const RuneAsciiDigit        = cast(rune) 0x8000_0000
-const RuneAsciiLetter       = cast(rune) 0x8000_0001
-const RuneAsciiLower        = cast(rune) 0x8000_0002
-const RuneAsciiUpper        = cast(rune) 0x8000_0003
-const RuneAsciiSpace        = cast(rune) 0x8000_0004
-const RuneAscii             = cast(rune) 0x8000_0005
-const RuneOpenParen         = cast(rune) 0x8000_0006
-const RuneCloseParen        = cast(rune) 0x8000_0007
-const RuneAsciiAlNum        = cast(rune) 0x8000_0008
-const RuneAsciiWord         = cast(rune) 0x8000_0009
-const RuneAsciiBlank        = cast(rune) 0x8000_000A
-const RuneAsciiHexa         = cast(rune) 0x8000_000B
-const RuneStart             = cast(rune) 0x8000_000C
-const RuneEnd               = cast(rune) 0x8000_000D
-const RuneWordSwap          = cast(rune) 0x8000_000E
-const RuneGroup1            = cast(rune) 0x8000_0010
-const RuneGroup2            = cast(rune) 0x8000_0020
-const RuneGroup3            = cast(rune) 0x8000_0030
-const RuneGroup4            = cast(rune) 0x8000_0040
-const RuneGroup5            = cast(rune) 0x8000_0050
-const RuneGroup6            = cast(rune) 0x8000_0060
-const RuneGroup7            = cast(rune) 0x8000_0070
-const RuneGroup8            = cast(rune) 0x8000_0080
-const RuneGroup9            = cast(rune) 0x8000_0090
-const RuneWhatever          = cast(rune) 0x8000_00A0
+const RuneAsciiDigit  = cast(rune) 0x8000_0000
+const RuneAsciiLetter = cast(rune) 0x8000_0001
+const RuneAsciiLower  = cast(rune) 0x8000_0002
+const RuneAsciiUpper  = cast(rune) 0x8000_0003
+const RuneAsciiSpace  = cast(rune) 0x8000_0004
+const RuneAscii       = cast(rune) 0x8000_0005
+const RuneOpenParen   = cast(rune) 0x8000_0006
+const RuneCloseParen  = cast(rune) 0x8000_0007
+const RuneAsciiAlNum  = cast(rune) 0x8000_0008
+const RuneAsciiWord   = cast(rune) 0x8000_0009
+const RuneAsciiBlank  = cast(rune) 0x8000_000A
+const RuneAsciiHexa   = cast(rune) 0x8000_000B
+const RuneStart       = cast(rune) 0x8000_000C
+const RuneEnd         = cast(rune) 0x8000_000D
+const RuneWordSwap    = cast(rune) 0x8000_000E
+const RuneGroup1      = cast(rune) 0x8000_0010
+const RuneGroup2      = cast(rune) 0x8000_0020
+const RuneGroup3      = cast(rune) 0x8000_0030
+const RuneGroup4      = cast(rune) 0x8000_0040
+const RuneGroup5      = cast(rune) 0x8000_0050
+const RuneGroup6      = cast(rune) 0x8000_0060
+const RuneGroup7      = cast(rune) 0x8000_0070
+const RuneGroup8      = cast(rune) 0x8000_0080
+const RuneGroup9      = cast(rune) 0x8000_0090
+const RuneWhatever    = cast(rune) 0x8000_00A0
 
-const RuneUnicodeLetter         = cast(rune) 0x8001_0006
-const RuneUnicodeLetterLower    = cast(rune) 0x8001_0007
-const RuneUnicodeLetterUpper    = cast(rune) 0x8001_0008
-const RuneUnicodeNumber         = cast(rune) 0x8001_0009
-const RuneUnicodeSymbol         = cast(rune) 0x8001_000a
-const RuneUnicodeSymbolMath     = cast(rune) 0x8001_000b
+const RuneUnicodeLetter      = cast(rune) 0x8001_0006
+const RuneUnicodeLetterLower = cast(rune) 0x8001_0007
+const RuneUnicodeLetterUpper = cast(rune) 0x8001_0008
+const RuneUnicodeNumber      = cast(rune) 0x8001_0009
+const RuneUnicodeSymbol      = cast(rune) 0x8001_000a
+const RuneUnicodeSymbolMath  = cast(rune) 0x8001_000b
 
 const RuneInvert = cast(rune) 0x0400_0000
 
 struct NfaTable
 {
-    level:  u32
-    nodes:  Array'(*NfaNode)
+    level:     u32
+    nodes:     Array'(*NfaNode)
 }
 
 struct NfaNode
 {
-    transitions:    HashTable'(rune, Array'(*NfaNode))
-    group:          u32
-    terminal:       bool
+    transitions:     HashTable'(rune, Array'(*NfaNode))
+    group:           u32
+    terminal:        bool
 }
 
 struct DfaNode
 {
-    table:          Array'(*NfaNode)
-    transitions:    HashTable'(rune, *DfaNode)
-    group:          u32
-    terminal:       bool
+    table:           Array'(*NfaNode)
+    transitions:     HashTable'(rune, *DfaNode)
+    group:           u32
+    terminal:        bool
 }
 
 struct RegExpGroup
 {
-    rank:   u32
-    value:  string
+    rank:      u32
+    value:     string
 }
 
 struct DfaState
@@ -114,23 +114,23 @@ struct DfaState
 #[Swag.Opaque]
 public struct RegExp
 {
-    nfaNodes:       ArrayPtr'(NfaNode)
-    dfaNodes:       ArrayPtr'(DfaNode)
-    nfaTables:      ArrayPtr'(NfaTable)
-    nfaStack:       Array'(*NfaTable)
-    charSet:        HashSet'rune
-    groups:         Array'RegExpGroup
-    groupTransform: Array'u32
-    openParen:      Array'u32
-    orOpStack:      Array'rune
-    orOpLevel:      Array'u32
-    preprocessed:   Array'rune
-    group:          u32
-    hasStarted:     bool
-    wasWord:        bool
-    ignoreCase:     bool
-    bufStart:       const ^u8
-    bufLength:      u64
+    nfaNodes:           ArrayPtr'(NfaNode)
+    dfaNodes:           ArrayPtr'(DfaNode)
+    nfaTables:          ArrayPtr'(NfaTable)
+    nfaStack:           Array'(*NfaTable)
+    charSet:            HashSet'rune
+    groups:             Array'RegExpGroup
+    groupTransform:     Array'u32
+    openParen:          Array'u32
+    orOpStack:          Array'rune
+    orOpLevel:          Array'u32
+    preprocessed:       Array'rune
+    group:              u32
+    hasStarted:         bool
+    wasWord:            bool
+    ignoreCase:         bool
+    bufStart:           const ^u8
+    bufLength:          u64
 }
 
 impl RegExp
@@ -245,8 +245,8 @@ impl RegExp
     public mtd grepAll(str: string)->Array'string
     {
         var result: retval
-        var res = str
-        let end = @dataof(str) + @countof(str)
+        var res     = str
+        let end     = @dataof(str) + @countof(str)
         clearMatch()
 
         loop
@@ -280,8 +280,8 @@ impl RegExp
 
     mtd internalGrep(str: string)->string
     {
-        var beg = @dataof(str)
-        var copy = @dataof(str)
+        var beg   = @dataof(str)
+        var copy  = @dataof(str)
         let pzEnd = beg + @countof(str)
 
         var end: const *u8
@@ -325,8 +325,8 @@ impl RegExp
         if dfaNodes.isEmpty() do
             return result
 
-        bufStart    = @dataof(str)
-        bufLength   = @countof(str)
+        bufStart  = @dataof(str)
+        bufLength = @countof(str)
 
         var stack1, stack2: Array'DfaState
         var grepTerm: DfaState
@@ -412,7 +412,7 @@ impl RegExp
             setCapture(state, state.lastGroup, strGroup)
         }
 
-        state.lastGroup = state.node.group
+        state.lastGroup  = state.node.group
         state.groupStart = ptr
     }
 
@@ -704,8 +704,8 @@ impl RegExp
     mtd operatorStar() throw
     {
         let table = nfaPop()
-        let s1 = table.nodes.front()
-        let s2 = table.nodes.back()
+        let s1    = table.nodes.front()
+        let s2    = table.nodes.back()
         s1.addTransition(0'rune, s2)
         s2.addTransition(0'rune, s1)
         nfaStack.add(table)
@@ -714,8 +714,8 @@ impl RegExp
     mtd operatorPlus() throw
     {
         let table = nfaPop()
-        let s1 = table.nodes.front()
-        let s2 = table.nodes.back()
+        let s1    = table.nodes.front()
+        let s2    = table.nodes.back()
         s2.addTransition(0'rune, s1)
         nfaStack.add(table)
     }
@@ -723,8 +723,8 @@ impl RegExp
     mtd operatorQuestion() throw
     {
         let table = nfaPop()
-        let s1 = table.nodes.front()
-        let s2 = table.nodes.back()
+        let s1    = table.nodes.front()
+        let s2    = table.nodes.back()
         s1.addTransition(0'rune, s2)
         nfaStack.add(table)
     }
@@ -733,10 +733,8 @@ impl RegExp
     {
         switch c
         {
-        case `\\`, `(`, `)`, `*`, `?`,
-             `+`, `.`, `|`, `[`, `]`,
-             `{`, `}`, `/`:
-             return true
+        case `\\`, `(`, `)`, `*`, `?`, `+`, `.`, `|`, `[`, `]`, `{`, `}`, `/`:
+            return true
         }
 
         return false
@@ -744,7 +742,7 @@ impl RegExp
 
     mtd nfaBuild() throw
     {
-        var pz = preprocessed.buffer
+        var pz  = preprocessed.buffer
         var cpt = 0
 
         while cpt < preprocessed.count
@@ -840,9 +838,6 @@ impl RegExp
     mtd setTable(node: *DfaNode, tbl: *Array'(*NfaNode))
     {
         node.table =,move dref tbl
-
-        // A DFA node is terminal if one of the NFA nodes used to construct it is a
-        // terminal too
         visit n: node.table
         {
             if node.group == 0 do
@@ -897,12 +892,12 @@ impl RegExp
 
         var curGroup, curGroupSwap: u32
 
-        groupTransform.resize(cast(u64) group+1)
+        groupTransform.resize(cast(u64) group + 1)
         visit n: grp
         {
             if n != curGroup do
                 curGroupSwap += 1
-            curGroup = n
+            curGroup          = n
             groupTransform[n] = curGroupSwap
         }
 
@@ -954,9 +949,9 @@ impl RegExp
     #[Swag.Discardable]
     mtd preprocessInter(sl: const [..] rune)->const ^rune throw
     {
-        var pz = @dataof(sl)
+        var pz      = @dataof(sl)
         let pzStart = pz
-        let pzEnd = pz + @countof(sl)
+        let pzEnd   = pz + @countof(sl)
 
         preprocessed.add(RuneOpenParen)
         pz += 1
@@ -1053,7 +1048,7 @@ impl RegExp
             if @countof(subSlice) >= 3 and pz[1] == `-` and pz[2] != `]`
             {
                 var first = pz[0]
-                var end = pz[2]
+                var end   = pz[2]
                 if first > end do
                     swap(&first, &end)
 
@@ -1105,7 +1100,7 @@ impl RegExp
             throw SyntaxError{}
 
         var pzStart = pz
-        var n = 0
+        var n       = 0
         while pzStart != pzEnd and Unicode.isLatin1(pzStart[0]) and Latin1.isDigit(cast(u8) pzStart[0])
         {
             n *= 10
@@ -1119,7 +1114,7 @@ impl RegExp
 
     mtd preprocessEnum(sl: const [..] rune)->const ^rune throw
     {
-        var pz = @dataof(sl)
+        var pz    = @dataof(sl)
         let pzEnd = pz + @countof(sl)
 
         if preprocessed.count == 0 do
@@ -1154,17 +1149,17 @@ impl RegExp
 
         pz += 1
 
-        if n == 0 and m == -1 do // {0,}
+        if n == 0 and m == -1 do
             preprocessed.add(`*`)
-        elif n == 0 and m == 1 do // {0,1}
+        elif n == 0 and m == 1 do
             preprocessed.add(`?`)
-        elif n == 1 and m == -1 do // {1,}
+        elif n == 1 and m == -1 do
             preprocessed.add(`+`)
         elif n != 1 or m != 1 // {1,1}
         {
             // Isolate expression to duplicate
-            let pze = preprocessed.buffer + preprocessed.count - 1
-            var pz1 = pze
+            let pze      = preprocessed.buffer + preprocessed.count - 1
+            var pz1      = pze
             var cptParen = 0
             if pz1[0] == `)` or pz1[0] == RuneCloseParen do
                 cptParen += 1
@@ -1267,7 +1262,7 @@ impl RegExp
     mtd preprocessEscape(sl: const [..] rune, inInter = false)->const ^rune throw
     {
         var pz = @dataof(sl)
-        let c = dref pz
+        let c  = dref pz
         if c == `\\`
         {
             switch pz[1]
@@ -1344,46 +1339,72 @@ impl RegExp
 
     func addParenthesis(uni32: &Array'rune)
     {
-        for var i = 1's32; i < uni32.count-1; i += 1
+        for var i = 1's32; i < uni32.count - 1; i += 1
         {
             if uni32[i] == `|`
             {
                 uni32.insertAt(acast i, `)`'rune)
-                uni32.insertAt(acast (i+2), `(`'rune)
+                uni32.insertAt(acast (i + 2), `(`'rune)
 
                 var cpt0, cpt1, cpt2: s32
-                var iminus = i-1
+                var iminus = i - 1
 
-                #scope Loop while iminus != -1
+                #scope Loop
+                while iminus != -1
                 {
                     switch uni32[iminus]
                     {
-                    case `]`: cpt0 += 1
-                    case `)`: cpt1 += 1
-                    case `}`: cpt2 += 1
-                    case `[`: if cpt0 == 0 do break Loop; cpt0 -= 1
-                    case `(`: if cpt1 == 0 do break Loop; cpt1 -= 1
-                    case `{`: if cpt2 == 0 do break Loop; cpt2 -= 1
+                    case `]`:
+                        cpt0 += 1
+                    case `)`:
+                        cpt1 += 1
+                    case `}`:
+                        cpt2 += 1
+                    case `[`:
+                        if cpt0 == 0 do
+                            break Loop
+                        cpt0 -= 1
+                    case `(`:
+                        if cpt1 == 0 do
+                            break Loop
+                        cpt1 -= 1
+                    case `{`:
+                        if cpt2 == 0 do
+                            break Loop
+                        cpt2 -= 1
                     }
 
                     iminus -= 1
                 }
 
-                uni32.insertAt(acast (iminus+1), `(`'rune)
+                uni32.insertAt(acast (iminus + 1), `(`'rune)
 
                 cpt0, cpt1, cpt2 = 0
                 var iplus = i + 4
 
-                #scope Loop while iplus != uni32.count
+                #scope Loop
+                while iplus != uni32.count
                 {
                     switch uni32[iplus]
                     {
-                    case `[`: cpt0 += 1
-                    case `(`: cpt1 += 1
-                    case `{`: cpt2 += 1
-                    case `]`: if cpt0 == 0 do break Loop; cpt0 -= 1
-                    case `)`: if cpt1 == 0 do break Loop; cpt1 -= 1
-                    case `}`: if cpt2 == 0 do break Loop; cpt2 -= 1
+                    case `[`:
+                        cpt0 += 1
+                    case `(`:
+                        cpt1 += 1
+                    case `{`:
+                        cpt2 += 1
+                    case `]`:
+                        if cpt0 == 0 do
+                            break Loop
+                        cpt0 -= 1
+                    case `)`:
+                        if cpt1 == 0 do
+                            break Loop
+                        cpt1 -= 1
+                    case `}`:
+                        if cpt2 == 0 do
+                            break Loop
+                        cpt2 -= 1
                     }
 
                     iplus += 1
@@ -1401,7 +1422,7 @@ impl RegExp
         addParenthesis(&in32)
         in32.add(0'rune)
 
-        var pz = cast(const ^rune) in32.buffer
+        var pz    = cast(const ^rune) in32.buffer
         let pzEnd = pz + in32.count
 
         var c = ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
@@ -1409,9 +1430,12 @@ impl RegExp
         {
             switch c
             {
-            case `[`:   pz = preprocessInter(@mkslice(pz, pzEnd - pz))
-            case `{`:   pz = preprocessEnum(@mkslice(pz, pzEnd - pz))
-            default:    pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
+            case `[`:
+                pz = preprocessInter(@mkslice(pz, pzEnd - pz))
+            case `{`:
+                pz = preprocessEnum(@mkslice(pz, pzEnd - pz))
+            default:
+                pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
             }
 
             c = ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]

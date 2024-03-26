@@ -6,11 +6,11 @@ typealias FileHandle = const *void
 #[Swag.NoCopy]
 struct FileStream
 {
-    name:       String
-    handle:     FileHandle
-    canRead:    bool
-    canSeek:    bool
-    canWrite:   bool
+    name:         String
+    handle:       FileHandle
+    canRead:      bool
+    canSeek:      bool
+    canWrite:     bool
 }
 
 impl FileStream

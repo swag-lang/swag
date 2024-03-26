@@ -2,18 +2,18 @@
 
 #[Swag.Tls]
 {
-    internal var g_Rng:      Random.Mt64
-    internal var g_RngInit:  bool
+    internal var g_Rng: Random.Mt64
+    internal var g_RngInit: bool
 }
 
 struct UUID
 {
     using uuid: union
     {
-        val8:  [16] u8
-        val64: [2]  u64
+        val8:      [16] u8
+        val64:     [2] u64
     }
-}
+        }
 
 #[Swag.Inline]
 internal func initRng()
@@ -43,8 +43,8 @@ impl UUID
         var result: retval = undefined
         result.val64[0] = g_Rng.nextU64()
         result.val64[1] = g_Rng.nextU64()
-        result.val8[6] = (result.val8[6] & 0x0F) | 0x40 // Version 4
-        result.val8[8] = (result.val8[8] & 0x3F) | 0x80 // Variant is 10
+        result.val8[6]  = (result.val8[6] & 0x0F) | 0x40 // Version 4
+        result.val8[8]  = (result.val8[8] & 0x3F) | 0x80 // Variant is 10
         return result
     }
 
@@ -72,7 +72,7 @@ impl UUID
         result[7] = Tbl[(val8[3] >> 4)]
         result[8] = `-`
 
-        result[9] = Tbl[(val8[4] & 0xF)]
+        result[9]  = Tbl[(val8[4] & 0xF)]
         result[10] = Tbl[(val8[4] >> 4)]
         result[11] = Tbl[(val8[5] & 0xF)]
         result[12] = Tbl[(val8[5] >> 4)]

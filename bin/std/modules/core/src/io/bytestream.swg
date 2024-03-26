@@ -2,10 +2,10 @@ using Core.Errors
 
 public struct ByteStream
 {
-    readBuffer:     const [..] u8
-    writeBuffer:    *Array'u8
-    seek:           u64
-    eof:            bool
+    readBuffer:      const [..] u8
+    writeBuffer:     *Array'u8
+    seek:            u64
+    eof:             bool
 }
 
 public impl ByteStream
@@ -129,7 +129,7 @@ public impl ByteStream
         if seek >= len
         {
             seek = len
-            eof = true
+            eof  = true
             return
         }
     }
@@ -140,7 +140,7 @@ public impl ByteStream
         let len = length()
         Debug.assert(seek <= len)
         seek = offset
-        eof = seek >= len
+        eof  = seek >= len
     }
 
     // Returns the seek value

@@ -6,10 +6,10 @@ using Core, Win32
 #[Swag.NoDoc]
 struct MARGINS
 {
-    cxLeftWidth:    s32
-    cxRightWidth:   s32
-    cyTopHeight:    s32
-    cyBottomHeight: s32
+    cxLeftWidth:        s32
+    cxRightWidth:       s32
+    cyTopHeight:        s32
+    cyBottomHeight:     s32
 }
 
 #[Swag.Foreign("dwmapi")]
@@ -20,8 +20,8 @@ struct MARGINS
 #[Swag.NoCopy]
 struct NativeSurface
 {
-    hWnd:           HWND
-    lastDeadChar:   WPARAM
+    hWnd:             HWND
+    lastDeadChar:     WPARAM
 }
 
 internal func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
@@ -41,8 +41,8 @@ internal func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LR
         {
             var evt = SysUserEvent{}
             evt.userMsg = msg
-            evt.param0 = wParam
-            evt.param1 = lParam
+            evt.param0  = wParam
+            evt.param1  = lParam
             surface.wnd.view.sendEvent(&evt)
             return TRUE
         }
@@ -55,7 +55,7 @@ internal func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LR
             return 0
 
         case WM_DEADCHAR:
-            if (wParam == 27) do // Escape
+            if (wParam == 27) do
                 return 1
             if surface.lastDeadChar != wParam
             {
@@ -66,14 +66,14 @@ internal func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LR
             fallthrough
 
         case WM_CHAR:
-            if (wParam == 27) do // Escape
+            if (wParam == 27) do
                 return 1
 
             surface.lastDeadChar = 0
 
             let scanCode = cast(UINT) (lParam & 0xFF0000) >> 16
-            let x = MapVirtualKeyW(scanCode, MAPVK_VSC_TO_VK_EX)
-            let y = Input.Keyboard.virtualKeyToKey(x)
+            let x        = MapVirtualKeyW(scanCode, MAPVK_VSC_TO_VK_EX)
+            let y        = Input.Keyboard.virtualKeyToKey(x)
 
             surface.app.sendRuneEvent(y, cast(rune) wParam)
             return 0
@@ -89,9 +89,12 @@ internal func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LR
             surface.app.setActivated(wParam ? true : false)
             return 0
 
-        case WM_ERASEBKGND: return 0
-        case WM_NCPAINT:    return 0
-        case WM_NCCALCSIZE: return 0
+        case WM_ERASEBKGND:
+            return 0
+        case WM_NCPAINT:
+            return 0
+        case WM_NCCALCSIZE:
+            return 0
 
         case WM_PAINT:
             var ps: PAINTSTRUCT
@@ -168,7 +171,7 @@ internal impl Surface
 
             var wc: WNDCLASSW
             wc.hInstance     = GetModuleHandleW(null)
-            wc.cbWndExtra    = @sizeof(*void);
+            wc.cbWndExtra    = @sizeof(*void)
             wc.style         = CS_OWNDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW
             wc.lpfnWndProc   = acast @mkcallback(&winProc)
             wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
@@ -187,24 +190,11 @@ internal impl Surface
             winFlagsEx |= WS_EX_TOPMOST
 
         // Create window
-        result.hWnd = cast(const *void) CreateWindowExW(
-            winFlagsEx,
-            className,
-            null,
-            winFlags,
-            x,
-            y,
-            width,
-            height,
-            null,
-            null,
-            GetModuleHandleW(null),
-            result
-        )
+        result.hWnd = cast(const *void) CreateWindowExW(winFlagsEx, className, null, winFlags, x, y, width, height, null, null, GetModuleHandleW(null), result)
 
         // Extend frame inside client area. This will also activate composition.
         let vm: s32 = cast(s32) app.theme.metrics.surfaceWnd_ShadowSize
-        var m:  MARGINS = {vm,vm,vm,vm}
+        var m:  MARGINS = {vm, vm, vm, vm}
         DwmExtendFrameIntoClientArea(result.hWnd, &m)
 
         result.rc = try app.renderer.native.createContext(result.hWnd, width, height, mainSurface ? mainSurface.rc.hRC : null)
@@ -297,8 +287,8 @@ impl Surface
     {
         if isMaximized do
             return
-        isMaximized = true
-        isMinimized = false
+        isMaximized          = true
+        isMinimized          = false
         positionNotMaximized = position
         ShowWindow(hWnd, SW_SHOWMAXIMIZED)
     }

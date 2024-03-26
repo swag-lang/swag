@@ -52,15 +52,6 @@ public enum RichEditCommand
     SelectWordRight
     SelectPageUp
     SelectPageDown
-    //CMD_SEL_HIDE_LINE
-    //CMD_MARKER_BOOKMARK_ADD
-    //CMD_MARKER_BOOKMARK_PREV
-    //CMD_MARKER_BOOKMARK_NEXT
-    //CMD_MARKER_BOOKMARK_FAST
-    //CMD_MAKE_UPPER
-    //CMD_MAKE_LOWER
-    //CMD_COMMENT_CPP
-    //CMD_UNCOMMENT_CPP
 }
 
 impl RichEditCtrl
@@ -73,9 +64,9 @@ impl RichEditCtrl
     mtd addMapping(key: Input.Key, mdf: Input.KeyModifiers, cmd: RichEditCommand)
     {
         var m: RichEditMapping
-        m.key = key
+        m.key       = key
         m.modifiers = mdf
-        m.command = cmd
+        m.command   = cmd
         mapping.add(m)
     }
 
@@ -92,53 +83,53 @@ impl RichEditCtrl
 
     mtd setDefaultMapping()
     {
-        addMapping(.Left,      .Zero,        .CursorLeft)
-        addMapping(.Left,      .Shift,       .SelectRuneLeft)
-        addMapping(.Left,      .Control,     .CursorWordLeft)
-        addMapping(.Left,      .CtrlShift,   .SelectWordLeft)
-        addMapping(.Left,      .Alt,         .SelectRectLeft)
-        addMapping(.Right,     .Zero,        .CursorRight)
-        addMapping(.Right,     .Shift,       .SelectRuneRight)
-        addMapping(.Right,     .Control,     .CursorWordRight)
-        addMapping(.Right,     .CtrlShift,   .SelectWordRight)
-        addMapping(.Right,     .Alt,         .SelectRectRight)
-        addMapping(.Up,        .Zero,        .CursorUp)
-        addMapping(.Up,        .Shift,       .SelectRuneUp)
-        addMapping(.Up,        .Control,     .ScrollLineUp)
-        addMapping(.Up,        .Alt,         .SelectRectUp)
-        addMapping(.Down,      .Zero,        .CursorDown)
-        addMapping(.Down,      .Shift,       .SelectRuneDown)
-        addMapping(.Down,      .Shift,       .SelectRuneDown)
-        addMapping(.Down,      .Control,     .ScrollLineDown)
-        addMapping(.Down,      .Alt,         .SelectRectDown)
-        addMapping(.PageUp,    .Zero,        .CursorPageUp)
-        addMapping(.PageUp,    .Shift,       .SelectPageUp)
-        addMapping(.PageDown,  .Zero,        .CursorPageDown)
-        addMapping(.PageDown,  .Shift,       .SelectPageDown)
-        addMapping(.Home,      .Zero,        .CursorStartLine)
-        addMapping(.Home,      .Control,     .CursorStartFile)
-        addMapping(.Home,      .Shift,       .SelectStartLine)
-        addMapping(.Home,      .CtrlShift,   .SelectStartFile)
-        addMapping(.End,       .Zero,        .CursorEndLine)
-        addMapping(.End,       .Control,     .CursorEndFile)
-        addMapping(.End,       .Shift,       .SelectEndLine)
-        addMapping(.End,       .CtrlShift,   .SelectEndFile)
-        addMapping(.Back,      .Zero,        .DeleteLeft)
-        addMapping(.Back,      .Control,     .DeleteWordLeft)
-        addMapping(.Delete,    .Zero,        .DeleteRight)
-        addMapping(.Delete,    .Control,     .DeleteWordRight)
-        addMapping(.Tab,       .Zero,        .EditTabulation)
-        addMapping(.Tab,       .Shift,       .EditBackTabulation)
-        addMapping(.Insert,    .Zero,        .ToggleOverwrite)
-        addMapping(.Insert,    .Control,     .ClipboardCopy)
-        addMapping(.Insert,    .Shift,       .ClipboardPaste)
-        addMapping(.A,         .Control,     .SelectAllFile)
-        addMapping(.C,         .Control,     .ClipboardCopy)
-        addMapping(.L,         .Control,     .DeleteLine)
-        addMapping(.V,         .Control,     .ClipboardPaste)
-        addMapping(.X,         .Control,     .ClipboardCut)
-        addMapping(.Y,         .Control,     .Redo)
-        addMapping(.Z,         .Control,     .Undo)
+        addMapping(.Left, .Zero, .CursorLeft)
+        addMapping(.Left, .Shift, .SelectRuneLeft)
+        addMapping(.Left, .Control, .CursorWordLeft)
+        addMapping(.Left, .CtrlShift, .SelectWordLeft)
+        addMapping(.Left, .Alt, .SelectRectLeft)
+        addMapping(.Right, .Zero, .CursorRight)
+        addMapping(.Right, .Shift, .SelectRuneRight)
+        addMapping(.Right, .Control, .CursorWordRight)
+        addMapping(.Right, .CtrlShift, .SelectWordRight)
+        addMapping(.Right, .Alt, .SelectRectRight)
+        addMapping(.Up, .Zero, .CursorUp)
+        addMapping(.Up, .Shift, .SelectRuneUp)
+        addMapping(.Up, .Control, .ScrollLineUp)
+        addMapping(.Up, .Alt, .SelectRectUp)
+        addMapping(.Down, .Zero, .CursorDown)
+        addMapping(.Down, .Shift, .SelectRuneDown)
+        addMapping(.Down, .Shift, .SelectRuneDown)
+        addMapping(.Down, .Control, .ScrollLineDown)
+        addMapping(.Down, .Alt, .SelectRectDown)
+        addMapping(.PageUp, .Zero, .CursorPageUp)
+        addMapping(.PageUp, .Shift, .SelectPageUp)
+        addMapping(.PageDown, .Zero, .CursorPageDown)
+        addMapping(.PageDown, .Shift, .SelectPageDown)
+        addMapping(.Home, .Zero, .CursorStartLine)
+        addMapping(.Home, .Control, .CursorStartFile)
+        addMapping(.Home, .Shift, .SelectStartLine)
+        addMapping(.Home, .CtrlShift, .SelectStartFile)
+        addMapping(.End, .Zero, .CursorEndLine)
+        addMapping(.End, .Control, .CursorEndFile)
+        addMapping(.End, .Shift, .SelectEndLine)
+        addMapping(.End, .CtrlShift, .SelectEndFile)
+        addMapping(.Back, .Zero, .DeleteLeft)
+        addMapping(.Back, .Control, .DeleteWordLeft)
+        addMapping(.Delete, .Zero, .DeleteRight)
+        addMapping(.Delete, .Control, .DeleteWordRight)
+        addMapping(.Tab, .Zero, .EditTabulation)
+        addMapping(.Tab, .Shift, .EditBackTabulation)
+        addMapping(.Insert, .Zero, .ToggleOverwrite)
+        addMapping(.Insert, .Control, .ClipboardCopy)
+        addMapping(.Insert, .Shift, .ClipboardPaste)
+        addMapping(.A, .Control, .SelectAllFile)
+        addMapping(.C, .Control, .ClipboardCopy)
+        addMapping(.L, .Control, .DeleteLine)
+        addMapping(.V, .Control, .ClipboardPaste)
+        addMapping(.X, .Control, .ClipboardCut)
+        addMapping(.Y, .Control, .Redo)
+        addMapping(.Z, .Control, .Undo)
     }
 
     // Execute a command

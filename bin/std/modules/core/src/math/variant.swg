@@ -3,10 +3,9 @@
 
 struct(T: const [..] typeinfo) Variant
 {
-    type:   typeinfo
-    buffer: [Reflection.maxSizeOf(T)] u8
-
-    const AllFlags = Reflection.orFlags(T)
+    type:              typeinfo
+    buffer:            [Reflection.maxSizeOf(T)] u8
+    const AllFlags     = Reflection.orFlags(T)
 }
 
 impl Variant
@@ -89,7 +88,7 @@ impl Variant
         // Drop previous value if necessary
         drop()
 
-        type = TN
+        type                  = TN
         dref cast(*TN) buffer =,nodrop value
     }
 

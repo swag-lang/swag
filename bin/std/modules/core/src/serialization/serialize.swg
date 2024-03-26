@@ -15,27 +15,27 @@ attr Final()
 attr PodFinal()
 
 // Accept this other name for the field
-#[AttrUsage(AttributeUsage.StructVariable|AttributeUsage.Multi)]
+#[AttrUsage(AttributeUsage.StructVariable | AttributeUsage.Multi)]
 attr Alias(name: string)
 
 // Do not serialize a struct or a field
-#[AttrUsage(AttributeUsage.Struct|AttributeUsage.StructVariable)]
+#[AttrUsage(AttributeUsage.Struct | AttributeUsage.StructVariable)]
 attr NoSerialize()
 
 interface ISerialize
 {
-    mtd read(decoder: IDecoder)->bool throw
-    mtd write(decoder: IEncoder)->bool throw
-    mtd readElement(type: TypeValue, data: *void, decoder: IDecoder)->bool throw
-    mtd writeElement(type: TypeValue, data: const *void, decoder: IEncoder)->bool throw
-    mtd postSerialize(data: *void, decoder: IDecoder) throw
+    mtd read(decoder: IDecoder)->bool throw;
+    mtd write(decoder: IEncoder)->bool throw;
+    mtd readElement(type: TypeValue, data: *void, decoder: IDecoder)->bool throw;
+    mtd writeElement(type: TypeValue, data: const *void, decoder: IEncoder)->bool throw;
+    mtd postSerialize(data: *void, decoder: IDecoder) throw;
 }
 
 struct Serializer
 {
-    encode:     IEncoder
-    decode:     IDecoder
-    isWrite:    bool
+    encode:      IEncoder
+    decode:      IDecoder
+    isWrite:     bool
 }
 
 impl Serializer
@@ -48,7 +48,7 @@ impl Serializer
     // Start encoding
     mtd startWrite(encoder: IEncoder, output: *ConcatBuffer) throw
     {
-        encode = encoder
+        encode  = encoder
         isWrite = true
         encode.start(output)
     }
@@ -56,7 +56,7 @@ impl Serializer
     // Start decoding
     mtd startRead(decoder: IDecoder, input: const [..] u8) throw
     {
-        decode = decoder
+        decode  = decoder
         isWrite = false
         decode.start(input)
     }
@@ -93,8 +93,8 @@ impl Serializer
     mtd(MT) serialize(name: string, crc32: u32, res: *MT) throw
     {
         var value: Swag.TypeValue
-        value.name = name
-        value.crc32 = crc32
+        value.name        = name
+        value.crc32       = crc32
         value.pointedType = @typeof(MT)
 
         if isWrite

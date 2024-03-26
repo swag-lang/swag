@@ -5,8 +5,8 @@ using Core.Errors
 #[Swag.Opaque]
 struct ZLib
 {
-    decoder: Inflate
-    encoder: Deflate
+    decoder:     Inflate
+    encoder:     Deflate
 }
 
 impl ZLib
@@ -65,9 +65,9 @@ impl ZLib
         // Now we should have the checksum
         decoder.stream.discardToNextByte()
         let adler32 = decoder.stream.readBits(8) << 24 |
-                   decoder.stream.readBits(8) << 16 |
-                   decoder.stream.readBits(8) << 8  |
-                   decoder.stream.readBits(8)
+                      decoder.stream.readBits(8) << 16 |
+                      decoder.stream.readBits(8) << 8 |
+                      decoder.stream.readBits(8)
         if adler32 != decoder.adler.adler do
             throw InvalidFormatError{"invalid checksum"}
 

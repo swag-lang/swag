@@ -9,8 +9,8 @@ enum EmbInfoCtrlKind
 
 struct EmbInfoCtrl
 {
-    using frameWnd: FrameWnd
-    label: *Label
+    using frameWnd:     FrameWnd
+    label:              *Label
 }
 
 impl EmbInfoCtrl
@@ -18,13 +18,13 @@ impl EmbInfoCtrl
     // Create the popup list, but do not display it
     func create(parent: *Wnd, name: string, kind: EmbInfoCtrlKind, height = 40, top = true)->*EmbInfoCtrl
     {
-        let theme = parent.getTheme()
+        let theme  = parent.getTheme()
         let colors = parent.getThemeColors()
 
         with let ctrl = Wnd.create'EmbInfoCtrl(parent, {0, 0, 0, height})
         {
             .dockStyle = top ? .Top : .Bottom
-            .label = Label.create(ctrl, #self.name, {})
+            .label     = Label.create(ctrl, #self.name, {})
         }
 
         with ctrl.label
@@ -42,17 +42,18 @@ impl EmbInfoCtrl
 
             .horzAlignmentText = .Left
             .horzAlignmentIcon = .Left
-            .paddingIcon.x = 10
-            .paddingText.x = 50
-            .paddingText.y = 4
-            .dockStyle = .Center
+            .paddingIcon.x     = 10
+            .paddingText.x     = 50
+            .paddingText.y     = 4
+            .dockStyle         = .Center
         }
 
         with let btn = IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), {0, 0, 32, 32})
         {
-            .margin = 5
+            .margin    = 5
             .dockStyle = .Right
-            .sigPressed += closure|ctrl|(btn) {
+            .sigPressed += closure|ctrl|(btn )
+            {
                 ctrl.destroy()
             }
         }

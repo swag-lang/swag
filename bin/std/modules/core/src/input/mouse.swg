@@ -5,10 +5,10 @@ using Math
 // Allows reading position and button click information from mouse
 struct Mouse
 {
-    previousState:	MouseState
-    currentState:	MouseState
-    dblClk:         [@countof(MouseButton)] bool
-    dblClkTimeMs:   u32 = 300
+    previousState:     MouseState
+    currentState:      MouseState
+    dblClk:            [@countof(MouseButton)] bool
+    dblClkTimeMs:      u32 = 300
 }
 
 impl Mouse
@@ -53,11 +53,16 @@ impl Mouse
         using MouseButton
         switch button
         {
-        case Left:		return Keyboard.isKeyPressed(Input.Key.LButton)
-        case Middle:	return Keyboard.isKeyPressed(Input.Key.MButton)
-        case Right:		return Keyboard.isKeyPressed(Input.Key.RButton)
-        case XButton1:	return Keyboard.isKeyPressed(Input.Key.XButton1)
-        case XButton2:	return Keyboard.isKeyPressed(Input.Key.XButton2)
+        case Left:
+            return Keyboard.isKeyPressed(Input.Key.LButton)
+        case Middle:
+            return Keyboard.isKeyPressed(Input.Key.MButton)
+        case Right:
+            return Keyboard.isKeyPressed(Input.Key.RButton)
+        case XButton1:
+            return Keyboard.isKeyPressed(Input.Key.XButton1)
+        case XButton2:
+            return Keyboard.isKeyPressed(Input.Key.XButton2)
         }
 
         return false
@@ -77,7 +82,7 @@ impl Mouse
     }
 
     // Determines whether the specified mouse button is released
-    mtd isButtonReleased( button: MouseButton)->bool
+    mtd isButtonReleased(button: MouseButton)->bool
     {
         return !currentState.pressed[button]
     }

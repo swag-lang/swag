@@ -5,8 +5,8 @@ attr Extension()
 
 struct OneFunc
 {
-    type: typeinfo
-    name: string
+    type:     typeinfo
+    name:     string
 }
 
 #[Compiler]
@@ -27,7 +27,7 @@ var g_Functions: Array'OneFunc
     var builderVars: StringBuilder
     var builderInit: StringBuilder
 
-    builderInit.appendString("public func glInitExtensions()\n{\n");
+    builderInit.appendString("public func glInitExtensions()\n{\n")
 
     visit e: g_Functions
     {
@@ -40,7 +40,8 @@ var g_Functions: Array'OneFunc
         builderVars.appendFormat("public func %(", e.name)
         visit p, i: typeFunc.parameters
         {
-            if i != 0 do builderVars.appendString(", ")
+            if i != 0 do
+                builderVars.appendString(", ")
             builderVars.appendFormat("p%: %", i, p.pointedType.name)
         }
 
@@ -51,21 +52,22 @@ var g_Functions: Array'OneFunc
         builderVars.appendFormat("\treturn ext_%(", e.name)
         visit p, i: typeFunc.parameters
         {
-            if i != 0 do builderVars.appendString(", ")
+            if i != 0 do
+                builderVars.appendString(", ")
             builderVars.appendFormat("p%", i)
         }
 
         builderVars.appendString(");\n}\n\n")
 
         // Initialize the variable with the getExtensionAddress
-        builderInit.appendFormat("\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n", e.name, typeFunc.name, e.name);
+        builderInit.appendFormat("\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n", e.name, typeFunc.name, e.name)
     }
 
     let itf = @compiler()
     var str = builderVars.toString()
     itf.compileString(str.toString())
 
-    builderInit.appendString("}\n");
+    builderInit.appendString("}\n")
     str = builderInit.toString()
     itf.compileString(str.toString())
 }

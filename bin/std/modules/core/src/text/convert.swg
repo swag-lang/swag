@@ -10,10 +10,10 @@ struct ConvertFormat
 // Format structure to convert a float to a string
 struct ConvertFormatFloat
 {
-    using val:  ConvertFormat
-    precision:  s8 = -1 // -1 is for 'most possible precision'
-    fmt:        u8 = `f`'u8
-    forceSign:  bool
+    using val:     ConvertFormat
+    precision:     s8 = -1           // -1 is for 'most possible precision'
+    fmt:           u8 = `f`'u8
+    forceSign:     bool
 }
 
 impl ConvertFormatFloat
@@ -34,7 +34,7 @@ impl ConvertFormatFloat
     //     A number which is the precision of the fractional part
     mtd setFormat(strFormat: string)
     {
-        let buffer = @dataof(strFormat)
+        let buffer  = @dataof(strFormat)
         let countof = @countof(strFormat)
         if buffer == null or countof == 0 do
             return
@@ -76,11 +76,11 @@ impl ConvertFormatFloat
 // be stored in 'unsignedValue'.
 struct ConvertFormatInt
 {
-    using val:      ConvertFormat
-    base:           u32 = 10
-    padding:        u8
-    width:          u8
-    forceSign:      bool
+    using val:     ConvertFormat
+    base:          u32 = 10
+    padding:       u8
+    width:         u8
+    forceSign:     bool
 }
 
 impl ConvertFormatInt
@@ -101,7 +101,7 @@ impl ConvertFormatInt
     //     The width of the output, in number of characters
     mtd setFormat(strFormat: string)
     {
-        let buffer = @dataof(strFormat)
+        let buffer  = @dataof(strFormat)
         let countof = @countof(strFormat)
         if buffer == null or countof == 0 do
             return
@@ -142,7 +142,8 @@ impl ConvertFormatInt
             return
         let (userWidth, eatCount, ?) = assume parseU64(@mkstring(buffer + cpt, cast(u64) countof - cpt))
         Debug.assert(userWidth <= 255, "padding width overflow")
-        if eatCount do width = cast(u8) userWidth
+        if eatCount do
+            width = cast(u8) userWidth
     }
 }
 
@@ -150,14 +151,14 @@ impl ConvertFormatInt
 func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 {
     var valueData = @dataof(value)
-    var type = Reflection.makeConcreteAlias(@kindof(value))
+    var type      = Reflection.makeConcreteAlias(@kindof(value))
 
     // A reference
     if Reflection.isPointerRef(type)
     {
         let ptrType = cast(const *TypeInfoPointer) type
         valueData = dref cast(**void) valueData
-        type = ptrType.pointedType
+        type      = ptrType.pointedType
     }
 
     let concreteValue = @mkany(valueData, type)
@@ -185,8 +186,8 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         }
 
         var fmt: ConvertFormatInt
-        fmt.base = 16
-        fmt.width = 16
+        fmt.base    = 16
+        fmt.width   = 16
         fmt.padding = `0`'u8
         fmt.setFormat(strFormat)
         fmt.value = dref cast(const *u64) valueData
@@ -223,11 +224,12 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         let ptrSlice = cast(const *TypeInfoSlice) type
         buf.addBytes("[")
 
-        let sl = cast(const [..] u8) valueData
+        let sl       = cast(const [..] u8) valueData
         var bufSlice = @dataof(sl)
         loop @countof(sl)
         {
-            if #index do buf.addBytes(",")
+            if #index do
+                buf.addBytes(",")
             let v = @mkany(bufSlice, ptrSlice.pointedType)
             convertAny(buf, v, strFormat)
             bufSlice += ptrSlice.pointedType.sizeof
@@ -246,7 +248,8 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         var bufArr = cast(const ^u8) valueData
         loop ptrArr.count
         {
-            if #index do buf.addBytes(",")
+            if #index do
+                buf.addBytes(",")
             let v = @mkany(bufArr, ptrArr.pointedType)
             convertAny(buf, v, strFormat)
             bufArr += ptrArr.pointedType.sizeof
@@ -319,7 +322,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
         // This rely on the fact that the Array struct layout is the same whatever
         // the underlying type is
         let addrArr = cast(const *Array'u8) ptr
-        var bufArr = addrArr.buffer
+        var bufArr  = addrArr.buffer
 
         buf.addBytes("[")
         var first = true
@@ -388,9 +391,9 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     Debug.assert(0 < fmt.base and fmt.base <= 16, "invalid convert base")
 
     let dataof = @dataof(fmt.value)
-    var bits = kindof.sizeof * 8
+    var bits   = kindof.sizeof * 8
 
-    var value: u64
+    var value:       u64
     var signedValue: s64
 
     var overflowS64 = false
@@ -398,16 +401,15 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     {
     case S8:
         signedValue = cast(s64) dref cast(*s8) dataof
-        value = cast(u64) Math.abs(signedValue)
+        value       = cast(u64) Math.abs(signedValue)
     case S16:
         signedValue = cast(s64) dref cast(*s16) dataof
-        value = cast(u64) Math.abs(signedValue)
+        value       = cast(u64) Math.abs(signedValue)
     case S32:
         signedValue = cast(s64) dref cast(*s32) dataof
-        value = cast(u64) Math.abs(signedValue)
+        value       = cast(u64) Math.abs(signedValue)
     case S64:
         signedValue = dref cast(*s64) dataof
-        // Cannot take the absolute value of Swag.S64.Min
         if signedValue == Swag.S64.Min do
             overflowS64 = true
         else do
@@ -423,8 +425,8 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     }
 
     const Tbl = "0123456789ABCDEF"
-    var tmp: [64] u8 = undefined
-    var cpt = 63'u32
+    var tmp:  [64] u8 = undefined
+    var cpt   = 63'u32
 
     // Special case for the lower digit of Swag.S64.Min
     // We have 9_223_372_036_854_775_807, and we want -9_223_372_036_854_775_808
@@ -436,9 +438,12 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         cpt, bits -= 1
         switch fmt.base
         {
-        case 2:  value = 4611686018427387904
-        case 10: value = 922337203685477580
-        case 16: value = 576460752303423488
+        case 2:
+            value = 4611686018427387904
+        case 10:
+            value = 922337203685477580
+        case 16:
+            value = 576460752303423488
         }
     }
 
@@ -476,7 +481,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         cpt -= 1
     }
 
-    buf.addBytes(cast([..] u8) @mkslice(&tmp[cpt + 1], cast(u64) 63 - cpt));
+    buf.addBytes(cast([..] u8) @mkslice(&tmp[cpt + 1], cast(u64) 63 - cpt))
 }
 
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer

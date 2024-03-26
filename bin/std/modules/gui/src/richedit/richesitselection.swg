@@ -6,9 +6,9 @@ internal impl RichEditCtrl
     mtd getSelectionRectRange(lineIndex: u64, rankBeg, rankEnd: *u64)->bool
     {
         let line = lines[lineIndex]
-        let len = line.length()
+        let len  = line.length()
 
-        var x = getMarginLeft()
+        var x  = getMarginLeft()
         var rb = 0'u64
         while x < selRectangle.x and rb < len
         {
@@ -35,7 +35,7 @@ internal impl RichEditCtrl
     mtd deleteSelectionPrivate(posStart, posEnd: RichEditCursor, selRect: bool)
     {
         let undo = Memory.new'RichEditUndo()
-        undo.type       = .Delete
+        undo.type = .Delete
         (undo.runes, undo.styles) = getTextPrivate(posStart, posEnd)
         undo.selBeg     = selBeg
         undo.cursorPos  = cursorPos
@@ -43,7 +43,7 @@ internal impl RichEditCtrl
         undo.serial     = 0
         resetUndo()
         toUndo.add(undo)
-        deleteTextPrivate(posStart, posEnd, selRect);
+        deleteTextPrivate(posStart, posEnd, selRect)
     }
 
     mtd undoRestoreSelection()
@@ -99,7 +99,7 @@ impl RichEditCtrl
 
     mtd setSelection(start, end: RichEditCursor)
     {
-        selBeg = start
+        selBeg    = start
         cursorPos = end
         checkSelection()
     }
@@ -118,8 +118,8 @@ impl RichEditCtrl
         if hasSelRect
         {
             var result: retval
-            result.lineIndex = Math.min(selBeg.lineIndex, cursorPos.lineIndex)
-            result.charPosInLine =  Math.min(selBeg.charPosInLine, cursorPos.charPosInLine)
+            result.lineIndex     = Math.min(selBeg.lineIndex, cursorPos.lineIndex)
+            result.charPosInLine = Math.min(selBeg.charPosInLine, cursorPos.charPosInLine)
             return result
         }
 
@@ -137,8 +137,8 @@ impl RichEditCtrl
         if hasSelRect
         {
             var result: retval
-            result.lineIndex = Math.max(selBeg.lineIndex, cursorPos.lineIndex)
-            result.charPosInLine =  Math.max(selBeg.charPosInLine, cursorPos.charPosInLine)
+            result.lineIndex     = Math.max(selBeg.lineIndex, cursorPos.lineIndex)
+            result.charPosInLine = Math.max(selBeg.charPosInLine, cursorPos.charPosInLine)
             return result
         }
 
@@ -161,8 +161,8 @@ impl RichEditCtrl
         if firstVisibleLineView >= lines.count or lastVisibleLineView >= lines.count
         {
             firstVisibleLineView = 0
-            lastVisibleLineView = 0
-            dirtyFirstLineView = true
+            lastVisibleLineView  = 0
+            dirtyFirstLineView   = true
             invalidate()
         }
 
@@ -191,7 +191,7 @@ impl RichEditCtrl
         if hasSelRect
         {
             cursorPos.charPosInLine = Math.min(cursorPos.charPosInLine, selBeg.charPosInLine)
-            selBeg.charPosInLine = cursorPos.charPosInLine
+            selBeg.charPosInLine    = cursorPos.charPosInLine
         }
         else
         {
@@ -270,7 +270,8 @@ impl RichEditCtrl
         var res = getTextPrivate(getBegSelection(), getEndSelection())
 
         registerClipboardFormat()
-        if clipFormat do Clipboard.addData(clipFormat, res.styles.toSlice())
+        if clipFormat do
+            Clipboard.addData(clipFormat, res.styles.toSlice())
 
         var txt = Utf8.fromUnicode(res.text.toSlice())
         Clipboard.addString(txt)
@@ -306,7 +307,7 @@ impl RichEditCtrl
             moveCursorLeft(&end)
         beg.charPosInLine = 0
         end.charPosInLine = lines[end.lineIndex].length()
-        selBeg = beg
+        selBeg            = beg
         setCursorPos(end)
         moveCursorRight(&cursorPos)
         copyToClipboard()
@@ -317,14 +318,14 @@ impl RichEditCtrl
     mtd selectWord()
     {
         let line = lines[cursorPos.lineIndex]
-        let len = line.length()
+        let len  = line.length()
         if !len do
             return
 
         if cursorPos.charPosInLine == len do
             cursorPos.charPosInLine -= 1
         let cp = cursorPos.charPosInLine ? line.chars[selBeg.charPosInLine - 1] : 0'rune
-        let c = selBeg.charPosInLine == len ? 0'rune : line.chars[selBeg.charPosInLine]
+        let c  = selBeg.charPosInLine == len ? 0'rune : line.chars[selBeg.charPosInLine]
         let cn = cursorPos.charPosInLine != len - 1 ? line.chars[selBeg.charPosInLine + 1] : 0'rune
 
         if Unicode.isSpace(c) and !Unicode.isSpace(cp) and !Unicode.isSpace(cn) and cursorPos.charPosInLine do
@@ -333,7 +334,7 @@ impl RichEditCtrl
         selBeg = cursorPos
 
         // Blanks
-        if (Unicode.isSpace(line.chars[selBeg.charPosInLine]))
+        if Unicode.isSpace(line.chars[selBeg.charPosInLine])
         {
             while selBeg.charPosInLine and Unicode.isSpace(line.chars[selBeg.charPosInLine - 1]) do
                 selBeg.charPosInLine -= 1
@@ -370,7 +371,7 @@ impl RichEditCtrl
 
     mtd scrollLineUp()
     {
-        var pt = scrollWnd.getScrollPos()
+        var pt   = scrollWnd.getScrollPos()
         var size = getXExtent()
 
         var sy = (pt.y / size.y) * size.y
@@ -380,7 +381,7 @@ impl RichEditCtrl
         sy = scrollWnd.getScrollPos().y
 
         var clientRect = edView.getClientRect()
-        var pos = getCaretPos(cursorPos)
+        var pos        = getCaretPos(cursorPos)
         while pos.bottom() > sy + clientRect.height
         {
             if !moveCursorUp(&cursorPos) do
@@ -392,7 +393,7 @@ impl RichEditCtrl
 
     mtd scrollLineDown()
     {
-        var pt = scrollWnd.getScrollPos()
+        var pt   = scrollWnd.getScrollPos()
         var size = getXExtent()
 
         var sy = (pt.y / size.y) * size.y

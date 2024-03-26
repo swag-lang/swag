@@ -2,10 +2,10 @@
 
 struct RenderTarget
 {
-    handle:         RenderTargetHandle
-    colorBuffer:    Texture
-    depthStencil:   RenderTargetSurfaceHandle
+    handle:           RenderTargetHandle
+    colorBuffer:      Texture
+    depthStencil:     RenderTargetSurfaceHandle
 
-    paintAlpha:     bool
-    paintAlphaIdx:  u64
+    paintAlpha:        bool
+    paintAlphaIdx:     u64
 }

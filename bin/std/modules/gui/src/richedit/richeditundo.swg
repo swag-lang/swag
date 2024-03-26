@@ -12,19 +12,19 @@ enum RichEditUndoType
 
 struct RichEditUndo
 {
-    type:           RichEditUndoType = Selection
-    concatChars:    bool
-    selBeg:         RichEditCursor
-    cursorPos:      RichEditCursor
-    runes:          Array'rune
-    styles:         Array'u8
-    serial:         u64
-    hasSelRect:     bool
+    type:            RichEditUndoType = Selection
+    concatChars:     bool
+    selBeg:          RichEditCursor
+    cursorPos:       RichEditCursor
+    runes:           Array'rune
+    styles:          Array'u8
+    serial:          u64
+    hasSelRect:      bool
 
-    begSelectionBefore: RichEditCursor
-    endSelectionBefore: RichEditCursor
-    begSelectionAfter:  RichEditCursor
-    endSelectionAfter:  RichEditCursor
+    begSelectionBefore:     RichEditCursor
+    endSelectionBefore:     RichEditCursor
+    begSelectionAfter:      RichEditCursor
+    endSelectionAfter:      RichEditCursor
 }
 
 internal impl RichEditCtrl
@@ -63,8 +63,8 @@ impl RichEditCtrl
     {
         undoMgr.clear()
         toUndo.clear()
-        currentUndo = 0
-        serialUndo  = 0
+        currentUndo        = 0
+        serialUndo         = 0
         modifiedUndoMarker = Swag.U64.Max
     }
 
@@ -116,7 +116,7 @@ impl RichEditCtrl
             return
 
         currentUndo -= 1
-        var undo = undoMgr[currentUndo]
+        var undo   = undoMgr[currentUndo]
         let serial = undo.serial
 
         loop
@@ -169,7 +169,7 @@ impl RichEditCtrl
         if !canRedo() do
             return
 
-        var undo = undoMgr[currentUndo]
+        var undo   = undoMgr[currentUndo]
         let serial = undo.serial
         currentUndo += 1
 

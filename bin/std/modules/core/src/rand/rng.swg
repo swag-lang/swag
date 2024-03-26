@@ -3,8 +3,8 @@
 
 struct(T = MWC) Rng
 {
-    rng:        T
-    seedDone:   bool
+    rng:          T
+    seedDone:     bool
 }
 
 impl Rng
@@ -82,7 +82,8 @@ impl Rng
     mtd nextF32()->f32
     {
         var v = nextU32()
-        while v == Swag.U32.Max do v = nextU32()
+        while v == Swag.U32.Max do
+            v = nextU32()
         return v / cast(f32) Swag.U32.Max
     }
 
@@ -91,7 +92,8 @@ impl Rng
     mtd nextF64()->f64
     {
         var v = nextU64()
-        while v == Swag.U64.Max do v = nextU64()
+        while v == Swag.U64.Max do
+            v = nextU64()
         return v / cast(f64) Swag.U64.Max
     }
 
@@ -171,7 +173,7 @@ impl Rng
     mtd(V) shuffle(slice: [..] V)
     {
         let countOf = @countof(slice)
-        let dataOf = @dataof(slice)
+        let dataOf  = @dataof(slice)
         loop i: slice
         {
             var o = nextU64(0, countOf)

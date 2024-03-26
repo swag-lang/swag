@@ -3,7 +3,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 public enum ScrollWndFlags
 {
-    Zero = 0
+    Zero            = 0
     SmallBar
     ForceHorizontal
     ForceVertical
@@ -14,20 +14,20 @@ public struct ScrollWnd
 {
     using frameWnd: FrameWnd
 
-    scrollIncrementV: f32 = 50
-    scrollIncrementH: f32 = 50
+    scrollIncrementV:     f32 = 50
+    scrollIncrementH:     f32 = 50
 
-    scrollSize:     Math.Point
-    scrollWndFlags  = ScrollWndFlags.Zero
+    scrollSize:        Math.Point
+    scrollWndFlags     = ScrollWndFlags.Zero
 
-    sigScrollPosChanged:    SigArray'closure(*Self, Math.Point, Math.Point)
-    sigScrollSizeChanged:   SigArray'closure(*Self, Math.Point, Math.Point)
+    sigScrollPosChanged:      SigArray'closure(*Self, Math.Point, Math.Point)
+    sigScrollSizeChanged:     SigArray'closure(*Self, Math.Point, Math.Point)
 
-    oldMouseCapture:    *Wnd
+    oldMouseCapture: *Wnd
 
-    scrollSmoothPos:    Math.Point
-    scrollRequestPos:   Math.Point
-    smoothScroll:       bool
+    scrollSmoothPos:      Math.Point
+    scrollRequestPos:     Math.Point
+    smoothScroll:         bool
 
     showBarV:       bool
     needV:          bool
@@ -45,20 +45,20 @@ public struct ScrollWnd
     isHotBarH:      bool
     isPressedH:     bool
 
-    isMoving:       bool
-    isGrabbing:     bool
-    correcMoving:   f32
-    offsetClientV:  f32
-    offsetClientH:  f32
-    paddingZ:       f32
-    paddingW:       f32
+    isMoving:          bool
+    isGrabbing:        bool
+    correcMoving:      f32
+    offsetClientV:     f32
+    offsetClientH:     f32
+    paddingZ:          f32
+    paddingW:          f32
 
-    aniBkBarV:      BlendColor
-    aniBkBarH:      BlendColor
-    aniBoxV:        BlendColor
-    aniBoxH:        BlendColor
+    aniBkBarV:     BlendColor
+    aniBkBarH:     BlendColor
+    aniBoxV:       BlendColor
+    aniBoxH:       BlendColor
 
-    grabbingPos:    Math.Point
+    grabbingPos: Math.Point
 }
 
 public impl IWnd for ScrollWnd
@@ -78,7 +78,7 @@ public impl IWnd for ScrollWnd
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
         var clientRect = getClientRect()
-        var pos = surfaceToLocal(evt.surfacePos)
+        var pos        = surfaceToLocal(evt.surfacePos)
 
         switch evt.kind
         {
@@ -95,11 +95,11 @@ public impl IWnd for ScrollWnd
         case MouseMove:
             if isGrabbing
             {
-                var move = evt.surfacePos - grabbingPos
+                var move   = evt.surfacePos - grabbingPos
                 var scroll = scrollRequestPos - move
                 scrollRequestPos = getScrollPosPrivate(scroll.x, scroll.y)
-                smoothScroll = true
-                grabbingPos = evt.surfacePos
+                smoothScroll     = true
+                grabbingPos      = evt.surfacePos
                 invalidate()
                 break
             }
@@ -113,14 +113,14 @@ public impl IWnd for ScrollWnd
             if isPressedV
             {
                 let vh = position.height - paddingW
-                var f = (pos.y - correcMoving) / (vh - offsetClientV)
+                var f  = (pos.y - correcMoving) / (vh - offsetClientV)
                 f *= scrollSize.y
                 setScrollPos(view.scrollPos.x, f)
             }
             elif isPressedH
             {
                 let vh = position.width - paddingZ
-                var f = (pos.x - correcMoving) / (vh - offsetClientH)
+                var f  = (pos.x - correcMoving) / (vh - offsetClientH)
                 f *= scrollSize.x
                 setScrollPos(f, view.scrollPos.y)
             }
@@ -131,8 +131,8 @@ public impl IWnd for ScrollWnd
             if evt.button == .Middle
             {
                 scrollSmoothPos = view.scrollPos
-                isGrabbing = true
-                grabbingPos = evt.surfacePos
+                isGrabbing      = true
+                grabbingPos     = evt.surfacePos
                 oldMouseCapture = getMouseCapture()
                 captureMouse()
                 invalidate()
@@ -142,18 +142,18 @@ public impl IWnd for ScrollWnd
                 isMoving = true
                 if isHotV
                 {
-                    isPressedV = true
+                    isPressedV   = true
                     correcMoving = pos.y - posBoxV
                 }
                 elif isHotH
                 {
-                    isPressedH = true
+                    isPressedH   = true
                     correcMoving = pos.x - posBoxH
                 }
                 elif isHotBarV
                 {
                     correcMoving = 0
-                    isPressedV = true
+                    isPressedV   = true
                     var f = pos.y / clientRect.height
                     f *= scrollSize.y
                     setScrollPos(view.scrollPos.x, f)
@@ -161,7 +161,7 @@ public impl IWnd for ScrollWnd
                 elif isHotBarH
                 {
                     correcMoving = 0
-                    isPressedH = true
+                    isPressedH   = true
                     var f = pos.x / clientRect.width
                     f *= scrollSize.x
                     setScrollPos(f, view.scrollPos.y)
@@ -199,11 +199,11 @@ public impl IWnd for ScrollWnd
         if smoothScroll
         {
             let dt = getApp().getDt()
-            if  !Math.isEqualEpsilon(scrollRequestPos.x, view.scrollPos.x) or
-                !Math.isEqualEpsilon(scrollRequestPos.y, view.scrollPos.y)
+            if !Math.isEqualEpsilon(scrollRequestPos.x, view.scrollPos.x) or
+               !Math.isEqualEpsilon(scrollRequestPos.y, view.scrollPos.y)
             {
-                scrollSmoothPos.x = Math.lerp(scrollSmoothPos.x, scrollRequestPos.x, 10*dt)
-                scrollSmoothPos.y = Math.lerp(scrollSmoothPos.y, scrollRequestPos.y, 10*dt)
+                scrollSmoothPos.x = Math.lerp(scrollSmoothPos.x, scrollRequestPos.x, 10 * dt)
+                scrollSmoothPos.y = Math.lerp(scrollSmoothPos.y, scrollRequestPos.y, 10 * dt)
                 discard setScrollPosPrivate(scrollSmoothPos.x, scrollSmoothPos.y)
                 invalidate()
             }
@@ -211,41 +211,42 @@ public impl IWnd for ScrollWnd
                 smoothScroll = false
         }
 
-        let bc = evt.bc
-        let theme = getTheme()
+        let bc      = evt.bc
+        let theme   = getTheme()
         let metrics = getThemeMetrics()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
 
         var colorBk: Color
         switch
         {
-            case scrollWndFlags.has(.TransparentBar):
-                break
-            case bc.isDisabled:
-                colorBk = colors.scrollBar_DisabledBk
-            default:
-                colorBk = colors.scrollBar_Bk
+        case scrollWndFlags.has(.TransparentBar):
+            break
+        case bc.isDisabled:
+            colorBk = colors.scrollBar_DisabledBk
+        default:
+            colorBk = colors.scrollBar_Bk
         }
 
         // Vertical bar
         if showBarV
         {
             var clientRect = getClientRect()
-            clientRect.x = clientRect.right() - paddingZ
+            clientRect.x     = clientRect.right() - paddingZ
             clientRect.width = paddingZ
             if showBarH do
                 clientRect.height -= paddingW
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, colorBk)
 
             var colBk = colors.scrollBar_HotBk
-            if !isHotBarV do colBk.a = 0
+            if !isHotBarV do
+                colBk.a = 0
             aniBkBarV.apply(self, colBk)
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, aniBkBarV.cur())
 
             if needV
             {
-                clientRect.y = posBoxV
+                clientRect.y      = posBoxV
                 clientRect.height = sizeBoxV
 
                 var colorBox: Color = undefined
@@ -265,20 +266,21 @@ public impl IWnd for ScrollWnd
         if showBarH
         {
             var clientRect = getClientRect()
-            clientRect.y = clientRect.bottom() - paddingW
+            clientRect.y      = clientRect.bottom() - paddingW
             clientRect.height = paddingW
             if showBarV do
                 clientRect.width -= paddingW
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkH, colorBk)
 
             var colBk = colors.scrollBar_HotBk
-            if !isHotBarH do colBk.a = 0
+            if !isHotBarH do
+                colBk.a = 0
             aniBkBarH.apply(self, colBk)
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, aniBkBarH.cur())
 
             if needH
             {
-                clientRect.x = posBoxH
+                clientRect.x     = posBoxH
                 clientRect.width = sizeBoxH
 
                 var colorBox: Color = undefined
@@ -298,9 +300,9 @@ public impl IWnd for ScrollWnd
         if showBarV and showBarH
         {
             var clientRect = getClientRect()
-            clientRect.x = clientRect.right() - paddingZ
-            clientRect.y = clientRect.bottom() - paddingW
-            clientRect.width = paddingZ
+            clientRect.x      = clientRect.right() - paddingZ
+            clientRect.y      = clientRect.bottom() - paddingW
+            clientRect.width  = paddingZ
             clientRect.height = paddingW
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_Corner, colors.scrollBar_Bk)
         }
@@ -354,11 +356,11 @@ impl ScrollWnd
     mtd getPosBoxV(full = false)->Math.Rectangle
     {
         var result: retval = getClientRect()
-        result.x = result.right() - paddingZ
+        result.x     = result.right() - paddingZ
         result.width = paddingZ
         if !full
         {
-            result.y = posBoxV
+            result.y      = posBoxV
             result.height = sizeBoxV
         }
 
@@ -368,11 +370,11 @@ impl ScrollWnd
     mtd getPosBoxH(full = false)->Math.Rectangle
     {
         var result: retval = getClientRect()
-        result.y = result.bottom() - paddingW
+        result.y      = result.bottom() - paddingW
         result.height = paddingW
         if !full
         {
-            result.x = posBoxH
+            result.x     = posBoxH
             result.width = sizeBoxH
         }
 
@@ -384,8 +386,8 @@ impl ScrollWnd
         if position.width == 0 or position.height == 0 do
             return
         var clientRect = getClientRectPadding()
-        var sx = Math.max(scrollSize.x, clientRect.width)
-        var sy = Math.max(scrollSize.y, clientRect.height)
+        var sx         = Math.max(scrollSize.x, clientRect.width)
+        var sy         = Math.max(scrollSize.y, clientRect.height)
         sx = Math.max(sx, 1)
         sy = Math.max(sy, 1)
 
@@ -503,7 +505,7 @@ public impl ScrollWnd
     {
         var newSP = setScrollPosPrivate(x, y)
         scrollRequestPos = newSP
-        smoothScroll = false
+        smoothScroll     = false
     }
 
     // Set the scroll size (window virtual size)

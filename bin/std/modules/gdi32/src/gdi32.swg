@@ -14,148 +14,148 @@ const GDI_ERROR = 0xFFFFFFFF
 
 struct PIXELFORMATDESCRIPTOR
 {
-    nSize:          WORD
-    nVersion:       WORD
-    dwFlags:        DWORD
-    iPixelType:     BYTE
-    cColorBits:     BYTE
-    cRedBits:       BYTE
-    cRedShift:      BYTE
-    cGreenBits:     BYTE
-    cGreenShift:    BYTE
-    cBlueBits:      BYTE
-    cBlueShift:     BYTE
-    cAlphaBits:     BYTE
-    cAlphaShift:    BYTE
-    cAccumBits:     BYTE
-    cAccumRedBits:  BYTE
-    cAccumGreenBits:BYTE
-    cAccumBlueBits: BYTE
-    cAccumAlphaBits:BYTE
-    cDepthBits:     BYTE
-    cStencilBits:   BYTE
-    cAuxBuffers:    BYTE
-    iLayerType:     BYTE
-    bReserved:      BYTE
-    dwLayerMask:    DWORD
-    dwVisibleMask:  DWORD
-    dwDamageMask:   DWORD
+    nSize:               WORD
+    nVersion:            WORD
+    dwFlags:             DWORD
+    iPixelType:          BYTE
+    cColorBits:          BYTE
+    cRedBits:            BYTE
+    cRedShift:           BYTE
+    cGreenBits:          BYTE
+    cGreenShift:         BYTE
+    cBlueBits:           BYTE
+    cBlueShift:          BYTE
+    cAlphaBits:          BYTE
+    cAlphaShift:         BYTE
+    cAccumBits:          BYTE
+    cAccumRedBits:       BYTE
+    cAccumGreenBits:     BYTE
+    cAccumBlueBits:      BYTE
+    cAccumAlphaBits:     BYTE
+    cDepthBits:          BYTE
+    cStencilBits:        BYTE
+    cAuxBuffers:         BYTE
+    iLayerType:          BYTE
+    bReserved:           BYTE
+    dwLayerMask:         DWORD
+    dwVisibleMask:       DWORD
+    dwDamageMask:        DWORD
 }
 
-const PFD_TYPE_RGBA        = 0
-const PFD_TYPE_COLORINDEX  = 1
-const PFD_MAIN_PLANE       = 0
-const PFD_OVERLAY_PLANE    = 1
-const PFD_UNDERLAY_PLANE   = -1
+const PFD_TYPE_RGBA       = 0
+const PFD_TYPE_COLORINDEX = 1
+const PFD_MAIN_PLANE      = 0
+const PFD_OVERLAY_PLANE   = 1
+const PFD_UNDERLAY_PLANE  = -1
 
-const PFD_DOUBLEBUFFER            = 0x00000001
-const PFD_STEREO                  = 0x00000002
-const PFD_DRAW_TO_WINDOW          = 0x00000004
-const PFD_DRAW_TO_BITMAP          = 0x00000008
-const PFD_SUPPORT_GDI             = 0x00000010
-const PFD_SUPPORT_OPENGL          = 0x00000020
-const PFD_GENERIC_FORMAT          = 0x00000040
-const PFD_NEED_PALETTE            = 0x00000080
-const PFD_NEED_SYSTEM_PALETTE     = 0x00000100
-const PFD_SWAP_EXCHANGE           = 0x00000200
-const PFD_SWAP_COPY               = 0x00000400
-const PFD_SWAP_LAYER_BUFFERS      = 0x00000800
-const PFD_GENERIC_ACCELERATED     = 0x00001000
-const PFD_SUPPORT_DIRECTDRAW      = 0x00002000
-const PFD_DIRECT3D_ACCELERATED    = 0x00004000
-const PFD_SUPPORT_COMPOSITION     = 0x00008000
-const PFD_DEPTH_DONTCARE          = 0x20000000
-const PFD_DOUBLEBUFFER_DONTCARE   = 0x40000000
-const PFD_STEREO_DONTCARE         = 0x80000000
+const PFD_DOUBLEBUFFER          = 0x00000001
+const PFD_STEREO                = 0x00000002
+const PFD_DRAW_TO_WINDOW        = 0x00000004
+const PFD_DRAW_TO_BITMAP        = 0x00000008
+const PFD_SUPPORT_GDI           = 0x00000010
+const PFD_SUPPORT_OPENGL        = 0x00000020
+const PFD_GENERIC_FORMAT        = 0x00000040
+const PFD_NEED_PALETTE          = 0x00000080
+const PFD_NEED_SYSTEM_PALETTE   = 0x00000100
+const PFD_SWAP_EXCHANGE         = 0x00000200
+const PFD_SWAP_COPY             = 0x00000400
+const PFD_SWAP_LAYER_BUFFERS    = 0x00000800
+const PFD_GENERIC_ACCELERATED   = 0x00001000
+const PFD_SUPPORT_DIRECTDRAW    = 0x00002000
+const PFD_DIRECT3D_ACCELERATED  = 0x00004000
+const PFD_SUPPORT_COMPOSITION   = 0x00008000
+const PFD_DEPTH_DONTCARE        = 0x20000000
+const PFD_DOUBLEBUFFER_DONTCARE = 0x40000000
+const PFD_STEREO_DONTCARE       = 0x80000000
 
-const SRCCOPY             = cast(DWORD)0x00CC0020 /* dest = source                   */
-const SRCPAINT            = cast(DWORD)0x00EE0086 /* dest = source OR dest           */
-const SRCAND              = cast(DWORD)0x008800C6 /* dest = source AND dest          */
-const SRCINVERT           = cast(DWORD)0x00660046 /* dest = source XOR dest          */
-const SRCERASE            = cast(DWORD)0x00440328 /* dest = source AND (NOT dest )   */
-const NOTSRCCOPY          = cast(DWORD)0x00330008 /* dest = (NOT source)             */
-const NOTSRCERASE         = cast(DWORD)0x001100A6 /* dest = (NOT src) AND (NOT dest) */
-const MERGECOPY           = cast(DWORD)0x00C000CA /* dest = (source AND pattern)     */
-const MERGEPAINT          = cast(DWORD)0x00BB0226 /* dest = (NOT source) OR dest     */
-const PATCOPY             = cast(DWORD)0x00F00021 /* dest = pattern                  */
-const PATPAINT            = cast(DWORD)0x00FB0A09 /* dest = DPSnoo                   */
-const PATINVERT           = cast(DWORD)0x005A0049 /* dest = pattern XOR dest         */
-const DSTINVERT           = cast(DWORD)0x00550009 /* dest = (NOT dest)               */
-const BLACKNESS           = cast(DWORD)0x00000042 /* dest = BLACK                    */
-const WHITENESS           = cast(DWORD)0x00FF0062 /* dest = WHITE                    */
-const NOMIRRORBITMAP      = cast(DWORD)0x80000000 /* Do not Mirror the bitmap in this call */
-const CAPTUREBLT          = cast(DWORD)0x40000000 /* Include layered windows */
+const SRCCOPY        = cast(DWORD) 0x00CC0020     /* dest = source                   */
+const SRCPAINT       = cast(DWORD) 0x00EE0086     /* dest = source OR dest           */
+const SRCAND         = cast(DWORD) 0x008800C6     /* dest = source AND dest          */
+const SRCINVERT      = cast(DWORD) 0x00660046     /* dest = source XOR dest          */
+const SRCERASE       = cast(DWORD) 0x00440328     /* dest = source AND (NOT dest )   */
+const NOTSRCCOPY     = cast(DWORD) 0x00330008     /* dest = (NOT source)             */
+const NOTSRCERASE    = cast(DWORD) 0x001100A6     /* dest = (NOT src) AND (NOT dest) */
+const MERGECOPY      = cast(DWORD) 0x00C000CA     /* dest = (source AND pattern)     */
+const MERGEPAINT     = cast(DWORD) 0x00BB0226     /* dest = (NOT source) OR dest     */
+const PATCOPY        = cast(DWORD) 0x00F00021     /* dest = pattern                  */
+const PATPAINT       = cast(DWORD) 0x00FB0A09     /* dest = DPSnoo                   */
+const PATINVERT      = cast(DWORD) 0x005A0049     /* dest = pattern XOR dest         */
+const DSTINVERT      = cast(DWORD) 0x00550009     /* dest = (NOT dest)               */
+const BLACKNESS      = cast(DWORD) 0x00000042     /* dest = BLACK                    */
+const WHITENESS      = cast(DWORD) 0x00FF0062     /* dest = WHITE                    */
+const NOMIRRORBITMAP = cast(DWORD) 0x80000000     /* Do not Mirror the bitmap in this call */
+const CAPTUREBLT     = cast(DWORD) 0x40000000     /* Include layered windows */
 
 struct BITMAP
 {
-    bmType:         LONG
-    bmWidth:        LONG
-    bmHeight:       LONG
-    bmWidthBytes:   LONG
-    bmPlanes:       WORD
-    bmBitsPixel:    WORD
-    bmBits:         LPVOID
+    bmType:           LONG
+    bmWidth:          LONG
+    bmHeight:         LONG
+    bmWidthBytes:     LONG
+    bmPlanes:         WORD
+    bmBitsPixel:      WORD
+    bmBits:           LPVOID
 }
 
 struct RGBQUAD
 {
-    rgbBlue:        BYTE
-    rgbGreen:       BYTE
-    rgbRed:         BYTE
-    rgbReserved:    BYTE
+    rgbBlue:         BYTE
+    rgbGreen:        BYTE
+    rgbRed:          BYTE
+    rgbReserved:     BYTE
 }
 
-const BI_RGB        = 0
-const BI_RLE8       = 1
-const BI_RLE4       = 2
-const BI_BITFIELDS  = 3
-const BI_JPEG       = 4
-const BI_PNG        = 5
+const BI_RGB       = 0
+const BI_RLE8      = 1
+const BI_RLE4      = 2
+const BI_BITFIELDS = 3
+const BI_JPEG      = 4
+const BI_PNG       = 5
 
 const DIB_RGB_COLORS = 0
 const DIB_PAL_COLORS = 1
 
 struct BITMAPINFOHEADER
 {
-    biSize:          DWORD
-    biWidth:         LONG
-    biHeight:        LONG
-    biPlanes:        WORD
-    biBitCount:      WORD
-    biCompression:   DWORD
-    biSizeImage:     DWORD
-    biXPelsPerMeter: LONG
-    biYPelsPerMeter: LONG
-    biClrUsed:       DWORD
-    biClrImportant:  DWORD
+    biSize:              DWORD
+    biWidth:             LONG
+    biHeight:            LONG
+    biPlanes:            WORD
+    biBitCount:          WORD
+    biCompression:       DWORD
+    biSizeImage:         DWORD
+    biXPelsPerMeter:     LONG
+    biYPelsPerMeter:     LONG
+    biClrUsed:           DWORD
+    biClrImportant:      DWORD
 }
 
 struct BITMAPINFO
 {
-    bmiHeader: BITMAPINFOHEADER
-    bmiColors: [1] RGBQUAD
+    bmiHeader:     BITMAPINFOHEADER
+    bmiColors:     [1] RGBQUAD
 }
 
-const LF_FACESIZE = 32
+const LF_FACESIZE       = 32
 const RASTER_FONTTYPE   = 0x0001
 const DEVICE_FONTTYPE   = 0x0002
 const TRUETYPE_FONTTYPE = 0x0004
 
-const FW_DONTCARE         = 0
-const FW_THIN             = 100
-const FW_EXTRALIGHT       = 200
-const FW_LIGHT            = 300
-const FW_NORMAL           = 400
-const FW_MEDIUM           = 500
-const FW_SEMIBOLD         = 600
-const FW_BOLD             = 700
-const FW_EXTRABOLD        = 800
-const FW_HEAVY            = 900
-const FW_ULTRALIGHT       = FW_EXTRALIGHT
-const FW_REGULAR          = FW_NORMAL
-const FW_DEMIBOLD         = FW_SEMIBOLD
-const FW_ULTRABOLD        = FW_EXTRABOLD
-const FW_BLACK            = FW_HEAVY
+const FW_DONTCARE   = 0
+const FW_THIN       = 100
+const FW_EXTRALIGHT = 200
+const FW_LIGHT      = 300
+const FW_NORMAL     = 400
+const FW_MEDIUM     = 500
+const FW_SEMIBOLD   = 600
+const FW_BOLD       = 700
+const FW_EXTRABOLD  = 800
+const FW_HEAVY      = 900
+const FW_ULTRALIGHT = FW_EXTRALIGHT
+const FW_REGULAR    = FW_NORMAL
+const FW_DEMIBOLD   = FW_SEMIBOLD
+const FW_ULTRABOLD  = FW_EXTRABOLD
+const FW_BLACK      = FW_HEAVY
 
 const WHITE_BRUSH         = 0
 const LTGRAY_BRUSH        = 1
@@ -196,183 +196,183 @@ const RUSSIAN_CHARSET     = 204
 const MAC_CHARSET         = 77
 const BALTIC_CHARSET      = 186
 
-const PS_SOLID            = 0
-const PS_DASH             = 1 /* -------  */
-const PS_DOT              = 2 /* .......  */
-const PS_DASHDOT          = 3 /* _._._._  */
-const PS_DASHDOTDOT       = 4 /* _.._.._  */
-const PS_NULL             = 5
-const PS_INSIDEFRAME      = 6
-const PS_USERSTYLE        = 7
-const PS_ALTERNATE        = 8
-const PS_STYLE_MASK       = 0x0000000F
+const PS_SOLID       = 0
+const PS_DASH        = 1              /* -------  */
+const PS_DOT         = 2              /* .......  */
+const PS_DASHDOT     = 3              /* _._._._  */
+const PS_DASHDOTDOT  = 4              /* _.._.._  */
+const PS_NULL        = 5
+const PS_INSIDEFRAME = 6
+const PS_USERSTYLE   = 7
+const PS_ALTERNATE   = 8
+const PS_STYLE_MASK  = 0x0000000F
 
-const TRANSPARENT         = 1
-const OPAQUE              = 2
-const BKMODE_LAST         = 2
+const TRANSPARENT = 1
+const OPAQUE      = 2
+const BKMODE_LAST = 2
 
 struct LOGFONTA
 {
-    lfHeight:           LONG
-    lfWidth:            LONG
-    lfEscapement:       LONG
-    lfOrientation:      LONG
-    lfWeight:           LONG
-    lfItalic:           BYTE
-    lfUnderline:        BYTE
-    lfStrikeOut:        BYTE
-    lfCharSet:          BYTE
-    lfOutPrecision:     BYTE
-    lfClipPrecision:    BYTE
-    lfQuality:          BYTE
-    lfPitchAndFamily:   BYTE
-    lfFaceName:         [LF_FACESIZE] CHAR
+    lfHeight:             LONG
+    lfWidth:              LONG
+    lfEscapement:         LONG
+    lfOrientation:        LONG
+    lfWeight:             LONG
+    lfItalic:             BYTE
+    lfUnderline:          BYTE
+    lfStrikeOut:          BYTE
+    lfCharSet:            BYTE
+    lfOutPrecision:       BYTE
+    lfClipPrecision:      BYTE
+    lfQuality:            BYTE
+    lfPitchAndFamily:     BYTE
+    lfFaceName:           [LF_FACESIZE] CHAR
 }
 
 struct LOGFONTW
 {
-    lfHeight:           LONG
-    lfWidth:            LONG
-    lfEscapement:       LONG
-    lfOrientation:      LONG
-    lfWeight:           LONG
-    lfItalic:           BYTE
-    lfUnderline:        BYTE
-    lfStrikeOut:        BYTE
-    lfCharSet:          BYTE
-    lfOutPrecision:     BYTE
-    lfClipPrecision:    BYTE
-    lfQuality:          BYTE
-    lfPitchAndFamily:   BYTE
-    lfFaceName:         [LF_FACESIZE] WCHAR
+    lfHeight:             LONG
+    lfWidth:              LONG
+    lfEscapement:         LONG
+    lfOrientation:        LONG
+    lfWeight:             LONG
+    lfItalic:             BYTE
+    lfUnderline:          BYTE
+    lfStrikeOut:          BYTE
+    lfCharSet:            BYTE
+    lfOutPrecision:       BYTE
+    lfClipPrecision:      BYTE
+    lfQuality:            BYTE
+    lfPitchAndFamily:     BYTE
+    lfFaceName:           [LF_FACESIZE] WCHAR
 }
 
 const LF_FULLFACESIZE = 64
 struct ENUMLOGFONTEXA
 {
-    elfLogFont:     LOGFONTA
-    elfFullName:    [LF_FULLFACESIZE] BYTE
-    elfStyle:       [LF_FACESIZE] BYTE
-    elfScript:      [LF_FACESIZE] BYTE
+    elfLogFont:      LOGFONTA
+    elfFullName:     [LF_FULLFACESIZE] BYTE
+    elfStyle:        [LF_FACESIZE] BYTE
+    elfScript:       [LF_FACESIZE] BYTE
 }
 
 struct ENUMLOGFONTEXW
 {
-    elfLogFont:     LOGFONTW
-    elfFullName:    [LF_FULLFACESIZE] WCHAR
-    elfStyle:       [LF_FACESIZE] WCHAR
-    elfScript:      [LF_FACESIZE] WCHAR
+    elfLogFont:      LOGFONTW
+    elfFullName:     [LF_FULLFACESIZE] WCHAR
+    elfStyle:        [LF_FACESIZE] WCHAR
+    elfScript:       [LF_FACESIZE] WCHAR
 }
 
 struct TEXTMETRICA
 {
-    tmHeight:           LONG
-    tmAscent:           LONG
-    tmDescent:          LONG
-    tmInternalLeading:  LONG
-    tmExternalLeading:  LONG
-    tmAveCharWidth:     LONG
-    tmMaxCharWidth:     LONG
-    tmWeight:           LONG
-    tmOverhang:         LONG
-    tmDigitizedAspectX: LONG
-    tmDigitizedAspectY: LONG
-    tmFirstChar:        BYTE
-    tmLastChar:         BYTE
-    tmDefaultChar:      BYTE
-    tmBreakChar:        BYTE
-    tmItalic:           BYTE
-    tmUnderlined:       BYTE
-    tmStruckOut:        BYTE
-    tmPitchAndFamily:   BYTE
-    tmCharSet:          BYTE
+    tmHeight:               LONG
+    tmAscent:               LONG
+    tmDescent:              LONG
+    tmInternalLeading:      LONG
+    tmExternalLeading:      LONG
+    tmAveCharWidth:         LONG
+    tmMaxCharWidth:         LONG
+    tmWeight:               LONG
+    tmOverhang:             LONG
+    tmDigitizedAspectX:     LONG
+    tmDigitizedAspectY:     LONG
+    tmFirstChar:            BYTE
+    tmLastChar:             BYTE
+    tmDefaultChar:          BYTE
+    tmBreakChar:            BYTE
+    tmItalic:               BYTE
+    tmUnderlined:           BYTE
+    tmStruckOut:            BYTE
+    tmPitchAndFamily:       BYTE
+    tmCharSet:              BYTE
 }
 
 struct TEXTMETRICW
 {
-    tmHeight:           LONG
-    tmAscent:           LONG
-    tmDescent:          LONG
-    tmInternalLeading:  LONG
-    tmExternalLeading:  LONG
-    tmAveCharWidth:     LONG
-    tmMaxCharWidth:     LONG
-    tmWeight:           LONG
-    tmOverhang:         LONG
-    tmDigitizedAspectX: LONG
-    tmDigitizedAspectY: LONG
-    tmFirstChar:        WCHAR
-    tmLastChar:         WCHAR
-    tmDefaultChar:      WCHAR
-    tmBreakChar:        WCHAR
-    tmItalic:           BYTE
-    tmUnderlined:       BYTE
-    tmStruckOut:        BYTE
-    tmPitchAndFamily:   BYTE
-    tmCharSet:          BYTE
+    tmHeight:               LONG
+    tmAscent:               LONG
+    tmDescent:              LONG
+    tmInternalLeading:      LONG
+    tmExternalLeading:      LONG
+    tmAveCharWidth:         LONG
+    tmMaxCharWidth:         LONG
+    tmWeight:               LONG
+    tmOverhang:             LONG
+    tmDigitizedAspectX:     LONG
+    tmDigitizedAspectY:     LONG
+    tmFirstChar:            WCHAR
+    tmLastChar:             WCHAR
+    tmDefaultChar:          WCHAR
+    tmBreakChar:            WCHAR
+    tmItalic:               BYTE
+    tmUnderlined:           BYTE
+    tmStruckOut:            BYTE
+    tmPitchAndFamily:       BYTE
+    tmCharSet:              BYTE
 }
 
 struct NEWTEXTMETRICA
 {
-    tmHeight:           LONG
-    tmAscent:           LONG
-    tmDescent:          LONG
-    tmInternalLeading:  LONG
-    tmExternalLeading:  LONG
-    tmAveCharWidth:     LONG
-    tmMaxCharWidth:     LONG
-    tmWeight:           LONG
-    tmOverhang:         LONG
-    tmDigitizedAspectX: LONG
-    tmDigitizedAspectY: LONG
-    tmFirstChar:        BYTE
-    tmLastChar:         BYTE
-    tmDefaultChar:      BYTE
-    tmBreakChar:        BYTE
-    tmItalic:           BYTE
-    tmUnderlined:       BYTE
-    tmStruckOut:        BYTE
-    tmPitchAndFamily:   BYTE
-    tmCharSet:          BYTE
-    ntmFlags:           DWORD
-    ntmSizeEM:          UINT
-    ntmCellHeight:      UINT
-    ntmAvgWidth:        UINT
+    tmHeight:               LONG
+    tmAscent:               LONG
+    tmDescent:              LONG
+    tmInternalLeading:      LONG
+    tmExternalLeading:      LONG
+    tmAveCharWidth:         LONG
+    tmMaxCharWidth:         LONG
+    tmWeight:               LONG
+    tmOverhang:             LONG
+    tmDigitizedAspectX:     LONG
+    tmDigitizedAspectY:     LONG
+    tmFirstChar:            BYTE
+    tmLastChar:             BYTE
+    tmDefaultChar:          BYTE
+    tmBreakChar:            BYTE
+    tmItalic:               BYTE
+    tmUnderlined:           BYTE
+    tmStruckOut:            BYTE
+    tmPitchAndFamily:       BYTE
+    tmCharSet:              BYTE
+    ntmFlags:               DWORD
+    ntmSizeEM:              UINT
+    ntmCellHeight:          UINT
+    ntmAvgWidth:            UINT
 }
 
 struct NEWTEXTMETRICW
 {
-    tmHeight:           LONG
-    tmAscent:           LONG
-    tmDescent:          LONG
-    tmInternalLeading:  LONG
-    tmExternalLeading:  LONG
-    tmAveCharWidth:     LONG
-    tmMaxCharWidth:     LONG
-    tmWeight:           LONG
-    tmOverhang:         LONG
-    tmDigitizedAspectX: LONG
-    tmDigitizedAspectY: LONG
-    tmFirstChar:        WCHAR
-    tmLastChar:         WCHAR
-    tmDefaultChar:      WCHAR
-    tmBreakChar:        WCHAR
-    tmItalic:           BYTE
-    tmUnderlined:       BYTE
-    tmStruckOut:        BYTE
-    tmPitchAndFamily:   BYTE
-    tmCharSet:          BYTE
-    ntmFlags:           DWORD
-    ntmSizeEM:          UINT
-    ntmCellHeight:      UINT
-    ntmAvgWidth:        UINT
+    tmHeight:               LONG
+    tmAscent:               LONG
+    tmDescent:              LONG
+    tmInternalLeading:      LONG
+    tmExternalLeading:      LONG
+    tmAveCharWidth:         LONG
+    tmMaxCharWidth:         LONG
+    tmWeight:               LONG
+    tmOverhang:             LONG
+    tmDigitizedAspectX:     LONG
+    tmDigitizedAspectY:     LONG
+    tmFirstChar:            WCHAR
+    tmLastChar:             WCHAR
+    tmDefaultChar:          WCHAR
+    tmBreakChar:            WCHAR
+    tmItalic:               BYTE
+    tmUnderlined:           BYTE
+    tmStruckOut:            BYTE
+    tmPitchAndFamily:       BYTE
+    tmCharSet:              BYTE
+    ntmFlags:               DWORD
+    ntmSizeEM:              UINT
+    ntmCellHeight:          UINT
+    ntmAvgWidth:            UINT
 }
 
-typealias FONTENUMPROCA = func(const *LOGFONTA, const *TEXTMETRICA, DWORD, LPARAM)->BOOL;
-typealias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->BOOL;
+typealias FONTENUMPROCA = func(const *LOGFONTA, const *TEXTMETRICA, DWORD, LPARAM)->BOOL
+typealias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->BOOL
 
 #[Swag.Inline]
-func RGB(r,g,b: s32)->COLORREF
+func RGB(r, g, b: s32)->COLORREF
 {
     return r | g << 8 | b << 16
 }

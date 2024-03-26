@@ -8,21 +8,21 @@ impl Image
     mtd toHICON()->HICON throw
     {
         var bi: BITMAPINFO
-        bi.bmiHeader.biSize = @sizeof(BITMAPINFOHEADER)
-        bi.bmiHeader.biWidth = width
-        bi.bmiHeader.biHeight = height
-        bi.bmiHeader.biPlanes = 1
-        bi.bmiHeader.biBitCount = bpp
+        bi.bmiHeader.biSize        = @sizeof(BITMAPINFOHEADER)
+        bi.bmiHeader.biWidth       = width
+        bi.bmiHeader.biHeight      = height
+        bi.bmiHeader.biPlanes      = 1
+        bi.bmiHeader.biBitCount    = bpp
         bi.bmiHeader.biCompression = BI_RGB
 
         var ppvBits: *u8
-        let hbmp = CreateDIBSection(null, &bi, acast DIB_RGB_COLORS, &ppvBits, null, 0)
+        let hbmp     = CreateDIBSection(null, &bi, acast DIB_RGB_COLORS, &ppvBits, null, 0)
         defer(noerr) DeleteObject(acast hbmp)
 
-        Memory.copy(ppvBits, pixels.buffer, cast(u64) width*height*bpp8)
+        Memory.copy(ppvBits, pixels.buffer, cast(u64) width * height * bpp8)
 
         var ii: ICONINFO
-        ii.fIcon = TRUE
+        ii.fIcon    = TRUE
         ii.hbmMask  = hbmp
         ii.hbmColor = hbmp
         return CreateIconIndirect(&ii)
@@ -33,7 +33,7 @@ impl Image
     func from(hicon: HICON)->Image throw
     {
         var result: retval
-        var ii: ICONINFO
+        var ii:     ICONINFO
 
         GetIconInfo(hicon, &ii)
         result = from(ii.hbmColor)

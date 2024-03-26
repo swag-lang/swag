@@ -4,29 +4,29 @@ using Swag
 
 interface IDecoder
 {
-    mtd start(input: const [..] u8) throw
-    mtd end() throw
+    mtd start(input: const [..] u8) throw;
+    mtd end() throw;
 
-    mtd beginField(val: Swag.TypeValue)->bool throw
-    mtd endField() throw
-    mtd beginSection(kind: SectionKind) throw
-    mtd endSection() throw
-    mtd getVersion()->u32
+    mtd beginField(val: Swag.TypeValue)->bool throw;
+    mtd endField() throw;
+    mtd beginSection(kind: SectionKind) throw;
+    mtd endSection() throw;
+    mtd getVersion()->u32;
 
-    mtd read(data: *void, dataType: typeinfo) throw
-    mtd readBufferU8(count: u64)->*u8 throw
+    mtd read(data: *void, dataType: typeinfo) throw;
+    mtd readBufferU8(count: u64)->*u8 throw;
 
-    mtd readBool()->bool throw
-    mtd readS8()->s8 throw
-    mtd readS16()->s16 throw
-    mtd readS32()->s32 throw
-    mtd readS64()->s64 throw
-    mtd readU8()->u8 throw
-    mtd readU16()->u16 throw
-    mtd readU32()->u32 throw
-    mtd readU64()->u64 throw
-    mtd readF32()->f32 throw
-    mtd readF64()->f64 throw
+    mtd readBool()->bool throw;
+    mtd readS8()->s8 throw;
+    mtd readS16()->s16 throw;
+    mtd readS32()->s32 throw;
+    mtd readS64()->s64 throw;
+    mtd readU8()->u8 throw;
+    mtd readU16()->u16 throw;
+    mtd readU32()->u32 throw;
+    mtd readU64()->u64 throw;
+    mtd readF32()->f32 throw;
+    mtd readF64()->f64 throw;
 }
 
 #[Swag.EnumFlags]
@@ -48,8 +48,8 @@ let myStruct = catch decoder.readAll'MyStruct(res.toSlice())
 */
 struct(T) Decoder
 {
-    serializer: T
-    flags:      DecoderFlags = Zero
+    serializer:     T
+    flags:          DecoderFlags = Zero
 }
 
 impl Decoder
@@ -78,25 +78,25 @@ impl Decoder
             case Bool:
                 dref cast(*bool) data = serializer.readNative'bool()
             case U8:
-                dref cast(*u8) data   = serializer.readNative'u8()
+                dref cast(*u8) data = serializer.readNative'u8()
             case U16:
-                dref cast(*u16) data  = serializer.readNative'u16()
+                dref cast(*u16) data = serializer.readNative'u16()
             case U32, Rune:
-                dref cast(*u32) data  = serializer.readNative'u32()
+                dref cast(*u32) data = serializer.readNative'u32()
             case U64:
-                dref cast(*u64) data  = serializer.readNative'u64()
+                dref cast(*u64) data = serializer.readNative'u64()
             case S8:
-                dref cast(*s8) data   = serializer.readNative's8()
+                dref cast(*s8) data = serializer.readNative's8()
             case S16:
-                dref cast(*s16) data  = serializer.readNative's16()
+                dref cast(*s16) data = serializer.readNative's16()
             case S32:
-                dref cast(*s32) data  = serializer.readNative's32()
+                dref cast(*s32) data = serializer.readNative's32()
             case S64:
-                dref cast(*s64) data  = serializer.readNative's64()
+                dref cast(*s64) data = serializer.readNative's64()
             case F32:
-                dref cast(*f32) data  = serializer.readNative'f32()
+                dref cast(*f32) data = serializer.readNative'f32()
             case F64:
-                dref cast(*f64) data  = serializer.readNative'f64()
+                dref cast(*f64) data = serializer.readNative'f64()
             }
 
             return
@@ -104,7 +104,7 @@ impl Decoder
 
         if Reflection.isType(type)
         {
-            let crc = serializer.readNative'u32()
+            let crc      = serializer.readNative'u32()
             let typeType = Reflection.crcToType(crc)
             dref cast(*typeinfo) data = typeType
             return
@@ -130,7 +130,7 @@ impl Decoder
                 itf.itable = @itftableof(cast(const *Swag.TypeInfoStruct) objType, cast(const *Swag.TypeInfoStruct) itfType)
 
                 typeVal.pointedType = objType
-                itf.obj = Memory.new(objType)
+                itf.obj             = Memory.new(objType)
                 readTypeValue(typeVal, itf.obj)
             }
 
@@ -153,7 +153,7 @@ impl Decoder
             {
                 let valueType = structType.generics[0].pointedType
 
-                var count = 0'u64
+                var count   = 0'u64
                 let treated = serializer.beginSequence(type, data, &count)
                 defer(noerr) serializer.endSequence()
 
@@ -171,7 +171,7 @@ impl Decoder
 
             // A structure with an implementation of ISerialize
             let idecoder = cast(IDecoder) self
-            let itf = @mkinterface(data, type, ISerialize)
+            let itf      = @mkinterface(data, type, ISerialize)
             if itf != null
             {
                 if itf.read(idecoder) do
@@ -218,7 +218,7 @@ impl Decoder
         if Reflection.isArray(type)
         {
             let typeArr = cast(const *TypeInfoArray) type
-            var count = typeArr.count
+            var count   = typeArr.count
             let treated = serializer.beginSequence(typeArr.pointedType, data, &count)
             defer(noerr) serializer.endSequence()
             if treated do
@@ -316,7 +316,7 @@ impl IDecoder for Decoder
     {
         let data = cast(^u8) Memory.alloc(count)
 
-        var cpt = count
+        var cpt     = count
         let treated = serializer.beginSequence(u8, data, &cpt)
         defer(noerr) serializer.endSequence()
 

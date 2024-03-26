@@ -2,8 +2,8 @@ using Swag, Core, Core.Errors
 
 struct ImageDecoder
 {
-    type:   const *TypeInfoStruct
-    itf:    IImageDecoder
+    type:     const *TypeInfoStruct
+    itf:      IImageDecoder
 }
 
 public struct DecodeOptions
@@ -16,8 +16,8 @@ public struct DecodeOptions
 // Interface to decode a buffer
 public interface IImageDecoder
 {
-    mtd canDecode(filename: string)->bool
-    mtd decode(buf: const [..] u8, opt: DecodeOptions)->Image throw
+    mtd canDecode(filename: string)->bool;
+    mtd decode(buf: const [..] u8, opt: DecodeOptions)->Image throw;
 }
 
 impl Image
@@ -59,7 +59,6 @@ impl Image
     }
 }
 
-
 // Load an image from file
 public impl Image
 {
@@ -70,7 +69,7 @@ public impl Image
 
         var decoder: ImageDecoder = undefined
         decoder.type = @typeof(T)
-        decoder.itf = @mkinterface(null, @typeof(T), IImageDecoder)
+        decoder.itf  = @mkinterface(null, @typeof(T), IImageDecoder)
         decoders.add(decoder)
     }
 

@@ -28,41 +28,85 @@ impl Vector2
     #[Swag.Overload]
     mtd(op: string) opAssign(other: Self)
     {
-        #if   op == "+="    { x += other.x; y += other.y; }
-        #elif op == "-="    { x -= other.x; y -= other.y; }
-        #elif op == "*="    { x *= other.x; y *= other.y; }
-        #elif op == "/="    { x /= other.x; y /= other.y; }
-        #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
+        #if op == "+="
+        {
+            x += other.x
+            y += other.y
+        }
+        #elif op == "-="
+        {
+            x -= other.x
+            y -= other.y
+        }
+        #elif op == "*="
+        {
+            x *= other.x
+            y *= other.y
+        }
+        #elif op == "/="
+        {
+            x /= other.x
+            y /= other.y
+        }
+        #else #do
+            #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload]
     mtd(op: string) opAssign(value: f32)
     {
-        #if   op == "+="    { x += value; y += value; }
-        #elif op == "-="    { x -= value; y -= value; }
-        #elif op == "*="    { x *= value; y *= value; }
-        #elif op == "/="    { x /= value; y /= value; }
-        #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
+        #if op == "+="
+        {
+            x += value
+            y += value
+        }
+        #elif op == "-="
+        {
+            x -= value
+            y -= value
+        }
+        #elif op == "*="
+        {
+            x *= value
+            y *= value
+        }
+        #elif op == "/="
+        {
+            x /= value
+            y /= value
+        }
+        #else #do
+            #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload]
     mtd(op: string) const opBinary(other: Self)->Self
     {
-        #if   op == "+" #do return Self{x + other.x, y + other.y}
-        #elif op == "-" #do return Self{x - other.x, y - other.y}
-        #elif op == "*" #do return Self{x * other.x, y * other.y}
-        #elif op == "/" #do return Self{x / other.x, y / other.y}
-        #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
+        #if op == "+" #do
+            return Self{x + other.x, y + other.y}
+        #elif op == "-" #do
+            return Self{x - other.x, y - other.y}
+        #elif op == "*" #do
+            return Self{x * other.x, y * other.y}
+        #elif op == "/" #do
+            return Self{x / other.x, y / other.y}
+        #else #do
+            #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload]
     mtd(op: string) const opBinary(value: f32)->Self
     {
-        #if   op == "+" #do return Self{x + value, y + value}
-        #elif op == "-" #do return Self{x - value, y - value}
-        #elif op == "*" #do return Self{x * value, y * value}
-        #elif op == "/" #do return Self{x / value, y / value}
-        #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
+        #if op == "+" #do
+            return Self{x + value, y + value}
+        #elif op == "-" #do
+            return Self{x - value, y - value}
+        #elif op == "*" #do
+            return Self{x * value, y * value}
+        #elif op == "/" #do
+            return Self{x / value, y / value}
+        #else #do
+            #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) const opUnary()->Self
@@ -254,8 +298,8 @@ impl Vector2
     // Rotate the vector by a given angle
     mtd rotate(angle: Math.Angle)
     {
-        let s = sin(angle.rad)
-        let c = cos(angle.rad)
+        let s  = sin(angle.rad)
+        let c  = cos(angle.rad)
         let tx = x
         let ty = y
         x = (c * tx) - (s * ty)

@@ -5,14 +5,15 @@ using Swag
 // Check if a given pointer is allocated
 func assertIsAllocated(buffer: ^void, size: u64, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
-    if !buffer do return
+    if !buffer do
+        return
 
     var req: AllocatorRequest
-    req.callerLoc   = loc
-    req.mode        = AllocatorMode.AssertIsAllocated
-    req.size        = size
-    req.address     = buffer
-    req.hint        = hint
+    req.callerLoc = loc
+    req.mode      = AllocatorMode.AssertIsAllocated
+    req.size      = size
+    req.address   = buffer
+    req.hint      = hint
 
     let talloc = allocator orelse @getcontext().allocator
     talloc.req(&req)
@@ -21,14 +22,15 @@ func assertIsAllocated(buffer: ^void, size: u64, allocator: IAllocator = null, h
 // Free the specified memory block
 func free(buffer: ^void, size: u64, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
-    if !buffer do return
+    if !buffer do
+        return
 
     var req: AllocatorRequest
-    req.callerLoc   = loc
-    req.mode        = AllocatorMode.Free
-    req.size        = size
-    req.address     = buffer
-    req.hint        = hint
+    req.callerLoc = loc
+    req.mode      = AllocatorMode.Free
+    req.size      = size
+    req.address   = buffer
+    req.hint      = hint
 
     let talloc = allocator orelse @getcontext().allocator
     talloc.req(&req)
@@ -38,9 +40,9 @@ func free(buffer: ^void, size: u64, allocator: IAllocator = null, hint: string =
 func freeAll(allocator: IAllocator, hint: string = null, loc = #callerlocation)
 {
     var req: AllocatorRequest
-    req.callerLoc   = loc
-    req.mode        = AllocatorMode.FreeAll
-    req.hint        = hint
+    req.callerLoc = loc
+    req.mode      = AllocatorMode.FreeAll
+    req.hint      = hint
 
     let talloc = allocator orelse @getcontext().allocator
     talloc.req(&req)
@@ -50,13 +52,13 @@ func freeAll(allocator: IAllocator, hint: string = null, loc = #callerlocation)
 func realloc(buffer: ^void, newSize: u64, oldSize: u64, allocator: IAllocator = null, alignment: u16 = 0, hint: string = null, loc = #callerlocation)->^void
 {
     var req: AllocatorRequest
-    req.callerLoc   = loc
-    req.hint        = hint
-    req.mode        = AllocatorMode.Realloc
-    req.address     = buffer
-    req.size        = newSize
-    req.oldSize     = oldSize
-    req.alignment  = alignment
+    req.callerLoc = loc
+    req.hint      = hint
+    req.mode      = AllocatorMode.Realloc
+    req.address   = buffer
+    req.size      = newSize
+    req.oldSize   = oldSize
+    req.alignment = alignment
 
     let talloc = allocator orelse @getcontext().allocator
     talloc.req(&req)
@@ -68,11 +70,11 @@ func realloc(buffer: ^void, newSize: u64, oldSize: u64, allocator: IAllocator = 
 func alloc(size: u64, allocator: IAllocator = null, alignment: u32 = 0, hint: string = null, loc = #callerlocation)->^void
 {
     var req: AllocatorRequest
-    req.callerLoc   = loc
-    req.hint        = hint
-    req.mode        = AllocatorMode.Alloc
-    req.size        = size
-    req.alignment  = alignment
+    req.callerLoc = loc
+    req.hint      = hint
+    req.mode      = AllocatorMode.Alloc
+    req.size      = size
+    req.alignment = alignment
 
     let talloc = allocator orelse @getcontext().allocator
     talloc.req(&req)
@@ -84,11 +86,11 @@ func alloc(size: u64, allocator: IAllocator = null, alignment: u32 = 0, hint: st
 func tempAlloc(size: u64, alignment: u32 = 0, hint: string = null, loc = #callerlocation)->^void
 {
     var req: AllocatorRequest
-    req.callerLoc   = loc
-    req.hint        = hint
-    req.mode        = AllocatorMode.Alloc
-    req.size        = size
-    req.alignment  = alignment
+    req.callerLoc = loc
+    req.hint      = hint
+    req.mode      = AllocatorMode.Alloc
+    req.size      = size
+    req.alignment = alignment
     @getcontext().tempAllocator.IAllocator.req(&req)
     return req.address
 }
@@ -98,7 +100,7 @@ func tempAlloc(size: u64, alignment: u32 = 0, hint: string = null, loc = #caller
 func new(type: typeinfo, allocator: IAllocator = null, alignment: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
 {
     let userHint = hint orelse type.fullname
-    let ptr = alloc(cast(u64) type.sizeof, allocator, alignment, userHint, loc)
+    let ptr      = alloc(cast(u64) type.sizeof, allocator, alignment, userHint, loc)
     if type.kind == Swag.TypeInfoKind.Struct
     {
         let typeStruct = cast(const *Swag.TypeInfoStruct) type
@@ -114,7 +116,7 @@ func new(type: typeinfo, allocator: IAllocator = null, alignment: u32 = 0, hint:
 func(T) new(allocator: IAllocator = null, alignment: u32 = 0, hint: string = null, loc = #callerlocation)->*T
 {
     let userHint = hint orelse @stringof(T)
-    let ptr = cast(*T) alloc(@sizeof(T), allocator, alignment, userHint, loc)
+    let ptr      = cast(*T) alloc(@sizeof(T), allocator, alignment, userHint, loc)
     @init(ptr, 1)
     return ptr
 }
@@ -159,7 +161,7 @@ func(T) new(num: u64, allocator: IAllocator = null, alignment: u32 = 0, hint: st
     Debug.assert(num > 0)
 
     let userHint = hint orelse @stringof(T)
-    let ptr = cast(^T) alloc(@sizeof(T) * num, allocator, alignment, userHint, loc)
+    let ptr      = cast(^T) alloc(@sizeof(T) * num, allocator, alignment, userHint, loc)
     @init(ptr, num)
     return ptr
 }

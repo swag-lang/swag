@@ -9,10 +9,10 @@ impl Painter
     {
         if width == 0 or height == 0 or color.a == 0 do
             return
-        sharedSolidBrush.color = color
-        sharedSolidBrush.type = BrushType.Texture
+        sharedSolidBrush.color   = color
+        sharedSolidBrush.type    = BrushType.Texture
         sharedSolidBrush.texture = texture
-        sharedSolidBrush.uvMode = .Fill
+        sharedSolidBrush.uvMode  = .Fill
         fillRect(x, y, width, height, sharedSolidBrush)
     }
 
@@ -27,10 +27,10 @@ impl Painter
     {
         if color.a == 0 do
             return
-        sharedSolidBrush.color = color
-        sharedSolidBrush.type = BrushType.Texture
+        sharedSolidBrush.color   = color
+        sharedSolidBrush.type    = BrushType.Texture
         sharedSolidBrush.texture = texture
-        sharedSolidBrush.uvMode = .Fill
+        sharedSolidBrush.uvMode  = .Fill
         fillRect(x, y, cast(f32) texture.width, cast(f32) texture.height, sharedSolidBrush)
     }
 
@@ -40,11 +40,11 @@ impl Painter
     {
         if srcRect.isEmpty() or width == 0 or height == 0 or color.a == 0 do
             return
-        sharedSolidBrush.color = color
-        sharedSolidBrush.type = BrushType.Texture
+        sharedSolidBrush.color   = color
+        sharedSolidBrush.type    = BrushType.Texture
         sharedSolidBrush.texture = texture
-        sharedSolidBrush.uvMode = .FillSubRect
-        sharedSolidBrush.uvRect = srcRect
+        sharedSolidBrush.uvMode  = .FillSubRect
+        sharedSolidBrush.uvRect  = srcRect
         fillRect(x, y, width, height, sharedSolidBrush)
     }
 
@@ -59,11 +59,11 @@ impl Painter
     {
         if srcRect.isEmpty() or color.a == 0 do
             return
-        sharedSolidBrush.color = color
-        sharedSolidBrush.type = BrushType.Texture
+        sharedSolidBrush.color   = color
+        sharedSolidBrush.type    = BrushType.Texture
         sharedSolidBrush.texture = texture
-        sharedSolidBrush.uvMode = .FillSubRect
-        sharedSolidBrush.uvRect = srcRect
+        sharedSolidBrush.uvMode  = .FillSubRect
+        sharedSolidBrush.uvRect  = srcRect
         fillRect(x, y, srcRect.width, srcRect.height, sharedSolidBrush)
     }
 }

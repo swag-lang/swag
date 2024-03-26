@@ -11,15 +11,15 @@ const InvalidShaderParamHandle: ShaderParamHandle = acast -1
 
 struct ShaderBase
 {
-    handle:         ShaderHandle
-    mvp:            ShaderParamHandle
-    mdl:            ShaderParamHandle
-    boundRect:      ShaderParamHandle
-    textureRect:    ShaderParamHandle
-    uvMode:         ShaderParamHandle
-    copyMode:       ShaderParamHandle
-    textureW:       ShaderParamHandle
-    textureH:       ShaderParamHandle
+    handle:          ShaderHandle
+    mvp:             ShaderParamHandle
+    mdl:             ShaderParamHandle
+    boundRect:       ShaderParamHandle
+    textureRect:     ShaderParamHandle
+    uvMode:          ShaderParamHandle
+    copyMode:        ShaderParamHandle
+    textureW:        ShaderParamHandle
+    textureH:        ShaderParamHandle
 }
 
 struct ShaderSimple
@@ -39,7 +39,7 @@ struct ShaderFont
 
 struct ShaderBlur
 {
-    using base: ShaderBase
-    radius:     ShaderParamHandle
-    axis:       ShaderParamHandle
+    using base:     ShaderBase
+    radius:         ShaderParamHandle
+    axis:           ShaderParamHandle
 }

@@ -4,7 +4,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum LabelFlags
 {
-    Zero = 0
+    Zero       = 0
     WordWrap
     LightText
     AutoHeight
@@ -14,27 +14,27 @@ struct Label
 {
     using wnd: Wnd
 
-    icon:               Icon
-    iconColor:          Color
-    labelFlags          = LabelFlags.Zero
-    horzAlignmentIcon   = StringHorzAlignment.Center
-    vertAlignmentIcon   = StringVertAlignment.Center
-    horzAlignmentText   = StringHorzAlignment.Center
-    vertAlignmentText   = StringVertAlignment.Center
-    paddingText:        Math.Vector4
-    paddingIcon:        Math.Vector4
+    icon:                 Icon
+    iconColor:            Color
+    labelFlags            = LabelFlags.Zero
+    horzAlignmentIcon     = StringHorzAlignment.Center
+    vertAlignmentIcon     = StringVertAlignment.Center
+    horzAlignmentText     = StringHorzAlignment.Center
+    vertAlignmentText     = StringVertAlignment.Center
+    paddingText:          Math.Vector4
+    paddingIcon:          Math.Vector4
 }
 
 impl IWnd for Label
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let bc = evt.bc
-        let theme = getTheme()
+        let bc      = evt.bc
+        let theme   = getTheme()
         let painter = evt.bc.painter
 
         var clientRect = getClientRect()
-        var pos = clientRect
+        var pos        = clientRect
         pos.applyPadding(padding)
 
         // Icon
@@ -88,7 +88,7 @@ impl Label
         sf.flags |= .Clip
         if labelFlags.has(.WordWrap) do
             sf.flags.add(.WordWrap)
-        sf.font = getFont()
+        sf.font          = getFont()
         sf.horzAlignment = horzAlignmentText
         sf.vertAlignment = vertAlignmentText
 
@@ -130,7 +130,7 @@ impl Label
         if labelFlags.has(.AutoHeight)
         {
             var painter: Painter{fake: true}
-            var sf = getStringFormat(false)
+            var sf       = getStringFormat(false)
             name.compute()
             painter.computeLayout(position, &name, sf)
             position.height = name.boundRect.height
@@ -145,9 +145,9 @@ impl Label
         autoHeight()
     }
 
-	// Get the text
-	mtd getText()->string
-	{
-		return name.raw
-	}
+    // Get the text
+    mtd getText()->string
+    {
+        return name.raw
+    }
 }

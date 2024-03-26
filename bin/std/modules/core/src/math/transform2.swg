@@ -3,16 +3,16 @@
 
 struct Transform2
 {
-    m11, m12:   f32
-    m21, m22:   f32
-    m31, m32:   f32
+    m11, m12: f32
+    m21, m22: f32
+    m31, m32: f32
 
     #[Swag.Offset("m11")]
-    m:  [2,2] f32
+    m:   [2, 2] f32
     #[Swag.Offset("m31")]
-    tx: f32
+    tx:  f32
     #[Swag.Offset("m32")]
-    ty: f32
+    ty:  f32
 }
 
 impl Transform2
@@ -22,9 +22,12 @@ impl Transform2
     // Set transform to identity
     mtd setIdentity()
     {
-        m11 = 1; m12 = 0
-        m21 = 0; m22 = 1
-        m31 = 0; m32 = 0
+        m11 = 1
+        m12 = 0
+        m21 = 0
+        m22 = 1
+        m31 = 0
+        m32 = 0
     }
 
     // Creates a rotation matix, with a given center of rotation
@@ -33,8 +36,8 @@ impl Transform2
         var result: retval = undefined
         using result
 
-        let s = Math.sin(angle)
-        let c = Math.cos(angle)
+        let s  = Math.sin(angle)
+        let c  = Math.cos(angle)
         let c1 = 1.0 - c
 
         tx = (centerX * c1) + (centerY * s)

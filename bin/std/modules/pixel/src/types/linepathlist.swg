@@ -3,9 +3,9 @@ using Core, Core.Math
 
 struct LinePathList
 {
-    paths:  Array'(*LinePath)
-    bvMin:  Vector2
-    bvMax:  Vector2
+    paths:     Array'(*LinePath)
+    bvMin:     Vector2
+    bvMax:     Vector2
 }
 
 impl LinePathList

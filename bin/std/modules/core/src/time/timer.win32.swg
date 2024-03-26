@@ -28,7 +28,7 @@ impl Timer
         Debug.assert(elapsedTimeMs > 0)
         Debug.assert(lambda != null)
         userLambda = lambda
-        context = dref @getcontext()
+        context    = dref @getcontext()
         try CreateTimerQueueTimer(&handle, null, @mkcallback(&timerEntry), self, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
     }
 

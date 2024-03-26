@@ -3,7 +3,7 @@ using Core, Pixel, Serialization
 #[Swag.EnumFlags]
 public enum SizingBorder
 {
-    Zero = 0
+    Zero   = 0
     Left
     Top
     Right
@@ -12,14 +12,14 @@ public enum SizingBorder
 
 public struct SurfaceWnd
 {
-    using base:     FrameWnd
-    icon:           Icon
-    minimizeBtn:    *IconButton
-    maximizeBtn:    *IconButton
-    closeBtn:       *IconButton
-    movingSurface:  bool
-    sizingBorder:   SizingBorder = Zero
-    cursorSet:      bool
+    using base:        FrameWnd
+    icon:              Icon
+    minimizeBtn:       *IconButton
+    maximizeBtn:       *IconButton
+    closeBtn:          *IconButton
+    movingSurface:     bool
+    sizingBorder:      SizingBorder = Zero
+    cursorSet:         bool
 }
 
 impl IWnd for SurfaceWnd
@@ -97,10 +97,10 @@ impl IWnd for SurfaceWnd
                     case Top, Bottom:
                         cursorSet = true
                         surface.app.pushCursor(Cursor.from(.SizeNS))
-                    case Right|Bottom, Left|Top:
+                    case Right | Bottom, Left | Top:
                         cursorSet = true
                         surface.app.pushCursor(Cursor.from(.SizeNWSE))
-                    case Right|Top, Left|Bottom:
+                    case Right | Top, Left | Bottom:
                         cursorSet = true
                         surface.app.pushCursor(Cursor.from(.SizeNESW))
                     }
@@ -116,7 +116,7 @@ impl IWnd for SurfaceWnd
                 break
 
             var hasChanged = false
-            var pos = surface.position
+            var pos        = surface.position
 
             if sizingBorder & .Left
             {
@@ -146,7 +146,7 @@ impl IWnd for SurfaceWnd
 
             if sizingBorder == .Zero
             {
-                pos.offset(evt.move.x, evt.move.y);
+                pos.offset(evt.move.x, evt.move.y)
                 hasChanged = true
             }
 
@@ -183,10 +183,10 @@ impl IWnd for SurfaceWnd
         var clientRect = getClientRect()
 
         var pos = clientRect
-        pos.width = surface.wnd.padding.y * 1.5
-        pos.x = clientRect.right() - pos.width
+        pos.width  = surface.wnd.padding.y * 1.5
+        pos.x      = clientRect.right() - pos.width
         pos.height = surface.wnd.padding.y
-        pos.y = 0
+        pos.y      = 0
 
         if closeBtn
         {
@@ -213,10 +213,10 @@ impl IWnd for SurfaceWnd
     {
         if isPendingDestroy do
             return
-        let bc = evt.bc
-        let theme = getTheme()
+        let bc     = evt.bc
+        let theme  = getTheme()
         let colors = getThemeColors()
-        let rects = getThemeRects()
+        let rects  = getThemeRects()
 
         var clientRect = getClientRect()
 
@@ -265,8 +265,8 @@ impl IWnd for SurfaceWnd
 
             var sf: Pixel.RichStringFormat
             sf.vertAlignment = .Center
-            sf.font = getFont()
-            sf.palette[0] = surface.app.isActivated ? colors.wnd_CaptionText : colors.wnd_CaptionNotActivatedText
+            sf.font          = getFont()
+            sf.palette[0]    = surface.app.isActivated ? colors.wnd_CaptionText : colors.wnd_CaptionNotActivatedText
             bc.painter.drawRichString(posCaption, &name, sf)
         }
     }
@@ -305,7 +305,7 @@ impl SurfaceWnd
         {
             if !minimizeBtn
             {
-                with minimizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), {0,0,0,0})
+                with minimizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), {0, 0, 0, 0})
                 {
                     .sigPressed += &onMinimize
                 }
@@ -321,7 +321,7 @@ impl SurfaceWnd
         {
             if !maximizeBtn
             {
-                with maximizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), {0,0,0,0})
+                with maximizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), {0, 0, 0, 0})
                 {
                     .sigPressed += &onMaximize
                 }
@@ -337,11 +337,11 @@ impl SurfaceWnd
         {
             if !closeBtn
             {
-                with closeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndClose), {0,0,0,0})
+                with closeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndClose), {0, 0, 0, 0})
                 {
                     .sigPressed += &onClose
-                    .style.addStyleSheetColors(@nameof(ThemeColors.btnIcon_HotBk)     ++" $" ++ @nameof(ThemeColors.wnd_BtnCloseBk))
-                    .style.addStyleSheetColors(@nameof(ThemeColors.btnIcon_PressedBk) ++" $" ++ @nameof(ThemeColors.wnd_BtnCloseHotBk))
+                    .style.addStyleSheetColors(@nameof(ThemeColors.btnIcon_HotBk) ++ " $" ++ @nameof(ThemeColors.wnd_BtnCloseBk))
+                    .style.addStyleSheetColors(@nameof(ThemeColors.btnIcon_PressedBk) ++ " $" ++ @nameof(ThemeColors.wnd_BtnCloseHotBk))
                 }
             }
         }
@@ -358,7 +358,7 @@ impl SurfaceWnd
 
         if userView
         {
-            view = userView
+            view             = userView
             view.hookOnEvent = hook
             view.setParent(self)
         }

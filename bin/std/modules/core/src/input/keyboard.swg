@@ -4,17 +4,17 @@
 // Allows getting keystrokes from keyboard
 struct Keyboard
 {
-    previousState:  KeyboardState
-    currentState:   KeyboardState
-    pressedRepeat:  [@countof(Key)] bool
-    pressedTime:    [@countof(Key)] u32
+    previousState:     KeyboardState
+    currentState:      KeyboardState
+    pressedRepeat:     [@countof(Key)] bool
+    pressedTime:       [@countof(Key)] u32
 
     // Delay, in milliseconds, before a repeated key stroke starts
-    pressedRepeatStartTimeMs:   u32 = 400
+    pressedRepeatStartTimeMs: u32 = 400
     // Delay, in miliseconds, between two repeated key strokes
-    pressedRepeatTimeMs:        u32 = 50
+    pressedRepeatTimeMs: u32 = 50
     // Allow key stroke repetition if true
-    canRepeat:                  bool = true
+    canRepeat: bool = true
 }
 
 impl Keyboard
@@ -32,7 +32,7 @@ impl Keyboard
             if !currentState.isKeyPressed(cast(Key) i)
             {
                 pressedRepeat[i] = false
-                pressedTime[i] = 0
+                pressedTime[i]   = 0
             }
             elif canRepeat
             {
@@ -45,14 +45,14 @@ impl Keyboard
                 {
                     if now - pressedTime[i] >= pressedRepeatStartTimeMs
                     {
-                        pressedRepeat[i] = true
-                        pressedTime[i]   = now
+                        pressedRepeat[i]         = true
+                        pressedTime[i]           = now
                         previousState.pressed[i] = false
                     }
                 }
                 elif now - pressedTime[i] >= pressedRepeatTimeMs
                 {
-                    pressedTime[i] = now
+                    pressedTime[i]           = now
                     previousState.pressed[i] = false
                 }
             }
@@ -97,12 +97,18 @@ impl Keyboard
     mtd getPressedModifiers()->KeyModifiers
     {
         var modifiers: Input.KeyModifiers = .Zero
-        if self.isKeyPressed(Input.Key.LShift)   do modifiers |= .Shift
-        if self.isKeyPressed(Input.Key.RShift)   do modifiers |= .Shift
-        if self.isKeyPressed(Input.Key.LControl) do modifiers |= .Control
-        if self.isKeyPressed(Input.Key.RControl) do modifiers |= .Control
-        if self.isKeyPressed(Input.Key.LMenu)    do modifiers |= .Alt
-        if self.isKeyPressed(Input.Key.RMenu)    do modifiers |= .Alt
+        if self.isKeyPressed(Input.Key.LShift) do
+            modifiers |= .Shift
+        if self.isKeyPressed(Input.Key.RShift) do
+            modifiers |= .Shift
+        if self.isKeyPressed(Input.Key.LControl) do
+            modifiers |= .Control
+        if self.isKeyPressed(Input.Key.RControl) do
+            modifiers |= .Control
+        if self.isKeyPressed(Input.Key.LMenu) do
+            modifiers |= .Alt
+        if self.isKeyPressed(Input.Key.RMenu) do
+            modifiers |= .Alt
         return modifiers
     }
 }

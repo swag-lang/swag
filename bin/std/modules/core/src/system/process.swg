@@ -5,8 +5,8 @@ typealias ProcessHandle = const *void
 
 struct StartInfo
 {
-    fileName:   string
-    arguments:  string
+    fileName:      string
+    arguments:     string
 }
 
 struct Process
@@ -19,7 +19,7 @@ struct Process
 func startProcess(fileName: string, arguments: string = null)->Process throw
 {
     var info: StartInfo
-    info.fileName = fileName
+    info.fileName  = fileName
     info.arguments = arguments
     return try startProcess(info)
 }

@@ -8,26 +8,26 @@ var g_ColorToWin: [@countof(Color)] u16 = undefined
 func colorToWin()
 {
     using Color
-    g_ColorToWin[Black] 		= 0
-    g_ColorToWin[White] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
-    g_ColorToWin[Gray]  		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
-    g_ColorToWin[Red]  		    = FOREGROUND_RED | FOREGROUND_INTENSITY
-    g_ColorToWin[Green] 		= FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_ColorToWin[Blue]  		= FOREGROUND_BLUE | FOREGROUND_INTENSITY
-    g_ColorToWin[Cyan]  		= FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_ColorToWin[Magenta] 	    = FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY
-    g_ColorToWin[Yellow] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_ColorToWin[DarkRed] 	    = FOREGROUND_RED
-    g_ColorToWin[DarkGreen] 	= FOREGROUND_GREEN
-    g_ColorToWin[DarkBlue] 	    = FOREGROUND_BLUE
-    g_ColorToWin[DarkCyan] 	    = FOREGROUND_BLUE | FOREGROUND_GREEN
-    g_ColorToWin[DarkMagenta]   = FOREGROUND_BLUE | FOREGROUND_RED
-    g_ColorToWin[DarkYellow] 	= FOREGROUND_RED | FOREGROUND_GREEN
+    g_ColorToWin[Black]       = 0
+    g_ColorToWin[White]       = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
+    g_ColorToWin[Gray]        = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+    g_ColorToWin[Red]         = FOREGROUND_RED | FOREGROUND_INTENSITY
+    g_ColorToWin[Green]       = FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_ColorToWin[Blue]        = FOREGROUND_BLUE | FOREGROUND_INTENSITY
+    g_ColorToWin[Cyan]        = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_ColorToWin[Magenta]     = FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY
+    g_ColorToWin[Yellow]      = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_ColorToWin[DarkRed]     = FOREGROUND_RED
+    g_ColorToWin[DarkGreen]   = FOREGROUND_GREEN
+    g_ColorToWin[DarkBlue]    = FOREGROUND_BLUE
+    g_ColorToWin[DarkCyan]    = FOREGROUND_BLUE | FOREGROUND_GREEN
+    g_ColorToWin[DarkMagenta] = FOREGROUND_BLUE | FOREGROUND_RED
+    g_ColorToWin[DarkYellow]  = FOREGROUND_RED | FOREGROUND_GREEN
 }
 
-var g_StdOutputHandle: HANDLE
+var g_StdOutputHandle:   HANDLE
 var g_StdOutputInitAttr: u16
-var g_StdOutputCurAttr: u16
+var g_StdOutputCurAttr:  u16
 
 #run
 {
@@ -41,7 +41,7 @@ var g_StdOutputCurAttr: u16
     var csbi: CONSOLE_SCREEN_BUFFER_INFO
     catch GetConsoleScreenBufferInfo(g_StdOutputHandle, &csbi)
     g_StdOutputInitAttr = csbi.wAttributes
-    g_StdOutputCurAttr = g_StdOutputInitAttr
+    g_StdOutputCurAttr  = g_StdOutputInitAttr
 }
 
 #drop
@@ -77,7 +77,8 @@ public func resetColor()
 public func printf(message: string, params: ...)
     #validifx
     {
-        if !@isconstexpr(message) or !@isconstexpr(params) do return true
+        if !@isconstexpr(message) or !@isconstexpr(params) do
+            return true
         Format.checkFormat(@nameof(#self), message, params)
         return true
     }
@@ -104,20 +105,20 @@ public func prompt()->String
     const BufSize = 1024'u32
 
     var result: retval
-	var buffer: [BufSize] u8
-	var dwRead: DWORD
+    var buffer: [BufSize] u8
+    var dwRead: DWORD
 
-	let h = GetStdHandle(STD_INPUT_HANDLE)
-	loop
-	{
-		if !ReadFile(h, &buffer[0], BufSize, &dwRead, null) do
+    let h = GetStdHandle(STD_INPUT_HANDLE)
+    loop
+    {
+        if !ReadFile(h, &buffer[0], BufSize, &dwRead, null) do
             break
         result.append(@mkstring(&buffer[0], dwRead))
-		if dwRead < BufSize do
-			break
-		if buffer[BufSize - 1] == `\n` do
-			break
-	}
+        if dwRead < BufSize do
+            break
+        if buffer[BufSize - 1] == `\n` do
+            break
+    }
 
     return result
 }

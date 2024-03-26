@@ -13,9 +13,9 @@ impl Painter
             return
         Debug.assert(endAngle.rad > startAngle.rad)
 
-        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.type  = .SolidColor
         sharedSolidPen.brush.color = color
-        sharedSolidPen.size = penSize
+        sharedSolidPen.size        = penSize
 
         sharedLinePath.setArc(centerX, centerY, radius, startAngle, endAngle)
         drawPath(&sharedLinePath, sharedSolidPen)
@@ -40,9 +40,9 @@ impl Painter
     {
         if radius == 0 or color.a == 0 do
             return
-        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.type  = .SolidColor
         sharedSolidPen.brush.color = color
-        sharedSolidPen.size = penSize
+        sharedSolidPen.size        = penSize
         drawCircle(centerX, centerY, radius, sharedSolidPen)
     }
 
@@ -67,7 +67,7 @@ impl Painter
     {
         if radius == 0 or color.a == 0 do
             return
-        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.type  = .SolidColor
         sharedSolidBrush.color = color
         sharedLinePath.setEllipse(centerX, centerY, radius, radius)
         fillPath(&sharedLinePath, sharedSolidBrush)
@@ -79,9 +79,9 @@ impl Painter
     {
         if radiusX == 0 or radiusY == 0 or color.a == 0 or penSize == 0 do
             return
-        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.type  = .SolidColor
         sharedSolidPen.brush.color = color
-        sharedSolidPen.size = penSize
+        sharedSolidPen.size        = penSize
         drawEllipse(centerX, centerY, radiusX, radiusY, sharedSolidPen)
     }
 
@@ -100,8 +100,8 @@ impl Painter
         case None:
             break
         case Inside:
-            rX -= pen.size*0.5
-            rY -= pen.size*0.5
+            rX -= pen.size * 0.5
+            rY -= pen.size * 0.5
         }
 
         sharedLinePath.setEllipseRaw(centerX, centerY, rX, rY)
@@ -123,7 +123,7 @@ impl Painter
     {
         if radiusX == 0 or radiusY == 0 or color.a == 0 do
             return
-        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.type  = .SolidColor
         sharedSolidBrush.color = color
         sharedLinePath.setEllipse(centerX, centerY, radiusX, radiusY)
         fillPath(&sharedLinePath, sharedSolidBrush)

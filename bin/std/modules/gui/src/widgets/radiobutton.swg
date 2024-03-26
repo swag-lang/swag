@@ -3,16 +3,16 @@ using Core, Pixel
 
 struct RadioButton
 {
-    using button:       Button
-    checked:            bool
-    radioButtonFlags    = RadioButtonFlags.Zero
-    sigChanged:         SigArray'closure(*Self)
+    using button:        Button
+    checked:             bool
+    radioButtonFlags     = RadioButtonFlags.Zero
+    sigChanged:          SigArray'closure(*Self)
 }
 
 #[Swag.EnumFlags]
 enum RadioButtonFlags
 {
-    Zero = 0
+    Zero       = 0
     RightAlign
 }
 
@@ -20,47 +20,47 @@ impl IWnd for RadioButton
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let bc = evt.bc
-        let theme = getTheme()
+        let bc      = evt.bc
+        let theme   = getTheme()
         let metrics = getThemeMetrics()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
 
-        var subRectBk:      *ThemeImageRect
-        var subRectBorder:  *ThemeImageRect
-        var subRectMark:    *ThemeImageRect
-        var colorBk:        Color = undefined
-        var colorBorder:    Color = undefined
-        var colorMark:      Color = undefined
-        var colorText:      Color = undefined
+        var subRectBk:     *ThemeImageRect
+        var subRectBorder: *ThemeImageRect
+        var subRectMark:   *ThemeImageRect
+        var colorBk:       Color = undefined
+        var colorBorder:   Color = undefined
+        var colorMark:     Color = undefined
+        var colorText:     Color = undefined
 
         switch
         {
         case bc.isDisabled:
-            colorBk       = colors.btnCheck_DisabledBk
-            colorBorder   = colors.btnCheck_DisabledBorder
-            colorMark     = colors.btnCheck_DisabledMark
-            colorText     = colors.btnCheck_DisabledText
+            colorBk     = colors.btnCheck_DisabledBk
+            colorBorder = colors.btnCheck_DisabledBorder
+            colorMark   = colors.btnCheck_DisabledMark
+            colorText   = colors.btnCheck_DisabledText
         case isPressed:
-            colorBk       = colors.btnCheck_PressedBk
-            colorBorder   = colors.btnCheck_PressedBorder
-            colorMark     = colors.btnCheck_PressedMark
-            colorText     = colors.btnCheck_PressedText
+            colorBk     = colors.btnCheck_PressedBk
+            colorBorder = colors.btnCheck_PressedBorder
+            colorMark   = colors.btnCheck_PressedMark
+            colorText   = colors.btnCheck_PressedText
         case isHot:
-            colorBk       = colors.btnCheck_HotBk
-            colorBorder   = colors.btnCheck_HotBorder
-            colorMark     = colors.btnCheck_HotMark
-            colorText     = colors.btnCheck_HotText
+            colorBk     = colors.btnCheck_HotBk
+            colorBorder = colors.btnCheck_HotBorder
+            colorMark   = colors.btnCheck_HotMark
+            colorText   = colors.btnCheck_HotText
         case checked:
-            colorBk       = colors.btnCheck_CheckedBk
-            colorText     = colors.btnCheck_CheckedText
-            colorBorder   = colors.btnCheck_CheckedBorder
-            colorMark     = colors.btnCheck_CheckedMark
+            colorBk     = colors.btnCheck_CheckedBk
+            colorText   = colors.btnCheck_CheckedText
+            colorBorder = colors.btnCheck_CheckedBorder
+            colorMark   = colors.btnCheck_CheckedMark
         default:
-            colorBk       = colors.btnCheck_Bk
-            colorBorder   = colors.btnCheck_Border
-            colorMark     = colors.btnCheck_Mark
-            colorText     = colors.btnCheck_Text
+            colorBk     = colors.btnCheck_Bk
+            colorBorder = colors.btnCheck_Border
+            colorMark   = colors.btnCheck_Mark
+            colorText   = colors.btnCheck_Text
         }
 
         if checked
@@ -77,10 +77,10 @@ impl IWnd for RadioButton
 
         // Box
         var clientRect = getClientRect()
-        var posBox = clientRect
+        var posBox     = clientRect
         posBox.height = metrics.btnCheck_Size
-        posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
-        posBox.width = posBox.height
+        posBox.y      = clientRect.vertCenter() - (posBox.height * 0.5)
+        posBox.width  = posBox.height
         if radioButtonFlags.has(.RightAlign) do
             posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
@@ -95,8 +95,8 @@ impl IWnd for RadioButton
         else do
             format.horzAlignment = .Left
         format.vertAlignment = .Center
-        format.flags = .Clip
-        format.font = getFont()
+        format.flags         = .Clip
+        format.font          = getFont()
         var labelPos = clientRect
         if !radioButtonFlags.has(.RightAlign) do
             labelPos.x += posBox.width + metrics.btnCheck_Padding

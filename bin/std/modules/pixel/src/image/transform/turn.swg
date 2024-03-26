@@ -21,11 +21,11 @@ impl Image
             case T90:
                 dstImage.visitPixels(&f)
                 {
-                    let data = cast(*@decltype(f)) userData
+                    let data     = cast(*@decltype(f)) userData
                     let srcImage = cast(const *Image) data.img
-                    let nx = srcImage.width - y - 1
-                    let ny = x
-                    let pixSrc = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
+                    let nx       = srcImage.width - y - 1
+                    let ny       = x
+                    let pixSrc   = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
                 break
@@ -33,11 +33,11 @@ impl Image
             case T180:
                 dstImage.visitPixels(&f)
                 {
-                    let data = cast(*@decltype(f)) userData
+                    let data     = cast(*@decltype(f)) userData
                     let srcImage = cast(const *Image) data.img
-                    let nx = srcImage.width - x - 1
-                    let ny = srcImage.height - y - 1
-                    let pixSrc = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
+                    let nx       = srcImage.width - x - 1
+                    let ny       = srcImage.height - y - 1
+                    let pixSrc   = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
                 break
@@ -45,11 +45,11 @@ impl Image
             case T270:
                 dstImage.visitPixels(&f)
                 {
-                    let data = cast(*@decltype(f)) userData
+                    let data     = cast(*@decltype(f)) userData
                     let srcImage = cast(const *Image) data.img
-                    let nx = y
-                    let ny = srcImage.height - x - 1
-                    let pixSrc = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
+                    let nx       = y
+                    let ny       = srcImage.height - x - 1
+                    let pixSrc   = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
                 break
@@ -58,9 +58,12 @@ impl Image
 
         switch bpp
         {
-        case 24: doIt'24()
-        case 32: doIt'32()
-        default: Debug.assert(false)
+        case 24:
+            doIt'24()
+        case 32:
+            doIt'32()
+        default:
+            Debug.assert(false)
         }
     }
 

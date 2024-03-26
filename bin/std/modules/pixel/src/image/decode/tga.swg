@@ -10,20 +10,20 @@ const TYPE_RLE_MONO = 11
 
 struct Header
 {
-    size:           u8
-    colorMapType:   u8
-    imageTypeCode:  u8
-    originL:        u8
-    originH:        u8
-    paletteLengthL: u8
-    paletteLengthH: u8
-    bpcInPalette:   u8
-    left:           u16
-    top:            u16
-    width:          u16
-    height:         u16
-    bpp:            u8
-    descriptorByte: u8
+    size:               u8
+    colorMapType:       u8
+    imageTypeCode:      u8
+    originL:            u8
+    originH:            u8
+    paletteLengthL:     u8
+    paletteLengthH:     u8
+    bpcInPalette:       u8
+    left:               u16
+    top:                u16
+    width:              u16
+    height:             u16
+    bpp:                u8
+    descriptorByte:     u8
 }
 
 public struct Decoder
@@ -35,15 +35,19 @@ impl Decoder
     func uncompress(bpp: u8, dstBuffer: ^u8, srcBuffer, lastSrc: const ^u8, length: u64) throw
     {
         let lastDest = dstBuffer + length
-        var dest = dstBuffer
-        var src = srcBuffer
-        var l = length
-        let bpp8 = bpp >> 3
+        var dest     = dstBuffer
+        var src      = srcBuffer
+        var l        = length
+        let bpp8     = bpp >> 3
 
         var invalid = false
         while l > 0
         {
-            if src >= lastSrc { invalid = true; break; }
+            if src >= lastSrc
+            {
+                invalid = true
+                break
+            }
             var num = dref src
             src += 1
             if num & 0x80
@@ -51,7 +55,11 @@ impl Decoder
                 num -= 127
                 let val = dref cast(const *u32) src
                 src += bpp8
-                if dest + bpp8 * num > lastDest { invalid = true; break; }
+                if dest + bpp8 * num > lastDest
+                {
+                    invalid = true
+                    break
+                }
 
                 loop num
                 {
@@ -76,8 +84,16 @@ impl Decoder
             else
             {
                 let val = cast(u64) bpp8 * (num + 1)
-                if dest + val > lastDest { invalid = true; break; }
-                if src + val > lastSrc { invalid = true; break; }
+                if dest + val > lastDest
+                {
+                    invalid = true
+                    break
+                }
+                if src + val > lastSrc
+                {
+                    invalid = true
+                    break
+                }
                 Memory.copy(dest, src, val)
                 l -= val
                 dest += val
@@ -99,11 +115,11 @@ public impl IImageDecoder for Decoder
 
     func impl decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
-        var dataof = @dataof(buffer)
+        var dataof  = @dataof(buffer)
         let countof = @countof(buffer)
-        let last = dataof + countof
+        let last    = dataof + countof
 
-        if countof <= @sizeof(Header)  do
+        if countof <= @sizeof(Header) do
             throw InvalidFormatError{"invalid source buffer"}
         let header = cast(const *Header) dataof
         dataof += @sizeof(Header)
@@ -125,7 +141,7 @@ public impl IImageDecoder for Decoder
         result.allocPixels()
 
         dataof += header.size
-        switch (header.imageTypeCode)
+        switch header.imageTypeCode
         {
         case TYPE_MAP, TYPE_RGB, TYPE_MONO:
             if dataof + result.size > last do

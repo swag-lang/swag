@@ -11,28 +11,28 @@ enum SectionKind
 
 interface IEncoder
 {
-    mtd start(result: *ConcatBuffer) throw
-    mtd end() throw
+    mtd start(result: *ConcatBuffer) throw;
+    mtd end() throw;
 
-    mtd beginField(val: Swag.TypeValue) throw
-    mtd endField() throw
-    mtd beginSection(kind: SectionKind) throw
-    mtd endSection() throw
+    mtd beginField(val: Swag.TypeValue) throw;
+    mtd endField() throw;
+    mtd beginSection(kind: SectionKind) throw;
+    mtd endSection() throw;
 
-    mtd write(data: const ^void, type: typeinfo) throw
-    mtd writeBufferU8(data: const ^u8, count: u64) throw
+    mtd write(data: const ^void, type: typeinfo) throw;
+    mtd writeBufferU8(data: const ^u8, count: u64) throw;
 
-    mtd writeBool(value: bool)
-    mtd writeS8(value: s8)
-    mtd writeS16(value: s16)
-    mtd writeS32(value: s32)
-    mtd writeS64(value: s64)
-    mtd writeU8(value: u8)
-    mtd writeU16(value: u16)
-    mtd writeU32(value: u32)
-    mtd writeU64(value: u64)
-    mtd writeF32(value: f32)
-    mtd writeF64(value: f64)
+    mtd writeBool(value: bool);
+    mtd writeS8(value: s8);
+    mtd writeS16(value: s16);
+    mtd writeS32(value: s32);
+    mtd writeS64(value: s64);
+    mtd writeU8(value: u8);
+    mtd writeU16(value: u16);
+    mtd writeU32(value: u32);
+    mtd writeU64(value: u64);
+    mtd writeF32(value: f32);
+    mtd writeF64(value: f64);
 }
 
 /*
@@ -62,8 +62,8 @@ A struct can implement the 'ISerialize' interface in order to have a specific se
 */
 struct(T) Encoder
 {
-    serializer: T
-    errorIfUnknown: bool // If true, an error will be raised if a type cannot be saved. The field will be ignored if set to false
+    serializer:         T
+    errorIfUnknown:     bool     // If true, an error will be raised if a type cannot be saved. The field will be ignored if set to false
 }
 
 impl Encoder
@@ -188,7 +188,7 @@ impl Encoder
             if structType.fromGeneric == @typeof(Core.Array)
             {
                 let valueType = structType.generics[0].pointedType
-                let ptrArr = cast(const *Array) data
+                let ptrArr    = cast(const *Array) data
 
                 let treated = serializer.beginSequence(type, data, ptrArr.count)
                 defer serializer.endSequence()

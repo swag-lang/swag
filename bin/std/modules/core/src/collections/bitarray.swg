@@ -4,10 +4,10 @@ using Swag
 // the bit is on (1) and `false` indicates the bit is off (0)
 public struct BitArray
 {
-    buffer:     ^u32
-    allocator:  IAllocator
-    count:      u64
-    capacity:   u64
+    buffer:        ^u32
+    allocator:     IAllocator
+    count:         u64
+    capacity:      u64
 }
 
 impl BitArray
@@ -94,13 +94,15 @@ public impl BitArray
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
-        #if ptr  #do #error "visiting by pointer is not supported for BitArray"
-        #if back #do #error "visiting in reverse order is not supported for BitArray"
+        #if ptr #do
+            #error "visiting by pointer is not supported for BitArray"
+        #if back #do
+            #error "visiting in reverse order is not supported for BitArray"
 
         if !count do
             return
         let remainingBits = count
-        var countBits = 0'u64
+        var countBits     = 0'u64
 
         #scope Up
         loop idx: Math.max(count >> 5, 1)
@@ -135,7 +137,7 @@ public impl BitArray
             return
         }
 
-        count = maxBits
+        count    = maxBits
         capacity = maxBits >> 5
         if capacity << 5 < maxBits do
             capacity += 1
@@ -162,8 +164,8 @@ public impl BitArray
     mtd set(index: u64, value: bool)
     {
         Debug.assert(index < count)
-        let val = index >> 5
-        let bit = index - (val << 5)
+        let val   = index >> 5
+        let bit   = index - (val << 5)
         let shift = 1'u32 << cast(u32) bit
         if value do
             buffer[val] |= shift
@@ -175,8 +177,8 @@ public impl BitArray
     mtd const get(index: u64)->bool
     {
         Debug.assert(index < count)
-        let val = index >> 5
-        let bit = index - (val << 5)
+        let val   = index >> 5
+        let bit   = index - (val << 5)
         let shift = 1'u32 << cast(u32) bit
         return cast(bool) (buffer[val] & shift)
     }
@@ -186,8 +188,8 @@ public impl BitArray
     mtd invert(index: u64)
     {
         Debug.assert(index < count)
-        let val = index >> 5
-        let bit = index - (val << 5)
+        let val   = index >> 5
+        let bit   = index - (val << 5)
         let shift = 1'u32 << cast(u32) bit
         if buffer[val] & shift do
             buffer[val] ^= shift
@@ -199,7 +201,8 @@ public impl BitArray
     #[Swag.Overload]
     mtd invert()
     {
-        if !count do return
+        if !count do
+            return
         loop Math.max(count >> 5, 1) do
             buffer[#index] = ~buffer[#index]
     }
@@ -210,7 +213,8 @@ public impl BitArray
     mtd andWith(other: Self)
     {
         Debug.assert(count == other.count)
-        if !count do return
+        if !count do
+            return
         loop Math.max(count >> 5, 1) do
             buffer[#index] &= other.buffer[#index]
     }
@@ -221,7 +225,8 @@ public impl BitArray
     mtd orWith(other: Self)
     {
         Debug.assert(count == other.count)
-        if !count do return
+        if !count do
+            return
         loop Math.max(count >> 5, 1) do
             buffer[#index] |= other.buffer[#index]
     }
@@ -232,7 +237,8 @@ public impl BitArray
     mtd xorWith(other: Self)
     {
         Debug.assert(count == other.count)
-        if !count do return
+        if !count do
+            return
         loop Math.max(count >> 5, 1) do
             buffer[#index] ^= other.buffer[#index]
     }

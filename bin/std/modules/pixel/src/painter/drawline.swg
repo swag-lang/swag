@@ -15,9 +15,9 @@ impl Painter
     {
         if (startX == endX and startY == endY) or color.a == 0 or penSize == 0 do
             return
-        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.type  = .SolidColor
         sharedSolidPen.brush.color = color
-        sharedSolidPen.size = penSize
+        sharedSolidPen.size        = penSize
         drawLine(startX, startY, endX, endY, sharedSolidPen)
     }
 

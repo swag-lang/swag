@@ -3,12 +3,12 @@ using Pixel
 
 struct BlendColor
 {
-    curVec4:    Math.Vector4
-    startVec4:  Math.Vector4
-    destVec4:   Math.Vector4
-    factor:     f32
-    start:      bool = true
-    speed:      f32 = 8
+    curVec4:       Math.Vector4
+    startVec4:     Math.Vector4
+    destVec4:      Math.Vector4
+    factor:        f32
+    start:         bool = true
+    speed:         f32 = 8
 }
 
 impl BlendColor
@@ -27,8 +27,8 @@ impl BlendColor
         if destVec4 != vec4
         {
             startVec4 = curVec4
-            destVec4 = vec4
-            factor = 0
+            destVec4  = vec4
+            factor    = 0
         }
         elif factor >= 1.0
         {
@@ -37,7 +37,7 @@ impl BlendColor
         }
 
         var startV = startVec4
-        var destV = destVec4
+        var destV  = destVec4
         if startV.w == 0
         {
             startV.x = destVec4.x

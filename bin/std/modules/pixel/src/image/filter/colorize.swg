@@ -10,8 +10,8 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8 do
             return
 
-        let h = Math.clamp(hue, 0.0, 1.0)
-        let s = Math.clamp(saturation, 0.0, 1.0)
+        let h  = Math.clamp(hue, 0.0, 1.0)
+        let s  = Math.clamp(saturation, 0.0, 1.0)
         let st = Math.clamp(strength, 0.0, 1.0)
 
         // Precompute bgr depending on luminance

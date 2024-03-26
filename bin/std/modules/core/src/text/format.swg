@@ -39,7 +39,8 @@ func countPercent(fmt: string)->u32
 func replaceString(dest: *String, fmt: string, values: ...)
     #validifx
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values) do return true
+        if !@isconstexpr(fmt) or !@isconstexpr(values) do
+            return true
         checkFormat(@nameof(#self), fmt, values)
         return true
     }
@@ -74,7 +75,8 @@ func replaceString(dest: *String, fmt: string, values: ...)
 func toString(fmt: string, values: ...)->String
     #validifx
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values) do return true
+        if !@isconstexpr(fmt) or !@isconstexpr(values) do
+            return true
         checkFormat(@nameof(#self), fmt, values)
         return true
     }
@@ -91,7 +93,8 @@ func toString(fmt: string, values: ...)->String
 func toStringTemp(fmt: string, values: ...)->string
     #validifx
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values) do return true
+        if !@isconstexpr(fmt) or !@isconstexpr(values) do
+            return true
         checkFormat(@nameof(#self), fmt, values)
         return true
     }
@@ -109,7 +112,8 @@ func toStringTemp(fmt: string, values: ...)->string
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
     #validifx
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values) do return true
+        if !@isconstexpr(fmt) or !@isconstexpr(values) do
+            return true
         checkFormat(@nameof(#self), fmt, values)
         return true
     }
@@ -117,9 +121,9 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
     let ptr = @dataof(fmt)
     let cpt = @countof(fmt)
 
-    var idx = 0'u32
-    var nextIdx = 0'u32
-    var paramIdx = 0'u32
+    var idx       = 0'u32
+    var nextIdx   = 0'u32
+    var paramIdx  = 0'u32
     let numParams = @countof(values)
 
     while nextIdx < cpt
@@ -128,7 +132,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
         {
             // Add remaining text, and starts again after the mark
             buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, cast(u64) (nextIdx - idx)))
-            idx = nextIdx + 1
+            idx     = nextIdx + 1
             nextIdx = idx
 
             // Deal with the parameter. %% is for one % only
@@ -145,7 +149,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
             if ptr[nextIdx] == `{`'u8
             {
                 nextIdx += 1
-                let ptrFormat = ptr + nextIdx
+                let ptrFormat   = ptr + nextIdx
                 var countFormat = 0'u32
                 while ptr[nextIdx] and ptr[nextIdx] != `}`'u8
                 {
@@ -155,7 +159,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 
                 if ptr[nextIdx] do
                     nextIdx += 1
-                idx = nextIdx
+                idx       = nextIdx
                 strFormat = @mkslice(ptrFormat, cast(u64) countFormat)
             }
 
@@ -205,11 +209,11 @@ func toInterp(buf: *ConcatBuffer, exp: string)
                 sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..<idxE])
 
             // Find the end of the interpolated string, or the start of the format
-            idx = idxE + 1
+            idx  = idxE + 1
             idxE = Utf8.indexOfAny(exp, "}:", startByteIndex: idx)
             if idxE == Swag.U64.Max
             {
-                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx-1..])
+                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx - 1..])
                 break
             }
 
@@ -224,7 +228,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
                 if idxE != Swag.U64.Max
                 {
                     format = exp[idx..<idxE]
-                    idx = idxE + 1
+                    idx    = idxE + 1
                 }
             }
 

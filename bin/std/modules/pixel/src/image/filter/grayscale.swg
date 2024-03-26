@@ -14,7 +14,7 @@ impl Image
         {
             visitPixels(&f)
             {
-                let f = dref cast(*f32) userData
+                let f    = dref cast(*f32) userData
                 let ncol = cast(f32) ((((pix[2] * 54's32) + (pix[1] * 183's32) + (pix[0] * 19's32)) >> 8) & 0xFF)
                 pix[0] = cast(u8) Math.lerp(cast(f32) pix[0], ncol, f)
                 pix[1] = cast(u8) Math.lerp(cast(f32) pix[1], ncol, f)
@@ -25,7 +25,7 @@ impl Image
         {
             visitPixels(&f)
             {
-                let f = dref cast(*f32) userData
+                let f    = dref cast(*f32) userData
                 let ncol = cast(f32) ((((pix[2] * 19's32) + (pix[1] * 183's32) + (pix[2] * 54's32)) >> 8) & 0xFF)
                 pix[0] = cast(u8) Math.lerp(cast(f32) pix[0], ncol, f)
                 pix[1] = cast(u8) Math.lerp(cast(f32) pix[1], ncol, f)

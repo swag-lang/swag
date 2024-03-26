@@ -13,7 +13,7 @@ impl Image
             visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
-                let pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -22,7 +22,7 @@ impl Image
             visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
-                let pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -41,7 +41,7 @@ impl Image
             visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
-                let pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -51,7 +51,7 @@ impl Image
             visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
-                let pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -61,7 +61,7 @@ impl Image
             visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
-                let pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -81,7 +81,7 @@ impl Image
             visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
-                let pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -90,7 +90,7 @@ impl Image
             visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
-                let pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -109,7 +109,7 @@ impl Image
             visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
-                let pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -119,7 +119,7 @@ impl Image
             visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
-                let pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -129,7 +129,7 @@ impl Image
             visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
-                let pixDst = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
+                let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -143,10 +143,14 @@ impl Image
         #[Swag.Complete]
         switch dstImage.pf
         {
-        case RGB8:  doRGB8(dstImage)
-        case RGBA8: doRGBA8(dstImage)
-        case BGR8:  doBGR8(dstImage)
-        case BGRA8: doBGRA8(dstImage)
+        case RGB8:
+            doRGB8(dstImage)
+        case RGBA8:
+            doRGBA8(dstImage)
+        case BGR8:
+            doBGR8(dstImage)
+        case BGRA8:
+            doBGRA8(dstImage)
         }
     }
 

@@ -11,38 +11,38 @@ enum FileDlgMode
 
 struct FileDlgState
 {
-    position:   Math.Rectangle
-    curFolder:  String
+    position:      Math.Rectangle
+    curFolder:     String
 }
 
 struct FileDlgOptions
 {
-    title:      string
-    btnOkName:  string
-    openFolder: string
-    editName:   string
-    drivePane   = true
-    mode:       FileDlgMode = SelectOneFile
-    filters:    Array'{name: string, extensions: string}
-    shortcuts:  Array'{type: Core.Env.SpecialDirectory, name: string}
-    state:      *FileDlgState
+    title:          string
+    btnOkName:      string
+    openFolder:     string
+    editName:       string
+    drivePane       = true
+    mode:           FileDlgMode = SelectOneFile
+    filters:        Array'{name: string, extensions: string}
+    shortcuts:      Array'{type: Core.Env.SpecialDirectory, name: string}
+    state:          *FileDlgState
 }
 
 struct FileDlg
 {
     using dialog: Dialog
 
-    treeCtrl:       *ListCtrl
-    treePathStr:    Array'String
-    listCtrl:       *ListCtrl
-    comboPath:      *ComboBox
-    comboPathStr:   Array'String
-    editFile:       *EditBox
-    comboType:      *ComboBox
-    dlgOptions:     FileDlgOptions
+    treeCtrl:         *ListCtrl
+    treePathStr:      Array'String
+    listCtrl:         *ListCtrl
+    comboPath:        *ComboBox
+    comboPathStr:     Array'String
+    editFile:         *EditBox
+    comboType:        *ComboBox
+    dlgOptions:       FileDlgOptions
 
-    curFolder:      String
-    curList:        Array'FileInfo
+    curFolder:     String
+    curList:       Array'FileInfo
 }
 
 impl IWnd for FileDlg
@@ -53,7 +53,7 @@ impl IWnd for FileDlg
         {
             with dlgOptions.state
             {
-                .position = surface.position
+                .position  = surface.position
                 .curFolder = curFolder
             }
         }
@@ -92,7 +92,7 @@ internal impl FileDlg
         loop,back i: all
         {
             var str: String
-            loop j: i+1
+            loop j: i + 1
             {
                 str += all[j]
                 str += `/`'u8
@@ -101,7 +101,7 @@ internal impl FileDlg
             comboPathStr.add(str)
 
             let one = all[i]
-            var ic = getApp().getDirectoryIcon(one)
+            var ic  = getApp().getDirectoryIcon(one)
             comboPath.addItem(one, icon: ic)
         }
 
@@ -115,15 +115,15 @@ internal impl FileDlg
 
         visit v: dlgOptions.shortcuts
         {
-            var c = Env.getSpecialDirectory(v.item0)
+            var c  = Env.getSpecialDirectory(v.item0)
             var ic = getApp().getSpecialDirectoryIcon(v.item0, true)
-            l = treeCtrl.createLine(v.item1, icon: ic)
-            l.userData0 = cast(*void) treePathStr.count
+            l                = treeCtrl.createLine(v.item1, icon: ic)
+            l.userData0      = cast(*void) treePathStr.count
             l.leftTextMargin = 10
             treePathStr.add(c)
         }
 
-        l = treeCtrl.createLine("Drives")
+        l           = treeCtrl.createLine("Drives")
         l.separator = true
 
         var volumes = catch Directory.getDrives()
@@ -131,13 +131,14 @@ internal impl FileDlg
         {
             v.removeBack()
             var ic = getApp().getDirectoryIcon(v, true)
-            l = treeCtrl.createLine(v.toString(), icon: ic)
-            l.userData0 = cast(*void) treePathStr.count
+            l                = treeCtrl.createLine(v.toString(), icon: ic)
+            l.userData0      = cast(*void) treePathStr.count
             l.leftTextMargin = 10
             treePathStr.add(v)
         }
 
-        treeCtrl.sigSelChanged += closure|self|(list) {
+        treeCtrl.sigSelChanged += closure|self|(list)
+        {
             var line = list.getSelectedLine()
             if !line do
                 return
@@ -152,15 +153,15 @@ internal impl FileDlg
 
         with var options: EnumerationOptions
         {
-            .skipAttributes = .Hidden
-            .wantFiles = dlgOptions.mode != .SelectFolder
+            .skipAttributes  = .Hidden
+            .wantFiles       = dlgOptions.mode != .SelectFolder
             .wantDirectories = true
-            .recurse = false
+            .recurse         = false
         }
 
         curList = catch Directory.enumerate(curFolder, options)
 
-        let item = comboType.getSelectedItem()
+        let item   = comboType.getSelectedItem()
         var filter = dlgOptions.filters[cast(u64) item.userData0]
         var tokens = Tokenize.split(filter.item1, `;`'rune)
 
@@ -175,11 +176,11 @@ internal impl FileDlg
                 show = false
                 visit t: tokens
                 {
-                     if Path.isExtension(fname, t)
-                     {
+                    if Path.isExtension(fname, t)
+                    {
                         show = true
                         break
-                     }
+                    }
                 }
             }
 
@@ -216,10 +217,14 @@ impl FileDlg
                 #[Swag.Complete]
                 switch opt.mode
                 {
-                case CreateFile:        .setTitle("Create File")
-                case SelectOneFile:     .setTitle("Select File")
-                case SelectMultiFiles:  .setTitle("Select Files")
-                case SelectFolder:      .setTitle("Select Folder")
+                case CreateFile:
+                    .setTitle("Create File")
+                case SelectOneFile:
+                    .setTitle("Select File")
+                case SelectMultiFiles:
+                    .setTitle("Select Files")
+                case SelectFolder:
+                    .setTitle("Select Folder")
                 }
             }
         }
@@ -230,7 +235,8 @@ impl FileDlg
         dlg.backgroundStyle = .Window
         srf.setSurfaceFlags(remove: .CloseBtn)
 
-        dlg.sigPressedButton = closure|dlg|(bdlg, id) {
+        dlg.sigPressedButton = closure|dlg|(bdlg, id)
+        {
             if id == Dialog.BtnOk
             {
                 var selName = dlg.getSelectedName()
@@ -263,8 +269,8 @@ impl FileDlg
             {
                 .dockStyle = .Left
                 .listFlags |= .HotTrack
-                .lineHeight = 28
-                .leftTextMargin = 8
+                .lineHeight      = 28
+                .leftTextMargin  = 8
                 .backgroundStyle = .Dialog
                 .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
                 dlg.fillListFolders()
@@ -274,8 +280,8 @@ impl FileDlg
         with dlg.listCtrl = ListCtrl.createMultiColumns(view)
         {
             .selectionMode = opt.mode == .SelectMultiFiles ? .Multi : .Single
-            .dockStyle = .Center
-            .margin.z = 10
+            .dockStyle     = .Center
+            .margin.z      = 10
             .listFlags |= .HotTrack
             .backgroundStyle = .View
             .addColumn("Name", 200)
@@ -284,7 +290,8 @@ impl FileDlg
             .header.style.addStyleSheetColors("headerItem_Separator $lighterMedium")
             .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
 
-            .sigKeyPressed += closure|dlg|(list, evt) {
+            .sigKeyPressed += closure|dlg|(list, evt)
+            {
                 switch evt.key
                 {
                 case Back:
@@ -292,7 +299,8 @@ impl FileDlg
 
                 case Enter:
                     let l = list.getFocusLine()
-                    if !l do break
+                    if !l do
+                        break
                     let fi = cast(const *FileInfo) l.userData0
                     if fi.isDirectory()
                     {
@@ -306,9 +314,11 @@ impl FileDlg
                 }
             }
 
-            .sigLeftDoubleClick += closure|dlg|(list, pt) {
+            .sigLeftDoubleClick += closure|dlg|(list, pt)
+            {
                 var l = list.getSelectedLine()
-                if !l do return
+                if !l do
+                    return
                 var fi = cast(const *FileInfo) l.userData0
                 if fi.isDirectory()
                 {
@@ -321,8 +331,9 @@ impl FileDlg
                 }
             }
 
-            .sigSelChanged += closure|dlg|(list) {
-                var sel = list.getSelectedLines()
+            .sigSelChanged += closure|dlg|(list)
+            {
+                var sel  = list.getSelectedLines()
                 var txt: String
                 visit l: sel
                 {
@@ -346,11 +357,14 @@ impl FileDlg
                 dlg.editFile.setText(txt)
             }
 
-            .sigSort = func(l1, l2, col, down) {
+            .sigSort = func(l1, l2, col, down)
+            {
                 var fi1 = cast(*FileInfo) l1.userData0
                 var fi2 = cast(*FileInfo) l2.userData0
-                if fi1.isDirectory() and !fi2.isDirectory() do return -1
-                if !fi1.isDirectory() and fi2.isDirectory() do return 1
+                if fi1.isDirectory() and !fi2.isDirectory() do
+                    return -1
+                if !fi1.isDirectory() and fi2.isDirectory() do
+                    return 1
                 switch col
                 {
                 case 0:
@@ -366,12 +380,12 @@ impl FileDlg
         // Top
         ////////////////////////
         let viewTop = Wnd.create'Wnd(view, {0, 0, 0, 50})
-        viewTop.dockStyle = .Top
+        viewTop.dockStyle       = .Top
         viewTop.backgroundStyle = .Window
-        viewTop.padding.x = 10
-        viewTop.padding.z = 10
-        viewTop.padding.y = 8
-        viewTop.padding.w = 8
+        viewTop.padding.x       = 10
+        viewTop.padding.z       = 10
+        viewTop.padding.y       = 8
+        viewTop.padding.w       = 8
         dlg.applyLayout()
 
         if opt.mode == .CreateFile or opt.mode == .SelectFolder
@@ -380,15 +394,19 @@ impl FileDlg
             with btn
             {
                 .dockStyle = .Right
-                .margin.x = 10
-                .sigPressed += closure|dlg|(btn) { dlg.onNewFolder(); }
+                .margin.x  = 10
+                .sigPressed += closure|dlg|(btn )
+                {
+                    dlg.onNewFolder()
+                }
             }
         }
 
         with dlg.comboPath = ComboBox.create(viewTop)
         {
             .dockStyle = .Center
-            .sigChanged += closure|dlg|(combo, idx) {
+            .sigChanged += closure|dlg|(combo, idx)
+            {
                 dlg.setCurFolder(dlg.comboPathStr[idx])
             }
         }
@@ -396,7 +414,7 @@ impl FileDlg
         // Bottom
         ////////////////////////
         let viewBottom = Wnd.create'Wnd(view, {0, 0, 0, 90})
-        viewBottom.dockStyle = .Bottom
+        viewBottom.dockStyle       = .Bottom
         viewBottom.backgroundStyle = .Window
         dlg.applyLayout()
 
@@ -410,17 +428,19 @@ impl FileDlg
             .anchorStyle = .Width
             if opt.mode == .SelectFolder do
                 .addItem("Folders")
-            else do visit f, idx: opt.filters do
-                .addItem(f.item0, userData0: cast(*void) idx)
+            else do
+                visit f, idx: opt.filters do
+                    .addItem(f.item0, userData0: cast(*void) idx)
 
             .selectItem(0)
-            .sigChanged += closure|dlg|(c, idx) {
+            .sigChanged += closure|dlg|(c, idx)
+            {
                 dlg.fillList()
             }
         }
 
         let nameLbl0 = opt.mode == .SelectFolder ? "Folder Name" : "File Name"
-        let label0 = Label.create(viewBottom, nameLbl0, {5, 10, 80, dlg.editFile.position.height})
+        let label0   = Label.create(viewBottom, nameLbl0, {5, 10, 80, dlg.editFile.position.height})
         label0.horzAlignmentText = .Right
         label0.vertAlignmentText = .Center
         let label1 = Label.create(viewBottom, "Type", {5, 45, 80, dlg.comboType.position.height})
@@ -482,7 +502,7 @@ impl FileDlg
         var result: retval
 
         let item = comboType.getSelectedItem()
-        var fi = dlgOptions.filters[cast(u64) item.userData0]
+        var fi   = dlgOptions.filters[cast(u64) item.userData0]
 
         var tokens = Tokenize.split(editFile.text, `;`'rune)
         visit t: tokens
@@ -526,7 +546,8 @@ impl FileDlg
             .surface.center(surface)
         }
 
-        dlg.sigPressedButton = closure|self, dlg|(fdlg, id) {
+        dlg.sigPressedButton = closure|self, dlg|(fdlg, id)
+        {
             if id != Dialog.BtnOk do
                 return true
 
@@ -536,7 +557,7 @@ impl FileDlg
             {
                 dlg.edit.selectAll()
                 dlg.edit.setFocus()
-                return false;
+                return false
             }
 
             if !Path.isValidFileName(folderName)

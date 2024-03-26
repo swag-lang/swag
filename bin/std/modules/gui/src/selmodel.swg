@@ -35,7 +35,7 @@ impl SelModel
     mtd select(idx: u32, select: bool)
     {
         let isSelectedRange = getSelectedRangeIndex(idx)
-        let isSelected = isSelectedRange != Swag.U32.Max
+        let isSelected      = isSelectedRange != Swag.U32.Max
         if select == isSelected do
             return
 
@@ -81,7 +81,8 @@ impl SelModel
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
-        #scope Up visit &r: selection
+        #scope Up
+        visit &r: selection
         {
             loop i: r.start to r.end
             {

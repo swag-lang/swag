@@ -55,15 +55,15 @@ impl ICodec for CodecPcmToPcm16
 
                 #if EN == .Pcm8
                 {
-                    dst[0] = ((cast(s16) src[0]) - 128) << 8
+                    dst[0] = (cast(s16) src[0] - 128) << 8
                 }
                 #elif EN == .Pcm24
                 {
                     var intS: s32
-                    intS = (cast(s32) src[2]) << 16
-                    intS |= (cast(s32) src[1]) << 8
+                    intS = cast(s32) src[2] << 16
+                    intS |= cast(s32) src[1] << 8
                     intS |= src[0]
-                    intS = Math.clamp(intS, -32768, 32767)
+                    intS   = Math.clamp(intS, -32768, 32767)
                     dst[0] = cast(s16) intS
                 }
                 #elif EN == .Pcm32
@@ -73,9 +73,9 @@ impl ICodec for CodecPcmToPcm16
                 }
                 #elif EN == .Float32
                 {
-                    let input = cast(^f32) src
+                    let input  = cast(^f32) src
                     let sample = input[0] * 32768.0
-                    let intS = Math.clamp(cast,over(s32) sample, -32768, 32767)
+                    let intS   = Math.clamp(cast,over(s32) sample, -32768, 32767)
                     dst[0] = cast(s16) intS
                 }
                 #else #do
@@ -103,6 +103,6 @@ impl ICodec for CodecPcmToPcm16
         }
 
         throw UnsupportedFormatError{"invalid encoding"}
-        return {0,0}
+        return {0, 0}
     }
 }

@@ -35,10 +35,12 @@ impl City32
     #[Swag.Safety("overflow", false)]
     mtd len5to12(data: const [..] u8)
     {
-        let s = @dataof(data)
+        let s   = @dataof(data)
         let len = cast(u32) @countof(data)
-        var a = len + crc, b = len * 5, c = 9'u32
-        let d = b
+        var a   = len + crc
+        var b   = len * 5
+        var c   = 9'u32
+        let d   = b
         a += fetch(s)
         b += fetch(s + len - 4)
         c += fetch(s + ((len >> 1) & 4))
@@ -48,15 +50,15 @@ impl City32
     #[Swag.Safety("overflow", false)]
     mtd len13to24(data: const [..] u8)
     {
-        let s = @dataof(data)
+        let s   = @dataof(data)
         let len = cast(u32) @countof(data)
-        let a = fetch(s - 4 + (len >> 1))
-        let b = fetch(s + 4)
-        let c = fetch(s + len - 8)
-        let d = fetch(s + (len >> 1))
-        let e = fetch(s)
-        let f = fetch(s + len - 4)
-        let h = crc + len
+        let a   = fetch(s - 4 + (len >> 1))
+        let b   = fetch(s + 4)
+        let c   = fetch(s + len - 8)
+        let d   = fetch(s + (len >> 1))
+        let e   = fetch(s)
+        let f   = fetch(s + len - 4)
+        let h   = crc + len
         crc = murmur3(murmur3(f, murmur3(e, murmur3(d, murmur3(c, murmur3(b, murmur3(a, h)))))))
     }
 
@@ -74,16 +76,21 @@ impl City32
 
         switch
         {
-        case len <= 4:  return len0to4(data)
-        case len <= 12: return len5to12(data)
-        case len <= 24: return len13to24(data)
+        case len <= 4:
+            return len0to4(data)
+        case len <= 12:
+            return len5to12(data)
+        case len <= 24:
+            return len13to24(data)
         }
 
         let seed = crc
-        var s = @dataof(data)
+        var s    = @dataof(data)
+        var h    = len + seed
+        var g    = C1 * len
 
         // len > 24
-        var h = len + seed, g = C1 * len, f = g
+        var f  = g
         var a0 = Math.ror(fetch(s + len - 4) * C1, 17) * C2
         var a1 = Math.ror(fetch(s + len - 8) * C1, 17) * C2
         var a2 = Math.ror(fetch(s + len - 16) * C1, 17) * C2
@@ -134,16 +141,16 @@ impl City32
             s += 20
         }
 
-        g = Math.ror(g, 11) * C1
-        g = Math.ror(g, 17) * C1
-        f = Math.ror(f, 11) * C1
-        f = Math.ror(f, 17) * C1
-        h = Math.ror(h + g, 19)
-        h = h * 5 + 0xe6546b64
-        h = Math.ror(h, 17) * C1
-        h = Math.ror(h + f, 19)
-        h = h * 5 + 0xe6546b64
-        h = Math.ror(h, 17) * C1
+        g   = Math.ror(g, 11) * C1
+        g   = Math.ror(g, 17) * C1
+        f   = Math.ror(f, 11) * C1
+        f   = Math.ror(f, 17) * C1
+        h   = Math.ror(h + g, 19)
+        h   = h * 5 + 0xe6546b64
+        h   = Math.ror(h, 17) * C1
+        h   = Math.ror(h + f, 19)
+        h   = h * 5 + 0xe6546b64
+        h   = Math.ror(h, 17) * C1
         crc = h
     }
 

@@ -11,9 +11,9 @@ public enum ElementType
 
 public struct Element
 {
-    type:       ElementType = undefined
-    position:   Vector2
-    p1, p2:     Vector2
+    type:         ElementType = undefined
+    position:     Vector2
+    p1, p2:       Vector2
 }
 
 public struct LinePath
@@ -26,16 +26,16 @@ public struct LinePath
     serial:         s32
 
     // Flatten infos
-    flattenQuality: PaintQuality = undefined
-    isPolyOnly:     bool
-    isFlatten:      bool
-    bvMin:          Vector2
-    bvMax:          Vector2
-    endPosBuffer:   Vector2
-    polygon:        Polygon
-    points:         Array'*Poly2Tri.Point
-    triangles:      Array'*Poly2Tri.Triangle
-    edgeList:       Array'*Poly2Tri.Edge
+    flattenQuality:     PaintQuality = undefined
+    isPolyOnly:         bool
+    isFlatten:          bool
+    bvMin:              Vector2
+    bvMax:              Vector2
+    endPosBuffer:       Vector2
+    polygon:            Polygon
+    points:             Array'*Poly2Tri.Point
+    triangles:          Array'*Poly2Tri.Triangle
+    edgeList:           Array'*Poly2Tri.Edge
 }
 
 public impl LinePath
@@ -71,11 +71,11 @@ public impl LinePath
     mtd start(startX, startY: f32)
     {
         elements.clear()
-        isClosed = false
-        isDirty = true
+        isClosed   = false
+        isDirty    = true
         isPolyOnly = false
         startPoint = Vector2{startX, startY}
-        endPoint = startPoint
+        endPoint   = startPoint
     }
 
     // Add a line from the previous point to 'pt'
@@ -90,7 +90,7 @@ public impl LinePath
         elem.position.set(x, y)
         elements.add(elem)
         endPoint = newEndPoint
-        isDirty = true
+        isDirty  = true
     }
 
     // Add a curve from the previous point to 'pt'
@@ -105,7 +105,7 @@ public impl LinePath
         elem.position.set(x, y)
         elements.add(elem)
         endPoint = newEndPoint
-        isDirty = true
+        isDirty  = true
     }
 
     // Add a curve from the previous point to 'pt'
@@ -122,7 +122,7 @@ public impl LinePath
         elem.p1.set(ctx, cty)
         elements.add(elem)
         endPoint = newEndPoint
-        isDirty = true
+        isDirty  = true
     }
 
     // Add a curve from the previous point to 'pt'
@@ -140,17 +140,20 @@ public impl LinePath
         elem.p2.set(ct2x, ct2y)
         elements.add(elem)
         endPoint = newEndPoint
-        isDirty = true
+        isDirty  = true
     }
 
     // Add an arc from the previous point
     mtd arcTo(centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: Math.Angle)
     {
         var ia = initAngle.rad
-        while ia < 0 do ia += Math.ConstF32.TwoPi
+        while ia < 0 do
+            ia += Math.ConstF32.TwoPi
         var ma = maxAngle.rad
-        while ma < 0 do ma += Math.ConstF32.TwoPi
-        while ma < ia do ma += Math.ConstF32.TwoPi
+        while ma < 0 do
+            ma += Math.ConstF32.TwoPi
+        while ma < ia do
+            ma += Math.ConstF32.TwoPi
 
         var newEndPoint = Vector2{centerX + (Math.sin(ma) * radiusX), centerY + (-Math.cos(ma) * radiusY)}
         if newEndPoint.isEqualEpsilon(endPoint) do
@@ -256,8 +259,8 @@ public impl LinePath
     {
         let cX = Math.round(centerX)
         let cY = Math.round(centerY)
-        let rX = 0.5*Math.round(radiusX*2)
-        let rY = 0.5*Math.round(radiusY*2)
+        let rX = 0.5 * Math.round(radiusX * 2)
+        let rY = 0.5 * Math.round(radiusY * 2)
 
         setEllipseRaw(cX, cY, rX, rY)
     }
@@ -267,7 +270,7 @@ public impl LinePath
     {
         let cX = Math.round(centerX)
         let cY = Math.round(centerY)
-        let r = 0.5*Math.round(radius*2)
+        let r  = 0.5 * Math.round(radius * 2)
 
         start(cX, cY - r)
         arcTo(cX, cY, r, r, 0'deg, 90'deg)
@@ -285,7 +288,7 @@ public impl LinePath
 
         let cX = Math.round(centerX)
         let cY = Math.round(centerY)
-        let r = Math.round(radius)
+        let r  = Math.round(radius)
 
         Debug.assert(endAngle.rad > startAngle.rad)
         var startPos = Math.Vector2{0, -r}
@@ -391,7 +394,7 @@ public impl LinePath
                     p3 = isClosed ? elements[1].position : pos + (pos - p1)
                 }
 
-                const Alpha = 0.5
+                const Alpha   = 0.5
                 const Tension = 0.0
 
                 let t01 = Math.pow(Vector2.distance(p0, p1), Alpha)
@@ -423,8 +426,10 @@ impl LinePath
         var minDist = 0'f32
         switch quality
         {
-        case Draft:  minDist = 2
-        case Normal: minDist = 0.2
+        case Draft:
+            minDist = 2
+        case Normal:
+            minDist = 0.2
         }
 
         return minDist
@@ -443,7 +448,7 @@ impl LinePath
 
         for var i = 0; i < tmp.count - 1; i += 1
         {
-            let t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            let t  = (tmp[i].factor + tmp[i + 1].factor) * 0.5
             let it = 1.0 - t
             let a1 = it * it
             let a2 = 2.0 * t * it
@@ -454,7 +459,8 @@ impl LinePath
             point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
 
             let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist do continue
+            if dist < minDist do
+                continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
             i -= 1
@@ -477,7 +483,7 @@ impl LinePath
 
         for var i = 0; i < tmp.count - 1; i += 1
         {
-            let t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            let t  = (tmp[i].factor + tmp[i + 1].factor) * 0.5
             let it = 1.0 - t
             let a1 = it * it * it
             let a2 = 3.0 * t * it * it
@@ -489,7 +495,8 @@ impl LinePath
             point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
 
             let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist do continue
+            if dist < minDist do
+                continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
             i -= 1
@@ -513,13 +520,14 @@ impl LinePath
             let t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
 
             var point: Vector2 = undefined
-            point  = p0 * t * t * t
+            point = p0 * t * t * t
             point += p1 * t * t
             point += p2 * t
             point += p3
 
             let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist do continue
+            if dist < minDist do
+                continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
             i -= 1
@@ -550,7 +558,8 @@ impl LinePath
             point.y += -(Math.cos(angle) * p2.y)
 
             let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist do continue
+            if dist < minDist do
+                continue
 
             tmp.insertAt(cast(u64) i + 1, {angle, point})
             i -= 1

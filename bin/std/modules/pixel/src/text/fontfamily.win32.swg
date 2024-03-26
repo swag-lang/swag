@@ -3,14 +3,14 @@ using Core, Win32, Gdi32
 
 public struct FontFamilyStyleEnumerate
 {
-    name:   String
-    face:   LOGFONTW
+    name:     String
+    face:     LOGFONTW
 }
 
 public struct FontFamilyEnumerate
 {
-    name:   String
-    faces: [@countof(FontFamilyStyle)] FontFamilyStyleEnumerate
+    name:      String
+    faces:     [@countof(FontFamilyStyle)] FontFamilyStyleEnumerate
 }
 
 impl FontFamily
@@ -86,9 +86,11 @@ impl FontFamily
         logFont.lfCharSet = DEFAULT_CHARSET
         EnumFontFamiliesExW(hdc, &logFont, @mkcallback(&enumFamily), cast(LPARAM) cast(u64) &result, 0)
 
-        result.sort(func(a, b) {
+        result.sort(func(a, b)
+        {
             return a.name <=> b.name
-        })
+        }
+)
         return result
     }
 
@@ -99,7 +101,7 @@ impl FontFamily
         defer ReleaseDC(null, hdc)
 
         var arr: Array'FontFamilyEnumerate
-        let v = Utf16.toZeroTerminated(fontFamily)
+        let v    = Utf16.toZeroTerminated(fontFamily)
         EnumFontFamiliesW(hdc, v.buffer, @mkcallback(&enumFamily), cast(LPARAM) cast(u64) &arr)
 
         return arr[0]

@@ -19,7 +19,7 @@ impl Image
         {
             visitPixels(&f)
             {
-                let params = cast(*@decltype(f)) userData
+                let params   = cast(*@decltype(f)) userData
                 let dstImage = cast(*Image) params.dstImage
                 let srcImage = cast(const *Image) params.srcImage
 
@@ -28,17 +28,17 @@ impl Image
 
                 let ny = image.height - y
 
-                if  x < params.x or
-                    ny < params.y or
-                    x >= params.x + srcImage.width or
-                    ny >= params.y + srcImage.height
+                if x < params.x or
+                   ny < params.y or
+                   x >= params.x + srcImage.width or
+                   ny >= params.y + srcImage.height
                 {
                     copyPixel'BPP(pixDst, pix)
                 }
                 else
                 {
-                    let x1 = x - params.x
-                    let y1 = srcImage.height - (ny - params.y)
+                    let x1     = x - params.x
+                    let y1     = srcImage.height - (ny - params.y)
                     var pixSrc = srcImage.pixels.buffer + x1 * srcImage.bpp8
                     pixSrc += cast(u64) (y1 * (srcImage.width * srcImage.bpp8))
 
@@ -61,9 +61,12 @@ impl Image
 
         switch bpp
         {
-        case 24: doIt'24()
-        case 32: doIt'32()
-        default: Debug.assert(false)
+        case 24:
+            doIt'24()
+        case 32:
+            doIt'32()
+        default:
+            Debug.assert(false)
         }
     }
 

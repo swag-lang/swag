@@ -8,142 +8,143 @@
 #global namespace Png
 using Core, Core.Errors
 
-private {
-
-const Adam7StartX: [7] u32 = [ 0, 4, 0, 2, 0, 1, 0 ]
-const Adam7StartY: [7] u32 = [ 0, 0, 4, 0, 2, 0, 1 ]
-const Adam7DeltaX: [7] u32 = [ 8, 8, 4, 4, 2, 2, 1 ]
-const Adam7DeltaY: [7] u32 = [ 8, 8, 8, 4, 4, 2, 2 ]
-
-struct RowInfo
+private
 {
-    scanlineIdx:   u32
-    rowNum:        u32
-    pass:          s32
-    filter:        u8
-}
 
-#[Swag.EnumFlags]
-enum ColorType: u8
-{
-    Paletted    = 1
-    Color       = 2
-    Alpha       = 4
-    AlphaColor  = Alpha | Color
-}
+    const Adam7StartX: [7] u32 = [0, 4, 0, 2, 0, 1, 0]
+    const Adam7StartY: [7] u32 = [0, 0, 4, 0, 2, 0, 1]
+    const Adam7DeltaX: [7] u32 = [8, 8, 4, 4, 2, 2, 1]
+    const Adam7DeltaY: [7] u32 = [8, 8, 8, 4, 4, 2, 2]
 
-struct EncodeFlags
-{
-    filterChoice:  FilterChoice
-    interlace:     bool
-    sameLayout:    bool
-    toBigEndian:   bool
-    progressive:   bool
-    finalize:      bool
-}
+    struct RowInfo
+    {
+        scanlineIdx:     u32
+        rowNum:          u32
+        pass:            s32
+        filter:          u8
+    }
 
-enum Filter
-{
-    None
-    Sub
-    Up
-    Average
-    Paeth
-}
+    #[Swag.EnumFlags]
+    enum ColorType : u8
+    {
+        Paletted   = 1
+        Color      = 2
+        Alpha      = 4
+        AlphaColor = Alpha | Color
+    }
 
-#[Swag.EnumFlags]
-enum FilterChoice
-{
-    Disabled = 0
-    None     = 8
-    Sub      = 16
-    Up       = 32
-    Average  = 64
-    Paeth    = 128
-    All      = (8|16|32|64|128)
-}
+    struct EncodeFlags
+    {
+        filterChoice:     FilterChoice
+        interlace:        bool
+        sameLayout:       bool
+        toBigEndian:      bool
+        progressive:      bool
+        finalize:         bool
+    }
 
-const PngSignature:   [8] u8 = [ 137, 80, 78, 71, 13, 10, 26, 10 ]
-const TypeIHdr:       [4] u8 = [ 73, 72, 68, 82 ]
-const TypeIDat:       [4] u8 = [ 73, 68, 65, 84 ]
-const TypeIEnd:       [4] u8 = [ 73, 69, 78, 68 ]
+    enum Filter
+    {
+        None
+        Sub
+        Up
+        Average
+        Paeth
+    }
 
-struct SubImage
-{
-    width:             u32
-    height:            u32
-    outWidth:          u32
-    scanlineWidth:     u32
-}
+    #[Swag.EnumFlags]
+    enum FilterChoice
+    {
+        Disabled = 0
+        None     = 8
+        Sub      = 16
+        Up       = 32
+        Average  = 64
+        Paeth    = 128
+        All      = (8 | 16 | 32 | 64 | 128)
+    }
 
-struct Ihdr
-{
-    width:             u32
-    height:            u32
-    bitDepth:          u8
-    colorType:         ColorType = undefined
-    compressionMethod: u8
-    filterMethod:      u8
-    interlaceMethod:   u8
-};
+    const PngSignature: [8] u8 = [137, 80, 78, 71, 13, 10, 26, 10]
+    const TypeIHdr:     [4] u8 = [73, 72, 68, 82]
+    const TypeIDat:     [4] u8 = [73, 68, 65, 84]
+    const TypeIEnd:     [4] u8 = [73, 69, 78, 68]
 
-struct ChunkBitfield
-{
-    ihdr: bool
-    plte: bool
-    chrm: bool
-    iccp: bool
-    gama: bool
-    sbit: bool
-    srgb: bool
-    text: bool
-    bkgd: bool
-    hist: bool
-    trns: bool
-    phys: bool
-    splt: bool
-    time: bool
-    offs: bool
-    exif: bool
-    unknown: bool
-};
+    struct SubImage
+    {
+        width:             u32
+        height:            u32
+        outWidth:          u32
+        scanlineWidth:     u32
+    }
 
-struct Chunk
-{
-    offset:     u64
-    length:     u32
-    type:       [4] u8
-    crc:        u32
-}
+    struct Ihdr
+    {
+        width:                 u32
+        height:                u32
+        bitDepth:              u8
+        colorType:             ColorType = undefined
+        compressionMethod:     u8
+        filterMethod:          u8
+        interlaceMethod:       u8
+    }
+
+    struct ChunkBitfield
+    {
+        ihdr:        bool
+        plte:        bool
+        chrm:        bool
+        iccp:        bool
+        gama:        bool
+        sbit:        bool
+        srgb:        bool
+        text:        bool
+        bkgd:        bool
+        hist:        bool
+        trns:        bool
+        phys:        bool
+        splt:        bool
+        time:        bool
+        offs:        bool
+        exif:        bool
+        unknown:     bool
+    }
+
+    struct Chunk
+    {
+        offset:     u64
+        length:     u32
+        type:       [4] u8
+        crc:        u32
+    }
 }
 
 #[Swag.Opaque]
 public struct Encoder
 {
-    stream:                 *ConcatBuffer
-    stored:                 ChunkBitfield
-    ihdr:                   Ihdr
-    currentChunk:           Chunk
-    tmpBuf:                 [256] u8
-    writePtr:               ^u8
-    crc:                    Hash.Crc32
-    subimage:               [7] SubImage
-    widestPass:             s32
-    lastPass:               s32
-    bytesPerPixel:          u32
-    scanlineBuf:            ^u8
-    prevScanlineBuf:        ^u8
-    row_buf:                ^u8
-    filteredScanlineBuf:    ^u8
-    filteredScanline:       ^u8
-    scanline:               ^u8
-    prevScanline:           ^u8
-    encodeFlags:            EncodeFlags
-    rowInfo:                RowInfo
-    pixelSize:              u32
-    bufferToCompress:       Array'u8
-    swapRB:                 bool
-    userOptions:            EncodeOptions
+    stream:                  *ConcatBuffer
+    stored:                  ChunkBitfield
+    ihdr:                    Ihdr
+    currentChunk:            Chunk
+    tmpBuf:                  [256] u8
+    writePtr:                ^u8
+    crc:                     Hash.Crc32
+    subimage:                [7] SubImage
+    widestPass:              s32
+    lastPass:                s32
+    bytesPerPixel:           u32
+    scanlineBuf:             ^u8
+    prevScanlineBuf:         ^u8
+    row_buf:                 ^u8
+    filteredScanlineBuf:     ^u8
+    filteredScanline:        ^u8
+    scanline:                ^u8
+    prevScanline:            ^u8
+    encodeFlags:             EncodeFlags
+    rowInfo:                 RowInfo
+    pixelSize:               u32
+    bufferToCompress:        Array'u8
+    swapRB:                  bool
+    userOptions:             EncodeOptions
 }
 
 impl Encoder
@@ -243,8 +244,10 @@ impl Encoder
     {
         switch ihdr.colorType
         {
-        case Color:         return 3
-        case AlphaColor:    return 4
+        case Color:
+            return 3
+        case AlphaColor:
+            return 4
         }
 
         return 0
@@ -254,24 +257,24 @@ impl Encoder
     {
         if ihdr.interlaceMethod == 1
         {
-            subimage[0].width = (ihdr.width + 7) >> 3
+            subimage[0].width  = (ihdr.width + 7) >> 3
             subimage[0].height = (ihdr.height + 7) >> 3
-            subimage[1].width = (ihdr.width + 3) >> 3
+            subimage[1].width  = (ihdr.width + 3) >> 3
             subimage[1].height = (ihdr.height + 7) >> 3
-            subimage[2].width = (ihdr.width + 3) >> 2
+            subimage[2].width  = (ihdr.width + 3) >> 2
             subimage[2].height = (ihdr.height + 3) >> 3
-            subimage[3].width = (ihdr.width + 1) >> 2
+            subimage[3].width  = (ihdr.width + 1) >> 2
             subimage[3].height = (ihdr.height + 3) >> 2
-            subimage[4].width = (ihdr.width + 1) >> 1
+            subimage[4].width  = (ihdr.width + 1) >> 1
             subimage[4].height = (ihdr.height + 1) >> 2
-            subimage[5].width = ihdr.width >> 1
+            subimage[5].width  = ihdr.width >> 1
             subimage[5].height = (ihdr.height + 1) >> 1
-            subimage[6].width = ihdr.width
+            subimage[6].width  = ihdr.width
             subimage[6].height = ihdr.height >> 1
         }
         else
         {
-            subimage[0].width = ihdr.width
+            subimage[0].width  = ihdr.width
             subimage[0].height = ihdr.height
         }
 
@@ -290,7 +293,7 @@ impl Encoder
     mtd finishIDat() throw
     {
         var zlib: Compress.ZLib
-        var cmp = zlib.compress(bufferToCompress.toSlice(), userOptions.compressionLevel)
+        var cmp   = zlib.compress(bufferToCompress.toSlice(), userOptions.compressionLevel)
 
         writePtr = writeHeader(TypeIDat, cmp.count)
         Memory.copy(writePtr, cmp.buffer, cmp.count)
@@ -315,9 +318,9 @@ impl Encoder
         if bitDepth < 8
         {
             let samplesPerByte = 8 / bitDepth
-            let mask = cast(u8) ((1 << bitDepth) - 1)
-            let initialShift = 8 - bitDepth
-            var shiftAmount = initialShift
+            let mask           = cast(u8) ((1 << bitDepth) - 1)
+            let initialShift   = 8 - bitDepth
+            var shiftAmount    = initialShift
 
             let row_uc = row
             Memory.clear(scanline, cast(u64) subimage[pass].scanlineWidth)
@@ -369,9 +372,9 @@ impl Encoder
             }
         }
 
-        var bestFilter = 0
-        var bestScore = Swag.S32.Max
-        var filterScores = [ Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max ]
+        var bestFilter   = 0
+        var bestScore    = Swag.S32.Max
+        var filterScores = [Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max]
 
         var sum: s32
         loop i: 5
@@ -380,11 +383,11 @@ impl Encoder
             if !(chl & flag) do
                 continue
 
-            sum = filterSum(size, cast(Filter) i)
+            sum             = filterSum(size, cast(Filter) i)
             filterScores[i] = Math.abs(sum)
             if filterScores[i] < bestScore
             {
-                bestScore = filterScores[i]
+                bestScore  = filterScores[i]
                 bestFilter = i
             }
         }
@@ -395,7 +398,7 @@ impl Encoder
     #[Swag.Safety("", false)]
     func paeth(a, b, c: u8)->u32
     {
-        let p = cast(s16) (a +,up b - c)
+        let p  = cast(s16) (a +,up b - c)
         let pa = Math.abs(cast(s16) (p - a))
         let pb = Math.abs(cast(s16) (p - b))
         let pc = Math.abs(cast(s16) (p - c))
@@ -529,7 +532,7 @@ impl Encoder
             Memory.clear(prevScanline, cast(u64) scanlineWidth)
 
         var filtered_sl = filteredScanline
-        let filter = getBestFilter(scanlineWidth - 1)
+        let filter      = getBestFilter(scanlineWidth - 1)
         if filter == .None do
             filtered_sl = scanline
         filtered_sl -= 1
@@ -554,8 +557,8 @@ impl Encoder
     mtd updateRowInfo()->bool
     {
         let interlacing = ihdr.interlaceMethod
-        let ri = &rowInfo
-        var sub = subimage
+        let ri          = &rowInfo
+        var sub         = subimage
 
         if ri.scanlineIdx == sub[ri.pass].height - 1
         {
@@ -583,8 +586,8 @@ impl Encoder
 
 public struct EncodeOptions
 {
-    compressionLevel = Compress.Deflate.CompressionLevel.Default
-    filtering        = true
+    compressionLevel     = Compress.Deflate.CompressionLevel.Default
+    filtering            = true
 }
 
 public impl IImageEncoder for Encoder
@@ -612,10 +615,10 @@ public impl IImageEncoder for Encoder
 
         stream = result
 
-        stored.ihdr = true
-        ihdr.width = image.width
-        ihdr.height = image.height
-        ihdr.bitDepth = 8
+        stored.ihdr    = true
+        ihdr.width     = image.width
+        ihdr.height    = image.height
+        ihdr.bitDepth  = 8
         ihdr.colorType = .Color
         if image.bpp == 32 do
             ihdr.colorType |= .Alpha
@@ -623,7 +626,7 @@ public impl IImageEncoder for Encoder
         writeChunksBeforeIDat()
         calculateSubImages()
 
-        bytesPerPixel   = numChannels() * (ihdr.bitDepth / 8)
+        bytesPerPixel = numChannels() * (ihdr.bitDepth / 8)
         var scanlineBufSize = subimage[widestPass].scanlineWidth
         scanlineBufSize += 32
 

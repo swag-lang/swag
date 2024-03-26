@@ -34,22 +34,22 @@ enum StringFormatFlags
 
 struct StringMetrics
 {
-    ascent:     f32     // Maximum size above baseline
-    descent:    f32     // Maximum size below baseline
-    width:      f32
-    height:     f32     // ascent + descent
+    ascent:      f32     // Maximum size above baseline
+    descent:     f32     // Maximum size below baseline
+    width:       f32
+    height:      f32     // ascent + descent
 }
 
 struct RichStringFormat
 {
-    font:           FontFamily
-    fontStyle:      FontFamilyStyle = Regular
-    palette:        [4] Color
-    brush:          Brush
-    horzAlignment:  StringHorzAlignment = Left
-    vertAlignment:  StringVertAlignment = Top
-    lineGap:        s32
-    flags:          StringFormatFlags = Default
+    font:              FontFamily
+    fontStyle:         FontFamilyStyle = Regular
+    palette:           [4] Color
+    brush:             Brush
+    horzAlignment:     StringHorzAlignment = Left
+    vertAlignment:     StringVertAlignment = Top
+    lineGap:           s32
+    flags:             StringFormatFlags = Default
 }
 
 impl Painter
@@ -88,7 +88,7 @@ impl Painter
     func measureRune(c: rune, font: *Font)->Math.Point
     {
         var result: retval
-        let desc = font.getGlyphDesc(c)
+        let desc    = font.getGlyphDesc(c)
         result.x = desc.advanceX
         result.y = desc.shiftY + desc.height
         return result
@@ -111,7 +111,7 @@ impl Painter
         result.descent = Swag.F32.NegInf
         visit refr: text
         {
-            result.ascent = Math.max(result.ascent, refr.shiftY)
+            result.ascent  = Math.max(result.ascent, refr.shiftY)
             result.descent = Math.max(result.descent, refr.height - refr.shiftY)
             result.width += refr.advanceX
         }
@@ -124,9 +124,9 @@ impl Painter
     mtd drawStringCenter(x, y: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None, zoom = 1.0)
     {
         var ms = measureString(text, font)
-        var yr = y - (ms.height*0.5*zoom)
+        var yr = y - (ms.height * 0.5 * zoom)
         yr -= (font.ascent - ms.ascent) * zoom
-        drawString(x - (ms.width*0.5*zoom), yr, text, font, color, under, zoom)
+        drawString(x - (ms.width * 0.5 * zoom), yr, text, font, color, under, zoom)
     }
 
     // Draw a simple string
@@ -135,7 +135,7 @@ impl Painter
     {
         if @countof(text) == 0 or color.a == 0 do
             return
-        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.type  = .SolidColor
         sharedSolidBrush.color = color
         drawString(left, top, text, font, sharedSolidBrush, under, zoom)
     }
@@ -152,7 +152,7 @@ impl Painter
             return
 
         var x = Math.round(left)
-        let y = Math.round(top + font.ascent*zoom)
+        let y = Math.round(top + font.ascent * zoom)
 
         // Compute text extent only if necessary
         var ms: StringMetrics = undefined
@@ -163,7 +163,7 @@ impl Painter
 
         // Set brush main texture
         if brush.type != .SolidColor do
-            setTexture0({x, y - ms.ascent*zoom}, {x + ms.width*zoom, y + ms.height*zoom}, brush)
+            setTexture0({x, y - ms.ascent * zoom}, {x + ms.width * zoom, y + ms.height * zoom}, brush)
         else do
             resetTexture0()
 
@@ -172,17 +172,17 @@ impl Painter
         {
             var pen = Pen.createSolid(brush.color, Math.max(1, Math.floor(font.underlineSize)))
             pen.beginCapStyle = .None
-            pen.endCapStyle = .None
+            pen.endCapStyle   = .None
 
             canSetTexture0 = false
             switch under
             {
             case Strikeout:
-                let yUnder = y - (ms.ascent*zoom / 2)
-                drawLine(x, yUnder, x + ms.width*zoom, yUnder, pen)
+                let yUnder = y - (ms.ascent * zoom / 2)
+                drawLine(x, yUnder, x + ms.width * zoom, yUnder, pen)
             case Underline:
                 let yUnder = y - font.underlinePos
-                drawLine(x, yUnder, x + ms.width*zoom, yUnder, pen)
+                drawLine(x, yUnder, x + ms.width * zoom, yUnder, pen)
             }
 
             canSetTexture0 = true
@@ -223,10 +223,10 @@ impl Painter
             {
                 setTextureFont(font, refr.atlasIndex)
 
-                let x1 = Math.round(x + refr.shiftX*zoom)
-                let y1 = Math.round(y - refr.shiftY*zoom)
-                let x2 = Math.round(x + (refr.shiftX*zoom) + (refr.width*zoom))
-                let y2 = Math.round(y - (refr.shiftY*zoom) + (refr.height*zoom))
+                let x1 = Math.round(x + refr.shiftX * zoom)
+                let y1 = Math.round(y - refr.shiftY * zoom)
+                let x2 = Math.round(x + (refr.shiftX * zoom) + (refr.width * zoom))
+                let y2 = Math.round(y - (refr.shiftY * zoom) + (refr.height * zoom))
 
                 let p1 = Math.Vector2{x1, y1}
                 let p2 = Math.Vector2{x2, y1}
@@ -241,7 +241,7 @@ impl Painter
                 discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
                 discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
-                x += Math.round(refr.advanceX*zoom)
+                x += Math.round(refr.advanceX * zoom)
             }
         }
 
@@ -257,18 +257,18 @@ impl Painter
 
         struct OneLine
         {
-            measure:        StringMetrics
-            start, end:     s32
-            countSpaces:    s32
-            whiteSpaces:    f32
-            hasEol:         bool
+            measure:         StringMetrics
+            start, end:      s32
+            countSpaces:     s32
+            whiteSpaces:     f32
+            hasEol:          bool
         }
 
         // Divide in lines
         var lines: Array'OneLine
         var line:  OneLine
 
-        var startLine = 0
+        var startLine    = 0
         var lastWasSpace = false
 
         visit &c, idx: text.chunks
@@ -284,8 +284,8 @@ impl Painter
             // User eol
             if c.isEol
             {
-                line.start = startLine
-                line.end  = cast(s32) idx
+                line.start  = startLine
+                line.end    = cast(s32) idx
                 line.hasEol = true
                 lines.add(line)
 
@@ -293,7 +293,7 @@ impl Painter
                 line.measure.width, line.measure.height = 0
                 line.measure.ascent, line.measure.descent = 0
                 line.countSpaces = 0
-                line.hasEol = false
+                line.hasEol      = false
                 continue
             }
 
@@ -307,7 +307,7 @@ impl Painter
                 if curW + c.boundRect.width > pos.width
                 {
                     line.start = startLine
-                    line.end  = cast(s32) idx
+                    line.end   = cast(s32) idx
 
                     // We do not want the current line to end with a space
                     if lastWasSpace and idx
@@ -321,7 +321,7 @@ impl Painter
                     }
 
                     lines.add(line)
-                    startLine  = cast(s32) idx
+                    startLine = cast(s32) idx
                     line.measure.width, line.measure.height = 0
                     line.measure.ascent, line.measure.descent = 0
                     line.countSpaces = 0
@@ -333,9 +333,9 @@ impl Painter
                     else
                     {
                         line.measure.width += ms.width
-                        line.measure.ascent = Math.max(line.measure.ascent, ms.ascent)
+                        line.measure.ascent  = Math.max(line.measure.ascent, ms.ascent)
                         line.measure.descent = Math.max(line.measure.descent, ms.descent)
-                        line.measure.height = Math.max(line.measure.height, ms.height)
+                        line.measure.height  = Math.max(line.measure.height, ms.height)
                     }
 
                     continue
@@ -353,9 +353,9 @@ impl Painter
             }
             else do
                 line.measure.width += ms.width
-            line.measure.ascent = Math.max(line.measure.ascent, ms.ascent)
+            line.measure.ascent  = Math.max(line.measure.ascent, ms.ascent)
             line.measure.descent = Math.max(line.measure.descent, ms.descent)
-            line.measure.height = Math.max(line.measure.height, ms.height)
+            line.measure.height  = Math.max(line.measure.height, ms.height)
         }
 
         if startLine != text.chunks.count
@@ -387,15 +387,16 @@ impl Painter
 
         switch format.vertAlignment
         {
-        case Bottom: y = pos.bottom() - totalHeight
-        case Center: y = pos.vertCenter() - (totalHeight * 0.5)
+        case Bottom:
+            y = pos.bottom() - totalHeight
+        case Center:
+            y = pos.vertCenter() - (totalHeight * 0.5)
         }
 
-        text.boundRect.x = Swag.F32.Max
-        text.boundRect.y = y
-        text.boundRect.width = 0
+        text.boundRect.x      = Swag.F32.Max
+        text.boundRect.y      = y
+        text.boundRect.width  = 0
         text.boundRect.height = totalHeight
-
 
         // Y correction if single line
         if singleLine and !(format.flags & .DontAdaptSingleLineHeight) do
@@ -409,12 +410,15 @@ impl Painter
 
             switch format.horzAlignment
             {
-            case Left:   break
-            case Right:  x1 = pos.right() - l.measure.width
-            case Center: x1 = pos.horzCenter() - l.measure.width * 0.5
+            case Left:
+                break
+            case Right:
+                x1 = pos.right() - l.measure.width
+            case Center:
+                x1 = pos.horzCenter() - l.measure.width * 0.5
             }
 
-            text.boundRect.x = Math.min(text.boundRect.x, x1)
+            text.boundRect.x     = Math.min(text.boundRect.x, x1)
             text.boundRect.width = Math.max(text.boundRect.width, l.measure.width)
 
             loop idx: l.start until l.end

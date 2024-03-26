@@ -30,41 +30,93 @@ impl Vector3
     #[Swag.Overload]
     mtd(op: string) opAssign(other: Self)
     {
-        #if   op == "+="    { x += other.x; y += other.y; z += other.z; }
-        #elif op == "-="    { x -= other.x; y -= other.y; z -= other.z; }
-        #elif op == "*="    { x *= other.x; y *= other.y; z *= other.z; }
-        #elif op == "/="    { x /= other.x; y /= other.y; z /= other.z; }
-        #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
+        #if op == "+="
+        {
+            x += other.x
+            y += other.y
+            z += other.z
+        }
+        #elif op == "-="
+        {
+            x -= other.x
+            y -= other.y
+            z -= other.z
+        }
+        #elif op == "*="
+        {
+            x *= other.x
+            y *= other.y
+            z *= other.z
+        }
+        #elif op == "/="
+        {
+            x /= other.x
+            y /= other.y
+            z /= other.z
+        }
+        #else #do
+            #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload]
     mtd(op: string) opAssign(value: f32)
     {
-        #if   op == "+="    { x += value; y += value; z += value; }
-        #elif op == "-="    { x -= value; y -= value; z -= value; }
-        #elif op == "*="    { x *= value; y *= value; z *= value; }
-        #elif op == "/="    { x /= value; y /= value; z /= value; }
-        #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
+        #if op == "+="
+        {
+            x += value
+            y += value
+            z += value
+        }
+        #elif op == "-="
+        {
+            x -= value
+            y -= value
+            z -= value
+        }
+        #elif op == "*="
+        {
+            x *= value
+            y *= value
+            z *= value
+        }
+        #elif op == "/="
+        {
+            x /= value
+            y /= value
+            z /= value
+        }
+        #else #do
+            #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload]
     mtd(op: string) opBinary(other: Self)->Self
     {
-        #if   op == "+" #do return Self{x + other.x, y + other.y, z + other.z}
-        #elif op == "-" #do return Self{x - other.x, y - other.y, z - other.z}
-        #elif op == "*" #do return Self{x * other.x, y * other.y, z * other.z}
-        #elif op == "/" #do return Self{x / other.x, y / other.y, z / other.z}
-        #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
+        #if op == "+" #do
+            return Self{x + other.x, y + other.y, z + other.z}
+        #elif op == "-" #do
+            return Self{x - other.x, y - other.y, z - other.z}
+        #elif op == "*" #do
+            return Self{x * other.x, y * other.y, z * other.z}
+        #elif op == "/" #do
+            return Self{x / other.x, y / other.y, z / other.z}
+        #else #do
+            #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload]
     mtd(op: string) opBinary(value: f32)->Self
     {
-        #if   op == "+" #do return Self{x + value, y + value, z + value}
-        #elif op == "-" #do return Self{x - value, y - value, z - value}
-        #elif op == "*" #do return Self{x * value, y * value, z * value}
-        #elif op == "/" #do return Self{x / value, y / value, z / value}
-        #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
+        #if op == "+" #do
+            return Self{x + value, y + value, z + value}
+        #elif op == "-" #do
+            return Self{x - value, y - value, z - value}
+        #elif op == "*" #do
+            return Self{x * value, y * value, z * value}
+        #elif op == "/" #do
+            return Self{x / value, y / value, z / value}
+        #else #do
+            #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) opUnary()->Self

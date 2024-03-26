@@ -3,14 +3,14 @@ using Core, Pixel
 #[Swag.Opaque]
 public struct RichEditView
 {
-    using wnd:  Wnd
+    using wnd: Wnd
 
-    ed:                 *RichEditCtrl
-    visibleCaret:       bool
-    selMode:            bool
-    timerCaret:         *Timer
-    firstLineSelMode:   u64
-    lastClientRect:     Math.Rectangle
+    ed:                   *RichEditCtrl
+    visibleCaret:         bool
+    selMode:              bool
+    timerCaret:           *Timer
+    firstLineSelMode:     u64
+    lastClientRect:       Math.Rectangle
 }
 
 impl IWnd for RichEditView
@@ -42,7 +42,7 @@ impl IWnd for RichEditView
                 firstLineSelMode = cp.lineIndex
                 ed.setCursorPos(cp)
                 if !(evt.modifiers & .Shift) do
-                    ed.selBeg  = cp
+                    ed.selBeg = cp
                 selMode = true
                 ed.setRectangularSelection(evt.modifiers & .Alt ? true : false)
                 ed.ensureCaretIsVisible()
@@ -53,7 +53,7 @@ impl IWnd for RichEditView
             if selMode
             {
                 evt.accepted = true
-                selMode = false
+                selMode      = false
                 releaseMouse()
             }
 
@@ -114,13 +114,13 @@ impl IWnd for RichEditView
         switch evt.kind
         {
         case SetFocus:
-            timerCaret = surface.app.addTimer(500'ms, self)
+            timerCaret   = surface.app.addTimer(500'ms, self)
             visibleCaret = true
             invalidate()
 
         case KillFocus:
             surface.app.deleteTimer(timerCaret)
-            timerCaret = null
+            timerCaret   = null
             visibleCaret = false
             invalidate()
         }
@@ -135,12 +135,12 @@ impl IWnd for RichEditView
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let painter = evt.bc.painter
-        let colors = getThemeColors()
+        let colors  = getThemeColors()
 
         let marginLeft = ed.getMarginLeft()
-        var x = 0'f32
-        var y = 0'f32
-        var size = ed.getXExtent()
+        var x          = 0'f32
+        var y          = 0'f32
+        var size       = ed.getXExtent()
 
         // Force visible caret
         if ed.forceCaretVisible do
@@ -150,7 +150,7 @@ impl IWnd for RichEditView
         var i: u64
         if ed.dirtyFirstLineView or ed.recomputeScroll
         {
-            i = 0
+            i                       = 0
             ed.firstVisibleLineView = Swag.U64.Max
         }
         else
@@ -163,9 +163,9 @@ impl IWnd for RichEditView
             ed.countVisibleLines = 0
         ed.dirtyFirstLineView = false
 
-        var clientRect = getClientRect()
+        var clientRect  = getClientRect()
         let firstHidden = true
-        var maxx = 0'f32
+        var maxx        = 0'f32
 
         let sizeChanged = lastClientRect != clientRect
         lastClientRect = clientRect
@@ -188,9 +188,9 @@ impl IWnd for RichEditView
 
             let l = ed.lines[i]
 
-            l.drawingRect.x = marginLeft
-            l.drawingRect.y = y
-            l.drawingRect.width = x - marginLeft
+            l.drawingRect.x      = marginLeft
+            l.drawingRect.y      = y
+            l.drawingRect.width  = x - marginLeft
             l.drawingRect.height = size.y
 
             // Current line
@@ -301,15 +301,15 @@ impl RichEditView
         let painter = bc.painter
 
         let fontR = ed.getFont().getFont(strStyle.fontMode)
-        let me = Painter.measureString(str, fontR)
+        let me    = Painter.measureString(str, fontR)
 
         // Background rectangle
         if visible and strStyle.colBk.a
         {
             var rect: Math.Rectangle
-            rect.x = x
-            rect.y = y
-            rect.width = me.width
+            rect.x      = x
+            rect.y      = y
+            rect.width  = me.width
             rect.height = ed.getXExtent().y
             painter.fillRect(rect, strStyle.colBk)
         }
@@ -321,19 +321,19 @@ impl RichEditView
     mtd paintLine(bc: *PaintContext, lineIndex: u64, py: f32, visible: bool)->f32
     {
         let line = ed.lines[lineIndex]
-        let y = py
+        let y    = py
 
         // Dummy character for empty lines, so that a selected line display something
-        var dummyChar = ` `'rune
+        var dummyChar  = ` `'rune
         var dummyStyle = 0'u8
-        var count = line.length()
-        var pChar = line.chars.buffer
-        var pStyle = line.styles.buffer
+        var count      = line.length()
+        var pChar      = line.chars.buffer
+        var pStyle     = line.styles.buffer
         if !count
         {
             pChar  = cast(^rune) &dummyChar
             pStyle = cast(^u8) &dummyStyle
-            count   = 1
+            count  = 1
         }
 
         var str: String{allocator: @getcontext().tempAllocator}
@@ -350,10 +350,15 @@ impl RichEditView
         var i = 0
         while i < count
         {
-            defer { i += 1; pChar += 1; pStyle += 1; }
+            defer
+            {
+                i += 1
+                pChar += 1
+                pStyle += 1
+            }
             newStyle = ed.styles[dref pStyle]
 
-            var cr = dref pChar
+            var cr           = dref pChar
             let isTabulation = cr == `\t`
 
             var selected = false
@@ -361,7 +366,7 @@ impl RichEditView
             {
                 var cp1: RichEditCursor
                 cp1.charPosInLine = i
-                cp1.lineIndex = lineIndex
+                cp1.lineIndex     = lineIndex
                 var charPos = ed.getCursorDisplayPos(cp1)
                 charPos.y -= size.y * 0.5
                 if ed.selRectangle.contains(charPos) do
@@ -394,7 +399,7 @@ impl RichEditView
                 if cr == ` ` and pChar != &dummyChar
                 {
                     newStyle.colFg = getThemeColors().richEdit_TextSpecial
-                    cr = `.`
+                    cr             = `.`
                 }
                 elif isTabulation
                 {
@@ -406,7 +411,7 @@ impl RichEditView
             let styleChange = newStyle != oldStyle
             if styleChange or isTabulation
             {
-                x = paintString(bc, x, y, str, oldStyle, visible)
+                x        = paintString(bc, x, y, str, oldStyle, visible)
                 oldStyle = newStyle
                 str.clear()
             }

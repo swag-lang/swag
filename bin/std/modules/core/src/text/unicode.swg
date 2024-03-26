@@ -10,8 +10,8 @@
 #[Swag.Inline, Swag.ConstExpr]
 public
 {
-    func isLatin1(c: rune)  => c <= 0xFF
-    func isAscii(c: rune)   => c <= 0x7F
+    func isLatin1(c: rune) => c <= 0xFF
+    func isAscii(c: rune)  => c <= 0x7F
 }
 
 #[Swag.ConstExpr]
@@ -147,9 +147,9 @@ public
 #[Swag.Overload]
 public func fromUtf8(dest: [..] rune, src: const [..] u8)->u32
 {
-    var count = 0'u32
-    var srcPtr = @dataof(src)
-    var destPtr = @dataof(dest)
+    var count     = 0'u32
+    var srcPtr    = @dataof(src)
+    var destPtr   = @dataof(dest)
     var srcLength = @countof(src)
 
     var (c, eat) = Utf8.decodeRune(src)
@@ -203,7 +203,7 @@ public func makeLower(buffer: [..] rune)
 // Compare two unicode strings, and returns -1, 0 or 1
 func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
 {
-    let length = @countof(src)
+    let length      = @countof(src)
     let otherLength = @countof(dst)
 
     var minLen: u64 = undefined
@@ -250,22 +250,22 @@ const UpperLower = Swag.S32.Max
 
 struct Range
 {
-    lo, hi: rune
-    stride: u32
+    lo, hi:     rune
+    stride:     u32
 }
 
 struct CaseRange
 {
-    lo, hi: rune
-    delta:  [3] s32
+    lo, hi:    rune
+    delta:     [3] s32
 }
 
 #[Swag.EnumIndex]
 enum WantedCase
 {
-	UpperCase
-	LowerCase
-	TitleCase
+    UpperCase
+    LowerCase
+    TitleCase
 }
 
 func isInTable(ranges: const [..] Range, r: rune)->bool
@@ -290,11 +290,11 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     var hi = @countof(ranges)
     while lo < hi
     {
-        let m = lo + (hi-lo)/2
+        let m     = lo + (hi - lo) / 2
         let range = &ranges[m]
         if range.lo <= r and r <= range.hi
         {
-            return range.stride == 1 or (r-range.lo) % range.stride == 0
+            return range.stride == 1 or (r - range.lo) % range.stride == 0
         }
 
         if r < range.lo do
@@ -306,47 +306,47 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     return false
 }
 
-func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange) -> {mappedRune: rune, foundMapping: bool}
+func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange)->{mappedRune: rune, foundMapping: bool}
 {
     var result: retval
 
-	// binary search over ranges
-	var lo = 0'u64
-	var hi = @countof(caseRange)
-	while lo < hi
+    // binary search over ranges
+    var lo = 0'u64
+    var hi = @countof(caseRange)
+    while lo < hi
     {
-		let m = lo + (hi-lo) / 2
-		var cr = caseRange[m]
-		if cr.lo <= r and r <= cr.hi
+        let m  = lo + (hi - lo) / 2
+        var cr = caseRange[m]
+        if cr.lo <= r and r <= cr.hi
         {
-			let delta = cr.delta[wCase]
-			if delta == Swag.S32.Max
+            let delta = cr.delta[wCase]
+            if delta == Swag.S32.Max
             {
-				// In an Upper-Lower sequence, which always starts with
-				// an UpperCase letter, the real deltas always look like:
-				//	{0, 1, 0}    UpperCase (Lower is next)
-				//	{-1, 0, -1}  LowerCase (Upper, Title are previous)
-				// The characters at even offsets from the beginning of the
-				// sequence are upper case; the ones at odd offsets are lower.
-				// The correct mapping can be done by clearing or setting the low
-				// bit in the sequence offset.
-				// The constants UpperCase and TitleCase are even while LowerCase
-				// is odd so we take the low bit from _case.
-				result.mappedRune = cr.lo +,over ((r - cr.lo) & ~1'u32 | (cast(rune) wCase & 1))
+                // In an Upper-Lower sequence, which always starts with
+                // an UpperCase letter, the real deltas always look like:
+                //	{0, 1, 0}    UpperCase (Lower is next)
+                //	{-1, 0, -1}  LowerCase (Upper, Title are previous)
+                // The characters at even offsets from the beginning of the
+                // sequence are upper case; the ones at odd offsets are lower.
+                // The correct mapping can be done by clearing or setting the low
+                // bit in the sequence offset.
+                // The constants UpperCase and TitleCase are even while LowerCase
+                // is odd so we take the low bit from _case.
+                result.mappedRune   = cr.lo +,over ((r - cr.lo) & ~1'u32 | (cast(rune) wCase & 1))
                 result.foundMapping = true
                 return result
-			}
+            }
 
-            result.mappedRune = r +,over cast,bit(rune) delta
+            result.mappedRune   = r +,over cast,bit(rune) delta
             result.foundMapping = true
             return result
-		}
+        }
 
-		if r < cr.lo do
-			hi = m
-		else do
-			lo = m + 1
-	}
+        if r < cr.lo do
+            hi = m
+        else do
+            lo = m + 1
+    }
 
-	return result
+    return result
 }

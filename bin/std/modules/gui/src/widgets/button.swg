@@ -2,13 +2,13 @@ public struct Button
 {
     using wnd: Wnd
 
-    icon:               Icon
-    sigPressed:         SigArray'closure(*Self)
-    sigRightPressed:    SigArray'closure(*Self)
-    isPressed:          bool
-    isPressing:         bool
-    isHot:              bool
-    isIn:               bool
+    icon:                Icon
+    sigPressed:          SigArray'closure(*Self)
+    sigRightPressed:     SigArray'closure(*Self)
+    isPressed:           bool
+    isPressing:          bool
+    isHot:               bool
+    isIn:                bool
 }
 
 impl IWnd for Button
@@ -21,14 +21,14 @@ impl IWnd for Button
         if evt.setFlags & .Icon and icon != evt.icon
         {
             evt.accepted = true
-            icon = evt.icon
+            icon         = evt.icon
             invalidate()
         }
 
         if evt.setFlags & .Name and name != evt.name
         {
             evt.accepted = true
-            name = evt.name
+            name         = evt.name
             invalidate()
         }
 

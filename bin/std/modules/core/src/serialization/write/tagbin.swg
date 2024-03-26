@@ -1,27 +1,28 @@
-#global namespace Serialization.Write
+#global namespace Serialization
+#global namespace Write
 #global public
 using Swag
 
-enum TagBinSignatures: u32
+enum TagBinSignatures : u32
 {
-    Root        = 0xC0DE0000
-    Fat         = 0xC0DE0001
-    Sequence    = 0xC0DE0002
-    Version     = 0xC0DE0003
+    Root     = 0xC0DE0000
+    Fat      = 0xC0DE0001
+    Sequence = 0xC0DE0002
+    Version  = 0xC0DE0003
 }
 
 struct TagBinSection
 {
-    startSeek:  ConcatBufferSeek
-    mapSeek:    HashTable'(u32, ConcatBufferSeek)
-    kind:       SectionKind
+    startSeek:     ConcatBufferSeek
+    mapSeek:       HashTable'(u32, ConcatBufferSeek)
+    kind:          SectionKind
 }
 
 struct TagBin
 {
-    output:         *ConcatBuffer
-    freeSections:   ArrayPtr'TagBinSection
-    sections:       ArrayPtr'TagBinSection
+    output:           *ConcatBuffer
+    freeSections:     ArrayPtr'TagBinSection
+    sections:         ArrayPtr'TagBinSection
 }
 
 internal impl TagBin
@@ -105,8 +106,8 @@ impl TagBin
 
     mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool
     {
-        if  Reflection.hasAttribute(structType, Serialization.Final) or
-            Reflection.hasAttribute(structType, Serialization.PodFinal)
+        if Reflection.hasAttribute(structType, Serialization.Final) or
+           Reflection.hasAttribute(structType, Serialization.PodFinal)
         {
             beginSection(.Raw)
         }

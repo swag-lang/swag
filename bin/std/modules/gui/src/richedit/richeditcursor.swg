@@ -3,8 +3,8 @@ using Core, Pixel
 
 struct RichEditCursor
 {
-    lineIndex:      u64
-    charPosInLine:  u64
+    lineIndex:         u64
+    charPosInLine:     u64
 }
 
 impl RichEditCtrl
@@ -20,7 +20,7 @@ impl RichEditCtrl
         else
         {
             let styleIdx = line.styles[i]
-            let fontR = getFont().getFont(styles[styleIdx].fontMode)
+            let fontR    = getFont().getFont(styles[styleIdx].fontMode)
             size = Painter.measureRune(line.chars[i], fontR)
             size.y += lineSpacing
         }
@@ -33,8 +33,8 @@ impl RichEditCtrl
         var result: retval
 
         let lineIndex = Math.min(cp.lineIndex, lines.count - 1)
-        let line = lines[lineIndex]
-        result.y  = line.drawingRect.bottom()
+        let line      = lines[lineIndex]
+        result.y = line.drawingRect.bottom()
 
         result.x = getMarginLeft()
         loop i: Math.min(cp.charPosInLine, line.length())
@@ -48,17 +48,17 @@ impl RichEditCtrl
 
     mtd getTabOffset(x: s32, numBlanks: *s32 = null)->s32
     {
-        let of = cast(s32) (x - getMarginLeft())
-        let fontR = getFont().getFont(styles[0].fontMode)
+        let of        = cast(s32) (x - getMarginLeft())
+        let fontR     = getFont().getFont(styles[0].fontMode)
         var sizeBlank = Painter.measureRune(` `, fontR)
-        let sx = cast(s32) (sizeBlank.x * tabSize)
+        let sx        = cast(s32) (sizeBlank.x * tabSize)
 
         var tab = (of / sx) * sx
         tab = of - tab
         if numBlanks do
             dref numBlanks = cast(s32) (tab / sizeBlank.x)
 
-        tab  = sx - tab
+        tab = sx - tab
         return tab
     }
 
@@ -70,13 +70,13 @@ impl RichEditCtrl
 
     mtd getCaretPos(cp: RichEditCursor)->Math.Rectangle
     {
-        let pt = getCursorDisplayPos(cp)
+        let pt   = getCursorDisplayPos(cp)
         let size = getXExtent()
 
         var result: retval
-        result.x = pt.x
-        result.y = overwriteMode ? pt.y - 2 : pt.y - size.y
-        result.width = overwriteMode ? size.x : 2
+        result.x      = pt.x
+        result.y      = overwriteMode ? pt.y - 2 : pt.y - size.y
+        result.width  = overwriteMode ? size.x : 2
         result.height = overwriteMode ? 2 : size.y
         return result
     }
@@ -90,21 +90,21 @@ impl RichEditCtrl
 
     mtd ensureCaretIsVisible(center = false)
     {
-        forceCaretVisible       = true;
+        forceCaretVisible       = true
         forceCaretVisibleCenter = center
         ensureCaretIsVisibleInternal(center)
     }
 
     mtd ensureCursorIsVisible(cp: RichEditCursor, center: bool)
     {
-        var size = getXExtent()
+        var size   = getXExtent()
         let decalx = size.x * 10
 
         var clientRect = edView.getClientRect()
 
         var pos = getCursorDisplayPos(cp)
-        var sx = edView.scrollPos.x
-        var sy = edView.scrollPos.y
+        var sx  = edView.scrollPos.x
+        var sy  = edView.scrollPos.y
 
         // Need to change horz scroll
         if pos.x < sx + getMarginLeft() do
@@ -147,18 +147,18 @@ impl RichEditCtrl
         }
         else
         {
-            var i = 0'u64
+            var i  = 0'u64
             var pi = Swag.U64.Max
             while i != pi and i != lines.count
             {
-                let line = lines[i]
+                let line  = lines[i]
                 let count = line.length()
-                var rect = line.drawingRect
+                var rect  = line.drawingRect
 
                 // Before the first character
                 if pt.y >= rect.y and pt.y < rect.bottom() and (pt.x < rect.x or !count)
                 {
-                    found = true
+                    found            = true
                     cp.lineIndex     = i
                     cp.charPosInLine = 0
                     break
@@ -347,7 +347,7 @@ impl RichEditCtrl
     mtd moveCursorStartLine(cp: *RichEditCursor)
     {
         let line = lines[cp.lineIndex]
-        var i = cast(s32) cp.charPosInLine
+        var i    = cast(s32) cp.charPosInLine
 
         var firstBlank: bool
         if !i
@@ -398,7 +398,7 @@ impl RichEditCtrl
     mtd moveCursorPageUp(cp: *RichEditCursor)
     {
         var client = edView.getClientRect()
-        var count = cast(s64) (client.height / getXExtent().y)
+        var count  = cast(s64) (client.height / getXExtent().y)
         while count
         {
             if cp.lineIndex == 0 do
@@ -411,7 +411,7 @@ impl RichEditCtrl
     mtd moveCursorPageDown(cp: *RichEditCursor)
     {
         var client = edView.getClientRect()
-        var count = cast(s64) (client.height / getXExtent().y)
+        var count  = cast(s64) (client.height / getXExtent().y)
         while count
         {
             if cp.lineIndex == lines.count - 1 do

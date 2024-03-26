@@ -1,11 +1,12 @@
-#global namespace Serialization.Read
+#global namespace Serialization
+#global namespace Read
 using Swag, Core.Errors
 
 public struct JSon
 {
-    stream:     ByteStream
-    line, col:  u64 = 1
-    propName:   String
+    stream:       ByteStream
+    line, col:    u64 = 1
+    propName:     String
 }
 
 public impl JSon
@@ -14,9 +15,9 @@ public impl JSon
     {
         var err: retval
         err.message = val
-        err.line = line
-        err.col = col
-        err.seek = stream.seek
+        err.line    = line
+        err.col     = col
+        err.seek    = stream.seek
         return err
     }
 
@@ -142,12 +143,12 @@ public impl JSon
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endElement() throw
     {
-    }
+        }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd beginValue() throw
     {
-    }
+        }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endValue() throw

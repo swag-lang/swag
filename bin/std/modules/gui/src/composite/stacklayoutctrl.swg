@@ -18,8 +18,8 @@ struct StackLayoutCtrl
 {
     using wnd: Wnd
 
-    layoutKind: StackLayoutKind = Top
-    spacing:    f32 = 5
+    layoutKind:     StackLayoutKind = Top
+    spacing:        f32 = 5
 }
 
 impl IWnd for StackLayoutCtrl

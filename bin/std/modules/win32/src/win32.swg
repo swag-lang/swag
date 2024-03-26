@@ -3,7 +3,7 @@
 // Throw a [[Swag.SystemError]]
 func throwWinError(errorMessageID: u32) throw
 {
-    if errorMessageID == 0  do
+    if errorMessageID == 0 do
         return
 
     var err: Swag.SystemError
@@ -17,8 +17,8 @@ func throwWinError(errorMessageID: u32) throw
     {
         const MaxLen = 128
         let errorMsg = cast(^u8) cxt.errorAllocator.alloc(acast MaxLen)
-        let lang = cast(DWORD) MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)
-        var len = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) errorMsg, cast(DWORD) MaxLen, null);
+        let lang     = cast(DWORD) MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)
+        var len      = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) errorMsg, cast(DWORD) MaxLen, null)
         if len
         {
             // Trim right, remove trailing dots, remove trailing non printable characters

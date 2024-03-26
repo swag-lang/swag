@@ -42,13 +42,13 @@ func hasZeroByte(v: u16)->bool
 #[ConstExpr, Inline, Safety("overflow", false), Overload]
 func hasZeroByte(v: u32)->bool
 {
-    return cast(bool) (((v) - 0x01010101) & ~(v) & 0x80808080)
+    return cast(bool) ((v - 0x01010101) & ~v & 0x80808080)
 }
 
 #[ConstExpr, Inline, Safety("overflow", false), Overload]
 func hasZeroByte(v: u64)->bool
 {
-    return cast(bool) (((v) - 0x01010101_01010101) & ~(v) & 0x80808080_80808080)
+    return cast(bool) ((v - 0x01010101_01010101) & ~v & 0x80808080_80808080)
 }
 
 // Make a 16 bits by repeating a given byte
@@ -56,7 +56,7 @@ func hasZeroByte(v: u64)->bool
 #[ConstExpr, Inline]
 func makeRepeat16(v: u8)->u16
 {
-    return (~0'u16/255 * v)
+    return (~0'u16 / 255 * v)
 }
 
 // Make a 32 bits by repeating a given byte
@@ -64,7 +64,7 @@ func makeRepeat16(v: u8)->u16
 #[ConstExpr, Inline]
 func makeRepeat32(v: u8)->u32
 {
-    return (~0'u32/255 * v)
+    return (~0'u32 / 255 * v)
 }
 
 // Make a 64 bits by repeating a given byte
@@ -72,7 +72,7 @@ func makeRepeat32(v: u8)->u32
 #[ConstExpr, Inline]
 func makeRepeat64(v: u8)->u64
 {
-    return (~0'u64/255 * v)
+    return (~0'u64 / 255 * v)
 }
 
 // Make a 64 bits with two 32 bits
@@ -105,7 +105,7 @@ func hasByte(value: u64, byte: u8)->bool
 // Will return -1, 1 or 0 for a zero value.
 #[ConstExpr, Inline, Overload]
 {
-    func sign(x: s8)  => cast(s8)  (x > 0) - cast(s8)  (x < 0)
+    func sign(x: s8)  => cast(s8) (x > 0) - cast(s8) (x < 0)
     func sign(x: s16) => cast(s16) (x > 0) - cast(s16) (x < 0)
     func sign(x: s32) => cast(s32) (x > 0) - cast(s32) (x < 0)
     func sign(x: s64) => cast(s64) (x > 0) - cast(s64) (x < 0)
@@ -161,7 +161,7 @@ func gcd(a0, b0: s64)->s64
 func lcm(a, b: s64)->s64
 {
     if a > b do
-        return a / gcd(a,b)*b
+        return a / gcd(a, b) * b
     else do
-        return b / gcd(a,b)*a
+        return b / gcd(a, b) * a
 }

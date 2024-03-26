@@ -4,46 +4,46 @@ using Threading, Swag
 #[Swag.EnumFlags]
 public enum JobState
 {
-    Zero        = 0x00000000
-    InPending   = 0x00000001
-    Done        = 0x00000002
+    Zero      = 0x00000000
+    InPending = 0x00000001
+    Done      = 0x00000002
 }
 
 public struct Job
 {
-    lambda:         func(*void)
-    data:           *void
+    lambda:     func(*void)
+    data:       *void
 
     // Internal state
-    state:          JobState = Zero
-    pendingIndex:   u32 = Swag.U32.Max
+    state:            JobState = Zero
+    pendingIndex:     u32 = Swag.U32.Max
 }
 
 public struct(T) SliceJob
 {
-    using base: Job
-    buffer:     [..] T
-    offset:     u32
-    userData:   *void
+    using base:     Job
+    buffer:         [..] T
+    offset:         u32
+    userData:       *void
 }
 
 public struct ForJob
 {
-    using base: Job
-    startIndex: u32
-    endIndex:   u32
-    userData:   *void
+    using base:     Job
+    startIndex:     u32
+    endIndex:       u32
+    userData:       *void
 }
 
-var g_Allocator:            Swag.IAllocator
-var g_mustEnd:              bool
-var g_numWorkers:           s32
-var g_workers:              Array'Thread
-var g_pendingJobs:          Array'(*Job)
-var g_mutexPendingJobs:     Sync.Mutex
-var g_eventPendingJobs:     Sync.Event
-var g_eventDone:            Sync.Event
-var g_totalJobs:            u32
+var g_Allocator:        Swag.IAllocator
+var g_mustEnd:          bool
+var g_numWorkers:       s32
+var g_workers:          Array'Thread
+var g_pendingJobs:      Array'(*Job)
+var g_mutexPendingJobs: Sync.Mutex
+var g_eventPendingJobs: Sync.Event
+var g_eventDone:        Sync.Event
+var g_totalJobs:        u32
 
 #drop
 {
@@ -51,7 +51,9 @@ var g_totalJobs:            u32
     {
         g_mustEnd = true
         g_eventPendingJobs.signal()
-        while Atomic.get(&g_numWorkers) {}
+        while Atomic.get(&g_numWorkers)
+        {
+        }
 
         visit th: g_workers do
             th.wait()
@@ -64,7 +66,9 @@ func workerEntry(_th: Thread)
 {
     while !g_mustEnd
     {
-        while peekExecJob() {}
+        while peekExecJob()
+        {
+        }
         g_eventPendingJobs.wait()
     }
 
@@ -89,7 +93,8 @@ func runJob(job: *Job)
 func peekExecJob()->bool
 {
     let job = getJobToExec()
-    if !job do return false
+    if !job do
+        return false
     runJob(job)
     return true
 }
@@ -129,8 +134,8 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
 {
     Debug.assert(g_numWorkers == 0)
 
-    g_Allocator = @getcontext().allocator
-    g_workers.allocator = g_Allocator
+    g_Allocator             = @getcontext().allocator
+    g_workers.allocator     = g_Allocator
     g_pendingJobs.allocator = g_Allocator
 
     g_eventPendingJobs.init()
@@ -159,7 +164,9 @@ public func scheduleJob(job: *Job)
 // Wait for all registered jobs to be finished
 public func waitDone()
 {
-    while peekExecJob() {}
+    while peekExecJob()
+    {
+    }
     g_eventDone.wait()
 }
 
@@ -217,7 +224,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
 
     func visitSlice(buffer: [..] T, offset: u32, userData: *void)
     {
-        var scan = @dataof(buffer)
+        var scan    = @dataof(buffer)
         let countof = @countof(buffer)
         loop countof / offset
         {
@@ -233,7 +240,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
     }
 
     // Force synchrone execution if range is too small
-    let wh = @countof(range) / offset
+    let wh         = @countof(range) / offset
     let numWorkers = Math.min(getNumWorkers(), cast(u32) wh)
     if isSynchrone() or numWorkers <= 1
     {
@@ -242,7 +249,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
     }
 
     // Compute size of each chunk (and size of the last one)
-    var splitSize = wh / numWorkers
+    var splitSize     = wh / numWorkers
     var lastSplitSize = splitSize + (wh - (splitSize * numWorkers))
     splitSize *= offset
     lastSplitSize *= offset
@@ -257,17 +264,18 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
         let sizeSlice = #index == sliceJobs.count - 1 ? lastSplitSize : splitSize
 
         j.base.lambda = &jobEntry
-        j.base.data = j
-        j.offset = offset
-        j.userData = userData
-        j.buffer = @mkslice(ptr, sizeSlice)
+        j.base.data   = j
+        j.offset      = offset
+        j.userData    = userData
+        j.buffer      = @mkslice(ptr, sizeSlice)
         ptr += sizeSlice
 
         scheduleJob(j)
     }
 
     // Sync
-    visit &j: sliceJobs do waitJob(j)
+    visit &j: sliceJobs do
+        waitJob(j)
 }
 
 // Do a for loop in parallel chunks.
@@ -277,7 +285,8 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
 #[Swag.Macro]
 public func parallelFor(count: u32, userData: *void = null, stmt: code)
 {
-    if !count do return
+    if !count do
+        return
 
     func jobEntry(jobData: *void)
     {
@@ -310,7 +319,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     }
 
     // Compute size of each chunk (and size of the last one)
-    let splitSize = count / numWorkers
+    let splitSize     = count / numWorkers
     let lastSplitSize = splitSize + (count - (splitSize * numWorkers))
 
     // Launch jobs
@@ -323,15 +332,16 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
         let sizeSlice = #index == sliceJobs.count - 1 ? lastSplitSize : splitSize
 
         j.base.lambda = &jobEntry
-        j.base.data = j
-        j.startIndex = startIndex
-        j.endIndex = startIndex + sizeSlice - 1
-        j.userData = userData
+        j.base.data   = j
+        j.startIndex  = startIndex
+        j.endIndex    = startIndex + sizeSlice - 1
+        j.userData    = userData
         startIndex += sizeSlice
 
         scheduleJob(j)
     }
 
     // Sync
-    visit &j: sliceJobs do waitJob(j)
+    visit &j: sliceJobs do
+        waitJob(j)
 }

@@ -4,17 +4,17 @@ using Swag, Core, Core.Serialization
 // An image buffer, in various pixel formats.
 struct Image
 {
-    pixels:             Array'u8        // All the pixels
-    size:               u64             // Size in bytes
-    width:              s32             // The width of the image
-    height:             s32             // The height of the image
-    width8:             s32             // The width, in bytes
-    pf:                 PixelFormat     // Format of one pixel
-    bpp:                u8              // Bits per pixel
-    bpp8:               u8              // Bytes per pixel
+    pixels:     Array'u8        // All the pixels
+    size:       u64             // Size in bytes
+    width:      s32             // The width of the image
+    height:     s32             // The height of the image
+    width8:     s32             // The width, in bytes
+    pf:         PixelFormat     // Format of one pixel
+    bpp:        u8              // Bits per pixel
+    bpp8:       u8              // Bytes per pixel
 
     #[Core.Serialization.NoSerialize]
-    workingBuffer:      *Image          // Temporary buffer for filters and transformations
+    workingBuffer: *Image // Temporary buffer for filters and transformations
 }
 
 impl Image
@@ -52,12 +52,12 @@ impl Image
         var scan = pixels.buffer
         loop width * height
         {
-			#macro
-			{
+            #macro
+            {
                 var #alias0 = #up scan
-				var #alias1 = #index
-				#mixin #up stmt
-			}
+                var #alias1 = #index
+                #mixin #up stmt
+            }
 
             scan += bpp8
         }
@@ -69,9 +69,9 @@ impl Image
     mtd init(width, height: s32, pf: PixelFormat)
     {
         self.pixels.clear()
-        self.width = #self.width
+        self.width  = #self.width
         self.height = #self.height
-        self.pf = #self.pf
+        self.pf     = #self.pf
 
         bpp    = self.pf.bpp()
         bpp8   = cast(u8) (bpp >> 3)
@@ -97,16 +97,16 @@ impl Image
     #[Swag.Overload]
     mtd allocWorkingBuffer(newWidth, newHeight: s32, newPf: PixelFormat)
     {
-        if  workingBuffer and
-            newWidth == workingBuffer.width and
-            newHeight == workingBuffer.height and
-            newPf == workingBuffer.pf
+        if workingBuffer and
+           newWidth == workingBuffer.width and
+           newHeight == workingBuffer.height and
+           newPf == workingBuffer.pf
         {
             return
         }
 
         freeWorkingBuffer()
-        workingBuffer = Memory.new'Image()
+        workingBuffer      = Memory.new'Image()
         dref workingBuffer = Image.create(newWidth, newHeight, newPf)
     }
 
@@ -150,13 +150,13 @@ impl Image
             let p = cast(*@decltype(p)) data
             #macro
             {
-                let image = #up p.self
+                let image    = #up p.self
                 let userData = #up p.userData
-                let pix = #up buffer
+                let pix      = #up buffer
 
-                let index = (cast(u64) (pix - image.pixels.buffer)) / image.bpp8
-                let x = cast(s32) index % image.width
-                let y = cast(s32) index / image.width
+                let index = cast(u64) (pix - image.pixels.buffer) / image.bpp8
+                let x     = cast(s32) index % image.width
+                let y     = cast(s32) index / image.width
 
                 #mixin #up stmt
             }
@@ -184,7 +184,7 @@ impl Image
         #if BPP == 24
         {
             dref cast(*u16) pixDst = dref cast(*u16) pixSrc
-            pixDst[2] = pixSrc[2]
+            pixDst[2]              = pixSrc[2]
         }
         #elif BPP == 32
         {
@@ -199,18 +199,40 @@ impl Image
     // Set pixel values depending on pixel format
     func(PF: PixelFormat) setPixelRGBA8(pixDst: ^u8, r, g, b, _a: u8)
     {
-        #if PF == .BGR8  { pixDst[0] = b; pixDst[1] = g; pixDst[2] = r; }
-        #if PF == .BGRA8 { pixDst[0] = b; pixDst[1] = g; pixDst[2] = r; pixDst[3] = _a; }
-        #if PF == .RGB8  { pixDst[0] = r; pixDst[1] = g; pixDst[2] = b; }
-        #if PF == .RGBA8 { pixDst[0] = r; pixDst[1] = g; pixDst[2] = b; pixDst[3] = _a; }
+        #if PF == .BGR8
+        {
+            pixDst[0] = b
+            pixDst[1] = g
+            pixDst[2] = r
+        }
+        #if PF == .BGRA8
+        {
+            pixDst[0] = b
+            pixDst[1] = g
+            pixDst[2] = r
+            pixDst[3] = _a
+        }
+        #if PF == .RGB8
+        {
+            pixDst[0] = r
+            pixDst[1] = g
+            pixDst[2] = b
+        }
+        #if PF == .RGBA8
+        {
+            pixDst[0] = r
+            pixDst[1] = g
+            pixDst[2] = b
+            pixDst[3] = _a
+        }
     }
 
     // Returns the color at the given coordinate
     mtd getPixelColor(pixX, pixY: s32)->Color
     {
         var result: retval
-        let x = Math.clamp(pixX, 0, width - 1)
-        var y = Math.clamp(pixY, 0, height - 1)
+        let x       = Math.clamp(pixX, 0, width - 1)
+        var y       = Math.clamp(pixY, 0, height - 1)
         y = height - y - 1
 
         #[Swag.Complete]

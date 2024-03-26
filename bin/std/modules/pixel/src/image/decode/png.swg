@@ -8,109 +8,110 @@
 #global namespace Png
 using Swag, Core, Core.Errors
 
-private {
-
-enum ChunkType: u32
+private
 {
-    IHDR = @byteswap(`I`'u32 << 24 | `H`'u32 << 16 | `D`'u32 << 8 | `R`'u32)
-	PLTE = @byteswap(`P`'u32 << 24 | `L`'u32 << 16 | `T`'u32 << 8 | `E`'u32)
-	BKGD = @byteswap(`b`'u32 << 24 | `K`'u32 << 16 | `G`'u32 << 8 | `D`'u32)
-	TRNS = @byteswap(`t`'u32 << 24 | `R`'u32 << 16 | `N`'u32 << 8 | `S`'u32)
-	IDAT = @byteswap(`I`'u32 << 24 | `D`'u32 << 16 | `A`'u32 << 8 | `T`'u32)
 
-	ITXt = @byteswap(`i`'u32 << 24 | `T`'u32 << 16 | `X`'u32 << 8 | `t`'u32)
-	TEXt = @byteswap(`t`'u32 << 24 | `E`'u32 << 16 | `X`'u32 << 8 | `t`'u32)
-	ZTXt = @byteswap(`z`'u32 << 24 | `T`'u32 << 16 | `X`'u32 << 8 | `t`'u32)
+    enum ChunkType : u32
+    {
+        IHDR = @byteswap(`I`'u32 << 24 | `H`'u32 << 16 | `D`'u32 << 8 | `R`'u32)
+        PLTE = @byteswap(`P`'u32 << 24 | `L`'u32 << 16 | `T`'u32 << 8 | `E`'u32)
+        BKGD = @byteswap(`b`'u32 << 24 | `K`'u32 << 16 | `G`'u32 << 8 | `D`'u32)
+        TRNS = @byteswap(`t`'u32 << 24 | `R`'u32 << 16 | `N`'u32 << 8 | `S`'u32)
+        IDAT = @byteswap(`I`'u32 << 24 | `D`'u32 << 16 | `A`'u32 << 8 | `T`'u32)
 
-	ICCP = @byteswap(`i`'u32 << 24 | `C`'u32 << 16 | `C`'u32 << 8 | `P`'u32)
-	PHYs = @byteswap(`p`'u32 << 24 | `H`'u32 << 16 | `Y`'u32 << 8 | `s`'u32)
-	GAMA = @byteswap(`g`'u32 << 24 | `A`'u32 << 16 | `M`'u32 << 8 | `A`'u32)
-	TIME = @byteswap(`t`'u32 << 24 | `I`'u32 << 16 | `M`'u32 << 8 | `E`'u32)
+        ITXt = @byteswap(`i`'u32 << 24 | `T`'u32 << 16 | `X`'u32 << 8 | `t`'u32)
+        TEXt = @byteswap(`t`'u32 << 24 | `E`'u32 << 16 | `X`'u32 << 8 | `t`'u32)
+        ZTXt = @byteswap(`z`'u32 << 24 | `T`'u32 << 16 | `X`'u32 << 8 | `t`'u32)
 
-	SPLT = @byteswap(`s`'u32 << 24 | `P`'u32 << 16 | `L`'u32 << 8 | `T`'u32)
-	SRGB = @byteswap(`s`'u32 << 24 | `R`'u32 << 16 | `G`'u32 << 8 | `B`'u32)
-	HIST = @byteswap(`h`'u32 << 24 | `I`'u32 << 16 | `S`'u32 << 8 | `T`'u32)
-	CHRM = @byteswap(`c`'u32 << 24 | `H`'u32 << 16 | `R`'u32 << 8 | `M`'u32)
-	SBIT = @byteswap(`s`'u32 << 24 | `B`'u32 << 16 | `I`'u32 << 8 | `T`'u32)
+        ICCP = @byteswap(`i`'u32 << 24 | `C`'u32 << 16 | `C`'u32 << 8 | `P`'u32)
+        PHYs = @byteswap(`p`'u32 << 24 | `H`'u32 << 16 | `Y`'u32 << 8 | `s`'u32)
+        GAMA = @byteswap(`g`'u32 << 24 | `A`'u32 << 16 | `M`'u32 << 8 | `A`'u32)
+        TIME = @byteswap(`t`'u32 << 24 | `I`'u32 << 16 | `M`'u32 << 8 | `E`'u32)
 
-	EXIf = @byteswap(`e`'u32 << 24 | `X`'u32 << 16 | `I`'u32 << 8 | `f`'u32)
-    IEND = @byteswap(`I`'u32 << 24 | `E`'u32 << 16 | `N`'u32 << 8 | `D`'u32)
-	IDOT = @byteswap(`i`'u32 << 24 | `D`'u32 << 16 | `O`'u32 << 8 | `T`'u32)
-	CbGI = @byteswap(`C`'u32 << 24 | `b`'u32 << 16 | `H`'u32 << 8 | `I`'u32)
-}
+        SPLT = @byteswap(`s`'u32 << 24 | `P`'u32 << 16 | `L`'u32 << 8 | `T`'u32)
+        SRGB = @byteswap(`s`'u32 << 24 | `R`'u32 << 16 | `G`'u32 << 8 | `B`'u32)
+        HIST = @byteswap(`h`'u32 << 24 | `I`'u32 << 16 | `S`'u32 << 8 | `T`'u32)
+        CHRM = @byteswap(`c`'u32 << 24 | `H`'u32 << 16 | `R`'u32 << 8 | `M`'u32)
+        SBIT = @byteswap(`s`'u32 << 24 | `B`'u32 << 16 | `I`'u32 << 8 | `T`'u32)
 
-const Adam7OrigX:     []s64 = [0,4,0,2,0,1,0]
-const Adam7OrigY:     []s64 = [0,0,4,0,2,0,1]
-const Adam7SpacingX:  []s64 = [8,8,4,4,2,2,1]
-const Adam7SpacingY:  []s64 = [8,8,8,4,4,2,2]
+        EXIf = @byteswap(`e`'u32 << 24 | `X`'u32 << 16 | `I`'u32 << 8 | `f`'u32)
+        IEND = @byteswap(`I`'u32 << 24 | `E`'u32 << 16 | `N`'u32 << 8 | `D`'u32)
+        IDOT = @byteswap(`i`'u32 << 24 | `D`'u32 << 16 | `O`'u32 << 8 | `T`'u32)
+        CbGI = @byteswap(`C`'u32 << 24 | `b`'u32 << 16 | `H`'u32 << 8 | `I`'u32)
+    }
 
-enum RowFilter: u8
-{
-   None    = 0
-   Sub     = 1
-   Up      = 2
-   Average = 3
-   Paeth   = 4
-}
+    const Adam7OrigX:    [] s64 = [0, 4, 0, 2, 0, 1, 0]
+    const Adam7OrigY:    [] s64 = [0, 0, 4, 0, 2, 0, 1]
+    const Adam7SpacingX: [] s64 = [8, 8, 4, 4, 2, 2, 1]
+    const Adam7SpacingY: [] s64 = [8, 8, 8, 4, 4, 2, 2]
 
-struct ChunkHeader
-{
-    length: u32
-    type:   ChunkType = undefined
-}
+    enum RowFilter : u8
+    {
+        None    = 0
+        Sub     = 1
+        Up      = 2
+        Average = 3
+        Paeth   = 4
+    }
 
-enum InterlaceMethod : u8
-{
-	None  = 0
-	Adam7 = 1
-}
+    struct ChunkHeader
+    {
+        length:     u32
+        type:       ChunkType = undefined
+    }
 
-#[Swag.EnumFlags]
-enum ColorType: u8
-{
-    Grayscale   = 0
-    Paletted    = 1
-    Color       = 2
-    Alpha       = 4
-}
+    enum InterlaceMethod : u8
+    {
+        None  = 0
+        Adam7 = 1
+    }
 
-struct Header
-{
-	width:              u32
-	height:             u32
-	bitDepth:           u8
-	colorType:          ColorType
-	compressionMethod:  u8
-	filterMethod:       u8
-	interlaceMethod:    InterlaceMethod = undefined
-}
+    #[Swag.EnumFlags]
+    enum ColorType : u8
+    {
+        Grayscale = 0
+        Paletted  = 1
+        Color     = 2
+        Alpha     = 4
+    }
 
-struct Chunk
-{
-    header: ChunkHeader
-    datas:  const [..] u8
-    crc:    u32
-}
+    struct Header
+    {
+        width:                 u32
+        height:                u32
+        bitDepth:              u8
+        colorType:             ColorType
+        compressionMethod:     u8
+        filterMethod:          u8
+        interlaceMethod:       InterlaceMethod = undefined
+    }
+
+    struct Chunk
+    {
+        header:     ChunkHeader
+        datas:      const [..] u8
+        crc:        u32
+    }
 }
 
 #[Opaque]
 public struct Decoder
 {
-    decOptions:     const *DecodeOptions
-    stream:         Compress.BitStream
-    header:         Header
-    inChannels:     s32
-    outChannels:    s32
-    dcmpBuf:        Array'u8
-    dstPixels:      ^u8
-    dstPixelsSize:  u64
-    chunkTRNS:      Chunk
-    palette:        [256] u32
-    paletteCount:   s32
-    seenTRSN:       bool
-    seenBKGD:       bool
-    seenPLTE:       bool
-    orderDefilter:  bool
+    decOptions:        const *DecodeOptions
+    stream:            Compress.BitStream
+    header:            Header
+    inChannels:        s32
+    outChannels:       s32
+    dcmpBuf:           Array'u8
+    dstPixels:         ^u8
+    dstPixelsSize:     u64
+    chunkTRNS:         Chunk
+    palette:           [256] u32
+    paletteCount:      s32
+    seenTRSN:          bool
+    seenBKGD:          bool
+    seenPLTE:          bool
+    orderDefilter:     bool
 }
 
 impl Decoder
@@ -140,8 +141,8 @@ impl Decoder
     mtd readHeader(ch: ChunkHeader) throw
     {
         var chunk = readChunk(ch)
-        header = dref cast(const *Header) @dataof(chunk.datas)
-        header.width = Math.bigEndianToNative(header.width)
+        header        = dref cast(const *Header) @dataof(chunk.datas)
+        header.width  = Math.bigEndianToNative(header.width)
         header.height = Math.bigEndianToNative(header.height)
 
         with header
@@ -184,7 +185,7 @@ impl Decoder
         let aa = cast(s16) left
         let bb = cast(s16) up
         let cc = cast(s16) upLeft
-        let p = aa + bb - cc
+        let p  = aa + bb - cc
         let pa = Math.abs(cast(s16) (p - aa))
         let pb = Math.abs(cast(s16) (p - bb))
         let pc = Math.abs(cast(s16) (p - cc))
@@ -198,10 +199,10 @@ impl Decoder
     // Expand 1, 2, 4 bits to 8 bits
     mtd expand8(width, height: u32, output: ^u8)
     {
-        let rowStrideIn = getStrideIn(width);
+        let rowStrideIn  = getStrideIn(width)
         let rowStrideOut = inChannels * width
 
-        var orgDest = output
+        var orgDest   = output
         let srcOffset = rowStrideOut - rowStrideIn
 
         // 1 bit => 8 bits
@@ -213,7 +214,7 @@ impl Decoder
                 var dest = orgDest
                 orgDest += rowStrideOut
                 var src = dest + srcOffset
-                var k = rowStrideOut
+                var k   = rowStrideOut
                 while k >= 8
                 {
                     let c = src[0]
@@ -233,12 +234,18 @@ impl Decoder
                 {
                     let c = src[0]
                     dest[0] = cast,bit(u8) ((c >> 7) * mul)
-                    if k > 1 do dest[1] = cast,bit(u8) (((c >> 6) & 1) * mul)
-                    if k > 2 do dest[2] = cast,bit(u8) (((c >> 5) & 1) * mul)
-                    if k > 3 do dest[3] = cast,bit(u8) (((c >> 4) & 1) * mul)
-                    if k > 4 do dest[4] = cast,bit(u8) (((c >> 3) & 1) * mul)
-                    if k > 5 do dest[5] = cast,bit(u8) (((c >> 2) & 1) * mul)
-                    if k > 6 do dest[6] = cast,bit(u8) (((c >> 1) & 1) * mul)
+                    if k > 1 do
+                        dest[1] = cast,bit(u8) (((c >> 6) & 1) * mul)
+                    if k > 2 do
+                        dest[2] = cast,bit(u8) (((c >> 5) & 1) * mul)
+                    if k > 3 do
+                        dest[3] = cast,bit(u8) (((c >> 4) & 1) * mul)
+                    if k > 4 do
+                        dest[4] = cast,bit(u8) (((c >> 3) & 1) * mul)
+                    if k > 5 do
+                        dest[5] = cast,bit(u8) (((c >> 2) & 1) * mul)
+                    if k > 6 do
+                        dest[6] = cast,bit(u8) (((c >> 1) & 1) * mul)
                 }
             }
         }
@@ -252,7 +259,7 @@ impl Decoder
                 var dest = orgDest
                 orgDest += rowStrideOut
                 var src = dest + srcOffset
-                var k = rowStrideOut
+                var k   = rowStrideOut
                 while k >= 2
                 {
                     let c = src[0]
@@ -268,8 +275,10 @@ impl Decoder
                 {
                     let c = src[0]
                     dest[0] = cast,bit(u8) ((c >> 6) * mul)
-                    if k > 1 do dest[1] = cast,bit(u8) (((c >> 4) & 3) * mul)
-                    if k > 2 do dest[2] = cast,bit(u8) (((c >> 2) & 3) * mul)
+                    if k > 1 do
+                        dest[1] = cast,bit(u8) (((c >> 4) & 3) * mul)
+                    if k > 2 do
+                        dest[2] = cast,bit(u8) (((c >> 2) & 3) * mul)
                 }
             }
         }
@@ -283,7 +292,7 @@ impl Decoder
                 var dest = orgDest
                 orgDest += rowStrideOut
                 var src = dest + srcOffset
-                var k = rowStrideOut
+                var k   = rowStrideOut
                 while k >= 2
                 {
                     let c = src[0]
@@ -310,13 +319,14 @@ impl Decoder
 
     mtd defilter8(width, height: u32, input, output: ^u8)
     {
-        let rowStrideIn = getStrideIn(width)
+        let rowStrideIn  = getStrideIn(width)
         let rowStrideOut = cast(u64) inChannels * width
-        let destOffset = rowStrideOut - rowStrideIn
+        let destOffset   = rowStrideOut - rowStrideIn
 
-        var src = input
+        var src  = input
         var dest = output
-        if !orderDefilter do dest += rowStrideOut * (height - 1)
+        if !orderDefilter do
+            dest += rowStrideOut * (height - 1)
 
         // A temporary line "before" the first one, if filter needs one
         var tmpRow: Array'u8
@@ -354,7 +364,7 @@ impl Decoder
                 }
                 loop k: nk
                 {
-                    let avg = cast(u8) ((cast(u16) (up[inChannels + k]) + cast(u16) (destOff[k])) >> 1)
+                    let avg = cast(u8) ((cast(u16) up[inChannels + k] + cast(u16) destOff[k]) >> 1)
                     destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] +,over avg)
                 }
 
@@ -400,11 +410,11 @@ impl Decoder
     mtd adam7()
     {
         var tmpArr: Array'u8
-        var input = dcmpBuf.buffer
+        var input   = dcmpBuf.buffer
         loop p: 7
         {
-			let x = (header.width  - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p]
-			let y = (header.height - Adam7OrigY[p] + Adam7SpacingY[p] - 1) / Adam7SpacingY[p]
+            let x = (header.width - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p]
+            let y = (header.height - Adam7OrigY[p] + Adam7SpacingY[p] - 1) / Adam7SpacingY[p]
             if x <= 0 or y <= 0 do
                 continue
 
@@ -418,8 +428,8 @@ impl Decoder
             {
                 loop i: x
                 {
-                    let out_y = header.height - ((j * Adam7SpacingY[p]) + Adam7OrigY[p]) - 1
-                    let out_x = (i * Adam7SpacingX[p]) + Adam7OrigX[p]
+                    let out_y   = header.height - ((j * Adam7SpacingY[p]) + Adam7OrigY[p]) - 1
+                    let out_x   = (i * Adam7SpacingX[p]) + Adam7OrigX[p]
                     var out_off = out_y * header.width * inChannels
                     out_off += out_x * inChannels
                     loop z: inChannels do
@@ -457,14 +467,14 @@ impl Decoder
         if signature != 0x0a1a0a0d474e5089 do
             throw InvalidFormatError{"not a png"}
 
-        var result:     retval
-        var iDataBuf:   Array'u8
-        var ch:         ChunkHeader = undefined
+        var result:   retval
+        var iDataBuf: Array'u8
+        var ch:       ChunkHeader = undefined
 
         var firstChunk = true
-        var seenIEND = false
-        var seenIDAT = false
-        var chIsHere = false
+        var seenIEND   = false
+        var seenIDAT   = false
+        var chIsHere   = false
 
         while !seenIEND
         {
@@ -488,7 +498,7 @@ impl Decoder
                 if decOptions.decodePixels
                 {
                     dstPixelsSize = header.width * header.height * inChannels
-                    dstPixels = Memory.alloc(dstPixelsSize)
+                    dstPixels     = Memory.alloc(dstPixelsSize)
                 }
 
             case TRNS:
@@ -524,14 +534,14 @@ impl Decoder
                 if seenIDAT do
                     throw InvalidFormatError{"invalid PLTE chunk"}
                 var chunk = readChunk(ch)
-                let len = @countof(chunk.datas)
+                let len   = @countof(chunk.datas)
                 if len % 3 != 0 or len > 768 do
                     throw InvalidFormatError{"invalid PLTE chunk"}
                 seenPLTE = true
                 for var i = 0; i < len; i += 3
                 {
-                    let col = (cast(u32) chunk.datas[i] << 16) | (cast(u32) chunk.datas[i+1] << 8) | (chunk.datas[i+2])
-                    palette[i/3] = col
+                    let col = (cast(u32) chunk.datas[i] << 16) | (cast(u32) chunk.datas[i + 1] << 8) | chunk.datas[i + 2]
+                    palette[i / 3] = col
                 }
 
                 paletteCount = cast(u32) (len / 3)
@@ -569,7 +579,7 @@ impl Decoder
         result.allocPixels()
         if inChannels == outChannels
         {
-            Memory.copy(result.pixels.buffer, dstPixels, result.size);
+            Memory.copy(result.pixels.buffer, dstPixels, result.size)
             Memory.free(dstPixels, dstPixelsSize)
             return result
         }
@@ -589,9 +599,9 @@ impl Decoder
             result.visitPixels(&pm)
             {
                 let params = cast(*@decltype(pm)) userData
-                var src = params.dstPixels
+                var src    = params.dstPixels
                 src += x + y * image.width
-                let pal = src[0]
+                let pal   = src[0]
                 let color = params.dec.palette[pal]
                 pix[0] = acast ((color >> 16) & 0xFF)
                 pix[1] = acast ((color >> 8) & 0xFF)
@@ -608,9 +618,9 @@ impl Decoder
             result.visitPixels(&pm)
             {
                 let params = cast(*@decltype(pm)) userData
-                var src = params.dstPixels
+                var src    = params.dstPixels
                 src += x + y * image.width
-                let pal = src[0]
+                let pal   = src[0]
                 let color = params.dec.palette[pal]
                 pix[0] = acast ((color >> 16) & 0xFF)
                 pix[1] = acast ((color >> 8) & 0xFF)
@@ -637,14 +647,14 @@ impl Decoder
         // Grayscale without alpha channel, but transparency
         elif inChannels == 1 and seenTRSN
         {
-            var key = chunkTRNS.datas[1]
+            var key   = chunkTRNS.datas[1]
             let scale = header.bitDepth == 1 ? 255'u8 : header.bitDepth == 2 ? 85'u8 : 17'u8
             key *= scale
             var pm = {dstPixels, key}
             result.visitPixels(&pm)
             {
                 let params = cast(*@decltype(pm)) userData
-                var src = params.dstPixels
+                var src    = params.dstPixels
                 src += x + y * image.width
                 pix[0] = src[0]
                 pix[1] = src[0]
@@ -663,22 +673,23 @@ impl Decoder
                 pix[0] = src[0]
                 pix[1] = src[0]
                 pix[2] = src[0]
-                if image.bpp == 32 do pix[3] = src[1]
+                if image.bpp == 32 do
+                    pix[3] = src[1]
             }
         }
 
         // Color without alpha but transparency
         elif inChannels == 3 and seenTRSN
         {
-            let key = cast(const ^u8) @dataof(chunkTRNS.datas)
+            let key  = cast(const ^u8) @dataof(chunkTRNS.datas)
             let key0 = key[1]
             let key1 = key[3]
             let key2 = key[5]
-            var pm = {dstPixels, key0, key1, key2}
+            var pm   = {dstPixels, key0, key1, key2}
             result.visitPixels(&pm)
             {
                 let params = cast(*@decltype(pm)) userData
-                var src = params.dstPixels
+                var src    = params.dstPixels
                 src += (x * 3) + (y * image.width * 3)
                 pix[0] = src[0]
                 pix[1] = src[1]

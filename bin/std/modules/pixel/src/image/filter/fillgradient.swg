@@ -16,10 +16,10 @@ impl Image
             loop x: width
             {
                 let factor0 = x / cast(f32) width
-                let b = cast(u8) Math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
-                let g = cast(u8) Math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
-                let r = cast(u8) Math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
-                var a = 255'u8
+                let b       = cast(u8) Math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
+                let g       = cast(u8) Math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
+                let r       = cast(u8) Math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
+                var a       = 255'u8
                 if PF.bpp() == 32 do
                     a = cast(u8) Math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
                 setPixelRGBA8'PF(pix, r, g, b, a)
@@ -29,11 +29,16 @@ impl Image
 
         switch pf
         {
-        case BGR8:  doIt'BGR8()
-        case BGRA8: doIt'BGRA8()
-        case RGB8:  doIt'RGB8()
-        case RGBA8: doIt'RGBA8()
-        default:    Debug.assert(false)
+        case BGR8:
+            doIt'BGR8()
+        case BGRA8:
+            doIt'BGRA8()
+        case RGB8:
+            doIt'RGB8()
+        case RGBA8:
+            doIt'RGBA8()
+        default:
+            Debug.assert(false)
         }
 
         visitPixels(stride: width)
@@ -54,12 +59,12 @@ impl Image
         {
             visitPixels(&f)
             {
-                let params = cast(*@decltype(f)) userData
+                let params  = cast(*@decltype(f)) userData
                 let factor0 = x / cast(f32) image.width
                 let factor1 = y / cast(f32) image.height
-                let colH1 = Color.getBlend(params.topLeft, params.topRight, factor0)
-                let colH0 = Color.getBlend(params.bottomLeft, params.bottomRight, factor0)
-                let col = Color.getBlend(colH0, colH1, factor1)
+                let colH1   = Color.getBlend(params.topLeft, params.topRight, factor0)
+                let colH0   = Color.getBlend(params.bottomLeft, params.bottomRight, factor0)
+                let col     = Color.getBlend(colH0, colH1, factor1)
                 setPixelRGBA8'PF(pix, col.r, col.g, col.b, col.a)
             }
         }
@@ -67,11 +72,16 @@ impl Image
         var f = {topLeft, topRight, bottomLeft, bottomRight}
         switch pf
         {
-        case BGR8:  doIt'BGR8()
-        case BGRA8: doIt'BGRA8()
-        case RGB8:  doIt'RGB8()
-        case RGBA8: doIt'RGBA8()
-        default:    Debug.assert(false)
+        case BGR8:
+            doIt'BGR8()
+        case BGRA8:
+            doIt'BGRA8()
+        case RGB8:
+            doIt'RGB8()
+        case RGBA8:
+            doIt'RGBA8()
+        default:
+            Debug.assert(false)
         }
     }
 }

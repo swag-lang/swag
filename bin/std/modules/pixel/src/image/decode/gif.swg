@@ -5,67 +5,68 @@
 #global namespace Gif
 using Swag, Core, Core.Errors
 
-private {
-
-struct Entry
+private
 {
-    length: u16
-    prefix: u16
-    suffix: u8
-}
 
-struct Table
-{
-    bulk:       s32
-    nentries:   s32
-    entries:    Array'Entry
-}
+    struct Entry
+    {
+        length:     u16
+        prefix:     u16
+        suffix:     u8
+    }
 
-struct Palette
-{
-    size:   s32
-    colors: [0x100 * 3] u8
-}
+    struct Table
+    {
+        bulk:         s32
+        nentries:     s32
+        entries:      Array'Entry
+    }
 
-struct Gce
-{
-    delay:          u16
-    tindex:         u8
-    disposal:       u8
-    input:          s32
-    transparency:   s32
-}
+    struct Palette
+    {
+        size:       s32
+        colors:     [0x100 * 3] u8
+    }
+
+    struct Gce
+    {
+        delay:            u16
+        tindex:           u8
+        disposal:         u8
+        input:            s32
+        transparency:     s32
+    }
 }
 
 #[Swag.Opaque]
 public struct Decoder
 {
-    fd:         s32
-    width:      u16
-    height:     u16
-    depth:      u16
-    loopCount:  u16
-    numFrames:  s32
-    gce:        Gce
-    palette:    *Palette
-    lct:        Palette
-    gct:        Palette
-    fx:         u16
-    fy:         u16
-    fw:         u16
-    fh:         u16
-    bgIndex:    u8
-    canvas:     ^u8
-    frame:      Array'u8
-    table:      Table
-    animStart:  u64
-    animRemain: u64
-    reachEnd:   bool
-    initDone:   bool
+    fd:             s32
+    width:          u16
+    height:         u16
+    depth:          u16
+    loopCount:      u16
+    numFrames:      s32
+    gce:            Gce
+    palette:        *Palette
+    lct:            Palette
+    gct:            Palette
+    fx:             u16
+    fy:             u16
+    fw:             u16
+    fh:             u16
+    bgIndex:        u8
+    canvas:         ^u8
+    frame:          Array'u8
+    table:          Table
+    animStart:      u64
+    animRemain:     u64
+    reachEnd:       bool
+    initDone:       bool
 
-    streamStart:    const ^u8
-    stream:         const ^u8
-    streamLen:      u64
+    streamStart:     const ^u8
+    stream:          const ^u8
+    streamLen:       u64
 }
 
 impl Decoder
@@ -74,7 +75,7 @@ impl Decoder
     {
         if len > streamLen do
             throw InvalidFormatError{"read error"}
-        stream    += len
+        stream += len
         streamLen -= len
     }
 
@@ -83,7 +84,7 @@ impl Decoder
         if len > streamLen do
             throw InvalidFormatError{"read error"}
         Memory.copy(dest, stream, len)
-        stream    += len
+        stream += len
         streamLen -= len
     }
 
@@ -93,7 +94,7 @@ impl Decoder
         if streamLen < 1 do
             throw InvalidFormatError{"read error"}
         let res = stream[0]
-        stream    += 1
+        stream += 1
         streamLen -= 1
         return res
     }
@@ -132,11 +133,11 @@ impl Decoder
         /* Discard block size (always 0x04) */
         seek(1)
         let rdit = readU8()
-        gce.disposal = (rdit >> 2) & 3
-        gce.input = rdit & 2
+        gce.disposal     = (rdit >> 2) & 3
+        gce.input        = rdit & 2
         gce.transparency = rdit & 1
-        gce.delay = readU16()
-        gce.tindex = readU8()
+        gce.delay        = readU16()
+        gce.tindex       = readU8()
         /* Skip block terminator */
         seek(1)
     }
@@ -148,13 +149,13 @@ impl Decoder
 
     mtd readApplicationExt() throw
     {
-        var app_id: [8] u8
+        var app_id:        [8] u8
         var app_auth_code: [3] u8
 
         /* Discard block size (always 0x0B) */
         seek(1)
         /* Application Identifier */
-        read(app_id, 8);
+        read(app_id, 8)
         /* Application Authentication Code */
         read(app_auth_code, 3)
 
@@ -192,7 +193,7 @@ impl Decoder
 
     mtd initTable(keySize: s32)
     {
-        table.bulk = Math.max(1 << (keySize + 1), 0x100's32)
+        table.bulk     = Math.max(1 << (keySize + 1), 0x100's32)
         table.nentries = (1 << keySize) + 2
         table.entries.resize(table.bulk)
         loop key: 1 << keySize do
@@ -201,7 +202,7 @@ impl Decoder
 
     mtd getKey(keySize: s32, subLen, shift, byte: *u8)->u16 throw
     {
-        var key = 0'u16
+        var key       = 0'u16
         var frag_size = 0
         for var bits_read = 0; bits_read < keySize; bits_read += frag_size
         {
@@ -221,7 +222,7 @@ impl Decoder
             }
 
             frag_size = Math.min(cast(s32) (keySize - bits_read), cast(s32) (8 - rpad))
-            key |= (cast(u16) ((dref byte) >> rpad)) << bits_read
+            key |= cast(u16) ((dref byte) >> rpad) << bits_read
         }
 
         /* Clear extra bits to the left. */
@@ -250,15 +251,15 @@ impl Decoder
         let h = h0
         var y = y0
         var p = (h - 1) / 8 + 1
-        if (y < p) do /* pass 1 */
+        if (y < p) do
             return y * 8
         y -= p
         p = (h - 5) / 8 + 1
-        if (y < p) do /* pass 2 */
+        if (y < p) do
             return y * 8 + 4
         y -= p
         p = (h - 3) / 4 + 1
-        if (y < p) do /* pass 3 */
+        if (y < p) do
             return y * 4 + 2
         y -= p
         /* pass 4 */
@@ -267,56 +268,59 @@ impl Decoder
 
     mtd readImageData(interlace: u8) throw
     {
-        var byte = readU8()
+        var byte    = readU8()
         var keySize = cast(s32) byte
         if keySize < 2 or keySize > 8 do
             throw InvalidFormatError{"invalid frame"}
 
-        let start = cast(u64) (stream - streamStart)
+        let start       = cast(u64) (stream - streamStart)
         let remainStart = streamLen
         discardSubBlocks()
-        let end = cast(u64) (stream - streamStart)
+        let end       = cast(u64) (stream - streamStart)
         let remainEnd = streamLen
-        stream = streamStart + start
+        stream    = streamStart + start
         streamLen = remainStart
 
         let clear = 1 << keySize
-        let stop = clear + 1
+        let stop  = clear + 1
         initTable(keySize)
         keySize += 1
         let initKeySize = keySize
         var subLen, shift = 0'u8
-        var key = getKey(keySize, &subLen, &shift, &byte) /* clear code */
-        var frmOff = 0
-        var ret = 0
-        let frmSize = cast(u32) fw * fh
+        var key         = getKey(keySize, &subLen, &shift, &byte)     /* clear code */
+        var frmOff      = 0
+        var ret         = 0
+        let frmSize     = cast(u32) fw * fh
         var tableIsFull = 0
-        var strLen = 0'u16
+        var strLen      = 0'u16
 
         var entry: Entry
         while frmOff < frmSize
         {
             if key == clear
             {
-                keySize = initKeySize
+                keySize        = initKeySize
                 table.nentries = (1 << (keySize - 1)) + 2
-                tableIsFull = 0
+                tableIsFull    = 0
             }
             elif !tableIsFull
             {
                 ret = addEntry(cast(u16) (strLen + 1), key, entry.suffix)
                 if table.nentries == 0x1000
                 {
-                    ret = 0
+                    ret         = 0
                     tableIsFull = 1
                 }
             }
 
             key = getKey(keySize, &subLen, &shift, &byte)
-            if key == clear do continue
-            if key == stop or key == 0x1000 do break
-            if ret == 1 do keySize += 1
-            entry = table.entries.buffer[key]
+            if key == clear do
+                continue
+            if key == stop or key == 0x1000 do
+                break
+            if ret == 1 do
+                keySize += 1
+            entry  = table.entries.buffer[key]
             strLen = entry.length
             loop i: strLen
             {
@@ -338,7 +342,7 @@ impl Decoder
 
         if key == stop do
             subLen = readU8() /* Must be zero! */
-        stream = streamStart + end
+        stream    = streamStart + end
         streamLen = remainEnd
     }
 
@@ -355,7 +359,7 @@ impl Decoder
         fw = Math.min(fw, cast(u16) (width - fx))
         fh = Math.min(fh, cast(u16) (height - fy))
 
-        let fisrz = readU8()
+        let fisrz     = readU8()
         let interlace = fisrz & 0x40
 
         /* Ignore Sort Flag. */
@@ -384,8 +388,8 @@ impl Decoder
                 loop k: cast(u32) fw
                 {
                     let index = frame[(fy + j) * cast(u32) width + (fx + k)]
-                    let color = &palette.colors[index*3'u32]
-                    let b = buffer + (i+k)*4
+                    let color = &palette.colors[index * 3'u32]
+                    let b     = buffer + (i + k) * 4
                     b[0] = color[0]
                     b[1] = color[1]
                     b[2] = color[2]
@@ -402,8 +406,8 @@ impl Decoder
                 loop k: fw
                 {
                     let index = frame[(fy + j) * width + (fx + k)]
-                    let color = &palette.colors[index*3]
-                    let b = buffer + (i+k)*4
+                    let color = &palette.colors[index * 3]
+                    let b     = buffer + (i + k) * 4
                     b[0] = color[0]
                     b[1] = color[1]
                     b[2] = color[2]
@@ -461,7 +465,7 @@ public impl Decoder
         /* FDSZ */
         var fdsz: u8
         read(&fdsz, 1)
-        if !(fdsz & 0x80) do // Presence of GCT
+        if !(fdsz & 0x80) do
             throw UnsupportedFormatError{"no global color table"}
 
         /* Color space's depth */
@@ -482,17 +486,17 @@ public impl Decoder
             let size = cast(u64) width * cast(u64) height
             frame.resize(4 * size)
             Memory.set(frame.buffer, bgIndex, size)
-            canvas  = &frame.buffer[size]
+            canvas = &frame.buffer[size]
 
-            let bgcolor = &palette.colors[bgIndex*3'u32]
+            let bgcolor = &palette.colors[bgIndex * 3'u32]
             if bgcolor[0] or bgcolor[1] or bgcolor[2]
             {
                 loop i: size do
-                    Memory.copy(&canvas[i*3], bgcolor, 3)
+                    Memory.copy(&canvas[i * 3], bgcolor, 3)
             }
         }
 
-        animStart = cast(u64) (stream - streamStart)
+        animStart  = cast(u64) (stream - streamStart)
         animRemain = streamLen
 
         discard getFrame(decodePixels)
@@ -546,8 +550,8 @@ public impl Decoder
     mtd rewind()
     {
         Debug.assert(initDone)
-        reachEnd = false
-        stream = streamStart + animStart
+        reachEnd  = false
+        stream    = streamStart + animStart
         streamLen = animRemain
     }
 }

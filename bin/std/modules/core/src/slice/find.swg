@@ -8,9 +8,9 @@ func(T, V) findSorted(values: const [..] T, value: V)->u64
 {
     var result: retval
 
-    var min = 0'u64
+    var min     = 0'u64
     let countof = @countof(values)
-    var max = @countof(values)
+    var max     = @countof(values)
 
     while max >= min
     {

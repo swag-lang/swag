@@ -17,15 +17,15 @@ enum Orientation
 
 public struct Point
 {
-    using v:        Math.Vector2
-    edgeList:       Array'*Edge
-    border:         [2] *Edge
+    using v:      Math.Vector2
+    edgeList:     Array'*Edge
+    border:       [2] *Edge
 }
 
 public struct Edge
 {
-    p: *Point
-    q: *Point
+    p:     *Point
+    q:     *Point
 }
 
 impl Edge
@@ -53,20 +53,24 @@ impl Edge
         }
 
         q.edgeList.add(self)
-        if p.border[0] do p.border[1] = self
-        else           do p.border[0] = self
-        if q.border[0] do q.border[1] = self
-        else           do q.border[0] = self
+        if p.border[0] do
+            p.border[1] = self
+        else do
+            p.border[0] = self
+        if q.border[0] do
+            q.border[1] = self
+        else do
+            q.border[0] = self
     }
 }
 
 public struct Triangle
 {
-    constrainedEdge:    [3] bool
-    delaunayEdge:       [3] bool
-    points:             [3] *Point
-    neighbors:          [3] *Triangle
-    interior:           bool
+    constrainedEdge:     [3] bool
+    delaunayEdge:        [3] bool
+    points:              [3] *Point
+    neighbors:           [3] *Triangle
+    interior:            bool
 }
 
 impl Triangle
@@ -105,16 +109,22 @@ impl Triangle
         switch p1
         {
         case points[0]:
-            if points[1] == p2 do return 2
-            if points[2] == p2 do return 1
+            if points[1] == p2 do
+                return 2
+            if points[2] == p2 do
+                return 1
 
         case points[1]:
-            if points[2] == p2 do return 0
-            if points[0] == p2 do return 2
+            if points[2] == p2 do
+                return 0
+            if points[0] == p2 do
+                return 2
 
         case points[2]:
-            if points[0] == p2 do return 1
-            if points[1] == p2 do return 0
+            if points[0] == p2 do
+                return 1
+            if points[1] == p2 do
+                return 0
         }
 
         return -1
@@ -124,9 +134,12 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: return 0
-        case points[1]: return 1
-        case points[2]: return 2
+        case points[0]:
+            return 0
+        case points[1]:
+            return 1
+        case points[2]:
+            return 2
         }
 
         Debug.assert(false)
@@ -137,9 +150,12 @@ impl Triangle
     {
         switch point
         {
-        case points[0]: return neighbors[0]
-        case points[1]: return neighbors[1]
-        default:        return neighbors[2]
+        case points[0]:
+            return neighbors[0]
+        case points[1]:
+            return neighbors[1]
+        default:
+            return neighbors[2]
         }
     }
 
@@ -147,9 +163,12 @@ impl Triangle
     {
         switch point
         {
-        case points[0]: return neighbors[1]
-        case points[1]: return neighbors[2]
-        default:        return neighbors[0]
+        case points[0]:
+            return neighbors[1]
+        case points[1]:
+            return neighbors[2]
+        default:
+            return neighbors[0]
         }
     }
 
@@ -157,9 +176,12 @@ impl Triangle
     {
         switch p
         {
-        case points[0]:  return neighbors[2]
-        case points[1]:  return neighbors[0]
-        default:         return neighbors[1]
+        case points[0]:
+            return neighbors[2]
+        case points[1]:
+            return neighbors[0]
+        default:
+            return neighbors[1]
         }
     }
 
@@ -167,9 +189,12 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: return constrainedEdge[2]
-        case points[1]: return constrainedEdge[0]
-        default:        return constrainedEdge[1]
+        case points[0]:
+            return constrainedEdge[2]
+        case points[1]:
+            return constrainedEdge[0]
+        default:
+            return constrainedEdge[1]
         }
     }
 
@@ -177,9 +202,12 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: return constrainedEdge[1]
-        case points[1]: return constrainedEdge[2]
-        default:        return constrainedEdge[0]
+        case points[0]:
+            return constrainedEdge[1]
+        case points[1]:
+            return constrainedEdge[2]
+        default:
+            return constrainedEdge[0]
         }
     }
 
@@ -187,9 +215,12 @@ impl Triangle
     {
         switch point
         {
-        case points[0]: return points[2]
-        case points[1]: return points[0]
-        case points[2]: return points[1]
+        case points[0]:
+            return points[2]
+        case points[1]:
+            return points[0]
+        case points[2]:
+            return points[1]
         }
 
         Debug.assert(false)
@@ -200,9 +231,12 @@ impl Triangle
     {
         switch point
         {
-        case points[0]: return points[1]
-        case points[1]: return points[2]
-        case points[2]: return points[0]
+        case points[0]:
+            return points[1]
+        case points[1]:
+            return points[2]
+        case points[2]:
+            return points[0]
         }
 
         Debug.assert(false)
@@ -213,9 +247,12 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: return delaunayEdge[2]
-        case points[1]: return delaunayEdge[0]
-        default:        return delaunayEdge[1]
+        case points[0]:
+            return delaunayEdge[2]
+        case points[1]:
+            return delaunayEdge[0]
+        default:
+            return delaunayEdge[1]
         }
     }
 
@@ -223,9 +260,12 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: return delaunayEdge[1]
-        case points[1]: return delaunayEdge[2]
-        default:        return delaunayEdge[0]
+        case points[0]:
+            return delaunayEdge[1]
+        case points[1]:
+            return delaunayEdge[2]
+        default:
+            return delaunayEdge[0]
         }
     }
 
@@ -233,9 +273,12 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: delaunayEdge[2] = e
-        case points[1]: delaunayEdge[0] = e
-        default:        delaunayEdge[1] = e
+        case points[0]:
+            delaunayEdge[2] = e
+        case points[1]:
+            delaunayEdge[0] = e
+        default:
+            delaunayEdge[1] = e
         }
     }
 
@@ -243,9 +286,12 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: delaunayEdge[1] = e
-        case points[1]: delaunayEdge[2] = e
-        default:        delaunayEdge[0] = e
+        case points[0]:
+            delaunayEdge[1] = e
+        case points[1]:
+            delaunayEdge[2] = e
+        default:
+            delaunayEdge[0] = e
         }
     }
 
@@ -253,9 +299,12 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: constrainedEdge[2] = ce
-        case points[1]: constrainedEdge[0] = ce
-        default:        constrainedEdge[1] = ce
+        case points[0]:
+            constrainedEdge[2] = ce
+        case points[1]:
+            constrainedEdge[0] = ce
+        default:
+            constrainedEdge[1] = ce
         }
     }
 
@@ -263,9 +312,12 @@ impl Triangle
     {
         switch p
         {
-        case points[0]: constrainedEdge[1] = ce
-        case points[1]: constrainedEdge[2] = ce
-        default:        constrainedEdge[0] = ce
+        case points[0]:
+            constrainedEdge[1] = ce
+        case points[1]:
+            constrainedEdge[2] = ce
+        default:
+            constrainedEdge[0] = ce
         }
     }
 
@@ -352,26 +404,26 @@ impl Triangle
 
 struct EdgeEvent
 {
-    constrainedEdge: *Edge
-    right:            bool
+    constrainedEdge:     *Edge
+    right:               bool
 }
 
 struct Basin
 {
-    leftNode:       *Node
-    bottomNode:     *Node
-    rightNode:      *Node
-    width:          f64
-    leftHighest:    bool
+    leftNode:        *Node
+    bottomNode:      *Node
+    rightNode:       *Node
+    width:           f64
+    leftHighest:     bool
 }
 
 struct Node
 {
-    point:      *Point
-    triangle:   *Triangle
-    next:       *Node
-    prev:       *Node
-    value:      f64
+    point:        *Point
+    triangle:     *Triangle
+    next:         *Node
+    prev:         *Node
+    value:        f64
 }
 
 struct AdvancingFront
@@ -385,9 +437,9 @@ impl AdvancingFront
 {
     mtd locatePoint(point: *Point)->*Node
     {
-        let px = point.x
+        let px   = point.x
         var node = searchNode
-        let nx = node.point.x
+        let nx   = node.point.x
 
         if px == nx
         {
@@ -422,7 +474,8 @@ impl AdvancingFront
             }
         }
 
-        if node do searchNode = node
+        if node do
+            searchNode = node
         return node
     }
 
@@ -465,20 +518,20 @@ impl AdvancingFront
 #[Swag.Opaque]
 public struct Tesselate
 {
-    basin:      Basin
-    edgeEvent:  EdgeEvent
-    triangles:  Array'*Triangle
-    map:        Array'*Triangle
-    edgeList:   Array'*Edge
-    points:     Array'*Point
-    nodes:      Array'*Node
-    front:      AdvancingFront
-    head:       *Point
-    tail:       *Point
-    afHead:     *Node
-    afMiddle:   *Node
-    afTail:     *Node
-    polyStart:  u64
+    basin:         Basin
+    edgeEvent:     EdgeEvent
+    triangles:     Array'*Triangle
+    map:           Array'*Triangle
+    edgeList:      Array'*Edge
+    points:        Array'*Point
+    nodes:         Array'*Node
+    front:         AdvancingFront
+    head:          *Point
+    tail:          *Point
+    afHead:        *Node
+    afMiddle:      *Node
+    afTail:        *Node
+    polyStart:     u64
 }
 
 impl Tesselate
@@ -502,10 +555,14 @@ impl Tesselate
         Memory.delete(afTail)
         head, tail, afHead, afMiddle, afTail = null
 
-        visit p: map do Memory.delete(p)
-        visit p: edgeList do Memory.delete(p)
-        visit p: nodes do Memory.delete(p)
-        visit p: points do Memory.delete(p)
+        visit p: map do
+            Memory.delete(p)
+        visit p: edgeList do
+            Memory.delete(p)
+        visit p: nodes do
+            Memory.delete(p)
+        visit p: points do
+            Memory.delete(p)
         triangles.clear()
         map.clear()
         edgeList.clear()
@@ -542,20 +599,21 @@ impl Tesselate
             visit pt, i: polyline
             {
                 let nexti = (i + 1) % @countof(polyline)
-                let edge = Memory.new'Edge()
+                let edge  = Memory.new'Edge()
                 edge.set(polyline[i], polyline[nexti])
                 edgeList.add(edge)
             }
         }
 
         Debug.assert(polyStart != points.count, "no points !")
-        initEdges(self, points[polyStart .. points.count - 1])
+        initEdges(self, points[polyStart..points.count - 1])
     }
 
     // Triangulate
     public mtd triangulate()
     {
-        if points.isEmpty() do return
+        if points.isEmpty() do
+            return
 
         initTriangulation()
         createAdvancingFront()
@@ -568,7 +626,7 @@ impl Tesselate
         loop i: 1 until points.count
         {
             let point = points[i]
-            let node = pointEvent(point)
+            let node  = pointEvent(point)
             visit e: point.edgeList do
                 addEdgeEvent2(e, node)
         }
@@ -590,7 +648,7 @@ impl Tesselate
             {
                 triangle.markConstrainedEdge(eq, p1)
                 edgeEvent.constrainedEdge.q = p1
-                triangle = triangle.neighborAcross(point)
+                triangle                    = triangle.neighborAcross(point)
                 addEdgeEvent(ep, p1, triangle, p1)
             }
             else
@@ -609,7 +667,7 @@ impl Tesselate
             {
                 triangle.markConstrainedEdge(eq, p2)
                 edgeEvent.constrainedEdge.q = p2
-                triangle = triangle.neighborAcross(point)
+                triangle                    = triangle.neighborAcross(point)
                 addEdgeEvent(ep, p2, triangle, p2)
             }
             else
@@ -696,8 +754,10 @@ impl Tesselate
     func nextFlipPoint(ep, eq: *Point, ot: *Triangle, op: *Point)->*Point
     {
         let o2d = orient2d(eq, op, ep)
-        if o2d == .CW  do return ot.pointCCW(op)
-        if o2d == .CCW do return ot.pointCW(op)
+        if o2d == .CW do
+            return ot.pointCCW(op)
+        if o2d == .CCW do
+            return ot.pointCW(op)
         Debug.assert(false, "[Unsupported] Opposing point on constrained edge")
         return null
     }
@@ -726,7 +786,7 @@ impl Tesselate
     mtd addEdgeEvent2(edge: *Edge, node: *Node)
     {
         edgeEvent.constrainedEdge = edge
-        edgeEvent.right = edge.p.x > edge.q.x
+        edgeEvent.right           = edge.p.x > edge.q.x
 
         if isEdgeSideOfTriangle(node.triangle, edge.p, edge.q) do
             return
@@ -777,7 +837,7 @@ impl Tesselate
             if orient2d(edge.q, node.next.point, edge.p) == .CCW
             {
                 if orient2d(node.point, node.next.point, node.next.next.point) == .CCW do
-                    fillRightConcaveEdgeEvent(edge, node);
+                    fillRightConcaveEdgeEvent(edge, node)
             }
         }
     }
@@ -791,7 +851,7 @@ impl Tesselate
         else
         {
             if orient2d(edge.q, node.next.next.point, edge.p) == .CCW do
-                fillRightConvexEdgeEvent(edge, node.next);
+                fillRightConvexEdgeEvent(edge, node.next)
         }
     }
 
@@ -845,14 +905,15 @@ impl Tesselate
         }
     }
 
-    func isEdgeSideOfTriangle(triangle: *Triangle, ep, eq : *Point)->bool
+    func isEdgeSideOfTriangle(triangle: *Triangle, ep, eq: *Point)->bool
     {
         let index = triangle.edgeIndex(ep, eq)
         if index != -1
         {
             triangle.markConstrainedEdge(index)
             let t = triangle.neighbors[index]
-            if t do t.markConstrainedEdge(ep, eq)
+            if t do
+                t.markConstrainedEdge(ep, eq)
             return true
         }
 
@@ -875,7 +936,8 @@ impl Tesselate
         var node = n.next
         while node and node.next
         {
-            if largeHoleDontFill(node) do break
+            if largeHoleDontFill(node) do
+                break
             fill(node)
             node = node.next
         }
@@ -883,7 +945,8 @@ impl Tesselate
         node = n.prev
         while node and node.prev
         {
-            if largeHoleDontFill(node) do break
+            if largeHoleDontFill(node) do
+                break
             fill(node)
             node = node.prev
         }
@@ -915,7 +978,7 @@ impl Tesselate
         if basin.rightNode == basin.bottomNode do
             return
 
-        basin.width = basin.rightNode.point.x - basin.leftNode.point.x
+        basin.width       = basin.rightNode.point.x - basin.leftNode.point.x
         basin.leftHighest = basin.leftNode.point.y > basin.rightNode.point.y
 
         fillBasinReq(basin.bottomNode)
@@ -981,7 +1044,7 @@ impl Tesselate
         if !angleExceeds90Degrees(node.point, nextNode.point, prevNode.point) do
             return false
         if angleIsNegative(node.point, nextNode.point, prevNode.point) do
-            return true;
+            return true
 
         let next2Node = nextNode.next
         if next2Node and !angleExceedsPlus90DegreesOrIsNegative(node.point, next2Node.point, prevNode.point) do
@@ -991,7 +1054,7 @@ impl Tesselate
         if prev2Node and !angleExceedsPlus90DegreesOrIsNegative(node.point, nextNode.point, prev2Node.point) do
             return false
 
-        return true;
+        return true
     }
 
     func angleIsNegative(origin, pa, pb: *Point)->bool
@@ -1020,8 +1083,8 @@ impl Tesselate
         let ay = pa.y - py
         let bx = pb.x - px
         let by = pb.y - py
-        let x = ax * by - ay * bx
-        let y = ax * bx + ay * by
+        let x  = ax * by - ay * bx
+        let y  = ax * bx + ay * by
         return Math.atan2(x, y)
     }
 
@@ -1058,10 +1121,10 @@ impl Tesselate
         new_node.value = point.x
         nodes.add(new_node)
 
-        new_node.next = node.next
-        new_node.prev = node
+        new_node.next  = node.next
+        new_node.prev  = node
         node.next.prev = new_node
-        node.next = new_node
+        node.next      = new_node
 
         if !legalize(triangle) do
             mapTriangleToNodes(triangle)
@@ -1071,9 +1134,9 @@ impl Tesselate
 
     func orient2d(pa, pb, pc: *Point)->Orientation
     {
-        let detleft = (pa.x - pc.x) * (pb.y - pc.y)
+        let detleft  = (pa.x - pc.x) * (pb.y - pc.y)
         let detright = (pa.y - pc.y) * (pb.x - pc.x)
-        let val = detleft - detright
+        let val      = detleft - detright
         if Math.isZeroEpsilon(val) do
             return Orientation.Collinear
         if val > 0 do
@@ -1103,7 +1166,7 @@ impl Tesselate
 
         let adxbdy = adx * bdy
         let bdxady = bdx * ady
-        let oabd = adxbdy - bdxady
+        let oabd   = adxbdy - bdxady
 
         if oabd <= 0 do
             return false
@@ -1113,7 +1176,7 @@ impl Tesselate
 
         let cdxady = cdx * ady
         let adxcdy = adx * cdy
-        let ocad = cdxady - adxcdy
+        let ocad   = cdxady - adxcdy
 
         if ocad <= 0 do
             return false
@@ -1139,7 +1202,7 @@ impl Tesselate
             let ot = t.neighbors[i]
             if ot
             {
-                let p = t.points[i]
+                let p  = t.points[i]
                 let op = ot.oppositePoint(t, p)
                 let oi = ot.index(op)
 
@@ -1150,9 +1213,9 @@ impl Tesselate
                 }
 
                 let inside = incircle(p, t.pointCCW(p), t.pointCW(p), op)
-                if (inside)
+                if inside
                 {
-                    t.delaunayEdge[i] = true
+                    t.delaunayEdge[i]   = true
                     ot.delaunayEdge[oi] = true
 
                     rotateTrianglePair(t, p, ot, op)
@@ -1165,9 +1228,9 @@ impl Tesselate
                     if not_legalized do
                         mapTriangleToNodes(ot)
 
-                    t.delaunayEdge[i] = false
+                    t.delaunayEdge[i]   = false
                     ot.delaunayEdge[oi] = false
-                    return true;
+                    return true
                 }
             }
         }
@@ -1207,10 +1270,14 @@ impl Tesselate
 
         t.clearNeighbors()
         ot.clearNeighbors()
-        if n1 do ot.markNeighbor(n1)
-        if n2 do t.markNeighbor(n2)
-        if n3 do t.markNeighbor(n3)
-        if n4 do ot.markNeighbor(n4)
+        if n1 do
+            ot.markNeighbor(n1)
+        if n2 do
+            t.markNeighbor(n2)
+        if n3 do
+            t.markNeighbor(n3)
+        if n4 do
+            ot.markNeighbor(n4)
         t.markNeighbor(ot)
     }
 
@@ -1221,7 +1288,8 @@ impl Tesselate
             if !t.neighbors[i]
             {
                 let n = front.locatePoint(t.pointCW(t.points[i]))
-                if n do n.triangle = t
+                if n do
+                    n.triangle = t
             }
         }
     }
@@ -1290,21 +1358,25 @@ impl Tesselate
         }
 
         const KAlpha = 0.3'f32
-        let dx = KAlpha * (xmax - xmin)
-        let dy = KAlpha * (ymax - ymin)
-        head = Memory.new'Point()
+        let dx       = KAlpha * (xmax - xmin)
+        let dy       = KAlpha * (ymax - ymin)
+        head   = Memory.new'Point()
         head.x = xmin - dx
         head.y = ymin - dy
-        tail = Memory.new'Point()
+        tail   = Memory.new'Point()
         tail.x = xmax + dx
         tail.y = ymin - dy
 
         func cmp(a, b: *Point)->s32
         {
-            if a.y < b.y do return -1
-            if a.y > b.y do return 1
-            if a.x < b.x do return -1
-            if a.x > b.x do return 1
+            if a.y < b.y do
+                return -1
+            if a.y > b.y do
+                return 1
+            if a.x < b.x do
+                return -1
+            if a.x > b.x do
+                return 1
             return 0
         }
 
@@ -1319,28 +1391,28 @@ impl Tesselate
         triangle.points[2] = tail
         map.add(triangle)
 
-        afHead = Memory.new'Node()
+        afHead   = Memory.new'Node()
         afMiddle = Memory.new'Node()
-        afTail = Memory.new'Node()
+        afTail   = Memory.new'Node()
 
-        front.head = afHead
-        front.tail = afTail
+        front.head       = afHead
+        front.tail       = afTail
         front.searchNode = afHead
 
-        afHead.point = triangle.points[1]
+        afHead.point    = triangle.points[1]
         afHead.triangle = triangle
-        afHead.next = afMiddle
-        afHead.value = afHead.point.x
+        afHead.next     = afMiddle
+        afHead.value    = afHead.point.x
 
-        afMiddle.point = triangle.points[0]
+        afMiddle.point    = triangle.points[0]
         afMiddle.triangle = triangle
-        afMiddle.next = afTail
-        afMiddle.prev = afHead
-        afMiddle.value = afMiddle.point.x
+        afMiddle.next     = afTail
+        afMiddle.prev     = afHead
+        afMiddle.value    = afMiddle.point.x
 
-        afTail.point = triangle.points[2]
+        afTail.point    = triangle.points[2]
         afTail.triangle = triangle
-        afTail.prev = afMiddle
-        afTail.value = afTail.point.x
+        afTail.prev     = afMiddle
+        afTail.value    = afTail.point.x
     }
 }

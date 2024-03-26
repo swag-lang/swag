@@ -3,11 +3,11 @@ using Swag, Core, Core.Errors, Win32, XAudio2
 
 struct DriverNative
 {
-    xAudio2:          *IXAudio2
-    masteringVoice:   *IXAudio2MasteringVoice
-    hasInitCOM:       bool
-    channelMask:      DWORD
-    x3DInstance:      X3DAUDIO_HANDLE
+    xAudio2:            *IXAudio2
+    masteringVoice:     *IXAudio2MasteringVoice
+    hasInitCOM:         bool
+    channelMask:        DWORD
+    x3DInstance:        X3DAUDIO_HANDLE
 }
 
 impl DriverNative
@@ -104,16 +104,28 @@ impl Driver
 
 private
 {
-    var g_ThreadCxt:    Swag.Context
-    var g_Cb:           IXAudio2VoiceCallback
-    var g_Cbi:          IXAudio2VoiceCallbackItf
+    var g_ThreadCxt: Swag.Context
+    var g_Cb:        IXAudio2VoiceCallback
+    var g_Cbi:       IXAudio2VoiceCallbackItf
 
-    func onVoiceProcessingPassStart(_me: *IXAudio2VoiceCallback, _bytesRequired: UINT32) {}
-    func onVoiceProcessingPassEnd(_me: *IXAudio2VoiceCallback) {}
-    func onStreamEnd(_me: *IXAudio2VoiceCallback) {}
-    func onBufferStart(_me: *IXAudio2VoiceCallback, _pBufferContext: *void) {}
-    func onLoopEnd(_me: *IXAudio2VoiceCallback, _pBufferContext: *void) {}
-    func onVoiceError(_me: *IXAudio2VoiceCallback, _pBufferContext: *void, _error: HRESULT) {}
+    func onVoiceProcessingPassStart(_me: *IXAudio2VoiceCallback, _bytesRequired: UINT32)
+    {
+    }
+    func onVoiceProcessingPassEnd(_me: *IXAudio2VoiceCallback)
+    {
+    }
+    func onStreamEnd(_me: *IXAudio2VoiceCallback)
+    {
+    }
+    func onBufferStart(_me: *IXAudio2VoiceCallback, _pBufferContext: *void)
+    {
+    }
+    func onLoopEnd(_me: *IXAudio2VoiceCallback, _pBufferContext: *void)
+    {
+    }
+    func onVoiceError(_me: *IXAudio2VoiceCallback, _pBufferContext: *void, _error: HRESULT)
+    {
+    }
 
     func onBufferEnd(_me: *IXAudio2VoiceCallback, pBufferContext: *void)
     {
@@ -131,7 +143,7 @@ private
 
 #init
 {
-    g_Cb.vtbl = &g_Cbi
+    g_Cb.vtbl                        = &g_Cbi
     g_Cbi.onVoiceProcessingPassStart = @mkcallback(&onVoiceProcessingPassStart)
     g_Cbi.onVoiceProcessingPassEnd   = @mkcallback(&onVoiceProcessingPassEnd)
     g_Cbi.onStreamEnd                = @mkcallback(&onStreamEnd)
@@ -156,30 +168,25 @@ impl Voice
         let file = voice.file
 
         var wfx: WAVEFORMATEXTENSIBLE
-        wfx.format.nChannels            = cast(u16) file.channelCount
-        wfx.format.nSamplesPerSec       = cast(u16) file.frequency
-        wfx.format.wBitsPerSample       = cast(u16) file.bitsPerSample
-        wfx.format.wFormatTag           = FORMAT_EXTENSIBLE
-        wfx.format.cbSize               = @sizeof(WAVEFORMATEXTENSIBLE) - @sizeof(WAVEFORMATEX)
-        wfx.dwChannelMask               = file.channelMask
+        wfx.format.nChannels      = cast(u16) file.channelCount
+        wfx.format.nSamplesPerSec = cast(u16) file.frequency
+        wfx.format.wBitsPerSample = cast(u16) file.bitsPerSample
+        wfx.format.wFormatTag     = FORMAT_EXTENSIBLE
+        wfx.format.cbSize         = @sizeof(WAVEFORMATEXTENSIBLE) - @sizeof(WAVEFORMATEX)
+        wfx.dwChannelMask         = file.channelMask
 
-        switch (file.encoding)
+        switch file.encoding
         {
-        // Native xaudio2 supported format
         case Pcm8, Pcm16, Pcm24, Pcm32:
-            wfx.subFormat = Wav.GUID_PCM
+            wfx.subFormat           = Wav.GUID_PCM
             voice.requestedEncoding = file.encoding
-
-        // Native xaudio2 supported format
         case Float32:
-            wfx.subFormat = Wav.GUID_IEEE_FLOAT
+            wfx.subFormat           = Wav.GUID_IEEE_FLOAT
             voice.requestedEncoding = file.encoding
-
-        // Will need a codec. Convert to 16 bits pcm
         default:
-            wfx.subFormat = Wav.GUID_PCM
+            wfx.subFormat             = Wav.GUID_PCM
             wfx.format.wBitsPerSample = 16
-            voice.requestedEncoding = .Pcm16
+            voice.requestedEncoding   = .Pcm16
         }
 
         wfx.format.nBlockAlign          = cast(u16) (wfx.format.nChannels * (wfx.format.wBitsPerSample / 8))
@@ -256,7 +263,7 @@ public impl Voice
     {
         if !handle do
             return
-        let v = Math.clamp(volume, 0, 1)
+        let v  = Math.clamp(volume, 0, 1)
         let hr = handle.vtbl.setVolume(acast handle, v, batchID)
         if hr != S_OK do
             throw SystemError{"setVolume", errorID: cast(u64) hr}
@@ -289,10 +296,10 @@ public impl Voice
     // main bus (which is the default).
     mtd setRooting(buses: const [..] *Bus) throw
     {
-        const MaxBus = 16
-        var sfxSend:        [MaxBus] XAUDIO2_SEND_DESCRIPTOR
-        var sfxSendList:    XAUDIO2_VOICE_SENDS
-        var pSFXSEndList:   *XAUDIO2_VOICE_SENDS
+        const MaxBus      = 16
+        var sfxSend:      [MaxBus] XAUDIO2_SEND_DESCRIPTOR
+        var sfxSendList:  XAUDIO2_VOICE_SENDS
+        var pSFXSEndList: *XAUDIO2_VOICE_SENDS
 
         let count = @countof(buses)
         if count >= MaxBus do
@@ -327,9 +334,9 @@ impl Bus
 {
     func createNative(bus: *Bus, numChannels: u32, parent: *Bus = null) throw
     {
-        var sfxSend:        XAUDIO2_SEND_DESCRIPTOR
-        var sfxSendList:    XAUDIO2_VOICE_SENDS
-        var pSFXSEndList:   *XAUDIO2_VOICE_SENDS
+        var sfxSend:      XAUDIO2_SEND_DESCRIPTOR
+        var sfxSendList:  XAUDIO2_VOICE_SENDS
+        var pSFXSEndList: *XAUDIO2_VOICE_SENDS
 
         if parent
         {
@@ -363,7 +370,7 @@ public impl Bus
     {
         if !handle do
             return
-        let v = Math.clamp(volume, 0, 1)
+        let v  = Math.clamp(volume, 0, 1)
         let hr = handle.vtbl.setVolume(acast handle, v, batchID)
         if hr != S_OK do
             throw SystemError{"setVolume", errorID: cast(u64) hr}

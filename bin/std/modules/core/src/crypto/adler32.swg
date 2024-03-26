@@ -26,7 +26,8 @@ public impl Adler32
         var s2 = (adler >> 16) & 0xffff
 
         let countof = @countof(buffer)
-        if !countof do return
+        if !countof do
+            return
 
         let input = @dataof(buffer)
         if countof == 1
@@ -53,7 +54,7 @@ public impl Adler32
         else
         {
             const n = NMax / 16
-            var i = 0'u64
+            var i   = 0'u64
 
             while i + NMax <= countof
             {

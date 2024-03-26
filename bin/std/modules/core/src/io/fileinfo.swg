@@ -4,12 +4,12 @@ using Time
 
 struct FileInfo
 {
-    fullname:       String
-    attributes =    FileAttributes.Zero
-    creationTime:   DateTime
-    lastAccessTime: DateTime
-    lastWriteTime:  DateTime
-    size:           u64
+    fullname:           String
+    attributes          = FileAttributes.Zero
+    creationTime:       DateTime
+    lastAccessTime:     DateTime
+    lastWriteTime:      DateTime
+    size:               u64
 }
 
 impl FileInfo

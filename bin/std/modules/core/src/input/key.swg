@@ -6,7 +6,7 @@ public typealias VirtualKey = u32
 #[Swag.EnumFlags]
 public enum KeyModifiers
 {
-    Zero = 0
+    Zero      = 0
     Shift
     Control
     Alt
@@ -217,34 +217,50 @@ public func getKeyName(mdf: KeyModifiers, key: Key)->String
 
     if mdf & .Control
     {
-        if result.length do result += "+"
+        if result.length do
+            result += "+"
         result += "Ctrl"
     }
 
     if mdf & .Shift
     {
-        if result.length do result += "+"
+        if result.length do
+            result += "+"
         result += "Shift"
     }
 
-    if result.length do result += "+"
+    if result.length do
+        result += "+"
     var k = key
 
     switch key
     {
-    case NumPad0:   result += "0"
-    case NumPad1:   result += "1"
-    case NumPad2:   result += "2"
-    case NumPad3:   result += "3"
-    case NumPad4:   result += "4"
-    case NumPad5:   result += "5"
-    case NumPad6:   result += "6"
-    case NumPad7:   result += "7"
-    case NumPad8:   result += "8"
-    case NumPad9:   result += "9"
-    case Add:       result += "+"
-    case Subtract:  result += "-"
-    default:        result += Reflection.getEnumName(Input.Key, &k, fullname: false)
+    case NumPad0:
+        result += "0"
+    case NumPad1:
+        result += "1"
+    case NumPad2:
+        result += "2"
+    case NumPad3:
+        result += "3"
+    case NumPad4:
+        result += "4"
+    case NumPad5:
+        result += "5"
+    case NumPad6:
+        result += "6"
+    case NumPad7:
+        result += "7"
+    case NumPad8:
+        result += "8"
+    case NumPad9:
+        result += "9"
+    case Add:
+        result += "+"
+    case Subtract:
+        result += "-"
+    default:
+        result += Reflection.getEnumName(Input.Key, &k, fullname: false)
     }
 
     return result

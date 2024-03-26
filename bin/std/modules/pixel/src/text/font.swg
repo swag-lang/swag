@@ -2,15 +2,15 @@ using Core, FreeType
 
 public struct GlyphAtlas
 {
-    texture:    Texture
-    width:      u32
-    height:     u32
-    bpp:        u32
-    datas:      Array'u8
-    dirty:      bool
-    curX:       s32
-    curY:       s32
-    nextY:      s32
+    texture:     Texture
+    width:       u32
+    height:      u32
+    bpp:         u32
+    datas:       Array'u8
+    dirty:       bool
+    curX:        s32
+    curY:        s32
+    nextY:       s32
 }
 
 public struct GlyphDesc
@@ -27,21 +27,21 @@ public struct GlyphDesc
 
 public struct Font
 {
-    ascent:         f32
-    descent:        f32
-    height:         f32
-    underlinePos:   f32
-    underlineSize:  f32
-    forceBold:      bool
-    forceItalic:    bool
+    ascent:            f32
+    descent:           f32
+    height:            f32
+    underlinePos:      f32
+    underlineSize:     f32
+    forceBold:         bool
+    forceItalic:       bool
 
-    fullname:   String
-    typeFace:   *TypeFace
-    size:       u32
-    atlases:    Array'GlyphAtlas
-    asciiRef:   [128] GlyphDesc
-    unicodeRef: HashTable'(rune, *GlyphDesc)
-    dirty:      bool
+    fullname:       String
+    typeFace:       *TypeFace
+    size:           u32
+    atlases:        Array'GlyphAtlas
+    asciiRef:       [128] GlyphDesc
+    unicodeRef:     HashTable'(rune, *GlyphDesc)
+    dirty:          bool
 }
 
 internal var g_HashFont: HashTable'(String, *Font)
@@ -66,7 +66,7 @@ public impl Font
     internal func mulFix(a, b: s32)->s32
     {
         let ab = cast(s64) a * cast(s64) b
-        return cast(s32) (((ab + 0x8000 - (ab < 0 ? 1 : 0)) >> 16))
+        return cast(s32) ((ab + 0x8000 - (ab < 0 ? 1 : 0)) >> 16)
     }
 
     // Release the given font
@@ -95,18 +95,18 @@ public impl Font
             return here.value
 
         let font = Memory.new'Font()
-        font.fullname = str
-        font.typeFace = typeFace
-        font.size = size
-        font.forceBold = forceBold
+        font.fullname    = str
+        font.typeFace    = typeFace
+        font.size        = size
+        font.forceBold   = forceBold
         font.forceItalic = forceItalic
 
         assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
         let metrics = &typeFace.face.size.metrics
-        font.ascent  = metrics.ascender / 64.0
-        font.descent = metrics.descender / 64.0
-        font.height  = font.ascent - font.descent
-        font.underlinePos = mulFix(cast(s32) typeFace.face.underline_position, metrics.y_scale) / 64.0
+        font.ascent        = metrics.ascender / 64.0
+        font.descent       = metrics.descender / 64.0
+        font.height        = font.ascent - font.descent
+        font.underlinePos  = mulFix(cast(s32) typeFace.face.underline_position, metrics.y_scale) / 64.0
         font.underlineSize = mulFix(cast(s32) typeFace.face.underline_thickness, metrics.y_scale) / 64.0
 
         g_HashFont.add(str, font)
@@ -164,8 +164,8 @@ public impl Font
         if !atlas
         {
             var newAtlas: GlyphAtlas
-            newAtlas.bpp = 1
-            newAtlas.width =  Math.roundUpToPowerOf2(size * 4) * newAtlas.bpp
+            newAtlas.bpp    = 1
+            newAtlas.width  = Math.roundUpToPowerOf2(size * 4) * newAtlas.bpp
             newAtlas.height = Math.roundUpToPowerOf2(size * 4)
             newAtlas.datas.resize(cast(u64) newAtlas.width * newAtlas.height)
             Memory.clear(newAtlas.datas.buffer, newAtlas.datas.count)
@@ -208,17 +208,17 @@ public impl Font
         refr.shiftX   = glyph.bitmap_left
         refr.shiftY   = glyph.bitmap_top
 
-        let widthf = cast(f32) atlas.width
+        let widthf  = cast(f32) atlas.width
         let heightf = cast(f32) atlas.height
-        refr.uv.x = x / widthf
-        refr.uv.y = y / heightf
-        refr.uv.width = refr.width / widthf
+        refr.uv.x      = x / widthf
+        refr.uv.y      = y / heightf
+        refr.uv.width  = refr.width / widthf
         refr.uv.height = refr.height / heightf
         refr.width /= atlas.bpp
 
         refr.atlasIndex = cast(u32) (atlases.count - 1)
 
-        dirty = true
+        dirty       = true
         atlas.dirty = true
 
         return refr

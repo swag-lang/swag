@@ -4,7 +4,7 @@ using Core, Pixel
 struct RichEditLexerSwag
 {
     #[Swag.Incomplete]
-    enum Style: RichEditStyleRef
+    enum Style : RichEditStyleRef
     {
         Default
         Comment
@@ -24,7 +24,7 @@ struct RichEditLexerSwag
     }
 
     #[Swag.Incomplete]
-    enum State: s32
+    enum State : s32
     {
         Default
         LineComment
@@ -55,8 +55,8 @@ struct RichEditLexerSwag
         Error
     }
 
-    mapStyles:      [256] RichEditStyleRef
-    mapWords:       HashTable'(string, s32)
+    mapStyles:     [256] RichEditStyleRef
+    mapWords:      HashTable'(string, s32)
 }
 
 impl IRichEditLexer for RichEditLexerSwag
@@ -64,32 +64,32 @@ impl IRichEditLexer for RichEditLexerSwag
     mtd impl setup(ed: *RichEditCtrl)
     {
         using RichEditLexerSwag.Style
-        mapStyles[State.LineComment]        = Comment
-        mapStyles[State.Comment]            = Comment
-        mapStyles[State.Keyword]            = Keyword
-        mapStyles[State.Control]            = Control
-        mapStyles[State.Declaration]        = Keyword
-        mapStyles[State.Intrinsic]          = Intrinsic
-        mapStyles[State.Buildin]            = Buildin
-        mapStyles[State.CompilerFunction]   = Function
-        mapStyles[State.CompilerGlobal]     = Preprocessor
-        mapStyles[State.CompilerStatement]  = Preprocessor
-        mapStyles[State.Compiler]           = CharEscape
-        mapStyles[State.FunctionSpecOp]     = Intrinsic
-        mapStyles[State.Type]               = Type
-        mapStyles[State.StorageModifier]    = Keyword
-        mapStyles[State.UserType]           = Class
-        mapStyles[State.FunctionCall]       = Function
-        mapStyles[State.Constant]           = Keyword
-        mapStyles[State.String]             = String
-        mapStyles[State.RawString]          = String
-        mapStyles[State.Character]          = Character
-        mapStyles[State.Numeric]            = Numeric
-        mapStyles[State.NumericFrac]        = Numeric
-        mapStyles[State.NumericHex]         = Numeric
-        mapStyles[State.NumericBin]         = Numeric
-        mapStyles[State.Attribute]          = Preprocessor
-        mapStyles[State.Error]              = Error
+        mapStyles[State.LineComment]       = Comment
+        mapStyles[State.Comment]           = Comment
+        mapStyles[State.Keyword]           = Keyword
+        mapStyles[State.Control]           = Control
+        mapStyles[State.Declaration]       = Keyword
+        mapStyles[State.Intrinsic]         = Intrinsic
+        mapStyles[State.Buildin]           = Buildin
+        mapStyles[State.CompilerFunction]  = Function
+        mapStyles[State.CompilerGlobal]    = Preprocessor
+        mapStyles[State.CompilerStatement] = Preprocessor
+        mapStyles[State.Compiler]          = CharEscape
+        mapStyles[State.FunctionSpecOp]    = Intrinsic
+        mapStyles[State.Type]              = Type
+        mapStyles[State.StorageModifier]   = Keyword
+        mapStyles[State.UserType]          = Class
+        mapStyles[State.FunctionCall]      = Function
+        mapStyles[State.Constant]          = Keyword
+        mapStyles[State.String]            = String
+        mapStyles[State.RawString]         = String
+        mapStyles[State.Character]         = Character
+        mapStyles[State.Numeric]           = Numeric
+        mapStyles[State.NumericFrac]       = Numeric
+        mapStyles[State.NumericHex]        = Numeric
+        mapStyles[State.NumericBin]        = Numeric
+        mapStyles[State.Attribute]         = Preprocessor
+        mapStyles[State.Error]             = Error
 
         ed.styles[Comment].colFg      = 0xFF6A9955
         ed.styles[Keyword].colFg      = 0xFF569cd6
@@ -393,7 +393,7 @@ impl IRichEditLexer for RichEditLexerSwag
         // Smart return
         if ch == `\n`
         {
-            var cp = ed.getBegSelection()
+            var cp   = ed.getBegSelection()
             let line = ed.lines[cp.lineIndex]
             var str: String = "\n"
 
@@ -422,36 +422,40 @@ impl IRichEditLexer for RichEditLexerSwag
 
     mtd impl compute(linePrev, line, lineNext: *RichEditLine)
     {
-        var seek = 0'u64
-        var currentState = linePrev ? linePrev.lexerEndingState : State.Default
+        var seek          = 0'u64
+        var currentState  = linePrev ? linePrev.lexerEndingState : State.Default
         var currentCptCmt = linePrev ? linePrev.lexerCptCmt : 0
 
         #[Swag.Mixin]
         func getCur()->rune
         {
-            if seek >= line.chars.count do return 0
+            if seek >= line.chars.count do
+                return 0
             return line.chars[seek]
         }
 
         #[Swag.Mixin]
         func getNext()->rune
         {
-            if !line.chars.count do return 0
-            if seek >= line.chars.count - 1 do return 0
+            if !line.chars.count do
+                return 0
+            if seek >= line.chars.count - 1 do
+                return 0
             return line.chars[seek + 1]
         }
 
         #[Swag.Mixin]
         func seekNext()
         {
-            if seek >= line.chars.count do return
+            if seek >= line.chars.count do
+                return
             line.styles[seek] = mapStyles[currentState]
             seek += 1
         }
 
         loop
         {
-            var c = getCur()
+            var c  = getCur()
             let cn = getNext()
             if !c
             {
@@ -621,7 +625,7 @@ impl IRichEditLexer for RichEditLexerSwag
 
                 if Unicode.isLetter(c) or c == `_` or c == `@` or c == `#`
                 {
-                    var word: String
+                    var word:    String
                     let saveSeek = seek
                     while Unicode.isLetterOrDigit(c) or c == `_` or c == `@` or c == `#`
                     {

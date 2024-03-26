@@ -7,34 +7,34 @@ const DayOfWeekNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", 
 
 enum DayOfWeek
 {
-    Sunday = 0
-    Monday = 1
-    Tuesday = 2
+    Sunday    = 0
+    Monday    = 1
+    Tuesday   = 2
     Wednesday = 3
-    Thursday = 4
-    Friday = 5
-    Saturday = 6
+    Thursday  = 4
+    Friday    = 5
+    Saturday  = 6
 }
 
 enum DateTimeFormat
 {
-    DateTime        // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS`
-    DateTimeMs      // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ`
-    Iso             // `YYYY-MM-DD HH:MM:SS`
-    IsoMs           // `YYYY-MM-DD HH:MM:SS.ZZZ`
-    IsoHM           // `YYYY-MM-DD HH:MM`
+    DateTime       // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS`
+    DateTimeMs     // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ`
+    Iso            // `YYYY-MM-DD HH:MM:SS`
+    IsoMs          // `YYYY-MM-DD HH:MM:SS.ZZZ`
+    IsoHM          // `YYYY-MM-DD HH:MM`
 }
 
 // Represents an instant in time, typically expressed as a date and time of day
 struct DateTime
 {
-    year:			u16
-    month:			u16
-    day:			u16
-    hour:			u16
-    minute:			u16
-    second:			u16
-    millisecond:	u16
+    year:            u16
+    month:           u16
+    day:             u16
+    hour:            u16
+    minute:          u16
+    second:          u16
+    millisecond:     u16
 }
 
 impl DateTime
@@ -47,33 +47,54 @@ impl DateTime
 
     mtd const opCmp(other: DateTime)->s32
     {
-        if year < other.year do return -1
-        if year > other.year do return 1
-        if month < other.month do return -1
-        if month > other.month do return 1
-        if day < other.day do return -1
-        if day > other.day do return 1
-        if hour < other.hour do return -1
-        if hour > other.hour do return 1
-        if minute < other.minute do return -1
-        if minute > other.minute do return 1
-        if second < other.second do return -1
-        if second > other.second do return 1
-        if millisecond < other.millisecond do return -1
-        if millisecond > other.millisecond do return 1
+        if year < other.year do
+            return -1
+        if year > other.year do
+            return 1
+        if month < other.month do
+            return -1
+        if month > other.month do
+            return 1
+        if day < other.day do
+            return -1
+        if day > other.day do
+            return 1
+        if hour < other.hour do
+            return -1
+        if hour > other.hour do
+            return 1
+        if minute < other.minute do
+            return -1
+        if minute > other.minute do
+            return 1
+        if second < other.second do
+            return -1
+        if second > other.second do
+            return 1
+        if millisecond < other.millisecond do
+            return -1
+        if millisecond > other.millisecond do
+            return 1
         return 0
     }
 
     // Returns true if this is a valid datatime
     mtd const isValid()->bool
     {
-        if year == 0 or year > 9999 do return false
-        if month == 0 or month > 12 do return false
-        if day == 0 or day > daysInMonth(year, month) do return false
-        if hour >= 24 do return false
-        if minute >= 60 do return false
-        if second >= 60 do return false
-        if millisecond >= 1000 do return false
+        if year == 0 or year > 9999 do
+            return false
+        if month == 0 or month > 12 do
+            return false
+        if day == 0 or day > daysInMonth(year, month) do
+            return false
+        if hour >= 24 do
+            return false
+        if minute >= 60 do
+            return false
+        if second >= 60 do
+            return false
+        if millisecond >= 1000 do
+            return false
         return true
     }
 
@@ -81,8 +102,8 @@ impl DateTime
     mtd const dayOfWeek()->DayOfWeek
     {
         let m: u32 = (month + 9) % 12
-        let y: u32 = year - m/10
-        var dn = 365*y +,over y/4 +,over y/400 +,over (m*306 + 5)/10 +,over day-1 -,over y/100
+        let y: u32 = year - m / 10
+        var dn = 365 * y +,over y / 4 +,over y / 400 +,over (m * 306 + 5) / 10 +,over day - 1 -,over y / 100
         dn += 3
         return cast(DayOfWeek) (dn % 7)
     }
@@ -112,7 +133,7 @@ impl DateTime
         if fmt == .DateTime or fmt == .DateTimeMs
         {
             // Day of week name
-            var done = false
+            var done       = false
             var dayOfWeek: DayOfWeek
             visit dow, idx: DayOfWeekNames
             {
@@ -120,7 +141,7 @@ impl DateTime
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
                 {
                     dayOfWeek = acast idx
-                    buf = Tokenize.eatCount(buf, cast(u64) len)
+                    buf       = Tokenize.eatCount(buf, cast(u64) len)
                     result.eat += cast(u32) len
                     done = true
                     break
@@ -144,7 +165,7 @@ impl DateTime
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
                 {
                     result.value.month = cast(u16) idx + 1
-                    buf = Tokenize.eatCount(buf, cast(u64) len)
+                    buf                = Tokenize.eatCount(buf, cast(u64) len)
                     result.eat += cast(u32) len
                     done = true
                     break
@@ -166,7 +187,7 @@ impl DateTime
                 throw SyntaxError{}
             result.eat += eat2
             result.value.day = day
-            buf = Tokenize.eatCount(buf, cast(u64) eat2)
+            buf              = Tokenize.eatCount(buf, cast(u64) eat2)
 
             // Blank
             if !@countof(buf) or buf[0] != ` ` do
@@ -206,7 +227,7 @@ impl DateTime
                 throw SyntaxError{}
             result.eat += eat1
             result.value.month = month
-            buf = Tokenize.eatCount(buf, cast(u64) eat1)
+            buf                = Tokenize.eatCount(buf, cast(u64) eat1)
             if !@countof(buf) or buf[0] != `-` do
                 throw SyntaxError{}
             buf = Tokenize.eatCount(buf, 1)
@@ -218,7 +239,7 @@ impl DateTime
                 throw SyntaxError{}
             result.eat += eat2
             result.value.day = day
-            buf = Tokenize.eatCount(buf, cast(u64) eat2)
+            buf              = Tokenize.eatCount(buf, cast(u64) eat2)
         }
 
         // Blank
@@ -233,7 +254,7 @@ impl DateTime
             throw SyntaxError{}
         result.eat += eat3
         result.value.hour = hour
-        buf = Tokenize.eatCount(buf, cast(u64) eat3)
+        buf               = Tokenize.eatCount(buf, cast(u64) eat3)
         if !@countof(buf) or buf[0] != `:` do
             throw SyntaxError{}
         buf = Tokenize.eatCount(buf, 1)
@@ -245,7 +266,7 @@ impl DateTime
             throw SyntaxError{}
         result.eat += eat4
         result.value.minute = minute
-        buf = Tokenize.eatCount(buf, cast(u64) eat4)
+        buf                 = Tokenize.eatCount(buf, cast(u64) eat4)
 
         // Seconds
         if fmt != .IsoHM
@@ -260,7 +281,7 @@ impl DateTime
                 throw SyntaxError{}
             result.eat += eat5
             result.value.second = second
-            buf = Tokenize.eatCount(buf, cast(u64) eat5)
+            buf                 = Tokenize.eatCount(buf, cast(u64) eat5)
         }
 
         // Milliseconds
@@ -276,7 +297,7 @@ impl DateTime
                 throw SyntaxError{}
             result.eat += eat6
             result.value.millisecond = millisecond
-            buf = Tokenize.eatCount(buf, cast(u64) eat6)
+            buf                      = Tokenize.eatCount(buf, cast(u64) eat6)
         }
 
         if checkDate and !result.value.isValid() do
@@ -292,58 +313,15 @@ impl DateTime
         switch fmt
         {
         case DateTime:
-            return Format.toString(
-                "% % % % %{02}:%{02}:%{02}",
-                dayOfWeekName(dayOfWeek()),
-                monthName(month),
-                day,
-                year,
-                hour,
-                minute,
-                second
-            )
+            return Format.toString("% % % % %{02}:%{02}:%{02}", dayOfWeekName(dayOfWeek()), monthName(month), day, year, hour, minute, second)
         case DateTimeMs:
-            return Format.toString(
-                "% % % % %{02}:%{02}:%{02}.%",
-                dayOfWeekName(dayOfWeek()),
-                monthName(month),
-                day,
-                year,
-                hour,
-                minute,
-                second,
-                millisecond
-            )
+            return Format.toString("% % % % %{02}:%{02}:%{02}.%", dayOfWeekName(dayOfWeek()), monthName(month), day, year, hour, minute, second, millisecond)
         case Iso:
-            return Format.toString(
-                "%-%{02}-%{02} %{02}:%{02}:%{02}",
-                year,
-                month,
-                day,
-                hour,
-                minute,
-                second
-            )
+            return Format.toString("%-%{02}-%{02} %{02}:%{02}:%{02}", year, month, day, hour, minute, second)
         case IsoMs:
-            return Format.toString(
-                "%-%{02}-%{02} %{02}:%{02}:%{02}.%",
-                year,
-                month,
-                day,
-                hour,
-                minute,
-                second,
-                millisecond
-            )
+            return Format.toString("%-%{02}-%{02} %{02}:%{02}:%{02}.%", year, month, day, hour, minute, second, millisecond)
         case IsoHM:
-            return Format.toString(
-                "%-%{02}-%{02} %{02}:%{02}",
-                year,
-                month,
-                day,
-                hour,
-                minute
-            )
+            return Format.toString("%-%{02}-%{02} %{02}:%{02}", year, month, day, hour, minute)
         }
 
         var result: retval

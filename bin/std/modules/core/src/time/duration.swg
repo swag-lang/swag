@@ -5,7 +5,7 @@ using Swag
 // Represents a delay, expressed in seconds.
 struct Duration
 {
-    timeInSeconds: f32      // The duration in seconds
+    timeInSeconds: f32 // The duration in seconds
 }
 
 impl Duration

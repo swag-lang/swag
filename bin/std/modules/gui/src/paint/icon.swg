@@ -3,10 +3,10 @@ using Pixel
 
 struct Icon
 {
-    imageList:  *ImageList
-    index:      s32
-    sizeX:      f32 = 24
-    sizeY:      f32 = 24
+    imageList:     *ImageList
+    index:         s32
+    sizeX:         f32 = 24
+    sizeY:         f32 = 24
 }
 
 impl Icon
@@ -24,8 +24,8 @@ impl Icon
     func from(imageList: *ImageList, index: s32, sizeX, sizeY: f32 = 0)->Icon
     {
         var result: retval
-        let sx = sizeX orelse cast(f32) imageList.frameSizeX
-        let sy = sizeY orelse cast(f32) imageList.frameSizeY
+        let sx      = sizeX orelse cast(f32) imageList.frameSizeX
+        let sy      = sizeY orelse cast(f32) imageList.frameSizeY
         result.set(imageList, index, sx, sy)
         return result
     }
@@ -47,7 +47,7 @@ impl Icon
         if !imageList or !imageList.totalFrames do
             return
 
-        let idx = index % imageList.totalFrames
+        let idx  = index % imageList.totalFrames
         var srcX = idx % imageList.countX()
         var srcY = idx / imageList.countX()
 

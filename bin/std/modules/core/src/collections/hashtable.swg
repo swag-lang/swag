@@ -3,24 +3,24 @@ using Swag
 
 struct(K, V) HashTableEntry
 {
-    hash:   u32
-    key:    K
-    value:  V
+    hash:      u32
+    key:       K
+    value:     V
 }
 
 // Map a key to a value.
 struct(K, V) HashTable
 {
-    const HASH_FREE    = 0'u32
-    const HASH_DELETED = 1'u32
-    const HASH_FIRST   = 2'u32
-    const HASH_MASK    = 2'u32
+    const HASH_FREE        = 0'u32
+    const HASH_DELETED     = 1'u32
+    const HASH_FIRST       = 2'u32
+    const HASH_MASK        = 2'u32
 
-    allocator:  IAllocator
-    table:      ^HashTableEntry
-    count:      u64 // Number of valid entries
-    capacity:   u64 // Number of total entries the table can hold
-    deleted:    u64 // Number of deleted entries
+    allocator:     IAllocator
+    table:         ^HashTableEntry
+    count:         u64                 // Number of valid entries
+    capacity:      u64                 // Number of total entries the table can hold
+    deleted:       u64                 // Number of deleted entries
 }
 
 impl HashTable
@@ -74,7 +74,8 @@ impl HashTable
     mtd const opIndex(key: K)->const &V
     {
         let it = find(key)
-        if it do return &it.value
+        if it do
+            return &it.value
         return null
     }
 
@@ -82,7 +83,8 @@ impl HashTable
     mtd opIndex(key: K)->&V
     {
         let it = find(key)
-        if it do return &it.value
+        if it do
+            return &it.value
         return null
     }
 
@@ -103,7 +105,8 @@ impl HashTable
             return
 
         var remain = count
-        #scope Up loop capacity
+        #scope Up
+        loop capacity
         {
             if table[#index].hash < HASH_FIRST do
                 continue
@@ -185,7 +188,7 @@ impl HashTable
             return
 
         let oldTable = table
-        count = 0
+        count   = 0
         deleted = 0
         let newCapacityBytes = reqCapacity * @sizeof(HashTableEntry)
 
@@ -218,9 +221,9 @@ impl HashTable
 
     mtd getNewIndex(key: K, idx: u64, hashVal: u64)->u64
     {
-        var firstFree = Swag.U64.Max
+        var firstFree    = Swag.U64.Max
         var firstDeleted = Swag.U64.Max
-        var index = idx
+        var index        = idx
 
         while table[index].hash
         {
@@ -252,7 +255,7 @@ impl HashTable
         grow()
 
         let hashVal = hashKey(key)
-        var index = hashVal % capacity
+        var index   = hashVal % capacity
 
         index = getNewIndex(key, index, hashVal)
         if table[index].hash >= HASH_FIRST
@@ -264,14 +267,14 @@ impl HashTable
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key =,nodrop key
+            table[index].key   =,nodrop key
             table[index].value =,nodrop value
         }
         else
         {
             if table[index].hash == HASH_DELETED do
                 deleted -= 1
-            table[index].key = key
+            table[index].key   = key
             table[index].value = value
         }
 
@@ -289,7 +292,7 @@ impl HashTable
         grow()
 
         let hashVal = hashKey(key)
-        var index = hashVal % capacity
+        var index   = hashVal % capacity
 
         index = getNewIndex(key, index, hashVal)
         if table[index].hash >= HASH_FIRST
@@ -301,14 +304,14 @@ impl HashTable
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key =,nodrop key
+            table[index].key   =,nodrop key
             table[index].value =,nodrop,move value
         }
         else
         {
             if table[index].hash == HASH_DELETED do
                 deleted -= 1
-            table[index].key = key
+            table[index].key   = key
             table[index].value =,move value
         }
 
@@ -335,14 +338,14 @@ impl HashTable
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key =,nodrop,moveraw key
+            table[index].key   =,nodrop,moveraw key
             table[index].value =,nodrop,moveraw value
         }
         else
         {
             if table[index].hash == HASH_DELETED do
                 deleted -= 1
-            table[index].key =,moveraw key
+            table[index].key   =,moveraw key
             table[index].value =,moveraw value
         }
 
@@ -358,7 +361,7 @@ impl HashTable
             return
 
         let hashVal = hashKey(key)
-        var index = hashVal % capacity
+        var index   = hashVal % capacity
 
         while table[index].hash
         {
@@ -381,7 +384,7 @@ impl HashTable
             return false
 
         let hashVal = hashKey(key)
-        var index = hashVal % capacity
+        var index   = hashVal % capacity
 
         while table[index].hash
         {
@@ -401,7 +404,7 @@ impl HashTable
             return null
 
         let hashVal = hashKey(key)
-        var index = hashVal % capacity
+        var index   = hashVal % capacity
 
         while table[index].hash
         {
@@ -418,7 +421,8 @@ impl HashTable
     mtd const get(key: K, val: V)->V
     {
         let it = find(key)
-        if !it do return val
+        if !it do
+            return val
         return it.value
     }
 
@@ -426,7 +430,8 @@ impl HashTable
     mtd findOrAdd(key: K)->*HashTableEntry
     {
         let it = find(key)
-        if it do return it
+        if it do
+            return it
         var val: V
         return add(key, val)
     }

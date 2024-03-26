@@ -3,12 +3,12 @@ using Pixel
 #[Swag.Opaque]
 public struct PaintImage
 {
-    app:        Application
-    painter:    Painter
-    surface:    *Surface
-    image:      Image
-    w, h:       s32
-    paint:      closure(app: *Application, painter: *Painter)
+    app:         Application
+    painter:     Painter
+    surface:     *Surface
+    image:       Image
+    w, h:        s32
+    paint:       closure(app: *Application, painter: *Painter)
 }
 
 impl PaintImage
@@ -29,7 +29,7 @@ impl PaintImage
         pt.paint(wnd.getApp(), painter)
         painter.end()
 
-        let r = &wnd.getApp().renderer
+        let r  = &wnd.getApp().renderer
         let rt = r.getRenderTarget(pt.w, pt.h)
         r.bindRenderTarget(rt)
         r.draw(painter)
@@ -49,10 +49,10 @@ impl PaintImage
     // First init the PaintImage instance
     public mtd init(w, h: s32)
     {
-        surface = assume app.createSurface(0, 0, 1, 1, hook: &onEvent)
+        surface          = assume app.createSurface(0, 0, 1, 1, hook: &onEvent)
         surface.userData = self
-        self.w = #self.w
-        self.h = #self.h
+        self.w           = #self.w
+        self.h           = #self.h
     }
 
     // Draw to an image by calling the closure

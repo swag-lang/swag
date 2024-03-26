@@ -9,9 +9,10 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8 do
             return
 
-        let level = cast(s32) (Math.clamp(factor, -1, 1) * 255)
+        let level    = cast(s32) (Math.clamp(factor, -1, 1) * 255)
         var convArr: [256] u8 = undefined
-        loop i: 256 do convArr[i] = cast(u8) Math.clamp(i + level, 0, 255)
+        loop i: 256 do
+            convArr[i] = cast(u8) Math.clamp(i + level, 0, 255)
 
         let f = &convArr[0]
         visitPixels(f)

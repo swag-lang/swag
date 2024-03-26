@@ -11,90 +11,90 @@ enum ListSelectionMode
 #[Swag.EnumFlags]
 enum ListFlags
 {
-    Zero = 0
+    Zero                  = 0
     HideSelection
     AlternateLines
     HorzLines
     VertLines
-    ForceMarginExpandMark   // Force one margin even if no expand mark
-    NoMouseEmptySel         // Click does not clear selection if not on an item
+    ForceMarginExpandMark         // Force one margin even if no expand mark
+    NoMouseEmptySel               // Click does not clear selection if not on an item
     HotTrack
 }
 
 struct ListItem
 {
-    using item: Item
-    sortKey:    String
-    colorBk:    Color
-    colorFg:    Color
-    column:     u32
-    horzAlign   = StringHorzAlignment.Left
+    using item:     Item
+    sortKey:        String
+    colorBk:        Color
+    colorFg:        Color
+    column:         u32
+    horzAlign       = StringHorzAlignment.Left
 }
 
 struct ListLine
 {
-    colorBk:            Color
-    colorFg:            Color
-    userData0:          *void
-    userData1:          *void
-    userData2:          *void
-    userData3:          *void
-    leftTextMargin:     f32
-    forceExpandMark:    bool
-    canCheck:           bool
-    separator:          bool
-    iconMargin:         bool
+    colorBk:             Color
+    colorFg:             Color
+    userData0:           *void
+    userData1:           *void
+    userData2:           *void
+    userData3:           *void
+    leftTextMargin:      f32
+    forceExpandMark:     bool
+    canCheck:            bool
+    separator:           bool
+    iconMargin:          bool
 
-    lines:          ArrayPtr'ListLine
-    items:          ArrayPtr'ListItem
-    parent:         *ListLine
-    index:          u32
-    level:          u32
-    expanded:       bool
+    lines:        ArrayPtr'ListLine
+    items:        ArrayPtr'ListItem
+    parent:       *ListLine
+    index:        u32
+    level:        u32
+    expanded:     bool
 }
 
 struct ListCtrl
 {
     using frameWnd: FrameWnd
 
-    horizontalExtent:   f32
-    lineHeight:         f32
-    indentWidth:        f32 = 22
-    iconSize:           f32
-    iconMarginFirstCol  = true
-    listFlags           = ListFlags.Zero
-    selectionMode       = ListSelectionMode.Single
-    leftTextMargin:     f32
+    horizontalExtent:      f32
+    lineHeight:            f32
+    indentWidth:           f32 = 22
+    iconSize:              f32
+    iconMarginFirstCol     = true
+    listFlags              = ListFlags.Zero
+    selectionMode          = ListSelectionMode.Single
+    leftTextMargin:        f32
 
-    sigSelChanged:      SigArray'closure(*Self)
-    sigCheckChanged:    SigArray'closure(*Self)
-    sigRightClick:      SigArray'closure(*Self, Math.Point)
-    sigLeftDoubleClick: SigArray'closure(*Self, Math.Point)
-    sigExpand:          SigArray'closure(*Self, *ListLine)
-    sigCollapse:        SigArray'closure(*Self, *ListLine)
-    sigKeyPressed:      SigArray'closure(*Self, *KeyEvent)
-    sigVirtualFill:     func(*Self, *ListLine, u32)
-    sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
+    sigSelChanged:          SigArray'closure(*Self)
+    sigCheckChanged:        SigArray'closure(*Self)
+    sigRightClick:          SigArray'closure(*Self, Math.Point)
+    sigLeftDoubleClick:     SigArray'closure(*Self, Math.Point)
+    sigExpand:              SigArray'closure(*Self, *ListLine)
+    sigCollapse:            SigArray'closure(*Self, *ListLine)
+    sigKeyPressed:          SigArray'closure(*Self, *KeyEvent)
+    sigVirtualFill:         func(*Self, *ListLine, u32 )
+    sigSort:                func(*ListLine, *ListLine, u32 , bool)->s32
 
-    toFreeLines:        ArrayPtr'ListLine
-    lines:              Array'*ListLine
-    idxLineToIdxList:   HashTable'(u32, u32)
-    selModel:           SelModel
-    checkModel:         SelModel
-    focusIndex          = Swag.U32.Max
-    hotIndex            = Swag.U32.Max
-    scrollWnd:          *ScrollWnd
-    listView:           *ListView
-    header:             *Header
-    virtualCount:       u32
-    isVirtual:          bool
+    toFreeLines:          ArrayPtr'ListLine
+    lines:                Array'*ListLine
+    idxLineToIdxList:     HashTable'(u32, u32)
+    selModel:             SelModel
+    checkModel:           SelModel
+    focusIndex            = Swag.U32.Max
+    hotIndex              = Swag.U32.Max
+    scrollWnd:            *ScrollWnd
+    listView:             *ListView
+    header:               *Header
+    virtualCount:         u32
+    isVirtual:            bool
 }
 
 struct ListView
 {
-    using wnd:              Wnd
-    list:                   *ListCtrl
-    discardMouseRelease:    bool
+    using wnd:               Wnd
+    list:                    *ListCtrl
+    discardMouseRelease:     bool
 }
 
 impl ListLine
@@ -141,8 +141,8 @@ impl ListLine
 
         let item = items.newPtr()
         item.column = column
-        item.name = name
-        item.icon = icon
+        item.name   = name
+        item.icon   = icon
         items.add(item)
         return item
     }
@@ -173,7 +173,7 @@ impl IWnd for ListView
             focusLine = list.lines[list.focusIndex]
 
         var shift = cast(bool) (evt.modifiers & .Shift)
-        let ctrl = cast(bool) (evt.modifiers & .Control)
+        let ctrl  = cast(bool) (evt.modifiers & .Control)
 
         if list.focusIndex == Swag.U32.Max
         {
@@ -230,19 +230,19 @@ impl IWnd for ListView
                 break
             shift = true
             list.selModel.unselectAll()
-            endSelIdx = 0
+            endSelIdx   = 0
             startSelIdx = list.getLineCount() - 1
-            selChanged = true
+            selChanged  = true
 
         case Home:
             startSelIdx = list.focusIndex
-            endSelIdx = 0
-            selChanged = true
+            endSelIdx   = 0
+            selChanged  = true
 
         case End:
             startSelIdx = list.focusIndex
-            endSelIdx = lineCount - 1
-            selChanged = true
+            endSelIdx   = lineCount - 1
+            selChanged  = true
 
         case Up:
             if list.focusIndex == 0 do
@@ -267,16 +267,16 @@ impl IWnd for ListView
 
         case PageDown:
             let first = list.getFirstVisibleLineIndex()
-            let last = list.getLastVisibleLineIndex()
+            let last  = list.getLastVisibleLineIndex()
             startSelIdx, endSelIdx = list.focusIndex + (last - first)
             startSelIdx = Math.min(startSelIdx, lineCount - 1)
-            endSelIdx = Math.min(endSelIdx, lineCount - 1)
-            selChanged = true
+            endSelIdx   = Math.min(endSelIdx, lineCount - 1)
+            selChanged  = true
             break
 
         case PageUp:
-            let first = list.getFirstVisibleLineIndex()
-            let last = list.getLastVisibleLineIndex()
+            let first  = list.getFirstVisibleLineIndex()
+            let last   = list.getLastVisibleLineIndex()
             let offset = last - first
             if offset > list.focusIndex do
                 startSelIdx, endSelIdx = 0
@@ -326,7 +326,7 @@ impl IWnd for ListView
 
         let metrics = getThemeMetrics()
 
-        let ctrl = cast(bool) (evt.modifiers & .Control)
+        let ctrl  = cast(bool) (evt.modifiers & .Control)
         let shift = cast(bool) (evt.modifiers & .Shift)
 
         // Right mouse button
@@ -362,8 +362,8 @@ impl IWnd for ListView
 
         if idx != Swag.U32.Max and !list.isVirtual
         {
-            let hitLine = list.lines[idx]
-            let idxLine = hitLine.index
+            let hitLine  = list.lines[idx]
+            let idxLine  = hitLine.index
             var localPos = surfaceToLocal(evt.surfacePos)
             localPos.x += scrollPos.x
             var widthLeft = hitLine.level * list.indentWidth
@@ -464,8 +464,8 @@ impl IWnd for ListView
             if shift and list.selectionMode == .Multi
             {
                 let startIdx = list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
-                let idx0 = Math.min(startIdx, idx)
-                let idx1 = Math.max(startIdx, idx)
+                let idx0     = Math.min(startIdx, idx)
+                let idx1     = Math.max(startIdx, idx)
                 loop i: idx0 to idx1
                 {
                     let idxLine = list.isVirtual ? i : list.lines[i].index
@@ -477,7 +477,7 @@ impl IWnd for ListView
             else
             {
                 let idxLine = list.isVirtual ? idx : list.lines[idx].index
-                let toSel = !list.selModel.isSelected(idxLine)
+                let toSel   = !list.selModel.isSelected(idxLine)
                 list.selModel.select(idxLine, toSel)
             }
         }
@@ -494,13 +494,13 @@ impl IWnd for ListView
         if list.getLineCount() == 0 do
             return
 
-        let bc = evt.bc
+        let bc      = evt.bc
         let painter = bc.painter
-        let colors = getThemeColors()
+        let colors  = getThemeColors()
         let metrics = getThemeMetrics()
 
         var rect: Math.Rectangle
-        rect.width = getDisplayWidth()
+        rect.width  = getDisplayWidth()
         rect.height = list.getLineHeight()
 
         // Clipping, take care of padding
@@ -508,7 +508,7 @@ impl IWnd for ListView
         clipRect.applyPadding(padding)
 
         let firstIdx = list.getFirstVisibleLineIndex()
-        let lastIdx = list.getLastVisibleLineIndex()
+        let lastIdx  = list.getLastVisibleLineIndex()
 
         // Do not display with bigs coordinates to avoid precision issues
         // So we do the scroll by hand, and draw will small coordinates
@@ -555,7 +555,7 @@ impl IWnd for ListView
             }
 
             let last = list.header.items.back()
-            var x = getXPos(last.column)
+            var x    = getXPos(last.column)
             x -= scrollPos.x
             x += last.width
             x += metrics.header_Separator * 0.5
@@ -577,15 +577,15 @@ internal impl ListView
     mtd paintLine(bc: PaintContext, idx: u32, line: *ListLine, rect: Math.Rectangle)
     {
         let painter = bc.painter
-        let theme = getTheme()
-        let colors = getThemeColors()
+        let theme   = getTheme()
+        let colors  = getThemeColors()
         let metrics = getThemeMetrics()
-        let rects = getThemeRects()
+        let rects   = getThemeRects()
 
         // Selection box
-        let isSelected = list.isLineSelected(idx)
+        let isSelected  = list.isLineSelected(idx)
         let canHotTrack = list.isVirtual or !line.separator
-        let hideSel = list.listFlags.has(.HideSelection)
+        let hideSel     = list.listFlags.has(.HideSelection)
         if isSelected and (!hideSel or hasFocus()) and !bc.isDisabled
         {
             let colorSel = hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk
@@ -613,18 +613,18 @@ internal impl ListView
         var colorText, colorExpand: Color = undefined
         switch
         {
-            case bc.isDisabled:
-                colorText, colorExpand = colors.listItem_DisabledText
-            case isSelected:
-                colorText, colorExpand = colors.listItem_SelectedText
-            case line.colorFg.a:
-                colorText   = line.colorFg
-                colorExpand = colors.listItem_Text
-            default:
-                if line.separator do
-                    colorText, colorExpand = colors.listItem_Separator
-                else do
-                    colorText, colorExpand = colors.listItem_Text
+        case bc.isDisabled:
+            colorText, colorExpand = colors.listItem_DisabledText
+        case isSelected:
+            colorText, colorExpand = colors.listItem_SelectedText
+        case line.colorFg.a:
+            colorText   = line.colorFg
+            colorExpand = colors.listItem_Text
+        default:
+            if line.separator do
+                colorText, colorExpand = colors.listItem_Separator
+            else do
+                colorText, colorExpand = colors.listItem_Text
         }
 
         var format: RichStringFormat
@@ -638,15 +638,15 @@ internal impl ListView
             theme.setTextColors(&format, colorFg)
             format.horzAlignment = item.horzAlign
             format.vertAlignment = .Center
-            format.flags = .Clip
-            format.font = list.getFont()
+            format.flags         = .Clip
+            format.font          = list.getFont()
 
             var labelPos = rect
 
             // Right
             if list.header
             {
-                labelPos.x = getXPos(item.column)
+                labelPos.x     = getXPos(item.column)
                 labelPos.width = list.header.getItemWidthByCol(item.column)
             }
 
@@ -686,14 +686,14 @@ internal impl ListView
             // Checkbox
             if idxItem == 0 and line.canCheck
             {
-                var subRectBorder:  *ThemeImageRect
-                var subRectMark:    *ThemeImageRect
+                var subRectBorder: *ThemeImageRect
+                var subRectMark:   *ThemeImageRect
 
                 let idxLine = list.isVirtual ? idx : line.index
                 let checked = list.checkModel.isSelected(idxLine)
 
                 var colorBorder = colorFg
-                var colorMark = colorFg
+                var colorMark   = colorFg
 
                 if checked
                 {
@@ -706,10 +706,10 @@ internal impl ListView
                 }
 
                 let widthCheck = Math.min(metrics.btnCheck_Size, list.getLineHeight())
-                var posBox = labelPos
+                var posBox     = labelPos
                 posBox.height = widthCheck
-                posBox.y = labelPos.vertCenter() - (posBox.height * 0.5)
-                posBox.width = posBox.height
+                posBox.y      = labelPos.vertCenter() - (posBox.height * 0.5)
+                posBox.width  = posBox.height
                 theme.drawSubRect(painter, posBox, subRectMark, colorMark)
                 theme.drawSubRect(painter, posBox, subRectBorder, colorBorder)
 
@@ -744,7 +744,7 @@ internal impl ListView
 
     mtd hitTest(surfacePos: Math.Point)->u32
     {
-        let lc = list.getLineCount()
+        let lc  = list.getLineCount()
         var res = surfaceToLocal(surfacePos)
         if res.x < 0 or res.y < 0 do
             return Swag.U32.Max
@@ -772,12 +772,12 @@ impl ListCtrl
     {
         with let list = Wnd.create'ListCtrl(parent, "", position, id)
         {
-            .scrollWnd = .createView'ScrollWnd()
-            .scrollWnd.dockStyle = .Center
+            .scrollWnd               = .createView'ScrollWnd()
+            .scrollWnd.dockStyle     = .Center
             .scrollWnd.focusStrategy = .None
             .scrollWnd.setAllPaddings(.getThemeMetrics().list_Padding)
 
-            .listView = .scrollWnd.createView'ListView()
+            .listView      = .scrollWnd.createView'ListView()
             .listView.list = list
             .listView.wndFlags |= .NoScroll
         }
@@ -795,24 +795,25 @@ impl ListCtrl
         fwnd.wndFlags ^= .ClipChildren
 
         // Adapt header to the frame container
-        list.hookOnEvent = func(wnd, evt) {
+        list.hookOnEvent = func(wnd, evt)
+        {
             if evt.kind != .Resize do
                 return false
 
-            var list = cast(*ListCtrl) wnd
+            var list   = cast(*ListCtrl) wnd
             var header = list.header
             if header.form == .Transparent do
                 return false
             switch list.frameForm
             {
             case Round:
-                header.form = .Round
+                header.form   = .Round
                 header.margin = -wnd.getThemeMetrics().frameWnd_RoundPadding
             case Square:
-                header.form = .Flat
+                header.form   = .Flat
                 header.margin = -wnd.getThemeMetrics().frameWnd_SquarePadding
             case Transparent:
-                header.form = .Flat
+                header.form   = .Flat
                 header.margin = -wnd.getThemeMetrics().frameWnd_FlatPadding
             }
 
@@ -824,30 +825,33 @@ impl ListCtrl
         {
             // Header
             // Need to recompute layout when header size has changed
-            .header = Header.create(fwnd, {})
-            .header.dockStyle = .Top
-            .header.form = .Round
-            .header.sigLayoutChanged = closure|list|(header) {
+            .header                  = Header.create(fwnd, {})
+            .header.dockStyle        = .Top
+            .header.form             = .Round
+            .header.sigLayoutChanged = closure|list|(header)
+            {
                 list.computeLayout()
             }
 
-            .header.sigClicked = closure|list|(header, col) {
+            .header.sigClicked = closure|list|(header, col)
+            {
                 list.sort(col, header.sortMark <= 0 ? false : true, true)
             }
 
             // Scroll that contains the list view
-            .scrollWnd = Wnd.create'ScrollWnd(fwnd, {})
-            .scrollWnd.dockStyle = .Center
-            .scrollWnd.focusStrategy = .None
+            .scrollWnd                 = Wnd.create'ScrollWnd(fwnd, {})
+            .scrollWnd.dockStyle       = .Center
+            .scrollWnd.focusStrategy   = .None
             .scrollWnd.backgroundStyle = .Transparent
             .scrollWnd.setAllPaddings(.getThemeMetrics().list_Padding)
-            .scrollWnd.sigScrollPosChanged += closure|list.header|(scrollWnd, op, np) {
+            .scrollWnd.sigScrollPosChanged += closure|list.header|(scrollWnd, op, np)
+            {
                 header.scrollPos.x = np.x
                 header.invalidate()
             }
 
             // ListCtrl view
-            .listView = .scrollWnd.createView'ListView()
+            .listView      = .scrollWnd.createView'ListView()
             .listView.list = list
             .listView.wndFlags |= .NoScroll
         }
@@ -965,13 +969,13 @@ impl ListCtrl
         {
             let line = parentLine.lines.newPtr()
             line.parent = parentLine
-            line.level = parentLine.level + 1
+            line.level  = parentLine.level + 1
             parentLine.lines.add(line)
             return line
         }
 
         let line = toFreeLines.newPtr()
-        line.index  = cast(u32) lines.count
+        line.index = cast(u32) lines.count
         idxLineToIdxList.add(line.index, line.index)
         lines.add(line)
         toFreeLines.add(line)
@@ -1016,7 +1020,7 @@ impl ListCtrl
     mtd setVirtualCount(count: u32)
     {
         clear()
-        isVirtual = true
+        isVirtual    = true
         virtualCount = count
         computeLayout()
     }
@@ -1024,7 +1028,7 @@ impl ListCtrl
     // Returns the first visible line index
     mtd getFirstVisibleLineIndex()->u32
     {
-        let lc = getLineCount()
+        let lc  = getLineCount()
         let idx = cast(u32) (listView.scrollPos.y / getLineHeight())
         if idx >= lc do
             return Swag.U32.Max
@@ -1053,7 +1057,7 @@ impl ListCtrl
     mtd ensureVisibleLine(idx: u32)
     {
         let first = getFirstVisibleLineIndex()
-        let last = getLastVisibleLineIndex()
+        let last  = getLastVisibleLineIndex()
         if idx > first and idx < last do
             return
         let sc = scrollWnd.getScrollPos()
@@ -1114,7 +1118,7 @@ impl ListCtrl
         if isVirtual or selModel.isEmpty() do
             return null
         let range = selModel.selection.front()
-        let idx = idxLineToIdxList.find(range.start).value
+        let idx   = idxLineToIdxList.find(range.start).value
         return lines[idx]
     }
 
@@ -1130,12 +1134,13 @@ impl ListCtrl
     {
         func sortFunc(column: u32, descentOrder: bool, a, b: *ListLine)->s32
         {
-            let it0 = a.getItem(column)
-            let it1 = b.getItem(column)
+            let it0   = a.getItem(column)
+            let it1   = b.getItem(column)
             let sort0 = it0.sortKey.isEmpty() ? &it0.name.raw : &it0.sortKey
             let sort1 = it1.sortKey.isEmpty() ? &it1.name.raw : &it1.sortKey
-            var res = Latin1.compareNatural(dref sort0, dref sort1)
-            if descentOrder do res *= -1
+            var res   = Latin1.compareNatural(dref sort0, dref sort1)
+            if descentOrder do
+                res *= -1
             return res
         }
 
@@ -1146,13 +1151,17 @@ impl ListCtrl
 
             if a.parent != b.parent
             {
-                if a.isParentOf(b) do return -1
-                if b.isParentOf(a) do return 1
+                if a.isParentOf(b) do
+                    return -1
+                if b.isParentOf(a) do
+                    return 1
 
                 var a1 = a
                 var b1 = b
-                while a1.level > b1.level do a1 = a1.parent
-                while b1.level > a1.level do b1 = b1.parent
+                while a1.level > b1.level do
+                    a1 = a1.parent
+                while b1.level > a1.level do
+                    b1 = b1.parent
                 while a1.parent != b1.parent
                 {
                     a1 = a1.parent
@@ -1183,7 +1192,7 @@ impl ListCtrl
         if header and persistent
         {
             header.sortColumn = column
-            header.sortMark = descentOrder ? -1 : 1
+            header.sortMark   = descentOrder ? -1 : 1
             header.invalidate()
         }
 
@@ -1216,10 +1225,10 @@ impl ListCtrl
             sort(header.sortColumn, header.sortMark == -1 ? true : false, &line.lines)
 
         var cptIdxLine = cast(u32) lines.count
-        var cptIdx = 0'u32
+        var cptIdx     = 0'u32
         while tmp.count
         {
-            let toI = tmp.popBack()
+            let toI       = tmp.popBack()
             let idxInsert = idxLineToIdxList.find(toI.index).value
             visit l, i: toI.lines
             {

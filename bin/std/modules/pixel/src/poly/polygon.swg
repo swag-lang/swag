@@ -5,15 +5,15 @@ const ClipperScaleCoords = 1000.0'f64
 
 struct Polygon
 {
-    points:         Array'Vector2
+    points: Array'Vector2
 
     // Fill with a call to compute()
-    isClockwise:    bool
-    isConvex:       bool
-    area:           f32
-    totalLen:       f32
-    bvMin:          Math.Vector2
-    bvMax:          Math.Vector2
+    isClockwise:     bool
+    isConvex:        bool
+    area:            f32
+    totalLen:        f32
+    bvMin:           Math.Vector2
+    bvMax:           Math.Vector2
 }
 
 impl Polygon
@@ -39,9 +39,9 @@ impl Polygon
         let v2 = points.buffer[(i + 1) % count]
 
         let tmp0 = Vector2.toNormalizeSafe(v1 - v0)
-        let n0 = tmp0.cross(1)
+        let n0   = tmp0.cross(1)
         let tmp1 = Vector2.toNormalizeSafe(v2 - v1)
-        let n1 = tmp1.cross(1)
+        let n1   = tmp1.cross(1)
 
         let vva1 = v1 + n0
         let vva0 = v0 + n0
@@ -70,8 +70,8 @@ impl Polygon
         while i < (closed ? points.count : points.count - 1)
         {
             defer i += 1
-            var v = points[(i + 1) % points.count] - points[i]
-            let d = v.length()
+            var v      = points[(i + 1) % points.count] - points[i]
+            let d      = v.length()
             var divide = cast(s32) (d / dist)
             if divide > 0
             {
@@ -90,10 +90,10 @@ impl Polygon
     // Clear all points
     mtd clear()
     {
-        area = 0
+        area        = 0
         isClockwise = false
-        isConvex = true
-        totalLen = 0
+        isConvex    = true
+        totalLen    = 0
         points.clear()
     }
 
@@ -151,9 +151,12 @@ impl Polygon
         var joinType = Clipper.JoinType.Square
         switch joinStyle
         {
-        case Round: joinType = .Round
-        case Bevel: joinType = .Square
-        case Miter: joinType = .Miter
+        case Round:
+            joinType = .Round
+        case Bevel:
+            joinType = .Square
+        case Miter:
+            joinType = .Miter
         }
 
         var off: Clipper.Offset
@@ -210,7 +213,7 @@ impl Polygon
             return
 
         var trf: Clipper.Transform
-        trf.strictSimple = true
+        trf.strictSimple  = true
         trf.reverseOutput = !isClockwise
 
         // Register path
@@ -251,7 +254,8 @@ impl Polygon
             np.polygon.storeClipperResult(p)
             np.bvMin = np.polygon.bvMin
             np.bvMax = np.polygon.bvMax
-            if !isClockwise do break
+            if !isClockwise do
+                break
         }
 
         return result
@@ -261,16 +265,16 @@ impl Polygon
     // Call it once the polygon contains all its points
     mtd compute()
     {
-        area = 0
+        area        = 0
         isClockwise = false
-        isConvex = true
-        totalLen = 0
+        isConvex    = true
+        totalLen    = 0
 
         if !points.count do
             return
 
-        let n = points.count - 1
-        let isClosed = points[0].distanceSquared(points.back()) < 0.5*0.5
+        let n        = points.count - 1
+        let isClosed = points[0].distanceSquared(points.back()) < 0.5 * 0.5
         if isClosed do
             points.count -= 1
 
@@ -285,9 +289,9 @@ impl Polygon
         while q < n
         {
             // Convex
-            let v = points.buffer[(q + 2) % points.count] - points.buffer[(q + 1) % points.count]
+            let v  = points.buffer[(q + 2) % points.count] - points.buffer[(q + 1) % points.count]
             let v1 = points.buffer[(q + 1) % points.count] - points.buffer[(q + 0) % points.count]
-            let c = v.cross(v1)
+            let c  = v.cross(v1)
             if first
             {
                 lastC = c

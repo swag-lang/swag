@@ -16,7 +16,6 @@ enum TabBarForm
     Round
 }
 
-
 enum TabItemForm
 {
     Transparent
@@ -41,36 +40,36 @@ enum TabBarLayout
 
 struct TabItem
 {
-    using item: Item
-    pos:        f32
-    width:      f32
-    view:       *Wnd
-    aniImg:     BlendColor
-    aniText:    BlendColor
+    using item:     Item
+    pos:            f32
+    width:          f32
+    view:           *Wnd
+    aniImg:         BlendColor
+    aniText:        BlendColor
 }
 
 struct Tab
 {
     using wnd: Wnd
 
-    barForm                 = TabBarForm.Flat
-    itemForm                = TabItemForm.Flat
-    viewForm                = TabViewForm.Flat
-    barLayout               = TabBarLayout.Divide
-    itemFixedLayoutWidth:   f32 = 100
-    itemAutoLayoutMargin:   f32 = 25
-    itemMinWidth:           f32 = 25
+    barForm                   = TabBarForm.Flat
+    itemForm                  = TabItemForm.Flat
+    viewForm                  = TabViewForm.Flat
+    barLayout                 = TabBarLayout.Divide
+    itemFixedLayoutWidth:     f32 = 100
+    itemAutoLayoutMargin:     f32 = 25
+    itemMinWidth:             f32 = 25
 
-    sigSelChanged:      SigArray'closure(self)
+    sigSelChanged: SigArray'closure(*Tab)
 
-    buttonPopup:        *IconButton
-    views:              ArrayPtr'TabItem
-    popup:              *PopupListCtrl
-    selectedIdx:        u32
-    firstVisibleIdx:    u32 = 0
-    hotIdx:             u32 = Swag.U32.Max
-    barHeight:          f32
-    mostRightPos:       f32
+    buttonPopup:         *IconButton
+    views:               ArrayPtr'TabItem
+    popup:               *PopupListCtrl
+    selectedIdx:         u32
+    firstVisibleIdx:     u32 = 0
+    hotIdx:              u32 = Swag.U32.Max
+    barHeight:           f32
+    mostRightPos:        f32
 }
 
 impl IWnd for Tab
@@ -81,31 +80,31 @@ impl IWnd for Tab
         clientRect.height = barHeight
         var labelPos = clientRect
         labelPos.width = v.width
-        labelPos.x = v.pos
+        labelPos.x     = v.pos
 
-        let theme = getTheme()
+        let theme   = getTheme()
         let metrics = getThemeMetrics()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
 
         // Item image
-        var subRect:    *ThemeImageRect
-        var colorImg:   Color
-        var colorText:  Color
+        var subRect:   *ThemeImageRect
+        var colorImg:  Color
+        var colorText: Color
 
         switch itemForm
         {
         case Flat:
             if idx == selectedIdx
             {
-                subRect = &rects.tabItem_FlatSelected
-                colorImg = colors.tabItem_FlatSelected
+                subRect   = &rects.tabItem_FlatSelected
+                colorImg  = colors.tabItem_FlatSelected
                 colorText = colors.tabItem_SelectedText
             }
             elif idx == hotIdx
             {
-                subRect = &rects.tabItem_FlatSelected
-                colorImg = colors.tabItem_FlatHot
+                subRect   = &rects.tabItem_FlatSelected
+                colorImg  = colors.tabItem_FlatHot
                 colorText = colors.tabItem_SelectedText
             }
             else
@@ -115,14 +114,14 @@ impl IWnd for Tab
         case Round:
             if idx == selectedIdx
             {
-                subRect = &rects.tabItem_RoundSelected
-                colorImg = colors.tabItem_RoundSelected
+                subRect   = &rects.tabItem_RoundSelected
+                colorImg  = colors.tabItem_RoundSelected
                 colorText = colors.tabItem_SelectedText
             }
             elif idx == hotIdx
             {
-                subRect = &rects.tabItem_RoundHot
-                colorImg = colors.tabItem_RoundHot
+                subRect   = &rects.tabItem_RoundHot
+                colorImg  = colors.tabItem_RoundHot
                 colorText = colors.tabItem_SelectedText
             }
             else
@@ -132,14 +131,14 @@ impl IWnd for Tab
         case Button:
             if idx == selectedIdx
             {
-                subRect = &rects.tabItem_ButtonSelected
-                colorImg = colors.tabItem_ButtonSelected
+                subRect   = &rects.tabItem_ButtonSelected
+                colorImg  = colors.tabItem_ButtonSelected
                 colorText = colors.tabItem_SelectedText
             }
             elif idx == hotIdx
             {
-                subRect = &rects.tabItem_ButtonHot
-                colorImg = colors.tabItem_ButtonHot
+                subRect   = &rects.tabItem_ButtonHot
+                colorImg  = colors.tabItem_ButtonHot
                 colorText = colors.tabItem_SelectedText
             }
             else
@@ -157,17 +156,17 @@ impl IWnd for Tab
         theme.setTextColors(&format, v.aniText.cur())
         format.horzAlignment = .Center
         format.vertAlignment = .Center
-        format.flags = .Clip
-        format.font = getFont()
+        format.flags         = .Clip
+        format.font          = getFont()
         Theme.drawIconText(painter, labelPos, v.icon, &v.name, format, metrics.iconText_Margin)
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let painter = evt.bc.painter
-        let theme = getTheme()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let theme   = getTheme()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
 
         // Background bar
         if barForm != .Transparent
@@ -186,8 +185,8 @@ impl IWnd for Tab
         }
 
         // Paint border and back
-        var subRect:    *ThemeImageRect
-        var colorBk:    Color
+        var subRect: *ThemeImageRect
+        var colorBk: Color
 
         var clientRect = getClientRect()
         clientRect.moveTop(barHeight)
@@ -284,7 +283,8 @@ internal impl Tab
         visit item: views do
             popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
-        popup.sigSelected = closure|self|(list, idx) {
+        popup.sigSelected = closure|self|(list, idx)
+        {
             if idx != Swag.U32.Max do
                 self.select(idx)
             self.hidePopup()
@@ -388,9 +388,9 @@ internal impl Tab
             // Create a button if there are too many items for the given size
             if !buttonPopup
             {
-                buttonPopup = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.SortArrowDown), {})
+                buttonPopup      = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.SortArrowDown), {})
                 buttonPopup.form = .Round
-                buttonPopup.sigPressed += closure|self|(btn)
+                buttonPopup.sigPressed += closure|self|(btn )
                 {
                     var rect = btn.getSurfaceRect()
                     self.showPopup(rect.x, rect.y + btn.position.height)

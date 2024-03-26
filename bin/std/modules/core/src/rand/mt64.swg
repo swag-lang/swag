@@ -12,16 +12,16 @@
 
 public const NN = 312
 
-const MID       = NN / 2
-const MM        = 156
-const MATRIX_A  = 0xB5026F5AA96619E9'u64
-const UM        = 0xFFFFFFFF80000000'u64
-const LM        = 0x7FFFFFFF'u64
+const MID      = NN / 2
+const MM       = 156
+const MATRIX_A = 0xB5026F5AA96619E9'u64
+const UM       = 0xFFFFFFFF80000000'u64
+const LM       = 0x7FFFFFFF'u64
 
 public struct Mt64
 {
-    mt:  [NN] u64
-	mti: u64
+    mt:      [NN] u64
+    mti:     u64
 }
 
 public impl Mt64
@@ -30,10 +30,10 @@ public impl Mt64
     mtd seedU64(seed: u64)
     {
         mt[0] = seed
-        mti = 1
+        mti   = 1
         while mti < NN
         {
-            mt[mti] = (6364136223846793005'u64 * (mt[mti-1] ^ (mt[mti-1] >> 62)) + mti)
+            mt[mti] = (6364136223846793005'u64 * (mt[mti - 1] ^ (mt[mti - 1] >> 62)) + mti)
             mti += 1
         }
     }
@@ -50,26 +50,26 @@ public impl Mt64
 
         while k
         {
-            mt[i] = (mt[i] ^ ((mt[i-1] ^ (mt[i-1] >> 62)) * 3935559000370003845)) + seed[j] + j
+            mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 62)) * 3935559000370003845)) + seed[j] + j
             i, j += 1
             if i >= NN
             {
-                mt[0] = mt[NN-1]
-                i = 1
+                mt[0] = mt[NN - 1]
+                i     = 1
             }
             if j >= keyLength do
                 j = 0
             k -= 1
         }
 
-        for k = NN-1; k != 0; k -= 1
+        for k = NN - 1; k != 0; k -= 1
         {
-            mt[i] = (mt[i] ^ ((mt[i-1] ^ (mt[i-1] >> 62)) * 2862933555777941757)) - i
+            mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 62)) * 2862933555777941757)) - i
             i += 1
             if i >= NN
             {
-                mt[0] = mt[NN-1]
-                i=1
+                mt[0] = mt[NN - 1]
+                i     = 1
             }
         }
 
@@ -83,9 +83,11 @@ public impl Mt64
         {
             let stateMid = mt[MID]
 
-            for {var i = 0; var j = MID;}
-                i != MID - 1
-                {i += 1; j += 1;}
+            for { var i = 0; var j = MID; } i != MID - 1;
+            {
+                i += 1
+                j += 1
+            }
             {
                 let x = (mt[i] & UM) | (mt[i + 1] & LM)
                 mt[i] = mt[i + MID] ^ (x >> 1) ^ ((mt[i + 1] & 1) * MATRIX_A)

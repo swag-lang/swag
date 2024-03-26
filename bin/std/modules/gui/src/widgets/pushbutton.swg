@@ -15,26 +15,26 @@ struct PushButton
 
     form = PushButtonForm.Normal
 
-    aniBk:      BlendColor
-    aniBorder:  BlendColor
-    aniText:    BlendColor
+    aniBk:         BlendColor
+    aniBorder:     BlendColor
+    aniText:       BlendColor
 }
 
 impl IWnd for PushButton
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let bc = evt.bc
-        let theme = getTheme()
+        let bc      = evt.bc
+        let theme   = getTheme()
         let metrics = getThemeMetrics()
-        let colors = getThemeColors()
-        let rects = getThemeRects()
+        let colors  = getThemeColors()
+        let rects   = getThemeRects()
 
-        var subRectBk:      *ThemeImageRect
-        var subRectBorder:  *ThemeImageRect
-        var colorBk:        Color = undefined
-        var colorBorder:    Color = undefined
-        var colorText:      Color = undefined
+        var subRectBk:     *ThemeImageRect
+        var subRectBorder: *ThemeImageRect
+        var colorBk:       Color = undefined
+        var colorBorder:   Color = undefined
+        var colorText:     Color = undefined
 
         if form == .Default
         {
@@ -155,8 +155,8 @@ impl IWnd for PushButton
         theme.setTextColors(&format, aniText.cur())
         format.horzAlignment = .Center
         format.vertAlignment = .Center
-        format.flags = .Clip
-        format.font = getFont()
+        format.flags         = .Clip
+        format.font          = getFont()
         if form == .Strong do
             format.fontStyle = .Bold
         var labelPos = clientRect

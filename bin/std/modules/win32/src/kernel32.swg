@@ -2,50 +2,50 @@
 #foreignlib "kernel32"
 using Swag
 
-typealias ATOM =		    const ^void
-typealias HANDLE = 			const ^void
-typealias HGLOBAL = 		HANDLE
-typealias HLOCAL = 			HANDLE
-typealias HINSTANCE =		HANDLE
-typealias HMODULE =		    HANDLE
-typealias LRESULT =		    s64
-typealias WORD = 			u16
-typealias DWORD =           u32
-typealias BOOL = 	        s32
-typealias BYTE = 			u8
-typealias LPBYTE = 			*BYTE
-typealias LONG = 			s32
-typealias ULONG =           u32
-typealias LPVOID =			^void
-typealias LPCVOID =			const ^void
-typealias LPCSTR =			const ^u8
-typealias PCSTR =			const ^u8
-typealias LPCWSTR =			const ^u16
-typealias PCWSTR =			const ^u16
-typealias LPCTSTR =			const ^u16
-typealias LPDWORD =			*DWORD
-typealias LPOVERLAPPED =	*DWORD
-typealias DWORD_PTR =		u64
-typealias UINT =			u32
-typealias SHORT =			s16
-typealias USHORT =			u16
-typealias LARGE_INTEGER =	s64
-typealias DWORD64 =         u64
-typealias ULONG64 =         u64
-typealias PLONG =           *LONG
-typealias CHAR =            u8
-typealias WCHAR =           u16
-typealias LPSTR =           ^CHAR
-typealias LPWSTR =          ^WCHAR
-typealias LPCH =            ^CHAR
-typealias LPWCH =           ^WCHAR
-typealias SIZE_T =          u64
-typealias va_list =         ^u8
+typealias ATOM          = const ^void
+typealias HANDLE        = const ^void
+typealias HGLOBAL       = HANDLE
+typealias HLOCAL        = HANDLE
+typealias HINSTANCE     = HANDLE
+typealias HMODULE       = HANDLE
+typealias LRESULT       = s64
+typealias WORD          = u16
+typealias DWORD         = u32
+typealias BOOL          = s32
+typealias BYTE          = u8
+typealias LPBYTE        = *BYTE
+typealias LONG          = s32
+typealias ULONG         = u32
+typealias LPVOID        = ^void
+typealias LPCVOID       = const ^void
+typealias LPCSTR        = const ^u8
+typealias PCSTR         = const ^u8
+typealias LPCWSTR       = const ^u16
+typealias PCWSTR        = const ^u16
+typealias LPCTSTR       = const ^u16
+typealias LPDWORD       = *DWORD
+typealias LPOVERLAPPED  = *DWORD
+typealias DWORD_PTR     = u64
+typealias UINT          = u32
+typealias SHORT         = s16
+typealias USHORT        = u16
+typealias LARGE_INTEGER = s64
+typealias DWORD64       = u64
+typealias ULONG64       = u64
+typealias PLONG         = *LONG
+typealias CHAR          = u8
+typealias WCHAR         = u16
+typealias LPSTR         = ^CHAR
+typealias LPWSTR        = ^WCHAR
+typealias LPCH          = ^CHAR
+typealias LPWCH         = ^WCHAR
+typealias SIZE_T        = u64
+typealias va_list       = ^u8
 
 typealias LPTHREAD_START_ROUTINE = func(*void)->DWORD
 typealias WAITORTIMERCALLBACK    = func(*void, BOOL)
 
-const STD_INPUT_HANDLE 	= cast,bit(DWORD) -10
+const STD_INPUT_HANDLE  = cast,bit(DWORD) -10
 const STD_OUTPUT_HANDLE = cast,bit(DWORD) -11
 
 const FALSE = 0
@@ -55,12 +55,12 @@ const FOREGROUND_BLUE      = 0x0001
 const FOREGROUND_GREEN     = 0x0002
 const FOREGROUND_RED       = 0x0004
 const FOREGROUND_INTENSITY = 0x0008
-const FOREGROUND_MASK	   = 0x000F
+const FOREGROUND_MASK      = 0x000F
 const BACKGROUND_BLUE      = 0x0010
 const BACKGROUND_GREEN     = 0x0020
 const BACKGROUND_RED       = 0x0040
 const BACKGROUND_INTENSITY = 0x0080
-const BACKGROUND_MASK	   = 0x00F0
+const BACKGROUND_MASK      = 0x00F0
 
 const FILE_SHARE_READ   = 0x00000001
 const FILE_SHARE_WRITE  = 0x00000002
@@ -96,25 +96,25 @@ const GENERIC_ALL           = 0x10000000
 const FILE_READ_ATTRIBUTES  = 0x0080
 const FILE_WRITE_ATTRIBUTES = 0x0100
 
-const FILE_BEGIN   = 0'u32
-const FILE_CURRENT = 1'u32
-const FILE_END     = 2'u32
-const INVALID_FILE_SIZE         = cast,bit(DWORD) -1
-const INVALID_SET_FILE_POINTER  = cast,bit(DWORD) -1
-const INVALID_FILE_ATTRIBUTES   = cast,bit(DWORD) -1
+const FILE_BEGIN               = 0'u32
+const FILE_CURRENT             = 1'u32
+const FILE_END                 = 2'u32
+const INVALID_FILE_SIZE        = cast,bit(DWORD) -1
+const INVALID_SET_FILE_POINTER = cast,bit(DWORD) -1
+const INVALID_FILE_ATTRIBUTES  = cast,bit(DWORD) -1
 
-const CREATE_NEW            = 1'u32
-const CREATE_ALWAYS         = 2'u32
-const OPEN_EXISTING         = 3'u32
-const OPEN_ALWAYS           = 4'u32
-const TRUNCATE_EXISTING     = 5'u32
+const CREATE_NEW        = 1'u32
+const CREATE_ALWAYS     = 2'u32
+const OPEN_EXISTING     = 3'u32
+const OPEN_ALWAYS       = 4'u32
+const TRUNCATE_EXISTING = 5'u32
 
-const INVALID_HANDLE_VALUE = cast(HANDLE) cast,bit(u64) -1's64
+const INVALID_HANDLE_VALUE    = cast(HANDLE) cast,bit(u64) -1's64
 const CONSOLE_TEXTMODE_BUFFER = 1'u32
-const MAX_PATH = 260
-const INFINITE = 0xFFFFFFFF
-const CREATE_SUSPENDED = 0x00000004
-const MAXIMUM_WAIT_OBJECTS = 64'u32
+const MAX_PATH                = 260
+const INFINITE                = 0xFFFFFFFF
+const CREATE_SUSPENDED        = 0x00000004
+const MAXIMUM_WAIT_OBJECTS    = 64'u32
 
 const FORMAT_MESSAGE_ALLOCATE_BUFFER = 0x00000100
 const FORMAT_MESSAGE_IGNORE_INSERTS  = 0x00000200
@@ -124,20 +124,20 @@ const FORMAT_MESSAGE_FROM_SYSTEM     = 0x00001000
 const FORMAT_MESSAGE_ARGUMENT_ARRAY  = 0x00002000
 const FORMAT_MESSAGE_MAX_WIDTH_MASK  = 0x000000FF
 
-const LANG_ENGLISH      = 0x09
-const SUBLANG_DEFAULT   = 0x01
+const LANG_ENGLISH    = 0x09
+const SUBLANG_DEFAULT = 0x01
 func MAKELANGID(p, s: WORD) => (s << 10) | p
 
-const WAIT_OBJECT_0     = 0x00000000
-const WAIT_ABANDONED    = 0x00000080
-const WAIT_TIMEOUT      = 0x00000102
-const WAIT_FAILED       = 0xFFFFFFFF
+const WAIT_OBJECT_0  = 0x00000000
+const WAIT_ABANDONED = 0x00000080
+const WAIT_TIMEOUT   = 0x00000102
+const WAIT_FAILED    = 0xFFFFFFFF
 
-const THREAD_PRIORITY_LOWEST        = -2
-const THREAD_PRIORITY_BELOW_NORMAL  = -1
-const THREAD_PRIORITY_NORMAL        = 0
-const THREAD_PRIORITY_ABOVE_NORMAL  = 1
-const THREAD_PRIORITY_HIGHEST       = 2
+const THREAD_PRIORITY_LOWEST       = -2
+const THREAD_PRIORITY_BELOW_NORMAL = -1
+const THREAD_PRIORITY_NORMAL       = 0
+const THREAD_PRIORITY_ABOVE_NORMAL = 1
+const THREAD_PRIORITY_HIGHEST      = 2
 
 func LOWORD(l: u64) => cast(s32) cast,bit(s16) (l & 0xffff)
 func HIWORD(l: u64) => cast(s32) cast,bit(s16) ((l >> 16) & 0xffff)
@@ -162,114 +162,114 @@ const GMEM_INVALID_HANDLE = 0x8000
 
 struct COORD
 {
-    x: WORD
-    y: WORD
+    x:     WORD
+    y:     WORD
 }
 
 struct POINT
 {
-    x: LONG
-    y: LONG
+    x:     LONG
+    y:     LONG
 }
 
 struct SMALL_RECT
 {
-    left: 	WORD
-    top:  	WORD
-    right: 	WORD
-    bottom: WORD
+    left:       WORD
+    top:        WORD
+    right:      WORD
+    bottom:     WORD
 }
 
 struct CONSOLE_SCREEN_BUFFER_INFO
 {
-    dwSize: 				COORD
-    dwCursorPosition: 		COORD
-    wAttributes: 			WORD
-    srWindow: 				SMALL_RECT
-    dwMaximumWindowSize: 	COORD
+    dwSize:                  COORD
+    dwCursorPosition:        COORD
+    wAttributes:             WORD
+    srWindow:                SMALL_RECT
+    dwMaximumWindowSize:     COORD
 }
 
 struct SYSTEM_INFO
 {
-    dwOemId:	DWORD // Must be updated to an union
-    dwPageSize:	DWORD
-    lpMinimumApplicationAddress:	LPVOID
-    lpMaximumApplicationAddress:	LPVOID
-    dwActiveProcessorMask:			DWORD_PTR
-    dwNumberOfProcessors:		    DWORD
-    dwProcessorType:			    DWORD
-    dwAllocationGranularity:	    DWORD
-    wProcessorLevel:			    WORD
-    wProcessorRevision:			    WORD
+    dwOemId:                         DWORD         // Must be updated to an union
+    dwPageSize:                      DWORD
+    lpMinimumApplicationAddress:     LPVOID
+    lpMaximumApplicationAddress:     LPVOID
+    dwActiveProcessorMask:           DWORD_PTR
+    dwNumberOfProcessors:            DWORD
+    dwProcessorType:                 DWORD
+    dwAllocationGranularity:         DWORD
+    wProcessorLevel:                 WORD
+    wProcessorRevision:              WORD
 }
 
 struct SYSTEMTIME
 {
-    wYear:			WORD
-    wMonth:			WORD
-    wDayOfWeek:		WORD
-    wDay:			WORD
-    wHour:			WORD
-    wMinute:		WORD
-    wSecond:		WORD
-    wMilliseconds:	WORD
+    wYear:             WORD
+    wMonth:            WORD
+    wDayOfWeek:        WORD
+    wDay:              WORD
+    wHour:             WORD
+    wMinute:           WORD
+    wSecond:           WORD
+    wMilliseconds:     WORD
 }
 
 struct SECURITY_ATTRIBUTES
 {
-    nLength:                DWORD
-    lpSecurityDescriptor:   LPVOID
-    bInheritHandle:         BOOL
+    nLength:                  DWORD
+    lpSecurityDescriptor:     LPVOID
+    bInheritHandle:           BOOL
 }
 
 struct FILETIME
 {
-    dwLowDateTime:    DWORD
-    dwHighDateTime:   DWORD
+    dwLowDateTime:      DWORD
+    dwHighDateTime:     DWORD
 }
 
 struct WIN32_FILE_ATTRIBUTE_DATA
 {
-    dwFileAttributes:  DWORD
-    ftCreationTime:    FILETIME
-    ftLastAccessTime:  FILETIME
-    ftLastWriteTime:   FILETIME
-    nFileSizeHigh:     DWORD
-    nFileSizeLow:      DWORD
+    dwFileAttributes:     DWORD
+    ftCreationTime:       FILETIME
+    ftLastAccessTime:     FILETIME
+    ftLastWriteTime:      FILETIME
+    nFileSizeHigh:        DWORD
+    nFileSizeLow:         DWORD
 }
 
 struct WIN32_FIND_DATAA
 {
-    dwFileAttributes:   DWORD
-    ftCreationTime:     FILETIME
-    ftLastAccessTime:   FILETIME
-    ftLastWriteTime:    FILETIME
-    nFileSizeHigh:      DWORD
-    nFileSizeLow:       DWORD
-    dwReserved0:        DWORD
-    dwReserved1:        DWORD
-    cFileName:          [MAX_PATH] CHAR
-    cAlternateFileName: [14] CHAR
-    dwFileType:         DWORD
-    dwCreatorType:      DWORD
-    wFinderFlags:       WORD
+    dwFileAttributes:       DWORD
+    ftCreationTime:         FILETIME
+    ftLastAccessTime:       FILETIME
+    ftLastWriteTime:        FILETIME
+    nFileSizeHigh:          DWORD
+    nFileSizeLow:           DWORD
+    dwReserved0:            DWORD
+    dwReserved1:            DWORD
+    cFileName:              [MAX_PATH] CHAR
+    cAlternateFileName:     [14] CHAR
+    dwFileType:             DWORD
+    dwCreatorType:          DWORD
+    wFinderFlags:           WORD
 }
 
 struct WIN32_FIND_DATAW
 {
-    dwFileAttributes:   DWORD
-    ftCreationTime:     FILETIME
-    ftLastAccessTime:   FILETIME
-    ftLastWriteTime:    FILETIME
-    nFileSizeHigh:      DWORD
-    nFileSizeLow:       DWORD
-    dwReserved0:        DWORD
-    dwReserved1:        DWORD
-    cFileName:          [MAX_PATH] WCHAR
-    cAlternateFileName: [14] WCHAR
-    dwFileType:         DWORD
-    dwCreatorType:      DWORD
-    wFinderFlags:       WORD
+    dwFileAttributes:       DWORD
+    ftCreationTime:         FILETIME
+    ftLastAccessTime:       FILETIME
+    ftLastWriteTime:        FILETIME
+    nFileSizeHigh:          DWORD
+    nFileSizeLow:           DWORD
+    dwReserved0:            DWORD
+    dwReserved1:            DWORD
+    cFileName:              [MAX_PATH] WCHAR
+    cAlternateFileName:     [14] WCHAR
+    dwFileType:             DWORD
+    dwCreatorType:          DWORD
+    wFinderFlags:           WORD
 }
 
 enum GET_FILEEX_INFO_LEVELS
@@ -280,54 +280,54 @@ enum GET_FILEEX_INFO_LEVELS
 
 struct STARTUPINFOA
 {
-    cb:                 DWORD
-    lpReserved:         LPSTR
-    lpDesktop:          LPSTR
-    lpTitle:            LPSTR
-    dwX:                DWORD
-    dwY:                DWORD
-    dwXSize:            DWORD
-    dwYSize:            DWORD
-    dwXCountChars:      DWORD
-    dwYCountChars:      DWORD
-    dwFillAttribute:    DWORD
-    dwFlags:            DWORD
-    wShowWindow:        WORD
-    cbReserved2:        WORD
-    lpReserved2:        LPBYTE
-    hStdInput:          HANDLE
-    hStdOutput:         HANDLE
-    hStdError:          HANDLE
+    cb:                  DWORD
+    lpReserved:          LPSTR
+    lpDesktop:           LPSTR
+    lpTitle:             LPSTR
+    dwX:                 DWORD
+    dwY:                 DWORD
+    dwXSize:             DWORD
+    dwYSize:             DWORD
+    dwXCountChars:       DWORD
+    dwYCountChars:       DWORD
+    dwFillAttribute:     DWORD
+    dwFlags:             DWORD
+    wShowWindow:         WORD
+    cbReserved2:         WORD
+    lpReserved2:         LPBYTE
+    hStdInput:           HANDLE
+    hStdOutput:          HANDLE
+    hStdError:           HANDLE
 }
 
 struct STARTUPINFOW
 {
-    cb:                 DWORD
-    lpReserved:         LPWSTR
-    lpDesktop:          LPWSTR
-    lpTitle:            LPWSTR
-    dwX:                DWORD
-    dwY:                DWORD
-    dwXSize:            DWORD
-    dwYSize:            DWORD
-    dwXCountChars:      DWORD
-    dwYCountChars:      DWORD
-    dwFillAttribute:    DWORD
-    dwFlags:            DWORD
-    wShowWindow:        WORD
-    cbReserved2:        WORD
-    lpReserved2:        LPBYTE
-    hStdInput:          HANDLE
-    hStdOutput:         HANDLE
-    hStdError:          HANDLE
+    cb:                  DWORD
+    lpReserved:          LPWSTR
+    lpDesktop:           LPWSTR
+    lpTitle:             LPWSTR
+    dwX:                 DWORD
+    dwY:                 DWORD
+    dwXSize:             DWORD
+    dwYSize:             DWORD
+    dwXCountChars:       DWORD
+    dwYCountChars:       DWORD
+    dwFillAttribute:     DWORD
+    dwFlags:             DWORD
+    wShowWindow:         WORD
+    cbReserved2:         WORD
+    lpReserved2:         LPBYTE
+    hStdInput:           HANDLE
+    hStdOutput:          HANDLE
+    hStdError:           HANDLE
 }
 
 struct PROCESS_INFORMATION
 {
-    hProcess:       HANDLE
-    hThread:        HANDLE
-    dwProcessId:    DWORD
-    dwThreadId:     DWORD
+    hProcess:        HANDLE
+    hThread:         HANDLE
+    dwProcessId:     DWORD
+    dwThreadId:      DWORD
 }
 
 #[Foreign("kernel32"), Discardable]
@@ -338,7 +338,7 @@ struct PROCESS_INFORMATION
 #[Foreign("kernel32")]
 {
     func GetLastError()->DWORD;
-    func FormatMessageA(dwFlags : DWORD, lpSource : LPCVOID, dwMessageId : DWORD, dwLanguageId : DWORD, lpBuffer: LPCSTR, nSize: DWORD, Arguments: *va_list)->DWORD;
+    func FormatMessageA(dwFlags: DWORD, lpSource: LPCVOID, dwMessageId: DWORD, dwLanguageId: DWORD, lpBuffer: LPCSTR, nSize: DWORD, Arguments: *va_list)->DWORD;
     func IsDebuggerPresent()->BOOL;
     func DebugBreak();
     func OutputDebugStringA(lpOutputString: LPCSTR);
@@ -400,7 +400,7 @@ private namespace Win32Priv
         func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
         func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->BOOL;
 
-        func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: LPTHREAD_START_ROUTINE, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE;
+        func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: LPTHREAD_START_ROUTINE, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId: *DWORD)->HANDLE;
         func ResumeThread(hThread: HANDLE)->DWORD;
         func SetThreadPriority(hThread: HANDLE, nPriority: s32)->BOOL;
         func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD;
@@ -472,7 +472,7 @@ private namespace Win32Priv
             throwWinError(GetLastError())
     }
 
-    func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: LPTHREAD_START_ROUTINE, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE throw
+    func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: LPTHREAD_START_ROUTINE, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId: *DWORD)->HANDLE throw
     {
         let h = Win32Priv.CreateThread(lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
         if h == null do
@@ -586,7 +586,8 @@ private namespace Win32Priv
         loop
         {
             let res = Win32Priv.DeleteTimerQueueTimer(timerQueue, timer, completionEvent)
-            if res or GetLastError() == ERROR_IO_PENDING do return
+            if res or GetLastError() == ERROR_IO_PENDING do
+                return
         }
     }
 

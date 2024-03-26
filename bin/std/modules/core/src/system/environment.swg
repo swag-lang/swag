@@ -7,7 +7,8 @@ func getArgs()->const [..] string => g_CmdLineArgs
 // Get a given argument, or null
 func getArg(idx: u32)->string
 {
-    if idx >= @countof(g_CmdLineArgs) do return null
+    if idx >= @countof(g_CmdLineArgs) do
+        return null
     return g_CmdLineArgs[idx]
 }
 
@@ -34,8 +35,8 @@ enum SpecialDirectory
 
 struct Monitor
 {
-    rect:   Math.Rectangle
-    work:   Math.Rectangle
+    rect:     Math.Rectangle
+    work:     Math.Rectangle
 }
 
 internal var g_CmdLineArgs: const [..] string

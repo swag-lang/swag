@@ -11,13 +11,20 @@ func isValidPathName(fullname: string)->bool
 
     visit c: fullname
     {
-        if c < 32    do return false
-        if c == `"`  do return false
-        if c == `<`  do return false
-        if c == `>`  do return false
-        if c == `|`  do return false
-        if c == `*`  do return false
-        if c == `?`  do return false
+        if c < 32 do
+            return false
+        if c == `"` do
+            return false
+        if c == `<` do
+            return false
+        if c == `>` do
+            return false
+        if c == `|` do
+            return false
+        if c == `*` do
+            return false
+        if c == `?` do
+            return false
     }
 
     return true
@@ -30,16 +37,26 @@ func isValidFileName(fullname: string)->bool
         return false
     visit c: fullname
     {
-        if c < 32    do return false
-        if c == `"`  do return false
-        if c == `<`  do return false
-        if c == `>`  do return false
-        if c == `|`  do return false
-        if c == `:`  do return false
-        if c == `*`  do return false
-        if c == `?`  do return false
-        if c == `\\` do return false
-        if c == `/`  do return false
+        if c < 32 do
+            return false
+        if c == `"` do
+            return false
+        if c == `<` do
+            return false
+        if c == `>` do
+            return false
+        if c == `|` do
+            return false
+        if c == `:` do
+            return false
+        if c == `*` do
+            return false
+        if c == `?` do
+            return false
+        if c == `\\` do
+            return false
+        if c == `/` do
+            return false
     }
 
     return true
@@ -51,41 +68,43 @@ func getRootLength(fullname: string)->u32
     func startsWithOrdinal(source, value: string)->bool
     {
         let sourceLength = @countof(source)
-        let valueLength = @countof(value)
+        let valueLength  = @countof(value)
         if sourceLength < valueLength do
             return false
 
         loop i: valueLength
         {
             if value[i] != source[i] do
-                return false;
+                return false
         }
 
-        return true;
+        return true
     }
 
-    var i = 0'u32;
-    var volumeSeparatorLength = 2'u32;  // Length to the colon "C:"
-    var uncRootLength = 2'u32;          // Length to the start of the server name "\\"
+    var i                     = 0'u32
+    var volumeSeparatorLength = 2'u32
+    // Length to the colon "C:"
+    var uncRootLength = 2'u32
+    // Length to the start of the server name "\\"
     let pathLength = @countof(fullname)
 
-    const ExtendedPathPrefix = #"\\?\"#
+    const ExtendedPathPrefix    = #"\\?\"#
     const UncExtendedPathPrefix = #"\\?\UNC\"#
 
-    let extendedSyntax = startsWithOrdinal(fullname, ExtendedPathPrefix);
-    let extendedUncSyntax = startsWithOrdinal(fullname, UncExtendedPathPrefix);
+    let extendedSyntax    = startsWithOrdinal(fullname, ExtendedPathPrefix)
+    let extendedUncSyntax = startsWithOrdinal(fullname, UncExtendedPathPrefix)
     if extendedSyntax
     {
         // Shift the position we look for the root from to account for the extended prefix
         if extendedUncSyntax
         {
             // "\\" -> "\\?\UNC\"
-            uncRootLength = @countof(UncExtendedPathPrefix);
+            uncRootLength = @countof(UncExtendedPathPrefix)
         }
         else
         {
             // "C:" -> "\\?\C:"
-            volumeSeparatorLength += @countof(ExtendedPathPrefix);
+            volumeSeparatorLength += @countof(ExtendedPathPrefix)
         }
     }
 
@@ -93,13 +112,15 @@ func getRootLength(fullname: string)->u32
     {
         // UNC or simple rooted path (e.g. "\foo", NOT "\\?\C:\foo")
 
-        i = 1; //  Drive rooted (\foo) is one character
+        i = 1
+        //  Drive rooted (\foo) is one character
         if (extendedUncSyntax or (pathLength > 1 and isDirectorySeparator(fullname[1])))
         {
             // UNC (\\?\UNC\ or \\), scan past the next two directory separators at most
             // (e.g. to \\?\UNC\Server\Share or \\Server\Share\)
             i = uncRootLength
-            var n = 1; // Maximum separators to skip
+            var n = 1
+            // Maximum separators to skip
             while i < pathLength and (!isDirectorySeparator(fullname[i]) or n >= 0)
             {
                 n -= 1
@@ -111,9 +132,9 @@ func getRootLength(fullname: string)->u32
     {
         // Path is at least longer than where we expect a colon, and has a colon (\\?\A:, A:)
         // If the colon is followed by a directory separator,,move past it
-        i = volumeSeparatorLength;
+        i = volumeSeparatorLength
         if pathLength >= volumeSeparatorLength + 1 and isDirectorySeparator(fullname[volumeSeparatorLength]) do
-            i += 1;
+            i += 1
     }
 
     return i
@@ -129,7 +150,7 @@ func getAbsolute(fullname: string)->String throw
     tmpArr.reserve(100)
 
     var winPath = Utf16.toZeroTerminated(fullname)
-    var res = cast(u64) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
+    var res     = cast(u64) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
 
     // No enough room in destination, give it another try
     if res >= 100
@@ -139,7 +160,7 @@ func getAbsolute(fullname: string)->String throw
     }
 
     tmpArr.count = res
-    result = Utf8.fromUtf16(tmpArr.toSlice())
+    result       = Utf8.fromUtf16(tmpArr.toSlice())
     normalize(&result)
     return result
 }

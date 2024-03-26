@@ -4,20 +4,20 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum IconBarFlags
 {
-    Zero = 0
+    Zero     = 0
     Vertical
 }
 
 struct IconBar
 {
-    using wnd:  Wnd
+    using wnd: Wnd
 
-    iconBarFlags    = IconBarFlags.Zero
-    iconSize:       f32
-    iconPadding:    f32 = 4
+    iconBarFlags     = IconBarFlags.Zero
+    iconSize:        f32
+    iconPadding:     f32 = 4
 
-    sigUpdateState:     SigArray'closure(*CommandStateEvent)
-    sigCheckChanged:    SigArray'closure(*IconButton)
+    sigUpdateState:      SigArray'closure(*CommandStateEvent)
+    sigCheckChanged:     SigArray'closure(*IconButton)
 }
 
 impl IWnd for IconBar
@@ -41,7 +41,7 @@ impl IconBar
                 c.dockStyle = .Left
         }
 
-        let pad = 2*iconPadding
+        let pad  = 2 * iconPadding
         let size = cast(f32) (childs.count * (iconSize + pad))
         if iconBarFlags.has(.Vertical) do
             resize(iconSize + pad, size)
@@ -66,16 +66,17 @@ impl IconBar
     {
         var iconT = icon
         iconT.sizeX, iconT.sizeY = iconSize
-        let size = iconSize + 2*iconPadding
-        let b = IconButton.create(self, iconT, {0, 0, size, size})
+        let size = iconSize + 2 * iconPadding
+        let b    = IconButton.create(self, iconT, {0, 0, size, size})
         b.iconBtnFlags.set(iconBtnFlags)
-        b.id = btnId
+        b.id        = btnId
         b.dockStyle = .Left
         computeLayout()
 
         if iconBtnFlags.has(.Checkable | .CheckableToggle)
         {
-            b.sigCheckChanged += closure|self|(btn) {
+            b.sigCheckChanged += closure|self|(btn )
+            {
                 self.sigCheckChanged.call(btn)
             }
         }

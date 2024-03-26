@@ -28,7 +28,7 @@ enum EditBoxCheckResult
 #[Swag.EnumFlags]
 enum EditBoxFlags
 {
-    Zero = 0
+    Zero          = 0
     AutoLoseFocus
     ReadOnly
     RightAlign
@@ -38,39 +38,39 @@ struct EditBox
 {
     using wnd: Wnd
 
-    icon:               Icon
-    text:               String
-    form                = EditBoxForm.Square
-    editBoxFlags        = EditBoxFlags.AutoLoseFocus
-    inputMode           = EditBoxInputMode.String
-    maxLength:          s32
-    rightMargin:        f32
+    icon:            Icon
+    text:            String
+    form             = EditBoxForm.Square
+    editBoxFlags     = EditBoxFlags.AutoLoseFocus
+    inputMode        = EditBoxInputMode.String
+    maxLength:       s32
+    rightMargin:     f32
 
-    sigChanged:         SigArray'closure(*Self)
-    sigLoseFocus:       SigArray'closure(*Self)
-    sigEnterPressed:    SigArray'closure(*Self)
-    sigEscapePressed:   SigArray'closure(*Self)
-    sigCheckContent:    closure(*Self)->EditBoxCheckResult
-
-    using minMax: union{
-        minMaxS64: {min: s64, max: s64} = {Swag.S64.Min, Swag.S64.Max}
-        minMaxU64: {min: u64, max: u64} = {0, Swag.U64.Max}
-        minMaxF64: {min: f64, max: f64} = {-Swag.F64.Max, Swag.F64.Max}
+    sigChanged:           SigArray'closure(*Self)
+    sigLoseFocus:         SigArray'closure(*Self)
+    sigEnterPressed:      SigArray'closure(*Self)
+    sigEscapePressed:     SigArray'closure(*Self)
+    sigCheckContent:      closure(*Self)->EditBoxCheckResult
+    using minMax:         union
+    {
+        minMaxS64:     {min: s64, max: s64} = {Swag.S64.Min, Swag.S64.Max}
+        minMaxU64:     {min: u64, max: u64} = {0, Swag.U64.Max}
+        minMaxF64:     {min: f64, max: f64} = {-Swag.F64.Max, Swag.F64.Max}
     }
 
-    aniBk:      BlendColor{speed: 4}
-    aniBorder:  BlendColor{speed: 4}
+    aniBk:         BlendColor{speed: 4}
+    aniBorder:     BlendColor{speed: 4}
 
-    isInvalid:          bool
-    isHot:              bool
-    isDragging:         bool
-    selBeg, selEnd:     u64
-    timerCaret:         *Timer
-    visibleCaret:       bool
-    posSelBeg:          f32
-    posSelEnd:          f32
-    scrollPosX:         f32
-    countRunes:         s32
+    isInvalid:        bool
+    isHot:            bool
+    isDragging:       bool
+    selBeg, selEnd:   u64
+    timerCaret:       *Timer
+    visibleCaret:     bool
+    posSelBeg:        f32
+    posSelEnd:        f32
+    scrollPosX:       f32
+    countRunes:       s32
 }
 
 impl IWnd for EditBox
@@ -80,7 +80,7 @@ impl IWnd for EditBox
         switch evt.kind
         {
         case SetFocus:
-            timerCaret = surface.app.addTimer(500'ms, self)
+            timerCaret   = surface.app.addTimer(500'ms, self)
             visibleCaret = true
             computeCaretPos()
             invalidate()
@@ -88,7 +88,7 @@ impl IWnd for EditBox
         case KillFocus:
             sigLoseFocus.call(self)
             surface.app.deleteTimer(timerCaret)
-            timerCaret = null
+            timerCaret   = null
             visibleCaret = false
             invalidate()
         }
@@ -96,30 +96,30 @@ impl IWnd for EditBox
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let bc = evt.bc
+        let bc      = evt.bc
         let painter = evt.bc.painter
 
-        let theme = getTheme()
-        let colors = getThemeColors()
+        let theme   = getTheme()
+        let colors  = getThemeColors()
         let metrics = getThemeMetrics()
-        let rects = getThemeRects()
+        let rects   = getThemeRects()
 
-        var subRectBk:      *ThemeImageRect
-        var subRectBorder:  *ThemeImageRect
-        var colorBk:        Color = undefined
-        var colorBorder:    Color = undefined
-        var colorText:      Color = undefined
+        var subRectBk:     *ThemeImageRect
+        var subRectBorder: *ThemeImageRect
+        var colorBk:       Color = undefined
+        var colorBorder:   Color = undefined
+        var colorText:     Color = undefined
 
         switch form
         {
         case Square, Transparent:
-            subRectBk = &rects.edit_SquareBk
+            subRectBk     = &rects.edit_SquareBk
             subRectBorder = &rects.edit_SquareBorder
         case Round:
-            subRectBk = &rects.edit_RoundBk
+            subRectBk     = &rects.edit_RoundBk
             subRectBorder = &rects.edit_RoundBorder
         case Flat:
-            subRectBk = &rects.edit_FlatBk
+            subRectBk     = &rects.edit_FlatBk
             subRectBorder = &rects.edit_FlatBorder
         }
 
@@ -129,20 +129,20 @@ impl IWnd for EditBox
         {
         case bc.isDisabled:
             colorBorder = colors.edit_DisabledBorder
-            colorBk = colors.edit_DisabledBk
-            colorText = colors.edit_DisabledText
+            colorBk     = colors.edit_DisabledBk
+            colorText   = colors.edit_DisabledText
         case isInvalid:
             colorBorder = colors.edit_ErrorBorder
-            colorBk = colors.edit_ErrorBk
+            colorBk     = colors.edit_ErrorBk
         case hasFocus():
             colorBorder = colors.edit_FocusBorder
-            colorBk = colors.edit_FocusBk
+            colorBk     = colors.edit_FocusBk
         case isHot:
             colorBorder = colors.edit_HotBorder
-            colorBk = colors.edit_HotBk
+            colorBk     = colors.edit_HotBk
         default:
             colorBorder = colors.edit_Border
-            colorBk = colors.edit_Bk
+            colorBk     = colors.edit_Bk
         }
 
         aniBk.apply(self, colorBk)
@@ -168,18 +168,18 @@ impl IWnd for EditBox
         if !name.isEmpty() and text.isEmpty()
         {
             var format: RichStringFormat
-            format.palette[0] = colors.edit_Note
+            format.palette[0]    = colors.edit_Note
             format.vertAlignment = .Center
-            format.flags = .Clip
-            format.font = getFont()
+            format.flags         = .Clip
+            format.font          = getFont()
             Theme.drawIconText(bc.painter, clientRect, {}, &name, format, metrics.iconText_Margin)
         }
 
         // Compute scroll position
-        let fontR = getFont().regular
-        var caretPos = getCaretPos()
-        let decalX = Math.min(Painter.measureString("X", fontR).width * 10, clientRect.width * 0.5)
-        let sizeX = Painter.measureString(text, fontR).width
+        let fontR     = getFont().regular
+        var caretPos  = getCaretPos()
+        let decalX    = Math.min(Painter.measureString("X", fontR).width * 10, clientRect.width * 0.5)
+        let sizeX     = Painter.measureString(text, fontR).width
         let maxDecalX = sizeX - decalX
 
         if caretPos.x - clientRect.x < scrollPosX do
@@ -203,9 +203,9 @@ impl IWnd for EditBox
                 pos.x = pos.right() - sizeX + posSelBeg
             else do
                 pos.x += posSelBeg
-            pos.y = clientRect.vertCenter() - fontR.height * 0.5
+            pos.y      = clientRect.vertCenter() - fontR.height * 0.5
             pos.height = fontR.height
-            pos.width = posSelEnd - posSelBeg
+            pos.width  = posSelEnd - posSelBeg
             bc.painter.fillRect(pos, colors.edit_SelectedBk)
         }
 
@@ -248,7 +248,7 @@ impl IWnd for EditBox
             setSelection(x, x)
             forceVisibleCaret()
             evt.accepted = true
-            isDragging = true
+            isDragging   = true
             captureMouse()
 
         case MouseReleased:
@@ -256,7 +256,7 @@ impl IWnd for EditBox
                 break
             if isDragging do
                 releaseMouse()
-            isDragging = false
+            isDragging   = false
             evt.accepted = true
 
         case MouseMove:
@@ -310,7 +310,7 @@ internal impl EditBox
 {
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {
-        let ctrl = mdf & .Control
+        let ctrl  = mdf & .Control
         let shift = mdf & .Shift
 
         switch key
@@ -503,8 +503,9 @@ internal impl EditBox
 
         // Convert rune to utf8
         var utf8: [5] u8
-        let cpt = Utf8.fromUnicode(utf8, [r])
-        if !cpt do return
+        let cpt   = Utf8.fromUnicode(utf8, [r])
+        if !cpt do
+            return
         utf8[cpt] = 0
 
         // Should we check the content ?
@@ -516,7 +517,7 @@ internal impl EditBox
             return
         }
 
-        var saveText = text
+        var saveText   = text
         let saveSelBeg = selBeg
         let saveSelEnd = selEnd
         insertUtf8(@mkstring(&utf8[0], cpt))
@@ -551,7 +552,7 @@ internal impl EditBox
         if selB == text.length do
             return false
 
-        countRunes -= cast(s32) Utf8.countRunes(text[selB..selE-1])
+        countRunes -= cast(s32) Utf8.countRunes(text[selB..selE - 1])
         text.remove(selB, selE - selB)
         discard checkContent()
 
@@ -627,7 +628,7 @@ internal impl EditBox
         }
 
         result.height = fontR.height
-        result.y = clientRect.vertCenter() - result.height * 0.5
+        result.y      = clientRect.vertCenter() - result.height * 0.5
 
         result.width = 2
         return result
@@ -647,9 +648,9 @@ internal impl EditBox
         if editBoxFlags.has(.RightAlign)
         {
             var clientRect = getEditRect()
-            let sizeX = Painter.measureString(text, fontR).width
-            var lastWidth = 0'f32
-            var diff = 0'f32
+            let sizeX      = Painter.measureString(text, fontR).width
+            var lastWidth  = 0'f32
+            var diff       = 0'f32
             loop idx: 1 until text.length
             {
                 let str = @mkstring(text.buffer, idx)
@@ -666,14 +667,13 @@ internal impl EditBox
             }
 
             if x < clientRect.right() - sizeX + lastWidth + diff do
-                return text.length-1
-
+                return text.length - 1
         }
         else
         {
             x -= getTextMarginLeft()
             var lastWidth = 0'f32
-            var diff = 0'f32
+            var diff      = 0'f32
             loop idx: 1 until text.length
             {
                 let str = @mkstring(text.buffer, idx)
@@ -690,7 +690,7 @@ internal impl EditBox
             }
 
             if x < lastWidth + diff do
-                return text.length-1
+                return text.length - 1
         }
 
         return text.length
@@ -709,8 +709,8 @@ internal impl EditBox
 
         if selBeg != selEnd
         {
-            str = @mkstring(text.buffer, selBeg)
-            met = Painter.measureString(str, fontR)
+            str       = @mkstring(text.buffer, selBeg)
+            met       = Painter.measureString(str, fontR)
             posSelBeg = met.width
         }
     }
@@ -745,7 +745,7 @@ internal impl EditBox
             return sel
 
         let test = !Latin1.isSpace(text.buffer[sel])
-        var s = sel
+        var s    = sel
         while s != text.length
         {
             s = moveCaretRight(s)
@@ -803,7 +803,7 @@ impl EditBox
         let res = Wnd.create'EditBox(parent, null, pos, id)
 
         res.setForm(EditBoxForm.Square)
-        res.text = content
+        res.text          = content
         res.focusStrategy = .MousePressed
         return res
     }
@@ -868,7 +868,7 @@ impl EditBox
     // Editbox will edit signed integers
     mtd setInputS64(min = Swag.S64.Min, max = Swag.S64.Max)
     {
-        inputMode = .S64
+        inputMode     = .S64
         minMaxS64.min = min
         minMaxS64.max = max
     }
@@ -876,7 +876,7 @@ impl EditBox
     // Editbox will edit unsigned integers
     mtd setInputU64(min = 0'u64, max = Swag.U64.Max)
     {
-        inputMode = .U64
+        inputMode     = .U64
         minMaxU64.min = min
         minMaxU64.max = max
     }
@@ -884,7 +884,7 @@ impl EditBox
     // Editbox will edit floating points
     mtd setInputF64(min = -Swag.F64.Max, max = Swag.F64.Max)
     {
-        inputMode = .F64
+        inputMode     = .F64
         minMaxF64.min = min
         minMaxF64.max = max
     }

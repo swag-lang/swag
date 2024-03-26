@@ -6,8 +6,8 @@ using Math
 // including the current state of buttons and sticks
 struct GamePadState
 {
-    pressed:    [@countof(GamePadButton)] bool
-    position:   [@countof(GamePadButton)] Point
+    pressed:      [@countof(GamePadButton)] bool
+    position:     [@countof(GamePadButton)] Point
 }
 
 impl GamePadState

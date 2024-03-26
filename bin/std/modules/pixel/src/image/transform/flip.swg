@@ -8,7 +8,7 @@ impl Image
         visitPixels(f, stride: width)
         {
             let dstImage = cast(*Image) userData
-            let w8 = image.width * image.bpp8
+            let w8       = image.width * image.bpp8
             Memory.copy(dstImage.pixels.buffer + (image.height - y - 1) * w8, pix, cast(u64) w8)
         }
     }
