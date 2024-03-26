@@ -99,8 +99,9 @@ struct ColorMask
 
 struct Command
 {
-    id:               CommandId = undefined
-    using params:     union
+    id:  CommandId = undefined
+
+    using params: union
     {
         clear:              struct{color: Color}
         drawTriangles:      struct{start: u32, count: u32}

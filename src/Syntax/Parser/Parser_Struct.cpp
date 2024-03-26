@@ -434,6 +434,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         case TokenId::KwdUsing:
         {
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            auto                   savedToken = tokenParse;
             SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, tokenParse.token, toErr(Err0478)}));
             SWAG_CHECK(eatToken());
             const auto structNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
@@ -441,6 +442,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             AstNode* varDecl;
             SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl, true));
             varDecl->addAstFlag(AST_DECL_USING);
+            FormatAst::inheritFormatBefore(this, varDecl, &savedToken);
             *result = varDecl;
             break;
         }
