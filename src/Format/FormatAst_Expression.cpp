@@ -71,15 +71,11 @@ bool FormatAst::outputChildrenAffectEqual(FormatContext& context, AstNode* node,
     uint32_t maxLenName = 0;
 
     {
-        PushConcatFormatTmp fmt{this};
-        FormatContext       cxt{context};
-        cxt.outputComments   = false;
-        cxt.outputBlankLines = false;
-
+        PushConcatFormatTmp fmt{this, context};
         for (const auto child : nodes)
         {
             tmpConcat.clear();
-            SWAG_CHECK(outputNode(cxt, child->firstChild()));
+            SWAG_CHECK(outputNode(fmt.cxt, child->firstChild()));
             maxLenName = max(maxLenName, tmpConcat.length());
         }
     }

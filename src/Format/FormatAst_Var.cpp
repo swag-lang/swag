@@ -18,16 +18,13 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
         flags.add(STOP_EMPTY_LINE_BEFORE);
 
     {
-        PushConcatFormatTmp fmt{this};
-        FormatContext       cxt{context};
-        cxt.outputComments   = false;
-        cxt.outputBlankLines = false;
+        PushConcatFormatTmp fmt{this, context};
         if (!collectChildrenToAlign(context, flags, node, start, nodes, processed, [&](const AstNode* n) {
                 if (n->kind != AstNodeKind::VarDecl && n->kind != AstNodeKind::ConstDecl)
                     return true;
                 const auto var = castAst<AstVarDecl>(n);
                 tmpConcat.clear();
-                SWAG_CHECK(outputNode(cxt, var->type));
+                SWAG_CHECK(outputNode(fmt.cxt, var->type));
                 if (tmpConcat.totalEol > 1)
                     return true;
                 return false;
@@ -39,11 +36,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
     uint32_t maxLenType = 0;
 
     {
-        PushConcatFormatTmp fmt{this};
-        FormatContext       cxt{context};
-        cxt.outputComments   = false;
-        cxt.outputBlankLines = false;
-
+        PushConcatFormatTmp fmt{this, context};
         for (const auto child : nodes)
         {
             const auto var = castAst<AstVarDecl>(child);
@@ -54,21 +47,21 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
             lenName = child->token.text.length();
 
             tmpConcat.clear();
-            SWAG_CHECK(outputVarHeader(cxt, var));
+            SWAG_CHECK(outputVarHeader(fmt.cxt, var));
             lenName += tmpConcat.length();
 
             if (var->type)
             {
                 lenName += 1; // +1 because of ':'
                 tmpConcat.clear();
-                SWAG_CHECK(outputNode(cxt, var->type));
+                SWAG_CHECK(outputNode(fmt.cxt, var->type));
                 lenType += tmpConcat.length();
             }
 
             if (var->assignment)
             {
                 tmpConcat.clear();
-                SWAG_CHECK(outputNode(cxt, var->assignment));
+                SWAG_CHECK(outputNode(fmt.cxt, var->assignment));
                 lenType += tmpConcat.length();
                 lenType += 2; // Because of '= '
                 if (var->type)

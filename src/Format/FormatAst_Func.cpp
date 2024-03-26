@@ -456,16 +456,12 @@ bool FormatAst::outputChildrenFuncDecl(FormatContext& context, AstNode* node, ui
     uint32_t maxLenSignature = 0;
 
     {
-        PushConcatFormatTmp fmt{this};
-        FormatContext       cxt{context};
-        cxt.outputComments   = false;
-        cxt.outputBlankLines = false;
-
+        PushConcatFormatTmp fmt{this, context};
         for (const auto child : nodes)
         {
             const auto funcDecl = castAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
             tmpConcat.clear();
-            SWAG_CHECK(outputFuncSignature(cxt, funcDecl, funcDecl->genericParameters, funcDecl->parameters, nullptr));
+            SWAG_CHECK(outputFuncSignature(fmt.cxt, funcDecl, funcDecl->genericParameters, funcDecl->parameters, nullptr));
             maxLenSignature = max(maxLenSignature, tmpConcat.length());
         }
     }

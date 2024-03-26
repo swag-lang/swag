@@ -179,11 +179,14 @@ struct FormatAst
 
 struct PushConcatFormatTmp
 {
-    explicit PushConcatFormatTmp(FormatAst* ast)
+    explicit PushConcatFormatTmp(FormatAst* ast, const FormatContext& context)
     {
-        savedAst         = ast;
-        savedConcat      = savedAst->concat;
-        savedAst->concat = &savedAst->tmpConcat;
+        cxt                  = context;
+        cxt.outputComments   = false;
+        cxt.outputBlankLines = false;
+        savedAst             = ast;
+        savedConcat          = savedAst->concat;
+        savedAst->concat     = &savedAst->tmpConcat;
     }
 
     ~PushConcatFormatTmp()
@@ -191,6 +194,7 @@ struct PushConcatFormatTmp
         savedAst->concat = savedConcat;
     }
 
+    FormatContext cxt;
     FormatAst*    savedAst    = nullptr;
     FormatConcat* savedConcat = nullptr;
 };

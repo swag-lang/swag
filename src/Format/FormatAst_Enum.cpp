@@ -25,11 +25,7 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
     uint32_t maxLenValue = 0;
 
     {
-        PushConcatFormatTmp fmt{this};
-        FormatContext       cxt{context};
-        cxt.outputComments   = false;
-        cxt.outputBlankLines = false;
-
+        PushConcatFormatTmp fmt{this, context};
         for (const auto child : nodes)
         {
             maxLenName = max(maxLenName, child->token.text.length());
@@ -37,7 +33,7 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
             if (child->childCount())
             {
                 tmpConcat.clear();
-                SWAG_CHECK(outputNode(cxt, child->firstChild()));
+                SWAG_CHECK(outputNode(fmt.cxt, child->firstChild()));
                 maxLenValue = max(maxLenValue, tmpConcat.length());
             }
         }
