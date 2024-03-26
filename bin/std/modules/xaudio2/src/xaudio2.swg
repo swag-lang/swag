@@ -342,9 +342,9 @@ struct WAVEFORMATEX
 
 struct WAVEFORMATEXTENSIBLE
 {
-    format:            WAVEFORMATEX
+    format: WAVEFORMATEX
 
-    samples:           union
+    samples: union
     {
         wValidBitsPerSample:     WORD
         wSamplesPerBlock:        WORD

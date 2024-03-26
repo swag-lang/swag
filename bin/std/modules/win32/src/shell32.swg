@@ -252,48 +252,48 @@ const NIF_SHOWTIP  = 0x00000080
 
 struct NOTIFYICONDATAA
 {
-    cbSize:                   DWORD
-    hWnd:                     HWND
-    uID:                      UINT
-    uFlags:                   UINT
-    uCallbackMessage:         UINT
-    hIcon:                    HICON
-    szTip:                    [128] CHAR
-    dwState:                  DWORD
-    dwStateMask:              DWORD
-    szInfo:                   [256] CHAR
-    using DUMMYUNIONNAME:     union
+    cbSize:               DWORD
+    hWnd:                 HWND
+    uID:                  UINT
+    uFlags:               UINT
+    uCallbackMessage:     UINT
+    hIcon:                HICON
+    szTip:                [128] CHAR
+    dwState:              DWORD
+    dwStateMask:          DWORD
+    szInfo:               [256] CHAR
+    using DUMMYUNIONNAME: union
     {
         uTimeout:     UINT
         uVersion:     UINT
     }
-    szInfoTitle:              [64] CHAR
-    dwInfoFlags:              DWORD
-    guidItem:                 GUID
-    hBalloonIcon:             HICON
+    szInfoTitle:      [64] CHAR
+    dwInfoFlags:      DWORD
+    guidItem:         GUID
+    hBalloonIcon:     HICON
 }
 
 struct NOTIFYICONDATAW
 {
-    cbSize:                   DWORD
-    hWnd:                     HWND
-    uID:                      UINT
-    uFlags:                   UINT
-    uCallbackMessage:         UINT
-    hIcon:                    HICON
-    szTip:                    [128] WCHAR
-    dwState:                  DWORD
-    dwStateMask:              DWORD
-    szInfo:                   [256] WCHAR
-    using DUMMYUNIONNAME:     union
+    cbSize:               DWORD
+    hWnd:                 HWND
+    uID:                  UINT
+    uFlags:               UINT
+    uCallbackMessage:     UINT
+    hIcon:                HICON
+    szTip:                [128] WCHAR
+    dwState:              DWORD
+    dwStateMask:          DWORD
+    szInfo:               [256] WCHAR
+    using DUMMYUNIONNAME: union
     {
         uTimeout:     UINT
         uVersion:     UINT
     }
-    szInfoTitle:              [64] WCHAR
-    dwInfoFlags:              DWORD
-    guidItem:                 GUID
-    hBalloonIcon:             HICON
+    szInfoTitle:      [64] WCHAR
+    dwInfoFlags:      DWORD
+    guidItem:         GUID
+    hBalloonIcon:     HICON
 }
 
 private namespace Shell32Priv

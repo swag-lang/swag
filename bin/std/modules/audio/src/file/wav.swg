@@ -98,17 +98,17 @@ struct WAVEFORMATEX
 #[Swag.Pack(1)]
 struct WAVEFORMATEXTENSIBLE
 {
-    using fmtex:       WAVEFORMATEX
+    using fmtex: WAVEFORMATEX
 
-    samples:           union
+    samples: union
     {
         wValidBitsPerSample:     u16     // Valid bits in each sample container
         wSamplesPerBlock:        u16     // Samples per block of audio data valid
         wReserved:               u16     // If wBitsPerSample=0 (but rarely used). Zero if neither case above applies.
     }
 
-    dwChannelMask:     u32                                                                                                                                      // Positions of the audio nChannels
-    subFormat:         GUID                                                                                                                                     // Format identifier GUID
+    dwChannelMask:     u32      // Positions of the audio nChannels
+    subFormat:         GUID     // Format identifier GUID
 }
 
 func setEncodingFormat(using file: *SoundFile, formatTag: u16) throw

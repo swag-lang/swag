@@ -10,6 +10,7 @@ void FormatConcat::addChar(char c)
     if (SWAG_IS_EOL(c))
     {
         eol++;
+        totalEol++;
         blank  = 0;
         column = 0;
     }
@@ -96,9 +97,11 @@ void FormatConcat::addU32Str(uint32_t value)
 void FormatConcat::clear()
 {
     Concat::clear();
-    eol    = 0;
-    blank  = 0;
-    column = 0;
+
+    totalEol = 0;
+    eol      = 0;
+    blank    = 0;
+    column   = 0;
 }
 
 Utf8 FormatConcat::getUtf8() const

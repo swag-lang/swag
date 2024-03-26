@@ -51,26 +51,26 @@ struct EditBox
     sigEnterPressed:      SigArray'closure(*Self)
     sigEscapePressed:     SigArray'closure(*Self)
     sigCheckContent:      closure(*Self)->EditBoxCheckResult
-    using minMax:         union
+    using minMax: union
     {
         minMaxS64:     {min: s64, max: s64} = {Swag.S64.Min, Swag.S64.Max}
         minMaxU64:     {min: u64, max: u64} = {0, Swag.U64.Max}
         minMaxF64:     {min: f64, max: f64} = {-Swag.F64.Max, Swag.F64.Max}
     }
 
-    aniBk:                BlendColor{speed: 4}
-    aniBorder:            BlendColor{speed: 4}
+    aniBk:            BlendColor{speed: 4}
+    aniBorder:        BlendColor{speed: 4}
 
-    isInvalid:            bool
-    isHot:                bool
-    isDragging:           bool
-    selBeg, selEnd:       u64
-    timerCaret:           *Timer
-    visibleCaret:         bool
-    posSelBeg:            f32
-    posSelEnd:            f32
-    scrollPosX:           f32
-    countRunes:           s32
+    isInvalid:        bool
+    isHot:            bool
+    isDragging:       bool
+    selBeg, selEnd:   u64
+    timerCaret:       *Timer
+    visibleCaret:     bool
+    posSelBeg:        f32
+    posSelEnd:        f32
+    scrollPosX:       f32
+    countRunes:       s32
 }
 
 impl IWnd for EditBox

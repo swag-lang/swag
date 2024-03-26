@@ -17,12 +17,23 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
     if (!node->is(AstNodeKind::StructContent))
         flags.add(STOP_EMPTY_LINE_BEFORE);
 
-    if (!collectChildrenToAlign(context, flags, node, start, nodes, processed, [](const AstNode* node) {
-            if (node->kind != AstNodeKind::VarDecl && node->kind != AstNodeKind::ConstDecl)
-                return true;
-            return false;
-        }))
-        return true;
+    {
+        PushConcatFormatTmp fmt{this};
+        FormatContext       cxt{context};
+        cxt.outputComments   = false;
+        cxt.outputBlankLines = false;
+        if (!collectChildrenToAlign(context, flags, node, start, nodes, processed, [&](const AstNode* n) {
+                if (n->kind != AstNodeKind::VarDecl && n->kind != AstNodeKind::ConstDecl)
+                    return true;
+                const auto var = castAst<AstVarDecl>(n);
+                tmpConcat.clear();
+                SWAG_CHECK(outputNode(cxt, var->type));
+                if (tmpConcat.totalEol > 1)
+                    return true;
+                return false;
+            }))
+            return true;
+    }
 
     uint32_t maxLenName = 0;
     uint32_t maxLenType = 0;
@@ -114,7 +125,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
             concat->addString(varNode->token.text);
     }
 
-    const auto countEol = concat->eol;
+    const auto totalEol = concat->totalEol;
     if (varNode->type)
     {
         if (!varNode->type->hasAstFlag(AST_GENERATED) || varNode->type->hasAstFlag(AST_GENERATED_USER))
@@ -164,7 +175,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
     }
 
     // Align comment only if the type didn't output some eol
-    if (concat->eol == countEol)
+    if (concat->totalEol == totalEol)
         concat->alignToColumn(startColumn + maxLenName + maxLenType + context.addBlanksBeforeAlignedLastLineComments);
 
     beautifyAfter(context, varNode);

@@ -99,9 +99,9 @@ struct ColorMask
 
 struct Command
 {
-    id:               CommandId = undefined
+    id:  CommandId = undefined
 
-    using params:     union
+    using params: union
     {
         clear:              struct{color: Color}
         drawTriangles:      struct{start: u32, count: u32}
@@ -115,7 +115,7 @@ struct Command
         renderTgt:          struct{tgt: *RenderTarget, paintAlpha: bool}
         shader:             struct{shader: *ShaderBase}
 
-        shaderParam:        struct
+        shaderParam: struct
         {
             param:     ShaderParamHandle
             type:      typeinfo
@@ -123,7 +123,7 @@ struct Command
             _s32:      s32
         }
 
-        texture0:           struct
+        texture0: struct
         {
             boundRect:             Vector4
             textureRect:           Vector4
