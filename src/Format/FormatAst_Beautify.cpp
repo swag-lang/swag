@@ -73,8 +73,8 @@ void FormatAst::beautifyBlankLine(const FormatContext& context, AstNode* node) c
     const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
     if (!to || !to->flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE))
         return;
-
     to->flags.remove(TOKEN_PARSE_BLANK_LINE_BEFORE);
+
     concat->addBlankLine();
     concat->addIndent(context.indent);
 }

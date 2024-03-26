@@ -173,12 +173,12 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
         concat->addIndent(context.indent);
         if (c->expressions.empty())
         {
-            beautifyBlankLine(context, c);
+            beautifyBefore(context, c);
             CONCAT_FIXED_STR(concat, "default");
         }
         else
         {
-            beautifyBlankLine(context, c);
+            beautifyBefore(context, c);
             CONCAT_FIXED_STR(concat, "case");
             concat->addBlank();
             bool first = true;
