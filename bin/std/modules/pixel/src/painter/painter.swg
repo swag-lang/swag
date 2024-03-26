@@ -132,8 +132,8 @@ struct Command
             interpolationMode:     InterpolationMode = undefined
             texture:               Texture
         }
-            }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+    }
+}
 
 struct Painter
 {
