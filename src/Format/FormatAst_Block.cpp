@@ -248,11 +248,14 @@ bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t s
         const auto child = convertNode(context, it);
         if (!child)
             continue;
-        
+
         if (child->kind == AstNodeKind::TypeAlias)
         {
+            FormatContext cxt{context};
+            cxt.alignTypeAlias = true;
+
             uint32_t processed = 0;
-            SWAG_CHECK(outputChildrenTypeAlias(context, node, i, processed));
+            SWAG_CHECK(outputChildrenTypeAlias(cxt, node, i, processed));
             if (processed)
             {
                 i += processed - 1;
@@ -262,8 +265,11 @@ bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t s
 
         if (child->kind == AstNodeKind::FuncDecl)
         {
+            FormatContext cxt{context};
+            cxt.alignShortFunc = true;
+
             uint32_t processed = 0;
-            SWAG_CHECK(outputChildrenFuncDecl(context, node, i, processed));
+            SWAG_CHECK(outputChildrenFuncDecl(cxt, node, i, processed));
             if (processed)
             {
                 i += processed - 1;
@@ -273,8 +279,11 @@ bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t s
 
         if (child->kind == AstNodeKind::EnumValue)
         {
+            FormatContext cxt{context};
+            cxt.alignEnumValue = true;
+
             uint32_t processed = 0;
-            SWAG_CHECK(outputChildrenEnumValues(context, node, i, processed));
+            SWAG_CHECK(outputChildrenEnumValues(cxt, node, i, processed));
             if (processed)
             {
                 i += processed - 1;
@@ -284,8 +293,11 @@ bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t s
 
         if (child->kind == AstNodeKind::VarDecl || child->kind == AstNodeKind::ConstDecl)
         {
+            FormatContext cxt{context};
+            cxt.alignVarDecl = true;
+
             uint32_t processed = 0;
-            SWAG_CHECK(outputChildrenVar(context, node, i, processed));
+            SWAG_CHECK(outputChildrenVar(cxt, node, i, processed));
             if (processed)
             {
                 i += processed - 1;
@@ -295,8 +307,11 @@ bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t s
 
         if (child->kind == AstNodeKind::AffectOp && child->token.text == "=")
         {
+            FormatContext cxt{context};
+            cxt.alignAffectEqual = true;
+
             uint32_t processed = 0;
-            SWAG_CHECK(outputChildrenAffectEqual(context, node, i, processed));
+            SWAG_CHECK(outputChildrenAffectEqual(cxt, node, i, processed));
             if (processed)
             {
                 i += processed - 1;
@@ -312,19 +327,16 @@ bool FormatAst::outputChildren(FormatContext& context, AstNode* node, uint32_t s
     return true;
 }
 
-bool FormatAst::outputCommaChildren(const FormatContext& context, AstNode* node, uint32_t start)
+bool FormatAst::outputCommaChildren(FormatContext& context, AstNode* node, uint32_t start)
 {
     if (!node)
         return true;
-
-    FormatContext cxt{context};
-    cxt.alignStructVarTypeAddBlanks = 0;
 
     bool first = true;
     for (uint32_t i = start; i < node->childCount(); i++)
     {
         const auto it    = node->children[i];
-        const auto child = convertNode(cxt, it);
+        const auto child = convertNode(context, it);
         if (!child)
             continue;
 
@@ -334,7 +346,7 @@ bool FormatAst::outputCommaChildren(const FormatContext& context, AstNode* node,
             concat->addBlank();
         }
 
-        SWAG_CHECK(outputNode(cxt, child));
+        SWAG_CHECK(outputNode(context, child));
         first = false;
     }
 

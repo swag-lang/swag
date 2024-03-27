@@ -48,11 +48,6 @@ struct FormatContext
     {
         outputComments                         = true;
         outputBlankLines                       = true;
-        alignVarDecl                           = true;
-        alignEnumValue                         = true;
-        alignAffectEqual                       = true;
-        alignShortFunc                         = true;
-        alignTypeAlias                         = true;
         addBlanksBeforeAlignedLastLineComments = 4;
         alignStructVarTypeAddBlanks            = 4;
     }
@@ -87,7 +82,7 @@ struct FormatAst
 
     static AstNode* convertNode(FormatContext& context, AstNode* node);
     auto            outputChildren(FormatContext& context, AstNode* node, uint32_t start = 0) -> bool;
-    bool            outputCommaChildren(const FormatContext& context, AstNode* node, uint32_t start = 0);
+    bool            outputCommaChildren(FormatContext& context, AstNode* node, uint32_t start = 0);
     bool            outputStatement(FormatContext& context, AstNode* node);
     bool            outputDoStatement(FormatContext& context, AstNode* node);
     static bool     collectChildrenToAlign(FormatContext& context, CollectFlags flags, AstNode* node, uint32_t start, VectorNative<AstNode*>& nodes, uint32_t& processed, const std::function<bool(AstNode*)>& stopFn);
@@ -107,12 +102,12 @@ struct FormatAst
     bool outputFuncDecl(FormatContext& context, AstNode* node, uint32_t maxLenSignature = 0);
     bool outputAttrUse(FormatContext& context, AstNode* node, bool& hasSomething);
     bool outputAttrUse(FormatContext& context, AstAttrUse* node);
-    bool outputFuncCallParams(const FormatContext& context, AstNode* node);
+    bool outputFuncCallParams(FormatContext& context, AstNode* node);
     bool outputChildrenFuncDecl(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
     bool outputInit(FormatContext& context, AstNode* node);
     bool outputDropCopyMove(FormatContext& context, AstNode* node);
     bool outputTypeLambda(FormatContext& context, AstNode* node);
-    bool outputFuncDeclParameters(const FormatContext& context, AstNode* parameters, bool isMethod);
+    bool outputFuncDeclParameters(FormatContext& context, AstNode* parameters, bool isMethod);
     bool outputFuncReturnType(FormatContext& context, const AstFuncDecl* funcNode);
     bool outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const AstNode* validIf);
     bool outputGenericParameters(FormatContext& context, AstNode* node);
@@ -137,7 +132,7 @@ struct FormatAst
     bool outputVarHeader(FormatContext& context, AstNode* node);
     bool outputVar(FormatContext& context, AstNode* node, uint32_t maxLenName = 0, uint32_t maxLenType = 0);
     bool outputStructDeclContent(FormatContext& context, AstNode* node);
-    bool outputTupleDeclContent(const FormatContext& context, AstNode* node);
+    bool outputTupleDeclContent(FormatContext& context, AstNode* node);
     bool outputStructDecl(FormatContext& context, AstStruct* node);
     bool outputTypeTuple(FormatContext& context, TypeInfo* typeInfo);
     bool outputTypeExpression(FormatContext& context, AstNode* node);

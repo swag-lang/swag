@@ -128,7 +128,8 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
                 if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
                 {
                     concat->addChar(':');
-                    concat->alignToColumn(startColumn + maxLenName + alignTypeBanks);
+                    if (context.alignVarDecl)
+                        concat->alignToColumn(startColumn + maxLenName + alignTypeBanks);
                     concat->addBlank();
                 }
 
@@ -153,7 +154,8 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
 
     if (varNode->assignment)
     {
-        concat->alignToColumn(startColumn + maxLenName + alignTypeBanks);
+        if (context.alignVarDecl)
+            concat->alignToColumn(startColumn + maxLenName + alignTypeBanks);
         concat->addBlank();
         concat->addChar('=');
         if (!varNode->assignment->is(AstNodeKind::Move) && !varNode->assignment->is(AstNodeKind::NoDrop))
@@ -168,7 +170,7 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
     }
 
     // Align comment only if the type didn't output some eol
-    if (concat->totalEol == totalEol)
+    if (concat->totalEol == totalEol && context.alignVarDecl)
         concat->alignToColumn(startColumn + maxLenName + maxLenType + context.addBlanksBeforeAlignedLastLineComments);
 
     beautifyAfter(context, varNode);
