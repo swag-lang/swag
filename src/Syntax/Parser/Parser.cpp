@@ -391,6 +391,8 @@ void Parser::setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file, Parser
     parserFlags = flags;
     if (parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION))
         tokenizer.tokenizeFlags.add(TOKENIZER_TRACK_COMMENTS);
+    if (parserFlags.has(PARSER_TRACK_FORMAT))
+        tokenizer.tokenizeFlags.add(TOKENIZER_TRACK_FORMAT);
 }
 
 bool Parser::generateAst()

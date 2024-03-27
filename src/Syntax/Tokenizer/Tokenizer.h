@@ -19,6 +19,7 @@ constexpr TokenFlags TOKEN_COMPILER_FUNC      = 0x00000040;
 constexpr TokenFlags TOKEN_TOP_LEVEL_INST     = 0x00000080;
 
 constexpr TokenizerFlags TOKENIZER_TRACK_COMMENTS = 0x00000001;
+constexpr TokenizerFlags TOKENIZER_TRACK_FORMAT   = 0x00000002;
 
 extern const char*      g_TokenNames[];
 extern const TokenFlags g_TokenFlags[];
@@ -49,6 +50,7 @@ struct Tokenizer
     void saveState(const TokenParse& token);
     void restoreState(TokenParse& token);
 
+    void trimMultilineString(Utf8& text) const;
     void setup(ErrorContext* errorCxt, SourceFile* file);
     bool doAfterToken(TokenParse& tokenParse);
     bool nextToken(TokenParse& tokenParse);

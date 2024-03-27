@@ -2,57 +2,57 @@
 #include "Report/ErrorIds.h"
 #include "Syntax/Tokenizer/Tokenizer.h"
 
-namespace
+// This function is used to 'align' text. This is the same rule as in swift : all blanks before the end mark ("@) will be removed
+// from every other lines.
+// This is necessary to be able to indent a multiline string in the code
+void Tokenizer::trimMultilineString(Utf8& text) const
 {
-    // This function is used to 'align' text. This is the same rule as in swift : all blanks before the end mark ("@) will be removed
-    // from every other lines.
-    // This is necessary to be able to indent a multiline string in the code
-    void trimMultilineString(Utf8& text)
+    if (tokenizeFlags.has(TOKENIZER_TRACK_FORMAT))
+        return;
+
+    // Count the blanks before the end
+    const char* pz    = text.buffer + text.length() - 1;
+    int         count = 0;
+    while (pz != text.buffer && SWAG_IS_BLANK(*pz))
     {
-        // Count the blanks before the end
-        const char* pz    = text.buffer + text.length() - 1;
-        int         count = 0;
-        while (pz != text.buffer && SWAG_IS_BLANK(*pz))
-        {
-            count++;
-            pz--;
-        }
-
-        if (count == 0)
-            return;
-
-        // Now remove the same amount of blank at the start of each new line
-        Utf8 copyText;
-        copyText.reserve(text.length());
-        const auto endPz = pz;
-
-        pz     = text.buffer;
-        auto i = text.count;
-        while (i && pz != endPz)
-        {
-            auto toRemove = count;
-            while (i && SWAG_IS_BLANK(*pz) && toRemove)
-            {
-                pz++;
-                toRemove--;
-                i--;
-            }
-
-            while (i && SWAG_IS_NOT_EOL(*pz))
-            {
-                copyText += *pz++;
-                i--;
-            }
-
-            if (SWAG_IS_EOL(*pz))
-            {
-                copyText += *pz++;
-                i--;
-            }
-        }
-
-        text = copyText;
+        count++;
+        pz--;
     }
+
+    if (count == 0)
+        return;
+
+    // Now remove the same amount of blank at the start of each new line
+    Utf8 copyText;
+    copyText.reserve(text.length());
+    const auto endPz = pz;
+
+    pz     = text.buffer;
+    auto i = text.count;
+    while (i && pz != endPz)
+    {
+        auto toRemove = count;
+        while (i && SWAG_IS_BLANK(*pz) && toRemove)
+        {
+            pz++;
+            toRemove--;
+            i--;
+        }
+
+        while (i && SWAG_IS_NOT_EOL(*pz))
+        {
+            copyText += *pz++;
+            i--;
+        }
+
+        if (SWAG_IS_EOL(*pz))
+        {
+            copyText += *pz++;
+            i--;
+        }
+    }
+
+    text = copyText;
 }
 
 bool Tokenizer::doStringLiteral(TokenParse& tokenParse)
@@ -99,26 +99,29 @@ bool Tokenizer::doStringLiteral(TokenParse& tokenParse)
         // Skip next eol
         if (multiline && c == '\\')
         {
-            // Window \r\n
-            if (SWAG_IS_WIN_EOL(curBuffer[1]) && SWAG_IS_EOL(curBuffer[2]))
+            if (!tokenizeFlags.has(TOKENIZER_TRACK_FORMAT))
             {
-                appendTokenName(tokenParse);
-                processChar('\n', 1);
-                realAppendName = true;
-                curBuffer += 3;
-                startTokenName               = curBuffer;
-                tokenParse.token.endLocation = location;
-                continue;
-            }
-            if (SWAG_IS_EOL(curBuffer[1]))
-            {
-                appendTokenName(tokenParse);
-                processChar('\n', 1);
-                realAppendName = true;
-                curBuffer += 2;
-                startTokenName               = curBuffer;
-                tokenParse.token.endLocation = location;
-                continue;
+                // Window \r\n
+                if (SWAG_IS_WIN_EOL(curBuffer[1]) && SWAG_IS_EOL(curBuffer[2]))
+                {
+                    appendTokenName(tokenParse);
+                    processChar('\n', 1);
+                    realAppendName = true;
+                    curBuffer += 3;
+                    startTokenName               = curBuffer;
+                    tokenParse.token.endLocation = location;
+                    continue;
+                }
+                if (SWAG_IS_EOL(curBuffer[1]))
+                {
+                    appendTokenName(tokenParse);
+                    processChar('\n', 1);
+                    realAppendName = true;
+                    curBuffer += 2;
+                    startTokenName               = curBuffer;
+                    tokenParse.token.endLocation = location;
+                    continue;
+                }
             }
         }
 
