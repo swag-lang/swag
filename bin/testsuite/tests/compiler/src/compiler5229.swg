@@ -1,9 +1,10 @@
-struct A {}
+struct A
+{
+}
 impl A
 {
     mtd opDrop()
     {
-        //@print("drop")
     }
 }
 

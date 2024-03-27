@@ -4,6 +4,5 @@
 {
     visit a, b, c: "toto"
     {
-
     }
 }

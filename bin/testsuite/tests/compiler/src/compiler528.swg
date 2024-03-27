@@ -1,18 +1,16 @@
 
-
-
 struct toto
 {
 }
 
 impl toto
 {
-	func f()
-	{
-	}
+    func f()
+    {
+    }
 }
 
 #test
 {
-	toto.f()
+    toto.f()
 }

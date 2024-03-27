@@ -55,10 +55,10 @@ You can concatenate some values if the values are known at compile time. Use the
     #assert a == "the devil number is 666"
 
     const b = 666
-    let c = "the devil number is not " ++ (b + 1) ++ "!"
+    let c   = "the devil number is not " ++ (b + 1) ++ "!"
     @assert(c == "the devil number is not 667!")
 
-    let d = "they are " ++ 4 ++ " apples in " ++ (2*2) ++ " baskets"
+    let d = "they are " ++ 4 ++ " apples in " ++ (2 * 2) ++ " baskets"
     @assert(d == "they are 4 apples in 4 baskets")
 }
 
@@ -91,18 +91,18 @@ By default, it's a lazy 32 bits integer that can be assigned to all integers (as
 #test
 {
     {
-        let a: u8   = `a`
-        let b: u16  = `a`
-        let c: u32  = `我`
-        let d: u64  = `我`
+        let a: u8 = `a`
+        let b: u16 = `a`
+        let c: u32 = `我`
+        let d: u64 = `我`
         let e: rune = `我`
     }
 
     {
-        let a: s8   = `a`
-        let b: s16  = `a`
-        let c: s32  = `我`
-        let d: s64  = `我`
+        let a: s8 = `a`
+        let b: s16 = `a`
+        let c: s32 = `我`
+        let d: s64 = `我`
     }
 }
 
@@ -142,18 +142,18 @@ An escape sequence starts with a backslash `\\`.
 */
 #test
 {
-    const a = "this is code ascii 0x00:   \0"   // null
-    const b = "this is code ascii 0x07:   \a"   // bell
-    const c = "this is code ascii 0x08:   \b"   // backspace
-    const d = "this is code ascii 0x09:   \t"   // horizontal tab
-    const e = "this is code ascii 0x0A:   \n"   // line feed
-    const f = "this is code ascii 0x0B:   \v"   // vertical tab
-    const g = "this is code ascii 0x0C:   \f"   // form feed
-    const h = "this is code ascii 0x0D:   \r"   // carriage return
-    const i = "this is code ascii 0x22:   \""   // double quote
-    const j = "this is code ascii 0x27:   \'"   // single quote
-    const k = "this is code ascii 0x60:   \`"   // backtick
-    const l = "this is code ascii 0x5C:   \\"   // backslash
+    const a = "this is code ascii 0x00:   \0"     // null
+    const b = "this is code ascii 0x07:   \a"     // bell
+    const c = "this is code ascii 0x08:   \b"     // backspace
+    const d = "this is code ascii 0x09:   \t"     // horizontal tab
+    const e = "this is code ascii 0x0A:   \n"     // line feed
+    const f = "this is code ascii 0x0B:   \v"     // vertical tab
+    const g = "this is code ascii 0x0C:   \f"     // form feed
+    const h = "this is code ascii 0x0D:   \r"     // carriage return
+    const i = "this is code ascii 0x22:   \""     // double quote
+    const j = "this is code ascii 0x27:   \'"     // single quote
+    const k = "this is code ascii 0x60:   \`"     // backtick
+    const l = "this is code ascii 0x5C:   \\"     // backslash
 }
 
 /**
@@ -162,9 +162,9 @@ An escape sequence can also be used to specify an ascii or a unicode value.
 #test
 {
     {
-        const a = "\x26"        // 1 byte, hexadecimal, extended ascii
-        const b = "\u2626"      // 2 bytes, hexadecimal, unicode 16 bits
-        const c = "\U00101234"  // 4 bytes, hexadecimal, unicode 32 bits
+        const a = "\x26"           // 1 byte, hexadecimal, extended ascii
+        const b = "\u2626"         // 2 bytes, hexadecimal, unicode 16 bits
+        const c = "\U00101234"     // 4 bytes, hexadecimal, unicode 32 bits
     }
 
     {
@@ -197,7 +197,8 @@ This are equivalent:
 #test
 {
     const a = "\\hello \\world"     // By using an escape character
-    const b = #"\hello \world"#     // Without, because they are not transformed
+    const b = #"\hello \world"#
+    // Without, because they are not transformed
     #assert a == b
 }
 
@@ -207,9 +208,9 @@ A raw string can spawn on multiple lines because the line feed is now part of th
 #test
 {
     const a = #"this is
-                a
-                string
-                "#
+a
+string
+"#
 }
 
 /**
@@ -217,9 +218,6 @@ Every blanks **before** the ending mark `"@` will be removed from every other li
 */
 #test
 {
-    // this is
-    // a
-    // string
 }
 
 /**
@@ -229,31 +227,22 @@ A multiline string starts and ends with `"""`. Unlike raw strings, they still ev
 #test
 {
     const a = """this is
-                 a
-                 string
-                 """
-
-    // Equivalent to :
-
-    // this is
-    // a
-    // string
+a
+string
+"""
 }
+
+// Equivalent to :
 
 /**
 In a multiline or a raw string, if you end a line with `\\`, the following 'eol' will **not** be part of the string.
 */
 #test
 {
-    const a = """\
-              this is
-              a
-              string
-              """
-    // Is equivalent to :
-    // this is
-    // a
-    // string
+    const a = """this is
+a
+string
+"""
 }
 
 /**

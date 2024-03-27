@@ -8,7 +8,9 @@ var G = 0
 impl A
 {
     #[Swag.Overload]
-    mtd(op: string) opAssign(t: func(s32, s32, s32)) {}
+    mtd(op: string) opAssign(t: func(s32, s32, s32))
+    {
+    }
     #[Swag.Overload]
     mtd(op: string) opAssign(t: func(s32, s32))
     {
@@ -19,6 +21,8 @@ impl A
 #test
 {
     var xxxx: A
-    xxxx += func(a, b) { }
+    xxxx += func(a, b)
+    {
+    }
     @assert(G == 1)
 }

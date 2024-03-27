@@ -1,6 +1,5 @@
 func toto()
 {
-
 }
 
 //#[Swag.PrintBc]

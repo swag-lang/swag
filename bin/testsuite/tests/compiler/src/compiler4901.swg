@@ -1,7 +1,6 @@
 #global testerror "Saf0015"
 
-#[Swag.Optim("", false)]
-#[Swag.Safety("", true)]
+#[Swag.Optim("", false), Swag.Safety("", true)]
 func toto(x: s32)
 {
     @print(10 / x)

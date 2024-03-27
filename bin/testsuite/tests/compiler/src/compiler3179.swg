@@ -1,4 +1,4 @@
-attr Toto(y: s32, x: string...);
+attr Toto(y: s32, x: string...)
 
 #[Toto(666, "a", "b", "c")]
 func titi()

@@ -1,5 +1,15 @@
-enum RGB { R = 1; G; B; }
-enum RGB1 { R = 10; G; B; }
+enum RGB
+{
+    R = 1
+    G
+    B
+}
+enum RGB1
+{
+    R = 10
+    G
+    B
+}
 
 func toto(x: bool, rgb: RGB, rgb1: RGB1)
 {

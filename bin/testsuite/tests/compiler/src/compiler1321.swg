@@ -1,4 +1,3 @@
-
 #global testerror "Err0449"
 
 #[Swag.Mixin]
@@ -12,6 +11,10 @@ func toto(x: code)
 #test
 {
     var cpt = 0
-    toto(#code { #up cpt += 1; })
+    toto(#code
+    {
+        #up cpt += 1
+    }
+)
     @assert(cpt == 2)
 }

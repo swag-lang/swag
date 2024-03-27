@@ -1,4 +1,3 @@
-//#global skip
 struct AA
 {
     x, y = 666

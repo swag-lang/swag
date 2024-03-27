@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	let x = 5
-	let y = x % 2
-	@assert(y == 1)
+    let x = 5
+    let y = x % 2
+    @assert(y == 1)
 }

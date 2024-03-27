@@ -22,12 +22,10 @@ impl AA
         //@print(x)
         //@assert(x == 1)
         x = 666
-        //@print("drop")
     }
 }
 
-
-func toto()-> {x: AA}
+func toto()->{x: AA}
 {
     var result: retval
     return result

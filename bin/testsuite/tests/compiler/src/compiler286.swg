@@ -1,10 +1,8 @@
-;
-;
 
 //#[Swag.PrintBc]
-func main ()
+func main()
 {
-	var a: bool;
-	let b = &a;
-	let c = dref b;
+    var a: bool
+    let b  = &a
+    let c  = dref b
 }

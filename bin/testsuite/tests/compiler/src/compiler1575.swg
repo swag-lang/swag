@@ -1,1 +1,1 @@
-var attributes:	const [..] {name: string, value: any}
+var attributes: const [..] {name: string, value: any}

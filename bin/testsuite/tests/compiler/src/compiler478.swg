@@ -1,5 +1,4 @@
 
-
 /*
 #[Swag.PrintBc]
 #test
@@ -26,11 +25,11 @@ func F(param: [3] s32, b: (*s32))
 //#[Swag.PrintBc]
 #test
 {
-	var array = [1,2,3]
-	F(cast([..]s32) array)
+    var array = [1, 2, 3]
+    F(cast([..] s32) array)
 }
 
 func F(param: [..] s32)
 {
-	@assert(@countof(param) == 3)
+    @assert(@countof(param) == 3)
 }

@@ -13,7 +13,8 @@ func toto(cpt: s64, stmt: code)
         #mixin stmt
     }
 
-    loop 10 do titi()
+    loop 10 do
+        titi()
 }
 
 //#[PrintBc]

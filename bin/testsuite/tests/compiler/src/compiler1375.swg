@@ -20,7 +20,7 @@ impl IAllocator for MyAlloc
 
 func toto()
 {
-    let cxt = @getcontext()
+    let cxt  = @getcontext()
     var req: AllocatorRequest
     req.size = 10
     cxt.allocator.req(&req)
@@ -30,7 +30,7 @@ func toto()
 func changeContext(user: code)
 {
     var savedCxt = @getcontext()
-    var cxt: Context = dref savedCxt
+    var cxt:     Context = dref savedCxt
     @setcontext(cxt)
 
     #macro

@@ -6,7 +6,6 @@ namespace A
 {
     struct B
     {
-
     }
 }
 

@@ -1,4 +1,4 @@
-enum X: const [..] u8
+enum X : const [..] u8
 {
     A = [1, 2, 3, 4]
 }

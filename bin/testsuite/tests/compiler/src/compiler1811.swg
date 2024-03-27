@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    var a = [1, 2, 3, 4]
-    let ptr = &a[0];
+    var a   = [1, 2, 3, 4]
+    let ptr = &a[0]
 
     let c = ptr[1..2]
     @assert(c[0] == 2)

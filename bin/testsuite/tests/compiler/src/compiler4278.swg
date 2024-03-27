@@ -1,2 +1,4 @@
-func(T) toto(x: T) {}
+func(T) toto(x: T)
+{
+}
 #assert @defined(toto)

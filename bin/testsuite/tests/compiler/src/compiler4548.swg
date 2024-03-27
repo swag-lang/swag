@@ -1,6 +1,11 @@
 #global testerror "Err0708"
 
-enum A { R; G; B; }
+enum A
+{
+    R
+    G
+    B
+}
 
 func toto(x: A)
 {

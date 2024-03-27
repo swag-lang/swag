@@ -18,6 +18,5 @@ namespace AA
 {
     AA.toto()
     {
-
     }
 }

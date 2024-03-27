@@ -1,5 +1,5 @@
 #[Swag.Incomplete]
-enum Style: u8
+enum Style : u8
 {
     Default
     LineComment

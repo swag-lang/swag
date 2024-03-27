@@ -1,4 +1,3 @@
-
 using Core
 
 #test
@@ -13,6 +12,4 @@ using Core
     @assert(arr[1] == "2")
     @assert(arr[2] == "1")
     @assert(arr[3] == "0")
-    //visit &it: arr
-    //    Console.write("%", :it)
 }

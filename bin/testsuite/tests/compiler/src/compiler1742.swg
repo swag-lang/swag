@@ -10,6 +10,6 @@
             result += it
         }
 
-        @assert(result == 1+2)
+        @assert(result == 1 + 2)
     }
 }

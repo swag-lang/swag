@@ -2,8 +2,8 @@ using Core, Pixel
 
 struct Test
 {
-    color:  Color
-    color1: Color
+    color:      Color
+    color1:     Color
 }
 
 #test
@@ -13,10 +13,10 @@ struct Test
     tw.registerFolder(&t1)
 
     const BUF = """
-    /Test
-        color  127 0 0 255
-        color1 Red
-    """
+/Test
+    color  127 0 0 255
+    color1 Red
+"""
 
     var arr = Tokenize.splitLines(BUF)
     assume tw.parse(arr)
@@ -25,6 +25,4 @@ struct Test
     @assert(t1.color.g == 0)
     @assert(t1.color.b == 255)
     @assert(t1.color1.r == 255)
-
-    //Console.println(t1)
 }

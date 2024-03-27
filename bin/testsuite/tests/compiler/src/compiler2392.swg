@@ -1,5 +1,5 @@
-#global testerror "Err0643";
+#global testerror "Err0643"
 
-typealias str = string;
-var a: str = "coucou";
-var c: str = 1;
+typealias str = string
+var a: str = "coucou"
+var c: str = 1

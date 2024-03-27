@@ -1,5 +1,4 @@
-;
-using Swag;
+using Swag
 
 #test
 {

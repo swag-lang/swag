@@ -1,5 +1,6 @@
 #global testerror "Err0104"
-struct A {
+struct A
+{
     x: s32
 }
 

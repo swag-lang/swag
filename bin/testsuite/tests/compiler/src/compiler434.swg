@@ -1,15 +1,13 @@
 
-
-
 #global testerror "Err0717"
 #test
 {
-	for var i = 0; i < 10; i += 10
-	{
-		if(i == 0)
-		{
-		}
-	}
+    for var i = 0; i < 10; i += 10
+    {
+        if (i == 0)
+        {
+        }
+    }
 
-	i = 1;
+    i = 1
 }

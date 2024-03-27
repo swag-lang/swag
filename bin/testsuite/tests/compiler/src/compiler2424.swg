@@ -5,7 +5,6 @@ func print(f: f32)
         return true
     }
 {
-
 }
 
 #[Swag.ConstExpr]

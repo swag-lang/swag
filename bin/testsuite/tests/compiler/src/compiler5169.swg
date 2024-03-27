@@ -6,8 +6,8 @@ enum BasicErrors
 
 enum MyErrors
 {
-    using BasicErrors    // The enum 'BasicErrors' is nested inside
-    NotFound = 100
+    using BasicErrors // The enum 'BasicErrors' is nested inside
+    NotFound  = 100
     NotFound1
 }
 

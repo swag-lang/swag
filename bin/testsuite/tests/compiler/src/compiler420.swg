@@ -2,5 +2,5 @@
 //#[Swag.PrintBc]
 #test
 {
-	const d: s32
+    const d: s32
 }

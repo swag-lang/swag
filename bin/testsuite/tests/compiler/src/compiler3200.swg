@@ -6,14 +6,14 @@ struct AA
 
 struct BB
 {
-    xx: f64
-    using aa0: AA
-    using aa1: AA
+    xx:            f64
+    using aa0:     AA
+    using aa1:     AA
 }
 
 interface I
 {
-    func toto(self)
+    func toto(self);
 }
 
 impl I for AA
@@ -27,7 +27,7 @@ impl I for AA
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    var x: BB
+    var x:  BB
     var ptr = cast(I) x
     ptr.toto()
 }

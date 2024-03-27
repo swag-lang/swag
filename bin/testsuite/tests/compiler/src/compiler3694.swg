@@ -1,4 +1,6 @@
-struct ErrToto{}
+struct ErrToto
+{
+}
 
 struct Array
 {
@@ -22,7 +24,7 @@ func GetFontData()->s32 throw
 //#[Swag.PrintBc]
 func getDataFromHFONT()->Array throw
 {
-    var result: retval
+    var result:          retval
     var outFontBufferLen = GetFontData()
     return result
 }

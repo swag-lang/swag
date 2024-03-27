@@ -13,7 +13,6 @@
 
 func toto(x: s32, y: bool)
 {
-
 }
 
 #test

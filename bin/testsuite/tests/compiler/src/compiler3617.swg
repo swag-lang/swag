@@ -26,7 +26,4 @@ struct X
 
     let res = x.t[0](1, 2)
     @assert(res == 3)
-
-    //var res1 = x.t[1](2, 3)
-    //@assert(res1 == 5)
 }

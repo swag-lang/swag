@@ -4,10 +4,10 @@ struct(T) AA
 {
     #ast
     {
-        #assert(@typeof(T).kind == TypeInfoKind.Struct)
+        #assert (@typeof(T).kind == TypeInfoKind.Struct)
 
         var buf: [100] u8
-        var idx = 0'u64
+        var idx  = 0'u64
 
         let ptr = @typeof(T)
         visit it: ptr.fields
@@ -31,8 +31,8 @@ struct(T) AA
 {
     struct BB
     {
-        val1: f32
-        val2: f32
+        val1:     f32
+        val2:     f32
     }
 
     var str: AA'BB

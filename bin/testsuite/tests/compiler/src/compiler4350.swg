@@ -8,9 +8,9 @@ struct(X1) Point
 impl Point
 {
     #[Swag.Inline]
-    mtd mixup() -> Point
+    mtd mixup()->Point
     {
-        let v = x
+        let v  = x
         var t: Point{v}
         return t
     }
@@ -20,5 +20,4 @@ impl Point
 {
     var p1 = Point{5's32}
     var p3 = p1.mixup()
-
 }

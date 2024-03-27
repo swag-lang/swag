@@ -1,4 +1,6 @@
-struct A {}
+struct A
+{
+}
 impl A
 {
     #[Swag.Overload]
@@ -20,5 +22,5 @@ impl A
 {
     var a: A
     a["a"] = 42
-    a[42] = 43
+    a[42]  = 43
 }

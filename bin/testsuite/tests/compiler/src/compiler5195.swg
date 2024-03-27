@@ -1,4 +1,7 @@
-struct A {x: s32}
+struct A
+{
+    x: s32
+}
 
 func toto() throw
 {

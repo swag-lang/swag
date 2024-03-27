@@ -1,4 +1,3 @@
-
 using Swag
 
 func toto1(s = #callerfunction)
@@ -8,7 +7,7 @@ func toto1(s = #callerfunction)
 
 func toto()
 {
-	@assert(@stringof(#self) == "__compiler1017.toto")
+    @assert(@stringof(#self) == "__compiler1017.toto")
     toto1()
     #run toto1()
     #run
@@ -20,5 +19,5 @@ func toto()
 //#[Swag.PrintBc]
 #test
 {
-	toto()
+    toto()
 }

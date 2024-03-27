@@ -1580,7 +1580,7 @@ impl Decoder
             if refinementScan and (successiveLow != successiveHigh - 1) do
                 throw InvalidFormatError{"bad sos successive"}
 
-            var decodeBlockFunc: func(*Decoder, u32 , s32 , s32 ) throw
+            var decodeBlockFunc: func(*Decoder, u32, s32, s32) throw
             if dcOnlyScan
             {
                 if refinementScan do

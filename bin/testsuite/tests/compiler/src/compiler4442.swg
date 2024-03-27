@@ -1,13 +1,17 @@
 #global testerror "Err0187"
 using Swag
 
-struct A {}
+struct A
+{
+}
 impl A
 {
     mtd toto()->A => {}
 }
 
-func titi(x: [..] A) {}
+func titi(x: [..] A)
+{
+}
 
 //#[Swag.PrintBc]
 #test

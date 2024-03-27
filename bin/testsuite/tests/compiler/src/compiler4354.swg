@@ -30,7 +30,8 @@ func(T) add(x, y: T)->T
 #global testerror "type bool not supported"
 struct(T) S
 {
-    #if T != s32 #do #error "type " ++ @typeof(T).name ++ " not supported"
+    #if T != s32 #do
+        #error "type " ++ @typeof(T).name ++ " not supported"
     x: T
 }
 

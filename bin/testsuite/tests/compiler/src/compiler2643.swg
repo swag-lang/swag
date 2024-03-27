@@ -8,6 +8,5 @@ public func toto2643()
 
     func titi(x: s32)->bool
     {
-
     }
 }

@@ -1,5 +1,4 @@
 
-
 func toto(x: f32)
 {
 }
@@ -39,13 +38,13 @@ func toto8(x: u64)
 //#[Swag.PrintBc]
 #test
 {
-	toto(0)
-	toto1(0)
-	toto2(0)
-	toto3(0)
-	toto4(0)
-	toto5(0)
-	toto6(0)
-	toto7(0)
-	toto8(0)
+    toto(0)
+    toto1(0)
+    toto2(0)
+    toto3(0)
+    toto4(0)
+    toto5(0)
+    toto6(0)
+    toto7(0)
+    toto8(0)
 }

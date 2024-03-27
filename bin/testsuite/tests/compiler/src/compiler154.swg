@@ -1,6 +1,6 @@
 #global testerror "Err0643"
 
-func main () -> bool
+func main()->bool
 {
-	return 1
+    return 1
 }

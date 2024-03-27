@@ -1,8 +1,8 @@
 //#global skip
 using Swag
 
-#[AttrUsage(AttributeUsage.Struct|AttributeUsage.Gen)]
-attr GenStuff();
+#[AttrUsage(AttributeUsage.Struct | AttributeUsage.Gen)]
+attr GenStuff()
 
 #[GenStuff]
 struct A
@@ -15,7 +15,7 @@ impl A
 
 interface I
 {
-    func toto(self)
+    func toto(self);
 }
 
 var G = 0
@@ -23,7 +23,8 @@ var G = 0
 {
     let itf = @compiler()
     let msg = itf.getMessage()
-    if msg.type.kind != .Struct do return
+    if msg.type.kind != .Struct do
+        return
 
     let typeS = cast(const *TypeInfoStruct) msg.type
     if @countof(typeS.attributes) != 1 do
@@ -38,7 +39,7 @@ var G = 0
 #test
 {
     var x: A
-    let i = cast(I) x
+    let i  = cast(I) x
     i.toto()
     @assert(G == 1)
 }

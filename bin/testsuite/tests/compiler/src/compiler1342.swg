@@ -2,7 +2,7 @@
 
 interface TOTO
 {
-	func print(self, str: string)
+    func print(self, str: string);
 }
 
 struct TITI
@@ -23,7 +23,4 @@ impl TOTO for TITI
 //#[Swag.PrintBc]
 #test
 {
-/*    var x: TOTO
-    var y: TITI
-    x = y*/
 }

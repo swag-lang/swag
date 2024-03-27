@@ -2,10 +2,14 @@ func toto(x: s32)->s32
 {
     switch x
     {
-    case 0:  return 0
-    case 2:  return 2
-    case 3:  return 3
-    default: return 666
+    case 0:
+        return 0
+    case 2:
+        return 2
+    case 3:
+        return 3
+    default:
+        return 666
     }
 
     return 666

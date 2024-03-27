@@ -2,7 +2,7 @@
 #global testerror "Err0284"
 #test
 {
-	while(bool)
-	{
-	}
+    while bool
+    {
+    }
 }

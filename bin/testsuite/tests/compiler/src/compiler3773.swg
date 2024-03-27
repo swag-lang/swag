@@ -1,4 +1,3 @@
-//#global skip
 struct Point
 {
     x, y: s32

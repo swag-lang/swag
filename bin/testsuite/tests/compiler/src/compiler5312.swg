@@ -5,7 +5,7 @@ func toto(x: string)->u64
         tt += 1
 
     #[Swag.Safety("sanity", false)]
-    let y = tt-2
+    let y = tt - 2
     return y
 }
 

@@ -22,8 +22,8 @@ When an affectation is done outside of an initialization, you will change the po
 
 #test
 {
-    var x = 42
-    var myRef: &s32 = &x // Note here that the reference is no more 'const'
+    var x      = 42
+    var myRef: &s32 = &x     // Note here that the reference is no more 'const'
     @assert(myRef == 42)
 
     // Here we will change the pointed value 'x'
@@ -76,7 +76,12 @@ func toto(x: const &s32)
 This is usefull for structs for examples, as you can directly pass a literal to a function.
 */
 
-struct MyStruct {x: s32, y: s32 }  // Our first little struct !
+struct MyStruct
+{
+    x:     s32
+    y:     s32
+}
+// Our first little struct !
 
 #test
 {

@@ -35,7 +35,8 @@ Or
 */
 #test
 {
-    let a: u32 = 12, b: f32 = 1.5
+    let a: u32 = 12
+    let b: f32 = 1.5
     @assert(a == 12)
     @assert(b == 1.5)
 }
@@ -96,8 +97,9 @@ The same goes for multiple variables.
     @assert(b == true)
     #assert @typeof(a) == @typeof(true)
     #assert @typeof(b) == @typeof(a)
+    let c = 1.5
 
-    let c = 1.5, d = "string"
+    let d = "string"
     @assert(c == 1.5)
     @assert(d == "string")
     #assert @typeof(c) == f32

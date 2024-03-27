@@ -2,13 +2,13 @@
 
 struct TOTO
 {
-	print: s32
+    print: s32
 }
 
 struct TITI
 {
-    print:  bool
-    print1: f32
+    print:      bool
+    print1:     f32
 }
 
 #[Swag.PrintBc]

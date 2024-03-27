@@ -1,6 +1,5 @@
 struct AA
 {
-
 }
 
 var G = 0

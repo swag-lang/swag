@@ -6,7 +6,7 @@ func consumeBits(width: u8)
     @assert(codeBuffer == 1)
 }
 
-var G: u8 = 2
+var G:  u8 = 2
 var G1: u32 = 0xFFFFFFFF
 
 //#[Swag.PrintBc]

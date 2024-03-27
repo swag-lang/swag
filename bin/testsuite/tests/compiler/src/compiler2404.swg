@@ -14,5 +14,5 @@ impl NumericArray
 #test
 {
     var v: NumericArray'(f32, 4)
-    var x = v[0]
+    var x  = v[0]
 }

@@ -6,4 +6,4 @@ enum A
     B
 }
 
-#assert(A.R == 1)
+#assert (A.R == 1)

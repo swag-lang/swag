@@ -1,4 +1,6 @@
-struct(T) A {}
+struct(T) A
+{
+}
 
 impl A
 {

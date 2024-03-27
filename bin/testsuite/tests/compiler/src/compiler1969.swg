@@ -1,6 +1,5 @@
 func(T) toto(value: const [..] T)
 {
-
 }
 
 #test

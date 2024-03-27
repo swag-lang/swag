@@ -2,7 +2,8 @@
 #test
 {
     var error = false
-    #scope outer loop x: 10
+    #scope outer
+    loop x: 10
     {
         loop 20
         {

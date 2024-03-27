@@ -1,4 +1,3 @@
-﻿
 using Core
 
 //#[Swag.PrintBc]
@@ -11,5 +10,5 @@ using Core
     @assert(@err() == Errors.FileNotFoundError)
 
     catch Directory.setCurrent("fkdfjfk?..??/jfkdj")
-    @assert(@err() == Errors.InvalidFileNameError)    
+    @assert(@err() == Errors.InvalidFileNameError)
 }

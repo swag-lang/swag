@@ -1,6 +1,5 @@
 struct AA
 {
-
 }
 
 impl AA
@@ -12,7 +11,7 @@ impl AA
 
 #test
 {
-    var x: AA
+    var x:  AA
     var ptr = &x
     dref ptr = "toto"
 }

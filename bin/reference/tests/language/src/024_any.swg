@@ -1,4 +1,3 @@
-
 /**
 `any` is a specific type that can store every other types.
 
@@ -30,7 +29,7 @@
 */
 #test
 {
-    let a: any = 6
+    let a:  any = 6
     let ptr = cast(const *s32) @dataof(a)
     @assert(dref ptr == 6)
 }
@@ -57,9 +56,9 @@ You can either get the value or a const reference to the value.
     #assert @typeof(a) == any
     @assert(@kindof(a) == s32)
 
-    let b = cast(s32) a             // Get the value itself
+    let b = cast(s32) a // Get the value itself
     @assert(b == 42)
-    let c = cast(const &s32) a   // This is fine too
+    let c = cast(const &s32) a // This is fine too
     @assert(c == 42)
 }
 
@@ -113,12 +112,13 @@ An 'any' value can be tested against a type with '==' and '!='. This will call '
     @assert(x == s32)
     @assert(x != bool)
 
-
     x = "string"
     @assert(x != s32)
     @assert(x == string)
 
-    struct A{}
+    struct A
+    {
+    }
     x = A{}
     @assert(x == A)
 }

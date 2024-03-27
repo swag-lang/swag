@@ -1,5 +1,10 @@
 #[Swag.EnumIndex]
-enum A { X; Y; Z; }
+enum A
+{
+    X
+    Y
+    Z
+}
 
 #test
 {

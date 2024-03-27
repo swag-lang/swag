@@ -2,27 +2,27 @@
 
 struct Point
 {
-	x: s32
-	y: s32
+    x:     s32
+    y:     s32
 }
 
 //#[Swag.PrintBc]
 impl Point
 {
-	func(op: string) opAssign(self, v: s32)
-	{
-		#if(op == "+=")
-		{
-		}
-		#else
-		{
-			#error "invalid operator"
-		}
-	}
+    func(op: string) opAssign(self, v: s32)
+    {
+        #if (op == "+=")
+        {
+        }
+        #else
+        {
+            #error "invalid operator"
+        }
+    }
 }
 
 #test
 {
-	var x : Point
-	x -= 0
+    var x: Point
+    x -= 0
 }

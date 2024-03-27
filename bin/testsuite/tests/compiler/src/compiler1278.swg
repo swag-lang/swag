@@ -11,6 +11,10 @@ func toto(x: code)
 #test
 {
     var b = 0
-    toto(#code{b += 1;})
+    toto(#code
+    {
+        b += 1
+    }
+)
     @assert(b == 10)
 }

@@ -1,9 +1,9 @@
-#global testerror "Err0351";
+#global testerror "Err0351"
 
 using Swag
 
-func main ()
+func main()
 {
-	var a = true;
-	a += true;
+    var a = true
+    a += true
 }

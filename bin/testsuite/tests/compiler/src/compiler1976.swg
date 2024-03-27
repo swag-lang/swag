@@ -22,6 +22,5 @@ impl AA1976
     var x: AA1976's32
     visit x
     {
-
     }
 }

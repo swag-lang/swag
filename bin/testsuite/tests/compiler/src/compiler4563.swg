@@ -1,4 +1,6 @@
-struct A {}
+struct A
+{
+}
 impl A
 {
     mtd opDrop()
@@ -7,8 +9,9 @@ impl A
     }
 }
 
-struct Err{}
-
+struct Err
+{
+}
 
 func tata()->A
 {

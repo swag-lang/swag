@@ -1,6 +1,6 @@
 #global testerror "Err0643"
 
-enum AA: const [2] s32
+enum AA : const [2] s32
 {
     A = [1, 2]
     B = [10, 20]
@@ -11,6 +11,7 @@ enum AA: const [2] s32
     var x = AA.A
     switch x
     {
-    case [1, 2]: break
+    case [1, 2]:
+        break
     }
 }

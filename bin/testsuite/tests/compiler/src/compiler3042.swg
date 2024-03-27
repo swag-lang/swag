@@ -1,7 +1,7 @@
 struct(T: const [..] typeinfo) AA
 {
-    x: @decltype(T[0])
-    y: @decltype(T[1])
+    x:     @decltype(T[0])
+    y:     @decltype(T[1])
     #assert T[0] == s32
     #assert T[1] == bool
 }

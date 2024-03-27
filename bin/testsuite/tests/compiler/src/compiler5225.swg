@@ -1,6 +1,8 @@
-struct(T) Array {}
+struct(T) Array
+{
+}
 
-struct(T) Toto 
+struct(T) Toto
 {
 }
 
@@ -10,7 +12,7 @@ impl Toto
     {
         @assert(x.fromGeneric == @typeof(Array))
         @assert(x.fromGeneric == Array)
-    }    
+    }
 }
 
 #test
@@ -18,4 +20,3 @@ impl Toto
     var x: Toto's32
     x.toto(Array's32)
 }
-

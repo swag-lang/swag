@@ -1,4 +1,6 @@
-struct Array {}
+struct Array
+{
+}
 
 impl Array
 {
@@ -6,7 +8,7 @@ impl Array
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
         loop 7 do
-        #mixin stmt
+            #mixin stmt
     }
 
     mtd opSlice(a, b: u64)->string
@@ -21,7 +23,7 @@ impl Array
 #test
 {
     var arr: Array
-    var g = 0
+    var g    = 0
     visit arr
     {
         visit arr[1..]
@@ -31,5 +33,5 @@ impl Array
         }
     }
 
-    @assert(g==7)
+    @assert(g == 7)
 }

@@ -1,9 +1,13 @@
 #global testerror "Err0111"
 
-struct A{}
+struct A
+{
+}
 impl A
 {
-    mtd opPostMove(){}
+    mtd opPostMove()
+    {
+    }
 }
 //#[Swag.PrintBc]
 #test

@@ -2,8 +2,8 @@ var G: s32
 
 struct X
 {
-    x: s32 = 666
-    y: bool   
+    x:     s32 = 666
+    y:     bool
 }
 
 impl X

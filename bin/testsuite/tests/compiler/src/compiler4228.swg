@@ -10,9 +10,9 @@ impl A
         x = 666
     }
 
-    mtd(op:string) opBinary(other: Self)->Self
+    mtd(op: string) opBinary(other: Self)->Self
     {
-        return {x+other.x}
+        return {x + other.x}
     }
 }
 

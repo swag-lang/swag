@@ -1,9 +1,11 @@
 #global testerror "Err0616"
-struct Point {}
+struct Point
+{
+}
 impl Point
 {
-	func opEqual(self, other: Point) -> bool
-	{
-		return self.x == other.x and self.y == other.y
-	}
+    func opEqual(self, other: Point)->bool
+    {
+        return self.x == other.x and self.y == other.y
+    }
 }

@@ -1,6 +1,5 @@
 struct AA
 {
-
 }
 
 impl AA
@@ -16,7 +15,7 @@ func toto(v: s32)
 
 #test
 {
-    var v: AA
+    var v:  AA
     let ptr = &v
     ptr.toto()
 }

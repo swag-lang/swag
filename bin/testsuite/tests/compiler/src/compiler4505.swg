@@ -4,7 +4,9 @@ var v: func(x: s32)
 func toto()
 {
     {
-        v = func(btn) {}
+        v = func(btn)
+        {
+        }
     }
 }
 

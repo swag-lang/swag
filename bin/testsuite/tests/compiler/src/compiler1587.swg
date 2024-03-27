@@ -2,7 +2,6 @@
 
 struct A
 {
-
 }
 
 struct(T) B
@@ -19,7 +18,7 @@ impl B
 
 #test
 {
-    var arr: B'A
+    var arr:   B'A
     var value: A
 
     arr.emplace(value)

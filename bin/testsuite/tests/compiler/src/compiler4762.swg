@@ -7,7 +7,7 @@ func toto(x, y: s32)
         @assert(#index == 1 or #index == 2 or #index == 3)
         g += #index
     }
-    @assert(g == 1+2+3)
+    @assert(g == 1 + 2 + 3)
 }
 
 #test

@@ -3,5 +3,4 @@
 
 public struct Toto65
 {
-
 }

@@ -1,23 +1,21 @@
-;
-;
 
-enum A: u8
+enum A : u8
 {
-	Red;
-	Green;
-	Blue;
+    Red
+    Green
+    Blue
 }
 
-enum B: u16
+enum B : u16
 {
-	Red;
-	Green;
-	Blue;
+    Red
+    Green
+    Blue
 }
 
-enum C: s64
+enum C : s64
 {
-	Red;
-	Green;
-	Blue;
+    Red
+    Green
+    Blue
 }

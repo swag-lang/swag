@@ -24,7 +24,6 @@ func sendWords(text: string)
         //@print("start:", start, "\n")
         @assert(start == 3)
         break
-        //break
     }
 }
 

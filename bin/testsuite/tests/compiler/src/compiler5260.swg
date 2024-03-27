@@ -3,7 +3,7 @@
 func toto(buffer: *bool)
 {
     var total: u64
-    let c = ref buffer
+    let c      = ref buffer
     total = c ? 1 : 0
     @assert(c == false)
     c = true

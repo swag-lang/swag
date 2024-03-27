@@ -1,6 +1,12 @@
 using Core, Core.Serialization
 
-enum ARGB { A; R; G; B; }
+enum ARGB
+{
+    A
+    R
+    G
+    B
+}
 
 struct Toto
 {
@@ -21,9 +27,6 @@ struct Toto
         ser.serialize("toto", &x)
         ser.endSection()
         ser.end()
-
-        //var str = buf.toString()
-        //Console.print(str, "\n")
     }
 
     try

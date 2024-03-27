@@ -2,7 +2,9 @@ struct A
 {
 }
 
-struct B {}
+struct B
+{
+}
 
 impl A
 {

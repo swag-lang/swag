@@ -1,5 +1,7 @@
 #global testerror "Err0625"
-namespace A { }
+namespace A
+{
+}
 
 func toto()
 {

@@ -68,13 +68,13 @@ func createView0(tabView: *Tab, view: *Wnd)
     {
         var button = PushButton.create(view, "Normal", {5, 10})
         button.icon = app.theme.getIcon24(ThemeIcons24.WndClose)
-        button.sigPressed += func(btn )
+        button.sigPressed += func(btn)
         {
             btn.name = "Pressed"
         }
 
         button = PushButton.create(view, "Default", {5, 50})
-        button.sigPressed += func(btn )
+        button.sigPressed += func(btn)
         {
             btn.icon = btn.getTheme().getIcon24(ThemeIcons24.WndClose, 18)
         }
@@ -90,14 +90,14 @@ func createView0(tabView: *Tab, view: *Wnd)
     {
         var button = PushButton.create(view, "YesNo", {5, 190})
         button.form = .Strong
-        button.sigPressed += func(btn )
+        button.sigPressed += func(btn)
         {
             discard MessageDlg.yesNo(btn.surface, "<u>Are<u> you very very <b>sure<b> ?")
         }
 
         button      = PushButton.create(view, "YesNo", {5, 230})
         button.form = .Strong
-        button.sigPressed += func(btn )
+        button.sigPressed += func(btn)
         {
             discard MessageDlg.yesNo(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
         }
@@ -106,14 +106,14 @@ func createView0(tabView: *Tab, view: *Wnd)
         button.form = .Flat
         button.style.addStyleSheetColors("btnPushFlat_HotBk 0xFF00AA00")
         button.style.addStyleSheetColors("btnPushFlat_PressedBk 0xFF00BB00")
-        button.sigPressed += func(btn )
+        button.sigPressed += func(btn)
         {
             MessageDlg.ok(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.")
         }
 
         button      = PushButton.create(view, "YesNoCancel", {5, 310})
         button.form = .Flat
-        button.sigPressed += func(btn )
+        button.sigPressed += func(btn)
         {
             discard MessageDlg.yesNoCancel(btn.surface, "Avant de désinstaller cette application, veuillez nous indiquer si vous souhaitez conserver ou supprimer les notifications, les alertes, les paramètres d'interface, les modules et d'autres préférences. I_a suppression des préférences peut empêcher leur migration vers de nouvelles versions de l'application.")
         }
@@ -170,7 +170,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         let btn = IconButton.create(edit, app.theme.getIcon24(ThemeIcons24.WndClose, 18), {0, 0, 24, 24})
         btn.dockStyle = .Right
         btn.setForm(IconButtonForm.Round)
-        btn.sigPressed += func(btn )
+        btn.sigPressed += func(btn)
         {
             var edt = cast(*EditBox) btn.parent
             edt.setText(null)
@@ -238,7 +238,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         edit0.setForm(EditBoxForm.Transparent)
 
         slider0.setMinMax(0, 255)
-        slider0.sigChanged += func(wnd )
+        slider0.sigChanged += func(wnd)
         {
             let val  = Format.toString("%", cast(s32) wnd.getValue())
             let edit = cast(*EditBox) wnd.getTopView().getChildById("edit0")
@@ -247,7 +247,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 
         edit0.setInputU64(0, 255)
         edit0.maxLength = 3
-        edit0.sigLoseFocus += func(wnd )
+        edit0.sigLoseFocus += func(wnd)
         {
             let (val, ?, ?) = catch StrConv.parseS32(wnd.text)
             let slider = cast(*Slider) wnd.getTopView().getChildById("slider0")
@@ -418,7 +418,7 @@ func createView0(tabView: *Tab, view: *Wnd)
     {
         let prg = ProgressBar.create(view, {20, 550, 200})
         g_Prg = prg
-        tabView.sigSelChanged += closure|prg|(tab )
+        tabView.sigSelChanged += closure|prg|(tab)
         {
             prg.setProgression(0)
         }
@@ -450,7 +450,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         let slider = Slider.create(view, {425, 780, 120})
         slider.disable()
 
-        btn.sigPressed += closure|img2, slider|(btn )
+        btn.sigPressed += closure|img2, slider|(btn)
         {
             img2.movie.pause(!img2.movie.inPause)
             slider.enable(img2.movie.inPause)

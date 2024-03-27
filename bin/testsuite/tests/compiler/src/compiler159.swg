@@ -1,8 +1,6 @@
-;
-;
 
-func main (argc: u32)
+func main(argc: u32)
 {
 }
 
-var a: bool;
+var a: bool

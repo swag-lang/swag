@@ -1,14 +1,12 @@
 struct AA
 {
-
 }
 
 impl AA
 {
     enum ENUM
     {
-
-    }
+        }
 
     #[Swag.Macro]
     func titi(using self, ptr: *void, stmt: code)

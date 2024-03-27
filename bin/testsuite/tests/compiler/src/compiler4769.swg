@@ -3,9 +3,12 @@ func toto(slice: const [..] s32)
     var cpt = 0
     visit,back v: slice
     {
-        if cpt == 0 do @assert(v == 3)
-        if cpt == 1 do @assert(v == 2)
-        if cpt == 2 do @assert(v == 1)
+        if cpt == 0 do
+            @assert(v == 3)
+        if cpt == 1 do
+            @assert(v == 2)
+        if cpt == 2 do
+            @assert(v == 1)
         cpt += 1
     }
 }

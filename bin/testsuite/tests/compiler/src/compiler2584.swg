@@ -2,7 +2,7 @@
 
 func toto() throw
 {
-}
+    }
 
 //#[Swag.PrintBc]
 #test

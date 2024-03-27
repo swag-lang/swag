@@ -6,9 +6,9 @@ struct Argb
 impl Argb
 {
     #[Swag.Inline]
-    func extract(self) -> {a,b:s64}
+    func extract(self)->{a, b: s64}
     {
-        return {666,555}
+        return {666, 555}
     }
 }
 
@@ -19,7 +19,5 @@ impl Argb
     {
         var x = 0
     }
-    var (a,b) = color.extract()
-//    @assert(a == 666)
-//    @assert(b == 555)
+    var (a, b) = color.extract()
 }

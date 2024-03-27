@@ -1,4 +1,6 @@
-struct Err{}
+struct Err
+{
+}
 
 func toto() throw
 {

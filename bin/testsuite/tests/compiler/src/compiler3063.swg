@@ -16,7 +16,7 @@ impl AA
         @assert(vv == 666)
         @assert(a == 0)
         @assert(b == 3)
-        return [1, 2, 3 ,4]
+        return [1, 2, 3, 4]
     }
 }
 

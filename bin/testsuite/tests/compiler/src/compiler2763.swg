@@ -1,4 +1,4 @@
-enum AA: const [..] s32
+enum AA : const [..] s32
 {
     A = [1, 2, 3, 4]
     B = [10, 20, 30]

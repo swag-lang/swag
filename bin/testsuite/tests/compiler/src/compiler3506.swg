@@ -8,9 +8,13 @@ struct B
 }
 
 #[Swag.Overload]
-func delete(x: *A) {}
+func delete(x: *A)
+{
+}
 #[Swag.Overload]
-func delete(x: *B) {}
+func delete(x: *B)
+{
+}
 
 #test
 {

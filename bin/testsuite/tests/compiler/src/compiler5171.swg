@@ -24,7 +24,7 @@ enum MyErrors
 
 #test
 {
-    let x = BasicErrors.FailedToLoad
+    let x  = BasicErrors.FailedToLoad
     let y: MyErrors0 = x
     let z: MyErrors1 = x
 }

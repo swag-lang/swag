@@ -17,7 +17,7 @@ impl A
 #test
 {
     var str: [2] string
-    var a: A'string
+    var a:   A'string
     a.buffer = &str
 
     str[0] = "toto"

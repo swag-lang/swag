@@ -1,10 +1,8 @@
-
 #global testerror "Err0081"
 
 //#[Swag.PrintBc]
 func toto(x: s64)
 {
-    //@assert(x == 666)
 }
 
 //#[Swag.PrintBc]

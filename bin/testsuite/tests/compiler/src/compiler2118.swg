@@ -1,7 +1,7 @@
 struct AA
 {
-    x, y: f64
-    z: BB = BB.R
+    x, y:  f64
+    z:     BB = BB.R
 }
 
 impl AA

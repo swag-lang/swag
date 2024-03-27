@@ -3,7 +3,6 @@
 
 struct AA
 {
-
 }
 
 var G = 0
@@ -16,8 +15,13 @@ impl AA
     }
 }
 
-func toto()->AA  { return AA{}; }
-func titi(x: AA) { }
+func toto()->AA
+{
+    return AA{}
+}
+func titi(x: AA)
+{
+}
 
 //#[Swag.PrintBc]
 #test

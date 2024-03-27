@@ -6,7 +6,6 @@
     var v = 0
     defer @assert(v == 1)
     v += 1
-    // defer expression will be executed here
 }
 
 /**
@@ -22,7 +21,6 @@
     }
 
     v += 5
-    // defer block will be executed here
 }
 
 /**
@@ -35,8 +33,7 @@
     {
         defer G += 1
         if G == 2 do
-            break   // will be called here, before breaking the loop
-        // will be called here also
+            break
     }
 
     @assert(G == 3)
@@ -48,8 +45,8 @@
 #test
 {
     var x = 1
-    defer @assert(x == 2)   // Will be executed second
-    defer x *= 2            // Will be executed first
+    defer @assert(x == 2) // Will be executed second
+    defer x *= 2 // Will be executed first
 }
 
 /**
@@ -57,9 +54,9 @@ It's typically used to unregister/destroy a resource, by putting the release cod
 */
 #test
 {
-    func createResource() => true
+    func createResource()                 => true
     func releaseResource(resource: *bool) = dref resource = false
-    func isResourceCreated(b: bool) => b
+    func isResourceCreated(b: bool)       => b
 
     var resource = false
     loop 10

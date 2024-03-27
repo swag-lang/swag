@@ -1,9 +1,8 @@
 struct A
 {
-
 }
 
-var G : s32 = 0
+var G: s32 = 0
 
 impl A
 {
@@ -34,7 +33,6 @@ func toto(stmt: code)
     var x: A
     toto()
     {
-
     }
 
     @assert(G == 0)

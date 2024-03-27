@@ -1,5 +1,7 @@
 //#global skip
-struct AA {}
+struct AA
+{
+}
 
 #[Swag.Inline]
 func create1()
@@ -9,7 +11,6 @@ func create1()
 
 func create(x: AA)
 {
-//    @print("x")
 }
 
 //#[Swag.PrintBc]

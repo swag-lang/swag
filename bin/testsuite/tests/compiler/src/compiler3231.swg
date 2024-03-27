@@ -2,7 +2,7 @@ var G: s32
 
 interface IWnd
 {
-    func titi(self, x: s32)
+    func titi(self, x: s32);
 }
 
 struct Wnd
@@ -11,12 +11,12 @@ struct Wnd
 
 struct Dialog
 {
-    using wnd:  Wnd
+    using wnd: Wnd
 }
 
 struct MessageDlg
 {
-    using dlg:  Dialog
+    using dlg: Dialog
 }
 
 impl IWnd for Wnd

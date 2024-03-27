@@ -2,7 +2,6 @@ namespace N1
 {
     struct A
     {
-
     }
 }
 
@@ -10,7 +9,6 @@ namespace N2
 {
     struct A
     {
-
     }
 }
 

@@ -1,13 +1,13 @@
 #global testerror "Err0566"
 
-enum OT: string
+enum OT : string
 {
-	A = "1"
-	B = "2"
+    A = "1"
+    B = "2"
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	var pt: OT
+    var pt: OT
 }

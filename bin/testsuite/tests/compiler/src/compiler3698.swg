@@ -7,7 +7,7 @@ func write_chunk(chunk_type: const [4] u8, buf: const *u8, length: u64 = 666)
     @assert(length == 666)
 }
 
-const type_ihdr: [4] u8 = [ 73, 72, 68, 82 ]
+const type_ihdr: [4] u8 = [73, 72, 68, 82]
 
 #test
 {

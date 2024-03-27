@@ -1,4 +1,6 @@
-struct V {}
+struct V
+{
+}
 
 func toto(x: ...)
 {

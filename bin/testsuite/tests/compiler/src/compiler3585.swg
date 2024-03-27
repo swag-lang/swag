@@ -1,7 +1,11 @@
-struct(T) A {}
+struct(T) A
+{
+}
 impl A
 {
-    mtd opAffect(v: T) {}
+    mtd opAffect(v: T)
+    {
+    }
 }
 
 #test
@@ -9,6 +13,10 @@ impl A
     var x: A'closure(s32)
     var y: A'closure(f32)
 
-    x = func(t) {}
-    y = func(t) {}
+    x = func(t)
+    {
+    }
+    y = func(t)
+    {
+    }
 }

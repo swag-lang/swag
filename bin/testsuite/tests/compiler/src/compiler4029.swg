@@ -2,7 +2,7 @@
 
 struct Point
 {
-	x: s32
+    x: s32
 }
 
 //#[Swag.PrintBc]

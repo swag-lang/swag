@@ -1,10 +1,14 @@
 #global testerror "Err0723"
 
-struct A {}
+struct A
+{
+}
 
 impl A
 {
-    mtd titi(){}
+    mtd titi()
+    {
+    }
 }
 
 #test

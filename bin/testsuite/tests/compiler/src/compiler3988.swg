@@ -10,7 +10,7 @@ struct String1981
 func(T) titi(x: const &T)
 {
     //#print @typeof(T).name
-    #assert(@typeof(T).kind == Swag.TypeInfoKind.Struct)
+    #assert (@typeof(T).kind == Swag.TypeInfoKind.Struct)
 }
 
 /*impl Array
@@ -27,5 +27,4 @@ func(T) titi(x: const &T)
     //var x: Array'String1981
     var b: String1981
     titi(b)
-    //x.add(b)
 }

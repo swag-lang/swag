@@ -1,6 +1,6 @@
 public func toto3632() throw
 {
-}
+    }
 
 public func tata3632()
 {

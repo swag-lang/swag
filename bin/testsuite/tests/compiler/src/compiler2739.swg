@@ -1,5 +1,9 @@
-struct ErrToto{}
-struct ErrTiti{}
+struct ErrToto
+{
+}
+struct ErrTiti
+{
+}
 
 //#[Swag.PrintBc]//, Swag.Optim("", false)]
 func toto() throw

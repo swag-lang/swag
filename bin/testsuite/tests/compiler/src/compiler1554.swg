@@ -1,12 +1,11 @@
 using Swag
 
 #[AttrUsage(AttributeUsage.Function)]
-attr Command();
+attr Command()
 
 #[Swag.ExportType("methods")]
 struct A
 {
-
 }
 
 impl A
@@ -14,13 +13,12 @@ impl A
     #[Command]
     func toto()
     {
-
     }
 }
 
 #test
 {
-    let ptr = cast(const* TypeInfoStruct) @typeof(A)
+    let ptr = cast(const *TypeInfoStruct) @typeof(A)
     @assert(@countof(ptr.methods) == 1)
 
     let fct = ptr.methods[0]

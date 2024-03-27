@@ -1,5 +1,4 @@
 
-
 /*func(T) valueof(x: any)->T
 {
 	var ptr = cast(*T) @dataof(x)
@@ -8,14 +7,14 @@
 
 func valueof(x: any)
 {
-	let ptr = cast(*s32) @dataof(x)
-	@assert(dref ptr == 666)
+    let ptr = cast(*s32) @dataof(x)
+    @assert(dref ptr == 666)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	var x: any
-	x = 666
-	valueof(x)
+    var x: any
+    x = 666
+    valueof(x)
 }

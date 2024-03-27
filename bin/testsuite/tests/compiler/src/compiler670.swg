@@ -5,5 +5,5 @@ typealias toto = bool
 //#[Swag.PrintBc]
 #test
 {
-	var a = &toto
+    var a = &toto
 }

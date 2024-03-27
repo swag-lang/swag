@@ -1,5 +1,7 @@
 #global testerror "Err0114"
-struct(T) Toto {}
+struct(T) Toto
+{
+}
 
 impl Toto
 {

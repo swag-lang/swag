@@ -1,8 +1,4 @@
-const X1 = """\
-A\
-    B\
-  C\
-"""
+const X1 = """A    B  C"""
 
 const X2 = """
 A
@@ -13,22 +9,17 @@ A
 const X3 = """ABC"""
 const X4 = """ABC("A")"""
 
-const X5 = #"\
-  A
-  B
-  C
-  "#
-
-const X6 = #"\
-A\
-B\
-C\
+const X5 = #"A
+B
+C
 "#
 
+const X6 = #"ABC"#
+
 const X7 = """this is
-              a
-              string
-              """
+a
+string
+"""
 
 #test
 {

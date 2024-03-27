@@ -10,12 +10,20 @@ impl A
     {
         G += 1
         @assert(vv == 666)
-        //@print("drop ", vv, "\n");
     }
 
-    mtd opCount()->u64     { return 6; }
-    mtd opSlice(a, b: u64)->string { return "abcdef"; }
-    mtd toString()->string  { return "var abc =0"; }
+    mtd opCount()->u64
+    {
+        return 6
+    }
+    mtd opSlice(a, b: u64)->string
+    {
+        return "abcdef"
+    }
+    mtd toString()->string
+    {
+        return "var abc =0"
+    }
 }
 
 //#[Swag.Compiler]
@@ -33,10 +41,10 @@ func toto()->A
     //#[Swag.PrintBc]
     //#ast
     //{
-        let r = toto()
-        @assert(cast(string) r == "abcdef")
-        //@print(cast(string) r)
-     //   return cast(string) r //.toString()
+    let r = toto()
+    @assert(cast(string) r == "abcdef")
+    //@print(cast(string) r)
+    //   return cast(string) r //.toString()
     //}
 
     if @isbytecode() do

@@ -602,7 +602,7 @@ impl MainWnd
             .iconBtnFlags.add(.Center)
             .textPos  = .Right
             .arrowPos = .RightUp
-            .sigPressed += closure|res|(btn )
+            .sigPressed += closure|res|(btn)
             {
                 var pos  = btn.getSurfaceRect()
                 var menu = MenuCtrl.createPopup(res)
@@ -618,7 +618,7 @@ impl MainWnd
             .iconBtnFlags.add(.Center)
             .textPos  = .Right
             .arrowPos = .RightUp
-            .sigPressed += closure|res|(btn )
+            .sigPressed += closure|res|(btn)
             {
                 var pos  = btn.getSurfaceRect()
                 var menu = MenuCtrl.createPopup(res)

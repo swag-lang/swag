@@ -1,4 +1,3 @@
-
 #global testerror "Err0717"
 
 #[Swag.Macro]

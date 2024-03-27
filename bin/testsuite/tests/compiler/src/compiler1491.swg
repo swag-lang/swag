@@ -1,6 +1,5 @@
 func toto(x: u8)
 {
-
 }
 
 #test

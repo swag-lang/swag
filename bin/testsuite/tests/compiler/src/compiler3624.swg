@@ -1,7 +1,13 @@
 #global testerror "Err0708"
 
-enum E { A; }
-enum F { B; }
+enum E
+{
+    A
+}
+enum F
+{
+    B
+}
 
 func toto(v: F)
 {
@@ -12,6 +18,7 @@ func toto(v: F)
     var x = E.A
     switch x
     {
-    case A: toto(.C)
+    case A:
+        toto(.C)
     }
 }

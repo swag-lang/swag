@@ -14,12 +14,10 @@ impl A
 
     func opPostMove(using self)
     {
-        //@assert(false)
     }
 
     func opPostCopy(using self)
     {
-        //@assert(false)
     }
 }
 

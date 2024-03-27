@@ -1,11 +1,9 @@
-
-
 using Core, Core.StrConv
 
 struct TOTO
 {
-    x: s32 = 555
-    y: s32 = 666
+    x:     s32 = 555
+    y:     s32 = 666
 }
 
 impl IConvert for TOTO

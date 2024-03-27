@@ -13,7 +13,8 @@ func toto(stmt: code)
 {
     var t: s32
     var x: s32
-    toto() {
+    toto()
+    {
         var t: s32
         var x: s32
         @print(@offsetof(x))

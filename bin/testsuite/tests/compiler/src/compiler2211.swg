@@ -19,7 +19,7 @@ impl A
     loop 4
     {
         if #index == 0 do
-            continue // should not drop x !
+            continue
         var x: A
         if #index == 2 do
             break

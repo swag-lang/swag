@@ -11,5 +11,5 @@ func toto(x: &const [..] s32)
     toto(&a)
     @assert(a[0] == 3)
     @assert(a[1] == 4)
-    @assert(@countof(a)==2)
+    @assert(@countof(a) == 2)
 }

@@ -1,16 +1,15 @@
 
-
 struct Point
 {
-	x: s32
-	y: s32
+    x:     s32
+    y:     s32
 }
 
 //#[Swag.PrintBc]
 func toto()->Point
 {
-	var pt: Point{10, 20}
-	return pt
+    var pt: Point{10, 20}
+    return pt
 }
 
 //#[Swag.PrintBc]

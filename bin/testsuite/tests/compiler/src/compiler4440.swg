@@ -1,12 +1,16 @@
 using Swag
 
-struct(T) A {}
+struct(T) A
+{
+}
 impl A
 {
     mtd toto()->A => {}
 }
 
-func titi(x: &&A) {}
+func titi(x: &&A)
+{
+}
 
 //#[Swag.PrintBc]
 #test

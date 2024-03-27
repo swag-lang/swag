@@ -5,4 +5,6 @@
     try toto()
 }
 
-func toto() {}
+func toto()
+{
+}

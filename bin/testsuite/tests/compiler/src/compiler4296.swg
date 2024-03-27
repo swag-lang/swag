@@ -12,7 +12,8 @@
         {
             i += 1
             if i == 2 do
-                continue Scope
+                continue
+            Scope
             @assert(i < 2)
         }
     }

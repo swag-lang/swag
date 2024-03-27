@@ -6,7 +6,8 @@
     func getInc()->closure()->s32
     {
         let x = 10
-        return closure|x|()->s32 {
+        return closure|x|()->s32
+        {
             x += 1
             return x
         }

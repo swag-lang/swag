@@ -1,5 +1,7 @@
 using Swag
-struct ErrToto{}
+struct ErrToto
+{
+}
 
 struct AA
 {

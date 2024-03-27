@@ -3,7 +3,8 @@
 func append(buf: *void, fmt: string, values: ...)
     #validifx
     {
-        if !@isconstexpr(fmt) do return true
+        if !@isconstexpr(fmt) do
+            return true
 
         var cptPercent = 0
         for var i = 0; i < @countof(fmt); i += 1

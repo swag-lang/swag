@@ -30,13 +30,13 @@ impl A1
 
 struct B
 {
-    using a: A0
-    using b: A1
+    using a:     A0
+    using b:     A1
 }
 
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
     var v: B
-    var x = v[0]
+    var x  = v[0]
 }

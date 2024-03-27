@@ -1,9 +1,13 @@
 //#global skip
 
-struct(T) A {}
+struct(T) A
+{
+}
 impl A
 {
-    mtd toto() {}
+    mtd toto()
+    {
+    }
 }
 
 struct(T) B

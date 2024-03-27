@@ -1,8 +1,8 @@
-#global testerror "Err0705";
-using Swag;
+#global testerror "Err0705"
+using Swag
 
 #[Test]
-func main ()->s32
+func main()->s32
 {
-	return 0;
+    return 0
 }

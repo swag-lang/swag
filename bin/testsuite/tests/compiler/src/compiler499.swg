@@ -1,6 +1,4 @@
 
-
-
 #global testerror "Err0513"
 func T(a: ..., c: s32)
 {
@@ -9,5 +7,5 @@ func T(a: ..., c: s32)
 //#[Swag.PrintBc]
 #test
 {
-	T(0, 1)
+    T(0, 1)
 }

@@ -20,12 +20,11 @@ Or it can be a block, with an explicit `return`
     #ast
     {
         const INC = 5
-        return "cpt += " ++ INC   // Equivalent to 'cpt += 5'
+        return "cpt += " ++ INC // Equivalent to 'cpt += 5'
     }
 
     @assert(cpt == 7)
 }
-
 
 /**
 # Struct and enums
@@ -81,7 +80,8 @@ It works with generics too, and can be mixed with static declarations.
     func append(buf: ^u8, val: string)
     {
         var len = 0
-        while buf[len] do len += 1
+        while buf[len] do
+            len += 1
         @memcpy(buf + len, @dataof(val), cast(u64) @countof(val) + 1)
     }
 
@@ -142,11 +142,8 @@ struct(T) IsSet
     const value = 666
     return "const myGeneratedConst = " ++ value
 }
-
-/**
-But be aware that you must use `#placeholder` in case you are generating global symbols that can be used by something else in the code. This will tell Swag that *this symbol* will exist at some point, so please wait for it to *exist* before complaining.
-*/
-#placeholder myGeneratedConst   // Symbol `myGeneratedConst` will be generated
+#placeholder myGeneratedConst
+// Symbol `myGeneratedConst` will be generated
 
 /**
 Here for example, thanks to the `#placeholder`, the `#assert` will wait for the symbol `myGeneratedConst` to be replaced with its real content.

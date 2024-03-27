@@ -1,7 +1,7 @@
 struct Base
 {
-    x: s32 = 10
-    y: s32 = 20
+    x:     s32 = 10
+    y:     s32 = 20
 }
 
 struct AA

@@ -11,7 +11,7 @@ impl AA
 
     mtd opSlice(a, b: u64)->const [..] string
     {
-        return ["1", "2", "3" , "4"]
+        return ["1", "2", "3", "4"]
     }
 }
 
@@ -25,8 +25,8 @@ func toto()->AA
 #test
 {
     const X = #run toto()
-    let v = X[0]
-    let v1 = v
+    let v   = X[0]
+    let v1  = v
     @assert(v1 == "1")
     @assert(X[1] == "2")
     @assert(X[2] == "3")

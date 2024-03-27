@@ -9,7 +9,6 @@ impl A
 {
     func opDrop(using self)
     {
-        //@print("drop\n")
     }
 
     func opPostMove(using self)
@@ -19,7 +18,6 @@ impl A
 
     func opPostCopy(using self)
     {
-        //@assert(false)
     }
 }
 

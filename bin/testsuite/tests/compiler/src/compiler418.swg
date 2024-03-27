@@ -1,10 +1,8 @@
 
-
-
 //#[Swag.PrintBc]
-#global testerror "Err0104";
+#global testerror "Err0104"
 #test
 {
-	const d = 6;
-	d = 5;
+    const d = 6
+    d = 5
 }

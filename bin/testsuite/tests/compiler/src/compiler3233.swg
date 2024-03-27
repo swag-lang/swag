@@ -1,6 +1,10 @@
 //#global skip
-struct AA {}
-struct BB {}
+struct AA
+{
+}
+struct BB
+{
+}
 
 #[Swag.Inline]
 func(T) create1()

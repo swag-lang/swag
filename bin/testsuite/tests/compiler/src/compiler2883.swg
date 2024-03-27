@@ -8,5 +8,5 @@ func toto()
 
 #test
 {
-    toto(|x, y|)
+    toto(|x, y| )
 }

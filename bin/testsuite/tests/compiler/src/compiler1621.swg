@@ -10,6 +10,6 @@ func mac(stmt: code)
 {
     mac()
     {
-         return 1
+        return 1
     }
 }

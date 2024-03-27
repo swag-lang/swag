@@ -7,7 +7,7 @@ struct Toto1
 
 struct Toto2
 {
-    str: String
+    str:     String
     z, y, x: s32
 }
 
@@ -26,7 +26,7 @@ struct Toto2
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin
-    let x1 = try dec.readAll'Toto2(buf.toSlice())
+    let x1   = try dec.readAll'Toto2(buf.toSlice())
     defer Memory.delete(x1)
 
     //Console.print(dref x1)

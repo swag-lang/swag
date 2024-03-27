@@ -1,5 +1,15 @@
-enum A { R; G; B; }
-enum AA { R; G; B; }
+enum A
+{
+    R
+    G
+    B
+}
+enum AA
+{
+    R
+    G
+    B
+}
 
 #[Swag.Overload]
 func toto(x: AA)
@@ -10,9 +20,3 @@ func toto(x: AA)
 func toto(x: A)
 {
 }
-/*
-func titi()
-{
-    toto(.R)
-}
-*/

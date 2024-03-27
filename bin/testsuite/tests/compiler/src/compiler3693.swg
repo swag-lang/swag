@@ -1,6 +1,10 @@
 #global testerror "Err0058"
-func ReleaseDC() throw { }
-func GetFontData() throw { }
+func ReleaseDC() throw
+{
+    }
+func GetFontData() throw
+{
+    }
 
 //#[Swag.PrintBc]
 func getDataFromHFONT() throw

@@ -15,10 +15,4 @@ func isF32(t: typeinfo)->bool
     }
 
     toto()
-    /*struct(var T: isF32(T) = f32) Point
-    {
-        x, y: T
-    }
-
-    var pt: Point's32*/
 }

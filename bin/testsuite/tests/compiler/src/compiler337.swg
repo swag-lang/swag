@@ -1,12 +1,9 @@
 
-;
-
-#global testerror "Err0136";
+#global testerror "Err0136"
 //#[Swag.PrintBc]
 #test
 {
-	var a: [4, 6] s32;
+    var a: [4, 6] s32
     #[Swag.Safety("", true)]
-	a[4, 0] = 1;
-	//@print(a[0, 0]);
+    a[4, 0] = 1
 }

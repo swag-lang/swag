@@ -11,7 +11,8 @@ var G: s32
 {
     toto()
     {
-        let fn = func(){
+        let fn = func()
+        {
             G = 1
         }
         fn()

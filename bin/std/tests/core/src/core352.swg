@@ -1,6 +1,12 @@
 using Core, Core.Serialization
 
-enum ARGB { A; R; G; B; }
+enum ARGB
+{
+    A
+    R
+    G
+    B
+}
 
 struct Toto
 {
@@ -21,10 +27,8 @@ struct Toto
     //Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
-    let v = try rea.readAll'Toto(str.toSlice())
+    let v    = try rea.readAll'Toto(str.toSlice())
     defer Memory.delete(v)
 
     @assert(v.e == .R)
-
-    //Console.print(dref v, "\n")
 }

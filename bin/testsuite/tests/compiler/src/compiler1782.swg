@@ -1,9 +1,7 @@
-
 #global testerror "Err0136"
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
-#[Swag.Safety("", true)]
+#[Swag.Optim("", false), Swag.Safety("", true)]
 #test
 {
     let x = "toto"

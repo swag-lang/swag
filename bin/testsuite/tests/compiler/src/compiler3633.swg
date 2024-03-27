@@ -1,4 +1,6 @@
-struct Image {}
+struct Image
+{
+}
 
 impl Image
 {

@@ -1,5 +1,7 @@
 //#global skip
-struct ErrToto{}
+struct ErrToto
+{
+}
 
 func toto() throw
 {

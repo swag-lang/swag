@@ -1,11 +1,13 @@
 //#global skip
 interface I
 {
-    mtd call1()
-    mtd call()
+    mtd call1();
+    mtd call();
 }
 
-struct A {}
+struct A
+{
+}
 impl I for A
 {
     mtd impl call1() = @assert(false)

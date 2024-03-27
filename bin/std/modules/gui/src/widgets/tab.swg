@@ -390,7 +390,7 @@ internal impl Tab
             {
                 buttonPopup      = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.SortArrowDown), {})
                 buttonPopup.form = .Round
-                buttonPopup.sigPressed += closure|self|(btn )
+                buttonPopup.sigPressed += closure|self|(btn)
                 {
                     var rect = btn.getSurfaceRect()
                     self.showPopup(rect.x, rect.y + btn.position.height)

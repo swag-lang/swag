@@ -1,6 +1,8 @@
 #global testerror "Err0559"
 
-struct A {}
+struct A
+{
+}
 impl A
 {
     mtd opVisit()

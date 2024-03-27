@@ -1,7 +1,7 @@
 #test
 {
-    let x = 0'u8
-    let y = 255'u8
+    let x   = 0'u8
+    let y   = 255'u8
     var cpt = 0
     loop x to y do
         cpt += 1

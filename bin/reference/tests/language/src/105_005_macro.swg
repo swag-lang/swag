@@ -17,11 +17,11 @@ Unlike a mixin, a macro has its own scope, and cannot conflict with the function
     #[Swag.Macro]
     func myMacro()
     {
-        var a = 666    // 'a' is declared in the scope of 'myMacro'
+        var a = 666 // 'a' is declared in the scope of 'myMacro'
     }
 
     let a = 0
-    myMacro()   // no conflict with the 'a' declared above
+    myMacro() // no conflict with the 'a' declared above
     @assert(a == 0)
 }
 
@@ -37,8 +37,8 @@ But you can force an identifier to be found **outside** of the scope of the macr
     }
 
     var a = 0
-    myMacro()   // This will change the 'a' above
-    myMacro()   // This will change the 'a' above
+    myMacro() // This will change the 'a' above
+    myMacro() // This will change the 'a' above
     @assert(a == 2)
 }
 
@@ -55,7 +55,11 @@ Like a mixin, macro accepts `code` parameters.
 
     var a = 0
 
-    myMacro(#code { #up a += 1; } )
+    myMacro(#code
+    {
+        #up a += 1
+    }
+)
 
     myMacro()
     {
@@ -87,7 +91,7 @@ You can use `#macro` inside a macro to force the code after to be in the same sc
     var a = 1
     myMacro()
     {
-        a += 2  // will reference the 'a' above because this code has been inserted inside '#macro'
+        a += 2 // will reference the 'a' above because this code has been inserted inside '#macro'
     }
 
     @assert(a == 3)
@@ -115,10 +119,16 @@ You can extend the language with macros, without using pointers to functions (no
     }
 
     var a = 0
-    repeat(5) { a += index; }
-    @assert(a == 0+1+2+3+4)
-    repeat(3) { a += index; }
-    @assert(a == 10+3)
+    repeat(5)
+    {
+        a += index
+    }
+    @assert(a == 0 + 1 + 2 + 3 + 4)
+    repeat(3)
+    {
+        a += index
+    }
+    @assert(a == 10 + 3)
 }
 
 /**
@@ -129,7 +139,8 @@ When you need `break` in the user code to break outside of a multi loop.
     #[Swag.Macro]
     func repeatSquare(count: u32, what: code)
     {
-        #scope Up loop count
+        #scope Up
+        loop count
         {
             loop count
             {
@@ -177,13 +188,13 @@ In a macro, you can use special variables named `#alias<num>`. Note that this is
     // Use |name0, name1, ...| before the function call parameters
     call(|x| 20)
     {
-        @assert(x == 20)        // x is #alias0
-        @assert(#alias1 == 40)  // #alias1 is not renamed
+        @assert(x == 20) // x is #alias0
+        @assert(#alias1 == 40) // #alias1 is not renamed
     }
 
     call(|x, y| 20)
     {
-        @assert(x == 20)   // x is #alias0
-        @assert(y == 40)   // y is #alias1
+        @assert(x == 20) // x is #alias0
+        @assert(y == 40) // y is #alias1
     }
 }

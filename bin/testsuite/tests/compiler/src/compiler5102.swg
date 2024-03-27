@@ -1,5 +1,7 @@
 #global testerror "Err0393"
 
-struct A{}
+struct A
+{
+}
 
-attr toto(x: A);
+attr toto(x: A)

@@ -1,8 +1,9 @@
 #test
 {
-    if const a = 1 do
+    if var a = 1 do
         @assert(a == 1)
-    if const a = 1 {
+    if var a = 1
+    {
         @assert(a == 1)
     }
 

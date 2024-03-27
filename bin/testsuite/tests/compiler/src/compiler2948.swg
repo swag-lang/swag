@@ -1,6 +1,6 @@
 #global testerror "Err0040"
 
-enum Rgb: u32
+enum Rgb : u32
 {
     R = 0xFF000000
 }

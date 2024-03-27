@@ -5,5 +5,6 @@ func msg() => "msg"
 #test
 {
     var x = 1
-    #if false #do #error #run msg()
+    #if false #do
+        #error #run msg()
 }

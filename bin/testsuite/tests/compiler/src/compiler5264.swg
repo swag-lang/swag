@@ -1,7 +1,9 @@
 //#global testerror "Err0649"
 
 #[Swag.Overload]
-func toto(x: s32) {}
+func toto(x: s32)
+{
+}
 
 #test
 {

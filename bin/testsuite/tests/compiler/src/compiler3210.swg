@@ -1,5 +1,7 @@
 #global testerror "Err0649"
-struct A {}
+struct A
+{
+}
 struct B
 {
     using a: A

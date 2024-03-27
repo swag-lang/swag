@@ -1,15 +1,13 @@
-;
-;
-using Swag;
+using Swag
 
 #[ConstExpr]
-func main() -> s32
+func main()->s32
 {
-	//@print("toto\n");
-	return 666;
+    //@print("toto\n");
+    return 666
 }
 
 #run
 {
-	var r = main();
+    var r = main()
 }

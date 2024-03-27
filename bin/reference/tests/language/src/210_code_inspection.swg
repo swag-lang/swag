@@ -29,9 +29,15 @@ With the `Swag.CompilerMsgMask.SemFunctions` flag, for example, `#message` will 
 
 var G = 0
 
-func XXTestFunc1() {}
-func XXTestFunc2() {}
-func XXTestFunc3() {}
+func XXTestFunc1()
+{
+}
+func XXTestFunc2()
+{
+}
+func XXTestFunc3()
+{
+}
 
 /**
 The compiler will call the following function after the semantic pass. So after **all the functions** of the module have been parsed.

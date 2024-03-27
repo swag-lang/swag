@@ -1,12 +1,11 @@
 using Swag
 
 #[AttrMulti]
-attr NC();
+attr NC()
 
 #[NC, NC]
 func toto()
 {
-
 }
 
 #test

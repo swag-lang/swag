@@ -17,5 +17,5 @@ impl Color
 const C: Color = 12345678
 #test
 {
-    #assert(C.argb == 12345678)
+    #assert (C.argb == 12345678)
 }

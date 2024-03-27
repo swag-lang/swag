@@ -3,6 +3,7 @@
 #test
 {
     let a = 0
-    var f = closure|a|(){
+    var f = closure|a|()
+    {
     }
 }

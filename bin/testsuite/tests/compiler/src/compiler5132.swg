@@ -3,7 +3,7 @@ const A = 0
 
 interface I
 {
-    mtd toto()
+    mtd toto();
 }
 
 impl I for A

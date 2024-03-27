@@ -3,6 +3,8 @@
 
 #test
 {
-	var a: s32
-    if a {}
+    var a: s32
+    if a
+    {
+    }
 }

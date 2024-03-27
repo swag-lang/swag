@@ -1,7 +1,7 @@
 using Core
 
 const CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789)(*&^%$#@!"
-const LEN = 25'u64
+const LEN     = 25'u64
 
 #test
 {
@@ -15,6 +15,4 @@ const LEN = 25'u64
         let idx = rng.nextS32(0, @countof(CHARSET))
         password += CHARSET[idx]
     }
-
-    //Console.print(password)
 }

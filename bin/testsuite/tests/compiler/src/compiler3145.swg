@@ -1,8 +1,8 @@
 func toto()->const *u8
 {
-    let b = false
+    let b     = false
     var titi: const *u8
-    let x = b ? null : titi
+    let x     = b ? null : titi
     return x
 }
 

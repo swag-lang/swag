@@ -1,14 +1,17 @@
 #global testerror "Err0626"
 
-namespace A.B
+namespace A
 {
-	struct Random
-	{
-		x: s32
-	}
+    namespace B
+    {
+        struct Random
+        {
+            x: s32
+        }
 
-	struct Random
-	{
-		x: s32
-	}
+        struct Random
+        {
+            x: s32
+        }
+    }
 }

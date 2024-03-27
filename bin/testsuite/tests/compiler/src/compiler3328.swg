@@ -1,7 +1,8 @@
 #global testerror "Err0622"
 #test
 {
-    var a = #run {
+    var a = #run
+    {
         loop 1 do
             return
         return true

@@ -57,7 +57,7 @@ The `TypeInfo` structure contains a different enum value for each type.
 
     // This can be evaluated compile-time
     using Swag
-    #assert @typeof(*u8).kind       == TypeInfoKind.Pointer
+    #assert @typeof(*u8).kind == TypeInfoKind.Pointer
     #assert @typeof([1, 2, 3]).kind == TypeInfoKind.Array
     #assert @typeof({1, 2, 3}).kind == TypeInfoKind.Struct
 }

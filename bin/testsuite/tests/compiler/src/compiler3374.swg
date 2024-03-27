@@ -1,8 +1,9 @@
-struct A {}
+struct A
+{
+}
 impl A
 {
     #run
     {
-
     }
 }

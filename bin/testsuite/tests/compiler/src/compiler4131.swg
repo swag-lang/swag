@@ -7,5 +7,4 @@
 {
     let y = Swag.F32.Nan
     let x = @pow(y, 2)
-    //@print(x)
 }

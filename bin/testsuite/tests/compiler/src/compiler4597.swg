@@ -2,12 +2,16 @@
 
 interface I
 {
-    mtd toto()
+    mtd toto();
 }
 
-struct S {}
+struct S
+{
+}
 
 impl I for S
 {
-    mtd impl titi() {}
+    mtd impl titi()
+    {
+    }
 }

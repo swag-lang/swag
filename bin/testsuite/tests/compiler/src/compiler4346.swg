@@ -2,13 +2,13 @@
 
 struct(X1, Y1) Point
 {
-    x: X1
-    y: Y1
+    x:     X1
+    y:     Y1
 }
 
 impl Point
 {
-    mtd(X2, Y2) mixup(other: Point'(X2, Y2)) -> Point'(X1, Y2)
+    mtd(X2, Y2) mixup(other: Point'(X2, Y2))->Point'(X1, Y2)
     {
         return Point'(X1, Y2){x: self.x, y: other.y}
     }

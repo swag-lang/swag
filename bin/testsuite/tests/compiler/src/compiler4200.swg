@@ -1,7 +1,11 @@
 #global testerror "is invalid"
-struct B1666 {}
+struct B1666
+{
+}
 
-struct(T) A {}
+struct(T) A
+{
+}
 impl A
 {
     #[Swag.Inline]

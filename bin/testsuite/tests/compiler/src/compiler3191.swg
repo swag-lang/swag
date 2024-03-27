@@ -1,7 +1,7 @@
 #[Swag.Macro]
 public func(T) x3191() throw
 {
-}
+    }
 
 #test
 {

@@ -3,7 +3,7 @@ func itoa(result: ^u8, value: s64)->^u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
-    var ptr = result
+    var ptr      = result
     var orgValue = value
     loop
     {
@@ -26,15 +26,18 @@ func itoa(result: ^u8, value: s64)->^u8
     let retVal = ptr
 
     // Zero terminated
-    dref ptr = 0; ptr -= 1
+    dref ptr = 0
+    ptr -= 1
 
     // Invert result
     var ptr1 = result
     while ptr1 < ptr
     {
         let tmpChar = dref ptr
-        dref ptr  = dref ptr1; ptr -= 1
-        dref ptr1 = tmpChar; ptr1 += 1
+        dref ptr = dref ptr1
+        ptr -= 1
+        dref ptr1 = tmpChar
+        ptr1 += 1
     }
 
     return retVal
@@ -58,9 +61,10 @@ func ftoa(result: ^u8, value: f64)
         n += 1
     }
     else do
-        n = itoa(result, ipart);
+        n = itoa(result, ipart)
 
-    dref n = `.`'u8; n += 1
+    dref n = `.`'u8
+    n += 1
 
     var afterPoint = 5
     if fpart < 0 do
@@ -72,7 +76,8 @@ func ftoa(result: ^u8, value: f64)
     }
 
     ipart = cast(s64) fpart
-    if fpart - ipart > 0.5 do ipart += 1
+    if fpart - ipart > 0.5 do
+        ipart += 1
     itoa(n, ipart)
 }
 

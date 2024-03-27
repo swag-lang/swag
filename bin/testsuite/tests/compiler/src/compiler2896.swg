@@ -1,4 +1,5 @@
-struct A {
+struct A
+{
     x, y: s32
 }
 
@@ -6,5 +7,4 @@ struct A {
 {
     var x, y: A
     var ptrX = &x
-    //ptrX.0 = y
 }

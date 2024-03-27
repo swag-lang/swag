@@ -1,6 +1,6 @@
 interface I
 {
-    mtd toto()
+    mtd toto();
 }
 
 struct A

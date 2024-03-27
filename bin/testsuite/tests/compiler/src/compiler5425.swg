@@ -1,6 +1,8 @@
 #global testerror "Err0649"
 
-func toto(x: bool) {}
+func toto(x: bool)
+{
+}
 
 #test
 {

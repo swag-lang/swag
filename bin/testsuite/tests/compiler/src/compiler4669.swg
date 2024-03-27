@@ -1,20 +1,24 @@
 interface I
 {
-    mtd toto()
+    mtd toto();
 }
 
-struct A {}
+struct A
+{
+}
 impl I for A
 {
-    mtd impl toto(){}
+    mtd impl toto()
+    {
+    }
 }
 
 //#global testerror
 //#[Swag.PrintBc]
 #test
 {
-    const a = A{}
+    const a  = A{}
     const x: I = cast(I) a
-    var y: I
-    const z = x orelse y
+    var y:   I
+    const z  = x orelse y
 }

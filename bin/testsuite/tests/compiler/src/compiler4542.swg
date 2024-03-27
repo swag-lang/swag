@@ -17,5 +17,4 @@ func add(flags: &Flags, value: Flags)
 #test
 {
     var x: Flags
-    //x.add(.A)
 }

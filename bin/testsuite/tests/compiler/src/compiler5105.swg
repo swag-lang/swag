@@ -1,9 +1,11 @@
 #global testerror "Err0258"
 
-struct A {}
+struct A
+{
+}
 
 #test
 {
     var x: A
-    var y = x[0]
+    var y  = x[0]
 }

@@ -2,6 +2,6 @@
 #global testerror "Saf0019"
 #test
 {
-	var a = [0,1,2]
-	var b = a[-1]
+    var a = [0, 1, 2]
+    var b = a[-1]
 }

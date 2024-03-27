@@ -1,4 +1,4 @@
-enum A: const [..] s32
+enum A : const [..] s32
 {
     BB = null
 }

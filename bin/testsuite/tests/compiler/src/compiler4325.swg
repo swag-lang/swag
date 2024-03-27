@@ -1,9 +1,11 @@
 interface I
 {
-    mtd toto(x: s32 = 10)
+    mtd toto(x: s32 = 10);
 }
 
-struct A {}
+struct A
+{
+}
 
 var G = 0
 impl I for A
@@ -17,7 +19,7 @@ impl I for A
 #test
 {
     var a: A
-    let i = cast(I) a
+    let i  = cast(I) a
     i.toto()
     a.I.toto()
     @assert(G == 30)

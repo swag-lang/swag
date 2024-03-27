@@ -1,5 +1,4 @@
 
-
 //#[Swag.waitsem(100)]
 func toto(x: s32)
 {
@@ -8,15 +7,11 @@ func toto(x: s32)
 //#[Swag.PrintBc]
 #test
 {
-	using Swag
+    using Swag
 
-	let t = @typeof(toto)
+    let t = @typeof(toto)
 
-	let ptr = cast(const *TypeInfoFunc) t
-	@assert(@countof(ptr.parameters) == 1)
-	@assert(ptr.parameters[0].name == "x")
-
-	/*@print(ptr.base.name)
-	@print(" ")
-	@print(ptr.returnType.name)*/
+    let ptr = cast(const *TypeInfoFunc) t
+    @assert(@countof(ptr.parameters) == 1)
+    @assert(ptr.parameters[0].name == "x")
 }

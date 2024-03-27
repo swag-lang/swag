@@ -7,7 +7,6 @@ func toto(stmt: code)
     {
         #mixin stmt
         {
-
         }
     }
 }

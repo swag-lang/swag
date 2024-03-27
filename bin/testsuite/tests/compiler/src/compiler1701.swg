@@ -1,6 +1,6 @@
 interface Print
 {
-    func toto(self)->s32
+    func toto(self)->s32;
 }
 
 struct A

@@ -21,6 +21,4 @@ impl AA
     var ew = x.titi()
     @assert(x.x == 10)
     @assert(x.y == 10)
-    //@print(cast(f64) x.titi().a); @print("\n")
-    //@print(cast(f64) x.titi().b); @print("\n")
 }

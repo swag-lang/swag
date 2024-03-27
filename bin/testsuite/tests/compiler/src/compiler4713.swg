@@ -1,1 +1,6 @@
-enum RGB {R, G, B}
+enum RGB
+{
+    R
+    G
+    B
+}

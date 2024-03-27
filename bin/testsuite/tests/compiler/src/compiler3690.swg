@@ -1,4 +1,6 @@
-struct A {}
+struct A
+{
+}
 impl A
 {
     mtd toto()

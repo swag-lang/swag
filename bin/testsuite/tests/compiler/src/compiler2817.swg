@@ -1,4 +1,4 @@
-enum A: string
+enum A : string
 {
     R = "toto"
     G = "titi"

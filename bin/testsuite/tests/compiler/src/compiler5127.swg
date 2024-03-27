@@ -1,7 +1,11 @@
 #global testerror "Err0572"
 
-struct A {}
+struct A
+{
+}
 impl A
 {
-    func opDrop() {}
+    func opDrop()
+    {
+    }
 }

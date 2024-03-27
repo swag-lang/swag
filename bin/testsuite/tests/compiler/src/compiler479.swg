@@ -1,29 +1,27 @@
 
-
-
 var g = 0
 
 //#[Swag.PrintBc]
 #test
 {
-	g = 0
+    g = 0
 
-	var array = [1,2,3]
-	F(cast([..]s32) array, &T)
-	@assert(g == 6)
+    var array = [1, 2, 3]
+    F(cast([..] s32) array, &T)
+    @assert(g == 6)
 }
 
 func T(param: *s32)
 {
-	g += dref param
+    g += dref param
 }
 
 //#[Swag.PrintBc]
 func F(param: [..] s32, b: func(*s32))
 {
-	let data = @dataof(param)
-	loop(param)
-	{
-		b(data + #index)
-	}
+    let data = @dataof(param)
+    loop param
+    {
+        b(data + #index)
+    }
 }

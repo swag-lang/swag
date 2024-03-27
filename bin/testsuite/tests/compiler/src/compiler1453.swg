@@ -1,4 +1,3 @@
-
 #global testerror "Err0649"
 
 struct S

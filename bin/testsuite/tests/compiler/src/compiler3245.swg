@@ -6,6 +6,6 @@ impl Image
 {
     struct Decoder
     {
-        type:   const *Swag.TypeInfoStruct
+        type: const *Swag.TypeInfoStruct
     }
 }

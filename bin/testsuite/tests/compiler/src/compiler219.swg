@@ -1,13 +1,14 @@
-;
-;
-using Swag;
+using Swag
 
 #[ConstExpr]
-func main ()->s32 { return 555; }
+func main()->s32
+{
+    return 555
+}
 
-var v = main();
+var v = main()
 
 #run
 {
-	@assert(v == 555);
+    @assert(v == 555)
 }

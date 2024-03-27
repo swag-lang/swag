@@ -1,6 +1,5 @@
 public struct(T) C1925
 {
-
 }
 
 public struct TT1925

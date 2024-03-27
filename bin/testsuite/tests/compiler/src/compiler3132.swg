@@ -3,5 +3,5 @@
 #test
 {
     var str = "titi"
-    var x = @runes(str)
+    var x   = @runes(str)
 }

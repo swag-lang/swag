@@ -1,4 +1,6 @@
-struct(T) Array {}
+struct(T) Array
+{
+}
 
 struct(T) Toto
 {

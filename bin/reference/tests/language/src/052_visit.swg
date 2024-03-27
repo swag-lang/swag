@@ -11,9 +11,12 @@
         let a = #index
         switch a
         {
-        case 0: @assert(value == `A`)
-        case 1: @assert(value == `B`)
-        case 2: @assert(value == `C`)
+        case 0:
+            @assert(value == `A`)
+        case 1:
+            @assert(value == `B`)
+        case 2:
+            @assert(value == `C`)
         }
     }
 }
@@ -28,9 +31,12 @@ You can name both the **value** and the loop **index**, in that order.
         let a = index
         switch a
         {
-        case 0: @assert(value == `A`)
-        case 1: @assert(value == `B`)
-        case 2: @assert(value == `C`)
+        case 0:
+            @assert(value == `A`)
+        case 1:
+            @assert(value == `B`)
+        case 2:
+            @assert(value == `C`)
         }
     }
 }
@@ -42,13 +48,16 @@ Both names are optional. In that case, you can use `#alias0` and `#alias1`. `#al
 {
     visit "ABC"
     {
-        let a = #alias1    // This is the index
+        let a = #alias1 // This is the index
         @assert(a == #index)
         switch a
         {
-        case 0: @assert(#alias0 == `A`)
-        case 1: @assert(#alias0 == `B`)
-        case 2: @assert(#alias0 == `C`)
+        case 0:
+            @assert(#alias0 == `A`)
+        case 1:
+            @assert(#alias0 == `B`)
+        case 2:
+            @assert(#alias0 == `C`)
         }
     }
 }
@@ -66,9 +75,15 @@ You can visit in reverse order by adding the 'back' modifier.
         // '#index' is also available. It stores the loop index.
         switch cpt
         {
-        case 0: @assert(value == `C`); @assert(#index == 2)
-        case 1: @assert(value == `B`); @assert(#index == 1)
-        case 2: @assert(value == `A`); @assert(#index == 0)
+        case 0:
+            @assert(value == `C`)
+            @assert(#index == 2)
+        case 1:
+            @assert(value == `B`)
+            @assert(#index == 1)
+        case 2:
+            @assert(value == `A`)
+            @assert(#index == 0)
         }
 
         cpt += 1
@@ -86,7 +101,7 @@ You can visit arrays or slices.
     visit it: array do
         result += it
 
-    @assert(result == 10+20+30)
+    @assert(result == 10 + 20 + 30)
 }
 
 /**
@@ -100,7 +115,7 @@ Works also for multi dimensional arrays.
     visit it: array do
         result += it
 
-    @assert(result == 10+20+30+40)
+    @assert(result == 10 + 20 + 30 + 40)
 }
 
 /**
@@ -117,7 +132,7 @@ You can visit with a pointer to the value, and not the value itself, by adding `
         dref it = 555
     }
 
-    @assert(result == 1+2+3+4)
+    @assert(result == 1 + 2 + 3 + 4)
 
     @assert(array[0, 0] == 555)
     @assert(array[0, 1] == 555)

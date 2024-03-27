@@ -1,4 +1,3 @@
+#global testpass syntax
 
-#global testpass syntax;
-
-attr toto();
+attr toto()

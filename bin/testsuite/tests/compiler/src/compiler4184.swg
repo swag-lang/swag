@@ -1,9 +1,7 @@
 #global testerror "San0010"
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
-#[Swag.Safety("sanity", true)]
-#[Swag.Safety("overflow", true)]
+#[Swag.Optim("", false), Swag.Safety("sanity", true), Swag.Safety("overflow", true)]
 #test
 {
     var x = 1'u8

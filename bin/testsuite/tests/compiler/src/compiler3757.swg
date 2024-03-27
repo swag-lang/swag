@@ -1,4 +1,4 @@
 interface I
 {
-    func x(self)
+    func x(self);
 }

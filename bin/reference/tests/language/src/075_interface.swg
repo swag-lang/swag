@@ -1,9 +1,3 @@
-/**
-Interfaces are **virtual tables** (a list of function pointers) that can be associated to a struct.
-
-Unlike C++, the virtual table is not embedded with the struct. It is a separate object.
-You can then *implement* an interface for a given struct without changing the struct definition.
-*/
 
 struct Point2
 {
@@ -21,10 +15,8 @@ Here we declare an interface, with two functions `set` and `reset`.
 interface IReset
 {
     // The first parameter must be 'self'
-    func set(self, val: f32)
-
-    // You can also use the 'mtd' declaration to avoid specifying the 'self' yourself
-    mtd reset()
+    func set(self, val: f32);
+    mtd reset();
 }
 
 /**
@@ -38,7 +30,7 @@ impl IReset for Point2
     mtd impl set(val: f32)
     {
         x = val
-        y = val+1
+        y = val + 1
     }
 
     // Don't forget that 'mtd' is just syntaxic sugar. 'func' still works.
@@ -61,8 +53,8 @@ impl IReset for Point3
     mtd impl set(val: f32)
     {
         x = val
-        y = val+1
-        z = val+2
+        y = val + 1
+        z = val + 2
     }
 
     mtd impl reset()
@@ -84,13 +76,13 @@ We can then use these interfaces on either `Vector2` or `Vector3`.
     var itf = cast(IReset) pt2
     itf.set(10)
     @assert(pt2.x == 10)
-    @assert(pt2.y == 10+1)
+    @assert(pt2.y == 10 + 1)
 
     itf = cast(IReset) pt3
     itf.set(10)
     @assert(pt3.x == 10)
-    @assert(pt3.y == 10+1)
-    @assert(pt3.z == 10+2)
+    @assert(pt3.y == 10 + 1)
+    @assert(pt3.z == 10 + 2)
     itf.reset()
     @assert(pt3.x == 0 and pt3.y == 0)
 }
@@ -118,7 +110,7 @@ An interface is a real type, with a size equivalent to 2 pointers. A pointer to 
 {
     var pt2: Point2
     var pt3: Point3
-    var itf = cast(IReset) pt2
+    var itf  = cast(IReset) pt2
     #assert @sizeof(itf) == 2 * @sizeof(*void)
 
     // You can retrieve the concrete type associated with an interface instance with '@kindof'.

@@ -1,12 +1,10 @@
-;
-;
-using Swag;
+using Swag
 
 enum T : s16
 {
-	X = -2;
-	Y;
+    X = -2
+    Y
 }
 
-#assert T.X == -2;
-#assert T.Y == -1;
+#assert T.X == -2
+#assert T.Y == -1

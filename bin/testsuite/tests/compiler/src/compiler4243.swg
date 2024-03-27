@@ -8,5 +8,4 @@ func titi(ptr: ...)
 #test
 {
     titi(#location)
-    //var x = toto("y")
 }

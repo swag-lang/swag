@@ -1,6 +1,5 @@
 var g = 55
 
-
 struct A
 {
     a: string

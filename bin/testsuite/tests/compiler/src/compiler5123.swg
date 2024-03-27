@@ -1,6 +1,8 @@
 #global testerror "Err0341"
 
-struct A {}
+struct A
+{
+}
 
 #test
 {

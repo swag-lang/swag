@@ -1,6 +1,13 @@
-enum RGB { R; G; B; }
+enum RGB
+{
+    R
+    G
+    B
+}
 
-struct A {}
+struct A
+{
+}
 impl A
 {
     mtd toto(rgb: RGB)

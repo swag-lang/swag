@@ -1,6 +1,6 @@
 interface I
 {
-    func op(self)
+    func op(self);
 }
 
 //#[Swag.PrintBc]

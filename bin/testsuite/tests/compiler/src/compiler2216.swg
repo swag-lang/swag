@@ -1,4 +1,3 @@
-
 #global testerror "Err0747"
 
 #[Swag.Inline]

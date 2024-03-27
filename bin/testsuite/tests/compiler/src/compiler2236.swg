@@ -8,7 +8,10 @@ func toto(x: Pt)
     @assert(x.x == 555)
 }
 
-func offset()->s64 { return 555; }
+func offset()->s64
+{
+    return 555
+}
 
 #test
 {

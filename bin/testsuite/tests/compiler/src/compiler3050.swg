@@ -1,11 +1,22 @@
 var G: s32
 
-struct XX {}
+struct XX
+{
+}
 impl XX
 {
-    mtd opDrop() { G += 1; }
-    mtd opPostCopy() {G += 1; }
-    mtd opPostMove() {G += 1; }
+    mtd opDrop()
+    {
+        G += 1
+    }
+    mtd opPostCopy()
+    {
+        G += 1
+    }
+    mtd opPostMove()
+    {
+        G += 1
+    }
 }
 
 struct(T: const [..] typeinfo) Variant
@@ -50,6 +61,6 @@ impl Variant
 
 #test
 {
-    var v: Variant'([XX])
+    var v:  Variant'([XX])
     var v1: Variant'([string])
 }

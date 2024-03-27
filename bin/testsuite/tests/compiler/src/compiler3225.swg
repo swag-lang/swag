@@ -17,6 +17,4 @@ struct C
 {
     var v: C
     @assert(v.b.a.x == 1.0)
-    //var v: B
-    //@print(v.a.x)
 }

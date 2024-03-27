@@ -1,16 +1,15 @@
-struct(T /*= bool*/) Random
+struct(T) Random
 {
 }
 
 impl Random
 {
-	func nextS64(using self)->u64 => nextU64(self)
-	func nextU64(using self)->u64 => 1
+    func nextS64(using self)->u64 => nextU64(self)
+    func nextU64(using self)->u64 => 1
 }
-
 
 #test
 {
-	var rng: Random'bool
-	var r = rng.nextS64()
+    var rng: Random'bool
+    var r    = rng.nextS64()
 }

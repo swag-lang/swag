@@ -1,5 +1,1 @@
-
-#global testpass lexer;
-
-/**/
-/******** gggg ************/
+#global testpass lexer

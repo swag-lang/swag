@@ -1,14 +1,16 @@
 func toto8(s: string, x: s8...)->s8
 {
     var total = 0's8
-    visit c: x do total += c
+    visit c: x do
+        total += c
     return total
 }
 
 func toto16(s: string, x: s16...)->s16
 {
     var total = 0's16
-    visit c: x do total += c
+    visit c: x do
+        total += c
     return total
 }
 

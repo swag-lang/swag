@@ -1,5 +1,7 @@
 //#global skip
-struct(T) Arr {}
+struct(T) Arr
+{
+}
 
 struct N
 {

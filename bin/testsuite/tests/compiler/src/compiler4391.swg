@@ -1,9 +1,13 @@
 #global testerror "Err0649"
 
-struct(T) A {}
+struct(T) A
+{
+}
 impl A
 {
-    mtd toto(x: const [..] T) {}
+    mtd toto(x: const [..] T)
+    {
+    }
 }
 
 #test

@@ -1,6 +1,6 @@
 interface IPrintable
 {
-	func print(self)
+    func print(self);
 }
 
 struct TITI
@@ -17,7 +17,6 @@ impl IPrintable for TITI
     {
         @assert(val == 666)
         G = 555
-        //@print("TITI\n")
     }
 }
 
@@ -32,7 +31,7 @@ func printWhatever(_itf: *IPrintable)
 {
     G = 0
     var titi: TITI
-    var itf: IPrintable
+    var itf:  IPrintable
     itf = titi
     printWhatever(&itf)
     @assert(G == 555)

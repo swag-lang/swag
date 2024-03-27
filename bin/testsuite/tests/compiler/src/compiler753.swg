@@ -1,10 +1,10 @@
 #global testerror "Err0024"
 func toto()
 {
-	toto()
+    toto()
 }
 
 #test
 {
-	toto()
+    toto()
 }

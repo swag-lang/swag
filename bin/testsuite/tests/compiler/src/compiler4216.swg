@@ -1,5 +1,7 @@
 //#global skip
-struct AA {}
+struct AA
+{
+}
 
 impl AA
 {
@@ -10,12 +12,15 @@ impl AA
 #test
 {
     var x: AA
-    var G = 0
+    var G  = 0
 
     switch x
     {
-    case 6:  G = 1; break
-    default: @assert(false)
+    case 6:
+        G = 1
+        break
+    default:
+        @assert(false)
     }
 
     @assert(G == 1)

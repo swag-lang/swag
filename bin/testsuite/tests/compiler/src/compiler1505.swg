@@ -2,7 +2,6 @@
 func set(x: string)
 {
     @assert(x == "inside function set")
-    //@print(x)
 }
 
 //#[Swag.PrintBc]

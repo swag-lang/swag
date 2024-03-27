@@ -7,8 +7,8 @@ enum TOTO : s64
 
 #test
 {
-    var x = TOTO.A
-    var y = TOTO.B
+    var x   = TOTO.A
+    var y   = TOTO.B
     let ptr = &x
     y = acast dref ptr
 }

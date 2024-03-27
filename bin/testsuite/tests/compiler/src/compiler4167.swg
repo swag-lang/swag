@@ -1,6 +1,5 @@
 //#[Swag.PrintBc]
-#[Swag.Safety("sanity", true)]
-#[Swag.Warn("Wrn0003", Swag.WarnLevel.Disable)]
+#[Swag.Safety("sanity", true), Swag.Warn("Wrn0003", Swag.WarnLevel.Disable)]
 func toto()
 {
     var a: [4] s32

@@ -1,7 +1,7 @@
 struct TOTO
 {
-	print: func(self, bool)
-    CPT: s32 = 666
+    print:     func(*TOTO, bool)
+    CPT:       s32 = 666
 }
 
 var G: bool

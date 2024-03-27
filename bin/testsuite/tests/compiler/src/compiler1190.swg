@@ -2,8 +2,8 @@
 
 struct Color
 {
-    a: u32
-    b: u32
+    a:     u32
+    b:     u32
 }
 
 impl Color
@@ -18,5 +18,4 @@ impl Color
 {
     var c: Color
     c.toto(0xFFFFFFFF)
-    //@assert(c.a == 0xFFFFFFFF)
 }

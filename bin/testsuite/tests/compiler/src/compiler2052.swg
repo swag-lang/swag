@@ -11,7 +11,7 @@ func toto(x: any)
 //#[Swag.PrintBc]
 #test
 {
-    var arr: [] s32 = [1,2,3,4]
-    let x: [..] s32 = arr
+    var arr: [] s32 = [1, 2, 3, 4]
+    let x:   [..] s32 = arr
     toto(x)
 }

@@ -1,6 +1,6 @@
 interface TOTO
 {
-	func print(self, b: bool)
+    func print(self, b: bool);
 }
 
 struct TITI
@@ -10,9 +10,9 @@ struct TITI
 
 struct TATA
 {
-    val: string = "TATA"
-    val1: string = "TATA"
-    val2: string = "TATA"
+    val:      string = "TATA"
+    val1:     string = "TATA"
+    val2:     string = "TATA"
 }
 
 var G = 0

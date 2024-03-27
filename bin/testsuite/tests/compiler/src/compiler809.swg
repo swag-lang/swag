@@ -1,9 +1,8 @@
 
-
 struct Point
 {
-	x: s32
-	y: s32
+    x:     s32
+    y:     s32
 }
 
 var pt: Point
@@ -11,9 +10,9 @@ var pt: Point
 //#[Swag.PrintBc]
 #test
 {
-	using pt
-	x = 10
-	y = 20
-	@assert(pt.x == 10)
-	@assert(pt.y == 20)
+    using pt
+    x = 10
+    y = 20
+    @assert(pt.x == 10)
+    @assert(pt.y == 20)
 }

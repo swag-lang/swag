@@ -1,6 +1,5 @@
 struct(T) A
 {
-
 }
 
 impl A

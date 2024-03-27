@@ -15,14 +15,12 @@ struct(T) X
 
 struct Y
 {
-
 }
 
 impl Y
 {
     func toto(using self)
     {
-
     }
 }
 
@@ -34,5 +32,4 @@ impl Y
     x.buffer = cast(^Y) &y
     //x.buffer[0].toto()
     Y.toto(x.buffer[0])
-    //x.titi()
 }

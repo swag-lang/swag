@@ -8,7 +8,7 @@ The loop expression value is evaluated **once**, and must be a **positive value*
 #test
 {
     var cpt = 0
-    loop 10 do // Loops 10 times
+    loop 10 do
         cpt += 1
     @assert(cpt == 10)
 }
@@ -24,7 +24,7 @@ The intrinsic `#index` returns the current index of the loop, starting at 0.
         cpt += #index
     }
 
-    @assert(cpt == 0+1+2+3+4)
+    @assert(cpt == 0 + 1 + 2 + 3 + 4)
 }
 
 /**
@@ -32,19 +32,18 @@ But you can name that index if you want.
 */
 #test
 {
-    var cpt = 0
+    var cpt  = 0
     var cpt1 = 0
 
-    loop i: 5   // index is named 'i'
+    loop i: 5 // index is named 'i'
     {
-        cpt  += i
-        cpt1 += #index  // #index is always available, even when named
+        cpt += i
+        cpt1 += #index // #index is always available, even when named
     }
 
-    @assert(cpt  == 0+1+2+3+4)
+    @assert(cpt == 0 + 1 + 2 + 3 + 4)
     @assert(cpt1 == cpt)
 }
-
 
 /**
 `loop` can be used on every types that accept the `@countof` intrinsic. So you can loop on a slice, an array, a string... and we'll see later, even on a struct.
@@ -55,9 +54,9 @@ But you can name that index if you want.
     #assert @countof(arr) == 4
 
     var cpt = 0
-    loop arr do     // The array contains 4 elements, so the loop count is 4
+    loop arr do
         cpt += arr[#index]
-    @assert(cpt == 10+20+30+40)
+    @assert(cpt == 10 + 20 + 30 + 40)
 }
 
 /**
@@ -84,9 +83,12 @@ You can loop in reverse order by adding the modifier `back` just after the `loop
     // Index will be 2, 1 and then 0.
     loop,back 3
     {
-        if   cpt == 0 do @assert(#index == 2)
-        elif cpt == 1 do @assert(#index == 1)
-        elif cpt == 2 do @assert(#index == 0)
+        if cpt == 0 do
+            @assert(#index == 2)
+        elif cpt == 1 do
+            @assert(#index == 1)
+        elif cpt == 2 do
+            @assert(#index == 0)
 
         cpt += 1
     }
@@ -122,7 +124,7 @@ You can force to return to the loop evaluation with `continue`.
     loop x: 10
     {
         if x == 5 do
-            continue // Do not count 5
+            continue
         cpt += 1
     }
 
@@ -140,8 +142,8 @@ You can add 'to' to loop from a given value *to* a given value. Note that the ra
 #test
 {
     var count = 0
-    var sum = 0
-    loop i: -1 to 1   // loop from -1 to 1, all included
+    var sum   = 0
+    loop i: -1 to 1 // loop from -1 to 1, all included
     {
         count += 1
         sum += i
@@ -163,7 +165,7 @@ You can exclude the last value with by using 'until' instead of 'to'.
         cpt += i
     }
 
-    @assert(cpt == 1+2)
+    @assert(cpt == 1 + 2)
 }
 
 /**
@@ -195,7 +197,7 @@ A loop without an expression but with a block is infinite. This is equivalent to
 {
     loop
     {
-        if #index == 4 do // #index is still valid in that case (but cannot be renamed)
+        if #index == 4 do
             break
     }
 }

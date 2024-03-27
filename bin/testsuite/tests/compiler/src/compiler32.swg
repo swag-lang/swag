@@ -1,2 +1,1 @@
-﻿
-#global testpass lexer;
+#global testpass lexer

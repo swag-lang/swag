@@ -1,22 +1,22 @@
 const TOTO = false
 #if TOTO
 {
-	#if TOTO
-	{
-		func toto()
-		{
-			@assert(false)
-		}
-	}
+    #if TOTO
+    {
+        func toto()
+        {
+            @assert(false)
+        }
+    }
 }
 #else
 {
-	func toto()
-	{
-	}
+    func toto()
+    {
+    }
 }
 
 #test
 {
-	toto()
+    toto()
 }

@@ -1,6 +1,12 @@
-struct Err{}
+struct Err
+{
+}
 
-func titi()->s32 throw { throw Err{}; return 0; }
+func titi()->s32 throw
+{
+    throw Err{}
+    return 0
+}
 
 #[Swag.Inline]
 func toto()->s32 throw => titi()

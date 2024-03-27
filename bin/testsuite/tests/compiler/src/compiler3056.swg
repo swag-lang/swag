@@ -6,7 +6,9 @@ struct Toto
 
 impl Toto
 {
-    func titi() {}
+    func titi()
+    {
+    }
 }
 
 #test

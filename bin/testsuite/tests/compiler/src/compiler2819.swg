@@ -4,5 +4,4 @@
 #[Swag.Inline]
 func toto()
 {
-
 }

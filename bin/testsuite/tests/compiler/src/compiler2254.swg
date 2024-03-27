@@ -12,7 +12,6 @@ impl B
 {
     func opDrop(using self)
     {
-        //@print("drop")
     }
 }
 

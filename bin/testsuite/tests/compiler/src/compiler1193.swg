@@ -2,14 +2,10 @@ const A = false
 
 enum E
 {
-    #if A
-    {
+    #if A #do
         RED
-    }
-    #else
-    {
+    #else #do
         GREEN
-    }
 }
 
 #test

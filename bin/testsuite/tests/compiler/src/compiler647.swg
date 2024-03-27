@@ -2,11 +2,11 @@
 
 struct(T) Point
 {
-	x: T = 6
+    x: T = 6
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	var pt: Point'bool
+    var pt: Point'bool
 }

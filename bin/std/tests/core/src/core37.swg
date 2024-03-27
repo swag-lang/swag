@@ -14,8 +14,6 @@ using Core.Input
         var mv = k.getMove()
         if mv.x > 0
         {
-            //@print(cast(s64) mv.y)
-            //@print("\n")
         }
     }
 }

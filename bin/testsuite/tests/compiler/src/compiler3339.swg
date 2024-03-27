@@ -8,6 +8,5 @@ impl AA
 {
     mtd opCMP1()
     {
-
     }
 }

@@ -8,8 +8,13 @@ struct B
     a: *A
 }
 
-enum RGB { R; }
-func toto(rgb: RGB) {}
+enum RGB
+{
+    R
+}
+func toto(rgb: RGB)
+{
+}
 
 #test
 {

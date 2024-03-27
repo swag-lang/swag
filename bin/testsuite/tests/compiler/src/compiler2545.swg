@@ -1,5 +1,7 @@
 using Swag
-struct ErrToto{}
+struct ErrToto
+{
+}
 
 #[Inline]
 func toto()->[2] s32 throw

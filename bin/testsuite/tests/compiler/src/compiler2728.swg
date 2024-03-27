@@ -3,5 +3,4 @@
 #[Swag.Discardable]
 func toto()
 {
-
 }

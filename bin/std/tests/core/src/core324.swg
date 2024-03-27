@@ -1,3 +1,5 @@
 using Core
 
-func(T) toto(x: Array'T) {}
+func(T) toto(x: Array'T)
+{
+}

@@ -1,6 +1,4 @@
-;
-;
 
-func main (argv = true)
+func main(argv = true)
 {
 }

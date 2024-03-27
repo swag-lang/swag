@@ -21,6 +21,4 @@ impl BB
 #test
 {
     var x: BB'AA
-    /*var y: AA
-    x[0] = y*/
 }

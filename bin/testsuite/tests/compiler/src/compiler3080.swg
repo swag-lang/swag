@@ -1,6 +1,6 @@
 interface AA
 {
-    func toto(self)
+    func toto(self);
 }
 
 struct BB
@@ -25,7 +25,7 @@ impl AA for BB
 #test
 {
     var v: BB
-    let i = cast(AA) v
+    let i  = cast(AA) v
     i.toto()
     @assert(G == 666)
 }

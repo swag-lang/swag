@@ -1,8 +1,8 @@
 typealias MyType = s32
 
-enum E: MyType
+enum E : MyType
 {
-    R;
+    R
 }
 
 #test

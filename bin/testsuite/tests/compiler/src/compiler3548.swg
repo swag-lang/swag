@@ -1,7 +1,7 @@
 #global testerror "Err0649"
 
 //#[Swag.Incomplete]
-enum RGB: const [..] s32
+enum RGB : const [..] s32
 {
     R = [0, 1]
     G = [1, 0]

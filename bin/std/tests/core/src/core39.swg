@@ -1,4 +1,3 @@
-
 using Core.Input
 
 #test
@@ -16,9 +15,9 @@ using Core.Input
             @print("down\n")
         if k.isButtonJustPressed(GamePadButton.RightThumbstickUp) do
             @print("up\n")
-		if k.isButtonJustPressed(GamePadButton.RightThumbstickLeft) do
+        if k.isButtonJustPressed(GamePadButton.RightThumbstickLeft) do
             @print("left\n")
-		if k.isButtonJustPressed(GamePadButton.RightThumbstickRight) do
+        if k.isButtonJustPressed(GamePadButton.RightThumbstickRight) do
             @print("right\n")
     }
 }

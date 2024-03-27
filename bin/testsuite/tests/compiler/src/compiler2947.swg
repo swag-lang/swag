@@ -1,6 +1,6 @@
 #global testerror "Err0040"
 
-enum Rgb: u32
+enum Rgb : u32
 {
     R = 0xFF000000
 }
@@ -20,11 +20,3 @@ struct AA
 {
     x: Color = Rgb.R
 }
-/*
-//var xx: Color = Rgb.R
-
-#[Swag.PrintBc]
-#test
-{
-    var e: AA
-}*/

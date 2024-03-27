@@ -1,5 +1,7 @@
 //#global testerror
-struct ErrTiti{}
+struct ErrTiti
+{
+}
 
 func toto() throw
 {
@@ -9,7 +11,8 @@ func toto() throw
 func titi() throw
 {
     catch toto()
-    if @err() != null do throw ErrTiti{}
+    if @err() != null do
+        throw ErrTiti{}
 }
 
 #test

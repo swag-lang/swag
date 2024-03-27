@@ -1,4 +1,6 @@
-struct A {}
+struct A
+{
+}
 
 func toto(y: any, what: typeinfo)->bool
 {

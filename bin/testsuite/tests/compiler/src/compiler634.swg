@@ -5,5 +5,5 @@ struct(T) Point
 
 #test
 {
-	var x: Point
+    var x: Point
 }

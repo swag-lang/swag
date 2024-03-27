@@ -6,7 +6,6 @@ using Core, Libc
     discard time(&timer)
 
     let ptr = ctime(&timer)
-    let a = strlen(ptr)
+    let a   = strlen(ptr)
     @assert(a > 0)
-    //Console.print(@mkstring(ptr, a))
 }

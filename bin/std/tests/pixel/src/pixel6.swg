@@ -2,21 +2,21 @@ using Core, Pixel, Core.Threading
 
 struct TH
 {
-    using base: Thread
-    filename:   String
+    using base:     Thread
+    filename:       String
 }
 
 func entry(th: Thread)
 {
     var param = cast(const *TH) &th
-    var img = assume Image.load(param.filename)
+    var img   = assume Image.load(param.filename)
 }
 
 //#[Swag.PrintBc]
 #test
 {
     var pathName = dataPath()
-    var files = try Directory.enumerateFiles(pathName)
+    var files    = try Directory.enumerateFiles(pathName)
 
     var ths: Array'TH
     ths.resize(files.count)

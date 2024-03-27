@@ -3,7 +3,6 @@
 
 func(T) max(a, b: T)
 {
-    //@print(@typeof(T).name)
 }
 
 #test

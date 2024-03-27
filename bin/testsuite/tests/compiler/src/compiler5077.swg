@@ -1,4 +1,8 @@
 #global testerror "Err0399"
-namespace A {}
+namespace A
+{
+}
 
-func toto()->A {}
+func toto()->A
+{
+}

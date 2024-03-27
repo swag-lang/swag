@@ -1,7 +1,11 @@
 #[Swag.Overload]
-func toto(x: s32) {}
+func toto(x: s32)
+{
+}
 #[Swag.Overload]
-func toto(y: s8) {}
+func toto(y: s8)
+{
+}
 
 #test
 {

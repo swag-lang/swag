@@ -1,11 +1,11 @@
-﻿
 using Core
 
 #[Swag.ConstExpr]
 func toto(rep: u32)->String
 {
     var result: retval
-    loop rep do result += "X"
+    loop rep do
+        result += "X"
     return result
 }
 

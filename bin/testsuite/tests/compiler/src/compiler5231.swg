@@ -1,11 +1,21 @@
-struct A { x, y: s32; }
-struct B { x, y: s32; }
+struct A
+{
+    x, y: s32
+}
+struct B
+{
+    x, y: s32
+}
 
-struct(T) Array {}
+struct(T) Array
+{
+}
 
 impl Array
 {
-    mtd toto(x: T){}
+    mtd toto(x: T)
+    {
+    }
 }
 
 #test

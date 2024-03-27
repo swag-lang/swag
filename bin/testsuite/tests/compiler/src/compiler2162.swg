@@ -9,7 +9,6 @@ impl A
 {
     func opDrop(self)
     {
-        //@print("drop\n")
     }
 
     func opPostMove(self)
@@ -25,7 +24,7 @@ impl A
 }
 
 //#[Swag.PrintBc]
-func toto() -> {a:A, b:bool}
+func toto()->{a: A, b: bool}
 {
     var x: A
     x.x = 555

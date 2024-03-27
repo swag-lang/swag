@@ -6,7 +6,9 @@ struct Vector
 
 impl Vector
 {
-    mtd opDrop() {}
+    mtd opDrop()
+    {
+    }
 }
 
 //#[Swag.PrintBc, Swag.Optim("", false)]

@@ -35,7 +35,7 @@ func parse(st: *TT, args: const [..] string)->Defined
 //#[Swag.PrintBc]
 #run
 {
-    var x: TT
+    var x:     TT
     var params = ["_f32", "3.14"]
-    var a = parse(&x, params)
+    var a      = parse(&x, params)
 }

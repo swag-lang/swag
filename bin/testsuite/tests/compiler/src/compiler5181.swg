@@ -1,8 +1,8 @@
 #global testerror "Err0119"
 
-enum E: f32
+enum E : f32
 {
-    FailedToLoad = 1.1
+    FailedToLoad  = 1.1
     FailedToLoad1 = 1.2
 }
 
@@ -10,8 +10,9 @@ enum E: f32
 {
     let x = E.FailedToLoad
     #[Swag.Complete]
-    switch(x)
+    switch x
     {
-    case FailedToLoad: break
+    case FailedToLoad:
+        break
     }
 }

@@ -34,7 +34,4 @@ struct(T) C
 {
     var v: C's32
     v.toto()
-    /*visit v
-    {
-    }*/
 }

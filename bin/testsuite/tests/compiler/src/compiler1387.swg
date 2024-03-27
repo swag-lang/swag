@@ -1,5 +1,7 @@
 //#[Swag.PrintBc]
 #run
 {
-    while(false){}
+    while false
+    {
+    }
 }

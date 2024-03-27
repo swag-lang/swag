@@ -7,7 +7,10 @@ var G = 0
 
 #test
 {
-    let x: B = closure||(a) { G += a; }
+    let x: B = closure||(a)
+    {
+        G += a
+    }
     x(1)
     @assert(G == 1)
 }

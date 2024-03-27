@@ -4,11 +4,13 @@ func toto(x: string...)
     {
         switch i
         {
-            case 0: @assert(str == "a")
-            case 1: @assert(str == "bb")
-            case 2: @assert(str == "ccc")
+        case 0:
+            @assert(str == "a")
+        case 1:
+            @assert(str == "bb")
+        case 2:
+            @assert(str == "ccc")
         }
-        //@print(str)
     }
 }
 

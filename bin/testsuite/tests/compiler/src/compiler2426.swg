@@ -9,12 +9,12 @@ func print(f: string)
         return true
     }
 {
-
 }
 
 #test
 {
     print("tt()")
     print("tt1()")
-    if @isbytecode() do @assert(G == 2)
+    if @isbytecode() do
+        @assert(G == 2)
 }

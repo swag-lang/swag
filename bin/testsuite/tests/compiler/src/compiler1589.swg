@@ -1,6 +1,5 @@
 struct BABA
 {
-
 }
 
 struct(T) Array
@@ -18,7 +17,7 @@ impl Array
 
 #test
 {
-    var arr: Array'BABA
+    var arr:   Array'BABA
     var value: BABA
     arr.emplace(&value)
 }

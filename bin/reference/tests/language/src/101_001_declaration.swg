@@ -52,7 +52,11 @@ func sum3(x, y = 0.0)
     #assert @typeof(y) == f32
 }
 
-enum Values { A; B; }
+enum Values
+{
+    A
+    B
+}
 #[Swag.Overload]
 func toto(x: s32, y = Values.A)
 {
@@ -102,7 +106,7 @@ An **anonymous struct** can be used to return multiple values in a function.
 */
 #test
 {
-    func myFunction() -> {x, y: f32}
+    func myFunction()->{x, y: f32}
     {
         return {1.0, 2.0}
     }
@@ -122,15 +126,13 @@ An **anonymous struct** can be used to return multiple values in a function.
 
 #test
 {
-    func returns2() -> {x: s32, y: s32}
+    func returns2()->{x: s32, y: s32}
     {
         // You can return a tuple literal as long as the types match
         if false do
             return {1, 2}
-
-        // Or use the specifal type 'retval' which is an typealias to the
-        // function return type (but not only, we'll see later)
-        using var result: retval
+        var result: retval
+        using result
         x = 1
         y = 2
         return result

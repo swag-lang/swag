@@ -1,10 +1,13 @@
 #global testerror "Err0535"
 
-struct Pt { x, y: f32; }
+struct Pt
+{
+    x, y: f32
+}
 
 interface I
 {
-    mtd toto(y: Pt)
+    mtd toto(y: Pt);
 }
 
 struct A
@@ -35,7 +38,7 @@ impl I for B
 #test
 {
     var b: B
-    var i = cast(I) b
+    var i  = cast(I) b
 
     var pt: Pt
     i.toto(pt)

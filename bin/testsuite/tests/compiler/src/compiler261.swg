@@ -1,9 +1,8 @@
-#global testerror "Err0578";
-;
-using Swag;
+#global testerror "Err0578"
+using Swag
 
-func main ()->s32
+func main()->s32
 {
-	if(true) do
-		return 0;
+    if true do
+        return 0
 }

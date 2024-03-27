@@ -7,7 +7,6 @@ using Core, Core.Random
     loop 10
     {
         var x = rng.nextU64()
-        //@print(x, "\n")
     }
 
     var s: [4] u64
@@ -19,11 +18,9 @@ using Core, Core.Random
     loop 10
     {
         var x = rng.nextU64()
-        //@print(x, "\n")
     }
 
     var rng1: Rng'Mt64
     rng1.seedU32(Time.nowMilliseconds())
     var x = rng1.nextU32()
-    //@print(x)
 }

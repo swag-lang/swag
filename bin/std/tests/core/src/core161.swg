@@ -1,4 +1,3 @@
-
 using Core
 
 //#[Swag.PrintBc]
@@ -6,5 +5,4 @@ using Core
 {
     var loc = #location
     var res = catch File.readAllBytes(loc.fileName)
-    //Console.print("%", res.item0)
 }

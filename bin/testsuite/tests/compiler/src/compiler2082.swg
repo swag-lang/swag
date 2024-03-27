@@ -2,11 +2,10 @@ struct AA
 {
 }
 
-
 #[Swag.Inline]
 func toto()->AA
 {
-    return AA{};
+    return AA{}
 }
 
 //#[Swag.PrintBc]

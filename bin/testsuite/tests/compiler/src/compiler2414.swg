@@ -2,10 +2,10 @@ var G = 0
 
 //#[Swag.PrintBc]
 func(T) toto(v: T)
-#validif
-{
-    return @typeof(T) == f32
-}
+    #validif
+    {
+        return @typeof(T) == f32
+    }
 {
     #assert @typeof(T) == f32
     G += 1
@@ -19,6 +19,4 @@ func(T) toto(v: T)
 #test
 {
     toto'f32(1.0)
-    //toto's32(1)
-    //@assert(G == 3)
 }

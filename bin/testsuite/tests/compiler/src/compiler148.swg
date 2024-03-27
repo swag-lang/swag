@@ -1,16 +1,24 @@
-#global testerror "Err0613";
+#global testerror "Err0613"
 
 #[Swag.Overload]
-func main (){}
+func main()
+{
+}
 #[Swag.Overload]
-func main (b: bool){}
+func main(b: bool)
+{
+}
 
 #run
 {
-	main(1, 2);
+    main(1, 2)
 }
 
 #[Swag.Overload]
-func main1 (b: bool, b1: bool){}
+func main1(b: bool, b1: bool)
+{
+}
 #[Swag.Overload]
-func main1 (b: string, b1: string){}
+func main1(b: string, b1: string)
+{
+}

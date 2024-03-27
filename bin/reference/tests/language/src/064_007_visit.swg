@@ -1,8 +1,8 @@
 struct MyStruct
 {
-    x: s32 = 10
-    y: s32 = 20
-    z: s32 = 30
+    x:     s32 = 10
+    y:     s32 = 20
+    z:     s32 = 30
 }
 
 /**
@@ -22,11 +22,13 @@ impl MyStruct
     {
         // 'ptr' is a generic parameter that tells if we want to visit by pointer or by value.
         // We do not use it in this example, so we check at compile time that it's not true.
-        #if ptr #do #error "visiting myStruct by pointer is not supported"
+        #if ptr #do
+            #error "visiting myStruct by pointer is not supported"
 
         // 'back' is a generic parameter that tells if we want to visit in reverse order.
         // We do not use it in this example, so we check at compile time that it's not true.
-        #if ptr #do #error "visiting myStruct in reverse order is not supported"
+        #if ptr #do
+            #error "visiting myStruct in reverse order is not supported"
 
         // Loop on the 3 fields
         loop idx: 3
@@ -42,9 +44,12 @@ impl MyStruct
                 // the caller scope)
                 switch #up idx
                 {
-                case 0: #alias0 = #up self.x   // Same for function parameter 'self'
-                case 1: #alias0 = #up self.y
-                case 2: #alias0 = #up self.z
+                case 0:
+                    #alias0 = #up self.x // Same for function parameter 'self'
+                case 1:
+                    #alias0 = #up self.y
+                case 2:
+                    #alias0 = #up self.z
                 }
 
                 // #alias1 will be the index
@@ -63,7 +68,7 @@ So now that the `opVisit` has been defined, we can `visit` it.
 #test
 {
     var myStruct = MyStruct{}
-    var cpt = 0
+    var cpt      = 0
 
     // Visiting each field in declaration order
     // 'v' is an alias for #alias0 (value)
@@ -72,9 +77,12 @@ So now that the `opVisit` has been defined, we can `visit` it.
     {
         switch i
         {
-        case 0: @assert(v == 10)
-        case 1: @assert(v == 20)
-        case 2: @assert(v == 30)
+        case 0:
+            @assert(v == 10)
+        case 1:
+            @assert(v == 20)
+        case 2:
+            @assert(v == 30)
         }
 
         cpt += 1
@@ -89,7 +97,7 @@ You can have variants of `opVisit` by specifying an **additional name** after 'o
 impl MyStruct
 {
     #[Swag.Macro]
-    mtd(ptr: bool, back: bool) opVisitReverse(stmt: code)   // We add a variant called 'reverse'
+    mtd(ptr: bool, back: bool) opVisitReverse(stmt: code)
     {
         // Visit fields in reverse order (z, y then x).
         // Note that visiting in reverse order should be implemented in the normal 'opVisit'
@@ -102,9 +110,12 @@ impl MyStruct
                 var #alias0: s32 = undefined
                 switch #up idx
                 {
-                case 0: #alias0 = #up self.z
-                case 1: #alias0 = #up self.y
-                case 2: #alias0 = #up self.x
+                case 0:
+                    #alias0 = #up self.z
+                case 1:
+                    #alias0 = #up self.y
+                case 2:
+                    #alias0 = #up self.x
                 }
 
                 var #alias1 = #index
@@ -117,16 +128,19 @@ impl MyStruct
 #test
 {
     var myStruct = MyStruct{}
-    var cpt = 0
+    var cpt      = 0
 
     // To call a variant, add the extra name after ':'.
     visit:Reverse v, i: myStruct
     {
         switch i
         {
-        case 0: @assert(v == 30)
-        case 1: @assert(v == 20)
-        case 2: @assert(v == 10)
+        case 0:
+            @assert(v == 30)
+        case 1:
+            @assert(v == 20)
+        case 2:
+            @assert(v == 10)
         }
 
         cpt += 1

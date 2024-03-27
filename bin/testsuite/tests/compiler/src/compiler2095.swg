@@ -1,4 +1,4 @@
-func(T) RR()->{a:T}
+func(T) RR()->{a: T}
 {
     return {5}
 }

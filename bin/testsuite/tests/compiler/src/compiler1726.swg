@@ -15,7 +15,4 @@
 
     let ptr = &x
     @assert(ptr.name == "toto")
-
-    //var ptr = @typeof(X)
-    //@print(ptr.rawType.name)
 }

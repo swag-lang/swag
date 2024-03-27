@@ -1,6 +1,5 @@
 struct A
 {
-
 }
 
 impl A

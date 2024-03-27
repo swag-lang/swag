@@ -1,11 +1,11 @@
 #[Swag.Inline]
 func toto(x: bool)
 {
-	@assert(x)
+    @assert(x)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	toto(true)
+    toto(true)
 }

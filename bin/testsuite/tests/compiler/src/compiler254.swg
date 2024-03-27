@@ -1,4 +1,4 @@
-using Swag;
+using Swag
 
 //#global testerror;
 

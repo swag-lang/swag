@@ -1,5 +1,8 @@
 #global testerror "Err0042"
-struct A { x: s32; }
+struct A
+{
+    x: s32
+}
 impl A
 {
     mtd(op: string) opBinary(value: s32)->Self
@@ -14,5 +17,4 @@ impl A
     const D: s32 = 2
     //var v = C - D
     const E = C - D
-    //@print(v.x)
 }

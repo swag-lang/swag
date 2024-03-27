@@ -5,8 +5,8 @@ struct A
 
 struct B
 {
-    using base: A
-    xx: s32
+    using base:     A
+    xx:             s32
 }
 
 struct C

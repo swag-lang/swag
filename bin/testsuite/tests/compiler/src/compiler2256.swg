@@ -7,7 +7,6 @@ impl B
 {
     func opPostMove(using self)
     {
-        //@print("postmove")
     }
 }
 

@@ -1,11 +1,10 @@
+#global testpass syntax
 
-#global testpass syntax;
-
-func main ()
+func main()
 {
 }
 
 #run
 {
-	main();
+    main()
 }

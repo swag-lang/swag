@@ -1,5 +1,15 @@
-enum RGB { R; G; B; }
-enum RGB1 { R1; G1; B1; }
+enum RGB
+{
+    R
+    G
+    B
+}
+enum RGB1
+{
+    R1
+    G1
+    B1
+}
 
 struct X
 {

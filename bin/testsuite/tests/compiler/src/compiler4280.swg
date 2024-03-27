@@ -3,8 +3,10 @@
     #[Swag.ConstExpr]
     func getType(str: bool)->typeinfo
     {
-        if str do return string
-        else   do return s32
+        if str do
+            return string
+        else do
+            return s32
     }
 
     var x: @decltype(getType(false))

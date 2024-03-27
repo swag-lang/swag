@@ -1,7 +1,7 @@
 #global testerror "Err0540"
 #test
 {
-	//var a: (x: s32)->s32 = { return x; }
-	var a: func(s32)->s32
-	a()
+    //var a: (x: s32)->s32 = { return x; }
+    var a: func(s32)->s32
+    a()
 }

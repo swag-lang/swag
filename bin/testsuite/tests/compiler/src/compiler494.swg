@@ -1,10 +1,11 @@
 
-
-
-func T()->string { return "toto"; }
+func T()->string
+{
+    return "toto"
+}
 
 //#[Swag.PrintBc]
 #test
 {
-	@assert(T() == "toto")
+    @assert(T() == "toto")
 }

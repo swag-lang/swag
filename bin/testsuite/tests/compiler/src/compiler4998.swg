@@ -2,5 +2,4 @@
 #[Swag.Foreign("tptp")]
 func toto()
 {
-
 }

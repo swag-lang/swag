@@ -4,7 +4,6 @@ struct BB
     abc: string
 }
 
-
 struct AA
 {
     abc: string
@@ -17,7 +16,7 @@ impl AA
         var x: BB
         with x
         {
-            abc = "2"
+            abc  = "2"
             .abc = "1"
         }
 

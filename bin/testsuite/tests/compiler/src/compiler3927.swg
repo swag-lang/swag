@@ -1,7 +1,11 @@
 #global testerror "Err0509"
-struct A {}
+struct A
+{
+}
 
 namespace B
 {
-func opDrop(x: *A){}
+    func opDrop(x: *A)
+    {
+    }
 }

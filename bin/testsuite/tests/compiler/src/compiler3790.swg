@@ -1,15 +1,19 @@
 namespace A
 {
-    func toto() {}
+    func toto()
+    {
+    }
 }
 
 private
 {
-    func toto() {}
+    func toto()
+    {
+    }
 }
 
 #test
 {
-    using A//, B
+    using A //, B
     var a = &toto
 }

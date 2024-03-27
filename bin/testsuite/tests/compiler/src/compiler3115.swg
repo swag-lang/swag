@@ -1,7 +1,6 @@
 #global testerror "Err0426"
 struct AA
 {
-
 }
 
 public func toto3115()->AA

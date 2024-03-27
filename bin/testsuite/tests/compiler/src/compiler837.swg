@@ -3,9 +3,9 @@
 
 #test
 {
-	loop 10
-	{
-		break
-		var a = 0
-	}
+    loop 10
+    {
+        break
+        var a = 0
+    }
 }

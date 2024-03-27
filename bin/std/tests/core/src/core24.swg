@@ -1,4 +1,3 @@
-
 using Core
 
 #assert Latin1.isUpper(cast(u8) `A`'rune)

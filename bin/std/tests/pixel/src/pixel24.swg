@@ -29,7 +29,7 @@ internal func tmpPath(name: string)->String
 {
     try
     {
-        var img = Image.load(imagePath("h1v1.jpg"))
+        var img  = Image.load(imagePath("h1v1.jpg"))
         var opt: Png.EncodeOptions
         img.save(tmpPath("__h1v1.png"), opt)
         var img1 = Image.load(tmpPath("__h1v1.png"))

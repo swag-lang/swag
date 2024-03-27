@@ -1,6 +1,6 @@
 #global testerror "Err0243"
 #test
 {
-	var a: [2, 2, 2] s32
-	@assert(1 == a[0, 0])
+    var a: [2, 2, 2] s32
+    @assert(1 == a[0, 0])
 }

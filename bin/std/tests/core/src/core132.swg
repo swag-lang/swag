@@ -1,4 +1,3 @@
-
 using Core.StrConv
 
 #test
@@ -11,7 +10,7 @@ using Core.StrConv
     var str: String = "mystring"
     builder.appendString(str)
 
-    var s = builder.toString();
+    var s = builder.toString()
     //Console.write("%\n", s)
     @assert(s == "toto444假mystring")
 }

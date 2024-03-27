@@ -6,6 +6,6 @@ struct BB
 #[Swag.Opaque]
 public struct AA2870
 {
-    x: [4] BB
-    y: f64 = 3.14
+    x:     [4] BB
+    y:     f64 = 3.14
 }

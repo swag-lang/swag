@@ -1,9 +1,13 @@
 #test
 {
-    func toto(x: func(bool,string))
+    func toto(x: func(bool, string))
     {
-        x(true,"64")
+        x(true, "64")
     }
 
-    toto(func(x,y) { @assert(y == "64"); })
+    toto(func(x, y)
+    {
+        @assert(y == "64")
+    }
+)
 }

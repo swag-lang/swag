@@ -17,6 +17,6 @@ impl A
 #test
 {
     var a: A
-    let b = cast(s32) a[0]
+    let b  = cast(s32) a[0]
     @assert(b == 55)
 }

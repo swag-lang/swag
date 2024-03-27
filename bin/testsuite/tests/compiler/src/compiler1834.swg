@@ -1,6 +1,5 @@
 struct TOTO
 {
-
 }
 
 #test

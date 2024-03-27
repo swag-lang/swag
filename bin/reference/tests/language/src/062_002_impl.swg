@@ -2,12 +2,13 @@
 Like for an enum, `impl` is used to declare some stuff in the scope of a struct.
 */
 
-#[Swag.ExportType("methods")]   // See later, used to export 'methods' in type reflection
+#[Swag.ExportType("methods")]
+// See later, used to export 'methods' in type reflection
 struct MyStruct
 {
-    x: s32 = 5
-    y: s32 = 10
-    z: s32 = 20
+    x:     s32 = 5
+    y:     s32 = 10
+    z:     s32 = 20
 }
 
 impl MyStruct
@@ -39,7 +40,7 @@ impl MyStruct
     func returnY(self)       => self.y
 
     // 'Self' is the corresponding type, in that case 'MyStruct'
-    func returnZ(me: Self)   => me.z
+    func returnZ(me: Self) => me.z
 }
 
 /**
@@ -50,8 +51,8 @@ Other than that, it's exactly the same. So this is just **syntaxic sugar** to av
 
 impl MyStruct
 {
-    mtd  methodReturnX()          => x
-    func funcReturnX(using self)  => x
+    mtd methodReturnX()          => x
+    func funcReturnX(using self) => x
 }
 
 #test
@@ -84,9 +85,12 @@ All functions in an `impl` block can be retrieved by reflection, as long as the 
         // which can be casted to the correct type
         switch p.name
         {
-        case "returnX": fnX = cast(Lambda) p.value
-        case "returnY": fnY = cast(Lambda) p.value
-        case "returnZ": fnZ = cast(Lambda) p.value
+        case "returnX":
+            fnX = cast(Lambda) p.value
+        case "returnY":
+            fnY = cast(Lambda) p.value
+        case "returnZ":
+            fnZ = cast(Lambda) p.value
         }
     }
 

@@ -1,7 +1,7 @@
 #test
 {
     {
-        let x = -128's8
+        let x  = -128's8
         let x1 = -0x80's8
         @assert(x == -128)
         @assert(x1 == -128)

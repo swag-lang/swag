@@ -1,4 +1,6 @@
-func toto() {}
+func toto()
+{
+}
 
 #test
 {

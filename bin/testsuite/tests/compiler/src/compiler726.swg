@@ -1,24 +1,23 @@
 
-
 struct iter
 {
-	value: s32
-	end: s32
-	arr: *Array
+    value:     s32
+    end:       s32
+    arr:       *Array
 }
 
 impl iter
 {
-	func next(self)->s32
-	{
-		if(self.value != self.end)
-		{
-			self.value += 1
-			return 0//self.arr[self.value - 1]
-		}
+    func next(self)->s32
+    {
+        if (self.value != self.end)
+        {
+            self.value += 1
+            return 0 //self.arr[self.value - 1]
+        }
 
-		return 0
-	}
+        return 0
+    }
 }
 
 struct Array
@@ -27,17 +26,10 @@ struct Array
 
 impl Array
 {
-	func getIter(self)->iter
-	{
-		var ret: iter
-		ret.end = 10
-		return ret
-	}
+    func getIter(self)->iter
+    {
+        var ret: iter
+        ret.end = 10
+        return ret
+    }
 }
-
-//#[Swag.PrintBc]
-/*#test
-{
-	var arr: Array
-	var it = arr.getIter()
-}*/

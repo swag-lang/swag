@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 func titi()->[4] s64
 {
-    return [1's64,2,3,4]
+    return [1's64, 2, 3, 4]
 }
 
 //#[Swag.PrintBc]

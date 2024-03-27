@@ -1,21 +1,27 @@
-namespace std.math
+namespace std
 {
-    typealias Float = f32
-    func isZeroEpsilon(x, y: Float) => true
+    namespace math
+    {
+        typealias Float = f32
+        func isZeroEpsilon(x, y: Float) => true
+    }
 }
 
-namespace std.math
+namespace std
 {
-	struct Vector2
-	{
-		x, y: Float
-	}
+    namespace math
+    {
+        struct Vector2
+        {
+            x, y: Float
+        }
 
-	impl Vector2
-	{
-		func isZeroEpsilon(using self, eps: Float = cast(Float) 1)->bool
-		{
-			return isZeroEpsilon(x, eps)
-		}
-	}
+        impl Vector2
+        {
+            func isZeroEpsilon(using self, eps: Float = cast(Float) 1)->bool
+            {
+                return isZeroEpsilon(x, eps)
+            }
+        }
+    }
 }

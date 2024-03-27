@@ -39,13 +39,8 @@ An example of a multidimensional array as a constant. We will detail arrays late
 #test
 {
     const M4x4: [4, 4] f32 = [
-        [1, 0, 0, 0],
-        [0, 1, 0, 0],
-        [0, 0, 1, 0],
-        [0, 0, 0, 1]
-    ]
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]]
 }
-
-/**
-So the difference between `let` and `const` is that the value of a constant should be known at compile time, where the value of a `let` can be dynamic. Other than that, both must be assigned once and only once.
-*/

@@ -1,9 +1,11 @@
 //#global skip
-struct Circle {}
+struct Circle
+{
+}
 
 interface IShape
 {
-    func area(self)->s32
+    func area(self)->s32;
 }
 
 impl IShape for Circle
@@ -15,8 +17,8 @@ func area_per_perimeter(shape: IShape) => shape.area()
 
 #test
 {
-    let a = Circle{}
-    let v = cast(IShape) a
+    let a      = Circle{}
+    let v      = cast(IShape) a
     let lambda = &area_per_perimeter
 
     @assert(v.lambda() == 123)

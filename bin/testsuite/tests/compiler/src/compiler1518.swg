@@ -1,7 +1,7 @@
 struct A
 {
-    myTruc: u64
-    buffer: [2] u32
+    myTruc:     u64
+    buffer:     [2] u32
 }
 
 impl A
@@ -35,7 +35,6 @@ impl A
     var x: A
     x.toto'true()
     {
-
     }
 
     @assert(x.myTruc == 1)

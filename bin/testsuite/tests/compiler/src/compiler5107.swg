@@ -1,7 +1,11 @@
 #global testerror "Err0598"
 
-struct A {}
+struct A
+{
+}
 impl A
 {
-    mtd opIndex() {}
+    mtd opIndex()
+    {
+    }
 }

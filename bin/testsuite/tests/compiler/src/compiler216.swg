@@ -1,23 +1,21 @@
-;
-;
-using Swag;
+using Swag
 
 //#[PrintBc]
-func main ()
+func main()
 {
-	if(false)
-	{
-		@assert(false);
-	}
-	else
-	{
-		@assert(true);
-	}
+    if false
+    {
+        @assert(false)
+    }
+    else
+    {
+        @assert(true)
+    }
 
-	@assert(true);
+    @assert(true)
 }
 
 #run
 {
-	main();
+    main()
 }

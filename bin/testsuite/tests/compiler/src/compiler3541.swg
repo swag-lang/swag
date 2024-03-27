@@ -12,12 +12,12 @@ func toto(stmt: code)
 
 #test
 {
-    toto(|i|)
+    toto(|i| )
     {
         @assert(i == 666)
     }
 
-    toto(|j|)
+    toto(|j| )
     {
         @assert(j == 666)
     }

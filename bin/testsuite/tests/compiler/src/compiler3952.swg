@@ -1,13 +1,13 @@
 #global testerror "Err0274"
 
-enum OT: cstring
+enum OT : cstring
 {
-	A = "1"
-	B = "2"
+    A = "1"
+    B = "2"
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	var pt: OT
+    var pt: OT
 }

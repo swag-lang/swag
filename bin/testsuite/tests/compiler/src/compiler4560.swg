@@ -1,7 +1,7 @@
 #test
 {
     let x: const [..] u8 = [0'u8, 1, 2, 3]
-    let y = cast(const [..] u32) x
+    let y  = cast(const [..] u32) x
 
     @assert(@countof(x) == 4)
     @assert(@countof(y) == 1)

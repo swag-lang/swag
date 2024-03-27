@@ -2,7 +2,8 @@ var G = 0
 
 //#[Swag.PrintBc]
 #[Swag.Overload]
-func(T) toto(v: T) #validif @typeof(T) == f32
+func(T) toto(v: T)
+    #validif @typeof(T) == f32
 {
     #assert @typeof(T) == f32
     G += 1

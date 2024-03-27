@@ -1,14 +1,12 @@
 
-
-
 struct Point
 {
-	c: u32 = 5
+    c: u32 = 5
 }
 
 impl Point
 {
-	func opCount(self)->u64
+    func opCount(self)->u64
     {
         return cast(u64) self.c
     }
@@ -17,11 +15,11 @@ impl Point
 //#[Swag.PrintBc]
 #test
 {
-	var pt: Point
-	var cpt = 0
-	loop pt
-	{
-		cpt += 1
-	}
-	@assert(cpt == 5)
+    var pt: Point
+    var cpt = 0
+    loop pt
+    {
+        cpt += 1
+    }
+    @assert(cpt == 5)
 }

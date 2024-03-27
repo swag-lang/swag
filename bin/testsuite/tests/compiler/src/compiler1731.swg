@@ -8,8 +8,8 @@
 
     struct B
     {
-        ggg:        u64
-        using root: A
+        ggg:            u64
+        using root:     A
     }
 
     /*func F(ptr: *A)
@@ -19,7 +19,4 @@
 
     var v: B
     @assert(v.name == 666)
-    //v.name = "titi"
-    //@assert(v.name == "titi")
-    //F(&v)
 }

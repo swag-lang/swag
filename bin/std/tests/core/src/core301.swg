@@ -4,7 +4,7 @@ using Core
 {
     struct TT
     {
-        count:  s8
+        count: s8
     }
 
     var x: TT

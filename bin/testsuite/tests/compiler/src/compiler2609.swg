@@ -2,7 +2,6 @@
 
 struct(T) AA
 {
-
 }
 
 impl AA

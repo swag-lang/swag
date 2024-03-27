@@ -1,4 +1,3 @@
-;
 
 /*
 func compare (str1: string, str2: string)-> bool
@@ -23,14 +22,14 @@ func compare (str1: string, str2: string)-> bool
 }*/
 
 //#[Swag.PrintBc]
-func compare (str: string)
+func compare(str: string)
 {
-	let count = @countof(str);
-	@assert(count == 4);
+    let count = @countof(str)
+    @assert(count == 4)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	compare("toto");
+    compare("toto")
 }

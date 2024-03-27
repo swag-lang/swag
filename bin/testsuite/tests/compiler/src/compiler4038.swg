@@ -1,5 +1,5 @@
 //#global testerror
-func(S=s32) toto()
+func(S = s32) toto()
 {
     #assert S == s32
 }

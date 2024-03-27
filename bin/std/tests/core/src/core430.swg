@@ -8,11 +8,11 @@ using Core, Core.Serialization
     }
 
     const str = """
-       a {{"toto" : 666}}
-    """
+   a {{"toto" : 666}}
+"""
 
     var rea: Decoder'Read.JSon
-    let v = catch rea.readAll'Toto(str)
+    let v    = catch rea.readAll'Toto(str)
     defer Memory.delete(v)
     @assert(@err() == Errors.SyntaxError)
 }

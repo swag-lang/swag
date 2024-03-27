@@ -3,6 +3,5 @@ using Core.Random
 #test
 {
     let rng = Random.shared()
-    let x = rng.nextU32()
-    //@print(x)
+    let x   = rng.nextU32()
 }

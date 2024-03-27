@@ -1,6 +1,5 @@
 struct AA
 {
-
 }
 
 impl AA
@@ -14,7 +13,7 @@ impl AA
 
 func toto() throw
 {
-}
+    }
 
 #test
 {

@@ -12,12 +12,12 @@ func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 
 #test
 {
-    var x = [1,2]
+    var x = [1, 2]
 
     func toto(x, y: s32)->s32
     {
         return 0
     }
 
-    insertionSort(acast x,&toto)
+    insertionSort(acast x, &toto)
 }

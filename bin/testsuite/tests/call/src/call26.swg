@@ -7,5 +7,6 @@ using test_foreign
     {
         //@print(x)
         @assert(x == 10)
-    })
+    }
+)
 }

@@ -1,8 +1,6 @@
-;
-;
 
 //#[Swag.PrintBc]
 #test
 {
-	@assert("toto" == "toto");
+    @assert("toto" == "toto")
 }

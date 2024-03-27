@@ -5,8 +5,8 @@ struct V
 
 #test
 {
-    var v: V
-    var fn: closure(V)
+    var v:  V
+    var fn: closure(V   )
 
     fn = func(v)
     {

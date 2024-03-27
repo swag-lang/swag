@@ -16,5 +16,4 @@ impl Arr
 {
     var x: Arr's32
     @assert(@typeof(x.z.x) == s32)
-    //@assert(@typeof(Arr.ST.x) == s32)
 }

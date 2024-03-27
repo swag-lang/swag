@@ -2,7 +2,6 @@ namespace AA
 {
     struct ST
     {
-
     }
 }
 
@@ -10,13 +9,11 @@ namespace BB
 {
     struct ST
     {
-
     }
 }
 
 func(T) toto()
 {
-
 }
 
 #test

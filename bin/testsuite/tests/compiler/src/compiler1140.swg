@@ -1,18 +1,27 @@
 //#global testerror "Err0712"
 
-namespace A.B
+namespace A
 {
-	using A.C
+    namespace B
+    {
+        using A.C
+    }
 }
 
-namespace A.B
+namespace A
 {
-	func toto1() => toto()
+    namespace B
+    {
+        func toto1() => toto()
+    }
 }
 
-namespace A.C
+namespace A
 {
-	func toto()
-	{
-	}
+    namespace C
+    {
+        func toto()
+        {
+        }
+    }
 }

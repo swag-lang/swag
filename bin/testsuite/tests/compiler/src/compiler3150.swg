@@ -6,7 +6,6 @@ func toto(str: string, x: cvarargs)
     @cvastart(&valist)
 
     let ptr = dref cast(^^s64) &valist
-    //@print(cast,bit(s32) ptr[0], " ", cast,bit(s32) ptr[1], "\n")
     @assert(cast,bit(s32) ptr[0] == 111)
     @assert(cast,bit(s32) ptr[1] == 222)
 }

@@ -1,11 +1,13 @@
-struct A{x: s32}
+struct A
+{
+    x: s32
+}
 
-#[Swag.Warn("Wrn0003", Swag.WarnLevel.Disable)]
-#[Swag.Inline]
+#[Swag.Warn("Wrn0003", Swag.WarnLevel.Disable), Swag.Inline]
 func toto()
 {
     let err = 0
-    var a: A
+    var a:  A
     a = A{err}
 }
 

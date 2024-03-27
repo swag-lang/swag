@@ -6,22 +6,22 @@ struct Duration
 
 impl Duration
 {
-    #[Swag.Implicit]
-    #[Swag.Overload]
+    #[Swag.Implicit, Swag.Overload]
     mtd opAffect(v: s32)
     {
         @assert(v == 6)
     }
 
-    #[Swag.Implicit]
-    #[Swag.Overload]
+    #[Swag.Implicit, Swag.Overload]
     mtd opAffect(v: f32)
     {
         @assert(v == 6)
     }
 }
 
-func toto(x: Duration) {}
+func toto(x: Duration)
+{
+}
 
 #test
 {

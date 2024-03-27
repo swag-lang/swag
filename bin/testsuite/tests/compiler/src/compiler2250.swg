@@ -1,7 +1,7 @@
 struct A
 {
-    x: [16] bool
-    y: bool = true
+    x:     [16] bool
+    y:     bool = true
 }
 
 func titi()->A

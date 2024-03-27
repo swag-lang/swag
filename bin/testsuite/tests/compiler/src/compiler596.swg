@@ -12,5 +12,5 @@ func(op: s32) toto()
 
 #test
 {
-	toto'(true)()
+    toto'(true)()
 }

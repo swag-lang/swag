@@ -9,7 +9,7 @@ var x: A = [5, 10]
     typealias p = x
     @assert(@countof(p) == 2)
 
-    typealias tt = [..] s32
+    typealias tt  = [..] s32
     typealias tt1 = const *s32
 
     var v1: tt = @mkslice(&x[0], 2)

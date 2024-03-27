@@ -3,7 +3,7 @@ using Pixel
 //#[Swag.PrintBc]
 #test
 {
-	var y: Color = 0xFFFF0000
+    var y: Color = 0xFFFF0000
     @assert(y.toArgbf().a == 1)
     @assert(y.toArgbf().r == 1)
     @assert(y.toArgbf().g == 0)

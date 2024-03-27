@@ -1,4 +1,3 @@
-
 using Core.Math
 
 //#[Swag.PrintBc]
@@ -6,5 +5,4 @@ using Core.Math
 {
     let y = -1'f32
     let z = abs(y)
-    //@assert(z == 1)
 }

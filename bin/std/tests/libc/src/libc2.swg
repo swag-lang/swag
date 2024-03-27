@@ -24,7 +24,7 @@ using Core, Libc
 
     {
         var str: String = "666"
-        let x = atoi(str)
+        let x    = atoi(str)
         @assert(x == 666)
     }
 

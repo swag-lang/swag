@@ -2,8 +2,8 @@ typealias F = func(s32)->bool
 
 struct A
 {
-    b: *B
-    f: F
+    b:     *B
+    f:     F
 }
 
 #[Swag.Optim("", false)]
@@ -11,7 +11,6 @@ struct A
 {
     var a: A
     var b: B
-    //@print("toto")
 }
 
 struct B

@@ -1,4 +1,6 @@
-func print(x: any) {}
+func print(x: any)
+{
+}
 
 #test
 {

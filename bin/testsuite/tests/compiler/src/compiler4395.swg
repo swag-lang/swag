@@ -1,4 +1,6 @@
-func toto(x: typeinfo) {}
+func toto(x: typeinfo)
+{
+}
 
 //#[Swag.PrintBc]
 #test

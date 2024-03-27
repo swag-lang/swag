@@ -4,11 +4,16 @@ struct A
 }
 
 //#[Swag.PrintBc]
-struct B { x: A{1}; }
+struct B
+{
+    x: A{1}
+}
 
 impl B
 {
-    mtd opDrop() {}
+    mtd opDrop()
+    {
+    }
 }
 
 #test

@@ -1,5 +1,9 @@
-struct ErrToto{}
-struct ErrTiti{}
+struct ErrToto
+{
+}
+struct ErrTiti
+{
+}
 
 func toto() throw
 {

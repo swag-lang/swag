@@ -21,7 +21,7 @@ enum EnumFlags
 
 struct AA
 {
-    tt:  string = "static string"
+    tt: string = "static string"
 
     #[Category("Categ"), SubCategory("SubCateg"), Name("<b>This is a name<b>: <i>italic<i>"), Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     xu8: u8 = 30
@@ -30,10 +30,10 @@ struct AA
     xf32: f32 = 0.5
 
     #[Name("<b>Another name<b>")]
-    x1:  Math.Vector3{11.5, 22, 33}
+    x1: Math.Vector3{11.5, 22, 33}
 
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
-    xb:  bool = true
+    xb: bool = true
     #[Description("This is something that needs to be done.")]
     xb1: bool = true
 
@@ -58,12 +58,12 @@ func createView7(_tabView: *Tab, view: *Wnd)
     let lt1 = PropertyListCtrl.create(view, {500, 10, 500, 600})
     lt1.addItem(aa)
 
-    lt.sigChanged += closure|lt1|(lt  )
+    lt.sigChanged += closure|lt1|(lt)
     {
         lt1.prop.refresh()
     }
 
-    lt1.prop.sigChanged += closure|lt|(lt1 )
+    lt1.prop.sigChanged += closure|lt|(lt1)
     {
         lt.refresh()
     }

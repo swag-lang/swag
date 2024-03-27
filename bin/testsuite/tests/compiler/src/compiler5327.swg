@@ -1,4 +1,6 @@
-struct S {}
+struct S
+{
+}
 
 impl S
 {

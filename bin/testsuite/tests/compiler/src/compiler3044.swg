@@ -8,7 +8,8 @@ impl AA
     {
         var ms: u64 = 0
         visit p: T do
-            if p == V do return true
+            if p == V do
+                return true
         return false
     }
 }

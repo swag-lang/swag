@@ -21,9 +21,6 @@ A type constraint can be added when declaring a generic type. If a function or a
     // This is ok.
     let res1 = sum's32(1, 2)
     @assert(res1 == 3)
-
-    // But the following would generate an error because the type is 'f32'.
-    // let res1 = sum'f32(1, 2)
 }
 
 /**
@@ -33,7 +30,7 @@ So you could do something like this.
 #test
 {
     #[Swag.ConstExpr]
-    func isS32(t: typeinfo)  => t == s32
+    func isS32(t: typeinfo) => t == s32
     #[Swag.ConstExpr]
     func isBool(t: typeinfo) => t == bool
 
@@ -42,7 +39,7 @@ So you could do something like this.
 
     // This is ok.
     @assert(myFunc(5's32) == 5)
-    @assert(myFunc(true)  == true)
+    @assert(myFunc(true) == true)
     @assert(myFunc(false) == false)
 }
 
@@ -61,7 +58,4 @@ Works also for structs.
 
     var pt:  Point'f32
     var pt1: Point'f64
-
-    // This will generate a type constraint error.
-    //var pt: Point's32
 }

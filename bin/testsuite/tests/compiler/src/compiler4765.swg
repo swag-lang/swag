@@ -1,19 +1,21 @@
 //#[Swag.PrintBc]
 func toto(x, y: s32)
 {
-    var g = 0
+    var g   = 0
     var cpt = 0
     loop,back x until y
     {
-        if cpt == 0 do @assert(#index == 2)
-        if cpt == 1 do @assert(#index == 1)
+        if cpt == 0 do
+            @assert(#index == 2)
+        if cpt == 1 do
+            @assert(#index == 1)
         cpt += 1
 
         //@print(#index)
         @assert(#index == 1 or #index == 2)
         g += #index
     }
-    @assert(g == 1+2)
+    @assert(g == 1 + 2)
 }
 
 #test

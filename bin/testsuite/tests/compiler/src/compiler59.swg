@@ -1,5 +1,2 @@
-﻿;
 
-var a: bool = true and true;
-//#global testerror
-//var b: bool = 1;
+var a: bool = true and true

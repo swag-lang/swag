@@ -11,7 +11,6 @@ impl BaseRenderOgl
 {
     func toto(using self)
     {
-
     }
 }
 

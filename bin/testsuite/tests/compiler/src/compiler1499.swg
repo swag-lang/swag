@@ -16,7 +16,4 @@ func set(ptr: [..] u16, val: u16)
     let a: [..] u16 = @mkslice(&buffer[0], 64)
     set(a, 666)
     @assert(buffer[0] == 666)
-
-    //set({&buffer[0], 64}, 777)
-    //@assert(buffer[0] == 777)
 }

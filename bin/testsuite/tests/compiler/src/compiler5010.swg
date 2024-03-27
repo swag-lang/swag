@@ -1,7 +1,9 @@
 #global testerror "Err0101"
 
 #[Swag.NoCopy]
-struct A{}
+struct A
+{
+}
 
 #test
 {

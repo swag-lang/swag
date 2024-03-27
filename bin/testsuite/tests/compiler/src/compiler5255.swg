@@ -1,4 +1,6 @@
-struct X {}
+struct X
+{
+}
 
 var G = 0
 
@@ -25,6 +27,5 @@ impl X
         }
     }
 
-
-    @assert(G==2)
+    @assert(G == 2)
 }

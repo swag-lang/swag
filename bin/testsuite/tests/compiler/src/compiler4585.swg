@@ -2,4 +2,6 @@
 attr Toto(x: f32)
 
 #[Toto()]
-func titi() {}
+func titi()
+{
+}

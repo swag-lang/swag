@@ -10,7 +10,6 @@ namespace AA
 
 struct BB
 {
-
 }
 
 impl BB

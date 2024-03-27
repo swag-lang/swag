@@ -27,7 +27,7 @@ func create()->AA
 
 #test
 {
-    var x: AA
+    var x:  AA
     var res = x.toto()
     @assert(res.x == 666)
 }

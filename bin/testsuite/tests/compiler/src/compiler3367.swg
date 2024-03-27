@@ -1,7 +1,10 @@
 //#global testerror
 
 //#[Swag.NoCopy]
-struct AA { x: s32; }
+struct AA
+{
+    x: s32
+}
 
 func toto()->[1] AA
 {

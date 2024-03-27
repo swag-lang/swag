@@ -1,6 +1,8 @@
 #global testerror "Err0039"
 
-struct V {}
+struct V
+{
+}
 
 //#[Swag.Macro]
 func toto(x: V)

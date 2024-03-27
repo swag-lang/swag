@@ -2,9 +2,9 @@
 //#[Swag.PrintBc]
 #test
 {
-	func chooseStepFunction()
-	{
-	}
+    func chooseStepFunction()
+    {
+    }
 
-	var moveNearerToZero = chooseStepFunction()
+    var moveNearerToZero = chooseStepFunction()
 }

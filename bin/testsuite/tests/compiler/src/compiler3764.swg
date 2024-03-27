@@ -1,6 +1,7 @@
 func toto()->{x: s32, y: s32}
 {
-    using var result: retval
+    var result: retval
+    using result
     x = 1
     y = 2
     return result

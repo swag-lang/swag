@@ -2,7 +2,6 @@
 
 struct A
 {
-
 }
 
 impl A

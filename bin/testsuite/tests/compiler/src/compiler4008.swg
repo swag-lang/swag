@@ -1,6 +1,8 @@
 #global testerror "Err0540"
 
-struct A {}
+struct A
+{
+}
 impl A
 {
     mtd toto()

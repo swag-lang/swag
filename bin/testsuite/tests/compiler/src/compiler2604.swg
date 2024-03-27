@@ -5,7 +5,8 @@ namespace tt
     #[Swag.Macro]
     func(ptr: bool, back: bool) opVisit(x: string, stmt: code)
     {
-        loop x do #mixin stmt
+        loop x do
+            #mixin stmt
     }
 }
 
@@ -15,7 +16,6 @@ namespace tt
         using tt
         visit "toto"
         {
-
         }
     }
 }

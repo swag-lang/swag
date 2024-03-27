@@ -11,5 +11,4 @@ func(T) toto(y: T)
 #test
 {
     toto(666's64)
-    //@assert(G == 1)
 }

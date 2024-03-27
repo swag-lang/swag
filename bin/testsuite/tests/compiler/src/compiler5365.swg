@@ -1,5 +1,8 @@
 //#global testerror "Err0299"
-struct A { x: s32; }
+struct A
+{
+    x: s32
+}
 
 func toto(x: {x: s32})
 {

@@ -1,10 +1,9 @@
-
 using Core
 
 #test
 {
     var rand: Random.Rng
-    var arr: Array's32
+    var arr:  Array's32
 
     rand.seedU32(0)
     loop 10 do

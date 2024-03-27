@@ -2,7 +2,6 @@ using Core
 
 func sendMessage(text: string)
 {
-    //Console.print(text, "\n")
 }
 
 func sendWords(text: string)

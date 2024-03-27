@@ -1,9 +1,9 @@
 func(T, N: u32) toto()
-#validif
-{
-    #assert(N > 0 and N <= 4)
-    return true
-}
+    #validif
+    {
+        #assert (N > 0 and N <= 4)
+        return true
+    }
 {
 }
 

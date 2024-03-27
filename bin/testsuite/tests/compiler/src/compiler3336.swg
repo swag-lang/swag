@@ -2,8 +2,13 @@
 
 #test
 {
-    struct A {}
-    struct B { v: A; }
+    struct A
+    {
+    }
+    struct B
+    {
+        v: A
+    }
     var x: B
     x.x = 0
 }

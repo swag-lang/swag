@@ -1,10 +1,11 @@
 #global testerror "Err0451"
 
-struct ErrTiti{}
+struct ErrTiti
+{
+}
 
 struct AA
 {
-
 }
 
 impl AA

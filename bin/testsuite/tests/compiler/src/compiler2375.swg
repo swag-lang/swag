@@ -30,7 +30,7 @@ impl BB
 //#[Swag.PrintBc]
 #test
 {
-    var v: BB'AA
+    var v:  BB'AA
     var v1: AA
     BB.toto(v1)
 }

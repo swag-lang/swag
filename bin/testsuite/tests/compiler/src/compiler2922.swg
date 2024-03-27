@@ -1,4 +1,6 @@
-struct AA {}
+struct AA
+{
+}
 impl AA
 {
     func titi(using self, x: s32 = 10)

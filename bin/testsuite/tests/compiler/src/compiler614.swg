@@ -6,5 +6,5 @@ func(T) print(x: T)
 
 #test
 {
-	print'(string)(1)
+    print'(string)(1)
 }

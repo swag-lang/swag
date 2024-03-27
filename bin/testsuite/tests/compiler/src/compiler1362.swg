@@ -1,6 +1,6 @@
 interface IPrintable
 {
-	func print(self)
+    func print(self);
 }
 
 struct TITI
@@ -29,7 +29,7 @@ impl IPrintable for TITI
 #test
 {
     G = 0
-    var titi: TITI
+    var titi:    TITI
     var content: CONTENT
     content.itf = titi
     content.itf.print()

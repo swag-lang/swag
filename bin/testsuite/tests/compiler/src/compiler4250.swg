@@ -2,5 +2,5 @@
 #test
 {
     const X = "abcd"
-    var x = X[0..4]
+    var x   = X[0..4]
 }

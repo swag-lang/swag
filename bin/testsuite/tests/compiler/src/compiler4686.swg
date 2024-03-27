@@ -1,4 +1,4 @@
-enum X: const [..] u32
+enum X : const [..] u32
 {
     A = [1, 2, 3, 4]
     B = [10, 20]

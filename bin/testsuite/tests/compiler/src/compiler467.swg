@@ -1,16 +1,14 @@
 
-
-
 //#[Swag.PrintBc]
 #global testerror "Err0643"
 #test
 {
-	var a: func() = &F;
-	var b: s32 = a();
-	@assert(b == 666)
+    var a: func() = &F
+    var b: s32 = a()
+    @assert(b == 666)
 }
 
 func F()->s32
 {
-	return 666
+    return 666
 }

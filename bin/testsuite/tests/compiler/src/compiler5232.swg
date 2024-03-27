@@ -1,4 +1,7 @@
-struct A { x, y: u8; }
+struct A
+{
+    x, y: u8
+}
 
 func toto(x: s32)
 {

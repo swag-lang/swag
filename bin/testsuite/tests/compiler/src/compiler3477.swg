@@ -2,7 +2,9 @@
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    struct X {}
+    struct X
+    {
+    }
 
     let x: closure(X, ...) = func(x: X, y: ...)
     {

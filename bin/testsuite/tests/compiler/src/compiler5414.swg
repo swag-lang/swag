@@ -17,7 +17,7 @@ impl A
     }
 }
 
-var g: A
+var g:  A
 var g1: *A
 
 func titi()->&*A

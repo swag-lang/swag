@@ -1,2 +1,4 @@
 #global testerror "Err0369"
-func toto()->void {}
+func toto()->void
+{
+}

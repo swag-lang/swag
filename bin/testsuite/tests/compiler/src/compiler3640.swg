@@ -4,7 +4,10 @@ struct C
 
 impl C
 {
-    mtd opCast()->s32 { return 666; }
+    mtd opCast()->s32
+    {
+        return 666
+    }
 }
 
 struct D
@@ -16,6 +19,6 @@ struct D
 #test
 {
     var x: D
-    let v = cast(s32) x.x
+    let v  = cast(s32) x.x
     @assert(v == 666)
 }

@@ -1,4 +1,3 @@
-
 using Core, Core.StrConv
 
 #test
@@ -21,9 +20,8 @@ using Core, Core.StrConv
     var fmt: ConvertFormatInt
 
     fmt.value = 0xFFFFFFFF
-    fmt.base = 16
+    fmt.base  = 16
     convertInt(&buf, fmt)
     var str = buf.toString()
     @assert(str == "FFFFFFFF")
-    //Console.write(cast(string) str)
 }

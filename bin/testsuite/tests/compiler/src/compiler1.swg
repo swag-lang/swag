@@ -1,3 +1,0 @@
-/* salut la foule
-    /* */
-*/

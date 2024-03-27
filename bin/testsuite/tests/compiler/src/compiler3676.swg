@@ -1,6 +1,6 @@
 interface I
 {
-    func toto(self)
+    func toto(self);
 }
 
 struct A
@@ -20,7 +20,7 @@ impl I for A
 //#[Swag.PrintBc]
 #test
 {
-    var x: A
+    var x:   A
     let itf: I = cast(I) x
 
     //var ptr: closure()

@@ -2,4 +2,6 @@
 #global export
 
 #[Swag.Opaque]
-struct A {}
+struct A
+{
+}

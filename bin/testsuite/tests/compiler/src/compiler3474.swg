@@ -13,5 +13,6 @@ func toto(x: closure(...))
         @assert(cast(s32) x[1] == 50)
         @assert(cast(s32) x[2] == 60)
         @assert(cast(s32) x[3] == 70)
-    })
+    }
+)
 }

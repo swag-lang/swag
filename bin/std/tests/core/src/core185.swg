@@ -1,4 +1,3 @@
-﻿
 using Core.Time
 
 //#[Swag.PrintBc]
@@ -12,5 +11,4 @@ using Core.Time
 
     var ts1 = TimeSpan.now()
     let tt1 = ts1.totalSeconds() - tt
-    //@print(tt1)
 }

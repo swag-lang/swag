@@ -1,6 +1,8 @@
 #global testerror "Err0387"
 
-func toto(x: ...) {}
+func toto(x: ...)
+{
+}
 
 #test
 {

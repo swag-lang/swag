@@ -8,11 +8,11 @@
 
     enum MyErrors
     {
-        using BasicErrors    // The enum 'BasicErrors' is nested inside
+        using BasicErrors // The enum 'BasicErrors' is nested inside
         NotFound = 100
     }
 
-    const E0: MyErrors    = MyErrors.BasicErrors.FailedToLoad
+    const E0: MyErrors = MyErrors.BasicErrors.FailedToLoad
     const E1: BasicErrors = BasicErrors.FailedToLoad
 
     func toto(err: MyErrors)

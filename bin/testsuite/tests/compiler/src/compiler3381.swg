@@ -3,6 +3,7 @@
     let a = 0
     switch
     {
-    case a: break
+    case a:
+        break
     }
 }

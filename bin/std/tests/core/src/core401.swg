@@ -1,4 +1,4 @@
-﻿using Core
+using Core
 
 #[Swag.Safety("nan", false)]
 #test

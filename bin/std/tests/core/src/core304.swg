@@ -2,7 +2,12 @@ using Core
 
 #test
 {
-    enum EE { R; G; B; }
+    enum EE
+    {
+        R
+        G
+        B
+    }
     struct TT
     {
         val0: EE = undefined

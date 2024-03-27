@@ -1,18 +1,19 @@
 
-
-
-namespace toto.titi
+namespace toto
 {
-	struct point
-	{
-		x: s32 = 10
-		y: s32
-	}
+    namespace titi
+    {
+        struct point
+        {
+            x:     s32 = 10
+            y:     s32
+        }
+    }
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	var pt: toto.titi.point
-	@assert(pt.x == 10)
+    var pt: toto.titi.point
+    @assert(pt.x == 10)
 }
