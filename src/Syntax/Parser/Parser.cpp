@@ -508,5 +508,9 @@ bool Parser::generateAst()
     while (tokenParse.isNot(TokenId::EndOfFile))
         SWAG_CHECK(doTopLevelInstruction(sourceFile->astRoot, &dummyResult));
 
+    // Just to eat comments at the end of the file
+    if (parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION))
+        Ast::newNode<AstCompilerGlobal>(AstNodeKind::EmptyNode, this, sourceFile->astRoot);
+
     return true;
 }

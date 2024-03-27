@@ -26,6 +26,9 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
 
     switch (node->kind)
     {
+        case AstNodeKind::EmptyNode:
+            break;
+
         case AstNodeKind::SwitchCaseBlock:
         case AstNodeKind::StatementNoScope:
         case AstNodeKind::File:
