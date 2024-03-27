@@ -23,7 +23,7 @@ impl Library
 
     func newFileName()->String
     {
-        var t = Time.DateTime.now()
+        var t        = Time.DateTime.now()
         var fileName = Format.toString("%_%_%_%_%_%.captme", t.month, t.day, t.year, t.hour, t.minute, t.second)
         return Path.combine(getFolder(), fileName.toString())
     }

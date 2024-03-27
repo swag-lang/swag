@@ -6,14 +6,14 @@ const H = 1024
 
 namespace Res
 {
-    var image0:         Texture
-    var image1:         Texture
-    var image2:         Texture
-    var typeface:       *TypeFace
-    var fontDefault:    *Font
-    var font20:         *Font
-    var font40:         *Font
-    var fontFam:        FontFamily
+    var image0:      Texture
+    var image1:      Texture
+    var image2:      Texture
+    var typeface:    *TypeFace
+    var fontDefault: *Font
+    var font20:      *Font
+    var font40:      *Font
+    var fontFam:     FontFamily
 }
 
 var g_ModeAA:       bool = true
@@ -21,7 +21,7 @@ var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
 var g_Page:         s32 = 1
 var g_Angle:        f32 = 0
-const MaxPages = 8
+const MaxPages      = 8
 
 func dataPath()->String
 {
@@ -51,41 +51,41 @@ func displayPage0(painter: *Pixel.Painter)
     {
         painter.setTransform(trs)
         painter.translateTransform(50, 50)
-        pen.brush.color = Argb.Black
+        pen.brush.color   = Argb.Black
         pen.beginCapStyle = .None
-        pen.endCapStyle = .None
+        pen.endCapStyle   = .None
         painter.drawLine(0, 0, 0, 150, pen)
 
         pen.beginCapStyle = .Square
-        pen.endCapStyle = .Square
+        pen.endCapStyle   = .Square
         painter.drawLine(100, 0, 150, 150, pen)
 
         pen.beginCapStyle = .Round
-        pen.endCapStyle = .Round
+        pen.endCapStyle   = .Round
         painter.drawLine(200, 0, 250, 150, pen)
 
-        pen.beginCapStyle = .ArrowAnchor
-        pen.endCapStyle = .ArrowAnchor
+        pen.beginCapStyle     = .ArrowAnchor
+        pen.endCapStyle       = .ArrowAnchor
         pen.dashBeginCapStyle = .Round
-        pen.dashEndCapStyle = .Round
+        pen.dashEndCapStyle   = .Round
         painter.drawLine(300, 0, 350, 150, pen)
 
-        pen.beginCapStyle = .SquareAnchor
-        pen.endCapStyle = .SquareAnchor
+        pen.beginCapStyle     = .SquareAnchor
+        pen.endCapStyle       = .SquareAnchor
         pen.dashBeginCapStyle = .Triangle
-        pen.dashEndCapStyle = .Triangle
-        pen.brush.color = Color.fromArgb(0x5f, Argb.Black)
+        pen.dashEndCapStyle   = .Triangle
+        pen.brush.color       = Color.fromArgb(0x5f, Argb.Black)
         painter.drawLine(400, 0, 450, 150, pen)
     }
 
     painter.drawLine(500, 0, 550, 150, Argb.Brown, 2)
 
     pen.dashBeginCapStyle = .Round
-    pen.dashEndCapStyle = .Round
+    pen.dashEndCapStyle   = .Round
     painter.setTransform(trs)
     painter.translateTransform(50, 250)
     pen.brush.color = Argb.Blue
-    pen.joinStyle = .None
+    pen.joinStyle   = .None
     painter.drawRect(0, 0, 100, 100, pen)
     pen.joinStyle = .Bevel
     painter.drawRect(150, 0, 100, 100, pen)
@@ -121,7 +121,7 @@ func displayPage0(painter: *Pixel.Painter)
     path.lineTo(100, 50)
     path.lineTo(0, 50)
     pen.beginCapStyle = .Round
-    pen.endCapStyle = .Round
+    pen.endCapStyle   = .Round
 
     painter.setTransform(trs)
     painter.translateTransform(50, 500)
@@ -325,7 +325,7 @@ func displayPage3(painter: *Pixel.Painter)
 
     {
         var lp1: LinePathList
-        var lp = lp1.newPath()
+        var lp   = lp1.newPath()
         lp.start(50, 0)
         lp.lineTo(50, 100)
         lp = lp1.newPath()
@@ -344,7 +344,7 @@ func displayPage3(painter: *Pixel.Painter)
         painter.drawPath(&lp1, pen, .Merge)
 
         painter.translateTransform(0, 150)
-        pen = Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 15)
+        pen           = Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 15)
         pen.dashStyle = .Dash
         painter.drawPath(&lp1, pen, .Merge)
     }
@@ -367,22 +367,22 @@ func displayPage4(painter: *Pixel.Painter)
         var sf: RichStringFormat
         sf.horzAlignment = .Center
         sf.vertAlignment = .Center
-        sf.lineGap = 1
-        sf.font.regular = Res.fontDefault
-        sf.palette[0] = Argb.Blue
+        sf.lineGap       = 1
+        sf.font.regular  = Res.fontDefault
+        sf.palette[0]    = Argb.Blue
         painter.drawRichString(rect, &rs, sf)
     }
 
     {
-        var rect:   Rectangle{500, 50, 100, 100}
+        var rect: Rectangle{500, 50, 100, 100}
         painter.fillRect(rect, Color.fromArgb(0x1F, Argb.Blue))
 
         var rs: RichString = "<u>on multiple lines this is a text on multiple lines<u>"
         var sf: RichStringFormat
         sf.flags |= .WordWrap
-        sf.lineGap = 1
+        sf.lineGap      = 1
         sf.font.regular = Res.fontDefault
-        sf.palette[0] = Argb.Black
+        sf.palette[0]   = Argb.Black
         painter.drawRichString(rect, &rs, sf)
     }
 
@@ -392,20 +392,20 @@ func displayPage4(painter: *Pixel.Painter)
 
         var sf = RichStringFormat{flags: StringFormatFlags.WordWrap}
         sf.horzAlignment = .Center
-        sf.font.regular = Res.fontDefault
-        sf.palette[0] = Argb.Black
+        sf.font.regular  = Res.fontDefault
+        sf.palette[0]    = Argb.Black
 
         const TXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit."
-        var rs: RichString = TXT
+        var rs:   RichString = TXT
         painter.drawRichString(rect, &rs, sf)
     }
 
     {
         var rect = Rectangle{100, 225, 200, 700}
-        var sf = RichStringFormat{flags: StringFormatFlags.WordWrap}
+        var sf   = RichStringFormat{flags: StringFormatFlags.WordWrap}
         sf.horzAlignment = .Center
-        sf.font.regular = Res.fontDefault
-        sf.palette[0] = Color.fromArgb(0x1FFF0000)
+        sf.font.regular  = Res.fontDefault
+        sf.palette[0]    = Color.fromArgb(0x1FFF0000)
         var rs: RichString = "<u>TOTO<u>"
         painter.drawRichString(rect, &rs, sf)
     }
@@ -423,11 +423,11 @@ func displayPage4(painter: *Pixel.Painter)
     const str = "abcdefghijklmnopqrstuvwxyz"
 
     {
-        var brush = Brush.createTexture(Res.image1)
+        var brush   = Brush.createTexture(Res.image1)
         var measure = Painter.measureString(str, Res.font40)
-        let off = Res.font40.height - measure.height
-        painter.fillRect(100, 300+off, measure.width, measure.height, Color.fromArgb(0x1F, Argb.Blue))
-        painter.fillRect(100, 300+off, measure.width, measure.ascent, Color.fromArgb(0x1F, Argb.Red))
+        let off     = Res.font40.height - measure.height
+        painter.fillRect(100, 300 + off, measure.width, measure.height, Color.fromArgb(0x1F, Argb.Blue))
+        painter.fillRect(100, 300 + off, measure.width, measure.ascent, Color.fromArgb(0x1F, Argb.Red))
         painter.drawString(100, 300, str, Res.font40, brush, UnderlineStyle.Strikeout)
         painter.drawString(100, 350, str, Res.font40, Argb.Black)
     }
@@ -437,7 +437,7 @@ func displayPage4(painter: *Pixel.Painter)
         painter.translateTransform(50, 470)
 
         var pen = Pen.createSolid(Argb.Red, 5)
-        pen.joinStyle = .Round
+        pen.joinStyle  = .Round
         pen.plotOffset = 2
 
         assume Res.typeface.getStringOutline(&pathl, str, 70)
@@ -547,7 +547,7 @@ func displayPage6(painter: *Pixel.Painter)
     var str:    RichString
     var format: RichStringFormat
 
-    format.font = Res.fontFam
+    format.font       = Res.fontFam
     format.palette[0] = Argb.Black
     format.palette[1] = Argb.Red
     format.palette[2] = Argb.Green
@@ -564,14 +564,14 @@ func displayPage6(painter: *Pixel.Painter)
     painter.fillRect({110, 10, 100, 100}, Argb.Gray)
     painter.drawRichString({110, 10, 100, 100}, &str, format)
 
-    str = "Lorem ipsum dolor sit amet, <b>consectetur<b> adipiscing elit. Sed non risus.\n<p1>Suspendisse<p1> lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, <u>dolor<u>."
+    str                  = "Lorem ipsum dolor sit amet, <b>consectetur<b> adipiscing elit. Sed non risus.\n<p1>Suspendisse<p1> lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, <u>dolor<u>."
     format.horzAlignment = .Center
-    format.flags = .WordWrap
+    format.flags         = .WordWrap
     painter.fillRect({10, 200, 200, 200}, Argb.Gray)
     painter.drawRichString({10, 200, 200, 100}, &str, format)
 
     format.horzAlignment = .Justify
-    format.flags = .WordWrap
+    format.flags         = .WordWrap
     painter.fillRect({220, 200, 200, 200}, Argb.Gray)
     painter.drawRichString({220, 200, 200, 100}, &str, format, true)
 }
@@ -631,14 +631,22 @@ impl IWnd for MyView
 
         switch g_Page
         {
-        case 0: displayPage0(painter)
-        case 1: displayPage1(painter)
-        case 2: displayPage2(painter)
-        case 3: displayPage3(painter)
-        case 4: displayPage4(painter)
-        case 5: displayPage5(painter)
-        case 6: displayPage6(painter)
-        case 7: displayPage7(event.bc.renderer, painter)
+        case 0:
+            displayPage0(painter)
+        case 1:
+            displayPage1(painter)
+        case 2:
+            displayPage2(painter)
+        case 3:
+            displayPage3(painter)
+        case 4:
+            displayPage4(painter)
+        case 5:
+            displayPage5(painter)
+        case 6:
+            displayPage6(painter)
+        case 7:
+            displayPage7(event.bc.renderer, painter)
         }
 
         painter.popState()
@@ -691,12 +699,12 @@ impl IWnd for MyView
 {
     var app: Gui.Application
 
-    let view = Wnd.create'MyView()
+    let view    = Wnd.create'MyView()
     let surface = try app.createSurface(100, 100, W, H, view: view)
 
     assume
     {
-        let rdr = surface.app.getRenderer()
+        let rdr  = surface.app.getRenderer()
         var img0 = Image.load(imagePath("basn0g01.png"))
         var img1 = Image.load(imagePath("test.gif"))
         Res.image0 = rdr.addImage(img0)
@@ -706,14 +714,14 @@ impl IWnd for MyView
         img1.setAlpha(128)
         rdr.updateTexture(Res.image2, img1.pixels.buffer)
 
-        Res.typeface = TypeFace.load(imagePath("arial.ttf"))
+        Res.typeface    = TypeFace.load(imagePath("arial.ttf"))
         Res.fontDefault = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))
-        Res.font20 = Font.create(Res.typeface, 20)
-        Res.font40 = Font.create(Res.typeface, 40)
+        Res.font20      = Font.create(Res.typeface, 20)
+        Res.font40      = Font.create(Res.typeface, 40)
 
-        Res.fontFam.regular = Font.create(imagePath("arial.ttf"), 20)
-        Res.fontFam.bold = Font.create(imagePath("arialbd.ttf"), 20)
-        Res.fontFam.italic = Font.create(imagePath("ariali.ttf"), 20)
+        Res.fontFam.regular    = Font.create(imagePath("arial.ttf"), 20)
+        Res.fontFam.bold       = Font.create(imagePath("arialbd.ttf"), 20)
+        Res.fontFam.italic     = Font.create(imagePath("ariali.ttf"), 20)
         Res.fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 20)
     }
 

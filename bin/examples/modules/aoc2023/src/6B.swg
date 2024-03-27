@@ -20,7 +20,7 @@ using Core
 func day6B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     let first  = Tokenize.split(lines[0], `:`'u8)
     let second = Tokenize.split(lines[1], `:`'u8)
@@ -31,8 +31,10 @@ func day6B()
     var dists: Array'u64
 
     var str0, str1: String
-    visit v: val0 do str0 += v
-    visit v: val1 do str1 += v
+    visit v: val0 do
+        str0 += v
+    visit v: val1 do
+        str1 += v
 
     times.add(assume StrConv.toU64(str0))
     dists.add(assume StrConv.toU64(str1))
@@ -41,7 +43,7 @@ func day6B()
     visit t, idx: times
     {
         var cpt = 0
-        let dx = dists[idx]
+        let dx  = dists[idx]
         loop i: t
         {
             let travel = (t - i) * i
@@ -55,4 +57,3 @@ func day6B()
     //Console.print("total: ", total)
     @assert(total == 33875953)
 }
-

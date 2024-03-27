@@ -29,18 +29,20 @@ func day9A()
     //Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "9.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
-    var r = assume Parser.RegExp.create(#"(\w+) to (\w+) = (\d+)"#)
-    var town: HashTable'(string, u64)
-    var dist: HashTable'(u64, u64)
+    var r      = assume Parser.RegExp.create(#"(\w+) to (\w+) = (\d+)"#)
+    var town:  HashTable'(string, u64)
+    var dist:  HashTable'(u64, u64)
     var combi: Array'u64
 
     visit l: lines
     {
         discard r.match(l)
-        if !town.contains(r[1]) do town.add(r[1], town.count)
-        if !town.contains(r[2]) do town.add(r[2], town.count)
+        if !town.contains(r[1]) do
+            town.add(r[1], town.count)
+        if !town.contains(r[2]) do
+            town.add(r[2], town.count)
         dist.add(town.find(r[1]).value << 32 | town.find(r[2]).value, assume StrConv.toU64(r[3]))
         dist.add(town.find(r[1]).value | town.find(r[2]).value << 32, assume StrConv.toU64(r[3]))
     }
@@ -52,8 +54,8 @@ func day9A()
     loop
     {
         var calc = 0'u64
-        loop i: cast(s64) combi.count-1 do
-            calc += dist.find(combi[i] << 32 | combi[i+1]).value
+        loop i: cast(s64) combi.count - 1 do
+            calc += dist.find(combi[i] << 32 | combi[i + 1]).value
         total = Math.min(total, calc)
         if !Slice.nextPermutation(combi.toSlice()) do
             break

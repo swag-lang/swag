@@ -3,18 +3,17 @@ const CmdIdResizeImage   = "CmdIdResizeImage"
 const CmdIdResizeCanevas = "CmdIdResizeCanevas"
 const CmdIdRestoreOrg    = "CmdIdRestoreOrg"
 
-struct ActionImage {}
+struct ActionImage
+{
+}
 impl IActionUI for ActionImage
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdTrimCanevas,
-             CmdIdResizeImage,
-             CmdIdResizeCanevas,
-             CmdIdRestoreOrg:
-             return true
+        case CmdIdTrimCanevas, CmdIdResizeImage, CmdIdResizeCanevas, CmdIdRestoreOrg:
+            return true
         }
 
         return false
@@ -22,29 +21,29 @@ impl IActionUI for ActionImage
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let main    = cast(*MainWnd) cxt.wnd
         let capture = main.getCapture()
 
         switch cxt.id
         {
         case CmdIdResizeImage:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Resize Image..."
+            evt.name     = "Resize Image..."
             evt.disabled = !capture
 
         case CmdIdResizeCanevas:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Resize Capture..."
+            evt.name     = "Resize Capture..."
             evt.disabled = !capture
 
         case CmdIdTrimCanevas:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Trim"
+            evt.name     = "Trim"
             evt.disabled = !capture
 
         case CmdIdRestoreOrg:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Restore to Original"
+            evt.name     = "Restore to Original"
             evt.disabled = !capture or !capture.backImgOrg.isValid()
         }
 
@@ -53,7 +52,7 @@ impl IActionUI for ActionImage
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let main    = cast(*MainWnd) cxt.wnd
         let capture = main.getCapture()
 
         switch cxt.id
@@ -85,7 +84,7 @@ impl MainWnd
         var g_KeepRatio: bool = true
 
         let capture = getCapture()
-        let ratio = cast(f32) capture.width / capture.height
+        let ratio   = cast(f32) capture.width / capture.height
 
         let dlg = Dialog.createDialog(surface, 350, 265, title: "Resize Image")
         dlg.addButton("Resize", Dialog.BtnOk, true)
@@ -97,7 +96,8 @@ impl MainWnd
         let btnRatio = CheckButton.create(dlg, "Keep Ratio", {120, 85})
         btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
 
-        edit0.edit.sigChanged += closure|ratio, btnRatio, edit1|(edt) {
+        edit0.edit.sigChanged += closure|ratio, btnRatio, edit1|(edt )
+        {
             if btnRatio.checked == .Checked
             {
                 let w = trycatch StrConv.toS32(edt.text)
@@ -105,7 +105,8 @@ impl MainWnd
                 edit1.edit.setTextSilent(Format.toString("%", h))
             }
         }
-        edit1.edit.sigChanged += closure|ratio, btnRatio, edit0|(edt) {
+        edit1.edit.sigChanged += closure|ratio, btnRatio, edit0|(edt )
+        {
             if btnRatio.checked == .Checked
             {
                 let h = trycatch StrConv.toS32(edt.text)
@@ -145,7 +146,7 @@ impl MainWnd
         undo1.newImg = img
         capture.pushUndo(undo1)
         let undo2 = capture.newUndo(.MoveCapture, serial)
-        undo2.newImg = img
+        undo2.newImg   = img
         undo2.newSizeX = w - capture.width
         undo2.newSizeY = h - capture.height
         capture.pushUndo(undo2)
@@ -159,7 +160,7 @@ impl MainWnd
         var g_ResizeMode: u64 = 5
 
         let capture = getCapture()
-        let ratio = cast(f32) capture.width / capture.height
+        let ratio   = cast(f32) capture.width / capture.height
 
         let dlg = Dialog.createDialog(surface, 350, 265, title: "Resize Canevas")
         dlg.addButton("Resize", Dialog.BtnOk, true)
@@ -171,7 +172,8 @@ impl MainWnd
         let btnRatio = CheckButton.create(dlg, "Keep Ratio", {70, 85})
         btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
 
-        edit0.edit.sigChanged += closure|ratio, btnRatio, edit1|(edt) {
+        edit0.edit.sigChanged += closure|ratio, btnRatio, edit1|(edt )
+        {
             if btnRatio.checked == .Checked
             {
                 let w = trycatch StrConv.toS32(edt.text)
@@ -179,7 +181,8 @@ impl MainWnd
                 edit1.edit.setTextSilent(Format.toString("%", h))
             }
         }
-        edit1.edit.sigChanged += closure|ratio, btnRatio, edit0|(edt) {
+        edit1.edit.sigChanged += closure|ratio, btnRatio, edit0|(edt )
+        {
             if btnRatio.checked == .Checked
             {
                 let h = trycatch StrConv.toS32(edt.text)
@@ -191,9 +194,10 @@ impl MainWnd
         func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: u64)
         {
             let btn = CheckButton.create(dlg, " ", pos)
-            btn.checked = g_ResizeMode == id ? .Undefined : .UnChecked
+            btn.checked  = g_ResizeMode == id ? .Undefined : .UnChecked
             btn.userData = cast(*void) id
-            btn.sigChanged += func(btn) {
+            btn.sigChanged += func(btn )
+            {
                 visit c: btn.parent.childs
                 {
                     if c.userData
@@ -206,16 +210,19 @@ impl MainWnd
             }
         }
 
-        const X = 175; const Y = 15; const S = 20; const O = 4
+        const X = 175
+        const Y = 15
+        const S = 20
+        const O = 4
         createBtn(dlg, {X, Y, S, S}, 1)
-        createBtn(dlg, {X+S+O, Y, S, S}, 2)
-        createBtn(dlg, {X+S+O+S+O, Y, S, S}, 3)
-        createBtn(dlg, {X, Y+S+O, S, S}, 4)
-        createBtn(dlg, {X+S+O, Y+S+O, S, S}, 5)
-        createBtn(dlg, {X+S+O+S+O, Y+S+O, S, S}, 6)
-        createBtn(dlg, {X, Y+S+O+S+O, S, S}, 7)
-        createBtn(dlg, {X+S+O, Y+S+O+S+O, S, S}, 8)
-        createBtn(dlg, {X+S+O+S+O, Y+S+O+S+O, S, S}, 9)
+        createBtn(dlg, {X + S + O, Y, S, S}, 2)
+        createBtn(dlg, {X + S + O + S + O, Y, S, S}, 3)
+        createBtn(dlg, {X, Y + S + O, S, S}, 4)
+        createBtn(dlg, {X + S + O, Y + S + O, S, S}, 5)
+        createBtn(dlg, {X + S + O + S + O, Y + S + O, S, S}, 6)
+        createBtn(dlg, {X, Y + S + O + S + O, S, S}, 7)
+        createBtn(dlg, {X + S + O, Y + S + O + S + O, S, S}, 8)
+        createBtn(dlg, {X + S + O + S + O, Y + S + O + S + O, S, S}, 9)
 
         let res = dlg.doModal()
 
@@ -303,7 +310,8 @@ impl MainWnd
             }
         }
 
-        #scope Left loop x: capture.backImg.width
+        #scope Left
+        loop x: capture.backImg.width
         {
             if x + capture.backImagePos.x < 0 do
                 continue
@@ -318,7 +326,8 @@ impl MainWnd
             }
         }
 
-        #scope Right loop x: capture.backImg.width-1 to 0
+        #scope Right
+        loop x: capture.backImg.width - 1 to 0
         {
             if x + capture.backImagePos.x >= capture.width do
                 continue
@@ -333,7 +342,8 @@ impl MainWnd
             }
         }
 
-        #scope Up loop y: capture.backImg.height
+        #scope Up
+        loop y: capture.backImg.height
         {
             if y + capture.backImagePos.y < 0 do
                 continue
@@ -348,7 +358,8 @@ impl MainWnd
             }
         }
 
-        #scope Down loop y: capture.backImg.height-1 to 0
+        #scope Down
+        loop y: capture.backImg.height - 1 to 0
         {
             if y + capture.backImagePos.y >= capture.height do
                 continue

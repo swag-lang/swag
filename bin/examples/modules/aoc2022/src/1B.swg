@@ -14,20 +14,23 @@ using Core
 func day1B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "1.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var count: [3] u64
-    var one: u64
+    var one:   u64
     visit l: lines
     {
         one += catch StrConv.toU64(l)
-        if l.isEmpty() or #index == lines.count-1
+        if l.isEmpty() or #index == lines.count - 1
         {
             switch
             {
-            case one > count[0]: count[0] = one
-            case one > count[1]: count[1] = one
-            case one > count[2]: count[2] = one
+            case one > count[0]:
+                count[0] = one
+            case one > count[1]:
+                count[1] = one
+            case one > count[2]:
+                count[2] = one
             }
 
             Slice.sort(count[..])
@@ -39,4 +42,3 @@ func day1B()
     //Console.print("total: ", total)
     @assert(total == 203002)
 }
-

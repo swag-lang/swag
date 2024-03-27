@@ -14,19 +14,19 @@ enum FormStepType
 
 struct FormStep
 {
-    using base: BaseForm
-    kind:     FormStepKind = Ellipse
-    index:    u32 = 1
-    typeIndex = FormStepType.Number
+    using base:     BaseForm
+    kind:           FormStepKind = Ellipse
+    index:          u32 = 1
+    typeIndex       = FormStepType.Number
 
     #[Serialization.NoSerialize]
     {
-        ws, hs:         s32 = 48
-        gizmo:          GizmoRect
-        isDirty:        bool
-        cachefSize:     f32
-        cacheTypeIndex  = FormStepType.Number
-        pathl:          LinePathList
+        ws, hs:            s32 = 48
+        gizmo:             GizmoRect
+        isDirty:           bool
+        cachefSize:        f32
+        cacheTypeIndex     = FormStepType.Number
+        pathl:             LinePathList
     }
 }
 
@@ -35,12 +35,12 @@ impl IForm for FormStep
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormStep) ptr
-        return  borderColor == other.borderColor and
-                backColor   == other.backColor and
-                alpha       == other.alpha and
-                kind        == other.kind and
-                paintShadow == other.paintShadow and
-                typeIndex   == other.typeIndex
+        return borderColor == other.borderColor and
+               backColor == other.backColor and
+               alpha == other.alpha and
+               kind == other.kind and
+               paintShadow == other.paintShadow and
+               typeIndex == other.typeIndex
     }
 
     mtd impl copy(dst, src: *BaseForm)
@@ -61,8 +61,8 @@ impl IForm for FormStep
     {
         var xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
         var ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
-        xa -= ws/2
-        ya -= hs/2
+        xa -= ws / 2
+        ya -= hs / 2
         setBaseForm(xa, ya, ws, hs)
 
         var xbu = 0
@@ -155,12 +155,12 @@ impl IForm for FormStep
             var cen = Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
             if !pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5) do
                 return false
-            if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2*borderSize), (paintPos.height * 0.5) - (2*borderSize)) do
+            if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2 * borderSize), (paintPos.height * 0.5) - (2 * borderSize)) do
                 return false
 
         case Rectangle, RoundRectangle:
             var rect = paintPos
-            rect.inflate(-2*borderSize)
+            rect.inflate(-2 * borderSize)
             if backColor.a == 0 and rect.contains(pt) do
                 return false
         }
@@ -170,9 +170,9 @@ impl IForm for FormStep
 
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        var pp = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        var pp    = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         var fSize = Math.min(w, h) * 0.6
-        fSize     = Math.max(fSize, 8)
+        fSize = Math.max(fSize, 8)
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
         let face = g_App.theme.res.defaultTypeFaceR
@@ -182,12 +182,12 @@ impl IForm for FormStep
 
         if isDirty
         {
-            isDirty = false
-            cachefSize = fSize
+            isDirty        = false
+            cachefSize     = fSize
             cacheTypeIndex = typeIndex
             pathl.clear()
 
-            var t: String
+            var t:       String
             let curIndex = quickMode ? 1 : index
 
             #[Swag.Complete]
@@ -227,7 +227,7 @@ impl IForm for FormStep
             painter.fillRect(pp, bk)
 
         case RoundRectangle:
-            var round = cast(f32) (Math.min(w, h))
+            var round = cast(f32) Math.min(w, h)
             round /= 3
             if quickMode and alpha != 100 do
                 painter.fillRoundRect(pp, round, round, backBrush)
@@ -251,14 +251,15 @@ impl IForm for FormStep
 
         with gizmo
         {
-            .roundShape = true
-            .anchorSize = 10
-            .trackChange = true
+            .roundShape        = true
+            .anchorSize        = 10
+            .trackChange       = true
             .paintSimpleBorder = false
-            .paintBigBorder = true
+            .paintBigBorder    = true
         }
 
-        gizmo.sigChanged = closure|self|(g, first, hitMove) {
+        gizmo.sigChanged = closure|self|(g, first, hitMove)
+        {
             g.apply(self, first, hitMove)
         }
     }

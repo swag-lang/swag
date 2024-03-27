@@ -55,21 +55,37 @@ private func run(op: &Array's64, input: s64)->s64
         let mode2 = (op[ip] / 10_000) % 10
         let inst  = (op[ip] % 10)
 
-        let param0 = mode0 == 1 ? ip+1 : op[ip+1] + (mode0 == 2 ? base : 0)
-        let param1 = mode1 == 1 ? ip+2 : op[ip+2] + (mode1 == 2 ? base : 0)
-        let param2 = mode2 == 1 ? ip+3 : op[ip+3] + (mode2 == 2 ? base : 0)
+        let param0 = mode0 == 1 ? ip + 1 : op[ip + 1] + (mode0 == 2 ? base : 0)
+        let param1 = mode1 == 1 ? ip + 2 : op[ip + 2] + (mode1 == 2 ? base : 0)
+        let param2 = mode2 == 1 ? ip + 3 : op[ip + 3] + (mode2 == 2 ? base : 0)
 
         switch inst
         {
-        case 1:   val(param2) = val(param0) + val(param1); ip += 4
-        case 2:   val(param2) = val(param0) * val(param1); ip += 4
-        case 3:   val(param0) = input; ip += 2
-        case 4:   output = val(param0); ip += 2
-        case 5:   ip = val(param0) ? val(param1) : ip+3
-        case 6:   ip = !val(param0) ? val(param1) : ip+3
-        case 7:   val(param2) = val(param0) < val(param1) ? 1 : 0; ip += 4
-        case 8:   val(param2) = val(param0) == val(param1) ? 1 : 0; ip += 4
-        case 9:   base += val(param0); ip += 2
+        case 1:
+            val(param2) = val(param0) + val(param1)
+            ip += 4
+        case 2:
+            val(param2) = val(param0) * val(param1)
+            ip += 4
+        case 3:
+            val(param0) = input
+            ip += 2
+        case 4:
+            output = val(param0)
+            ip += 2
+        case 5:
+            ip = val(param0) ? val(param1) : ip + 3
+        case 6:
+            ip = !val(param0) ? val(param1) : ip + 3
+        case 7:
+            val(param2) = val(param0) < val(param1) ? 1 : 0
+            ip += 4
+        case 8:
+            val(param2) = val(param0) == val(param1) ? 1 : 0
+            ip += 4
+        case 9:
+            base += val(param0)
+            ip += 2
         }
     }
 
@@ -79,7 +95,7 @@ private func run(op: &Array's64, input: s64)->s64
 func day9B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "9.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var prg: Array's64
     visit v: Tokenize.split(lines[0], `,`'u8) do

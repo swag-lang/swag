@@ -79,15 +79,16 @@ using Core
 func day7A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "7.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
-    var folder: String
+    var folder:  String
     var folders: HashTable'(String, s32)
 
     loop i: lines
     {
         let l = ref lines[i]
-        if l[0] == `$` do l.remove(0, 1)
+        if l[0] == `$` do
+            l.remove(0, 1)
 
         let cmd = Tokenize.split(l, ` `'u8)
         switch cmd[0]
@@ -105,11 +106,12 @@ func day7A()
 
         default:
             let size = assume StrConv.toS32(cmd[0])
-            var tmp = folder
+            var tmp  = folder
             loop
             {
                 folders.findOrAdd(tmp).value += size
-                if !tmp.length do break
+                if !tmp.length do
+                    break
                 tmp = Path.getDirectoryName(tmp)
             }
         }
@@ -123,4 +125,3 @@ func day7A()
     //Console.print("total: ", total)
     @assert(total == 1443806)
 }
-

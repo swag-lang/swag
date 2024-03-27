@@ -2,48 +2,48 @@
 #dependencies
 {
     // Here you can add your external dependencies
-     #import "gui" location="swag@std"
+    #import "gui" location="swag@std"
 }
 
 using Core, Gui, Pixel
 
-const CARD_WIDTH      = 428
-const CARD_HEIGHT     = 594
-const CARD_ROUND      = cast(u32) (CARD_WIDTH / 54)
-const BORDER_SIZE     = cast(f32) (CARD_WIDTH / 18)
-const BADGE_OFFSET    = BORDER_SIZE * 0.5
-const BADGE_SIZE      = cast(f32) (CARD_WIDTH / 5)
-const BADGE_BORDER    = BORDER_SIZE/4
-const PEPPER_SIZE     = BADGE_SIZE / 2
-const TEXT_MARGIN     = BORDER_SIZE * 0.5
-const TEXT_PADDING    = BORDER_SIZE * 0.5
-const TEXT_FONT_SIZE  = cast(u32) (CARD_WIDTH / 18)
-const TEXT_FONT2_SIZE = cast(u32) (TEXT_FONT_SIZE * 0.9)
-const TEXT_HEIGHT     = cast(u32) (CARD_HEIGHT / 2.5)
-const TITLE_FONT_SIZE = cast(u32) (CARD_WIDTH / 13)
-const TITLE_HEIGHT    = cast(u32) (CARD_HEIGHT / 6)
-const TITLE_OFFSET_Y  = cast(f32) (TITLE_HEIGHT / 5)
+const CARD_WIDTH         = 428
+const CARD_HEIGHT        = 594
+const CARD_ROUND         = cast(u32) (CARD_WIDTH / 54)
+const BORDER_SIZE        = cast(f32) (CARD_WIDTH / 18)
+const BADGE_OFFSET       = BORDER_SIZE * 0.5
+const BADGE_SIZE         = cast(f32) (CARD_WIDTH / 5)
+const BADGE_BORDER       = BORDER_SIZE / 4
+const PEPPER_SIZE        = BADGE_SIZE / 2
+const TEXT_MARGIN        = BORDER_SIZE * 0.5
+const TEXT_PADDING       = BORDER_SIZE * 0.5
+const TEXT_FONT_SIZE     = cast(u32) (CARD_WIDTH / 18)
+const TEXT_FONT2_SIZE    = cast(u32) (TEXT_FONT_SIZE * 0.9)
+const TEXT_HEIGHT        = cast(u32) (CARD_HEIGHT / 2.5)
+const TITLE_FONT_SIZE    = cast(u32) (CARD_WIDTH / 13)
+const TITLE_HEIGHT       = cast(u32) (CARD_HEIGHT / 6)
+const TITLE_OFFSET_Y     = cast(f32) (TITLE_HEIGHT / 5)
 const SUBTITLE_HEIGHT    = cast(u32) (TITLE_HEIGHT / 5)
 const SUBTITLE_FONT_SIZE = SUBTITLE_HEIGHT - 4
-const FONT_SIZE_ID    = cast(u32) (CARD_WIDTH / 16)
-const MARGIN_BOTTOM   = cast(f32) (CARD_WIDTH / 17)
-const LOGO_WIDTH      = cast(f32) (CARD_WIDTH / 4)
-const LOGO_HEIGHT     = MARGIN_BOTTOM
+const FONT_SIZE_ID       = cast(u32) (CARD_WIDTH / 16)
+const MARGIN_BOTTOM      = cast(f32) (CARD_WIDTH / 17)
+const LOGO_WIDTH         = cast(f32) (CARD_WIDTH / 4)
+const LOGO_HEIGHT        = MARGIN_BOTTOM
 
 var g_InitDone = false
 var g_IconM, g_IconF, g_Pepper: Texture
-var g_BackText:     Texture
-var g_BackTitle:    [5] Texture
-var g_Logo:         Texture
-var g_TextSep:      Texture
+var g_BackText:  Texture
+var g_BackTitle: [5] Texture
+var g_Logo:      Texture
+var g_TextSep:   Texture
 
 var g_Files: Array'ImageInfo
 var g_File:  ImageInfo
 var g_Id:    u32 = 1
 
-var g_TTRegular:    *TypeFace
-var g_TTBold:       *TypeFace
-var g_TTItalic:     *TypeFace
+var g_TTRegular: *TypeFace
+var g_TTBold:    *TypeFace
+var g_TTItalic:  *TypeFace
 
 var g_TitleFont:    *Font
 var g_SubTitleFont: *Font
@@ -52,13 +52,13 @@ var g_TextFont2:    FontFamily
 
 struct ImageInfo
 {
-    image:      String
-    badge:      String
-    title:      String
-    subTitles:  Array'string
-    text:       String
-    text2:      String
-    rank:       s32
+    image:         String
+    badge:         String
+    title:         String
+    subTitles:     Array'string
+    text:          String
+    text2:         String
+    rank:          s32
 }
 
 func loadRes(app: *Application)
@@ -94,31 +94,31 @@ func loadRes(app: *Application)
 
     g_TitleFont = Font.create(g_TTBold, TITLE_FONT_SIZE)
 
-    g_TextFont.regular      = Font.create(g_TTRegular, TEXT_FONT_SIZE)
-    g_TextFont.bold         = Font.create(g_TTBold, TEXT_FONT_SIZE)
-    g_TextFont.italic       = Font.create(g_TTItalic, TEXT_FONT_SIZE)
-    g_TextFont.boldItalic   = Font.create(g_TTItalic, TEXT_FONT_SIZE, forceBold: true)
+    g_TextFont.regular    = Font.create(g_TTRegular, TEXT_FONT_SIZE)
+    g_TextFont.bold       = Font.create(g_TTBold, TEXT_FONT_SIZE)
+    g_TextFont.italic     = Font.create(g_TTItalic, TEXT_FONT_SIZE)
+    g_TextFont.boldItalic = Font.create(g_TTItalic, TEXT_FONT_SIZE, forceBold: true)
 
-    g_TextFont2.regular     = Font.create(g_TTRegular, TEXT_FONT2_SIZE)
-    g_TextFont2.bold        = Font.create(g_TTBold, TEXT_FONT2_SIZE)
-    g_TextFont2.italic      = Font.create(g_TTItalic, TEXT_FONT2_SIZE)
-    g_TextFont2.boldItalic  = Font.create(g_TTItalic, TEXT_FONT2_SIZE, forceBold: true)
+    g_TextFont2.regular    = Font.create(g_TTRegular, TEXT_FONT2_SIZE)
+    g_TextFont2.bold       = Font.create(g_TTBold, TEXT_FONT2_SIZE)
+    g_TextFont2.italic     = Font.create(g_TTItalic, TEXT_FONT2_SIZE)
+    g_TextFont2.boldItalic = Font.create(g_TTItalic, TEXT_FONT2_SIZE, forceBold: true)
 
     g_SubTitleFont = Font.create(g_TTItalic, SUBTITLE_FONT_SIZE)
 
     img = assume Image.load(Path.combine(dataPath, "backA.png"))
     img.resize(acast CARD_WIDTH, acast TITLE_HEIGHT, .Bicubic)
     g_BackTitle[0] = app.renderer.addImage(img)
-    img = assume Image.load(Path.combine(dataPath, "backB.png"))
+    img            = assume Image.load(Path.combine(dataPath, "backB.png"))
     img.resize(acast CARD_WIDTH, acast TITLE_HEIGHT, .Bicubic)
     g_BackTitle[1] = app.renderer.addImage(img)
-    img = assume Image.load(Path.combine(dataPath, "backC.png"))
+    img            = assume Image.load(Path.combine(dataPath, "backC.png"))
     img.resize(acast CARD_WIDTH, acast TITLE_HEIGHT, .Bicubic)
     g_BackTitle[2] = app.renderer.addImage(img)
-    img = assume Image.load(Path.combine(dataPath, "backD.png"))
+    img            = assume Image.load(Path.combine(dataPath, "backD.png"))
     img.resize(acast CARD_WIDTH, acast TITLE_HEIGHT, .Bicubic)
     g_BackTitle[3] = app.renderer.addImage(img)
-    img = assume Image.load(Path.combine(dataPath, "backE.png"))
+    img            = assume Image.load(Path.combine(dataPath, "backE.png"))
     img.resize(acast CARD_WIDTH, acast TITLE_HEIGHT, .Bicubic)
     g_BackTitle[4] = app.renderer.addImage(img)
 }
@@ -126,26 +126,26 @@ func loadRes(app: *Application)
 func paintBadge(dc: *Painter, x, y: f32, m: bool)
 {
     var texture: Texture
-    var color: Color
+    var color:   Color
 
     if m
     {
         texture = g_IconM
-        color = Argb.CornflowerBlue
+        color   = Argb.CornflowerBlue
     }
     else
     {
         texture = g_IconF
-        color = Argb.Pink
+        color   = Argb.Pink
     }
 
     var rectSolo = Math.Rectangle{x, y, BADGE_SIZE, BADGE_SIZE}
 
-    dc.fillCircle(rectSolo.horzCenter(), rectSolo.vertCenter(), BADGE_SIZE*0.5, color)
+    dc.fillCircle(rectSolo.horzCenter(), rectSolo.vertCenter(), BADGE_SIZE * 0.5, color)
     var rectIcon = rectSolo
     rectIcon.inflate(-10)
     dc.drawTexture(rectIcon, texture)
-    dc.drawCircle(rectSolo.horzCenter(), rectSolo.vertCenter(), BADGE_SIZE*0.5, Argb.Black, BADGE_BORDER)
+    dc.drawCircle(rectSolo.horzCenter(), rectSolo.vertCenter(), BADGE_SIZE * 0.5, Argb.Black, BADGE_BORDER)
 }
 
 func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
@@ -160,12 +160,12 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 
     {
         var rectBorder = rect
-        dc.fillRoundRect(rectBorder, CARD_ROUND*2.0, CARD_ROUND*2.0, Argb.Black)
+        dc.fillRoundRect(rectBorder, CARD_ROUND * 2.0, CARD_ROUND * 2.0, Argb.Black)
     }
 
     {
         var rectOutside = rect
-        dc.drawRoundRect(rectOutside, CARD_ROUND*2.5, CARD_ROUND*2.5, Argb.White, 3)
+        dc.drawRoundRect(rectOutside, CARD_ROUND * 2.5, CARD_ROUND * 2.5, Argb.White, 3)
     }
 
     // Image
@@ -180,21 +180,21 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 
         if img.width > img.height
         {
-            let ratio = img.width / cast(f32) img.height
+            let ratio     = img.width / cast(f32) img.height
             let newHeight = rectImage.height
             img.resize(cast(s32) (newHeight * ratio), cast(s32) newHeight)
         }
         else
         {
-            let ratio = img.height / cast(f32) img.width
+            let ratio    = img.height / cast(f32) img.width
             let newWidth = rectImage.width
             img.resize(cast(s32) newWidth, cast(s32) (newWidth * ratio))
         }
 
         var cropRect: Math.Rectangle
-        cropRect.x = (img.width / 2) - rectImage.width / 2
-        cropRect.y = (img.height / 2) - rectImage.height
-        cropRect.width = rectImage.width
+        cropRect.x      = (img.width / 2) - rectImage.width / 2
+        cropRect.y      = (img.height / 2) - rectImage.height
+        cropRect.width  = rectImage.width
         cropRect.height = rectImage.height
         img.crop(cropRect)
 
@@ -209,7 +209,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         if @countof(fi.badge) >= 1 do
             paintBadge(dc, rect.x + BADGE_OFFSET, rect.y + BADGE_OFFSET, fi.badge[0] == `h`)
         if @countof(fi.badge) >= 2 do
-            paintBadge(dc, rect.x + BADGE_OFFSET + BADGE_SIZE + BADGE_BORDER*2, rect.y + BADGE_OFFSET, fi.badge[1] == `h`)
+            paintBadge(dc, rect.x + BADGE_OFFSET + BADGE_SIZE + BADGE_BORDER * 2, rect.y + BADGE_OFFSET, fi.badge[1] == `h`)
     }
 
     // Text
@@ -218,17 +218,17 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     {
         var rectText = rect
         rectText.inflate(-BORDER_SIZE)
-        rectText.y = rectText.bottom() - TEXT_HEIGHT
+        rectText.y      = rectText.bottom() - TEXT_HEIGHT
         rectText.height = TEXT_HEIGHT - MARGIN_BOTTOM
         dc.drawTexture(rectText, g_BackText)
 
-        rectText.moveTop(TITLE_HEIGHT*0.5)
+        rectText.moveTop(TITLE_HEIGHT * 0.5)
         rectText.moveLeft(TEXT_PADDING)
         rectText.moveRight(-TEXT_PADDING)
 
         var rs:  RichString
         var rsf: RichStringFormat
-        rsf.font = g_TextFont
+        rsf.font          = g_TextFont
         rsf.horzAlignment = .Left
         rsf.vertAlignment = .Center
         rsf.flags |= .WordWrap
@@ -246,7 +246,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
             dc.drawRichString(rectText, &rs, rsf)
 
             var rectSep = rectText
-            rectSep.y -= (TEXT_FONT_SIZE*0.5)
+            rectSep.y -= (TEXT_FONT_SIZE * 0.5)
             rectSep.height = TEXT_FONT_SIZE
             dc.drawTexture(rectSep, g_TextSep)
         }
@@ -258,12 +258,12 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     {
         var rect1 = rect
         rect1.inflate(-BORDER_SIZE)
-        rect1.y = rect1.bottom() - TEXT_HEIGHT - (TITLE_HEIGHT/2)
+        rect1.y      = rect1.bottom() - TEXT_HEIGHT - (TITLE_HEIGHT / 2)
         rect1.height = TITLE_HEIGHT
         dc.drawTexture(rect1, g_BackTitle[fi.rank])
 
         var rectSub = rect1
-        rectSub.y = rectSub.bottom() - SUBTITLE_HEIGHT
+        rectSub.y      = rectSub.bottom() - SUBTITLE_HEIGHT
         rectSub.height = SUBTITLE_HEIGHT
         dc.fillRect(rectSub, Color.fromArgb(100, 0, 0, 0))
 
@@ -274,7 +274,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         rsf.font.regular  = g_TitleFont
         rsf.horzAlignment = .Left
         rsf.vertAlignment = .Center
-        rsf.palette[0] = Argb.White
+        rsf.palette[0]    = Argb.White
         rect1.x += TEXT_PADDING
         rect1.height -= SUBTITLE_HEIGHT
         rect1.moveTop(TITLE_OFFSET_Y)
@@ -299,14 +299,14 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 
     {
         var rectPepper = rect
-        rectPepper.x = rect.right() - PEPPER_SIZE - (BORDER_SIZE*1.5)
-        rectPepper.y = rect.bottom() - TEXT_HEIGHT - (TITLE_HEIGHT/2)
+        rectPepper.x = rect.right() - PEPPER_SIZE - (BORDER_SIZE * 1.5)
+        rectPepper.y = rect.bottom() - TEXT_HEIGHT - (TITLE_HEIGHT / 2)
         rectPepper.width, rectPepper.height = PEPPER_SIZE
 
         loop i: fi.rank
         {
             dc.drawTexture(rectPepper, g_Pepper)
-            rectPepper.x -= PEPPER_SIZE*0.5
+            rectPepper.x -= PEPPER_SIZE * 0.5
         }
     }
 
@@ -315,7 +315,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 
     {
         var rect1 = rect
-        rect1.y = rect1.bottom() - MARGIN_BOTTOM - BORDER_SIZE
+        rect1.y      = rect1.bottom() - MARGIN_BOTTOM - BORDER_SIZE
         rect1.height = MARGIN_BOTTOM + BORDER_SIZE
         rect1.width -= BORDER_SIZE
 
@@ -327,18 +327,18 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         rsf.font.regular  = app.theme.createDefaultFont(FONT_SIZE_ID)
         rsf.horzAlignment = .Right
         rsf.vertAlignment = .Center
-        rsf.palette[0] = Argb.White
+        rsf.palette[0]    = Argb.White
         dc.drawRichString(rect1, &rs, rsf)
     }
 
     {
         var rect1 = rect
-        rect1.y = rect1.bottom() - MARGIN_BOTTOM - BORDER_SIZE
+        rect1.y      = rect1.bottom() - MARGIN_BOTTOM - BORDER_SIZE
         rect1.height = MARGIN_BOTTOM + BORDER_SIZE
-        rect1.y = rect1.vertCenter() - (LOGO_HEIGHT/2)
+        rect1.y      = rect1.vertCenter() - (LOGO_HEIGHT / 2)
 
-        rect1.x = BORDER_SIZE
-        rect1.width = LOGO_WIDTH
+        rect1.x      = BORDER_SIZE
+        rect1.width  = LOGO_WIDTH
         rect1.height = LOGO_HEIGHT
 
         dc.drawTexture(rect1, g_Logo)
@@ -351,25 +351,25 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     dataPath = Path.combine(dataPath, "datas", "cards")
 
     var pathImg = Path.combine(dataPath, "img")
-    var lines = assume File.readAllLines(Path.combine(dataPath, "cards.txt"))
+    var lines   = assume File.readAllLines(Path.combine(dataPath, "cards.txt"))
     visit l: lines
     {
-        var tokens = Tokenize.split(l, `;`'rune, removeEmpty: false)
-        var fi: ImageInfo
+        var tokens  = Tokenize.split(l, `;`'rune, removeEmpty: false)
+        var fi:     ImageInfo
         var folders = Tokenize.split(tokens[0], `/`'rune)
 
-        fi.title   = folders.back()
-        fi.image   = Path.combine(pathImg, tokens[1])
-        fi.badge   = tokens[2]
-        fi.rank    = assume StrConv.toS32(tokens[3])
-        fi.text    = tokens[4]
-        fi.text2   = tokens[5]
+        fi.title = folders.back()
+        fi.image = Path.combine(pathImg, tokens[1])
+        fi.badge = tokens[2]
+        fi.rank  = assume StrConv.toS32(tokens[3])
+        fi.text  = tokens[4]
+        fi.text2 = tokens[5]
         folders.removeBack()
         fi.subTitles = folders
         g_Files.add(fi)
     }
 
-    var page = Image.create(CARD_WIDTH*3, CARD_HEIGHT*3, .BGRA8)
+    var page = Image.create(CARD_WIDTH * 3, CARD_HEIGHT * 3, .BGRA8)
     page.fill(Argb.White)
     var x, y = 0
     var pageNum = 1
@@ -388,11 +388,13 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     {
         g_File = f
 
-        var img = pt.draw(func(app, dc) {
+        var img = pt.draw(func(app, dc)
+        {
             dc.setColorMaskFull()
             dc.clear(Argb.White)
             paintOne(app, dc, 0, 0, g_File)
-        })
+        }
+)
 
         page.mix(img, x, y)
 

@@ -32,7 +32,7 @@ func day6A0()
     //Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var lights: HashSet'u64
 
@@ -76,19 +76,19 @@ func day6A1()
     //Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var lights: Array'bool
-    lights.resize(1000*1000)
+    lights.resize(1000 * 1000)
 
     var r = assume Parser.RegExp.create(#"\d+"#)
     visit l: lines
     {
         let nums = r.grepAll(l)
-        let x0 = assume StrConv.toU64(nums[0])
-        let y0 = assume StrConv.toU64(nums[1])
-        let x1 = assume StrConv.toU64(nums[2])
-        let y1 = assume StrConv.toU64(nums[3])
+        let x0   = assume StrConv.toU64(nums[0])
+        let y0   = assume StrConv.toU64(nums[1])
+        let x1   = assume StrConv.toU64(nums[2])
+        let y1   = assume StrConv.toU64(nums[3])
 
         loop x: x0 to x1
         {
@@ -119,25 +119,25 @@ func day6A2()
     //Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var lights: BitArray
-    lights.reserve(1000*1000'u64, false)
+    lights.reserve(1000 * 1000'u64, false)
 
     var r = assume Parser.RegExp.create(#"\d+"#)
     visit l: lines
     {
         let nums = r.grepAll(l)
-        let x0 = assume StrConv.toU64(nums[0])
-        let y0 = assume StrConv.toU64(nums[1])
-        let x1 = assume StrConv.toU64(nums[2])
-        let y1 = assume StrConv.toU64(nums[3])
+        let x0   = assume StrConv.toU64(nums[0])
+        let y0   = assume StrConv.toU64(nums[1])
+        let x1   = assume StrConv.toU64(nums[2])
+        let y1   = assume StrConv.toU64(nums[3])
 
         loop x: x0 to x1
         {
             loop y: y0 to y1
             {
-                let coord = x+(y*1000)
+                let coord = x + (y * 1000)
                 if l[6] == `n` do
                     lights.set(coord, true)
                 elif l[6] == `f` do

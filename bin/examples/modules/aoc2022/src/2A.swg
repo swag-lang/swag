@@ -32,13 +32,12 @@ using Core
 func day2A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     const Score: [3, 3] s32 = [
-        [1+3, 2+6, 3+0],
-        [1+0, 2+3, 3+6],
-        [1+6, 2+0, 3+3]
-    ]
+    [1 + 3, 2 + 6, 3 + 0],
+    [1 + 0, 2 + 3, 3 + 6],
+    [1 + 6, 2 + 0, 3 + 3]]
 
     var total: u64
     visit l: lines
@@ -49,4 +48,3 @@ func day2A()
     //Console.print("total: ", total)
     @assert(total == 14163)
 }
-

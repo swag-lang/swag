@@ -12,13 +12,13 @@ using Core
 func day3B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "3.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var r = assume Parser.RegExp.create(#"#(\d+) @ (\d+),(\d+): (\d+)x(\d+)"#)
 
-    var ids:   Array's32
-    var here:  HashSet's32
-    ids.resize(1000*1000)
+    var ids:  Array's32
+    var here: HashSet's32
+    ids.resize(1000 * 1000)
     here.reserve(1000)
     visit l: lines
     {
@@ -30,9 +30,9 @@ func day3B()
         let height = assume StrConv.toS32(r[5])
 
         var alone = true
-        loop x: startX until startX+width
+        loop x: startX until startX + width
         {
-            loop y: startY until startY+height
+            loop y: startY until startY + height
             {
                 let re = ref ids.ref2(x, y, 1000)
                 if re
@@ -43,10 +43,10 @@ func day3B()
                 re = id
             }
         }
-        if alone do here.add(id)
+        if alone do
+            here.add(id)
     }
 
     @assert(here.count == 1)
     @assert(here.contains(251))
 }
-

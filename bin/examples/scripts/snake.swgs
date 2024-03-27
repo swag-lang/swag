@@ -5,14 +5,14 @@
 
 using Gui, Core, Pixel, Core.Math
 
-const ElemSize   = 40
-const SnakeTime  = 150
+const ElemSize  = 40
+const SnakeTime = 150
 
-var g_Snake:        Array'Vector2
-var g_ApplePos:     Vector2
-var g_SnakeSpeed:   Vector2
-var g_Rect:         Rectangle
-var g_Time:         u64
+var g_Snake:      Array'Vector2
+var g_ApplePos:   Vector2
+var g_SnakeSpeed: Vector2
+var g_Rect:       Rectangle
+var g_Time:       u64
 
 func paintSnake(painter: *Painter)
 {
@@ -22,9 +22,9 @@ func paintSnake(painter: *Painter)
         let x = p.x * ElemSize
         let y = p.y * ElemSize
 
-        painter.fillCircle(x, y, ElemSize*scale, Argb.Black)
+        painter.fillCircle(x, y, ElemSize * scale, Argb.Black)
         if #index == 0 do
-            painter.fillCircle(x, y, ElemSize*0.45, Argb.Green)
+            painter.fillCircle(x, y, ElemSize * 0.45, Argb.Green)
         scale -= 0.025
         scale = Math.max(scale, 0.4)
     }
@@ -34,7 +34,7 @@ func paintApple(painter: *Painter)
 {
     let x = g_ApplePos.x * ElemSize
     let y = g_ApplePos.y * ElemSize
-    painter.fillCircle(x, y, ElemSize*0.45, Argb.Red)
+    painter.fillCircle(x, y, ElemSize * 0.45, Argb.Red)
 }
 
 func updateCollisions()->bool
@@ -125,8 +125,8 @@ func generateApplePos()
     var error = true
     while error
     {
-        error = false
-        g_ApplePos.x = Random.shared().nextS32(1, cast(s32) (g_Rect.width  / ElemSize))
+        error        = false
+        g_ApplePos.x = Random.shared().nextS32(1, cast(s32) (g_Rect.width / ElemSize))
         g_ApplePos.y = Random.shared().nextS32(1, cast(s32) (g_Rect.height / ElemSize))
         visit p: g_Snake
         {
@@ -141,7 +141,7 @@ func generateApplePos()
 
 func startGame()
 {
-    var initPos: Vector2{g_Rect.width / (2*ElemSize), g_Rect.height / (2*ElemSize)}
+    var initPos: Vector2{g_Rect.width / (2 * ElemSize), g_Rect.height / (2 * ElemSize)}
     initPos.round()
     g_Snake.clear()
     g_Snake.add(initPos)
@@ -160,8 +160,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
-        g_Rect   = wnd.getClientRect()
+        let painter  = paintEvt.bc.painter
+        g_Rect = wnd.getClientRect()
 
         updateSnakePosition()
         updateSpeed(wnd)
@@ -178,6 +178,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 800, 512, title: "Snake", hook: &onEvent, init: &test)
 }

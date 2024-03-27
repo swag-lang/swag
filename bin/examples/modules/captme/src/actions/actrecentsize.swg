@@ -4,17 +4,17 @@ const CmdIdRecentSmall  = "CmdIdRecentSmall"
 const CmdIdRecentMedium = "CmdIdRecentMedium"
 const CmdIdRecentBig    = "CmdIdRecentBig"
 
-struct ActionRecentSize {}
+struct ActionRecentSize
+{
+}
 impl IActionUI for ActionRecentSize
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdRecentSmall,
-             CmdIdRecentMedium,
-             CmdIdRecentBig:
-             return true
+        case CmdIdRecentSmall, CmdIdRecentMedium, CmdIdRecentBig:
+            return true
         }
 
         return false
@@ -30,19 +30,19 @@ impl IActionUI for ActionRecentSize
             evt.setFlags |= .Name | .ToolTip | .Checked | .Icon
             evt.toolTip = "Small recent view"
             evt.checked = main.bottomSize == .Small
-            evt.icon = Icon.from(&main.icons24, 0)
+            evt.icon    = Icon.from(&main.icons24, 0)
 
         case CmdIdRecentMedium:
             evt.setFlags |= .Name | .ToolTip | .Checked | .Icon
             evt.toolTip = "Medium recent view"
             evt.checked = main.bottomSize == .Medium
-            evt.icon = Icon.from(&main.icons24, 1)
+            evt.icon    = Icon.from(&main.icons24, 1)
 
         case CmdIdRecentBig:
             evt.setFlags |= .Name | .ToolTip | .Checked | .Icon
             evt.toolTip = "Big recent view"
             evt.checked = main.bottomSize == .Big
-            evt.icon = Icon.from(&main.icons24, 2)
+            evt.icon    = Icon.from(&main.icons24, 2)
         }
 
         return true

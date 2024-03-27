@@ -20,22 +20,22 @@ func day3B()
     assume
     {
         let dataPath = Path.combine(Path.getDirectoryName(#file), "3.txt")
-        let lines = File.readAllLines(dataPath)
+        let lines    = File.readAllLines(dataPath)
 
         var total = 0
         for var l = 0'u64; l < lines.count; l += 3
         {
             var split: [3] Array'string
             split[0] = Tokenize.split(lines[l], ` `'u8)
-            split[1] = Tokenize.split(lines[l+1], ` `'u8)
-            split[2] = Tokenize.split(lines[l+2], ` `'u8)
+            split[1] = Tokenize.split(lines[l + 1], ` `'u8)
+            split[2] = Tokenize.split(lines[l + 2], ` `'u8)
 
             loop i: 3
             {
-                let v = [StrConv.toS32(split[0][i]), StrConv.toS32(split[1][i]), StrConv.toS32(split[2][i])]
+                let v  = [StrConv.toS32(split[0][i]), StrConv.toS32(split[1][i]), StrConv.toS32(split[2][i])]
                 var ok = 0
                 loop j: 3 do
-                    ok += cast(s32) (v[j] + v[(j+1)%3] > v[(j+2)%3])
+                    ok += cast(s32) (v[j] + v[(j + 1) % 3] > v[(j + 2) % 3])
                 total += cast(s32) (ok == 3)
             }
         }
@@ -44,4 +44,3 @@ func day3B()
         @assert(total == 1544)
     }
 }
-

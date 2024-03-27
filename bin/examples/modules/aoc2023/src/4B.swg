@@ -32,8 +32,8 @@ using Core
 
 private struct Card
 {
-    win: s32
-    num: s32
+    win:     s32
+    num:     s32
 }
 
 private var cards: Array'Card
@@ -41,7 +41,7 @@ private var cards: Array'Card
 func day4B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     visit l: lines
     {
@@ -51,8 +51,10 @@ func day4B()
         let val1  = Tokenize.split(game[1], ` `'u8)
 
         var v0, v1: Array's32
-        visit v: val0 do v0.add(assume StrConv.toS32(v))
-        visit v: val1 do v1.add(assume StrConv.toS32(v))
+        visit v: val0 do
+            v0.add(assume StrConv.toS32(v))
+        visit v: val1 do
+            v1.add(assume StrConv.toS32(v))
 
         var score = 0
         visit v: v1
@@ -78,4 +80,3 @@ func day4B()
     //Console.print("total: ", total)
     @assert(total == 12263631)
 }
-

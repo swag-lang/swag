@@ -27,11 +27,10 @@ func day2A()
             let l = StrConv.toS32(r.getCapture(1))
             let w = StrConv.toS32(r.getCapture(2))
             let h = StrConv.toS32(r.getCapture(3))
-            total += 2*l*w + 2*w*h + 2*h*l + Math.min(l*w, w*h, h*l)
+            total += 2 * l * w + 2 * w * h + 2 * h * l + Math.min(l * w, w * h, h * l)
         }
     }
 
     //Console.print("total: ", total)
     @assert(total == 1588178)
 }
-

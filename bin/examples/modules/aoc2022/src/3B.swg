@@ -30,10 +30,10 @@ using Core
 func day3B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total: u64
-    var idx: s32
+    var idx:   s32
     while idx < lines.count
     {
         var stack: [3] Array's32
@@ -47,7 +47,7 @@ func day3B()
                     s = l[i] - `a`
                 else do
                     s = 26 + (l[i] - `A`)
-                stack[ii].add(s+1)
+                stack[ii].add(s + 1)
             }
 
             idx += 1
@@ -71,4 +71,3 @@ func day3B()
     //Console.print("total: ", total)
     @assert(total == 2415)
 }
-

@@ -17,7 +17,7 @@ func day4B()
     var total = 0
     loop x: 246515 to 739105
     {
-        var div = 100_000
+        var div  = 100_000
         var str: [6] u8 = undefined
         loop i: 6
         {
@@ -28,17 +28,17 @@ func day4B()
         var ok = false
         loop i: 5
         {
-            if str[i] > str[i+1]
+            if str[i] > str[i + 1]
             {
                 ok = false
                 break
             }
 
-            if str[i] == str[i+1]
+            if str[i] == str[i + 1]
             {
-                if !i or str[i-1] != str[i]
+                if !i or str[i - 1] != str[i]
                 {
-                    if i >= 4 or str[i+1] != str[i+2]
+                    if i >= 4 or str[i + 1] != str[i + 2]
                     {
                         ok = true
                     }
@@ -46,7 +46,8 @@ func day4B()
             }
         }
 
-        if ok do total += 1
+        if ok do
+            total += 1
     }
 
     //Console.print("total: ", total)

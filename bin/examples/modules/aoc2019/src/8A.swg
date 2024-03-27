@@ -27,25 +27,27 @@ using Core
 func day8A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var x, y: s32
     var count: [10] s32
-    var best0 = Swag.S32.Max
-    var total = 0
+    var best0  = Swag.S32.Max
+    var total  = 0
 
     visit:Bytes c: lines[0]
     {
-        count[c-`0`] += 1
+        count[c - `0`] += 1
         x = (x + 1) % 25
-        if x != 0 do continue
+        if x != 0 do
+            continue
         y = (y + 1) % 6
-        if y != 0 do continue
+        if y != 0 do
+            continue
 
         if count[0] < best0
         {
             best0 = count[0]
-            total = count[1]*count[2]
+            total = count[1] * count[2]
         }
 
         @init(count)

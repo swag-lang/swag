@@ -43,19 +43,21 @@ func day7A()
 func day7A0()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var id: HashTable'(string, Array'string)
 
     visit l: lines
     {
-        visit r: ["bags", "bag", "."] do l.replace(r, "")
+        visit r: ["bags", "bag", "."] do
+            l.replace(r, "")
         l.replace(" , ", ",")
         l.replace("  ", " ")
         l.trim()
 
         let split = Tokenize.split(l, " contain ")
-        if split[1] == "no other" do continue
+        if split[1] == "no other" do
+            continue
 
         let split1 = Tokenize.split(split[1], `,`'u8)
         visit v: split1
@@ -79,7 +81,8 @@ func day7A0()
     func contains(id: *HashTable'(string, Array'string), what: string)->bool
     {
         let it = id.find(what)
-        if !it do return false
+        if !it do
+            return false
 
         visit v: it.value
         {
@@ -105,7 +108,7 @@ func day7A0()
 func day7A1()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var id: HashTable'(string, Array'string)
 

@@ -47,7 +47,7 @@ using Core
 func day9B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "9.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     let target = 552655238
     visit l, i: lines
@@ -66,7 +66,7 @@ func day9B()
             if sum == target
             {
                 //Console.print("total: ", min+max)
-                @assert(min+max==70672245)
+                @assert(min + max == 70672245)
                 return
             }
         }

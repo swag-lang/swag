@@ -35,7 +35,7 @@ func day3A()
 func day3A0()
 {
     var x, y, dx, dy: s32
-    var l = 0
+    var l   = 0
     var cpt = 1
 
     const D = 312051
@@ -45,7 +45,9 @@ func day3A0()
     {
         loop l
         {
-            x += dx; y += dy; cpt += 1
+            x += dx
+            y += dy
+            cpt += 1
             if cpt == D
             {
                 //Console.print("total: ", Math.abs(x) + Math.abs(y))
@@ -57,13 +59,19 @@ func day3A0()
 
     loop
     {
-        l += 1; dx = 1; dy = 0
+        l += 1
+        dx = 1
+        dy = 0
         mix()
-        dx = 0; dy = -1
+        dx = 0
+        dy = -1
         mix()
-        l += 1; dx = -1; dy = 0
+        l += 1
+        dx = -1
+        dy = 0
         mix()
-        dx = 0; dy = 1
+        dx = 0
+        dy = 1
         mix()
     }
 }
@@ -73,7 +81,7 @@ func day3A0()
 func day3A1()
 {
     var x, y, dx, dy: s32
-    var l = 0
+    var l   = 0
     var cpt = 1
 
     const D = 312051
@@ -83,10 +91,14 @@ func day3A1()
         const O = [{1, 1, 0}, {0, 0, -1}, {1, -1, 0}, {0, 0, 1}]
         visit v: O
         {
-            l += v.item0; dx = v.item1; dy = v.item2
+            l += v.item0
+            dx = v.item1
+            dy = v.item2
             loop l
             {
-                x += dx; y += dy; cpt += 1
+                x += dx
+                y += dy
+                cpt += 1
                 if cpt == D
                 {
                     //Console.print("total: ", Math.abs(x) + Math.abs(y))
@@ -97,4 +109,3 @@ func day3A1()
         }
     }
 }
-

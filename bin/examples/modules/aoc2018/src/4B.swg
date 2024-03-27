@@ -12,7 +12,7 @@ using Core, Core.Parser
 func day4B() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "4.txt")
-    let lines = File.readAllLines(dataPath)
+    let lines    = File.readAllLines(dataPath)
     Slice.sort(lines[..])
 
     var curGuard, startSleep, curMin = 0
@@ -39,12 +39,12 @@ func day4B() assume
             if v1 > minCount
             {
                 minCount = v1
-                min = i
-                guard = k1
+                min      = i
+                guard    = k1
             }
         }
     }
 
     //Console.print("total: ", guard*min)
-    @assert(guard*min == 10491)
+    @assert(guard * min == 10491)
 }

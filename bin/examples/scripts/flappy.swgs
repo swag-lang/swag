@@ -90,7 +90,8 @@ The '#main' special function is usually the entry point of an executable. It's e
 
     // From the command line, if the script is run with '--arg:swag.test', then we force the application
     // to exit after 100 frames. This is usefull for batch testing.
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
 
     // Creates and run one surface (i.e. window) at the given position and with the given size and title.
     // 'hook' defines a lambda that will receive and treat all gui events
@@ -103,38 +104,38 @@ The '#main' special function is usually the entry point of an executable. It's e
 ## Constants
 We declare global constants with 'const'. Note that we do not specify types for thoses constants. They will be deduced thanks to the affection.
 */
-const Gravity      = 2.5        // 2.5 is a 32 bits float, so the type of Gravity is 'f32'
+const Gravity      = 2.5       // 2.5 is a 32 bits float, so the type of Gravity is 'f32'
 const GroundHeight = 40.0
 const SpeedHorz    = 100.0
-const BirdImpulseY = 350        // 350 is an integer, so the type of BirdImpulseY is 's32'
+const BirdImpulseY = 350       // 350 is an integer, so the type of BirdImpulseY is 's32'
 
 /**
 ## Variables
 */
 
-var g_Bird:      Bird           // 'Bird' is a structure, and will be defined later
+var g_Bird: Bird // 'Bird' is a structure, and will be defined later
 
 /**
 'g_Pipes' is a **dynamic** and **generic array** where all the elements are of type 'Pipe'. In other languages, you would write 'Array<Pipe>'. 'Array' comes from the 'Core' module, but thanks to the global `using Core`, we do not need to write `Core.Array'Pipe`.
 */
 
-var g_Pipes:     Array'Pipe
+var g_Pipes: Array'Pipe
 
 /**
 'Math' is a namespace part of the 'Core' module. We could have specified a global `using Core.Math` at the top of the script file, but here, we prefer the explicit reference.
 */
 
-var g_Rect:      Math.Rectangle
+var g_Rect: Math.Rectangle
 
 /**
 Here are a bunch of global variables. All of them are **initialized to 0** by default.
 */
-var g_Dt:        f32
-var g_Time:      f32
-var g_BasePos:   f32
-var g_Score:     s32
-var g_GameOver:  bool
-var g_Start:     bool
+var g_Dt:       f32
+var g_Time:     f32
+var g_BasePos:  f32
+var g_Score:    s32
+var g_GameOver: bool
+var g_Start:    bool
 
 /**
 Again, no need to specify the type of 'g_FirstStart'. It is deduced from the affectation to be 'bool'.
@@ -142,13 +143,12 @@ Again, no need to specify the type of 'g_FirstStart'. It is deduced from the aff
 
 var g_FirstStart = true
 
-
 /**
 */
 
 // Texture assets
-var g_DigitTexture: [10] Texture    // A static array of 10 textures
-var g_BirdTexture:  [3] Texture     // A static array of 3 textures
+var g_DigitTexture: [10] Texture     // A static array of 10 textures
+var g_BirdTexture:  [3] Texture      // A static array of 3 textures
 var g_BackTexture:  Texture
 var g_OverTexture:  Texture
 var g_BaseTexture:  Texture
@@ -157,10 +157,10 @@ var g_PipeTextureD: Texture
 var g_MsgTexture:   Texture
 
 // Sound assets
-var g_SoundDie:     Audio.SoundFile
-var g_SoundScore:   Audio.SoundFile
-var g_SoundHit:     Audio.SoundFile
-var g_SoundFlap:    Audio.SoundFile
+var g_SoundDie:   Audio.SoundFile
+var g_SoundScore: Audio.SoundFile
+var g_SoundHit:   Audio.SoundFile
+var g_SoundFlap:  Audio.SoundFile
 
 /**
 'g_Font' is a **value** pointer to a Font structure.
@@ -183,22 +183,22 @@ Pointer arithmetic is not enabled on value pointers, but it is on block pointers
 struct Bird
 {
     // Position of the bird. Full qualified name.
-    pos:        Core.Math.Vector2
+    pos: Core.Math.Vector2
 
     // Speed of the bird. In fact no need to specify 'Core' thanks to the global 'using'.
-    speed:      Math.Vector2
+    speed: Math.Vector2
 
     // Sprite frame
-    frame:      f32
+    frame: f32
 }
 
 // Defines one Pipe
 struct Pipe
 {
-    rectUp:     Math.Rectangle  // Position of the up part of the Pipe
-    rectDown:   Math.Rectangle  // Position of the down part of the Pipe
-    distToNext: f32             // Distance to the next Pipe
-    scored:     bool            // 'true' if the Bird has passed that Pipe
+    rectUp:         Math.Rectangle     // Position of the up part of the Pipe
+    rectDown:       Math.Rectangle     // Position of the down part of the Pipe
+    distToNext:     f32                // Distance to the next Pipe
+    scored:         bool               // 'true' if the Bird has passed that Pipe
 }
 
 /**
@@ -212,7 +212,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
     switch evt.kind
     {
-    // Called once for the surface. Can be used to initialize some stuff.
     case Create:
         g_Rect = wnd.getClientRect()
 
@@ -221,22 +220,18 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         assume loadAssets(wnd)
 
         start()
-
-    // Each time the surface (i.e. window) is resized
     case Resize:
         g_Rect = wnd.getClientRect()
-
-    // Each time the surface needs to be repainted
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
+        let painter  = paintEvt.bc.painter
 
         // This is the elapsed time between two 'frames', in seconds.
         g_Dt = wnd.getApp().getDt()
 
-        input(wnd)          // IO (keyboard test)
-        paint(painter)      // Paint game
-        move()              // Update game
+        input(wnd) // IO (keyboard test)
+        paint(painter) // Paint game
+        move() // Update game
 
         // We force the window to be dirty, which means that the 'Paint' event will
         // be sent again next frame.
@@ -273,7 +268,7 @@ func paint(painter: *Painter)
         painter.translateTransform(g_Bird.pos.x + trf.tx, g_Bird.pos.y + trf.ty)
 
         // This is the sprite frame of the bird
-        let frame = (cast(s32) g_Bird.frame) % 3
+        let frame = cast(s32) g_Bird.frame % 3
 
         // No need to initialize the 'pt' variable here, as we will set both 'x' and 'y'
         // just after. So we initialize it with 'undefined'.
@@ -304,7 +299,7 @@ func paint(painter: *Painter)
     painter.drawTexture(-g_BasePos, g_Rect.bottom() - GroundHeight, cast(f32) g_BaseTexture.width, GroundHeight, g_BaseTexture)
     painter.drawTexture(-g_BasePos + g_BaseTexture.width, g_Rect.bottom() - GroundHeight, cast(f32) g_BaseTexture.width, GroundHeight, g_BaseTexture)
     if !g_GameOver do
-        g_BasePos += SpeedHorz*g_Dt
+        g_BasePos += SpeedHorz * g_Dt
     if g_BasePos >= g_BaseTexture.width do
         g_BasePos = 0
 
@@ -312,10 +307,7 @@ func paint(painter: *Painter)
     if g_GameOver
     {
         // This is another way of initializing a struct variable or constant.
-        var pt = Math.Point{
-            g_Rect.horzCenter() - g_OverTexture.width/2,
-            g_Rect.vertCenter() - g_OverTexture.height/2
-        }
+        var pt = Math.Point{g_Rect.horzCenter() - g_OverTexture.width / 2, g_Rect.vertCenter() - g_OverTexture.height / 2}
 
         painter.drawTexture(pt.x, pt.y, g_OverTexture)
     }
@@ -330,8 +322,8 @@ func paint(painter: *Painter)
     if g_FirstStart
     {
         var pt: Math.Point = undefined
-        pt.x = g_Rect.horzCenter() - g_MsgTexture.width/2
-        pt.y = g_Rect.vertCenter() - g_MsgTexture.height/2
+        pt.x = g_Rect.horzCenter() - g_MsgTexture.width / 2
+        pt.y = g_Rect.vertCenter() - g_MsgTexture.height / 2
         painter.drawTexture(pt.x, pt.y, g_MsgTexture)
     }
 }
@@ -356,7 +348,7 @@ func input(wnd: *Wnd)
 
     if kb.isKeyJustPressed(.Up)
     {
-        g_Start = true
+        g_Start        = true
         g_Bird.speed.y = -BirdImpulseY
         assume Audio.Voice.play(&g_SoundFlap)
     }
@@ -368,9 +360,9 @@ Collision detection (kind of) between the bird and a given rectangle.
 func birdInRect(rect: Math.Rectangle)->bool
 {
     var rectBird: Math.Rectangle = undefined
-    rectBird.x = g_Bird.pos.x - g_BirdTexture[0].width/2
-    rectBird.y = g_Bird.pos.y - g_BirdTexture[0].height/2
-    rectBird.width = g_BirdTexture[0].width
+    rectBird.x      = g_Bird.pos.x - g_BirdTexture[0].width / 2
+    rectBird.y      = g_Bird.pos.y - g_BirdTexture[0].height / 2
+    rectBird.width  = g_BirdTexture[0].width
     rectBird.height = g_BirdTexture[0].height
     return rect.intersectWith(rectBird)
 }
@@ -445,20 +437,20 @@ Creates a random up and down part of a new Pipe.
 */
 func createPipe()
 {
-    let pos = g_Rect.width
+    let pos         = g_Rect.width
     let sizePassage = Random.shared().nextF32(100, 175)
-    let heightUp = Random.shared().nextF32(50, g_Rect.height - sizePassage - 50)
-    let heightDown = g_Rect.height - heightUp - GroundHeight - sizePassage
+    let heightUp    = Random.shared().nextF32(50, g_Rect.height - sizePassage - 50)
+    let heightDown  = g_Rect.height - heightUp - GroundHeight - sizePassage
 
     var pipe: Pipe
-    pipe.rectUp.x = pos
-    pipe.rectUp.y = heightUp - g_PipeTextureU.height
-    pipe.rectUp.width = g_PipeTextureU.width
+    pipe.rectUp.x      = pos
+    pipe.rectUp.y      = heightUp - g_PipeTextureU.height
+    pipe.rectUp.width  = g_PipeTextureU.width
     pipe.rectUp.height = g_PipeTextureU.height
 
-    pipe.rectDown.x = pos
-    pipe.rectDown.y = g_Rect.bottom() - heightDown - GroundHeight
-    pipe.rectDown.width = g_PipeTextureU.width
+    pipe.rectDown.x      = pos
+    pipe.rectDown.y      = g_Rect.bottom() - heightDown - GroundHeight
+    pipe.rectDown.width  = g_PipeTextureU.width
     pipe.rectDown.height = g_PipeTextureU.height
 
     pipe.distToNext = Random.shared().nextF32(100, 200)
@@ -476,7 +468,7 @@ func start()
 
     g_Bird.pos.x = g_Rect.horzCenter()
     g_Bird.pos.y = g_Rect.vertCenter()
-    g_Score = 0
+    g_Score      = 0
     g_Pipes.clear()
 
     // Assign two variables with the same value

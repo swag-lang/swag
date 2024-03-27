@@ -8,30 +8,30 @@ using Core, Pixel, Gui
 const NumElems  = 3
 const SpeedMove = 5
 
-var g_Image:        Image
-var g_Texture:      Texture
+var g_Image:   Image
+var g_Texture: Texture
 var g_HotX, g_HotY: s32
-var g_Moving:       bool
+var g_Moving: bool
 
 struct Elem
 {
-    x, y:   f32
-    empty:  bool
-    moveX:  s32
-    moveY:  s32
-    moveDt: f32
-    angle:  f32 = 1
+    x, y:       f32
+    empty:      bool
+    moveX:      s32
+    moveY:      s32
+    moveDt:     f32
+    angle:      f32 = 1
 }
 
-var g_Matrix:   [NumElems, NumElems] Elem
-var g_Rect:     Math.Rectangle
+var g_Matrix: [NumElems, NumElems] Elem
+var g_Rect:   Math.Rectangle
 
 func tilePos(i, j: s32)->Math.Rectangle
 {
     let displayW = g_Rect.width / NumElems
     let displayH = g_Rect.height / NumElems
-    let xd = i * displayW
-    let yd = j * displayH
+    let xd       = i * displayW
+    let yd       = j * displayH
     return Math.Rectangle{xd, yd, displayW, displayH}
 }
 
@@ -47,9 +47,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         dataPath = Path.combine(dataPath, "datas")
         dataPath = Path.combine(dataPath, "taquin")
 
-        g_Image = assume Image.load(Path.combine(dataPath, "joconde.jpg"))
+        g_Image   = assume Image.load(Path.combine(dataPath, "joconde.jpg"))
         g_Texture = wnd.getApp().getRenderer().addImage(g_Image)
-        g_Rect = wnd.getClientRect()
+        g_Rect    = wnd.getClientRect()
 
         // List of tiles to pick from
         var toAdd: Array'Elem
@@ -69,7 +69,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 if toAdd.count == 1 do
                     break
                 let idx = Random.shared().nextU64(0, toAdd.count)
-                g_Matrix[i, j] = toAdd[idx]
+                g_Matrix[i, j]       = toAdd[idx]
                 g_Matrix[i, j].angle = Random.shared().nextF32(-0.01, 0.01)
                 toAdd.removeAt(idx)
             }
@@ -82,10 +82,11 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     case MouseMove:
         let mouseEvt = cast(*MouseEvent) evt
-        let pt = wnd.surfaceToLocal(mouseEvt.surfacePos)
+        let pt       = wnd.surfaceToLocal(mouseEvt.surfacePos)
 
         g_HotX, g_HotY = -1
-        #scope Big loop i: NumElems
+        #scope Big
+        loop i: NumElems
         {
             loop j: NumElems
             {
@@ -103,29 +104,30 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         }
 
     case MousePressed:
-        if g_Moving do break
-        if g_HotX == -1 do break
+        if g_Moving do
+            break
+        if g_HotX == -1 do
+            break
 
         let i = g_HotX
         let j = g_HotY
 
         let cur = &g_Matrix[i, j]
-        if i and g_Matrix[i-1, j].empty do // Move to the left
+        if i and g_Matrix[i - 1, j].empty do
             cur.moveX = -1
-        if j and g_Matrix[i, j-1].empty do // Move to the top
+        if j and g_Matrix[i, j - 1].empty do
             cur.moveY = -1
 
-        if i != NumElems-1 and g_Matrix[i+1, j].empty do // Move to the right
+        if i != NumElems - 1 and g_Matrix[i + 1, j].empty do
             cur.moveX = 1
-        if j != NumElems-1 and g_Matrix[i, j+1].empty do // Move to the bottom
+        if j != NumElems - 1 and g_Matrix[i, j + 1].empty do
             cur.moveY = 1
 
         if cur.moveX or cur.moveY
         {
-            g_Moving = true
+            g_Moving   = true
             cur.moveDt = 0
         }
-
 
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
@@ -149,48 +151,48 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 // Move tile left <=> right
                 if cur.moveX
                 {
-                    let rdd = tilePos(i+cur.moveX, j)
+                    let rdd = tilePos(i + cur.moveX, j)
                     rd.x = Math.lerp(rd.x, rdd.x, cur.moveDt)
-                    cur.moveDt += SpeedMove*dt
+                    cur.moveDt += SpeedMove * dt
                     cur.moveDt = Math.min(cur.moveDt, 1.0)
                     if Math.isEqualEpsilon(rd.x, rdd.x)
                     {
-                        g_Matrix[i+cur.moveX, j] = dref cur
-                        g_Matrix[i+cur.moveX, j].moveX = 0
-                        cur.empty = true
-                        g_Moving = false
+                        g_Matrix[i + cur.moveX, j]       = dref cur
+                        g_Matrix[i + cur.moveX, j].moveX = 0
+                        cur.empty                        = true
+                        g_Moving                         = false
                     }
                 }
 
                 // Move tile up <=> down
                 if cur.moveY
                 {
-                    let rdd = tilePos(i, j+cur.moveY)
+                    let rdd = tilePos(i, j + cur.moveY)
                     rd.y = Math.lerp(rd.y, rdd.y, cur.moveDt)
-                    cur.moveDt += SpeedMove*dt
+                    cur.moveDt += SpeedMove * dt
                     cur.moveDt = Math.min(cur.moveDt, 1.0)
                     if Math.isEqualEpsilon(rd.y, rdd.y)
                     {
-                        g_Matrix[i, j+cur.moveY] = dref cur
-                        g_Matrix[i, j+cur.moveY].moveY = 0
-                        cur.empty = true
-                        g_Moving = false
+                        g_Matrix[i, j + cur.moveY]       = dref cur
+                        g_Matrix[i, j + cur.moveY].moveY = 0
+                        cur.empty                        = true
+                        g_Moving                         = false
                     }
                 }
 
                 // Sub position in the image
                 let elemW = g_Image.width / NumElems
                 let elemH = g_Image.height / NumElems
-                let xs = cur.x * elemW
-                let ys = cur.y * elemH
-                let rs = Math.Rectangle{xs, ys, elemW, elemH}
+                let xs    = cur.x * elemW
+                let ys    = cur.y * elemH
+                let rs    = Math.Rectangle{xs, ys, elemW, elemH}
 
                 painter.pushState()
                 painter.startClippingRegion()
                 painter.translateTransform(rd.horzCenter(), rd.vertCenter())
                 painter.rotateTransform(cur.angle)
 
-                let destRect = Math.Rectangle{-rd.width*0.5, -rd.height*0.5, rd.width, rd.height}
+                let destRect = Math.Rectangle{-rd.width * 0.5, -rd.height * 0.5, rd.width, rd.height}
                 painter.fillRoundRect(destRect, 15, 15, Argb.White)
                 painter.endClippingRegion()
 
@@ -208,6 +210,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 600, 800, "Taquin", hook: &onEvent, init: &test)
 }

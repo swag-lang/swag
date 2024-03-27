@@ -9,11 +9,11 @@ using Core, Gui, Pixel, Core.Math
 
 struct Verlet
 {
-    positionCurrent:    Vector2
-    positionOld:        Vector2
-    acceleration:       Vector2
-    radius:             f32 = 20
-    color:              Color
+    positionCurrent:     Vector2
+    positionOld:         Vector2
+    acceleration:        Vector2
+    radius:              f32 = 20
+    color:               Color
 }
 
 impl Verlet
@@ -21,7 +21,7 @@ impl Verlet
     mtd updatePosition(dt: f32)
     {
         var velocity = positionCurrent - positionOld
-        positionOld = positionCurrent
+        positionOld     = positionCurrent
         positionCurrent = positionCurrent + velocity + (acceleration * dt * dt)
         acceleration.clear()
     }
@@ -34,7 +34,7 @@ impl Verlet
     mtd applyConstraint()
     {
         var toObj = positionCurrent - PositionC
-        let dist = toObj.length()
+        let dist  = toObj.length()
         if dist > RadC - radius
         {
             var n = toObj / dist
@@ -51,8 +51,8 @@ func solveCollisions()
         for var j = i + 1; j < g_Objs.count; j += 1
         {
             var v2 = g_Objs[j]
-            var n = v1.positionCurrent - v2.positionCurrent
-            let d = n.length()
+            var n  = v1.positionCurrent - v2.positionCurrent
+            let d  = n.length()
             if d < v1.radius + v2.radius
             {
                 n /= d
@@ -96,7 +96,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     {
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
+        let painter  = paintEvt.bc.painter
         painter.clear(Argb.Gray)
         painter.setParams(.Antialiased)
         painter.fillCircle(PositionC.x, PositionC.y, RadC, Argb.Black)
@@ -108,11 +108,11 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             g_Time = 0
             var v = Verlet{}
-            v.radius = g_Rng.nextF32(10, 20)
+            v.radius            = g_Rng.nextF32(10, 20)
             v.positionCurrent.x = wnd.position.horzCenter()
             v.positionCurrent.y = PositionC.y - RadC + (v.radius * 2)
-            v.positionOld = v.positionCurrent
-            v.color = Argb.Red
+            v.positionOld       = v.positionCurrent
+            v.color             = Argb.Red
             g_Objs.add(v)
         }
 
@@ -129,6 +129,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 800, 600, title: "Verlet", hook: &onEvent, init: &test)
 }

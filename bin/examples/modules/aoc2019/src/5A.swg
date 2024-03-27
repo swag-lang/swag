@@ -52,7 +52,7 @@ using Core
 func day5A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var op: Array's32
     visit v: Tokenize.split(lines[0], `,`'u8) do
@@ -68,18 +68,20 @@ func day5A()
         switch inst
         {
         case 1:
-            let param0 = mode0 ? op[ip+1] : op[op[ip+1]]
-            let param1 = mode1 ? op[ip+2] : op[op[ip+2]]
-            op[op[ip+3]] = param0 + param1; ip += 4
+            let param0 = mode0 ? op[ip + 1] : op[op[ip + 1]]
+            let param1 = mode1 ? op[ip + 2] : op[op[ip + 2]]
+            op[op[ip + 3]] = param0 + param1
+            ip += 4
         case 2:
-            let param0 = mode0 ? op[ip+1] : op[op[ip+1]]
-            let param1 = mode1 ? op[ip+2] : op[op[ip+2]]
-            op[op[ip+3]] = param0 * param1; ip += 4
+            let param0 = mode0 ? op[ip + 1] : op[op[ip + 1]]
+            let param1 = mode1 ? op[ip + 2] : op[op[ip + 2]]
+            op[op[ip + 3]] = param0 * param1
+            ip += 4
         case 3:
-            op[op[ip+1]] = 1
+            op[op[ip + 1]] = 1
             ip += 2
         case 4:
-            output = op[op[ip+1]]
+            output = op[op[ip + 1]]
             ip += 2
         }
     }

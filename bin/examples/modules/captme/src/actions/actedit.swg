@@ -3,16 +3,17 @@ using Gui
 const CmdEditText           = "CmdEditText"
 const CmdIdClearImageInside = "CmdIdClearImageInside"
 
-struct ActionEdit {}
+struct ActionEdit
+{
+}
 impl IActionUI for ActionEdit
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdEditText,
-             CmdIdClearImageInside:
-             return true
+        case CmdEditText, CmdIdClearImageInside:
+            return true
         }
 
         return false
@@ -20,9 +21,9 @@ impl IActionUI for ActionEdit
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let main    = cast(*MainWnd) cxt.wnd
         let capture = main.getCapture()
-        let hasSel = capture and capture.selection.count
+        let hasSel  = capture and capture.selection.count
 
         var lastSelType: typeinfo
         if capture
@@ -39,7 +40,7 @@ impl IActionUI for ActionEdit
         case CmdEditText:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !hasSel or !lastSelType or lastSelType != FormText
-            evt.name = "Edit"
+            evt.name     = "Edit"
 
         case CmdIdClearImageInside:
             evt.setFlags |= .Disabled | .Name | .Hidden
@@ -71,7 +72,7 @@ impl IActionUI for ActionEdit
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let main    = cast(*MainWnd) cxt.wnd
         let capture = main.getCapture()
 
         switch cxt.id

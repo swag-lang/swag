@@ -20,17 +20,17 @@ using Core
 func day5B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
     visit l: lines
     {
         var dbl0, dbl1 = 0
-        loop i: l.length-2
+        loop i: l.length - 2
         {
-            if Utf8.indexOf(l[i+2..], l[i..i+1]) != Swag.U64.Max do
+            if Utf8.indexOf(l[i + 2..], l[i..i + 1]) != Swag.U64.Max do
                 dbl0 += 1
-            if l[i] == l[i+2] do
+            if l[i] == l[i + 2] do
                 dbl1 += 1
         }
 
@@ -41,4 +41,3 @@ func day5B()
     //Console.print("total: ", total)
     @assert(total == 53)
 }
-

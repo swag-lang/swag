@@ -1,24 +1,22 @@
 using Gui
 
-const CmdIdSelectAll        = "CmdIdSelectAll"
-const CmdIdDeSelectAll      = "CmdIdDeSelectAll"
-const CmdIdInvertSelection  = "CmdIdInvertSelection"
-const CmdIdDeleteSelection  = "CmdIdDeleteSelection"
-const CmdIdSnap             = "CmdIdSnap"
+const CmdIdSelectAll       = "CmdIdSelectAll"
+const CmdIdDeSelectAll     = "CmdIdDeSelectAll"
+const CmdIdInvertSelection = "CmdIdInvertSelection"
+const CmdIdDeleteSelection = "CmdIdDeleteSelection"
+const CmdIdSnap            = "CmdIdSnap"
 
-struct ActionSelection {}
+struct ActionSelection
+{
+}
 impl IActionUI for ActionSelection
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdSelectAll,
-             CmdIdDeSelectAll,
-             CmdIdInvertSelection,
-             CmdIdDeleteSelection,
-             CmdIdSnap:
-             return true
+        case CmdIdSelectAll, CmdIdDeSelectAll, CmdIdInvertSelection, CmdIdDeleteSelection, CmdIdSnap:
+            return true
         }
 
         return false
@@ -26,35 +24,35 @@ impl IActionUI for ActionSelection
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let main    = cast(*MainWnd) cxt.wnd
         let capture = main.getCapture()
-        let hasSel = capture and capture.selection.count
+        let hasSel  = capture and capture.selection.count
 
         switch cxt.id
         {
         case CmdIdSelectAll:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture or !capture.forms.count
-            evt.name = "Select All Objects"
+            evt.name     = "Select All Objects"
 
         case CmdIdDeSelectAll:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture or !hasSel
-            evt.name = "Deselect All Objects"
+            evt.name     = "Deselect All Objects"
 
         case CmdIdInvertSelection:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture
-            evt.name = "Invert Selection"
+            evt.name     = "Invert Selection"
 
         case CmdIdDeleteSelection:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !hasSel
-            evt.name = "Delete"
+            evt.name     = "Delete"
 
         case CmdIdSnap:
             evt.setFlags |= .Name | .Checked
-            evt.name = "Snap To Forms"
+            evt.name    = "Snap To Forms"
             evt.checked = main.snap
         }
 
@@ -63,7 +61,7 @@ impl IActionUI for ActionSelection
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let main    = cast(*MainWnd) cxt.wnd
         let capture = main.getCapture()
 
         switch cxt.id

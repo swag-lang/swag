@@ -35,19 +35,18 @@ using Core
 func day6A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
-    let str = ref lines[0]
+    let lines    = assume File.readAllLines(dataPath)
+    let str      = ref lines[0]
 
-    loop i: 0 to str.length-4
+    loop i: 0 to str.length - 4
     {
-        if str[i+0] != str[i+1] and str[i+0] != str[i+2] and str[i+0] != str[i+3] and
-           str[i+1] != str[i+2] and str[i+1] != str[i+3] and
-           str[i+2] != str[i+3]
+        if str[i + 0] != str[i + 1] and str[i + 0] != str[i + 2] and str[i + 0] != str[i + 3] and
+           str[i + 1] != str[i + 2] and str[i + 1] != str[i + 3] and
+           str[i + 2] != str[i + 3]
         {
             //Console.print("total: ", i+4)
-            @assert(i+4 == 1848)
+            @assert(i + 4 == 1848)
             break
         }
     }
 }
-

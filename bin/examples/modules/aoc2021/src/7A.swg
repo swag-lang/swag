@@ -41,8 +41,8 @@ using Core
 func day7A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "7.txt")
-    let lines = assume File.readAllLines(dataPath)
-    let str = Tokenize.split(lines[0], `,`'u8)
+    let lines    = assume File.readAllLines(dataPath)
+    let str      = Tokenize.split(lines[0], `,`'u8)
 
     var crabs: Array's32
     visit v: str do
@@ -51,12 +51,11 @@ func day7A()
     crabs.sort()
 
     // https://en.wikipedia.org/wiki/Geometric_median#Properties
-    var total = 0
-    let median = crabs[crabs.count/2]
+    var total  = 0
+    let median = crabs[crabs.count / 2]
     visit v: crabs do
-        total += Math.abs(v-median)
+        total += Math.abs(v - median)
 
     //Console.print("total: ", total)
     @assert(total == 342730)
 }
-

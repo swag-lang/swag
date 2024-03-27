@@ -70,7 +70,7 @@ using Core
 func day9A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "9.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total: s64
 
@@ -79,16 +79,17 @@ func day9A()
         let vals = Tokenize.split(l, ` `'u8)
 
         var values: Array's64
-        visit v: vals do values.add(assume StrConv.toS64(v))
+        visit v: vals do
+            values.add(assume StrConv.toS64(v))
         total += values.back()
 
         var hasNoZero = true
         while hasNoZero
         {
             hasNoZero = false
-            loop i: 0 until values.count-1
+            loop i: 0 until values.count - 1
             {
-                values[i] = values[i+1] - values[i]
+                values[i] = values[i + 1] - values[i]
                 hasNoZero = values[i] or hasNoZero
             }
 
@@ -100,4 +101,3 @@ func day9A()
     //Console.print("total: ", total, " ")
     @assert(total == 2105961943)
 }
-

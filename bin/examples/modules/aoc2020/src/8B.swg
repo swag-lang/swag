@@ -47,7 +47,7 @@ using Core
 func day8B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
-    let all = assume File.readAllLines(dataPath)
+    let all      = assume File.readAllLines(dataPath)
 
     var fix = 0
     loop
@@ -58,12 +58,18 @@ func day8B()
         while ip < lines.count and lines[ip].length
         {
             let lip = ip
-            let v = assume StrConv.parseS32(lines[ip][4..]).value
+            let v   = assume StrConv.parseS32(lines[ip][4..]).value
             switch lines[ip][0..2]
             {
-            case "nop": ip += cpt == fix ? v : 1; cpt += 1
-            case "acc": total += v; ip += 1
-            case "jmp": ip += cpt == fix ? 1 : v; cpt += 1
+            case "nop":
+                ip += cpt == fix ? v : 1
+                cpt += 1
+            case "acc":
+                total += v
+                ip += 1
+            case "jmp":
+                ip += cpt == fix ? 1 : v
+                cpt += 1
             }
 
             lines[lip].clear()

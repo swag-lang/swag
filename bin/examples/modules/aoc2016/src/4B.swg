@@ -16,16 +16,16 @@ using Core
 func day4B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "4.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     visit l: lines
     {
-        var idx = 0
+        var idx  = 0
         var str: String
         while !Latin1.isDigit(l[idx])
         {
             if l[idx] != `-` do
-                str += l[idx]-`a`
+                str += l[idx] - `a`
             idx += 1
         }
 
@@ -42,4 +42,3 @@ func day4B()
         }
     }
 }
-

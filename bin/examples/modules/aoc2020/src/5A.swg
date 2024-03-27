@@ -51,30 +51,32 @@ func day5A()
 func day5A0()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total: s32
     visit l: lines
     {
-        var row0 = 0, row1 = 127
+        var row0 = 0
+        var row1 = 127
         loop c: 7
         {
             if l[c] == `F` do
                 row1 = (row1 + row0) / 2
             else do
-                row0 = 1+(row1 + row0) / 2
+                row0 = 1 + (row1 + row0) / 2
         }
+        var col0 = 0
 
-        var col0 = 0, col1 = 7
+        var col1 = 7
         loop c: 3
         {
-            if l[7+c] == `L` do
+            if l[7 + c] == `L` do
                 col1 = (col1 + col0) / 2
             else do
-                col0 = 1+(col1 + col0) / 2
+                col0 = 1 + (col1 + col0) / 2
         }
 
-        total = Math.max(total, row0*8+col0)
+        total = Math.max(total, row0 * 8 + col0)
     }
 
     //Console.print("total: ", total)

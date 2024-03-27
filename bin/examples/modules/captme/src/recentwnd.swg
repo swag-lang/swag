@@ -4,21 +4,21 @@ const RecentPadding = 8.0
 
 struct RecentItem
 {
-    file:       String
-    preview:    Texture
-    rect:       Math.Rectangle
-    zoom:       f32
+    file:        String
+    preview:     Texture
+    rect:        Math.Rectangle
+    zoom:        f32
 }
 
 struct RecentView
 {
-    using wnd: Wnd
+    using wnd:     Wnd
 
-    main:       *MainWnd
-    recentWnd:  *RecentWnd
-    items:      ArrayPtr'RecentItem
-    selected:   u64 = Swag.U64.Max
-    hotItem:    u64 = Swag.U64.Max
+    main:          *MainWnd
+    recentWnd:     *RecentWnd
+    items:         ArrayPtr'RecentItem
+    selected:      u64 = Swag.U64.Max
+    hotItem:       u64 = Swag.U64.Max
 }
 
 impl RecentView
@@ -42,7 +42,7 @@ impl RecentView
 
         // Select new recent item
         selected = idx
-        let item = items[idx]
+        let item    = items[idx]
         let capture = catch Capture.load(item.file)
         if capture
         {
@@ -123,13 +123,13 @@ impl IWnd for RecentView
             return
 
         var txtRect = rect
-        txtRect.inflate(-RecentPadding*0.5)
+        txtRect.inflate(-RecentPadding * 0.5)
 
         let ratio = Math.min(txtRect.width / texture.width, txtRect.height / texture.height)
 
-        txtRect.x = rect.horzCenter() - (texture.width * 0.5 * ratio)
-        txtRect.y = rect.vertCenter() - (texture.height * 0.5 * ratio)
-        txtRect.width = texture.width * ratio
+        txtRect.x      = rect.horzCenter() - (texture.width * 0.5 * ratio)
+        txtRect.y      = rect.vertCenter() - (texture.height * 0.5 * ratio)
+        txtRect.width  = texture.width * ratio
         txtRect.height = texture.height * ratio
 
         painter.fillRect(txtRect, Argb.LightGray)
@@ -141,14 +141,14 @@ impl IWnd for RecentView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let painter = evt.bc.painter
+        let painter    = evt.bc.painter
         var clientRect = getClientRectPadding()
 
         painter.setParams(.Antialiased)
         var x = clientRect.x
         visit i, idx: items
         {
-            let w = clientRect.height * 4.0/3
+            let w = clientRect.height * 4.0 / 3
 
             var rect = Math.Rectangle{x, clientRect.y, w, clientRect.height}
             i.rect = rect
@@ -163,10 +163,10 @@ impl IWnd for RecentView
 
 struct RecentWnd
 {
-    using scrollWnd: ScrollWnd
-    main:       *MainWnd
-    recentView: *RecentView
-    timer:      *Timer
+    using scrollWnd:     ScrollWnd
+    main:                *MainWnd
+    recentView:          *RecentView
+    timer:               *Timer
 }
 
 impl IWnd for RecentWnd
@@ -193,16 +193,16 @@ impl RecentWnd
 {
     func create(parent: *Wnd, main: *MainWnd)->*RecentWnd
     {
-        with let recent = Wnd.create'RecentWnd(parent, {0, 0, 0, PreviewHeight + RecentPadding*2})
+        with let recent = Wnd.create'RecentWnd(parent, {0, 0, 0, PreviewHeight + RecentPadding * 2})
         {
             .scrollWndFlags |= .SmallBar | .ForceHorizontal
             .backgroundStyle = .Window
-            .main = main
+            .main            = main
             .style.addStyleSheetColors("scrollBar_Bk $view_Bk")
 
-            .recentView = recent.createView'RecentView()
-            .recentView.padding = RecentPadding
-            .recentView.main = main
+            .recentView           = recent.createView'RecentView()
+            .recentView.padding   = RecentPadding
+            .recentView.main      = main
             .recentView.recentWnd = recent
             .view.backgroundStyle = .View
         }
@@ -210,9 +210,11 @@ impl RecentWnd
         g_Library.fill()
 
         var res = g_Library.files
-        res.sort(func(a, b) {
+        res.sort(func(a, b)
+        {
             return b.lastWriteTime <=> a.lastWriteTime
-        })
+        }
+)
 
         var cptRecent = 0
         visit r, idx: res
@@ -323,7 +325,7 @@ impl RecentWnd
 
         let item = recentView.items.newPtr()
         item.preview = getApp().getRenderer().addImage(preview)
-        item.file = file
+        item.file    = file
         if front
         {
             recentView.items.insertAt(0, item)

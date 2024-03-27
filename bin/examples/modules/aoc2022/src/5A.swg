@@ -56,7 +56,7 @@ using Core
 func day5A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var stacks: Array'String
 
@@ -69,10 +69,11 @@ func day5A()
         if moveMode
         {
             let res = r.grepAll(l)
-            if res.count == 0 do continue
+            if res.count == 0 do
+                continue
             var count   = assume StrConv.toU64(res[0])
-            let colFrom = assume StrConv.toS32(res[1])-1
-            let colTo   = assume StrConv.toS32(res[2])-1
+            let colFrom = assume StrConv.toS32(res[1]) - 1
+            let colTo   = assume StrConv.toS32(res[2]) - 1
 
             while count
             {
@@ -95,7 +96,7 @@ func day5A()
                 if stack >= stacks.count do
                     stacks.add("")
                 if l[i] == `[` do
-                    stacks[stack].append(l[i+1])
+                    stacks[stack].append(l[i + 1])
                 stack += 1
             }
         }
@@ -108,4 +109,3 @@ func day5A()
     //Console.print("total: ", total)
     @assert(total == "HNSNMTLHQ")
 }
-

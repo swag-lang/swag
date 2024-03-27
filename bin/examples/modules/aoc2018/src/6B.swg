@@ -38,29 +38,31 @@ using Core
 func day6B() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    var lines = File.readAllLines(dataPath)
+    var lines    = File.readAllLines(dataPath)
 
     const W = 700
 
     var arr: Array's32
-    arr.resize(W*W)
+    arr.resize(W * W)
 
     visit l: lines
     {
         let split = Tokenize.split(l, `,`'u8)
-        let cx = assume StrConv.toS32(Latin1.trim(split[0]))+W/2
-        let cy = assume StrConv.toS32(Latin1.trim(split[1]))+W/2
+        let cx    = assume StrConv.toS32(Latin1.trim(split[0])) + W / 2
+        let cy    = assume StrConv.toS32(Latin1.trim(split[1])) + W / 2
 
-        loop i: W*W
+        loop i: W * W
         {
-            let x = i%W, y = i/W
+            let x = i % W
+            let y = i / W
             let d = Math.abs(cx - x) + Math.abs(cy - y)
             arr[i] += d
         }
     }
 
     var total = 0
-    visit v: arr do total += cast(s32) (v<10000)
+    visit v: arr do
+        total += cast(s32) (v < 10000)
 
     //Console.print("total: ", total)
     @assert(total == 43852)

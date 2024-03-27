@@ -37,7 +37,7 @@ func day2B0()
             f[1] = StrConv.toS32(r.getCapture(2))
             f[2] = StrConv.toS32(r.getCapture(3))
             Slice.sort(f[..])
-            total += f[0]*f[1]*f[2] + 2*f[0] + 2*f[1]
+            total += f[0] * f[1] * f[2] + 2 * f[0] + 2 * f[1]
         }
     }
 
@@ -60,11 +60,10 @@ func day2B1()
             discard r.match(line)
             let f = [StrConv.toS32(r.getCapture(1)), StrConv.toS32(r.getCapture(2)), StrConv.toS32(r.getCapture(3))]
             Slice.sort(f[..])
-            total += f[0]*f[1]*f[2] + 2*f[0] + 2*f[1]
+            total += f[0] * f[1] * f[2] + 2 * f[0] + 2 * f[1]
         }
     }
 
     //Console.print("total: ", total)
     @assert(total == 3783758)
 }
-

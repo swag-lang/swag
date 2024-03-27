@@ -22,12 +22,13 @@ using Core
 func day2A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
     visit l: lines
     {
-        var max = 0, min = Swag.S32.Max
+        var max = 0
+        var min = Swag.S32.Max
         visit v: Tokenize.splitAny(l, [` `, `\t`])
         {
             let val = assume StrConv.toS32(Latin1.trim(v))
@@ -35,10 +36,9 @@ func day2A()
             max = Math.max(max, val)
         }
 
-        total += max-min
+        total += max - min
     }
 
     // Console.print("total: ", total)
     @assert(total == 36174)
 }
-

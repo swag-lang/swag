@@ -16,7 +16,7 @@ using Core
 func day1B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "1.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
     visit l: lines
@@ -25,7 +25,8 @@ func day1B()
         loop
         {
             fuel = (fuel / 3) - 2
-            if fuel <= 0 do break
+            if fuel <= 0 do
+                break
             total += fuel
         }
     }
@@ -33,4 +34,3 @@ func day1B()
     //Console.print("total: ", total)
     @assert(total == 4941976)
 }
-

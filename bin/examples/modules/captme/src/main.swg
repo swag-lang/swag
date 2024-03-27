@@ -28,12 +28,12 @@ var g_App: Application
     using Win32
     with var tnid: NOTIFYICONDATAA
     {
-        .cbSize = @sizeof(NOTIFYICONDATAA)
-        .hWnd = surface.hWnd
-        .uID = 1
-        .uFlags = NIF_ICON | NIF_MESSAGE
+        .cbSize           = @sizeof(NOTIFYICONDATAA)
+        .hWnd             = surface.hWnd
+        .uID              = 1
+        .uFlags           = NIF_ICON | NIF_MESSAGE
         .uCallbackMessage = WM_USER
-        .hIcon = catch img.toHICON()
+        .hIcon            = catch img.toHICON()
     }
 
     catch Shell_NotifyIconA(NIM_ADD, &tnid)

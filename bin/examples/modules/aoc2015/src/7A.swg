@@ -44,7 +44,7 @@ using Core
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
 
     var result: String
-    var r: Parser.RegExp
+    var r:      Parser.RegExp
 
     var map: HashTable'(string, string)
     map.add("AND", "&")
@@ -74,6 +74,4 @@ using Core
 
     return result
 }
-
-//#print a
 #assert a == 46065

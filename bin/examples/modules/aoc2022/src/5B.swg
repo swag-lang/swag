@@ -49,10 +49,10 @@ using Core
 func day5B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
-    var stacks: Array'String
-    var r: Parser.RegExp
+    var stacks:  Array'String
+    var r:       Parser.RegExp
     var moveMode = false
     visit l: lines
     {
@@ -61,10 +61,10 @@ func day5B()
             if !catch r.match(#"move (\d+) from (\d+) to (\d+)"#, l) do
                 continue
             let count   = assume StrConv.toU64(r.getCapture(1))
-            let colFrom = assume StrConv.toS32(r.getCapture(2))-1
-            let colTo   = assume StrConv.toS32(r.getCapture(3))-1
+            let colFrom = assume StrConv.toS32(r.getCapture(2)) - 1
+            let colTo   = assume StrConv.toS32(r.getCapture(3)) - 1
 
-            let str = ref stacks[colFrom]
+            let str   = ref stacks[colFrom]
             let slice = str[0..<count]
             stacks[colTo].insert(0, slice)
             str.remove(0, count)
@@ -81,7 +81,7 @@ func day5B()
                 if stack >= stacks.count do
                     stacks.add("")
                 if l[i] == `[` do
-                    stacks[stack].append(l[i+1])
+                    stacks[stack].append(l[i + 1])
                 stack += 1
             }
         }
@@ -94,4 +94,3 @@ func day5B()
     //Console.print("total: ", total)
     @assert(total == "RNLFDJMCT")
 }
-

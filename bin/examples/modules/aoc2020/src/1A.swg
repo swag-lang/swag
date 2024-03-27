@@ -30,10 +30,11 @@ using Core
 func day1A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "1.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var arr: Array's32
-    visit v: lines do arr.add(assume StrConv.toS32(v))
+    visit v: lines do
+        arr.add(assume StrConv.toS32(v))
 
     arr.sort()
 
@@ -47,4 +48,3 @@ func day1A()
         }
     }
 }
-

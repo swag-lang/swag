@@ -22,17 +22,17 @@ func day4A()
     assume
     {
         let dataPath = Path.combine(Path.getDirectoryName(#file), "4.txt")
-        let lines = File.readAllLines(dataPath)
+        let lines    = File.readAllLines(dataPath)
 
         var total = 0's64
         visit l: lines
         {
-            var idx = 0
+            var idx    = 0
             var count: [26] s32
             while Latin1.isLetter(l[idx]) or l[idx] == `-`
             {
                 if l[idx] != `-` do
-                    count[l[idx]-`a`] += 1
+                    count[l[idx] - `a`] += 1
                 idx += 1
             }
 
@@ -40,19 +40,19 @@ func day4A()
             idx += res.eat
 
             var valid = true
-            visit c: l[idx+1..idx+5]
+            visit c: l[idx + 1..idx + 5]
             {
                 var max, maxi = 0'u64
                 loop i: count
                 {
                     if count[i] > max
                     {
-                        max = count[i]
+                        max  = count[i]
                         maxi = i
                     }
                 }
 
-                if c != maxi+`a`
+                if c != maxi + `a`
                 {
                     valid = false
                     break
@@ -69,4 +69,3 @@ func day4A()
         @assert(total == 361724)
     }
 }
-

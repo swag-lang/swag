@@ -55,18 +55,19 @@ using Core, Core.Parser
 func day4A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "4.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     Slice.sort(lines[..], func(x, y)->s32
     {
         let val0 = assume Time.DateTime.parse(x[1..16], Time.DateTimeFormat.IsoHM)
         let val1 = assume Time.DateTime.parse(y[1..16], Time.DateTimeFormat.IsoHM)
         return val0.value <=> val1.value
-    })
+    }
+)
 
-    var when = assume RegExp.create("(\\d+)-(\\d+)-(\\d+) (\\d+):(\\d+)")
-    var start = assume RegExp.create("Guard #(\\d+) begins shift")
-    var asleep = assume RegExp.create("falls asleep")
+    var when    = assume RegExp.create("(\\d+)-(\\d+)-(\\d+) (\\d+):(\\d+)")
+    var start   = assume RegExp.create("Guard #(\\d+) begins shift")
+    var asleep  = assume RegExp.create("falls asleep")
     var wakesup = assume RegExp.create("wakes up")
 
     var curGuard, startSleep, curMin = 0
@@ -104,7 +105,7 @@ func day4A()
         if v > min
         {
             curGuard = k
-            min = v
+            min      = v
         }
     }
 
@@ -115,12 +116,12 @@ func day4A()
             if k1 == curGuard and v1 > minCount
             {
                 minCount = v1
-                min = i
-                guard = k1
+                min      = i
+                guard    = k1
             }
         }
     }
 
     //Console.print("total: ", guard*min)
-    @assert(guard*min == 106710)
+    @assert(guard * min == 106710)
 }

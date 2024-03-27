@@ -30,26 +30,26 @@ func day5A()
 func day5A0()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
     visit l: lines
     {
-        if Utf8.indexOf(l, "ab") != Swag.U64.Max
-            do continue
-        if Utf8.indexOf(l, "cd") != Swag.U64.Max
-            do continue
-        if Utf8.indexOf(l, "pq") != Swag.U64.Max
-            do continue
-        if Utf8.indexOf(l, "xy") != Swag.U64.Max
-            do continue
+        if Utf8.indexOf(l, "ab") != Swag.U64.Max do
+            continue
+        if Utf8.indexOf(l, "cd") != Swag.U64.Max do
+            continue
+        if Utf8.indexOf(l, "pq") != Swag.U64.Max do
+            continue
+        if Utf8.indexOf(l, "xy") != Swag.U64.Max do
+            continue
 
         var vowels, dbl = 0
         loop i: l
         {
             if Utf8.indexOf("aeiou", cast(rune) l[i]) != Swag.U64.Max do
                 vowels += 1
-            if i and l[i] == l[i-1] do
+            if i and l[i] == l[i - 1] do
                 dbl += 1
         }
 
@@ -66,12 +66,12 @@ func day5A0()
 func day5A1()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
-    var r0 = assume Parser.RegExp.create("ab|cd|pq|xy")
-    var r1 = assume Parser.RegExp.create("[aeiou]")
-    var r2 = assume Parser.RegExp.create(#"([a-z])\1"#)
+    var r0    = assume Parser.RegExp.create("ab|cd|pq|xy")
+    var r1    = assume Parser.RegExp.create("[aeiou]")
+    var r2    = assume Parser.RegExp.create(#"([a-z])\1"#)
     visit l: lines
     {
         if r0.grep(l) do

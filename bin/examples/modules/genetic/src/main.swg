@@ -3,8 +3,8 @@ using Core, Pixel, Gui, Core.Math
 const W = 1024
 const H = 1024
 
-var g_Image0: Image
-var g_Image1: Image
+var g_Image0:   Image
+var g_Image1:   Image
 var g_Texture0: Texture
 var g_Texture1: Texture
 var g_Texture2: Texture
@@ -47,10 +47,10 @@ impl IWnd for MyView
 
     assume
     {
-        let view = Wnd.create'MyView()
+        let view    = Wnd.create'MyView()
         let surface = app.createSurface(100, 100, W, H, view: view)
 
-        let rdr = surface.app.getRenderer()
+        let rdr      = surface.app.getRenderer()
         let dataPath = Path.getDirectoryName(#location.fileName)
         g_Image0 = Image.load(Path.combine(dataPath, "/datas/img1.jpg"))
         g_Image1 = Image.load(Path.combine(dataPath, "/datas/img2.jpg"))

@@ -36,7 +36,7 @@ using Core
 func day3A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total: u64
     visit l: lines
@@ -45,9 +45,9 @@ func day3A()
         loop i: div
         {
             let c = l[i]
-            let f = Slice.findLinear(cast(const [..] u8) l[div..], c)  
+            let f = Slice.findLinear(cast(const [..] u8) l[div..], c)
             if f != Swag.U64.Max
-            {      
+            {
                 total += 1 + (Latin1.isLower(c) ? c - `a` : 26 + (c - `A`))
                 break
             }
@@ -57,4 +57,3 @@ func day3A()
     //Console.print("total: ", total)
     @assert(total == 7766)
 }
-

@@ -1,7 +1,7 @@
 using Serialization
 
 const PreviewHeight = 256.0
-const PreviewWidth  = PreviewHeight * (4/3.0)
+const PreviewWidth  = PreviewHeight * (4 / 3.0)
 
 enum MouseMode
 {
@@ -14,47 +14,47 @@ enum MouseMode
 struct Capture
 {
     const MinSize = 16
-    const MaxSize = 4096
 
     // To save
-    width, height:          s32
-    backImg:                Image
-    widthOrg, heightOrg:    s32
-    backImgOrg:             Image
+    const MaxSize      = 4096
+    width, height:     s32
+    backImg:           Image
+    widthOrg, heightOrg: s32
+    backImgOrg:        Image
 
-    backImagePos:   Math.Point
-    preview:        Image
-    file:           String
-    forms:          Array'IForm
-    nextStepIndex:  u32 = 1
+    backImagePos:      Math.Point
+    preview:           Image
+    file:              String
+    forms:             Array'IForm
+    nextStepIndex:     u32 = 1
 
-    linkedImage:    String
+    linkedImage:       String
 
     // Dyn
     #[NoSerialize]
     {
-        changed:    bool
-        mouseMode:  MouseMode = None
-        editView:   *EditView
-        gizmo:      GizmoRect
-        undos:      ArrayPtr'Undo
-        nextUndo:   u64
-        hotForm:    u64 = Swag.U64.Max
-        selection:  Array'u64
-        paintRect:  Math.Rectangle
+        changed:       bool
+        mouseMode:     MouseMode = None
+        editView:      *EditView
+        gizmo:         GizmoRect
+        undos:         ArrayPtr'Undo
+        nextUndo:      u64
+        hotForm:       u64 = Swag.U64.Max
+        selection:     Array'u64
+        paintRect:     Math.Rectangle
 
-        backTexture: Texture
-        snapX:       f32 = -1
-        snapY:       f32 = -1
+        backTexture:     Texture
+        snapX:           f32 = -1
+        snapY:           f32 = -1
 
-        serialUndo:         u32
-        serialBackTexture:  u32
-        movingStart:        Math.Point
-        movingEnd:          Math.Point
-        firstMouseMove:     bool
-        movingCursorSet:    bool
-        dirtyBackImg:       bool
-        drawSelRect:        bool
+        serialUndo:            u32
+        serialBackTexture:     u32
+        movingStart:           Math.Point
+        movingEnd:             Math.Point
+        firstMouseMove:        bool
+        movingCursorSet:       bool
+        dirtyBackImg:          bool
+        drawSelRect:           bool
     }
 }
 
@@ -76,8 +76,9 @@ impl Capture
 
     mtd setup(view: *EditView)
     {
-        editView = view
-        gizmo.sigChanged = closure|self|(g, first, hitMove) {
+        editView         = view
+        gizmo.sigChanged = closure|self|(g, first, hitMove)
+        {
             var undo = self.newUndo(.MoveCapture)
             undo.newPosX  = cast(s32) ((g.rect.x - g.movingRect.x) / self.editView.zoom)
             undo.newPosY  = cast(s32) ((g.rect.y - g.movingRect.y) / self.editView.zoom)
@@ -103,10 +104,10 @@ impl Capture
     {
         var result: retval
 
-        var rect = Math.Rectangle{width: width * zoom, height: height * zoom}
+        var rect     = Math.Rectangle{width: width * zoom, height: height * zoom}
         var painter: Pixel.Painter
 
-        let app = editView.getApp()
+        let app    = editView.getApp()
         let render = app.getRenderer()
 
         painter.begin()
@@ -276,7 +277,8 @@ impl Capture
             {
                 decode.start(arr.toSlice())
                 decode.readValue(&res, Array'IForm)
-                if !res.count do return
+                if !res.count do
+                    return
                 decode.end()
             }
         }
@@ -286,8 +288,8 @@ impl Capture
             if img.isValid()
             {
                 let formImg = Memory.new'FormImage()
-                formImg.w = img.width
-                formImg.h = img.height
+                formImg.w     = img.width
+                formImg.h     = img.height
                 formImg.image = img
                 res.add(cast(IForm) formImg)
             }
@@ -362,14 +364,14 @@ impl Capture
         base.paintPos.width  = boundRect.width * zoom
         base.paintPos.height = boundRect.height * zoom
 
-        base.paintPos.width  += base.paintPos.x - Math.round(base.paintPos.x)
+        base.paintPos.width += base.paintPos.x - Math.round(base.paintPos.x)
         base.paintPos.height += base.paintPos.y - Math.round(base.paintPos.y)
         base.paintPos.round()
 
         let wt2 = cast(s32) base.paintPos.width
         let ht2 = cast(s32) base.paintPos.height
-        var wt = wt2
-        var ht = ht2
+        var wt  = wt2
+        var ht  = ht2
 
         let rt = render.getRenderTarget(wt2, ht2)
         painter.bindRenderTarget(rt, true)
@@ -385,8 +387,8 @@ impl Capture
         var rt1, rt2: *RenderTarget
         if base.paintShadow
         {
-            wt += 2*Margin
-            ht += 2*Margin
+            wt += 2 * Margin
+            ht += 2 * Margin
 
             rt1 = render.getRenderTarget(wt, ht)
             rt2 = render.getRenderTarget(wt, ht)
@@ -430,7 +432,7 @@ impl Capture
             // Add the real image at the right place just after
             var imgRect = dstRect
             imgRect.offset(cast(f32) Margin)
-            imgRect.width = base.paintPos.width
+            imgRect.width  = base.paintPos.width
             imgRect.height = base.paintPos.height
             imgRect.offset(-base.shadowOffset.x, -base.shadowOffset.y)
             painter.setShader(&render.shaderSimple)
@@ -510,15 +512,15 @@ impl Capture
             if dirtyBackImg
             {
                 renderer.removeTexture(&backTexture)
-                backTexture = renderer.addImage(backImg)
+                backTexture  = renderer.addImage(backImg)
                 dirtyBackImg = false
                 serialBackTexture += 1
             }
 
             var backRect: Math.Rectangle
-            backRect.x = (backImagePos.x * z) + x
-            backRect.y = (backImagePos.y * z) + y
-            backRect.width = backImg.width * z
+            backRect.x      = (backImagePos.x * z) + x
+            backRect.y      = (backImagePos.y * z) + y
+            backRect.width  = backImg.width * z
             backRect.height = backImg.height * z
             painter.drawTexture(backRect, backTexture)
         }
@@ -560,9 +562,9 @@ impl Capture
         {
             with var r: Math.Rectangle
             {
-                .x = movingStart.x
-                .y = movingStart.y
-                .width = movingEnd.x - movingStart.x
+                .x      = movingStart.x
+                .y      = movingStart.y
+                .width  = movingEnd.x - movingStart.x
                 .height = movingEnd.y - movingStart.y
             }
 
@@ -679,7 +681,7 @@ impl Capture
         visit f, i: forms
         {
             let autoSel = selection.contains(i) or @dataof(f) == @dataof(editForm)
-            let form = cast(*BaseForm) @dataof(f)
+            let form    = cast(*BaseForm) @dataof(f)
 
             switch f
             {
@@ -726,8 +728,8 @@ impl Capture
             }
         }
 
-        var bestX = Swag.F32.Max
-        var bestY = Swag.F32.Max
+        var bestX      = Swag.F32.Max
+        var bestY      = Swag.F32.Max
         var bestCoordX = 0.0
         var bestCoordY = 0.0
 
@@ -735,11 +737,11 @@ impl Capture
         {
             visit ax: arrX
             {
-                let p = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
+                let p   = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 let nbX = Math.abs(p.x - ax)
                 if nbX < bestX
                 {
-                    bestX = nbX
+                    bestX      = nbX
                     bestCoordX = ax
                 }
             }
@@ -749,11 +751,11 @@ impl Capture
         {
             visit ay: arrY
             {
-                let p = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
+                let p   = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 let nbY = Math.abs(p.y - ay)
                 if nbY < bestY
                 {
-                    bestY = nbY
+                    bestY      = nbY
                     bestCoordY = ay
                 }
             }
@@ -773,8 +775,10 @@ impl Capture
             ny = cast(s32) (bestCoordY - p.y)
         }
 
-        if x do dref x = nx
-        if y do dref y = ny
+        if x do
+            dref x = nx
+        if y do
+            dref y = ny
     }
 
     //////////////////////////////
@@ -919,7 +923,7 @@ impl Capture
         }
 
         let shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
-        let ctrlPressed = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
+        let ctrlPressed  = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
 
         // Start of mode
         ///////////////////////
@@ -929,9 +933,9 @@ impl Capture
             {
                 if (shiftPressed and ctrlPressed) or view.main.editMode == .Selection
                 {
-                    mouseMode = .Selecting
+                    mouseMode      = .Selecting
                     firstMouseMove = true
-                    movingStart = localPos
+                    movingStart    = localPos
                     view.captureMouse()
                     view.invalidate()
                     drawSelRect = true
@@ -939,7 +943,7 @@ impl Capture
                 else
                 {
                     let hadSelection = selection.count != 0
-                    let here = selection.contains(hotForm)
+                    let here         = selection.contains(hotForm)
                     if !(evt.modifiers & .Control) and !here
                     {
                         if selection.count
@@ -957,17 +961,17 @@ impl Capture
                             selectionHasChanged()
                         }
 
-                        mouseMode = .Moving
+                        mouseMode      = .Moving
                         firstMouseMove = true
-                        movingStart = localPos
+                        movingStart    = localPos
                         view.captureMouse()
                         view.invalidate()
                     }
                     elif !hadSelection or editView.main.editMode != .Step
                     {
-                        mouseMode = .Creating
+                        mouseMode      = .Creating
                         firstMouseMove = true
-                        movingStart = localPos
+                        movingStart    = localPos
                         view.captureMouse()
                         view.invalidate()
                     }
@@ -985,7 +989,7 @@ impl Capture
             {
                 view.releaseMouse()
                 view.invalidate()
-                mouseMode = .None
+                mouseMode   = .None
                 drawSelRect = false
                 view.main.updateState()
             }
@@ -1058,14 +1062,14 @@ impl Capture
 
             if Math.abs(nx - newPosX) > Math.abs(nx1 - newPosX)
             {
-                snapX = saveSnapX
+                snapX     = saveSnapX
                 u.newPosX = nx
             }
             else do
                 u.newPosX = nx1
             if Math.abs(ny - newPosY) > Math.abs(ny1 - newPosY)
             {
-                snapY = saveSnapY
+                snapY     = saveSnapY
                 u.newPosY = ny
             }
             else do
@@ -1095,7 +1099,7 @@ impl Capture
                 case Shape:
                     var form = Memory.new'FormShape()
                     dref form = editView.main.mdlFormShape
-                    itf = cast(IForm) form
+                    itf       = cast(IForm) form
                 case Image:
                     var form = Memory.new'FormImage()
                     dref form = editView.main.mdlFormImage
@@ -1104,15 +1108,15 @@ impl Capture
                 case Step:
                     var form = Memory.new'FormStep()
                     dref form = editView.main.mdlFormStep
-                    itf = cast(IForm) form
+                    itf       = cast(IForm) form
                 case Arrow:
                     var form = Memory.new'FormArrow()
                     dref form = editView.main.mdlFormArrow
-                    itf = cast(IForm) form
+                    itf       = cast(IForm) form
                 case Line:
                     var form = Memory.new'FormLine()
                     dref form = editView.main.mdlFormLine
-                    itf = cast(IForm) form
+                    itf       = cast(IForm) form
                 case Polygon:
                     var form = Memory.new'FormPolygon()
                     dref form = editView.main.mdlFormPolygon
@@ -1121,7 +1125,7 @@ impl Capture
                 case Text:
                     var form = Memory.new'FormText()
                     dref form = editView.main.mdlFormText
-                    itf = cast(IForm) form
+                    itf       = cast(IForm) form
                 case Draw:
                     var form = Memory.new'FormDraw()
                     dref form = editView.main.mdlFormDraw
@@ -1199,8 +1203,8 @@ impl Capture
         if main.editMode == .Selection do
             return
 
-        let f = forms[selection.back()]
-        let t = @kindof(f)
+        let f    = forms[selection.back()]
+        let t    = @kindof(f)
         let form = cast(*BaseForm) @dataof(f)
 
         if main.editMode == .Favorites
@@ -1264,8 +1268,8 @@ impl Capture
         if !selection.count do
             return
 
-        let f = forms[selection.back()]
-        let t = @kindof(f)
+        let f    = forms[selection.back()]
+        let t    = @kindof(f)
         let form = cast(*BaseForm) @dataof(f)
         if form.subKind == .Highlight do
             editView.main.mdlHighlight = f
@@ -1285,7 +1289,7 @@ impl Capture
 
         case FormStep:
             let b = cast(*FormStep) @dataof(f)
-            editView.main.mdlFormStep = dref b
+            editView.main.mdlFormStep    = dref b
             editView.main.mdlFormStep.ws = b.w
             editView.main.mdlFormStep.hs = b.h
 
@@ -1352,8 +1356,8 @@ impl Capture
         if !canUndo() do
             return
 
-        let serial = undos[nextUndo-1].serial
-        while nextUndo and undos[nextUndo-1].serial == serial
+        let serial = undos[nextUndo - 1].serial
+        while nextUndo and undos[nextUndo - 1].serial == serial
         {
             nextUndo -= 1
             undos[nextUndo].undoIt()

@@ -39,7 +39,7 @@ func day7B()
 func day7B0()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var id: HashTable'(string, Array'({count: u32, name: string}))
 
@@ -50,7 +50,7 @@ func day7B0()
         visit v: r.grepAll(split[1])
         {
             let splitVal = Tokenize.split(v, ` `'u8, 1)
-            let count = assume StrConv.toU32(splitVal[0])
+            let count    = assume StrConv.toU32(splitVal[0])
             id.findOrAdd(split[0]).value.add({count, splitVal[1]})
         }
     }
@@ -64,7 +64,7 @@ func day7B0()
 
         var total: u32
         visit v: it.value do
-            total += v.count + (v.count*count(id, v.name))
+            total += v.count + (v.count * count(id, v.name))
 
         return total
     }
@@ -79,7 +79,7 @@ func day7B0()
 func day7B1()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var id: HashTable'(string, Array'({count: u32, name: string}))
 
@@ -104,7 +104,7 @@ func day7B1()
 
         var total: u32
         visit v: it.value do
-            total += v.count + (v.count*count(id, v.name))
+            total += v.count + (v.count * count(id, v.name))
 
         return total
     }

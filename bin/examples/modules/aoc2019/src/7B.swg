@@ -38,31 +38,47 @@ using Core
 
 private func run(op: &Array's32, input: const [2] s32, ip: &s32)->{output: s32, stopped: bool}
 {
-    var output = 0
+    var output    = 0
     var phaseDone = ip != 0
 
     while op[ip] != 99
     {
         let imm0 = (op[ip] / 100) % 10
         let imm1 = (op[ip] / 1000) % 10
-        let inst  = op[ip] % 10
+        let inst = op[ip] % 10
 
         var param0, param1 = 0's32
         if inst != 3 do
-            param0 = imm0 ? op[ip+1] : op[op[ip+1]]
+            param0 = imm0 ? op[ip + 1] : op[op[ip + 1]]
         if inst != 3 and inst != 4 do
-            param1 = imm1 ? op[ip+2] : op[op[ip+2]]
+            param1 = imm1 ? op[ip + 2] : op[op[ip + 2]]
 
         switch inst
         {
-        case 1:   op[op[ip+3]] = param0 + param1; ip += 4
-        case 2:   op[op[ip+3]] = param0 * param1; ip += 4
-        case 3:   op[op[ip+1]] = phaseDone ? input[1] : input[0]; ip += 2; phaseDone = true
-        case 4:   output = param0; ip += 2; return {output, false}
-        case 5:   ip = param0 ? param1 : ip+3
-        case 6:   ip = !param0 ? param1 : ip+3
-        case 7:   op[op[ip+3]] = param0 < param1 ? 1 : 0; ip += 4
-        case 8:   op[op[ip+3]] = param0 == param1 ? 1 : 0; ip += 4
+        case 1:
+            op[op[ip + 3]] = param0 + param1
+            ip += 4
+        case 2:
+            op[op[ip + 3]] = param0 * param1
+            ip += 4
+        case 3:
+            op[op[ip + 1]] = phaseDone ? input[1] : input[0]
+            ip += 2
+            phaseDone = true
+        case 4:
+            output = param0
+            ip += 2
+            return {output, false}
+        case 5:
+            ip = param0 ? param1 : ip + 3
+        case 6:
+            ip = !param0 ? param1 : ip + 3
+        case 7:
+            op[op[ip + 3]] = param0 < param1 ? 1 : 0
+            ip += 4
+        case 8:
+            op[op[ip + 3]] = param0 == param1 ? 1 : 0
+            ip += 4
         }
     }
 
@@ -72,13 +88,13 @@ private func run(op: &Array's32, input: const [2] s32, ip: &s32)->{output: s32, 
 func day7B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var prg: Array's32
     visit v: Tokenize.split(lines[0], `,`'u8) do
         prg.add(assume StrConv.toS32(v))
 
-    var phase = [5,6,7,8,9]
+    var phase = [5, 6, 7, 8, 9]
     var total = 0
     loop
     {
@@ -90,7 +106,7 @@ func day7B()
             let result = run(&op[cpt], [phase[cpt], input], &ip[cpt])
             total = Math.max(total, result.output)
             input = result.output
-            cpt = (cpt + 1) % 5
+            cpt   = (cpt + 1) % 5
             if result.stopped and !cpt do
                 break
         }

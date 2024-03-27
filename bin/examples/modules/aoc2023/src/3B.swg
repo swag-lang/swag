@@ -30,8 +30,8 @@ What is the sum of all of the gear ratios in your engine schematic?
 using Core
 
 private var symbols: Array'{s, x, y: s32}
-private var nums:    Array'{num, x, lx, y: s32}
-private var parts:   Array'{num, x, lx, y: s32}
+private var nums: Array'{num, x, lx, y: s32}
+private var parts: Array'{num, x, lx, y: s32}
 
 private func hasSymbol(x, y: s32)->bool
 {
@@ -47,7 +47,7 @@ private func hasSymbol(x, y: s32)->bool
 func day3B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     visit l, y: lines
     {
@@ -56,7 +56,7 @@ func day3B()
             var c = l[x]
             if c >= `0` and c <= `9`
             {
-                let sx = x
+                let sx  = x
                 var num = 0
                 while x < l.length
                 {
@@ -68,7 +68,7 @@ func day3B()
                     x += 1
                 }
 
-                nums.add({num, sx, x-1, cast(s32) y})
+                nums.add({num, sx, x - 1, cast(s32) y})
             }
 
             if c != `.` and x < l.length
@@ -83,14 +83,14 @@ func day3B()
     {
         for var x = n.x; x <= n.lx; x += 1
         {
-            if hasSymbol(x, n.y-1)   or
-               hasSymbol(x, n.y+1)   or
-               hasSymbol(x-1, n.y-1) or
-               hasSymbol(x-1, n.y)   or
-               hasSymbol(x-1, n.y+1) or
-               hasSymbol(x+1, n.y-1) or
-               hasSymbol(x+1, n.y)   or
-               hasSymbol(x+1, n.y+1)
+            if hasSymbol(x, n.y - 1) or
+               hasSymbol(x, n.y + 1) or
+               hasSymbol(x - 1, n.y - 1) or
+               hasSymbol(x - 1, n.y) or
+               hasSymbol(x - 1, n.y + 1) or
+               hasSymbol(x + 1, n.y - 1) or
+               hasSymbol(x + 1, n.y) or
+               hasSymbol(x + 1, n.y + 1)
             {
                 parts.add(n)
                 break
@@ -104,12 +104,12 @@ func day3B()
             continue
 
         var gear = 1
-        var cpt = 0
+        var cpt  = 0
         visit n: nums
         {
-            if n.y < s.y-1 or n.y > s.y+1 do
+            if n.y < s.y - 1 or n.y > s.y + 1 do
                 continue
-            if (s.x >= n.x-1 and s.x <= n.lx+1)
+            if (s.x >= n.x - 1 and s.x <= n.lx + 1)
             {
                 gear *= n.num
                 cpt += 1
@@ -125,4 +125,3 @@ func day3B()
     //Console.print("total: ", total)
     @assert(total == 93994191)
 }
-

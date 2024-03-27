@@ -56,7 +56,7 @@ using Core
 func day6A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var map: HashTable'(string, string)
     visit l: lines
@@ -68,7 +68,8 @@ func day6A()
     func count(m: *@decltype(map), name: string)->u32
     {
         let it = m.find(name)
-        if !it do return 0
+        if !it do
+            return 0
         return 1 + count(m, it.value)
     }
 

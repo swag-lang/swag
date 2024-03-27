@@ -19,11 +19,11 @@ using Core
 func day6B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
-    let str = const ref lines[0]
+    let lines    = assume File.readAllLines(dataPath)
+    let str      = const ref lines[0]
 
     var arr: [128] s32
-    var len = 0
+    var len  = 0
 
     const LEN = 14
     loop i: str
@@ -33,16 +33,15 @@ func day6B()
 
         if i >= LEN
         {
-            arr[str[i-LEN]] -= 1
-            len -= cast(s32) (arr[str[i-LEN]] == 0)
+            arr[str[i - LEN]] -= 1
+            len -= cast(s32) (arr[str[i - LEN]] == 0)
         }
 
         if len == LEN
         {
             //Console.print("total: ", i+1)
-            @assert(i+1 == 2308)
+            @assert(i + 1 == 2308)
             break
         }
     }
 }
-

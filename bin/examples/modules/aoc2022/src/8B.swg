@@ -39,19 +39,19 @@ using Core
 func day8B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "8.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     //Time.Stopwatch.scopeMeasure()
 
     var total: s32
     visit l, line: lines
     {
-        if line == 0 or line == lines.count-1 do
+        if line == 0 or line == lines.count - 1 do
             continue
 
         visit:Bytes c, col: l
         {
-            if col == 0 or col == l.length-1 do
+            if col == 0 or col == l.length - 1 do
                 continue
 
             var score0 = 0
@@ -63,7 +63,7 @@ func day8B()
             }
 
             var score1 = 0
-            loop x: col+1 to l.length-1
+            loop x: col + 1 to l.length - 1
             {
                 score1 += 1
                 if l[x] >= l[col] do
@@ -79,7 +79,7 @@ func day8B()
             }
 
             var score3 = 0
-            loop y: line+1 to lines.count-1
+            loop y: line + 1 to lines.count - 1
             {
                 score3 += 1
                 if lines[y][col] >= l[col] do
@@ -93,4 +93,3 @@ func day8B()
     //Console.print("total: ", total)
     @assert(total == 201600)
 }
-

@@ -52,25 +52,33 @@ func day3A()
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
 private const S = 20000
-private var grid: [S,S] bool
+private var grid: [S, S] bool
 private var total = Swag.S32.Max
 func day3A0()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     func trace(idx: s32, line: string)
     {
-        var x, y = S/2
+        var x, y = S / 2
         var dx, dy = 0
         visit v: Tokenize.split(line, `,`'u8)
         {
             switch v[0]
             {
-            case `U`: dx = 0; dy = -1
-            case `D`: dx = 0; dy = 1
-            case `R`: dx = 1; dy = 0
-            case `L`: dx = -1; dy = 0
+            case `U`:
+                dx = 0
+                dy = -1
+            case `D`:
+                dx = 0
+                dy = 1
+            case `R`:
+                dx = 1
+                dy = 0
+            case `L`:
+                dx = -1
+                dy = 0
             }
 
             let val = assume StrConv.toS32(v[1..])
@@ -82,7 +90,7 @@ func day3A0()
                     grid[x, y] = true
                 if idx == 1 and grid[x, y]
                 {
-                    let d = Math.abs(x - S/2) + Math.abs(y - S/2)
+                    let d = Math.abs(x - S / 2) + Math.abs(y - S / 2)
                     total = Math.min(total, d)
                 }
             }
@@ -101,22 +109,26 @@ func day3A0()
 func day3A1()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     func trace(line: string)->Array'Vector2
     {
         var result: retval
-        var pos: Vector2
+        var pos:    Vector2
         result.add(pos)
         visit v: Tokenize.split(line, `,`'u8)
         {
             let val = assume StrConv.toF32(v[1..])
             switch v[0]
             {
-            case `U`: pos += {0, -val}
-            case `D`: pos += {0, val}
-            case `R`: pos += {-val, 0}
-            case `L`: pos += {val, 0}
+            case `U`:
+                pos += {0, -val}
+            case `D`:
+                pos += {0, val}
+            case `R`:
+                pos += {-val, 0}
+            case `L`:
+                pos += {val, 0}
             }
             result.add(pos)
         }
@@ -127,14 +139,14 @@ func day3A1()
     let t1 = trace(lines[1])
 
     var best = Swag.S32.Max
-    loop i: t1.count-1
+    loop i: t1.count - 1
     {
-        loop j: t0.count-1
+        loop j: t0.count - 1
         {
-            let (yes,pos) = Vector2.segSegIntersect(t1[i], t1[i+1], t0[j], t0[j+1])
+            let (yes, pos) = Vector2.segSegIntersect(t1[i], t1[i + 1], t0[j], t0[j + 1])
             if yes and !pos.isZero()
             {
-                let d = Math.abs(pos.x)+Math.abs(pos.y)
+                let d = Math.abs(pos.x) + Math.abs(pos.y)
                 best = Math.min(best, cast(s32) d)
             }
         }

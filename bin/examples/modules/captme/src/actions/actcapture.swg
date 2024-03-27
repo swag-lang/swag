@@ -1,40 +1,30 @@
 using Gui
 
-const CmdIdCapture              = "CmdIdCapture"
-const CmdIdCaptureArea          = "CmdIdCaptureArea"
-const CmdIdCaptureLastArea      = "CmdIdCaptureLastArea"
-const CmdIdCaptureFullScreen    = "CmdIdCaptureFullScreen"
-const CmdIdCaptureScreen0       = "CmdIdCaptureScreen0"
-const CmdIdCaptureScreen1       = "CmdIdCaptureScreen1"
-const CmdIdCaptureScreen2       = "CmdIdCaptureScreen2"
-const CmdIdCaptureScreen3       = "CmdIdCaptureScreen3"
-const CmdIdCaptureActiveWnd     = "CmdIdCaptureActiveWnd"
-const CmdIdCaptureHideEditor    = "CmdIdCaptureHideEditor"
-const CmdIdCaptureShowEditor    = "CmdIdCaptureShowEditor"
-const CmdIdCaptureToEditor      = "CmdIdCaptureToEditor"
-const CmdIdCaptureToClipboard   = "CmdIdCaptureToClipboard"
+const CmdIdCapture            = "CmdIdCapture"
+const CmdIdCaptureArea        = "CmdIdCaptureArea"
+const CmdIdCaptureLastArea    = "CmdIdCaptureLastArea"
+const CmdIdCaptureFullScreen  = "CmdIdCaptureFullScreen"
+const CmdIdCaptureScreen0     = "CmdIdCaptureScreen0"
+const CmdIdCaptureScreen1     = "CmdIdCaptureScreen1"
+const CmdIdCaptureScreen2     = "CmdIdCaptureScreen2"
+const CmdIdCaptureScreen3     = "CmdIdCaptureScreen3"
+const CmdIdCaptureActiveWnd   = "CmdIdCaptureActiveWnd"
+const CmdIdCaptureHideEditor  = "CmdIdCaptureHideEditor"
+const CmdIdCaptureShowEditor  = "CmdIdCaptureShowEditor"
+const CmdIdCaptureToEditor    = "CmdIdCaptureToEditor"
+const CmdIdCaptureToClipboard = "CmdIdCaptureToClipboard"
 
-struct ActionCapture {}
+struct ActionCapture
+{
+}
 impl IActionUI for ActionCapture
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdCapture,
-             CmdIdCaptureArea,
-             CmdIdCaptureLastArea,
-             CmdIdCaptureFullScreen,
-             CmdIdCaptureScreen0,
-             CmdIdCaptureScreen1,
-             CmdIdCaptureScreen2,
-             CmdIdCaptureScreen3,
-             CmdIdCaptureActiveWnd,
-             CmdIdCaptureHideEditor,
-             CmdIdCaptureShowEditor,
-             CmdIdCaptureToEditor,
-             CmdIdCaptureToClipboard:
-             return true
+        case CmdIdCapture, CmdIdCaptureArea, CmdIdCaptureLastArea, CmdIdCaptureFullScreen, CmdIdCaptureScreen0, CmdIdCaptureScreen1, CmdIdCaptureScreen2, CmdIdCaptureScreen3, CmdIdCaptureActiveWnd, CmdIdCaptureHideEditor, CmdIdCaptureShowEditor, CmdIdCaptureToEditor, CmdIdCaptureToClipboard:
+            return true
         }
 
         return false
@@ -85,23 +75,23 @@ impl IActionUI for ActionCapture
 
         case CmdIdCaptureHideEditor:
             evt.setFlags |= .Name | .Checked
-            evt.name = "Hide Editor Before Capture"
-            evt.checked = main.captureHideEditor
+            evt.name     = "Hide Editor Before Capture"
+            evt.checked  = main.captureHideEditor
             evt.accepted = true
         case CmdIdCaptureShowEditor:
             evt.setFlags |= .Name | .Checked
-            evt.name = "Show Editor After Capture"
-            evt.checked = main.captureShowEditor
+            evt.name     = "Show Editor After Capture"
+            evt.checked  = main.captureShowEditor
             evt.accepted = true
         case CmdIdCaptureToEditor:
             evt.setFlags |= .Name | .Checked
-            evt.name = "Send Capture To Editor"
-            evt.checked = main.captureToEditor
+            evt.name     = "Send Capture To Editor"
+            evt.checked  = main.captureToEditor
             evt.accepted = true
         case CmdIdCaptureToClipboard:
             evt.setFlags |= .Name | .Checked
-            evt.name = "Send Capture To Clipboard"
-            evt.checked = main.captureToClipboard
+            evt.name     = "Send Capture To Clipboard"
+            evt.checked  = main.captureToClipboard
             evt.accepted = true
         }
 
@@ -161,7 +151,7 @@ impl MainWnd
             .height, .heightOrg = img.height
             .backImg, .backImgOrg = img
             .linkedImage = linked
-            .file = Library.newFileName()
+            .file        = Library.newFileName()
         }
 
         editWnd.editView.setCapture(capture)
@@ -190,7 +180,7 @@ impl MainWnd
         if captureDelay do
             Threading.Thread.sleep(captureDelay * 1000)
 
-        var img = catch screenShot(mode)
+        var img     = catch screenShot(mode)
         let isValid = @err() == null and img.width > 0 and img.height > 0
 
         if (isValid and captureShowEditor) or !wasHidden

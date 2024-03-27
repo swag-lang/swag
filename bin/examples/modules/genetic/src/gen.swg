@@ -5,14 +5,14 @@ const TakeBest        = 50'u32
 const TakeWorst       = 0'u32
 
 #[Swag.Tls]
-var g_Rng:          Random.Rng
-var g_NumGenes:     u32
-var g_Gen:          [2] Generation
-var g_CurGen:       u32
-var g_TotalWeight   = 0'f32
-var g_BestScore     = Swag.F32.Max
-var g_NumGen:       u32
-var g_Result:       Array'u8
+var g_Rng: Random.Rng
+var g_NumGenes:   u32
+var g_Gen:        [2] Generation
+var g_CurGen:     u32
+var g_TotalWeight = 0'f32
+var g_BestScore   = Swag.F32.Max
+var g_NumGen:     u32
+var g_Result:     Array'u8
 
 struct Generation
 {
@@ -21,9 +21,9 @@ struct Generation
 
 struct Solution
 {
-    genes:  Array'u32
-    score:  f32
-    weight: f32
+    genes:      Array'u32
+    score:      f32
+    weight:     f32
 }
 
 func genInit()
@@ -37,15 +37,18 @@ func genInit()
     {
         let soluce = g_Gen[0].all.addNewPtr()
         soluce.genes.resize(cast(u64) g_NumGenes)
-        loop i: g_NumGenes do soluce.genes[i] = i
+        loop i: g_NumGenes do
+            soluce.genes[i] = i
         g_Rng.shuffle(soluce.genes.toSlice())
         evaluateSolution(soluce)
     }
 
     // Sort solutions from best to worst
-    g_Gen[0].all.sort(func(x, y) {
+    g_Gen[0].all.sort(func(x, y)
+    {
         return x.score <=> y.score
-    })
+    }
+)
 
     // Placeholder for the next generation
     loop PopulationCount
@@ -62,13 +65,13 @@ func evaluateSolution(idxSrc, idxDst: u32)->f32
 {
     var a, b: Pixel.Color = undefined
 
-    a.r = g_Image0.pixels[(idxSrc*3)+0]
-    a.g = g_Image0.pixels[(idxSrc*3)+1]
-    a.b = g_Image0.pixels[(idxSrc*3)+2]
+    a.r = g_Image0.pixels[(idxSrc * 3) + 0]
+    a.g = g_Image0.pixels[(idxSrc * 3) + 1]
+    a.b = g_Image0.pixels[(idxSrc * 3) + 2]
 
-    b.r = g_Image1.pixels[(idxDst*3)+0]
-    b.g = g_Image1.pixels[(idxDst*3)+1]
-    b.b = g_Image1.pixels[(idxDst*3)+2]
+    b.r = g_Image1.pixels[(idxDst * 3) + 0]
+    b.g = g_Image1.pixels[(idxDst * 3) + 1]
+    b.b = g_Image1.pixels[(idxDst * 3) + 2]
 
     let dist = a.getDistanceRgb(b)
     return dist
@@ -102,16 +105,16 @@ func mutate(child: *Solution, idx: u32)
 
     switch
     {
-    case idx < PopulationCount/2:
+    case idx < PopulationCount / 2:
         mutRate = 2
         mutNum  = 1
-    case idx < PopulationCount/4:
+    case idx < PopulationCount / 4:
         mutRate = 50
         mutNum  = 1
-    case idx < PopulationCount/2:
+    case idx < PopulationCount / 2:
         mutRate = 50
         mutNum  = 5
-    case idx < PopulationCount/2 + PopulationCount/4:
+    case idx < PopulationCount / 2 + PopulationCount / 4:
         mutRate = 50
         mutNum  = 10
     default:
@@ -166,7 +169,7 @@ func genGo()->*u8
     }
 
     let nextGenIdx = (g_CurGen + 1) % 2
-    var numChilds = PopulationCount - TakeBest - TakeWorst
+    var numChilds  = PopulationCount - TakeBest - TakeWorst
 
     Jobs.parallelFor(|index| numChilds)
     {
@@ -190,13 +193,13 @@ func genGo()->*u8
 
         // Copy solution from mother, in order, except of already present
         var holes: Array'u32
-        var cpt = 0'u32
+        var cpt    = 0'u32
         loop i: g_NumGenes - crossPoint1
         {
             let g = mother.genes[i + crossPoint1]
             if !done[g]
             {
-                done[g] = true
+                done[g]                         = true
                 child1.genes[crossPoint1 + cpt] = g
             }
             else
@@ -210,19 +213,20 @@ func genGo()->*u8
         // Fill the rest
         loop i: g_NumGenes
         {
-            if done[i] do continue
+            if done[i] do
+                continue
 
-            var bestRes = Swag.F32.Max
+            var bestRes  = Swag.F32.Max
             var bestHole = 0'u64
 
             for var idx = 0; idx < Math.min(50, holes.count); idx += 1
             {
-                let start = g_Rng.nextU32(0, acast holes.count)
-                let hole = holes[start]
+                let start  = g_Rng.nextU32(0, acast holes.count)
+                let hole   = holes[start]
                 let result = evaluateSolution(i, hole)
                 if result < bestRes
                 {
-                    bestRes = result
+                    bestRes  = result
                     bestHole = start
                 }
             }
@@ -248,9 +252,11 @@ func genGo()->*u8
     }
 
     // Mutate
-    g_Gen[nextGenIdx].all.sort(func(x, y) {
+    g_Gen[nextGenIdx].all.sort(func(x, y)
+    {
         return x.score <=> y.score
-    })
+    }
+)
 
     visit child, idx: g_Gen[nextGenIdx].all
     {
@@ -261,12 +267,14 @@ func genGo()->*u8
     g_CurGen = (g_CurGen + 1) % 2
 
     // Sort solutions from best to worst
-    g_Gen[g_CurGen].all.sort(func(x, y) {
+    g_Gen[g_CurGen].all.sort(func(x, y)
+    {
         return x.score <=> y.score
-    })
+    }
+)
 
     // Returns the best score
-    let best = g_Gen[g_CurGen].all[0]
+    let best      = g_Gen[g_CurGen].all[0]
     let bestScore = best.score
     if bestScore < g_BestScore
     {
@@ -276,9 +284,9 @@ func genGo()->*u8
         loop i: best.genes
         {
             let idx = best.genes[i]
-            g_Result[(i*3)+0] = g_Image0.pixels[(idx*3)+0]
-            g_Result[(i*3)+1] = g_Image0.pixels[(idx*3)+1]
-            g_Result[(i*3)+2] = g_Image0.pixels[(idx*3)+2]
+            g_Result[(i * 3) + 0] = g_Image0.pixels[(idx * 3) + 0]
+            g_Result[(i * 3) + 1] = g_Image0.pixels[(idx * 3) + 1]
+            g_Result[(i * 3) + 2] = g_Image0.pixels[(idx * 3) + 2]
         }
 
         return g_Result.buffer

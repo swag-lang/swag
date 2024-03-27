@@ -16,11 +16,11 @@ func day9B()
     //Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "9.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
-    var r = assume Parser.RegExp.create(#"(\w+) to (\w+) = (\d+)"#)
-    var town: HashTable'(string, u64)
-    var dist: HashTable'(u64, u64)
+    var r      = assume Parser.RegExp.create(#"(\w+) to (\w+) = (\d+)"#)
+    var town:  HashTable'(string, u64)
+    var dist:  HashTable'(u64, u64)
     var combi: Array'u64
 
     visit l: lines
@@ -39,8 +39,8 @@ func day9B()
     loop
     {
         var calc = 0'u64
-        loop i: cast(s64) combi.count-1 do
-            calc += dist.find(combi[i] << 32 | combi[i+1]).value
+        loop i: cast(s64) combi.count - 1 do
+            calc += dist.find(combi[i] << 32 | combi[i + 1]).value
         total = Math.max(total, calc)
         if !Slice.nextPermutation(combi.toSlice()) do
             break

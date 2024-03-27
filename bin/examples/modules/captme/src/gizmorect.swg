@@ -1,23 +1,23 @@
 struct GizmoRect
 {
-    paintSimpleBorder:  bool = true
-    paintBigBorder:     bool = true
-    roundShape:         bool = false
-    anchorSize:         f32 = 8
-    trackChange:        bool = false
+    paintSimpleBorder:     bool = true
+    paintBigBorder:        bool = true
+    roundShape:            bool = false
+    anchorSize:            f32 = 8
+    trackChange:           bool = false
 
-    rect:           Math.Rectangle
-    startRect:      Math.Rectangle
-    anchors:        [8] Math.Rectangle
-    hotAnchor:      u32 = Swag.U32.Max
-    moving:         bool
-    firstMoving:    bool
-    movingRect:     Math.Rectangle
-    movingStart:    Math.Point
-    sigChanged:     closure(self, bool, u32)
+    rect:                  Math.Rectangle
+    startRect:             Math.Rectangle
+    anchors:               [8] Math.Rectangle
+    hotAnchor:             u32 = Swag.U32.Max
+    moving:                bool
+    firstMoving:           bool
+    movingRect:            Math.Rectangle
+    movingStart:           Math.Point
+    sigChanged:            closure(*GizmoRect, bool, u32 )
 
-    minSizeX:       f32 = 2
-    minSizeY:       f32 = 2
+    minSizeX:              f32 = 2
+    minSizeY:              f32 = 2
 }
 
 impl GizmoRect
@@ -91,12 +91,12 @@ impl GizmoRect
                     movingRect.y      = Math.min(startRect.bottom() - minSizeY, movingRect.y + diff.y)
                     movingRect.width  = startRect.right() - movingRect.x
                     movingRect.height = startRect.bottom() - movingRect.y
-                    hitMove = 1 | 2
+                    hitMove           = 1 | 2
 
                 case 1:
                     movingRect.y      = Math.min(movingRect.y + diff.y, startRect.bottom() - minSizeY)
                     movingRect.height = startRect.bottom() - movingRect.y
-                    hitMove = 2
+                    hitMove           = 2
 
                 case 2:
                     if prop
@@ -110,16 +110,16 @@ impl GizmoRect
                     movingRect.y      = Math.min(startRect.bottom() - minSizeY, movingRect.y + diff.y)
                     movingRect.width  = Math.max(movingRect.width + diff.x, minSizeX)
                     movingRect.height = startRect.bottom() - movingRect.y
-                    hitMove = 2 | 4
+                    hitMove           = 2 | 4
 
                 case 3:
                     movingRect.x     = Math.min(startRect.right() - minSizeX, movingRect.x + diff.x)
                     movingRect.width = startRect.right() - movingRect.x
-                    hitMove = 1
+                    hitMove          = 1
 
                 case 4:
                     movingRect.width = Math.max(movingRect.width + diff.x, minSizeX)
-                    hitMove = 4
+                    hitMove          = 4
 
                 case 5:
                     if prop
@@ -133,11 +133,11 @@ impl GizmoRect
                     movingRect.x      = Math.min(startRect.right() - minSizeX, movingRect.x + diff.x)
                     movingRect.width  = startRect.right() - movingRect.x
                     movingRect.height = Math.max(movingRect.height + diff.y, minSizeY)
-                    hitMove = 1 | 8
+                    hitMove           = 1 | 8
 
                 case 6:
                     movingRect.height = Math.max(movingRect.height + diff.y, minSizeY)
-                    hitMove = 8
+                    hitMove           = 8
 
                 case 7:
                     if prop
@@ -150,7 +150,7 @@ impl GizmoRect
 
                     movingRect.width  = Math.max(movingRect.width + diff.x, minSizeX)
                     movingRect.height = Math.max(movingRect.height + diff.y, minSizeY)
-                    hitMove = 4 | 8
+                    hitMove           = 4 | 8
                 }
 
                 if trackChange and sigChanged do
@@ -168,10 +168,14 @@ impl GizmoRect
                     {
                         switch i
                         {
-                        case 0, 7: view.getApp().pushCursor(Cursor.from(.SizeNWSE))
-                        case 1, 6: view.getApp().pushCursor(Cursor.from(.SizeNS))
-                        case 2, 5: view.getApp().pushCursor(Cursor.from(.SizeNESW))
-                        case 3, 4: view.getApp().pushCursor(Cursor.from(.SizeWE))
+                        case 0, 7:
+                            view.getApp().pushCursor(Cursor.from(.SizeNWSE))
+                        case 1, 6:
+                            view.getApp().pushCursor(Cursor.from(.SizeNS))
+                        case 2, 5:
+                            view.getApp().pushCursor(Cursor.from(.SizeNESW))
+                        case 3, 4:
+                            view.getApp().pushCursor(Cursor.from(.SizeWE))
                         }
 
                         hotAnchor = i
@@ -235,7 +239,7 @@ impl GizmoRect
 
     mtd apply(iform: IForm, first: bool, hitMove: u32)
     {
-        let form = cast(*BaseForm) @dataof(iform)
+        let form    = cast(*BaseForm) @dataof(iform)
         let capture = form.capture
         if !first do
             capture.undo()

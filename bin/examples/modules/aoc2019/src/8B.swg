@@ -36,18 +36,11 @@ func day8B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
 
-    const S = 25*6
+    const S  = 25 * 6
     var pix: [S] rune
     visit:Bytes c, i: assume File.readAllText(dataPath)
     {
-        if pix[i%S] == 0 and c != `2` do
-            pix[i%S] = c == `1` ? `X` : ` `
+        if pix[i % S] == 0 and c != `2` do
+            pix[i % S] = c == `1` ? `X` : ` `
     }
-
-    /*loop i: pix
-    {
-        if i % 25 == 0 do
-            Console.print("\n")
-        Console.print(pix[i])
-    }*/
 }

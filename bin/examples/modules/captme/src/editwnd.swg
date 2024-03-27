@@ -1,18 +1,18 @@
 struct EditWnd
 {
-    using scrollWnd: ScrollWnd
-    editView:        *EditView
+    using scrollWnd:     ScrollWnd
+    editView:            *EditView
 }
 
 struct EditView
 {
-    using wnd:  Wnd
-    main:       *MainWnd
-    scroll:     *ScrollWnd
-    capture:    *Capture
-    zoom:       f32 = 1
-    viewMargin: f32 = 32
-    firstPaint: bool = true
+    using wnd:      Wnd
+    main:           *MainWnd
+    scroll:         *ScrollWnd
+    capture:        *Capture
+    zoom:           f32 = 1
+    viewMargin:     f32 = 32
+    firstPaint:     bool = true
 }
 
 impl EditWnd
@@ -20,11 +20,11 @@ impl EditWnd
     func create(main: *MainWnd, parent: *Wnd)->*EditWnd
     {
         let scroll = Wnd.create'EditWnd(parent)
-        let view = Wnd.create'EditView(scroll)
-        view.scroll = scroll
-        view.main = main
+        let view   = Wnd.create'EditView(scroll)
+        view.scroll     = scroll
+        view.main       = main
         scroll.editView = view
-        scroll.view = view
+        scroll.view     = view
         return scroll
     }
 }
@@ -34,7 +34,8 @@ impl IWnd for EditView
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = false
-        if !capture do return
+        if !capture do
+            return
 
         if capture.mouse(self, evt)
         {
@@ -92,11 +93,11 @@ impl EditView
     mtd getCaptureRect()->Math.Rectangle
     {
         var captureRect: retval
-        var rect = scroll.getClientScrollRect()
+        var rect         = scroll.getClientScrollRect()
         captureRect.width  = capture.width * zoom
         captureRect.height = capture.height * zoom
-        captureRect.x = rect.horzCenter() - captureRect.width * 0.5
-        captureRect.y = rect.vertCenter() - captureRect.height * 0.5
+        captureRect.x      = rect.horzCenter() - captureRect.width * 0.5
+        captureRect.y      = rect.vertCenter() - captureRect.height * 0.5
         return captureRect
     }
 
@@ -108,16 +109,16 @@ impl EditView
         var mousePos, mousePos1: Math.Point
         if mouseCenter
         {
-            mousePos = getApp().mouse.getPosition()
-            mousePos = screenToSurface(mousePos)
-            mousePos = surfaceToLocal(mousePos)
+            mousePos  = getApp().mouse.getPosition()
+            mousePos  = screenToSurface(mousePos)
+            mousePos  = surfaceToLocal(mousePos)
             mousePos1 = mousePos + scrollPos
             mousePos1 /= zoom
         }
 
         zoom = Math.clamp(z, MinZoom, MaxZoom)
         var captureRect = getCaptureRect()
-        scroll.setScrollSize(captureRect.width + (2*viewMargin), captureRect.height + (2*viewMargin))
+        scroll.setScrollSize(captureRect.width + (2 * viewMargin), captureRect.height + (2 * viewMargin))
 
         if mouseCenter
         {
@@ -129,7 +130,7 @@ impl EditView
         invalidate()
     }
 
-    mtd canZoomIn() => zoom != MaxZoom
+    mtd canZoomIn()  => zoom != MaxZoom
     mtd canZoomOut() => zoom != MinZoom
 
     mtd zoomIn()
@@ -147,7 +148,7 @@ impl EditView
         if !capture do
             return
         var rect = getClientRect()
-        rect.inflate(-viewMargin*2)
+        rect.inflate(-viewMargin * 2)
 
         var zx = rect.width / capture.width
         var zy = rect.height / capture.height

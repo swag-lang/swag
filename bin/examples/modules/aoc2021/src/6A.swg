@@ -55,11 +55,12 @@ using Core
 func day6A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var values: Array's32
-    let str = Tokenize.split(lines[0], `,`'u8)
-    visit v: str do values.add(assume StrConv.toS32(v))
+    let str     = Tokenize.split(lines[0], `,`'u8)
+    visit v: str do
+        values.add(assume StrConv.toS32(v))
 
     loop day: 80
     {
@@ -78,4 +79,3 @@ func day6A()
     //Console.print("total: ", values.count)
     @assert(values.count == 388739)
 }
-

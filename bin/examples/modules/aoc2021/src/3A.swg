@@ -38,7 +38,7 @@ using Core
 func day3A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var gamma, epsilon: u32
     loop c: lines[0]
@@ -49,11 +49,10 @@ func day3A()
         visit l: lines do
             count += cast(s32) (l[c] == `1`)
 
-        gamma   |= cast(s32) (count > lines.count/2)
-        epsilon |= cast(s32) (count < lines.count/2)
+        gamma |= cast(s32) (count > lines.count / 2)
+        epsilon |= cast(s32) (count < lines.count / 2)
     }
 
     //Console.print("total: ", gamma*epsilon)
-    @assert(gamma*epsilon == 2967914)
+    @assert(gamma * epsilon == 2967914)
 }
-

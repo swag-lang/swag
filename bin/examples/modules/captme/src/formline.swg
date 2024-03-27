@@ -1,16 +1,16 @@
 struct FormLine
 {
-    using base: BaseForm
-    beginCap:   LineCapStyle = .Round
-    endCap:     LineCapStyle = .Round
-    dashCap:    DashCapStyle = .None
-    startSize:  f32 = 4
-    endSize:    f32 = 4
+    using base:     BaseForm
+    beginCap:       LineCapStyle = .Round
+    endCap:         LineCapStyle = .Round
+    dashCap:        DashCapStyle = .None
+    startSize:      f32 = 4
+    endSize:        f32 = 4
     xa, ya, xb, yb: f32
 
     #[Serialization.NoSerialize]
     {
-        gizmo: GizmoPoints
+        gizmo:     GizmoPoints
         x0, y0, x1, y1: f32
     }
 }
@@ -20,16 +20,16 @@ impl IForm for FormLine
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormLine) ptr
-        return  borderColor == other.borderColor and
-                borderSize  == other.borderSize and
-                alpha       == other.alpha and
-                beginCap    == other.beginCap and
-                endCap      == other.endCap and
-                dashStyle   == other.dashStyle and
-                startSize   == other.startSize and
-                endSize     == other.endSize and
-                dashCap     == other.dashCap and
-                paintShadow == other.paintShadow
+        return borderColor == other.borderColor and
+               borderSize == other.borderSize and
+               alpha == other.alpha and
+               beginCap == other.beginCap and
+               endCap == other.endCap and
+               dashStyle == other.dashStyle and
+               startSize == other.startSize and
+               endSize == other.endSize and
+               dashCap == other.dashCap and
+               paintShadow == other.paintShadow
     }
 
     mtd impl copy(dst, src: *BaseForm)
@@ -133,12 +133,12 @@ impl IForm for FormLine
         var l0 = l0r
         var l1 = l1r
         if beginCap == .ArrowAnchor do
-            l0 = 2*2*borderSize
+            l0 = 2 * 2 * borderSize
         if endCap == .ArrowAnchor do
-            l1 = 2*2*borderSize
+            l1 = 2 * 2 * borderSize
 
-        var v1 = bound(va, vb, d*l0 + d1*w0, d*l1 + d1*w1)
-        var v2 = bound(va, vb, d*l0 - d1*w0, d*l1 - d1*w1)
+        var v1 = bound(va, vb, d * l0 + d1 * w0, d * l1 + d1 * w1)
+        var v2 = bound(va, vb, d * l0 - d1 * w0, d * l1 - d1 * w1)
 
         v1.x = Math.min(v1.x, v2.x)
         v1.y = Math.min(v1.y, v2.y)
@@ -146,9 +146,9 @@ impl IForm for FormLine
         v1.w = Math.max(v1.w, v2.w)
 
         /////
-        result.x = v1.x
-        result.y = v1.y
-        result.width = v1.z - v1.x
+        result.x      = v1.x
+        result.y      = v1.y
+        result.width  = v1.z - v1.x
         result.height = v1.w - v1.y
 
         return result
@@ -200,8 +200,8 @@ impl IForm for FormLine
             {
                 let tri = cmd.drawTriangles.start + i
                 let xx0 = painter.vertexBuffer[tri].pos
-                let xx1 = painter.vertexBuffer[tri+1].pos
-                let xx2 = painter.vertexBuffer[tri+2].pos
+                let xx1 = painter.vertexBuffer[tri + 1].pos
+                let xx2 = painter.vertexBuffer[tri + 2].pos
                 if pos.isInTriangle(xx0, xx1, xx2) do
                     return true
             }
@@ -237,7 +237,8 @@ impl IForm for FormLine
         capture = capt
         gizmo.anchors.resize(2)
 
-        gizmo.sigChanged = closure|self|(diff, pt, first) {
+        gizmo.sigChanged = closure|self|(diff, pt, first)
+        {
             GizmoPoints.apply(self, diff, pt, first)
         }
     }

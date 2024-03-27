@@ -41,11 +41,11 @@ using Core
 func day8B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "8.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var instructions: string
-    var nodes:      Array'{name: string, left, right: u64}
-    var nameToNode: HashTable'(string, u64)
+    var nodes:        Array'{name: string, left, right: u64}
+    var nameToNode:   HashTable'(string, u64)
 
     var startNode: Array'u64
 
@@ -55,7 +55,7 @@ func day8B()
             instructions = l.toString()
         elif i > 1
         {
-            let name   = l[0..2]
+            let name = l[0..2]
             nameToNode.add(name, i - 2)
             if name[2] == `A` do
                 startNode.add(i - 2)
@@ -72,7 +72,7 @@ func day8B()
         let right  = l[12..14]
         let leftV  = nameToNode.find(left).value
         let rightV = nameToNode.find(right).value
-        nodes[i-2] = {name, leftV, rightV}
+        nodes[i - 2] = {name, leftV, rightV}
     }
 
     var curNode = startNode
@@ -108,4 +108,3 @@ func day8B()
     //Console.print("total: ", total)
     @assert(total == 16187743689077)
 }
-

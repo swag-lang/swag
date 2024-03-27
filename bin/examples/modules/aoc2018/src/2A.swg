@@ -29,24 +29,27 @@ using Core
 func day2A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total2, total3 = 0
     visit l: lines
     {
         var count: [26] s32
         visit:Bytes c: l do
-            count[c-`a`] += 1
+            count[c - `a`] += 1
         Slice.sort(count[..], bigFirst: true)
         switch
         {
-        case count[0] == 3 and count[1] == 2:   total2 += 1; total3 += 1
-        case count[0] == 3:                     total3 += 1
-        case count[0] == 2:                     total2 += 1
+        case count[0] == 3 and count[1] == 2:
+            total2 += 1
+            total3 += 1
+        case count[0] == 3:
+            total3 += 1
+        case count[0] == 2:
+            total2 += 1
         }
     }
 
     //Console.print("total: ", total2*total3)
-    @assert(total2*total3 == 5390)
+    @assert(total2 * total3 == 5390)
 }
-

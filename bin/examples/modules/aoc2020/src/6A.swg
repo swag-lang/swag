@@ -45,14 +45,15 @@ using Core
 func day6A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var map:   HashSet'u8
     var total: u64
     visit l: lines
     {
-        visit:Bytes c: l do map.add(c)
-        if #index == lines.count-1 or lines[#index+1].length == 0
+        visit:Bytes c: l do
+            map.add(c)
+        if #index == lines.count - 1 or lines[#index + 1].length == 0
         {
             total += map.count
             map.clear()

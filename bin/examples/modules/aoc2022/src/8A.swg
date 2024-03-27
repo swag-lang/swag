@@ -33,7 +33,7 @@ using Core
 func day8A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "8.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     //Time.Stopwatch.scopeMeasure()
 
@@ -41,35 +41,36 @@ func day8A()
 
     // All edges are visible
     total += lines.count * 2
-    total += (lines[0].length-2)*2
+    total += (lines[0].length - 2) * 2
 
     visit l, line: lines
     {
-        if line == 0 or line == lines.count-1 do
+        if line == 0 or line == lines.count - 1 do
             continue
 
         var maxLeft: u8
 
         visit:Bytes c, col: l
         {
-            if col == 0 or col == l.length-1 do
+            if col == 0 or col == l.length - 1 do
                 continue
 
             var hidden = 0
 
             if l[col] <= maxLeft do
                 hidden += 1
-            else do loop x: 0 until col
-            {
-                if l[x] >= l[col]
+            else do
+                loop x: 0 until col
                 {
-                    hidden += 1
-                    break
+                    if l[x] >= l[col]
+                    {
+                        hidden += 1
+                        break
+                    }
                 }
-            }
             maxLeft = Math.max(maxLeft, l[col])
 
-            loop x: col+1 to l.length-1
+            loop x: col + 1 to l.length - 1
             {
                 if l[x] >= l[col]
                 {
@@ -87,7 +88,7 @@ func day8A()
                 }
             }
 
-            loop y: line+1 to lines.count-1
+            loop y: line + 1 to lines.count - 1
             {
                 if lines[y][col] >= l[col]
                 {
@@ -104,4 +105,3 @@ func day8A()
     //Console.print("total: ", total)
     @assert(total == 1849)
 }
-

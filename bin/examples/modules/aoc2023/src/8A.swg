@@ -36,7 +36,7 @@ using Core
 func day8A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "8.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var instructions: string
     var nodes:        Array'{left, right: u64}
@@ -68,10 +68,10 @@ func day8A()
         let right  = l[12..14]
         let leftV  = nameToNode.find(left).value
         let rightV = nameToNode.find(right).value
-        nodes[i-2] = {leftV, rightV}
+        nodes[i - 2] = {leftV, rightV}
     }
 
-    var total: u64
+    var total:   u64
     var curNode: u64 = startNode
     while curNode != endNode
     {
@@ -90,4 +90,3 @@ func day8A()
     //Console.print("total: ", total)
     @assert(total == 14257)
 }
-

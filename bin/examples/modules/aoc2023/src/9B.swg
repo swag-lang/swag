@@ -23,7 +23,7 @@ using Core
 func day9B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "9.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total: s64
 
@@ -32,7 +32,8 @@ func day9B()
         let vals = Tokenize.split(l, ` `'u8)
 
         var values: Array's64
-        visit v: vals do values.add(assume StrConv.toS64(v))
+        visit v: vals do
+            values.add(assume StrConv.toS64(v))
 
         var column: Array's64
         column.add(values[0])
@@ -42,9 +43,9 @@ func day9B()
         {
             recom = false
             var newValues: Array's64
-            loop i: 0 until values.count-1
+            loop i: 0 until values.count - 1
             {
-                let v = values[i+1] - values[i]
+                let v = values[i + 1] - values[i]
                 recom = v or recom
                 newValues.add(v)
 
@@ -68,4 +69,3 @@ func day9B()
     //Console.print("total: ", total)
     @assert(total == 1019)
 }
-

@@ -26,7 +26,7 @@ func day8A()
     //Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total0, total1: s64
     visit l: lines
@@ -34,11 +34,11 @@ func day8A()
         var i = 0
         while i < l.length
         {
-            if i != l.length-1 and l[i] == `\\` and l[i+1] == `"` do
+            if i != l.length - 1 and l[i] == `\\` and l[i + 1] == `"` do
                 i += 2
-            elif i < l.length-1 and l[i] == `\\` and l[i+1] == `\\` do
+            elif i < l.length - 1 and l[i] == `\\` and l[i + 1] == `\\` do
                 i += 2
-            elif l.length > 3 and i < l.length-3 and l[i] == `\\`  and l[i+1] == `x` and Latin1.isHexDigit(l[i+2]) and Latin1.isHexDigit(l[i+3]) do
+            elif l.length > 3 and i < l.length - 3 and l[i] == `\\` and l[i + 1] == `x` and Latin1.isHexDigit(l[i + 2]) and Latin1.isHexDigit(l[i + 3]) do
                 i += 4
             else do
                 i += 1
@@ -51,5 +51,5 @@ func day8A()
     }
 
     //Console.print("total: ", total0-total1)
-    @assert(total0-total1 == 1333)
+    @assert(total0 - total1 == 1333)
 }

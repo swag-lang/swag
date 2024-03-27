@@ -18,7 +18,7 @@ func day4A()
     loop
     {
         let str = Format.toString("yzbqklnj%", #index)
-        let v = Hash.Md5.compute(str)
+        let v   = Hash.Md5.compute(str)
         if v[0] == 0 and v[1] == 0 and (v[2] & 0xF0) == 0
         {
             //Console.print("total: ", #index)
@@ -27,4 +27,3 @@ func day4A()
         }
     }
 }
-

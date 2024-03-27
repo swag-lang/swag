@@ -43,7 +43,7 @@ using Core
 func day1A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "1.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total, one: u64
     visit l: lines
@@ -52,11 +52,10 @@ func day1A()
         if l.isEmpty()
         {
             total = Math.max(total, one)
-            one = 0
+            one   = 0
         }
     }
 
     //Console.print("total: ", total)
     @assert(total == 70369)
 }
-

@@ -29,7 +29,7 @@ using Core
 func day2B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var h, d, a: u64
     visit l: lines
@@ -38,13 +38,16 @@ func day2B()
         let val = assume StrConv.toS32(cmd[1])
         switch cmd[0]
         {
-        case "forward": h += val; d += a*val
-        case "down":    a += val
-        case "up":      a -= val
+        case "forward":
+            h += val
+            d += a * val
+        case "down":
+            a += val
+        case "up":
+            a -= val
         }
     }
 
     //Console.print("total: ", h*d)
-    @assert(h*d == 1963088820)
+    @assert(h * d == 1963088820)
 }
-

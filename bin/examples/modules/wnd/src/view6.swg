@@ -5,7 +5,7 @@ func createView6(_tabView: *Tab, view: *Wnd)
     {
         let lt = StackLayoutCtrl.create(view, .Top, {5, 5, 200, 200})
         lt.backgroundStyle = .Dialog
-        lt.padding = 5
+        lt.padding         = 5
         PushButton.create(lt, "toto1")
         PushButton.create(lt, "toto2")
         PushButton.create(lt, "toto3")
@@ -15,7 +15,7 @@ func createView6(_tabView: *Tab, view: *Wnd)
     {
         let lt = StackLayoutCtrl.create(view, .Bottom, {210, 5, 200, 200})
         lt.backgroundStyle = .Dialog
-        lt.padding = 5
+        lt.padding         = 5
         PushButton.create(lt, "toto10")
         PushButton.create(lt, "toto20")
         PushButton.create(lt, "toto30")
@@ -25,7 +25,7 @@ func createView6(_tabView: *Tab, view: *Wnd)
     {
         let lt = StackLayoutCtrl.create(view, .Left, {420, 5, 400, 40})
         lt.backgroundStyle = .Dialog
-        lt.padding = 5
+        lt.padding         = 5
         PushButton.create(lt, "toto10")
         PushButton.create(lt, "toto20")
         PushButton.create(lt, "toto30")
@@ -35,7 +35,7 @@ func createView6(_tabView: *Tab, view: *Wnd)
     {
         let lt = StackLayoutCtrl.create(view, .Right, {420, 50, 400, 40})
         lt.backgroundStyle = .Dialog
-        lt.padding = 5
+        lt.padding         = 5
         PushButton.create(lt, "toto10")
         PushButton.create(lt, "toto20")
         PushButton.create(lt, "toto30")
@@ -44,8 +44,8 @@ func createView6(_tabView: *Tab, view: *Wnd)
 
     {
         let lt = StackLayoutCtrl.create(view, .TopAutoSize, {5, 240, 200, 200})
-        lt.padding = 15
-        lt.spacing = 15
+        lt.padding         = 15
+        lt.spacing         = 15
         lt.backgroundStyle = .Window
         lt.style.addStyleSheetColors("wnd_Bk Green")
 
@@ -71,7 +71,7 @@ func createView6(_tabView: *Tab, view: *Wnd)
     {
         let lt = GridLayoutCtrl.create(view, 3, 3, {220, 240, 400, 300})
         lt.backgroundStyle = .Dialog
-        lt.padding = 5
+        lt.padding         = 5
         lt.gridLayoutFlags = .AdaptSizeToContent
         lt.setColRowChild(Label.create(lt, "Label 0"), 0, 0)
         lt.setColRowChild(Label.create(lt, "Label 1"), 1, 0)

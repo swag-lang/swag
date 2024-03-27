@@ -51,7 +51,7 @@ using Core
 func day6B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var map: HashTable'(string, string)
     visit l: lines

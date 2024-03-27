@@ -31,26 +31,35 @@ using Core
 func day2A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
+    var x        = 1
+    var y        = 1
 
-    var x = 1, y = 1, cde = 0
+    var cde = 0
     visit l: lines
     {
         visit:Bytes c: l
         {
             switch c
             {
-            case `U`: if y do y -= 1
-            case `D`: if y != 2 do y += 1
-            case `L`: if x do x -= 1
-            case `R`: if x != 2 do x += 1
+            case `U`:
+                if y do
+                    y -= 1
+            case `D`:
+                if y != 2 do
+                    y += 1
+            case `L`:
+                if x do
+                    x -= 1
+            case `R`:
+                if x != 2 do
+                    x += 1
             }
         }
 
-        cde = (cde*10) + ((x+1) + y*3)
+        cde = (cde * 10) + ((x + 1) + y * 3)
     }
 
     //Console.print("total: ", cde)
     @assert(cde == 98575)
 }
-

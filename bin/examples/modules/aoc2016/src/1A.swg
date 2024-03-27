@@ -23,11 +23,11 @@ using Core
 func day1A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "1.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     let split = Tokenize.split(lines[0], `,`'u8)
-    var x = 0
-    var y = 1
+    var x     = 0
+    var y     = 1
     var px, py = 0
     visit it: split
     {
@@ -35,15 +35,19 @@ func day1A()
         let n = assume StrConv.toS32(v[1..])
         switch v[0]
         {
-        case `R`:  swap(&x, &y); y = -y
-        case `L`:  swap(&x, &y); x = -x
+        case `R`:
+            swap(&x, &y)
+            y = -y
+        case `L`:
+            swap(&x, &y)
+            x = -x
         }
 
-        px += x*n; py += y*n
+        px += x * n
+        py += y * n
     }
 
-    let total = Math.abs(px)+Math.abs(py)
+    let total = Math.abs(px) + Math.abs(py)
     //Console.print("total: ", total)
     @assert(total == 242)
 }
-

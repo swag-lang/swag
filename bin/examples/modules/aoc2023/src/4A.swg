@@ -39,7 +39,7 @@ using Core
 func day4A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total = 0'u64
     visit l: lines
@@ -50,8 +50,10 @@ func day4A()
         let val1  = Tokenize.split(game[1], ` `'u8)
 
         var v0, v1: Array's32
-        visit v: val0 do v0.add(assume StrConv.toS32(v))
-        visit v: val1 do v1.add(assume StrConv.toS32(v))
+        visit v: val0 do
+            v0.add(assume StrConv.toS32(v))
+        visit v: val1 do
+            v1.add(assume StrConv.toS32(v))
 
         var score = 1
         visit v: v1
@@ -60,10 +62,9 @@ func day4A()
                 score <<= 1
         }
 
-        total += score/2
+        total += score / 2
     }
 
     //Console.print("total: ", total)
     @assert(total == 23673)
 }
-

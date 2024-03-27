@@ -1,6 +1,6 @@
 using Core, Gui, Pixel
 
-const Txt = #include "view0.swg"
+const Txt  = #include "view0.swg"
 const Txt1 = #include "view4.swg"
 
 var g_LexerSwag: RichEditLexerSwag
@@ -15,7 +15,7 @@ func createView4(_tabView: *Tab, view: *Wnd)
             .setRichEdFlags(.ShowFocusSel | .CurLineBorder | .TabToSpaces | .WordWrap)
             .setLexer(cast(IRichEditLexer) g_LexerSwag)
             .setText(cast(string) Txt)
-            .marginLeft = 20
+            .marginLeft  = 20
             .marginRight = 40
         }
     }
@@ -40,9 +40,9 @@ func createView4(_tabView: *Tab, view: *Wnd)
             .setRichEdFlags(.WordWrap)
             .setForm(.Edit)
 
-            .styles[1].colFg = Argb.Red
-            .styles[2].colBk = Argb.Blue
-            .styles[3].fontMode = .Regular
+            .styles[1].colFg     = Argb.Red
+            .styles[2].colBk     = Argb.Blue
+            .styles[3].fontMode  = .Regular
             .styles[3].underline = .Underline
             .addText("RichEditCtrl coucou la foule ", 0)
             .addText("comment ça va ? ", 1)

@@ -7,17 +7,17 @@
 
 using Core, Gui, Pixel, Core.Math
 
-var r1 = 125.0
-var r2 = 125.0
-var m1 = 10.0
-var m2 = 10.0
-var a1 = 0.0
-var a2 = 0.0
+var r1   = 125.0
+var r2   = 125.0
+var m1   = 10.0
+var m2   = 10.0
+var a1   = 0.0
+var a2   = 0.0
 var a1_v = 0.0
 var a2_v = 0.0
-var g = 0.98
+var g    = 0.98
 var cx, cy: f32
-var friction = 1.0
+var friction  = 1.0
 var linePath: Array'Vector2
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
@@ -37,50 +37,62 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         start()
 
         let panel = StackLayoutCtrl.create(wnd, .Top, {0, 0, 360})
-        panel.padding = 10
-        panel.spacing = 5
+        panel.padding   = 10
+        panel.spacing   = 5
         panel.dockStyle = .Right
 
         {
             let slider = SliderCtrl.create(panel, "r1")
             slider.setMinMaxU64(50, 200)
             slider.setValue(r1)
-            slider.slider.sigChanged += func(slider) { r1 = slider.getValue(); }
+            slider.slider.sigChanged += func(slider)
+            {
+                r1 = slider.getValue()
+            }
         }
         {
             let slider = SliderCtrl.create(panel, "r2")
             slider.setMinMaxU64(50, 200)
             slider.setValue(r2)
-            slider.slider.sigChanged += func(slider) { r2 = slider.getValue(); }
+            slider.slider.sigChanged += func(slider)
+            {
+                r2 = slider.getValue()
+            }
         }
         {
             let slider = SliderCtrl.create(panel, "friction")
             slider.setMinMaxU64(0, 100)
             slider.setValue(0)
-            slider.slider.sigChanged += func(slider) { friction = 1 - (slider.getValue() * 0.0001); }
+            slider.slider.sigChanged += func(slider)
+            {
+                friction = 1 - (slider.getValue() * 0.0001)
+            }
         }
         {
             let btn = PushButton.create(panel, "restart")
             btn.maxSize = 100
-            btn.sigPressed += func(btn) { start(); }
+            btn.sigPressed += func(btn )
+            {
+                start()
+            }
         }
 
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
+        let painter  = paintEvt.bc.painter
 
         var num1 = -g * (2 * m1 + m2) * sin(a1)
         var num2 = -m2 * g * sin(a1 - 2 * a2)
         var num3 = -2 * sin(a1 - a2) * m2
         var num4 = a2_v * a2_v * r2 + a1_v * a1_v * r1 * cos(a1 - a2)
-        var den = r1 * (2 * m1 + m2 - m2 * cos(2 * a1 - 2 * a2))
+        var den  = r1 * (2 * m1 + m2 - m2 * cos(2 * a1 - 2 * a2))
         let a1_a = (num1 + num2 + num3 * num4) / den
 
         num1 = 2 * sin(a1 - a2)
         num2 = a1_v * a1_v * r1 * (m1 + m2)
         num3 = g * (m1 + m2) * cos(a1)
         num4 = a2_v * a2_v * r2 * m2 * cos(a1 - a2)
-        den = r2 * (2 * m1 + m2 - m2 * cos(2 * a1 - 2 * a2))
+        den  = r2 * (2 * m1 + m2 - m2 * cos(2 * a1 - 2 * a2))
         let a2_a = (num1 * (num2 + num3 + num4)) / den
 
         let x1 = r1 * sin(a1)
@@ -131,6 +143,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 600, title: "Pendulum", borders: false, hook: &onEvent, init: &test)
 }

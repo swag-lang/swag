@@ -31,7 +31,7 @@ using Core
 func day2A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total = 0'u64
 
@@ -49,9 +49,12 @@ func day2A()
                 let one = Tokenize.split(v, ` `'u8)
                 switch one[1]
                 {
-                case "red":   game.r = Math.max(game.r, assume StrConv.toS32(one[0]))
-                case "green": game.g = Math.max(game.g, assume StrConv.toS32(one[0]))
-                case "blue":  game.b = Math.max(game.b, assume StrConv.toS32(one[0]))
+                case "red":
+                    game.r = Math.max(game.r, assume StrConv.toS32(one[0]))
+                case "green":
+                    game.g = Math.max(game.g, assume StrConv.toS32(one[0]))
+                case "blue":
+                    game.b = Math.max(game.b, assume StrConv.toS32(one[0]))
                 }
             }
         }
@@ -63,4 +66,3 @@ func day2A()
     //Console.print("total: ", total)
     @assert(total == 2369)
 }
-

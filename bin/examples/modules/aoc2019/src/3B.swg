@@ -33,22 +33,26 @@ using Core, Core.Math
 func day3B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     func trace(line: string)->Array'Vector2
     {
         var result: retval
-        var pos: Vector2
+        var pos:    Vector2
         result.add(pos)
         visit v: Tokenize.split(line, `,`'u8)
         {
             let val = assume StrConv.toF32(v[1..])
             switch v[0]
             {
-            case `U`: pos += {0, -val}
-            case `D`: pos += {0, val}
-            case `R`: pos += {-val, 0}
-            case `L`: pos += {val, 0}
+            case `U`:
+                pos += {0, -val}
+            case `D`:
+                pos += {0, val}
+            case `R`:
+                pos += {-val, 0}
+            case `L`:
+                pos += {val, 0}
             }
             result.add(pos)
         }
@@ -59,25 +63,25 @@ func day3B()
     let t1 = trace(lines[1])
 
     var best = Swag.F32.Max
-    var di = 0'f32
-    loop i: t1.count-1
+    var di   = 0'f32
+    loop i: t1.count - 1
     {
         var dj = 0'f32
-        loop j: t0.count-1
+        loop j: t0.count - 1
         {
-            let (yes,pos) = Vector2.segSegIntersect(t1[i], t1[i+1], t0[j], t0[j+1])
+            let (yes, pos) = Vector2.segSegIntersect(t1[i], t1[i + 1], t0[j], t0[j + 1])
             if yes and !pos.isZero()
             {
-                let d0 = pos-t0[j]
-                let d1 = pos-t1[i]
-                best = Math.min(best, di+dj+d0.length()+d1.length())
+                let d0 = pos - t0[j]
+                let d1 = pos - t1[i]
+                best = Math.min(best, di + dj + d0.length() + d1.length())
             }
 
-            let d0 = t0[j+1]-t0[j]
+            let d0 = t0[j + 1] - t0[j]
             dj += d0.length()
         }
 
-        let d1 = t1[i+1]-t1[i]
+        let d1 = t1[i + 1] - t1[i]
         di += d1.length()
     }
 

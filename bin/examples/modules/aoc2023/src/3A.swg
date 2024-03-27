@@ -32,23 +32,17 @@ Of course, the actual engine schematic is much larger. What is the sum of all of
 using Core
 
 private var symbols: Array'{x, y: s32}
-private var nums:    Array'{num, x, lx, y: s32}
+private var nums: Array'{num, x, lx, y: s32}
 
 private func hasSymbol(x, y: s32)->bool
 {
     return symbols.contains({x, y})
-    /*visit s: symbols
-    {
-        if s.x == x and s.y == y do
-            return true
-    }
-    return false*/
 }
 
 func day3A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     visit l, y: lines
     {
@@ -57,7 +51,7 @@ func day3A()
             var c = l[x]
             if c >= `0` and c <= `9`
             {
-                let sx = x
+                let sx  = x
                 var num = 0
                 while x < l.length
                 {
@@ -69,7 +63,7 @@ func day3A()
                     x += 1
                 }
 
-                nums.add({num, sx, x-1, cast(s32) y})
+                nums.add({num, sx, x - 1, cast(s32) y})
             }
 
             if c != `.` and x < l.length
@@ -84,14 +78,14 @@ func day3A()
     {
         for var x = n.x; x <= n.lx; x += 1
         {
-            if hasSymbol(x, n.y-1)   or
-               hasSymbol(x, n.y+1)   or
-               hasSymbol(x-1, n.y-1) or
-               hasSymbol(x-1, n.y)   or
-               hasSymbol(x-1, n.y+1) or
-               hasSymbol(x+1, n.y-1) or
-               hasSymbol(x+1, n.y)   or
-               hasSymbol(x+1, n.y+1)
+            if hasSymbol(x, n.y - 1) or
+               hasSymbol(x, n.y + 1) or
+               hasSymbol(x - 1, n.y - 1) or
+               hasSymbol(x - 1, n.y) or
+               hasSymbol(x - 1, n.y + 1) or
+               hasSymbol(x + 1, n.y - 1) or
+               hasSymbol(x + 1, n.y) or
+               hasSymbol(x + 1, n.y + 1)
             {
                 total += n.num
                 break
@@ -102,4 +96,3 @@ func day3A()
     //Console.print("total: ", total)
     @assert(total == 553825)
 }
-

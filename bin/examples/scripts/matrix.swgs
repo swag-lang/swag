@@ -5,20 +5,20 @@
 
 using Core, Gui, Pixel
 
-const FirstRune     = 33
-const LastRune      = 600
-const FontSize      = 15'u32
-const MinTrailSize  = 10
-const MaxTrailSize  = 50
-const MaxColumns    = 80
+const FirstRune    = 33
+const LastRune     = 600
+const FontSize     = 15'u32
+const MinTrailSize = 10
+const MaxTrailSize = 50
+const MaxColumns   = 80
 
 struct C
 {
-    y:      f32
-    length: s32
-    speed:  f32
-    c:      [MaxTrailSize] rune
-    lastYI: s32
+    y:          f32
+    length:     s32
+    speed:      f32
+    c:          [MaxTrailSize] rune
+    lastYI:     s32
 }
 
 var g_RD:   [MaxColumns] C
@@ -31,7 +31,7 @@ func initC(i: s32)
     loop j: g_RD[i].length do
         g_RD[i].c[j] = cast(rune) g_Rng.nextS32(FirstRune, LastRune)
     g_RD[i].speed = g_Rng.nextF32(400, 800)
-    g_RD[i].y = 0
+    g_RD[i].y     = 0
 }
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
@@ -45,8 +45,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
-        var rect = wnd.getClientRect()
+        let painter  = paintEvt.bc.painter
+        var rect     = wnd.getClientRect()
 
         painter.fillRect(rect, Argb.Black)
 
@@ -110,6 +110,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 800, title: "Matrix", hook: &onEvent, init: &test)
 }

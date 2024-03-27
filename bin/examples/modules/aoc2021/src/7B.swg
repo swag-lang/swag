@@ -30,11 +30,11 @@ using Core
 func day7B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "7.txt")
-    let lines = assume File.readAllLines(dataPath)
-    let str = Tokenize.split(lines[0], `,`'u8)
+    let lines    = assume File.readAllLines(dataPath)
+    let str      = Tokenize.split(lines[0], `,`'u8)
 
     var crabs: Array's32
-    var mean: s32
+    var mean:  s32
     visit v: str
     {
         let c = assume StrConv.toS32(v)
@@ -48,11 +48,10 @@ func day7B()
     var total = 0
     visit v: crabs
     {
-        let n = Math.abs(v-mean)
-        total += (n*(n+1)) / 2
+        let n = Math.abs(v - mean)
+        total += (n * (n + 1)) / 2
     }
 
     //Console.print("total: ", total)
     @assert(total == 92335207)
 }
-

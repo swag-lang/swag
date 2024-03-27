@@ -19,10 +19,10 @@ using Core
 func day3B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total: u64 = 1
-    visit s, slope: [{1,1},{3,1},{5,1},{7,1},{1,2}]
+    visit s, slope: [{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}]
     {
         var x, y, count: u32
         loop
@@ -40,4 +40,3 @@ func day3B()
     //Console.print("total: ", total)
     @assert(total == 3584591857)
 }
-

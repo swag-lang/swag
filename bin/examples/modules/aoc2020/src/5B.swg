@@ -22,28 +22,30 @@ func day5B()
 func day5B0()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var here: [128, 8] bool
 
     visit l: lines
     {
-        var row0 = 0, row1 = 127
+        var row0 = 0
+        var row1 = 127
         loop c: 7
         {
             if l[c] == `F` do
                 row1 = (row1 + row0) / 2
             else do
-                row0 = 1+(row1 + row0) / 2
+                row0 = 1 + (row1 + row0) / 2
         }
+        var col0 = 0
 
-        var col0 = 0, col1 = 7
+        var col1 = 7
         loop c: 3
         {
-            if l[7+c] == `L` do
+            if l[7 + c] == `L` do
                 col1 = (col1 + col0) / 2
             else do
-                col0 = 1+(col1 + col0) / 2
+                col0 = 1 + (col1 + col0) / 2
         }
 
         here[row0, col0] = true
@@ -57,12 +59,12 @@ func day5B0()
 
         if cpt == 7 // Search for one missing seat in the row
         {
-            loop c: 1 to 6   // Can't be on the side
+            loop c: 1 to 6 // Can't be on the side
             {
                 if !here[r, c]
                 {
                     //Console.print("total: ", r, " ", c, " ", r*8+c,"\n")
-                    @assert(r*8+c == 714)
+                    @assert(r * 8 + c == 714)
                     return
                 }
             }
@@ -75,34 +77,40 @@ func day5B0()
 func day5B1()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var seats: Array's32
     visit l: lines
     {
-        var row0 = 0, row1 = 127
-        var col0 = 0, col1 = 7
+        var row0 = 0
+        var row1 = 127
+        var col0 = 0
+        var col1 = 7
         loop c: 10
         {
             switch
             {
-            case c < 7 and l[c] == `F`: row1 = (row1 + row0) / 2
-            case c < 7:                 row0 = 1+(row1 + row0) / 2
-            case l[c] == `L`:           col1 = (col1 + col0) / 2
-            default:                    col0 = 1+(col1 + col0) / 2
+            case c < 7 and l[c] == `F`:
+                row1 = (row1 + row0) / 2
+            case c < 7:
+                row0 = 1 + (row1 + row0) / 2
+            case l[c] == `L`:
+                col1 = (col1 + col0) / 2
+            default:
+                col0 = 1 + (col1 + col0) / 2
             }
         }
 
-        seats.add(row0*8+col0)
+        seats.add(row0 * 8 + col0)
     }
 
     seats.sort()
     loop i: seats
     {
-        if seats[i+1] - seats[i] != 1
+        if seats[i + 1] - seats[i] != 1
         {
             //Console.print("total: ", seats[i]+1)
-            @assert(seats[i]+1 == 714)
+            @assert(seats[i] + 1 == 714)
             return
         }
     }

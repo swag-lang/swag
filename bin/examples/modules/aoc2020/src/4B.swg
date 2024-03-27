@@ -78,7 +78,7 @@ func day4B()
 func day4B0()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total, pass: u32
     visit l: lines
@@ -102,10 +102,13 @@ func day4B0()
                     pass |= 4
             case "hgt":
                 let val = catch StrConv.parseS32(res1[1])
-                if @err() != null do break
-                if val.eat == @countof(res1[1]) do break
+                if @err() != null do
+                    break
+                if val.eat == @countof(res1[1]) do
+                    break
                 let sub = res1[1][val.eat..]
-                if sub != "cm" and sub != "in" do break
+                if sub != "cm" and sub != "in" do
+                    break
                 if sub == "cm" and val.value >= 150 and val.value <= 193 do
                     pass |= 8
                 elif sub == "in" and val.value >= 59 and val.value <= 76 do
@@ -126,7 +129,7 @@ func day4B0()
             }
         }
 
-        if #index == lines.count-1 or lines[#index+1].length == 0
+        if #index == lines.count - 1 or lines[#index + 1].length == 0
         {
             if pass & 0b1111111 == 0b1111111 do
                 total += 1
@@ -143,7 +146,7 @@ func day4B0()
 func day4B1()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     assume
     {
@@ -172,12 +175,12 @@ func day4B1()
         visit r: Tokenize.split(l, ` `'u8)
         {
             let res1 = Tokenize.split(r, `:`'u8)
-            let it = map.find(res1[0])
+            let it   = map.find(res1[0])
             if it and it.value.r.match(res1[1]) do
                 pass |= it.value.b
         }
 
-        if #index == lines.count-1 or lines[#index+1].length == 0
+        if #index == lines.count - 1 or lines[#index + 1].length == 0
         {
             total += cast(s32) (pass == 0b1111111)
             pass = 0
@@ -187,4 +190,3 @@ func day4B1()
     //Console.print("total: ", total)
     @assert(total == 224)
 }
-

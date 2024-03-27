@@ -7,14 +7,14 @@
 
 using Core, Gui, Pixel, Core.Math
 
-const BallRadius  = 10'f32
-const PaddleWidth = 8'f32
+const BallRadius   = 10'f32
+const PaddleWidth  = 8'f32
 const PaddleHeight = 50'f32
 
 struct Ball
 {
-    pos:    Vector2
-    speed:  Vector2
+    pos:       Vector2
+    speed:     Vector2
 }
 
 struct Paddle
@@ -26,12 +26,12 @@ var g_Rng:  Random.Rng
 var g_Rect: Math.Rectangle
 var g_Font: *Font
 
-var g_ScoreLeft:    s32
-var g_ScoreRight:   s32
+var g_ScoreLeft:  s32
+var g_ScoreRight: s32
 
-var g_Ball:         Ball
-var g_PaddleLeft:   Paddle
-var g_PaddleRight:  Paddle
+var g_Ball:        Ball
+var g_PaddleLeft:  Paddle
+var g_PaddleRight: Paddle
 
 func resetBall()
 {
@@ -91,24 +91,24 @@ func updateBall(wnd: *Wnd)
        g_Ball.pos.x - BallRadius < g_PaddleLeft.pos.x + PaddleWidth and
        g_Ball.pos.x > g_PaddleLeft.pos.x
     {
-        let n = g_Ball.speed.length()
-        let diff = g_Ball.pos.y - (g_PaddleLeft.pos.y - PaddleHeight)
+        let n     = g_Ball.speed.length()
+        let diff  = g_Ball.pos.y - (g_PaddleLeft.pos.y - PaddleHeight)
         let angle = map(diff, 0, PaddleHeight * 2, -toRadians(45'f32), toRadians(45'f32))
         g_Ball.speed.x = n * cos(angle)
         g_Ball.speed.y = n * sin(angle)
-        g_Ball.pos.x = g_PaddleLeft.pos.x + PaddleWidth + BallRadius
+        g_Ball.pos.x   = g_PaddleLeft.pos.x + PaddleWidth + BallRadius
     }
     elif g_Ball.pos.y - BallRadius < g_PaddleRight.pos.y + PaddleHeight and
-       g_Ball.pos.y + BallRadius > g_PaddleRight.pos.y - PaddleHeight and
-       g_Ball.pos.x + BallRadius > g_PaddleRight.pos.x - PaddleWidth and
-       g_Ball.pos.x < g_PaddleRight.pos.x
+         g_Ball.pos.y + BallRadius > g_PaddleRight.pos.y - PaddleHeight and
+         g_Ball.pos.x + BallRadius > g_PaddleRight.pos.x - PaddleWidth and
+         g_Ball.pos.x < g_PaddleRight.pos.x
     {
-        let n = g_Ball.speed.length()
-        let diff = g_Ball.pos.y - (g_PaddleRight.pos.y - PaddleHeight)
+        let n     = g_Ball.speed.length()
+        let diff  = g_Ball.pos.y - (g_PaddleRight.pos.y - PaddleHeight)
         let angle = map(diff, 0, PaddleHeight * 2, toRadians(225'f32), toRadians(135'f32))
         g_Ball.speed.x = n * cos(angle)
         g_Ball.speed.y = n * sin(angle)
-        g_Ball.pos.x = g_PaddleRight.pos.x - PaddleWidth - BallRadius
+        g_Ball.pos.x   = g_PaddleRight.pos.x - PaddleWidth - BallRadius
     }
 
     g_Ball.pos += g_Ball.speed * dt
@@ -123,17 +123,17 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Font = wnd.getTheme().createDefaultFont(30)
         resetBall()
 
-        g_PaddleLeft.pos.y = g_Rect.vertCenter() - PaddleHeight * 0.5
+        g_PaddleLeft.pos.y  = g_Rect.vertCenter() - PaddleHeight * 0.5
         g_PaddleRight.pos.y = g_Rect.vertCenter() - PaddleHeight * 0.5
 
     case Resize:
-        g_Rect = wnd.getClientRect()
+        g_Rect              = wnd.getClientRect()
         g_PaddleLeft.pos.x  = BallRadius + PaddleWidth
         g_PaddleRight.pos.x = g_Rect.right() - BallRadius - PaddleWidth
 
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
+        let painter  = paintEvt.bc.painter
 
         updatePaddles(wnd)
         updateBall(wnd)
@@ -143,8 +143,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         painter.setParams(.Antialiased)
         painter.drawLine(g_Rect.horzCenter(), 0, g_Rect.horzCenter(), g_Rect.bottom(), Pen.createDash(.Dot, Argb.DarkGray, 10))
         painter.fillCircle(g_Ball.pos.x, g_Ball.pos.y, BallRadius, Argb.White)
-        painter.fillRect(g_PaddleLeft.pos.x - PaddleWidth, g_PaddleLeft.pos.y - PaddleHeight, 2*PaddleWidth, 2*PaddleHeight, Argb.White)
-        painter.fillRect(g_PaddleRight.pos.x - PaddleWidth, g_PaddleRight.pos.y - PaddleHeight, 2*PaddleWidth, 2*PaddleHeight, Argb.White)
+        painter.fillRect(g_PaddleLeft.pos.x - PaddleWidth, g_PaddleLeft.pos.y - PaddleHeight, 2 * PaddleWidth, 2 * PaddleHeight, Argb.White)
+        painter.fillRect(g_PaddleRight.pos.x - PaddleWidth, g_PaddleRight.pos.y - PaddleHeight, 2 * PaddleWidth, 2 * PaddleHeight, Argb.White)
 
         var sp: StringPainter
         sp.font(g_Font)
@@ -162,6 +162,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 800, 512, title: "Pong (left: A Q right: P M)", hook: &onEvent, init: &test)
 }

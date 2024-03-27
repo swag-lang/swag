@@ -25,19 +25,20 @@ using Core
 
 private struct Card
 {
-    val:    string;
-    bid:    u64
-    count:  [13] s32
-    countV: [6] s32
-    value:  s32
+    val:        string
+    bid:        u64
+    count:      [13] s32
+    countV:     [6] s32
+    value:      s32
 }
 
-private var map:   [256] u8
+private var map: [256] u8
 private var cards: Array'Card
 
 private func sort()
 {
-    cards.sort(func(a, b) {
+    cards.sort(func(a, b)
+    {
         if a.value != b.value do
             return a.value <=> b.value
 
@@ -50,13 +51,14 @@ private func sort()
         }
 
         return 0
-    })
+    }
+)
 }
 
 func day7B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "7.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     map[`A`] = 12
     map[`K`] = 11
@@ -76,7 +78,7 @@ func day7B()
     {
         let first = Tokenize.split(l, ` `'u8)
 
-        var card: Card
+        var card:    Card
         var maxCount = 0
         visit c: first[0]
         {
@@ -97,12 +99,18 @@ func day7B()
 
         switch
         {
-        case card.countV[5]:                        card.value = 6
-        case card.countV[4]:                        card.value = 5
-        case card.countV[3] and card.countV[2]:     card.value = 4
-        case card.countV[3]:                        card.value = 3
-        case card.countV[2] == 2:                   card.value = 2
-        case card.countV[2]:                        card.value = 1
+        case card.countV[5]:
+            card.value = 6
+        case card.countV[4]:
+            card.value = 5
+        case card.countV[3] and card.countV[2]:
+            card.value = 4
+        case card.countV[3]:
+            card.value = 3
+        case card.countV[2] == 2:
+            card.value = 2
+        case card.countV[2]:
+            card.value = 1
         }
 
         card.val = first[0]
@@ -114,9 +122,8 @@ func day7B()
 
     var total: u64
     visit c, idx: cards do
-        total += (idx+1) * c.bid
+        total += (idx + 1) * c.bid
 
     //Console.print("total: ", total)
     @assert(total == 248029057)
 }
-

@@ -10,10 +10,10 @@ const CellSize = 30'f32
 
 struct Cell
 {
-    mine:   bool
-    show:   bool
-    mark:   bool
-    score:  s32
+    mine:      bool
+    show:      bool
+    mark:      bool
+    score:     s32
 }
 
 var g_Grid:       [GridSize, GridSize] Cell
@@ -111,21 +111,28 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_FontCell = wnd.getTheme().createDefaultFont(20)
 
         let btn = PushButton.create(wnd, "Again!", {CellSize, (CellSize * 2) + GridSize * CellSize})
-        btn.sigPressed += closure|wnd|(btn) { setup(); wnd.invalidate(); }
+        btn.sigPressed += closure|wnd|(btn )
+        {
+            setup()
+            wnd.invalidate()
+        }
 
         let sli = SliderCtrl.create(wnd, "Density", {CellSize + 120, (CellSize * 2) + GridSize * CellSize, 250})
         sli.slider.setMinMax(1, 10)
         sli.edit.setInputU64(1, 10)
         sli.slider.setValue(acast g_Density)
-        sli.slider.sigChanged += func(sli) { g_Density = cast(s32) sli.getValue(); }
+        sli.slider.sigChanged += func(sli )
+        {
+            g_Density = cast(s32) sli.getValue()
+        }
 
         setup()
 
     case MousePressed:
         let mouseEvt = cast(*MouseEvent) evt
-        var pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
-        var x = cast(s32) (pos.x / CellSize)
-        var y = cast(s32) (pos.y / CellSize)
+        var pos      = wnd.surfaceToLocal(mouseEvt.surfacePos)
+        var x        = cast(s32) (pos.x / CellSize)
+        var y        = cast(s32) (pos.y / CellSize)
         x, y -= 1
         if x < 0 or x >= GridSize or y < 0 or y >= GridSize do
             break
@@ -151,7 +158,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
+        let painter  = paintEvt.bc.painter
 
         painter.fillRect(wnd.getClientRect(), wnd.getThemeColors().wnd_Bk)
         var bk = Math.Rectangle{CellSize, CellSize, GridSize * CellSize, GridSize * CellSize}
@@ -172,8 +179,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             loop j: GridSize
             {
-                let x = CellSize + (i * CellSize)
-                let y = CellSize + (j * CellSize)
+                let x    = CellSize + (i * CellSize)
+                let y    = CellSize + (j * CellSize)
                 var rect = Math.Rectangle{x, y, CellSize, CellSize}
 
                 if !g_Grid[i, j].show and !g_Lost and !g_Win
@@ -193,10 +200,10 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                     var rs:  RichString
                     var rsf: RichStringFormat
                     rs.set(str)
-                    rsf.font.regular = g_FontCell
+                    rsf.font.regular  = g_FontCell
                     rsf.horzAlignment = .Center
                     rsf.vertAlignment = .Center
-                    rsf.palette[0] = Argb.Black
+                    rsf.palette[0]    = Argb.Black
                     painter.drawRichString(rect, &rs, rsf)
                 }
             }
@@ -208,6 +215,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 1024, title: "Minesweeper", canSize: false, hook: &onEvent, init: &test)
 }

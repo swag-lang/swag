@@ -28,7 +28,7 @@ using Core
 func day1A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "1.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
 
@@ -42,4 +42,3 @@ func day1A()
     //Console.print("total: ", total)
     @assert(total == 55108)
 }
-

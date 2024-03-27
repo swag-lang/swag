@@ -2,19 +2,19 @@ using Threading, Time
 
 struct LibraryWnd
 {
-    using wnd: Wnd
+    using wnd:     Wnd
 
-    main:       *MainWnd
-    view:       *LibraryView
-    listCtrl:   *ListCtrl
+    main:          *MainWnd
+    view:          *LibraryView
+    listCtrl:      *ListCtrl
 }
 
 struct LibraryItem
 {
-    fi:         File.FileInfo
-    capture:    *Capture
-    texture:    Texture
-    rect:       Math.Rectangle
+    fi:          File.FileInfo
+    capture:     *Capture
+    texture:     Texture
+    rect:        Math.Rectangle
 }
 
 impl LibraryItem
@@ -27,19 +27,19 @@ impl LibraryItem
 
 struct LibraryView
 {
-    using wnd: Wnd
-    scrollWnd:      *ScrollWnd
-    libWnd:         *LibraryWnd
-    mainWnd:        *MainWnd
-    items:          Array'LibraryItem
-    mutexLoaded:    Sync.Mutex
-    loaded:         Array'*Capture
-    thread:         Thread
-    hotItem         = Swag.U64.Max
-    selectedItem    = Swag.U64.Max
-    filterYear:     u64
-    filterMonth:    u64
-    filterDay:      u64
+    using wnd:       Wnd
+    scrollWnd:       *ScrollWnd
+    libWnd:          *LibraryWnd
+    mainWnd:         *MainWnd
+    items:           Array'LibraryItem
+    mutexLoaded:     Sync.Mutex
+    loaded:          Array'*Capture
+    thread:          Thread
+    hotItem          = Swag.U64.Max
+    selectedItem     = Swag.U64.Max
+    filterYear:      u64
+    filterMonth:     u64
+    filterDay:       u64
 }
 
 impl IWnd for LibraryView
@@ -87,7 +87,7 @@ impl IWnd for LibraryView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let painter = evt.bc.painter
+        let painter    = evt.bc.painter
         var clientRect = getClientRectPadding()
 
         var x = clientRect.x
@@ -99,8 +99,8 @@ impl IWnd for LibraryView
         loaded.clear()
         mutexLoaded.unlock()
 
-        const H = 128.0
-        const W = H * 4.0/3.0
+        const H      = 128.0
+        const W      = H * 4.0 / 3.0
         const Margin = 8.0
 
         visit &it, i: items
@@ -128,9 +128,9 @@ impl IWnd for LibraryView
             // Waiting for texture
             if !it.texture.isValid()
             {
-                var icon = getTheme().getIcon64(.HourGlass, 48)
+                var icon  = getTheme().getIcon64(.HourGlass, 48)
                 var color = Color.fromArgb(50, Argb.White)
-                icon.paint(painter, it.rect.horzCenter() - icon.sizeX*0.5, it.rect.vertCenter() - icon.sizeY*0.5, color)
+                icon.paint(painter, it.rect.horzCenter() - icon.sizeX * 0.5, it.rect.vertCenter() - icon.sizeY * 0.5, color)
             }
 
             // Next item
@@ -174,9 +174,11 @@ impl LibraryView
             }
         }
 
-        res.sort(func(a, b) {
+        res.sort(func(a, b)
+        {
             return b.lastWriteTime <=> a.lastWriteTime
-        })
+        }
+)
 
         let renderer = getApp().getRenderer()
         visit &it: items do
@@ -192,13 +194,14 @@ impl LibraryView
             items.add(item)
         }
 
-        hotItem = Swag.U64.Max
+        hotItem      = Swag.U64.Max
         selectedItem = Swag.U64.Max
 
         // Launch thread to read all captures
         try
         {
-            thread.init(closure|self|(th: Thread) {
+            thread.init(closure|self|(th: Thread)
+            {
                 visit &it: self.items
                 {
                     let capture = catch Capture.load(it.fi.fullname)
@@ -214,7 +217,8 @@ impl LibraryView
                     if th.requestEnd do
                         break
                 }
-            })
+            }
+)
             thread.start()
         }
 
@@ -242,15 +246,17 @@ impl LibraryWnd
         var item = line.setItem(1, Format.toString("% ", g_Library.files.count))
         item.horzAlign = .Right
 
-        g_Library.files.sort(func(a, b) {
+        g_Library.files.sort(func(a, b)
+        {
             return b.lastWriteTime <=> a.lastWriteTime
-        })
+        }
+)
 
-        var lastDateTime:   const *DateTime
-        var lastLine:       *ListLine
-        var lastLineYear:   *ListLine
-        var lastLineMonth:  *ListLine
-        var lastLineDay:    *ListLine
+        var lastDateTime:  const *DateTime
+        var lastLine:      *ListLine
+        var lastLineYear:  *ListLine
+        var lastLineMonth: *ListLine
+        var lastLineDay:   *ListLine
 
         var icon1 = Icon.from(&main.icons24, 3)
 
@@ -261,9 +267,9 @@ impl LibraryWnd
         {
             if lastLineYear
             {
-                item = lastLineYear.setItem(1, Format.toString("% ", cptYear))
+                item           = lastLineYear.setItem(1, Format.toString("% ", cptYear))
                 item.horzAlign = .Right
-                cptYear = 0
+                cptYear        = 0
             }
         }
 
@@ -272,9 +278,9 @@ impl LibraryWnd
         {
             if lastLineMonth
             {
-                item = lastLineMonth.setItem(1, Format.toString("% ", cptMonth))
+                item           = lastLineMonth.setItem(1, Format.toString("% ", cptMonth))
                 item.horzAlign = .Right
-                cptMonth = 0
+                cptMonth       = 0
             }
         }
 
@@ -283,9 +289,9 @@ impl LibraryWnd
         {
             if lastLineDay
             {
-                item = lastLineDay.setItem(1, Format.toString("% ", cptDay))
+                item           = lastLineDay.setItem(1, Format.toString("% ", cptDay))
                 item.horzAlign = .Right
-                cptDay = 0
+                cptDay         = 0
             }
         }
 
@@ -294,28 +300,28 @@ impl LibraryWnd
             if !lastDateTime or (fi.lastWriteTime.year != lastDateTime.year)
             {
                 fillLastYear()
-                lastLine = listCtrl.createLine(Format.toString("%", fi.lastWriteTime.year), icon1)
+                lastLine           = listCtrl.createLine(Format.toString("%", fi.lastWriteTime.year), icon1)
                 lastLine.userData0 = acast cast(u64) fi.lastWriteTime.year
-                lastLineYear = lastLine
+                lastLineYear       = lastLine
             }
 
             if !lastDateTime or (fi.lastWriteTime.month != lastDateTime.month)
             {
                 fillLastMonth()
-                lastLine = listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLineYear)
+                lastLine           = listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLineYear)
                 lastLine.userData0 = acast cast(u64) fi.lastWriteTime.year
                 lastLine.userData1 = acast cast(u64) fi.lastWriteTime.month
-                lastLineMonth = lastLine
+                lastLineMonth      = lastLine
             }
 
             if !lastDateTime or (fi.lastWriteTime.day != lastDateTime.day)
             {
                 fillLastDay()
-                lastLine = listCtrl.createLine(Format.toString("%, %", DateTime.dayOfWeekName(fi.lastWriteTime.dayOfWeek()), fi.lastWriteTime.day), icon1, lastLineMonth)
+                lastLine           = listCtrl.createLine(Format.toString("%, %", DateTime.dayOfWeekName(fi.lastWriteTime.dayOfWeek()), fi.lastWriteTime.day), icon1, lastLineMonth)
                 lastLine.userData0 = acast cast(u64) fi.lastWriteTime.year
                 lastLine.userData1 = acast cast(u64) fi.lastWriteTime.month
                 lastLine.userData2 = acast cast(u64) fi.lastWriteTime.day
-                lastLineDay = lastLine
+                lastLineDay        = lastLine
             }
 
             lastDateTime = &fi.lastWriteTime
@@ -334,8 +340,8 @@ impl LibraryWnd
     {
         with let res = Wnd.create'LibraryWnd(parent, "captme.librarywnd")
         {
-            .main = parent
-            .dockStyle = .Center
+            .main            = parent
+            .dockStyle       = .Center
             .backgroundStyle = .View
         }
 
@@ -351,10 +357,10 @@ impl LibraryWnd
 
         with let view = Wnd.create'LibraryView(scrollWnd)
         {
-            .libWnd = res
-            .padding = 8
+            .libWnd    = res
+            .padding   = 8
             .scrollWnd = scrollWnd
-            .mainWnd = parent
+            .mainWnd   = parent
         }
 
         scrollWnd.setView(view)
@@ -372,12 +378,14 @@ impl LibraryWnd
             .backgroundStyle = .Window
             .listFlags |= .ForceMarginExpandMark
             .dockStyle = .Center
-            .sigSelChanged += closure|view|(list) {
+            .sigSelChanged += closure|view|(list)
+            {
                 var sel = list.getSelectedLine()
-                if !sel do return
-                view.filterYear = cast(u64) sel.userData0
+                if !sel do
+                    return
+                view.filterYear  = cast(u64) sel.userData0
                 view.filterMonth = cast(u64) sel.userData1
-                view.filterDay = cast(u64) sel.userData2
+                view.filterDay   = cast(u64) sel.userData2
                 catch view.fill()
             }
         }

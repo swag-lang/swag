@@ -37,9 +37,9 @@ using Core
 func day7B() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
-    var lines = File.readAllLines(dataPath)
+    var lines    = File.readAllLines(dataPath)
 
-    var steps: HashTable'(u8, { prev, next: String })
+    var steps: HashTable'(u8, {prev, next: String})
     visit l: lines
     {
         steps.findOrAdd(l[5]).value.next.append(l[36])
@@ -47,7 +47,7 @@ func day7B() assume
     }
 
     var first: Array'u8
-    var last: u8
+    var last:  u8
     visit k, v: steps
     {
         if v.next.length == 0 do
@@ -56,14 +56,14 @@ func day7B() assume
             first.add(k)
     }
 
-    var result: String
+    var result:  String
     var current: Array'u8
     var workers: [5] {val: u8, tick: s32}
 
     visit cc, i: first
     {
-        workers[i].val = cc
-        workers[i].tick = (cc-`A`)+61
+        workers[i].val  = cc
+        workers[i].tick = (cc - `A`) + 61
         current.add(cc)
     }
 
@@ -102,7 +102,7 @@ func day7B() assume
             {
                 if result.contains(k) or current.contains(k) do
                     continue
-                if !Slice.allOf(v.prev.toSlice(), closure|&result|(x) => result.contains(x)) do
+                if !Slice.allOf(v.prev.toSlice(), closure|&result|(x   ) => result.contains(x)) do
                     continue
                 avail.add(k)
             }
@@ -114,8 +114,8 @@ func day7B() assume
             if w1.val or avail.isEmpty() do
                 continue
             let cc = avail.popBack()
-            w1.val = cc
-            w1.tick = (cc-`A`)+61
+            w1.val  = cc
+            w1.tick = (cc - `A`) + 61
             current.add(cc)
         }
     }

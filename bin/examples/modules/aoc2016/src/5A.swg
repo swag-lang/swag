@@ -27,7 +27,7 @@ func day5A()
     var pwd: String
     visit idx: IDX
     {
-        let str = Format.toString("reyedfim%", idx)
+        let str    = Format.toString("reyedfim%", idx)
         let result = Hash.Md5.toString(Hash.Md5.compute(str))
         if result[0] == `0` and result[1] == `0` and result[2] == `0` and result[3] == `0` and result[4] == `0` do
             pwd += result[5]
@@ -37,4 +37,3 @@ func day5A()
 
     @assert(pwd == "F97C354D")
 }
-

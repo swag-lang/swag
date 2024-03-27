@@ -60,7 +60,7 @@ using Core
 func day4A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var numbers: Array's32
     visit v: Tokenize.split(lines[0], `,`'u8) do
@@ -77,12 +77,12 @@ func day4A()
         {
             visit v, x: Tokenize.split(lines[y], ` `'u8)
             {
-                let n =  assume StrConv.toS32(v)
+                let n = assume StrConv.toS32(v)
                 let i = Slice.findLinear(numbers.toSlice(), n)
                 card.add(i)
 
-                maxCol[x]       = Math.max(maxCol[x], i)
-                maxLine[y-line] = Math.max(maxLine[y-line], i)
+                maxCol[x]         = Math.max(maxCol[x], i)
+                maxLine[y - line] = Math.max(maxLine[y - line], i)
             }
         }
 
@@ -93,7 +93,7 @@ func day4A()
         if score < bestScore
         {
             bestScore = score
-            bestCard = card
+            bestCard  = card
         }
     }
 
@@ -108,4 +108,3 @@ func day4A()
     //Console.print("total: ", total)
     @assert(total == 41503)
 }
-

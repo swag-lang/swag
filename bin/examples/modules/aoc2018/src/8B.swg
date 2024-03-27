@@ -25,19 +25,19 @@ func day8B() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
     let values   = Tokenize.split(File.readAllText(dataPath), ` `'u8)
-    let nums     = Slice.map(values.toSlice(), func(v) => assume StrConv.toS32(v))
+    let nums     = Slice.map(values.toSlice(), func(v   ) => assume StrConv.toS32(v))
 
     func read(n: Array's32, s: u32)->{nStart, sum: u32}
     {
         var start = s
-        let (nc, nm) = {n[start], n[start+1]}
+        let (nc, nm) = {n[start], n[start + 1]}
         start += 2
 
         if !nc
         {
             var sum: u32
             loop i: nm do
-                sum += n[start+i]
+                sum += n[start + i]
             return {start + nm, sum}
         }
 
@@ -52,9 +52,9 @@ func day8B() assume
         var sum: u32
         loop i: nm
         {
-            let idx = n[start+i]
-            if idx and idx-1 < childs.count do
-                sum += childs[idx-1]
+            let idx = n[start + i]
+            if idx and idx - 1 < childs.count do
+                sum += childs[idx - 1]
         }
 
         return {start + nm, sum}

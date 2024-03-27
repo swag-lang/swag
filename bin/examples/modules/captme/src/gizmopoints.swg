@@ -1,18 +1,18 @@
 struct GizmoPoints
 {
-    anchorSize:     f32 = 8
+    anchorSize:      f32 = 8
 
-    startRect:      Math.Rectangle
-    anchors:        Array'Math.Point
-    hotAnchor:      u32 = Swag.U32.Max
-    moving:         bool
-    firstMoving:    bool
-    movingRect:     Math.Rectangle
-    movingStart:    Math.Point
-    sigChanged:     closure(Math.Point, u32, bool)
+    startRect:       Math.Rectangle
+    anchors:         Array'Math.Point
+    hotAnchor:       u32 = Swag.U32.Max
+    moving:          bool
+    firstMoving:     bool
+    movingRect:      Math.Rectangle
+    movingStart:     Math.Point
+    sigChanged:      closure(Math.Point, u32 , bool)
 
-    minSizeX:       f32 = 2
-    minSizeY:       f32 = 2
+    minSizeX:        f32 = 2
+    minSizeY:        f32 = 2
 }
 
 impl GizmoPoints
@@ -78,7 +78,7 @@ impl GizmoPoints
     mtd paint(_app: *Application, painter: *Painter, hot: bool, col: Color = Argb.White)
     {
         let anchorSize2 = anchorSize * 0.5
-        let color = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
+        let color       = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
         visit c: anchors
         {
             painter.fillCircle(c.x, c.y, anchorSize2, color)
@@ -88,7 +88,7 @@ impl GizmoPoints
 
     func apply(iform: IForm, diff: Math.Point, pt: u32, first: bool)
     {
-        let form = cast(*BaseForm) @dataof(iform)
+        let form    = cast(*BaseForm) @dataof(iform)
         let capture = form.capture
         if !first do
             capture.undo()

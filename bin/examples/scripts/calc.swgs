@@ -23,8 +23,8 @@ func validateOp(str: string)
         if g_Start
         {
             g_CurValue = 0
-            g_Start = false
-            g_Error = null
+            g_Start    = false
+            g_Error    = null
         }
 
         let v = assume StrConv.toS64(str)
@@ -49,9 +49,9 @@ func validateOp(str: string)
             g_ComputeValue = g_CurValue
         }
 
-        g_Start = true
+        g_Start    = true
         g_CurValue = g_ComputeValue
-        g_Op = str
+        g_Op       = str
     }
 
     if g_Error do
@@ -65,7 +65,10 @@ func createBtn(str: string, x, y: s32)
 {
     {
         let btn = PushButton.create(layout, str)
-        btn.sigPressed += func(btn) { validateOp(btn.name.raw); }
+        btn.sigPressed += func(btn )
+        {
+            validateOp(btn.name.raw)
+        }
         btn.style.setFont(g_FontBtn, .Regular)
         layout.setColRowChild(btn, x, y)
 
@@ -89,10 +92,10 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         with let layout = GridLayoutCtrl.create(wnd, 4, 6)
         {
-            .dockStyle = .Center
+            .dockStyle       = .Center
             .gridLayoutFlags = .AdaptColWidth | .AdaptRowHeight
             .backgroundStyle = .Window
-            .margin = 10
+            .margin          = 10
         }
 
         with g_Edit = EditBox.create(layout, "0")
@@ -127,6 +130,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 400, 400, title: "Calc", hook: &onEvent, init: &test)
 }

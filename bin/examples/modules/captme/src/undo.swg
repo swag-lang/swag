@@ -30,39 +30,39 @@ enum UndoKind
 
 struct Undo
 {
-    kind:       UndoKind
-    capture:    *Capture
-    baseForm:   IForm
-    serial:     u32
+    kind:            UndoKind
+    capture:         *Capture
+    baseForm:        IForm
+    serial:          u32
 
-    selection:      Array'u64
+    selection:       Array'u64
 
-    toFreeForms:    Array'IForm
-    oldForms:       Array'IForm
-    oldS32:         Array's32
-    oldU32:         Array'u32
-    oldForm:        Array'*BaseForm
-    oldText:        Array'String
-    oldImage:       Array'Image
-    oldImg:         Image
-    oldImagePos:    Math.Point
+    toFreeForms:     Array'IForm
+    oldForms:        Array'IForm
+    oldS32:          Array's32
+    oldU32:          Array'u32
+    oldForm:         Array'*BaseForm
+    oldText:         Array'String
+    oldImage:        Array'Image
+    oldImg:          Image
+    oldImagePos:     Math.Point
 
-    newSizeX:       s32
-    newSizeY:       s32
-    newPosX:        s32
-    newPosY:        s32
-    newImg:         Image
-    newImagePos:    Math.Point
+    newSizeX:        s32
+    newSizeY:        s32
+    newPosX:         s32
+    newPosY:         s32
+    newImg:          Image
+    newImagePos:     Math.Point
 
-    minP:       s32
-    maxP:       s32
-    pointIdx:   u32
-    valU32:     u32
-    valRef:     const *Swag.TypeValue
-    mdlType:    typeinfo
-    mdlValue:   *BaseForm
-    text:       String
-    fontStyle:  FontFamilyStyle
+    minP:            s32
+    maxP:            s32
+    pointIdx:        u32
+    valU32:          u32
+    valRef:          const *Swag.TypeValue
+    mdlType:         typeinfo
+    mdlValue:        *BaseForm
+    text:            String
+    fontStyle:       FontFamilyStyle
 }
 
 impl Undo
@@ -96,24 +96,24 @@ impl Undo
         {
         case RestoreOrg:
             oldImagePos = capture.backImagePos
-            oldImg = capture.backImg
-            oldForms = capture.forms
+            oldImg      = capture.backImg
+            oldForms    = capture.forms
             oldS32.add(capture.width)
             oldS32.add(capture.height)
 
         case Flatten:
-            selection = capture.selection
-            oldImg = capture.backImg
+            selection   = capture.selection
+            oldImg      = capture.backImg
             oldImagePos = capture.backImagePos
-            oldForms = capture.forms
+            oldForms    = capture.forms
 
         case FlattenAll:
-            oldImg = capture.backImg
+            oldImg      = capture.backImg
             oldImagePos = capture.backImagePos
-            oldForms = capture.forms
+            oldForms    = capture.forms
 
         case SetImage:
-            oldImg = capture.backImg
+            oldImg      = capture.backImg
             oldImagePos = capture.backImagePos
 
         case SetImageInside:
@@ -177,8 +177,8 @@ impl Undo
 
         case AlignLeft, AlignCenter, AlignRight:
             selection = capture.selection
-            minP = Swag.S32.Max
-            maxP = Swag.S32.Min
+            minP      = Swag.S32.Max
+            maxP      = Swag.S32.Min
             oldS32.reserve(selection.count)
             visit s: selection
             {
@@ -191,8 +191,8 @@ impl Undo
 
         case AlignTop, AlignMiddle, AlignBottom:
             selection = capture.selection
-            minP = Swag.S32.Max
-            maxP = Swag.S32.Min
+            minP      = Swag.S32.Max
+            maxP      = Swag.S32.Min
             oldS32.reserve(selection.count)
             visit s: selection
             {
@@ -220,12 +220,12 @@ impl Undo
 
         case MoveToFront, MoveToBack, MoveBackward, MoveForward:
             selection = capture.selection
-            oldForms = capture.forms
+            oldForms  = capture.forms
             selection.sort()
 
         case DeleteSelection:
             selection = capture.selection
-            oldForms = capture.forms
+            oldForms  = capture.forms
         }
     }
 
@@ -255,8 +255,8 @@ impl Undo
             with capture
             {
                 .backImg = .backImgOrg
-                .width = .widthOrg
-                .height = .heightOrg
+                .width   = .widthOrg
+                .height  = .heightOrg
                 .selection.clear()
                 .forms.clear()
                 .dirtyBackImg = true
@@ -285,7 +285,7 @@ impl Undo
             }
 
         case SetImage:
-            capture.backImg = newImg
+            capture.backImg      = newImg
             capture.backImagePos = newImagePos
             capture.dirtyBackImg = true
 
@@ -309,7 +309,7 @@ impl Undo
                 if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.text = text
+                b.text    = text
                 b.isDirty = true
             }
 
@@ -320,8 +320,8 @@ impl Undo
                 if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.fontName  = text
-                b.fontStyle = fontStyle
+                b.fontName    = text
+                b.fontStyle   = fontStyle
                 b.isDirtyFont = true
             }
 
@@ -332,7 +332,7 @@ impl Undo
                 if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.fontStyle = fontStyle
+                b.fontStyle   = fontStyle
                 b.isDirtyFont = true
             }
 
@@ -418,9 +418,9 @@ impl Undo
             capture.backImagePos.y += newPosY
             visit f: capture.forms do
                 f.moveForm(newPosX, newPosY)
-            capture.width  += newSizeX
+            capture.width += newSizeX
             capture.height += newSizeY
-            capture.width = Math.clamp(capture.width, Capture.MinSize, Capture.MaxSize)
+            capture.width  = Math.clamp(capture.width, Capture.MinSize, Capture.MaxSize)
             capture.height = Math.clamp(capture.height, Capture.MinSize, Capture.MaxSize)
 
         case OffsetSelection:
@@ -516,8 +516,8 @@ impl Undo
         case RestoreOrg:
             with capture
             {
-                .width = oldS32[0]
-                .height = oldS32[1]
+                .width   = oldS32[0]
+                .height  = oldS32[1]
                 .backImg = oldImg
                 .forms   = oldForms
                 .selection.clear()
@@ -529,16 +529,16 @@ impl Undo
         case Flatten, FlattenAll:
             with capture
             {
-                .backImg = oldImg
+                .backImg      = oldImg
                 .backImagePos = oldImagePos
-                .forms = oldForms
+                .forms        = oldForms
                 .selection.clear()
                 .dirtyBackImg = true
                 .selectionHasChanged()
             }
 
         case SetImage:
-            capture.backImg = oldImg
+            capture.backImg      = oldImg
             capture.backImagePos = oldImagePos
             capture.dirtyBackImg = true
 
@@ -562,7 +562,7 @@ impl Undo
                 if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.text = oldText[i]
+                b.text    = oldText[i]
                 b.isDirty = true
             }
 
@@ -573,8 +573,8 @@ impl Undo
                 if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.fontName = oldText[i]
-                b.fontStyle = acast oldU32[i]
+                b.fontName    = oldText[i]
+                b.fontStyle   = acast oldU32[i]
                 b.isDirtyFont = true
             }
 
@@ -585,7 +585,7 @@ impl Undo
                 if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.fontStyle = acast oldU32[i]
+                b.fontStyle   = acast oldU32[i]
                 b.isDirtyFont = true
             }
 
@@ -630,7 +630,7 @@ impl Undo
             capture.backImagePos.y += -newPosY
             visit f: capture.forms do
                 f.moveForm(-newPosX, -newPosY)
-            capture.width  -= newSizeX
+            capture.width -= newSizeX
             capture.height -= newSizeY
 
         case OffsetSelection:

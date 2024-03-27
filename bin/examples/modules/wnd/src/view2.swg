@@ -7,7 +7,7 @@ func createTreeSimple(view: *Wnd, maxItems = 50)->*ListCtrl
     let tree = ListCtrl.createSimple(view, {5, 5, 250, 300})
     tree.setFrameForm(FrameWndForm.Round)
     tree.selectionMode = .Multi
-    tree.iconSize = 16
+    tree.iconSize      = 16
 
     var str: String
     loop i: maxItems
@@ -41,9 +41,9 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
     tree.addColumn("column 1")
     tree.addColumn("column 2")
     tree.setFrameForm(FrameWndForm.Round)
-    tree.selectionMode = .Multi
-    tree.iconSize = 16
-    tree.iconMarginFirstCol = false
+    tree.selectionMode                = .Multi
+    tree.iconSize                     = 16
+    tree.iconMarginFirstCol           = false
     tree.header.getItem(2).iconMargin = true
 
     var str: String
@@ -51,7 +51,8 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
     {
         Format.replaceString(&str, "item %", i)
         var icon = app.theme.getIcon24(ThemeIcons24.Search, 16)
-        if i % 2 == 0 do icon.clear()
+        if i % 2 == 0 do
+            icon.clear()
         let line = tree.createLine(str, icon)
         Format.replaceString(&str, "sub item %", i)
         line.setItem(1, str)
@@ -89,7 +90,8 @@ func createView2(_tabView: *Tab, view: *Wnd)
         tree.selectionMode = .Single
         tree.setPosition({5, 5, 250, 300})
         let btn = PushButton.create(view, "collapse", {5, 310})
-        btn.sigPressed += closure|tree|(btn) {
+        btn.sigPressed += closure|tree|(btn )
+        {
             tree.collapseAll()
         }
     }
@@ -102,7 +104,8 @@ func createView2(_tabView: *Tab, view: *Wnd)
         tree.setPosition({420, 5, 600, 300})
         tree.setColumnWidth(0, 200)
 
-        tree.sigSelChanged += func(tree) {
+        tree.sigSelChanged += func(tree)
+        {
             var sel = tree.getSelectedLines()
             visit l: sel do
                 Console.printf("%\n", l.getItem(0).name.raw)

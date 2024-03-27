@@ -12,10 +12,10 @@ var g_Points: Array'C
 
 struct C
 {
-    pos:    Vector2
-    target: Vector2
-    speed:  Vector2
-    acc:    Vector2
+    pos:        Vector2
+    target:     Vector2
+    speed:      Vector2
+    acc:        Vector2
 }
 
 impl C
@@ -41,8 +41,8 @@ impl C
         var pm = app.getMouse().getPosition()
         pm = wnd.screenToSurface(pm)
         pm = wnd.surfaceToLocal(pm)
-        v = pos - Vector2{pm.x, pm.y}
-        d = v.length()
+        v  = pos - Vector2{pm.x, pm.y}
+        d  = v.length()
         if d < 50
         {
             d = 50 - d
@@ -76,8 +76,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
-        var rect = wnd.getClientRect()
+        let painter  = paintEvt.bc.painter
+        var rect     = wnd.getClientRect()
 
         painter.fillRect(rect, Argb.Black)
 
@@ -98,6 +98,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 50
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 50
     Application.runSurface(100, 100, 800, 512, title: "Swag (move mouse on me!)", hook: &onEvent, init: &test)
 }

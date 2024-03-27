@@ -1,20 +1,19 @@
-const CmdIdPixSelClear      = "CmdIdPixSelClear"
-const CmdIdPixSelFill       = "CmdIdPixSelFill"
-const CmdIdPixSelSmartFill  = "CmdIdPixSelSmartFill"
-const CmdIdPixSelSmartMove  = "CmdIdPixSelSmartMove"
+const CmdIdPixSelClear     = "CmdIdPixSelClear"
+const CmdIdPixSelFill      = "CmdIdPixSelFill"
+const CmdIdPixSelSmartFill = "CmdIdPixSelSmartFill"
+const CmdIdPixSelSmartMove = "CmdIdPixSelSmartMove"
 
-struct ActionPixSel {}
+struct ActionPixSel
+{
+}
 impl IActionUI for ActionPixSel
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdPixSelClear,
-             CmdIdPixSelFill,
-             CmdIdPixSelSmartFill,
-             CmdIdPixSelSmartMove:
-             return true
+        case CmdIdPixSelClear, CmdIdPixSelFill, CmdIdPixSelSmartFill, CmdIdPixSelSmartMove:
+            return true
         }
 
         return false
@@ -22,7 +21,7 @@ impl IActionUI for ActionPixSel
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let main    = cast(*MainWnd) cxt.wnd
         let capture = main.getCapture()
 
         var hasPixSel = false
@@ -33,7 +32,8 @@ impl IActionUI for ActionPixSel
                 let f = capture.forms[s]
                 let b = cast(*BaseForm) @dataof(f)
                 hasPixSel = b.subKind == .PixSel
-                if hasPixSel do break
+                if hasPixSel do
+                    break
             }
         }
 
@@ -41,27 +41,27 @@ impl IActionUI for ActionPixSel
         {
         case CmdIdPixSelClear:
             evt.setFlags |= .Name | .Disabled | .Hidden
-            evt.name = "Clear"
+            evt.name     = "Clear"
             evt.disabled = !capture or !hasPixSel
-            evt.hidden = evt.disabled
+            evt.hidden   = evt.disabled
 
         case CmdIdPixSelFill:
             evt.setFlags |= .Name | .Disabled | .Hidden
-            evt.name = "Fill"
+            evt.name     = "Fill"
             evt.disabled = !capture or !hasPixSel
-            evt.hidden = evt.disabled
+            evt.hidden   = evt.disabled
 
         case CmdIdPixSelSmartFill:
             evt.setFlags |= .Name | .Disabled | .Hidden
-            evt.name = "Smart Fill"
+            evt.name     = "Smart Fill"
             evt.disabled = !capture or !hasPixSel
-            evt.hidden = evt.disabled
+            evt.hidden   = evt.disabled
 
         case CmdIdPixSelSmartMove:
             evt.setFlags |= .Name | .Disabled | .Hidden
-            evt.name = "Smart Move"
+            evt.name     = "Smart Move"
             evt.disabled = !capture or !hasPixSel
-            evt.hidden = evt.disabled
+            evt.hidden   = evt.disabled
         }
 
         return true
@@ -111,9 +111,9 @@ impl MainWnd
             return
 
         let capture = getCapture()
-        let undo = capture.newUndo(.SetImage)
+        let undo    = capture.newUndo(.SetImage)
         undo.newImagePos = capture.backImagePos
-        undo.newImg = capture.backImg
+        undo.newImg      = capture.backImg
 
         var boundRects: Array'Math.Rectangle
         visit f: forms do
@@ -149,9 +149,9 @@ impl MainWnd
             return
 
         let capture = getCapture()
-        let undo = capture.newUndo(.SetImage)
+        let undo    = capture.newUndo(.SetImage)
         undo.newImagePos = capture.backImagePos
-        undo.newImg = capture.backImg
+        undo.newImg      = capture.backImg
 
         var boundRects: Array'Math.Rectangle
         visit f: forms do
@@ -187,14 +187,14 @@ impl MainWnd
             return
 
         let capture = getCapture()
-        let undo = capture.newUndo(.SetImage, serial)
+        let undo    = capture.newUndo(.SetImage, serial)
         undo.newImagePos = capture.backImagePos
-        undo.newImg = capture.backImg
+        undo.newImg      = capture.backImg
 
         struct Info
         {
-            boundRect: Math.Rectangle
-            boundCols: Array'{y1: s32, y2: s32, col1: Color, col2: Color}
+            boundRect:     Math.Rectangle
+            boundCols:     Array'{y1: s32, y2: s32, col1: Color, col2: Color}
         }
 
         var infos: Array'Info
@@ -267,18 +267,18 @@ impl MainWnd
 
                 if f.isInside(pt)
                 {
-                    let p1 = p.infos[idx].boundCols[x]
+                    let p1   = p.infos[idx].boundCols[x]
                     let col1 = p1.col1
                     let col2 = p1.col2
-                    let y1 = p1.y1
-                    let y2 = p1.y2
+                    let y1   = p1.y1
+                    let y2   = p1.y2
                     if y2 != y1
                     {
                         // Store pixel mask
                         if p.masks
                         {
-                            let xx = cast(s32) (pt.x - p.infos[idx].boundRect.x)
-                            var yy = cast(s32) (pt.y - p.infos[idx].boundRect.y)
+                            let xx    = cast(s32) (pt.x - p.infos[idx].boundRect.x)
+                            var yy    = cast(s32) (pt.y - p.infos[idx].boundRect.y)
                             let pmask = p.masks.buffer + idx
                             yy = pmask.height - yy
                             if xx < pmask.width and yy < pmask.height
@@ -323,14 +323,14 @@ impl MainWnd
 
             with let nf = Memory.new'FormImage()
             {
-                .kind = .Capture
-                .x = cast(s32) br.x
-                .y = cast(s32) br.y
-                .w = cast(s32) br.width
-                .h = cast(s32) br.height
-                .borderColor = Argb.Zero
-                .borderSize = 0
-                .paintShadow = false
+                .kind             = .Capture
+                .x                = cast(s32) br.x
+                .y                = cast(s32) br.y
+                .w                = cast(s32) br.width
+                .h                = cast(s32) br.height
+                .borderColor      = Argb.Zero
+                .borderSize       = 0
+                .paintShadow      = false
                 .isReadyToCapture = true
                 .IForm.setup(capture)
                 .IForm.backCapture(getApp())

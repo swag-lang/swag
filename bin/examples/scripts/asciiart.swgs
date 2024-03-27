@@ -5,17 +5,17 @@
 
 using Gui, Core, Pixel
 
-var g_Img:      Image
-var g_Texture:  Texture
-var g_Font:     *Font
+var g_Img:     Image
+var g_Texture: Texture
+var g_Font:    *Font
 
 func openImage(surface: *Surface)
 {
     var opt: FileDlgOptions
     with opt
     {
-        .mode = .SelectOneFile
-        .title = "Load Image"
+        .mode      = .SelectOneFile
+        .title     = "Load Image"
         .btnOkName = "Load"
         .shortcuts.add({Env.SpecialDirectory.Desktop, "Desktop"})
         .shortcuts.add({Env.SpecialDirectory.UserPictures, "My Images"})
@@ -52,7 +52,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     {
     case Create:
         let btn = PushButton.create(wnd, "Load Image", {10, 10, 100})
-        btn.sigPressed += closure|wnd|(btn) {
+        btn.sigPressed += closure|wnd|(btn )
+        {
             openImage(btn.surface)
             compute(&btn.getApp().renderer)
             wnd.invalidate()
@@ -65,9 +66,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             break
 
         let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
+        let painter  = paintEvt.bc.painter
 
-        const GrayRamp = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,\"^`\'. ";
+        const GrayRamp = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,\"^`\'. "
 
         let size = cast(f32) g_Font.size * 0.8
 
@@ -77,7 +78,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             {
                 let col = g_Img.getPixelColor(x, y)
                 let idx = Math.map(cast(f32) col.r, 0, 255, 0, cast(f32) @countof(GrayRamp))
-                let v = @mkstring(@dataof(GrayRamp) + cast(s32) idx, 1)
+                let v   = @mkstring(@dataof(GrayRamp) + cast(s32) idx, 1)
                 painter.drawString(x * size, y * size, v, g_Font, Argb.White)
             }
         }
@@ -88,6 +89,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 1024, title: "Ascii art", hook: &onEvent, init: &test)
 }

@@ -46,10 +46,10 @@ using Core
 func day4A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total: u64
-    var r: Parser.RegExp
+    var r:     Parser.RegExp
     visit l: lines
     {
         discard catch r.match(#"(\d+)-(\d+),(\d+)-(\d+)"#, l)
@@ -75,4 +75,3 @@ func day4A()
     //Console.print("total: ", total)
     @assert(total == 471)
 }
-

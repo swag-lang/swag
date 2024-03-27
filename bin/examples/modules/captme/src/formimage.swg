@@ -16,26 +16,26 @@ enum FormImagePlacement
 
 struct FormImage
 {
-    using base: BaseForm
-    image:      Image
-    kind:       FormImageKind = .Image
-    strength:   s32 = 50
-    place:      FormImagePlacement = .Center
-    freePos:    Math.Rectangle
+    using base:     BaseForm
+    image:          Image
+    kind:           FormImageKind = .Image
+    strength:       s32 = 50
+    place:          FormImagePlacement = .Center
+    freePos:        Math.Rectangle
 
     #[Serialization.NoSerialize]
     {
-        editInside:         bool
-        dirty:              bool
-        isReadyToCapture:   bool
+        editInside:           bool
+        dirty:                bool
+        isReadyToCapture:     bool
 
-        serial:         u32
-        stc:            s32
-        xc, yc:         s32
-        wc, hc:         s32
-        texture:        Texture
-        gizmo:          GizmoRect
-        textureKind:    FormImageKind = .Image
+        serial:          u32
+        stc:             s32
+        xc, yc:          s32
+        wc, hc:          s32
+        texture:         Texture
+        gizmo:           GizmoRect
+        textureKind:     FormImageKind = .Image
     }
 }
 
@@ -54,12 +54,12 @@ impl IForm for FormImage
         let other = cast(*FormImage) ptr
         if kind == .Image and backColor != other.backColor do
             return false
-        return  borderColor == other.borderColor and
-                borderSize  == other.borderSize and
-                alpha       == other.alpha and
-                kind        == other.kind and
-                paintShadow == other.paintShadow and
-                strength    == other.strength
+        return borderColor == other.borderColor and
+               borderSize == other.borderSize and
+               alpha == other.alpha and
+               kind == other.kind and
+               paintShadow == other.paintShadow and
+               strength == other.strength
     }
 
     mtd impl copy(dst, src: *BaseForm)
@@ -119,23 +119,23 @@ impl IForm for FormImage
         {
             if newSizeX < 0
             {
-                freePos.x = newPosX + newSizeX
+                freePos.x     = newPosX + newSizeX
                 freePos.width = -newSizeX
             }
             else
             {
-                freePos.x = newPosX
+                freePos.x     = newPosX
                 freePos.width = newSizeX
             }
 
             if newSizeY < 0
             {
-                freePos.y = newPosY + newSizeY
+                freePos.y      = newPosY + newSizeY
                 freePos.height = -newSizeY
             }
             else
             {
-                freePos.y = newPosY
+                freePos.y      = newPosY
                 freePos.height = newSizeY
             }
         }
@@ -216,9 +216,9 @@ impl IForm for FormImage
 
             if mustEditInside()
             {
-                gizmo.rect.offset(freePos.x*z, freePos.y*z)
-                gizmo.rect.width = freePos.width*z
-                gizmo.rect.height = freePos.height*z
+                gizmo.rect.offset(freePos.x * z, freePos.y * z)
+                gizmo.rect.width  = freePos.width * z
+                gizmo.rect.height = freePos.height * z
                 gizmo.paint(painter, flags & .Selected ? false : true, Argb.Yellow)
             }
             else
@@ -243,9 +243,9 @@ impl IForm for FormImage
         if mustEditInside()
         {
             var pp = Math.Rectangle{paintPos.x, paintPos.y, paintPos.width, paintPos.height}
-            pp.offset(freePos.x*z, freePos.y*z)
-            pp.width = freePos.width*z
-            pp.height = freePos.height*z
+            pp.offset(freePos.x * z, freePos.y * z)
+            pp.width  = freePos.width * z
+            pp.height = freePos.height * z
             return pp.contains(pt)
         }
 
@@ -259,7 +259,7 @@ impl IForm for FormImage
         image.visitPixels(mask)
         {
             var maskImg = cast(*Image) userData
-            var pix1 = maskImg.pixels.buffer + x * 4
+            var pix1    = maskImg.pixels.buffer + x * 4
             pix1 += maskImg.width * y * 4
             if !pix1[0] do
                 dref cast(*u32) pix = 0
@@ -272,16 +272,16 @@ impl IForm for FormImage
     mtd backCapture(app: *Application)
     {
         let renderer = app.getRenderer()
-        let x1 = cast(s32) (x - capture.backImagePos.x)
-        let y1 = cast(s32) (y - capture.backImagePos.y)
+        let x1       = cast(s32) (x - capture.backImagePos.x)
+        let y1       = cast(s32) (y - capture.backImagePos.y)
 
         if w > 1 and h > 1 and isReadyToCapture
         {
             isReadyToCapture = false
-            dirty = false
-            textureKind = kind
+            dirty            = false
+            textureKind      = kind
             renderer.removeTexture(&texture)
-            image = capture.backImg.toCrop(x1, y1, w, h)
+            image   = capture.backImg.toCrop(x1, y1, w, h)
             texture = app.getRenderer().addImage(image)
         }
         elif image.isValid()
@@ -293,21 +293,21 @@ impl IForm for FormImage
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        var pp = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
-        var pen = Pen.createSolid(borderColor, bSize)
+        var pp    = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        var pen   = Pen.createSolid(borderColor, bSize)
 
         if !quickMode
         {
             let renderer = app.getRenderer()
-            let x1 = cast(s32) (x - capture.backImagePos.x)
-            let y1 = cast(s32) (y - capture.backImagePos.y)
+            let x1       = cast(s32) (x - capture.backImagePos.x)
+            let y1       = cast(s32) (y - capture.backImagePos.y)
 
             switch kind
             {
             case Image:
                 if (!texture.isValid() or textureKind != kind or dirty) and image.isValid()
                 {
-                    dirty = false
+                    dirty       = false
                     textureKind = kind
                     renderer.removeTexture(&texture)
                     texture = renderer.addImage(image)
@@ -318,32 +318,35 @@ impl IForm for FormImage
                 }
 
             case Capture:
-                if  !texture.isValid() or
-                    textureKind != kind
+                if !texture.isValid() or
+                   textureKind != kind
                 {
                     backCapture(app)
                 }
 
             case Blur, Pixelate:
-                if  !texture.isValid() or
-                    xc != x or yc != y or wc != w or hc != h or
-                    textureKind != kind or
-                    dirty or
-                    stc != strength or
-                    serial != capture.serialBackTexture
+                if !texture.isValid() or
+                   xc != x or yc != y or wc != w or hc != h or
+                   textureKind != kind or
+                   dirty or
+                   stc != strength or
+                   serial != capture.serialBackTexture
                 {
                     if w > 1 and h > 1
                     {
-                        dirty = false
-                        serial = capture.serialBackTexture
+                        dirty       = false
+                        serial      = capture.serialBackTexture
                         textureKind = kind
-                        stc = strength
-                        xc = x; yc = y; wc = w; hc = h
+                        stc         = strength
+                        xc          = x
+                        yc          = y
+                        wc          = w
+                        hc          = h
                         renderer.removeTexture(&texture)
                         var img = capture.backImg.toCrop(x1, y1, w, h)
-                        let st = Math.map(cast(f32) strength, 0, 100, 1, 16)
-                        let nw = Math.max(cast(s32) (img.width / st), 4)
-                        let nh = Math.max(cast(s32) (img.height / st), 4)
+                        let st  = Math.map(cast(f32) strength, 0, 100, 1, 16)
+                        let nw  = Math.max(cast(s32) (img.width / st), 4)
+                        let nh  = Math.max(cast(s32) (img.height / st), 4)
                         img.resize(nw, nh, .Quadratic)
                         img.resize(w, h, kind == .Pixelate ? .Raw : .Quadratic)
                         texture = app.getRenderer().addImage(img)
@@ -351,25 +354,28 @@ impl IForm for FormImage
                 }
 
             case Zoom:
-                if  !texture.isValid() or
-                    xc != x or yc != y or wc != w or hc != h or
-                    textureKind != kind or
-                    dirty or
-                    stc != strength or
-                    serial != capture.serialBackTexture
+                if !texture.isValid() or
+                   xc != x or yc != y or wc != w or hc != h or
+                   textureKind != kind or
+                   dirty or
+                   stc != strength or
+                   serial != capture.serialBackTexture
                 {
                     if w > 1 and h > 1
                     {
-                        dirty = false
-                        serial = capture.serialBackTexture
+                        dirty       = false
+                        serial      = capture.serialBackTexture
                         textureKind = kind
-                        stc = strength
-                        xc = x; yc = y; wc = w; hc = h
+                        stc         = strength
+                        xc          = x
+                        yc          = y
+                        wc          = w
+                        hc          = h
                         renderer.removeTexture(&texture)
                         const ZoomFactor = 2.5
-                        let stw = cast(s32) Math.map(cast(f32) strength, 0, 100, 1, w / ZoomFactor)
-                        let sth = cast(s32) Math.map(cast(f32) strength, 0, 100, 1, h / ZoomFactor)
-                        var img = capture.backImg.toCrop(x1+stw, y1+sth, w-stw*2, h-sth*2)
+                        let stw          = cast(s32) Math.map(cast(f32) strength, 0, 100, 1, w / ZoomFactor)
+                        let sth          = cast(s32) Math.map(cast(f32) strength, 0, 100, 1, h / ZoomFactor)
+                        var img          = capture.backImg.toCrop(x1 + stw, y1 + sth, w - stw * 2, h - sth * 2)
                         img.resize(w, h, .Raw)
                         texture = app.getRenderer().addImage(img)
                     }
@@ -377,7 +383,7 @@ impl IForm for FormImage
             }
         }
 
-        if borderColor.a and (pp.width <= 2*bSize or pp.height < 2*bSize) do
+        if borderColor.a and (pp.width <= 2 * bSize or pp.height < 2 * bSize) do
             painter.fillRect(pp, borderColor)
         else
         {
@@ -402,7 +408,7 @@ impl IForm for FormImage
                 }
 
                 icon.sizeX, icon.sizeY = 32
-                icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
+                icon.paint(painter, pp.horzCenter() - icon.sizeX * 0.5, pp.vertCenter() - icon.sizeY * 0.5, Argb.White)
                 pp.inflate(-bSize * 0.5)
                 painter.drawRect(pp, pen)
             }
@@ -414,7 +420,7 @@ impl IForm for FormImage
             {
                 painter.fillRect(pp, backColor)
                 var icon = Icon.from(&g_Main.icons48, 13)
-                icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
+                icon.paint(painter, pp.horzCenter() - icon.sizeX * 0.5, pp.vertCenter() - icon.sizeY * 0.5, Argb.White)
                 pp.inflate(-bSize * 0.5)
                 painter.drawRect(pp, pen)
             }
@@ -427,16 +433,16 @@ impl IForm for FormImage
                     painter.drawTexture(pp, texture)
                 case Center:
                     var pp1 = pp
-                    pp1.x = pp.horzCenter() - (texture.width / 2)*z
-                    pp1.y = pp.vertCenter() - (texture.height / 2)*z
-                    pp1.width = texture.width*z
-                    pp1.height = texture.height*z
+                    pp1.x      = pp.horzCenter() - (texture.width / 2) * z
+                    pp1.y      = pp.vertCenter() - (texture.height / 2) * z
+                    pp1.width  = texture.width * z
+                    pp1.height = texture.height * z
                     painter.drawTexture(pp1, texture)
                 case Free:
                     var pp1 = pp
-                    pp1.offset(freePos.x*z, freePos.y*z)
-                    pp1.width = freePos.width*z
-                    pp1.height = freePos.height*z
+                    pp1.offset(freePos.x * z, freePos.y * z)
+                    pp1.width  = freePos.width * z
+                    pp1.height = freePos.height * z
                     painter.drawTexture(pp1, texture)
                 }
 
@@ -458,14 +464,15 @@ impl IForm for FormImage
 
         with gizmo
         {
-            .roundShape = true
-            .anchorSize = 10
-            .trackChange = true
+            .roundShape        = true
+            .anchorSize        = 10
+            .trackChange       = true
             .paintSimpleBorder = false
-            .paintBigBorder = true
+            .paintBigBorder    = true
         }
 
-        gizmo.sigChanged = closure|self|(g, first, hitMove) {
+        gizmo.sigChanged = closure|self|(g, first, hitMove)
+        {
             g.apply(self, first, hitMove)
         }
     }

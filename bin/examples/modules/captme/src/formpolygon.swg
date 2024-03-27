@@ -5,9 +5,9 @@ struct FormPolygon
 
     #[Serialization.NoSerialize]
     {
-        gizmo:          GizmoPoints
-        paintPoints:    Array'Math.Vector2
-        linePath:       LinePath
+        gizmo:           GizmoPoints
+        paintPoints:     Array'Math.Vector2
+        linePath:        LinePath
     }
 }
 
@@ -27,11 +27,11 @@ impl IForm for FormPolygon
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormPolygon) ptr
-        return  borderColor == other.borderColor and
-                borderSize  == other.borderSize and
-                backColor   == other.backColor and
-                alpha       == other.alpha and
-                paintShadow == other.paintShadow
+        return borderColor == other.borderColor and
+               borderSize == other.borderSize and
+               backColor == other.backColor and
+               alpha == other.alpha and
+               paintShadow == other.paintShadow
     }
 
     mtd impl copy(dst, src: *BaseForm)
@@ -89,8 +89,8 @@ impl IForm for FormPolygon
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         var rect = boundRect()
-        let fx = newSizeX / rect.width
-        let fy = newSizeY / rect.height
+        let fx   = newSizeX / rect.width
+        let fy   = newSizeY / rect.height
 
         visit &pt: points
         {
@@ -130,10 +130,10 @@ impl IForm for FormPolygon
         var result: retval
 
         let bSize = borderSize * 0.5
-        var x0 = Swag.F32.Max
-        var y0 = Swag.F32.Max
-        var x1 = 0'f32
-        var y1 = 0'f32
+        var x0    = Swag.F32.Max
+        var y0    = Swag.F32.Max
+        var x1    = 0'f32
+        var y1    = 0'f32
         visit &pt: points
         {
             x0 = Math.min(x0, pt.x - bSize)
@@ -142,9 +142,9 @@ impl IForm for FormPolygon
             y1 = Math.max(y1, pt.y + bSize)
         }
 
-        result.x = x0
-        result.y = y0
-        result.width = x1 - x0
+        result.x      = x0
+        result.y      = y0
+        result.width  = x1 - x0
         result.height = y1 - y0
 
         if joinStyle == .Miter or joinStyle == .MiterBevel do
@@ -220,14 +220,14 @@ impl IForm for FormPolygon
         computePaintCoords(z)
 
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
-        var bk = backColor
+        var bk        = backColor
         if quickMode and alpha != 100 and subKind == .Highlight do
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
         if subKind == .PixSel
         {
-            bSize = 2
-            bk.a = 0
+            bSize     = 2
+            bk.a      = 0
             dashStyle = .Dash
             painter.removeParams(.Antialiased)
         }
@@ -254,8 +254,9 @@ impl IForm for FormPolygon
 
     mtd impl setup(capt: *Capture)
     {
-        capture = capt
-        gizmo.sigChanged = closure|self|(diff, pt, first) {
+        capture          = capt
+        gizmo.sigChanged = closure|self|(diff, pt, first)
+        {
             GizmoPoints.apply(self, diff, pt, first)
         }
     }

@@ -51,25 +51,25 @@ using Core
 func day2A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var op: Array's32
     visit v: Tokenize.split(lines[0], `,`'u8) do
         op.add(assume StrConv.toS32(v))
 
-    op[1] = 12; op[2] = 2
+    op[1] = 12
+    op[2] = 2
 
     var ip = 0
     while op[ip] != 99
     {
         if op[ip] == 1 do
-            op[op[ip+3]] = op[op[ip+1]] + op[op[ip+2]]
+            op[op[ip + 3]] = op[op[ip + 1]] + op[op[ip + 2]]
         else do
-            op[op[ip+3]] = op[op[ip+1]] * op[op[ip+2]]
+            op[op[ip + 3]] = op[op[ip + 1]] * op[op[ip + 2]]
         ip += 4
     }
 
     //Console.print("total: ", op[0])
     @assert(op[0] == 5534943)
 }
-

@@ -23,7 +23,7 @@ func day3A()
     {
         x, y: s32
         #[Swag.Offset("x")]
-        v: u64
+        v:   u64
     }
 
     var pos: Pos
@@ -32,10 +32,14 @@ func day3A()
     {
         switch c
         {
-        case `^`: pos.y -= 1
-        case `v`: pos.y += 1
-        case `<`: pos.x -= 1
-        case `>`: pos.x += 1
+        case `^`:
+            pos.y -= 1
+        case `v`:
+            pos.y += 1
+        case `<`:
+            pos.x -= 1
+        case `>`:
+            pos.x += 1
         }
 
         set.add(pos.v)
@@ -44,4 +48,3 @@ func day3A()
     //Console.print("total: ", set.count)
     @assert(set.count == 2572)
 }
-

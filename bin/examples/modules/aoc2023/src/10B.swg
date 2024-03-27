@@ -95,22 +95,32 @@ Figure out whether you have time to search for the nest by calculating the area 
 using Core
 
 #[Swag.EnumFlags]
-private enum Dir{Zero=0,West, East, North, South, Edge, Fill, Mask=1|2|4|8}
+private enum Dir
+{
+    Zero  = 0
+    West
+    East
+    North
+    South
+    Edge
+    Fill
+    Mask  = 1 | 2 | 4 | 8
+}
 
 func day10B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "10.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var width, height: u64
     var maze: Array'Dir
 
-    width  = lines[0].length+2
-    height = lines.count+2
-    maze.resize(width*height)
+    width  = lines[0].length + 2
+    height = lines.count + 2
+    maze.resize(width * height)
 
     #[Swag.Mixin]
-    func mp(x0, y0: s64)->&Dir => maze.buffer + ((x0+1) + (y0+1)*width)
+    func mp(x0, y0: s64)->&Dir => maze.buffer + ((x0 + 1) + (y0 + 1) * width)
 
     var startX, startY: s64
     visit l, line: lines
@@ -120,26 +130,39 @@ func day10B()
             let one = ref mp(cast(s64) col, cast(s64) line)
             switch c
             {
-            case `-`: one = .West|.East
-            case `|`: one = .North|.South
-            case `L`: one = .North|.East
-            case `J`: one = .North|.West
-            case `7`: one = .South|.West
-            case `F`: one = .South|.East
-            case `S`: startX = col; startY = line
+            case `-`:
+                one = .West | .East
+            case `|`:
+                one = .North | .South
+            case `L`:
+                one = .North | .East
+            case `J`:
+                one = .North | .West
+            case `7`:
+                one = .South | .West
+            case `F`:
+                one = .South | .East
+            case `S`:
+                startX = col
+                startY = line
             }
         }
     }
 
     // Determin the shape of the start 'S'
     let start = ref mp(startX, startY)
-    if mp(startX-1, startY) & .East  do start |= .West
-    if mp(startX+1, startY) & .West  do start |= .East
-    if mp(startX, startY-1) & .South do start |= .North
-    if mp(startX, startY+1) & .North do start |= .South
+    if mp(startX - 1, startY) & .East do
+        start |= .West
+    if mp(startX + 1, startY) & .West do
+        start |= .East
+    if mp(startX, startY - 1) & .South do
+        start |= .North
+    if mp(startX, startY + 1) & .North do
+        start |= .South
+    var visitX = startX
 
     // Visit the maze
-    var visitX = startX, visitY = startY
+    var visitY = startY
     loop
     {
         let one = ref mp(visitX, visitY)
@@ -147,10 +170,18 @@ func day10B()
 
         switch
         {
-        case one & .East  and !(mp(visitX+1, visitY) & .Edge): visitX += 1; continue
-        case one & .West  and !(mp(visitX-1, visitY) & .Edge): visitX -= 1; continue
-        case one & .North and !(mp(visitX, visitY-1) & .Edge): visitY -= 1; continue
-        case one & .South and !(mp(visitX, visitY+1) & .Edge): visitY += 1; continue
+        case one & .East and !(mp(visitX + 1, visitY) & .Edge):
+            visitX += 1
+            continue
+        case one & .West and !(mp(visitX - 1, visitY) & .Edge):
+            visitX -= 1
+            continue
+        case one & .North and !(mp(visitX, visitY - 1) & .Edge):
+            visitY -= 1
+            continue
+        case one & .South and !(mp(visitX, visitY + 1) & .Edge):
+            visitY += 1
+            continue
         }
 
         break
@@ -180,4 +211,3 @@ func day10B()
     //Console.print("total: ", total, " ")
     @assert(total == 287)
 }
-

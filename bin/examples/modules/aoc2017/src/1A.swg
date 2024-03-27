@@ -26,16 +26,15 @@ using Core
 func day1A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "1.txt")
-    let text = assume File.readAllText(dataPath)
+    let text     = assume File.readAllText(dataPath)
 
     var total = 0
     loop i: text
     {
-        if text[i] == text[(i+1)%text.length] do
+        if text[i] == text[(i + 1) % text.length] do
             total += text[i] - `0`
     }
 
     //Console.print("total: ", total)
     @assert(total == 1393)
 }
-

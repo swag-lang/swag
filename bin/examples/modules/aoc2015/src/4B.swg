@@ -9,65 +9,65 @@ private var best: u64 = Swag.U64.Max
 
 func day4B()
 {
-#if #cfg == "release" {
-
-    if @isbytecode() do
-        return
-
-    //Time.Stopwatch.scopeMeasure()
-    assume Jobs.setNumWorkers()
-
-    struct ForJob
+    #if #cfg == "release"
     {
-        using base: Jobs.Job
-        start:  u64
-        result: u64 = Swag.U64.Max
-    }
 
-    var sliceJobs: Array'ForJob
-    sliceJobs.resize(Jobs.getNumWorkers())
+        if @isbytecode() do
+            return
 
-    func jobEntry(jobData: *void)
-    {
-        let oneJob = cast(*ForJob) jobData
-        var index  = oneJob.start
-        let offset = Jobs.getNumWorkers()
-        loop
+        //Time.Stopwatch.scopeMeasure()
+        assume Jobs.setNumWorkers()
+
+        struct ForJob
         {
-            // Another job is better than us, just quit
-            if Atomic.get(&best) < index do
-                return
-
-            let str = Format.toString("yzbqklnj%", index)
-            let v = Hash.Md5.compute(str)
-            if v[0] == 0 and v[1] == 0 and v[2] == 0
-            {
-                Atomic.exchange(&best, index)
-                oneJob.result = index
-                return
-            }
-
-            index += offset
+            using base:     Jobs.Job
+            start:          u64
+            result:         u64 = Swag.U64.Max
         }
-    }
 
-    visit &j: sliceJobs
-    {
-        j.base.lambda = &jobEntry
-        j.data = j
-        j.start = #index
-        Jobs.scheduleJob(j)
-    }
+        var sliceJobs: Array'ForJob
+        sliceJobs.resize(Jobs.getNumWorkers())
 
-    var total: u64 = Swag.U64.Max
-    visit &j: sliceJobs
-    {
-        Jobs.waitJob(j)
-        total = Math.min(total, j.result)
-    }
+        func jobEntry(jobData: *void)
+        {
+            let oneJob = cast(*ForJob) jobData
+            var index  = oneJob.start
+            let offset = Jobs.getNumWorkers()
+            loop
+            {
+                // Another job is better than us, just quit
+                if Atomic.get(&best) < index do
+                    return
 
-    //Console.print("total: ", total)
-    @assert(total == 9962624)
+                let str = Format.toString("yzbqklnj%", index)
+                let v   = Hash.Md5.compute(str)
+                if v[0] == 0 and v[1] == 0 and v[2] == 0
+                {
+                    Atomic.exchange(&best, index)
+                    oneJob.result = index
+                    return
+                }
+
+                index += offset
+            }
+        }
+
+        visit &j: sliceJobs
+        {
+            j.base.lambda = &jobEntry
+            j.data        = j
+            j.start       = #index
+            Jobs.scheduleJob(j)
+        }
+
+        var total: u64 = Swag.U64.Max
+        visit &j: sliceJobs
+        {
+            Jobs.waitJob(j)
+            total = Math.min(total, j.result)
+        }
+
+        //Console.print("total: ", total)
+        @assert(total == 9962624)
+    }
 }
-}
-

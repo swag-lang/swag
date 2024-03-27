@@ -67,7 +67,7 @@ func createView5(_tabView: *Tab, view: *Wnd)
         split.addPane(list0)
         let pane1 = split.addPane(list1, 300)
         pane1.tryPreserveSize = true
-        pane1.maxSize = 300
+        pane1.maxSize         = 300
 
         let pane2 = split.addPane(list2, 300)
         pane2.tryPreserveSize = true

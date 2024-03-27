@@ -54,14 +54,14 @@ using Core
 func day6A() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    var lines = File.readAllLines(dataPath)
+    var lines    = File.readAllLines(dataPath)
 
     var coords: Array'{x, y: s32}
     visit l: lines
     {
         let split = Tokenize.split(l, `,`'u8)
-        let vx = assume StrConv.toS32(Latin1.trim(split[0]))
-        let vy = assume StrConv.toS32(Latin1.trim(split[1]))
+        let vx    = assume StrConv.toS32(Latin1.trim(split[0]))
+        let vy    = assume StrConv.toS32(Latin1.trim(split[1]))
         coords.add({vx, vy})
     }
 
@@ -71,30 +71,30 @@ func day6A() assume
     var count:   Array's32
     var borders: Array's32
 
-    arr.resize(W*W)
+    arr.resize(W * W)
     count.resize(coords.count)
     borders.resize(coords.count)
 
     visit c, who: coords
     {
-        loop i: W*W
+        loop i: W * W
         {
-            let x = i%W
-            let y = i/W
+            let x = i % W
+            let y = i / W
             let d = Math.abs(c.x - x) + Math.abs(c.y - y)
 
             var r = ref arr.ref2(x, y, W)
             if d < r.d or !r.who
             {
-                let border = cast(s32) (!x or !y or x == W-1 or y==W-1)
+                let border = cast(s32) (!x or !y or x == W - 1 or y == W - 1)
 
                 if r.who
                 {
-                    count[r.who-1] -= 1
-                    borders[r.who-1] -= border
+                    count[r.who - 1] -= 1
+                    borders[r.who - 1] -= border
                 }
 
-                r = {d, cast(s32) who+1}
+                r = {d, cast(s32) who + 1}
 
                 count[who] += 1
                 borders[who] += border

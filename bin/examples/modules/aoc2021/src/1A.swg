@@ -48,10 +48,10 @@ using Core
 func day1A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "1.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total: u64
-    var last = Swag.U64.Max
+    var last   = Swag.U64.Max
     visit l: lines
     {
         let cur = assume StrConv.toS32(l)
@@ -63,4 +63,3 @@ func day1A()
     //Console.print("total: ", total)
     @assert(total == 1791)
 }
-

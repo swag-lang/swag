@@ -21,14 +21,15 @@ using Core
 func day2B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     visit a, i: lines
     {
         visit b, j: lines
         {
-            if i == j do continue
-            var diff = 0
+            if i == j do
+                continue
+            var diff    = 0
             var result: String
             loop k: b
             {
@@ -49,4 +50,3 @@ func day2B()
         }
     }
 }
-

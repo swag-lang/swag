@@ -35,7 +35,7 @@ using Core
 func day2A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var h, d: u64
     visit l: lines
@@ -44,13 +44,15 @@ func day2A()
         let val = assume StrConv.toS32(cmd[1])
         switch cmd[0]
         {
-        case "forward": h += val
-        case "down":    d += val
-        case "up":      d -= val
+        case "forward":
+            h += val
+        case "down":
+            d += val
+        case "up":
+            d -= val
         }
     }
 
     //Console.print("total: ", h*d)
-    @assert(h*d == 1714680)
+    @assert(h * d == 1714680)
 }
-

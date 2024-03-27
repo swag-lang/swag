@@ -26,10 +26,10 @@ impl IForm for FormDraw
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormDraw) ptr
-        return  borderColor == other.borderColor and
-                borderSize  == other.borderSize and
-                alpha       == other.alpha and
-                paintShadow == paintShadow
+        return borderColor == other.borderColor and
+               borderSize == other.borderSize and
+               alpha == other.alpha and
+               paintShadow == paintShadow
     }
 
     mtd impl copy(dst, src: *BaseForm)
@@ -83,7 +83,7 @@ impl IForm for FormDraw
 
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        var rect = boundRect()
+        var rect  = boundRect()
         let bSize = borderSize * 0.5
         rect.inflate(-bSize)
         let fx = newSizeX / rect.width
@@ -123,10 +123,10 @@ impl IForm for FormDraw
         var result: retval
 
         let bSize = borderSize * 0.5
-        var x0 = Swag.F32.Max
-        var y0 = Swag.F32.Max
-        var x1 = 0'f32
-        var y1 = 0'f32
+        var x0    = Swag.F32.Max
+        var y0    = Swag.F32.Max
+        var x1    = 0'f32
+        var y1    = 0'f32
         visit &pt: points
         {
             x0 = Math.min(x0, pt.x - bSize)
@@ -135,9 +135,9 @@ impl IForm for FormDraw
             y1 = Math.max(y1, pt.y + bSize)
         }
 
-        result.x = x0
-        result.y = y0
-        result.width = x1 - x0
+        result.x      = x0
+        result.y      = y0
+        result.width  = x1 - x0
         result.height = y1 - y0
         return result
     }
@@ -165,9 +165,9 @@ impl IForm for FormDraw
         if flags & (.Hot | .Selected)
         {
             const anchorSize = 8
-            let anchorSize2 = anchorSize * 0.5
-            let col = subKind == .PixSel ? Argb.Yellow : Argb.White
-            let color = Color.getBlend(Argb.Black, col, (flags & .Hot) ? 0.8 : 1)
+            let anchorSize2  = anchorSize * 0.5
+            let col          = subKind == .PixSel ? Argb.Yellow : Argb.White
+            let color        = Color.getBlend(Argb.Black, col, (flags & .Hot) ? 0.8 : 1)
 
             let start = paintPoints[0]
             painter.fillCircle(start.x, start.y, anchorSize2, color)
@@ -194,9 +194,9 @@ impl IForm for FormDraw
             return Math.Vector2.polyContains(paintPoints, {pt.x, pt.y})
 
         var v = Math.Vector2{pt.x, pt.y}
-        loop i: 0 until paintPoints.count-1
+        loop i: 0 until paintPoints.count - 1
         {
-            if v.distanceToSegment(paintPoints[i], paintPoints[i+1]) <= bSize do
+            if v.distanceToSegment(paintPoints[i], paintPoints[i + 1]) <= bSize do
                 return true
         }
 
@@ -217,7 +217,7 @@ impl IForm for FormDraw
         if subKind == .PixSel
         {
             pl.close()
-            bSize = 2
+            bSize     = 2
             dashStyle = .Dash
             painter.removeParams(.Antialiased)
         }

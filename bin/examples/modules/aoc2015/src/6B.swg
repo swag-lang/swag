@@ -25,19 +25,19 @@ func day6B()
     //Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var lights: Array's32
-    lights.resize(1000*1000)
+    lights.resize(1000 * 1000)
 
     var r = assume Parser.RegExp.create(#"\d+"#)
     visit l: lines
     {
         let nums = r.grepAll(l)
-        let x0 = assume StrConv.toU64(nums[0])
-        let y0 = assume StrConv.toU64(nums[1])
-        let x1 = assume StrConv.toU64(nums[2])
-        let y1 = assume StrConv.toU64(nums[3])
+        let x0   = assume StrConv.toU64(nums[0])
+        let y0   = assume StrConv.toU64(nums[1])
+        let x1   = assume StrConv.toU64(nums[2])
+        let y1   = assume StrConv.toU64(nums[3])
 
         loop x: x0 to x1
         {

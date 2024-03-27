@@ -23,38 +23,45 @@ using Core
 func day2B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
-    const pad: [7,7] s32 =
-        [
-            [0, 0, 0,  0,  0,  0, 0],
-            [0, 0, 0,  1,  0,  0, 0],
-            [0, 0, 2,  3,  4,  0, 0],
-            [0, 5, 6,  7,  8,  9, 0],
-            [0, 0, 10, 11, 12, 0, 0],
-            [0, 0, 0,  13, 0,  0, 0],
-            [0, 0, 0,  0,  0,  0, 0],
-        ]
+    const pad: [7, 7] s32 = [
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 2, 3, 4, 0, 0],
+    [0, 5, 6, 7, 8, 9, 0],
+    [0, 0, 10, 11, 12, 0, 0],
+    [0, 0, 0, 13, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0]]
+    var x      = 1
+    var y      = 3
 
-    var x = 1, y = 3, cde = 0
+    var cde = 0
     visit l: lines
     {
         visit:Bytes c: l
         {
             switch c
             {
-            case `U`: if pad[y-1,x] do y -= 1
-            case `D`: if pad[y+1,x] do y += 1
-            case `L`: if pad[y,x-1] do x -= 1
-            case `R`: if pad[y,x+1] do x += 1
+            case `U`:
+                if pad[y - 1, x] do
+                    y -= 1
+            case `D`:
+                if pad[y + 1, x] do
+                    y += 1
+            case `L`:
+                if pad[y, x - 1] do
+                    x -= 1
+            case `R`:
+                if pad[y, x + 1] do
+                    x += 1
             }
         }
 
         cde <<= 4
-        cde |= pad[y,x]
+        cde |= pad[y, x]
     }
 
     //Console.printf("%{X} %", cde, cde)
     @assert(cde == 841940)
 }
-

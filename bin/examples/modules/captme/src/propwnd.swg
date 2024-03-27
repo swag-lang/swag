@@ -9,28 +9,28 @@ const MaxFontSize       = 150.0
 const MinBoldSize       = 0.0
 const MaxBoldSize       = 10.0
 
-const CapSize         = 8.0
-const DashSize        = 8.0
-const BtnColorWidth   = 68.0
-const BtnColorHeight  = 88.0
-const BtnStyleWidth   = 88.0
-const BtnStyleHeight  = 68.0
+const CapSize        = 8.0
+const DashSize       = 8.0
+const BtnColorWidth  = 68.0
+const BtnColorHeight = 88.0
+const BtnStyleWidth  = 88.0
+const BtnStyleHeight = 68.0
 
-const CmdIdTextHLeft    = "CmdIdTextHLeft"
-const CmdIdTextHCenter  = "CmdIdTextHCenter"
-const CmdIdTextHRight   = "CmdIdTextHRight"
-const CmdIdTextVTop     = "CmdIdTextVTop"
-const CmdIdTextVCenter  = "CmdIdTextVCenter"
-const CmdIdTextVBottom  = "CmdIdTextVBottom"
-const CmdIdTextBold     = "CmdIdTextBold"
-const CmdIdTextItalic   = "CmdIdTextItalic"
+const CmdIdTextHLeft   = "CmdIdTextHLeft"
+const CmdIdTextHCenter = "CmdIdTextHCenter"
+const CmdIdTextHRight  = "CmdIdTextHRight"
+const CmdIdTextVTop    = "CmdIdTextVTop"
+const CmdIdTextVCenter = "CmdIdTextVCenter"
+const CmdIdTextVBottom = "CmdIdTextVBottom"
+const CmdIdTextBold    = "CmdIdTextBold"
+const CmdIdTextItalic  = "CmdIdTextItalic"
 
 struct PropWnd
 {
-    using scrollWnd:    ScrollWnd
-    mainLayout:         *StackLayoutCtrl
-    main:               *MainWnd
-    sysFonts:           Array'FontFamilyEnumerate
+    using scrollWnd:     ScrollWnd
+    mainLayout:          *StackLayoutCtrl
+    main:                *MainWnd
+    sysFonts:            Array'FontFamilyEnumerate
 }
 
 impl PropWnd
@@ -114,8 +114,8 @@ impl PropWnd
         // Change model
         if !capture or !capture.selection.count
         {
-            let form = getSelectedBaseForm()
-            let field = Reflection.getField(#self.type, #self.name)
+            let form   = getSelectedBaseForm()
+            let field  = Reflection.getField(#self.type, #self.name)
             var valU32 = val
             Reflection.setFieldValue(form, field, &valU32, true)
         }
@@ -158,8 +158,8 @@ impl PropWnd
             .style.addStyleSheetColors("btnIcon_HotBk     $lighterBig")
             .style.addStyleSheetColors("btnIcon_PressedBk $lighterVeryBig")
             .iconBtnFlags.add(.Popup | .CheckableToggle)
-            .arrowPos = .Bottom
-            .textPos = .Top
+            .arrowPos    = .Bottom
+            .textPos     = .Top
             .checkedForm = .None
         }
 
@@ -168,9 +168,9 @@ impl PropWnd
 
     func createPopup(btn: *IconButton, w, h: f32)->*FrameWnd
     {
-        var pos = btn.getSurfaceRect()
+        var pos     = btn.getSurfaceRect()
         let topView = btn.getTopView()
-        var pt = topView.surfaceToLocal({pos.x, pos.bottom()})
+        var pt      = topView.surfaceToLocal({pos.x, pos.bottom()})
         pt.y += btn.getThemeMetrics().frameWnd_AnchorHeight
 
         var sdw = btn.getThemeMetrics().frameWnd_SmallShadowSize
@@ -181,7 +181,7 @@ impl PropWnd
             .setFrameFlags(FrameWndFlags.SmallShadow)
             .style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
             .fitPosInParent(sdw.z, sdw.w)
-            .anchor = .Top
+            .anchor    = .Top
             .anchorPos = pos.horzCenter() - frame.getSurfaceRect().x
         }
 
@@ -208,7 +208,8 @@ impl PropWnd
             .addColor(Argb.Purple)
             .addColor(Color.fromArgb(0))
             .boxSize = 32
-            .sigChanged += closure|picker|(pal) {
+            .sigChanged += closure|picker|(pal )
+            {
                 picker.setColor(pal.selectedColor)
             }
         }
@@ -218,7 +219,7 @@ impl PropWnd
 
     mtd createPopupShapeKind(btn: *IconButton)
     {
-        let frame = createPopup(btn, 180, 66)
+        let frame  = createPopup(btn, 180, 66)
         let layout = frame.createView'WrapLayoutCtrl()
         layout.wrapWidth, layout.wrapHeight = 48
         layout.padding = 4
@@ -228,7 +229,7 @@ impl PropWnd
             let curSel = cast(*FormShape) getSelectedBaseForm()
             visit c: layout.childs
             {
-                let btn = cast(*IconButton) c
+                let btn  = cast(*IconButton) c
                 let kind = cast(FormShapeKind) cast(u64) btn.userData
                 btn.isChecked = curSel.kind == kind
                 btn.invalidate()
@@ -242,16 +243,17 @@ impl PropWnd
             let btn0 = IconButton.create(frame.view, {})
             btn0.userData = cast(*void) cast(u64) i
             btn0.setForm(.RoundSquare)
-            if curSel.kind == i do btn0.isChecked = true
+            if curSel.kind == i do
+                btn0.isChecked = true
 
             let me = self
             btn0.sigPaintIcon = closure|me|(btn, bc, pos)
             {
                 bc.painter.setParams(.Antialiased)
                 var curSel = cast(*FormShape) me.getSelectedBaseForm()
-                var rect = pos
+                var rect   = pos
                 rect.inflate(-9, -9)
-                rect.x = rect.horzCenter() - rect.height * 0.5
+                rect.x     = rect.horzCenter() - rect.height * 0.5
                 rect.width = rect.height
                 var color = btn.getThemeColors().btnIcon_Icon
 
@@ -268,7 +270,8 @@ impl PropWnd
                 }
             }
 
-            btn0.sigPressed += closure|me, layout|(btn) {
+            btn0.sigPressed += closure|me, layout|(btn )
+            {
                 var kind = cast(u64) btn.userData
                 me.pushTypedValue(acast kind, FormShape, @nameof(FormShape.kind), true)
                 me.updateBtnState(layout)
@@ -280,7 +283,7 @@ impl PropWnd
 
     mtd createPopupStepKind(btn: *IconButton)
     {
-        let frame = createPopup(btn, 180, 66)
+        let frame  = createPopup(btn, 180, 66)
         let layout = frame.createView'WrapLayoutCtrl()
         layout.wrapWidth, layout.wrapHeight = 48
         layout.padding = 4
@@ -295,9 +298,9 @@ impl PropWnd
             {
                 bc.painter.setParams(.Antialiased)
                 var curSel = cast(*FormStep) me.getSelectedBaseForm()
-                var rect = pos
+                var rect   = pos
                 rect.inflate(-9, -9)
-                rect.x = rect.horzCenter() - rect.height * 0.5
+                rect.x     = rect.horzCenter() - rect.height * 0.5
                 rect.width = rect.height
                 var color = btn.getThemeColors().btnIcon_Icon
 
@@ -314,7 +317,8 @@ impl PropWnd
                 }
             }
 
-            btn0.sigPressed += closure|me|(btn) {
+            btn0.sigPressed += closure|me|(btn )
+            {
                 var kind = cast(u64) btn.userData
                 me.pushTypedValue(acast kind, FormStep, @nameof(FormStep.kind), true)
             }
@@ -323,10 +327,9 @@ impl PropWnd
         layout.computeLayout()
     }
 
-
     mtd createPopupStartCapStyle(btn: *IconButton)
     {
-        let frame = createPopup(btn, 100, @countof(LineCapStyle)*46.0)
+        let frame  = createPopup(btn, 100, @countof(LineCapStyle) * 46.0)
         let layout = StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 
@@ -355,18 +358,19 @@ impl PropWnd
             {
                 bc.painter.setParams(.Antialiased)
                 var curSel = cast(*FormShape) me.getSelectedBaseForm()
-                var rect = pos
+                var rect   = pos
                 rect.inflate(-9, -9)
                 var cap = cast(LineCapStyle) cast(u64) btn.userData
                 var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.beginCapStyle = cap
-                pen.endCapStyle = .None
+                pen.endCapStyle   = .None
                 var (w0, l0) = Painter.capStyleExtent(cap, CapSize, pen.capStartScaleX)
                 rect.moveLeft(l0)
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
-            btn0.sigPressed += closure|me, layout|(btn) {
+            btn0.sigPressed += closure|me, layout|(btn )
+            {
                 var kind = cast(u64) btn.userData
                 me.pushTypedValue(acast kind, FormLine, @nameof(FormLine.beginCap), true)
                 me.updateBtnState(layout)
@@ -378,7 +382,7 @@ impl PropWnd
 
     mtd createPopupEndCapStyle(btn: *IconButton)
     {
-        let frame = createPopup(btn, 100, @countof(LineCapStyle)*46.0)
+        let frame  = createPopup(btn, 100, @countof(LineCapStyle) * 46.0)
         let layout = StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 
@@ -407,18 +411,19 @@ impl PropWnd
             {
                 bc.painter.setParams(.Antialiased)
                 var curSel = cast(*FormShape) me.getSelectedBaseForm()
-                var rect = pos
+                var rect   = pos
                 rect.inflate(-9, -9)
                 var cap = cast(LineCapStyle) cast(u64) btn.userData
                 var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.beginCapStyle = .None
-                pen.endCapStyle = cap
+                pen.endCapStyle   = cap
                 var (w0, l0) = Painter.capStyleExtent(cap, CapSize, pen.capEndScaleX)
                 rect.moveRight(-l0)
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
-            btn0.sigPressed += closure|me, layout|(btn) {
+            btn0.sigPressed += closure|me, layout|(btn )
+            {
                 var kind = cast(u64) btn.userData
                 me.pushTypedValue(acast kind, FormLine, @nameof(FormLine.endCap), true)
                 me.updateBtnState(layout)
@@ -430,7 +435,7 @@ impl PropWnd
 
     mtd createPopupDashStyle(btn: *IconButton)
     {
-        let frame = createPopup(btn, 180, 170)
+        let frame  = createPopup(btn, 180, 170)
         let layout = StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 
@@ -439,7 +444,7 @@ impl PropWnd
             let curSel = getSelectedBaseForm()
             visit c: layout.childs
             {
-                let btn = cast(*IconButton) c
+                let btn  = cast(*IconButton) c
                 let dash = cast(DashStyle) cast(u64) btn.userData
                 btn.isChecked = curSel.dashStyle == dash
                 btn.invalidate()
@@ -449,7 +454,8 @@ impl PropWnd
         let curSel = getSelectedBaseForm()
         visit i: DashStyle
         {
-            if i == .Pattern do continue
+            if i == .Pattern do
+                continue
 
             let btn0 = IconButton.create(layout, {}, {0, 0, 0, 32})
             btn0.userData = cast(*void) cast(u64) i
@@ -461,14 +467,15 @@ impl PropWnd
             {
                 bc.painter.setParams(.Antialiased)
                 var curSel = cast(*FormShape) me.getSelectedBaseForm()
-                var rect = pos
+                var rect   = pos
                 rect.inflate(-9, -9)
                 var dash = cast(DashStyle) cast(u64) btn.userData
-                var pen = Pen.createDash(dash, btn.getThemeColors().btnIcon_Icon, DashSize)
+                var pen  = Pen.createDash(dash, btn.getThemeColors().btnIcon_Icon, DashSize)
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
-            btn0.sigPressed += closure|me, layout|(btn) {
+            btn0.sigPressed += closure|me, layout|(btn )
+            {
                 var kind = cast(u64) btn.userData
                 me.pushTypedValue(acast kind, BaseForm, @nameof(BaseForm.dashStyle), true, true)
                 me.updateBtnState(layout)
@@ -502,7 +509,7 @@ impl PropWnd
         {
             bc.painter.setParams(.Antialiased)
             let curSel = me.getSelectedBaseForm()
-            var rect = pos
+            var rect   = pos
             rect.x = rect.horzCenter() - 16
             rect.y = rect.vertCenter() - 16
             rect.width, rect.height = 32
@@ -511,11 +518,13 @@ impl PropWnd
             bc.painter.drawRoundRect(rect, 5, 5, curSel.borderColor, 5)
         }
 
-        btn.sigShowPopup += closure|me|(btn) {
+        btn.sigShowPopup += closure|me|(btn )
+        {
             let curSel = me.getSelectedBaseForm()
             var picker = createColorPicker(btn, curSel.borderColor)
             me.pushTypedValue(curSel.borderColor.argb, BaseForm, @nameof(BaseForm.borderColor), true, true)
-            picker.sigChanged += closure|me, btn|(pk) {
+            picker.sigChanged += closure|me, btn|(pk  )
+            {
                 me.pushTypedValue(pk.getColor().argb, BaseForm, @nameof(BaseForm.borderColor), false, true)
                 btn.invalidate()
             }
@@ -529,8 +538,8 @@ impl PropWnd
         {
             let curSelType = getSelectedFormType()
             if curSelType == FormLine or
-            curSelType == FormArrow or
-            curSelType == FormDraw do
+               curSelType == FormArrow or
+               curSelType == FormDraw do
                 return
 
             if curSelType == FormImage
@@ -548,7 +557,7 @@ impl PropWnd
         {
             bc.painter.setParams(.Antialiased)
             var curSel = me.getSelectedBaseForm()
-            var rect = pos
+            var rect   = pos
             rect.x = rect.horzCenter() - 21
             rect.y = rect.vertCenter() - 21
             rect.width, rect.height = 42
@@ -558,13 +567,15 @@ impl PropWnd
             bc.painter.fillRoundRect(rect, 10, 10, backCol)
         }
 
-        btn.sigShowPopup += closure|me|(btn) {
-            var curSel = me.getSelectedBaseForm()
+        btn.sigShowPopup += closure|me|(btn )
+        {
+            var curSel  = me.getSelectedBaseForm()
             var backCol = curSel.subKind == .PixSel ? g_Main.pixSelFillCol : curSel.backColor
-            var picker = createColorPicker(btn, backCol)
+            var picker  = createColorPicker(btn, backCol)
             if curSel.subKind == .PixSel
             {
-                picker.sigChanged += closure|btn|(pk) {
+                picker.sigChanged += closure|btn|(pk  )
+                {
                     g_Main.pixSelFillCol = pk.getColor()
                     btn.invalidate()
                 }
@@ -572,7 +583,8 @@ impl PropWnd
             else
             {
                 me.pushTypedValue(curSel.backColor.argb, BaseForm, @nameof(BaseForm.backColor), true, true)
-                picker.sigChanged += closure|me, btn|(pk) {
+                picker.sigChanged += closure|me, btn|(pk  )
+                {
                     me.pushTypedValue(pk.getColor().argb, BaseForm, @nameof(BaseForm.backColor), false, true)
                     btn.invalidate()
                 }
@@ -596,9 +608,9 @@ impl PropWnd
         {
             bc.painter.setParams(.Antialiased)
             var curSel = cast(*FormShape) me.getSelectedBaseForm()
-            var rect = pos
+            var rect   = pos
             rect.inflate(-9, -9)
-            rect.x = rect.horzCenter() - rect.height * 0.5
+            rect.x     = rect.horzCenter() - rect.height * 0.5
             rect.width = rect.height
             var color = btn.getThemeColors().btnIcon_Icon
 
@@ -615,7 +627,8 @@ impl PropWnd
             }
         }
 
-        btn.sigShowPopup += closure|me|(btn) {
+        btn.sigShowPopup += closure|me|(btn )
+        {
             var curSel = cast(*FormShape) me.getSelectedBaseForm()
             me.createPopupShapeKind(btn)
         }
@@ -634,9 +647,9 @@ impl PropWnd
         {
             bc.painter.setParams(.Antialiased)
             var curSel = cast(*FormStep) me.getSelectedBaseForm()
-            var rect = pos
+            var rect   = pos
             rect.inflate(-9, -9)
-            rect.x = rect.horzCenter() - rect.height * 0.5
+            rect.x     = rect.horzCenter() - rect.height * 0.5
             rect.width = rect.height
             var color = btn.getThemeColors().btnIcon_Icon
 
@@ -653,7 +666,8 @@ impl PropWnd
             }
         }
 
-        btn.sigShowPopup += closure|me|(btn) {
+        btn.sigShowPopup += closure|me|(btn )
+        {
             var curSel = cast(*FormStep) me.getSelectedBaseForm()
             me.createPopupStepKind(btn)
         }
@@ -672,17 +686,18 @@ impl PropWnd
         {
             bc.painter.setParams(.Antialiased)
             var curSel = cast(*FormLine) me.getSelectedBaseForm()
-            var rect = pos
+            var rect   = pos
             rect.inflate(-9, -9)
             var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.beginCapStyle = curSel.beginCap
-            pen.endCapStyle = .None
+            pen.endCapStyle   = .None
             var (w0, l0) = Painter.capStyleExtent(curSel.beginCap, CapSize, pen.capStartScaleX)
             rect.moveLeft(l0)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
-        btn.sigShowPopup += closure|me|(btn) {
+        btn.sigShowPopup += closure|me|(btn )
+        {
             var curSel = cast(*FormShape) me.getSelectedBaseForm()
             me.createPopupStartCapStyle(btn)
         }
@@ -701,17 +716,18 @@ impl PropWnd
         {
             bc.painter.setParams(.Antialiased)
             let curSel = cast(*FormLine) me.getSelectedBaseForm()
-            var rect = pos
+            var rect   = pos
             rect.inflate(-9, -9)
             var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.beginCapStyle = .None
-            pen.endCapStyle = curSel.endCap
+            pen.endCapStyle   = curSel.endCap
             let (w0, l0) = Painter.capStyleExtent(curSel.endCap, CapSize, pen.capEndScaleX)
             rect.moveRight(-l0)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
-        btn.sigShowPopup += closure|me|(btn) {
+        btn.sigShowPopup += closure|me|(btn )
+        {
             var curSel = cast(*FormShape) me.getSelectedBaseForm()
             me.createPopupEndCapStyle(btn)
         }
@@ -734,13 +750,14 @@ impl PropWnd
         {
             bc.painter.setParams(.Antialiased)
             var curSel = me.getSelectedBaseForm()
-            var rect = pos
+            var rect   = pos
             rect.inflate(-9, -9)
             var pen = Pen.createDash(curSel.dashStyle, btn.getThemeColors().btnIcon_Icon, DashSize)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
-        btn.sigShowPopup += closure|me|(btn) {
+        btn.sigShowPopup += closure|me|(btn )
+        {
             var curSel = cast(*FormShape) me.getSelectedBaseForm()
             me.createPopupDashStyle(btn)
         }
@@ -762,17 +779,19 @@ impl PropWnd
             .addItem("A...B...C...")
             .addItem("a...b...c...")
             .selectItem(cast(u32) curSel.typeIndex)
-            .sigChanged += closure|self|(combo, val) {
+            .sigChanged += closure|self|(combo, val)
+            {
                 self.pushTypedValue(acast val, FormStep, @nameof(FormStep.typeIndex), true)
             }
         }
 
         with let btn = PushButton.create(stack, "Reset", {0, 0, 60})
         {
-            .margin.x = 5
+            .margin.x  = 5
             .dockStyle = .Right
-            .toolTip = "Reset the global step count to 1"
-            btn.sigPressed += closure|self|(btn) {
+            .toolTip   = "Reset the global step count to 1"
+            btn.sigPressed += closure|self|(btn )
+            {
                 self.main.getCapture().nextStepIndex = 1
             }
         }
@@ -791,7 +810,7 @@ impl PropWnd
         if dlg.doModal() != Dialog.BtnOk do
             return curText
         let capture = self.main.getCapture()
-        let undo = capture.newUndo(.SetText)
+        let undo    = capture.newUndo(.SetText)
         undo.text = dlg.getText()
         capture.pushUndo(undo)
         return undo.text
@@ -829,7 +848,7 @@ impl PropWnd
                 return
 
             var capture = self.main.getCapture()
-            var undo = capture.newUndo(.SetFont)
+            var undo    = capture.newUndo(.SetFont)
 
             var sel = combo.items[idx]
             if sel.userData0
@@ -848,19 +867,21 @@ impl PropWnd
         with let btnedt = IconButton.create(edt, getTheme().getIcon24(.More, 20), {0, 0, 20, 20})
         {
             .dockStyle = .Right
-            .sigPressed += closure|self, edt|(btn) {
+            .sigPressed += closure|self, edt|(btn )
+            {
                 let txt = self.editText(edt.text)
                 edt.setText(txt)
             }
         }
 
         edt.name = "Enter text"
-        edt.sigLoseFocus += closure|self|(edit) {
+        edt.sigLoseFocus += closure|self|(edit)
+        {
             let curSel = cast(*FormText) self.getSelectedBaseForm()
             if curSel.text != edit.text
             {
                 let capture = self.main.getCapture()
-                let undo = capture.newUndo(.SetText)
+                let undo    = capture.newUndo(.SetText)
                 undo.text = edit.text
                 capture.pushUndo(undo)
             }
@@ -873,22 +894,26 @@ impl PropWnd
             .addCheckableToggleItem(Icon.from(&main.icons24, 16), CmdIdTextBold)
             .addCheckableToggleItem(Icon.from(&main.icons24, 17), CmdIdTextItalic)
 
-            .sigUpdateState += closure|self|(evt) {
+            .sigUpdateState += closure|self|(evt )
+            {
                 let curSel = cast(*FormText) self.getSelectedBaseForm()
                 evt.setFlags.add(.Checked)
                 evt.accepted = true
 
                 switch evt.id
                 {
-                case CmdIdTextBold:    evt.checked = curSel.fontStyle == .Bold or curSel.fontStyle == .BoldItalic
-                case CmdIdTextItalic:  evt.checked = curSel.fontStyle == .Italic or curSel.fontStyle == .BoldItalic
+                case CmdIdTextBold:
+                    evt.checked = curSel.fontStyle == .Bold or curSel.fontStyle == .BoldItalic
+                case CmdIdTextItalic:
+                    evt.checked = curSel.fontStyle == .Italic or curSel.fontStyle == .BoldItalic
                 }
             }
 
-            .sigCheckChanged += closure|self|(btn) {
+            .sigCheckChanged += closure|self|(btn )
+            {
                 let capture = self.main.getCapture()
-                let curSel = cast(*FormText) self.getSelectedBaseForm()
-                var style = curSel.fontStyle
+                let curSel  = cast(*FormText) self.getSelectedBaseForm()
+                var style   = curSel.fontStyle
                 switch btn.id
                 {
                 case CmdIdTextBold:
@@ -924,30 +949,38 @@ impl PropWnd
         let stack1 = StackLayoutCtrl.create(stack, .HorzCenter, {0, 0, 0, 40})
         with let bar = IconBar.create(stack1, 24)
         {
-            .addCheckableItem(Icon.from(&main.icons24, 8),  CmdIdTextHLeft)
-            .addCheckableItem(Icon.from(&main.icons24, 9),  CmdIdTextHCenter)
+            .addCheckableItem(Icon.from(&main.icons24, 8), CmdIdTextHLeft)
+            .addCheckableItem(Icon.from(&main.icons24, 9), CmdIdTextHCenter)
             .addCheckableItem(Icon.from(&main.icons24, 10), CmdIdTextHRight)
             .addCheckableItem(Icon.from(&main.icons24, 11), CmdIdTextVTop)
             .addCheckableItem(Icon.from(&main.icons24, 12), CmdIdTextVCenter)
             .addCheckableItem(Icon.from(&main.icons24, 13), CmdIdTextVBottom)
 
-            .sigUpdateState += closure|self|(evt) {
+            .sigUpdateState += closure|self|(evt )
+            {
                 var curSel = cast(*FormText) self.getSelectedBaseForm()
                 evt.setFlags.add(.Checked)
                 evt.accepted = true
 
                 switch evt.id
                 {
-                case CmdIdTextHLeft:    evt.checked = curSel.alignHorz == .LeftTop
-                case CmdIdTextHCenter:  evt.checked = curSel.alignHorz == .Center
-                case CmdIdTextHRight:   evt.checked = curSel.alignHorz == .RightBottom
-                case CmdIdTextVTop:     evt.checked = curSel.alignVert == .LeftTop
-                case CmdIdTextVCenter:  evt.checked = curSel.alignVert == .Center
-                case CmdIdTextVBottom:  evt.checked = curSel.alignVert == .RightBottom
+                case CmdIdTextHLeft:
+                    evt.checked = curSel.alignHorz == .LeftTop
+                case CmdIdTextHCenter:
+                    evt.checked = curSel.alignHorz == .Center
+                case CmdIdTextHRight:
+                    evt.checked = curSel.alignHorz == .RightBottom
+                case CmdIdTextVTop:
+                    evt.checked = curSel.alignVert == .LeftTop
+                case CmdIdTextVCenter:
+                    evt.checked = curSel.alignVert == .Center
+                case CmdIdTextVBottom:
+                    evt.checked = curSel.alignVert == .RightBottom
                 }
             }
 
-            .sigCheckChanged += closure|self|(btn) {
+            .sigCheckChanged += closure|self|(btn )
+            {
                 var capture = self.main.getCapture()
                 switch btn.id
                 {
@@ -978,10 +1011,12 @@ impl PropWnd
         let curSel = cast(*FormLine) getSelectedBaseForm()
 
         let ctrl = createSlider("Start Size", acast MinCapSize, acast MaxCapSize, curSel.startSize)
-        ctrl.slider.sigStartChange += closure|self|(slider) {
+        ctrl.slider.sigStartChange += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), FormLine, @nameof(FormLine.startSize), true)
         }
-        ctrl.slider.sigChanged += closure|self|(slider) {
+        ctrl.slider.sigChanged += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), FormLine, @nameof(FormLine.startSize), false)
         }
     }
@@ -993,11 +1028,13 @@ impl PropWnd
             return
 
         let curSel = cast(*FormLine) getSelectedBaseForm()
-        let ctrl = createSlider("End Size", acast MinCapSize, acast MaxCapSize, curSel.endSize)
-        ctrl.slider.sigStartChange += closure|self|(slider) {
+        let ctrl   = createSlider("End Size", acast MinCapSize, acast MaxCapSize, curSel.endSize)
+        ctrl.slider.sigStartChange += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), FormLine, @nameof(FormLine.endSize), true)
         }
-        ctrl.slider.sigChanged += closure|self|(slider) {
+        ctrl.slider.sigChanged += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), FormLine, @nameof(FormLine.endSize), false)
         }
     }
@@ -1013,10 +1050,12 @@ impl PropWnd
             return
 
         let ctrl = createSlider("Round", acast MinRoundSize, acast MaxRoundSize, curSel.roundSize)
-        ctrl.slider.sigStartChange += closure|self|(slider) {
+        ctrl.slider.sigStartChange += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), FormShape, @nameof(FormShape.roundSize), true)
         }
-        ctrl.slider.sigChanged += closure|self|(slider) {
+        ctrl.slider.sigChanged += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), FormShape, @nameof(FormShape.roundSize), false)
         }
     }
@@ -1046,10 +1085,12 @@ impl PropWnd
         }
 
         let ctrl = createSlider(labl, acast minS, acast maxS, curSel.borderSize)
-        ctrl.slider.sigStartChange += closure|self|(slider) {
+        ctrl.slider.sigStartChange += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), BaseForm, @nameof(BaseForm.borderSize), true, true)
         }
-        ctrl.slider.sigChanged += closure|self|(slider) {
+        ctrl.slider.sigChanged += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), BaseForm, @nameof(BaseForm.borderSize), false, true)
         }
     }
@@ -1061,11 +1102,13 @@ impl PropWnd
             return
 
         let curSel = cast(*FormText) getSelectedBaseForm()
-        let ctrl = createSlider("Size", acast MinFontSize, acast MaxFontSize, acast curSel.fontSize)
-        ctrl.slider.sigStartChange += closure|self|(slider) {
+        let ctrl   = createSlider("Size", acast MinFontSize, acast MaxFontSize, acast curSel.fontSize)
+        ctrl.slider.sigStartChange += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), FormText, @nameof(FormText.fontSize), true)
         }
-        ctrl.slider.sigChanged += closure|self|(slider) {
+        ctrl.slider.sigChanged += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), FormText, @nameof(FormText.fontSize), false)
         }
     }
@@ -1077,11 +1120,13 @@ impl PropWnd
             return
 
         let curSel = cast(*FormText) getSelectedBaseForm()
-        let ctrl = createSlider("Strengh", acast MinBoldSize, acast MaxBoldSize, acast curSel.boldSize)
-        ctrl.slider.sigStartChange += closure|self|(slider) {
+        let ctrl   = createSlider("Strengh", acast MinBoldSize, acast MaxBoldSize, acast curSel.boldSize)
+        ctrl.slider.sigStartChange += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), FormText, @nameof(FormText.boldSize), true)
         }
-        ctrl.slider.sigChanged += closure|self|(slider) {
+        ctrl.slider.sigChanged += closure|self|(slider)
+        {
             self.pushTypedValue(cast,bit(u32) slider.getValue(), FormText, @nameof(FormText.boldSize), false)
         }
     }
@@ -1093,10 +1138,12 @@ impl PropWnd
             return
 
         let ctrl = createSlider("Opacity", 0, 100, acast curSel.alpha)
-        ctrl.slider.sigStartChange += closure|self|(slider) {
+        ctrl.slider.sigStartChange += closure|self|(slider)
+        {
             self.pushTypedValue(cast(u32) slider.getValue(), BaseForm, @nameof(BaseForm.alpha), true, true)
         }
-        ctrl.slider.sigChanged += closure|self|(slider) {
+        ctrl.slider.sigChanged += closure|self|(slider)
+        {
             self.pushTypedValue(cast(u32) slider.getValue(), BaseForm, @nameof(BaseForm.alpha), false, true)
         }
     }
@@ -1116,7 +1163,8 @@ impl PropWnd
             visit v: @typeof(FormImageKind).values do
                 .addItem(v.name)
             .selectItem(cast(u32) curSel.kind)
-            .sigChanged += closure|self|(combo, val) {
+            .sigChanged += closure|self|(combo, val)
+            {
                 self.pushTypedValue(val, FormImage, @nameof(FormImage.kind), true)
                 self.selectionHasChanged()
             }
@@ -1129,7 +1177,8 @@ impl PropWnd
             visit v: @typeof(FormImagePlacement).values do
                 .addItem(v.name)
             .selectItem(cast(u32) curSel.place)
-            .sigChanged += closure|self|(combo, val) {
+            .sigChanged += closure|self|(combo, val)
+            {
                 self.pushTypedValue(val, FormImage, @nameof(FormImage.place), true)
             }
         }
@@ -1145,10 +1194,12 @@ impl PropWnd
             return
 
         let ctrl = createSlider("Strength", 0, 100, acast curSel.strength)
-        ctrl.slider.sigStartChange += closure|self|(slider) {
+        ctrl.slider.sigStartChange += closure|self|(slider)
+        {
             self.pushTypedValue(cast(u32) slider.getValue(), FormImage, @nameof(FormImage.strength), true)
         }
-        ctrl.slider.sigChanged += closure|self|(slider) {
+        ctrl.slider.sigChanged += closure|self|(slider)
+        {
             self.pushTypedValue(cast(u32) slider.getValue(), FormImage, @nameof(FormImage.strength), false)
         }
     }
@@ -1169,7 +1220,8 @@ impl PropWnd
             .addItem("Miter")
             .addItem("MiterBevel")
             .selectItem(cast(u32) curSel.joinStyle - 1)
-            .sigChanged += closure|self|(combo, val) {
+            .sigChanged += closure|self|(combo, val)
+            {
                 var v = val + 1
                 self.pushTypedValue(acast v, BaseForm, @nameof(BaseForm.joinStyle), true, true)
             }
@@ -1189,7 +1241,8 @@ impl PropWnd
             .addItem("No Shadow")
             .addItem("Small")
             .selectItem(curSel.paintShadow ? 1 : 0)
-            .sigChanged += closure|self|(combo, val) {
+            .sigChanged += closure|self|(combo, val)
+            {
                 var b = val == 1 ? true : false
                 self.pushTypedValue(acast b, BaseForm, @nameof(BaseForm.paintShadow), true, true)
             }
@@ -1263,10 +1316,10 @@ impl PropWnd
             .backgroundStyle = .Window
             .scrollWndFlags |= .ForceVertical | .SmallBar | .TransparentBar
 
-            .mainLayout = StackLayoutCtrl.create(prop)
+            .mainLayout            = StackLayoutCtrl.create(prop)
             .mainLayout.layoutKind = .Top
-            .mainLayout.padding = 8
-            .mainLayout.padding.y = 16
+            .mainLayout.padding    = 8
+            .mainLayout.padding.y  = 16
 
             .setView(.mainLayout)
         }

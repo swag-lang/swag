@@ -47,10 +47,14 @@ func display()
     glBegin(GL_QUADS)
     let w = 2 * g_MyImage.width / cast(f32) W
     let h = 2 * g_MyImage.height / cast(f32) H
-    glTexCoord2f(0.0, 0.0); glVertex2f(-1.0, -1.0)
-    glTexCoord2f(1.0, 0.0); glVertex2f(-1.0 + w, -1.0)
-    glTexCoord2f(1.0, 1.0); glVertex2f(-1.0 + w, -1.0 + h)
-    glTexCoord2f(0.0, 1.0); glVertex2f(-1.0, -1.0 + h)
+    glTexCoord2f(0.0, 0.0)
+    glVertex2f(-1.0, -1.0)
+    glTexCoord2f(1.0, 0.0)
+    glVertex2f(-1.0 + w, -1.0)
+    glTexCoord2f(1.0, 1.0)
+    glVertex2f(-1.0 + w, -1.0 + h)
+    glTexCoord2f(0.0, 1.0)
+    glVertex2f(-1.0, -1.0 + h)
     glEnd()
 
     glFlush()
@@ -64,38 +68,70 @@ func loadImg()
     var imgName = "rgba.bmp"
     switch g_ImageIdx
     {
-    case 0:     break
-    case 1:     imgName = "rgb.bmp"
-    case 2:     imgName = "rgb.tga"
-    case 3:     imgName = "rgba.tga"
-    case 4:     imgName = "rle24.tga"
-    case 5:     imgName = "rle32.tga"
-    case 6:     imgName = "h2v1.jpg"
-    case 7:     imgName = "h2v2.jpg"
-    case 8:     imgName = "h1v1.jpg"
-    case 9:     imgName = "gray.jpg"
-    case 10:    imgName = "progh1v1.jpg"
-    case 11:    imgName = "rgb.png"
-    case 12:    imgName = "rgba.png"
-    case 13:    imgName = "grayscale.png"
-    case 14:    imgName = "basn4a08.png"  // grayscale 8 alpha
-    case 15:    imgName = "tbrn2c08.png"  // bkgnd transparent
-    case 16:    imgName = "basn0g01.png"  // grayscale 1 bit
-    case 17:    imgName = "basn0g02.png"  // grayscale 2 bit
-    case 18:    imgName = "basn0g04.png"  // grayscale 4 bit
-    case 19:    imgName = "tbbn0g04.png"  // grayscale 4 bit + transparency
-    case 20:    imgName = "basi2c08.png"  // color interlaced
-    case 21:    imgName = "basi0g01.png"  // grayscale interlaced 1 bit
-    case 22:    imgName = "basi0g02.png"  // grayscale interlaced 2 bits
-    case 23:    imgName = "basi0g04.png"  // grayscale interlaced 4 bits
-    case 24:    imgName = "basi0g08.png"  // grayscale interlaced 8 bits
-    case 25:    imgName = "basi4a08.png"  // grayscale interlaced alpha
-    case 26:    imgName = "basi6a08.png"  // color interlaced alpha
-    case 27:    imgName = "testa.gif"
-    case 28:    imgName = "test.gif"
-    case 29:    imgName = "paletted.png"
-    case 30:    imgName = "gameover.png"
-    default:    g_ImageIdx = 0
+    case 0:
+        break
+    case 1:
+        imgName = "rgb.bmp"
+    case 2:
+        imgName = "rgb.tga"
+    case 3:
+        imgName = "rgba.tga"
+    case 4:
+        imgName = "rle24.tga"
+    case 5:
+        imgName = "rle32.tga"
+    case 6:
+        imgName = "h2v1.jpg"
+    case 7:
+        imgName = "h2v2.jpg"
+    case 8:
+        imgName = "h1v1.jpg"
+    case 9:
+        imgName = "gray.jpg"
+    case 10:
+        imgName = "progh1v1.jpg"
+    case 11:
+        imgName = "rgb.png"
+    case 12:
+        imgName = "rgba.png"
+    case 13:
+        imgName = "grayscale.png"
+    case 14:
+        imgName = "basn4a08.png" // grayscale 8 alpha
+    case 15:
+        imgName = "tbrn2c08.png" // bkgnd transparent
+    case 16:
+        imgName = "basn0g01.png" // grayscale 1 bit
+    case 17:
+        imgName = "basn0g02.png" // grayscale 2 bit
+    case 18:
+        imgName = "basn0g04.png" // grayscale 4 bit
+    case 19:
+        imgName = "tbbn0g04.png" // grayscale 4 bit + transparency
+    case 20:
+        imgName = "basi2c08.png" // color interlaced
+    case 21:
+        imgName = "basi0g01.png" // grayscale interlaced 1 bit
+    case 22:
+        imgName = "basi0g02.png" // grayscale interlaced 2 bits
+    case 23:
+        imgName = "basi0g04.png" // grayscale interlaced 4 bits
+    case 24:
+        imgName = "basi0g08.png" // grayscale interlaced 8 bits
+    case 25:
+        imgName = "basi4a08.png" // grayscale interlaced alpha
+    case 26:
+        imgName = "basi6a08.png" // color interlaced alpha
+    case 27:
+        imgName = "testa.gif"
+    case 28:
+        imgName = "test.gif"
+    case 29:
+        imgName = "paletted.png"
+    case 30:
+        imgName = "gameover.png"
+    default:
+        g_ImageIdx = 0
     }
 
     // Load image
@@ -112,54 +148,102 @@ func loadImg()
     te.start()
     switch g_EffectIdx
     {
-    case 1:  g_MyImage.halfSize()
-    case 2:  g_MyImage.resize(1024, 1024)
-    case 3:  g_MyImage.resize(g_MyImage.width / 2, g_MyImage.height / 2)
-    case 4:  g_MyImage.flip()
-    case 5:  g_MyImage.mirror()
-    case 6:  g_MyImage.grayScale(0.5)
-    case 7:  g_MyImage.grayScale()
-    case 8:  g_MyImage.fillHsl(.SaturationLightness, Argb.Green)
-    case 9:  g_MyImage.fillGradient2(Argb.Green, Argb.Red)
-    case 10: g_MyImage.fillGradient4(Argb.Green, Argb.Red, Argb.Blue, Argb.Yellow)
-    case 11: g_MyImage.fill(Argb.Cyan)
-    case 12: g_MyImage.resize(1024, 1024, .Bilinear)
-    case 13: g_MyImage.resize(1024, 1024, .Bicubic)
-    case 14: g_MyImage.resize(1024, 1024, .Gaussian)
-    case 15: g_MyImage.resize(1024, 1024, .Hermite)
-    case 16: g_MyImage.resize(1024, 1024, .Hamming)
-    case 17: g_MyImage.resize(1024, 1024, .Catrom)
-    case 18: g_MyImage.resize(1024, 1024, .Quadratic)
-    case 19: g_MyImage.applyKernel(.EdgeDetect3x3A)
-    case 20: g_MyImage.applyKernel(.EdgeDetect3x3B)
-    case 21: g_MyImage.applyKernel(.EdgeDetect3x3C)
-    case 22: g_MyImage.applyKernel(.EdgeDetect3x3D)
-    case 23: g_MyImage.applyKernel(.EdgeDetect3x3E)
-    case 24: g_MyImage.applyKernel(.EdgeDetect3x3F)
-    case 25: g_MyImage.lightness(0.1)
-    case 26: g_MyImage.lightness(0.2)
-    case 27: g_MyImage.lightness(-0.4)
-    case 28: g_MyImage.contrast(0.1)
-    case 29: g_MyImage.contrast(0.2)
-    case 30: g_MyImage.contrast(-0.4)
-    case 31: g_MyImage.invert()
-    case 32: g_MyImage.crop(229, 105, 206, 166)
-    case 33: g_MyImage.setPixelFormat(.BGR8)
-    case 34: g_MyImage.setPixelFormat(.BGRA8)
-    case 35: g_MyImage.setChannel(.RGB, .MinRGB)
-    case 36: g_MyImage.setChannel(.RGB, .MaxRGB)
-    case 37: g_MyImage.setChannel(.RGB, .MeanRGB)
-    case 38: g_MyImage.gamma(0.5)
-    case 39: g_MyImage.gamma(1.0)
-    case 40: g_MyImage.gamma(2.2)
-    case 41: g_MyImage.colorize(0.5, 0.2, strength: 0.5)
-    case 42: g_MyImage.turn(.T90)
-    case 43: g_MyImage.turn(.T180)
-    case 44: g_MyImage.turn(.T270)
-    case 45: g_MyImage.setPixelFormat(.RGB8)
-    case 46: g_MyImage.setPixelFormat(.RGBA8)
-    case 47: g_MyImage.setPixelFormat(.BGR8)
-    case 48: g_MyImage.setPixelFormat(.BGRA8)
+    case 1:
+        g_MyImage.halfSize()
+    case 2:
+        g_MyImage.resize(1024, 1024)
+    case 3:
+        g_MyImage.resize(g_MyImage.width / 2, g_MyImage.height / 2)
+    case 4:
+        g_MyImage.flip()
+    case 5:
+        g_MyImage.mirror()
+    case 6:
+        g_MyImage.grayScale(0.5)
+    case 7:
+        g_MyImage.grayScale()
+    case 8:
+        g_MyImage.fillHsl(.SaturationLightness, Argb.Green)
+    case 9:
+        g_MyImage.fillGradient2(Argb.Green, Argb.Red)
+    case 10:
+        g_MyImage.fillGradient4(Argb.Green, Argb.Red, Argb.Blue, Argb.Yellow)
+    case 11:
+        g_MyImage.fill(Argb.Cyan)
+    case 12:
+        g_MyImage.resize(1024, 1024, .Bilinear)
+    case 13:
+        g_MyImage.resize(1024, 1024, .Bicubic)
+    case 14:
+        g_MyImage.resize(1024, 1024, .Gaussian)
+    case 15:
+        g_MyImage.resize(1024, 1024, .Hermite)
+    case 16:
+        g_MyImage.resize(1024, 1024, .Hamming)
+    case 17:
+        g_MyImage.resize(1024, 1024, .Catrom)
+    case 18:
+        g_MyImage.resize(1024, 1024, .Quadratic)
+    case 19:
+        g_MyImage.applyKernel(.EdgeDetect3x3A)
+    case 20:
+        g_MyImage.applyKernel(.EdgeDetect3x3B)
+    case 21:
+        g_MyImage.applyKernel(.EdgeDetect3x3C)
+    case 22:
+        g_MyImage.applyKernel(.EdgeDetect3x3D)
+    case 23:
+        g_MyImage.applyKernel(.EdgeDetect3x3E)
+    case 24:
+        g_MyImage.applyKernel(.EdgeDetect3x3F)
+    case 25:
+        g_MyImage.lightness(0.1)
+    case 26:
+        g_MyImage.lightness(0.2)
+    case 27:
+        g_MyImage.lightness(-0.4)
+    case 28:
+        g_MyImage.contrast(0.1)
+    case 29:
+        g_MyImage.contrast(0.2)
+    case 30:
+        g_MyImage.contrast(-0.4)
+    case 31:
+        g_MyImage.invert()
+    case 32:
+        g_MyImage.crop(229, 105, 206, 166)
+    case 33:
+        g_MyImage.setPixelFormat(.BGR8)
+    case 34:
+        g_MyImage.setPixelFormat(.BGRA8)
+    case 35:
+        g_MyImage.setChannel(.RGB, .MinRGB)
+    case 36:
+        g_MyImage.setChannel(.RGB, .MaxRGB)
+    case 37:
+        g_MyImage.setChannel(.RGB, .MeanRGB)
+    case 38:
+        g_MyImage.gamma(0.5)
+    case 39:
+        g_MyImage.gamma(1.0)
+    case 40:
+        g_MyImage.gamma(2.2)
+    case 41:
+        g_MyImage.colorize(0.5, 0.2, strength: 0.5)
+    case 42:
+        g_MyImage.turn(.T90)
+    case 43:
+        g_MyImage.turn(.T180)
+    case 44:
+        g_MyImage.turn(.T270)
+    case 45:
+        g_MyImage.setPixelFormat(.RGB8)
+    case 46:
+        g_MyImage.setPixelFormat(.RGBA8)
+    case 47:
+        g_MyImage.setPixelFormat(.BGR8)
+    case 48:
+        g_MyImage.setPixelFormat(.BGRA8)
 
     case 49:
         var img1 = assume Image.load(imagePath("testa.gif"))
@@ -174,16 +258,22 @@ func loadImg()
     te.stop()
     //Console.printf("filter: % %ms\n", g_EffectIdx, te.elapsedMilliseconds())
 
-    var fmt: GLenum = 0
+    var fmt:      GLenum = 0
     var finternal = GL_RGB
 
     #[Swag.Complete]
     switch g_MyImage.pf
     {
-    case BGR8:  fmt = GL_BGR
-    case BGRA8: fmt = GL_BGRA; finternal = GL_RGBA
-    case RGB8:  fmt = GL_RGB
-    case RGBA8: fmt = GL_RGBA; finternal = GL_RGBA
+    case BGR8:
+        fmt = GL_BGR
+    case BGRA8:
+        fmt       = GL_BGRA
+        finternal = GL_RGBA
+    case RGB8:
+        fmt = GL_RGB
+    case RGBA8:
+        fmt       = GL_RGBA
+        finternal = GL_RGBA
     }
 
     glGenTextures(1, &g_TextureID)
@@ -203,9 +293,9 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         break
 
     case WM_SIZE:
-	    glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
+        glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
         display()
-	    return 0
+        return 0
 
     case WM_DESTROY:
         PostQuitMessage(0)
@@ -223,28 +313,16 @@ func createWindow()->HWND
     wc.lpszClassName = @dataof("CLASS_NAME")
     assume RegisterClassA(wc)
 
-    let hWnd = CreateWindowExA(
-        0,
-        @dataof("CLASS_NAME"),
-        @dataof("Example"),
-        WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-        100,
-        100,
-        W,
-        H,
-        null,
-        null,
-        wc.hInstance,
-        null)
+    let hWnd = CreateWindowExA(0, @dataof("CLASS_NAME"), @dataof("Example"), WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 100, 100, W, H, null, null, wc.hInstance, null)
 
     g_HDC = GetDC(hWnd)
 
     var pfd: PIXELFORMATDESCRIPTOR
-    pfd.nSize        = @sizeof(pfd)
-    pfd.nVersion     = 1;
-    pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
-    pfd.iPixelType   = PFD_TYPE_RGBA
-    pfd.cColorBits   = 32
+    pfd.nSize      = @sizeof(pfd)
+    pfd.nVersion   = 1
+    pfd.dwFlags    = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
+    pfd.iPixelType = PFD_TYPE_RGBA
+    pfd.cColorBits = 32
 
     assume
     {
@@ -270,7 +348,7 @@ func bigLoop()
 
         loop j: MAX_EFFECTS
         {
-            g_ImageIdx = 0
+            g_ImageIdx  = 0
             g_EffectIdx = j
             loadImg()
             display()
@@ -282,7 +360,7 @@ func bigLoop()
     var keyb: Input.Keyboard
     loop
     {
-        var msg:  MSG
+        var msg: MSG
         @getcontext().tempAllocator.freeAll()
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {

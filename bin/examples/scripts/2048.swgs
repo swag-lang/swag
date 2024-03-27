@@ -21,13 +21,13 @@ struct Cell
     remove:     bool
 }
 
-var g_Cells:        Array'Cell
-var g_Font:         *Font
-var g_MoveDirX:     s32
-var g_MoveDirY:     s32
-var g_IsMoving:     bool
-var g_GameOver:     bool
-var g_Score:        s32
+var g_Cells:    Array'Cell
+var g_Font:     *Font
+var g_MoveDirX: s32
+var g_MoveDirY: s32
+var g_IsMoving: bool
+var g_GameOver: bool
+var g_Score:    s32
 
 const RoundCorners = 8.0
 func paintGrid(wnd: *Wnd, painter: *Painter)
@@ -38,21 +38,21 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
 
     let size = CellSize * CellCount
     rectGrid.x = rect.horzCenter() - size * 0.5
-    rectGrid.y = rect.bottom() - size - 3*Margin
+    rectGrid.y = rect.bottom() - size - 3 * Margin
     rectGrid.width, rectGrid.height = size
 
     painter.setAntialiased(true)
     var rectBack = rectGrid
     rectBack.inflate(Margin)
-    painter.fillRoundRect(rectBack, RoundCorners, RoundCorners, Color.fromRgb(187,173,160))
+    painter.fillRoundRect(rectBack, RoundCorners, RoundCorners, Color.fromRgb(187, 173, 160))
 
-    const CellSizeW = CellSize - (2*Margin)
+    const CellSizeW = CellSize - (2 * Margin)
     loop x: 4
     {
         loop y: 4
         {
-            let xi = rectGrid.x + (x * CellSize) + (Margin)
-            let yi = rectGrid.y + (y * CellSize) + (Margin)
+            let xi = rectGrid.x + (x * CellSize) + Margin
+            let yi = rectGrid.y + (y * CellSize) + Margin
             painter.fillRoundRect(xi, yi, CellSizeW, CellSizeW, RoundCorners, RoundCorners, Color.fromRgb(204, 192, 178))
         }
     }
@@ -66,27 +66,36 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
 
         switch c.val
         {
-        case 0:   color = Color.fromRgb(204, 192, 178)
-        case 2:   color = Color.fromRgb(238, 238, 218)
-        case 4:   color = Color.fromRgb(236, 224, 201)
-        case 8:   color = Color.fromRgb(242, 177, 122)
-        case 16:  color = Color.fromRgb(246, 149, 100)
-        case 32:  color = Color.fromRgb(248, 124, 96)
-        case 64:  color = Color.fromRgb(245, 94, 57)
-        case 128: color = Color.fromRgb(237, 208, 115)
-        default:  color = Color.fromRgb(238, 194, 46)
+        case 0:
+            color = Color.fromRgb(204, 192, 178)
+        case 2:
+            color = Color.fromRgb(238, 238, 218)
+        case 4:
+            color = Color.fromRgb(236, 224, 201)
+        case 8:
+            color = Color.fromRgb(242, 177, 122)
+        case 16:
+            color = Color.fromRgb(246, 149, 100)
+        case 32:
+            color = Color.fromRgb(248, 124, 96)
+        case 64:
+            color = Color.fromRgb(245, 94, 57)
+        case 128:
+            color = Color.fromRgb(237, 208, 115)
+        default:
+            color = Color.fromRgb(238, 194, 46)
         }
 
         let off = (1 - c.z) * 40
-        painter.fillRoundRect(xi+off, yi+off, CellSizeW-2*off, CellSizeW-2*off, RoundCorners, RoundCorners, color)
+        painter.fillRoundRect(xi + off, yi + off, CellSizeW - 2 * off, CellSizeW - 2 * off, RoundCorners, RoundCorners, color)
         if !c.val do
             continue
 
         // Paint cell value
-        var str = Format.toString("%", c.val)
+        var str  = Format.toString("%", c.val)
         var zoom = c.z
         zoom -= (cast(f32) str.length * 0.08)
-        painter.drawStringCenter(xi + (CellSizeW*0.5), yi + (CellSizeW*0.5), str, g_Font, Argb.Black, zoom: zoom)
+        painter.drawStringCenter(xi + (CellSizeW * 0.5), yi + (CellSizeW * 0.5), str, g_Font, Argb.Black, zoom: zoom)
     }
 }
 
@@ -119,22 +128,22 @@ func animate(wnd: *Wnd)
         // End of scale
         if Math.isEqualEpsilon(c.z, c.zd, 0.01) do
             c.zd = 1
-        c.z = Math.lerp(c.z, c.zd, 20*dt)
+        c.z = Math.lerp(c.z, c.zd, 20 * dt)
         if Math.isEqualEpsilon(c.z, 1, 0.01) do
             c.z = 1
 
         // End of move
         if c.moving
         {
-            c.x = Math.lerp(c.x, c.xd, 20*dt)
-            c.y = Math.lerp(c.y, c.yd, 20*dt)
+            c.x = Math.lerp(c.x, c.xd, 20 * dt)
+            c.y = Math.lerp(c.y, c.yd, 20 * dt)
             if Math.isEqualEpsilon(c.x, c.xd, 0.1) and Math.isEqualEpsilon(c.y, c.yd, 0.1)
             {
                 c.moving = false
                 let dest = cellAt(cast(s32) c.xd, cast(s32) c.yd, c)
                 if dest and dest.val
                 {
-                    c.moving = true
+                    c.moving    = true
                     dest.remove = true
                     c.val *= 2
                     c.zd = 1.2
@@ -231,25 +240,25 @@ func keyboard(wnd: *Wnd)
             {
                 if g_MoveDirX != 0
                 {
-                    let nx = cast(s32) (c.xd + i*g_MoveDirX)
+                    let nx = cast(s32) (c.xd + i * g_MoveDirX)
                     if nx < 0 or nx >= CellCount do
                         break
                     if c.xd == nx or canMoveTo(c.val, nx, cast(s32) c.y)
                     {
                         c.moving = true
-                        c.nxd = nx
+                        c.nxd    = nx
                     }
                     break
                 }
                 elif g_MoveDirY != 0
                 {
-                    let ny = cast(s32) (c.yd + i*g_MoveDirY)
+                    let ny = cast(s32) (c.yd + i * g_MoveDirY)
                     if ny < 0 or ny >= CellCount do
                         break
                     if c.yd == ny or canMoveTo(c.val, cast(s32) c.x, ny)
                     {
                         c.moving = true
-                        c.nyd = ny
+                        c.nyd    = ny
                     }
                     break
                 }
@@ -263,8 +272,8 @@ func keyboard(wnd: *Wnd)
             if Math.isEqualEpsilon(c.xd, c.nxd) and Math.isEqualEpsilon(c.yd, c.nyd) do
                 continue
             recom = true
-            c.xd = c.nxd
-            c.yd = c.nyd
+            c.xd  = c.nxd
+            c.yd  = c.nyd
         }
     }
 }
@@ -280,10 +289,10 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
-        var rect = wnd.getClientRect()
+        let painter  = paintEvt.bc.painter
+        var rect     = wnd.getClientRect()
 
-        painter.fillRect(rect, Color.fromRgb(43,43,43))
+        painter.fillRect(rect, Color.fromRgb(43, 43, 43))
 
         painter.drawStringCenter(rect.horzCenter(), 20, "score", wnd.getTheme().createDefaultFont(25), Argb.White)
         var str = Format.toString("%", g_Score)
@@ -294,7 +303,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         animate(wnd)
 
         wnd.invalidate()
-
     }
 
     return false
@@ -302,6 +310,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 600, 730, title: "2048", hook: &onEvent, init: &test)
 }

@@ -10,9 +10,9 @@ const MaxRoundSize = 50.0
 
 struct FormShape
 {
-    using base: BaseForm
-    kind:       FormShapeKind = Ellipse
-    roundSize:  f32 = 10
+    using base:     BaseForm
+    kind:           FormShapeKind = Ellipse
+    roundSize:      f32 = 10
 
     #[Serialization.NoSerialize]
     {
@@ -25,13 +25,13 @@ impl IForm for FormShape
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormShape) ptr
-        return  borderColor == other.borderColor and
-                borderSize  == other.borderSize and
-                backColor   == other.backColor and
-                alpha       == other.alpha and
-                kind        == other.kind and
-                dashStyle   == other.dashStyle and
-                paintShadow == other.paintShadow
+        return borderColor == other.borderColor and
+               borderSize == other.borderSize and
+               backColor == other.backColor and
+               alpha == other.alpha and
+               kind == other.kind and
+               dashStyle == other.dashStyle and
+               paintShadow == other.paintShadow
     }
 
     mtd impl copy(dst, src: *BaseForm)
@@ -148,7 +148,7 @@ impl IForm for FormShape
         switch kind
         {
         case Ellipse:
-            var br = boundRect()
+            var br  = boundRect()
             var pos = Math.Vector2{pt.x, pt.y}
             var cen = Math.Vector2{br.horzCenter(), br.vertCenter()}
             return pos.isInEllipse(cen, br.width * 0.5, br.height * 0.5)
@@ -166,12 +166,12 @@ impl IForm for FormShape
             var cen = Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
             if !pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5) do
                 return false
-            if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2*borderSize), (paintPos.height * 0.5) - (2*borderSize)) do
+            if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2 * borderSize), (paintPos.height * 0.5) - (2 * borderSize)) do
                 return false
 
         case Rectangle, RoundRectangle:
             var rect = paintPos
-            rect.inflate(-2*borderSize)
+            rect.inflate(-2 * borderSize)
             if backColor.a == 0 and rect.contains(pt) do
                 return false
         }
@@ -186,13 +186,13 @@ impl IForm for FormShape
 
         if subKind == .PixSel
         {
-            bSize = 2
-            dashStyle = .Dash
+            bSize       = 2
+            dashStyle   = .Dash
             borderColor = Argb.White
             painter.setAntialiased(false)
         }
 
-        var pp = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        var pp  = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         var pen = Pen.createDash(dashStyle, borderColor, bSize)
         pen.borderPos = .Inside
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
@@ -232,7 +232,7 @@ impl IForm for FormShape
                 painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
 
             case Rectangle:
-                if borderColor.a and (pp.width <= 2*bSize or pp.height < 2*bSize) do
+                if borderColor.a and (pp.width <= 2 * bSize or pp.height < 2 * bSize) do
                     painter.fillRect(pp, borderColor)
                 else
                 {
@@ -244,7 +244,7 @@ impl IForm for FormShape
 
             case RoundRectangle:
                 var pp1 = pp
-                pp1.inflate(-bSize*0.5)
+                pp1.inflate(-bSize * 0.5)
                 if quickMode and alpha != 100 and subKind == .Highlight do
                     painter.fillRoundRect(pp1, rSize, rSize, backBrush)
                 painter.fillRoundRect(pp1, rSize, rSize, bk)
@@ -259,14 +259,15 @@ impl IForm for FormShape
 
         with gizmo
         {
-            .roundShape = true
-            .anchorSize = 10
-            .trackChange = true
+            .roundShape        = true
+            .anchorSize        = 10
+            .trackChange       = true
             .paintSimpleBorder = false
-            .paintBigBorder = true
+            .paintBigBorder    = true
         }
 
-        gizmo.sigChanged = closure|self|(g, first, hitMove) {
+        gizmo.sigChanged = closure|self|(g, first, hitMove)
+        {
             g.apply(self, first, hitMove)
         }
     }

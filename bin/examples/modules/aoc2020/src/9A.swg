@@ -47,7 +47,7 @@ using Core
 func day9A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "9.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var sum, val: Array's32
     const N = 25
@@ -56,7 +56,8 @@ func day9A()
         let v1 = assume StrConv.toS32(l)
         if #index < N
         {
-            visit v0: val do sum.add(v0+v1)
+            visit v0: val do
+                sum.add(v0 + v1)
             val.add(v1)
             continue
         }
@@ -73,8 +74,8 @@ func day9A()
 
         visit v0: val
         {
-            sum.remove(v+v0)
-            sum.add(v0+v1)
+            sum.remove(v + v0)
+            sum.add(v0 + v1)
         }
 
         val.add(v1)

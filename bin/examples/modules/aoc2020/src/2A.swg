@@ -25,7 +25,7 @@ using Core
 func day2A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var r: Parser.RegExp
     assume r.compile(#"(\d+)-(\d+) ([a-z]): ([a-z])+"#)
@@ -37,13 +37,13 @@ func day2A()
 
         let min    = assume StrConv.toS32(r.getCapture(1))
         let max    = assume StrConv.toS32(r.getCapture(2))
-        let letter = r.getCapture(3)[0]-`a`
+        let letter = r.getCapture(3)[0] - `a`
         let pwd    = r.getCapture(4)
 
         var count: [26] s32
 
         visit c: pwd do
-            count[c-`a`] += 1
+            count[c - `a`] += 1
         if count[letter] >= min and count[letter] <= max do
             total += 1
     }
@@ -51,4 +51,3 @@ func day2A()
     //Console.print("total: ", total)
     @assert(total == 524)
 }
-

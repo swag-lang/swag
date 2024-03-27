@@ -7,38 +7,38 @@ enum FormTextAlign
 
 struct FormTextRune
 {
-    back:           LinePathList
-    border:         LinePathList
-    advance:        f32
+    back:        LinePathList
+    border:      LinePathList
+    advance:     f32
 }
 
 struct FormText
 {
-    using base: BaseForm
-    fontSize:   f32 = 48
-    boldSize:   f32 = 0
-    text:       String
-    alignHorz   = FormTextAlign.Center
-    alignVert   = FormTextAlign.Center
-    lineSpacing = 14.0
-    fontStyle   = FontFamilyStyle.Regular
-    fontName:   String
+    using base:     BaseForm
+    fontSize:       f32 = 48
+    boldSize:       f32 = 0
+    text:           String
+    alignHorz       = FormTextAlign.Center
+    alignVert       = FormTextAlign.Center
+    lineSpacing     = 14.0
+    fontStyle       = FontFamilyStyle.Regular
+    fontName:       String
 
     #[Serialization.NoSerialize]
     {
-        gizmo:          GizmoRect
-        isDirty:        bool
-        isDirtyFont:    bool
-        typeFace:       *TypeFace
+        gizmo:           GizmoRect
+        isDirty:         bool
+        isDirtyFont:     bool
+        typeFace:        *TypeFace
 
-        cacheFace:      *TypeFace
-        cachebSize:     f32
-        cachesSize:     f32
-        cachefSize:     f32
-        cacheStyle:     JoinStyle
-        cacheFontN:     String
-        cacheFontS:     FontFamilyStyle
-        cacheBColorA:   u8
+        cacheFace:        *TypeFace
+        cachebSize:       f32
+        cachesSize:       f32
+        cachefSize:       f32
+        cacheStyle:       JoinStyle
+        cacheFontN:       String
+        cacheFontS:       FontFamilyStyle
+        cacheBColorA:     u8
 
         totalY:     f32
         runes:      HashTable'(rune, FormTextRune)
@@ -51,16 +51,16 @@ impl IForm for FormText
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormText) ptr
-        return  borderColor == other.borderColor and
-                borderSize  == other.borderSize and
-                backColor   == other.backColor and
-                alpha       == other.alpha and
-                fontSize    == other.fontSize and
-                boldSize    == other.boldSize and
-                paintShadow == other.paintShadow and
-                fontName    == other.fontName and
-                fontStyle   == other.fontStyle and
-                joinStyle   == other.joinStyle
+        return borderColor == other.borderColor and
+               borderSize == other.borderSize and
+               backColor == other.backColor and
+               alpha == other.alpha and
+               fontSize == other.fontSize and
+               boldSize == other.boldSize and
+               paintShadow == other.paintShadow and
+               fontName == other.fontName and
+               fontStyle == other.fontStyle and
+               joinStyle == other.joinStyle
     }
 
     mtd impl copy(dst, src: *BaseForm)
@@ -174,7 +174,7 @@ impl IForm for FormText
 
         if text.isEmpty()
         {
-            text = "A"
+            text    = "A"
             isDirty = true
         }
 
@@ -196,14 +196,18 @@ impl IForm for FormText
         {
             switch fontStyle
             {
-            case Regular:       face = g_App.theme.res.defaultTypeFaceR
-            case Bold:          face = g_App.theme.res.defaultTypeFaceB
-            case Italic:        face = g_App.theme.res.defaultTypeFaceI
-            case BoldItalic:    face = g_App.theme.res.defaultTypeFaceBI
+            case Regular:
+                face = g_App.theme.res.defaultTypeFaceR
+            case Bold:
+                face = g_App.theme.res.defaultTypeFaceB
+            case Italic:
+                face = g_App.theme.res.defaultTypeFaceI
+            case BoldItalic:
+                face = g_App.theme.res.defaultTypeFaceBI
             }
         }
 
-        if face  != cacheFace or
+        if face != cacheFace or
            bSize != cachebSize or
            fSize != cachefSize or
            sSize != cachesSize or
@@ -218,14 +222,14 @@ impl IForm for FormText
         var tokens = Tokenize.split(text, `\n`'rune)
         if isDirty
         {
-            isDirty = false
-            cacheFace = face
-            cachesSize = sSize
-            cachebSize = bSize
-            cachefSize = fSize
-            cacheStyle = joinStyle
-            cacheFontN = fontName
-            cacheFontS = fontStyle
+            isDirty      = false
+            cacheFace    = face
+            cachesSize   = sSize
+            cachebSize   = bSize
+            cachefSize   = fSize
+            cacheStyle   = joinStyle
+            cacheFontN   = fontName
+            cacheFontS   = fontStyle
             cacheBColorA = borderColor.a
 
             paths.clear()
@@ -235,7 +239,7 @@ impl IForm for FormText
             totalY = 0
             visit t, idx: tokens
             {
-                let pathl = &paths[idx * 2]
+                let pathl  = &paths[idx * 2]
                 let pathl1 = &paths[(idx * 2) + 1]
 
                 Utf8.visitRunes(|c| t)
@@ -282,7 +286,7 @@ impl IForm for FormText
             }
         }
 
-        var y0 = 0'f32
+        var y0      = 0'f32
         let addSize = (bSize + sSize) * z
 
         let count = paths.count / 2
@@ -294,9 +298,12 @@ impl IForm for FormText
         let aH = quickMode ? FormTextAlign.Center : alignHorz
         switch aV
         {
-        case LeftTop:       y0 = pp.y + addSize
-        case Center:        y0 = pp.vertCenter() - (totalYZ * 0.5)
-        case RightBottom:   y0 = pp.bottom() - addSize - totalYZ
+        case LeftTop:
+            y0 = pp.y + addSize
+        case Center:
+            y0 = pp.vertCenter() - (totalYZ * 0.5)
+        case RightBottom:
+            y0 = pp.bottom() - addSize - totalYZ
         }
 
         for var i = 0; i < paths.count; i += 2
@@ -309,9 +316,12 @@ impl IForm for FormText
             var x0 = 0'f32
             switch aH
             {
-            case LeftTop:       x0 = pp.x + addSize
-            case Center:        x0 = pp.horzCenter() - (wt * 0.5)
-            case RightBottom:   x0 = pp.right() - (wt + addSize)
+            case LeftTop:
+                x0 = pp.x + addSize
+            case Center:
+                x0 = pp.horzCenter() - (wt * 0.5)
+            case RightBottom:
+                x0 = pp.right() - (wt + addSize)
             }
 
             var pl: LinePathList
@@ -328,7 +338,7 @@ impl IForm for FormText
                     pl.paths.add(it.value.border.paths.toSlice())
                     painter.fillPath(&pl, borderColor)
                     pl.paths.count = 0
-                    painter.translateTransform(cast(f32) it.value.advance*z, 0)
+                    painter.translateTransform(cast(f32) it.value.advance * z, 0)
                 }
                 painter.popState()
             }
@@ -345,7 +355,7 @@ impl IForm for FormText
                     pl.paths.add(it.value.back.paths.toSlice())
                     painter.fillPath(&pl, backColor)
                     pl.paths.count = 0
-                    painter.translateTransform(cast(f32) it.value.advance*z, 0)
+                    painter.translateTransform(cast(f32) it.value.advance * z, 0)
                 }
                 painter.popState()
             }
@@ -361,14 +371,15 @@ impl IForm for FormText
 
         with gizmo
         {
-            .roundShape = true
-            .anchorSize = 10
-            .trackChange = true
+            .roundShape        = true
+            .anchorSize        = 10
+            .trackChange       = true
             .paintSimpleBorder = false
-            .paintBigBorder = true
+            .paintBigBorder    = true
         }
 
-        gizmo.sigChanged = closure|self|(g, first, hitMove) {
+        gizmo.sigChanged = closure|self|(g, first, hitMove)
+        {
             g.apply(self, first, hitMove)
         }
     }

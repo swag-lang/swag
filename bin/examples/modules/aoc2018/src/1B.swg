@@ -27,7 +27,7 @@ using Core
 func day1B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "1.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var values: Array's64
     visit l: lines do
@@ -51,4 +51,3 @@ func day1B()
         }
     }
 }
-

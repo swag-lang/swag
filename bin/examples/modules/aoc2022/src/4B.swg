@@ -18,7 +18,7 @@ using Core
 func day4B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total: u64
     visit l: lines
@@ -38,4 +38,3 @@ func day4B()
     //Console.print("total: ", total)
     @assert(total == 888)
 }
-

@@ -28,14 +28,14 @@ using Core
 func day5B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
-    var r: Parser.RegExp
-    var m: Array's32
+    var r:    Parser.RegExp
+    var m:    Array's32
     var total = 0'u64
 
     const W = 1000'u64
-    m.resize(W*W)
+    m.resize(W * W)
 
     visit l: lines
     {
@@ -48,11 +48,11 @@ func day5B()
             let y1 = StrConv.toS32(r.getCapture(4))
         }
 
-        loop i: Math.max(Math.abs(x1-x0),Math.abs(y1-y0))+1
+        loop i: Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) + 1
         {
-            let x: u64 = x0 + i*Math.sign(x1-x0)
-            let y: u64 = y0 + i*Math.sign(y1-y0)
-            let c = ref m.ref2(x,y,W)
+            let x: u64 = x0 + i * Math.sign(x1 - x0)
+            let y: u64 = y0 + i * Math.sign(y1 - y0)
+            let c  = ref m.ref2(x, y, W)
             total += (c == 1 ? 1 : 0)
             c += 1
         }
@@ -61,4 +61,3 @@ func day5B()
     //Console.print("total: ", total)
     @assert(total == 17604)
 }
-

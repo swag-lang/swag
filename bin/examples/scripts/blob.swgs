@@ -14,7 +14,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         return false
 
     let paintEvt = cast(*PaintEvent) evt
-    let painter = paintEvt.bc.painter
+    let painter  = paintEvt.bc.painter
 
     let centerX = wnd.position.width * 0.5
     let centerY = wnd.position.height * 0.5
@@ -28,7 +28,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     {
         let xoff = map(cos(a), -1, 1, 0, NoiseMax)
         let yoff = map(sin(a), -1, 1, 0, NoiseMax)
-        let r = map(Noise.perlin(xoff, yoff, zoff), -1, 1, 100, 200)
+        let r    = map(Noise.perlin(xoff, yoff, zoff), -1, 1, 100, 200)
 
         let x = r * cos(a)
         let y = r * sin(a)
@@ -52,6 +52,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 512, 512, title: "Blob", hook: &onEvent, init: &test)
 }

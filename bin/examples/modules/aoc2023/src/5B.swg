@@ -31,38 +31,54 @@ private enum Mode
 private struct Range
 {
     src, srcE: u64
-    dst: u64
+    dst:     u64
 }
 
-private var seeds:   Array'u64
+private var seeds: Array'u64
 private var convert: [7] Array'Range
 
 func day5B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var mode = Mode.Invalid
     visit l: lines
     {
-        if l.isEmpty() do continue
+        if l.isEmpty() do
+            continue
 
         switch l.toString()
         {
-        case "seed-to-soil map:":             mode = .ToSoil; continue
-        case "soil-to-fertilizer map:":       mode = .ToFertilizer; continue
-        case "fertilizer-to-water map:":      mode = .ToWater; continue
-        case "water-to-light map:":           mode = .ToLight; continue
-        case "light-to-temperature map:":     mode = .ToTemperature; continue
-        case "temperature-to-humidity map:":  mode = .ToHumidity; continue
-        case "humidity-to-location map:":     mode = .ToLocation; continue
+        case "seed-to-soil map:":
+            mode = .ToSoil
+            continue
+        case "soil-to-fertilizer map:":
+            mode = .ToFertilizer
+            continue
+        case "fertilizer-to-water map:":
+            mode = .ToWater
+            continue
+        case "water-to-light map:":
+            mode = .ToLight
+            continue
+        case "light-to-temperature map:":
+            mode = .ToTemperature
+            continue
+        case "temperature-to-humidity map:":
+            mode = .ToHumidity
+            continue
+        case "humidity-to-location map:":
+            mode = .ToLocation
+            continue
         }
 
         if mode == .Invalid
         {
             let tokens = Tokenize.split(l, `:`'u8)
             let values = Tokenize.split(tokens[1], ` `'u8)
-            visit v: values do seeds.add(assume StrConv.toU64(v))
+            visit v: values do
+                seeds.add(assume StrConv.toU64(v))
             continue
         }
 
@@ -77,7 +93,7 @@ func day5B()
 
     var ranges: Array'{start, end: u64}
     for var x = 0; x < seeds.count; x += 2 do
-        ranges.add({seeds[x], seeds[x]+seeds[x+1]-1})
+        ranges.add({seeds[x], seeds[x] + seeds[x + 1] - 1})
 
     loop i: 7
     {
@@ -117,4 +133,3 @@ func day5B()
     //Console.print("total: ", total)
     @assert(total == 69323688)
 }
-

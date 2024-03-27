@@ -7,9 +7,9 @@
 
 using Core, Gui, Pixel
 
-var g_Image:    Image
-var g_Texture:  Texture
-var g_Slider:   *Slider
+var g_Image:   Image
+var g_Texture: Texture
+var g_Slider:  *Slider
 
 func compute()
 {
@@ -19,8 +19,8 @@ func compute()
     g_Image.visitPixels(&data)
     {
         var params = cast(*@decltype(data)) userData
-        var minS = params.minS
-        var maxS = params.maxS
+        var minS   = params.minS
+        var maxS   = params.maxS
 
         var a = map(cast(f32) x, 0, cast(f32) g_Image.width, minS, maxS)
         var b = map(cast(f32) y, 0, cast(f32) g_Image.height, minS, maxS)
@@ -28,7 +28,7 @@ func compute()
         var ca = a
         var cb = b
 
-        var n = 0
+        var n               = 0
         const MaxIterations = 100
         while n < MaxIterations
         {
@@ -62,7 +62,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Slider = Slider.create(wnd, {0, 0, 200}, range: true)
         g_Slider.setMinMax(-2.5, 2.5)
         g_Slider.setRangeValues(-2.5, 2.5)
-        g_Slider.sigChanged += closure|wnd|(s)
+        g_Slider.sigChanged += closure|wnd|(s   )
         {
             compute()
             wnd.invalidate()
@@ -76,7 +76,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
+        let painter  = paintEvt.bc.painter
         let renderer = paintEvt.bc.renderer
         renderer.updateTexture(g_Texture, g_Image.pixels.buffer)
         painter.drawTexture(0, 0, cast(f32) w, cast(f32) h, g_Texture)
@@ -89,6 +89,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 #main
 {
     try Jobs.setNumWorkers(4)
-    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
     Application.runSurface(100, 100, 512, 512, title: "Mandelbrot", hook: &onEvent, init: &test)
 }

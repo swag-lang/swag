@@ -25,11 +25,11 @@ using Core
 func day3A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total: u32
     var x, y = 0
-    while y != lines.count-1
+    while y != lines.count - 1
     {
         x = cast(s32) ((x + 3) % lines[0].length)
         y += 1
@@ -39,4 +39,3 @@ func day3A()
     //Console.print("total: ", total)
     @assert(total == 211)
 }
-

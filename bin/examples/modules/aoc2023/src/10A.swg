@@ -97,19 +97,26 @@ Find the single giant loop starting at S. How many steps along the loop does it 
 using Core
 
 #[Swag.EnumFlags]
-private enum Dir{Zero=0,West, East, North, South}
+private enum Dir
+{
+    Zero  = 0
+    West
+    East
+    North
+    South
+}
 
 func day10A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "10.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var maze: Array'Dir
-    let width = lines[0].length+2
-    maze.resize(width*width)
+    let width = lines[0].length + 2
+    maze.resize(width * width)
 
     #[Swag.Mixin]
-    func mp(x0, y0: s64)->&Dir => maze.buffer + ((x0+1) + (y0+1)*width)
+    func mp(x0, y0: s64)->&Dir => maze.buffer + ((x0 + 1) + (y0 + 1) * width)
 
     var startX, startY: s64
     visit l, line: lines
@@ -119,36 +126,57 @@ func day10A()
             let one = ref mp(cast(s64) col, cast(s64) line)
             switch c
             {
-            case `-`: one = .West|.East
-            case `|`: one = .North|.South
-            case `L`: one = .North|.East
-            case `J`: one = .North|.West
-            case `7`: one = .South|.West
-            case `F`: one = .South|.East
-            case `S`: startX = col; startY = line
+            case `-`:
+                one = .West | .East
+            case `|`:
+                one = .North | .South
+            case `L`:
+                one = .North | .East
+            case `J`:
+                one = .North | .West
+            case `7`:
+                one = .South | .West
+            case `F`:
+                one = .South | .East
+            case `S`:
+                startX = col
+                startY = line
             }
         }
     }
 
     // Determin the shape of the start 'S'
     let start = ref mp(startX, startY)
-    if mp(startX-1, startY) & .East  do start |= .West
-    if mp(startX+1, startY) & .West  do start |= .East
-    if mp(startX, startY-1) & .South do start |= .North
-    if mp(startX, startY+1) & .North do start |= .South
+    if mp(startX - 1, startY) & .East do
+        start |= .West
+    if mp(startX + 1, startY) & .West do
+        start |= .East
+    if mp(startX, startY - 1) & .South do
+        start |= .North
+    if mp(startX, startY + 1) & .North do
+        start |= .South
+    var visitX = startX
 
     // Visit the maze
-    var visitX = startX, visitY = startY
-    var total = 0
+    var visitY = startY
+    var total  = 0
     loop
     {
         let one = mp(visitX, visitY)
         switch
         {
-        case one & .East:  visitX += 1; mp(visitX, visitY) &= ~.West
-        case one & .West:  visitX -= 1; mp(visitX, visitY) &= ~.East
-        case one & .North: visitY -= 1; mp(visitX, visitY) &= ~.South
-        case one & .South: visitY += 1; mp(visitX, visitY) &= ~.North
+        case one & .East:
+            visitX += 1
+            mp(visitX, visitY) &= ~.West
+        case one & .West:
+            visitX -= 1
+            mp(visitX, visitY) &= ~.East
+        case one & .North:
+            visitY -= 1
+            mp(visitX, visitY) &= ~.South
+        case one & .South:
+            visitY += 1
+            mp(visitX, visitY) &= ~.North
         }
 
         total += 1
@@ -161,4 +189,3 @@ func day10A()
     //Console.print("total: ", total, " ")
     @assert(total == 6870)
 }
-

@@ -2,8 +2,8 @@ using Core, Pixel, Gui
 
 var app: Application
 
-var g_Tab:  *Tab
-var g_Page: u32
+var g_Tab:      *Tab
+var g_Page:     u32
 const MAX_PAGES = 8
 
 #main
@@ -13,7 +13,7 @@ const MAX_PAGES = 8
     surface0.setIcon(app.theme.getIcon24(ThemeIcons24.WndMinimize, 20))
 
     let tab = Tab.create(surface0.wnd.view, {}, id: "bigtab")
-    g_Tab = tab
+    g_Tab         = tab
     tab.dockStyle = .Center
     tab.barLayout = .Fixed
     tab.setAllPaddings(10)
@@ -48,7 +48,8 @@ const MAX_PAGES = 8
     if Env.hasArg("swag.test")
     {
         tab.select(0)
-        app.sigFrame += func(app) {
+        app.sigFrame += func(app )
+        {
             Threading.Thread.sleep(100'ms)
             g_Page = (g_Page + 1) % MAX_PAGES
             if g_Page == 0 do

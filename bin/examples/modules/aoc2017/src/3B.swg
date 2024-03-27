@@ -33,7 +33,7 @@ func day3B()
         var s: s32
         loop dx: -1 to 1 do
             loop dy: -1 to 1 do
-                s += a.get({x+dx, y+dy}, 0)
+                s += a.get({x + dx, y + dy}, 0)
         return s
     }
 
@@ -48,7 +48,8 @@ func day3B()
             l += v.dl
             loop l
             {
-                x += v.dx; y += v.dy
+                x += v.dx
+                y += v.dy
                 let s = sum(x, y, arr)
                 if s >= D
                 {
@@ -62,4 +63,3 @@ func day3B()
         }
     }
 }
-

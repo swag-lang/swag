@@ -42,9 +42,9 @@ using Core
 func day7A() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
-    var lines = File.readAllLines(dataPath)
+    var lines    = File.readAllLines(dataPath)
 
-    var steps: HashTable'(u8, { prev, next: String })
+    var steps: HashTable'(u8, {prev, next: String})
     visit l: lines
     {
         steps.findOrAdd(l[5]).value.next.append(l[36])

@@ -24,7 +24,7 @@ using Core
 func day2B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var prg: Array's32
     visit v: Tokenize.split(lines[0], `,`'u8) do
@@ -34,27 +34,29 @@ func day2B()
     var x, y = 0
     loop
     {
-        op[1] = x; op[2] = y
+        op[1] = x
+        op[2] = y
 
         var ip = 0
         while op[ip] != 99
         {
             if op[ip] == 1 do
-                op[op[ip+3]] = op[op[ip+1]] + op[op[ip+2]]
+                op[op[ip + 3]] = op[op[ip + 1]] + op[op[ip + 2]]
             else do
-                op[op[ip+3]] = op[op[ip+1]] * op[op[ip+2]]
+                op[op[ip + 3]] = op[op[ip + 1]] * op[op[ip + 2]]
             ip += 4
         }
 
-        if op[0] == 19690720 do break
+        if op[0] == 19690720 do
+            break
 
         x = (x + 1) % 100
-        if x == 0 do y += 1
+        if x == 0 do
+            y += 1
 
         op = prg
     }
 
     //Console.print("total: ", 100*op[1]+op[2])
-    @assert(100*op[1]+op[2] == 7603)
+    @assert(100 * op[1] + op[2] == 7603)
 }
-

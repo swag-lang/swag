@@ -1,32 +1,26 @@
 using Gui
 
-const CmdIdSaveAsImage          = "CmdIdSaveAsImage"
-const CmdIdSaveAsLinkedImage    = "CmdIdSaveAsLinkedImage"
-const CmdIdOpenImage            = "CmdIdOpenImage"
-const CmdIdUpdateLinkedImage    = "CmdIdUpdateLinkedImage"
-const CmdIdDupCapture           = "CmdIdDupCapture"
-const CmdIdDeleteCapture        = "CmdIdDeleteCapture"
-const CmdIdFileLocation         = "CmdIdFileLocation"
-const CmdIdNewImage             = "CmdIdNewImage"
-const CmdIdNewFromClipboard     = "CmdIdNewFromClipboard"
+const CmdIdSaveAsImage       = "CmdIdSaveAsImage"
+const CmdIdSaveAsLinkedImage = "CmdIdSaveAsLinkedImage"
+const CmdIdOpenImage         = "CmdIdOpenImage"
+const CmdIdUpdateLinkedImage = "CmdIdUpdateLinkedImage"
+const CmdIdDupCapture        = "CmdIdDupCapture"
+const CmdIdDeleteCapture     = "CmdIdDeleteCapture"
+const CmdIdFileLocation      = "CmdIdFileLocation"
+const CmdIdNewImage          = "CmdIdNewImage"
+const CmdIdNewFromClipboard  = "CmdIdNewFromClipboard"
 
-struct ActionFile {}
+struct ActionFile
+{
+}
 impl IActionUI for ActionFile
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdSaveAsImage,
-             CmdIdSaveAsLinkedImage,
-             CmdIdOpenImage,
-             CmdIdUpdateLinkedImage,
-             CmdIdDupCapture,
-             CmdIdDeleteCapture,
-             CmdIdFileLocation,
-             CmdIdNewImage,
-             CmdIdNewFromClipboard:
-             return true
+        case CmdIdSaveAsImage, CmdIdSaveAsLinkedImage, CmdIdOpenImage, CmdIdUpdateLinkedImage, CmdIdDupCapture, CmdIdDeleteCapture, CmdIdFileLocation, CmdIdNewImage, CmdIdNewFromClipboard:
+            return true
         }
 
         return false
@@ -34,7 +28,7 @@ impl IActionUI for ActionFile
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let main    = cast(*MainWnd) cxt.wnd
         let capture = main.getCapture()
 
         switch cxt.id
@@ -45,17 +39,17 @@ impl IActionUI for ActionFile
 
         case CmdIdNewFromClipboard:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "New From Clipboard"
+            evt.name     = "New From Clipboard"
             evt.disabled = !Clipboard.hasImage()
 
         case CmdIdSaveAsImage:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Save As Image..."
+            evt.name     = "Save As Image..."
             evt.disabled = !capture
 
         case CmdIdSaveAsLinkedImage:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Save As Linked Image..."
+            evt.name     = "Save As Linked Image..."
             evt.disabled = !capture
 
         case CmdIdOpenImage:
@@ -64,22 +58,22 @@ impl IActionUI for ActionFile
 
         case CmdIdUpdateLinkedImage:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Update Linked Image"
+            evt.name     = "Update Linked Image"
             evt.disabled = !capture or capture.linkedImage.length == 0
 
         case CmdIdDeleteCapture:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Delete"
+            evt.name     = "Delete"
             evt.disabled = !capture
 
         case CmdIdDupCapture:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Duplicate"
+            evt.name     = "Duplicate"
             evt.disabled = !capture
 
         case CmdIdFileLocation:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Open File Location"
+            evt.name     = "Open File Location"
             evt.disabled = !capture
         }
 
@@ -88,7 +82,7 @@ impl IActionUI for ActionFile
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let main    = cast(*MainWnd) cxt.wnd
         let capture = main.getCapture()
 
         switch cxt.id
@@ -147,9 +141,9 @@ impl MainWnd
         var opt: FileDlgOptions
         with opt
         {
-            .state = &fileDlgState
-            .mode = .SelectOneFile
-            .title = "Load Image"
+            .state     = &fileDlgState
+            .mode      = .SelectOneFile
+            .title     = "Load Image"
             .btnOkName = "Load"
             .shortcuts.add({Env.SpecialDirectory.Desktop, "Desktop"})
             .shortcuts.add({Env.SpecialDirectory.UserPictures, "My Images"})
@@ -176,9 +170,9 @@ impl MainWnd
         var opt: FileDlgOptions
         with opt
         {
-            .state = &fileDlgState
-            .mode = .CreateFile
-            .title = "Save As Image"
+            .state     = &fileDlgState
+            .mode      = .CreateFile
+            .title     = "Save As Image"
             .btnOkName = "Save"
             .shortcuts.add({Env.SpecialDirectory.Desktop, "Desktop"})
             .shortcuts.add({Env.SpecialDirectory.UserPictures, "My Images"})
@@ -196,7 +190,7 @@ impl MainWnd
 
         Cursor.wait()
         let capture = getCapture()
-        var img = capture.toImage()
+        var img     = capture.toImage()
         catch img.save(dlg.getSelectedName())
         if @err() != null
         {
@@ -207,7 +201,7 @@ impl MainWnd
         if linked
         {
             capture.linkedImage = dlg.getSelectedName()
-            capture.changed = true
+            capture.changed     = true
             catch capture.save()
         }
     }

@@ -19,7 +19,7 @@ using Core
 func day2B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "2.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var r: Parser.RegExp
     assume r.compile(#"(\d+)-(\d+) ([a-z]): ([a-z])+"#)
@@ -29,8 +29,8 @@ func day2B()
     {
         discard r.match(l)
 
-        let min    = assume StrConv.toS32(r.getCapture(1))-1
-        let max    = assume StrConv.toS32(r.getCapture(2))-1
+        let min    = assume StrConv.toS32(r.getCapture(1)) - 1
+        let max    = assume StrConv.toS32(r.getCapture(2)) - 1
         let letter = r.getCapture(3)[0]
         let pwd    = r.getCapture(4)
 
@@ -41,4 +41,3 @@ func day2B()
     //Console.print("total: ", total)
     @assert(total == 485)
 }
-

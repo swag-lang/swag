@@ -49,7 +49,7 @@ using Core
 func day4A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total, pass: u32
     visit l: lines
@@ -58,11 +58,11 @@ func day4A()
         visit r: res
         {
             let res1 = Tokenize.split(r, `:`'u8)
-            let idx = Slice.findLinear(["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"], res1[0])
+            let idx  = Slice.findLinear(["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"], res1[0])
             pass |= 1 << cast(u32) idx
         }
 
-        if #index == lines.count-1 or lines[#index+1].length == 0
+        if #index == lines.count - 1 or lines[#index + 1].length == 0
         {
             if pass & 0b1111111 == 0b1111111 do
                 total += 1
@@ -73,4 +73,3 @@ func day4A()
     //Console.print("total: ", total)
     @assert(total == 264)
 }
-

@@ -23,20 +23,24 @@ func day3B()
     {
         x, y: s32
         #[Swag.Offset("x")]
-        v: u64
+        v:   u64
     }
 
     var pos: [2] Pos
     var set: HashSet'u64
     visit:Bytes c, i: assume File.readAllText(dataPath)
     {
-        let who = i&1
+        let who = i & 1
         switch c
         {
-        case `^`: pos[who].y -= 1
-        case `v`: pos[who].y += 1
-        case `<`: pos[who].x -= 1
-        case `>`: pos[who].x += 1
+        case `^`:
+            pos[who].y -= 1
+        case `v`:
+            pos[who].y += 1
+        case `<`:
+            pos[who].x -= 1
+        case `>`:
+            pos[who].x += 1
         }
 
         set.add(pos[who].v)
@@ -45,4 +49,3 @@ func day3B()
     //Console.print("total: ", set.count)
     @assert(set.count == 2631)
 }
-

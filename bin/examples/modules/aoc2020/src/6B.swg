@@ -46,7 +46,7 @@ func day6B()
 func day6B0()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var count: [26] s32
     var total, num: u64
@@ -57,9 +57,9 @@ func day6B0()
             num += 1
 
         visit:Bytes c: l do
-            count[c-`a`] += 1
+            count[c - `a`] += 1
 
-        if #index == lines.count-1 or lines[#index+1].length == 0
+        if #index == lines.count - 1 or lines[#index + 1].length == 0
         {
             visit c: count do
                 if c == num do
@@ -78,7 +78,7 @@ func day6B0()
 func day6B1()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    let lines = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total:    u64
     var lineVal:  u32
@@ -90,11 +90,11 @@ func day6B1()
         {
             lineVal = 0
             visit:Bytes c: l do
-                lineVal |= 1 << cast(u32) (c-`a`)
+                lineVal |= 1 << cast(u32) (c - `a`)
             interVal &= lineVal
         }
 
-        if #index == lines.count-1 or lines[#index+1].length == 0
+        if #index == lines.count - 1 or lines[#index + 1].length == 0
         {
             total += Math.countOnes(interVal)
             interVal = ~0

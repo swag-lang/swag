@@ -4,17 +4,17 @@ const CmdIdLibrary    = "CmdIdLibrary"
 const CmdIdExit       = "CmdIdExit"
 const CmdIdShowEditor = "CmdIdShowEditor"
 
-struct ActionGlobal {}
+struct ActionGlobal
+{
+}
 impl IActionUI for ActionGlobal
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdLibrary,
-             CmdIdExit,
-             CmdIdShowEditor:
-             return true
+        case CmdIdLibrary, CmdIdExit, CmdIdShowEditor:
+            return true
         }
 
         return false
@@ -36,7 +36,7 @@ impl IActionUI for ActionGlobal
 
         case CmdIdLibrary:
             evt.setFlags |= .Name | .ToolTip | .Checked
-            evt.name = "Library"
+            evt.name    = "Library"
             evt.toolTip = "Display captures library"
             evt.checked = main.libraryMode
         }

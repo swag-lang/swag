@@ -28,26 +28,26 @@ func day5B()
 func day5B0() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
-    var read = File.readAllText(dataPath)
+    var read     = File.readAllText(dataPath)
 
     var best = Swag.U64.Max
     loop x: 26
     {
         var line = read
-        var idx = 0
+        var idx  = 0
 
-        while idx < line.length-1
+        while idx < line.length - 1
         {
-            while Latin1.toLower(line[idx]) == x+`a` do
+            while Latin1.toLower(line[idx]) == x + `a` do
                 line.remove(idx, 1)
             idx += 1
         }
 
         idx = 0
-        while idx < line.length-1
+        while idx < line.length - 1
         {
-            while Latin1.isLower(line[idx]) != Latin1.isLower(line[idx+1]) and
-                  Latin1.toLower(line[idx]) == Latin1.toLower(line[idx+1])
+            while Latin1.isLower(line[idx]) != Latin1.isLower(line[idx + 1]) and
+                  Latin1.toLower(line[idx]) == Latin1.toLower(line[idx + 1])
             {
                 line.remove(idx, 2)
                 if idx >= line.length do
@@ -71,7 +71,7 @@ func day5B0() assume
 func day5B1() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
-    var read = File.readAllText(dataPath)
+    var read     = File.readAllText(dataPath)
 
     var best = Swag.U64.Max
     visit x: "abcdefghijklmnopqrstuvwxyz"

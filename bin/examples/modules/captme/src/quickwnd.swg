@@ -31,30 +31,30 @@ impl QuickStyle
 
 struct QuickButton
 {
-    using iconBtn: IconButton
-    formItf: IForm
+    using iconBtn:     IconButton
+    formItf:           IForm
 }
 
 struct QuickWnd
 {
-    using scrollWnd: ScrollWnd
+    using scrollWnd:     ScrollWnd
 
-    layout:         *WrapLayoutCtrl
-    main:           *MainWnd
+    layout:              *WrapLayoutCtrl
+    main:                *MainWnd
 
-    qsArrow:        QuickStyle
-    qsShape:        QuickStyle
-    qsImage:        QuickStyle
-    qsStep:         QuickStyle
-    qsLine:         QuickStyle
-    qsPolygon:      QuickStyle
-    qsText:         QuickStyle
-    qsFavorites:    QuickStyle
-    qsDraw:         QuickStyle
-    qsHighlight:    QuickStyle
-    qsPixSel:       QuickStyle
+    qsArrow:             QuickStyle
+    qsShape:             QuickStyle
+    qsImage:             QuickStyle
+    qsStep:              QuickStyle
+    qsLine:              QuickStyle
+    qsPolygon:           QuickStyle
+    qsText:              QuickStyle
+    qsFavorites:         QuickStyle
+    qsDraw:              QuickStyle
+    qsHighlight:         QuickStyle
+    qsPixSel:            QuickStyle
 
-    currentStyle:   *QuickStyle
+    currentStyle:        *QuickStyle
 }
 
 impl IWnd for QuickWnd
@@ -77,17 +77,17 @@ impl IWnd for QuickWnd
         {
             with evt.ser
             {
-                .serialize("QuickWnd.qsArrow",     &qsArrow)
-                .serialize("QuickWnd.qsShape",     &qsShape)
-                .serialize("QuickWnd.qsImage",     &qsImage)
-                .serialize("QuickWnd.qsStep",      &qsStep)
-                .serialize("QuickWnd.qsLine",      &qsLine)
-                .serialize("QuickWnd.qsPolygon",   &qsPolygon)
-                .serialize("QuickWnd.qsText",      &qsText)
+                .serialize("QuickWnd.qsArrow", &qsArrow)
+                .serialize("QuickWnd.qsShape", &qsShape)
+                .serialize("QuickWnd.qsImage", &qsImage)
+                .serialize("QuickWnd.qsStep", &qsStep)
+                .serialize("QuickWnd.qsLine", &qsLine)
+                .serialize("QuickWnd.qsPolygon", &qsPolygon)
+                .serialize("QuickWnd.qsText", &qsText)
                 .serialize("QuickWnd.qsFavorites", &qsFavorites)
-                .serialize("QuickWnd.qsDraw",      &qsDraw)
+                .serialize("QuickWnd.qsDraw", &qsDraw)
                 .serialize("QuickWnd.qsHighlight", &qsHighlight)
-                .serialize("QuickWnd.qsPixSel",    &qsPixSel)
+                .serialize("QuickWnd.qsPixSel", &qsPixSel)
             }
         }
     }
@@ -97,16 +97,26 @@ impl QuickWnd
 {
     mtd setDefault()
     {
-        if qsArrow.forms.isEmpty()      do defaultQuickStyleArrow()
-        if qsShape.forms.isEmpty()      do defaultQuickStyleShape()
-        if qsImage.forms.isEmpty()      do defaultQuickStyleImage()
-        if qsStep.forms.isEmpty()       do defaultQuickStyleStep()
-        if qsLine.forms.isEmpty()       do defaultQuickStyleLine()
-        if qsPolygon.forms.isEmpty()    do defaultQuickStylePolygon()
-        if qsText.forms.isEmpty()       do defaultQuickStyleText()
-        if qsDraw.forms.isEmpty()       do defaultQuickStyleDraw()
-        if qsHighlight.forms.isEmpty()  do defaultQuickStyleHighlight()
-        if qsPixSel.forms.isEmpty()     do defaultQuickStylePixSel()
+        if qsArrow.forms.isEmpty() do
+            defaultQuickStyleArrow()
+        if qsShape.forms.isEmpty() do
+            defaultQuickStyleShape()
+        if qsImage.forms.isEmpty() do
+            defaultQuickStyleImage()
+        if qsStep.forms.isEmpty() do
+            defaultQuickStyleStep()
+        if qsLine.forms.isEmpty() do
+            defaultQuickStyleLine()
+        if qsPolygon.forms.isEmpty() do
+            defaultQuickStylePolygon()
+        if qsText.forms.isEmpty() do
+            defaultQuickStyleText()
+        if qsDraw.forms.isEmpty() do
+            defaultQuickStyleDraw()
+        if qsHighlight.forms.isEmpty() do
+            defaultQuickStyleHighlight()
+        if qsPixSel.forms.isEmpty() do
+            defaultQuickStylePixSel()
         updateQuickStyles()
     }
 
@@ -133,7 +143,7 @@ impl QuickWnd
             .backgroundStyle = .Window
             .scrollWndFlags |= .ForceVertical | .SmallBar | .TransparentBar
 
-            .layout = WrapLayoutCtrl.create(quick)
+            .layout         = WrapLayoutCtrl.create(quick)
             .layout.padding = 6
             .layout.spacing = 6
             .setView(quick.layout)
@@ -148,8 +158,8 @@ impl QuickWnd
         {
             let form = Memory.new'FormArrow()
             form.borderSize = borderSize
-            form.startSize = startSize
-            form.endSize = endSize
+            form.startSize  = startSize
+            form.endSize    = endSize
             if startSize != 0 do
                 form.beginCap = .ArrowAnchor
             if endSize != 0 do
@@ -179,7 +189,7 @@ impl QuickWnd
         mtd add(borderSize: f32, color: Color)
         {
             let form = Memory.new'FormLine()
-            form.borderSize = borderSize
+            form.borderSize  = borderSize
             form.borderColor = color
             let it = cast(IForm) form
             it.setup(null)
@@ -202,10 +212,10 @@ impl QuickWnd
         mtd add(borderSize: f32, kind: FormShapeKind, color: Color, backColor: Color)
         {
             let form = Memory.new'FormShape()
-            form.borderSize = borderSize
+            form.borderSize  = borderSize
             form.borderColor = color
-            form.backColor = backColor
-            form.kind = kind
+            form.backColor   = backColor
+            form.kind        = kind
             let it = cast(IForm) form
             it.setup(null)
             qsShape.forms.add(it)
@@ -230,10 +240,10 @@ impl QuickWnd
         mtd add(borderSize: f32, kind: FormImageKind, color: Color)
         {
             let form = Memory.new'FormImage()
-            form.borderSize = borderSize
+            form.borderSize  = borderSize
             form.borderColor = color
-            form.backColor = Argb.Gray
-            form.kind = kind
+            form.backColor   = Argb.Gray
+            form.kind        = kind
             if borderSize == 0 do
                 form.paintShadow = false
             let it = cast(IForm) form
@@ -254,8 +264,8 @@ impl QuickWnd
         {
             let form = Memory.new'FormStep()
             form.borderColor = color
-            form.backColor = backColor
-            form.kind = kind
+            form.backColor   = backColor
+            form.kind        = kind
             let it = cast(IForm) form
             it.setup(null)
             qsStep.forms.add(it)
@@ -276,9 +286,9 @@ impl QuickWnd
         mtd add(borderSize: f32, color: Color)
         {
             let form = Memory.new'FormPolygon()
-            form.borderSize = borderSize
+            form.borderSize  = borderSize
             form.borderColor = color
-            form.backColor = 0
+            form.backColor   = 0
             let it = cast(IForm) form
             it.setup(null)
             qsPolygon.forms.add(it)
@@ -299,11 +309,11 @@ impl QuickWnd
         mtd add(borderSize, fontSize: f32, bdColor, bkColor: Color)
         {
             let form = Memory.new'FormText()
-            form.borderSize = borderSize
+            form.borderSize  = borderSize
             form.borderColor = bdColor
-            form.backColor = bkColor
-            form.fontSize = fontSize
-            form.text = "A"
+            form.backColor   = bkColor
+            form.fontSize    = fontSize
+            form.text        = "A"
             let it = cast(IForm) form
             it.setup(null)
             qsText.forms.add(it)
@@ -327,7 +337,7 @@ impl QuickWnd
         mtd add(borderSize: f32, color: Color)
         {
             let form = Memory.new'FormDraw()
-            form.borderSize = borderSize
+            form.borderSize  = borderSize
             form.borderColor = color
             let it = cast(IForm) form
             it.setup(null)
@@ -350,10 +360,10 @@ impl QuickWnd
         mtd addDraw(borderSize: f32, color: Color)
         {
             let form = Memory.new'FormDraw()
-            form.borderSize = borderSize
+            form.borderSize  = borderSize
             form.borderColor = color
-            form.alpha = 30
-            form.subKind = .Highlight
+            form.alpha       = 30
+            form.subKind     = .Highlight
             let it = cast(IForm) form
             it.setup(null)
             qsHighlight.forms.add(it)
@@ -362,12 +372,12 @@ impl QuickWnd
         mtd addShape(kind: FormShapeKind, backColor: Color)
         {
             let form = Memory.new'FormShape()
-            form.borderSize = 0
+            form.borderSize  = 0
             form.borderColor = Argb.Zero
-            form.backColor = backColor
-            form.alpha = 30
-            form.kind = kind
-            form.subKind = .Highlight
+            form.backColor   = backColor
+            form.alpha       = 30
+            form.kind        = kind
+            form.subKind     = .Highlight
             let it = cast(IForm) form
             it.setup(null)
             qsHighlight.forms.add(it)
@@ -376,11 +386,11 @@ impl QuickWnd
         mtd addPoly(backColor: Color)
         {
             let form = Memory.new'FormPolygon()
-            form.borderSize = 0
+            form.borderSize  = 0
             form.borderColor = Argb.Zero
-            form.backColor = backColor
-            form.alpha = 30
-            form.subKind = .Highlight
+            form.backColor   = backColor
+            form.alpha       = 30
+            form.subKind     = .Highlight
             let it = cast(IForm) form
             it.setup(null)
             qsHighlight.forms.add(it)
@@ -408,7 +418,7 @@ impl QuickWnd
         mtd addDraw()
         {
             let form = Memory.new'FormDraw()
-            form.subKind = .PixSel
+            form.subKind     = .PixSel
             form.paintShadow = false
             let it = cast(IForm) form
             it.setup(null)
@@ -418,8 +428,8 @@ impl QuickWnd
         mtd addShape(kind: FormShapeKind)
         {
             let form = Memory.new'FormShape()
-            form.kind = kind
-            form.subKind = .PixSel
+            form.kind        = kind
+            form.subKind     = .PixSel
             form.paintShadow = false
             let it = cast(IForm) form
             it.setup(null)
@@ -429,7 +439,7 @@ impl QuickWnd
         mtd addPoly()
         {
             let form = Memory.new'FormPolygon()
-            form.subKind = .PixSel
+            form.subKind     = .PixSel
             form.paintShadow = false
             let it = cast(IForm) form
             it.setup(null)
@@ -511,18 +521,30 @@ impl QuickWnd
         #[Swag.Complete]
         switch main.editMode
         {
-        case Arrow:     defaultQuickStyleArrow()
-        case Shape:     defaultQuickStyleShape()
-        case Image:     defaultQuickStyleImage()
-        case Step:      defaultQuickStyleStep()
-        case Line:      defaultQuickStyleLine()
-        case Polygon:   defaultQuickStylePolygon()
-        case Text:      defaultQuickStyleText()
-        case Draw:      defaultQuickStyleDraw()
-        case Highlight: defaultQuickStyleHighlight()
-        case PixSel:    defaultQuickStylePixSel()
-        case Favorites: break
-        case Selection: break
+        case Arrow:
+            defaultQuickStyleArrow()
+        case Shape:
+            defaultQuickStyleShape()
+        case Image:
+            defaultQuickStyleImage()
+        case Step:
+            defaultQuickStyleStep()
+        case Line:
+            defaultQuickStyleLine()
+        case Polygon:
+            defaultQuickStylePolygon()
+        case Text:
+            defaultQuickStyleText()
+        case Draw:
+            defaultQuickStyleDraw()
+        case Highlight:
+            defaultQuickStyleHighlight()
+        case PixSel:
+            defaultQuickStylePixSel()
+        case Favorites:
+            break
+        case Selection:
+            break
         }
 
         updateQuickStyles()
@@ -533,9 +555,9 @@ impl QuickWnd
         func paintForm(painter: *Painter, btnp: *QuickButton)
         {
             painter.setParams(.Antialiased)
-            let sel = cast(*BaseForm) @dataof(btnp.formItf)
-            let s = cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MinBorderSize, MaxBorderSize, 1, true)
-            var rect = Math.Rectangle{8 + s, 8 + s, 48 - 2*s, 48 - 2*s}
+            let sel  = cast(*BaseForm) @dataof(btnp.formItf)
+            let s    = cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MinBorderSize, MaxBorderSize, 1, true)
+            var rect = Math.Rectangle{8 + s, 8 + s, 48 - 2 * s, 48 - 2 * s}
 
             var title = ""
 
@@ -554,11 +576,16 @@ impl QuickWnd
                 let img = cast(*FormImage) @dataof(btnp.formItf)
                 switch img.kind
                 {
-                case Image:     title = "image"
-                case Blur:      title = "blur"
-                case Pixelate:  title = "pixelate"
-                case Zoom:      title = "zoom"
-                case Capture:   title = "capture"
+                case Image:
+                    title = "image"
+                case Blur:
+                    title = "blur"
+                case Pixelate:
+                    title = "pixelate"
+                case Zoom:
+                    title = "zoom"
+                case Capture:
+                    title = "capture"
                 }
             }
 
@@ -611,16 +638,19 @@ impl QuickWnd
             btn.setForm(.RoundSquare)
             btn.formItf = it
 
-            btn.sigPaintIcon = func(btn, bc, pos) {
+            btn.sigPaintIcon = func(btn, bc, pos)
+            {
                 paintForm(bc.painter, cast(*QuickButton) btn)
             }
 
-            btn.sigRightPressed += closure|self|(btn) {
+            btn.sigRightPressed += closure|self|(btn )
+            {
                 var rect = btn.getSurfaceRect()
                 self.btnPopup(btn, rect.center())
             }
 
-            btn.sigCheckChanged += closure|self, it|(btn) {
+            btn.sigCheckChanged += closure|self, it|(btn )
+            {
                 if !btn.isChecked do
                     return
 
@@ -641,8 +671,8 @@ impl QuickWnd
                     self.main.mdlFavorite  = &self.main.mdlFormImage
                 case FormStep:
                     let b = cast(*FormStep) @dataof(it)
-                    self.main.mdlFormStep  = dref b
-                    self.main.mdlFavorite  = &self.main.mdlFormStep
+                    self.main.mdlFormStep = dref b
+                    self.main.mdlFavorite = &self.main.mdlFormStep
                 case FormLine:
                     let b = cast(*FormLine) @dataof(it)
                     self.main.mdlFormLine  = dref b
@@ -651,13 +681,13 @@ impl QuickWnd
                 case FormPolygon:
                     let b = cast(*FormPolygon) @dataof(it)
                     self.main.mdlFormPolygon = dref b
-                    self.main.mdlFavorite  = &self.main.mdlFormPolygon
-                    self.main.mdlHighlight = &self.main.mdlFormPolygon
-                    self.main.mdlPixSel    = &self.main.mdlFormPolygon
+                    self.main.mdlFavorite    = &self.main.mdlFormPolygon
+                    self.main.mdlHighlight   = &self.main.mdlFormPolygon
+                    self.main.mdlPixSel      = &self.main.mdlFormPolygon
                 case FormArrow:
                     let b = cast(*FormArrow) @dataof(it)
                     self.main.mdlFormArrow = dref b
-                    self.main.mdlFavorite = &self.main.mdlFormArrow
+                    self.main.mdlFavorite  = &self.main.mdlFormArrow
                 case FormText:
                     let b = cast(*FormText) @dataof(it)
                     self.main.mdlFormText = dref b
@@ -713,7 +743,7 @@ impl QuickWnd
                     }
 
                     let undo = capture.newUndo(.SetFormFromModel)
-                    undo.mdlType = type
+                    undo.mdlType  = type
                     undo.mdlValue = mdlValue
                     capture.pushUndo(undo)
                 }
@@ -760,7 +790,7 @@ impl QuickWnd
             break
         }
 
-        let baseForm = cast(*BaseForm) @dataof(formItf)
+        let baseForm    = cast(*BaseForm) @dataof(formItf)
         var canAddModel = true
         if main.editMode == .Highlight
         {
@@ -780,14 +810,15 @@ impl QuickWnd
         {
             let btn = Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
             btn.userData = cast(*void) 1'u64 // This is the model button
-            btn.formItf = formItf
+            btn.formItf  = formItf
             btn.setForm(.RoundSquare)
             btn.style.addStyleSheetColors("btnIcon_Bk          0x0")
             btn.style.addStyleSheetColors("btnIcon_HotBk       0x0")
             btn.style.addStyleSheetColors("btnIcon_PressedBk   0x0")
             layout.sendResizeEvent()
 
-            btn.sigPaintIcon = func(btn, bc, pos) {
+            btn.sigPaintIcon = func(btn, bc, pos)
+            {
                 paintForm(bc.painter, cast(*QuickButton) btn)
                 var rect = btn.getClientRect()
                 rect.inflate(-2, -2)
@@ -796,7 +827,7 @@ impl QuickWnd
             }
 
             // Button to add a new style
-            let ico = getTheme().getIcon24(ThemeIcons24.Plus)
+            let ico  = getTheme().getIcon24(ThemeIcons24.Plus)
             let btn1 = IconButton.create(btn, ico, {64 - 26, 2, 24, 24})
             btn1.style.addStyleSheetColors("btnIcon_Bk          $hilight")
             btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")
@@ -806,7 +837,8 @@ impl QuickWnd
             layout.sendResizeEvent()
             setScrollSize(0, layout.resultHeight)
 
-            btn1.sigPressed += closure|self, main|(btn) {
+            btn1.sigPressed += closure|self, main|(btn )
+            {
                 let mode = main.getEditMode()
                 #[Swag.Complete]
                 switch mode
