@@ -8,14 +8,14 @@ These are all signed integers types `s8`, `s16`, `s32` and `s64`.
     let c: s32 = -3     // 32 bits signed integer
     let d: s64 = -4     // 64 bits signed integer
 
-    // Remember that the instrinsic '@assert' will raise an error at runtime if
+    // Remember that the intrinsic '@assert' will raise an error at runtime if
     // the enclosed expression is false.
     @assert(a == -1)
     @assert(b == -2)
     @assert(c == -3)
     @assert(d == -4)
 
-    // The instrinsic '@sizeof' gives the size, in bytes, of a variable.
+    // The intrinsic '@sizeof' gives the size, in bytes, of a variable.
     @assert(@sizeof(a) == 1)    // 'a' has type 's8', so this should be 1 byte.
     @assert(@sizeof(b) == 2)    // 'b' has type 's16', so this should be 2 bytes.
     @assert(@sizeof(c) == 4)

@@ -258,7 +258,7 @@ In a multiline or a raw string, if you end a line with `\\`, the following 'eol'
 
 /**
 # @stringof and @nameof
-You can use the instrinsic `@stringof` to return at compile time the result of a constant expression as a string.
+You can use the intrinsic `@stringof` to return at compile time the result of a constant expression as a string.
 */
 #test
 {
