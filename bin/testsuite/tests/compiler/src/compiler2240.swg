@@ -11,7 +11,7 @@ var G = 0
 #test
 {
     {
-        scopeLock()
+        scopeLock();
         @assert(a == 4)
         defer a += 1
     }

@@ -1,9 +1,5 @@
-#global testerror "Err0351"
+#global testerror "Err0351";
 
-using Swag
+using Swag;
 
-func main00()
-{
-    var b: f32 = 0
-    b <<= 1
-}
+func main00 () { var b: f32 = 0; b <<= 1; }

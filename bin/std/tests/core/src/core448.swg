@@ -2,7 +2,7 @@ using Core
 
 #test
 {
-    var s:  String = "abcd"
+    var s: String = "abcd"
     var s1: String
     visit s
     {

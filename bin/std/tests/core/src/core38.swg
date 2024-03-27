@@ -13,8 +13,11 @@ using Core.Input
         assume k.update()
         if k.isButtonPressed(GamePadButton.X)
         {
+            //@print("X\n")
         }
 
         var m = k.getPosition(GamePadButton.LeftTrigger)
+        //@print(cast(f64) m.y)
+        //@print("\n")
     }
 }

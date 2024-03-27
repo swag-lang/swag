@@ -11,10 +11,8 @@ func toto(stmt: code)
         #mixin stmt
     }
 
-    loop 5 do
-        titi(#index)
-    loop 5 do
-        titi(#index)
+    loop 5 do titi(#index)
+    loop 5 do titi(#index)
 }
 
 //#[Swag.PrintBc]

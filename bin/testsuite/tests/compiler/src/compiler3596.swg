@@ -1,9 +1,7 @@
 //#global testerror "Err0017"
 
 #[Swag.Overload]
-func(T) toto(x: T)
-{
-}
+func(T) toto(x: T) {}
 
 #test
 {

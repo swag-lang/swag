@@ -1,8 +1,6 @@
 #global testerror "Err0589"
 
-namespace A
-{
-}
+namespace A {}
 #test
 {
     A = 0

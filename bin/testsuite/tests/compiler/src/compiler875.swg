@@ -1,9 +1,9 @@
-func minMax(array: const [..] s32)->{min: s32, max: s32}
+func minMax(array: const [..] s32) -> {min: s32, max: s32}
 {
     var currentMin, currentMax = array[0]
     loop array
-    {
-        let value = array[#index]
+	{
+		let value = array[#index]
         if value < currentMin do
             currentMin = value
         elif value > currentMax do
@@ -16,7 +16,7 @@ func minMax(array: const [..] s32)->{min: s32, max: s32}
 //#[Swag.PrintBc]
 #test
 {
-    var bounds = minMax(array: [8, -6, 2, 109, 3, 71])
-    @assert(bounds.min == -6)
-    @assert(bounds.max == 109)
+	var bounds = minMax(array: [8, -6, 2, 109, 3, 71])
+	@assert(bounds.min == -6)
+	@assert(bounds.max == 109)
 }

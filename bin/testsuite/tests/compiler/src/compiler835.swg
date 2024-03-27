@@ -3,6 +3,6 @@
 
 #test
 {
-    return
-    var a = 0
+	return;
+	var a = 0
 }

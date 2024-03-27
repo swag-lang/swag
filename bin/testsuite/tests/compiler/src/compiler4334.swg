@@ -5,5 +5,5 @@ namespace A
 }
 
 //#global testerror
-var G: {a:   A.B, b:   s32 = 1}
+var G: {a: A.B, b: s32 = 1}
 var F: func(a: A.B, c: s32)

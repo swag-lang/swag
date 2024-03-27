@@ -1,14 +1,10 @@
 #global testerror "Err0556"
 
-struct(T) Arr
-{
-}
+struct(T) Arr {}
 impl Arr
 {
     //mtd opAffect(x: T) {}
-    mtd opAffect(x: const [..] T)
-    {
-    }
+    mtd opAffect(x: const [..] T) {}
 }
 
 #test

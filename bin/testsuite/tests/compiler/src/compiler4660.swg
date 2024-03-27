@@ -8,6 +8,6 @@ func totoXXX(x: s32)
 #test
 {
     const ptr = @typeof(totoXXX)
-    let ptr1  = &ptr.parameters[0]
+    let ptr1 = &ptr.parameters[0]
     @assert(ptr1.name == "x")
 }

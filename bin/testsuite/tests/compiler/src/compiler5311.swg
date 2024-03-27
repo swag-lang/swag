@@ -1,6 +1,4 @@
-struct(K, V) A
-{
-}
+struct(K, V) A {}
 impl A
 {
     mtd opAffect(slice: const [..] {k: K, v: V})

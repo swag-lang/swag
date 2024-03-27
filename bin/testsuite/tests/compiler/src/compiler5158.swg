@@ -1,17 +1,17 @@
 #global testerror "Err0717"
 
-enum XY : string
+enum XY: string
 {
     x = "X"
     y = "Y"
 }
 
-enum Z : string
+enum Z: string
 {
     z = "Z"
 }
 
-enum XYZ : string
+enum XYZ: string
 {
     using XY1
     using Z

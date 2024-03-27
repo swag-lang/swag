@@ -1,10 +1,10 @@
 struct TT
 {
-    value:      s64 = 456
-    value1:     s64 = 456
-    value2:     s64 = 456
-    value3:     s64 = 456
-    value4:     s64 = 456
+    value:  s64 = 456
+    value1: s64 = 456
+    value2: s64 = 456
+    value3: s64 = 456
+    value4: s64 = 456
 }
 
 typealias myStruct = TT

@@ -1,6 +1,4 @@
-struct ErrToto
-{
-}
+struct ErrToto{}
 func toto()->s64 throw
 {
     throw ErrToto{}

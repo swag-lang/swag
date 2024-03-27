@@ -1,11 +1,6 @@
-struct Err
-{
-}
+struct Err{}
 
-func titi() throw
-{
-    throw Err{}
-}
+func titi() throw { throw Err{}; }
 
 #[Swag.Inline]
 func toto() throw = titi()

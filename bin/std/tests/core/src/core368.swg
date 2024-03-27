@@ -18,7 +18,7 @@ struct Toto1
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin
-    let x1   = try dec.readAll'Toto1(buf.toSlice())
+    let x1 = try dec.readAll'Toto1(buf.toSlice())
     defer Memory.delete(x1)
 
     @assert(x1.x == 666)

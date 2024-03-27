@@ -1,4 +1,4 @@
-/* salut la foule
+	/* salut la foule
 		/* */
 	*/
 

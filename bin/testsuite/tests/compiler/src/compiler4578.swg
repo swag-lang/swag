@@ -15,7 +15,7 @@ func toto()->s32
 {
     var x: s32
     {
-        defer @assert(toto() == 1)
+    defer @assert(toto() == 1)
     }
     @assert(x == 0)
 }

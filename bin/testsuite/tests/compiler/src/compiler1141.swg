@@ -1,18 +1,15 @@
-namespace std
+namespace std.crypto
 {
-    namespace crypto
-    {
-        struct Mwc
-        {
-            x: u32
-        }
+	struct Mwc
+	{
+		x: u32
+	}
 
-        impl Mwc
-        {
-            func seed(using self, _seed: u32)
-            {
-                x = _seed
-            }
-        }
-    }
+	impl Mwc
+	{
+		func seed(using self, _seed: u32)
+		{
+			x = _seed
+		}
+	}
 }

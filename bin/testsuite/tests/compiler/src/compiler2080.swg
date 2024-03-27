@@ -1,14 +1,12 @@
 #global testerror "Err0644"
 
 //#[Swag.PrintBc]
-#test
+ #test
 {
     var value: any = 1
     switch value
     {
-    case 1:
-        break
-    case 2:
-        break
+        case 1: break
+        case 2: break
     }
 }

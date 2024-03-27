@@ -1,11 +1,7 @@
 #global testerror "Err0597"
 
-struct A
-{
-}
+struct A {}
 impl A
 {
-    mtd opSlice()
-    {
-    }
+    mtd opSlice() {}
 }

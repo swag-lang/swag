@@ -1,15 +1,7 @@
-struct A
-{
-    x, y: s32
-}
-struct B
-{
-    x, y: s32
-}
+struct A { x, y: s32; }
+struct B { x, y: s32; }
 
-struct(T) Array
-{
-}
+struct(T) Array {}
 
 #test
 {

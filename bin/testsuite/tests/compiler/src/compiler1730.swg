@@ -7,8 +7,8 @@
 
     struct B
     {
-        ggg:            bool
-        using root:     A
+        ggg: bool
+        using root:  A
     }
 
     func F(ptr: *A)

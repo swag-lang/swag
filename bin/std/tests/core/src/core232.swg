@@ -1,3 +1,4 @@
+
 using Core, Core.Directory
 
 //#[Swag.PrintBc]
@@ -9,11 +10,12 @@ using Core, Core.Directory
     let loc = #location.fileName
     let pth = Path.getDirectoryName(loc)
 
-    let res   = assume enumerate(pth, options)
+    let res = assume enumerate(pth, options)
     var count = 0
     visit p: res
     {
         count += 1
+        //Console.print("%\n", p.fullname)
     }
 
     @assert(count > 100)

@@ -1,17 +1,11 @@
 #global testerror "Err0613"
-struct A
-{
-}
+struct A {}
 impl A
 {
     #[Swag.Overload]
-    mtd toto()
-    {
-    }
+    mtd toto() {}
     #[Swag.Overload]
-    mtd toto(x: s32)
-    {
-    }
+    mtd toto(x: s32) {}
 }
 
 func titi(x: A)

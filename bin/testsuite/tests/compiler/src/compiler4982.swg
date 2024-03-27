@@ -4,8 +4,6 @@
 #[Swag.Optim("", false)]
 #test
 {
-    var a = 0
-    if a
-    {
-    }
+	var a = 0
+    if a {}
 }

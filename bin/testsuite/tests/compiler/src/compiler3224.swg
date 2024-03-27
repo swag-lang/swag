@@ -4,9 +4,7 @@ struct A
 
 impl A
 {
-    mtd toto()
-    {
-    }
+    mtd toto() {}
 }
 
 struct C

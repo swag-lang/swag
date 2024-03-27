@@ -5,7 +5,7 @@ struct Point
 
 interface IPrintable
 {
-    func print(self);
+    func print(self)
 }
 
 impl IPrintable for Point
@@ -24,5 +24,9 @@ impl IPrintable for Point
     let type = @typeof(pt)
     visit itf: type.interfaces
     {
+        /*if(itf.pointedType == IPrintable)
+        {
+            //var call: IPrintable = {&pt, &pt}
+        }*/
     }
 }

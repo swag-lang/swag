@@ -6,4 +6,5 @@
 #test
 {
     var x: code
+    //toto(6)
 }

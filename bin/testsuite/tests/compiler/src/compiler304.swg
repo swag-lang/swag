@@ -1,6 +1,6 @@
-var g:  bool = true
-var g1: s32 = 666
-var g2: u64 = 0xF000_000F
+var g: bool = true;
+var g1: s32 = 666;
+var g2: u64 = 0xF000_000F;
 
 /*
 func compare: (str1: string, str2: string)-> bool
@@ -27,7 +27,7 @@ func compare: (str1: string, str2: string)-> bool
 //#[Swag.PrintBc]
 #test
 {
-    @assert(g == true)
-    @assert(g1 == 666)
-    @assert(g2 == 0xF000_000F)
+	@assert(g == true);
+	@assert(g1 == 666);
+	@assert(g2 == 0xF000_000F);
 }

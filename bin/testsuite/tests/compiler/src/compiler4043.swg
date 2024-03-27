@@ -3,5 +3,5 @@
 {
     var a: func()
     var b: [..] s32
-    var x  = a != b
+    var x = a != b
 }

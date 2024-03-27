@@ -1,8 +1,8 @@
 struct TT
 {
-    value:      s64 = 456
-    value1:     s64 = 456
-    value2:     s64 = 456
+    value:  s64 = 456
+    value1: s64 = 456
+    value2: s64 = 456
 }
 
 func D(x: const &TT)

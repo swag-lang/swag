@@ -129,7 +129,7 @@ namespace __Win32RT
 #[Swag.NoDoc]
 struct MutexRW
 {
-    v: __Win32RT.SRWLOCK = __Win32RT.SRWLOCK_INIT
+    v:   __Win32RT.SRWLOCK = __Win32RT.SRWLOCK_INIT
 }
 
 #[Swag.NoDoc]

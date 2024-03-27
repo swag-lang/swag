@@ -1,16 +1,12 @@
 interface I
 {
-    func toto(self);
+    func toto(self)
 }
 
-struct X
-{
-}
+struct X {}
 impl I for X
 {
-    mtd impl toto()
-    {
-    }
+    mtd impl toto() {}
 }
 
 //#[Swag.PrintBc]

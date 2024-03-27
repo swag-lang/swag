@@ -12,9 +12,7 @@ impl Duration
     }
 }
 
-func toto(x: Duration)
-{
-}
+func toto(x: Duration) {}
 
 #test
 {

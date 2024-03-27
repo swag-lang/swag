@@ -1,7 +1,7 @@
 struct A
 {
-    x:     s32
-    y:     s32
+    x: s32
+    y: s32
 }
 
 //#[Swag.PrintBc, Swag.Optim(false)]

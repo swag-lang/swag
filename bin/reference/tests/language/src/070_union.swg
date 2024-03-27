@@ -1,3 +1,6 @@
+/**
+An union is just a struct where all fields are located at offset 0.
+*/
 
 #test
 {

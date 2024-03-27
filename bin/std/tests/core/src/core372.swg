@@ -2,18 +2,18 @@ using Core, Core.Serialization, Core.Math
 
 struct Toto1
 {
-    a:     s32 = 266
-    b:     [4] s32 = [1, 2, 3, 4]
-    c:     [4] f32 = [0, 1, 0, 1]
-    d:     [4] s8 = [-1, 0, 0, 0]
+    a: s32 = 266
+    b: [4] s32 = [1, 2, 3, 4]
+    c: [4] f32 = [0, 1, 0, 1]
+    d: [4] s8  = [-1, 0, 0, 0]
 }
 
 struct Toto2
 {
-    a:     f32
-    b:     [4] f32
-    c:     [4] bool
-    d:     [4] u8
+    a: f32
+    b: [4] f32
+    c: [4] bool
+    d: [4] u8
 }
 
 //#[Swag.PrintBc]
@@ -21,13 +21,13 @@ struct Toto2
 {
     var enc: Encoder'Write.TagBin
 
-    var x:   Toto1
+    var x: Toto1
     var buf: ConcatBuffer
     try enc.writeAll(&buf, x)
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin
-    let x1   = try dec.readAll'Toto2(buf.toSlice())
+    let x1 = try dec.readAll'Toto2(buf.toSlice())
     defer Memory.delete(x1)
 
     //Console.print(dref x1)

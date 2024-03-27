@@ -1,9 +1,11 @@
+;
+;
 
-var g = "toto"
+var g = "toto";
 
 //#[Swag.PrintBc]
 #test
 {
-    let c = @countof(g)
-    @assert(c == 4)
+	let c = @countof(g);
+	@assert(c == 4);
 }

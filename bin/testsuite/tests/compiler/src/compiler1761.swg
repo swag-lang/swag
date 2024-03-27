@@ -7,7 +7,7 @@
     }
 
     var a = 0
-    myMixin(0, 1)
-    myMixin(0, 2)
+    myMixin(0,1)
+    myMixin(0,2)
     @assert(a == 3)
 }

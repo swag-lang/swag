@@ -1,12 +1,13 @@
 
+
 //#[Swag.PrintBc]
 #test
 {
-    var a = 0
-    loop 1
-    {
-        defer a = 1
-        break
-    }
-    @assert(a == 1)
+	var a = 0
+	loop(1)
+	{
+		defer a = 1
+		break
+	}
+	@assert(a == 1)
 }

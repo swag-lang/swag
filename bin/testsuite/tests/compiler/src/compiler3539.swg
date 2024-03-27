@@ -36,7 +36,9 @@ struct Team
 #test
 {
     {
-        var team = Team{a: Thing.initxxx(1) + Thing.initxxx(2)}
+        var team = Team{
+            a: Thing.initxxx(1) + Thing.initxxx(2),
+        }
     }
 
     @assert(G == 3)

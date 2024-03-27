@@ -1,8 +1,5 @@
 #[Swag.ConstExpr]
-struct A
-{
-    x: s32
-}
+struct A { x: s32; }
 impl A
 {
     mtd(op: string) opBinary(value: s32)->Self
@@ -15,6 +12,6 @@ impl A
 {
     const C: A = {1}
     const D: s32 = 2
-    const E  = C - D
+    const E = C - D
     @assert(E.x == 2)
 }

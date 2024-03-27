@@ -4,14 +4,15 @@
 {
     {
         let month = 11'u16
-        let year  = 2020'u16
-        let day   = 8'u16
+        let year = 2020'u16
+        let day = 8'u16
 
         let m = (month + 9) % 12
-        let y = year - m / 10
-        @print("x: ", 365 * y)
+        let y = year - m/10
+        @print("x: ", 365*y)
         //@assert(365*y == 164040)
-        var dn = 365 * y +,over y / 4 +,over y / 400 +,over (m * 306 + 5) / 10 +,over day - 1 -,over y / 100
+        var dn = 365*y +,over y/4 +,over y/400 +,over (m*306 + 5)/10 +,over day-1 -,over y/100
         dn += 3
+        //@print(dn % 7)
     }
 }

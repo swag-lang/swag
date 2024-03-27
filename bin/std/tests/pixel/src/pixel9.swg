@@ -7,7 +7,7 @@ using Core, Pixel
     options.decodePixels = false
 
     var pathName = dataPath()
-    var files    = try Directory.enumerateFiles(pathName)
+    var files = try Directory.enumerateFiles(pathName)
     visit f: files
     {
         if Image.canLoad(f.fullname)

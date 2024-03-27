@@ -1,12 +1,12 @@
-#global testerror "Err0176"
-using Swag
+#global testerror "Err0176";
+using Swag;
 
 #[Compiler]
-func main()
+func main ()
 {
 }
 
-func main1()
+func main1 ()
 {
-    main()
+	main();
 }

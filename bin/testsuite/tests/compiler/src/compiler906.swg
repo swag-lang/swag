@@ -1,10 +1,11 @@
 
+
 func arithmeticMean(x: f64)
 {
-    @assert(x == 1.0)
+	@assert(x == 1.0)
 }
 
 #test
 {
-    arithmeticMean(1.0)
+	arithmeticMean(1.0)
 }

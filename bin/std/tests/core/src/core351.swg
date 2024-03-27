@@ -21,11 +21,13 @@ struct Toto
     //Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
-    let v    = try rea.readAll'Toto(str.toSlice())
+    let v = try rea.readAll'Toto(str.toSlice())
     defer Memory.delete(v)
 
     @assert(v.arr.count == 3)
     @assert(v.arr[0] == "toto")
     @assert(v.arr[1] == "titi")
     @assert(v.arr[2] == "tata")
+
+    //Console.print(dref v, "\n")
 }

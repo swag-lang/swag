@@ -1,22 +1,16 @@
 //#global testerror "Err0535"
 #global testerror "Err0508"
 
-struct A
-{
-}
+struct A {}
 interface I
 {
-    mtd x();
+    mtd x()
 }
 
 impl I for A
 {
-    mtd opDrop()
-    {
-    }
-    mtd impl x()
-    {
-    }
+    mtd opDrop(){}
+    mtd impl x(){}
 }
 
 #test

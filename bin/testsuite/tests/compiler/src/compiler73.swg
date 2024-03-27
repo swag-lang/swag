@@ -1,4 +1,5 @@
-#global testerror "Err0727"
+#global testerror "Err0727";
+;
 
-typealias myType = u32
-var a: myType1
+typealias myType = u32;
+var a: myType1;

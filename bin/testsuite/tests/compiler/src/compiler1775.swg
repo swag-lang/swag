@@ -1,5 +1,6 @@
 func test1()
 {
+
 }
 
 //#[Swag.PrintBc]

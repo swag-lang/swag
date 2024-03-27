@@ -3,8 +3,8 @@ using Core
 
 struct Node
 {
-    name:     String
-    kids:     Array'*Node
+    name:   String
+    kids:   Array'*Node
 }
 
 func release(node: *Node)
@@ -27,20 +27,17 @@ func walk(tree: const *Node, action: WalkAction, depth = 0)
 
 func print(tree: const *Node)
 {
-    walk(tree, func(node, depth)
-    {
-    }
-)
+    walk(tree, func(node, depth) {
+        //Console.printf("% %\n", 2 * depth, dref node)
+    })
 }
 
-func calcTotalDepth(tree: *Node)->s32
+func calcTotalDepth(tree: *Node) -> s32
 {
     var total = 0
-    walk(tree, closure|&total|(node, depth)
-    {
+    walk(tree, closure|&total|(node, depth) {
         dref total += depth
-    }
-)
+    })
 
     return total
 }

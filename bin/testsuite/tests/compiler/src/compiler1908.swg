@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x   = 666
+    var x = 666
     let ptr = @typeof(x)
     let val = @mkany(&x, ptr)
 

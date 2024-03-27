@@ -1,6 +1,6 @@
 func titi() throw
 {
-    }
+}
 
 func toto()
 {

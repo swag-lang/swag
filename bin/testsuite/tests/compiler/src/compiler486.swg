@@ -1,15 +1,17 @@
 
+
+
 //#[Swag.PrintBc]
 #test
 {
-    var res = T()
-    @assert(res.item0 == true)
-    @assert(res.item1 == 2)
-    @assert(res.item2 == false)
+	var res = T()
+	@assert(res.item0 == true)
+	@assert(res.item1 == 2)
+	@assert(res.item2 == false)
 }
 
 //#[Swag.PrintBc]
-func T()->{a: bool, b: s32, c: bool}
+func T()-> {a:bool,b:s32,c:bool}
 {
-    return {true, 2, false}
+	return {true,2,false}
 }

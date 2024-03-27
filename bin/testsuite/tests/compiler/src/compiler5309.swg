@@ -1,21 +1,13 @@
 //#global skip
 
-struct A
-{
-}
+struct A {}
 var G = [1, 2]
 impl A
 {
     #[Swag.Overload]
-    mtd const toto()->const [..] s32
-    {
-        return G
-    }
+    mtd const toto()->const [..] s32 { return G; }
     #[Swag.Overload]
-    mtd toto()->[..] s32
-    {
-        return G
-    }
+    mtd toto()->[..] s32 { return G; }
 }
 
 #test

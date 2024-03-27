@@ -1,9 +1,9 @@
 //#global testerror
-func(N: s32) toto(v: f32)->[N] f32
+func(N: s32) toto(v: f32)->[N]f32
 {
     var result: retval
     loop i: N do
-        result[i] = v * v
+        result[i] = v*v
     return result
 }
 

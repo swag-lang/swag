@@ -22,6 +22,6 @@ impl A
 #test
 {
     var a: A
-    let b  = a[0] - a[1]
+    let b = a[0] - a[1]
     @assert(b == 11)
 }

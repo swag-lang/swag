@@ -2,8 +2,8 @@
 
 struct(A, B) Foozle
 {
-    a:     A
-    b:     B
+    a: A
+    b: B
 }
 
 func yes_auto2(x: Foozle, y: Foozle)

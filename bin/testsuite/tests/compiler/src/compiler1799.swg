@@ -1,12 +1,9 @@
 #global testerror "Err0626"
 
-namespace A
+namespace A.B
 {
-    namespace B
+    func toto()
     {
-        func toto()
-        {
-        }
     }
 }
 

@@ -2,12 +2,12 @@
 
 enum OT
 {
-    A = 1
-    B
+	A = 1
+	B
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var pt: [1] OT
+	var pt: [1] OT
 }

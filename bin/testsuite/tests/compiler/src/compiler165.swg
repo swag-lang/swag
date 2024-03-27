@@ -1,11 +1,13 @@
-using Swag
+;
+;
+using Swag;
 
-func main()
+func main ()
 {
-    @assert(true)
+	@assert(true);
 }
 
 #run
 {
-    main()
+	main()
 }

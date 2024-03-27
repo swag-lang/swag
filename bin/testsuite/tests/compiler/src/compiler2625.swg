@@ -2,13 +2,13 @@
 {
     enum AA
     {
-        }
+    }
 }
 #else
 {
     enum AA
     {
-        }
+    }
 }
 
 #if true

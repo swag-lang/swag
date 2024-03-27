@@ -1,7 +1,7 @@
 struct S
 {
-    down:     s32 = 10
-    up:       s32 = 20
+    down:   s32 = 10
+    up:     s32 = 20
 }
 
 impl S

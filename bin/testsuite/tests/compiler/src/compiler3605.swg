@@ -1,13 +1,13 @@
 //#global skip
 struct(K, V) A
 {
-    k:     K
-    v:     V
+    k: K
+    v: V
 }
 
 #test
 {
-    enum E : string
+    enum E: string
     {
         N = null
         R = "toto"

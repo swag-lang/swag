@@ -1,13 +1,10 @@
 var G = 0
 
-namespace A
+namespace A.B
 {
-    namespace B
+    func toto(x: s32)
     {
-        func toto(x: s32)
-        {
-            G += x
-        }
+        G += x
     }
 }
 

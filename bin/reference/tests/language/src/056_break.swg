@@ -5,7 +5,7 @@ We have already seen than `break` is used to exit a `loop`, `visit`, `while`, `f
 {
     loop 10 do
         break
-    for var i = 0; i < 10; i += 1 do
+    for var i = 0; i < 10; i += 1; do
         break
     while false do
         break
@@ -21,7 +21,7 @@ By default, `break` will exit the parent scope only.
     {
         loop 10
         {
-            break // Exit the inner loop...
+            break   // Exit the inner loop...
         }
 
         // ...and continue execution here
@@ -44,7 +44,7 @@ But you can **name a scope** with the `#scope` compiler keyword, and exit to the
         loop 10
         {
             cpt += 1
-            break BigScope
+            break BigScope  // Break to the outer scope...
         }
 
         @assert(false)
@@ -65,7 +65,7 @@ When used with a scope, a continue is a way to go back to the start of the scope
         cpt += 1
         if cpt == 5 do
             break
-        continue // Loop
+        continue    // Loop
     }
 
     @assert(cpt == 5)
@@ -104,8 +104,7 @@ Note that a scope can be followed by a simple statement, not always a block.
 */
 #test
 {
-    #scope Up
-    loop 10
+    #scope Up loop 10
     {
         loop 10
         {

@@ -6,7 +6,10 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
     G += 1
 }
 
-#[Safety("overflow", true), Optim("", false), Swag.Warn("Wrn0003", Swag.WarnLevel.Disable)]
+#[Safety("overflow", true)]
+#[Optim("", false)]
+//#[PrintBc, optim("bc", false)]
+#[Swag.Warn("Wrn0003", Swag.WarnLevel.Disable)]
 #test
 {
     {
@@ -15,7 +18,7 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
         defer cxt.panic = null
 
         {
-            var x  = -1's8
+            var x = -1's8
             var x0 = cast(u8) x
             var x1 = cast(u16) x
             var x2 = cast(u32) x
@@ -23,7 +26,7 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
         }
 
         {
-            var x  = -1's16
+            var x = -1's16
             var x0 = cast(u8) x
             var x1 = cast(u16) x
             var x2 = cast(u32) x
@@ -31,7 +34,7 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
         }
 
         {
-            var x  = -1's32
+            var x = -1's32
             var x0 = cast(u8) x
             var x1 = cast(u16) x
             var x2 = cast(u32) x
@@ -39,7 +42,7 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
         }
 
         {
-            var x  = -1's64
+            var x = -1's64
             var x0 = cast(u8) x
             var x1 = cast(u16) x
             var x2 = cast(u32) x
@@ -47,18 +50,18 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
         }
 
         {
-            var x  = Swag.S16.Max
+            var x = Swag.S16.Max
             var x0 = cast(u8) x
         }
 
         {
-            var x  = Swag.S32.Max
+            var x = Swag.S32.Max
             var x0 = cast(u8) x
             var x1 = cast(u16) x
         }
 
         {
-            var x  = Swag.S64.Max
+            var x = Swag.S64.Max
             var x0 = cast(u8) x
             var x1 = cast(u16) x
             var x2 = cast(u32) x

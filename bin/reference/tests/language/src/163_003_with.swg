@@ -2,10 +2,7 @@
 You can use `with` to avoid repeating the same variable again and again. You can then access fields with a simple `.`.
 */
 
-struct Point
-{
-    x, y: s32
-}
+struct Point { x, y: s32; }
 
 impl Point
 {
@@ -23,8 +20,8 @@ impl Point
     var pt: Point
     with pt
     {
-        .x = 1
-        .y = 2
+        .x = 1   // equivalent to pt.x
+        .y = 2   // equivalent to pt.y
     }
 
     @assert(pt.x == 1)
@@ -39,10 +36,10 @@ Works for function calls to.
     var pt: Point
     with pt
     {
-        .setOne() // equivalent to pt.setOne() or setOne(pt)
-        .y = 2 // equivalent to pt.y
-        @assert(.x == 1) // equivalent to pt.x
-        @assert(.y == 2) // equivalent to pt.y
+        .setOne()           // equivalent to pt.setOne() or setOne(pt)
+        .y = 2              // equivalent to pt.y
+        @assert(.x == 1)    // equivalent to pt.x
+        @assert(.y == 2)    // equivalent to pt.y
         @assert(pt.x == 1)
         @assert(pt.y == 2)
     }
@@ -100,12 +97,9 @@ Or an affectation statement.
     @assert(pt.x == 10 and pt.y == 20)
 }
 
+
 namespace NameSpace
 {
-    func inside0()
-    {
-    }
-    func inside1()
-    {
-    }
+    func inside0() {}
+    func inside1() {}
 }

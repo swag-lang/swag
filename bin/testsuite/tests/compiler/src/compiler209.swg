@@ -1,12 +1,14 @@
-using Swag
+;
+;
+using Swag;
 
-func main(a: f64, b: f64)
+func main (a: f64, b: f64)
 {
-    @assert(a == 666)
-    @assert(b == 555)
+	@assert(a == 666);
+	@assert(b == 555);
 }
 
 #run
 {
-    main(666'f64, 555'f64)
+	main(666'f64, 555'f64);
 }

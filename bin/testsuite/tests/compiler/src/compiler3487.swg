@@ -6,7 +6,5 @@ struct A
 #test
 {
     var v: A
-    v.fct = closure||(s)
-    {
-    }
+    v.fct = closure||(s) {}
 }

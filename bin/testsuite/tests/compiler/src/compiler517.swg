@@ -1,3 +1,5 @@
 
+
+
 //#[Swag.PrintBc]
-var x, y = 666
+var x, y = 666;

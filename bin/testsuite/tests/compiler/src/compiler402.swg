@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    let c = 0xFFFFFFFF_FFFFFFFF
+	let c = 0xFFFFFFFF_FFFFFFFF;
     #[Swag.Overflow(true)]
-    let a = c >> 56
-    @assert(a == 0xFF)
+	let a = c >> 56;
+	@assert(a == 0xFF);
 }

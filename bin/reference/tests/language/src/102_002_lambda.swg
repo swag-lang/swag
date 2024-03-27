@@ -3,9 +3,7 @@ A lambda is just a **pointer to a function**.
 */
 #test
 {
-    func myFunction0()
-    {
-    }
+    func myFunction0() {}
     func myFunction1(x: s32) => x * x
 
     // 'ptr0' is declared as a pointer to a function that takes no parameter, and returns nothing
@@ -61,11 +59,7 @@ Anonymous functions can be passed as parameters to another function.
 
     @assert(toDo(4, func(x: s32) => x * x) == 16)
     @assert(toDo(4, func(x: s32) => x + x) == 8)
-    @assert(toDo(4, func(x: s32)->s32
-    {
-        return x - x
-    }
-) == 0)
+    @assert(toDo(4, func(x: s32)->s32 { return x - x; }) == 0)
 }
 
 /**
@@ -78,11 +72,7 @@ The types of the parameters can be deduced.
 
     @assert(toDo(4, func(x) => x * x) == 16)
     @assert(toDo(4, func(x) => x + x) == 8)
-    @assert(toDo(4, func(x)
-    {
-        return x - x
-    }
-) == 0)
+    @assert(toDo(4, func(x) { return x - x; }) == 0)
 }
 
 /**
@@ -95,10 +85,7 @@ When you affect a lambda to a variable, the type of parameters and the return ty
     fct = func(x, y) => x == y
     @assert(fct(10, 10))
 
-    fct = func(x, y)
-    {
-        return x != y
-    }
+    fct = func(x, y) { return x != y; }
     @assert(fct(20, 120))
 }
 
@@ -108,8 +95,7 @@ Lambdas can have default parameters values.
 #test
 {
     {
-        let x = func(val = true)
-        {
+        let x = func(val = true) {
             @assert(val == true)
         }
 
@@ -119,8 +105,7 @@ Lambdas can have default parameters values.
     {
         var x: func(val: bool = true)
 
-        x = func(val)
-        {
+        x = func(val) {
             @assert(val == true)
         }
 

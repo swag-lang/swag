@@ -1,7 +1,5 @@
-#global testerror "Err0217"
+#global testerror "Err0217";
 
-func Titi()
-{
-}
+func Titi() {}
 #[Titi()]
 const A = 0

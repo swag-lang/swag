@@ -4,5 +4,6 @@
 {
     visit "toto"
     {
+        //@print("x")
     }
 }

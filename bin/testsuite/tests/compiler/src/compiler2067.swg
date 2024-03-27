@@ -1,5 +1,5 @@
 var g_Argv: [128] string
-var g_Argc  = 0'u32
+var g_Argc = 0'u32
 
 func init(x: string)
 {
@@ -8,32 +8,26 @@ func init(x: string)
     g_Argc = 0
     while dref cmdLine
     {
-        while dref cmdLine == ` `'u8 do
-            cmdLine += 1
-        if dref cmdLine == 0 do
-            break
+        while dref cmdLine == ` `'u8 do cmdLine += 1
+        if dref cmdLine == 0 do break
 
         if dref cmdLine == `"`'u8
         {
             cmdLine += 1
             let start = cmdLine
-            while dref cmdLine and dref cmdLine != `"`'u8 do
-                cmdLine += 1
+            while dref cmdLine and dref cmdLine != `"`'u8 do cmdLine += 1
             g_Argv[g_Argc] = @mkstring(start, cast(u64) (cmdLine - start))
-            if dref cmdLine do
-                cmdLine += 1
+            if dref cmdLine do cmdLine += 1
         }
         else
         {
             let start = cmdLine
-            while dref cmdLine and dref cmdLine != ` `'u8 do
-                cmdLine += 1
+            while dref cmdLine and dref cmdLine != ` `'u8 do cmdLine += 1
             g_Argv[g_Argc] = @mkstring(start, cast(u64) (cmdLine - start))
         }
 
         g_Argc += 1
-        while dref cmdLine and dref cmdLine == ` `'u8 do
-            cmdLine += 1
+        while dref cmdLine and dref cmdLine == ` `'u8 do cmdLine += 1
     }
 }
 

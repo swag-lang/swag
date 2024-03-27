@@ -6,4 +6,4 @@ struct AA
 }
 
 const v: AA{10, 20}
-var vv:  AA{10, 20} = v
+var vv: AA{10, 20} = v

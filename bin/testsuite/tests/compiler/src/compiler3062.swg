@@ -1,6 +1,7 @@
 #global testerror "Err0374"
 struct AA
 {
+
 }
 
 #test

@@ -1,6 +1,8 @@
 
+
+
 //#[Swag.PrintBc]
 #test
 {
-    var a: [..] s32 = null
+	var a: [..] s32 = null;
 }

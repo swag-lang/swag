@@ -5,14 +5,10 @@ struct C
 
 impl C
 {
-    mtd opAffect(x: s32)
-    {
-    }
+    mtd opAffect(x: s32) {}
 }
 
-func toto(x: C)
-{
-}
+func toto(x: C) {}
 
 #test
 {

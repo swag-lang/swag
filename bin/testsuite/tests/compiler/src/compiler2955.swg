@@ -12,9 +12,7 @@ impl Color
     }
 }
 
-struct Painter
-{
-}
+struct Painter{}
 impl Painter
 {
     func draw(using self, col: Color, size: f32)

@@ -7,6 +7,5 @@ func toto(fct: func(s32, s32)->bool)
     toto(func(x, y)
     {
         return true
-    }
-)
+    })
 }

@@ -6,15 +6,11 @@ struct(T) A
 
 impl A
 {
-    mtd(op: string) opAssign(t: T)
-    {
-    }
+    mtd(op: string) opAssign(t: T) {}
 }
 
 #test
 {
     var xxxx: A'closure(s32)
-    xxxx += func(a)
-    {
-    }
+    xxxx += func(a) { }
 }

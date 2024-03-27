@@ -3,26 +3,26 @@ const TITI = true
 
 #if TOTO
 {
-    func toto()
-    {
-        @assert(false)
-    }
+	func toto()
+	{
+		@assert(false)
+	}
 }
 #elif TOTO
 {
-    func toto()
-    {
-        @assert(false)
-    }
+	func toto()
+	{
+		@assert(false)
+	}
 }
 #elif TITI and !TOTO
 {
-    func toto()
-    {
-    }
+	func toto()
+	{
+	}
 }
 
 #test
 {
-    toto()
+	toto()
 }

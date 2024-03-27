@@ -1,6 +1,4 @@
-struct V
-{
-}
+struct V {}
 impl V
 {
     mtd(op: string) const opBinary(other: const &V)->Self

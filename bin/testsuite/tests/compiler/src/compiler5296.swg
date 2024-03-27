@@ -1,6 +1,4 @@
-struct(T) Arr
-{
-}
+struct(T) Arr {}
 
 func titi()
 {

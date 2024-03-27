@@ -1,5 +1,5 @@
 #[Swag.AttrUsage(Swag.AttributeUsage.StructVariable)]
-attr toto()
+attr toto();
 
 struct A
 {

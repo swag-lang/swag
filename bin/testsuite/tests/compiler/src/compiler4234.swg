@@ -7,7 +7,7 @@ func toto(x: string)->string
     {
         let y = x
         @print(y)
-        return "return \"5\"" //"return \"" ++ x ++ "\""
+        return "return \"5\""//"return \"" ++ x ++ "\""
     }
 }
 

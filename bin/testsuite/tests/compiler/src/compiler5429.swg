@@ -8,4 +8,5 @@ namespace A
 struct B
 {
     t: T
+    //x: {a: T}
 }

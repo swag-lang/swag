@@ -1,7 +1,8 @@
 func(N) titi()->N => true
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false), Swag.Safety("", false)]
+#[Swag.Optim("", false)]
+#[Swag.Safety("", false)]
 func(N) toto()->N
 {
     let aa = titi'N()

@@ -8,14 +8,14 @@ using Core
     {
         switch i
         {
-        case 0:
-            @assert(c == `A`'rune)
-        case 1:
-            @assert(c == `⻨`'rune)
-        case 4:
-            @assert(c == `C`'rune)
-        default:
-            @assert(false)
+            case 0:
+                @assert(c == `A`'rune)
+            case 1:
+                @assert(c == `⻨`'rune)
+            case 4:
+                @assert(c == `C`'rune)
+            default:
+                @assert(false)
         }
     }
 }

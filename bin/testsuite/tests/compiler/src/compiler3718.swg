@@ -2,9 +2,7 @@
 
 var READ, TOTO: s32
 
-struct Err
-{
-}
+struct Err{}
 
 func toto() throw
 {

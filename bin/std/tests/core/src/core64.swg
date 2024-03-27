@@ -1,3 +1,4 @@
+
 using Core
 
 struct X
@@ -12,6 +13,7 @@ impl X
     func opDrop(using self)
     {
         G += 1
+        //@print("opDrop64 ")
     }
 }
 
@@ -20,7 +22,7 @@ impl X
 {
     {
         G = 0
-        var arr:   Array'X
+        var arr: Array'X
         var value: X
         arr.add(value)
     }

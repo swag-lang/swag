@@ -1,11 +1,8 @@
-struct A
-{
-    x, y: s32
-}
+struct A { x, y: s32; }
 
 #test
 {
-    var arr:  [4] A
+    var arr: [4] A
     let slice = arr[..]
     visit v: slice
     {

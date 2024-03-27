@@ -1,13 +1,10 @@
 #global testerror "Err0055"
-struct(T) A
-{
-}
+struct(T) A {}
 
 impl A
 {
-    mtd add(x: T)
-    {
-    }
+    mtd add(x: T) {}
+    //mtd add(x: const [..] T) {}
 }
 
 #test

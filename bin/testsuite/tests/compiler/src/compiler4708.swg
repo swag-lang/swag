@@ -1,18 +1,8 @@
 #global testerror "Err0708"
-enum RGB
-{
-    R
-    G
-    B
-}
-enum RGB1
-{
-    R
-    G
-    B
-}
+enum RGB { R; G; B; }
+enum RGB1 { R; G; B; }
 
-var g:  RGB = R
+var g: RGB = R
 var g1: RGB1 = R
 
 func toto()

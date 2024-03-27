@@ -1,38 +1,38 @@
 struct Point
 {
-    x:     s32
-    y:     s32
+	x: s32
+	y: s32
 }
 
 impl Point
 {
-    func(op: string) opIndexAssign(self, i: u64, v: s32)
-    {
-        #if op == "+="
-        {
-            if (i == 0) do
-                self.x += v
-            else do
-                self.y += v
-        }
-        #if op == "-="
-        {
-            if (i == 0) do
-                self.x -= v
-            else do
-                self.y -= v
-        }
-    }
+	func(op: string) opIndexAssign(self, i: u64, v: s32)
+	{
+		#if op == "+="
+		{
+			if(i == 0) do
+				self.x += v;
+			else do
+				self.y += v;
+		}
+		#if op == "-="
+		{
+			if(i == 0) do
+				self.x -= v;
+			else do
+				self.y -= v;
+		}
+	}
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var pt: Point
-    pt[1] += 10
-    @assert(pt.y == 10)
-    pt[1] += 10
-    @assert(pt.y == 20)
-    pt[1] -= 5
-    @assert(pt.y == 15)
+	var pt: Point
+	pt[1] += 10
+	@assert(pt.y == 10)
+	pt[1] += 10
+	@assert(pt.y == 20)
+	pt[1] -= 5
+	@assert(pt.y == 15)
 }

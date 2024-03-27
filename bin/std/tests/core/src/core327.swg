@@ -1,13 +1,13 @@
 using Swag, Core, Core.StrConv
 
-#[AttrUsage(AttributeUsage.Struct | AttributeUsage.Gen)]
-attr GenOpEquals()
+#[AttrUsage(AttributeUsage.Struct|AttributeUsage.Gen)]
+attr GenOpEquals();
 
 #[GenOpEquals]
 struct A
 {
-    a:     String
-    b:     f32
+    a: String
+    b: f32
 }
 
 #message(Swag.CompilerMsgMask.AttributeGen)
@@ -38,6 +38,7 @@ struct A
     sb.appendString("}\n")
 
     itf.compileString(sb.toString())
+    //@print("EXIT\n")
 }
 
 //#[PrintBc]

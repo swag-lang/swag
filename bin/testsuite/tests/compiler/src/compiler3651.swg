@@ -1,12 +1,8 @@
 #global testerror "Err0613"
 #[Swag.Overload]
-func toto(x: bool, y: f32)
-{
-}
+func toto(x: bool, y: f32) {}
 #[Swag.Overload]
-func toto(x: bool, y: bool)
-{
-}
+func toto(x: bool, y: bool) {}
 
 #test
 {

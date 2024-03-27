@@ -1,7 +1,8 @@
 
-#global testerror "Err0104"
+
+#global testerror "Err0104";
 #test
 {
-    const a = 1
-    a = 0
+	const a = 1;
+	a = 0;
 }

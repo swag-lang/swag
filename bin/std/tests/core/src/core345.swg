@@ -29,17 +29,19 @@ const C = #include #file
     @assert(@countof(C) == arr.count)
 
     var comp: Compress.Deflate
-    var res:  Array'u8
+    var res: Array'u8
 
     comp.init()
     try comp.compress(&res, arr.toSlice())
 
     var decomp: Compress.Inflate
-    var res1    = try decomp.decompress(res.toSlice())
+    var res1 = try decomp.decompress(res.toSlice())
 
     @assert(arr.count == res1.count)
     visit v, i: arr
     {
         @assert(v == res1[i])
     }
+
+    //@print(@mkstring(res1.buffer, res1.count))
 }

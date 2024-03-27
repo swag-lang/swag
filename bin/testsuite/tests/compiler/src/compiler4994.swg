@@ -3,5 +3,5 @@
 #test
 {
     var x: s32
-    var y  = x.z
+    var y = x.z
 }

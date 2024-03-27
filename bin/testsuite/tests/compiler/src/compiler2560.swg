@@ -7,10 +7,12 @@ impl AA
 {
     func opDrop(self)
     {
+        //@print("drop")
     }
 
     func opPostMove(self)
     {
+        //@print("move")
     }
 
     func from()->AA

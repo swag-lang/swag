@@ -1,5 +1,6 @@
 struct A
 {
+
 }
 
 impl A
@@ -14,4 +15,6 @@ impl A
 #test
 {
     var x: A = [true]
+    //var y: A
+    //y = [true]
 }

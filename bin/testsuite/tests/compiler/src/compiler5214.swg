@@ -1,6 +1,4 @@
-struct Err
-{
-}
+struct Err{}
 
 //#[Swag.PrintBc]
 func toto() throw

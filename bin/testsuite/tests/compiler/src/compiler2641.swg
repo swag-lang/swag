@@ -10,6 +10,7 @@ namespace AA
 {
     func toto()
     {
+
     }
 }
 

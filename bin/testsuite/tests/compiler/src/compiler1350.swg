@@ -4,6 +4,6 @@ interface TOTO
 {
     #if CONST
     {
-        func print(v: *TOTO, x: bool);
+        func print(v: *TOTO, x: bool)
     }
 }

@@ -8,5 +8,5 @@ func toto()
 {
     var arr0: Arr
     var arr1: Arr
-    let a     = arr0 == arr1
+    let a = arr0 == arr1
 }

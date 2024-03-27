@@ -5,9 +5,9 @@ struct V
 
 #test
 {
-    var v:  V
-    var fn: closure(V   )
-    let t:  s32 = 40
+    var v: V
+    var fn: closure(V)
+    let t: s32 = 40
 
     fn = closure|t|(v)
     {

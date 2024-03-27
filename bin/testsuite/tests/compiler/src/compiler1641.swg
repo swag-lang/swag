@@ -1,6 +1,6 @@
 interface ITOTO
 {
-    func ptr(self);
+    func ptr(self)
 }
 
 var val: ITOTO

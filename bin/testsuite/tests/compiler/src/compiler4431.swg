@@ -1,10 +1,8 @@
 using Swag
 
-struct A
-{
-}
+struct A {}
 
-func get()->A
+func get() -> A
 {
     return {}
 }
@@ -26,5 +24,5 @@ func toto(x: A)
 #test
 {
     toto(get())
-    @assert(G == 1)
+	@assert(G == 1)
 }

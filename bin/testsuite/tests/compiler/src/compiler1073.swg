@@ -1,13 +1,13 @@
 #test
 {
-    @assert(G == 100)
+	@assert(G == 100)
 }
 
 var G: s32 = undefined
 
 #run
 {
-    G = 100
+	G = 100
 }
 
 #drop

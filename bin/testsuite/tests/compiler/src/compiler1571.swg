@@ -5,6 +5,6 @@ struct Point
 
 #test
 {
-    var x:   Point
-    var ptr: const *void = cast(const *void) x
+    var x: Point
+    var ptr: const* void = cast(const* void) x
 }

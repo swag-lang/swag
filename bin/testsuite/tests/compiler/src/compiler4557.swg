@@ -1,6 +1,4 @@
-struct A
-{
-}
+struct A {}
 impl A
 {
     mtd opCount() => 2'u64
@@ -14,6 +12,6 @@ impl A
 #test
 {
     var x: A
-    let y  = x[0..]
+    let y = x[0..]
     @assert(y == "")
 }

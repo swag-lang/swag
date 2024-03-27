@@ -15,8 +15,8 @@ impl A
 #[Swag.Optim("", false)]
 #test
 {
-    let C  = [1, 2, 4]
+    let C = [1, 2, 4]
     var a: A
-    let b  = C[a[0]]
+    let b = C[a[0]]
     @assert(b == 4)
 }

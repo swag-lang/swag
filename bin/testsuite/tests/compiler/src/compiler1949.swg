@@ -1,16 +1,14 @@
 struct(A, B) Foozle
 {
-    a:     A
-    b:     B
+    a: A
+    b: B
 }
 
 var G = 0
 func(T, TT) yes_auto2(x: T, y: TT)
 {
-    if (@typeof(x.a) == s32) do
-        G |= 1
-    if (@typeof(y.a) == bool) do
-        G |= 2
+    if(@typeof(x.a) == s32) do G |= 1
+    if(@typeof(y.a) == bool) do G |= 2
 }
 
 #test

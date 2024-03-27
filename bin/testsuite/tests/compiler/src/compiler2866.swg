@@ -1,9 +1,10 @@
 #global testerror "Saf0023"
 
 //#[Swag.PrintBc]
-#[Swag.Safety("", true), Swag.Optim("", false)]
+#[Swag.Safety("", true)]
+#[Swag.Optim("", false)]
 #test
 {
-    let x  = 0xFFFFFFFF'u32
+    let x = 0xFFFFFFFF'u32
     let y: s32 = x
 }

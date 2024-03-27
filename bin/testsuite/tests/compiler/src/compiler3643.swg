@@ -1,8 +1,5 @@
 //#global skip
-enum RGB
-{
-    R
-}
+enum RGB { R; }
 var g: func(RGB)
 
 func toto()

@@ -1,9 +1,5 @@
-struct ErrTata
-{
-}
-struct ErrTiti
-{
-}
+struct ErrTata{}
+struct ErrTiti{}
 
 func tata() throw
 {

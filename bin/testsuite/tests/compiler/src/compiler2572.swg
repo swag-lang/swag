@@ -1,8 +1,6 @@
 #global testerror "Err"
 
-struct Err
-{
-}
+struct Err{}
 #test
 {
     throw Err{}

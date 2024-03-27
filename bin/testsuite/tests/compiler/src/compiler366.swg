@@ -3,5 +3,5 @@
 //#[Swag.PrintBc]
 #test
 {
-    var arr: [4] s32 = 0
+	var arr: [4] s32 = 0
 }

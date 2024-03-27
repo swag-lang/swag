@@ -1,9 +1,4 @@
-enum RGB
-{
-    R
-    G
-    B
-}
+enum RGB { R; G; B; }
 
 #[Swag.Using(RGB)]
 func toto()

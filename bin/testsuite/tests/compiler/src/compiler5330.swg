@@ -1,12 +1,8 @@
 #global testerror "Err0055"
-struct(T) Arr
-{
-}
+struct(T) Arr {}
 impl Arr
 {
-    mtd toto()
-    {
-    }
+    mtd toto() {}
 }
 
 #test

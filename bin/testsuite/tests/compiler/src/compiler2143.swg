@@ -1,8 +1,8 @@
 // A simple point with 2 float coordinates X and Y
 struct(T) P
 {
-    const XX:     T = 1
-    x, y:         T
+    const XX: T = 1
+    x, y: T
 }
 
 #test

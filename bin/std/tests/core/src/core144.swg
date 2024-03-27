@@ -1,9 +1,10 @@
+
 using Core
 
 #test
 {
     {
-        var x: Array's32 = [1, 2, 3, 4]
+        var x: Array's32 = [1,2,3,4]
 
         var buf: ConcatBuffer
         StrConv.convertAny(&buf, x, null)
@@ -14,7 +15,7 @@ using Core
     }
 
     {
-        var x:  Array'string = ["a", "b", "c", "d"]
+        var x: Array'string = ["a","b","c","d"]
         var str = Format.toString("%", x)
         //Console.print("%\n", str)
         @assert(str == "[a,b,c,d]")

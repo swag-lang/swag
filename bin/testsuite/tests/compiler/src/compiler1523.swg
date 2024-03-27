@@ -2,8 +2,8 @@
 
 struct X
 {
-    x:     s32
-    y:     bool
+    x: s32
+    y: bool
 }
 
 impl X

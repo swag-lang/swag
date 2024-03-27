@@ -3,9 +3,7 @@ struct C
     c: s32
 }
 
-struct A
-{
-}
+struct A {}
 impl A
 {
     mtd opIndex(x: u64)->*C

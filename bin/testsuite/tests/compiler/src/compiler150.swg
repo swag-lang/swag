@@ -1,10 +1,12 @@
+;
+;
 
-#run
+#run 
 {
-    main()
+	main();
 }
 
-func main()
+func main ()
 {
-    return
+	return;
 }

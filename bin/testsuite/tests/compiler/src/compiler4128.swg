@@ -14,4 +14,5 @@ func toto(y: f32)
     var y = -1.0'f64
     var x = @sqrt(y)
     @print(x)
+    //toto(-1.0)
 }

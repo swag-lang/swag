@@ -7,10 +7,11 @@ enum Toto
 
 struct A
 {
-    x     = false
-    e     = Toto.R
+    x = false
+    e = Toto.R
 }
 
 func toto(x = false)
 {
+
 }

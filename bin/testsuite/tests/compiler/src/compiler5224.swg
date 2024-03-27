@@ -9,12 +9,12 @@ func beginSection(fct: *void, kind: s32, skipFat = false) throw
     G = 1
 }
 
-attr attrA()
-attr attrB()
+attr attrA();
+attr attrB();
 
 func readNative(fct: *void)->u32 throw
 {
-    return 0
+    return 0;
 }
 
 struct SerializationError
@@ -25,8 +25,8 @@ struct SerializationError
 //#[Swag.PrintBc]//, Swag.Optim("", false)]
 func beginStruct(fct: *void, structType: typeinfo, _structData: const *u8)->bool throw
 {
-    if hasAttribute(structType, attrA) or
-       hasAttribute(structType, attrB)
+    if  hasAttribute(structType, attrA) or
+        hasAttribute(structType, attrB)
     {
         beginSection(fct, 0)
     }

@@ -1,8 +1,6 @@
 #global testerror "Err0717"
 
-struct A
-{
-}
+struct A {}
 impl A
 {
     mtd opIndex(u: u64)->s32
@@ -14,5 +12,5 @@ impl A
 #test
 {
     var x: A
-    let y  = x[0].y
+    let y = x[0].y
 }

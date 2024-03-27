@@ -1,6 +1,6 @@
 #global testerror "Err0365"
 
-var G:  VV
+var G: VV
 var PC: bool
 
 struct VV

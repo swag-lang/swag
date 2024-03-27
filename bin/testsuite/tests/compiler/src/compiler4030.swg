@@ -3,15 +3,15 @@
 
 struct Utf8
 {
-    size: u32
+	size: u32
 }
 
 impl Utf8
 {
-    func reserveSize()
-    {
-        size = 0
-    }
+	func reserveSize()
+	{
+		size = 0
+	}
 }
 
 #test

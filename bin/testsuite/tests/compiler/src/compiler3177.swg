@@ -4,10 +4,7 @@
 func toto()->s32
 {
     #[Swag.Mixin]
-    func x()->s32
-    {
-        return 666
-    }
+    func x()->s32 { return 666; }
     return x()
 }
 

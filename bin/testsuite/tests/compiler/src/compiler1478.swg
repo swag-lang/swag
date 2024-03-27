@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    let arr: const [..] u32 = [10, 20, 30, 40]
-    var cpt  = 0
+    let arr : const [..] u32 = [10, 20, 30, 40]
+    var cpt = 0
     visit xxx: arr
     {
         //@print(cast(s64) xxx)

@@ -47,4 +47,6 @@ func titi()->A
         @assert(x.x == 1)
         @assert(G == 0)
     }
+
+    //@assert(G == 1)
 }

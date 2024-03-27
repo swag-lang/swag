@@ -1,4 +1,6 @@
 
+
+
 struct(T) Point
 {
 }
@@ -10,4 +12,5 @@ func toto(x: Point)
 
 #test
 {
+	//var x: Point
 }

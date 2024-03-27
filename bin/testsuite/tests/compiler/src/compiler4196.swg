@@ -7,5 +7,5 @@ func toto(x: s32)->s32
 
 #test
 {
-    @assert(toto(10) == 10)
+    @assert(toto(10)==10)
 }

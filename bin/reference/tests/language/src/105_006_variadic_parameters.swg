@@ -92,9 +92,9 @@ You can spread the content of an array or a slice to variadic parameters with `@
     }
 
     var arr = [1, 2, 3, 4]
-    let res = sum(@spread(arr))     // is equivalent to sum(1, 2, 3, 4)
-    @assert(res == 1 + 2 + 3 + 4)
+    let res = sum(@spread(arr)) // is equivalent to sum(1, 2, 3, 4)
+    @assert(res == 1+2+3+4)
 
     let res1 = sum(@spread(arr[1..2])) // is equivalent to sum(2, 3)
-    @assert(res1 == 2 + 3)
+    @assert(res1 == 2+3)
 }

@@ -1,5 +1,6 @@
 func titi()
 {
+    //@print("x")
 }
 
 //#[Swag.PrintBc]

@@ -48,7 +48,7 @@ const MAX_PAGES = 8
     if Env.hasArg("swag.test")
     {
         tab.select(0)
-        app.sigFrame += func(app)
+        app.sigFrame += func(app )
         {
             Threading.Thread.sleep(100'ms)
             g_Page = (g_Page + 1) % MAX_PAGES

@@ -1,6 +1,4 @@
-struct Color
-{
-}
+struct Color {}
 impl Color
 {
     #[Swag.Implicit]
@@ -9,14 +7,10 @@ impl Color
     }
 }
 
-struct Painter
-{
-}
+struct Painter{}
 impl Painter
 {
-    func draw(using self, col: Color, size: f32)
-    {
-    }
+    func draw(using self, col: Color, size: f32) {}
 }
 
 #test

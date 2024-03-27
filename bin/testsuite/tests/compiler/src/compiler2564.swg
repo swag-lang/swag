@@ -1,11 +1,13 @@
 struct AA
 {
+
 }
 
 impl AA
 {
     func opDrop(self)
     {
+        //@print("drop")
     }
 }
 
@@ -13,6 +15,6 @@ impl AA
 #test
 {
     var x: [2] AA
-    var y  = x
+    var y = x
     y = x
 }

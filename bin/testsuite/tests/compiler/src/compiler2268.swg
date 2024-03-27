@@ -4,7 +4,7 @@ var G = 0
 
 #if @defined(PRRRRR)
 {
-    #assert false
+    #assert(false)
 }
 
 #if @defined(Value)

@@ -1,15 +1,15 @@
-#global testerror "Err0567"
+#global testerror "Err0567";
 
-enum A : bool
+enum A: bool
 {
-    Red   = true
-    Green = false
-    Blue  = true
+	Red = true;
+	Green = false;
+	Blue = true;
 }
 
-enum B : bool
+enum B: bool
 {
-    Red   = true
-    Green
-    Blue  = true
+	Red = true;
+	Green;
+	Blue = true;
 }

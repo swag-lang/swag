@@ -1,6 +1,8 @@
 
-#global testerror "Err0625"
+;
+
+#global testerror "Err0625";
 #run
 {
-    Swag.@print
+	Swag.@print;
 }

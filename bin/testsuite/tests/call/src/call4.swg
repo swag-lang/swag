@@ -25,7 +25,7 @@ func thisFunc1(x, y: s64)
     ptr3(555, 666, &thisFunc1)
 
     var ptr = &tcf_toto16
-    ptr(456, 3.14)
+    ptr(456,3.14)
 
     var ptr1 = &tcf_toto5
     @assert(ptr1(10) == 10)

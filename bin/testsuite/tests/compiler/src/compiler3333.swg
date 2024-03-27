@@ -9,7 +9,7 @@ struct(T) VV
 func toto(t: *VV)
 {
     @assert(@typeof(t) == *VV'f32 or @typeof(t) == *VV'bool)
-    #assert (@typeof(t) == *VV'f32 or @typeof(t) == *VV'bool)
+    #assert(@typeof(t) == *VV'f32 or @typeof(t) == *VV'bool)
 }
 
 #test
@@ -18,4 +18,7 @@ func toto(t: *VV)
     toto(&v)
     var v1: VV'bool
     toto(&v1)
+
+    //var v1: *void
+    //toto(v1)
 }

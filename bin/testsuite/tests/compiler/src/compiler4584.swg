@@ -2,6 +2,4 @@
 attr Toto(x: f32)
 
 #[Toto(true)]
-func titi()
-{
-}
+func titi() {}

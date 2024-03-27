@@ -9,7 +9,7 @@ impl A
     {
         x = 0
     }
-
+    
     func tata()
     {
         var pt: A

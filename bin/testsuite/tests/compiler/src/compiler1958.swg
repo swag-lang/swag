@@ -5,18 +5,24 @@ struct A
 
 interface I
 {
-    func toto(self);
-    func toto1(self);
+    func toto(self)
+    func toto1(self)
 }
 
 impl I for A
 {
     func impl toto(self)
     {
+        /*@print("toto ")
+        @print(cast(s64) self.x)
+        @print("\n")*/
     }
 
     func impl toto1(self)
     {
+        /*@print("toto1 ")
+        @print(cast(s64) self.x)
+        @print("\n")*/
     }
 }
 
@@ -30,14 +36,14 @@ func titi(itf: *I)
 
 struct BB
 {
-    itf:      I
-    pitf:     *I
+    itf: I
+    pitf: *I
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var x:  I
+    var x: I
     var st: A
     x = cast(I) st
     G = &x

@@ -1,9 +1,9 @@
 func(T) toto(x: T)
 {
-    @assert(@typeof(x) == f32)
+	@assert(@typeof(x) == f32)
 }
 
 #test
 {
-    toto'f32(1)
+	toto'f32(1)
 }

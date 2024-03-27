@@ -1,12 +1,12 @@
 struct Point
 {
-    x:     s32
-    y:     s32
+	x: s32
+	y: s32
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    let cpt = Point
+	let cpt = Point
     @assert(cpt == Point)
 }

@@ -1,6 +1,6 @@
 interface TOTO
 {
-    func print(self, x: string);
+	func print(self, x: string)
 }
 
 struct TITI
@@ -11,6 +11,7 @@ impl TOTO for TITI
 {
     func impl print(using self, x: string)
     {
+        //@print(x)
     }
 }
 
@@ -20,4 +21,5 @@ impl TOTO for TITI
     var x: TOTO
     var y: TITI
     x = y
+    //y.print("toto\n")
 }

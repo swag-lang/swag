@@ -1,7 +1,5 @@
 #global testerror "Err0649"
-func toto(x: u32)
-{
-}
+func toto(x: u32){}
 
 #test
 {

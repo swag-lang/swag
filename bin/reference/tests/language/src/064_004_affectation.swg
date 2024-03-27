@@ -1,3 +1,7 @@
+/**
+`opAffect` is a way of assigning to a struct with `=`.
+You can have more the one `opAffect` with different types.
+*/
 
 struct Struct
 {
@@ -7,15 +11,9 @@ struct Struct
 impl Struct
 {
     #[Swag.Overload]
-    mtd opAffect(value: s32)
-    {
-        x, y = value
-    }
+    mtd opAffect(value: s32)  { x, y = value; }
     #[Swag.Overload]
-    mtd opAffect(value: bool)
-    {
-        x, y = value ? 1 : 0
-    }
+    mtd opAffect(value: bool) { x, y = value ? 1 : 0; }
 }
 
 #test
@@ -45,18 +43,14 @@ If `opAffect` is supposed to initialize the full content of the struct, you can 
 
 impl Struct
 {
-    #[Swag.Complete, Swag.Overload]
-    mtd opAffect(value: u64)
-    {
-        x, y, z = cast(s32) value
-    }
+    #[Swag.Complete]
+    #[Swag.Overload]
+    mtd opAffect(value: u64)  { x, y, z = cast(s32) value; }
 
     // For later
-    #[Swag.Implicit, Swag.Overload]
-    mtd opAffect(value: u16)
-    {
-        x, y = cast(s32) value
-    }
+    #[Swag.Implicit]
+    #[Swag.Overload]
+    mtd opAffect(value: u16)  { x, y = cast(s32) value; }
 }
 
 /**
@@ -92,6 +86,10 @@ Here the variable `v` will not be initialized prior to the affectation. This is 
     // No need for an explicit cast.
     toto(5'u16)
 }
+
+/**
+A structure can be converted to a constant by a call to `opAffect` if the function is marked with `Swag.ConstExpr`.
+*/
 struct Vector2
 {
     x, y: f32
@@ -106,6 +104,6 @@ impl Vector2
     }
 }
 
-const One: Vector2 = 1.0 // This will call opAffect(1.0) at compile time
+const One: Vector2 = 1.0    // This will call opAffect(1.0) at compile time
 #assert One.x == 1.0
 #assert One.y == 1.0

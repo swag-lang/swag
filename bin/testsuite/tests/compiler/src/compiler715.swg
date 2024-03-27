@@ -1,19 +1,19 @@
 //#[Swag.PrintBc]
 func(N: s32) toto()->s32
 {
-    var cpt = 0
-    loop N
-    {
-        //@print("toto\n")
-        cpt += 1
-        break
-    }
+	var cpt = 0
+	loop(N)
+	{
+		//@print("toto\n")
+		cpt += 1
+		break
+	}
 
-    return cpt
+	return cpt
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    @assert(toto'4() == 1)
+	@assert(toto'4() == 1)
 }

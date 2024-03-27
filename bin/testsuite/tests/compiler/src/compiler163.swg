@@ -1,17 +1,16 @@
+;
+;
 
-using A.B
+using A.B;
 
-namespace A
+namespace A.B
 {
-    namespace B
-    {
-        func main()
-        {
-        }
-    }
+	func main ()
+	{
+	}
 }
 
-#run
+#run 
 {
-    main()
+	main();
 }

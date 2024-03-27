@@ -26,5 +26,6 @@ func(T) toto(v: [..] T, stmt: code)
     var v: [2] s32
     toto(acast v)
     {
+
     }
 }

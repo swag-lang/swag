@@ -1,10 +1,11 @@
 using Swag
 
-attr NC(x: string, y: s32)
+attr NC(x: string, y: s32);
 
 #[NC("myStringValue", 666)]
 func toto()
 {
+
 }
 
 #test

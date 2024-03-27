@@ -1,3 +1,4 @@
+
 #global testerror "Err0717"
 
 struct ConvertFormatInt
@@ -8,5 +9,5 @@ struct ConvertFormatInt
 func convertInt(fmt: ConvertFormatInt)
 {
     var dataof = @dataof(toto)
-    var toto:  u64
+    var toto: u64
 }

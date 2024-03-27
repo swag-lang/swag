@@ -10,11 +10,13 @@ impl A
     mtd opPostCopy()
     {
         G0 += 1
+        //@print("copy ", self, "\n")
     }
 
     mtd opDrop()
     {
         G1 += 1
+        //@print("drop ", self, "\n")
     }
 }
 
@@ -30,5 +32,5 @@ impl A
         }
     }
 
-    @assert(G1 == G0 + 1)
+    @assert(G1 == G0+1)
 }

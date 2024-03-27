@@ -1,3 +1,4 @@
+
 using Core
 
 #test
@@ -11,4 +12,6 @@ using Core
 
     let result1 = Slice.findLinear(arr.toSlice(), 15'u32)
     @assert(result1 == Swag.U64.Max)
+
+    //Console.write("result is %\n", res)
 }

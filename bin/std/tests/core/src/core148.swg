@@ -1,3 +1,4 @@
+
 using Core, Core.Utf8, Core.Tokenize
 
 //#[Swag.PrintBc]
@@ -10,6 +11,8 @@ using Core, Core.Utf8, Core.Tokenize
 
     visit v: arr
     {
+        //@print(v)
+        //@print("\n")
     }
 
     @assert(arr.count == 15)
@@ -19,7 +22,7 @@ using Core, Core.Utf8, Core.Tokenize
 
 #test
 {
-    var x:  String = "This is a list of words"
+    var x: String = "This is a list of words"
     var arr = x.splitAny([` `'rune], 1)
     @assert(arr.count == 2)
     @assert(arr[0] == "This")

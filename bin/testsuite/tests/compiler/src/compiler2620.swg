@@ -8,15 +8,13 @@ struct(T) AA
 impl AA
 {
     #[Swag.Overload]
-    func isNull(using self)->bool
-        #validif @typeof(T) == s32
+    func isNull(using self)->bool #validif @typeof(T) == s32
     {
         return x == 0
     }
 
     #[Swag.Overload]
-    func isNull(using self, eps: f32)->bool
-        #validif @typeof(T) == f32
+    func isNull(using self, eps: f32)->bool #validif @typeof(T) == f32
     {
         return x < eps ? true : false
     }

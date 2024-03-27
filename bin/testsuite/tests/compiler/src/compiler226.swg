@@ -1,25 +1,27 @@
-using Swag
+;
+;
+using Swag;
 
 //#[PrintBc]
-func main()
+func main ()
 {
-    var a: s32
-    {
-        var b: s64
-        var c: s64
-    }
-    {
-        var b: s64
-    }
+	var a : s32;
+	{
+		var b : s64;
+		var c : s64;
+	}
+	{
+		var b : s64;
+	}
 }
 
 //#[PrintBc]
-func main1()
+func main1 ()
 {
-    main()
+	main();
 }
 
 #run
 {
-    main1()
+	main1()
 }

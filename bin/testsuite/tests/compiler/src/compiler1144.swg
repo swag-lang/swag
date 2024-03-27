@@ -3,10 +3,11 @@
 #[Swag.Inline]
 func toto()
 {
+	//@print(x)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var x = &toto
+	var x = &toto
 }

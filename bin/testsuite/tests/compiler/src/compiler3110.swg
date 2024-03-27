@@ -1,8 +1,6 @@
 #global testerror "Err0450"
 
-struct ErrTiti
-{
-}
+struct ErrTiti{}
 
 #[Swag.Macro]
 func toto(stmt: code)

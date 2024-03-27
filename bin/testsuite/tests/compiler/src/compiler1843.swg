@@ -12,4 +12,4 @@ enum MouseButton
     XButton2
 }
 
-#assert (MouseButton.Left == 0)
+#assert(MouseButton.Left == 0)

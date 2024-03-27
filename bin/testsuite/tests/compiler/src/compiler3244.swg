@@ -1,8 +1,6 @@
 //#global skip
 
-public struct AA3244
-{
-}
+public struct AA3244 {}
 
 public impl AA3244
 {

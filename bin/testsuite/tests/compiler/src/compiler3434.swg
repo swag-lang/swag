@@ -9,11 +9,9 @@ func toto(v: closure(s32))
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    toto(closure||(x: s32)
-    {
+    toto(closure||(x: s32) {
         G = x
-    }
-)
+    })
 
     @assert(G == 5)
 }

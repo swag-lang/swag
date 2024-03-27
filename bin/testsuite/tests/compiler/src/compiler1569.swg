@@ -1,3 +1,4 @@
+
 #global testerror "Err0327"
 
 struct A

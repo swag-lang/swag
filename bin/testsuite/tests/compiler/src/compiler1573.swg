@@ -1,7 +1,7 @@
 using Swag
 
 #[AttrUsage(AttributeUsage.All)]
-attr NC()
+attr NC();
 
 #[NC]
 func toto()
@@ -16,4 +16,4 @@ struct Point
 #[NC]
 enum Color
 {
-    }
+}

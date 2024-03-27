@@ -7,7 +7,7 @@ It is declared with `[..]`.
 */
 #test
 {
-    var a: [..] bool // Slice of bools
+    var a: [..] bool    // Slice of bools
     #assert @sizeof(a) == @sizeof(*void) + @sizeof(u64)
 }
 
@@ -34,9 +34,9 @@ At runtime, `@dataof` will return the address of the values, `@countof` the numb
 */
 #test
 {
-    var a:    const [..] u32 = [10, 20, 30, 40, 50]
+    var a: const [..] u32 = [10, 20, 30, 40, 50]
     let count = @countof(a)
-    let addr  = @dataof(a)
+    let addr = @dataof(a)
     @assert(count == 5)
     @assert(addr[0] == 10)
     @assert(addr[4] == 50)
@@ -69,7 +69,7 @@ For a string, the slice must be `const` because a string is immutable.
 */
 #test
 {
-    let str       = "string"
+    let str = "string"
     let strSlice: const [..] u8 = @mkslice(@dataof(str), 2)
     @assert(strSlice[0] == `s`)
     @assert(strSlice[1] == `t`)
@@ -97,7 +97,7 @@ The upper limit is **included** by default. If you want to exclude it, use `..<`
 */
 #test
 {
-    let str   = "string"
+    let str = "string"
     let slice = str[1..<3]
     @assert(slice == "tr")
 }
@@ -107,7 +107,7 @@ You can omit the upper bound if you want to slice to the end.
 */
 #test
 {
-    let str   = "string"
+    let str = "string"
     let slice = str[2..]
     @assert(slice == "ring")
 }
@@ -117,12 +117,10 @@ You can omit the lower bound if you want to slice from the start (0).
 */
 #test
 {
-    let str   = "string"
-    let slice = str[..2]
-    // Index 2 is included
+    let str = "string"
+    let slice = str[..2]        // Index 2 is included
     @assert(slice == "str")
-    let slice1 = str[..<2]
-    // Index 2 is excluded
+    let slice1 = str[..<2]      // Index 2 is excluded
     @assert(slice1 == "st")
 }
 
@@ -131,7 +129,7 @@ You can also slice an array.
 */
 #test
 {
-    let arr   = [10, 20, 30, 40]
+    let arr = [10, 20, 30, 40]
     let slice = arr[2..3]
     @assert(slice[0] == 30)
     @assert(slice[1] == 40)
@@ -147,7 +145,7 @@ You can slice another slice.
 */
 #test
 {
-    let arr    = [10, 20, 30, 40]
+    let arr = [10, 20, 30, 40]
     let slice1 = arr[1..3]
     @assert(slice1[0] == 20)
     @assert(slice1[1] == 30)
@@ -163,8 +161,8 @@ You can transform a pointer to a slice.
 */
 #test
 {
-    var arr   = [10, 20, 30, 40]
-    let ptr   = &arr[2]
+    var arr = [10, 20, 30, 40]
+    let ptr = &arr[2]
     let slice = ptr[0..1]
     @assert(slice[0] == 30)
     @assert(slice[1] == 40)

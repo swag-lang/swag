@@ -3,12 +3,7 @@
 */
 #test
 {
-    enum RGB
-    {
-        R
-        G
-        B
-    }
+    enum RGB { R; G; B; }
     @assert(RGB.R == 0)
 
     using RGB
@@ -20,17 +15,13 @@
 */
 #test
 {
-    struct Point
-    {
-        x:     s32
-        y:     s32
-    }
+    struct Point { x: s32, y: s32 }
 
     var pt: Point
 
     using pt
-    x = 1
-    y = 2
+    x = 1 // no need to specify 'pt'
+    y = 2 // no need to specify 'pt'
 
     @assert(pt.x == 1)
     @assert(pt.y == 2)
@@ -41,19 +32,16 @@ You can declare a variable with `using` just before.
 */
 #test
 {
-    struct Point
-    {
-        x:     s32
-        y:     s32
-    }
-    var pt: Point
-    using pt
-    x = 1
-    y = 2
+    struct Point { x: s32; y: s32; }
+
+    using var pt: Point
+    x = 1 // no need to specify 'pt'
+    y = 2 // no need to specify 'pt'
 
     @assert(pt.x == 1)
     @assert(pt.y == 2)
 }
+
 
 /**
 # For a function parameter
@@ -61,11 +49,7 @@ You can declare a variable with `using` just before.
 */
 #test
 {
-    struct Point
-    {
-        x:     s32
-        y:     s32
-    }
+    struct Point { x: s32; y: s32; }
 
     func setOne(using point: *Point)
     {
@@ -83,6 +67,11 @@ You can declare a variable with `using` just before.
     @assert(pt.x == 1)
     @assert(pt.y == 1)
 }
+
+/**
+# For a field
+`using` can also be used with a field inside a struct.
+*/
 #test
 {
     struct Point2
@@ -92,14 +81,14 @@ You can declare a variable with `using` just before.
 
     struct Point3
     {
-        using base:     Point2
-        z:              s32
+        using base: Point2
+        z: s32
     }
 
     // That way the content of the field can be referenced directly
     var value: Point3
-    value.x = 0
-    value.y = 0
+    value.x = 0 // Equivalent to value.base.x = 0
+    value.y = 0 // Equivalent to value.base.y = 0
     value.z = 0
     @assert(&value.x == &value.base.x)
     @assert(&value.y == &value.base.y)

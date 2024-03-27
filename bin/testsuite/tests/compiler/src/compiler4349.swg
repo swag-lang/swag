@@ -7,7 +7,7 @@ struct(X1) Point
 
 impl Point
 {
-    mtd(X2) mixup(other: Point'X2)->Point'X1
+    mtd(X2) mixup(other: Point'X2) -> Point'X1
     {
         return Point{x}
     }

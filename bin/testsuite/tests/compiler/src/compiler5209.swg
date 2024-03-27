@@ -1,7 +1,7 @@
 struct A
 {
-    x:     s64 = 66
-    y:     s64 = 66
+    x: s64 = 66
+    y: s64 = 66
 }
 
 impl A

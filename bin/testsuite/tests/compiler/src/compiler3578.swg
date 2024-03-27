@@ -15,16 +15,12 @@ impl A
     }
 
     #[Swag.Overload]
-    mtd(op: string) opAssign(t: func(f32, f32))
-    {
-    }
+    mtd(op: string) opAssign(t: func(f32, f32)) {}
 }
 
 #test
 {
     var xxxx: A
-    xxxx += closure||(a, b)
-    {
-    }
+    xxxx += closure||(a, b) { }
     @assert(G == 1)
 }

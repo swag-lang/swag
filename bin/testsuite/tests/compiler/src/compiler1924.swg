@@ -1,5 +1,6 @@
 struct(T) C1924
 {
+
 }
 
 struct TT1924

@@ -1,5 +1,6 @@
 func toto(x: string, y: s32, z: ...)
 {
+
 }
 
 #test

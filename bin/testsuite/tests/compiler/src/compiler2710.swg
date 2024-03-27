@@ -1,5 +1,6 @@
 struct AA
 {
+
 }
 
 impl AA

@@ -1,9 +1,9 @@
 //#global testerror "Err0613"
 #[Swag.Overload]
 {
-    func min(x, y: s8)  => 0
-    func min(x, y: s16) => 0
-    func min(x, y: s32) => 0
+func min(x, y: s8) => 0
+func min(x, y: s16) => 0
+func min(x, y: s32) => 0
 }
 
 #test

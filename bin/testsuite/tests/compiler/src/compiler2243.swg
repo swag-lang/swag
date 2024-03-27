@@ -9,7 +9,7 @@ func inc10()
 #test
 {
     //var a, b = 0
-    inc10(|a| )
-    inc10(|b| )
+    inc10(|a|)
+    inc10(|b|)
     @assert(a == b and b == 10)
 }

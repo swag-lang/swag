@@ -1,6 +1,6 @@
 interface I
 {
-    func toto(self);
+    func toto(self)
 }
 
 struct A
@@ -9,9 +9,7 @@ struct A
 
 impl I for A
 {
-    mtd impl toto()
-    {
-    }
+    mtd impl toto() {}
 }
 
 struct B
@@ -21,14 +19,12 @@ struct B
 
 impl I for B
 {
-    mtd impl toto()
-    {
-    }
+    mtd impl toto() {}
 }
 
 func(T) alloc()
 {
-    var x:  *T
+    var x: *T
     var itf = cast(I) x
 }
 

@@ -9,9 +9,9 @@ func toto(stmt: code)
 {
     toto()
     {
-        struct A
-        {
-        }
+        struct A {}
         var x: A
+        //var x = func(){}
+        //x()
     }
 }

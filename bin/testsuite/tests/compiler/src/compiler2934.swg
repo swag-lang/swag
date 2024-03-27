@@ -1,5 +1,6 @@
 struct AA
 {
+
 }
 
 impl AA
@@ -12,13 +13,9 @@ impl AA
     var x: AA
     switch x
     {
-    case 4:
-        @assert(false)
-    case 5:
-        @assert(false)
-    case 6:
-        break
-    default:
-        @assert(false)
+    case 4:     @assert(false)
+    case 5:     @assert(false)
+    case 6:     break
+    default:    @assert(false)
     }
 }

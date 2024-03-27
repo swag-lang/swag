@@ -1,6 +1,4 @@
-struct B
-{
-}
+struct B {}
 
 var G = 0
 
@@ -19,9 +17,7 @@ struct(T) A
 
 impl A
 {
-    mtd titi()
-    {
-    }
+    mtd titi() {}
 
     #[Swag.Inline]
     mtd toto()

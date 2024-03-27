@@ -1,5 +1,5 @@
 #[Swag.ConstExpr]
-func toto()->{a, b: s64}
+func toto()->{a,b: s64}
 {
     var result: retval
     loop 5

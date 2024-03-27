@@ -1,6 +1,8 @@
 #global testerror "Saf0012"
 
-#[Swag.Optim("", false), Swag.Safety("math", true), Swag.Safety("nan", false)]
+#[Swag.Optim("", false)]
+#[Swag.Safety("math", true)]
+#[Swag.Safety("nan", false)]
 func toto(y: f32)
 {
     var x = @log10(y)

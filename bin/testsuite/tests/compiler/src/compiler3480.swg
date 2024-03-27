@@ -10,6 +10,5 @@ func(T) toto(cb: closure(T, T))
     {
         @assert(x == a)
         @assert(y == 20)
-    }
-)
+    })
 }

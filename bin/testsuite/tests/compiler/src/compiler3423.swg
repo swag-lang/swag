@@ -3,8 +3,8 @@
 //#[Swag.PrintBc]
 #test
 {
-    var a  = 10
-    let v: closure(s32 ) = closure|&a|(x: s32)
+    var a = 10
+    let v: closure(s32) = closure|&a|(x: s32)
     {
         dref a += x
     }

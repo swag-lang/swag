@@ -1,8 +1,8 @@
 union Evt1
 {
     x, y, z: s32
-    b:     bool
-    v:     s64
+    b: bool
+    v: s64
 }
 
 #assert @sizeof(Evt1) == 8

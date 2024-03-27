@@ -1,8 +1,7 @@
 #global testerror "Err0576"
 #test
 {
-    var a = #run
-    {
+    var a = #run {
         loop 1 do
             return 66.0
         return

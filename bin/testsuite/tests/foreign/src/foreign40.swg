@@ -1,7 +1,7 @@
 public struct T40
 {
-    x:     s32 = 555
-    y:     s32 = 666
+    x: s32 = 555
+    y: s32 = 666
 }
 
 public func toto40(f: any)

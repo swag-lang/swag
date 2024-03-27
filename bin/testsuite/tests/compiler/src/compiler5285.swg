@@ -5,4 +5,5 @@
     @assert(a[2] == 3)
     @init(a)
     @assert(a[2] == 0)
+    //@assert(a == 0)
 }

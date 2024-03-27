@@ -1,6 +1,6 @@
 //#global testerror
 
-attr toto(x: s32)
+attr toto(x: s32);
 
 #[toto(666)]
 func titi()

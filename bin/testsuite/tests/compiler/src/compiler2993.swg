@@ -1,12 +1,11 @@
 interface I
 {
-    func op(self);
+    func op(self)
 }
 
 //#[Swag.PrintBc]
 #test
 {
     var x: I
-    if x do
-        @assert(false)
+    if x do @assert(false)
 }

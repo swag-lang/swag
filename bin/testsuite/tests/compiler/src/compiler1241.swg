@@ -1,15 +1,12 @@
 const WINDOWS = true
 #if WINDOWS
 {
-    namespace std
+    namespace std.environment
     {
-        namespace environment
         {
-            {
-                func getProcessorCount() => g_SysInfo
-            }
-
-            var g_SysInfo: s32
+            func getProcessorCount() => g_SysInfo
         }
+
+        var g_SysInfo: s32
     }
 }

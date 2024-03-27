@@ -23,6 +23,6 @@ func toto()->A
 //#[Swag.PrintBc]
 #test
 {
-    var x  = toto()
+    var x = toto()
     var x1 = toto()
 }

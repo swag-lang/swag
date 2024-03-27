@@ -7,10 +7,8 @@ using Core
     {
         switch i
         {
-        case 0:
-            @assert(c == `あ`'rune)
-        case 1:
-            @assert(c == `え`'rune)
+        case 0: @assert(c == `あ`'rune)
+        case 1: @assert(c == `え`'rune)
         }
     }
 }

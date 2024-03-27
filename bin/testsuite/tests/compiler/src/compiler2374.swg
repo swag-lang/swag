@@ -2,6 +2,7 @@ using Swag
 
 struct AA
 {
+
 }
 
 impl AA
@@ -21,7 +22,7 @@ impl AA
 //#[Swag.PrintBc]
 #test
 {
-    var v:  AA
+    var v: AA
     var vs: AA
     @assert(v == vs)
 }

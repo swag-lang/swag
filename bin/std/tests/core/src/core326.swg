@@ -2,11 +2,12 @@ using Core, Core.Time
 
 struct Employee
 {
-    name:     String
-    date:     Time.DateTime
+    name: String
+    date: Time.DateTime
 }
 
-#[Swag.Compiler, Swag.ConstExpr]
+#[Swag.Compiler]
+#[Swag.ConstExpr]
 func gen(type: const *Swag.TypeInfoStruct)->String
 {
     var result: String = "return "
@@ -40,9 +41,8 @@ func years_employed(employee: Employee)->u32 => DateTime.now().year - employee.d
 
 #run
 {
-    var alice  = Employee{String.from("Alice"), Time.DateTime{2000, 1, 1}}
-    var alice2 = alice
-    alice2.date = Time.DateTime{2010, 1, 1}
+    var alice = Employee{String.from("Alice"), Time.DateTime{2000, 1, 1}}
+    var alice2 = alice; alice2.date = Time.DateTime{2010, 1, 1}
     var alice3 = alice2
 
     @assert(alice.years_employed() >= 22)

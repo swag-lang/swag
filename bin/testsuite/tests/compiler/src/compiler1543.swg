@@ -24,10 +24,12 @@ impl X
 {
     func toto(using const self, xx: Self)
     {
+
     }
 
     func toto1(using const self, xx: Self)
     {
+
     }
 }
 

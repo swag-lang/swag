@@ -13,6 +13,6 @@ struct AA
     loop t.x
     {
         if #index > 10 do
-            break
+            break;
     }
 }

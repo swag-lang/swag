@@ -1,3 +1,3 @@
-#global testpass syntax
+﻿#global testpass syntax
 
 typealias myType = u32

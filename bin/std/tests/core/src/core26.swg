@@ -1,29 +1,31 @@
+
+
 #[Swag.Macro]
 func Visit(str: string, user: code)
 {
-    var ptr   = @dataof(str)
+    var ptr = @dataof(str)
     var count = @countof(str)
-    loop
-    {
+	loop
+	{
         let slice = @mkslice(ptr, cast(u64) count)
-        let (c, eat) = Core.Utf8.decodeRune(slice)
-        if !eat do
-            break
-        #macro
+		let (c, eat) = Core.Utf8.decodeRune(slice)
+		if !eat do
+			break
+		#macro
         {
             var value = #up c
             #mixin #up user
         }
         ptr += eat
         count -= eat
-    }
+	}
 }
 
 //#[Swag.PrintBc]
 #test
 {
     var cpt = 0
-    let str = "あああ"
+	let str = "あああ"
     Visit(str)
     {
         @assert(value == 12354)

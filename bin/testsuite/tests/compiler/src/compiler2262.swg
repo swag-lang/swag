@@ -5,14 +5,16 @@ public struct Evt
         //#[Swag.Pack(8)]
         Two: struct
         {
-            x:     s32
-            y:     s32
+            x: s32
+            y: s32
         }
+
+        //#[Swag.Pack(8)]
         Three: struct
         {
-            x:     s32
-            y:     s32
-            z:     s32
+            x: s32
+            y: s32
+            z: s32
         }
     }
 }

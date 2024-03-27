@@ -4,8 +4,8 @@ struct(T) Array
 
 struct BOUBOU
 {
-    value:      s32 = 666
-    value1:     s32 = 666
+    value: s32 = 666
+    value1: s32 = 666
 }
 
 impl BOUBOU

@@ -1,11 +1,9 @@
 interface I
 {
-    func toto(self);
+    func toto(self)
 }
 
-struct(T) A
-{
-}
+struct(T) A {}
 
 impl I for A
 {

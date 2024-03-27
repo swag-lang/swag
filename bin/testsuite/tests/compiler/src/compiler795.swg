@@ -5,8 +5,9 @@ func(T) toto()
 {
 }
 
+
 //#[Swag.PrintBc]
 #test
 {
-    toto'"s32"()
+	toto'"s32"()
 }

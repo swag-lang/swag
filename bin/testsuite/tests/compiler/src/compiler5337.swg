@@ -1,14 +1,8 @@
 #global testerror "Err0648"
-struct A
-{
-}
-struct B
-{
-}
+struct A {}
+struct B {}
 
-func toto(x: B)
-{
-}
+func toto(x: B) {}
 
 #test
 {

@@ -9,7 +9,7 @@ impl AA
 {
     mtd(op: string) opAssign(t: T)
     {
-        #assert (op == "+=")
+        #assert(op == "+=")
         arr.add(t)
     }
 
@@ -20,13 +20,12 @@ impl AA
             #ast
             {
                 var sb: StringBuilder
-                let ts  = @typeof(T)
+                let ts = @typeof(T)
 
                 sb.appendString("fn(")
                 loop i: @countof(ts.parameters)
                 {
-                    if i do
-                        sb.appendString(",")
+                    if i do sb.appendString(",")
                     sb.appendFormat("params[%]", i)
                 }
 
@@ -41,14 +40,8 @@ var G = 0
 #test
 {
     var x: AA'func(s32, s32)
-    x += func(x, y: s32)
-    {
-        G += x + y
-    }
-    x += func(x, y: s32)
-    {
-        G += x * y
-    }
+    x += func(x, y: s32) { G += x+y; }
+    x += func(x, y: s32) { G += x*y; }
     x.call(2, 4)
     @assert(G == 14)
 }

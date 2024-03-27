@@ -1,3 +1,4 @@
+
 #global testerror "Err0607"
 
 const g: u8 = `漢`'u8

@@ -14,6 +14,7 @@ struct C
 
 func toto(x: A)
 {
+
 }
 
 #test

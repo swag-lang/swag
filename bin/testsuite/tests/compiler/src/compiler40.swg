@@ -1,6 +1,7 @@
-#global testpass syntax
+﻿
+#global testpass syntax;
 namespace toto
 {
-    var a: s32
-    var b: s32
+	var a: s32;
+	var b: s32;
 }

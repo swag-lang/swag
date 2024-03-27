@@ -1,27 +1,19 @@
-struct A
+struct A {}
+struct B {}
+
+interface I 
 {
-}
-struct B
-{
+    mtd toto()
 }
 
-interface I
+impl I for A 
 {
-    mtd toto();
-}
-
-impl I for A
-{
-    mtd impl toto()
-    {
-    }
+    mtd impl toto() {}
 }
 
 impl I for B
 {
-    mtd impl toto()
-    {
-    }
+    mtd impl toto() {}
 }
 
 func toto(y: I, what: typeinfo)->bool
@@ -33,9 +25,9 @@ func toto(y: I, what: typeinfo)->bool
 {
     let a: A
     let b: B
-
+    
     @assert(toto(cast(I) a, A))
     @assert(toto(cast(I) b, B))
     @assert(!toto(cast(I) a, B))
-    @assert(!toto(cast(I) b, A))
+    @assert(!toto(cast(I) b, A))    
 }

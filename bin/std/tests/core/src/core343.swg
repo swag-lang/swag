@@ -7,13 +7,13 @@ using Core
         arr.add(cast(u8) i)
 
     var comp: Compress.Deflate
-    var res:  Array'u8
+    var res: Array'u8
 
     comp.init()
     try comp.compress(&res, arr.toSlice())
 
     var decomp: Compress.Inflate
-    var res1    = try decomp.decompress(res.toSlice())
+    var res1 = try decomp.decompress(res.toSlice())
 
     @assert(res1.count == 100)
     visit v, i: res1 do

@@ -51,7 +51,7 @@ impl SliderCtrl
             .label.horzAlignmentText = .Right
 
             .slider = Slider.create(ctrl, {})
-            .slider.sigChanged += closure|ctrl|(wnd)
+            .slider.sigChanged += closure|ctrl|(wnd )
             {
                 var val: String
                 switch ctrl.edit.inputMode

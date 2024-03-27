@@ -7,7 +7,5 @@ struct Wnd
 #test
 {
     var l: Wnd
-    l.h = func(w)
-    {
-    }
+    l.h = func(w) {}
 }

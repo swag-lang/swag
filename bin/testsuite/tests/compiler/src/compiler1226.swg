@@ -1,23 +1,24 @@
 struct Vector2
 {
-    x:     s32
-    y:     s32
+	x: s32
+	y: s32
 }
 
 func normalize()->Vector2
 {
-    return Vector2{1, 1}
+	return Vector2{1, 1}
 }
 
 impl Vector2
 {
-    func toto(self)
-    {
-    }
+	func toto(self)
+	{
+	}
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var pt1 = normalize()
+	var pt1 = normalize()
+	//Vector2.toto(pt1)
 }

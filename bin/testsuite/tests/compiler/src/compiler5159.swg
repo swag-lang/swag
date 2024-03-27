@@ -4,12 +4,12 @@ struct XY
 {
 }
 
-enum Z : string
+enum Z: string
 {
     z = "Z"
 }
 
-enum XYZ : string
+enum XYZ: string
 {
     using XY
     using Z

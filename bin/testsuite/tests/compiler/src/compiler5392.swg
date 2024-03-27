@@ -1,7 +1,7 @@
 struct(T) A
 {
-    t1:     T
-    t:      T = 55
+    t1: T
+    t: T = 55
 }
 
 impl A

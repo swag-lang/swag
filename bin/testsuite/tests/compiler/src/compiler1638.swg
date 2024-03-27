@@ -1,9 +1,10 @@
+
 //#global testerror
 
 struct A
 {
-    x:     u32
-    y:     u32
+    x: u32
+    y: u32
 }
 
 #run

@@ -1,6 +1,4 @@
-struct Theme
-{
-}
+struct Theme {}
 
 impl Theme
 {
@@ -21,6 +19,6 @@ impl Wnd
 #test
 {
     var v: Wnd
-    let x  = v.getTheme().getIcon24()
+    let x = v.getTheme().getIcon24()
     @assert(x == 666)
 }

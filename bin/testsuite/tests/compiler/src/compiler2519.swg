@@ -1,8 +1,6 @@
-var t: struct
-{
-    inT: const [..] rune
-}
- = {[1'rune, 2, 3, 4]}
+var t: struct {
+    inT:  const [..] rune
+} = {[1'rune,2,3,4]}
 
 #test
 {

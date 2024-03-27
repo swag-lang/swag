@@ -155,7 +155,7 @@ impl ColorPickerCtrl
             .radioG = RadioButton.create(v, "G", {280, 130, 40})
             .radioB = RadioButton.create(v, "B", {280, 160, 40})
 
-            picker.sigPressed += closure|v|(cb)
+            picker.sigPressed += closure|v|(cb  )
             {
                 var app = cb.getApp()
                 app.pushCursor(Cursor.from(.Cross))
@@ -163,7 +163,7 @@ impl ColorPickerCtrl
                 var save  = v.getColor()
                 var sfade = app.fadeDisabledSurface
                 app.fadeDisabledSurface = false
-                discard app.doModalLoop(null, closure|v, save|(app)
+                discard app.doModalLoop(null, closure|v, save|(app )
                 {
                     if app.mouse.isButtonPressed(.Right)
                     {
@@ -184,7 +184,7 @@ impl ColorPickerCtrl
                 app.popCursor()
             }
 
-            .pickBox.sigChanged += closure|v|(cb)
+            .pickBox.sigChanged += closure|v|(cb  )
             {
                 switch v.mode
                 {
@@ -218,7 +218,7 @@ impl ColorPickerCtrl
                 v.updateEdits()
             }
 
-            .pickBar.sigChanged += closure|v|(cb)
+            .pickBar.sigChanged += closure|v|(cb  )
             {
                 switch v.mode
                 {
@@ -251,7 +251,7 @@ impl ColorPickerCtrl
             }
 
             .pickAlpha.setMode(.AlphaHorz)
-            .pickAlpha.sigChanged += closure|v|(cb)
+            .pickAlpha.sigChanged += closure|v|(cb  )
             {
                 v.color.a = cast(u8) (cb.a * 255)
                 v.updateEdits()
@@ -259,7 +259,7 @@ impl ColorPickerCtrl
 
             .editR.setInputU64(0, 255)
             .editR.maxLength = 3
-            .editR.sigLoseFocus += closure|v|(ed)
+            .editR.sigLoseFocus += closure|v|(ed  )
             {
                 var res = catch StrConv.parseU32(ed.text)
                 v.color.r = acast Math.clamp(res.value, 0, 255)
@@ -268,7 +268,7 @@ impl ColorPickerCtrl
 
             .editG.setInputU64(0, 255)
             .editG.maxLength = 3
-            .editG.sigLoseFocus += closure|v|(ed)
+            .editG.sigLoseFocus += closure|v|(ed  )
             {
                 var res = catch StrConv.parseU32(ed.text)
                 v.color.g = acast Math.clamp(res.value, 0, 255)
@@ -277,7 +277,7 @@ impl ColorPickerCtrl
 
             .editB.setInputU64(0, 255)
             .editB.maxLength = 3
-            .editB.sigLoseFocus += closure|v|(ed)
+            .editB.sigLoseFocus += closure|v|(ed  )
             {
                 var res = catch StrConv.parseU32(ed.text)
                 v.color.b = acast Math.clamp(res.value, 0, 255)
@@ -286,7 +286,7 @@ impl ColorPickerCtrl
 
             .editA.setInputU64(0, 255)
             .editA.maxLength = 3
-            .editA.sigLoseFocus += closure|v|(ed)
+            .editA.sigLoseFocus += closure|v|(ed  )
             {
                 var res = catch StrConv.parseU32(ed.text)
                 v.color.a = acast Math.clamp(res.value, 0, 255)
@@ -294,7 +294,7 @@ impl ColorPickerCtrl
                 v.updateEdits()
             }
 
-            .editH.sigLoseFocus += closure|v|(ed)
+            .editH.sigLoseFocus += closure|v|(ed  )
             {
                 var res = catch StrConv.parseX64(ed.text)
                 v.color.argb = cast(u32) res.value
@@ -302,33 +302,33 @@ impl ColorPickerCtrl
                 v.updateAll()
             }
 
-            .radioH.sigChanged += closure|v|(bt)
+            .radioH.sigChanged += closure|v|(bt  )
             {
                 v.setMode(.SaturationLightness)
                 v.updateAll()
             }
-            .radioS.sigChanged += closure|v|(bt)
+            .radioS.sigChanged += closure|v|(bt  )
             {
                 v.setMode(.HueLightness)
                 v.updateAll()
             }
-            .radioL.sigChanged += closure|v|(bt)
+            .radioL.sigChanged += closure|v|(bt  )
             {
                 v.setMode(.HueSaturation)
                 v.updateAll()
             }
 
-            .radioR.sigChanged += closure|v|(bt)
+            .radioR.sigChanged += closure|v|(bt  )
             {
                 v.setMode(.GreenBlue)
                 v.updateAll()
             }
-            .radioG.sigChanged += closure|v|(bt)
+            .radioG.sigChanged += closure|v|(bt  )
             {
                 v.setMode(.RedBlue)
                 v.updateAll()
             }
-            .radioB.sigChanged += closure|v|(bt)
+            .radioB.sigChanged += closure|v|(bt  )
             {
                 v.setMode(.RedGreen)
                 v.updateAll()

@@ -3,5 +3,5 @@
 #test
 {
     const a: any = 6
-    let b    = 6 + a
+    let b = 6 + a
 }

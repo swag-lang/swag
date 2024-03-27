@@ -1,3 +1,4 @@
+
 using Core
 
 //#[Swag.PrintBc]
@@ -20,4 +21,5 @@ using Core
 
     var res = catch File.readAllText(loc.fileName)
     @assert(res.length > 0)
+    //Console.print("%", res.item0)
 }

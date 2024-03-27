@@ -1,4 +1,4 @@
-var t: const [..] u16 = [1, 2, 3, 4]
+var t: const [..] u16 = [1,2,3,4]
 
 #test
 {

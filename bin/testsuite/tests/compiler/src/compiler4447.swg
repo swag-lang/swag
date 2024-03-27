@@ -1,12 +1,10 @@
 #global testerror "Err0535"
 interface I
 {
-    mtd toto()->bool;
+    mtd toto()->bool
 }
 
-struct A
-{
-}
+struct A{}
 impl I for A
 {
     mtd toto()->s32

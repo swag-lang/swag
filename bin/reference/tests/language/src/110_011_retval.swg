@@ -18,10 +18,7 @@ But `retval` will also make a direct reference to the caller storage, to avoid a
 */
 #test
 {
-    struct RGB
-    {
-        x, y, z: f64
-    }
+    struct RGB { x, y, z: f64; }
 
     func getWhite()->RGB
     {

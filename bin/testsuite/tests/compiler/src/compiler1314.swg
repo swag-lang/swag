@@ -9,6 +9,7 @@ impl A
     func opDrop(using self)
     {
         DROP += 1
+        //@print("drop\n")
     }
 }
 

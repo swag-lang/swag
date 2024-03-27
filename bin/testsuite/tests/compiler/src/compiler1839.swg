@@ -7,7 +7,7 @@ var G: s64 = 0
 
 interface IPrintable
 {
-    func print(self);
+    func print(self)
 }
 
 impl IPrintable for Point
@@ -22,7 +22,7 @@ impl IPrintable for Point
 #test
 {
     var pt: Point
-    let ty  = @typeof(pt)
+    let ty = @typeof(pt)
     let itf = @mkinterface(&pt, ty, IPrintable)
     @assert(itf != null)
     itf.print()

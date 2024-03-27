@@ -1,3 +1,4 @@
+﻿
 using Core
 
 #test
@@ -8,6 +9,7 @@ using Core
         @assert(res[0] == `A`)
         @assert(res[1] == `B`)
         @assert(res[2] == `C`)
+        //Console.print("%", res)
     }
 
     {

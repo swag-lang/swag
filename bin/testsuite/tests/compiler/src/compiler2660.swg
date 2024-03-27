@@ -1,4 +1,4 @@
-var f  = 100'u64
+var f = 100'u64
 var f1 = 100'u32
 
 //#[Swag.PrintBc]

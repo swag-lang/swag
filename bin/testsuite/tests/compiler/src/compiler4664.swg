@@ -2,9 +2,7 @@
 attr Toto(x: f32)
 
 #[Toto(1)]
-func titi()
-{
-}
+func titi() {}
 
 //#[Swag.PrintBc]
 #test

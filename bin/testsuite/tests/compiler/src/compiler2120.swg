@@ -16,4 +16,5 @@ impl Arr
 {
     var x: Arr'f64
     @assert(@typeof(x.z.x) == f64)
+    //@assert(@typeof(Arr.ST.x) == s32)
 }

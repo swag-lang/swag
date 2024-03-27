@@ -5,6 +5,7 @@ func toto()
     loop 5
     {
         var xx = 666
+        //@assert(v != 666)
     }
 }
 

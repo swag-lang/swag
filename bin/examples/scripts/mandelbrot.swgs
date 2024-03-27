@@ -62,7 +62,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Slider = Slider.create(wnd, {0, 0, 200}, range: true)
         g_Slider.setMinMax(-2.5, 2.5)
         g_Slider.setRangeValues(-2.5, 2.5)
-        g_Slider.sigChanged += closure|wnd|(s)
+        g_Slider.sigChanged += closure|wnd|(s   )
         {
             compute()
             wnd.invalidate()

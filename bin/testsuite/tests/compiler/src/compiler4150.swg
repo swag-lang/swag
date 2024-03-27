@@ -1,13 +1,9 @@
 #global testerror "Err0630"
-struct A
-{
-}
+struct A {}
 
 impl A
 {
-    mtd toto(x, y: s32)
-    {
-    }
+    mtd toto(x, y: s32) {}
     {
     }
 

@@ -1,6 +1,6 @@
-#global testerror "Err0705"
+#global testerror "Err0705";
 
-var g: string = "tata"
+var g: string = "tata";
 
 #[PrintBc]
 #test

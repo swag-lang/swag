@@ -775,46 +775,46 @@ namespace Swag
     // See [[ICompiler]]
     struct BuildCfg
     {
-        moduleVersion:                 u32 = 0                              // The module version
-        moduleRevision:                u32 = 0                              // The module revision
-        moduleBuildNum:                u32 = 0                              // The module build value
-        moduleNamespace:               string                               // The namespace name of the module
-        embeddedImports                = false                              // Module should embed all its dependencies
+        moduleVersion:       u32 = 0     // The module version
+        moduleRevision:      u32 = 0     // The module revision
+        moduleBuildNum:      u32 = 0     // The module build value
+        moduleNamespace:     string      // The namespace name of the module
+        embeddedImports      = false     // Module should embed all its dependencies
 
-        tempAllocatorCapacity          = 4'u32 * 1024 * 1024                // Default capacity of the 'temp' allocator (in bytes)
-        errorAllocatorCapacity         = 16'u32 * 1024                      // Default capacity of the 'error' allocator (in bytes)
-        safetyGuards:                  u16 = SafetyAll                      // Activate specific safety checks
-        debugAllocator                 = true                               // Use Swag.DebugAllocator by default
-        debugAllocatorCaptureStack     = true                               // Capture the call stack for each allocation
-        debugAllocatorLeaks            = true                               // Detect memory leaks
-        errorStackTrace                = true                               // Add stack trace in case a 'throw' is raised
+        tempAllocatorCapacity          = 4'u32 * 1024 * 1024     // Default capacity of the 'temp' allocator (in bytes)
+        errorAllocatorCapacity         = 16'u32 * 1024           // Default capacity of the 'error' allocator (in bytes)
+        safetyGuards:                  u16 = SafetyAll           // Activate specific safety checks
+        debugAllocator                 = true                    // Use Swag.DebugAllocator by default
+        debugAllocatorCaptureStack     = true                    // Capture the call stack for each allocation
+        debugAllocatorLeaks            = true                    // Detect memory leaks
+        errorStackTrace                = true                    // Add stack trace in case a 'throw' is raised
 
-        warnAsErrors:                  string                               // Force some warnings to be treated as errors. Format is "WrnXXXX|WrnXXXX..."
-        warnAsWarning:                 string                               // Override 'warnAsErrors', restoring warnings as warnings
-        warnAsDisabled:                string                               // Disable some specific warnings
-        warnDefaultDisabled:           bool                                 // All warnings are disabled, except those specified above
-        warnDefaultErrors:             bool                                 // All warnings are treated as errors, except those specified above
+        warnAsErrors:            string     // Force some warnings to be treated as errors. Format is "WrnXXXX|WrnXXXX..."
+        warnAsWarning:           string     // Override 'warnAsErrors', restoring warnings as warnings
+        warnAsDisabled:          string     // Disable some specific warnings
+        warnDefaultDisabled:     bool       // All warnings are disabled, except those specified above
+        warnDefaultErrors:       bool       // All warnings are treated as errors, except those specified above
 
-        byteCodeOptimizeLevel          = 1                                  // Optimization level of bytecode [0, 1 or 2]
-        byteCodeEmitAssume             = true                               // 'assume' will panic if an error is raised
-        byteCodeInline                 = true                               // Enable bytecode inlining with #[Swag.Inline]
-        byteCodeAutoInline             = true                               // Automatic inlining of some other functions
+        byteCodeOptimizeLevel     = 1        // Optimization level of bytecode [0, 1 or 2]
+        byteCodeEmitAssume        = true     // 'assume' will panic if an error is raised
+        byteCodeInline            = true     // Enable bytecode inlining with #[Swag.Inline]
+        byteCodeAutoInline        = true     // Automatic inlining of some other functions
 
-        backendKind                    = BuildCfgBackendKind.Executable     // Backend type (executable, dynamic lib...)
-        backendSubKind                 = BuildCfgBackendSubKind.Console     // Backend sub kind
-        backendDebugInformations       = false                              // Output debug information if 'true'
-        backendDebugInline             = false                              // Generate specific line information for inline code
-        backendOptimize                = BuildCfgBackendOptim.O0            // Backend optimization level
-        backendNumCU                   = 0'u32
+        backendKind                  = BuildCfgBackendKind.Executable     // Backend type (executable, dynamic lib...)
+        backendSubKind               = BuildCfgBackendSubKind.Console     // Backend sub kind
+        backendDebugInformations     = false                              // Output debug information if 'true'
+        backendDebugInline           = false                              // Generate specific line information for inline code
+        backendOptimize              = BuildCfgBackendOptim.O0            // Backend optimization level
+        backendNumCU                 = 0'u32
 
-        linkerArgs:                    string                               // Additional linker arguments
+        linkerArgs: string // Additional linker arguments
 
-        backendLLVM:                   BuildCfgBackendLLVM                  // Specific LLVM options
-        backendSCBE:                   BuildCfgBackendSCBE                  // Specific SCBE options
+        backendLLVM:     BuildCfgBackendLLVM     // Specific LLVM options
+        backendSCBE:     BuildCfgBackendSCBE     // Specific SCBE options
 
-        repoPath:                      string                               // Repository access path to the module
+        repoPath: string // Repository access path to the module
 
-        genDoc:                        BuildCfgGenDoc                       // Parameters for document generation
+        genDoc: BuildCfgGenDoc // Parameters for document generation
     }
 
     // #########################################################

@@ -1,3 +1,4 @@
+
 using Core.StrConv
 
 //#[Swag.PrintBc]
@@ -8,4 +9,5 @@ using Core.StrConv
     str.appendAny(3.14, "+f2")
     str.appendString(" ")
     str.appendAny(-666, "+010")
+    //Console.print("%", str.toString())
 }

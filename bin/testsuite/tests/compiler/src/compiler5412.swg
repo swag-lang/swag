@@ -1,6 +1,6 @@
 //#global skip
 
-var g   = 4
+var g = 4
 var g1: *s32
 
 func titi()->&*s32

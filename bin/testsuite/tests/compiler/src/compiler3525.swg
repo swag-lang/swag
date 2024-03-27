@@ -1,11 +1,9 @@
 //#global skip
-struct Circle
-{
-}
+struct Circle {}
 
 interface IShape
 {
-    func area(self)->s32;
+    func area(self)->s32
 }
 
 impl IShape for Circle

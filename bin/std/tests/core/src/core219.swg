@@ -1,3 +1,4 @@
+
 using Core
 
 //#[Swag.PrintBc]
@@ -7,5 +8,6 @@ using Core
     arr.add("toto")
     visit v: arr
     {
+        //Console.print("%\n", @typeof(v))
     }
 }

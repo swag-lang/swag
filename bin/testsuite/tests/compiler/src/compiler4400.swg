@@ -1,11 +1,6 @@
 //#global testerror "Err0649"
-struct Node
-{
-    x: s32
-}
-struct(T) Arr
-{
-}
+struct Node {x: s32;}
+struct(T) Arr {}
 
 impl Arr
 {

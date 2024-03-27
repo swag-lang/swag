@@ -1,14 +1,10 @@
 namespace A
 {
-    struct B
-    {
-    }
+    struct B {}
 }
 
 #test
 {
     using A
-    func toto(x: B)
-    {
-    }
+    func toto(x: B) {}
 }

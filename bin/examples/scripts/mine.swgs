@@ -111,7 +111,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_FontCell = wnd.getTheme().createDefaultFont(20)
 
         let btn = PushButton.create(wnd, "Again!", {CellSize, (CellSize * 2) + GridSize * CellSize})
-        btn.sigPressed += closure|wnd|(btn)
+        btn.sigPressed += closure|wnd|(btn )
         {
             setup()
             wnd.invalidate()
@@ -121,7 +121,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         sli.slider.setMinMax(1, 10)
         sli.edit.setInputU64(1, 10)
         sli.slider.setValue(acast g_Density)
-        sli.slider.sigChanged += func(sli)
+        sli.slider.sigChanged += func(sli )
         {
             g_Density = cast(s32) sli.getValue()
         }

@@ -2,16 +2,13 @@
 
 struct Point
 {
-    x: s32
+	x: s32
 }
 
-func new()->Point
-{
-    return {1}
-}
+func new()->Point { return {1}; }
 
 //#[Swag.PrintBc]
 #test
 {
-    new().x = 1
+	new().x = 1
 }

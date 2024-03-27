@@ -1,5 +1,5 @@
 #global testerror "Err0244"
 #test
 {
-    @assert("toto" > "toto")
+	@assert("toto" > "toto")
 }

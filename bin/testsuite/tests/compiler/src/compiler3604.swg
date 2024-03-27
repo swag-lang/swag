@@ -5,7 +5,7 @@ struct A
 
 interface I
 {
-    func toto(self);
+    func toto(self)
 }
 
 impl I for A
@@ -23,7 +23,7 @@ impl I for A
 
     mtd impl toto()
     {
-        var x:  XX = undefined
+        var x: XX = undefined
         var x1: XX1 = undefined
         var x2: XX2 = undefined
     }

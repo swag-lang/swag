@@ -1,7 +1,4 @@
-struct A
-{
-    x: s32
-}
+struct A { x: s32; }
 var G = 0
 
 impl A

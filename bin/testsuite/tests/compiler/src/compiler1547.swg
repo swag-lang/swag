@@ -1,21 +1,23 @@
 using Swag
 
 #[ConstExpr]
-func hasMember(type: const *TypeInfo, name: string)->bool
+func hasMember(type: const* TypeInfo, name: string)->bool
 {
-    if (name == "titi") do
+    if(name == "titi") do
         return true
     return false
 }
 
 struct X
 {
+
 }
 
 impl X
 {
     func titi()
     {
+
     }
 }
 

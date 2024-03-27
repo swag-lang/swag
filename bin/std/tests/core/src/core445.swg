@@ -8,8 +8,8 @@ using Core
     }
 
     {
-        var r = assume Parser.RegExp.create(#"\/"#)
-        @assert(r.match("/"))
+         var r = assume Parser.RegExp.create(#"\/"#)
+         @assert(r.match("/"))
     }
 
     {
@@ -18,9 +18,9 @@ using Core
     }
 
     {
-        var r = assume Parser.RegExp.create(#"X\s*\s*X"#)
-        @assert(r.match("XX"))
-        @assert(r.match("X X"))
-        @assert(r.match("X         X"))
+         var r = assume Parser.RegExp.create(#"X\s*\s*X"#)
+         @assert(r.match("XX"))
+         @assert(r.match("X X"))
+         @assert(r.match("X         X"))
     }
 }

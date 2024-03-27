@@ -1,8 +1,5 @@
 //#global skip
-struct Rectangle
-{
-    x: s32
-}
+struct Rectangle{ x: s32; }
 
 #[Swag.Overload]
 func(T) create(parent: *void = null, id: string = null)

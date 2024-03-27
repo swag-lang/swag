@@ -7,7 +7,7 @@ func toto(ptr: func() throw) throw
 
 func toto1() throw
 {
-    }
+}
 
 //#[Swag.PrintBc]
 #test

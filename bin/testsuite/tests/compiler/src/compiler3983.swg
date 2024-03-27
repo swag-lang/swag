@@ -20,6 +20,7 @@ func dot(x: const &Vec2)
     @assert(x[1] == 2.0)
 }
 
+
 //#[Swag.PrintBc]
 #test
 {

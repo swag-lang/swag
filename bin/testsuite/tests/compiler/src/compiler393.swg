@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    let c = 1
-    @assert(c == 1)
+	let c = 1;
+	@assert(c == 1);
 }

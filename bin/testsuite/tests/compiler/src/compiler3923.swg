@@ -1,8 +1,9 @@
-struct A
+
+struct A 
 {
     x: s32
 }
-struct B
+struct B 
 {
     a: *A
 }

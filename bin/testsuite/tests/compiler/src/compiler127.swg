@@ -1,14 +1,14 @@
 using Swag
 #[AttrUsage(AttributeUsage.Function)]
-attr toto()
+attr toto();
 
 #[toto]
-func main()
+func main ()
 {
 }
 
 #[AttrUsage(AttributeUsage.GlobalVariable)]
-attr toto1()
+attr toto1();
 
 #[toto1]
-var a: bool
+var a: bool;

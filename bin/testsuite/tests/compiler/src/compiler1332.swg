@@ -4,7 +4,7 @@
 #assert 2 * -2 == -4
 #assert 0x1_FFFF * 1'u32 == 0x1_FFFF
 #assert 1 * 0x1_FFFF == 0x1_FFFF
-#assert 0x1_FFFF * 1 == 0x1_FFFF
+#assert 0x1_FFFF  * 1 == 0x1_FFFF
 #assert 1'u8 * 0x1_FFFF == 0x1_FFFF
 #assert 1'u16 * 0x1_FFFF == 0x1_FFFF
 #assert 1'u32 * 0x1_FFFF == 0x1_FFFF

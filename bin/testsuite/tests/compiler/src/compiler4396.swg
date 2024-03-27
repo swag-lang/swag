@@ -1,9 +1,6 @@
 #global testerror "Err0649"
 
-struct A
-{
-    x, y: s32
-}
+struct A { x, y: s32; }
 
 func toto(x: &A)
 {

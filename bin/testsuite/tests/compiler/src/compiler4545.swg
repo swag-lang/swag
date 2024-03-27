@@ -1,9 +1,4 @@
-enum A
-{
-    R
-    G
-    B
-}
+enum A { R; G; B; }
 
 func toto(x: s32)
 {

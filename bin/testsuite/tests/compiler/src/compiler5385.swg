@@ -8,9 +8,7 @@ func toto()->const &rune
 {
     switch toto()
     {
-    case `A`:
-        break
-    default:
-        @assert(false)
+    case `A`: break
+    default: @assert(false)
     }
 }

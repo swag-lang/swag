@@ -1,3 +1,5 @@
+﻿;
+;
 
-var a: bool = false
-var b: bool = true
+var a: bool = false;
+var b: bool = true;

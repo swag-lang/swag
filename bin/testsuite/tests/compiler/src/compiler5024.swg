@@ -1,13 +1,9 @@
 #global testerror "Err0108"
 
-struct A
-{
-}
+struct A{}
 impl A
 {
-    mtd opDrop()
-    {
-    }
+    mtd opDrop(){}
 }
 //#[Swag.PrintBc]
 #test

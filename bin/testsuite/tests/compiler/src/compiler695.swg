@@ -1,12 +1,13 @@
+
 struct(T) Point
 {
-    x:     T = 5
-    y:     T = 10
+	x: T = 5
+	y: T = 10
 }
 
 struct(V) Array
 {
-    pt: Point'V
+	pt: Point'V
 }
 
 #test

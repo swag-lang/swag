@@ -1,29 +1,30 @@
 
+
 var G: s32
 
 struct Point
 {
-    x: s32
+	x: s32
 }
 
 impl Point
 {
-    func opDrop(self)
-    {
-        @assert(self.x == 10)
-        G += 1
-    }
+	func opDrop(self)
+	{
+		@assert(self.x == 10)
+		G += 1
+	}
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    G = 0
+	G = 0
 
-    loop 10
-    {
-        var pt: Point{10}
-    }
+	loop(10)
+	{
+		var pt: Point{10}
+	}
 
-    @assert(G == 10)
+	@assert(G == 10)
 }

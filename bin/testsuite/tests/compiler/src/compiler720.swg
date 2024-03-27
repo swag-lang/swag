@@ -1,6 +1,6 @@
 #global testerror "Err0256"
 #test
 {
-    var ptr: *void
-    var c    = ptr[0]
+	var ptr: *void
+	var c = ptr[0]
 }

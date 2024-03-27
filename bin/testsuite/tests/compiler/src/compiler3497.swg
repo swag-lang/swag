@@ -13,6 +13,11 @@ impl A
         {
             #mixin stmt
         }
+
+        /*#if @typeof(T).kind == .Struct
+        {
+            @assert(false)
+        }*/
     }
 }
 

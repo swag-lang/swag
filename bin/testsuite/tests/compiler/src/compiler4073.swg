@@ -1,8 +1,5 @@
 #global testerror "Err0625"
-enum A
-{
-    B
-}
+enum A { B; }
 
 func toto()
 {

@@ -1,10 +1,6 @@
 impl A
 {
-    struct B
-    {
-    }
+    struct B{}
 }
 
-struct A
-{
-}
+struct A {}

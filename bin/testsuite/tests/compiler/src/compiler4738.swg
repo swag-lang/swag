@@ -1,7 +1,5 @@
 #global testerror "Err0592"
-func toto(x: s32, y: f32)
-{
-}
+func toto(x: s32, y: f32) {}
 
 struct A
 {

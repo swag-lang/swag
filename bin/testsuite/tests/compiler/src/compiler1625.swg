@@ -1,5 +1,6 @@
 struct(T) A
 {
+
 }
 
 #test

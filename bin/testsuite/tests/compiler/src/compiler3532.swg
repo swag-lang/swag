@@ -4,6 +4,7 @@ func(T, N: u64) norm(a: const [N] T)
     var arr: [N] s32
     @assert(N == 2)
     @assert(T == f32)
+
 }
 
 //#[Swag.PrintBc]

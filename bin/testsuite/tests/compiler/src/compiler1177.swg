@@ -13,7 +13,7 @@ func fromName(name: string)->X
     loop t.values
     {
         let param = t.values[#index]
-        if (param.name == name)
+        if(param.name == name)
         {
             let ptr = cast(const *TOTO) param.value
             return dref ptr

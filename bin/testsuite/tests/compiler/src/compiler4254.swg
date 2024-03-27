@@ -1,6 +1,4 @@
-struct V
-{
-}
+struct V {}
 
 impl V
 {
@@ -20,6 +18,6 @@ impl V
 #test
 {
     var v: V
-    let y  = v[0..]
+    let y = v[0..]
     @assert(y == "toto")
 }

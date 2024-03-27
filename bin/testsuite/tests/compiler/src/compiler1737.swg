@@ -6,10 +6,8 @@
     {
         switch #index
         {
-        case 0:
-            break
-        case 1:
-            break
+            case 0: break
+            case 1: break
         }
 
         a += 1

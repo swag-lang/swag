@@ -1,9 +1,6 @@
 #global testerror "Saf0001"
 
-struct A
-{
-    x: s32
-}
+struct A {x: s32}
 
 func toto() throw
 {
@@ -17,4 +14,5 @@ func toto() throw
     catch toto()
     //@breakpoint()
     let err = cast(s32) @err()
+    //@print(err.x)
 }

@@ -47,7 +47,7 @@ impl PropertyListCtrl
             .dockStyle = .Top
             .setNote("Search")
             .margin.w = 10
-            .sigChanged += closure|ed|(fil)
+            .sigChanged += closure|ed|(fil )
             {
                 ed.prop.setStringFilter(fil.text)
             }

@@ -395,7 +395,7 @@ impl FileDlg
             {
                 .dockStyle = .Right
                 .margin.x  = 10
-                .sigPressed += closure|dlg|(btn)
+                .sigPressed += closure|dlg|(btn )
                 {
                     dlg.onNewFolder()
                 }

@@ -1,9 +1,4 @@
-enum RGB
-{
-    R
-    G
-    B
-}
+enum RGB { R; G; B; }
 #test
 {
     var cpt = 0
@@ -11,12 +6,9 @@ enum RGB
     {
         switch e
         {
-        case R:
-            cpt += 1
-        case G:
-            cpt += 2
-        case B:
-            cpt += 4
+        case R: cpt += 1
+        case G: cpt += 2
+        case B: cpt += 4
         }
     }
 

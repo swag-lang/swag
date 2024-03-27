@@ -1,6 +1,4 @@
-struct(T) A
-{
-}
+struct(T) A {}
 
 var G = 0
 
@@ -22,7 +20,7 @@ impl A
 #test
 {
     var a: A's32
-    var x  = 0's32
+    var x = 0's32
     a.toto(moveref &x)
     @assert(G == 1)
 }

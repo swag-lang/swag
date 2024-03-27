@@ -1,10 +1,6 @@
 //#global skip
-struct AA
-{
-}
-struct BB
-{
-}
+struct AA {}
+struct BB {}
 
 func(T) create1()
 {

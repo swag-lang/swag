@@ -1,4 +1,4 @@
 interface toto
 {
-    func print(self);
+    func print(self)
 }

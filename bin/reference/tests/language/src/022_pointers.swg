@@ -7,8 +7,8 @@ A pointer to a **single element** is declared with `*`.
 */
 #test
 {
-    var ptr1: *u8      // This is a pointer to one single 'u8'
-    var ptr2: **u8     // This is a pointer to one other pointer to one single 'u8'
+    var ptr1: *u8   // This is a pointer to one single 'u8'
+    var ptr2: **u8  // This is a pointer to one other pointer to one single 'u8'
 }
 
 /**
@@ -26,7 +26,7 @@ You can take the address of something with `&`.
 #test
 {
     var arr = 1
-    let ptr = &arr     // Take the address of the variable 'arr'
+    let ptr = &arr // Take the address of the variable 'arr'
     @assert(@typeof(ptr) == *s32)
 }
 
@@ -45,7 +45,7 @@ Pointers can be `const`.
 */
 #test
 {
-    let str  = "string"
+    let str = "string"
     let ptr: const *u8 = @dataof(str)
     @assert(dref ptr == `s`)
 }
@@ -55,10 +55,11 @@ You can be weird, but is this necessary ?
 */
 #test
 {
-    var ptr:  *const *u8           // Normal pointer to a const pointer
-    var ptr1: const *const *u8     // Const pointer to a const pointer
-    var ptr2: const **u8           // Const pointer to a normal pointer
+    var ptr:  *const *u8        // Normal pointer to a const pointer
+    var ptr1: const *const *u8  // Const pointer to a const pointer
+    var ptr2: const **u8        // Const pointer to a normal pointer
 }
+
 
 /**
 # Multiple values pointers
@@ -78,7 +79,7 @@ Taking the address of an array element enables pointer arithmetic.
 */
 #test
 {
-    var x:  [4] s32
+    var x: [4] s32
     var ptr = &x[1]
     ptr = ptr - 1
     #assert @typeof(ptr) == ^s32

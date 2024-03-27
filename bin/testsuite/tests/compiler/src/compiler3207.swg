@@ -5,24 +5,22 @@ struct Base
 
 struct BB
 {
-    x:              [4] bool
-    using base:     Base
+    x: [4] bool
+    using base: Base
 }
 
 interface I
 {
-    func init(self, x: s32)->s32;
-    func close(self)->s32;
-    func data(self);
+    func init(self, x: s32)->s32
+    func close(self)->s32
+    func data(self)
 }
 
 impl I for Base
 {
     mtd impl init(param: s32) => param
-    mtd impl close()->s32     => 2
-    mtd impl data()
-    {
-    }
+    mtd impl close()->s32 => 2
+    mtd impl data() {}
 }
 
 impl I for BB
@@ -32,7 +30,7 @@ impl I for BB
 
 #test
 {
-    var x:  BB
+    var x: BB
     let ptr = cast(I) x
     @assert(ptr.init(1) == 1)
     @assert(ptr.init(10) == 10)

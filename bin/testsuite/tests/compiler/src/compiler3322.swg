@@ -5,7 +5,7 @@ struct AA
 
 interface BB
 {
-    func x(self)->s32;
+    func x(self)->s32
 }
 
 var G = 0
@@ -22,7 +22,7 @@ impl BB for AA
 //#[Swag.PrintBc]
 #test
 {
-    var x:  AA
+    var x: AA
     let ptr = &x
     let itf = cast(BB) ptr
     @assert(itf.x() == 555)

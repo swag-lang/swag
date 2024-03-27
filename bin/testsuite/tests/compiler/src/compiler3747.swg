@@ -11,5 +11,6 @@ func(T) toto() throw
 
 #test
 {
-    try toto's32()
+    try
+    toto's32()
 }

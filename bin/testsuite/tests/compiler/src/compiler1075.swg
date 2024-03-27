@@ -1,11 +1,12 @@
 
+
 #global testerror "Err0005"
 #main
 {
-    @assert(true)
+	@assert(true)
 }
 
 #main
 {
-    @assert(true)
+	@assert(true)
 }

@@ -6,5 +6,5 @@ func toto()->s32 => 666
 //#global testerror
 #test
 {
-    var ptr = &toto
+	var ptr = &toto
 }

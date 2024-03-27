@@ -1,10 +1,11 @@
 //#[Swag.PrintBc]
-#[Swag.Safety("sanity", false), Swag.Optim("", true)]
+#[Swag.Safety("sanity", false)]
+#[Swag.Optim("", true)]
 func toto(z: f32)->f32
 {
     const F = 0'f32
-    let x   = 1
-    let y   = x + 0'f32
+    let x = 1
+    let y = x + 0'f32
     return z + y
 }
 

@@ -16,8 +16,6 @@ typealias CB = closure()
 #test
 {
     var arr: Arr
-    let x    = func()
-    {
-    }
+    let x = func(){}
     arr.add(x)
 }

@@ -1,9 +1,11 @@
+;
+;
 
-const TOTO = 666
+const TOTO = 666;
 
 //#[Swag.PrintBc]
 #test
 {
-    let b = TOTO
-    @assert(b == 666)
+	let b = TOTO;
+	@assert(b == 666);
 }

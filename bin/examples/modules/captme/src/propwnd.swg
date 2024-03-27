@@ -208,7 +208,7 @@ impl PropWnd
             .addColor(Argb.Purple)
             .addColor(Color.fromArgb(0))
             .boxSize = 32
-            .sigChanged += closure|picker|(pal)
+            .sigChanged += closure|picker|(pal )
             {
                 picker.setColor(pal.selectedColor)
             }
@@ -270,7 +270,7 @@ impl PropWnd
                 }
             }
 
-            btn0.sigPressed += closure|me, layout|(btn)
+            btn0.sigPressed += closure|me, layout|(btn )
             {
                 var kind = cast(u64) btn.userData
                 me.pushTypedValue(acast kind, FormShape, @nameof(FormShape.kind), true)
@@ -317,7 +317,7 @@ impl PropWnd
                 }
             }
 
-            btn0.sigPressed += closure|me|(btn)
+            btn0.sigPressed += closure|me|(btn )
             {
                 var kind = cast(u64) btn.userData
                 me.pushTypedValue(acast kind, FormStep, @nameof(FormStep.kind), true)
@@ -369,7 +369,7 @@ impl PropWnd
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
-            btn0.sigPressed += closure|me, layout|(btn)
+            btn0.sigPressed += closure|me, layout|(btn )
             {
                 var kind = cast(u64) btn.userData
                 me.pushTypedValue(acast kind, FormLine, @nameof(FormLine.beginCap), true)
@@ -422,7 +422,7 @@ impl PropWnd
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
-            btn0.sigPressed += closure|me, layout|(btn)
+            btn0.sigPressed += closure|me, layout|(btn )
             {
                 var kind = cast(u64) btn.userData
                 me.pushTypedValue(acast kind, FormLine, @nameof(FormLine.endCap), true)
@@ -474,7 +474,7 @@ impl PropWnd
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
-            btn0.sigPressed += closure|me, layout|(btn)
+            btn0.sigPressed += closure|me, layout|(btn )
             {
                 var kind = cast(u64) btn.userData
                 me.pushTypedValue(acast kind, BaseForm, @nameof(BaseForm.dashStyle), true, true)
@@ -518,12 +518,12 @@ impl PropWnd
             bc.painter.drawRoundRect(rect, 5, 5, curSel.borderColor, 5)
         }
 
-        btn.sigShowPopup += closure|me|(btn)
+        btn.sigShowPopup += closure|me|(btn )
         {
             let curSel = me.getSelectedBaseForm()
             var picker = createColorPicker(btn, curSel.borderColor)
             me.pushTypedValue(curSel.borderColor.argb, BaseForm, @nameof(BaseForm.borderColor), true, true)
-            picker.sigChanged += closure|me, btn|(pk)
+            picker.sigChanged += closure|me, btn|(pk  )
             {
                 me.pushTypedValue(pk.getColor().argb, BaseForm, @nameof(BaseForm.borderColor), false, true)
                 btn.invalidate()
@@ -567,14 +567,14 @@ impl PropWnd
             bc.painter.fillRoundRect(rect, 10, 10, backCol)
         }
 
-        btn.sigShowPopup += closure|me|(btn)
+        btn.sigShowPopup += closure|me|(btn )
         {
             var curSel  = me.getSelectedBaseForm()
             var backCol = curSel.subKind == .PixSel ? g_Main.pixSelFillCol : curSel.backColor
             var picker  = createColorPicker(btn, backCol)
             if curSel.subKind == .PixSel
             {
-                picker.sigChanged += closure|btn|(pk)
+                picker.sigChanged += closure|btn|(pk  )
                 {
                     g_Main.pixSelFillCol = pk.getColor()
                     btn.invalidate()
@@ -583,7 +583,7 @@ impl PropWnd
             else
             {
                 me.pushTypedValue(curSel.backColor.argb, BaseForm, @nameof(BaseForm.backColor), true, true)
-                picker.sigChanged += closure|me, btn|(pk)
+                picker.sigChanged += closure|me, btn|(pk  )
                 {
                     me.pushTypedValue(pk.getColor().argb, BaseForm, @nameof(BaseForm.backColor), false, true)
                     btn.invalidate()
@@ -627,7 +627,7 @@ impl PropWnd
             }
         }
 
-        btn.sigShowPopup += closure|me|(btn)
+        btn.sigShowPopup += closure|me|(btn )
         {
             var curSel = cast(*FormShape) me.getSelectedBaseForm()
             me.createPopupShapeKind(btn)
@@ -666,7 +666,7 @@ impl PropWnd
             }
         }
 
-        btn.sigShowPopup += closure|me|(btn)
+        btn.sigShowPopup += closure|me|(btn )
         {
             var curSel = cast(*FormStep) me.getSelectedBaseForm()
             me.createPopupStepKind(btn)
@@ -696,7 +696,7 @@ impl PropWnd
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
-        btn.sigShowPopup += closure|me|(btn)
+        btn.sigShowPopup += closure|me|(btn )
         {
             var curSel = cast(*FormShape) me.getSelectedBaseForm()
             me.createPopupStartCapStyle(btn)
@@ -726,7 +726,7 @@ impl PropWnd
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
-        btn.sigShowPopup += closure|me|(btn)
+        btn.sigShowPopup += closure|me|(btn )
         {
             var curSel = cast(*FormShape) me.getSelectedBaseForm()
             me.createPopupEndCapStyle(btn)
@@ -756,7 +756,7 @@ impl PropWnd
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
-        btn.sigShowPopup += closure|me|(btn)
+        btn.sigShowPopup += closure|me|(btn )
         {
             var curSel = cast(*FormShape) me.getSelectedBaseForm()
             me.createPopupDashStyle(btn)
@@ -790,7 +790,7 @@ impl PropWnd
             .margin.x  = 5
             .dockStyle = .Right
             .toolTip   = "Reset the global step count to 1"
-            btn.sigPressed += closure|self|(btn)
+            btn.sigPressed += closure|self|(btn )
             {
                 self.main.getCapture().nextStepIndex = 1
             }
@@ -867,7 +867,7 @@ impl PropWnd
         with let btnedt = IconButton.create(edt, getTheme().getIcon24(.More, 20), {0, 0, 20, 20})
         {
             .dockStyle = .Right
-            .sigPressed += closure|self, edt|(btn)
+            .sigPressed += closure|self, edt|(btn )
             {
                 let txt = self.editText(edt.text)
                 edt.setText(txt)
@@ -894,7 +894,7 @@ impl PropWnd
             .addCheckableToggleItem(Icon.from(&main.icons24, 16), CmdIdTextBold)
             .addCheckableToggleItem(Icon.from(&main.icons24, 17), CmdIdTextItalic)
 
-            .sigUpdateState += closure|self|(evt)
+            .sigUpdateState += closure|self|(evt )
             {
                 let curSel = cast(*FormText) self.getSelectedBaseForm()
                 evt.setFlags.add(.Checked)
@@ -909,7 +909,7 @@ impl PropWnd
                 }
             }
 
-            .sigCheckChanged += closure|self|(btn)
+            .sigCheckChanged += closure|self|(btn )
             {
                 let capture = self.main.getCapture()
                 let curSel  = cast(*FormText) self.getSelectedBaseForm()
@@ -956,7 +956,7 @@ impl PropWnd
             .addCheckableItem(Icon.from(&main.icons24, 12), CmdIdTextVCenter)
             .addCheckableItem(Icon.from(&main.icons24, 13), CmdIdTextVBottom)
 
-            .sigUpdateState += closure|self|(evt)
+            .sigUpdateState += closure|self|(evt )
             {
                 var curSel = cast(*FormText) self.getSelectedBaseForm()
                 evt.setFlags.add(.Checked)
@@ -979,7 +979,7 @@ impl PropWnd
                 }
             }
 
-            .sigCheckChanged += closure|self|(btn)
+            .sigCheckChanged += closure|self|(btn )
             {
                 var capture = self.main.getCapture()
                 switch btn.id

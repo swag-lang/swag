@@ -4,7 +4,8 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
     G += 1
 }
 
-#[Swag.Safety("overflow", true), Swag.Safety("sanity", false)]
+#[Swag.Safety("overflow", true)]
+#[Swag.Safety("sanity", false)]
 #test
 {
     {

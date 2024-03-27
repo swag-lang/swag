@@ -4,7 +4,6 @@
     let y = cast([..] u8) x
     @assert(@countof(y) == 8)
     var cpt = 0
-    loop 8 do
-        cpt += y[#index]
+    loop 8 do cpt += y[#index]
     @assert(cpt == 36)
 }

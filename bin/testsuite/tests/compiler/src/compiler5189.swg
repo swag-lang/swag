@@ -1,24 +1,20 @@
 //#global skip
-interface I
-{
-    mtd toto();
+interface I 
+{    
+    mtd toto()
 }
 
-struct X
-{
-}
+struct X {}
 
 impl I for X
 {
-    mtd impl toto()
-    {
-    }
+    mtd impl toto() {}
 }
 
 #test
 {
-    var x: X
-    let i  = cast(I) x
+    var x: X    
+    let i = cast(I) x
     switch i
     {
     case X:

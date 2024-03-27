@@ -10,10 +10,12 @@ impl AA
         //@print(x)
         //@assert(x == 1)
         x = 666
+        //@print("drop")
     }
 }
 
-func toto()->{x: AA}
+
+func toto()-> {x: AA}
 {
     var result: retval
     return result
@@ -23,4 +25,5 @@ func toto()->{x: AA}
 #test
 {
     var (v) = toto()
+    //var v1 = v.item0
 }

@@ -11,10 +11,10 @@ Note that 'var' is not necessary for the fields.
 
     struct MyStruct1
     {
-        x:       s32
-        y, z:    s32
-        val:     bool
-        myS:     MyStruct
+        x:      s32
+        y, z:   s32
+        val:    bool
+        myS:    MyStruct
     }
 }
 
@@ -23,18 +23,8 @@ Variables can also be separated with ';' or ','. The last one is not mandatory.
 */
 #test
 {
-    struct MyStruct
-    {
-        name:     string
-        val1:     bool
-    }
-    struct MyStruct1
-    {
-        x:       s32
-        y, z:    s32
-        val:     bool
-        myS:     MyStruct
-    }
+    struct MyStruct{name: string, val1: bool}
+    struct MyStruct1{x: s32; y, z: s32; val: bool; myS: MyStruct}
 }
 
 /**
@@ -44,8 +34,8 @@ A struct can be anonymous when declared as a variable type.
 {
     var tuple: struct
     {
-        x:     f32
-        y:     f32
+        x: f32
+        y: f32
     }
     var tuple1: struct{x, y: f32}
 
@@ -59,8 +49,8 @@ A struct can be anonymous when declared as a variable type.
 {
     struct MyStruct
     {
-        rgb:     struct{x, y, z: f32}
-        hsl:     struct{h, s, l: f32}
+        rgb: struct{x, y, z: f32}
+        hsl: struct{h, s, l: f32}
     }
 }
 
@@ -71,14 +61,18 @@ The fields of a struct can be initialized at the declaration.
 {
     struct MyStruct
     {
-        x:     s32 = 666
-        y:     string = "454"
+        x: s32    = 666
+        y: string = "454"
     }
 
     var v = MyStruct{}
     @assert(v.x == 666)
     @assert(v.y == "454")
 }
+
+/**
+You can initialize a struct variable in different ways.
+*/
 #test
 {
     // At fields declaration
@@ -117,14 +111,19 @@ A struct can be affected to a constant, as long as it can be evaluated at compil
 {
     struct MyStruct
     {
-        x:     s32 = 666
-        y:     string = "454"
+        x: s32    = 666
+        y: string = "454"
     }
 
     const X: MyStruct{50, "value"}
     #assert X.x == 50
     #assert X.y == "value"
 }
+
+/**
+A function can take an argument of type 'struct'.
+No copy is done (this is equivalent to a const reference in C++).
+*/
 
 struct Struct3
 {
@@ -153,7 +152,7 @@ func titi(v: Struct3)
     toto({5, 5, 666})
 
     // You can also just specify some parts of the struct, in the declaration order of the fields
-    titi({5}) // Initialize x, which is the first field
+    titi({5})      // Initialize x, which is the first field
     titi({5, 666}) // Initialize x and y
 
     // You can also name the fields, and omit some of them

@@ -1,10 +1,8 @@
-typealias Point       = s64
-typealias Triangle    = s64
+typealias Point = s64
+typealias Triangle = s64
 typealias Orientation = bool
 
-struct A
-{
-}
+struct A {}
 impl A
 {
     mtd orient2d(pa, pb, pc: Point)->Orientation
@@ -24,10 +22,9 @@ impl A
     {
         //@print(ep, " ", eq, " ", tri, " ", p, "\n")
         @assert(tri == 1)
-        if cpt == 2 do
-            return
+        if cpt == 2 do return
         cpt += 1
-        var t  = tri
+        var t = tri
         let ot = t
         let op = t
 

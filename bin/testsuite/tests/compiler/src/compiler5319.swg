@@ -21,11 +21,13 @@ impl X
 {
     mtd opDrop()
     {
+        //X.clear(self)
     }
 
     mtd clear()
     {
         G += 1
+        //@print("clear")
     }
 }
 

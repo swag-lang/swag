@@ -1,5 +1,6 @@
 namespace Toto
 {
+
 }
 
 enum Titi

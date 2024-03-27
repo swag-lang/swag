@@ -1,28 +1,16 @@
 #global testerror "Err0613"
-struct A
-{
-}
-struct B
-{
-}
+struct A {}
+struct B {}
 
-struct C
-{
-}
+struct C {}
 impl C
 {
     #[Swag.Overload]
-    mtd toto(x: A)
-    {
-    }
+    mtd toto(x: A){}
     #[Swag.Overload]
-    mtd toto(x: B)
-    {
-    }
+    mtd toto(x: B){}
     #[Swag.Overload]
-    mtd toto(x, y: s32)
-    {
-    }
+    mtd toto(x, y: s32){}
 }
 
 #test

@@ -1,6 +1,6 @@
 #test
 {
-    let toto  = 0
+    let toto = 0
     var toto1 = 1
     var toto2 = 2
 

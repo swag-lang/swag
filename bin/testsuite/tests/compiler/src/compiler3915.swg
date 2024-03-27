@@ -8,5 +8,5 @@ func toto(x: const [2] s32, b: s32)
 //#[Swag.PrintBc]
 #test
 {
-    toto([1, 2], 10)
+    toto([1,2], 10)
 }

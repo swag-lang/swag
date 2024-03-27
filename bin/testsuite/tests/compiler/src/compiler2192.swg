@@ -1,6 +1,7 @@
 #global testerror "Err0370"
 struct A
 {
+
 }
 
 impl A
@@ -13,7 +14,7 @@ impl A
 
 #test
 {
-    var x:  A
+    var x: A
     var res = x[1..2]
     @assert(res == 3)
 }

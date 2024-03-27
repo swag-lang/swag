@@ -1,4 +1,4 @@
-var G:  s32
+var G: s32
 var G1: s32
 
 func toto()->&s32

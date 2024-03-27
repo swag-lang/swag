@@ -1,6 +1,4 @@
-struct ErrToto
-{
-}
+struct ErrToto{}
 
 var G = 0
 func toto() throw

@@ -1,9 +1,11 @@
-using Swag
+;
+;
+using Swag;
 
 #[ConstExpr]
-func main()->u16
+func main ()->u16
 {
-    return 45
+	return 45;
 }
 
-#assert cast(f32) main() == 45
+#assert cast(f32) (main()) == 45;

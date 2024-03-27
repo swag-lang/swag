@@ -1,3 +1,4 @@
+﻿
 using Core.Memory
 
 //#[Swag.PrintBc]
@@ -12,8 +13,7 @@ using Core.Memory
 
     {
         var ptr = new'String(10)
-        loop 10 do
-            ptr[#index] = "toto"
+        loop 10 do ptr[#index] = "toto"
         delete(ptr, 10)
     }
 }

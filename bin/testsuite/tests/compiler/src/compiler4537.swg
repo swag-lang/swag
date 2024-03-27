@@ -5,8 +5,5 @@ typealias C = func(s32)
 
 #test
 {
-    var y: C = func(a)
-    {
-        return a
-    }
+    var y: C = func(a) { return a; }
 }

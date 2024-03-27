@@ -1,7 +1,7 @@
-private
-{
+private {
 
-    var x = 0
+var x = 0
+
 }
 
 #test

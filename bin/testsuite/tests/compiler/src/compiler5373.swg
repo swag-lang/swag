@@ -1,11 +1,9 @@
-struct B
-{
-}
+struct B {}
 
 struct A
 {
-    x:     [4] s32
-    y:     [4] B
+    x: [4] s32
+    y: [4] B
 }
 
 //#global skip

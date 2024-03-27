@@ -1,9 +1,12 @@
 
+
+
 func(op: string) toto()
 {
+	//@print("coucou")
 }
 
 #test
 {
-    toto'("op")()
+	toto'("op")()
 }

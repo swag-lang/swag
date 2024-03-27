@@ -1,9 +1,6 @@
 func toto()
 {
-    #if true #do
-        struct AA
-        {
-        }
+    #if true #do struct AA {}
     var x: AA
 }
 

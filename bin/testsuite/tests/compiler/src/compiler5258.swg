@@ -1,9 +1,6 @@
 #global testerror "Err0419"
-struct A
-{
-}
-impl A
-{
+struct A {}
+impl A {
 
     #[Swag.Macro]
     mtd(x: bool, y: bool) opVisitBytes(s: code)
@@ -15,6 +12,5 @@ impl A
 {
     var x: A
     visit:Byte x
-    {
-    }
+    {}
 }

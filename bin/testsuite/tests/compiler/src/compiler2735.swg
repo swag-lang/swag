@@ -1,8 +1,6 @@
 var G = 0
 
-struct ErrTiti
-{
-}
+struct ErrTiti{}
 
 func titi() throw
 {

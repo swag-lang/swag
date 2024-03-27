@@ -9,10 +9,7 @@ struct B
     a: A
 }
 
-enum RR
-{
-    T
-}
+enum RR { T; }
 
 impl A
 {

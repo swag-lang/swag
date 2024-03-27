@@ -12,13 +12,13 @@ using Core
     }
 
     var comp: Compress.Deflate
-    var res:  Array'u8
+    var res: Array'u8
 
     comp.init()
     try comp.compress(&res, arr.toSlice())
 
     var decomp: Compress.Inflate
-    var res1    = try decomp.decompress(res.toSlice())
+    var res1 = try decomp.decompress(res.toSlice())
 
     @assert(arr.count == res1.count)
     visit v, i: arr

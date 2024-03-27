@@ -1,5 +1,6 @@
 #global testerror "Err0272"
 
-enum A : [..] s32
+enum A: [..] s32
 {
+
 }

@@ -1,8 +1,8 @@
 struct TOTO
 {
     //CPT: s32 = 666
-    print1:     func(*TOTO, string)
-    print:      func(*TOTO, string)
+    print1: func(self, string)
+	print: func(self, string)
 }
 
 func print1(s: *TOTO, x: string)

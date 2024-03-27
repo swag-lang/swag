@@ -1,7 +1,4 @@
-struct A
-{
-    r, g, b, d: s32
-}
+struct A { r, g, b, d : s32; }
 
 var G = 0
 

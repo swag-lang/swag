@@ -1,8 +1,8 @@
 func toto(f: f32)
-    #validif
-    {
-        return true
-    }
+#validif
+{
+    return true
+}
 {
 }
 

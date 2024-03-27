@@ -4,5 +4,5 @@ func toto()->s32 => 1
 //#[Swag.PrintBc]
 #test
 {
-    var r = toto()
+	var r = toto()
 }

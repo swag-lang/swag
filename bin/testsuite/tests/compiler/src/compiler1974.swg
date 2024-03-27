@@ -1,14 +1,15 @@
+
 #global testerror "Err0556"
 
 struct(K, V) HashTableEntry
 {
-    key:       K
-    value:     V
+    key:    K
+    value:  V
 }
 
 struct(K, V) HashTable
 {
-    table: *HashTableEntry
+    table:  *HashTableEntry
 }
 
 impl HashTable

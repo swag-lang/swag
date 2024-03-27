@@ -1,15 +1,15 @@
+﻿
 using Core
 
-var G      = 0's64
-const N    = 3
+var G = 0's64
+const N = 3
 const ITER = 10000
 var mutex: Sync.Mutex
 
 func entry(th: Threading.Thread)
 {
     mutex.lock()
-    loop ITER do
-        G += 1
+    loop ITER do G += 1
     mutex.unlock()
 }
 
@@ -17,10 +17,8 @@ func entry(th: Threading.Thread)
 #test
 {
     var th: [N] Threading.Thread
-    visit &t: th do
-        catch t.init(&entry)
-    visit &t: th do
-        catch t.start()
+    visit &t: th do catch t.init(&entry)
+    visit &t: th do catch t.start()
     Threading.wait(&th[0], &th[1], &th[2])
     @assert(G == N * ITER)
 }

@@ -1,5 +1,6 @@
 struct AA
 {
+
 }
 
 var G = false
@@ -11,7 +12,7 @@ func toto(x: AA)
 //#[Swag.PrintBc]
 #test
 {
-    let x   = &toto
+    let x = &toto
     var tt: AA
     tt.x()
 }

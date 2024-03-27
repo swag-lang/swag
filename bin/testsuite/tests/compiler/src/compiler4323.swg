@@ -2,16 +2,14 @@
 #test
 {
     var x: func(a: s32 = 1)
-    x = func(a)
-    {
+    x = func(a) {
         @assert(a == 1)
     }
 
     x()
     x(1)
 
-    x = func(a)
-    {
+    x = func(a) {
         @assert(a == 2)
     }
 

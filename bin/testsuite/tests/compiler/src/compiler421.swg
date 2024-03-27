@@ -2,6 +2,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    const d: s32 = 666
-    d = 20
+	const d: s32 = 666
+	d = 20
 }

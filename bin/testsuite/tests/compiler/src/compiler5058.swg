@@ -1,6 +1,6 @@
 #global testerror "Err0033"
 
-func toto() => "toto"
+func toto()=>"toto"
 
 #test
 {

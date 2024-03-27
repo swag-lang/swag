@@ -1,8 +1,9 @@
 #global testerror "Saf0025"
 
-#[Swag.Safety("", true), Swag.Optim("", false)]
+#[Swag.Safety("", true)]
+#[Swag.Optim("", false)]
 #test
 {
     const x = Swag.F32.Max
-    let y   = cast(s8) x
+    let y = cast(s8) x
 }

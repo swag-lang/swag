@@ -1,9 +1,11 @@
 func(T) toto(v: T)
 {
+
 }
 
 struct(T) A
 {
+
 }
 
 impl A

@@ -1,8 +1,4 @@
-enum SoundFileEncoding
-{
-    Pcm8
-    B
-}
+enum SoundFileEncoding { Pcm8, B }
 
 #test
 {

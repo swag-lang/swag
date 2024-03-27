@@ -1,6 +1,4 @@
 public
 {
-    private func toto63(b: s32)
-    {
-    }
+    private func toto63(b: s32) {}
 }

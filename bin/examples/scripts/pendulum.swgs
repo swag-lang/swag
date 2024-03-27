@@ -71,7 +71,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             let btn = PushButton.create(panel, "restart")
             btn.maxSize = 100
-            btn.sigPressed += func(btn)
+            btn.sigPressed += func(btn )
             {
                 start()
             }

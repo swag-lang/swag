@@ -6,7 +6,7 @@ struct TOTO
 
 interface Itf
 {
-    func print(self);
+    func print(self)
 }
 
 impl Itf for TOTO

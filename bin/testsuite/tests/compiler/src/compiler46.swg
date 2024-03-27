@@ -1,12 +1,14 @@
-var a:   bool
-var b:   bool
-var c:   bool
-var d:   bool
-var aa:  bool
-var bb:  bool
-var cc:  bool
-var dd:  bool
-var aaa: bool
-var abb: bool
-var acc: bool
-var add: bool
+﻿;
+;
+var a: bool;
+var b: bool;
+var c: bool;
+var d: bool;
+var aa: bool;
+var bb: bool;
+var cc: bool;
+var dd: bool;
+var aaa: bool;
+var abb: bool;
+var acc: bool;
+var add: bool;

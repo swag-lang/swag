@@ -1,7 +1,7 @@
 struct S
 {
-    down:     s32 = 10
-    up:       s32 = 20
+    down:   s32 = 10
+    up:     s32 = 20
 }
 
 impl S
@@ -14,18 +14,25 @@ impl S
             let #alias0 = v
             let #alias1 = #index
             #mixin stmt
+
+            /*#macro
+            {
+                let alias0 = x
+                let alias1 = #index
+                //#mixin #up stmt
+            }*/
         }
     }
 }
 
 #test
 {
-    var x:   S
-    var cpt  = 0
+    var x: S
+    var cpt = 0
     var cpt1 = 0
     visit i, j: x
     {
-        cpt += i
+        cpt +=  i
         cpt1 += cast(s32) j
     }
 

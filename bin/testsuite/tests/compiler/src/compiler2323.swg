@@ -2,14 +2,14 @@
 
 struct AA
 {
-    x:     u64
-    y:     u16
+    x: u64
+    y: u16
 }
 
 struct BB
 {
-    v:     AA
-    z:     u32 = 555
+    v: AA
+    z: u32 = 555
 }
 
 //#[Swag.PrintBc]

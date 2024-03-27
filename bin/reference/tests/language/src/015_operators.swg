@@ -173,9 +173,9 @@ A <=> B == 1  if A > B
         #assert @typeof(a) == s32
         @assert(a == -1)
 
-        @assert(-10 <=> 10 == -1)
-        @assert(10 <=> -10 == 1)
-        @assert(10 <=> 10 == 0)
+        @assert(-10 <=>  10 == -1)
+        @assert( 10 <=> -10 == 1)
+        @assert( 10 <=>  10 == 0)
     }
 
     {
@@ -227,18 +227,18 @@ Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types
 */
 #test
 {
-    #assert @typeof(0'u8 + 1'u8) == u8
-    #assert @typeof(0'u8 + 1'u16) == u16 // Priority to bigger type
+    #assert @typeof(0'u8 + 1'u8)  == u8
+    #assert @typeof(0'u8 + 1'u16) == u16    // Priority to bigger type
     #assert @typeof(0'u8 + 1'u32) == u32
     #assert @typeof(0'u8 + 1'u64) == u64
-    #assert @typeof(0'u8 + 1's8) == s8 // Priority to signed type
+    #assert @typeof(0'u8 + 1's8)  == s8     // Priority to signed type
     #assert @typeof(0'u8 + 1's16) == s16
     #assert @typeof(0'u8 + 1's32) == s32
     #assert @typeof(0'u8 + 1's64) == s64
     #assert @typeof(0'u8 + 1'f32) == f32
     #assert @typeof(0'u8 + 1'f64) == f64
 
-    #assert @typeof(0's8 + 1'u16) == u16 // Priority to bigger type also
+    #assert @typeof(0's8 + 1'u16) == u16   // Priority to bigger type also
 }
 
 /**

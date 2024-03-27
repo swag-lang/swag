@@ -2,12 +2,7 @@
 `impl` can be used to declare some stuff in the scope of an enum. The keyword `self` represents the enum value.
 */
 
-enum RGB
-{
-    R
-    G
-    B
-}
+enum RGB { R; G; B; }
 
 /**
 Note the `impl enum` syntax. We'll see later that `impl` is also used for structs.

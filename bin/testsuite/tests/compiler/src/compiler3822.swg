@@ -2,6 +2,6 @@ namespace S
 {
     interface I
     {
-        mtd toto();
+        mtd toto()
     }
 }

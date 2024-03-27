@@ -1,14 +1,10 @@
 using Swag
 
-struct A
-{
-}
+struct A {}
 impl A
 {
     #[Implicit]
-    mtd opAffect(x: s32)
-    {
-    }
+    mtd opAffect(x: s32) {}
 }
 
 var G = 0
@@ -28,5 +24,5 @@ func toto(x: A)
 #test
 {
     toto(0's32)
-    @assert(G == 1)
+	@assert(G == 1)
 }

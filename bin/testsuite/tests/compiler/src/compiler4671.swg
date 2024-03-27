@@ -1,15 +1,9 @@
-interface I
-{
-    mtd toto();
+interface I {
+    mtd toto()
 }
-struct A
-{
-}
-impl I for A
-{
-    mtd impl toto()
-    {
-    }
+struct A {}
+impl I for A {
+    mtd impl toto() {}
 }
 
 //#global skip

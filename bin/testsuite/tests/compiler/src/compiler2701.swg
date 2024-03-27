@@ -13,6 +13,7 @@ func toto(stmt: code)
     {
         toto()
         {
+
         }
     }
 }

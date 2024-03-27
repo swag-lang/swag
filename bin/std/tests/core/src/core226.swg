@@ -1,3 +1,4 @@
+
 using Core
 
 //#[Swag.PrintBc]
@@ -9,6 +10,7 @@ using Core
     {
         var full = catch Path.getAbsolute(p)
         @assert(@err() == null)
+        //Console.print("%\n", full)
     }
 
     {

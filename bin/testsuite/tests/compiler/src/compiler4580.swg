@@ -14,4 +14,6 @@ func toto(x: H = null)
 {
     var y: closure()
     y = null
+
+//    toto()
 }

@@ -1,14 +1,14 @@
 //#global skip
-struct A
-{
-    str:     string
-    x:       s32 = 66
+struct A 
+{ 
+    str: string 
+    x:   s32 = 66
 }
 
-struct B
-{
-    using a:     A
-    y:           bool
+struct B 
+{ 
+    using a: A
+    y: bool
 }
 
 //#[Swag.PrintBc]

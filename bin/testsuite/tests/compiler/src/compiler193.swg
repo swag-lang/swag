@@ -1,8 +1,10 @@
+;
+;
 
 #[Swag.ConstExpr]
-func main()->s32
+func main ()->s32
 {
-    return 5
+	return 5;
 }
 
-#assert cast(f32) main() == 5.0
+#assert cast(f32) main() == 5.0;

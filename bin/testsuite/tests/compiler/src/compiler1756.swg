@@ -4,4 +4,5 @@
 #test
 {
     var a = null
+    //a = @dataof("string")
 }

@@ -1,4 +1,4 @@
-/* salut la foule
+	/* salut la foule
 		/* */
 	*/
 
@@ -10,6 +10,7 @@ var G = 0
 
 #init
 {
+
 }
 
 #test

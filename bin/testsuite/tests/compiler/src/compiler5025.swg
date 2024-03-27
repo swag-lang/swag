@@ -1,13 +1,9 @@
 #global testerror "Err0110"
 
-struct A
-{
-}
+struct A{}
 impl A
 {
-    mtd opPostCopy()
-    {
-    }
+    mtd opPostCopy(){}
 }
 //#[Swag.PrintBc]
 #test

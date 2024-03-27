@@ -1,8 +1,8 @@
 // A simple point with 2 float coordinates X and Y
 public struct(T) Const
 {
-    const Zero:     T = 0
-    const One:      T = Zero + 1
+    const Zero: T = 0
+    const One: T = Zero + 1
 }
 
 public typealias ConstF = Const'f32

@@ -7,6 +7,7 @@ struct(T) X
 
 struct Y
 {
+
 }
 
 impl Y

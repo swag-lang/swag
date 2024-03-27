@@ -17,7 +17,7 @@ func parse(stmt: code) throw
 
 #test
 {
-    var cpt      = 0
+    var cpt = 0
     var countTot = 0
     try parse()
     {

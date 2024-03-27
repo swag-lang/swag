@@ -1,6 +1,4 @@
 #global testerror "Err0319"
 
-namespace B
-{
-}
+namespace B {}
 const A = 1'B

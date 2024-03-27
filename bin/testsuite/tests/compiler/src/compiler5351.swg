@@ -1,7 +1,5 @@
 //#global skip
-struct String
-{
-}
+struct String {}
 
 impl String
 {

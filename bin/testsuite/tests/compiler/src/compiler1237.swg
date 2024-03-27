@@ -4,11 +4,11 @@ typealias T = func()->void
 #test
 {
     var x: *s32
-    if !x
+    if(!x)
     {
     }
 
-    if x
+    if(x)
     {
         @assert(false)
     }

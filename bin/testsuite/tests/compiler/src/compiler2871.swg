@@ -3,7 +3,7 @@
 {
     {
         var cpt = 0
-        var l   = 0
+        var l = 0
         loop x: -5 to 5
         {
             cpt += x

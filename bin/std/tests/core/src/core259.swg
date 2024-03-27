@@ -2,13 +2,14 @@ using Core
 
 interface IGen
 {
-    func fn(self);
+    func fn(self)
 }
 
 impl IGen for Core.String
 {
     func impl fn(self)
     {
+
     }
 }
 

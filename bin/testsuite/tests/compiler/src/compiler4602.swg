@@ -4,7 +4,7 @@ namespace StrConv
     public interface IPokeValue
     {
         const X = 10
-        mtd toto();
+        mtd toto()
     }
 }
 

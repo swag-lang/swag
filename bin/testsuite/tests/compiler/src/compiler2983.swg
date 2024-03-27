@@ -1,19 +1,15 @@
 struct AA
 {
+
 }
 
-enum Col
-{
-    AA
-    BB
-}
+enum Col { AA; BB; }
 
 #test
 {
     let v = Col.AA
-    switch v
+    switch(v)
     {
-    case .AA:
-        break
+    case .AA: break
     }
 }

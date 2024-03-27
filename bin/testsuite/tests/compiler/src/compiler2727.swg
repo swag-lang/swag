@@ -2,6 +2,7 @@
 
 func toto()
 {
+
 }
 
 #test

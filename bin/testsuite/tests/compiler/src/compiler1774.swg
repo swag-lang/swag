@@ -1,16 +1,18 @@
 interface A
 {
-    func x(self)->void;
+    func x(self)->void
 }
 
 struct X
 {
+
 }
 
 impl A for X
 {
     func impl x(using self)
     {
+
     }
 }
 

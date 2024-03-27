@@ -1,8 +1,6 @@
 #global testerror "Err0162"
 
-struct A
-{
-}
+struct A {}
 impl A for A
 {
 }

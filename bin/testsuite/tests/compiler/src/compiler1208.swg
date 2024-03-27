@@ -3,6 +3,7 @@
 {
     func toto()
     {
+        //@print("toto")
     }
 }
 

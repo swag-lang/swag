@@ -1,5 +1,5 @@
 #[Swag.EnumFlags]
-enum A : u32
+enum A: u32
 {
     R
     G

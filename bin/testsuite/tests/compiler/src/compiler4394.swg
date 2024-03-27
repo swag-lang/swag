@@ -1,9 +1,5 @@
-struct(T: const [2] s32) A
-{
-}
-struct(T) B
-{
-}
+struct(T: const [2] s32) A {}
+struct(T) B {}
 
 #test
 {

@@ -1,17 +1,22 @@
 struct(T) Arr
 {
-    enum BB : T
+    enum BB: T
     {
         R
         G
         B
     }
+
+    /*struct ST
+    {
+        x, y: T
+    }*/
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var x:  Arr's32
+    var x: Arr's32
     let ptr = @typeof(x.BB)
     @assert(ptr.rawType == s32)
     @assert(x.BB.R == 0)

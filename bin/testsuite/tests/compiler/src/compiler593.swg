@@ -5,5 +5,5 @@ func(op: string) toto()
 
 #test
 {
-    toto()
+	toto()
 }

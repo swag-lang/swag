@@ -1,10 +1,8 @@
 using Swag
 
-struct A
-{
-}
+struct A {}
 
-func get()->A
+func get() -> A
 {
     return {}
 }

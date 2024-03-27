@@ -1,4 +1,4 @@
-var G:  VV
+var G: VV
 var PC: bool
 
 struct VV
@@ -23,7 +23,7 @@ func toto()->const &VV
 #test
 {
     let x: const &VV = toto()
-    let y  = x
+    let y = x
     @assert(@typeof(x) == const &VV)
     @assert(@typeof(y) == VV)
     @assert(PC == true)

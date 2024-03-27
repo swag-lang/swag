@@ -7,7 +7,7 @@ func toto(#[Swag.ConstExpr] x: string)->string
     {
         var y = x
         @print(y)
-        return "return \"5\"" //"return \"" ++ x ++ "\""
+        return "return \"5\""//"return \"" ++ x ++ "\""
     }
 }
 

@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x, y, z: s32
-    x, y, z = 1
+	var x, y, z: s32
+	x, y, z = 1
 }

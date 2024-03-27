@@ -1,5 +1,6 @@
 struct(T = s32) A
 {
+
 }
 
 #test

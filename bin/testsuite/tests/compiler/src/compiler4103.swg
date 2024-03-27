@@ -1,15 +1,9 @@
 #global testerror "Err0042"
 
 //#[Swag.ConstExpr]
-struct A
-{
-    x: s32
-}
+struct A { x: s32; }
 #[Swag.ConstExpr]
-func toto()->A
-{
-    return A{1}
-}
+func toto()->A { return A{1}; }
 
 const C = toto()
 #assert C.x == 1

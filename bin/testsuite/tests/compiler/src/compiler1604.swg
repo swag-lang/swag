@@ -6,8 +6,10 @@ enum Color
     Green
     Blue
 
-    #if ALPHA #do
+    #if ALPHA
+    {
         Alpha
+    }
 }
 
 //#[Swag.PrintBc]

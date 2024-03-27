@@ -1,29 +1,28 @@
 interface I
 {
-    func toto(self);
+    func toto(self)
 }
 
 struct A
 {
+
 }
 
 impl I for A
 {
-    mtd impl toto()
-    {
-    }
+    mtd impl toto() {}
 }
 
 #[Swag.Optim("", false)]
 #test
 {
     var a: A
-    var i  = cast(I) a
+    var i = cast(I) a
 
     struct TT
     {
-        obj:        *void
-        itable:     const ^^void
+        obj:    *void
+        itable: const ^^void
     }
 
     let ptr = cast(*TT) &i
@@ -36,7 +35,7 @@ impl I for A
     //@print(" ", t1.fullname)
 
     var itf1: TT
-    itf1.obj    = ptr.obj
+    itf1.obj = ptr.obj
     itf1.itable = acast @itftableof(t, t1)
     @assert(ptr.itable == itf1.itable)
 }

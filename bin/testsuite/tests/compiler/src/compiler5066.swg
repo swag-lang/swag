@@ -1,10 +1,11 @@
 #global testerror "Err0472"
 
-attr toto()
+attr toto();
 
 #test
 {
     using toto
     {
+
     }
 }

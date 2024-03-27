@@ -5,8 +5,8 @@ struct A
 
 struct B
 {
-    using val:     A
-    v:             s32
+    using val: A
+    v: s32
 }
 
 #test

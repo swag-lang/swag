@@ -13,6 +13,7 @@ impl Thing
 
     mtd opDrop()
     {
+        //@print("~Thing", number, "\n")
     }
 }
 
@@ -23,5 +24,8 @@ struct Team
 
 #run
 {
-    var team = Team{a: Thing.init(1), b: Thing.init(2)}
+    var team = Team{
+        a: Thing.init(1),
+        b: Thing.init(2),
+    }
 }

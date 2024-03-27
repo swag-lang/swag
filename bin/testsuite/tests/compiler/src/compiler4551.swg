@@ -15,7 +15,7 @@ func add(flags: &Flags, value: Flags)
 
 func toto(add: Flags)
 {
-    var y: Flags
+    var y : Flags
     y.add(add)
     @assert(y == .A)
 }

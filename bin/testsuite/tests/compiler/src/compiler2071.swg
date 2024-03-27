@@ -13,7 +13,7 @@ impl AA
 //#[Swag.optimizebc(0)]
 #test
 {
-    var x:  AA
+    var x: AA
     var cpt = 0
     loop x do
         cpt += 1

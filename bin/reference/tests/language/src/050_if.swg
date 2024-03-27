@@ -11,8 +11,7 @@ Unlike C/C++, the expression doesn't need to be enclosed with `()`.
         @assert(false)
     if (a == 1) do
         @assert(false)
-    if a == 0
-    {
+    if a == 0 {
         @assert(true)
     }
 
@@ -27,13 +26,12 @@ Unlike C/C++, the expression doesn't need to be enclosed with `()`.
     // 'elif' is equivalent to 'else if'
     if a == 1 do
         a += 1
-    else do
-        if a == 2 do
-            @assert(false)
-        elif a == 3 do
-            @assert(false)
-        elif a == 4 do
-            @assert(false)
+    else do if a == 2 do
+        @assert(false)
+    elif a == 3 do
+        @assert(false)
+    elif a == 4 do
+        @assert(false)
 
     // Boolean expression with 'and' and 'or'
     if a == 0 and a == 1 do
@@ -55,12 +53,12 @@ You can also at the same time declare and test one variable in an `if` expressio
     }
 
     // So you can redeclare 'a' (this time as a constant).
-    if var a = 1 do
+    if const a = 1 do
         @assert(a == 1)
     else do
         @assert(false)
 
-    if var a = 1 do
+    if let a = 1 do
         @assert(a == 1)
     else do
         @assert(false)

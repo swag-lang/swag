@@ -12,13 +12,14 @@ impl A
         var result: retval
         result.myX = 0xAA's64
         return result
+        //@print(v)
     }
 }
 
 #test
 {
     var st: A
-    var ew  = st.toto(66)
+    var ew = st.toto(66)
 
     {
         var xxx = 0

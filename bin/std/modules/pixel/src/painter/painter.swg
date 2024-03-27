@@ -99,13 +99,13 @@ struct ColorMask
 
 struct Command
 {
-    id: CommandId = undefined
+    id:  CommandId = undefined
 
     using params: union
     {
         clear:              struct{color: Color}
         drawTriangles:      struct{start: u32, count: u32}
-        transform:          struct{tr:  Transform2}
+        transform:          struct{tr: Transform2}
         clippingRect:       struct{rect: Rectangle}
         clippingRegion:     struct{mode: ClippingMode = undefined}
         font:               struct{fontRef: *Font}

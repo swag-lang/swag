@@ -6,8 +6,5 @@ func mac(stmt: code)
 
 #test
 {
-    mac()
-    {
-        return
-    }
+    mac() { return; }
 }

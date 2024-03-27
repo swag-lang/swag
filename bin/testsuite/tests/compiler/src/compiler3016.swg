@@ -14,7 +14,5 @@ impl IntPoint
 func GetBottomPt()
 {
     var pp: IntPoint = undefined
-    while pp == pp
-    {
-    }
+    while pp == pp {}
 }

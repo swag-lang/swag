@@ -2,9 +2,9 @@ struct X
 {
 }
 
-impl X
-{
+impl X{
     func toto()
     {
+
     }
 }

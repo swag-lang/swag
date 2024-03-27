@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
 #test
 {
-    var d = 6
+	var d = 6;
 }

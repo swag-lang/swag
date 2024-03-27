@@ -2,7 +2,7 @@ using Pixel
 
 #test
 {
-    var y: Color
+	var y: Color
     y.setRgbf(1.0, 1.0, 1.0)
     @assert(cast(s64) y.a == 255)
     @assert(cast(s64) y.r == 255)

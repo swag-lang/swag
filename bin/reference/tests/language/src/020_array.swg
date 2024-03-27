@@ -8,7 +8,7 @@ A static array is declared with `[N]` followed by the type, where `N` is the dim
 #test
 {
     {
-        var array: [2] s32 // Static array of two s32
+        var array: [2] s32  // Static array of two s32
         array[0] = 1
         array[1] = 2
     }
@@ -30,7 +30,7 @@ You can get the address of the array with `@dataof`.
 #test
 {
     var array: [2] s32
-    var ptr0   = @dataof(array)
+    var ptr0 = @dataof(array)
     ptr0[0] = 1
 
     // This is equivalent of taking the address of the first element
@@ -46,8 +46,7 @@ An **array literal** has the form `[A, B, ...]`.
 */
 #test
 {
-    var arr = [1, 2, 3, 4]
-    // An array of four s32
+    var arr = [1, 2, 3, 4] // An array of four s32
     #assert @countof(arr) == 4
     #assert @typeof(arr) == #type [4] s32
 }
@@ -95,7 +94,7 @@ A static array (with compile time values) can be stored as a constant.
 #test
 {
     const array = [1, 2, 3, 4]
-    #assert array[0] == 1 // Dereference is done at compile time
+    #assert array[0] == 1   // Dereference is done at compile time
     #assert array[3] == 4
 }
 
@@ -104,8 +103,7 @@ If the type of the array is not specified, the type of the **first** literal val
 */
 #test
 {
-    var arr = [1'f64, 2, 3, 4]
-    // Every values are forced to be 'f64'
+    var arr = [1'f64, 2, 3, 4]    // Every values are forced to be 'f64'
 
     #assert @countof(arr) == 4
     #assert @typeof(arr) == #type [4] f64
@@ -121,8 +119,8 @@ Syntax is `[X, Y, Z...]` where `X`, `Y` and `Z` are dimensions.
 */
 #test
 {
-    var array: [2, 2] s32 // Declare a 2x2 array
-    array[0, 0] = 1
+    var array: [2, 2] s32   // Declare a 2x2 array
+    array[0, 0] = 1         // To access it, the same syntax is used
     array[0, 1] = 2
     array[1, 0] = 3
     array[1, 1] = 4
@@ -133,7 +131,7 @@ But the C/C++ syntax is also accepted. You will then declare an array of array i
 */
 #test
 {
-    var array: [2] [2] s32
+    var array: [2][2] s32
     array[0, 0] = 1
     array[0, 1] = 2
     array[1, 0] = 3
@@ -145,7 +143,7 @@ The sizes can be deduced from the initialization expression too.
 */
 #test
 {
-    var array  = [1, 2, 3, 4]
+    var array = [1, 2, 3, 4]
     var array1 = [[1, 2], [3, 4]]
 
     #assert @countof(array) == 4

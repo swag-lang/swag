@@ -1,10 +1,11 @@
+
 #global testerror "Saf0001"
 
 struct TT
 {
-    value:      s64 = 456
-    value1:     s64 = 456
-    value2:     s64 = 456
+    value:  s64 = 456
+    value1: s64 = 456
+    value2: s64 = 456
 }
 
 //#[Swag.PrintBc]

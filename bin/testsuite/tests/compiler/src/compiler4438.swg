@@ -3,17 +3,17 @@ using Swag
 
 func toto(x: string)
 {
-    @assert(x == "a")
+	@assert(x == "a")
 }
 
 //#[Swag.PrintBc]
 func toto1(yyy: &string)
 {
-    toto(yyy)
+	toto(yyy)
 }
 
 #test
 {
-    var xxx = "a"
-    toto1(&xxx)
+	var xxx = "a"
+	toto1(&xxx)
 }

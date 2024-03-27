@@ -1,7 +1,4 @@
-func DeleteObject() throw
-{
-    @print("")
-}
+func DeleteObject() throw { @print(""); }
 
 //#[Swag.PrintBc]
 func getDataFromHFONT() throw

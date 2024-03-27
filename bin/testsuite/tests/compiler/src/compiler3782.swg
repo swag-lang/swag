@@ -14,16 +14,11 @@ func toto(x: DockStyle)
     {
         switch x
         {
-        case Top:
-            break
-        case Right:
-            break
-        case Left:
-            @print("Top")
-        case Bottom:
-            @print("Bottom")
-        case Center:
-            @print("Center")
+        case Top:    break
+        case Right:  break
+        case Left:   @print("Top")
+        case Bottom: @print("Bottom")
+        case Center: @print("Center")
         }
     }
 }

@@ -13,5 +13,5 @@ struct BB
 #test
 {
     var x: BB
-    var y  = x
+    var y = x
 }

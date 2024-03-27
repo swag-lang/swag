@@ -17,20 +17,20 @@ impl A
 
 struct B
 {
-    d:           f32
-    using a:     A
+    d: f32
+    using a: A
 }
 
 struct C
 {
-    d:           f32
-    using b:     B
+    d: f32
+    using b: B
 }
 
 //#[Swag.PrintBc]
 #test
 {
     var v: C
-    let x  = v[0]
+    let x = v[0]
     @assert(x == 10)
 }

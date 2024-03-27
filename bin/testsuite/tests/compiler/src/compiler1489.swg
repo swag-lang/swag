@@ -1,5 +1,6 @@
 struct S
 {
+
 }
 
 var G = 0
@@ -23,16 +24,10 @@ impl S
     G = 0
 
     var x: S
-    visit x
-    {
-    }
+    visit x {}
     @assert(G == 2)
-    visit x
-    {
-    }
+    visit x {}
     @assert(G == 4)
-    visit &xxx: x
-    {
-    }
+    visit &xxx: x {}
     @assert(G == 5)
 }

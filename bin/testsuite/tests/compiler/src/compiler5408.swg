@@ -15,10 +15,11 @@ impl A
     }
 }
 
-#[Swag.Optim("", false), Swag.Safety("", false)]
+#[Swag.Optim("", false)]
+#[Swag.Safety("", false)]
 #test
 {
     var a: A
-    let b  = @countof(a[0])
+    let b = @countof(a[0])
     @assert(b == 3)
 }

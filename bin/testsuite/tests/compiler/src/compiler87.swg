@@ -1,16 +1,18 @@
-#global testerror "Err0626"
+
+;
+#global testerror "Err0626";
 namespace A
 {
-    namespace B
-    {
-        var a: bool
-    }
+	namespace B
+	{
+		var a: bool;
+	}
 }
 
 namespace A
 {
-    namespace B
-    {
-        var a: bool
-    }
+	namespace B
+	{
+		var a: bool;
+	}
 }

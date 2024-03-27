@@ -13,7 +13,7 @@ func titi()
 {
 }
 
-var toTreat:    [4] string
+var toTreat: [4] string
 var toTreatCpt: u32
 
 //#[Swag.PrintBc]
@@ -21,8 +21,7 @@ var toTreatCpt: u32
 {
     let itf = @compiler()
     let msg = itf.getMessage()
-    if msg.type.kind != TypeInfoKind.Func do
-        return
+    if msg.type.kind != TypeInfoKind.Func do return
 
     let typeF = cast(const *TypeInfoFunc) msg.type
     visit i: typeF.attributes
@@ -45,9 +44,14 @@ var toTreatCpt: u32
 
     loop toTreatCpt
     {
+        //@print(toTreat[#index])
+        //@print("\n")
     }
 }
 
 #run
 {
+    //let itf = @compiler()
+    //itf.compileString("#run @print(\"toto\")")
+    //@assert(GG() == 1234)
 }

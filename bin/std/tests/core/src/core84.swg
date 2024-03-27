@@ -1,3 +1,4 @@
+
 using Core, Core.StrConv
 
 #test
@@ -7,4 +8,5 @@ using Core, Core.StrConv
     convertAny(&buf, 666, null)
     var str = buf.toString()
     @assert(str == "666")
+    //@print(cast(string) str)
 }

@@ -3,9 +3,9 @@
 #[Swag.Safety("sanity", true)]
 #test
 {
-    let a: [..] s32 = null
+	let a: [..] s32 = null;
     #[Swag.Safety("", true)]
-    if a[0] == 0
-    {
-    }
+	if a[0] == 0
+	{
+	}
 }

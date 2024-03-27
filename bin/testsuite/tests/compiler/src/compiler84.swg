@@ -1,2 +1,3 @@
+;
 
-typealias tt = bool
+typealias tt = bool;

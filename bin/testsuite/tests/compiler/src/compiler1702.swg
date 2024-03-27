@@ -1,4 +1,4 @@
-attr myAttribute()
+attr myAttribute();
 
 #[myAttribute]
 func function()
@@ -8,4 +8,5 @@ func function()
 #[myAttribute]
 struct A
 {
+
 }

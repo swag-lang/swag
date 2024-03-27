@@ -1,10 +1,11 @@
 struct AA
 {
+
 }
 
 interface BB
 {
-    func toto(self, x: *u8);
+    func toto(self, x: *u8)
 }
 
 impl AA

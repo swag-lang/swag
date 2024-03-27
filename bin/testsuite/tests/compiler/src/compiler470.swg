@@ -1,14 +1,16 @@
 
+
+
 //#[Swag.PrintBc]
 #test
 {
-    let a = &F
-    let b = a(100)
-    @assert(b == 100)
+	let a = &F;
+	let b = a(100);
+	@assert(b == 100)
 }
 
 func F(x: s32)->s32
 {
-    //@print(x)
-    return x
+	//@print(x)
+	return x
 }

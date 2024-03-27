@@ -1,4 +1,4 @@
-var G  = true
+var G = true
 var G1 = 0
 
 #[Swag.Optim("", false)]

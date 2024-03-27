@@ -22,4 +22,12 @@ using Core.Hash
     var y: String
     let v3 = hash32(y)
     @assert(v3 == 0)
+
+    /*struct G
+    {
+
+    }
+
+    var xx: G
+    var v4 = hash32(xx)*/
 }

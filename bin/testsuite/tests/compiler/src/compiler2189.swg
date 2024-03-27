@@ -12,7 +12,7 @@ impl P
     }
 
     #[Swag.Inline]
-    func toFloat(using self)->{a: f32}
+    func toFloat(using self) -> {a: f32}
     {
         var result: retval = undefined
         result.a = self.a / 255'f32
@@ -25,6 +25,6 @@ impl P
 #test
 {
     var x: P = 255'u8
-    var v  = x.toFloat()
+    var v = x.toFloat()
     @assert(v.a == 1)
 }

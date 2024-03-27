@@ -1,8 +1,27 @@
 #global testerror "Saf0023"
 
-#[Swag.Safety("", true), Swag.Optim("", false)]
+#[Swag.Safety("", true)]
+#[Swag.Optim("", false)]
 #test
 {
     const x = 0xFFFF'u32
-    let y   = cast(s16) x
+    let y = cast(s16) x
 }
+
+/*
+#[Swag.Safety("", true)]
+#[Swag.Optim("", false)]
+#test
+{
+    let x = Swag.F64.Max
+    let y = cast(u64) x
+}
+
+#[Swag.Safety("", true)]
+#[Swag.Optim("", false)]
+#test
+{
+    let x = -1'f64
+    let y = cast(u64) x
+}
+*/

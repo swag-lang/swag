@@ -1,6 +1,6 @@
 using Swag
 
-public func tcf_tuple()->{a, b: s32}
+public func tcf_tuple()->{a,b:s32}
 {
     return {0, 0}
 }
@@ -55,14 +55,14 @@ public func tcf_toto6(x: string)->string
 
 public func tcf_toto7(a, b, c, d: s64)->s64
 {
-    return a + b + c + d
+    return a+b+c+d;
 }
 
 public func tcf_toto8(a, b, c, d, e, f: s32)->s32
 {
     @assert(a == 1)
     @assert(f == 6)
-    var x = a + b + c + d + e + f
+    var x = a+b+c+d+e+f
     @assert(x == 21)
     return x
 }
@@ -104,7 +104,7 @@ public func tcf_toto11(x: s32)->tcf_Point
 
 public func tcf_toto12(a, b, c, d, e, f: s32)->tcf_Point
 {
-    @assert(a + b + c + d + e + f == 21)
+    @assert(a+b+c+d+e+f == 21)
     return {10, 20}
 }
 
@@ -133,6 +133,8 @@ public func tcf_toto16(x: s32, y: f64)
 {
     @assert(x == 456)
     @assert(y == 3.14)
+    //@print(cast(s64) x)
+    //@print(cast(f64) y)
 }
 
 public func tcf_toto17(x: s64, fct: func(s64))
@@ -151,7 +153,7 @@ public func tcf_toto18(x, y: s64, fct: func(s64, s64))
 
     @assert(x == 555)
     @assert(y == 666)
-    fct(x, y)
+    fct(x,y)
 }
 
 public func tcf_toto19(v, w, x, y, z: s64, fct: func(s64, s64, s64, s64, s64))
@@ -161,7 +163,7 @@ public func tcf_toto19(v, w, x, y, z: s64, fct: func(s64, s64, s64, s64, s64))
     @assert(x == 555)
     @assert(y == 666)
     @assert(z == 777)
-    fct(v, w, x, y, z)
+    fct(v,w,x,y,z)
 }
 
 //func tcf_assert1(a,b,c,d,e,f: s32)->string
@@ -172,6 +174,7 @@ public func tcf_assert1()
 
 public func tcf_assert(values: ...)
 {
+    //tcf_assert1(0,0,0)
 }
 
 public namespace tcf
@@ -182,7 +185,7 @@ public namespace tcf
 
     public interface ITcf
     {
-        func call(self)->u32;
+        func call(self)->u32
     }
 
     public impl ITcf for AA
@@ -203,16 +206,11 @@ public func tcf_join(titi: string, values: s64...)
         //@print(" ")
         switch i
         {
-        case 0:
-            @assert(values[i] == 1)
-        case 1:
-            @assert(values[i] == 2)
-        case 2:
-            @assert(values[i] == 3)
-        case 3:
-            @assert(values[i] == 4)
-        default:
-            @assert(false)
+            case 0: @assert(values[i] == 1)
+            case 1: @assert(values[i] == 2)
+            case 2: @assert(values[i] == 3)
+            case 3: @assert(values[i] == 4)
+            default: @assert(false)
         }
     }
 }
@@ -226,16 +224,11 @@ public func tcf_join8(titi: string, values: s8...)
         //@print(" ")
         switch i
         {
-        case 0:
-            @assert(values[i] == 1)
-        case 1:
-            @assert(values[i] == 2)
-        case 2:
-            @assert(values[i] == 3)
-        case 3:
-            @assert(values[i] == 4)
-        default:
-            @assert(false)
+            case 0: @assert(values[i] == 1)
+            case 1: @assert(values[i] == 2)
+            case 2: @assert(values[i] == 3)
+            case 3: @assert(values[i] == 4)
+            default: @assert(false)
         }
     }
 }
@@ -249,16 +242,11 @@ public func tcf_join16(titi: string, values: s16...)
         //@print(" ")
         switch i
         {
-        case 0:
-            @assert(values[i] == 1)
-        case 1:
-            @assert(values[i] == 2)
-        case 2:
-            @assert(values[i] == 3)
-        case 3:
-            @assert(values[i] == 4)
-        default:
-            @assert(false)
+            case 0: @assert(values[i] == 1)
+            case 1: @assert(values[i] == 2)
+            case 2: @assert(values[i] == 3)
+            case 3: @assert(values[i] == 4)
+            default: @assert(false)
         }
     }
 }
@@ -272,16 +260,11 @@ public func tcf_join32(titi: string, values: s32...)
         //@print(" ")
         switch i
         {
-        case 0:
-            @assert(values[i] == 1)
-        case 1:
-            @assert(values[i] == 2)
-        case 2:
-            @assert(values[i] == 3)
-        case 3:
-            @assert(values[i] == 4)
-        default:
-            @assert(false)
+            case 0: @assert(values[i] == 1)
+            case 1: @assert(values[i] == 2)
+            case 2: @assert(values[i] == 3)
+            case 3: @assert(values[i] == 4)
+            default: @assert(false)
         }
     }
 }
@@ -291,9 +274,12 @@ const DaysToMonth365 = [0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 33
 //#[Swag.PrintBc]
 public func tcf_toto20(a: u16)
 {
-    //    @assert(a == 2020)
-    //    @assert(b == 2)
+//    @assert(a == 2020)
+//    @assert(b == 2)
     var res = DaysToMonth365[a]
+
+    //var slice: const [..] u16 = DaysToMonth365
+    //var res1 = slice[a]
 }
 
 struct TT
@@ -324,12 +310,12 @@ public func tcf_alloc(size: u32)
     all(vv.x)
 }
 
-public typealias ThreadProc = func(*void)->u32
+public typealias ThreadProc = func(*void)->u32;
 
 #[Swag.Foreign("kernel32")]
 {
-    func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: ThreadProc, lpParameter: *void, dwCreationFlags: u32, lpThreadId: *u32)->*void;
-    func WaitForSingleObject(hHandle: *void, dwMilliseconds: u32)->u32;
+    func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: ThreadProc, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
+    func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
 }
 
 public func tcf_entry(param: ^void)->u32
@@ -345,10 +331,10 @@ public func tcf_createThread(lambda: ThreadProc, userParam: u64)
     paramBC[0] = acast lambda
     paramBC[1] = acast userParam
 
-    var id         = 0'u32
-    var h          = CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)
+    var id = 0'u32
+    var h = CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)
     const INFINITE = 0xFFFFFFFF
-    var ew         = WaitForSingleObject(h, INFINITE)
+    var ew = WaitForSingleObject(h, INFINITE)
 }
 
 public func tcf_callret(fct: func()->s64)->s64
@@ -380,7 +366,7 @@ public func tcf_toto22(v: s8, w: s16, x: s32, y: string, z: s64, fct: func(s8, s
     @assert(y == "666")
     @assert(z == 777)
 
-    fct(v, w, x, y, z)
+    fct(v,w,x,y,z)
 }
 
 public func tcf_print(params: ...)
@@ -410,8 +396,8 @@ public func tcf_toto23(x: string, fct: func(string))
 
 public struct T3209
 {
-    m11:     s32
-    m12:     s32
+    m11: s32
+    m12: s32
 }
 
 public impl T3209
@@ -463,6 +449,7 @@ public func tcf_toto27(a, b, c: Vector2)
     @assert(c.x == 3.0)
 }
 
+
 func tcf_toto28A(a, b, c, d: Vector2)
 {
     //@print(a.x, " ", b.x, " ", c.x, " ", d.x, "\n")
@@ -472,7 +459,7 @@ func tcf_toto28A(a, b, c, d: Vector2)
     @assert(d.x == 4.0)
 }
 
-public func tcf_toto28(a, b, c, d: Vector2, e: f32 = 0)->{a: s32}
+public func tcf_toto28(a, b, c, d: Vector2, e: f32 = 0)->{a:s32}
 {
     //@print(a.x, " ", b.x, " ", c.x, " ", d.x, "\n")
     tcf_toto28A(a, b, c, d)
@@ -487,7 +474,7 @@ func getLineLineIntersectCoefs1(start0, end0, start1, end1: Vector2f)->{d0: f32,
 {
     var ua = (end1.x - start1.x) * (start0.y - start1.y)
     var ub = (end0.x - start0.x) * (start0.y - start1.y)
-    var d  = (end1.y - start1.y) * (end0.x - start0.x) + (end1.x - start1.x) * (end0.y - start0.y)
+    var d = (end1.y - start1.y) * (end0.x - start0.x) + (end1.x - start1.x) * (end0.y - start0.y)
     return {ua / d, ub / d}
 }
 
@@ -500,7 +487,7 @@ public func lineLineIntersect1(start0, end0, start1, end1: Vector2f)->f32
 
 public struct AZE
 {
-    x: {a: s32} = {0}
+    x: {a:s32} = {0}
 }
 
 #premain

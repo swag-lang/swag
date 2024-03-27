@@ -1,9 +1,5 @@
-func toto(x: const *void)
-{
-}
-func titi()
-{
-}
+func toto(x: const *void) {}
+func titi() {}
 
 #test
 {

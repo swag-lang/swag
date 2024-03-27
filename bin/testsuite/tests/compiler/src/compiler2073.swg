@@ -1,7 +1,7 @@
 struct AA
 {
-    val:      u64
-    val1:     u64
+    val: u64
+    val1: u64
 }
 
 impl AA

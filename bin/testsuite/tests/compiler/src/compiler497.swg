@@ -1,18 +1,20 @@
 
+
+
 enum EN : s32
 {
-    Red   = 666
-    Green
+	Red = 666
+	Green
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var val: EN = undefined
+	var val : EN = undefined
 
-    using EN
-    val = EN.Red
-    @assert(val == 666)
-    val = Green
-    @assert(val == 667)
+	using EN
+	val = EN.Red
+	@assert(val == 666)
+	val = Green
+	@assert(val == 667)
 }

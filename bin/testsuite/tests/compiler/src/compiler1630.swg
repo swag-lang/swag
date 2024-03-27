@@ -1,4 +1,5 @@
 //#global testerror
 func drop()
 {
+
 }

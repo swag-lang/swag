@@ -1,9 +1,11 @@
 #global testerror "Err0420"
-struct A
-{
-}
-impl A
-{
+struct A {}
+impl A {
+
+    //#[Swag.Macro]
+    /*mtd(x: bool, y: bool) opVisitBytes(s: code)
+    {
+    }*/
 }
 
 #test
@@ -11,5 +13,6 @@ impl A
     var x: A
     visit x
     {
+
     }
 }

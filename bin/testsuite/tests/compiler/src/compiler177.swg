@@ -1,6 +1,4 @@
-#global testerror "Err0589"
-namespace A
-{
-}
+#global testerror "Err0589";
+namespace A{}
 
-#assert A + A
+#assert A + A;

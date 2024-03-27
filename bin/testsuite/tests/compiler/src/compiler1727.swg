@@ -12,6 +12,7 @@
 
     func F(ptr: *B)
     {
+
     }
 
     var v: B

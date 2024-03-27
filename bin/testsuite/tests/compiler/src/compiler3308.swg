@@ -7,6 +7,7 @@ func(op: s32, T) toto(v: T)
         @assert(v == "string")
     #else #do
         #assert false
+    //@print(op, " ", v, "\n")
 }
 
 #test

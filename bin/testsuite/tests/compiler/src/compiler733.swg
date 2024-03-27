@@ -3,13 +3,13 @@
 //#[Swag.PrintBc]
 func(T) toto(x: T)
 {
-    var c: const *T
-    c = &x
-    @assert(dref c == "toto")
+	var c: const *T
+	c = &x
+	@assert(dref c == "toto")
 }
 
 #test
 {
-    let cpt = "toto"
-    toto(cpt)
+	let cpt = "toto"
+	toto(cpt)
 }

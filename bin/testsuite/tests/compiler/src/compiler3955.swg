@@ -1,4 +1,4 @@
-enum OT : const [..] s32
+enum OT: const [..] s32
 {
     A = [1]
     B = [2]
@@ -8,5 +8,5 @@ enum OT : const [..] s32
 //#[Swag.PrintBc]
 #test
 {
-    var pt: OT
+	var pt: OT
 }

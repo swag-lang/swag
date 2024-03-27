@@ -1,7 +1,4 @@
-struct A
-{
-    r, g: s32
-}
+struct A { r, g : s32; }
 //#[Swag.Strict]
 typealias AL = A
 //typealias AL1 = AL

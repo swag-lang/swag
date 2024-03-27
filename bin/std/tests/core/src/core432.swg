@@ -1,4 +1,4 @@
-using Core
+﻿using Core
 
 const C = "totototototototototototototototototototototototototototototototototototototototo"
 struct Err
@@ -16,6 +16,6 @@ func toto() throw
 {
     catch toto()
     let err = cast(Err) @err()
-    @assert(err.x == C)
+    @assert(err.x == C)   
     @assert(err.x.allocator != null)
 }

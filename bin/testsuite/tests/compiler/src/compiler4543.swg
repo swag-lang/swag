@@ -20,4 +20,5 @@ func add(flags: &A, value: A)
 #test
 {
     var x: A
+    //x.add(.A)
 }

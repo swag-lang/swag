@@ -1,14 +1,14 @@
-#global testerror "Err0649"
+#global testerror "Err0649";
 
 //#[Swag.PrintBc]
-func test(arr: [2] s32, idx: s32, val: s32)
+func test (arr: [2] s32, idx: s32, val: s32)
 {
-    @assert(arr[idx] == val)
+	@assert(arr[idx] == val);
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var arr = {6, 10, 10}
-    test(arr, 0, 6)
+	var arr = {6, 10, 10};
+	test(arr, 0, 6);
 }

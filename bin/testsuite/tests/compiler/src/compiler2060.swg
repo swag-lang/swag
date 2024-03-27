@@ -5,13 +5,14 @@ struct AA
 
 interface ITF
 {
-    func cb(self);
+    func cb(self)
 }
 
 impl ITF for AA
 {
     func impl cb(using self)
     {
+
     }
 }
 
@@ -19,8 +20,7 @@ func interfaceOf(structType, itfType: const *Swag.TypeInfoStruct)->const *void
 {
     //loop i: structType.interfaces
     return structType.interfaces[0].value
-}
-/*{
+    /*{
         if @stringcmp(@dataof(structType.interfaces[i].name),
                    @dataof(itfType.name),
                    @countof(structType.interfaces[i].name),
@@ -29,6 +29,9 @@ func interfaceOf(structType, itfType: const *Swag.TypeInfoStruct)->const *void
             return structType.interfaces[i].value
         }
     }*/
+
+    //return null
+}
 
 #test
 {

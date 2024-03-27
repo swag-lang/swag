@@ -24,10 +24,12 @@ The `#validif` expression is evaluated **only once**, whatever the call, so it i
     @assert(res1 == 3)
     let res2 = sum's64(10, 20)
     @assert(res2 == 30)
-}
 
-// But the following would generate an error because the type is `f32`.
-// So there's no match possible for that type.
+    // But the following would generate an error because the type is `f32`.
+    // So there's no match possible for that type.
+
+    // var res1 = sum'f32(1, 2)
+}
 
 /**
 You can use `#validif` to make a kind of a generic specialisation.
@@ -90,9 +92,12 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
     {
         return x + y
     }
+
+    // This will trigger an error
+
+    // var x = sum'f32(1, 2)
 }
 
-// This will trigger an error
 
 /**
 `#validif` can also be used on a generic struct. Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures.
@@ -100,13 +105,16 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
 #test
 {
     struct(T) Point
-    #validif T == f32 or T == f64
-{
+        #validif T == f32 or T == f64
+    {
         x, y: T
     }
 
     // Fine.
     var v: Point'f32
+
+    // Error.
+    //var v: Point's32
 }
 
 /**
@@ -133,9 +141,11 @@ Instead of `#validif`, you can use `#validifx`. `#validifx` is evaluated for **e
 
         // Fine
         var x1 = div(1, 1)
-    }
 
-    // Error at compile time, division by zero.
+        // Error at compile time, division by zero.
+
+        // var x2 = div(1, 0)
+    }
 
     {
         // A version of 'first' where 'x' is known at compile time.

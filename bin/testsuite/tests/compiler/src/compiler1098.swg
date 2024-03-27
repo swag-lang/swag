@@ -6,14 +6,14 @@ enum Days
 
 struct TT
 {
-    x: string
+	x: string
 }
 
 var g: TT
-func toto() => g
+func toto()=>g
 
 #test
 {
-    //	@print(toto().x)
-    @assert(@typeof(Days).fullname == "__compiler1098.Days")
+//	@print(toto().x)
+	@assert(@typeof(Days).fullname == "__compiler1098.Days")
 }

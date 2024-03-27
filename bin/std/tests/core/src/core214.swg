@@ -1,3 +1,4 @@
+
 using Core, Swag, Core.StrConv
 
 #[AttrUsage(AttributeUsage.Function)]
@@ -11,8 +12,8 @@ attr Extension()
 
 struct OneFunc
 {
-    type:     typeinfo
-    name:     string
+    type: typeinfo
+    name: string
 }
 
 var g: Array'OneFunc
@@ -21,10 +22,8 @@ var g: Array'OneFunc
 {
     let itf = @compiler()
     let msg = itf.getMessage()
-    if msg.type.kind != TypeInfoKind.Func do
-        return
-    if !Reflection.hasAttribute(msg.type, Extension) do
-        return
+    if msg.type.kind != TypeInfoKind.Func do return
+    if !Reflection.hasAttribute(msg.type, Extension) do return
 
     g.add({msg.type, msg.name})
 }
@@ -32,9 +31,9 @@ var g: Array'OneFunc
 #message(CompilerMsgMask.PassAfterSemantic)
 {
     var builderVars: StringBuilder
-    var builderFct:  StringBuilder
+    var builderFct: StringBuilder
 
-    builderFct.appendString("func printAll() {\n")
+    builderFct.appendString("func printAll() {\n");
 
     visit t: g
     {
@@ -46,7 +45,7 @@ var g: Array'OneFunc
         builderFct.appendEOL()
     }
 
-    builderFct.appendString("}\n")
+    builderFct.appendString("}\n");
 
     let itf = @compiler()
 

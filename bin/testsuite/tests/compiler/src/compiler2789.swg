@@ -1,11 +1,12 @@
 interface AA
 {
     #[Swag.Discardable]
-    func fb(self)->s32;
+    func fb(self)->s32
 }
 
 struct BB
 {
+
 }
 
 impl AA for BB
@@ -18,7 +19,7 @@ impl AA for BB
 
 #test
 {
-    var x:  BB
+    var x: BB
     let itf = cast(AA) x
     itf.fb()
 }

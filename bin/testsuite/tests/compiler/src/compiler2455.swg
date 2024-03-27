@@ -1,2 +1,16 @@
-#global skip
- // no more relative pointers (18 july 2021)
+#global skip // no more relative pointers (18 july 2021)
+//#[Swag.PrintBc]
+#test
+{
+    var arr: [4] s32 = [10, 20, 30, 40]
+    var ptr: *~16 s32 = &arr[0]
+
+    @assert(@sizeof(ptr) == 2)
+    @assert(ptr[0] == 10)
+
+    ptr += 1
+    @assert(ptr[0] == 20)
+
+    ptr += 2
+    @assert(ptr[0] == 40)
+}

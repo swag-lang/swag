@@ -1,5 +1,5 @@
 typealias GG = s32
-enum AA : GG
+enum AA: GG
 {
     A = 0
     B

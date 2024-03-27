@@ -1,7 +1,5 @@
 #global testerror "Err0654"
-struct V
-{
-}
+struct V {}
 
 impl V
 {
@@ -15,5 +13,5 @@ impl V
 #test
 {
     var v: V
-    var y  = v[0..]
+    var y = v[0..]
 }

@@ -3,13 +3,12 @@ using Core
 #[Swag.Tls]
 var G = 0's64
 
-const N    = 3
+const N = 3
 const ITER = 100000
 
 func entry(th: Threading.Thread)
 {
-    loop ITER do
-        G += 1
+    loop ITER do G += 1
     @assert(G == ITER)
 }
 
@@ -17,9 +16,7 @@ func entry(th: Threading.Thread)
 #test
 {
     var th: [N] Threading.Thread
-    visit &t: th do
-        catch t.init(&entry)
-    visit &t: th do
-        catch t.start()
+    visit &t: th do catch t.init(&entry)
+    visit &t: th do catch t.start()
     Threading.wait(&th[0], &th[1], &th[2])
 }

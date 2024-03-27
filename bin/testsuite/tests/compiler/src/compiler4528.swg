@@ -11,7 +11,7 @@ typealias AL = A
 //#[Swag.PrintBc]
 #test
 {
-    var x:  AL
+    var x: AL
     var x1: A
     x = x1
 }

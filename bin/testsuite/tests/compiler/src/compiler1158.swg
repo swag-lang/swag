@@ -1,10 +1,10 @@
 #[Swag.Inline]
 func min(x: s32)->s32
 {
-    return x + x
+	return x + x
 }
 
 #test
 {
-    var x = min(1)
+	var x = min(1)
 }

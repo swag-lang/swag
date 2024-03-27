@@ -1,10 +1,7 @@
 using Core, Core.Serialization
 
 #[NoSerialize]
-struct V2
-{
-    x, y: f32
-}
+struct V2 { x, y: f32; }
 
 struct Toto
 {
@@ -25,8 +22,10 @@ struct Toto
     //Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
-    let v    = try rea.readAll'Toto(str.toSlice())
+    let v = try rea.readAll'Toto(str.toSlice())
     defer Memory.delete(v)
 
     @assert(v.v2.x == 0)
+
+    //Console.print(dref v, "\n")
 }

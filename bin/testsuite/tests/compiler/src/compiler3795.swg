@@ -15,7 +15,7 @@ var G: s32
 #[Swag.Mixin]
 func toto() throw
 {
-    }
+}
 
 //#[Swag.PrintBc]
 #test

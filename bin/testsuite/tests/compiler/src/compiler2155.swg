@@ -1,5 +1,6 @@
 struct A
 {
+
 }
 
 impl A
@@ -22,4 +23,5 @@ impl A
     var a, b: A
     @assert(a.toto(b) == 1)
     @assert(A.toto(a, b) == 2)
+    //@assert(a.toto(a, b) == 1)
 }

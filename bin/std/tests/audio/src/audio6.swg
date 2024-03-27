@@ -5,7 +5,7 @@ func test() throw
     Audio.createEngine()
     defer Audio.destroyEngine()
 
-    var x     = SoundFile.load(sndPath("pacman_eatfruit.wav"), loadDatas: false)
+    var x = SoundFile.load(sndPath("pacman_eatfruit.wav"), loadDatas: false)
     let voice = Voice.create(&x)
     voice.setVolume(0)
     voice.play(.Loop)

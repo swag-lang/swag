@@ -1,28 +1,18 @@
 #global testerror "Err0613"
-struct(T) A
-{
-}
-struct Str
-{
-}
+struct(T) A {}
+struct Str {}
 
 impl Str
 {
-    mtd opAffect(x: s32)
-    {
-    }
+    mtd opAffect(x: s32) {}
 }
 
 impl A
 {
     #[Swag.Overload]
-    mtd add(x: const [..] T)
-    {
-    }
+    mtd add(x: const [..] T) {}
     #[Swag.Overload]
-    mtd add(x: T)
-    {
-    }
+    mtd add(x: T) {}
 }
 
 #test

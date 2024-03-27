@@ -1,4 +1,4 @@
-enum ContextFlags : u64
+enum ContextFlags: u64
 {
     None     = 0x00000000_00000000
     Test     = 0x00000000_00000001
@@ -8,7 +8,7 @@ enum ContextFlags : u64
 
 struct A
 {
-    x = ContextFlags.None
+    x =  ContextFlags.None
 }
 
 var G: A

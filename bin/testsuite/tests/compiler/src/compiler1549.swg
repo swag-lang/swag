@@ -4,6 +4,7 @@ var G = 0
 
 struct Y
 {
+
 }
 
 impl Y
@@ -18,7 +19,7 @@ impl Y
 #test
 {
     G = 0
-    var y:      Y
+    var y: Y
     let buffer: ^Y = cast(^Y) &y
     buffer[0].toto()
     @assert(G == 1)

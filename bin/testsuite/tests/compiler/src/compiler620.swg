@@ -1,12 +1,12 @@
 struct Point
 {
-    x: s32
+	x: s32
 }
 
 impl Point
 {
-    func toto(st: *Self)
-    {
-        st.x = 0
-    }
+	func toto(st: *Self)
+	{
+		st.x = 0
+	}
 }

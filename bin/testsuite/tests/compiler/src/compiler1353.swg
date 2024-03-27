@@ -2,7 +2,7 @@
 
 struct TOTO
 {
-    print: func(*TOTO, bool)
+	print: func(self, bool)
 }
 
 func print1(s: *TOTO, x: bool)

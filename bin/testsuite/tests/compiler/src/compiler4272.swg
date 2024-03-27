@@ -1,6 +1,7 @@
 #global testerror "Saf0026"
 
-#[Swag.ConstExpr, Swag.Safety("", true)]
+#[Swag.ConstExpr]
+#[Swag.Safety("", true)]
 func toto(v: u8)->u8
 {
     return 255'u8 + v

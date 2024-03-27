@@ -1,10 +1,10 @@
+
 using Core
 
 #test
 {
     var arr: Array'u32
-    loop 100 do
-        arr.add(cast(u32) #index)
+    loop 100 do arr.add(cast(u32) #index)
     arr.sort(func(x, y) => y <=> x)
 
     loop i: arr

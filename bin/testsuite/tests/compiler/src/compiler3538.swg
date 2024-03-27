@@ -23,9 +23,9 @@ impl Thing
 
 struct Team
 {
-    a:     Thing
-    b:     Thing
-    c:     Thing
+    a: Thing
+    b: Thing
+    c: Thing
 }
 
 //#[Swag.PrintBc]
@@ -33,7 +33,11 @@ struct Team
 #test
 {
     {
-        var team = Team{a: Thing.initxxx(1), b: Thing.initxxx(2), c: Thing.initxxx(3)}
+        var team = Team{
+            a: Thing.initxxx(1),
+            b: Thing.initxxx(2),
+            c: Thing.initxxx(3),
+        }
     }
 
     @assert(G == 3)

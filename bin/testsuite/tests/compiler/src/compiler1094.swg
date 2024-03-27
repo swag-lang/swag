@@ -1,8 +1,8 @@
 #test
 {
-    let x = 1
-    //@assert(x & 1)
-    @assert(x & 1 != 0)
-    @assert(x | 1 != 0)
-    @assert(x & 2 == 0)
+	let x = 1
+	//@assert(x & 1)
+	@assert(x & 1 != 0)
+	@assert(x | 1 != 0)
+	@assert(x & 2 == 0)
 }

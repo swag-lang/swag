@@ -6,8 +6,8 @@ struct Arr
 //#[Swag.PrintBc]
 struct T
 {
-    x:     Arr
-    y:     [2] Arr
+    x: Arr
+    y: [2] Arr
 }
 
 #test

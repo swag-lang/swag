@@ -1,6 +1,6 @@
 interface I
 {
-    mtd const x();
+    mtd const x()
 }
 
 struct(T) A

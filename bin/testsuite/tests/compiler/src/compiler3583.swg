@@ -19,8 +19,7 @@ var G = 0
 #test
 {
     var x: A
-    x = func()
-    {
+    x = func() {
         G = 1
     }
     x.x()

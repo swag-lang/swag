@@ -570,7 +570,7 @@ internal impl PropertyList
 
                 refreshEnumFlags(itemB)
 
-                itemB.checkBox.sigChanged += closure|self, itemB|(ed)
+                itemB.checkBox.sigChanged += closure|self, itemB|(ed  )
                 {
                     self.validateEnumFlags(itemB)
                 }
@@ -602,7 +602,7 @@ internal impl PropertyList
         let item = addItem(f, ptrData)
         let ed   = EditBox.create(item.line, dref cast(*String) ptrData)
         item.editBox = ed
-        ed.sigLoseFocus += closure|self, item|(ed)
+        ed.sigLoseFocus += closure|self, item|(ed  )
         {
             self.validateString(item)
         }
@@ -634,7 +634,7 @@ internal impl PropertyList
         }
 
         item.checkBox = ed
-        ed.sigChanged += closure|self, item|(ed)
+        ed.sigChanged += closure|self, item|(ed  )
         {
             self.validateBool(item)
         }
@@ -700,14 +700,14 @@ internal impl PropertyList
 
         if item.sliderBox
         {
-            item.sliderBox.sigChanged += closure|self, item|(ed)
+            item.sliderBox.sigChanged += closure|self, item|(ed  )
             {
                 self.validateNative(item)
             }
         }
         elif item.editBox
         {
-            item.editBox.sigLoseFocus += closure|self, item|(ed)
+            item.editBox.sigLoseFocus += closure|self, item|(ed  )
             {
                 self.validateNative(item)
             }

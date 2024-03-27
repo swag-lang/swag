@@ -25,6 +25,7 @@ impl S
     visit:Bytes x
     {
         cpt += 1
+        //@print("aa\n")
     }
 
     @assert(cpt == 10)

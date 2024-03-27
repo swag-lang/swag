@@ -1,5 +1,6 @@
 public struct A2191
 {
+
 }
 
 public impl A2191

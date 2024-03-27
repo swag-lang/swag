@@ -4,5 +4,5 @@ namealias toto = Swag
 #test
 {
     const a = [1, 2, 3]
-    var x   = a[0]
+    var x = a[0]
 }

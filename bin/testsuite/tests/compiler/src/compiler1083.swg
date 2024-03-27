@@ -1,13 +1,13 @@
 #[Swag.Pack(0)]
 struct Union
 {
-    x:     s32
-    y:     bool
+	x: s32
+	y: bool
 }
 
 #test
 {
-    var t: Union
-    t.y = true
-    @assert(t.x == 1)
+	var t: Union
+	t.y = true
+	@assert(t.x == 1)
 }

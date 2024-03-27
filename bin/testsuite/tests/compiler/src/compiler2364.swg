@@ -1,6 +1,6 @@
 interface ErrorId
 {
-    func toString(self)->string;
+    func toString(self)->string
 }
 
 struct ErrorString

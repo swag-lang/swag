@@ -1,9 +1,11 @@
+;
+;
 
-using A.B
+using A.B;
 
 namespace A
 {
-    namespace B
-    {
-    }
+	namespace B
+	{
+	}
 }

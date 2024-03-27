@@ -1,3 +1,4 @@
+
 #global testerror "Err0284"
 
 func toto(x: any)

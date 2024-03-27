@@ -1,6 +1,8 @@
+;
+;
 
 //#[Swag.PrintBc]
 #test
 {
-    @assert(@countof({1, 2}) == 2)
+	@assert(@countof({1, 2}) == 2);
 }

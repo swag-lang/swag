@@ -23,7 +23,7 @@ Use `cast(type)` to cast from one type to another.
 #test
 {
     let x: f32 = 1.0
-    let y: s32 = acast x     // cast 'x' to 's32'
+    let y: s32 = acast x    // cast 'x' to 's32'
     #assert @typeof(y) == s32
     @assert(y == 1)
 }
@@ -50,6 +50,12 @@ Swag can sometimes cast from one type to another for you. This is an *implicit* 
     // An implicit cast is done if there's no loss of precision.
     // In that case, you can affect different types.
 
-    let x: s16 = 1's8      // 8 bits to 16 bits, fine
-    let y: s32 = 1's16     // 16 bits to 32 bits, fine
+    let x: s16 = 1's8   // 8 bits to 16 bits, fine
+    let y: s32 = 1's16  // 16 bits to 32 bits, fine
+
+    // But the following would generate an error as you cannot affect 's16' to 's8'
+    // without an explicit cast(s16).
+
+    // let z0: s16 = 1
+    // let z1: s8 = z0
 }

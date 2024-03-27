@@ -11,9 +11,8 @@ var G: s32
 {
     toto()
     {
-        let a  = 666
-        let fn = closure|a|()
-        {
+        let a = 666
+        let fn = closure|a|(){
             G = a
         }
         fn()

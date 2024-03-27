@@ -1,14 +1,16 @@
+;
+;
 
-namespace A
+namespace A 
 {
-    func main()
-    {
-    }
+	func main ()
+	{
+	}
 }
 
-namespace B
+namespace B 
 {
-    func main()
-    {
-    }
+	func main ()
+	{
+	}
 }

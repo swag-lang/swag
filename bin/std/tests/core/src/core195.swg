@@ -1,4 +1,4 @@
-using Core.Memory
+﻿using Core.Memory
 
 #test
 {
@@ -7,7 +7,7 @@ using Core.Memory
     var dbg: Swag.DebugAllocator
     dbg.setup(@sysalloc())
 
-    let ptr  = alloc(16, dbg)
+    let ptr = alloc(16, dbg)
     let ptr1 = new'String(dbg)
 
     //dbg.printAllocated()

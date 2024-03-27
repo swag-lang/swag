@@ -1,7 +1,2 @@
-enum RGB
-{
-    R
-    G
-    B
-}
+enum RGB { R; G; B; }
 func toto() => RGB.R

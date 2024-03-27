@@ -5,4 +5,5 @@
     @assert(msg.moduleName == "test_compiler")
 
     let cfg = itf.getBuildCfg()
+    //cfg.backendLLVM.outputIR = true
 }

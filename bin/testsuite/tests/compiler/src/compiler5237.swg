@@ -1,15 +1,12 @@
-enum Dir
-{
-    A
-}
+enum Dir {A}
 
-struct(T) Array
-{
-}
+struct(T) Array {}
 impl Array
 {
     mtd(op: string) opIndexAssign(index: u64, value: T)
     {
+        //Debug.safetyBoundCheck(index < count, "index out of range")
+        //#ast "buffer[index] " ++ op ++ " value"
     }
 }
 

@@ -1,6 +1,4 @@
-struct B
-{
-}
+struct B {}
 
 impl B
 {
@@ -13,9 +11,7 @@ struct(T) A
 
 impl A
 {
-    mtd titi()
-    {
-    }
+    mtd titi() {}
 
     #[Swag.Inline]
     mtd toto()

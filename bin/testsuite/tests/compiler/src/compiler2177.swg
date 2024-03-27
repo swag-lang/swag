@@ -1,8 +1,8 @@
 const TicksPerMillisecond: u64 = 10000
-const TicksPerSecond:      u64 = TicksPerMillisecond * 1000
-const TicksPerMinute:      u64 = TicksPerSecond * 60
-const TicksPerHour:        u64 = TicksPerMinute * 60
-const TicksPerDay:         u64 = TicksPerHour * 24
+const TicksPerSecond: u64 = TicksPerMillisecond * 1000
+const TicksPerMinute: u64 = TicksPerSecond * 60
+const TicksPerHour: u64   = TicksPerMinute * 60
+const TicksPerDay: u64    = TicksPerHour * 24
 
 const DaysPerYear     = 365
 const DaysPer4Years   = (DaysPerYear * 4) + 1
@@ -15,8 +15,8 @@ const DaysToMonth366 = [0'u16, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 33
 func dateToTicks(year, month, day: u16)->u64
 {
     let days = @dataof(DaysToMonth366)
-    let y    = cast(u64) (year - 1)
-    let n    = ((y * 365) + (y / 4) + (y / 400) + days[month - 1] + (day - 1)) - (y / 100)
+    let y = cast(u64) (year - 1)
+    let n = ((y * 365) + (y / 4) + (y / 400) + days[month - 1] + (day - 1)) - (y / 100)
     return n * TicksPerDay
 }
 

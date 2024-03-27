@@ -1,11 +1,6 @@
 //#global skip
-struct X
-{
-}
-struct Y
-{
-    idx: u64
-}
+struct X {}
+struct Y { idx: u64 }
 
 impl X
 {
@@ -19,7 +14,7 @@ impl Y
 {
     mtd opIndex(x: u64)->u64
     {
-        return idx + x * 10
+        return idx+x*10
     }
 }
 

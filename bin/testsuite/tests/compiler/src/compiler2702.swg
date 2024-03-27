@@ -8,10 +8,6 @@ func doIt(fn: func())
 {
     loop 2
     {
-        doIt(func()
-        {
-            break
-        }
-)
+        doIt(func() { break; })
     }
 }

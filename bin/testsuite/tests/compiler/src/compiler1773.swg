@@ -1,5 +1,6 @@
 func a(x: ...)
 {
+
 }
 
 //#[Swag.PrintBc]

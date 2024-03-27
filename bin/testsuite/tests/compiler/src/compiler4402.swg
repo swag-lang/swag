@@ -1,6 +1,4 @@
-func toto(t: typeinfo)
-{
-}
+func toto(t: typeinfo) {}
 
 func(T) titi(x: T)
 {
@@ -10,9 +8,7 @@ func(T) titi(x: T)
 //#[Swag.PrintBc]
 #test
 {
-    let x = func()
-    {
-    }
+    let x = func() {}
 
     titi(x)
 }

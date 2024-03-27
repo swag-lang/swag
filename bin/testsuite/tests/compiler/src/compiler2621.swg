@@ -11,8 +11,7 @@ impl AA
 {
     //#[compileif(@typeof(T) == s32)]
     #[Swag.Overload]
-    func isNull(using self)->bool
-        #validif @typeof(T) == s32
+    func isNull(using self)->bool #validif @typeof(T) == s32
     {
         G += 1
         return x == 0
@@ -20,8 +19,7 @@ impl AA
 
     //#[compileif(@typeof(T) == f32)]
     #[Swag.Overload]
-    func isNull(using self)->bool
-        #validif @typeof(T) == f32
+    func isNull(using self)->bool #validif @typeof(T) == f32
     {
         G += 2
         return x == 0

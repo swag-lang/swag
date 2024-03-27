@@ -3,7 +3,7 @@
     {
         let xx = 555
         let yy = 666
-        let t  = {xx, yy}
+        let t = {xx, yy}
     }
 
     {

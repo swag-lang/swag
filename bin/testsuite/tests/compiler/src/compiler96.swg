@@ -1,9 +1,10 @@
-#global testpass syntax
+
+#global testpass syntax;
 
 enum A
 {
-    Red
-    Green
+	Red;
+	Green;
 }
 
-var a: A
+var a: A;

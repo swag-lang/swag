@@ -1,8 +1,6 @@
 #global testerror "Err0013"
 
-struct AA
-{
-}
+struct AA {}
 impl AA
 {
     mtd toto(x: s32 = 0)

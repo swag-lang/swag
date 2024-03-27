@@ -4,7 +4,7 @@ struct(T) B
 
 impl B
 {
-    func opIndex(using self, index: u64)->T
+    func opIndex(using self, index: u64) -> T
     {
         let x: T = 666 + cast(s32) index
         return x

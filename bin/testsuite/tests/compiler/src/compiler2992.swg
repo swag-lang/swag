@@ -16,9 +16,9 @@ using Swag
     let ptr2 = req.address
     @assert(alloc.maxLeak == 200)
 
-    req.mode    = .Free
+    req.mode = .Free
     req.address = ptr1
-    req.size    = 100
+    req.size = 100
     itf.req(&req)
     @assert(alloc.totalLeak == 100)
     req.address = ptr2

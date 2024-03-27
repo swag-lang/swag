@@ -1,5 +1,6 @@
 struct AA
 {
+
 }
 
 impl AA
@@ -14,6 +15,7 @@ func toto(x: AA)
 {
     visit x
     {
+
     }
 }
 

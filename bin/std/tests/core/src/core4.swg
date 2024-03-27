@@ -2,17 +2,17 @@ using Core
 
 struct(T = Random.MWC) Rdom
 {
-    rng: T
+	rng: T
 }
 
 impl Rdom
 {
-    func nextF32(using self)->f32 => rng.nextU32() / cast(f32) Swag.U32.Max
+	func nextF32(using self)->f32 => rng.nextU32() / cast(f32) Swag.U32.Max
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var rng: Rdom
-    @assert(rng.nextF32() != 0)
+	var rng: Rdom
+	@assert(rng.nextF32() != 0)
 }

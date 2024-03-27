@@ -1,7 +1,5 @@
 #global testerror "Err0649"
-struct Arr
-{
-}
+struct Arr {}
 
 func(T) toto(v: [..] T)
 {

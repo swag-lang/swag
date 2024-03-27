@@ -1,12 +1,6 @@
-struct ErrToto
-{
-}
-struct ErrTata
-{
-}
-struct ErrRead
-{
-}
+struct ErrToto{}
+struct ErrTata{}
+struct ErrRead{}
 
 func toto() throw
 {

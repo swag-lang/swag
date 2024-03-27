@@ -8,6 +8,7 @@ func assert(expr: u32)
     }
 }
 
+
 #[Inline]
 func isPowerOf2(x: u32)
 {

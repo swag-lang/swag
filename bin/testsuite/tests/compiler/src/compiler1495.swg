@@ -1,24 +1,12 @@
-namespace std
+namespace std.os
 {
-    namespace os
-    {
-        using std.diagnostics.Debug
-        const A = 0
-    }
+    using std.diagnostics.Debug
+    const A = 0
 }
 
-namespace std
+namespace std.diagnostics.Debug.os
 {
-    namespace diagnostics
-    {
-        namespace Debug
-        {
-            namespace os
-            {
-                const A = 1
-            }
-        }
-    }
+    const A = 1
 }
 
 #assert std.os.A == 0

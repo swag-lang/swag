@@ -19,8 +19,8 @@ impl A
 
 struct(T) B
 {
-    d:           f32
-    using a:     A'(*T)
+    d: f32
+    using a: A'(*T)
 }
 
 struct C

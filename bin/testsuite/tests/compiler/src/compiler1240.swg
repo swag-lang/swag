@@ -7,8 +7,9 @@ impl A
 {
     func toto()
     {
+        //toto1()
     }
-
+    
     func toto1()
     {
     }

@@ -23,9 +23,9 @@
 
     // At runtime, `@dataof` will return the address of the values, `@countof` the number of elements.
     {
-        var a:    const [..] u32 = [10, 20, 30, 40, 50]
+        var a: const [..] u32 = [10, 20, 30, 40, 50]
         let count = @countof(a)
-        let addr  = @dataof(a)
+        let addr = @dataof(a)
         @assert(count == 5)
         @assert(addr[0] == 10)
         @assert(addr[4] == 50)
@@ -52,7 +52,7 @@
 
     // For a string, the slice must be `const` because a string is immutable.
     {
-        let str       = "string"
+        let str = "string"
         let strSlice: const [..] u8 = @mkslice(@dataof(str), 2)
         @assert(strSlice[0] == `s`'u8)
         @assert(strSlice[1] == `t`'u8)

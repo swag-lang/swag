@@ -16,7 +16,7 @@ impl A
     func opDrop(using self)
     {
         G = 1
-        var ptr: TTX
+        var ptr : TTX
         @assert(@typeof(TTX) == @typeof(s32))
     }
 }
@@ -28,6 +28,7 @@ impl A
 
     {
         var x: A's32
+        //x.fct()
     }
 
     @assert(G == 1)
