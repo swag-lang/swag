@@ -203,6 +203,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     }
 
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     return true;
 }
