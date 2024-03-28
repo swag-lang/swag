@@ -4,7 +4,7 @@
 #[Serialization.PodFinal]
 struct Matrix3x3
 {
-    m:   [3, 3] f32
+    m: [3, 3] f32
 }
 
 impl Matrix3x3

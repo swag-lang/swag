@@ -216,7 +216,7 @@ impl TagBin
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endRoot() throw
     {
-        }
+    }
 
     mtd beginSection(kind: SectionKind, skipFat = false) throw
     {
@@ -407,12 +407,12 @@ impl TagBin
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd beginValue() throw
     {
-        }
+    }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endValue() throw
     {
-        }
+    }
 
     mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *u64)->bool throw
     {
@@ -478,7 +478,7 @@ impl TagBin
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endSequence() throw
     {
-        }
+    }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd toNextSequenceElement(countElem: *u64)->bool

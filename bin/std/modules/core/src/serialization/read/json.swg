@@ -143,12 +143,12 @@ public impl JSon
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endElement() throw
     {
-        }
+    }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd beginValue() throw
     {
-        }
+    }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endValue() throw
