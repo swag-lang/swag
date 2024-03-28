@@ -18,10 +18,12 @@ struct FormatConcat : Concat
     void addStringFormat(const char* format, ...);
     void addChar(char c);
 
-    uint32_t totalEol = 0;
-    uint32_t eol      = 1;
-    uint32_t blank    = 0;
-    uint32_t column   = 0;
+    uint32_t   totalEol = 0;
+    uint32_t   eol      = 1;
+    uint32_t   blank    = 0;
+    uint32_t   column   = 0;
+    uint32_t   indent   = 0;
+    ConcatSeek lastSeek;
 };
 
 #define CONCAT_FIXED_STR(__concat, __str)                                         \

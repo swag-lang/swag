@@ -395,6 +395,7 @@ bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
     }
 
     node->token.endLocation = tokenParse.token.startLocation;
+    SWAG_CHECK(eatFormat(node));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
     return true;
 }

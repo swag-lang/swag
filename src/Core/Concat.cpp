@@ -256,6 +256,20 @@ void Concat::addStringN(const char* v, uint32_t len)
     currentSP += len;
 }
 
+ConcatSeek Concat::getSeek() const
+{
+    ConcatSeek seek;
+    seek.bucket = lastBucket;
+    seek.sp     = currentSP;
+    return seek;
+}
+
+void Concat::setSeek(const ConcatSeek& seek)
+{
+    lastBucket = seek.bucket;
+    currentSP  = seek.sp;
+}
+
 uint8_t* Concat::getSeekPtr() const
 {
     return currentSP;

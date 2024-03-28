@@ -6,6 +6,7 @@ void FormatConcat::addChar(char c)
     ensureSpace(1);
     *currentSP++ = c;
     column++;
+    indent = 0;
 
     if (SWAG_IS_EOL(c))
     {
@@ -31,6 +32,7 @@ void FormatConcat::addString(const char* v, uint32_t len)
     eol   = 0;
     blank = 0;
     column += len;
+    indent = 0;
 }
 
 void FormatConcat::addBlank()
@@ -59,15 +61,19 @@ void FormatConcat::addBlankLine()
 
 void FormatConcat::addIndent(uint32_t num)
 {
-    if (blank)
+    if (indent == num)
         return;
-    while (num--)
+
+    if (indent > num)
     {
-        addBlank();
-        addBlank();
-        addBlank();
-        addBlank();
+        setSeek(lastSeek);
+        indent = num;
+        return;
     }
+
+    lastSeek = getSeek();
+    alignToColumn(num * 4);
+    indent = num;
 }
 
 void FormatConcat::addString(const Utf8& v)

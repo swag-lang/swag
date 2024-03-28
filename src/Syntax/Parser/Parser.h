@@ -102,6 +102,7 @@ struct Parser
     bool eatToken(TokenId id, const char* msg);
     void prepareExpectTokenError();
     bool eatTokenError(TokenId id, const Utf8& msg);
+    bool eatFormat(AstNode* parent);
     bool eatSemiCol(const char* msg);
 
     static bool testIsSingleIdentifier(const AstNode* node);

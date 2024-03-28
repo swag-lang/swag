@@ -10,19 +10,27 @@ struct ConcatBucket
     uint32_t      capacity   = 0;
 };
 
+struct ConcatSeek
+{
+    ConcatBucket* bucket = nullptr;
+    uint8_t*      sp     = nullptr;
+};
+
 struct Concat
 {
-    void     init(int size = 32 * 1024);
-    void     clear();
-    void     release();
-    void     ensureSpace(uint32_t numBytes);
-    void     align(uint32_t align);
-    uint8_t* getSeekPtr() const;
-    uint32_t totalCount() const;
-    uint8_t* getPtr(uint32_t seek) const;
-    uint32_t bucketCount(const ConcatBucket* b) const;
-    bool     hasEnoughSpace(uint32_t numBytes) const;
-    bool     flushToFile(const Path& path);
+    void       init(int size = 32 * 1024);
+    void       clear();
+    void       release();
+    void       ensureSpace(uint32_t numBytes);
+    void       align(uint32_t align);
+    ConcatSeek getSeek() const;
+    void       setSeek(const ConcatSeek& seek);
+    uint8_t*   getSeekPtr() const;
+    uint32_t   totalCount() const;
+    uint8_t*   getPtr(uint32_t seek) const;
+    uint32_t   bucketCount(const ConcatBucket* b) const;
+    bool       hasEnoughSpace(uint32_t numBytes) const;
+    bool       flushToFile(const Path& path);
 
     void      addU8(uint8_t v);
     void      addU16(uint16_t v);

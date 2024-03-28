@@ -219,6 +219,18 @@ bool Parser::eatToken(TokenId id, const char* msg)
     return true;
 }
 
+bool Parser::eatFormat(AstNode* parent)
+{
+    if (!parserFlags.has(PARSER_TRACK_FORMAT))
+        return true;
+    if (tokenParse.comments.before.empty() &&
+        tokenParse.comments.justBefore.empty() &&
+        tokenParse.comments.after.empty())
+        return true;
+    Ast::newNode<AstNode>(AstNodeKind::EmptyNode, this, parent);
+    return true;
+}
+
 bool Parser::eatSemiCol(const char* msg)
 {
     SWAG_ASSERT(msg);
@@ -510,9 +522,6 @@ bool Parser::generateAst()
     while (tokenParse.isNot(TokenId::EndOfFile))
         SWAG_CHECK(doTopLevelInstruction(sourceFile->astRoot, &dummyResult));
 
-    // Just to eat comments at the end of the file
-    if (parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION))
-        Ast::newNode<AstCompilerGlobal>(AstNodeKind::EmptyNode, this, sourceFile->astRoot);
-
+    SWAG_CHECK(eatFormat(sourceFile->astRoot));
     return true;
 }

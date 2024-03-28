@@ -290,7 +290,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
                 readChar();
                 tokenParse.literalType = LiteralType::TypeStringRaw;
                 SWAG_CHECK(doStringLiteral(tokenParse));
-                return true;
+                break;
             }
 
             if (curBuffer[0] == '[')
