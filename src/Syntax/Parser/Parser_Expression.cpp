@@ -1184,19 +1184,19 @@ bool Parser::doAssignmentExpression(AstNode* parent, AstNode** result)
 
 bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
 {
-    const auto initNode   = Ast::newNode<AstExpressionList>(AstNodeKind::ExpressionList, this, parent);
-    *result               = initNode;
-    initNode->semanticFct = Semantic::resolveExpressionListTuple;
-    initNode->addSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE);
+    const auto node   = Ast::newNode<AstExpressionList>(AstNodeKind::ExpressionList, this, parent);
+    *result           = node;
+    node->semanticFct = Semantic::resolveExpressionListTuple;
+    node->addSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE);
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatToken());
 
     while (tokenParse.isNot(TokenId::SymRightCurly))
     {
         if (tokenParse.is(TokenId::SymLeftCurly))
-            SWAG_CHECK(doExpressionListTuple(initNode, &dummyResult));
+            SWAG_CHECK(doExpressionListTuple(node, &dummyResult));
         else if (tokenParse.is(TokenId::SymLeftSquare))
-            SWAG_CHECK(doExpressionListArray(initNode, &dummyResult));
+            SWAG_CHECK(doExpressionListArray(node, &dummyResult));
         else
         {
             AstNode* paramExpression;
@@ -1212,9 +1212,9 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
                 const auto namedExpression = namedToFree->lastChild();
                 SWAG_CHECK(eatToken());
                 if (tokenParse.is(TokenId::SymLeftCurly))
-                    SWAG_CHECK(doExpressionListTuple(initNode, &paramExpression));
+                    SWAG_CHECK(doExpressionListTuple(node, &paramExpression));
                 else
-                    SWAG_CHECK(doExpression(initNode, EXPR_FLAG_NONE, &paramExpression));
+                    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &paramExpression));
 
                 paramExpression->addExtraPointer(ExtraPointerKind::IsNamed, namedExpression);
                 paramExpression->token.startLocation = namedExpression->token.startLocation;
@@ -1223,7 +1223,7 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
             }
             else
             {
-                Ast::addChildBack(initNode, paramExpression);
+                Ast::addChildBack(node, paramExpression);
             }
         }
 
@@ -1232,17 +1232,18 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
     }
 
-    initNode->token.endLocation = tokenParse.token.endLocation;
+    node->token.endLocation = tokenParse.token.endLocation;
+    SWAG_CHECK(eatFormat(node));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the tuple body"));
     return true;
 }
 
 bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
 {
-    const auto initNode   = Ast::newNode<AstExpressionList>(AstNodeKind::ExpressionList, this, parent);
-    *result               = initNode;
-    initNode->semanticFct = Semantic::resolveExpressionListArray;
-    const auto startLoc   = tokenParse.token.startLocation;
+    const auto node     = Ast::newNode<AstExpressionList>(AstNodeKind::ExpressionList, this, parent);
+    *result             = node;
+    node->semanticFct   = Semantic::resolveExpressionListArray;
+    const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatToken());
 
     if (tokenParse.is(TokenId::SymRightSquare))
@@ -1251,18 +1252,19 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
     while (tokenParse.isNot(TokenId::SymRightSquare))
     {
         if (tokenParse.is(TokenId::SymLeftSquare))
-            SWAG_CHECK(doExpressionListArray(initNode, &dummyResult));
+            SWAG_CHECK(doExpressionListArray(node, &dummyResult));
         else if (tokenParse.is(TokenId::SymLeftCurly))
-            SWAG_CHECK(doExpressionListTuple(initNode, &dummyResult));
+            SWAG_CHECK(doExpressionListTuple(node, &dummyResult));
         else
-            SWAG_CHECK(doExpression(initNode, EXPR_FLAG_NONE, &dummyResult));
+            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
 
         if (tokenParse.isNot(TokenId::SymComma))
             break;
         SWAG_CHECK(eatToken());
     }
 
-    initNode->token.endLocation = tokenParse.token.endLocation;
+    node->token.endLocation = tokenParse.token.endLocation;
+    SWAG_CHECK(eatFormat(node));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startLoc));
     return true;
 }
