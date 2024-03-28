@@ -73,8 +73,8 @@ struct ListCtrl
     sigExpand:              SigArray'closure(*Self, *ListLine)
     sigCollapse:            SigArray'closure(*Self, *ListLine)
     sigKeyPressed:          SigArray'closure(*Self, *KeyEvent)
-    sigVirtualFill:         func(*Self, *ListLine, u32 )
-    sigSort:                func(*ListLine, *ListLine, u32 , bool)->s32
+    sigVirtualFill:         func(*Self, *ListLine, u32)
+    sigSort:                func(*ListLine, *ListLine, u32, bool)->s32
 
     toFreeLines:            ArrayPtr'ListLine
     lines:                  Array'*ListLine

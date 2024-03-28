@@ -358,7 +358,9 @@ bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
     else
         CONCAT_FIXED_STR(concat, "closure");
 
-    SWAG_CHECK(outputFuncDeclParameters(context, typeNode->parameters, false));
+    FormatContext cxt{context};
+    cxt.alignVarDecl = false;
+    SWAG_CHECK(outputFuncDeclParameters(cxt, typeNode->parameters, false));
 
     if (typeNode->returnType)
     {
