@@ -209,11 +209,9 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
 
     if (funcDecl->content->isNot(AstNodeKind::Statement))
     {
-        concat->addIndent(context.indent);
         context.indent--;
         SWAG_CHECK(outputNode(context, funcDecl->content));
         context.indent++;
-        concat->addEol();
     }
     else
     {
