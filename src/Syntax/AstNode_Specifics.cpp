@@ -800,7 +800,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     // :StructParamsNoSem
     // We need to revaluate the call parameters of the struct initialization, because inside we can have some
     // symbols, and we want them to be correctly found in the right function (inline).
-    // Otherwise we can have a out of frame error, because the original symbol is not in the same stack frame.
+    // Otherwise, we can have an out of frame error, because the original symbol is not in the same stack frame.
     if (hasSpecFlag(SPEC_FLAG_CREATED_STRUCT_PARAMETERS))
     {
         if (context.cloneFlags.has(CLONE_FORCE_OWNER_FCT))
