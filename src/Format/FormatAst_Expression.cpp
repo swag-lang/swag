@@ -108,6 +108,7 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
         concat->addBlank();
 
     SWAG_CHECK(outputNode(context, node->secondChild()));
+    beautifyAfter(context, node);
     return true;
 }
 
