@@ -16,6 +16,6 @@ using Core.Input
         {
             //@print(cast(s64) mv.y)
             //@print("\n")
-        }
+}
     }
 }

@@ -2,8 +2,8 @@ using Core, Pixel
 
 struct Test
 {
-    color:  Color
-    color1: Color
+    color:      Color
+    color1:     Color
 }
 
 #test

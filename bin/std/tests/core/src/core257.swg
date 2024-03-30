@@ -2,29 +2,44 @@ using Core
 
 struct Test1
 {
-    coucous32: s32
-    coucouu64: u64
-    coucoub:   bool
-    coucoue:   EnumFlags = undefined
+    coucous32:     s32
+    coucouu64:     u64
+    coucoub:       bool
+    coucoue:       EnumFlags = undefined
 }
 
-enum Enum           { Red; Green; Blue; }
-enum Enum2: string  { StrRed = "StrRed"; StrGreen = "StrGreen"; StrBlue = "StrBlue"; }
+enum Enum
+{
+    Red
+    Green
+    Blue
+}
+enum Enum2 : string
+{
+    StrRed   = "StrRed"
+    StrGreen = "StrGreen"
+    StrBlue  = "StrBlue"
+}
 
 #[Swag.EnumFlags]
-enum EnumFlags      { A; B; C; }
+enum EnumFlags
+{
+    A
+    B
+    C
+}
 
 struct Test2
 {
-    coucou1: f32
-    coucou2: f64
-    coucou3: String
-    coucou4: Enum = undefined
-    coucou5: rune
-    coucou6: Array'rune
-    coucou7: Array'String
-    coucou8: [4] f32
-    coucou9: Enum2 = undefined
+    coucou1:     f32
+    coucou2:     f64
+    coucou3:     String
+    coucou4:     Enum = undefined
+    coucou5:     rune
+    coucou6:     Array'rune
+    coucou7:     Array'String
+    coucou8:     [4] f32
+    coucou9:     Enum2 = undefined
 }
 
 #test
@@ -62,7 +77,7 @@ struct Test2
     @assert(t1.coucous32 == -666)
     @assert(t1.coucouu64 == 0xFF)
     @assert(t1.coucoub == true)
-    @assert(t1.coucoue == .A|.B)
+    @assert(t1.coucoue == .A | .B)
 
     @assert(t2.coucou6.count == 4)
     @assert(t2.coucou7.count == 6)

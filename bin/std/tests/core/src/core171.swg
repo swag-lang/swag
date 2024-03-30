@@ -1,4 +1,3 @@
-﻿
 using Core.Time
 
 #test

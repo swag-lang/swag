@@ -1,11 +1,10 @@
 
-
 using Core
 
 struct TOTO
 {
-    x: s32 = 555
-    y: s32 = 666
+    x:     s32 = 555
+    y:     s32 = 666
 }
 
 //#[Swag.PrintBc]

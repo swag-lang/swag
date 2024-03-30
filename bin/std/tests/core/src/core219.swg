@@ -1,4 +1,3 @@
-
 using Core
 
 //#[Swag.PrintBc]
@@ -9,5 +8,5 @@ using Core
     visit v: arr
     {
         //Console.print("%\n", @typeof(v))
-    }
+}
 }

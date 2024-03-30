@@ -4,8 +4,8 @@ using Core
 {
     struct Key
     {
-        r: Parser.RegExp
-        b: u32
+        r:     Parser.RegExp
+        b:     u32
     }
 
     var byr_r: Parser.RegExp

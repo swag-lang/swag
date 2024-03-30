@@ -1,7 +1,6 @@
 
-
 //#[Swag.PrintBc]
 #test
 {
-	Core.Debug.assert(true)
+    Core.Debug.assert(true)
 }

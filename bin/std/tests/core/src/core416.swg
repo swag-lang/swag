@@ -1,6 +1,9 @@
 using Core
 
-struct A { x: s32; }
+struct A
+{
+    x: s32
+}
 
 func toto(x: A)
 {

@@ -1,10 +1,9 @@
-
 using Core
 
 struct BOUBOU
 {
-    value: s32 = 666
-    value1: s32 = 666
+    value:      s32 = 666
+    value1:     s32 = 666
 }
 
 var G = 0
@@ -22,7 +21,7 @@ impl BOUBOU
 {
     G = 0
     {
-        var arr: Array'BOUBOU
+        var arr:   Array'BOUBOU
         var value: BOUBOU
         arr.add(value)
     }

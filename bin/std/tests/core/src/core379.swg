@@ -2,8 +2,8 @@ using Core, Core.Serialization, Core.Math
 
 struct Toto1
 {
-    x: s32
-    y: f64
+    x:     s32
+    y:     f64
 }
 
 var toto1: Toto1

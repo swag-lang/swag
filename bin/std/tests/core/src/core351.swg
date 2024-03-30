@@ -21,7 +21,7 @@ struct Toto
     //Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
-    let v = try rea.readAll'Toto(str.toSlice())
+    let v    = try rea.readAll'Toto(str.toSlice())
     defer Memory.delete(v)
 
     @assert(v.arr.count == 3)

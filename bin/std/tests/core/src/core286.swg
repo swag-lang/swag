@@ -2,8 +2,8 @@ using Core.Math
 
 struct P
 {
-    bvMin: Vector2
-    bvMax: Vector2
+    bvMin:     Vector2
+    bvMax:     Vector2
 }
 
 impl P

@@ -3,11 +3,11 @@ using Core, Core.Serialization
 #[Version(4)]
 struct Toto
 {
-    x, y:   bool
-    z:      f32
-    arr:    [10] s32
-    str:    String
-    arr2:   Array's32
+    x, y:     bool
+    z:        f32
+    arr:      [10] s32
+    str:      String
+    arr2:     Array's32
 }
 
 #test
@@ -16,10 +16,10 @@ struct Toto
     var wri: Encoder'Write.JSon
 
     var toto: Toto
-    toto.x = true
-    toto.z = 3.14
+    toto.x      = true
+    toto.z      = 3.14
     toto.arr[5] = 666
-    toto.str = "my string"
+    toto.str    = "my string"
     toto.arr2.add([1, 2, 3])
 
     try wri.writeAll(&buf, toto)

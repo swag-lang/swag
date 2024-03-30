@@ -7,7 +7,7 @@ using Core, Core.StrConv
 #test
 {
     var lafoule = 52
-    var ca = 10
-    var v = "toto {lafoule} comment {ca+1} va"
-    var x = Format.toInterp(v)
+    var ca      = 10
+    var v       = "toto {lafoule} comment {ca+1} va"
+    var x       = Format.toInterp(v)
 }

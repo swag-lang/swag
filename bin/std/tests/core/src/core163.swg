@@ -1,4 +1,4 @@
-﻿//toto
+//toto
 using Core.File
 
 //#[Swag.PrintBc]

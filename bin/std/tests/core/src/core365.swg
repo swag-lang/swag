@@ -14,7 +14,7 @@ using Core, Core.Serialization, Core.Math
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin
-    let x1 = try dec.readAll'Point(buf.toSlice())
+    let x1   = try dec.readAll'Point(buf.toSlice())
     defer Memory.delete(x1)
 
     //Console.print(dref x1)

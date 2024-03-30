@@ -1,22 +1,21 @@
 
-
 using Core, Core.StrConv
 
 struct TOTO
 {
-    x: s32 = 555
-    y: s32 = 666
+    x:     s32 = 555
+    y:     s32 = 666
 }
 
 impl IConvert for TOTO
 {
     func impl convert(using self, buf: *ConcatBuffer, fmt: const *ConvertFormat, strFormat: string)
     {
-        buf.addBytes("! x = ");
+        buf.addBytes("! x = ")
         convertInt(buf, x, null)
-        buf.addBytes(", y = ");
+        buf.addBytes(", y = ")
         convertInt(buf, y, null)
-        buf.addBytes(" !");
+        buf.addBytes(" !")
     }
 }
 

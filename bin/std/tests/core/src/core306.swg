@@ -3,7 +3,12 @@ using Core
 #test
 {
     #[Swag.EnumFlags]
-    enum EE { R = 0; G; B; }
+    enum EE
+    {
+        R = 0
+        G
+        B
+    }
     struct TT
     {
         val0: EE = R

@@ -8,7 +8,7 @@ using Core, Core.StrConv
         Dtoa.parse(&cb, v, `f`'u8, 5, false)
         var str = cb.toString()
         //Console.print("result: %\n", str)
-    }
+}
 
     {
         var cb: ConcatBuffer
@@ -16,5 +16,5 @@ using Core, Core.StrConv
         Dtoa.parse(&cb, v, `e`'u8, -1, false)
         var str = cb.toString()
         //Console.print("result: %\n", str)
-    }
+}
 }

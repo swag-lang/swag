@@ -1,6 +1,5 @@
 #global testerror "Err0085"
 
-
 using Core
 
 #[Swag.NoCopy]
@@ -12,6 +11,6 @@ struct AA
 #test
 {
     var arr: Array'AA
-    var y: AA
+    var y:   AA
     arr[0] = y
 }

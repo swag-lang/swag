@@ -1,9 +1,8 @@
 
-
 #test
 {
-	using Core.Input
-	while !Keyboard.isKeyPressed(Key.Space)
+    using Core.Input
+    while !Keyboard.isKeyPressed(Key.Space)
     {
         var pt = getMousePos()
         //@print(cast(s64) pt.item0)
@@ -11,8 +10,9 @@
         break
     }
 
-	//@print("pressed")
-	while Keyboard.isKeyPressed(Key.Space) do break
+    //@print("pressed")
+    while Keyboard.isKeyPressed(Key.Space) do
+        break
 
-	//@print("unpressed")
+    //@print("unpressed")
 }

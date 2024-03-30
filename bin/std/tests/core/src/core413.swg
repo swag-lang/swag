@@ -1,7 +1,7 @@
 using Core
 
 const CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789)(*&^%$#@!"
-const LEN = 25'u64
+const LEN     = 25'u64
 
 #test
 {

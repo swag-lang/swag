@@ -1,4 +1,3 @@
-
 using Core
 
 struct X
@@ -14,7 +13,7 @@ impl X
     {
         G += 1
         //@print("opDrop64 ")
-    }
+}
 }
 
 //#[Swag.PrintBc]
@@ -22,7 +21,7 @@ impl X
 {
     {
         G = 0
-        var arr: Array'X
+        var arr:   Array'X
         var value: X
         arr.add(value)
     }

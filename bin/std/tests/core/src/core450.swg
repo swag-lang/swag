@@ -7,12 +7,14 @@ using Core
 
     {
         //Time.Stopwatch.scopeMeasure()
-        loop N do discard Hash.City32.compute(str.toSlice())
+        loop N do
+            discard Hash.City32.compute(str.toSlice())
     }
 
     {
         //Time.Stopwatch.scopeMeasure()
-        loop N do discard Hash.Crc32.compute(str.toSlice())
+        loop N do
+            discard Hash.Crc32.compute(str.toSlice())
     }
 
     //@assert(v == 0x86da05bf)

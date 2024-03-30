@@ -4,8 +4,8 @@ using Core
 {
     struct TT
     {
-        val0: String
-        val1: String
+        val0:     String
+        val1:     String
     }
 
     var x: TT

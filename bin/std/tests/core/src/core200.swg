@@ -1,4 +1,4 @@
-﻿/*using Core.Memory, Swag
+/*using Core.Memory, Swag
 
 #test
 {

@@ -1,4 +1,3 @@
-
 using Core
 
 func toto(v: const &String)

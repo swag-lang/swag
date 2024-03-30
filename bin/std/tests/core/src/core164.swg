@@ -1,4 +1,3 @@
-﻿
 using Core.File
 
 //#[Swag.PrintBc]

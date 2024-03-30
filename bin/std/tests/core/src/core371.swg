@@ -15,7 +15,7 @@ struct Toto2
 {
     var enc: Encoder'Write.TagBin
 
-    var x: Toto2
+    var x:   Toto2
     var buf: ConcatBuffer
     x.x.add(1)
     x.x.add(9)
@@ -23,7 +23,7 @@ struct Toto2
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin
-    let x1 = try dec.readAll'Toto1(buf.toSlice())
+    let x1   = try dec.readAll'Toto1(buf.toSlice())
     defer Memory.delete(x1)
 
     @assert(x1.x[0] == 1)

@@ -1,4 +1,4 @@
-﻿using Core.File
+using Core.File
 // DO NOT CHANGE THE COMMENT
 // DO NOT CHANGE THE COMMENT AGAIN
 
@@ -6,7 +6,7 @@
 #test
 {
     var reader: TextReader
-    var loc = #location
+    var loc     = #location
 
     {
         catch reader.open(loc.fileName)

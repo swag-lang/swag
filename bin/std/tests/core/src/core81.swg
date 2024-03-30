@@ -1,4 +1,3 @@
-
 using Core
 
 #test
@@ -43,7 +42,7 @@ using Core
 
     var b: ConcatBuffer
     b.setBucketSize(4)
-    b.addBytes([1,2,3,4,5,6,7,8], false)
+    b.addBytes([1, 2, 3, 4, 5, 6, 7, 8], false)
 
     @assert(b.firstBucket != b.lastBucket)
 

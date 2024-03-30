@@ -1,4 +1,3 @@
-﻿
 using Core.Utf8
 
 #test

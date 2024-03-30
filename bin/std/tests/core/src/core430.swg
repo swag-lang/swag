@@ -12,7 +12,7 @@ using Core, Core.Serialization
     """
 
     var rea: Decoder'Read.JSon
-    let v = catch rea.readAll'Toto(str)
+    let v    = catch rea.readAll'Toto(str)
     defer Memory.delete(v)
     @assert(@err() == Errors.SyntaxError)
 }

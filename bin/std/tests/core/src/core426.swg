@@ -1,2 +1,2 @@
-﻿using Core
+using Core
 namealias aa = Math.round

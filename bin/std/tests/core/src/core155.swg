@@ -1,11 +1,10 @@
-
 using Core, Core.Utf8
 
 //#[Swag.PrintBc]
 #test
 {
     //var res = "A假CD"
-    var res: String = "XXABAB"
+    var res:   String = "XXABAB"
     var result = indexOf(res.toString(), "AB")
     @assert(result == 2)
 
