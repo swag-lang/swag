@@ -10,7 +10,7 @@ bool FormatAst::outputStructDeclContent(FormatContext& context, AstNode* node)
     concat->addChar('{');
     concat->addEol();
     context.indent++;
-    outputChildren(context, node);
+    outputChildrenEol(context, node);
     context.indent--;
     concat->addIndent(context.indent);
     concat->addChar('}');
@@ -21,7 +21,7 @@ bool FormatAst::outputStructDeclContent(FormatContext& context, AstNode* node)
 bool FormatAst::outputTupleDeclContent(FormatContext& context, AstNode* node)
 {
     concat->addChar('{');
-    outputCommaChildren(context, node);
+    outputChildrenComma(context, node);
     concat->addChar('}');
     return true;
 }
@@ -190,7 +190,7 @@ bool FormatAst::outputImpl(FormatContext& context, AstNode* node)
 
     const uint32_t first = nodeImpl->identifierFor ? 2 : 1;
     context.indent++;
-    SWAG_CHECK(outputChildren(context, node, first));
+    SWAG_CHECK(outputChildrenEol(context, node, first));
     context.indent--;
 
     concat->addIndent(context.indent);

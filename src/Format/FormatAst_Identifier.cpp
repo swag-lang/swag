@@ -33,7 +33,11 @@ bool FormatAst::outputIdentifier(FormatContext& context, AstNode* node)
         if (identifier->genericParameters->hasAstFlag(AST_EXPR_IN_PARENTS))
             concat->addChar('(');
 
-        SWAG_CHECK(outputNode(context, identifier->genericParameters, false));
+        {
+            FormatContext cxt{context};
+            cxt.beautifyAfter = false;
+            SWAG_CHECK(outputNode(cxt, identifier->genericParameters));
+        }
 
         if (identifier->genericParameters->hasAstFlag(AST_EXPR_IN_PARENTS))
             concat->addChar(')');
@@ -48,7 +52,11 @@ bool FormatAst::outputIdentifier(FormatContext& context, AstNode* node)
         else
             concat->addChar('(');
 
-        SWAG_CHECK(outputNode(context, identifier->callParameters, false));
+        {
+            FormatContext cxt{context};
+            cxt.beautifyAfter = false;        
+            SWAG_CHECK(outputNode(cxt, identifier->callParameters));
+        }
 
         if (identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         {

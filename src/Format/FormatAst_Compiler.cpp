@@ -16,7 +16,7 @@ bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, AstNo
         concat->addBlank();
         SWAG_CHECK(outputNode(context, ifNode->boolExpression));
         concat->addEol();
-        SWAG_CHECK(outputChildren(context, ifNode->ifBlock->firstChild()));
+        SWAG_CHECK(outputChildrenEol(context, ifNode->ifBlock->firstChild()));
         return true;
     }
 

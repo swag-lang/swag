@@ -317,9 +317,10 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerAst));
         funcNode->inheritTokenLocation(node->token);
 
-        const auto idRef           = Ast::newIdentifierRef(funcNode->token.text, this, node);
-        const auto identifier      = castAst<AstIdentifier>(idRef->lastChild(), AstNodeKind::Identifier);
-        identifier->callParameters = Ast::newFuncCallParams(this, identifier);
+        ParserPushFreezeFormat ff{this};
+        const auto             idRef      = Ast::newIdentifierRef(funcNode->token.text, this, node);
+        const auto             identifier = castAst<AstIdentifier>(idRef->lastChild(), AstNodeKind::Identifier);
+        identifier->callParameters        = Ast::newFuncCallParams(this, identifier);
         idRef->inheritTokenLocation(node->token);
         identifier->inheritTokenLocation(node->token);
     }
@@ -899,6 +900,7 @@ bool Parser::doCompilerPlaceHolder(AstNode* parent)
     node->inheritTokenName(tokenParse.token);
     node->inheritTokenLocation(tokenParse.token);
     SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatFormat(node));
     SWAG_CHECK(eatSemiCol("[[#placeholder]] expression"));
 
     currentScope->symTable.registerSymbolName(context, node, SymbolKind::PlaceHolder);

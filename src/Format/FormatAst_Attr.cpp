@@ -72,7 +72,7 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
             CONCAT_FIXED_STR(concat, "public");
             concat->addEol();
             concat->addIndent(context.indent);
-            SWAG_CHECK(outputChildren(context, node->content));
+            SWAG_CHECK(outputChildrenEol(context, node->content));
         }
         else
         {
@@ -92,7 +92,7 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
             CONCAT_FIXED_STR(concat, "private");
             concat->addEol();
             concat->addIndent(context.indent);
-            SWAG_CHECK(outputChildren(context, node->content));
+            SWAG_CHECK(outputChildrenEol(context, node->content));
         }
         else
         {
@@ -112,7 +112,7 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
             CONCAT_FIXED_STR(concat, "internal");
             concat->addEol();
             concat->addIndent(context.indent);
-            SWAG_CHECK(outputChildren(context, node->content));
+            SWAG_CHECK(outputChildrenEol(context, node->content));
         }
         else
         {
@@ -131,7 +131,7 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
         SWAG_CHECK(outputAttrUse(context, node, hasSomething));
         concat->addEol();
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputChildren(context, node->content));
+        SWAG_CHECK(outputChildrenEol(context, node->content));
         return true;
     }
 

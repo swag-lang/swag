@@ -107,7 +107,7 @@ bool FormatAst::outputEnum(FormatContext& context, AstEnum* node)
     concat->addChar('{');
     concat->addEol();
     context.indent++;
-    SWAG_CHECK(outputChildren(context, node, first));
+    SWAG_CHECK(outputChildrenEol(context, node, first));
     context.indent--;
     concat->addIndent(context.indent);
     concat->addChar('}');

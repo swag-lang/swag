@@ -35,6 +35,7 @@ struct FormatContext
     uint32_t startBinaryOpColumn = 0;
     bool     outputComments      = false;
     bool     outputBlankLines    = false;
+    bool     beautifyAfter       = true;
 
     bool     alignVarDecl                           = false;
     bool     alignEnumValue                         = false;
@@ -81,8 +82,9 @@ struct FormatAst
     static TokenParse*       getOrCreateTokenParse(AstNode* node);
 
     static AstNode* convertNode(FormatContext& context, AstNode* node);
-    auto            outputChildren(FormatContext& context, AstNode* node, uint32_t start = 0) -> bool;
-    bool            outputCommaChildren(FormatContext& context, AstNode* node, uint32_t start = 0);
+    auto            outputChildrenEol(FormatContext& context, AstNode* node, uint32_t start = 0) -> bool;
+    bool            outputChildrenComma(FormatContext& context, AstNode* node, uint32_t start = 0);
+    bool            outputChildrenBlank(FormatContext& context, AstNode* node, uint32_t start = 0);
     bool            outputStatement(FormatContext& context, AstNode* node);
     bool            outputDoStatement(FormatContext& context, AstNode* node);
     static bool     collectChildrenToAlign(FormatContext& context, CollectFlags flags, AstNode* node, uint32_t start, VectorNative<AstNode*>& nodes, uint32_t& processed, const std::function<bool(AstNode*)>& stopFn);
@@ -165,7 +167,7 @@ struct FormatAst
     bool outputNullConditionalExpression(FormatContext& context, const AstNode* node);
     bool outputConditionalExpression(FormatContext& context, AstNode* node);
     bool outputCast(FormatContext& context, const AstNode* node);
-    bool outputNode(FormatContext& context, AstNode* node, bool cmtAfter = true);
+    bool outputNode(FormatContext& context, AstNode* node);
 
     FormatConcat  inConcat;
     FormatConcat  tmpConcat;

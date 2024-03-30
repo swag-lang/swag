@@ -7,7 +7,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
+bool FormatAst::outputNode(FormatContext& context, AstNode* node)
 {
     node = convertNode(context, node);
     if (!node)
@@ -24,6 +24,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
         concat->addBlank();
     }
 
+    bool forceEOL = false;
     switch (node->kind)
     {
         case AstNodeKind::EmptyNode:
@@ -32,7 +33,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
         case AstNodeKind::SwitchCaseBlock:
         case AstNodeKind::StatementNoScope:
         case AstNodeKind::File:
-            SWAG_CHECK(outputChildren(context, node));
+            SWAG_CHECK(outputChildrenEol(context, node));
             break;
 
         case AstNodeKind::ExplicitNoInit:
@@ -48,12 +49,12 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
         case AstNodeKind::CompilerLoad:
             CONCAT_FIXED_STR(concat, "#load");
             concat->addBlank();
-            SWAG_CHECK(outputNode(context, node->firstChild()));
+            SWAG_CHECK(outputChildrenBlank(context, node));
             break;
         case AstNodeKind::CompilerInclude:
             CONCAT_FIXED_STR(concat, "#include");
             concat->addBlank();
-            SWAG_CHECK(outputNode(context, node->firstChild()));
+            SWAG_CHECK(outputChildrenBlank(context, node));
             break;
         case AstNodeKind::CompilerGlobal:
             SWAG_CHECK(outputCompilerGlobal(context, node));
@@ -83,24 +84,26 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
 
         case AstNodeKind::FallThrough:
             CONCAT_FIXED_STR(concat, "fallthrough");
-            concat->addEol();
+            forceEOL = true;
             break;
         case AstNodeKind::Unreachable:
             CONCAT_FIXED_STR(concat, "unreachable");
-            concat->addEol();
+            forceEOL = true;
             break;
 
         case AstNodeKind::CompilerPlaceHolder:
             CONCAT_FIXED_STR(concat, "#placeholder");
             concat->addBlank();
             concat->addString(node->token.text);
-            concat->addEol();
+            concat->addBlank();
+            SWAG_CHECK(outputChildrenBlank(context, node));
+            forceEOL = true;
             break;
         case AstNodeKind::CompilerForeignLib:
             CONCAT_FIXED_STR(concat, "#foreignlib");
             concat->addBlank();
-            SWAG_CHECK(outputNode(context, node->firstChild()));
-            concat->addEol();
+            SWAG_CHECK(outputChildrenBlank(context, node));
+            forceEOL = true;
             break;
 
         case AstNodeKind::CompilerImport:
@@ -139,7 +142,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
 
         case AstNodeKind::FuncDeclParams:
             concat->addChar('(');
-            outputCommaChildren(context, node);
+            outputChildrenComma(context, node);
             concat->addChar(')');
             break;
 
@@ -154,9 +157,9 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
             concat->addBlank();
             concat->addString(node->token.text);
             concat->addChar('(');
-            outputCommaChildren(context, attrDecl->parameters);
+            outputChildrenComma(context, attrDecl->parameters);
             concat->addChar(')');
-            concat->addEol();
+            forceEOL = true;
             break;
         }
 
@@ -354,7 +357,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
 
             CONCAT_FIXED_STR(concat, "using");
             concat->addBlank();
-            SWAG_CHECK(outputCommaChildren(context, node));
+            SWAG_CHECK(outputChildrenComma(context, node));
             break;
 
         case AstNodeKind::Return:
@@ -377,7 +380,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
         case AstNodeKind::IntrinsicProp:
             concat->addString(node->token.text);
             concat->addChar('(');
-            SWAG_CHECK(outputCommaChildren(context, node));
+            SWAG_CHECK(outputChildrenComma(context, node));
             concat->addChar(')');
             break;
 
@@ -498,8 +501,8 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
         case AstNodeKind::CompilerDependencies:
             CONCAT_FIXED_STR(concat, "#dependencies");
             concat->addEol();
-            SWAG_CHECK(outputChildren(context, node));
-            concat->addEol();
+            SWAG_CHECK(outputChildrenEol(context, node));
+            forceEOL = true;
             break;
 
         case AstNodeKind::Impl:
@@ -511,10 +514,12 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node, bool cmtAfter)
             break;
 
         default:
-            return Report::internalError(const_cast<AstNode*>(node), "FormatAst::outputNode, unknown node kind");
+            return Report::internalError(node, "FormatAst::outputNode, unknown node kind");
     }
 
-    if (cmtAfter)
+    if (context.beautifyAfter)
         beautifyAfter(context, node);
+    if (forceEOL)
+        concat->addEol();
     return true;
 }

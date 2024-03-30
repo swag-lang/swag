@@ -14,7 +14,7 @@ bool FormatAst::outputFuncDeclParameters(FormatContext& context, AstNode* parame
     }
 
     concat->addChar('(');
-    SWAG_CHECK(outputCommaChildren(context, parameters, isMethod ? 1 : 0));
+    SWAG_CHECK(outputChildrenComma(context, parameters, isMethod ? 1 : 0));
     concat->addChar(')');
     beautifyAfter(context, parameters);
 
@@ -224,7 +224,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
             concat->addEol();
         }
 
-        SWAG_CHECK(outputChildren(context, funcDecl->content));
+        SWAG_CHECK(outputChildrenEol(context, funcDecl->content));
     }
 
     context.indent--;
@@ -339,7 +339,7 @@ bool FormatAst::outputFuncCallParams(FormatContext& context, AstNode* node)
         concat->addBlank();
     }
 
-    SWAG_CHECK(outputCommaChildren(context, node));
+    SWAG_CHECK(outputChildrenComma(context, node));
     return true;
 }
 
@@ -400,7 +400,13 @@ bool FormatAst::outputInit(FormatContext& context, AstNode* node)
     if (init->parameters)
     {
         concat->addChar('(');
-        SWAG_CHECK(outputNode(context, init->parameters, false));
+
+        {
+            FormatContext cxt{context};
+            cxt.beautifyAfter = false;
+            SWAG_CHECK(outputNode(cxt, init->parameters));
+        }
+
         concat->addChar(')');
         beautifyAfter(context, init->parameters);
     }
