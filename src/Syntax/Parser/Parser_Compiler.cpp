@@ -518,6 +518,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         FormatAst::inheritFormatBefore(this, globalDecl, &savedToken);
         const auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
         idRef->addAstFlag(AST_NO_SEMANTIC);
+        sourceFile->addFlag(FILE_NO_FORMAT);
         sourceFile->buildPass = BuildPass::Lexer;
     }
 
