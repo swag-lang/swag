@@ -99,18 +99,18 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         return true;
     }
 
-    concat->addEol();
-    concat->addIndent(context.indent);
-
     // #validif must be exported
     if (node->validif)
     {
-        context.indent++;
         concat->addEol();
+        context.indent++;
         concat->addIndent(context.indent);
         SWAG_CHECK(outputNode(context, node->validif));
         context.indent--;
     }
+
+    concat->addEol();
+    concat->addIndent(context.indent);
 
     // Opaque export. Just simulate structure with the correct size.
     if (node->hasAttribute(ATTRIBUTE_OPAQUE))
