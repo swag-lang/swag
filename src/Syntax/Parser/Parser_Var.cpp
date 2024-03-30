@@ -319,6 +319,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
 bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct, bool forLet)
 {
     AstNode* leftNode;
+    bool     first = true;
     while (true)
     {
         SWAG_CHECK(doLeftExpressionVar(parent, &leftNode, IDENTIFIER_NO_PARAMS));
@@ -376,8 +377,14 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         // Treat all
         {
             ParserPushFreezeFormat sc(this);
-            SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, result, forLet));
+            AstNode*               varExpr = nullptr;
+            SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, &varExpr, forLet));
             leftNode->release();
+            if (!first && varExpr)
+                varExpr->addSpecFlag(AstVarDecl::SPEC_FLAG_EXTRA_DECL);
+            else
+                *result = varExpr;
+            first = false;
         }
 
         // If we have a type, and that type has parameters (struct construction), then we need to evaluate and push the parameters

@@ -565,6 +565,7 @@ struct AstVarDecl : AstNode
     static constexpr SpecFlags SPEC_FLAG_PRIVATE_NAME     = 0x0400;
     static constexpr SpecFlags SPEC_FLAG_FORCE_VAR        = 0x0800;
     static constexpr SpecFlags SPEC_FLAG_FORCE_CONST      = 0x1000;
+    static constexpr SpecFlags SPEC_FLAG_EXTRA_DECL       = 0x2000;
 
     AstNode* clone(CloneContext& context);
     bool     isConstDecl() const;

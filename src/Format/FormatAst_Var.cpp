@@ -73,19 +73,43 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
         }
     }
 
-    for (const auto child : nodes)
+    for (uint32_t i = 0; i < nodes.size(); i++)
     {
+        auto child = nodes[i];
+
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputVar(context, child, maxLenName, maxLenType));
+        if (i != nodes.size() - 1 && nodes[i + 1]->hasSpecFlag(AstVarDecl::SPEC_FLAG_EXTRA_DECL))
+        {
+            FormatContext cxt{context};
+            cxt.alignVarDecl = false;
+            SWAG_CHECK(outputVar(cxt, child, maxLenName, maxLenType));
+        }
+        else
+            SWAG_CHECK(outputVar(context, child, maxLenName, maxLenType));
+
+        while (i != nodes.size() - 1 && nodes[i + 1]->hasSpecFlag(AstVarDecl::SPEC_FLAG_EXTRA_DECL))
+        {
+            i++;
+            child = nodes[i];
+
+            FormatContext cxt{context};
+            cxt.alignVarDecl = false;
+            concat->addChar(',');
+            concat->addBlank();
+            const auto varNode = castAst<AstVarDecl>(child, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+            SWAG_CHECK(outputVarContent(cxt, varNode, 0, maxLenName, maxLenType));
+        }
+
         concat->addEol();
     }
 
     return true;
 }
 
-bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, uint32_t startColumn, uint32_t maxLenName, uint32_t maxLenType)
+bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t startColumn, uint32_t maxLenName, uint32_t maxLenType)
 {
     const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+    const bool isSelf  = varNode->token.text == g_LangSpec->name_self;
     inheritLastFormatAfter(nullptr, varNode);
 
     const uint32_t alignTypeBanks = node->hasAstFlag(AST_STRUCT_MEMBER) ? context.alignStructVarTypeAddBlanks : 0;
@@ -174,7 +198,6 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, bool isSelf, ui
         concat->alignToColumn(startColumn + maxLenName + maxLenType + context.addBlanksBeforeAlignedLastLineComments);
 
     beautifyAfter(context, varNode);
-
     return true;
 }
 
@@ -227,7 +250,6 @@ bool FormatAst::outputVar(FormatContext& context, AstNode* node, uint32_t maxLen
     SWAG_CHECK(outputVarHeader(context, node));
 
     const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-    const bool isSelf  = varNode->token.text == g_LangSpec->name_self;
-    SWAG_CHECK(outputVar(context, varNode, isSelf, startColumn, maxLenName, maxLenType));
+    SWAG_CHECK(outputVarContent(context, varNode, startColumn, maxLenName, maxLenType));
     return true;
 }
