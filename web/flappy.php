@@ -179,7 +179,8 @@
 
     <span class="SCmt">// From the command line, if the script is run with '--arg:swag.test', then we force the application</span>
     <span class="SCmt">// to exit after 100 frames. This is usefull for batch testing.</span>
-    <span class="SKwd">func</span> <span class="SFct">test</span>(app: *<span class="SCst">Application</span>) = <span class="SLgc">if</span> <span class="SCst">Env</span>.<span class="SFct">hasArg</span>(<span class="SStr">"swag.test"</span>) <span class="SLgc">do</span> app.maxRunFrame = <span class="SNum">100</span>
+    <span class="SKwd">func</span> <span class="SFct">test</span>(app: *<span class="SCst">Application</span>) = <span class="SLgc">if</span> <span class="SCst">Env</span>.<span class="SFct">hasArg</span>(<span class="SStr">"swag.test"</span>) <span class="SLgc">do</span>
+        app.maxRunFrame = <span class="SNum">100</span>
 
     <span class="SCmt">// Creates and run one surface (i.e. window) at the given position and with the given size and title.</span>
     <span class="SCmt">// 'hook' defines a lambda that will receive and treat all gui events</span>
@@ -189,28 +190,28 @@
 <h1 id="">Global definitions </h1>
 <h2 id="">Constants </h2>
 <p>We declare global constants with <span class="code-inline">const</span>. Note that we do not specify types for thoses constants. They will be deduced thanks to the affection. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>        <span class="SCmt">// 2.5 is a 32 bits float, so the type of Gravity is 'f32'</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>       <span class="SCmt">// 2.5 is a 32 bits float, so the type of Gravity is 'f32'</span>
 <span class="SKwd">const</span> <span class="SCst">GroundHeight</span> = <span class="SNum">40.0</span>
 <span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span>
-<span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>        <span class="SCmt">// 350 is an integer, so the type of BirdImpulseY is 's32'</span></span></div>
+<span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>       <span class="SCmt">// 350 is an integer, so the type of BirdImpulseY is 's32'</span></span></div>
 <h2 id="">Variables </h2>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>           <span class="SCmt">// 'Bird' is a structure, and will be defined later</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Bird: <span class="SCst">Bird</span> <span class="SCmt">// 'Bird' is a structure, and will be defined later</span></span></div>
 <p><span class="code-inline">g_Pipes</span> is a <b>dynamic</b> and <b>generic array</b> where all the elements are of type <span class="code-inline">Pipe</span>. In other languages, you would write <span class="code-inline">Array&lt;Pipe&gt;</span>. <span class="code-inline">Array</span> comes from the <span class="code-inline">Core</span> module, but thanks to the global <span class="code-inline">using Core</span>, we do not need to write <span class="code-inline">Core.Array'Pipe</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Pipes:     <span class="SCst">Array</span>'<span class="SCst">Pipe</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Pipes: <span class="SCst">Array</span>'<span class="SCst">Pipe</span></span></div>
 <p><span class="code-inline">Math</span> is a namespace part of the <span class="code-inline">Core</span> module. We could have specified a global <span class="code-inline">using Core.Math</span> at the top of the script file, but here, we prefer the explicit reference. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Rect:      <span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
 <p>Here are a bunch of global variables. All of them are <b>initialized to 0</b> by default. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Dt:        <span class="STpe">f32</span>
-<span class="SKwd">var</span> g_Time:      <span class="STpe">f32</span>
-<span class="SKwd">var</span> g_BasePos:   <span class="STpe">f32</span>
-<span class="SKwd">var</span> g_Score:     <span class="STpe">s32</span>
-<span class="SKwd">var</span> g_GameOver:  <span class="STpe">bool</span>
-<span class="SKwd">var</span> g_Start:     <span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Dt:       <span class="STpe">f32</span>
+<span class="SKwd">var</span> g_Time:     <span class="STpe">f32</span>
+<span class="SKwd">var</span> g_BasePos:  <span class="STpe">f32</span>
+<span class="SKwd">var</span> g_Score:    <span class="STpe">s32</span>
+<span class="SKwd">var</span> g_GameOver: <span class="STpe">bool</span>
+<span class="SKwd">var</span> g_Start:    <span class="STpe">bool</span></span></div>
 <p>Again, no need to specify the type of <span class="code-inline">g_FirstStart</span>. It is deduced from the affectation to be <span class="code-inline">bool</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_FirstStart = <span class="SKwd">true</span></span></div>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Texture assets</span>
-<span class="SKwd">var</span> g_DigitTexture: [<span class="SNum">10</span>] <span class="SCst">Texture</span>    <span class="SCmt">// A static array of 10 textures</span>
-<span class="SKwd">var</span> g_BirdTexture:  [<span class="SNum">3</span>] <span class="SCst">Texture</span>     <span class="SCmt">// A static array of 3 textures</span>
+<span class="SKwd">var</span> g_DigitTexture: [<span class="SNum">10</span>] <span class="SCst">Texture</span>     <span class="SCmt">// A static array of 10 textures</span>
+<span class="SKwd">var</span> g_BirdTexture:  [<span class="SNum">3</span>] <span class="SCst">Texture</span>      <span class="SCmt">// A static array of 3 textures</span>
 <span class="SKwd">var</span> g_BackTexture:  <span class="SCst">Texture</span>
 <span class="SKwd">var</span> g_OverTexture:  <span class="SCst">Texture</span>
 <span class="SKwd">var</span> g_BaseTexture:  <span class="SCst">Texture</span>
@@ -219,10 +220,10 @@
 <span class="SKwd">var</span> g_MsgTexture:   <span class="SCst">Texture</span>
 
 <span class="SCmt">// Sound assets</span>
-<span class="SKwd">var</span> g_SoundDie:     <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>
-<span class="SKwd">var</span> g_SoundScore:   <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>
-<span class="SKwd">var</span> g_SoundHit:     <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>
-<span class="SKwd">var</span> g_SoundFlap:    <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span></span></div>
+<span class="SKwd">var</span> g_SoundDie:   <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>
+<span class="SKwd">var</span> g_SoundScore: <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>
+<span class="SKwd">var</span> g_SoundHit:   <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>
+<span class="SKwd">var</span> g_SoundFlap:  <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span></span></div>
 <p><span class="code-inline">g_Font</span> is a <b>value</b> pointer to a Font structure. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Font: *<span class="SCst">Font</span></span></div>
 <p>In Swag, their are two types of pointers. </p>
@@ -236,22 +237,22 @@
 <span class="SKwd">struct</span> <span class="SCst">Bird</span>
 {
     <span class="SCmt">// Position of the bird. Full qualified name.</span>
-    pos:        <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>
+    pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>
 
     <span class="SCmt">// Speed of the bird. In fact no need to specify 'Core' thanks to the global 'using'.</span>
-    speed:      <span class="SCst">Math</span>.<span class="SCst">Vector2</span>
+    speed: <span class="SCst">Math</span>.<span class="SCst">Vector2</span>
 
     <span class="SCmt">// Sprite frame</span>
-    frame:      <span class="STpe">f32</span>
+    frame: <span class="STpe">f32</span>
 }
 
 <span class="SCmt">// Defines one Pipe</span>
 <span class="SKwd">struct</span> <span class="SCst">Pipe</span>
 {
-    rectUp:     <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>  <span class="SCmt">// Position of the up part of the Pipe</span>
-    rectDown:   <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>  <span class="SCmt">// Position of the down part of the Pipe</span>
-    distToNext: <span class="STpe">f32</span>             <span class="SCmt">// Distance to the next Pipe</span>
-    scored:     <span class="STpe">bool</span>            <span class="SCmt">// 'true' if the Bird has passed that Pipe</span>
+    rectUp:         <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>     <span class="SCmt">// Position of the up part of the Pipe</span>
+    rectDown:       <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>     <span class="SCmt">// Position of the down part of the Pipe</span>
+    distToNext:     <span class="STpe">f32</span>                <span class="SCmt">// Distance to the next Pipe</span>
+    scored:         <span class="STpe">bool</span>               <span class="SCmt">// 'true' if the Bird has passed that Pipe</span>
 }</span></div>
 <h1 id="">The actual code </h1>
 <p>This is the callback that will deal with all gui events. This feels like <i>Windows</i> API, but there are other ways of dealing with gui, in a more 'object like' way. You can look at the <span class="code-inline">captme</span> tool for example, which does not use a callback but <b>interfaces</b> instead. </p>
@@ -260,7 +261,6 @@
 {
     <span class="SLgc">switch</span> evt.kind
     {
-    <span class="SCmt">// Called once for the surface. Can be used to initialize some stuff.</span>
     <span class="SLgc">case</span> <span class="SCst">Create</span>:
         g_Rect = wnd.<span class="SFct">getClientRect</span>()
 
@@ -269,22 +269,18 @@
         <span class="SKwd">assume</span> <span class="SFct">loadAssets</span>(wnd)
 
         <span class="SFct">start</span>()
-
-    <span class="SCmt">// Each time the surface (i.e. window) is resized</span>
     <span class="SLgc">case</span> <span class="SCst">Resize</span>:
         g_Rect = wnd.<span class="SFct">getClientRect</span>()
-
-    <span class="SCmt">// Each time the surface needs to be repainted</span>
     <span class="SLgc">case</span> <span class="SCst">Paint</span>:
         <span class="SKwd">let</span> paintEvt = <span class="SKwd">cast</span>(*<span class="SCst">PaintEvent</span>) evt
-        <span class="SKwd">let</span> painter = paintEvt.bc.painter
+        <span class="SKwd">let</span> painter  = paintEvt.bc.painter
 
         <span class="SCmt">// This is the elapsed time between two 'frames', in seconds.</span>
         g_Dt = wnd.<span class="SFct">getApp</span>().<span class="SFct">getDt</span>()
 
-        <span class="SFct">input</span>(wnd)          <span class="SCmt">// IO (keyboard test)</span>
-        <span class="SFct">paint</span>(painter)      <span class="SCmt">// Paint game</span>
-        <span class="SFct">move</span>()              <span class="SCmt">// Update game</span>
+        <span class="SFct">input</span>(wnd) <span class="SCmt">// IO (keyboard test)</span>
+        <span class="SFct">paint</span>(painter) <span class="SCmt">// Paint game</span>
+        <span class="SFct">move</span>() <span class="SCmt">// Update game</span>
 
         <span class="SCmt">// We force the window to be dirty, which means that the 'Paint' event will</span>
         <span class="SCmt">// be sent again next frame.</span>
@@ -318,7 +314,7 @@
         painter.<span class="SFct">translateTransform</span>(g_Bird.pos.x + trf.tx, g_Bird.pos.y + trf.ty)
 
         <span class="SCmt">// This is the sprite frame of the bird</span>
-        <span class="SKwd">let</span> frame = (<span class="SKwd">cast</span>(<span class="STpe">s32</span>) g_Bird.frame) % <span class="SNum">3</span>
+        <span class="SKwd">let</span> frame = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) g_Bird.frame % <span class="SNum">3</span>
 
         <span class="SCmt">// No need to initialize the 'pt' variable here, as we will set both 'x' and 'y'</span>
         <span class="SCmt">// just after. So we initialize it with 'undefined'.</span>
@@ -349,7 +345,7 @@
     painter.<span class="SFct">drawTexture</span>(-g_BasePos, g_Rect.<span class="SFct">bottom</span>() - <span class="SCst">GroundHeight</span>, <span class="SKwd">cast</span>(<span class="STpe">f32</span>) g_BaseTexture.width, <span class="SCst">GroundHeight</span>, g_BaseTexture)
     painter.<span class="SFct">drawTexture</span>(-g_BasePos + g_BaseTexture.width, g_Rect.<span class="SFct">bottom</span>() - <span class="SCst">GroundHeight</span>, <span class="SKwd">cast</span>(<span class="STpe">f32</span>) g_BaseTexture.width, <span class="SCst">GroundHeight</span>, g_BaseTexture)
     <span class="SLgc">if</span> !g_GameOver <span class="SLgc">do</span>
-        g_BasePos += <span class="SCst">SpeedHorz</span>*g_Dt
+        g_BasePos += <span class="SCst">SpeedHorz</span> * g_Dt
     <span class="SLgc">if</span> g_BasePos &gt;= g_BaseTexture.width <span class="SLgc">do</span>
         g_BasePos = <span class="SNum">0</span>
 
@@ -357,10 +353,7 @@
     <span class="SLgc">if</span> g_GameOver
     {
         <span class="SCmt">// This is another way of initializing a struct variable or constant.</span>
-        <span class="SKwd">var</span> pt = <span class="SCst">Math</span>.<span class="SCst">Point</span>{
-            g_Rect.<span class="SFct">horzCenter</span>() - g_OverTexture.width/<span class="SNum">2</span>,
-            g_Rect.<span class="SFct">vertCenter</span>() - g_OverTexture.height/<span class="SNum">2</span>
-        }
+        <span class="SKwd">var</span> pt = <span class="SCst">Math</span>.<span class="SCst">Point</span>{g_Rect.<span class="SFct">horzCenter</span>() - g_OverTexture.width / <span class="SNum">2</span>, g_Rect.<span class="SFct">vertCenter</span>() - g_OverTexture.height / <span class="SNum">2</span>}
 
         painter.<span class="SFct">drawTexture</span>(pt.x, pt.y, g_OverTexture)
     }
@@ -375,8 +368,8 @@
     <span class="SLgc">if</span> g_FirstStart
     {
         <span class="SKwd">var</span> pt: <span class="SCst">Math</span>.<span class="SCst">Point</span> = <span class="SKwd">undefined</span>
-        pt.x = g_Rect.<span class="SFct">horzCenter</span>() - g_MsgTexture.width/<span class="SNum">2</span>
-        pt.y = g_Rect.<span class="SFct">vertCenter</span>() - g_MsgTexture.height/<span class="SNum">2</span>
+        pt.x = g_Rect.<span class="SFct">horzCenter</span>() - g_MsgTexture.width / <span class="SNum">2</span>
+        pt.y = g_Rect.<span class="SFct">vertCenter</span>() - g_MsgTexture.height / <span class="SNum">2</span>
         painter.<span class="SFct">drawTexture</span>(pt.x, pt.y, g_MsgTexture)
     }
 }</span></div>
@@ -398,7 +391,7 @@
 
     <span class="SLgc">if</span> kb.<span class="SFct">isKeyJustPressed</span>(.<span class="SCst">Up</span>)
     {
-        g_Start = <span class="SKwd">true</span>
+        g_Start        = <span class="SKwd">true</span>
         g_Bird.speed.y = -<span class="SCst">BirdImpulseY</span>
         <span class="SKwd">assume</span> <span class="SCst">Audio</span>.<span class="SCst">Voice</span>.<span class="SFct">play</span>(&g_SoundFlap)
     }
@@ -407,9 +400,9 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">birdInRect</span>(rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="STpe">bool</span>
 {
     <span class="SKwd">var</span> rectBird: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = <span class="SKwd">undefined</span>
-    rectBird.x = g_Bird.pos.x - g_BirdTexture[<span class="SNum">0</span>].width/<span class="SNum">2</span>
-    rectBird.y = g_Bird.pos.y - g_BirdTexture[<span class="SNum">0</span>].height/<span class="SNum">2</span>
-    rectBird.width = g_BirdTexture[<span class="SNum">0</span>].width
+    rectBird.x      = g_Bird.pos.x - g_BirdTexture[<span class="SNum">0</span>].width / <span class="SNum">2</span>
+    rectBird.y      = g_Bird.pos.y - g_BirdTexture[<span class="SNum">0</span>].height / <span class="SNum">2</span>
+    rectBird.width  = g_BirdTexture[<span class="SNum">0</span>].width
     rectBird.height = g_BirdTexture[<span class="SNum">0</span>].height
     <span class="SLgc">return</span> rect.<span class="SFct">intersectWith</span>(rectBird)
 }</span></div>
@@ -478,20 +471,20 @@
 <p>Creates a random up and down part of a new Pipe. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createPipe</span>()
 {
-    <span class="SKwd">let</span> pos = g_Rect.width
+    <span class="SKwd">let</span> pos         = g_Rect.width
     <span class="SKwd">let</span> sizePassage = <span class="SCst">Random</span>.<span class="SFct">shared</span>().<span class="SFct">nextF32</span>(<span class="SNum">100</span>, <span class="SNum">175</span>)
-    <span class="SKwd">let</span> heightUp = <span class="SCst">Random</span>.<span class="SFct">shared</span>().<span class="SFct">nextF32</span>(<span class="SNum">50</span>, g_Rect.height - sizePassage - <span class="SNum">50</span>)
-    <span class="SKwd">let</span> heightDown = g_Rect.height - heightUp - <span class="SCst">GroundHeight</span> - sizePassage
+    <span class="SKwd">let</span> heightUp    = <span class="SCst">Random</span>.<span class="SFct">shared</span>().<span class="SFct">nextF32</span>(<span class="SNum">50</span>, g_Rect.height - sizePassage - <span class="SNum">50</span>)
+    <span class="SKwd">let</span> heightDown  = g_Rect.height - heightUp - <span class="SCst">GroundHeight</span> - sizePassage
 
     <span class="SKwd">var</span> pipe: <span class="SCst">Pipe</span>
-    pipe.rectUp.x = pos
-    pipe.rectUp.y = heightUp - g_PipeTextureU.height
-    pipe.rectUp.width = g_PipeTextureU.width
+    pipe.rectUp.x      = pos
+    pipe.rectUp.y      = heightUp - g_PipeTextureU.height
+    pipe.rectUp.width  = g_PipeTextureU.width
     pipe.rectUp.height = g_PipeTextureU.height
 
-    pipe.rectDown.x = pos
-    pipe.rectDown.y = g_Rect.<span class="SFct">bottom</span>() - heightDown - <span class="SCst">GroundHeight</span>
-    pipe.rectDown.width = g_PipeTextureU.width
+    pipe.rectDown.x      = pos
+    pipe.rectDown.y      = g_Rect.<span class="SFct">bottom</span>() - heightDown - <span class="SCst">GroundHeight</span>
+    pipe.rectDown.width  = g_PipeTextureU.width
     pipe.rectDown.height = g_PipeTextureU.height
 
     pipe.distToNext = <span class="SCst">Random</span>.<span class="SFct">shared</span>().<span class="SFct">nextF32</span>(<span class="SNum">100</span>, <span class="SNum">200</span>)
@@ -506,7 +499,7 @@
 
     g_Bird.pos.x = g_Rect.<span class="SFct">horzCenter</span>()
     g_Bird.pos.y = g_Rect.<span class="SFct">vertCenter</span>()
-    g_Score = <span class="SNum">0</span>
+    g_Score      = <span class="SNum">0</span>
     g_Pipes.<span class="SFct">clear</span>()
 
     <span class="SCmt">// Assign two variables with the same value</span>
@@ -556,7 +549,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 24-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
+Generated on 30-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
 </div>
 </div>
 </div>

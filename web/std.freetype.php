@@ -711,7 +711,7 @@
 <span id="FreeType_FT_Done_FreeType"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FreeType.</span><span class="api-item-title-strong">FT_Done_FreeType</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L441" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L442" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1293,7 +1293,7 @@
 <span id="FreeType_FT_Library_SetLcdFilter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FreeType.</span><span class="api-item-title-strong">FT_Library_SetLcdFilter</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L489" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L498" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1305,7 +1305,7 @@
 <span id="FreeType_FT_Library_SetLcdFilterWeights"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FreeType.</span><span class="api-item-title-strong">FT_Library_SetLcdFilterWeights</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L495" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L505" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1340,7 +1340,7 @@
 <span id="FreeType_FT_Load_Char"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FreeType.</span><span class="api-item-title-strong">FT_Load_Char</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L465" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L470" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1352,7 +1352,7 @@
 <span id="FreeType_FT_Load_Glyph"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FreeType.</span><span class="api-item-title-strong">FT_Load_Glyph</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L459" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L463" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1397,7 +1397,7 @@
 <span id="FreeType_FT_New_Memory_Face"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FreeType.</span><span class="api-item-title-strong">FT_New_Memory_Face</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L447" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L449" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1452,7 +1452,7 @@
 <span id="FreeType_FT_Outline_Decompose"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FreeType.</span><span class="api-item-title-strong">FT_Outline_Decompose</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L477" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L484" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1464,7 +1464,7 @@
 <span id="FreeType_FT_Outline_Embolden"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FreeType.</span><span class="api-item-title-strong">FT_Outline_Embolden</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L483" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L491" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1592,7 +1592,7 @@
 <span id="FreeType_FT_Render_Glyph"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FreeType.</span><span class="api-item-title-strong">FT_Render_Glyph</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L471" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L477" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1641,7 +1641,7 @@
 <span id="FreeType_FT_Set_Pixel_Sizes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FreeType.</span><span class="api-item-title-strong">FT_Set_Pixel_Sizes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L453" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/freetype\src\freetype.swg#L456" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1794,7 +1794,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 24-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
+Generated on 30-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
 </div>
 </div>
 </div>

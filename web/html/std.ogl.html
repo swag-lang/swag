@@ -9774,7 +9774,7 @@
 <span id="Ogl_glCompressedTexSubImage3D"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glCompressedTexSubImage3D</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L12" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10926,7 +10926,7 @@
 <span id="Ogl_glGetCompressedTexImage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glGetCompressedTexImage</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L13" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12174,7 +12174,7 @@
 <span id="Ogl_glLoadTransposeMatrixd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glLoadTransposeMatrixd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L14" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12186,7 +12186,7 @@
 <span id="Ogl_glLoadTransposeMatrixf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glLoadTransposeMatrixf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L15" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12414,7 +12414,7 @@
 <span id="Ogl_glMultTransposeMatrixd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultTransposeMatrixd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L16" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L17" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12426,7 +12426,7 @@
 <span id="Ogl_glMultTransposeMatrixf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultTransposeMatrixf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L17" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12486,7 +12486,7 @@
 <span id="Ogl_glMultiTexCoord1d"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord1d</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12498,7 +12498,7 @@
 <span id="Ogl_glMultiTexCoord1dv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord1dv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12510,7 +12510,7 @@
 <span id="Ogl_glMultiTexCoord1f"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord1f</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12522,7 +12522,7 @@
 <span id="Ogl_glMultiTexCoord1fv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord1fv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L21" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12534,7 +12534,7 @@
 <span id="Ogl_glMultiTexCoord1i"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord1i</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12546,7 +12546,7 @@
 <span id="Ogl_glMultiTexCoord1iv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord1iv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12558,7 +12558,7 @@
 <span id="Ogl_glMultiTexCoord1s"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord1s</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L24" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12570,7 +12570,7 @@
 <span id="Ogl_glMultiTexCoord1sv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord1sv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12582,7 +12582,7 @@
 <span id="Ogl_glMultiTexCoord2d"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord2d</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12594,7 +12594,7 @@
 <span id="Ogl_glMultiTexCoord2dv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord2dv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L28" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12606,7 +12606,7 @@
 <span id="Ogl_glMultiTexCoord2f"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord2f</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L28" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12618,7 +12618,7 @@
 <span id="Ogl_glMultiTexCoord2fv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord2fv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12630,7 +12630,7 @@
 <span id="Ogl_glMultiTexCoord2i"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord2i</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12642,7 +12642,7 @@
 <span id="Ogl_glMultiTexCoord2iv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord2iv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12654,7 +12654,7 @@
 <span id="Ogl_glMultiTexCoord2s"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord2s</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L32" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12666,7 +12666,7 @@
 <span id="Ogl_glMultiTexCoord2sv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord2sv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L34" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12678,7 +12678,7 @@
 <span id="Ogl_glMultiTexCoord3d"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord3d</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12690,7 +12690,7 @@
 <span id="Ogl_glMultiTexCoord3dv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord3dv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L35" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12702,7 +12702,7 @@
 <span id="Ogl_glMultiTexCoord3f"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord3f</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L36" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12714,7 +12714,7 @@
 <span id="Ogl_glMultiTexCoord3fv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord3fv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12726,7 +12726,7 @@
 <span id="Ogl_glMultiTexCoord3i"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord3i</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L38" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12738,7 +12738,7 @@
 <span id="Ogl_glMultiTexCoord3iv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord3iv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L39" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12750,7 +12750,7 @@
 <span id="Ogl_glMultiTexCoord3s"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord3s</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L40" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12762,7 +12762,7 @@
 <span id="Ogl_glMultiTexCoord3sv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord3sv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L42" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12774,7 +12774,7 @@
 <span id="Ogl_glMultiTexCoord4d"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord4d</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12786,7 +12786,7 @@
 <span id="Ogl_glMultiTexCoord4dv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord4dv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L43" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L44" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12798,7 +12798,7 @@
 <span id="Ogl_glMultiTexCoord4f"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord4f</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12810,7 +12810,7 @@
 <span id="Ogl_glMultiTexCoord4fv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord4fv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L45" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12822,7 +12822,7 @@
 <span id="Ogl_glMultiTexCoord4i"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord4i</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L46" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12834,7 +12834,7 @@
 <span id="Ogl_glMultiTexCoord4iv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord4iv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12846,7 +12846,7 @@
 <span id="Ogl_glMultiTexCoord4s"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord4s</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L48" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12858,7 +12858,7 @@
 <span id="Ogl_glMultiTexCoord4sv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glMultiTexCoord4sv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L49" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13842,7 +13842,7 @@
 <span id="Ogl_glSampleCoverage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glSampleCoverage</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L50" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_3.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16596,7 +16596,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wglShareLists</span>(hRc0, hRc1: <span class="SCst"><a href="#Ogl_HGLRC">HGLRC</a></span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 24-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
+Generated on 30-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
 </div>
 </div>
 </div>

@@ -840,14 +840,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> c: <span class="STpe">s32</span> = -<span class="SNum">3</span>     <span class="SCmt">// 32 bits signed integer</span>
     <span class="SKwd">let</span> d: <span class="STpe">s64</span> = -<span class="SNum">4</span>     <span class="SCmt">// 64 bits signed integer</span>
 
-    <span class="SCmt">// Remember that the instrinsic '@assert' will raise an error at runtime if</span>
+    <span class="SCmt">// Remember that the intrinsic '@assert' will raise an error at runtime if</span>
     <span class="SCmt">// the enclosed expression is false.</span>
     <span class="SItr">@assert</span>(a == -<span class="SNum">1</span>)
     <span class="SItr">@assert</span>(b == -<span class="SNum">2</span>)
     <span class="SItr">@assert</span>(c == -<span class="SNum">3</span>)
     <span class="SItr">@assert</span>(d == -<span class="SNum">4</span>)
 
-    <span class="SCmt">// The instrinsic '@sizeof' gives the size, in bytes, of a variable.</span>
+    <span class="SCmt">// The intrinsic '@sizeof' gives the size, in bytes, of a variable.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">1</span>)    <span class="SCmt">// 'a' has type 's8', so this should be 1 byte.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(b) == <span class="SNum">2</span>)    <span class="SCmt">// 'b' has type 's16', so this should be 2 bytes.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(c) == <span class="SNum">4</span>)
@@ -1235,7 +1235,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// string</span>
 }</span></div>
 <h3 id="_012_string_swg_@stringof_and_@nameof">@stringof and @nameof </h3>
-<p>You can use the instrinsic <span class="code-inline">@stringof</span> to return at compile time the result of a constant expression as a string. </p>
+<p>You can use the intrinsic <span class="code-inline">@stringof</span> to return at compile time the result of a constant expression as a string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> <span class="SCst">X</span> = <span class="SNum">1</span>
@@ -7469,7 +7469,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation_md__231_003_Pages_md">Pages.md</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 24-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
+Generated on 30-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
 </div>
 </div>
 </div>

@@ -7076,7 +7076,7 @@
 <span id="Win32_CreateDirectoryA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateDirectoryA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L827" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L828" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7088,7 +7088,7 @@
 <span id="Win32_CreateDirectoryW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateDirectoryW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L834" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L835" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7124,7 +7124,7 @@
 <span id="Win32_CreateFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateFileA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L688" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L689" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7136,7 +7136,7 @@
 <span id="Win32_CreateFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateFileW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L696" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L697" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7328,7 +7328,7 @@
 <span id="Win32_DeleteFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DeleteFileA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L620" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L621" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7340,7 +7340,7 @@
 <span id="Win32_DeleteFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DeleteFileW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L626" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L627" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7543,7 +7543,7 @@
 <span id="Win32_FileTimeToSystemTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FileTimeToSystemTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L602" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L603" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7567,7 +7567,7 @@
 <span id="Win32_FindClose"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindClose</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L736" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L737" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7579,7 +7579,7 @@
 <span id="Win32_FindFirstFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstFileA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L704" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L705" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7591,7 +7591,7 @@
 <span id="Win32_FindFirstFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstFileW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L712" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L713" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7603,7 +7603,7 @@
 <span id="Win32_FindFirstVolumeA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstVolumeA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L742" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L743" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7615,7 +7615,7 @@
 <span id="Win32_FindFirstVolumeW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstVolumeW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L750" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L751" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7627,7 +7627,7 @@
 <span id="Win32_FindNextFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextFileA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L720" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L721" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7639,7 +7639,7 @@
 <span id="Win32_FindNextFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextFileW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L728" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L729" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7651,7 +7651,7 @@
 <span id="Win32_FindNextVolumeA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextVolumeA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L758" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L759" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7663,7 +7663,7 @@
 <span id="Win32_FindNextVolumeW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextVolumeW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L766" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L767" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7675,7 +7675,7 @@
 <span id="Win32_FindVolumeClose"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindVolumeClose</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L774" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L775" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7825,7 +7825,7 @@
 <span id="Win32_GetAdaptersInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetAdaptersInfo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\iphlpapi.swg#L54" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\iphlpapi.swg#L55" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7885,7 +7885,7 @@
 <span id="Win32_GetCurrentDirectoryA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentDirectoryA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L660" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L661" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7897,7 +7897,7 @@
 <span id="Win32_GetCurrentDirectoryW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentDirectoryW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L668" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L669" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7993,7 +7993,7 @@
 <span id="Win32_GetFileAttributesA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L632" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L633" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8005,7 +8005,7 @@
 <span id="Win32_GetFileAttributesExA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesExA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L648" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L649" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8017,7 +8017,7 @@
 <span id="Win32_GetFileAttributesExW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesExW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L654" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L655" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8029,7 +8029,7 @@
 <span id="Win32_GetFileAttributesW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L640" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L641" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8041,7 +8041,7 @@
 <span id="Win32_GetFileSize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileSize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L801" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L802" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8065,7 +8065,7 @@
 <span id="Win32_GetFullPathNameA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFullPathNameA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L810" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L811" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8077,7 +8077,7 @@
 <span id="Win32_GetFullPathNameW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFullPathNameW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L819" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L820" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8293,7 +8293,7 @@
 <span id="Win32_GetVolumePathNamesForVolumeNameA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetVolumePathNamesForVolumeNameA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L780" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L781" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8305,7 +8305,7 @@
 <span id="Win32_GetVolumePathNamesForVolumeNameW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetVolumePathNamesForVolumeNameW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L786" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L787" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10602,7 +10602,7 @@
 <span id="Win32_SetCurrentDirectoryA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetCurrentDirectoryA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L676" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L677" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10614,7 +10614,7 @@
 <span id="Win32_SetCurrentDirectoryW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetCurrentDirectoryW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L682" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L683" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10662,7 +10662,7 @@
 <span id="Win32_SetFilePointer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetFilePointer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L793" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L794" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10674,7 +10674,7 @@
 <span id="Win32_SetFileTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetFileTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L614" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L615" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10854,7 +10854,7 @@
 <span id="Win32_SystemTimeToFileTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SystemTimeToFileTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L608" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L609" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11371,7 +11371,7 @@
 <span id="Win32_WriteFile"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WriteFile</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L594" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L595" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11390,7 +11390,7 @@
 <p>Throw a <a href="swag.runtime.php#Swag_SystemError">Swag.SystemError</a>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">throwWinError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 24-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
+Generated on 30-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
 </div>
 </div>
 </div>
