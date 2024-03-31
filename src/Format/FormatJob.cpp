@@ -30,9 +30,16 @@ bool FormatJob::writeResult(const Path& fileName, const Utf8& content)
     Vector<Utf8> lines;
     Utf8::tokenize(content, '\n', lines, true);
 
+    bool start = true;
     for (auto& l : lines)
     {
         l.trimRight();
+
+        // Remove empty lines at the top of the file
+        if (l.empty() && start)
+            continue;
+        
+        start = false;
         (void) fwrite(l.data(), 1, l.length(), f);
 #ifdef _WIN32
         (void) fputc('\r', f);

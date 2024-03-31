@@ -107,6 +107,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         }
 
         *exprNode = arrayNode;
+        FormatAst::inheritFormatAfter(this, arrayNode, &tokenParse);
         SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startToken));
     }
 
@@ -142,6 +143,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse.token, toErr(Err0128)));
         }
 
+        FormatAst::inheritFormatAfter(this, (*exprNode)->lastChild(), &tokenParse);
         SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startToken));
     }
 
