@@ -52,7 +52,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     {
     case Create:
         let btn = PushButton.create(wnd, "Load Image", {10, 10, 100})
-        btn.sigPressed += closure|wnd|(btn )
+        btn.sigPressed += closure|wnd|(btn)
         {
             openImage(btn.surface)
             compute(&btn.getApp().renderer)

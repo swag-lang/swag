@@ -14,7 +14,7 @@ enum Enum
     Green
     Blue
 }
-enum Enum2 : string
+enum Enum2: string
 {
     StrRed   = "StrRed"
     StrGreen = "StrGreen"

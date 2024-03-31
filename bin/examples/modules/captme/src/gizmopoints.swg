@@ -9,7 +9,7 @@ struct GizmoPoints
     firstMoving:     bool
     movingRect:      Math.Rectangle
     movingStart:     Math.Point
-    sigChanged:      closure(Math.Point, u32 , bool)
+    sigChanged:      closure(Math.Point, u32, bool)
 
     minSizeX:        f32 = 2
     minSizeY:        f32 = 2

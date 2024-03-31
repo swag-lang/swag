@@ -4,7 +4,7 @@ using Core, Pixel
 struct RichEditLexerSwag
 {
     #[Swag.Incomplete]
-    enum Style : RichEditStyleRef
+    enum Style: RichEditStyleRef
     {
         Default
         Comment
@@ -24,7 +24,7 @@ struct RichEditLexerSwag
     }
 
     #[Swag.Incomplete]
-    enum State : s32
+    enum State: s32
     {
         Default
         LineComment

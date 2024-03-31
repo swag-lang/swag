@@ -13,7 +13,7 @@ using Core
     //Console.write("%\n", str)
     @assert(str == "RGB.Green")
 
-    enum RGBS : string
+    enum RGBS: string
     {
         Red   = "A"
         Green = "B"

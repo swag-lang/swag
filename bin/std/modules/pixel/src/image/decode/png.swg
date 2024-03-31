@@ -11,7 +11,7 @@ using Swag, Core, Core.Errors
 private
 {
 
-    enum ChunkType : u32
+    enum ChunkType: u32
     {
         IHDR = @byteswap(`I`'u32 << 24 | `H`'u32 << 16 | `D`'u32 << 8 | `R`'u32)
         PLTE = @byteswap(`P`'u32 << 24 | `L`'u32 << 16 | `T`'u32 << 8 | `E`'u32)
@@ -45,7 +45,7 @@ private
     const Adam7SpacingX: [] s64 = [8, 8, 4, 4, 2, 2, 1]
     const Adam7SpacingY: [] s64 = [8, 8, 8, 4, 4, 2, 2]
 
-    enum RowFilter : u8
+    enum RowFilter: u8
     {
         None    = 0
         Sub     = 1
@@ -60,14 +60,14 @@ private
         type:       ChunkType = undefined
     }
 
-    enum InterlaceMethod : u8
+    enum InterlaceMethod: u8
     {
         None  = 0
         Adam7 = 1
     }
 
     #[Swag.EnumFlags]
-    enum ColorType : u8
+    enum ColorType: u8
     {
         Grayscale = 0
         Paletted  = 1

@@ -102,7 +102,7 @@ func day7B() assume
             {
                 if result.contains(k) or current.contains(k) do
                     continue
-                if !Slice.allOf(v.prev.toSlice(), closure|&result|(x   ) => result.contains(x)) do
+                if !Slice.allOf(v.prev.toSlice(), closure|&result|(x) => result.contains(x)) do
                     continue
                 avail.add(k)
             }

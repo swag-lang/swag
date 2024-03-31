@@ -25,7 +25,7 @@ private
     }
 
     #[Swag.EnumFlags]
-    enum ColorType : u8
+    enum ColorType: u8
     {
         Paletted   = 1
         Color      = 2

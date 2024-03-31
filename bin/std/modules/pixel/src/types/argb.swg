@@ -1,4 +1,4 @@
-public enum Argb : u32
+public enum Argb: u32
 {
     AliceBlue            = 0xFFF0F8FF
     AntiqueWhite         = 0xFFFAEBD7

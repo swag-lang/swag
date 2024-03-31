@@ -4,7 +4,7 @@ impl Image
 {
     // Kernel format is : kernelSize, kernelNormalizeValue, kernelValues...
     #[Swag.Incomplete]
-    public enum Kernel : const [..] s32
+    public enum Kernel: const [..] s32
     {
         GaussianBlur3x3A     = [3, 8, 0, 1, 0, 1, 4, 1, 0, 1, 0]
         GaussianBlur3x3B     = [3, 20, 1, 2, 1, 2, 8, 2, 1, 2, 1]

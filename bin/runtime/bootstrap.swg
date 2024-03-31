@@ -1,6 +1,6 @@
 namespace Swag
 {
-    enum AttributeUsage : u32
+    enum AttributeUsage: u32
     {
         Enum              = 0x00000001     // Attribute can be used on an enum
         EnumValue         = 0x00000002     // Attribute can be used on an enum value
@@ -169,7 +169,7 @@ namespace Swag
     attr Overflow(value: bool)
 
     // Warning behavior for [[Warn]] attribute
-    enum WarnLevel : u8
+    enum WarnLevel: u8
     {
         Enable      // Enable the given warning
         Disable     // Disable the given warning
@@ -363,7 +363,7 @@ namespace Swag
     // #########################################################
 
     #[Swag.EnumFlags]
-    enum ContextFlags : u64
+    enum ContextFlags: u64
     {
         None                   = 0x00000000_00000000
         Test                   = 0x00000000_00000001
@@ -443,7 +443,7 @@ namespace Swag
     }
 
     // The kind of the typeinfo.
-    enum TypeInfoKind : u8
+    enum TypeInfoKind: u8
     {
         Invalid
         Native            // The typeinfo is a [[TypeInfoNative]]. See [[TypeInfoNativeKind]] for the underlying type.
@@ -469,7 +469,7 @@ namespace Swag
 
     // The native type if the type is... native.
     // If the 'kind' of the type is 'TypeInfoKind.Native', then this is the real native type.
-    enum TypeInfoNativeKind : u8
+    enum TypeInfoNativeKind: u8
     {
         Void
         S8
@@ -492,7 +492,7 @@ namespace Swag
 
     // Flags in each [[TypeInfo]]
     #[Swag.EnumFlags]
-    enum TypeInfoFlags : u32
+    enum TypeInfoFlags: u32
     {
         Zero              = 0x00000000
         PointerTypeInfo   = 0x00000001     // This is a pointer to a [[TypeInfo]] struct
@@ -643,7 +643,7 @@ namespace Swag
     // #########################################################
 
     #[EnumFlags]
-    enum RuntimeFlags : u64
+    enum RuntimeFlags: u64
     {
         Zero         = 0
         FromCompiler = 1
@@ -822,7 +822,7 @@ namespace Swag
     // #########################################################
 
     // The kind of message in [[CompilerMessage]]
-    enum CompilerMsgKind : u32
+    enum CompilerMsgKind: u32
     {
         PassAfterSemantic         // Called once the program semantic has been done
         PassBeforeRunByteCode     // Called just before running bytecode
@@ -838,7 +838,7 @@ namespace Swag
     //
     // The function could be called for more than one reason, as this is a mask.
     #[EnumFlags]
-    enum CompilerMsgMask : u64
+    enum CompilerMsgMask: u64
     {
         PassAfterSemantic = 1 << cast(u32) CompilerMsgKind.PassAfterSemantic
         PassBeforeRun     = 1 << cast(u32) CompilerMsgKind.PassBeforeRunByteCode

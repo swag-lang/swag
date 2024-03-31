@@ -14,7 +14,7 @@ struct GizmoRect
     firstMoving:           bool
     movingRect:            Math.Rectangle
     movingStart:           Math.Point
-    sigChanged:            closure(*GizmoRect, bool, u32 )
+    sigChanged:            closure(*GizmoRect, bool, u32)
 
     minSizeX:              f32 = 2
     minSizeY:              f32 = 2

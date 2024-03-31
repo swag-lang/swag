@@ -18,7 +18,7 @@ struct ChunkHeader
     func SND_WAV_FOURCC_MARKER(a, b, c, d: u32) => (a | (b << 8) | (c << 16) | (d << 24))
 }
 
-enum ChunkID : u32
+enum ChunkID: u32
 {
     SND_WAV_FOURCC_RIFF = SND_WAV_FOURCC_MARKER(`R`'u32, `I`'u32, `F`'u32, `F`'u32)
     SND_WAV_FOURCC_RIFX = SND_WAV_FOURCC_MARKER(`R`'u32, `I`'u32, `F`'u32, `X`'u32)

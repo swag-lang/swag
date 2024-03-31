@@ -1103,7 +1103,7 @@ public impl Deflate
     }
 
     #[Swag.Incomplete]
-    enum CompressionLevel : u32
+    enum CompressionLevel: u32
     {
         NoCompression   = 0
         BestSpeed       = 1
