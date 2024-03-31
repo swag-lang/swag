@@ -434,44 +434,41 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
         SWAG_CHECK(doScopedCurlyStatement(parent, result));
+        return true;
     }
-    else
+
+    const auto      newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+    ParserPushScope scoped(this, newScope);
+    AstNode*        statement = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
+    *result                   = statement;
+
+    if (mustHaveDo)
     {
-        if (mustHaveDo)
+        if (tokenParse.isNot(TokenId::KwdDo))
         {
-            const auto tokenDo = tokenParse;
-            if (tokenParse.isNot(TokenId::KwdDo))
-            {
-                Diagnostic err{sourceFile, tokenParse.token, formErr(Err0533, tokenParse.token.c_str())};
-                err.addNote(parent, forToken, formNte(Nte0016, forToken.c_str()));
-                return context->report(err);
-            }
-
-            SWAG_CHECK(eatToken());
-
-            if (tokenParse.is(TokenId::SymLeftCurly))
-            {
-                const Diagnostic err{sourceFile, tokenDo.token, toErr(Err0460)};
-                return context->report(err);
-            }
+            Diagnostic err{sourceFile, tokenParse.token, formErr(Err0533, tokenParse.token.c_str())};
+            err.addNote(parent, forToken, formNte(Nte0016, forToken.c_str()));
+            return context->report(err);
         }
 
-        SWAG_ASSERT(!currentScope->isGlobalOrImpl());
+        const auto tokenDo = tokenParse;
+        SWAG_CHECK(eatToken());
 
-        const auto newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
-
-        ParserPushScope scoped(this, newScope);
-        AstNode*        statement = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
-        *result                   = statement;
-
-        statement->allocateExtension(ExtensionKind::Semantic);
-        statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
-        statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
-        statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE);
-        newScope->owner = statement;
-        SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
+        if (tokenParse.is(TokenId::SymLeftCurly))
+        {
+            const Diagnostic err{sourceFile, tokenDo.token, toErr(Err0460)};
+            return context->report(err);
+        }
     }
 
+    SWAG_ASSERT(!currentScope->isGlobalOrImpl());
+
+    statement->allocateExtension(ExtensionKind::Semantic);
+    statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
+    statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
+    statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE);
+    newScope->owner = statement;
+    SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
     return true;
 }
 

@@ -105,6 +105,7 @@ bool FormatAst::outputDoStatement(FormatContext& context, AstNode* node)
     {
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "do");
+        beautifyAfter(context, node);
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
