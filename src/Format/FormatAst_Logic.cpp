@@ -13,8 +13,10 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
     if (ifNode->hasSpecFlag(AstIf::SPEC_FLAG_ASSIGN))
     {
         const auto varNode = castAst<AstVarDecl>(ifNode->firstChild(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-        if (varNode->token.is(TokenId::KwdConst))
+        if (varNode->is(AstNodeKind::ConstDecl))
             CONCAT_FIXED_STR(concat, "const");
+        else if (varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
+            CONCAT_FIXED_STR(concat, "let");
         else
             CONCAT_FIXED_STR(concat, "var");
         concat->addBlank();
