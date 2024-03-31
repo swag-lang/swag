@@ -1,4 +1,3 @@
-
 using Core, Core.StrConv
 
 struct TOTO

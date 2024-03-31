@@ -1,4 +1,3 @@
-
 //#[Swag.PrintBc]
 #test
 {

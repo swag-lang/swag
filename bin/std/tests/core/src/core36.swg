@@ -8,7 +8,7 @@ using Core.Input
     @assert(k.isKeyReleased(Key.Space))
     @assert(!k.isKeyJustReleased(Key.Space))
 
-    while false//loop
+    while false //loop
     {
         k.update()
         if k.isKeyJustPressed(Key.Space)

@@ -23,7 +23,7 @@ func print(tree: const &Node)
     walk(tree, func(node, depth)
     {
         //Console.printf("% %\n", 2 * depth, node)
-}
+    }
 )
 }
 

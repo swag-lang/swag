@@ -30,7 +30,7 @@ struct Toto
 
         //var str = buf.toString()
         //Console.print(str, "\n")
-}
+    }
 
     try
     {

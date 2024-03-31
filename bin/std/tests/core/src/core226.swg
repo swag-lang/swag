@@ -10,7 +10,7 @@ using Core
         var full = catch Path.getAbsolute(p)
         @assert(@err() == null)
         //Console.print("%\n", full)
-}
+    }
 
     {
         var cur = catch Directory.getCurrent()

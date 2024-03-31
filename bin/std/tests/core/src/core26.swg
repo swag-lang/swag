@@ -1,4 +1,3 @@
-
 #[Swag.Macro]
 func Visit(str: string, user: code)
 {

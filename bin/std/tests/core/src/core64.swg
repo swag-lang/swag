@@ -13,7 +13,7 @@ impl X
     {
         G += 1
         //@print("opDrop64 ")
-}
+    }
 }
 
 //#[Swag.PrintBc]

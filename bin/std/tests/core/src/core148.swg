@@ -12,7 +12,7 @@ using Core, Core.Utf8, Core.Tokenize
     {
         //@print(v)
         //@print("\n")
-}
+    }
 
     @assert(arr.count == 15)
     @assert(arr[0] == "This")

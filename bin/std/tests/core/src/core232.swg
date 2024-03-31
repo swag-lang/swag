@@ -15,7 +15,7 @@ using Core, Core.Directory
     {
         count += 1
         //Console.print("%\n", p.fullname)
-}
+    }
 
     @assert(count > 100)
 }

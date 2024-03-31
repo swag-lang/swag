@@ -1,4 +1,3 @@
-
 using Core
 
 struct TOTO
