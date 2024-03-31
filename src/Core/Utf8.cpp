@@ -620,7 +620,7 @@ void Utf8::remove(uint32_t index, uint32_t len)
 {
     SWAG_ASSERT(index + len <= count);
     makeLocal();
-    memmove(buffer + index, buffer + index + len, count - index);
+    memmove(buffer + index, buffer + index + len, count - index - len);
     count -= len;
     buffer[count] = 0;
 }
