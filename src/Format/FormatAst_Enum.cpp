@@ -95,7 +95,6 @@ bool FormatAst::outputEnum(FormatContext& context, AstEnum* node)
     if (node->firstChild() && node->firstChild()->childCount())
     {
         first = 1;
-        concat->addBlank();
         concat->addChar(':');
         concat->addBlank();
         SWAG_ASSERT(node->firstChild()->is(AstNodeKind::EnumType));
