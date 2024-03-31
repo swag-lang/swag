@@ -450,8 +450,12 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         case TokenId::KwdConst:
         {
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            auto                   savedToken = tokenParse;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::ConstDecl, true));
+            AstNode* varDecl;
+            SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::ConstDecl, true));
+            FormatAst::inheritFormatBefore(this, varDecl, &savedToken);
+            *result = varDecl;
             break;
         }
 
