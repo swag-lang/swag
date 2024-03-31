@@ -122,29 +122,31 @@ bool FormatAst::outputDoStatement(FormatContext& context, AstNode* node)
 
 bool FormatAst::outputNamespace(FormatContext& context, AstNode* node)
 {
-    if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
+    const auto npName = castAst<AstNameSpace>(node, AstNodeKind::Namespace);
+
+    if (npName->hasSpecFlag(AstNameSpace::SPEC_FLAG_GENERATED_TOP_LEVEL))
     {
-        SWAG_CHECK(outputChildrenEol(context, node));
+        SWAG_CHECK(outputChildrenEol(context, npName));
         return true;
     }
 
-    if (node->hasAstFlag(AST_GLOBAL_NODE))
+    if (npName->hasAstFlag(AST_GLOBAL_NODE))
     {
         CONCAT_FIXED_STR(concat, "#global");
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "namespace");
         concat->addBlank();
-        concat->addString(node->token.text);
+        concat->addString(npName->token.text);
         concat->addEol();
-        outputChildrenEol(context, node);
+        outputChildrenEol(context, npName);
         return true;
     }
 
-    if (!node->hasSpecFlag(AstNameSpace::SPEC_FLAG_PRIVATE))
+    if (!npName->hasSpecFlag(AstNameSpace::SPEC_FLAG_PRIVATE) && !npName->hasSpecFlag(AstNameSpace::SPEC_FLAG_SUB_NAME))
     {
         concat->addIndent(context.indent);
 
-        if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_USING))
+        if (npName->hasSpecFlag(AstNameSpace::SPEC_FLAG_USING))
         {
             CONCAT_FIXED_STR(concat, "using");
             concat->addBlank();
@@ -152,12 +154,17 @@ bool FormatAst::outputNamespace(FormatContext& context, AstNode* node)
 
         CONCAT_FIXED_STR(concat, "namespace");
         concat->addBlank();
-        concat->addString(node->token.text);
+        concat->addString(npName->token.text);
+        for (auto& n : npName->multiNames)
+        {
+            concat->addChar('.');
+            concat->addString(n);
+        }
     }
 
-    if (node->hasSpecFlag(AstNameSpace::SPEC_FLAG_NO_CURLY))
+    if (npName->hasSpecFlag(AstNameSpace::SPEC_FLAG_NO_CURLY))
     {
-        outputChildrenEol(context, node);
+        outputChildrenEol(context, npName);
     }
     else
     {
@@ -166,7 +173,7 @@ bool FormatAst::outputNamespace(FormatContext& context, AstNode* node)
         concat->addChar('{');
         concat->addEol();
         context.indent++;
-        outputChildrenEol(context, node);
+        outputChildrenEol(context, npName);
         context.indent--;
         concat->addIndent(context.indent);
         concat->addChar('}');

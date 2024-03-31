@@ -23,7 +23,7 @@ Unlike C/C++, the expression doesn't need to be enclosed with `()`.
         a += 2
     @assert(a == 1)
 
-    // 'elif' is equivalent to 'else if'
+    // 'elif' is equivalent to 'else do if'
     if a == 1 do
         a += 1
     else do if a == 2 do

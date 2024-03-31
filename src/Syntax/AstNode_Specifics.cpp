@@ -1223,6 +1223,7 @@ AstNode* AstNameSpace::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstNameSpace>();
     newNode->copyFrom(context, this);
+    newNode->multiNames = multiNames;
     return newNode;
 }
 

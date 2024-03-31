@@ -1100,8 +1100,11 @@ struct AstNameSpace : AstNode
     static constexpr SpecFlags SPEC_FLAG_PRIVATE             = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_NO_CURLY            = 0x0004;
     static constexpr SpecFlags SPEC_FLAG_USING               = 0x0008;
+    static constexpr SpecFlags SPEC_FLAG_SUB_NAME            = 0x0010;
 
     AstNode* clone(CloneContext& context);
+
+    Vector<Utf8> multiNames;
 };
 
 struct AstTryCatchAssume : AstReturn

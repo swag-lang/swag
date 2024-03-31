@@ -139,6 +139,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
     {
         case TokenId::KwdNamespace:
             SWAG_CHECK(doNamespace(parent, result, false, true));
+            FormatAst::inheritFormatBefore(this, *result, &savedToken);
             return true;
 
         case TokenId::KwdVar:
@@ -225,17 +226,17 @@ bool Parser::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool
 
 bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, const Token* privName)
 {
-    AstNode* namespaceNode;
-    Scope*   oldScope = currentScope;
-    Scope*   newScope = nullptr;
-
     // There is only one swag namespace, defined in the bootstrap. So if we redeclared it
     // in runtime, use the one from the bootstrap
     if (sourceFile->hasFlag(FILE_RUNTIME) && tokenParse.token.text == g_LangSpec->name_Swag)
         currentScope = g_Workspace->bootstrapModule->files[0]->astRoot->ownerScope;
 
-    AstNode*   firstNameSpace = nullptr;
-    const bool forPrivate     = privName != nullptr;
+    Scope*        oldScope       = currentScope;
+    Scope*        newScope       = nullptr;
+    AstNameSpace* namespaceNode  = nullptr;
+    AstNameSpace* firstNameSpace = nullptr;
+    const bool    forPrivate     = privName != nullptr;
+
     while (true)
     {
         namespaceNode = Ast::newNode<AstNameSpace>(AstNodeKind::Namespace, this, parent);
@@ -243,6 +244,11 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             namespaceNode->token.text = privName->text;
         if (!firstNameSpace)
             firstNameSpace = namespaceNode;
+        else
+        {
+            namespaceNode->addSpecFlag(AstNameSpace::SPEC_FLAG_SUB_NAME);
+            firstNameSpace->multiNames.push_back(namespaceNode->token.text);
+        }
         if (forGlobal)
             namespaceNode->addAstFlag(AST_GLOBAL_NODE);
         if (forUsing)
@@ -312,7 +318,8 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         }
 
         SWAG_CHECK(eatToken());
-        parent       = namespaceNode;
+        parent = namespaceNode;
+        namespaceNode->addSpecFlag(AstNameSpace::SPEC_FLAG_NO_CURLY);
         currentScope = newScope;
     }
 
