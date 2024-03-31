@@ -400,13 +400,7 @@ bool FormatAst::outputInit(FormatContext& context, AstNode* node)
     if (init->parameters)
     {
         concat->addChar('(');
-
-        {
-            FormatContext cxt{context};
-            cxt.beautifyAfter = false;
-            SWAG_CHECK(outputNode(cxt, init->parameters));
-        }
-
+        SWAG_CHECK(outputNode(context, init->parameters));
         concat->addChar(')');
         beautifyAfter(context, init->parameters);
     }

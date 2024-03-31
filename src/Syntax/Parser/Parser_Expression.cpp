@@ -1666,12 +1666,14 @@ bool Parser::doInit(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->count));
     }
 
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
     if (tokenParse.is(TokenId::SymLeftParen))
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doFuncCallParameters(node, &node->parameters, TokenId::SymRightParen));
+        FormatAst::inheritFormatAfter(this, node, node->parameters);
     }
 
     return true;
