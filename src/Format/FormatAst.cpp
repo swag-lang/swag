@@ -125,7 +125,6 @@ TokenParse* FormatAst::getOrCreateTokenParse(AstNode* node)
     return tp;
 }
 
-
 bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_t start)
 {
     if (!node)
@@ -216,7 +215,7 @@ bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_
     return true;
 }
 
-bool FormatAst::outputChildrenComma(FormatContext& context, AstNode* node, uint32_t start)
+bool FormatAst::outputChildrenChar(FormatContext& context, AstNode* node, char c, uint32_t start)
 {
     if (!node)
         return true;
@@ -231,7 +230,8 @@ bool FormatAst::outputChildrenComma(FormatContext& context, AstNode* node, uint3
 
         if (!first)
         {
-            concat->addChar(',');
+            if (c)
+                concat->addChar(c);
             concat->addBlank();
         }
 
@@ -244,25 +244,7 @@ bool FormatAst::outputChildrenComma(FormatContext& context, AstNode* node, uint3
 
 bool FormatAst::outputChildrenBlank(FormatContext& context, AstNode* node, uint32_t start)
 {
-    if (!node)
-        return true;
-
-    bool first = true;
-    for (uint32_t i = start; i < node->childCount(); i++)
-    {
-        const auto it    = node->children[i];
-        const auto child = convertNode(context, it);
-        if (!child)
-            continue;
-
-        if (!first)
-            concat->addBlank();
-
-        SWAG_CHECK(outputNode(context, child));
-        first = false;
-    }
-
-    return true;
+    return outputChildrenChar(context, node, 0, start);
 }
 
 bool FormatAst::collectChildrenToAlign(FormatContext&                       context,

@@ -14,7 +14,7 @@ bool FormatAst::outputFuncDeclParameters(FormatContext& context, AstNode* parame
     }
 
     concat->addChar('(');
-    SWAG_CHECK(outputChildrenComma(context, parameters, isMethod ? 1 : 0));
+    SWAG_CHECK(outputChildrenChar(context, parameters, ',', isMethod ? 1 : 0));
     concat->addChar(')');
     beautifyAfter(context, parameters);
 
@@ -339,7 +339,7 @@ bool FormatAst::outputFuncCallParams(FormatContext& context, AstNode* node)
         concat->addBlank();
     }
 
-    SWAG_CHECK(outputChildrenComma(context, node));
+    SWAG_CHECK(outputChildrenChar(context, node, ','));
     return true;
 }
 

@@ -83,7 +83,7 @@ struct FormatAst
 
     static AstNode* convertNode(FormatContext& context, AstNode* node);
     auto            outputChildrenEol(FormatContext& context, AstNode* node, uint32_t start = 0) -> bool;
-    bool            outputChildrenComma(FormatContext& context, AstNode* node, uint32_t start = 0);
+    bool            outputChildrenChar(FormatContext& context, AstNode* node, char c, uint32_t start = 0);
     bool            outputChildrenBlank(FormatContext& context, AstNode* node, uint32_t start = 0);
     bool            outputStatement(FormatContext& context, AstNode* node);
     bool            outputDoStatement(FormatContext& context, AstNode* node);

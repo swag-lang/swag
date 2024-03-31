@@ -255,6 +255,7 @@ bool FormatAst::outputCompilerCode(FormatContext& context, AstNode* node)
         CONCAT_FIXED_STR(concat, "#code");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, node->firstChild()));
+        concat->removeLastChar('\n');
     }
 
     return true;

@@ -21,7 +21,7 @@ bool FormatAst::outputStructDeclContent(FormatContext& context, AstNode* node)
 bool FormatAst::outputTupleDeclContent(FormatContext& context, AstNode* node)
 {
     concat->addChar('{');
-    outputChildrenComma(context, node);
+    outputChildrenChar(context, node, ',');
     concat->addChar('}');
     return true;
 }

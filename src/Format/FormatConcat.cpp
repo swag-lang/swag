@@ -59,6 +59,33 @@ void FormatConcat::addBlankLine()
         addChar('\n');
 }
 
+bool FormatConcat::removeLastChar(char c)
+{
+    if (currentSP == lastBucket->data)
+    {
+        if (lastBucket == firstBucket)
+            return false;
+
+        auto b = firstBucket;
+        while (b->nextBucket != lastBucket)
+            b = b->nextBucket;
+        if (!b->countBytes)
+            return false;
+
+        lastBucket = b;
+        currentSP  = lastBucket->data + lastBucket->countBytes;
+    }
+
+    if (currentSP[-1] == c || c == 0)
+    {
+        column--; // this is false, depends on 'c', but is it enough for the current usage ?
+        currentSP--;
+        return true;
+    }
+
+    return false;
+}
+
 void FormatConcat::addIndent(uint32_t num)
 {
     if (indent == num)
@@ -66,13 +93,18 @@ void FormatConcat::addIndent(uint32_t num)
 
     if (indent > num)
     {
-        setSeek(lastSeek);
-        column -= indent * 4;
+        while (indent > num)
+        {
+            indent--;
+            for (uint32_t i = 0; i < 4; i++)
+                removeLastChar(' ');
+        }
     }
-
-    lastSeek = getSeek();
-    alignToColumn(num * 4);
-    indent = num;
+    else
+    {
+        alignToColumn(num * 4);
+        indent = num;
+    }
 }
 
 void FormatConcat::addString(const Utf8& v)

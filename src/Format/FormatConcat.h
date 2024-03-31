@@ -17,13 +17,13 @@ struct FormatConcat : Concat
     void addString(const Utf8& v);
     void addStringFormat(const char* format, ...);
     void addChar(char c);
+    bool removeLastChar(char c);
 
-    uint32_t   totalEol = 0;
-    uint32_t   eol      = 1;
-    uint32_t   blank    = 0;
-    uint32_t   column   = 0;
-    uint32_t   indent   = 0;
-    ConcatSeek lastSeek;
+    uint32_t totalEol = 0;
+    uint32_t eol      = 1;
+    uint32_t blank    = 0;
+    uint32_t column   = 0;
+    uint32_t indent   = 0;
 };
 
 #define CONCAT_FIXED_STR(__concat, __str)                                         \
