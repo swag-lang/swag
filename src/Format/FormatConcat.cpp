@@ -67,8 +67,7 @@ void FormatConcat::addIndent(uint32_t num)
     if (indent > num)
     {
         setSeek(lastSeek);
-        indent = num;
-        return;
+        column -= indent * 4;
     }
 
     lastSeek = getSeek();
