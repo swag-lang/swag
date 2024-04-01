@@ -11,7 +11,6 @@ By default, you must always use the returned value of a function, otherwise the 
 
     // To force the return value to be ignored, you can use 'discard' at the call site
     discard sum(2, 3)
-
 }
 
 /**

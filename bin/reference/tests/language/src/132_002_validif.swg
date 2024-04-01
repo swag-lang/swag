@@ -98,7 +98,6 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
     // var x = sum'f32(1, 2)
 }
 
-
 /**
 `#validif` can also be used on a generic struct. Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures.
 */

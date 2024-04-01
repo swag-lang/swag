@@ -33,7 +33,7 @@ So you could do something like this.
 #test
 {
     #[Swag.ConstExpr]
-    func isS32(t: typeinfo)  => t == s32
+    func isS32(t: typeinfo) => t == s32
     #[Swag.ConstExpr]
     func isBool(t: typeinfo) => t == bool
 
@@ -42,7 +42,7 @@ So you could do something like this.
 
     // This is ok.
     @assert(myFunc(5's32) == 5)
-    @assert(myFunc(true)  == true)
+    @assert(myFunc(true) == true)
     @assert(myFunc(false) == false)
 }
 
