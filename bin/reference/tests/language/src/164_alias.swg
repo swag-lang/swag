@@ -7,10 +7,10 @@
 */
 #test
 {
-    enum RGB { R; G; B; }
+    enum RGB { R, G, B }
     @assert(RGB.R == 0)
 
-    typealias Color = RGB   // 'Color' is now equivalent to 'RGB'
+    typealias Color = RGB // 'Color' is now equivalent to 'RGB'
     @assert(Color.G == 1)
 }
 
@@ -22,8 +22,8 @@ You can then use the new name in place of the original type. This does not creat
     typealias Float32 = f32
     typealias Float64 = f64
 
-    var x: Float32 = 1.0    // Same as 'f32'
-    var y: Float64 = 1.0    // Same as 'f64'
+    var x: Float32 = 1.0     // Same as 'f32'
+    var y: Float64 = 1.0     // Same as 'f64'
     #assert @typeof(Float32) == f32
     #assert @typeof(Float64) == f64
 }
@@ -38,7 +38,6 @@ But to create a new type, a `typealias` can also be marked with the `Swag.Strict
     #assert @typeof(MyType) != s32
     var x: MyType = cast(MyType) 0
 }
-
 
 /**
 # Name alias

@@ -1,6 +1,4 @@
-struct MyStruct
-{
-}
+struct MyStruct {}
 
 impl MyStruct
 {

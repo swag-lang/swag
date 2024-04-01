@@ -22,9 +22,7 @@ impl Vector3
     }
 
     // Just imagine that we have something to drop. Like a memory allocated buffer.
-    mtd opDrop()
-    {
-    }
+    mtd opDrop() {}
 }
 
 #test

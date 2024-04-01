@@ -4,9 +4,7 @@ A macro, like a mixin, is declared like a function, but with the attribute `Swag
 #test
 {
     #[Swag.Macro]
-    func myMacro()
-    {
-    }
+    func myMacro() {}
 }
 
 /**

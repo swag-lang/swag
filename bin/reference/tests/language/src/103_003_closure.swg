@@ -106,7 +106,8 @@ Captured variables are mutable, and part of the closure. So you can modify them.
     {
         let x = 10
 
-        return closure|x|()->s32 {
+        return closure|x|()->s32
+        {
             x += 1
             return x
         }

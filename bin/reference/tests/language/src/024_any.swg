@@ -116,10 +116,8 @@ An 'any' value can be tested against a type with '==' and '!='. This will call '
     @assert(x != s32)
     @assert(x == string)
 
-    struct A
-    {
-    }
-    
+    struct A {}
+
     x = A{}
     @assert(x == A)
 }

@@ -19,13 +19,13 @@ But you can also specify a pointer and a count to reinitialize a variable amount
 #test
 {
     var x = [1, 2]
-    @init(&x, 2)    // Initialize 2 elements
+    @init(&x, 2) // Initialize 2 elements
     @assert(x[0] == 0)
     @assert(x[1] == 0)
 
     x[0] = 1
     x[1] = 2
-    @init(x)        // Or you can just specify the variable name
+    @init(x) // Or you can just specify the variable name
     @assert(x[0] == 0)
     @assert(x[1] == 0)
 }
@@ -36,7 +36,7 @@ You can also specify a *value* to initialize, instead of the default one.
 #test
 {
     var x = 666'f32
-    @init(x)(3.14)      // Initialize to 3.14 instead of zero
+    @init(x)(3.14) // Initialize to 3.14 instead of zero
     @assert(x == 3.14)
 }
 
@@ -51,13 +51,12 @@ Same for an array.
     @assert(x[1] == 555)
 }
 
-
 /**
 When called on a struct, the struct will be restored to the values defined in it.
 */
 #test
 {
-    struct RGB{r = 1, g = 2, b = 3}
+    struct RGB { r = 1, g = 2, b = 3 }
 
     var rgb: RGB{10, 20, 30}
     @init(rgb)
@@ -71,7 +70,7 @@ But you can also specified the values.
 */
 #test
 {
-    struct RGB{r = 1, g = 2, b = 3}
+    struct RGB { r = 1, g = 2, b = 3 }
 
     var rgb: RGB{10, 20, 30}
     @init(rgb)(5, 6, 7)
@@ -85,7 +84,7 @@ And this works also for array.
 */
 #test
 {
-    struct RGB{r = 1, g = 2, b = 3}
+    struct RGB { r = 1, g = 2, b = 3 }
 
     var rgb: [4] RGB
     @init(&rgb, 4)(5, 6, 7)
@@ -107,7 +106,7 @@ But there is also `@drop` intrinsic, which works the same, except that it will `
 */
 #test
 {
-    struct RGB{r = 1, g = 2, b = 3}
+    struct RGB { r = 1, g = 2, b = 3 }
 
     var rgb: [4] RGB
 

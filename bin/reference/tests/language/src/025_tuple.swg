@@ -49,8 +49,8 @@ Even if two tuples do not have the same field names, they can be assigned to eac
 */
 #test
 {
-    var x: {a: s32, b: s32}
-    var y: {c: s32, d: s32}
+    var x: { a: s32, b: s32 }
+    var y: { c: s32, d: s32 }
 
     y = {1, 2}
     x = y

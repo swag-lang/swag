@@ -3,9 +3,7 @@ A function can take a variable number of arguments with `...`.
 */
 #test
 {
-    func myFunction(value: bool, parameters: ...)
-    {
-    }
+    func myFunction(value: bool, parameters: ...) {}
 
     myFunction(true, 4, "true", 5.6)
 }

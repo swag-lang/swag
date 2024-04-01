@@ -25,9 +25,7 @@ attr AttributeC()
 To use an attribute, the syntax is `#[attribute, attribute...]`. It should be placed **before** the thing you want to tag.
 */
 #[AttributeA, AttributeB(0, 0, "string")]
-func function1()
-{
-}
+func function1() {}
 
 /**
 You can declare multiple usages.
@@ -36,14 +34,10 @@ You can declare multiple usages.
 attr AttributeD(x: s32)
 
 #[AttributeD(6)]
-func function2()
-{
-}
+func function2() {}
 
 #[AttributeD(150)]
-struct struct1
-{
-}
+struct struct1 {}
 
 /**
 Finally, attributes can be retrieved at runtime thanks to **type reflection**.

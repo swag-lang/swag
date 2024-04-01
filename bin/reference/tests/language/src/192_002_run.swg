@@ -132,7 +132,7 @@ Can also be used to initialize a plain old data struct. Note that you can also f
 */
 #test
 {
-    struct RGB {r, g, b: u8}
+    struct RGB { r, g, b: u8 }
     const White: RGB = #run
     {
         var rgb: RGB = undefined
