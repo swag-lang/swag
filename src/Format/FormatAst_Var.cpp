@@ -44,7 +44,9 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
             uint32_t lenName = 0;
             uint32_t lenType = 0;
 
-            lenName = child->token.text.length();
+            tmpConcat.clear();
+            SWAG_CHECK(outputVarName(context, var));
+            lenName = tmpConcat.length();
 
             tmpConcat.clear();
             SWAG_CHECK(outputVarHeader(fmt.cxt, var));
@@ -106,14 +108,8 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
     return true;
 }
 
-bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t startColumn, uint32_t maxLenName, uint32_t maxLenType)
+bool FormatAst::outputVarName(FormatContext& context, const AstVarDecl* varNode) const
 {
-    const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-    const bool isSelf  = varNode->token.text == g_LangSpec->name_self;
-    inheritLastFormatAfter(nullptr, varNode);
-
-    const uint32_t alignTypeBanks = node->hasAstFlag(AST_STRUCT_MEMBER) ? context.alignStructVarTypeAddBlanks : 0;
-
     if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
     {
         if (!varNode->multiNames.empty())
@@ -141,6 +137,19 @@ bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t
         else
             concat->addString(varNode->token.text);
     }
+
+    return true;
+}
+
+bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t startColumn, uint32_t maxLenName, uint32_t maxLenType)
+{
+    const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+    const bool isSelf  = varNode->token.text == g_LangSpec->name_self;
+    inheritLastFormatAfter(nullptr, varNode);
+
+    const uint32_t alignTypeBanks = node->hasAstFlag(AST_STRUCT_MEMBER) ? context.alignStructVarTypeAddBlanks : 0;
+
+    SWAG_CHECK(outputVarName(context, varNode));
 
     const auto totalEol = concat->totalEol;
     if (varNode->type)
