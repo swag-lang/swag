@@ -134,7 +134,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             if (!mustDropLeft)
                 node->assignment->addAstFlag(AST_NO_LEFT_DROP);
 
-            bool isLet = node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET);
+            bool isLet = node->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET);
             if (!node->typeInfo->isNativeIntegerOrRune() &&
                 !node->typeInfo->isNativeFloat() &&
                 !node->typeInfo->isPointer() &&

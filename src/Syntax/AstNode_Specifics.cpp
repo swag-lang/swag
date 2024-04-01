@@ -44,7 +44,7 @@ bool AstVarDecl::isConstDecl() const
 {
     if (kind == AstNodeKind::ConstDecl)
         return true;
-    if (hasSpecFlag(SPEC_FLAG_IS_LET_TO_CONST))
+    if (hasSpecFlag(SPEC_FLAG_LET_TO_CONST))
         return true;
     return false;
 }

@@ -953,7 +953,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     OverloadFlags overFlags          = 0;
 
     // Transform let to constant if possible
-    if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
+    if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET))
     {
         if (node->assignment &&
             node->assignment->hasFlagComputedValue() &&
@@ -961,7 +961,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             (!node->type || !node->type->typeInfo->isStruct()) &&
             (!node->assignment->typeInfo->isPointer() || node->assignment->typeInfo->isPointerToTypeInfo()))
         {
-            node->addSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET_TO_CONST);
+            node->addSpecFlag(AstVarDecl::SPEC_FLAG_LET_TO_CONST);
             overFlags.add(OVERLOAD_IS_LET);
             isCompilerConstant = true;
         }
@@ -1107,7 +1107,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             return context->report(err);
         }
 
-        if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
+        if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET))
         {
             Diagnostic err{node->assignment, toErr(Err0564)};
             err.addNote(toNte(Nte0036));
@@ -1285,7 +1285,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     SWAG_VERIFY(!node->typeInfo->isVoid(), context->report({node->type ? node->type : node, toErr(Err0412)}));
 
     // A 'let' for a struct make the type const
-    if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET) && node->typeInfo->isStruct())
+    if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET) && node->typeInfo->isStruct())
         node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)

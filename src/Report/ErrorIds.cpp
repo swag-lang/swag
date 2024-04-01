@@ -545,7 +545,7 @@ void initErrors()
     SWAG_ERROR(Err0419, "invalid visit                                     $ can't find the [[%s]] visit specialization in [[%s]]");
     SWAG_ERROR(Err0420, "invalid visit                                     $ the type [[%s]] can't be visited with [[visit]]");
     SWAG_ERROR(Err0421, "invalid void dereference                          $ dereferencing a pointer to [[void]] is not valid $ [[void]] does not have a valid size");
-    SWAG_ERROR(Err0422, nullptr);
+    SWAG_ERROR(Err0422, "invalid multiple variable                         $ [[using]] does not support multiple variable declarations");
     SWAG_ERROR(Err0423, "literal overflow                                  $ can't negate number [[%I64d]] because [[%I64u]] is too large for type [[s64]]");
     SWAG_ERROR(Err0424, "literal overflow                                  $ can't negate number [[%d]] because [[%u]] is too large for type [[s8]]");
     SWAG_ERROR(Err0425, "literal overflow                                  $ the number [[%I64u]] is too large for type [[%s]]");
@@ -901,7 +901,7 @@ void initErrors()
     SWAG_ERROR(Nte0011, "[[closure]] should be followed by the capture parameters enclosed in [[|...|]]");
     SWAG_ERROR(Nte0012, "[[discard]] can't be associated with an intrinsic, as an intrinsic result should always be used");
     SWAG_ERROR(Nte0013, "[[namealias]] should be associated with a namespace, a function or a variable instead of a type");
-    SWAG_ERROR(Nte0014, "[[with]] should be followed by a single identifier");
+    SWAG_ERROR(Nte0014, "[[with]] should be followed by a single variable");
     SWAG_ERROR(Nte0015, "a [[%s]] block must start with [[#do]] or must be enclosed in [[{}]]");
     SWAG_ERROR(Nte0016, "a [[%s]] block must start with [[do]] or must be enclosed in [[{}]]");
     SWAG_ERROR(Nte0017, "a [[let]] variable is immutable and can't be changed");
@@ -944,7 +944,7 @@ void initErrors()
     SWAG_ERROR(Nte0054, "employ [[{}]] for an intentional empty statement");
     SWAG_ERROR(Nte0055, "entity %s [[%s]] awaits the generation of type [[%s]]");
     SWAG_ERROR(Nte0056, "evaluation failed during compile-time");
-    SWAG_ERROR(Nte0057, nullptr);
+    SWAG_ERROR(Nte0057, "[[using]] should be followed by a single variable declaration");
     SWAG_ERROR(Nte0058, "function names that start with [[op]] followed by an uppercase letter are reserved for struct special functions");
     SWAG_ERROR(Nte0059, "function parameters are immutable and can't be modified");
     SWAG_ERROR(Nte0060, "here is another one");

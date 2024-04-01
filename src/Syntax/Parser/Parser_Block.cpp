@@ -381,7 +381,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     {
         const auto var = Ast::newVarDecl(name, this, node, AstNodeKind::VarDecl);
         var->token     = tokenName;
-        var->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
+        var->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_LET);
         node->specificName = var;
 
         const auto identifer   = Ast::newNode<AstNode>(AstNodeKind::Index, this, var);
@@ -405,10 +405,11 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
     if (tokenParse.is(TokenId::KwdVar) || tokenParse.is(TokenId::KwdLet))
     {
         SWAG_CHECK(doVarDecl(node, &id));
+
         if (id->isNot(AstNodeKind::VarDecl))
         {
             Diagnostic err{id->token.sourceFile, id->firstChild()->token.startLocation, id->lastChild()->token.endLocation, toErr(Err0311)};
-            err.addNote(toNte(Nte0014));
+            err.addNote(node, node->token, toNte(Nte0014));
             return context->report(err);
         }
 
@@ -423,7 +424,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         if (id->is(AstNodeKind::StatementNoScope))
         {
             Diagnostic err{node->token.sourceFile, id->firstChild()->token.startLocation, id->lastChild()->token.endLocation, toErr(Err0311)};
-            err.addNote(toNte(Nte0014));
+            err.addNote(node, node->token, toNte(Nte0014));
             return context->report(err);
         }
 

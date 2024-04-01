@@ -147,10 +147,14 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
             AstNode* varNode;
             SWAG_CHECK(doVarDecl(parent, &varNode));
 
-            const auto node   = Ast::newNode<AstUsing>(AstNodeKind::Using, this, parent);
-            *result           = node;
-            node->semanticFct = Semantic::resolveUsing;
-            Ast::newIdentifierRef(varNode->token.text, this, node);
+            if (!varNode->is(AstNodeKind::VarDecl))
+            {
+                Diagnostic err{varNode->token.sourceFile, varNode->firstChild()->token.startLocation, varNode->lastChild()->token.endLocation, toErr(Err0422)};
+                err.addNote(varNode->token.sourceFile, savedToken.token, toNte(Nte0057));
+                return context->report(err);
+            }
+
+            varNode->addAstFlag(AST_DECL_USING);
             return true;
         }
     }

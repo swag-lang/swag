@@ -701,7 +701,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto pointedType = typeArray->finalType;
 
         auto varDecl = Ast::newVarDecl(form("__tmp%u", id), nullptr, node);
-        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
+        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_LET);
         varDecl->assignment = Ast::newIntrinsicProp(TokenId::IntrinsicDataOf, nullptr, varDecl);
         Ast::clone(node->expression, varDecl->assignment);
         varDecl->assignment->firstChild()->addAstFlag(AST_NO_SEMANTIC);
@@ -743,7 +743,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         auto varDecl        = Ast::newVarDecl(form("__addr%u", id), nullptr, node);
         varDecl->assignment = Ast::newIntrinsicProp(TokenId::IntrinsicDataOf, nullptr, varDecl);
-        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
+        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_LET);
         Ast::clone(node->expression, varDecl->assignment);
         varDecl->assignment->firstChild()->addAstFlag(AST_NO_SEMANTIC);
         newVar = varDecl;
@@ -782,7 +782,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto pointedType = typeSlice->pointedType;
 
         auto varDecl = Ast::newVarDecl(form("__tmp%u", id), nullptr, node);
-        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
+        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 
@@ -818,7 +818,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     else if (typeInfo->isString())
     {
         auto varDecl = Ast::newVarDecl(form("__tmp%u", id), nullptr, node);
-        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
+        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 

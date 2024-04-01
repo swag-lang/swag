@@ -234,7 +234,7 @@ bool FormatAst::outputVarHeader(FormatContext& context, AstNode* node)
     }
     else if (varNode->isNot(AstNodeKind::FuncDeclParam) && !varNode->hasAstFlag(AST_STRUCT_MEMBER))
     {
-        if (varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
+        if (varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET))
             CONCAT_FIXED_STR(concat, "let");
         else
             CONCAT_FIXED_STR(concat, "var");

@@ -15,7 +15,7 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
         const auto varNode = castAst<AstVarDecl>(ifNode->firstChild(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         if (varNode->is(AstNodeKind::ConstDecl))
             CONCAT_FIXED_STR(concat, "const");
-        else if (varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
+        else if (varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET))
             CONCAT_FIXED_STR(concat, "let");
         else
             CONCAT_FIXED_STR(concat, "var");
