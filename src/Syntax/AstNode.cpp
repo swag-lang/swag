@@ -214,7 +214,7 @@ void AstNode::inheritComputedValue(const AstNode* from)
 {
     if (!from)
         return;
-    inheritAstFlagsOr(from, AST_COMPUTED_VALUE | AST_VALUE_IS_GEN_TYPEINFO);
+    inheritAstFlagsOr(from, AST_COMPUTED_VALUE | AST_VALUE_GEN_TYPEINFO);
     if (hasAstFlag(AST_COMPUTED_VALUE))
     {
         SWAG_ASSERT(from->hasComputedValue());
@@ -237,7 +237,7 @@ bool AstNode::hasFlagComputedValue() const
 
 bool AstNode::isConstantGenTypeInfo() const
 {
-    return hasAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
+    return hasAstFlag(AST_VALUE_GEN_TYPEINFO);
 }
 
 ExportedTypeInfo* AstNode::getConstantGenTypeInfo() const

@@ -57,7 +57,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
     const auto concreteType     = TypeManager::concreteType(resolvedType);
     const auto typeDefinedFct   = castTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::LambdaClosure);
 
-    SWAG_ASSERT(!funcDecl->hasAstFlag(AST_IS_GENERIC));
+    SWAG_ASSERT(!funcDecl->hasAstFlag(AST_GENERIC));
 
     // Replace every parameters types
     for (uint32_t paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
@@ -595,7 +595,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     if (overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
     {
         if (overload->node->isConstantGenTypeInfo())
-            identifier->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
+            identifier->addAstFlag(AST_VALUE_GEN_TYPEINFO);
         identifier->setFlagsValueIsComputed();
         *identifier->computedValue() = overload->computedValue;
 
@@ -779,7 +779,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
 
     // Need to make all types compatible, in case a cast is necessary
-    if (!identifier->ownerFct || !identifier->ownerFct->hasAstFlag(AST_IS_GENERIC))
+    if (!identifier->ownerFct || !identifier->ownerFct->hasAstFlag(AST_GENERIC))
     {
         SWAG_CHECK(Semantic::setSymbolMatchCallParams(context, oneMatch, identifier));
         YIELD();
@@ -942,7 +942,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
     // Setup parent if necessary
     if (returnType->isStruct())
-        identifier->addSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT | SEMFLAG_IS_CONST_ASSIGN);
+        identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
 
     SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
 
@@ -1314,9 +1314,9 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
     identifier->setResolvedSymbol(symbol, overload);
 
     if (identifier->typeInfo->isGeneric())
-        identifier->addAstFlag(AST_IS_GENERIC);
+        identifier->addAstFlag(AST_GENERIC);
     else if (overload->hasFlag(OVERLOAD_GENERIC) && !identifier->hasAstFlag(AST_FROM_GENERIC))
-        identifier->addAstFlag(AST_IS_GENERIC);
+        identifier->addAstFlag(AST_GENERIC);
 
     // Symbol is linked to a using var : insert the variable name before the symbol
     // Except if symbol is a constant !
@@ -1499,7 +1499,7 @@ bool Semantic::registerMatch(SemanticContext*            context,
             {
                 for (const auto p : id->genericParameters->children)
                 {
-                    if (p->hasAstFlag(AST_IS_GENERIC))
+                    if (p->hasAstFlag(AST_GENERIC))
                     {
                         canRegisterInstance = false;
                         break;

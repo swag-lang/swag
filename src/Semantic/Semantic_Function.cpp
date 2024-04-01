@@ -115,7 +115,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
             }
         }
 
-        parameters->inheritAstFlagsOr(nodeParam->type, AST_IS_GENERIC);
+        parameters->inheritAstFlagsOr(nodeParam->type, AST_GENERIC);
 
         // Variadic must be the last one
         if (paramType->isVariadic())
@@ -193,7 +193,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
 bool Semantic::resolveFuncDeclParams(SemanticContext* context)
 {
     const auto node = context->node;
-    node->inheritAstFlagsOr(AST_IS_GENERIC);
+    node->inheritAstFlagsOr(AST_GENERIC);
     node->byteCodeFct = ByteCodeGen::emitFuncDeclParams;
     return true;
 }
@@ -213,7 +213,7 @@ bool Semantic::sendCompilerMsgFuncDecl(SemanticContext* context)
         return true;
     if (context->node->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
         return true;
-    if (context->node->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
+    if (context->node->hasAstFlag(AST_GENERIC | AST_FROM_GENERIC))
         return true;
 
     const auto funcNode = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
@@ -291,7 +291,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     }
 
     // No semantic on a generic function, or a macro
-    if (funcNode->hasAstFlag(AST_IS_GENERIC))
+    if (funcNode->hasAstFlag(AST_GENERIC))
     {
         if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && !funcNode->hasAstFlag(AST_GENERATED))
             funcNode->ownerScope->addPublicNode(funcNode);
@@ -429,7 +429,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (funcNode->isForeign())
         genByteCode = false;
-    if (funcNode->hasAstFlag(AST_IS_GENERIC))
+    if (funcNode->hasAstFlag(AST_GENERIC))
         genByteCode = false;
     if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
         genByteCode = false;
@@ -657,7 +657,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     // Implicit attribute cannot be used on a generic function
     // This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast
-    if (funcNode->hasAttribute(ATTRIBUTE_IMPLICIT) && funcNode->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
+    if (funcNode->hasAttribute(ATTRIBUTE_IMPLICIT) && funcNode->hasAstFlag(AST_GENERIC | AST_FROM_GENERIC))
     {
         bool ok = false;
         if (funcNode->token.text == g_LangSpec->name_opAffectLiteral && funcNode->genericParameters->childCount() <= 1)
@@ -676,13 +676,13 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (!funcNode->hasAstFlag(AST_FROM_GENERIC))
     {
         // Determine if function is generic
-        if (funcNode->ownerStructScope && funcNode->ownerStructScope->owner->hasAstFlag(AST_IS_GENERIC) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
-            funcNode->addAstFlag(AST_IS_GENERIC);
-        if (funcNode->ownerFct && funcNode->ownerFct->hasAstFlag(AST_IS_GENERIC) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
-            funcNode->addAstFlag(AST_IS_GENERIC);
+        if (funcNode->ownerStructScope && funcNode->ownerStructScope->owner->hasAstFlag(AST_GENERIC) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
+            funcNode->addAstFlag(AST_GENERIC);
+        if (funcNode->ownerFct && funcNode->ownerFct->hasAstFlag(AST_GENERIC) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
+            funcNode->addAstFlag(AST_GENERIC);
 
         if (funcNode->parameters)
-            funcNode->inheritAstFlagsOr(funcNode->parameters, AST_IS_GENERIC);
+            funcNode->inheritAstFlagsOr(funcNode->parameters, AST_GENERIC);
 
         if (funcNode->genericParameters)
         {
@@ -694,13 +694,13 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
                 return context->report(err);
             }
 
-            funcNode->addAstFlag(AST_IS_GENERIC);
+            funcNode->addAstFlag(AST_GENERIC);
         }
 
-        if (funcNode->hasAstFlag(AST_IS_GENERIC))
+        if (funcNode->hasAstFlag(AST_GENERIC))
             typeInfo->addFlag(TYPEINFO_GENERIC);
 
-        if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC) && funcNode->hasAstFlag(AST_IS_GENERIC))
+        if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC) && funcNode->hasAstFlag(AST_GENERIC))
         {
             Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0684, funcNode->token.c_str())};
             const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
@@ -727,7 +727,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // If a lambda function will wait for a match, then no need to deduce the return type
     // It will be done in the same way as parameters
     bool shortLambdaPendingTyping = false;
-    if (!funcNode->hasAstFlag(AST_IS_GENERIC))
+    if (!funcNode->hasAstFlag(AST_GENERIC))
     {
         if (funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING) && typeNode->typeInfo->isVoid())
         {
@@ -750,7 +750,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         mustDeduceReturnType = true;
 
     // No semantic on content if function is generic
-    if (funcNode->hasAstFlag(AST_IS_GENERIC))
+    if (funcNode->hasAstFlag(AST_GENERIC))
     {
         shortLambda = false;
         funcNode->content->addAstFlag(AST_NO_SEMANTIC);
@@ -823,7 +823,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // Function Semantic::setSymbolMatch will wake us up as soon as a valid match is found
     if (funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
     {
-        if (!funcNode->hasAstFlag(AST_IS_GENERIC))
+        if (!funcNode->hasAstFlag(AST_GENERIC))
         {
             funcNode->pendingLambdaJob = context->baseJob;
             context->baseJob->setPending(JobWaitKind::PendingLambdaTyping, nullptr, funcNode, nullptr);
@@ -956,7 +956,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         }
     }
 
-    if (funcNode->hasAstFlag(AST_IS_GENERIC))
+    if (funcNode->hasAstFlag(AST_GENERIC))
         overFlags.add(OVERLOAD_GENERIC);
 
     AddSymbolTypeInfo toAdd;
@@ -1074,7 +1074,7 @@ void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
     // Because for a generic function, the sub declarations will be cloned and solved after instantiation.
     // Otherwise, we can have a race condition by solving a generic sub declaration and cloning it for instantiation
     // at the same time.
-    if (!funcNode->hasAstFlag(AST_IS_GENERIC) && funcNode->content && !funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
+    if (!funcNode->hasAstFlag(AST_GENERIC) && funcNode->content && !funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
     {
         for (auto f : funcNode->subDecl)
         {
@@ -1099,7 +1099,7 @@ void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
 bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
 {
     const auto node = castAst<AstFuncCallParams>(context->node, AstNodeKind::FuncCallParams);
-    node->inheritAstFlagsOr(AST_IS_GENERIC);
+    node->inheritAstFlagsOr(AST_GENERIC);
     node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
     // Check capture types
@@ -1155,10 +1155,10 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
 bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
 {
     const auto node = context->node;
-    node->inheritAstFlagsOr(AST_IS_GENERIC);
+    node->inheritAstFlagsOr(AST_GENERIC);
     node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
-    if (node->hasAstFlag(AST_IS_GENERIC))
+    if (node->hasAstFlag(AST_GENERIC))
         return true;
 
     for (auto c : node->children)
@@ -1185,7 +1185,7 @@ bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
 bool Semantic::resolveFuncCallParams(SemanticContext* context)
 {
     const auto node = context->node;
-    node->inheritAstFlagsOr(AST_IS_GENERIC);
+    node->inheritAstFlagsOr(AST_GENERIC);
     node->inheritAstFlagsAnd(AST_CONST_EXPR);
     return true;
 }
@@ -1223,7 +1223,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     }
 
     node->inheritComputedValue(child);
-    node->inheritAstFlagsOr(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GEN_TYPEINFO | AST_OP_AFFECT_CAST | AST_TRANSIENT);
+    node->inheritAstFlagsOr(child, AST_CONST_EXPR | AST_GENERIC | AST_VALUE_GEN_TYPEINFO | AST_OP_AFFECT_CAST | AST_TRANSIENT);
     if (node->firstChild()->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
         node->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
 

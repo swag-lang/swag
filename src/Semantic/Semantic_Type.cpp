@@ -22,7 +22,7 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
     {
         const auto any                       = static_cast<SwagAny*>(node->computedValue()->getStorageAddr());
         node->computedValue()->storageOffset = node->computedValue()->storageSegment->offset(reinterpret_cast<uint8_t*>(any->type));
-        node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
+        node->addAstFlag(AST_VALUE_GEN_TYPEINFO);
         node->typeInfo = g_TypeMgr->typeInfoTypeType;
     }
     else if (typeInfo->isAny() || typeInfo->isInterface())
@@ -85,7 +85,7 @@ bool Semantic::sendCompilerMsgTypeDecl(SemanticContext* context)
         return true;
     if (!node->ownerScope->isGlobalOrImpl())
         return true;
-    if (node->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
+    if (node->hasAstFlag(AST_GENERIC | AST_FROM_GENERIC))
         return true;
     if (node->typeInfo->isTuple() || node->typeInfo->isGeneric())
         return true;
@@ -364,7 +364,7 @@ bool Semantic::resolveType(SemanticContext* context)
     if (typeNode->identifier)
     {
         typeNode->typeInfo = typeNode->identifier->typeInfo;
-        typeNode->inheritAstFlagsOr(typeNode->identifier, AST_IS_GENERIC);
+        typeNode->inheritAstFlagsOr(typeNode->identifier, AST_GENERIC);
     }
     else if (typeNode->typeFlags.has(TYPEFLAG_IS_SUB_TYPE))
     {
@@ -452,7 +452,7 @@ bool Semantic::resolveType(SemanticContext* context)
         if (typeNode->typeFlags.has(TYPEFLAG_IS_PTR_ARITHMETIC))
             ptrFlags.add(TYPEINFO_POINTER_ARITHMETIC);
         if (ptrFlags.has(TYPEINFO_GENERIC))
-            typeNode->addAstFlag(AST_IS_GENERIC);
+            typeNode->addAstFlag(AST_GENERIC);
         typeNode->typeInfo = g_TypeMgr->makePointerTo(typeNode->typeInfo, ptrFlags);
         return true;
     }
@@ -743,7 +743,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     node->toCastTypeInfo = typeNode->typeInfo;
 
     node->byteCodeFct = ByteCodeGen::emitExplicitCast;
-    node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_VALUE_IS_GEN_TYPEINFO | AST_COMPUTED_VALUE | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OP_AFFECT_CAST);
+    node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_VALUE_GEN_TYPEINFO | AST_COMPUTED_VALUE | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OP_AFFECT_CAST);
     node->inheritComputedValue(exprNode);
     node->setResolvedSymbol(exprNode->resolvedSymbolName(), exprNode->resolvedSymbolOverload());
 
@@ -785,7 +785,7 @@ bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
     node->typeInfo = cloneType;
 
     node->byteCodeFct = ByteCodeGen::emitExplicitAutoCast;
-    node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_VALUE_IS_GEN_TYPEINFO | AST_COMPUTED_VALUE | AST_SIDE_EFFECTS);
+    node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_VALUE_GEN_TYPEINFO | AST_COMPUTED_VALUE | AST_SIDE_EFFECTS);
     node->inheritComputedValue(exprNode);
     return true;
 }
@@ -817,6 +817,6 @@ bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, 
     SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeInfo, node->computedValue()->storageSegment, &node->computedValue()->storageOffset, genFlags.with(GEN_EXPORTED_TYPE_SHOULD_WAIT), resultTypeInfo));
     YIELD();
     node->setFlagsValueIsComputed();
-    node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
+    node->addAstFlag(AST_VALUE_GEN_TYPEINFO);
     return true;
 }

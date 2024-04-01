@@ -18,7 +18,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     AstFuncDecl* newFunc = castAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
     if (newFunc->genericParameters)
     {
-        newFunc->addAstFlag(AST_IS_GENERIC);
+        newFunc->addAstFlag(AST_GENERIC);
         newFunc->content->addAstFlag(AST_NO_SEMANTIC);
     }
     else
@@ -263,8 +263,8 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                     param->assignment->clone(cloneContext);
                 }
 
-                identifier->identifierRef()->removeAstFlag(AST_IS_GENERIC);
-                identifier->removeAstFlag(AST_IS_GENERIC);
+                identifier->identifierRef()->removeAstFlag(AST_GENERIC);
+                identifier->removeAstFlag(AST_GENERIC);
 
                 // Force the reevaluation of the identifier and its children
                 context->result     = ContextResult::NewChildren1;

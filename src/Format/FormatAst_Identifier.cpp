@@ -54,7 +54,7 @@ bool FormatAst::outputIdentifier(FormatContext& context, AstNode* node)
 
         {
             FormatContext cxt{context};
-            cxt.beautifyAfter = false;        
+            cxt.beautifyAfter = false;
             SWAG_CHECK(outputNode(cxt, identifier->callParameters));
         }
 

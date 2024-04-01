@@ -633,7 +633,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     if (typeFunc->declNode && typeFunc->declNode->is(AstNodeKind::FuncDecl))
     {
         const auto funcNode = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
-        if (funcNode->parameters && funcNode->parameters->hasAstFlag(AST_IS_GENERIC))
+        if (funcNode->parameters && funcNode->parameters->hasAstFlag(AST_GENERIC))
         {
             matchParametersAndNamed(context, typeFunc->parameters, CAST_FLAG_DEFAULT);
             if (context.semContext->result != ContextResult::Done)

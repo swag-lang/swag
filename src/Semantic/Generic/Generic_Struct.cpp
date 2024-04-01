@@ -41,10 +41,10 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                         param->assignment->clone(cloneContext);
                     }
 
-                    idRef->removeAstFlag(AST_IS_GENERIC);
-                    identifier->removeAstFlag(AST_IS_GENERIC);
-                    node->removeAstFlag(AST_IS_GENERIC);
-                    node->type->removeAstFlag(AST_IS_GENERIC);
+                    idRef->removeAstFlag(AST_GENERIC);
+                    identifier->removeAstFlag(AST_GENERIC);
+                    node->removeAstFlag(AST_GENERIC);
+                    node->type->removeAstFlag(AST_GENERIC);
 
                     // Force the reevaluation of the variable and its children
                     context->result     = ContextResult::NewChildren;

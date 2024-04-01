@@ -18,7 +18,7 @@ bool ByteCodeGen::emitCastToNativeAny(const ByteCodeGenContext* context, AstNode
         transformResultToLinear2(context, exprNode->resultRegisterRc);
         node->resultRegisterRc = exprNode->resultRegisterRc;
         EMIT_INST1(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRc[1]);
-        exprNode->addSemFlag(SEMFLAG_TYPE_IS_NULL);
+        exprNode->addSemFlag(SEMFLAG_TYPE_NULL);
         return true;
     }
 
@@ -602,7 +602,7 @@ bool ByteCodeGen::emitCastToNativeString(const ByteCodeGenContext* context, AstN
         node->resultRegisterRc = exprNode->resultRegisterRc;
         EMIT_INST1(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRc[0]);
         EMIT_INST1(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRc[1]);
-        exprNode->addSemFlag(SEMFLAG_TYPE_IS_NULL);
+        exprNode->addSemFlag(SEMFLAG_TYPE_NULL);
         return true;
     }
 

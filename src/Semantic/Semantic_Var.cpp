@@ -270,7 +270,7 @@ bool Semantic::resolveVarDeclBefore(SemanticContext* context)
         {
             const auto parent = node->findParent(AstNodeKind::StructDecl);
             if (parent)
-                isGeneric = parent->hasAstFlag(AST_IS_GENERIC);
+                isGeneric = parent->hasAstFlag(AST_GENERIC);
         }
 
         if (isGeneric)
@@ -1022,7 +1022,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         const auto p = node->findParent(AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
         SWAG_ASSERT(p);
-        isGeneric = p->hasAstFlag(AST_IS_GENERIC);
+        isGeneric = p->hasAstFlag(AST_GENERIC);
     }
 
     // Evaluate type constraint
@@ -1040,7 +1040,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         !isGeneric)
     {
         // A generic identifier without a type but with a default value is a generic type
-        if (node->hasAstFlag(AST_IS_GENERIC) && !node->type && !node->hasAstFlag(AST_R_VALUE) && !node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
+        if (node->hasAstFlag(AST_GENERIC) && !node->type && !node->hasAstFlag(AST_R_VALUE) && !node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
         {
             thisIsAGenericType = true;
         }
@@ -1232,8 +1232,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     if (node->type)
-        node->inheritAstFlagsOr(node->type, AST_IS_GENERIC);
-    if (node->hasAstFlag(AST_IS_GENERIC))
+        node->inheritAstFlagsOr(node->type, AST_GENERIC);
+    if (node->hasAstFlag(AST_GENERIC))
     {
         overFlags.add(OVERLOAD_GENERIC);
         if (thisIsAGenericType && node->assignment)

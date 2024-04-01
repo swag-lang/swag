@@ -110,15 +110,15 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
             node->removeAstFlag(AST_CONST_EXPR);
         if (!child->hasAstFlag(AST_FROM_GENERIC_REPLACE))
             node->removeAstFlag(AST_FROM_GENERIC_REPLACE);
-        if (child->hasAstFlag(AST_IS_GENERIC))
-            node->addAstFlag(AST_IS_GENERIC);
-        if (child->hasAstFlag(AST_IS_CONST))
-            node->addAstFlag(AST_IS_CONST);
+        if (child->hasAstFlag(AST_GENERIC))
+            node->addAstFlag(AST_GENERIC);
+        if (child->hasAstFlag(AST_CONST))
+            node->addAstFlag(AST_CONST);
     }
 
     if (childBack->hasFlagComputedValue())
         node->inheritComputedValue(childBack);
-    node->inheritAstFlagsOr(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_GEN_TYPEINFO | AST_SIDE_EFFECTS);
+    node->inheritAstFlagsOr(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_GEN_TYPEINFO | AST_SIDE_EFFECTS);
 
     // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload() &&
@@ -144,10 +144,10 @@ bool Semantic::setupIdentifierRef(SemanticContext*, AstNode* node)
 {
     // If type of previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
-        node->addAstFlag(AST_IS_CONST);
+        node->addAstFlag(AST_CONST);
     const auto overload = node->resolvedSymbolOverload();
     if (overload && overload->hasFlag(OVERLOAD_CONST_ASSIGN))
-        node->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
+        node->addSemFlag(SEMFLAG_CONST_ASSIGN);
 
     if (node->parent->isNot(AstNodeKind::IdentifierRef))
         return true;
@@ -156,10 +156,10 @@ bool Semantic::setupIdentifierRef(SemanticContext*, AstNode* node)
 
     // If we cannot assign previous, and this was AST_IS_CONST_ASSIGN_INHERIT, then we cannot assign
     // this one either
-    if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT))
+    if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->hasSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT))
     {
-        node->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
-        node->addSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT);
+        node->addSemFlag(SEMFLAG_CONST_ASSIGN);
+        node->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT);
     }
 
     identifierRef->previousResolvedNode = node;
@@ -858,7 +858,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
         const auto symbol     = overload->symbol;
         const auto symbolKind = symbol->kind;
 
-        node->inheritAstFlagsOr(genericParameters, AST_IS_GENERIC);
+        node->inheritAstFlagsOr(genericParameters, AST_GENERIC);
         if (symbolKind != SymbolKind::Function &&
             symbolKind != SymbolKind::Struct &&
             symbolKind != SymbolKind::Interface &&
@@ -1196,7 +1196,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     if (match->ufcs && !identifier->isForcedUFCS())
     {
         // Do not change AST if this is code inside a generic function
-        if (!identifier->ownerFct || !identifier->ownerFct->hasAstFlag(AST_IS_GENERIC))
+        if (!identifier->ownerFct || !identifier->ownerFct->hasAstFlag(AST_GENERIC))
         {
             if (match->dependentVar && !identifierRef->previousResolvedNode)
             {

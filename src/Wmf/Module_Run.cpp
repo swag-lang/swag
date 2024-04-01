@@ -229,7 +229,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         uint32_t   offset = module->compilerSegment.tryOffset(runContext->registersRR[0].pointer);
         if (offset != UINT32_MAX)
         {
-            node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
+            node->addAstFlag(AST_VALUE_GEN_TYPEINFO);
             node->computedValue()->storageOffset  = offset;
             node->computedValue()->storageSegment = &module->compilerSegment;
             return true;
@@ -238,7 +238,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         offset = module->constantSegment.tryOffset(runContext->registersRR[0].pointer);
         if (offset != UINT32_MAX)
         {
-            node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
+            node->addAstFlag(AST_VALUE_GEN_TYPEINFO);
             node->computedValue()->storageOffset  = offset;
             node->computedValue()->storageSegment = &module->constantSegment;
             return true;

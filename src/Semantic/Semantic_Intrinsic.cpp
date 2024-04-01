@@ -720,7 +720,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
             const auto any                       = static_cast<SwagAny*>(expr->computedValue()->getStorageAddr());
             expr->computedValue()->storageOffset = expr->computedValue()->storageSegment->offset(reinterpret_cast<uint8_t*>(any->type));
             node->inheritComputedValue(expr);
-            node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
+            node->addAstFlag(AST_VALUE_GEN_TYPEINFO);
             node->typeInfo = g_TypeMgr->typeInfoTypeType;
             SWAG_CHECK(setupIdentifierRef(context, node));
         }

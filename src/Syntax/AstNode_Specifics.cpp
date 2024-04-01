@@ -975,11 +975,11 @@ AstNode* AstImpl::clone(CloneContext& context)
                 // If function inside the impl block has specific generic parameters, then we
                 // consider it to be generic
                 newFunc->removeAstFlag(AST_FROM_GENERIC);
-                newFunc->addAstFlag(AST_IS_GENERIC);
+                newFunc->addAstFlag(AST_GENERIC);
                 for (const auto g : newFunc->genericParameters->children)
                 {
                     g->removeAstFlag(AST_FROM_GENERIC);
-                    g->addAstFlag(AST_IS_GENERIC);
+                    g->addAstFlag(AST_GENERIC);
                 }
 
                 // Be sure we keep a generic typeinfo

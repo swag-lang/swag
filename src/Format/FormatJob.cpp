@@ -38,7 +38,7 @@ bool FormatJob::writeResult(const Path& fileName, const Utf8& content)
         // Remove empty lines at the top of the file
         if (l.empty() && start)
             continue;
-        
+
         start = false;
         (void) fwrite(l.data(), 1, l.length(), f);
 #ifdef _WIN32

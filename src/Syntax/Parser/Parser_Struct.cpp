@@ -211,7 +211,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     if (tokenParse.is(TokenId::SymLeftParen))
     {
         SWAG_CHECK(doGenericDeclParameters(structNode, &structNode->genericParameters));
-        structNode->addAstFlag(AST_IS_GENERIC | AST_NO_BYTECODE);
+        structNode->addAstFlag(AST_GENERIC | AST_NO_BYTECODE);
     }
 
     // If a struct is declared inside a generic struct, force the sub struct to have generic parameters
@@ -221,7 +221,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
         if (parentStruct->genericParameters)
         {
             structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode, AST_GENERATED_GENERIC_PARAM);
-            structNode->addAstFlag(AST_IS_GENERIC | AST_NO_BYTECODE);
+            structNode->addAstFlag(AST_GENERIC | AST_NO_BYTECODE);
             structNode->genericParameters->addAstFlag(AST_GENERATED);
         }
     }
@@ -309,7 +309,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         Ast::visit(structNode->genericParameters, [&](AstNode* n) {
             n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
-            n->addAstFlag(AST_IS_GENERIC);
+            n->addAstFlag(AST_GENERIC);
             if (n->is(AstNodeKind::FuncDeclParam))
             {
                 const auto param = castAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
@@ -554,7 +554,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             auto                   count = parent->children.size();
             SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
-            if(*result)
+            if (*result)
                 FormatAst::inheritFormatBefore(this, *result, &savedToken);
             else
                 FormatAst::inheritFormatBefore(this, parent->children[count], &savedToken);

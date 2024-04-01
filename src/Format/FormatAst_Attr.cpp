@@ -39,7 +39,7 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstNode* node, bool& hasSo
         if (s == nodeAttr->content)
             continue;
         const auto child = convertNode(context, s);
-        if(!child)
+        if (!child)
             continue;
         if (child->is(AstNodeKind::AttrUse))
             continue;

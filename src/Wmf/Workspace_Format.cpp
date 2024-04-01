@@ -64,7 +64,7 @@ void Workspace::formatCommand()
             if (n.extension() != ".swg" && n.extension() != ".swgs")
                 return;
             const auto job = Allocator::alloc<FormatJob>();
-            job->fileName = fileName;
+            job->fileName  = fileName;
             g_ThreadMgr.addJob(job);
         });
 

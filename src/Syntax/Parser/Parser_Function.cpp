@@ -532,7 +532,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
         SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0307, tokenParse.token.c_str())));
 
         auto oneParam = Ast::newVarDecl(tokenParse.token.text, this, allParams, AstNodeKind::FuncDeclParam);
-        oneParam->addAstFlag(AST_IS_GENERIC);
+        oneParam->addAstFlag(AST_GENERIC);
         if (isConstant)
             oneParam->addSpecFlag(AstVarDecl::SPEC_FLAG_FORCE_CONST);
         else if (isType)

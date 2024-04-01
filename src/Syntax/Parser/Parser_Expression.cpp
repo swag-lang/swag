@@ -540,7 +540,7 @@ bool Parser::doPrimaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
         if (tokenParse.is(TokenId::KwdRef))
         {
             SWAG_CHECK(doKeepRef(parent, &exprNode));
-            exprNode->addAstFlag(AST_IS_CONST);
+            exprNode->addAstFlag(AST_CONST);
             exprNode->token.startLocation = startLoc;
         }
         else

@@ -301,7 +301,7 @@ bool Semantic::resolveCompilerForeignLib(SemanticContext* context)
 bool Semantic::resolveCompilerRun(SemanticContext* context)
 {
     const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerRun, AstNodeKind::CompilerRunExpression);
-    if (node->hasAstFlag(AST_IS_GENERIC))
+    if (node->hasAstFlag(AST_GENERIC))
         return true;
 
     const auto expression = context->node->lastChild();
@@ -323,7 +323,7 @@ bool Semantic::resolveCompilerRun(SemanticContext* context)
 bool Semantic::resolveCompilerValidIfExpression(SemanticContext* context)
 {
     const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerValidIf, AstNodeKind::CompilerValidIfx);
-    if (node->hasAstFlag(AST_IS_GENERIC))
+    if (node->hasAstFlag(AST_GENERIC))
         return true;
 
     const auto expression = context->node->lastChild();
@@ -340,7 +340,7 @@ bool Semantic::resolveCompilerValidIfExpression(SemanticContext* context)
 bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 {
     const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerAst);
-    if (node->hasAstFlag(AST_IS_GENERIC))
+    if (node->hasAstFlag(AST_GENERIC))
         return true;
 
     // Do it once (in case of inline)
@@ -390,7 +390,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 bool Semantic::resolveCompilerError(SemanticContext* context)
 {
     const auto node = context->node;
-    if (node->hasAstFlag(AST_IS_GENERIC))
+    if (node->hasAstFlag(AST_GENERIC))
         return true;
 
     const auto msg = node->firstChild();
@@ -406,7 +406,7 @@ bool Semantic::resolveCompilerError(SemanticContext* context)
 bool Semantic::resolveCompilerWarning(SemanticContext* context)
 {
     const auto node = context->node;
-    if (node->hasAstFlag(AST_IS_GENERIC))
+    if (node->hasAstFlag(AST_GENERIC))
         return true;
 
     const auto msg = node->firstChild();
@@ -422,7 +422,7 @@ bool Semantic::resolveCompilerWarning(SemanticContext* context)
 bool Semantic::resolveCompilerAssert(SemanticContext* context)
 {
     auto node = context->node;
-    if (node->hasAstFlag(AST_IS_GENERIC))
+    if (node->hasAstFlag(AST_GENERIC))
         return true;
 
     // Expression to check
@@ -506,7 +506,7 @@ bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
         {
             // If we are inside a generic structure, do not evaluate the instruction.
             // Will be done during instantiation
-            if (node->ownerStructScope && node->ownerStructScope->owner->hasAstFlag(AST_IS_GENERIC))
+            if (node->ownerStructScope && node->ownerStructScope->owner->hasAstFlag(AST_GENERIC))
             {
                 // Be sure we are inside a struct definition, and not in an impl block
                 auto parent = node->parent;
@@ -514,7 +514,7 @@ bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
                 {
                     if (parent->is(AstNodeKind::StructDecl))
                     {
-                        node->addAstFlag(AST_IS_GENERIC);
+                        node->addAstFlag(AST_GENERIC);
                         break;
                     }
 
@@ -525,12 +525,12 @@ bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
             }
 
             // Same for a function
-            if (node->ownerFct && node->ownerFct->hasAstFlag(AST_IS_GENERIC))
-                node->addAstFlag(AST_IS_GENERIC);
+            if (node->ownerFct && node->ownerFct->hasAstFlag(AST_GENERIC))
+                node->addAstFlag(AST_GENERIC);
         }
     }
 
-    if (node->hasAstFlag(AST_IS_GENERIC))
+    if (node->hasAstFlag(AST_GENERIC))
     {
         for (const auto& c : node->children)
             c->addAstFlag(AST_NO_SEMANTIC);
@@ -543,7 +543,7 @@ bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
 bool Semantic::resolveCompilerPrint(SemanticContext* context)
 {
     const auto node = context->node;
-    if (node->hasAstFlag(AST_IS_GENERIC))
+    if (node->hasAstFlag(AST_GENERIC))
         return true;
 
     const auto expr = context->node->firstChild();

@@ -232,7 +232,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     }
 
     // Taking the address of a const is const
-    if (child->hasAstFlag(AST_IS_CONST) || forceConst)
+    if (child->hasAstFlag(AST_CONST) || forceConst)
     {
         ptrFlags.add(TYPEINFO_CONST);
     }
@@ -253,7 +253,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         {
             ptrFlags.add(TYPEINFO_CONST);
         }
-        else if (node->hasAstFlag(AST_IS_CONST))
+        else if (node->hasAstFlag(AST_CONST))
         {
             ptrFlags.add(TYPEINFO_CONST);
         }
@@ -510,11 +510,11 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
     {
         typeInfo = typeInfo->clone();
         typeInfo->addFlag(TYPEINFO_POINTER_REF);
-        if (node->hasAstFlag(AST_IS_CONST))
+        if (node->hasAstFlag(AST_CONST))
             typeInfo->setConst();
         typeInfo->forceComputeName();
     }
-    else if (node->hasAstFlag(AST_IS_CONST))
+    else if (node->hasAstFlag(AST_CONST))
     {
         typeInfo = g_TypeMgr->makeConst(typeInfo);
     }
@@ -615,7 +615,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     {
         // If array is const, inform the make pointer that it need to make a const pointer
         if (baseType->isConst())
-            arrayNode->parent->parent->addAstFlag(AST_IS_CONST);
+            arrayNode->parent->parent->addAstFlag(AST_CONST);
     }
 
     const auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
@@ -662,7 +662,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             {
                 arrayNode->typeInfo    = g_TypeMgr->typeInfoU8;
                 arrayNode->byteCodeFct = ByteCodeGen::emitStringRef;
-                arrayNode->addAstFlag(AST_IS_CONST);
+                arrayNode->addAstFlag(AST_CONST);
             }
             else
             {

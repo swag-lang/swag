@@ -100,7 +100,7 @@ bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* v
         return true;
 
     // Types
-    if (flags.has(AST_VALUE_IS_GEN_TYPEINFO))
+    if (flags.has(AST_VALUE_GEN_TYPEINFO))
     {
         if (!value1)
             return false;

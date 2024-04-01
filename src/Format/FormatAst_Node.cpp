@@ -61,7 +61,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::KeepRef:
-            if (node->hasAstFlag(AST_IS_CONST))
+            if (node->hasAstFlag(AST_CONST))
             {
                 CONCAT_FIXED_STR(concat, "const");
                 concat->addBlank();

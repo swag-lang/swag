@@ -80,7 +80,7 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
     const auto funcDecl = castAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
     if (funcDecl->fromItfSymbol)
         return true;
-    if (funcDecl->hasAstFlag(AST_IS_GENERIC | AST_GENERATED | AST_FROM_GENERIC))
+    if (funcDecl->hasAstFlag(AST_GENERIC | AST_GENERATED | AST_FROM_GENERIC))
         return true;
     if (funcDecl->hasAttribute(ATTRIBUTE_PUBLIC | ATTRIBUTE_INLINE | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_MAIN_FUNC |
                                ATTRIBUTE_COMPILER))
@@ -104,7 +104,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         return true;
     if (node->isEmptyFct())
         return true;
-    if (node->hasAstFlag(AST_IS_GENERIC))
+    if (node->hasAstFlag(AST_GENERIC))
         return true;
     if (scope->is(ScopeKind::Struct))
         return true;

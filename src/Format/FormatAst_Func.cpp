@@ -54,7 +54,7 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
 
     if (genericParameters)
     {
-        if (!node->hasAstFlag(AST_FROM_GENERIC) || node->hasAstFlag(AST_IS_GENERIC))
+        if (!node->hasAstFlag(AST_FROM_GENERIC) || node->hasAstFlag(AST_GENERIC))
             SWAG_CHECK(outputGenericParameters(context, genericParameters));
     }
 

@@ -442,7 +442,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
         typeParam->declNode = child;
         typeParam->index    = storageIndex;
 
-        if (!node->hasAstFlag(AST_IS_GENERIC))
+        if (!node->hasAstFlag(AST_GENERIC))
         {
             SWAG_VERIFY(!child->typeInfo->isGeneric(), context->report({child, formErr(Err0731, node->token.c_str(), child->typeInfo->getDisplayNameC())}));
         }
@@ -674,7 +674,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
                 n->inheritOwners(structNode);
                 n->ownerStructScope = structNode->scope;
                 n->ownerScope       = structNode->scope;
-                n->addAstFlag(AST_IS_GENERIC);
+                n->addAstFlag(AST_GENERIC);
             });
         }
     }
@@ -715,7 +715,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
             }
 
-            node->addAstFlag(AST_IS_GENERIC);
+            node->addAstFlag(AST_GENERIC);
             typeInfo->addFlag(TYPEINFO_GENERIC);
             overFlags.add(OVERLOAD_GENERIC);
         }
@@ -1056,7 +1056,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             }
 
             // If the struct is not generic, be sure that a field is not generic either
-            if (!node->hasAstFlag(AST_IS_GENERIC))
+            if (!node->hasAstFlag(AST_GENERIC))
             {
                 if (varTypeInfo->isGeneric())
                 {

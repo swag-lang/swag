@@ -70,18 +70,18 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
 
 bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const AstNode* right)
 {
-    if (left->lastChild()->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN))
+    if (left->lastChild()->hasSemFlag(SEMFLAG_CONST_ASSIGN))
     {
         if (!left->typeInfo->isPointerRef() || right->is(AstNodeKind::KeepRef))
         {
-            left->addAstFlag(AST_IS_CONST);
+            left->addAstFlag(AST_CONST);
         }
     }
 
     // Check that left type is mutable
     bool isConst = false;
     if (left->hasAstFlag(AST_CONST_EXPR) ||
-        left->hasAstFlag(AST_IS_CONST) ||
+        left->hasAstFlag(AST_CONST) ||
         !left->hasAstFlag(AST_L_VALUE) ||
         (left->typeInfo->isConstAlias() && left->typeInfo->isConst()) ||
         (left->typeInfo->isConstPointerRef() && right->isNot(AstNodeKind::KeepRef)))

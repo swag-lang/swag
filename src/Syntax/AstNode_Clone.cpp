@@ -11,7 +11,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     kind = from->kind;
 
     flags = from->flags;
-    flags.remove(AST_IS_GENERIC);
+    flags.remove(AST_GENERIC);
     flags.add(context.forceFlags);
     flags.remove(context.removeFlags);
 
@@ -133,7 +133,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         cloneChildren(context, from);
 
         // Force semantic on specific nodes on generic instantiation
-        if (from->hasAstFlag(AST_IS_GENERIC) && from->hasSemFlag(SEMFLAG_ON_CLONE))
+        if (from->hasAstFlag(AST_GENERIC) && from->hasSemFlag(SEMFLAG_ON_CLONE))
         {
             for (const auto one : children)
                 one->removeAstFlag(AST_NO_SEMANTIC);
