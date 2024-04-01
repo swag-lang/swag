@@ -13,19 +13,19 @@ struct PopupListCtrlItem
 
 struct PopupListCtrl
 {
-    using frameWnd:      FrameWnd
-    heightItem:          f32 = 30
-    heightSeparator:     f32 = 15
-    minWidthPopup:       f32 = 100
-    maxHeightPopup:      f32 = 300
-    simFitX, simFitY:    bool
+    using frameWnd:       FrameWnd
+    heightItem:           f32 = 30
+    heightSeparator:      f32 = 15
+    minWidthPopup:        f32 = 100
+    maxHeightPopup:       f32 = 300
+    simFitX, simFitY:     bool
 
-    sigSelected:         closure(*Self, u32)
+    sigSelected:          closure(*Self, u32)
 
-    items:               ArrayPtr'PopupListCtrlItem
-    selectedIdx          = Swag.U32.Max
-    scrollWnd:           *ScrollWnd
-    maxIconSize:         s32
+    items:                ArrayPtr'PopupListCtrlItem
+    selectedIdx           = Swag.U32.Max
+    scrollWnd:            *ScrollWnd
+    maxIconSize:          s32
 }
 
 struct PopupListView

@@ -4,9 +4,9 @@ using Swag, Core.Errors
 
 public struct JSon
 {
-    stream:       ByteStream
-    line, col:    u64 = 1
-    propName:     String
+    stream:        ByteStream
+    line, col:     u64 = 1
+    propName:      String
 }
 
 public impl JSon

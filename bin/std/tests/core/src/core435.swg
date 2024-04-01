@@ -2,8 +2,8 @@ using Core
 
 struct Test
 {
-    exp, val:   string
-    result:     bool
+    exp, val:     string
+    result:       bool
 }
 
 const TestCases: [] Test = [

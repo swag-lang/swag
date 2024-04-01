@@ -3,9 +3,9 @@
 
 struct Transform2
 {
-    m11, m12: f32
-    m21, m22: f32
-    m31, m32: f32
+    m11, m12:     f32
+    m21, m22:     f32
+    m31, m32:     f32
 
     #[Swag.Offset("m11")]
     m: [2, 2] f32

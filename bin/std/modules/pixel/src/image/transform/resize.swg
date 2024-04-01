@@ -52,8 +52,8 @@ namespace ResizeTools
 {
     struct Contribution
     {
-        weights:     Array'f64
-        left, right: s64
+        weights:         Array'f64
+        left, right:     s64
     }
 
     struct LineContrib

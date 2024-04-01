@@ -23,9 +23,9 @@ struct Decimal
 
 struct DecimalSlice
 {
-    d:       [..] u8
-    nd, dp:  s64
-    neg:     bool
+    d:          [..] u8
+    nd, dp:     s64
+    neg:        bool
 }
 
 struct LeftCheat

@@ -27,17 +27,17 @@ enum ColorPickerMode
 
 struct ColorPicker
 {
-    using wnd:      Wnd
-    hue, sat, lum:  f32
-    a, r, g, b:     f32
-    mode            = ColorPickerMode.SaturationLightness
-    sigChanged:     SigArray'closure(*Self)
+    using wnd:         Wnd
+    hue, sat, lum:     f32
+    a, r, g, b:        f32
+    mode               = ColorPickerMode.SaturationLightness
+    sigChanged:        SigArray'closure(*Self)
 
-    dirty:          bool = true
-    isMoving:       bool
-    img:            Image
-    texture:        Texture
-    xCur, yCur:     s32
+    dirty:             bool = true
+    isMoving:          bool
+    img:               Image
+    texture:           Texture
+    xCur, yCur:        s32
 }
 
 impl IWnd for ColorPicker

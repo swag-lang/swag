@@ -58,19 +58,19 @@ struct EditBox
         minMaxF64:     {min: f64, max: f64} = {-Swag.F64.Max, Swag.F64.Max}
     }
 
-    aniBk:            BlendColor{speed: 4}
-    aniBorder:        BlendColor{speed: 4}
+    aniBk:              BlendColor{speed: 4}
+    aniBorder:          BlendColor{speed: 4}
 
-    isInvalid:        bool
-    isHot:            bool
-    isDragging:       bool
-    selBeg, selEnd:   u64
-    timerCaret:       *Timer
-    visibleCaret:     bool
-    posSelBeg:        f32
-    posSelEnd:        f32
-    scrollPosX:       f32
-    countRunes:       s32
+    isInvalid:          bool
+    isHot:              bool
+    isDragging:         bool
+    selBeg, selEnd:     u64
+    timerCaret:         *Timer
+    visibleCaret:       bool
+    posSelBeg:          f32
+    posSelEnd:          f32
+    scrollPosX:         f32
+    countRunes:         s32
 }
 
 impl IWnd for EditBox

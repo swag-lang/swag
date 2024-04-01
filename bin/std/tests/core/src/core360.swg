@@ -7,8 +7,8 @@ struct Toto1
 
 struct Toto2
 {
-    str:     String
-    z, y, x: s32
+    str:         String
+    z, y, x:     s32
 }
 
 //#[Swag.PrintBc]

@@ -2,8 +2,8 @@ using Core
 
 struct CaseT
 {
-    cas:     s32
-    inT, outT: rune
+    cas:           s32
+    inT, outT:     rune
 }
 
 const UpperCase = 1

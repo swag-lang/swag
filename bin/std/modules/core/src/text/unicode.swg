@@ -256,8 +256,8 @@ struct Range
 
 struct CaseRange
 {
-    lo, hi:    rune
-    delta:     [3] s32
+    lo, hi:     rune
+    delta:      [3] s32
 }
 
 #[Swag.EnumIndex]
