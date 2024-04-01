@@ -14,7 +14,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
     VectorNative<AstNode*> nodes;
 
     CollectFlags flags = STOP_CMT_BEFORE;
-    if (!node->is(AstNodeKind::StructContent))
+    if (!node->findParentOrMe(AstNodeKind::StructContent))
         flags.add(STOP_EMPTY_LINE_BEFORE);
 
     {
