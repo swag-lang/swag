@@ -61,7 +61,6 @@ Even if two tuples do not have the same field names, they can be assigned to eac
     #assert @typeof(x) != @typeof(y)
 }
 
-
 /**
 # Tuple unpacking
 */

@@ -135,7 +135,7 @@ struct FormatAst
     bool outputVarHeader(FormatContext& context, AstNode* node);
     bool outputVar(FormatContext& context, AstNode* node, uint32_t maxLenName = 0, uint32_t maxLenType = 0);
     bool outputStructDeclContent(FormatContext& context, AstNode* node);
-    bool outputTupleDeclContent(FormatContext& context, AstNode* node);
+    bool outputTupleDeclContent(const FormatContext& context, AstNode* node);
     bool outputStructDecl(FormatContext& context, AstStruct* node);
     bool outputTypeTuple(FormatContext& context, TypeInfo* typeInfo);
     bool outputTypeExpression(FormatContext& context, AstNode* node);

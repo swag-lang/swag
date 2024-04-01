@@ -18,10 +18,12 @@ bool FormatAst::outputStructDeclContent(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputTupleDeclContent(FormatContext& context, AstNode* node)
+bool FormatAst::outputTupleDeclContent(const FormatContext& context, AstNode* node)
 {
+    FormatContext cxt{context};
+    cxt.alignVarDecl = false;
     concat->addChar('{');
-    outputChildrenChar(context, node, ',');
+    outputChildrenChar(cxt, node, ',');
     concat->addChar('}');
     return true;
 }
