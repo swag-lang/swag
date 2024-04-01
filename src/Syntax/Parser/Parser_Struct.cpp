@@ -552,8 +552,12 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse.token, formErr(Err0293, tokenParse.token.c_str())));
             TokenParse             savedToken = tokenParse;
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            auto                   count = parent->children.size();
             SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
-            FormatAst::inheritFormatBefore(this, *result, &savedToken);
+            if(*result)
+                FormatAst::inheritFormatBefore(this, *result, &savedToken);
+            else
+                FormatAst::inheritFormatBefore(this, parent->children[count], &savedToken);
             break;
         }
     }

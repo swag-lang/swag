@@ -310,9 +310,12 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
             SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0409, isLet ? "let" : "var", tokenParse.token.c_str())));
     }
 
+    const auto count = parent->children.size();
     SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
-    FormatAst::inheritFormatBefore(this, *result, &savedTokenParse);
-
+    if (*result)
+        FormatAst::inheritFormatBefore(this, *result, &savedTokenParse);
+    else
+        FormatAst::inheritFormatBefore(this, parent->children[count], &savedTokenParse);
     return true;
 }
 
