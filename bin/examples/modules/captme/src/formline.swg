@@ -1,17 +1,17 @@
 struct FormLine
 {
-    using base:     BaseForm
-    beginCap:       LineCapStyle = .Round
-    endCap:         LineCapStyle = .Round
-    dashCap:        DashCapStyle = .None
-    startSize:      f32 = 4
-    endSize:        f32 = 4
-    xa, ya, xb, yb: f32
+    using base:         BaseForm
+    beginCap:           LineCapStyle = .Round
+    endCap:             LineCapStyle = .Round
+    dashCap:            DashCapStyle = .None
+    startSize:          f32 = 4
+    endSize:            f32 = 4
+    xa, ya, xb, yb:     f32
 
     #[Serialization.NoSerialize]
     {
-        gizmo:     GizmoPoints
-        x0, y0, x1, y1: f32
+        gizmo:              GizmoPoints
+        x0, y0, x1, y1:     f32
     }
 }
 

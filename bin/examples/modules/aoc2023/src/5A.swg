@@ -111,8 +111,8 @@ private enum Mode
 
 private struct Range
 {
-    src, dst:  u64
-    range:     u64
+    src, dst:     u64
+    range:        u64
 }
 
 private var seeds: Array'u64

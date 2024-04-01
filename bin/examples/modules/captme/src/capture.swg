@@ -13,20 +13,20 @@ enum MouseMode
 
 struct Capture
 {
-    const MinSize      = 16
-    const MaxSize      = 4096
-    width, height:     s32
-    backImg:           Image
-    widthOrg, heightOrg: s32
-    backImgOrg:        Image
+    const MinSize            = 16
+    const MaxSize            = 4096
+    width, height:           s32
+    backImg:                 Image
+    widthOrg, heightOrg:     s32
+    backImgOrg:              Image
 
-    backImagePos:      Math.Point
-    preview:           Image
-    file:              String
-    forms:             Array'IForm
-    nextStepIndex:     u32 = 1
+    backImagePos:            Math.Point
+    preview:                 Image
+    file:                    String
+    forms:                   Array'IForm
+    nextStepIndex:           u32 = 1
 
-    linkedImage:       String
+    linkedImage:             String
 
     // Dyn
     #[NoSerialize]

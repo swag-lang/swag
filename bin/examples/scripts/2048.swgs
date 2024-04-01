@@ -11,14 +11,14 @@ const Margin    = 8.0
 
 struct Cell
 {
-    z:          f32 = 0.1
-    zd:         f32 = 1.0
-    x, y:       f32
-    xd, yd:     f32
-    nxd, nyd:   f32
-    val:        s32
-    moving:     bool
-    remove:     bool
+    z:            f32 = 0.1
+    zd:           f32 = 1.0
+    x, y:         f32
+    xd, yd:       f32
+    nxd, nyd:     f32
+    val:          s32
+    moving:       bool
+    remove:       bool
 }
 
 var g_Cells:    Array'Cell
