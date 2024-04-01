@@ -3,9 +3,9 @@ Integers in *decimal*, *hexadecimal* or *binary* forms.
 */
 #test
 {
-    const a: u32 = 123456           // Decimal
-    const b: u32 = 0xFFFF           // Hexadecimal, with '0x'
-    const c: u32 = 0b00001111       // Binary, with '0b'
+    const a: u32 = 123456         // Decimal
+    const b: u32 = 0xFFFF         // Hexadecimal, with '0x'
+    const c: u32 = 0b00001111     // Binary, with '0b'
     @assert(a == 123456)
     @assert(b == 65535)
     @assert(c == 15)

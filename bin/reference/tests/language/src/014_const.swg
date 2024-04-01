@@ -39,11 +39,10 @@ An example of a multidimensional array as a constant. We will detail arrays late
 #test
 {
     const M4x4: [4, 4] f32 = [
-        [1, 0, 0, 0],
-        [0, 1, 0, 0],
-        [0, 0, 1, 0],
-        [0, 0, 0, 1]
-    ]
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]]
 }
 
 /**
