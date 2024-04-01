@@ -28,7 +28,7 @@ But if you know what your are doing, you can use a special version of those oper
 #test
 {
     var x = 255'u8
-    x +=,over 1     // Overflow is expected, so this will wrap around
+    x +=,over 1 // Overflow is expected, so this will wrap around
     @assert(x == 0)
 }
 
@@ -39,7 +39,7 @@ You can also use `#[Swag.Overflow(true)]` to authorize overflow on a more global
 #test
 {
     var x = 255'u8
-    x += 1     // No need for operator modifier ',over'
+    x += 1 // No need for operator modifier ',over'
     @assert(x == 0)
 }
 
@@ -63,7 +63,7 @@ Swag will also check that a cast does not lose information.
     //var y0 = cast(s8) x1     // This would lose information and panic, as 255 cannot be encoded in 's8'
     //@print(y0)
 
-    let y1 = cast,over(s8) x1  // But ',over' can be used on the cast operation too
+    let y1 = cast,over(s8) x1 // But ',over' can be used on the cast operation too
     @assert(y1 == -1)
 
     let x2 = -1's8
@@ -80,9 +80,9 @@ Rember that you can disable these safety checks with the corresponding attribute
 #test
 {
     var x = 255'u8
-    x += 255    // 254
-    x += 1      // 255
-    x >>= 1     // 127
+    x += 255 // 254
+    x += 1 // 255
+    x >>= 1 // 127
     @assert(x == 127)
 }
 
@@ -97,7 +97,7 @@ Swag will panic if a bad cast from `any` is performed.
 #test
 {
     let x: any = "1"
-    let y = cast(string) x     // This is valid, because this is the correct underlying type
+    let y  = cast(string) x     // This is valid, because this is the correct underlying type
     //var z = cast(s32) x      // This is not valid, and will panic
     //@assert(z == 0)
 }
@@ -115,7 +115,7 @@ Safety for fixed size arrays.
 */
 #test
 {
-    var x = [0, 1, 2]
+    var x   = [0, 1, 2]
     var idx = 10
     //@assert(x[idx] == 1)     // '10' is out of range, will panic
 }
@@ -125,9 +125,9 @@ Safety when indexing a slice.
 */
 #test
 {
-    let x: const [..] s32 = [0, 1, 2]
+    let x:  const [..] s32 = [0, 1, 2]
     var idx = 1
-    @assert(x[idx] == 1)        // '1' is in range, ok
+    @assert(x[idx] == 1) // '1' is in range, ok
     idx += 9
     //@assert(x[idx] == 1)      // '10' is out of range, will panic
 }
@@ -144,7 +144,7 @@ Safety when slicing a sized value.
 
 #test
 {
-    var x = "string"
+    var x   = "string"
     var idx = 10
     //var slice = x[0..idx]            // '10' is out of range, will panic
     //@assert(slice[0] == `s`)

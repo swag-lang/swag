@@ -15,7 +15,7 @@ var Global = 0
 # #if/#else
 A static `#if/#elif/#else`, with an expression that can be evaluated at compile time.
 */
-const DEBUG = 1
+const DEBUG   = 1
 const RELEASE = 0
 #if DEBUG
 {
@@ -33,7 +33,7 @@ const RELEASE = 0
 */
 #if false
 {
-    #error   "this is an error"
+    #error "this is an error"
     #warning "this is a warning"
 }
 

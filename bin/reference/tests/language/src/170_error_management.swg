@@ -71,7 +71,8 @@ func myOtherFunc()
 
     // This is equivalent to:
     var cpt2 = catch count("filename")
-    if @err() != null do return
+    if @err() != null do
+        return
 }
 
 /**
@@ -121,7 +122,7 @@ func myFunc3A() assume
 {
     // Here the program will stop with a panic message if 'count()' throws an error, but no
     // need to specify 'assume'.
-    var cpt  = count("filename")
+    var cpt = count("filename")
 
     // Same here. Implicit 'assume'.
     var cpt1 = count("filename")
@@ -185,8 +186,8 @@ When a function is marked with `throw`, the `try` for a function call is implici
         // There's no need to add a 'try' before the call because 'mySubFunc1' is marked with 'throw'.
         // This is less verbose when you do not want to do something special in case
         // of errors (with 'assume', 'catch' or 'trycatch')
-        mySubFunc2()        // implicit
-        try mySubFunc3()    // explicit
+        mySubFunc2() // implicit
+        try mySubFunc3() // explicit
     }
 
     catch mySubFunc1()
@@ -200,8 +201,8 @@ We have seen that the error value is a struct. This means that you can add some 
 
 struct SyntaxError
 {
-    using base: Swag.BaseError
-    line, col: u32
+    using base:     Swag.BaseError
+    line, col:      u32
 }
 
 /**
@@ -228,9 +229,9 @@ func raiseError() throw
 
 func testDefer(err: bool) throw
 {
-    defer(err)      g_Defer += 1    // This will be called in case an error is raised, before exiting
-    defer(noerr)    g_Defer += 2    // This will only be called in case an error is not raised
-    defer           g_Defer += 3    // This will be called in both cases
+    defer(err) g_Defer += 1 // This will be called in case an error is raised, before exiting
+    defer(noerr) g_Defer += 2 // This will only be called in case an error is not raised
+    defer g_Defer += 3 // This will be called in both cases
     if err do
         raiseError()
 }
@@ -239,9 +240,9 @@ func testDefer(err: bool) throw
 {
     g_Defer = 0
     catch testDefer(true)
-    @assert(g_Defer == 4)   // Will call only defer(err) and the normal defer
+    @assert(g_Defer == 4) // Will call only defer(err) and the normal defer
 
     g_Defer = 0
     catch testDefer(false)
-    @assert(g_Defer == 5)   // Will call only defer(noerr) and the normal defer
+    @assert(g_Defer == 5) // Will call only defer(noerr) and the normal defer
 }
