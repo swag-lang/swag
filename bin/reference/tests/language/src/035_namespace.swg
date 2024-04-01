@@ -31,12 +31,13 @@ using namespace Private
 }
 
 const B = Private.FileSymbol
-const C = FileSymbol // No need to specify 'Private' because of the 'using'
+const C = FileSymbol             // No need to specify 'Private' because of the 'using'
 
 /**
 This is equivalent to `private`, but you don't have to specify a name, the compiler will generate it for you.
 */
-private {
+private
+{
     const OtherSymbol = 0
 }
 

@@ -11,7 +11,8 @@ Unlike C/C++, the expression doesn't need to be enclosed with `()`.
         @assert(false)
     if (a == 1) do
         @assert(false)
-    if a == 0 {
+    if a == 0
+    {
         @assert(true)
     }
 
@@ -26,12 +27,13 @@ Unlike C/C++, the expression doesn't need to be enclosed with `()`.
     // 'elif' is equivalent to 'else do if'
     if a == 1 do
         a += 1
-    else do if a == 2 do
-        @assert(false)
-    elif a == 3 do
-        @assert(false)
-    elif a == 4 do
-        @assert(false)
+    else do
+        if a == 2 do
+            @assert(false)
+        elif a == 3 do
+            @assert(false)
+        elif a == 4 do
+            @assert(false)
 
     // Boolean expression with 'and' and 'or'
     if a == 0 and a == 1 do
