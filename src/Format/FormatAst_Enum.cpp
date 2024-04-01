@@ -78,7 +78,9 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
 
     if (maxLenValue)
         maxLenValue += 3;
-    concat->alignToColumn(startColumn + maxLenName + maxLenValue + context.addBlanksBeforeAlignedLastLineComments);
+    if (context.alignEnumValue)
+        concat->alignToColumn(startColumn + maxLenName + maxLenValue + context.addBlanksBeforeAlignedLastLineComments);
+
     beautifyAfter(context, node);
     return true;
 }
@@ -101,15 +103,37 @@ bool FormatAst::outputEnum(FormatContext& context, AstEnum* node)
         SWAG_CHECK(outputNode(context, node->firstChild()));
     }
 
-    concat->addEol();
-    concat->addIndent(context.indent);
-    concat->addChar('{');
-    concat->addEol();
-    context.indent++;
-    SWAG_CHECK(outputChildrenEol(context, node, first));
-    context.indent--;
-    concat->addIndent(context.indent);
-    concat->addChar('}');
-    concat->addEol();
+    bool sameLine = false;
+    if (context.keepSameLineEnum)
+        sameLine = !hasEOLInside(node);
+
+    if (!sameLine)
+    {
+        concat->addEol();
+        concat->addIndent(context.indent);
+        concat->addChar('{');
+        concat->addEol();
+        context.indent++;
+        SWAG_CHECK(outputChildrenEol(context, node, first));
+        context.indent--;
+        concat->addIndent(context.indent);
+        concat->addChar('}');
+        concat->addEol();
+    }
+    else
+    {
+        if (node->firstChild() && node->firstChild()->is(AstNodeKind::EnumType))
+            first = 1;
+        FormatContext cxt{context};
+        cxt.alignEnumValue = false;
+        concat->addBlank();
+        concat->addChar('{');
+        concat->addBlank();
+        SWAG_CHECK(outputChildrenChar(cxt, node, ',', first));
+        concat->addBlank();
+        concat->addChar('}');
+        concat->addEol();
+    }
+
     return true;
 }

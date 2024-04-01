@@ -44,6 +44,8 @@ struct FormatContext
     bool     alignTypeAlias                         = false;
     uint32_t addBlanksBeforeAlignedLastLineComments = 0;
     uint32_t alignStructVarTypeAddBlanks            = 0;
+    bool     keepSameLineStruct                     = false;
+    bool     keepSameLineEnum                       = false;
 
     void setDefaultBeautify()
     {
@@ -51,6 +53,8 @@ struct FormatContext
         outputBlankLines                       = true;
         addBlanksBeforeAlignedLastLineComments = 4;
         alignStructVarTypeAddBlanks            = 4;
+        keepSameLineStruct                     = true;
+        keepSameLineEnum                       = true;
     }
 };
 
@@ -138,7 +142,7 @@ struct FormatAst
     bool outputStructDeclContent(FormatContext& context, AstNode* node);
     bool outputTupleDeclContent(const FormatContext& context, AstNode* node);
     bool outputStructDecl(FormatContext& context, AstStruct* node);
-    bool outputTypeTuple(FormatContext& context, TypeInfo* typeInfo);
+    bool outputTypeTuple(const FormatContext& context, TypeInfo* typeInfo);
     bool outputTypeExpression(FormatContext& context, AstNode* node);
     bool outputType(FormatContext& context, AstTypeExpression* node);
 

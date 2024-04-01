@@ -25,6 +25,7 @@ bool FormatAst::outputTupleDeclContent(const FormatContext& context, AstNode* no
     concat->addChar('{');
     outputChildrenChar(cxt, node, ',');
     concat->addChar('}');
+    beautifyAfter(context, node);
     return true;
 }
 
@@ -50,20 +51,24 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         }
     }
 
-    bool sameLineAnonymous = true;
-    if (node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))
-        sameLineAnonymous = !hasEOLInside(node->content);
-
-    if (!node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS) || !sameLineAnonymous)
-        concat->addIndent(context.indent);
+    bool       sameLine  = false;
+    const bool anonymous = node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS);
 
     if (node->is(AstNodeKind::InterfaceDecl))
     {
+        concat->addIndent(context.indent);
         CONCAT_FIXED_STR(concat, "interface");
     }
     else
     {
         SWAG_ASSERT(node->is(AstNodeKind::StructDecl));
+
+        if (context.keepSameLineStruct)
+            sameLine = !node->validif && !node->hasAttribute(ATTRIBUTE_OPAQUE) && !hasEOLInside(node->content);
+
+        if (!sameLine)
+            concat->addIndent(context.indent);
+
         if (node->hasSpecFlag(AstStruct::SPEC_FLAG_SPECIFIED_TYPE) || !node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))
         {
             if (const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl); structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
@@ -74,17 +79,18 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
     }
 
     if (node->genericParameters && !node->genericParameters->hasAstFlag(AST_GENERATED))
-    {
         SWAG_CHECK(outputGenericParameters(context, node->genericParameters));
-    }
 
-    if (!node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))
+    if (!anonymous)
     {
         concat->addBlank();
         concat->addString(node->token.text);
     }
-    else if (sameLineAnonymous)
+
+    if (sameLine)
     {
+        if (!anonymous)
+            concat->addBlank();
         SWAG_CHECK(outputTupleDeclContent(context, node->content));
         return true;
     }
@@ -139,7 +145,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
     return true;
 }
 
-bool FormatAst::outputTypeTuple(FormatContext& context, TypeInfo* typeInfo)
+bool FormatAst::outputTypeTuple(const FormatContext& context, TypeInfo* typeInfo)
 {
     typeInfo = TypeManager::concretePtrRef(typeInfo);
     SWAG_ASSERT(typeInfo->isTuple());
