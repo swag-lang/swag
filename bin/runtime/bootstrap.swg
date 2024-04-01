@@ -697,9 +697,7 @@ namespace Swag
     }
 
     // 'SCBE' backend specific options
-    struct BuildCfgBackendSCBE
-    {
-    }
+    struct BuildCfgBackendSCBE {}
 
     // The kind of native backend to generate.
     enum BuildCfgBackendKind

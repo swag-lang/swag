@@ -1,8 +1,6 @@
 #global namespace Swag
 
-struct SystemAllocator
-{
-}
+struct SystemAllocator {}
 
 impl IAllocator for SystemAllocator
 {
