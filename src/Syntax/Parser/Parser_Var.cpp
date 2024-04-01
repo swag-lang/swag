@@ -127,7 +127,6 @@ bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNod
             Ast::addChildBack(varNode, assign);
             varNode->type       = type;
             varNode->assignment = assign;
-            *result             = orgVarNode;
         }
 
         // We are supposed to be constexpr, so we need to duplicate the assignment instead of generating an

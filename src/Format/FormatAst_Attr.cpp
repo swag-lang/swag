@@ -38,7 +38,10 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstNode* node, bool& hasSo
     {
         if (s == nodeAttr->content)
             continue;
-        if (s->is(AstNodeKind::AttrUse))
+        const auto child = convertNode(context, s);
+        if(!child)
+            continue;
+        if (child->is(AstNodeKind::AttrUse))
             continue;
 
         if (first)
@@ -52,7 +55,7 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstNode* node, bool& hasSo
             concat->addBlank();
         }
 
-        SWAG_CHECK(outputNode(context, s));
+        SWAG_CHECK(outputNode(context, child));
     }
 
     if (!first)

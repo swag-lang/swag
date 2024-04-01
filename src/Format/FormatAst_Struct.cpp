@@ -52,19 +52,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
 
     bool sameLineAnonymous = true;
     if (node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))
-    {
-        for (const auto s : node->content->children)
-        {
-            if (const auto parse = getTokenParse(s))
-            {
-                if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE | TOKEN_PARSE_EOL_AFTER))
-                {
-                    sameLineAnonymous = false;
-                    break;
-                }
-            }
-        }
-    }
+        sameLineAnonymous = !hasEOLInside(node->content);
 
     if (!node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS) || !sameLineAnonymous)
         concat->addIndent(context.indent);

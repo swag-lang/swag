@@ -14,6 +14,20 @@ Utf8 FormatAst::getUtf8() const
     return concat->getUtf8();
 }
 
+bool FormatAst::hasEOLInside(AstNode* node)
+{
+    for (const auto s : node->children)
+    {
+        if (const auto parse = getTokenParse(s))
+        {
+            if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE | TOKEN_PARSE_EOL_AFTER))
+                return true;
+        }
+    }
+    
+    return false;
+}
+
 AstNode* FormatAst::convertNode(FormatContext&, AstNode* node)
 {
     if (!node)
