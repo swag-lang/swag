@@ -24,16 +24,12 @@ If the first line ends with a dot `.`, then this marks the end of the paragraph,
 // This first paragraph is the short description of function 'test1'
 //
 // This second paragraph should be the long description.
-func test1()
-{
-}
+func test1() {}
 
 // This is the short description of 'test'.
 // As the previous first line ends with '.', this is another paragraph, so this should be
 // the long description. No need for an empty line before.
-func test()
-{
-}
+func test() {}
 
 /**
 For constants or enum values, the document comment is the one declared at the end of the line.
@@ -53,14 +49,10 @@ You can create a **reference** to something in the current module with `[[name]]
 */
 
 // This is a function with a 'value' parameter.
-func one(value: s32)
-{
-}
+func one(value: s32) {}
 
 // This is a reference to [[one]]
-func two()
-{
-}
+func two() {}
 
 /**
 # NoDoc
@@ -69,6 +61,4 @@ You can use the `#[Swag.NoDoc]` attribute to prevent a certain element from show
 
 // The function 'three' will be ignored when generating the documentation.
 #[Swag.NoDoc]
-func three()
-{
-}
+func three() {}
