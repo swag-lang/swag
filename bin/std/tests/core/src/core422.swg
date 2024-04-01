@@ -7,9 +7,7 @@ func get()->string
 }
 
 #[Swag.Safety(get(), false)]
-func toto()
-{
-}
+func toto() {}
 
 #test
 {

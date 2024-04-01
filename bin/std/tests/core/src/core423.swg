@@ -10,6 +10,4 @@ func get()->String
 }
 
 #[Swag.Safety(get(), false)]
-func toto(f: bool)
-{
-}
+func toto(f: bool) {}

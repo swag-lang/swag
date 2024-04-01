@@ -156,19 +156,13 @@ impl TagBin
     }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
-    mtd endElement()
-    {
-    }
+    mtd endElement() {}
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
-    mtd beginValue()
-    {
-    }
+    mtd beginValue() {}
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
-    mtd endValue()
-    {
-    }
+    mtd endValue() {}
 
     mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: u64)->bool
     {
@@ -209,9 +203,7 @@ impl TagBin
     }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
-    mtd endSequence()
-    {
-    }
+    mtd endSequence() {}
 
     /////////////////////////////////
     // VALUES

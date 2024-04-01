@@ -182,44 +182,22 @@ impl IWnd for Wnd
         }
     }
 
-    mtd impl onCreateEvent(evt: *CreateEvent)
-    {
-    }
-    mtd impl onDestroyEvent(evt: *DestroyEvent)
-    {
-    }
-    mtd impl onStateEvent(evt: *StateEvent)
-    {
-    }
-    mtd impl onResizeEvent(evt: *ResizeEvent)
-    {
-    }
-    mtd impl onPrePaintEvent(evt: *PaintEvent)
-    {
-    }
-    mtd impl onPaintEvent(evt: *PaintEvent)
-    {
-    }
-    mtd impl onPostPaintEvent(evt: *PaintEvent)
-    {
-    }
+    mtd impl onCreateEvent(evt: *CreateEvent) {}
+    mtd impl onDestroyEvent(evt: *DestroyEvent) {}
+    mtd impl onStateEvent(evt: *StateEvent) {}
+    mtd impl onResizeEvent(evt: *ResizeEvent) {}
+    mtd impl onPrePaintEvent(evt: *PaintEvent) {}
+    mtd impl onPaintEvent(evt: *PaintEvent) {}
+    mtd impl onPostPaintEvent(evt: *PaintEvent) {}
     mtd impl onSetThemeEvent(evt: *SetThemeEvent)
     {
         invalidate()
         sendResizeEvent()
     }
-    mtd impl onTimerEvent(evt: *TimerEvent)
-    {
-    }
-    mtd impl onHookEvent(evt: *Event)
-    {
-    }
-    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
-    {
-    }
-    mtd impl onFrameEvent(evt: *FrameEvent)
-    {
-    }
+    mtd impl onTimerEvent(evt: *TimerEvent) {}
+    mtd impl onHookEvent(evt: *Event) {}
+    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent) {}
+    mtd impl onFrameEvent(evt: *FrameEvent) {}
 
     mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {

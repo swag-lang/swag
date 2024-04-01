@@ -1,8 +1,6 @@
 using Core
 
-func entry(th: Threading.Thread)
-{
-}
+func entry(th: Threading.Thread) {}
 
 //#[Swag.PrintBc]
 #test

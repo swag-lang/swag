@@ -120,14 +120,10 @@ impl JSon
     }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
-    mtd endElement()
-    {
-    }
+    mtd endElement() {}
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
-    mtd beginValue()
-    {
-    }
+    mtd beginValue() {}
 
     mtd endValue()
     {

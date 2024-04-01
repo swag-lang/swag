@@ -175,7 +175,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
     {
         concat->alignToColumn(startColumn + maxLenSignature);
         concat->addBlank();
-        CONCAT_FIXED_STR(concat, "=");
+        concat->addChar('=');
         concat->addBlank();
         SWAG_CHECK(outputNode(context, funcDecl->content->firstChild()));
         concat->addEol();
@@ -200,37 +200,52 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
         return true;
     }
 
-    // Content, normal function
-    concat->addEol();
-    concat->addIndent(context.indent);
-    concat->addChar('{');
-    concat->addEol();
-    context.indent++;
-
-    if (funcDecl->content->isNot(AstNodeKind::Statement))
+    // Content, empty function
+    if (funcDecl->subDecl.empty() &&
+        funcDecl->content &&
+        funcDecl->content->children.empty() &&
+        !funcDecl->hasAttribute(ATTRIBUTE_SHARP_FUNC))
     {
-        context.indent--;
-        SWAG_CHECK(outputNode(context, funcDecl->content));
-        context.indent++;
+        concat->addBlank();
+        CONCAT_FIXED_STR(concat, "{}");
+        concat->addEol();
     }
+
+    // Content, normal function
     else
     {
-        for (auto c : funcDecl->subDecl)
+        concat->addEol();
+        concat->addIndent(context.indent);
+        concat->addChar('{');
+        concat->addEol();
+        context.indent++;
+
+        if (funcDecl->content->isNot(AstNodeKind::Statement))
         {
-            concat->addIndent(context.indent);
-            if (c->parent && c->parent->is(AstNodeKind::AttrUse))
-                c = c->parent;
-            SWAG_CHECK(outputNode(context, c));
-            concat->addEol();
+            context.indent--;
+            SWAG_CHECK(outputNode(context, funcDecl->content));
+            context.indent++;
+        }
+        else
+        {
+            for (auto c : funcDecl->subDecl)
+            {
+                concat->addIndent(context.indent);
+                if (c->parent && c->parent->is(AstNodeKind::AttrUse))
+                    c = c->parent;
+                SWAG_CHECK(outputNode(context, c));
+                concat->addEol();
+            }
+
+            SWAG_CHECK(outputChildrenEol(context, funcDecl->content));
         }
 
-        SWAG_CHECK(outputChildrenEol(context, funcDecl->content));
+        context.indent--;
+        concat->addIndent(context.indent);
+        concat->addChar('}');
+        concat->addEol();
     }
 
-    context.indent--;
-    concat->addIndent(context.indent);
-    concat->addChar('}');
-    concat->addEol();
     return true;
 }
 

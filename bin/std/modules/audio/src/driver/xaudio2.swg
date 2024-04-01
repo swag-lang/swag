@@ -108,24 +108,12 @@ private
     var g_Cb:        IXAudio2VoiceCallback
     var g_Cbi:       IXAudio2VoiceCallbackItf
 
-    func onVoiceProcessingPassStart(_me: *IXAudio2VoiceCallback, _bytesRequired: UINT32)
-    {
-    }
-    func onVoiceProcessingPassEnd(_me: *IXAudio2VoiceCallback)
-    {
-    }
-    func onStreamEnd(_me: *IXAudio2VoiceCallback)
-    {
-    }
-    func onBufferStart(_me: *IXAudio2VoiceCallback, _pBufferContext: *void)
-    {
-    }
-    func onLoopEnd(_me: *IXAudio2VoiceCallback, _pBufferContext: *void)
-    {
-    }
-    func onVoiceError(_me: *IXAudio2VoiceCallback, _pBufferContext: *void, _error: HRESULT)
-    {
-    }
+    func onVoiceProcessingPassStart(_me: *IXAudio2VoiceCallback, _bytesRequired: UINT32) {}
+    func onVoiceProcessingPassEnd(_me: *IXAudio2VoiceCallback) {}
+    func onStreamEnd(_me: *IXAudio2VoiceCallback) {}
+    func onBufferStart(_me: *IXAudio2VoiceCallback, _pBufferContext: *void) {}
+    func onLoopEnd(_me: *IXAudio2VoiceCallback, _pBufferContext: *void) {}
+    func onVoiceError(_me: *IXAudio2VoiceCallback, _pBufferContext: *void, _error: HRESULT) {}
 
     func onBufferEnd(_me: *IXAudio2VoiceCallback, pBufferContext: *void)
     {

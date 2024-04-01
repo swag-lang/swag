@@ -7,9 +7,7 @@ struct X
 
 impl X
 {
-    func toto()
-    {
-    }
+    func toto() {}
 }
 
 //#[Swag.PrintBc]
