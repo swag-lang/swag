@@ -36,7 +36,7 @@ Try every combination of the new phase settings on the amplifier feedback loop. 
 
 using Core
 
-private func run(op: &Array's32, input: const [2] s32, ip: &s32)->{output: s32, stopped: bool}
+private func run(op: &Array's32, input: const [2] s32, ip: &s32)->{ output: s32, stopped: bool }
 {
     var output    = 0
     var phaseDone = ip != 0

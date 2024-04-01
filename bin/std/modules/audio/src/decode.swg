@@ -2,7 +2,7 @@ using Core, Core.Errors
 
 impl Voice
 {
-    mtd readBuffer()->{buffer: ^void, size: u64} throw
+    mtd readBuffer()->{ buffer: ^void, size: u64 } throw
     {
         // If we are at the end of the file, then nothing to do, except if we need
         // to loop. In that case, we rewind datas to the start

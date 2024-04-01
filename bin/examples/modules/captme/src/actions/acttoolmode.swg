@@ -13,9 +13,7 @@ const CmdIdModeStep      = "CmdIdModeStep"
 const CmdIdModeImage     = "CmdIdModeImage"
 const CmdIdModePixSel    = "CmdIdModePixSel"
 
-struct ActionToolMode
-{
-}
+struct ActionToolMode {}
 impl IActionUI for ActionToolMode
 {
     mtd impl accept(cxt: ActionContext)->bool

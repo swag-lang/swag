@@ -4,9 +4,7 @@ const CmdIdLibrary    = "CmdIdLibrary"
 const CmdIdExit       = "CmdIdExit"
 const CmdIdShowEditor = "CmdIdShowEditor"
 
-struct ActionGlobal
-{
-}
+struct ActionGlobal {}
 impl IActionUI for ActionGlobal
 {
     mtd impl accept(cxt: ActionContext)->bool

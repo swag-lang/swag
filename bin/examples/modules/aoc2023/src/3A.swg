@@ -31,8 +31,8 @@ Of course, the actual engine schematic is much larger. What is the sum of all of
 
 using Core
 
-private var symbols: Array'{x, y: s32}
-private var nums: Array'{num, x, lx, y: s32}
+private var symbols: Array'{ x, y: s32 }
+private var nums: Array'{ num, x, lx, y: s32 }
 
 private func hasSymbol(x, y: s32)->bool
 {

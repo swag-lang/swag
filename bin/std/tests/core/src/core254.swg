@@ -1,8 +1,6 @@
 using Core
 
-struct W
-{
-}
+struct W {}
 
 var G = 0
 

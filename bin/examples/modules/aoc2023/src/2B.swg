@@ -35,7 +35,7 @@ func day2B()
         let first = Tokenize.split(l, `:`'u8)
         let sets  = Tokenize.split(first[1], `;`'u8)
 
-        var game: {r, g, b: s32}
+        var game: { r, g, b: s32 }
         visit s: sets
         {
             let values = Tokenize.split(s, `,`'u8)

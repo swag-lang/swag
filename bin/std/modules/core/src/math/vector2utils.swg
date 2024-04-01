@@ -77,7 +77,7 @@ impl Vector2
     // https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt
     // https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h
     // ---
-    func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{a: Math.Vector2, b: Math.Vector2, dist: f32}
+    func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{ a: Math.Vector2, b: Math.Vector2, dist: f32 }
     {
         let p1p0 = p1 - p0
         let q1q0 = q1 - q0
@@ -227,7 +227,7 @@ impl Vector2
         return result
     }
 
-    internal func getLineLineIntersectCoefs(start0, end0, start1, end1: Vector2, epsilon: f32)->{yes: bool, d0: f32, d1: f32}
+    internal func getLineLineIntersectCoefs(start0, end0, start1, end1: Vector2, epsilon: f32)->{ yes: bool, d0: f32, d1: f32 }
     {
         var result: retval
 
@@ -249,7 +249,7 @@ impl Vector2
     }
 
     // Compute the intersection point of two lines
-    func lineLineIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF32.Epsilon)->{yes: bool, pos: Vector2}
+    func lineLineIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF32.Epsilon)->{ yes: bool, pos: Vector2 }
     {
         var result: retval
 
@@ -264,7 +264,7 @@ impl Vector2
     }
 
     // Compute the intersection point of two segments
-    func segSegIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF32.Epsilon)->{yes: bool, pos: Vector2}
+    func segSegIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF32.Epsilon)->{ yes: bool, pos: Vector2 }
     {
         var result: retval
 

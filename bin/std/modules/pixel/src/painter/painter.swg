@@ -103,17 +103,17 @@ struct Command
 
     using params: union
     {
-        clear:              struct{color: Color}
-        drawTriangles:      struct{start: u32, count: u32}
-        transform:          struct{tr: Transform2}
-        clippingRect:       struct{rect: Rectangle}
-        clippingRegion:     struct{mode: ClippingMode = undefined}
-        font:               struct{fontRef: *Font}
-        blendingMode:       struct{mode: BlendingMode = undefined}
-        textureFont:        struct{font: *Font, atlasIndex: s32}
+        clear:              struct{ color: Color }
+        drawTriangles:      struct{ start: u32, count: u32 }
+        transform:          struct{ tr: Transform2 }
+        clippingRect:       struct{ rect: Rectangle }
+        clippingRegion:     struct{ mode: ClippingMode = undefined }
+        font:               struct{ fontRef: *Font }
+        blendingMode:       struct{ mode: BlendingMode = undefined }
+        textureFont:        struct{ font: *Font, atlasIndex: s32 }
         colorMask:          ColorMask
-        renderTgt:          struct{tgt: *RenderTarget, paintAlpha: bool}
-        shader:             struct{shader: *ShaderBase}
+        renderTgt:          struct{ tgt: *RenderTarget, paintAlpha: bool }
+        shader:             struct{ shader: *ShaderBase }
 
         shaderParam: struct
         {
@@ -147,7 +147,7 @@ struct Painter
     sharedSolidBrush:       Brush
     sharedLinePath:         LinePath
     sharedLinePathList:     LinePathList
-    sharedRoundTmp:         Array'{factor: f32, pos: Vector2}
+    sharedRoundTmp:         Array'{ factor: f32, pos: Vector2 }
 
     curState:               PaintState
     stackState:             Array'PaintState
@@ -167,7 +167,7 @@ struct Painter
 
 impl Painter
 {
-    internal func getTextureSize(brush: Brush)->{w: s32, h: s32}
+    internal func getTextureSize(brush: Brush)->{ w: s32, h: s32 }
     {
         var result: retval
 

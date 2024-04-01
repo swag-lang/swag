@@ -5,9 +5,7 @@ const CmdIdPaste            = "CmdIdPaste"
 const CmdIdPasteImageInside = "CmdIdPasteImageInside"
 const CmdIdCopyAsImage      = "CmdIdCopyAsImage"
 
-struct ActionCopyPaste
-{
-}
+struct ActionCopyPaste {}
 impl IActionUI for ActionCopyPaste
 {
     mtd impl accept(cxt: ActionContext)->bool

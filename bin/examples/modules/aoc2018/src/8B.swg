@@ -27,7 +27,7 @@ func day8B() assume
     let values   = Tokenize.split(File.readAllText(dataPath), ` `'u8)
     let nums     = Slice.map(values.toSlice(), func(v   ) => assume StrConv.toS32(v))
 
-    func read(n: Array's32, s: u32)->{nStart, sum: u32}
+    func read(n: Array's32, s: u32)->{ nStart, sum: u32 }
     {
         var start = s
         let (nc, nm) = {n[start], n[start + 1]}

@@ -8,7 +8,7 @@ public interface ICodec
     mtd canEncode(encoding: SoundFileEncoding)->bool;
     mtd canDecode(encoding: SoundFileEncoding)->bool;
     mtd init(srcBuffer: ^void, srcLength: u64)->u64 throw;
-    mtd decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64} throw;
+    mtd decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{ write, read: u64 } throw;
 }
 
 struct CodecDesc

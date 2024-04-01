@@ -1,9 +1,7 @@
 #global namespace Tga
 using Core, Core.Errors
 
-public struct Encoder
-{
-}
+public struct Encoder {}
 
 public impl IImageEncoder for Encoder
 {

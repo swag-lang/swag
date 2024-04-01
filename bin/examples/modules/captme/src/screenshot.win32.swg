@@ -49,7 +49,7 @@ private
     var g_MemDesktop1DC:     HDC
     var g_MemDesktop1Bitmap: HBITMAP
 
-    func getGrabRect()->{x1: s32, y1: s32, x2: s32, y2: s32}
+    func getGrabRect()->{ x1: s32, y1: s32, x2: s32, y2: s32 }
     {
         var result: retval
         result.x1 = Math.min(g_StartGrabX, g_EndGrabX)

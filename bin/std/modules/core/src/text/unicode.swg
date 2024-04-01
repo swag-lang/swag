@@ -306,7 +306,7 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     return false
 }
 
-func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange)->{mappedRune: rune, foundMapping: bool}
+func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange)->{ mappedRune: rune, foundMapping: bool }
 {
     var result: retval
 

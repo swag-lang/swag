@@ -318,7 +318,7 @@ impl RegExp
         state.groups.add({rank, str})
     }
 
-    mtd matchInternal(str: string, forGrep: bool)->{ok: bool, buf: const *u8}
+    mtd matchInternal(str: string, forGrep: bool)->{ ok: bool, buf: const *u8 }
     {
         var result: retval
 

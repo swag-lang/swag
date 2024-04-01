@@ -1,9 +1,7 @@
 #global namespace Bmp
 using Core
 
-public struct Encoder
-{
-}
+public struct Encoder {}
 
 public impl IImageEncoder for Encoder
 {

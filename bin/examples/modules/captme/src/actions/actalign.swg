@@ -11,9 +11,7 @@ const CmdIdSendToBack   = "CmdIdSendToBack"
 const CmdIdBringForward = "CmdIdBringForward"
 const CmdIdSendBackward = "CmdIdSendBackward"
 
-struct ActionMoveSel
-{
-}
+struct ActionMoveSel {}
 impl IActionUI for ActionMoveSel
 {
     mtd impl accept(cxt: ActionContext)->bool

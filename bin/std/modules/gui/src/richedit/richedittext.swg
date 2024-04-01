@@ -2,7 +2,7 @@ using Core, Pixel
 
 impl RichEditCtrl
 {
-    mtd getTextPrivate(start, end: RichEditCursor)->{text: Array'rune, styles: Array'u8}
+    mtd getTextPrivate(start, end: RichEditCursor)->{ text: Array'rune, styles: Array'u8 }
     {
         var result: retval
         if !hasSelRect
@@ -424,7 +424,7 @@ public impl RichEditCtrl
     }
 
     // Get the full text with the associated styles per character
-    mtd getTextAndStyles()->{text: Core.Array'rune, styles: Core.Array'u8}
+    mtd getTextAndStyles()->{ text: Core.Array'rune, styles: Core.Array'u8 }
     {
         var sel0: RichEditCursor
         var sel1: RichEditCursor
@@ -498,7 +498,7 @@ public impl RichEditCtrl
     }
 
     // Get the rune at the given cursor pos
-    mtd getRune(cp: RichEditCursor)->{char: rune, style: RichEditStyleRef}
+    mtd getRune(cp: RichEditCursor)->{ char: rune, style: RichEditStyleRef }
     {
         var result: retval
         if cp.lineIndex >= lines.count do
@@ -797,7 +797,7 @@ public impl RichEditCtrl
     }
 
     // Evaluate the rendering size
-    mtd evaluateSize()->{w: f32, h: f32}
+    mtd evaluateSize()->{ w: f32, h: f32 }
     {
         var result: retval
 

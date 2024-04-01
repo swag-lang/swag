@@ -29,9 +29,9 @@ What is the sum of all of the gear ratios in your engine schematic?
 
 using Core
 
-private var symbols: Array'{s, x, y: s32}
-private var nums: Array'{num, x, lx, y: s32}
-private var parts: Array'{num, x, lx, y: s32}
+private var symbols: Array'{ s, x, y: s32 }
+private var nums: Array'{ num, x, lx, y: s32 }
+private var parts: Array'{ num, x, lx, y: s32 }
 
 private func hasSymbol(x, y: s32)->bool
 {

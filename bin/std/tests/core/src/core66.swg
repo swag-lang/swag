@@ -1,8 +1,6 @@
 using Core
 
-struct BABA
-{
-}
+struct BABA {}
 
 //#[Swag.PrintBc]
 #test

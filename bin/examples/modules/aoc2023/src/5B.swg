@@ -91,13 +91,13 @@ func day5B()
         convert[cast(s32) mode].add(range)
     }
 
-    var ranges: Array'{start, end: u64}
+    var ranges: Array'{ start, end: u64 }
     for var x = 0; x < seeds.count; x += 2 do
         ranges.add({seeds[x], seeds[x] + seeds[x + 1] - 1})
 
     loop i: 7
     {
-        var newRanges: Array'{start, end: u64}
+        var newRanges: Array'{ start, end: u64 }
         for var idx = 0; idx < ranges.count; idx += 1
         {
             let range = ranges[idx]

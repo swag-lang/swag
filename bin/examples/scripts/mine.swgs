@@ -63,7 +63,7 @@ func fillGrid()
 
 func floodFill(x, y: s32)
 {
-    var arr: Array'{x: s32, y: s32}
+    var arr: Array'{ x: s32, y: s32 }
     arr.add({x, y})
 
     while arr.count

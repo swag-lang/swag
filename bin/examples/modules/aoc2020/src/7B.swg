@@ -41,7 +41,7 @@ func day7B0()
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    var id: HashTable'(string, Array'({count: u32, name: string}))
+    var id: HashTable'(string, Array'({ count: u32, name: string }))
 
     var r = assume Parser.RegExp.create(#"\d+ \w+ \w+"#)
     visit l: lines
@@ -81,7 +81,7 @@ func day7B1()
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    var id: HashTable'(string, Array'({count: u32, name: string}))
+    var id: HashTable'(string, Array'({ count: u32, name: string }))
 
     var r = assume Parser.RegExp.create(#"(\d+) (\w+ \w+)"#)
     visit l: lines

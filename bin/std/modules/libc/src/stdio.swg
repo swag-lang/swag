@@ -1,9 +1,7 @@
 #global export
 using Swag
 
-struct FILE
-{
-}
+struct FILE {}
 typealias fpos_t = s64
 
 const _IOFBF = 0x0000

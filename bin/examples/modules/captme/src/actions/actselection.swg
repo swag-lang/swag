@@ -6,9 +6,7 @@ const CmdIdInvertSelection = "CmdIdInvertSelection"
 const CmdIdDeleteSelection = "CmdIdDeleteSelection"
 const CmdIdSnap            = "CmdIdSnap"
 
-struct ActionSelection
-{
-}
+struct ActionSelection {}
 impl IActionUI for ActionSelection
 {
     mtd impl accept(cxt: ActionContext)->bool

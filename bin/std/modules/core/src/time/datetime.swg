@@ -122,7 +122,7 @@ impl DateTime
     }
 
     // Convert a string to a DateTime with the given format
-    func parse(str: string, fmt = DateTimeFormat.DateTime, checkDate = true)->{value: DateTime, eat: u32} throw
+    func parse(str: string, fmt = DateTimeFormat.DateTime, checkDate = true)->{ value: DateTime, eat: u32 } throw
     {
         var result: retval
 

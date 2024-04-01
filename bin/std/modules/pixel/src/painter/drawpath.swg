@@ -766,7 +766,7 @@ public impl Painter
     // * 'lineSize' is the supposed line drawing size
     // * 'capScale' is the supposed LineCapStyle scale
     // Returns the width and the length.
-    func capStyleExtent(capStyle: LineCapStyle, lineSize, capScale: f32)->{w: f32, l: f32}
+    func capStyleExtent(capStyle: LineCapStyle, lineSize, capScale: f32)->{ w: f32, l: f32 }
     {
         #[Swag.Complete]
         switch capStyle

@@ -56,7 +56,7 @@ func day6A() assume
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
     var lines    = File.readAllLines(dataPath)
 
-    var coords: Array'{x, y: s32}
+    var coords: Array'{ x, y: s32 }
     visit l: lines
     {
         let split = Tokenize.split(l, `,`'u8)
@@ -67,7 +67,7 @@ func day6A() assume
 
     const W = 300
 
-    var arr:     Array'{d, who: s32}
+    var arr:     Array'{ d, who: s32 }
     var count:   Array's32
     var borders: Array's32
 

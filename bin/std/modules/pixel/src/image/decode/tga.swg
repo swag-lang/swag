@@ -26,9 +26,7 @@ struct Header
     descriptorByte:     u8
 }
 
-public struct Decoder
-{
-}
+public struct Decoder {}
 
 impl Decoder
 {

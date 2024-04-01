@@ -91,7 +91,7 @@ internal
 
 // Get the last unicode rune of the utf8 slice, and the number of
 // bytes to encode it
-func decodeLastRune(buffer: const [..] u8)->{c: rune, eat: u32}
+func decodeLastRune(buffer: const [..] u8)->{ c: rune, eat: u32 }
 {
     var result: retval
 
@@ -150,7 +150,7 @@ func decodeLastRune(buffer: const [..] u8)->{c: rune, eat: u32}
 // Get the unicode rune pointed by 'buffer', and the number of bytes to encode it
 //
 // Will return 'RuneError' for an invalid utf8 sequence
-func decodeRune(buffer: const [..] u8)->{c: rune, eat: u32}
+func decodeRune(buffer: const [..] u8)->{ c: rune, eat: u32 }
 {
     var result: retval
 
@@ -412,7 +412,7 @@ func countBytesAt(buffer: const [..] u8)->u32
 }
 
 // Returns the byte index of the given rune index
-func byteIndex(buffer: const [..] u8, charIndex: u64)->{index: u64, success: bool}
+func byteIndex(buffer: const [..] u8, charIndex: u64)->{ index: u64, success: bool }
 {
     var result: retval
 

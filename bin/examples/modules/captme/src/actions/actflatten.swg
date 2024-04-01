@@ -3,9 +3,7 @@ using Gui
 const CmdIdFlatten    = "CmdIdFlatten"
 const CmdIdFlattenAll = "CmdIdFlattenAll"
 
-struct ActionFlatten
-{
-}
+struct ActionFlatten {}
 impl IActionUI for ActionFlatten
 {
     mtd impl accept(cxt: ActionContext)->bool

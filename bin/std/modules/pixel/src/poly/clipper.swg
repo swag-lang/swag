@@ -172,7 +172,7 @@ public struct Transform
     usingPolyTree:         bool
     strictSimple:          bool
     reverseOutput:         bool
-    edgeList:              Array'{edge: ^Edge, rank: u64}
+    edgeList:              Array'{ edge: ^Edge, rank: u64 }
     minimaList:            Array'LocalMinimum
     polyOuts:              Array'*OutRec
     joinList:              Array'*Join

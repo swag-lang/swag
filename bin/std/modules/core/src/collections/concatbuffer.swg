@@ -415,7 +415,7 @@ impl ConcatBuffer
         return result
     }
 
-    internal mtd eatBuffer()->{data: ^u8, size: u64, capacity: u64}
+    internal mtd eatBuffer()->{ data: ^u8, size: u64, capacity: u64 }
     {
         // Must be linear ?
         Debug.assert(lastBucket == firstBucket)

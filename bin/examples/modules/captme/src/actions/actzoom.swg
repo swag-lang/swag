@@ -5,9 +5,7 @@ const CmdIdZoomFit = "CmdIdZoomFit"
 const CmdIdZoomIn  = "CmdIdZoomIn"
 const CmdIdZoomOut = "CmdIdZoomOut"
 
-struct ActionZoom
-{
-}
+struct ActionZoom {}
 impl IActionUI for ActionZoom
 {
     mtd impl accept(cxt: ActionContext)->bool

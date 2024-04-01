@@ -2,9 +2,7 @@ using Gui
 
 const CmdIdResetQuickStyle = "CmdIdResetQuickStyle"
 
-struct ActionQuickStyle
-{
-}
+struct ActionQuickStyle {}
 impl IActionUI for ActionQuickStyle
 {
     mtd impl accept(cxt: ActionContext)->bool

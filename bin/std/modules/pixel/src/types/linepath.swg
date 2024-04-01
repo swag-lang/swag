@@ -442,7 +442,7 @@ impl LinePath
         var startPt = endPosBuffer
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{factor: f32, pos: Vector2}
+        var tmp: Array'{ factor: f32, pos: Vector2 }
         tmp.add({0, endPosBuffer})
         tmp.add({1, pos})
 
@@ -477,7 +477,7 @@ impl LinePath
         var startPt = endPosBuffer
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{factor: f32, pos: Vector2}
+        var tmp: Array'{ factor: f32, pos: Vector2 }
         tmp.add({0, endPosBuffer})
         tmp.add({1, pos})
 
@@ -511,7 +511,7 @@ impl LinePath
         let minDist = getFlattenDistance(quality)
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{factor: f32, pos: Vector2}
+        var tmp: Array'{ factor: f32, pos: Vector2 }
         tmp.add({0, endPosBuffer})
         tmp.add({1, p0 + p1 + p2 + p3})
 
@@ -546,7 +546,7 @@ impl LinePath
         let minDist = getFlattenDistance(quality)
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{angle: f32, pos: Vector2}
+        var tmp: Array'{ angle: f32, pos: Vector2 }
         tmp.add({p1.x, endPosBuffer})
         tmp.add({p1.y, endPos})
 

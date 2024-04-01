@@ -3,9 +3,7 @@ using Gui
 const CmdIdUndo = "CmdIdUndo"
 const CmdIdRedo = "CmdIdRedo"
 
-struct ActionUndo
-{
-}
+struct ActionUndo {}
 impl IActionUI for ActionUndo
 {
     mtd impl accept(cxt: ActionContext)->bool

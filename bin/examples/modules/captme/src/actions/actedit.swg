@@ -3,9 +3,7 @@ using Gui
 const CmdEditText           = "CmdEditText"
 const CmdIdClearImageInside = "CmdIdClearImageInside"
 
-struct ActionEdit
-{
-}
+struct ActionEdit {}
 impl IActionUI for ActionEdit
 {
     mtd impl accept(cxt: ActionContext)->bool

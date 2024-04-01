@@ -3,9 +3,7 @@
 using Core
 
 #[Swag.NoCopy]
-struct AA
-{
-}
+struct AA {}
 
 //#[Swag.PrintBc]
 #test

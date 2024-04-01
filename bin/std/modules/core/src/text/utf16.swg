@@ -9,7 +9,7 @@ const SurrSelf  = 0x10000
 
 // Get the unicode character pointed by 'buffer', and the number of u16 to encode it
 // Will return 'RuneError' for an invalid utf16 sequence
-func decodeRune(buffer: const [..] u16)->{c: rune, eat: u32}
+func decodeRune(buffer: const [..] u16)->{ c: rune, eat: u32 }
 {
     var result: retval
 

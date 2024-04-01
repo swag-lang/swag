@@ -14,9 +14,7 @@ const CmdIdCaptureShowEditor  = "CmdIdCaptureShowEditor"
 const CmdIdCaptureToEditor    = "CmdIdCaptureToEditor"
 const CmdIdCaptureToClipboard = "CmdIdCaptureToClipboard"
 
-struct ActionCapture
-{
-}
+struct ActionCapture {}
 impl IActionUI for ActionCapture
 {
     mtd impl accept(cxt: ActionContext)->bool

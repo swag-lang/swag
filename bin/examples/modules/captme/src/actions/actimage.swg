@@ -3,9 +3,7 @@ const CmdIdResizeImage   = "CmdIdResizeImage"
 const CmdIdResizeCanevas = "CmdIdResizeCanevas"
 const CmdIdRestoreOrg    = "CmdIdRestoreOrg"
 
-struct ActionImage
-{
-}
+struct ActionImage {}
 impl IActionUI for ActionImage
 {
     mtd impl accept(cxt: ActionContext)->bool

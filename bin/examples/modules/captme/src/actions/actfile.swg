@@ -10,9 +10,7 @@ const CmdIdFileLocation      = "CmdIdFileLocation"
 const CmdIdNewImage          = "CmdIdNewImage"
 const CmdIdNewFromClipboard  = "CmdIdNewFromClipboard"
 
-struct ActionFile
-{
-}
+struct ActionFile {}
 impl IActionUI for ActionFile
 {
     mtd impl accept(cxt: ActionContext)->bool

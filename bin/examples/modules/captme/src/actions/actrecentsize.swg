@@ -4,9 +4,7 @@ const CmdIdRecentSmall  = "CmdIdRecentSmall"
 const CmdIdRecentMedium = "CmdIdRecentMedium"
 const CmdIdRecentBig    = "CmdIdRecentBig"
 
-struct ActionRecentSize
-{
-}
+struct ActionRecentSize {}
 impl IActionUI for ActionRecentSize
 {
     mtd impl accept(cxt: ActionContext)->bool

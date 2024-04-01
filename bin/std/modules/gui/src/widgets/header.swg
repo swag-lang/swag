@@ -256,7 +256,7 @@ impl IWnd for Header
 
 internal impl Header
 {
-    mtd hitTest(surfacePos: Math.Point)->{idx: u32, sep: bool}
+    mtd hitTest(surfacePos: Math.Point)->{ idx: u32, sep: bool }
     {
         let metrics = getThemeMetrics()
         var pos     = surfaceToLocal(surfacePos)

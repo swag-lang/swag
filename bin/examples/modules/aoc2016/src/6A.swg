@@ -43,7 +43,7 @@ func day6A0() assume
     let lines    = File.readAllLines(dataPath)
 
     var freq: [8, 26] u32
-    var best: [8] {val: u8, freq: u32}
+    var best: [8] { val: u8, freq: u32 }
 
     visit l: lines
     {

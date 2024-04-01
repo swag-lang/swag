@@ -4,9 +4,7 @@ using Core.Errors
 
 attr ArgParams(nameAlias: string = null)
 
-struct ParseOptions
-{
-}
+struct ParseOptions {}
 
 // The 'IsSet' generic struct is a mirror of the user input struct.
 //

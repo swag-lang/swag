@@ -10,7 +10,7 @@
 #global #[Swag.Overflow(true)]
 using Globalization
 
-func exact(neg: bool, mantissa: u64, exponent: s64)->{f: f64, ok: bool}
+func exact(neg: bool, mantissa: u64, exponent: s64)->{ f: f64, ok: bool }
 {
     const Pow10: [] f64 = [
         1e0'f64, 1e1'f64, 1e2'f64, 1e3'f64, 1e4'f64, 1e5'f64, 1e6'f64, 1e7'f64, 1e8'f64, 1e9'f64,
@@ -1451,7 +1451,7 @@ var PowersOfTen: [696, 2] u64 = [
 // 1e346
 [0x4B7195F2D2D1A9FB, 0xD13EB46469447567]]
 
-func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
+func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{ f: f64, ok: bool }
 {
     const PowersOfTenMinExp10 = -348
     const PowersOfTenMaxExp10 = 347
@@ -1537,7 +1537,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 }
 
 #[Swag.Safety("nan", false)]
-func special(s: const [..] u8)->{value: f64, eat: u32}
+func special(s: const [..] u8)->{ value: f64, eat: u32 }
 {
     var result: retval
 
@@ -1560,7 +1560,7 @@ func special(s: const [..] u8)->{value: f64, eat: u32}
     return result
 }
 
-public func parse(s: const [..] u8)->{value: f64, eat: u32, ovf: bool} throw
+public func parse(s: const [..] u8)->{ value: f64, eat: u32, ovf: bool } throw
 {
     var result: retval
     let countof = @countof(s)

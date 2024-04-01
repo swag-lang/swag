@@ -3,7 +3,7 @@ using Core
 
 struct SelModel
 {
-    selection: Array'{start: u32, end: u32}
+    selection: Array'{ start: u32, end: u32 }
 }
 
 impl SelModel

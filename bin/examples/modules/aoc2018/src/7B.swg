@@ -39,7 +39,7 @@ func day7B() assume
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
     var lines    = File.readAllLines(dataPath)
 
-    var steps: HashTable'(u8, {prev, next: String})
+    var steps: HashTable'(u8, { prev, next: String })
     visit l: lines
     {
         steps.findOrAdd(l[5]).value.next.append(l[36])
@@ -58,7 +58,7 @@ func day7B() assume
 
     var result:  String
     var current: Array'u8
-    var workers: [5] {val: u8, tick: s32}
+    var workers: [5] { val: u8, tick: s32 }
 
     visit cc, i: first
     {

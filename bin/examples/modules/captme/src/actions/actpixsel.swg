@@ -3,9 +3,7 @@ const CmdIdPixSelFill      = "CmdIdPixSelFill"
 const CmdIdPixSelSmartFill = "CmdIdPixSelSmartFill"
 const CmdIdPixSelSmartMove = "CmdIdPixSelSmartMove"
 
-struct ActionPixSel
-{
-}
+struct ActionPixSel {}
 impl IActionUI for ActionPixSel
 {
     mtd impl accept(cxt: ActionContext)->bool
@@ -194,7 +192,7 @@ impl MainWnd
         struct Info
         {
             boundRect:     Math.Rectangle
-            boundCols:     Array'{y1: s32, y2: s32, col1: Color, col2: Color}
+            boundCols:     Array'{ y1: s32, y2: s32, col1: Color, col2: Color }
         }
 
         var infos: Array'Info

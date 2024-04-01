@@ -1,9 +1,7 @@
 using Core.Reflection
 
 #[Swag.ExportType("methods")]
-struct X
-{
-}
+struct X {}
 
 impl X
 {

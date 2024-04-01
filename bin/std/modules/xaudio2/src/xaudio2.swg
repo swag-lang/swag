@@ -98,9 +98,7 @@ const XAUDIO2_LOG_LOCKS      = 0x0080     // Usage of critical sections and mute
 const XAUDIO2_LOG_MEMORY     = 0x0100     // Memory heap usage information.
 const XAUDIO2_LOG_STREAMING  = 0x1000     // Audio streaming information.
 
-struct XAUDIO2_EFFECT_CHAIN
-{
-}
+struct XAUDIO2_EFFECT_CHAIN {}
 
 struct XAUDIO2_PERFORMANCE_DATA
 {

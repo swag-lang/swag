@@ -7,9 +7,7 @@ const CmdIdCaptureDelay2 = "CmdIdCaptureDelay2"
 const CmdIdCaptureDelay5 = "CmdIdCaptureDelay5"
 const CmdIdCaptureDelay9 = "CmdIdCaptureDelay9"
 
-struct ActionDelay
-{
-}
+struct ActionDelay {}
 impl IActionUI for ActionDelay
 {
     mtd impl accept(cxt: ActionContext)->bool

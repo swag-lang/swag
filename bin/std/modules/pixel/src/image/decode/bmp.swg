@@ -47,9 +47,7 @@ struct FileHeader
     bfOffBits:       u32
 }
 
-public struct Decoder
-{
-}
+public struct Decoder {}
 
 public impl IImageDecoder for Decoder
 {

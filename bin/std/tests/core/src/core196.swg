@@ -1,8 +1,6 @@
 using Core, Swag
 
-struct My
-{
-}
+struct My {}
 
 var G = 0
 

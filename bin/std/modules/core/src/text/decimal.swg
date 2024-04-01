@@ -546,7 +546,7 @@ impl Decimal
         return cpt
     }
 
-    func floatBits(using self)->{b: u64, overflow: bool}
+    func floatBits(using self)->{ b: u64, overflow: bool }
     {
         const PowTab: [] s64 = [1, 3, 6, 9, 13, 16, 19, 23, 26]
         var mant:     u64

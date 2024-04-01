@@ -36,7 +36,7 @@ impl HashTable
         free()
     }
 
-    mtd opAffect(slice: const [..] {k: K, v: V})
+    mtd opAffect(slice: const [..] { k: K, v: V })
     {
         visit v: slice do
             add(v.k, v.v)

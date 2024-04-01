@@ -9,9 +9,7 @@ const CmdIdMoveSelTop1    = "CmdIdMoveSelTop1"
 const CmdIdMoveSelRight1  = "CmdIdMoveSelRight1"
 const CmdIdMoveSelBottom1 = "CmdIdMoveSelBottom1"
 
-struct ActionAlign
-{
-}
+struct ActionAlign {}
 impl IActionUI for ActionAlign
 {
     mtd impl accept(cxt: ActionContext)->bool

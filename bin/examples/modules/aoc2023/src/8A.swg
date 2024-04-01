@@ -39,7 +39,7 @@ func day8A()
     let lines    = assume File.readAllLines(dataPath)
 
     var instructions: string
-    var nodes:        Array'{left, right: u64}
+    var nodes:        Array'{ left, right: u64 }
     var nameToNode:   HashTable'(string, u64)
 
     var startNode, endNode: u64

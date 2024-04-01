@@ -15,7 +15,7 @@ struct Driver
     updateTh:                 Threading.Thread
     wakeupUpdate:             Sync.Event
     mutexVoicesToUpdate:      Sync.Mutex
-    voicesToUpdate:           Array'{voice: *Voice, command: UpdateCommand}
+    voicesToUpdate:           Array'{ voice: *Voice, command: UpdateCommand }
 
     mutexRecycleVoices:       Sync.Mutex
     activeVoices:             Array'(*Voice)
