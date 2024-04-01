@@ -26,10 +26,10 @@ struct FormText
 
     #[Serialization.NoSerialize]
     {
-        gizmo:           GizmoRect
-        isDirty:         bool
-        isDirtyFont:     bool
-        typeFace:        *TypeFace
+        gizmo:            GizmoRect
+        isDirty:          bool
+        isDirtyFont:      bool
+        typeFace:         *TypeFace
 
         cacheFace:        *TypeFace
         cachebSize:       f32
@@ -40,9 +40,9 @@ struct FormText
         cacheFontS:       FontFamilyStyle
         cacheBColorA:     u8
 
-        totalY:     f32
-        runes:      HashTable'(rune, FormTextRune)
-        paths:      Array'LinePathList
+        totalY:           f32
+        runes:            HashTable'(rune, FormTextRune)
+        paths:            Array'LinePathList
     }
 }
 

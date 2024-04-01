@@ -31,19 +31,19 @@ struct Capture
     // Dyn
     #[NoSerialize]
     {
-        changed:       bool
-        mouseMode:     MouseMode = None
-        editView:      *EditView
-        gizmo:         GizmoRect
-        undos:         ArrayPtr'Undo
-        nextUndo:      u64
-        hotForm:       u64 = Swag.U64.Max
-        selection:     Array'u64
-        paintRect:     Math.Rectangle
+        changed:               bool
+        mouseMode:             MouseMode = None
+        editView:              *EditView
+        gizmo:                 GizmoRect
+        undos:                 ArrayPtr'Undo
+        nextUndo:              u64
+        hotForm:               u64 = Swag.U64.Max
+        selection:             Array'u64
+        paintRect:             Math.Rectangle
 
-        backTexture:     Texture
-        snapX:           f32 = -1
-        snapY:           f32 = -1
+        backTexture:           Texture
+        snapX:                 f32 = -1
+        snapY:                 f32 = -1
 
         serialUndo:            u32
         serialBackTexture:     u32

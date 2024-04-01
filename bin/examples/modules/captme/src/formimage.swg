@@ -29,13 +29,13 @@ struct FormImage
         dirty:                bool
         isReadyToCapture:     bool
 
-        serial:          u32
-        stc:             s32
-        xc, yc:          s32
-        wc, hc:          s32
-        texture:         Texture
-        gizmo:           GizmoRect
-        textureKind:     FormImageKind = .Image
+        serial:               u32
+        stc:                  s32
+        xc, yc:               s32
+        wc, hc:               s32
+        texture:              Texture
+        gizmo:                GizmoRect
+        textureKind:          FormImageKind = .Image
     }
 }
 
