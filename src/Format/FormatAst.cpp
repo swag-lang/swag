@@ -16,20 +16,20 @@ Utf8 FormatAst::getUtf8() const
 
 bool FormatAst::hasEOLInside(AstNode* node)
 {
-    if (const auto parse = getTokenParse(node))
-    {
-        if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE | TOKEN_PARSE_EOL_AFTER))
-            return true;
-        if (!parse->comments.before.empty())
-            return true;
-        if (!parse->comments.justBefore.empty())
-            return true;
-        if (!parse->comments.after.empty())
-            return true;
-    }
-
     for (const auto s : node->children)
     {
+        if (const auto parse = getTokenParse(s))
+        {
+            if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE | TOKEN_PARSE_EOL_AFTER))
+                return true;
+            if (!parse->comments.before.empty())
+                return true;
+            if (!parse->comments.justBefore.empty())
+                return true;
+            if (!parse->comments.after.empty())
+                return true;
+        }
+
         if (hasEOLInside(s))
             return true;
     }

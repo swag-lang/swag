@@ -87,6 +87,10 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
 
 bool FormatAst::outputEnum(FormatContext& context, AstEnum* node)
 {
+    bool sameLine = false;
+    if (context.keepSameLineEnum)
+        sameLine = !hasEOLInside(node);
+
     concat->addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "enum");
     concat->addBlank();
@@ -102,10 +106,6 @@ bool FormatAst::outputEnum(FormatContext& context, AstEnum* node)
         SWAG_ASSERT(node->firstChild()->is(AstNodeKind::EnumType));
         SWAG_CHECK(outputNode(context, node->firstChild()));
     }
-
-    bool sameLine = false;
-    if (context.keepSameLineEnum)
-        sameLine = !hasEOLInside(node);
 
     if (!sameLine)
     {

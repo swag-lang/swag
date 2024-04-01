@@ -23,7 +23,11 @@ bool FormatAst::outputTupleDeclContent(const FormatContext& context, AstNode* no
     FormatContext cxt{context};
     cxt.alignVarDecl = false;
     concat->addChar('{');
+    if (!node->children.empty())
+        concat->addBlank();
     outputChildrenChar(cxt, node, ',');
+    if (!node->children.empty())
+        concat->addBlank();
     concat->addChar('}');
     beautifyAfter(context, node);
     return true;
