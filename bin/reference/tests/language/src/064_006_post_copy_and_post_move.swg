@@ -37,7 +37,7 @@ impl Vector3
     // 2. This will raw copy 'b' to 'a'.
     // 3. This will call 'opPostCopy' on 'a' if it exists.
     a = b
-    @assert(a.x == 101)     // +1 because of the call to opPostCopy
+    @assert(a.x == 101) // +1 because of the call to opPostCopy
     @assert(a.y == 201)
     @assert(a.z == 301)
 
@@ -47,7 +47,7 @@ impl Vector3
     // 3. This will call 'opPostMove' on 'a' if it exists
     // 4. This will reinitialize 'b' to the default values if 'opDrop' exists
     a =,move b
-    @assert(a.x == 102)     // +2 because of the call to opPostMove
+    @assert(a.x == 102) // +2 because of the call to opPostMove
     @assert(a.y == 202)
     @assert(a.z == 302)
 
@@ -59,8 +59,8 @@ impl Vector3
     // Do it when you know the state of 'a' and do not want an extra unnecessary call
     // (for example if 'a' is in an undetermined state).
 
-    a =,nodrop b            // Copy b to a without dropping 'a' first
-    a =,nodrop,move b       // Move b to a without dropping 'a' first
+    a =,nodrop b // Copy b to a without dropping 'a' first
+    a =,nodrop,move b // Move b to a without dropping 'a' first
 
     // For the 'move semantic', you can avoid the last reinitialization by using 'moveraw'. Of course, do this at your own risk, if you know that 'b' will never by dropped by the compiler or if you reinitialize its state yourself.
 
@@ -90,7 +90,7 @@ impl Vector3
         assignTo = from
     }
 
-    var a = Vector3{1, 2, 3}
+    var a  = Vector3{1, 2, 3}
     var b: Vector3
 
     // Call the 'copy' version of 'assign'.
