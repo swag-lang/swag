@@ -155,6 +155,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
             }
 
             varNode->addAstFlag(AST_DECL_USING);
+            FormatAst::inheritFormatBefore(this, varNode, &savedToken);
             return true;
         }
     }
