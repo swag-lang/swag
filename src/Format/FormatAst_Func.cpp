@@ -351,7 +351,8 @@ bool FormatAst::outputFuncCallParams(FormatContext& context, AstNode* node)
         }
 
         concat->addChar('|');
-        concat->addBlank();
+        if (!node->children.empty())
+            concat->addBlank();
     }
 
     SWAG_CHECK(outputChildrenChar(context, node, ','));
