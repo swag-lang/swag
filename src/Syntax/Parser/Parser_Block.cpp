@@ -536,6 +536,7 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0155, tokenParse.token.c_str())));
         node->label = tokenParse.token;
+        FormatAst::inheritFormatAfter(this, node, &tokenParse);
         SWAG_CHECK(eatToken());
     }
 
