@@ -379,7 +379,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 
         // Treat all
         {
-            ParserPushFreezeFormat sc(this);
+            ParserPushFreezeFormat ff(this);
             AstNode*               varExpr = nullptr;
             SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, &varExpr, forLet));
             leftNode->release();

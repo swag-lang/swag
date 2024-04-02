@@ -177,6 +177,7 @@ struct Parser
     bool doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result);
     bool doStruct(AstNode* parent, AstNode** result);
     bool doStructContent(AstStruct* structNode, SyntaxStructType structType);
+    bool doInterfaceMtdDecl(AstNode* parent, AstNode** result);
     bool doImpl(AstNode* parent, AstNode** result);
     bool doAssignmentExpression(AstNode* parent, AstNode** result);
     bool doExpressionListTuple(AstNode* parent, AstNode** result);
