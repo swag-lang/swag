@@ -95,7 +95,8 @@ Lambdas can have default parameters values.
 #test
 {
     {
-        let x = func(val = true) {
+        let x = func(val = true)
+        {
             @assert(val == true)
         }
 
@@ -105,7 +106,8 @@ Lambdas can have default parameters values.
     {
         var x: func(val: bool = true)
 
-        x = func(val) {
+        x = func(val)
+        {
             @assert(val == true)
         }
 
