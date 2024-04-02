@@ -3,7 +3,7 @@
 */
 #test
 {
-    enum RGB { R; G; B; }
+    enum RGB { R, G, B }
     @assert(RGB.R == 0)
 
     using RGB
@@ -32,8 +32,7 @@ You can declare a variable with `using` just before.
 */
 #test
 {
-    struct Point { x: s32; y: s32; }
-
+    struct Point { x: s32, y: s32 }
     using var pt: Point
     x = 1 // no need to specify 'pt'
     y = 2 // no need to specify 'pt'
@@ -42,14 +41,13 @@ You can declare a variable with `using` just before.
     @assert(pt.y == 2)
 }
 
-
 /**
 # For a function parameter
 `using` applied to a function parameter can be seen as the equivalent of the hidden `this` in C++.
 */
 #test
 {
-    struct Point { x: s32; y: s32; }
+    struct Point { x: s32, y: s32 }
 
     func setOne(using point: *Point)
     {
@@ -81,8 +79,8 @@ You can declare a variable with `using` just before.
 
     struct Point3
     {
-        using base: Point2
-        z: s32
+        using base:     Point2
+        z:              s32
     }
 
     // That way the content of the field can be referenced directly
