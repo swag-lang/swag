@@ -25,7 +25,7 @@ bool FormatAst::outputTupleDeclContent(const FormatContext& context, AstNode* no
     concat->addChar('{');
     if (!node->children.empty())
         concat->addBlank();
-    outputChildrenChar(cxt, node, ',');
+    outputChildrenChar(cxt, node, ',', 0, 0);
     if (!node->children.empty())
         concat->addBlank();
     concat->addChar('}');

@@ -238,7 +238,7 @@ bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_
     return true;
 }
 
-bool FormatAst::outputChildrenChar(FormatContext& context, AstNode* node, char c, uint32_t start)
+bool FormatAst::outputChildrenChar(FormatContext& context, AstNode* node, char betweenChar, char endChar, uint32_t start)
 {
     if (!node)
         return true;
@@ -253,8 +253,8 @@ bool FormatAst::outputChildrenChar(FormatContext& context, AstNode* node, char c
 
         if (!first)
         {
-            if (c)
-                concat->addChar(c);
+            if (betweenChar)
+                concat->addChar(betweenChar);
             concat->addBlank();
         }
 
@@ -262,12 +262,15 @@ bool FormatAst::outputChildrenChar(FormatContext& context, AstNode* node, char c
         first = false;
     }
 
+    if (!first && endChar)
+        concat->addChar(endChar);
+
     return true;
 }
 
 bool FormatAst::outputChildrenBlank(FormatContext& context, AstNode* node, uint32_t start)
 {
-    return outputChildrenChar(context, node, 0, start);
+    return outputChildrenChar(context, node, 0, 0, start);
 }
 
 bool FormatAst::collectChildrenToAlign(FormatContext&                       context,

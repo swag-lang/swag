@@ -73,16 +73,29 @@ bool FormatAst::outputStatement(FormatContext& context, AstNode* node)
 
     if (node->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY))
     {
-        concat->addEol();
-        concat->addIndent(context.indent);
-        concat->addChar('{');
-        concat->addEol();
-        context.indent++;
-        SWAG_CHECK(outputChildrenEol(context, node));
-        context.indent--;
-        concat->addIndent(context.indent);
-        concat->addChar('}');
-        concat->addEol();
+        if (context.canConcatStatement && !hasEOLInside(node))
+        {
+            concat->addChar('{');
+            if (!node->children.empty())
+                concat->addBlank();
+            SWAG_CHECK(outputChildrenChar(context, node, ';', ';', 0));
+            if (!node->children.empty())
+                concat->addBlank();
+            concat->addChar('}');
+        }
+        else
+        {
+            concat->addEol();
+            concat->addIndent(context.indent);
+            concat->addChar('{');
+            concat->addEol();
+            context.indent++;
+            SWAG_CHECK(outputChildrenEol(context, node));
+            context.indent--;
+            concat->addIndent(context.indent);
+            concat->addChar('}');
+            concat->addEol();
+        }
     }
     else
     {

@@ -129,7 +129,7 @@ bool FormatAst::outputEnum(FormatContext& context, AstEnum* node)
         concat->addBlank();
         concat->addChar('{');
         concat->addBlank();
-        SWAG_CHECK(outputChildrenChar(cxt, node, ',', first));
+        SWAG_CHECK(outputChildrenChar(cxt, node, ',', 0, first));
         concat->addBlank();
         concat->addChar('}');
         concat->addEol();

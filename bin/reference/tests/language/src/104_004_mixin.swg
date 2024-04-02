@@ -4,9 +4,7 @@ A mixin is declared like a function, with the attribute `#[Swag.Mixin]`.
 #test
 {
     #[Swag.Mixin]
-    func myMixin()
-    {
-    }
+    func myMixin() {}
 }
 
 /**
@@ -21,8 +19,8 @@ A mixin function is inserted in the scope of the caller.
     }
 
     var a = 0
-    myMixin()   // Equivalent to 'a += 1'
-    myMixin()   // Equivalent to 'a += 1'
+    myMixin() // Equivalent to 'a += 1'
+    myMixin() // Equivalent to 'a += 1'
     @assert(a == 2)
 }
 
@@ -38,8 +36,8 @@ This behaves like a function, so you can add parameters, some default values, yo
     }
 
     var a = 0
-    myMixin()   // Equivalent to 'a += 1'
-    myMixin(2)  // Equivalent to 'a += 2'
+    myMixin() // Equivalent to 'a += 1'
+    myMixin(2) // Equivalent to 'a += 2'
     @assert(a == 3)
 }
 
@@ -60,7 +58,7 @@ A mixin accepts a special parameter of type `code`. This represents a Swag **pie
     var a = 0
 
     // You can use '#code' to specify some code when calling the mixin function.
-    doItTwice(#code {a += 1;})
+    doItTwice(#code { a += 1; })
     @assert(a == 2)
 }
 
@@ -103,8 +101,8 @@ You can use the special name `#alias` to create a named alias for an identifier.
     }
 
     var a, b = 0
-    inc10(|a|)  // Passing alias name 'a'
-    inc10(|b|)  // Passing alias name 'b'
+    inc10(|a|) // Passing alias name 'a'
+    inc10(|b|) // Passing alias name 'b'
     @assert(a == b and b == 10)
 }
 
@@ -116,11 +114,11 @@ You can use the special name `#alias` to create a named alias for an identifier.
         let #alias0 = value
     }
 
-    setVar(|a| 10)  // Passing alias name 'a'
-    setVar(|b| 20)  // Passing alias name 'b'
+    setVar(|a| 10) // Passing alias name 'a'
+    setVar(|b| 20) // Passing alias name 'b'
     @assert(a == 10)
     @assert(b == 20)
-    setVar(30)      // No typealias, so name is #alias0
+    setVar(30) // No typealias, so name is #alias0
     @assert(#alias0 == 30)
 }
 

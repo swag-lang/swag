@@ -14,7 +14,7 @@ bool FormatAst::outputFuncDeclParameters(FormatContext& context, AstNode* parame
     }
 
     concat->addChar('(');
-    SWAG_CHECK(outputChildrenChar(context, parameters, ',', isMethod ? 1 : 0));
+    SWAG_CHECK(outputChildrenChar(context, parameters, ',', 0, isMethod ? 1 : 0));
     concat->addChar(')');
     beautifyAfter(context, parameters);
 
@@ -201,13 +201,33 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
     }
 
     // Content, empty function
-    if (funcDecl->subDecl.empty() &&
+    if (context.keepSameLineFuncBody &&
+        funcDecl->subDecl.empty() &&
         funcDecl->content &&
         funcDecl->content->children.empty() &&
         !funcDecl->hasAttribute(ATTRIBUTE_SHARP_FUNC))
     {
         concat->addBlank();
         CONCAT_FIXED_STR(concat, "{}");
+        concat->addEol();
+    }
+
+    // Content on same line
+    else if (context.keepSameLineFuncBody &&
+             funcDecl->subDecl.empty() &&
+             funcDecl->content &&
+             funcDecl->content->is(AstNodeKind::Statement) &&
+             !funcDecl->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
+             !hasEOLInside(funcDecl->content))
+    {
+        FormatContext cxt{context};
+        cxt.canConcatStatement = true;
+        concat->addBlank();
+        concat->addChar('{');
+        concat->addBlank();
+        SWAG_CHECK(outputChildrenChar(cxt, funcDecl->content, ';', ';', 0));
+        concat->addBlank();
+        concat->addChar('}');
         concat->addEol();
     }
 
@@ -322,7 +342,10 @@ bool FormatAst::outputLambdaExpression(FormatContext& context, AstNode* node)
     }
     else
     {
-        SWAG_CHECK(outputNode(context, funcDecl->content));
+        FormatContext cxt{context};
+        cxt.canConcatStatement = context.keepSameLineFuncBody;
+        concat->addBlank();
+        SWAG_CHECK(outputNode(cxt, funcDecl->content));
     }
 
     return true;
@@ -355,7 +378,7 @@ bool FormatAst::outputFuncCallParams(FormatContext& context, AstNode* node)
             concat->addBlank();
     }
 
-    SWAG_CHECK(outputChildrenChar(context, node, ','));
+    SWAG_CHECK(outputChildrenChar(context, node, ',', 0, 0));
     return true;
 }
 

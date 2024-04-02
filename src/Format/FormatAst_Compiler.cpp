@@ -252,9 +252,11 @@ bool FormatAst::outputCompilerCode(FormatContext& context, AstNode* node)
     }
     else
     {
+        FormatContext cxt{context};
+        cxt.canConcatStatement = context.keepSameCodeBlock;
         CONCAT_FIXED_STR(concat, "#code");
         concat->addBlank();
-        SWAG_CHECK(outputNode(context, node->firstChild()));
+        SWAG_CHECK(outputNode(cxt, node->firstChild()));
         concat->removeLastChar('\n');
     }
 

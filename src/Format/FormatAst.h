@@ -36,6 +36,7 @@ struct FormatContext
     bool     outputComments      = false;
     bool     outputBlankLines    = false;
     bool     beautifyAfter       = true;
+    bool     canConcatStatement  = false;
 
     bool     alignVarDecl                           = false;
     bool     alignEnumValue                         = false;
@@ -46,6 +47,8 @@ struct FormatContext
     uint32_t alignStructVarTypeAddBlanks            = 0;
     bool     keepSameLineStruct                     = false;
     bool     keepSameLineEnum                       = false;
+    bool     keepSameLineFuncBody                   = false;
+    bool     keepSameCodeBlock                      = false;
 
     void setDefaultBeautify()
     {
@@ -55,6 +58,8 @@ struct FormatContext
         alignStructVarTypeAddBlanks            = 4;
         keepSameLineStruct                     = true;
         keepSameLineEnum                       = true;
+        keepSameLineFuncBody                   = true;
+        keepSameCodeBlock                      = true;
     }
 };
 
@@ -88,7 +93,7 @@ struct FormatAst
     static bool     hasEOLInside(AstNode* node);
     static AstNode* convertNode(FormatContext& context, AstNode* node);
     auto            outputChildrenEol(FormatContext& context, AstNode* node, uint32_t start = 0) -> bool;
-    bool            outputChildrenChar(FormatContext& context, AstNode* node, char c, uint32_t start = 0);
+    bool            outputChildrenChar(FormatContext& context, AstNode* node, char betweenChar, char endChar, uint32_t start);
     bool            outputChildrenBlank(FormatContext& context, AstNode* node, uint32_t start = 0);
     bool            outputStatement(FormatContext& context, AstNode* node);
     bool            outputDoStatement(FormatContext& context, AstNode* node);

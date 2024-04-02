@@ -142,7 +142,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
 
         case AstNodeKind::FuncDeclParams:
             concat->addChar('(');
-            outputChildrenChar(context, node, ',');
+            outputChildrenChar(context, node, ',', 0, 0);
             concat->addChar(')');
             break;
 
@@ -157,7 +157,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             concat->addBlank();
             concat->addString(node->token.text);
             concat->addChar('(');
-            outputChildrenChar(context, attrDecl->parameters, ',');
+            outputChildrenChar(context, attrDecl->parameters, ',', 0, 0);
             concat->addChar(')');
             forceEOL = true;
             break;
@@ -357,7 +357,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
 
             CONCAT_FIXED_STR(concat, "using");
             concat->addBlank();
-            SWAG_CHECK(outputChildrenChar(context, node, ','));
+            SWAG_CHECK(outputChildrenChar(context, node, ',', 0, 0));
             break;
 
         case AstNodeKind::Return:
@@ -380,7 +380,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::IntrinsicProp:
             concat->addString(node->token.text);
             concat->addChar('(');
-            SWAG_CHECK(outputChildrenChar(context, node, ','));
+            SWAG_CHECK(outputChildrenChar(context, node, ',', 0, 0));
             concat->addChar(')');
             break;
 
