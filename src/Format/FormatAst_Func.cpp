@@ -222,12 +222,14 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
     {
         FormatContext cxt{context};
         cxt.canConcatStatement = true;
+        concat->noEol++;
         concat->addBlank();
         concat->addChar('{');
         concat->addBlank();
         SWAG_CHECK(outputChildrenChar(cxt, funcDecl->content, ';', ';', 0));
         concat->addBlank();
         concat->addChar('}');
+        concat->noEol--;
         concat->addEol();
     }
 

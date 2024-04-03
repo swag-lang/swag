@@ -78,7 +78,9 @@ bool FormatAst::outputStatement(FormatContext& context, AstNode* node)
             concat->addChar('{');
             if (!node->children.empty())
                 concat->addBlank();
+            concat->noEol++;
             SWAG_CHECK(outputChildrenChar(context, node, ';', ';', 0));
+            concat->noEol--;
             if (!node->children.empty())
                 concat->addBlank();
             concat->addChar('}');

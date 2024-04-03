@@ -24,6 +24,7 @@ struct FormatConcat : Concat
     uint32_t blank    = 0;
     uint32_t column   = 0;
     uint32_t indent   = 0;
+    uint32_t noEol    = 0;
 };
 
 #define CONCAT_FIXED_STR(__concat, __str)                                         \

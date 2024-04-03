@@ -48,7 +48,7 @@ void FormatConcat::alignToColumn(uint32_t destCol)
 
 void FormatConcat::addEol()
 {
-    if (eol)
+    if (eol || noEol)
         return;
     addChar('\n');
 }
@@ -139,6 +139,7 @@ void FormatConcat::clear()
     eol      = 0;
     blank    = 0;
     column   = 0;
+    noEol    = 0;
 }
 
 Utf8 FormatConcat::getUtf8() const

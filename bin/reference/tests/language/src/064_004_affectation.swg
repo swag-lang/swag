@@ -11,7 +11,7 @@ struct Struct
 impl Struct
 {
     #[Swag.Overload]
-    mtd opAffect(value: s32)  { x, y = value; }
+    mtd opAffect(value: s32) { x, y = value; }
     #[Swag.Overload]
     mtd opAffect(value: bool) { x, y = value ? 1 : 0; }
 }
@@ -43,14 +43,12 @@ If `opAffect` is supposed to initialize the full content of the struct, you can 
 
 impl Struct
 {
-    #[Swag.Complete]
-    #[Swag.Overload]
-    mtd opAffect(value: u64)  { x, y, z = cast(s32) value; }
+    #[Swag.Complete, Swag.Overload]
+    mtd opAffect(value: u64) { x, y, z = cast(s32) value; }
 
     // For later
-    #[Swag.Implicit]
-    #[Swag.Overload]
-    mtd opAffect(value: u16)  { x, y = cast(s32) value; }
+    #[Swag.Implicit, Swag.Overload]
+    mtd opAffect(value: u16) { x, y = cast(s32) value; }
 }
 
 /**
@@ -104,6 +102,6 @@ impl Vector2
     }
 }
 
-const One: Vector2 = 1.0    // This will call opAffect(1.0) at compile time
+const One: Vector2 = 1.0 // This will call opAffect(1.0) at compile time
 #assert One.x == 1.0
 #assert One.y == 1.0
