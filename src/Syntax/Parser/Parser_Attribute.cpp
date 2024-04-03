@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Format/FormatAst.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
@@ -84,6 +85,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
             }
         }
 
+        FormatAst::inheritFormatAfter(this, attrBlockNode, &tokenParse);
         attrBlockNode->token.endLocation = tokenParse.token.endLocation;
         SWAG_CHECK(eatToken(TokenId::SymRightSquare, "to end the attribute list"));
         if (single)

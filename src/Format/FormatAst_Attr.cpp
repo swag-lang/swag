@@ -142,6 +142,7 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
     SWAG_CHECK(outputAttrUse(context, node, hasSomething));
     if (!hasSomething)
         return true;
+    beautifyAfter(context, node);
     concat->addEol();
     concat->addIndent(context.indent);
     SWAG_CHECK(outputNode(context, node->content));
