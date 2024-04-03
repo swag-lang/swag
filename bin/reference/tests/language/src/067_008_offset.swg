@@ -29,10 +29,10 @@ An example to reference a field by index.
 {
     struct MyStruct
     {
-        x, y, z:    f32
+        x, y, z: f32
 
         #[Swag.Offset("x")]
-        idx:        [3] f32
+        idx: [3] f32
     }
 
     var v: MyStruct

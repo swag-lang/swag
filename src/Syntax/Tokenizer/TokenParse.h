@@ -46,6 +46,7 @@ constexpr TokenParseFlags TOKEN_PARSE_BLANK_BEFORE      = 0x00000004;
 constexpr TokenParseFlags TOKEN_PARSE_BLANK_AFTER       = 0x00000008;
 constexpr TokenParseFlags TOKEN_PARSE_BLANK_LINE_BEFORE = 0x00000010;
 constexpr TokenParseFlags TOKEN_PARSE_ONE_LINE_COMMENT  = 0x00000020;
+constexpr TokenParseFlags TOKEN_PARSE_SEMI_COL          = 0x00000040;
 
 struct TokenComment
 {

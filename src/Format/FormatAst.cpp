@@ -118,10 +118,13 @@ void FormatAst::inheritFormatAfter(const Parser* parser, AstNode* node, TokenPar
         return;
 
     if (tokenParse->flags.has(TOKEN_PARSE_EOL_AFTER) ||
+        tokenParse->is(TokenId::SymSemiColon) ||
         !tokenParse->comments.after.empty())
     {
         const auto tp = getOrCreateTokenParse(node);
         tp->flags.add(tokenParse->flags);
+        if(tokenParse->is(TokenId::SymSemiColon))
+            tp->flags.add(TOKEN_PARSE_SEMI_COL);
         tp->comments.after = std::move(tokenParse->comments.after);
     }
 }

@@ -48,6 +48,7 @@ struct FormatContext
     bool     keepSameLineStruct                     = false;
     bool     keepSameLineEnum                       = false;
     bool     keepSameLineFuncBody                   = false;
+    bool     keepSameLineAffect                     = false;
     bool     keepSameCodeBlock                      = false;
 
     void setDefaultBeautify()
@@ -59,6 +60,7 @@ struct FormatContext
         keepSameLineStruct                     = true;
         keepSameLineEnum                       = true;
         keepSameLineFuncBody                   = true;
+        keepSameLineAffect                     = true;
         keepSameCodeBlock                      = true;
     }
 };

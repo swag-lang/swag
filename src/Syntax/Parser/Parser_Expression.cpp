@@ -1636,6 +1636,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         {
             SWAG_CHECK(doSingleIdentifierAffect(parent, result, leftNode, opFlags, opAttrFlags, savedToken));
             FormatAst::inheritFormatBefore(this, *result, leftNode);
+            FormatAst::inheritFormatAfter(this, *result, &tokenParse);
         }
     }
     else
@@ -1648,6 +1649,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
 
     if (tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::KwdDo))
         SWAG_CHECK(eatSemiCol("left expression"));
+
     return true;
 }
 
