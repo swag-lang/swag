@@ -180,6 +180,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         }
     }
 
+    SWAG_CHECK(eatFormat(implNode));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[impl]] body"));
     return true;
 }
@@ -344,6 +345,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[struct]] body"));
         while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(contentNode, structType, &dummyResult));
+        SWAG_CHECK(eatFormat(contentNode));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[struct]] body"));
     }
 
@@ -441,6 +443,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         SWAG_CHECK(eatToken());
         while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(stmt, structType, &dummyResult));
+        SWAG_CHECK(eatFormat(stmt));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the struct body"));
         parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
         return true;

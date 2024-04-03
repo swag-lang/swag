@@ -349,6 +349,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             ParserPushScope scoped(this, newScope);
             while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
                 SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
+            SWAG_CHECK(eatFormat(namespaceNode));
             SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the namespace body"));
         }
         else if (tokenParse.is(TokenId::SymSemiColon))
@@ -377,6 +378,7 @@ bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the statement block"));
     while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
         SWAG_CHECK(doTopLevelInstruction(node, &dummyResult));
+    SWAG_CHECK(eatFormat(node));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
     return true;
 }

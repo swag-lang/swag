@@ -82,6 +82,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[enum]] body"));
     while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
         SWAG_CHECK(doEnumContent(enumNode, &dummyResult));
+    SWAG_CHECK(eatFormat(enumNode));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[enum]] body"));
     return true;
 }
@@ -96,6 +97,7 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
             SWAG_CHECK(doEnumContent(stmt, &dummyResult));
+        SWAG_CHECK(eatFormat(stmt));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
         return true;
     }

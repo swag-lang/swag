@@ -184,8 +184,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         switchNode->cases.push_back(defaultCase);
     }
 
+    SWAG_CHECK(eatFormat(switchNode));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[switch]] body"));
-
     return true;
 }
 
