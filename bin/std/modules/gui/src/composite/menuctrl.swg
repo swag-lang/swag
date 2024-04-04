@@ -26,9 +26,9 @@ public struct PopupMenuItem
     checked:          bool
     hidden:           bool
 
-    aniSel:           BlendColor{speed: 10}
-    aniText:          BlendColor{speed: 10}
-    aniRightText:     BlendColor{speed: 10}
+    aniSel:           BlendColor{speed: 50}
+    aniText:          BlendColor{speed: 50}
+    aniRightText:     BlendColor{speed: 50}
 }
 
 public struct MenuCtrl
