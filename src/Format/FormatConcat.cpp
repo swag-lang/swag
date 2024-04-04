@@ -88,6 +88,8 @@ bool FormatConcat::removeLastChar(char c)
 
 void FormatConcat::addIndent(uint32_t num)
 {
+    if(!eol)
+        return;
     if (indent == num)
         return;
 
