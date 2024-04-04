@@ -123,7 +123,7 @@ void FormatAst::inheritFormatAfter(const Parser* parser, AstNode* node, TokenPar
     {
         const auto tp = getOrCreateTokenParse(node);
         tp->flags.add(tokenParse->flags);
-        if(tokenParse->is(TokenId::SymSemiColon))
+        if (tokenParse->is(TokenId::SymSemiColon))
             tp->flags.add(TOKEN_PARSE_SEMI_COL);
         tp->comments.after = std::move(tokenParse->comments.after);
     }
@@ -149,6 +149,18 @@ TokenParse* FormatAst::getOrCreateTokenParse(AstNode* node)
     }
 
     return tp;
+}
+
+void FormatAst::addEOLOrSemi(const FormatContext& context, const AstNode* child) const
+{
+    const auto parse = getTokenParse(child);
+    if (context.keepSameLineAffect && parse && !parse->flags.has(TOKEN_PARSE_EOL_AFTER) && parse->flags.has(TOKEN_PARSE_SEMI_COL))
+    {
+        concat->addChar(';');
+        concat->addBlank();
+    }
+    else
+        concat->addEol();
 }
 
 bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_t start)
@@ -235,7 +247,7 @@ bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_
 
         concat->addIndent(context.indent);
         SWAG_CHECK(outputNode(context, child));
-        concat->addEol();
+        addEOLOrSemi(context, child);
     }
 
     return true;

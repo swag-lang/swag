@@ -94,6 +94,7 @@ struct FormatAst
 
     static bool     hasEOLInside(AstNode* node);
     static AstNode* convertNode(FormatContext& context, AstNode* node);
+    void            addEOLOrSemi(const FormatContext& context, const AstNode* child) const;
     auto            outputChildrenEol(FormatContext& context, AstNode* node, uint32_t start = 0) -> bool;
     bool            outputChildrenChar(FormatContext& context, AstNode* node, char betweenChar, char endChar, uint32_t start);
     bool            outputChildrenBlank(FormatContext& context, AstNode* node, uint32_t start = 0);

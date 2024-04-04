@@ -84,15 +84,7 @@ bool FormatAst::outputChildrenAffectEqual(FormatContext& context, AstNode* node,
     {
         concat->addIndent(context.indent);
         SWAG_CHECK(outputAffectOp(context, child, maxLenName));
-
-        const auto parse = getTokenParse(child);
-        if (context.keepSameLineAffect && parse && !parse->flags.has(TOKEN_PARSE_EOL_AFTER) && parse->flags.has(TOKEN_PARSE_SEMI_COL))
-        {
-            concat->addChar(';');
-            concat->addBlank();
-        }
-        else
-            concat->addEol();
+        addEOLOrSemi(context, child);
     }
 
     return true;

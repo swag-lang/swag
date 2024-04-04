@@ -102,7 +102,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
             SWAG_CHECK(outputVarContent(cxt, varNode, 0, maxLenName, maxLenType));
         }
 
-        concat->addEol();
+        addEOLOrSemi(context, child);
     }
 
     return true;
