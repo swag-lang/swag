@@ -8,7 +8,7 @@ To create a new script file with the special extension 'swgs':
     => script file 'myScript.swgs' has been created
     => type 'swag script -f:myScript.swgs' to run that script
 
-This will generate a simple file with a '#dependency' block and one '#run' compiler function.
+This will generate a simple file with a '#dependency' block and the program entry point '#main'.
 
 ```swag
 // Swag script file
@@ -18,7 +18,7 @@ This will generate a simple file with a '#dependency' block and one '#run' compi
     // #import "core" location="swag@std"
 }
 
-#run
+#main
 {
     @print("Hello world !\n")
 }
@@ -34,7 +34,7 @@ You can also just specify the script file **with the extension** as a command.
     $ swag myScript.swgs
     Hello world !
 
-You will find a bunch of small scripts in `swag/bin/examples/scripts`.
+As examples, you will find a bunch of small scripts in `swag/bin/examples/scripts`.
 To run one of them from the console, go to the folder and type for example `swag flappy.swgs`.
 
 ---

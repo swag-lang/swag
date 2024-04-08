@@ -110,7 +110,7 @@
 <div class="code-block"><span class="SCde">$ swag new -f:myScript
 =&gt; script file 'myScript.swgs' has been created
 =&gt; type 'swag script -f:myScript.swgs' to run that script</span></div>
-<p>This will generate a simple file with a <span class="code-inline">#dependency</span> block and one <span class="code-inline">#run</span> compiler function. </p>
+<p>This will generate a simple file with a <span class="code-inline">#dependency</span> block and the program entry point <span class="code-inline">#main</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Swag script file</span>
 <span class="SFct">#dependencies</span>
 {
@@ -118,7 +118,7 @@
     <span class="SCmt">// #import "core" location="swag@std"</span>
 }
 
-<span class="SFct">#run</span>
+<span class="SFct">#main</span>
 {
     <span class="SItr">@print</span>(<span class="SStr">"Hello world !\n"</span>)
 }</span></div>
@@ -128,7 +128,7 @@ Hello world !</span></div>
 <p>You can also just specify the script file <b>with the extension</b> as a command. </p>
 <div class="code-block"><span class="SCde">$ swag myScript.swgs
 Hello world !</span></div>
-<p>You will find a bunch of small scripts in <span class="code-inline">swag/bin/examples/scripts</span>. To run one of them from the console, go to the folder and type for example <span class="code-inline">swag flappy.swgs</span>. </p>
+<p>As examples, you will find a bunch of small scripts in <span class="code-inline">swag/bin/examples/scripts</span>. To run one of them from the console, go to the folder and type for example <span class="code-inline">swag flappy.swgs</span>. </p>
 <p style="white-space: break-spaces"><div align="center">
     <div class="round-button">
         <a href="flappy.php" class="no-decoration">Flappy Bird</a>
@@ -157,7 +157,7 @@ Hello world !</span></div>
 <p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <span class="code-inline">@breakpoint()</span> in your code when you want the debugger to trigger. </p>
 <p>The debugger command set is inspired by <a href="https://docs.python.org/3/library/pdb.html">Pdb</a>, the python debugger. </p>
 <div class="swag-watermark">
-Generated on 08-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
+Generated on 08-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>
