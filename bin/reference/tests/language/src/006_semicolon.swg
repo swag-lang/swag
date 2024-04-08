@@ -1,3 +1,5 @@
+#global skipfmt
+
 /**
 In Swag, there's no need to end a statement with `;` like in C/C++. Most of the time a `end of line` is enough.
 */

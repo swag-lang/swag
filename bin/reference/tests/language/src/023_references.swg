@@ -22,8 +22,8 @@ When an affectation is done outside of an initialization, you will change the po
 
 #test
 {
-    var x = 42
-    var myRef: &s32 = &x // Note here that the reference is no more 'const'
+    var x      = 42
+    var myRef: &s32 = &x     // Note here that the reference is no more 'const'
     @assert(myRef == 42)
 
     // Here we will change the pointed value 'x'
@@ -76,7 +76,8 @@ func toto(x: const &s32)
 This is usefull for structs for examples, as you can directly pass a literal to a function.
 */
 
-struct MyStruct {x: s32, y: s32 }  // Our first little struct !
+// Our first little struct !
+struct MyStruct { x: s32, y: s32 }
 
 #test
 {
@@ -85,7 +86,7 @@ struct MyStruct {x: s32, y: s32 }  // Our first little struct !
     titi2({5, 6})
 }
 
-func titi0(param: const &{x: s32, y: s32})
+func titi0(param: const &{ x: s32, y: s32 })
 {
     // We'll see later about tuples and naming of fields.
     @assert(param.item0 == 1)
@@ -95,7 +96,7 @@ func titi0(param: const &{x: s32, y: s32})
 /**
 Note that declaring a tuple type or a struct type is equivalent to a constant reference.
 */
-func titi1(param: {x: s32, y: s32})
+func titi1(param: { x: s32, y: s32 })
 {
     @assert(param.x == 3)
     @assert(param.y == 4)

@@ -1,3 +1,5 @@
+#global skipfmt
+
 /**
 `for` accepts a *start statement*, an *expression to test*, and an *ending statement*. This is in fact the same as the C/C++ `for`.
 */

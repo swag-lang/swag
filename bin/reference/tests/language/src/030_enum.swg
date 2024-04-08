@@ -1,3 +1,5 @@
+#global skipfmt
+
 /**
 Enums values, unlike C/C++, can end with `;` or `,` or an `eol`.
 */
