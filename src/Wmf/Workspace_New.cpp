@@ -8,6 +8,8 @@
 
 void newScriptFile()
 {
+    if (Path{g_CommandLine.fileName}.extension().empty())
+        g_CommandLine.fileName.append(".swgs");
     std::ofstream file(g_CommandLine.fileName);
     if (!file.is_open())
     {
