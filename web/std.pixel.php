@@ -1404,7 +1404,7 @@
 <span id="Pixel_Bmp_Decoder_IImageDecoder_canDecode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IImageDecoder.</span><span class="api-item-title-strong">canDecode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\bmp.swg#L56" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\bmp.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1416,7 +1416,7 @@
 <span id="Pixel_Bmp_Decoder_IImageDecoder_decode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IImageDecoder.</span><span class="api-item-title-strong">decode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\bmp.swg#L61" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\bmp.swg#L59" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1439,7 +1439,7 @@
 <span id="Pixel_Bmp_Encoder_IImageEncoder_canEncode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IImageEncoder.</span><span class="api-item-title-strong">canEncode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\encode\bmp.swg#L10" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\encode\bmp.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1451,7 +1451,7 @@
 <span id="Pixel_Bmp_Encoder_IImageEncoder_encode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IImageEncoder.</span><span class="api-item-title-strong">encode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\encode\bmp.swg#L15" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\encode\bmp.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5626,7 +5626,7 @@
 <span id="Pixel_NativeRenderOgl_createContext"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">NativeRenderOgl.</span><span class="api-item-title-strong">createContext</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5639,7 +5639,7 @@
 <span id="Pixel_NativeRenderOgl_dropContext"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">NativeRenderOgl.</span><span class="api-item-title-strong">dropContext</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L49" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5651,7 +5651,7 @@
 <span id="Pixel_NativeRenderOgl_setCurrentContext"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">NativeRenderOgl.</span><span class="api-item-title-strong">setCurrentContext</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L56" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5663,7 +5663,7 @@
 <span id="Pixel_NativeRenderOgl_swapBuffers"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">NativeRenderOgl.</span><span class="api-item-title-strong">swapBuffers</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L62" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L60" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8664,7 +8664,7 @@
 <span id="Pixel_RenderingContext"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Pixel.</span><span class="api-item-title-strong">RenderingContext</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L8" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.win32.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9496,7 +9496,7 @@
 <span id="Pixel_Tga_Decoder_IImageDecoder_canDecode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IImageDecoder.</span><span class="api-item-title-strong">canDecode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\tga.swg#L111" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\tga.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9508,7 +9508,7 @@
 <span id="Pixel_Tga_Decoder_IImageDecoder_decode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IImageDecoder.</span><span class="api-item-title-strong">decode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\tga.swg#L116" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\tga.swg#L114" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9531,7 +9531,7 @@
 <span id="Pixel_Tga_Encoder_IImageEncoder_canEncode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IImageEncoder.</span><span class="api-item-title-strong">canEncode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\encode\tga.swg#L10" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\encode\tga.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9543,7 +9543,7 @@
 <span id="Pixel_Tga_Encoder_IImageEncoder_encode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IImageEncoder.</span><span class="api-item-title-strong">encode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\encode\tga.swg#L15" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\encode\tga.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9853,7 +9853,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 30-03-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
+Generated on 08-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.31.0</div>
 </div>
 </div>
 </div>
