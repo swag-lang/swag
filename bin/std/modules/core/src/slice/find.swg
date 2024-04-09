@@ -46,6 +46,31 @@ func(T, V) findLinear(values: const [..] T, value: V)->u64
     return Swag.U64.Max
 }
 
+// Returns true if the given slice contains the sub slice 'value'
+func(T) findSlice(values, value: const [..] T)->u32
+{
+    if @countof(value) > @countof(values) do
+        return Swag.U32.Max
+
+    loop it0: 0 to @countof(values) - @countof(value)
+    {
+        var ok = true
+        visit c, it1: value
+        {
+            if values[it0 + it1] != c
+            {
+                ok = false
+                break
+            }
+        }
+
+        if ok do
+            return acast it0
+    }
+
+    return Swag.U32.Max
+}
+
 // Returns true if the given slice contains the 'value'.
 // The slice must be sorted in ascending order
 #[Swag.ConstExpr]
@@ -55,7 +80,7 @@ func(T, V) containsSorted(values: const [..] T, value: V)->bool
 }
 
 // Returns true if the given slice contains the 'value'
-#[Swag.ConstExpr]
+#[Swag.ConstExpr, Swag.Overload]
 func(T, V) contains(values: const [..] T, value: V)->bool
 {
     visit v: values

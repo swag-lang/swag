@@ -648,9 +648,10 @@ impl String
     #[Overload]
     {
         // Returns true if the string contains 'what'
-        mtd const contains(what: u8)->bool     => Utf8.contains(toSlice(), what)
-        mtd const contains(what: rune)->bool   => Utf8.contains(toSlice(), what)
-        mtd const contains(what: string)->bool => Utf8.contains(toSlice(), what)
+        mtd const contains(what: u8)->bool            => Utf8.contains(toSlice(), what)
+        mtd const contains(what: rune)->bool          => Utf8.contains(toSlice(), what)
+        mtd const contains(what: string)->bool        => Utf8.contains(toSlice(), what)
+        mtd const contains(what: const [..] u8)->bool => Utf8.contains(toSlice(), what)
 
         // Return true if the string starts with 'str'
         mtd const startsWith(str: string, comparisonType = Utf8.ComparisonType.Latin1)->bool => Utf8.startsWith(toSlice(), str, comparisonType)
