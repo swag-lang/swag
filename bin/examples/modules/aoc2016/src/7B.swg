@@ -36,13 +36,12 @@ func day7B() assume
 
         loop i: 0 until @countof(outside) - 2
         {
-            if outside[i] == outside[i + 2] and outside[i] != outside[i + 1]
+            if outside[i] == outside[i + 2] and
+               outside[i] != outside[i + 1] and
+               inside.contains([outside[i + 1], outside[i], outside[i + 1]])
             {
-                if inside.contains([outside[i + 1], outside[i], outside[i + 1]])
-                {
-                    total += 1
-                    break
-                }
+                total += 1
+                break
             }
         }
     }
