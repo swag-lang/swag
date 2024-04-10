@@ -857,8 +857,9 @@ void ByteCodeDebugger::tokenizeCommand(const Utf8& line, BcDbgCommandArg& arg)
             c.trim();
         arg.cmd = arg.split[0];
 
-        for (const auto& cmd : arg.split)
+        for (uint32_t i = 1; i < arg.split.size(); i++)
         {
+            const auto& cmd = arg.split[i];
             arg.cmdExpr += cmd;
             arg.cmdExpr += " ";
         }

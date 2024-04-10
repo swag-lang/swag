@@ -192,15 +192,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
             if (expr.empty())
                 return BcDbgCommandResult::BadArguments;
         }
-        else
-        {
-            expr.clear();
-            for (uint32_t i = 1; i < arg.split.size(); i++)
-                expr += arg.split[i] + " ";
-            expr.trim();
-            if (expr.empty())
-                return BcDbgCommandResult::BadArguments;
-        }
     }
 
     EvaluateResult res;
