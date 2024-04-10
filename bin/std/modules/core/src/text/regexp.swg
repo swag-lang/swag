@@ -278,30 +278,32 @@ impl RegExp
         return internalGrep(str)
     }
 
+    // Try to match the start of the string, and returns the matched value or null.
+    public mtd partialMatch(str: string)->string
+    {
+        let beg  = @dataof(str)
+        let last = beg + @countof(str)
+
+        let res = matchInternal(@mkstring(beg, last - beg), true)
+        if res.ok do
+            return @mkstring(beg, res.buf - beg)
+        return null
+    }
+
     mtd internalGrep(str: string)->string
     {
-        var beg   = @dataof(str)
-        var copy  = @dataof(str)
-        let pzEnd = beg + @countof(str)
+        var beg  = @dataof(str)
+        let last = beg + @countof(str)
 
-        var end: const *u8
-
-        while !end and (copy != pzEnd)
+        while beg != last
         {
-            let res = matchInternal(@mkstring(beg, pzEnd - beg), true)
-            end = res.buf
-            if !end or end == beg
-            {
-                copy += 1
-                beg = copy
-                end = null
-            }
+            let res = matchInternal(@mkstring(beg, last - beg), true)
+            if res.ok do
+                return @mkstring(beg, res.buf - beg)
+            beg += 1
         }
 
-        if !end do
-            return null
-
-        return @mkstring(beg, end - beg)
+        return null
     }
 
     func setCapture(state: *DfaState, rank: s32, str: string)

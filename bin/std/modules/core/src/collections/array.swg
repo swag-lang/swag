@@ -319,6 +319,13 @@ impl Array
         count = 0
     }
 
+    // Fill the array with the given value
+    mtd fill(value: T)
+    {
+        loop i: count do
+            buffer[i] = value
+    }
+
     // Add a copy of one element at the end of the array
     mtd addOnce(value: T)
         #validif Reflection.canCopy(T)
