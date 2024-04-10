@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Syntax/SyntaxJob.h"
 #include "Format/FormatAst.h"
 #include "Format/FormatJob.h"
 #include "Jobs/LoadSourceFileJob.h"
+#include "Syntax/SyntaxJob.h"
 #include "Syntax/Parser/Parser.h"
 #include "Wmf/SourceFile.h"
 

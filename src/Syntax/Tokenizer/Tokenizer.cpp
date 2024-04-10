@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Syntax/Tokenizer/Tokenizer.h"
 #include "Main/Statistics.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorContext.h"
 #include "Report/ErrorIds.h"
+#include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
 #ifdef SWAG_STATS
 #include "Core/Timer.h"

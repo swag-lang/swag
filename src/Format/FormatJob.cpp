@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Format/FormatJob.h"
 #include "Format/FormatAst.h"
+#include "Format/FormatJob.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
 #include "Report/Report.h"
-#include "Syntax/Parser/Parser.h"
 #include "Syntax/SyntaxJob.h"
+#include "Syntax/Parser/Parser.h"
 #include "Wmf/Module.h"
 
 bool FormatJob::writeResult(const Path& fileName, const Utf8& content)

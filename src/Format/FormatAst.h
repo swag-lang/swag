@@ -170,7 +170,7 @@ struct FormatAst
     bool outputTryAssume(FormatContext& context, const AstNode* node);
     bool outputCatch(FormatContext& context, const AstNode* node);
     bool outputImpl(FormatContext& context, AstNode* node);
-    bool outputIdentifier(FormatContext& context, AstNode* node);
+    bool outputIdentifier(const FormatContext& context, AstNode* node);
     bool outputIdentifierRef(FormatContext& context, AstNode* node);
     bool outputArrayPointerSlicing(FormatContext& context, AstNode* node);
     bool outputArrayPointerIndex(FormatContext& context, AstNode* node);

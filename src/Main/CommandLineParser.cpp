@@ -1,15 +1,15 @@
 #include "pch.h"
-#include "Main/CommandLineParser.h"
 #include "Main/CommandLine.h"
+#include "Main/CommandLineParser.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
 #include "Report/Report.h"
 
 CommandLineArgument::CommandLineArgument(const char* commands, CommandLineType type, void* buffer, const char* param, const char* help) :
-    buffer{buffer},
-    param{param},
-    help{help},
-    type{type}
+                                                                                                                                        buffer{buffer},
+                                                                                                                                        param{param},
+                                                                                                                                        help{help},
+                                                                                                                                        type{type}
 {
     Vector<Utf8> all;
     Utf8::tokenize(commands, ' ', all);

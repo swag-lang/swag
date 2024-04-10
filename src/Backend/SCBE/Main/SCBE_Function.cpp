@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "SCBE_Macros.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/SCBE/Main/SCBE.h"
@@ -6,7 +7,6 @@
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
-#include "SCBE_Macros.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"

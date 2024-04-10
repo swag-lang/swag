@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Run/ByteCodeRunContext.h"
+#include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Report/Log.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/AstNode.h"

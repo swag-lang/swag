@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Jobs/ModuleGenOutputJob.h"
 #include "Backend/Backend.h"
+#include "Jobs/ModuleGenOutputJob.h"
 #include "Main/Statistics.h"
 #include "Wmf/Module.h"
 #ifdef SWAG_STATS

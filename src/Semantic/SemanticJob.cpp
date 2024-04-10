@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Semantic/SemanticJob.h"
 #include "Main/Statistics.h"
 #include "Semantic/Scope.h"
+#include "Semantic/SemanticJob.h"
 #include "Syntax/AstFlags.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"

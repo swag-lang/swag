@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
-#include "Report/Log.h"
 #include "Main/CommandLine.h"
+#include "Report/Log.h"
 
 Log g_Log;
 

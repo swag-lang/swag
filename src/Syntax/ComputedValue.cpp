@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Syntax/ComputedValue.h"
 #include "Semantic/DataSegment.h"
+#include "Syntax/ComputedValue.h"
 
 void* ComputedValue::getStorageAddr() const
 {

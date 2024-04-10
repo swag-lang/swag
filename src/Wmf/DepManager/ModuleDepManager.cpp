@@ -1,7 +1,6 @@
 #include "pch.h"
-#include "Wmf/DepManager/ModuleDepManager.h"
-#include "Core/Timer.h"
 #include "FetchModuleFileSystemJob.h"
+#include "Core/Timer.h"
 #include "Jobs/ModuleBuildJob.h"
 #include "Main/Statistics.h"
 #include "Report/Diagnostic.h"
@@ -12,6 +11,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/Workspace.h"
+#include "Wmf/DepManager/ModuleDepManager.h"
 
 ModuleDepManager* g_ModuleCfgMgr = nullptr;
 

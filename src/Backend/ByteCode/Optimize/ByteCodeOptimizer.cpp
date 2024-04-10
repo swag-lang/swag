@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 #include "ByteCodeOptimizerJob.h"
+#include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 #include "Main/Statistics.h"
 #include "Syntax/AstNode.h"
 #include "Threading/ThreadManager.h"

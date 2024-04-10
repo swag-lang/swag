@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Semantic.h"
+#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"

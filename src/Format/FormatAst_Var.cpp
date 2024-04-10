@@ -108,7 +108,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
     return true;
 }
 
-bool FormatAst::outputVarName(FormatContext& context, const AstVarDecl* varNode) const
+bool FormatAst::outputVarName(FormatContext&, const AstVarDecl* varNode) const
 {
     if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
     {

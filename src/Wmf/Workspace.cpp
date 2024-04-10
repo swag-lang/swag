@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Wmf/Workspace.h"
 #include "Jobs/ModuleBuildJob.h"
 #include "Os/Os.h"
 #include "Report/ErrorIds.h"
@@ -7,6 +6,7 @@
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Threading/ThreadManager.h"
+#include "Wmf/Workspace.h"
 
 Workspace* g_Workspace = nullptr;
 

@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Report/ErrorContext.h"
 #include "Report/Diagnostic.h"
+#include "Report/ErrorContext.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
 #include "Semantic/Scope.h"
 #include "Wmf/SourceFile.h"
 
 PushErrCxtStep::PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const std::function<Utf8()>& err, bool locIsToken) :
-    cxt{context}
+                                                                                                                                             cxt{context}
 {
     ErrorCxtStep expNode;
     expNode.node       = node;

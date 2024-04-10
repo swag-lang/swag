@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Scope.h"
+#include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstNode.h"
 

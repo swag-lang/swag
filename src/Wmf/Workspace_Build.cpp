@@ -15,9 +15,9 @@
 #include "Syntax/SyntaxJob.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Threading/ThreadManager.h"
-#include "Wmf/DepManager/ModuleDepManager.h"
 #include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
+#include "Wmf/DepManager/ModuleDepManager.h"
 
 void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)
 {

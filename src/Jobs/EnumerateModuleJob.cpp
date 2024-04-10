@@ -7,9 +7,9 @@
 #include "Report/Report.h"
 #include "Syntax/SyntaxJob.h"
 #include "Threading/ThreadManager.h"
-#include "Wmf/DepManager/ModuleDepManager.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
+#include "Wmf/DepManager/ModuleDepManager.h"
 
 SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
                                                 Vector<SourceFile*>& allFiles,

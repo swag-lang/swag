@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Syntax/Naming.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/AstNode.h"
+#include "Syntax/Naming.h"
 
 Utf8 Naming::kindName(const SymbolName* symbol, const AstNode* node, const TypeInfo* typeInfo, OverloadFlags overFlags, Utf8& article)
 {

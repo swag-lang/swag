@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Backend/ByteCode/Gen/ByteCodeGenJob.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Backend/ByteCode/Gen/ByteCodeGenJob.h"
 #include "Syntax/AstFlags.h"
 #include "Wmf/Module.h"
 

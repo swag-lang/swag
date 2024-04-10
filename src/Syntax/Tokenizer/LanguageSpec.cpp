@@ -1,8 +1,8 @@
 // ReSharper disable StringLiteralTypo
 #include "pch.h"
-#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Parser/Parser.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 
 LanguageSpec* g_LangSpec = nullptr;
 

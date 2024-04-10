@@ -1,6 +1,6 @@
 #pragma once
-#include "Backend/ByteCode/ByteCode.h"
 #include "MapRegTo.h"
+#include "Backend/ByteCode/ByteCode.h"
 #include "Threading/Job.h"
 
 struct ByteCode;

@@ -90,7 +90,7 @@ bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, AstNo
     return true;
 }
 
-bool FormatAst::outputCompilerSpecialValue(FormatContext& context, AstNode* node) const
+bool FormatAst::outputCompilerSpecialValue(FormatContext&, AstNode* node) const
 {
     switch (node->token.id)
     {
@@ -125,7 +125,7 @@ bool FormatAst::outputCompilerSpecialValue(FormatContext& context, AstNode* node
             CONCAT_FIXED_STR(concat, "#cfg");
             break;
         default:
-            Report::internalError(const_cast<AstNode*>(node), "FormatAst::outputNode, unknown compiler function");
+            Report::internalError(node, "FormatAst::outputNode, unknown compiler function");
     }
 
     return true;
@@ -199,7 +199,7 @@ bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputCompilerExport(FormatContext& context, AstNode* node) const
+bool FormatAst::outputCompilerExport(FormatContext&, AstNode* node) const
 {
     const auto decl = castAst<AstCompilerImport>(node, AstNodeKind::CompilerImport);
     CONCAT_FIXED_STR(concat, "#import");

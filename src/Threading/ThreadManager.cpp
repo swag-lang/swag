@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Threading/ThreadManager.h"
 #include "Backend/Context.h"
 #include "Syntax/AstNode.h"
 #include "Threading/JobThread.h"
+#include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 #if !defined(SWAG_DEV_MODE)

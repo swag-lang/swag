@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Wmf/SourceFile.h"
 #include "Main/Statistics.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
 #include "Semantic/Scope.h"
 #include "Wmf/Module.h"
+#include "Wmf/SourceFile.h"
 #ifdef SWAG_STATS
 #include "Core/Timer.h"
 #endif

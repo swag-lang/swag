@@ -1,8 +1,8 @@
 #pragma once
 #include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/ByteCode/ByteCodeOp.h"
-#include "Backend/ByteCode/Profiler/Profiler.h"
 #include "Backend/ByteCode/Register.h"
+#include "Backend/ByteCode/Profiler/Profiler.h"
 #include "Threading/Mutex.h"
 #include "Threading/RaceCondition.h"
 
