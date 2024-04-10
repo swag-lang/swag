@@ -477,16 +477,17 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             break;
 
         case DebugStepMode::NextInstructionStepIn:
-            stepCount--;
-            if (stepCount <= 0)
+            if (stepCount == 0)
             {
-                stepCount        = 0;
                 context->debugOn = true;
                 stepMode         = DebugStepMode::None;
                 bcMode           = true;
             }
             else
+            {
+                stepCount--;
                 zapCurrentIp = true;
+            }
             break;
 
         case DebugStepMode::NextInstructionStepOut:
@@ -497,16 +498,17 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
                 break;
             }
 
-            stepCount--;
-            if (stepCount <= 0)
+            if (stepCount == 0)
             {
-                stepCount        = 0;
                 context->debugOn = true;
                 stepMode         = DebugStepMode::None;
                 bcMode           = true;
             }
             else
+            {
+                stepCount--;
                 zapCurrentIp = true;
+            }
             break;
 
         case DebugStepMode::NextLineStepIn:
@@ -523,19 +525,16 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             {
                 zapCurrentIp = true;
             }
+            else if (stepCount == 0)
+            {
+                context->debugOn = true;
+                stepMode         = DebugStepMode::None;
+            }
             else
             {
                 stepCount--;
-                if (stepCount <= 0)
-                {
-                    context->debugOn = true;
-                    stepMode         = DebugStepMode::None;
-                }
-                else
-                {
-                    zapCurrentIp           = true;
-                    stepLastLocation->line = loc.location->line;
-                }
+                zapCurrentIp           = true;
+                stepLastLocation->line = loc.location->line;
             }
             break;
         }
@@ -603,19 +602,16 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             {
                 zapCurrentIp = true;
             }
+            else if (stepCount == 0)
+            {
+                context->debugOn = true;
+                stepMode         = DebugStepMode::None;
+            }
             else
             {
                 stepCount--;
-                if (stepCount <= 0)
-                {
-                    context->debugOn = true;
-                    stepMode         = DebugStepMode::None;
-                }
-                else
-                {
-                    stepLastLocation->line = loc.location->line;
-                    zapCurrentIp           = true;
-                }
+                stepLastLocation->line = loc.location->line;
+                zapCurrentIp           = true;
             }
             break;
         }
