@@ -249,6 +249,7 @@
     <ClCompile Include="..\src\Wmf\Workspace_New.cpp" />
     <ClCompile Include="..\src\Wmf\Workspace_Script.cpp" />
     <ClCompile Include="..\src\Wmf\Workspace_Tags.cpp" />
+    <ClCompile Include="..\src\Format\FormatAst_Enum.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/pch.h" />
@@ -377,7 +378,7 @@
     <ClInclude Include="..\src\Wmf\ModuleManager.h" />
     <ClInclude Include="..\src\Wmf\SourceFile.h" />
     <ClInclude Include="..\src\Wmf\Workspace.h" />
-    <ClInclude Include="..\src\Backend\ByteCode\Gen\Backend/ByteCode/Gen/ByteCodeGenJob.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Gen\ByteCodeGenJob.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />

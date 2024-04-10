@@ -70,7 +70,7 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
                 continue;
 
             // If my dependent node has already been computed, then just get the result, everything has already
-            // been flatten
+            // been flattened
             {
                 SharedLock lk(node->mutex);
                 if (node->hasSemFlag(SEMFLAG_BYTECODE_RESOLVED))
@@ -238,7 +238,7 @@ JobResult ByteCodeGenJob::execute()
     }
 
     // Wait for other dependent nodes to be generated
-    // That way we are sure that every one has registered depend nodes, so the full dependency graph is completed
+    // That way we are sure that every one has registered dependent nodes, so the full dependency graph is completed
     // for the next pass
     if (pass == Pass::WaitForDependenciesGenerated)
     {
