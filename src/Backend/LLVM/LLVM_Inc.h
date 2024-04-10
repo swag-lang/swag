@@ -1,3 +1,5 @@
+// ReSharper disable CppUnusedIncludeDirective
+// ReSharper disable CppInconsistentNaming
 #pragma once
 
 #pragma warning(push, 0)

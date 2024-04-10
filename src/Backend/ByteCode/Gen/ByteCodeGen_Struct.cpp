@@ -517,7 +517,7 @@ void ByteCodeGen::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStru
     }
 }
 
-bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_INIT))
@@ -579,7 +579,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->hasFlag(TYPEINFO_SPEC_OP_GENERATED));
-        generateStruct_opInit(context, typeStructVar);
+        generateStructOpInit(context, typeStructVar);
         YIELD();
     }
 
@@ -793,7 +793,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     return true;
 }
 
-bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+bool ByteCodeGen::generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_DROP))
@@ -859,7 +859,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->hasFlag(TYPEINFO_SPEC_OP_GENERATED));
-        generateStruct_opDrop(context, typeStructVar);
+        generateStructOpDrop(context, typeStructVar);
         YIELD();
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             needDrop = true;
@@ -904,7 +904,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
     return true;
 }
 
-bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+bool ByteCodeGen::generateStructOpPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_POST_COPY))
@@ -971,7 +971,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->hasFlag(TYPEINFO_SPEC_OP_GENERATED));
-        generateStruct_opPostCopy(context, typeStructVar);
+        generateStructOpPostCopy(context, typeStructVar);
         YIELD();
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             needPostCopy = true;
@@ -1016,7 +1016,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
     return true;
 }
 
-bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+bool ByteCodeGen::generateStructOpPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_POST_MOVE))
@@ -1081,7 +1081,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->hasFlag(TYPEINFO_SPEC_OP_GENERATED));
-        generateStruct_opPostMove(context, typeStructVar);
+        generateStructOpPostMove(context, typeStructVar);
         YIELD();
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             needPostMove = true;
@@ -1135,13 +1135,13 @@ bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
     generateStructAlloc(context, typeInfoStruct);
     YIELD();
 
-    SWAG_CHECK(generateStruct_opInit(context, typeInfoStruct));
+    SWAG_CHECK(generateStructOpInit(context, typeInfoStruct));
     YIELD();
-    SWAG_CHECK(generateStruct_opDrop(context, typeInfoStruct));
+    SWAG_CHECK(generateStructOpDrop(context, typeInfoStruct));
     YIELD();
-    SWAG_CHECK(generateStruct_opPostCopy(context, typeInfoStruct));
+    SWAG_CHECK(generateStructOpPostCopy(context, typeInfoStruct));
     YIELD();
-    SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
+    SWAG_CHECK(generateStructOpPostMove(context, typeInfoStruct));
     YIELD();
 
     const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -1485,7 +1485,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             SWAG_ASSERT(typeStruct->opInit || typeStruct->opUserInitFct);
             generateStructAlloc(context, typeStruct);
             SWAG_ASSERT(context->result == ContextResult::Done);
-            SWAG_CHECK(generateStruct_opInit(context, typeStruct));
+            SWAG_CHECK(generateStructOpInit(context, typeStruct));
             SWAG_ASSERT(context->result == ContextResult::Done);
 
             // Constant loop
@@ -1672,21 +1672,21 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
         case AstNodeKind::Drop:
             generateStructAlloc(context, typeStruct);
             YIELD();
-            generateStruct_opDrop(context, typeStruct);
+            generateStructOpDrop(context, typeStruct);
             YIELD();
             somethingToDo = typeStruct->opDrop || typeStruct->opUserDropFct;
             break;
         case AstNodeKind::PostCopy:
             generateStructAlloc(context, typeStruct);
             YIELD();
-            generateStruct_opPostCopy(context, typeStruct);
+            generateStructOpPostCopy(context, typeStruct);
             YIELD();
             somethingToDo = typeStruct->opPostCopy || typeStruct->opUserPostCopyFct;
             break;
         case AstNodeKind::PostMove:
             generateStructAlloc(context, typeStruct);
             YIELD();
-            generateStruct_opPostMove(context, typeStruct);
+            generateStructOpPostMove(context, typeStruct);
             YIELD();
             somethingToDo = typeStruct->opPostMove || typeStruct->opUserPostMoveFct;
             break;

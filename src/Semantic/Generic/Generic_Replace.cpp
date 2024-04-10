@@ -5,7 +5,6 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
-#include "Syntax/Naming.h"
 
 bool Generic::replaceGenericParameters(OneMatch&                     match,
                                        VectorNative<TypeInfoParam*>& typeGenericParameters,

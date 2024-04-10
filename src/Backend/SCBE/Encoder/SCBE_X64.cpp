@@ -520,9 +520,9 @@ void SCBE_X64::emitLoad32Immediate(CPURegister reg, uint32_t value)
     concat.addU32(value);
 }
 
-void SCBE_X64::emitLoad64Immediate(CPURegister reg, uint64_t value, bool force64bits)
+void SCBE_X64::emitLoad64Immediate(CPURegister reg, uint64_t value, bool force64Bits)
 {
-    if (force64bits)
+    if (force64Bits)
     {
         emitREX(concat, CPUBits::B64, RAX, reg);
         concat.addU8(0xB8 | reg);

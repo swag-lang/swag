@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Format/FormatAst.h"
 #include "Format/FormatJob.h"
 #include "Jobs/LoadSourceFileJob.h"
 #include "Syntax/SyntaxJob.h"

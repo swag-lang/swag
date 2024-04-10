@@ -32,7 +32,7 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
         {
             cpt = 0;
             g_Log.setColor(LogColor::Gray);
-            static auto MSG = "-- Type <RET> for more, 'q' to quit, 'c' to continue without paging --";
+            static constexpr auto MSG = "-- Type <RET> for more, 'q' to quit, 'c' to continue without paging --";
             g_Log.write(MSG);
             bool ctrl, shift;
             int  c = 0;

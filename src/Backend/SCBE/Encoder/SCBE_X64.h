@@ -1,3 +1,4 @@
+// ReSharper disable CppInconsistentNaming
 #pragma once
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
 
@@ -60,7 +61,7 @@ struct SCBE_X64 : SCBE_CPU
     void emitLoad8Immediate(CPURegister reg, uint8_t value);
     void emitLoad16Immediate(CPURegister reg, uint16_t value);
     void emitLoad32Immediate(CPURegister reg, uint32_t value);
-    void emitLoad64Immediate(CPURegister reg, uint64_t value, bool force64bits = false);
+    void emitLoad64Immediate(CPURegister reg, uint64_t value, bool force64Bits = false);
     void emitLoadNImmediate(CPURegister reg, uint64_t value, CPUBits numBits);
 
     void emitLoad8Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);

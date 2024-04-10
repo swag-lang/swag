@@ -305,12 +305,12 @@ namespace ByteCodeGen
     void        emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, const AstArrayPointerSlicing* node);
 
     void generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
-    bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
     void emitOpCallUserArrayOfStruct(const ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset);
     void emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, EmitOpUserKind kind);
-    bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
-    bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
-    bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
+    bool generateStructOpInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
+    bool generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
+    bool generateStructOpPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
+    bool generateStructOpPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
     bool emitCopyStruct(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
 
     void     transformResultToLinear2(const ByteCodeGenContext* context, RegisterList& resultRegisterRC);

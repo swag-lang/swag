@@ -448,8 +448,8 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
     lastInlineSourceFile = nullptr;
 
     AstFuncDecl*        decl;
-    llvm::DISubprogram* SP = startFunction(bc, &decl);
-    func->setSubprogram(SP);
+    llvm::DISubprogram* sp = startFunction(bc, &decl);
+    func->setSubprogram(sp);
 
     TypeInfoFuncAttr* typeFunc = bc->typeInfoFunc;
     llvm::DIFile*     file     = getOrCreateFile(bc->sourceFile);
@@ -534,7 +534,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             const auto    child     = decl->parameters->lastChild();
             const auto&   loc       = child->token.startLocation;
             const auto    typeParam = typeFunc->parameters.back()->typeInfo;
-            const auto    scope     = SP;
+            const auto    scope     = sp;
             llvm::DIType* type      = getType(typeParam, file);
 
             llvm::DILocalVariable* var0 = dbgBuilder->createAutoVariable(scope, child->token.c_str(), file, loc.line + 1, type, !isOptimized);
@@ -554,7 +554,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             const auto  child     = decl->parameters->children[i];
             const auto& loc       = child->token.startLocation;
             const auto  typeParam = typeFunc->parameters[i]->typeInfo;
-            const auto  scope     = SP;
+            const auto  scope     = sp;
             const auto  location  = debugLocGet(loc.line + 1, loc.column, scope);
             const auto  allocA    = allocaParams[i];
 

@@ -531,7 +531,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetZeroAtPointer8:
             {
@@ -578,7 +578,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::ClearRR8:
             {
@@ -621,7 +621,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::MakeMutableSegPointer:
             {
@@ -667,7 +667,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8:
             {
@@ -701,7 +701,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8x2:
             {
@@ -754,7 +754,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetIncFromStack64:
             {
@@ -805,7 +805,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CopyStack8:
             {
@@ -836,7 +836,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicDbgAlloc:
             {
@@ -1792,7 +1792,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMinusEqS8:
             case ByteCodeOp::AffectOpMinusEqS8_Safe:
@@ -1966,7 +1966,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
             case ByteCodeOp::AffectOpPlusEqS8_Safe:
@@ -2140,7 +2140,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMulEqS8:
             case ByteCodeOp::AffectOpMulEqS8_Safe:
@@ -2314,7 +2314,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpDivEqS8:
             {
@@ -2536,7 +2536,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpModuloEqS8:
             {
@@ -2714,7 +2714,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpAndEqU8:
             {
@@ -2748,7 +2748,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpOrEqU8:
             {
@@ -2779,7 +2779,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftLeftEqS8:
                 emitShiftEqLogical(context, builder, allocR, ip, 8, true);
@@ -2806,7 +2806,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitShiftEqLogical(context, builder, allocR, ip, 64, true);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftRightEqU8:
                 emitShiftEqLogical(context, builder, allocR, ip, 8, false);
@@ -2834,7 +2834,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitShiftRightEqArithmetic(context, builder, allocR, ip, 64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpXorEqU8:
             {
@@ -2868,7 +2868,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CompareOpGreaterS8:
             {
@@ -3194,7 +3194,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CompareOp3Way8:
             {
@@ -3273,7 +3273,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CompareOpEqual8:
             {
@@ -3373,7 +3373,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::TestNotZero8:
             {
@@ -3404,7 +3404,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpDyn8:
             case ByteCodeOp::JumpDyn16:
@@ -3484,7 +3484,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::Jump:
             {
@@ -4188,7 +4188,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CopyRBtoRRRet:
                 getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_B), ip->b, allocR, allocResult);
@@ -4207,7 +4207,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicCompilerError:
             {
@@ -4367,7 +4367,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::InternalFailedAssume:
                 emitCall(buildParameters, g_LangSpec->name_priv_failedAssume, allocR, allocT, {ip->a.u32}, {});
@@ -4445,7 +4445,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitCall(buildParameters, g_LangSpec->name_priv_stackTrace, allocR, allocT, {ip->a.u32}, {});
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::NegBool:
             {
@@ -4536,7 +4536,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CastBool8:
             {
@@ -4787,7 +4787,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRR:
                 getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
@@ -4841,7 +4841,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocRR);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetParam8:
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 1));
@@ -4863,7 +4863,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64));
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetParam64DeRef8:
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, 0, 1));
@@ -4878,7 +4878,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, 0, 8));
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetIncParam64DeRef8:
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64, 1));
@@ -4893,7 +4893,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64, 8));
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::ZeroToTrue:
             {
@@ -4936,7 +4936,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::PushRVParam:
                 pushRVParams.push_back({ip->a.u32, ip->b.u32});
@@ -5174,7 +5174,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 //////////////////////////////
                 builder.SetInsertPoint(blockLambdaNative);
                 {
-                    llvm::FunctionType*        FT = nullptr;
+                    llvm::FunctionType*        ft = nullptr;
                     auto                       v1 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
                     VectorNative<llvm::Value*> fctParams;
                     emitCallParameters(buildParameters, allocR, allocRR, typeFuncCall, fctParams, pushRAParams, {});
@@ -5199,28 +5199,28 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         VectorNative<llvm::Value*> fctParamsLocal;
                         emitCallParameters(buildParameters, allocR, allocRR, typeFuncCall, fctParamsLocal, pushRAParams, {}, true);
 
-                        FT            = getOrCreateFuncType(buildParameters, typeFuncCall, true);
-                        auto l_PT     = llvm::PointerType::getUnqual(FT);
-                        auto l_r1     = builder.CreateIntToPtr(v1, l_PT);
-                        auto l_result = builder.CreateCall(FT, l_r1, {fctParamsLocal.begin(), fctParamsLocal.end()});
-                        SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, l_result));
+                        ft           = getOrCreateFuncType(buildParameters, typeFuncCall, true);
+                        auto lPt     = llvm::PointerType::getUnqual(ft);
+                        auto lR1     = builder.CreateIntToPtr(v1, lPt);
+                        auto lResult = builder.CreateCall(ft, lR1, {fctParamsLocal.begin(), fctParamsLocal.end()});
+                        SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, lResult));
                         builder.CreateBr(blockNext);
 
                         // Closure call. Normal call, as the type contains the first parameter.
                         builder.SetInsertPoint(blockClosure);
-                        FT            = getOrCreateFuncType(buildParameters, typeFuncCall);
-                        auto c_PT     = llvm::PointerType::getUnqual(FT);
-                        auto c_r1     = builder.CreateIntToPtr(v1, c_PT);
-                        auto c_result = builder.CreateCall(FT, c_r1, {fctParams.begin(), fctParams.end()});
-                        SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, c_result));
+                        ft           = getOrCreateFuncType(buildParameters, typeFuncCall);
+                        auto cPT     = llvm::PointerType::getUnqual(ft);
+                        auto cR1     = builder.CreateIntToPtr(v1, cPT);
+                        auto cResult = builder.CreateCall(ft, cR1, {fctParams.begin(), fctParams.end()});
+                        SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, cResult));
                         builder.CreateBr(blockNext);
                     }
                     else
                     {
-                        FT                = getOrCreateFuncType(buildParameters, typeFuncCall);
-                        auto PT           = llvm::PointerType::getUnqual(FT);
+                        ft                = getOrCreateFuncType(buildParameters, typeFuncCall);
+                        auto PT           = llvm::PointerType::getUnqual(ft);
                         auto r1           = builder.CreateIntToPtr(v1, PT);
-                        auto returnResult = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
+                        auto returnResult = builder.CreateCall(ft, r1, {fctParams.begin(), fctParams.end()});
                         SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, returnResult));
                         builder.CreateBr(blockNext);
                     }
@@ -5237,8 +5237,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                     auto ra = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst4_i32});
                     auto r1 = builder.CreateLoad(PTR_I8_TY(), ra);
-                    auto PT = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
-                    auto r2 = builder.CreatePointerCast(r1, PT);
+                    auto pt = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
+                    auto r2 = builder.CreatePointerCast(r1, pt);
 
                     if (typeFuncCall->isClosure())
                     {
@@ -5283,7 +5283,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pushRVParams.clear();
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicMulAddF32:
             {

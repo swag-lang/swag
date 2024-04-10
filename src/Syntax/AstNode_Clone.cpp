@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Semantic/Generic/Generic.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"

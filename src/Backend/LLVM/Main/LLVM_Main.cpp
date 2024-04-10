@@ -23,10 +23,10 @@ void LLVM::emitOS(const BuildParameters& buildParameters) const
             params.push_back(PTR_I8_TY());
             params.push_back(I32_TY());
             params.push_back(PTR_I8_TY());
-            llvm::FunctionType* FT = llvm::FunctionType::get(I32_TY(), {params.begin(), params.end()}, false);
-            llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "_DllMainCRTStartup", modu);
-            llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
-            builder.SetInsertPoint(BB);
+            llvm::FunctionType* ft = llvm::FunctionType::get(I32_TY(), {params.begin(), params.end()}, false);
+            llvm::Function*     f  = llvm::Function::Create(ft, llvm::Function::ExternalLinkage, "_DllMainCRTStartup", modu);
+            llvm::BasicBlock*   bb = llvm::BasicBlock::Create(context, "entry", f);
+            builder.SetInsertPoint(bb);
             builder.CreateRet(builder.getInt32(1));
         }
 
@@ -93,10 +93,10 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // void mainCRTStartup()
-    llvm::FunctionType* FT = llvm::FunctionType::get(VOID_TY(), {}, false);
-    llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, entryPoint, modu);
-    llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
-    builder.SetInsertPoint(BB);
+    llvm::FunctionType* ft = llvm::FunctionType::get(VOID_TY(), {}, false);
+    llvm::Function*     f  = llvm::Function::Create(ft, llvm::Function::ExternalLinkage, entryPoint, modu);
+    llvm::BasicBlock*   bb = llvm::BasicBlock::Create(context, "entry", f);
+    builder.SetInsertPoint(bb);
 
     // Reserve room to pass parameters to embedded intrinsics
     const auto allocT = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
@@ -290,8 +290,8 @@ void LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
-    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
-    builder.SetInsertPoint(BB);
+    llvm::BasicBlock* bb = llvm::BasicBlock::Create(context, "entry", fct);
+    builder.SetInsertPoint(bb);
 
     const auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt32(module->typesSliceOffset));
     builder.CreateRet(TO_PTR_I8(r1));
@@ -313,8 +313,8 @@ void LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
-    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
-    builder.SetInsertPoint(BB);
+    llvm::BasicBlock* bb = llvm::BasicBlock::Create(context, "entry", fct);
+    builder.SetInsertPoint(bb);
 
     // __process_infos = *processInfos;
     {
@@ -353,8 +353,8 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
-    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
-    builder.SetInsertPoint(BB);
+    llvm::BasicBlock* bb = llvm::BasicBlock::Create(context, "entry", fct);
+    builder.SetInsertPoint(bb);
 
     // __process_infos = *processInfos;
     {

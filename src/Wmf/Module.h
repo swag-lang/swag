@@ -5,7 +5,6 @@
 #include "Core/Path.h"
 #include "Jobs/DependentJobs.h"
 #include "Semantic/DataSegment.h"
-#include "Semantic/Symbol/SymTable.h"
 #include "Semantic/Type/TypeGen.h"
 #include "Syntax/Tokenizer/Token.h"
 #include "Threading/JobGroup.h"
@@ -33,20 +32,21 @@ enum class ModuleBuildPass
     Invalid
 };
 
-struct Utf8;
-struct SourceFile;
-struct SymTable;
-struct Utf8;
-struct Workspace;
+struct AstFuncDecl;
 struct AstNode;
-struct Scope;
-struct ByteCode;
-struct Job;
 struct Backend;
 struct BuildCfg;
-struct SourceLocation;
-struct AstFuncDecl;
+struct ByteCode;
+struct Job;
 struct Module;
+struct Scope;
+struct SourceFile;
+struct SourceLocation;
+struct SymTable;
+struct TypeInfoStruct;
+struct Utf8;
+struct Utf8;
+struct Workspace;
 enum class ModuleBuildPass;
 
 enum class GlobalVarKind

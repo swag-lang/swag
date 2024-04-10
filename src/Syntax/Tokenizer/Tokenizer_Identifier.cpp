@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Semantic/Semantic.h"
 #include "Semantic/Error/SemanticError.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 

@@ -1,6 +1,5 @@
 // ReSharper disable StringLiteralTypo
 #include "pch.h"
-#include "Semantic/Type/TypeManager.h"
 #include "Syntax/Parser/Parser.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 

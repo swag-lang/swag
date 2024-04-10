@@ -3,7 +3,7 @@
 
 #undef SWAG_ERROR
 #define SWAG_ERROR(__enum) #__enum
-const char* g_EI[] = {
+const char* g_ErrList[] = {
 #include "ErrorList.h"
 };
 
@@ -1094,7 +1094,7 @@ Utf8 formErr(ErrorID idx, ...)
 {
     va_list args;
     va_start(args, idx);
-    auto result = form("[%s] %s", g_EI[idx], g_E[idx].c_str());
+    auto result = form("[%s] %s", g_ErrList[idx], g_E[idx].c_str());
     result      = form(result.c_str(), args);
     va_end(args);
     return result;
@@ -1112,7 +1112,7 @@ Utf8 formNte(ErrorID idx, ...)
 
 Utf8 toErr(ErrorID idx)
 {
-    return form("[%s] %s", g_EI[idx], g_E[idx].c_str());
+    return form("[%s] %s", g_ErrList[idx], g_E[idx].c_str());
 }
 
 Utf8 toNte(ErrorID idx)

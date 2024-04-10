@@ -122,8 +122,8 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
     if (node->lambda && node->lambda->captureParameters)
     {
         const auto     typeBlock = castTypeInfo<TypeInfoStruct>(node->lastChild()->typeInfo, TypeInfoKind::Struct);
-        constexpr auto MaxSize   = SWAG_LIMIT_CLOSURE_SIZEOF - 2 * sizeof(void*);
-        SWAG_VERIFY(typeBlock->sizeOf <= MaxSize, context->report({node->lambda->captureParameters, formErr(Err0026, typeBlock->sizeOf, MaxSize)}));
+        constexpr auto maxSize   = SWAG_LIMIT_CLOSURE_SIZEOF - 2 * sizeof(void*);
+        SWAG_VERIFY(typeBlock->sizeOf <= maxSize, context->report({node->lambda->captureParameters, formErr(Err0026, typeBlock->sizeOf, maxSize)}));
     }
 
     return true;
