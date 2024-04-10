@@ -123,8 +123,8 @@ struct Diagnostic
         setup();
     }
 
-    static constexpr uint32_t    MAX_INDENT_BLANKS       = 10;
-    static constexpr const char* ERROR_MESSAGE_SEPARATOR = "$";
+    static constexpr uint32_t MAX_INDENT_BLANKS       = 10;
+    static constexpr auto     ERROR_MESSAGE_SEPARATOR = "$";
 
     static Diagnostic* note(const Utf8& msg) { return new Diagnostic{msg, DiagnosticLevel::Note}; }
     static Diagnostic* note(AstNode* node, const Token& token, const Utf8& msg) { return new Diagnostic{node, token, msg, DiagnosticLevel::Note}; }

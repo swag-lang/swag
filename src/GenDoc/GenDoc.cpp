@@ -9,11 +9,11 @@
 
 namespace
 {
-    const char* START_NOTE      = "> NOTE:";
-    const char* START_TIP       = "> TIP:";
-    const char* START_WARNING   = "> WARNING:";
-    const char* START_ATTENTION = "> ATTENTION:";
-    const char* START_EXAMPLE   = "> EXAMPLE:";
+    auto START_NOTE      = "> NOTE:";
+    auto START_TIP       = "> TIP:";
+    auto START_WARNING   = "> WARNING:";
+    auto START_ATTENTION = "> ATTENTION:";
+    auto START_EXAMPLE   = "> EXAMPLE:";
 }
 
 void GenDoc::outputStyles()
