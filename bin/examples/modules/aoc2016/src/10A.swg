@@ -31,9 +31,11 @@ private struct Bot
 {
     id:     s32
     count:  s32
-    val:    [2] s32
+    val:    [2] s32 = Swag.S32.Max
     out:    s32
 }
+
+private var result = 0
 
 private impl Bot
 {
@@ -58,6 +60,7 @@ private impl Bot
 
         if count == 2 and val[0] == 17 and val[1] == 61
         {
+            result = id
             @assert(id == 47)
         }
     }
@@ -78,7 +81,7 @@ private impl Bot
     }
 }
 
-func day10A() assume
+func day10AB() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
     var lines    = File.readAllLines(dataPath)
@@ -132,4 +135,7 @@ func day10A() assume
                 i = 0
         }
     }
+
+    @assert(result == 47)
+    @assert(bots[0].out * bots[1].out * bots[2].out == 2666)
 }
