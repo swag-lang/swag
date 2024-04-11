@@ -262,7 +262,7 @@ impl Array
     }
 
     // Ensure the Array is big enough to store at least 'newCount' elements.
-    // The number of valid elements does not change.
+    // The number of valid elements does not change. If you the number of valid elements to be changed also, use [[growResize]] instead.
     mtd grow(newCount: u64)
     {
         if newCount <= capacity do
@@ -289,6 +289,8 @@ impl Array
         realloc(newCapacity)
     }
 
+    // Ensure that at least 'newCount' elements are present and initizalized in the array.
+    // This will grow the array if necessary.
     mtd growResize(newCount: u64)
     {
         if newCount <= count do
@@ -297,7 +299,8 @@ impl Array
         resize(newCount)
     }
 
-    // Change the number of valid elements in the array
+    // Change the number of valid elements in the array.
+    // This can be used to reduce or increase the number of valid elements.
     mtd resize(newCount: u64)
     {
         if newCount == count do
