@@ -41,22 +41,9 @@ private impl Bot
 {
     mtd add(v: s32)
     {
-        if count == 0
-        {
-            val[0] = v
-            count = 1
-        }
-        elif val[0] > v
-        {
-            val[1] = val[0]
-            val[0] = v
-            count = 2
-        }
-        else
-        {
-            val[1] = v
-            count = 2
-        }
+        val[count] = v
+        orderMinMax(&val[0], &val[1])
+        count += 1
 
         if count == 2 and val[0] == 17 and val[1] == 61
         {
