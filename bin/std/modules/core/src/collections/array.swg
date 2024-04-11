@@ -289,6 +289,14 @@ impl Array
         realloc(newCapacity)
     }
 
+    mtd growResize(newCount: u64)
+    {
+        if newCount <= count do
+            return
+        grow(newCount)
+        resize(newCount)
+    }
+
     // Change the number of valid elements in the array
     mtd resize(newCount: u64)
     {
