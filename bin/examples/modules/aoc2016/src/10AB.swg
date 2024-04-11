@@ -38,6 +38,8 @@ private struct Bot
 
 private var result = 0
 private var bots: Array'Bot
+private var r0: Parser.RegExp
+private var r1: Parser.RegExp
 
 private impl Bot
 {
@@ -89,33 +91,32 @@ private func getBot(x: s32)->&Bot
 
 private func execute(lines: Array'String) assume
 {
-    var r: Parser.RegExp
     visit l: lines
     {
         switch
         {
-        case r.match(#"value (\d+) goes to bot (\d+)"#, l):
-            let bot = ref getBot(StrConv.toS32(r[2]))
-            bot.add(StrConv.toS32(r[1]))
+        case r0.match(l):
+            let bot = ref getBot(StrConv.toS32(r0[2]))
+            bot.add(StrConv.toS32(r0[1]))
             bot.execute()
 
-        case r.match(#"bot (\d+) gives low to (\w+) (\d+) and high to (\w+) (\d+)"#, l):
-            let bot = ref getBot(StrConv.toS32(r[1]))
+        case r1.match(l):
+            let bot = ref getBot(StrConv.toS32(r1[1]))
             if bot.count != 2
             {
                 bot.pending.add(l)
                 break
             }
 
-            let low  = ref getBot(StrConv.toS32(r[3]))
-            let high = ref getBot(StrConv.toS32(r[5]))
+            let low  = ref getBot(StrConv.toS32(r1[3]))
+            let high = ref getBot(StrConv.toS32(r1[5]))
 
-            if r[2] == "bot" do
+            if r1[2] == "bot" do
                 low.add(bot.eatLow())
             else do
                 low.out = bot.eatLow()
 
-            if r[4] == "bot" do
+            if r1[4] == "bot" do
                 high.add(bot.eatHigh())
             else do
                 high.out = bot.eatHigh()
@@ -128,10 +129,14 @@ private func execute(lines: Array'String) assume
 
 func day10AB() assume
 {
-    Time.Stopwatch.scopeMeasure()
+    //Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
     var lines    = File.readAllLines(dataPath)
+
+    r0.compile(#"value (\d+) goes to bot (\d+)"#)
+    r1.compile(#"bot (\d+) gives low to (\w+) (\d+) and high to (\w+) (\d+)"#)
+
     execute(lines)
 
     @assert(result == 47)
