@@ -29,13 +29,15 @@ using Core
 
 private struct Bot
 {
-    id:     s32
-    count:  s32
-    val:    [2] s32 = Swag.S32.Max
-    out:    s32
+    id:          s32
+    count:       s32
+    val:         [2] s32 = Swag.S32.Max
+    out:         s32
+    pending:     Array'String
 }
 
 private var result = 0
+private var bots: Array'Bot
 
 private impl Bot
 {
@@ -66,62 +68,71 @@ private impl Bot
         count -= 1
         return v
     }
+
+    mtd execute()
+    {
+        if count == 2 and pending.count
+        {
+            let cpy = pending
+            pending.clear()
+            execute(cpy)
+        }
+    }
+}
+
+private func getBot(x: s32)->&Bot
+{
+    bots.growResize(x + 1)
+    bots[x].id = x
+    return bots.ref1(x)
+}
+
+private func execute(lines: Array'String) assume
+{
+    var r: Parser.RegExp
+    visit l: lines
+    {
+        switch
+        {
+        case r.match(#"value (\d+) goes to bot (\d+)"#, l):
+            let bot = ref getBot(StrConv.toS32(r[2]))
+            bot.add(StrConv.toS32(r[1]))
+            bot.execute()
+
+        case r.match(#"bot (\d+) gives low to (\w+) (\d+) and high to (\w+) (\d+)"#, l):
+            let bot = ref getBot(StrConv.toS32(r[1]))
+            if bot.count != 2
+            {
+                bot.pending.add(l)
+                break
+            }
+
+            let low  = ref getBot(StrConv.toS32(r[3]))
+            let high = ref getBot(StrConv.toS32(r[5]))
+
+            if r[2] == "bot" do
+                low.add(bot.eatLow())
+            else do
+                low.out = bot.eatLow()
+
+            if r[4] == "bot" do
+                high.add(bot.eatHigh())
+            else do
+                high.out = bot.eatHigh()
+
+            low.execute()
+            high.execute()
+        }
+    }
 }
 
 func day10AB() assume
 {
+    Time.Stopwatch.scopeMeasure()
+
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
     var lines    = File.readAllLines(dataPath)
-
-    var bots: Array'Bot
-
-    #[Swag.Mixin]
-    func getBot(x: s32)->&Bot
-    {
-        bots.growResize(x+1)
-        bots[x].id = x
-        return bots.ref1(x)
-    }
-
-    var r: Parser.RegExp
-    var i = 0
-    while lines.count
-    {
-        var l = lines.ref1(i)
-
-        switch
-        {
-            case r.match(#"value (\d+) goes to bot (\d+)"#, l):
-                let bot = ref getBot(StrConv.toS32(r[2]))
-                bot.add(StrConv.toS32(r[1]))
-                lines.removeAt(i)
-                i = 0
-
-            case r.match(#"bot (\d+) gives low to (\w+) (\d+) and high to (\w+) (\d+)"#, l):
-                let bot = ref getBot(StrConv.toS32(r[1]))
-                if bot.count != 2
-                {
-                    i += 1
-                    break
-                }
-
-                let low = ref getBot(StrConv.toS32(r[3]))
-                let high = ref getBot(StrConv.toS32(r[5]))
-
-                if r[2] == "bot" do
-                    low.add(bot.eatLow())
-                else do
-                    low.out = bot.eatLow()
-
-                if r[4] == "bot" do
-                    high.add(bot.eatHigh())
-                else do
-                    high.out = bot.eatHigh()
-
-                lines.removeAt(i)
-                i = 0
-        }
-    }
+    execute(lines)
 
     @assert(result == 47)
     @assert(bots[0].out * bots[1].out * bots[2].out == 2666)
