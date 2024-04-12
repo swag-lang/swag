@@ -57,10 +57,7 @@ func day7A() assume
     visit v: g
     {
         let it = set.find(v)
-        if !it do
-            set.add(v, 1)
-        else do
-            it.value += 1
+        set.add(v, it ? it.value + 1 : 1)
     }
 
     var result: String
