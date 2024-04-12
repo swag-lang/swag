@@ -34,9 +34,6 @@ impl Array
         if buffer == null do
             return
 
-        if @getcontext().flags & .PostCopyResetAllocator do
-            allocator = null
-
         let oldBuffer = buffer
         buffer = null
         realloc(count)

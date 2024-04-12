@@ -23,21 +23,8 @@ func day4A()
     visit l: lines
     {
         let s = Tokenize.split(l, " ")
-        var set: HashSet'string
-
-        var ok = true
-        visit w: s
-        {
-            if set.contains(w)
-            {
-                ok = false
-                break
-            }
-
-            set.add(w)
-        }
-
-        if ok do total += 1
+        var set: HashSet'string = s[..]
+        total += cast(s32) (set.count == s.count)
     }
 
     @assert(total == 455)

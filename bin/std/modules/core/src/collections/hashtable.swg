@@ -47,8 +47,6 @@ impl HashTable
         if !table do
             return
 
-        if @getcontext().flags & .PostCopyResetAllocator do
-            allocator = null
         if allocator == null do
             allocator = @getcontext().allocator
 
@@ -146,17 +144,7 @@ impl HashTable
         return Hash.hash32(key) | HASH_MASK
     }
 
-    mtd grow()
-    {
-        // We need to trigger the growing of the table is there's not enough room
-        if capacity != 0 and capacity - (count + deleted) > capacity / 4 do
-            return
-
-        let newCapacity = capacity * 2
-        reserve(newCapacity)
-    }
-
-    // Free the hashtable content
+    // Free the hashtable content.
     mtd free()
     {
         if !table do
@@ -180,6 +168,16 @@ impl HashTable
         count, capacity, deleted = 0
     }
 
+    mtd grow()
+    {
+        // We need to trigger the growing of the table is there's not enough room
+        if capacity != 0 and capacity - (count + deleted) > capacity / 4 do
+            return
+
+        let newCapacity = capacity * 2
+        reserve(newCapacity)
+    }
+
     // Reserve 'newCapacity' elements in the table.
     mtd reserve(newCapacity: u64)
     {
@@ -188,8 +186,7 @@ impl HashTable
             return
 
         let oldTable = table
-        count   = 0
-        deleted = 0
+        count, deleted = 0
         let newCapacityBytes = reqCapacity * @sizeof(HashTableEntry)
 
         if allocator == null do

@@ -47,9 +47,8 @@ constexpr AttrUsageFlags ATTR_USAGE_ALL        = 0x04000000;
 
 enum class ContextFlags : uint64_t
 {
-    Test                   = 0x00000000'00000001,
-    ByteCode               = 0x00000000'00000002,
-    PostCopyResetAllocator = 0x00000000'00000004,
+    Test     = 0x00000000'00000001,
+    ByteCode = 0x00000000'00000002,
 };
 
 using SwagInterface = struct SwagInterface
@@ -86,7 +85,7 @@ struct SwagSourceCodeLocation
 {
     SwagSlice fileName;
     uint32_t  lineStart, colStart;
-    uint32_t  lineEnd, colEnd;
+    uint32_t  lineEnd,   colEnd;
 };
 
 struct SwagCVaList
@@ -148,10 +147,10 @@ using SwagContext = struct SwagContext
     uint32_t                hasError;
 };
 
-using FuncCB = void* (*) (void*, void*, void*, void*, void*, void*);
+using FuncCB = void* (*)(void*, void*, void*, void*, void*, void*);
 
-using SwagBytecodeRun  = void    (*)(void*, ...);
-using SwagThreadRun    = void      (*)(void*);
+using SwagBytecodeRun  = void (*)(void*, ...);
+using SwagThreadRun    = void (*)(void*);
 using SwagMakeCallback = FuncCB (*)(void*);
 
 enum class SwagBackendGenType : uint32_t

@@ -35,10 +35,19 @@ impl HashSet
         free()
     }
 
+    mtd opAffect(slice: const [..] K )
+    {
+        visit v: slice do
+            add(v)
+    }
+
     mtd opPostCopy()
     {
         if !table do
             return
+
+        if allocator == null do
+            allocator = @getcontext().allocator
 
         let newTable = cast(^HashSetEntry) Memory.alloc(capacity * @sizeof(HashSetEntry), allocator)
         #if Reflection.hasPostCopy(K)
@@ -101,6 +110,7 @@ impl HashSet
         return Hash.hash32(key) | HASH_MASK
     }
 
+    // Free the hashset content.
     mtd free()
     {
         if !table do
@@ -117,6 +127,8 @@ impl HashSet
         }
 
         Memory.free(table, capacity * @sizeof(HashSetEntry), allocator)
+        table = null
+        count, capacity, deleted = 0
     }
 
     mtd grow()
@@ -129,7 +141,7 @@ impl HashSet
         reserve(newCapacity)
     }
 
-    // Reserve 'newCapacity' elements in the table.
+    // Reserve 'newCapacity' elements in the set.
     mtd reserve(newCapacity: u64)
     {
         let reqCapacity = Math.max(newCapacity, 32)
@@ -137,8 +149,7 @@ impl HashSet
             return
 
         let oldTable = table
-        count   = 0
-        deleted = 0
+        count, deleted = 0
         let newCapacityBytes = reqCapacity * @sizeof(HashSetEntry)
 
         if allocator == null do
@@ -194,7 +205,7 @@ impl HashSet
         return index
     }
 
-    // Add a new key.
+    // Add a new element.
     #[Discardable, Overload]
     mtd add(key: K)->*HashSetEntry
         #validif Reflection.canCopy(@typeof(K))
@@ -224,7 +235,7 @@ impl HashSet
         return table + index
     }
 
-    // Add a new key.
+    // Add a new element.
     #[Discardable, Overload]
     mtd add(key: &&K)->*HashSetEntry
     {
@@ -253,7 +264,7 @@ impl HashSet
         return table + index
     }
 
-    // Add a new key.
+    // Add a new element.
     #[Discardable]
     mtd emplaceInternal(hashVal: u32, key: &K)->*HashSetEntry
         #validif Reflection.canCopy(@typeof(K))
@@ -282,7 +293,7 @@ impl HashSet
         return table + index
     }
 
-    // Remove the given key if it exists
+    // Remove the given element if it exists.
     mtd remove(key: K)
     {
         if !table do
@@ -305,8 +316,8 @@ impl HashSet
         }
     }
 
-    // Returns true if the table contains the given key
-    mtd contains(key: K)->bool
+    // Returns true if the table contains the given element.
+    mtd const contains(key: K)->bool
     {
         if !table do
             return false
@@ -324,7 +335,7 @@ impl HashSet
         return false
     }
 
-    // Remove all elements
+    // Remove all elements.
     mtd clear()
     {
         // Need to put the 'hash' value of each entry to HASH_FREE
