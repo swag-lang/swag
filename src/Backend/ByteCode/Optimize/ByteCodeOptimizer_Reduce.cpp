@@ -2706,6 +2706,20 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             }
             break;
 
+        case ByteCodeOp::BinOpMulU64_Safe:
+            if (ip[1].op == ByteCodeOp::IncPointer64 &&
+                ip[0].hasFlag(BCI_IMM_B) &&
+                !ip[1].hasFlag(BCI_IMM_B) &&
+                ip[1].b.u32 == ip[0].c.u32 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::IncMulPointer64);
+                ip[1].b.u32 = ip->a.u32;
+                ip[1].d.u64 = ip->b.u64;
+                break;
+            }
+            break;
+
         case ByteCodeOp::IncPointer64:
             // followed by another IncPointer64
             if (ip[1].op == ByteCodeOp::IncPointer64 &&
