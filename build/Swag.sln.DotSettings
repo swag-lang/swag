@@ -11,4 +11,8 @@
 	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=RB/@EntryIndexedValue">RB</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=RV/@EntryIndexedValue">RV</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=SCBE/@EntryIndexedValue">SCBE</s:String>
-	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=UFCS/@EntryIndexedValue">UFCS</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=UFCS/@EntryIndexedValue">UFCS</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=TLS/@EntryIndexedValue">TLS</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=DBG/@EntryIndexedValue">DBG</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=Fct/@EntryIndexedValue">Fct</s:String>
+</wpf:ResourceDictionary>

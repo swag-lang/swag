@@ -3266,17 +3266,17 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         }
         case ByteCodeOp::CastS8S16:
         {
-            registersRC[ip->a.u32].s16 = registersRC[ip->b.u32].s8;
+            registersRC[ip->a.u32].s16 = static_cast<int16_t>(registersRC[ip->b.u32].s8);
             break;
         }
         case ByteCodeOp::CastS8S32:
         {
-            registersRC[ip->a.u32].s32 = registersRC[ip->b.u32].s8;
+            registersRC[ip->a.u32].s32 = static_cast<int32_t>(registersRC[ip->b.u32].s8);
             break;
         }
         case ByteCodeOp::CastS8S64:
         {
-            registersRC[ip->a.u32].s64 = registersRC[ip->b.u32].s8;
+            registersRC[ip->a.u32].s64 = static_cast<int64_t>(registersRC[ip->b.u32].s8);
             break;
         }
         case ByteCodeOp::CastS32S64:

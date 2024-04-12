@@ -53,23 +53,23 @@ struct Workspace
     bool               build();
     Module*            createOrUseModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule = false);
 
+    Module*     getModuleByName(const Utf8& moduleName);
+    OneTag*     hasTag(const Utf8& name);
+    Path        getTargetPath() const;
+    SourceFile* findFile(const char* fileName) const;
+    static Utf8 getTargetFullName(const Utf8& buildCfg, const BackendTarget& target);
+    static void cleanFolderContent(const Path& path);
+    static void computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind);
     void        addBootstrap();
     void        addRuntime();
     void        addRuntimeFile(const char* fileName) const;
-    void        setupPaths();
-    void        setupInternalTags();
-    void        setupUserTags();
-    void        setup();
-    static void computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind);
-    SourceFile* findFile(const char* fileName) const;
-    Module*     getModuleByName(const Utf8& moduleName);
-    static void cleanFolderContent(const Path& path);
-    OneTag*     hasTag(const Utf8& name);
-    void        setupCachePath();
     void        setScriptWorkspace(const Utf8& name);
-    static Utf8 getTargetFullName(const Utf8& buildCfg, const BackendTarget& target);
-    Path        getTargetPath() const;
+    void        setup();
+    void        setupCachePath();
+    void        setupInternalTags();
+    void        setupPaths();
     void        setupTarget();
+    void        setupUserTags();
 
     static void cleanPublic(const Path& basePath);
     void        cleanScript();
