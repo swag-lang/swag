@@ -12,19 +12,19 @@ using Core
 //#[Swag.PrintBc]
 func day5B()
 {
+    //Time.Stopwatch.scopeMeasure()
+
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
     let lines    = assume File.readAllLines(dataPath)
     var jumps    = Slice.map(lines[..], func(x) => assume StrConv.toS32(x))
 
-    var it, step = 0
-    loop
+    var it, step = 0'u64
+    while it < jumps.count
     {
+        let jit = ref jumps.ref1(it)
+        it += jit
+        jit += -1 + 2 * cast(s32) (jit < 3)
         step += 1
-        let it1 = it + jumps[it]
-        if it1 >= jumps.count do
-            break
-        jumps[it] += jumps[it] >= 3 ? -1 : 1
-        it = it1
     }
 
     @assert(step == 27688760)

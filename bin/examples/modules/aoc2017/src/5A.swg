@@ -14,21 +14,20 @@ The system's full passphrase list is available as your puzzle input. How many pa
 
 using Core
 
+//#[Swag.PrintBc]
 func day5A()
 {
+    //Time.Stopwatch.scopeMeasure()
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
     let lines    = assume File.readAllLines(dataPath)
     var jumps    = Slice.map(lines[..], func(x) => assume StrConv.toS32(x))
 
     var it, step = 0
-    loop
+    while it < jumps.count
     {
         step += 1
-        let it1 = it + jumps[it]
-        if it1 >= jumps.count do
-            break
         jumps[it] += 1
-        it = it1
+        it += jumps[it] - 1
     }
 
     @assert(step == 359348)
