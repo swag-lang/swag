@@ -25,7 +25,7 @@ bool SaveGenJob::flush(Module* mdl)
 
         auto publicPath  = mdl->publicPath;
         auto tmpFilePath = publicPath;
-        auto tmpFileName = form("%s%d.gwg", mdl->name.c_str(), idx);
+        auto tmpFileName = form("%s.%d.gwg", mdl->name.c_str(), idx);
 
         publicPath.append(tmpFileName.c_str());
 

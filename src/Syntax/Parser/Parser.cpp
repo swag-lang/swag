@@ -263,7 +263,7 @@ bool Parser::saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path&
     const auto modl = fromNode->token.sourceFile->module;
 
     tmpFilePath = modl->publicPath;
-    tmpFileName = form("%s%d.gwg", modl->name.c_str(), g_ThreadIndex);
+    tmpFileName = form("%s.%d.gwg", modl->name.c_str(), g_ThreadIndex);
 
     uint32_t   countEol = 0;
     const auto size     = content.length();
