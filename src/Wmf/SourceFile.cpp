@@ -143,6 +143,8 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
                 if (*pz)
                     pz++;
             }
+
+            lineNo -= offsetGetLine;
         }
         else
         {
