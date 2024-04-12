@@ -12,6 +12,7 @@ function registerTask(cmdLine, name, taskGroup)
     let task = new vscode.Task({type: "swag-build", cmdLine: cmdLine}, vscode.TaskScope.Workspace, name, "swag", execution, '$swag');
     task.group = taskGroup;
     task.presentationOptions.clear = true;
+    task.presentationOptions.close = true;
     buildTasks.push(task);
 }
 
@@ -21,7 +22,7 @@ class TaskProvider
     {
         registerTask("swag build -w:${workspaceFolder}",             "build",        vscode.TaskGroup.Build);
         registerTask("swag build -w:${workspaceFolder} --rebuild",   "rebuild",      vscode.TaskGroup.Rebuild);
-        registerTask("swag format -f:${file}",                       "swag format",   vscode.TaskGroup.Clean);
+        registerTask("swag format -f:${file}",                       "swag format",  vscode.TaskGroup.Clean);
         return buildTasks;
     }
 
