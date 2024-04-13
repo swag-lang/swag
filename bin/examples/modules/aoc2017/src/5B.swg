@@ -18,7 +18,7 @@ func day5B()
     let lines    = assume File.readAllLines(dataPath)
     var jumps    = Slice.map(lines[..], func(x) => assume StrConv.toS64(x))
 
-    var it, step = 0'u64
+    var it, step = 0's64
     while it < jumps.count
     {
         let jit = ref jumps.ref1(it)
