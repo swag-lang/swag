@@ -2,15 +2,9 @@
 #global namespace StrConv
 using Swag, Globalization
 
-struct ConvertFormat
-{
-    value: any
-}
-
 // Format structure to convert a float to a string
 struct ConvertFormatFloat
 {
-    using val:     ConvertFormat
     precision:     s8 = -1           // -1 is for 'most possible precision'
     fmt:           u8 = `f`'u8
     forceSign:     bool
@@ -76,7 +70,6 @@ impl ConvertFormatFloat
 // be stored in 'unsignedValue'.
 struct ConvertFormatInt
 {
-    using val:     ConvertFormat
     base:          u32 = 10
     padding:       u8
     width:         u8
@@ -190,8 +183,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         fmt.width   = 16
         fmt.padding = `0`'u8
         fmt.setFormat(strFormat)
-        fmt.value = dref cast(const *u64) valueData
-        convertInt(buf, fmt)
+        convertInt(buf, dref cast(const *u64) valueData, fmt)
         return
     }
 
@@ -209,12 +201,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // A struct
     if Reflection.isStruct(type)
     {
-        if type == ConvertFormatInt do
-            convertInt(buf, cast(ConvertFormatInt) concreteValue)
-        elif type == ConvertFormatFloat do
-            convertFloat(buf, cast(ConvertFormatFloat) concreteValue)
-        else do
-            convertStruct(buf, concreteValue, strFormat)
+        convertStruct(buf, concreteValue, strFormat)
         return
     }
 
@@ -319,7 +306,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     let itf = @mkinterface(ptr, kindof, IConvert)
     if itf != null
     {
-        itf.convert(buf, null, strFormat)
+        itf.convert(buf, strFormat)
         return
     }
 
@@ -339,37 +326,37 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
 #[Swag.Overload]
-func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
+func convertFloat(buf: *ConcatBuffer, value: any, fmt: ConvertFormatFloat)
 {
-    let kindof = cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
+    let kindof = cast(const *Swag.TypeInfoNative) @kindof(value)
     Debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
-    let dataof = @dataof(fmt.value)
+    let dataof = @dataof(value)
 
-    var value: f64
+    var value64: f64
     switch kindof.nativeKind
     {
     case F32:
-        value = cast(f64) dref cast(*f32) dataof
+        value64 = cast(f64) dref cast(*f32) dataof
     case F64:
-        value = dref cast(*f64) dataof
+        value64 = dref cast(*f64) dataof
     }
 
-    Dtoa.parse(buf, value, fmt.fmt, cast(s64) fmt.precision, fmt.forceSign)
+    Dtoa.parse(buf, value64, fmt.fmt, cast(s64) fmt.precision, fmt.forceSign)
 }
 
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
 #[Swag.Overload]
-func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
+func convertInt(buf: *ConcatBuffer, value: any, fmt: ConvertFormatInt)
 {
-    let kindof = cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
+    let kindof = cast(const *Swag.TypeInfoNative) @kindof(value)
     Debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
     Debug.assert(0 < fmt.base and fmt.base <= 16, "invalid convert base")
 
-    let dataof = @dataof(fmt.value)
+    let dataof = @dataof(value)
     var bits   = kindof.sizeof * 8
 
-    var value:       u64
+    var value64:     u64
     var signedValue: s64
 
     var overflowS64 = false
@@ -377,27 +364,27 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     {
     case S8:
         signedValue = cast(s64) dref cast(*s8) dataof
-        value       = cast(u64) Math.abs(signedValue)
+        value64     = cast(u64) Math.abs(signedValue)
     case S16:
         signedValue = cast(s64) dref cast(*s16) dataof
-        value       = cast(u64) Math.abs(signedValue)
+        value64     = cast(u64) Math.abs(signedValue)
     case S32:
         signedValue = cast(s64) dref cast(*s32) dataof
-        value       = cast(u64) Math.abs(signedValue)
+        value64     = cast(u64) Math.abs(signedValue)
     case S64:
         signedValue = dref cast(*s64) dataof
         if signedValue == Swag.S64.Min do
             overflowS64 = true
         else do
-            value = cast(u64) Math.abs(signedValue)
+            value64 = cast(u64) Math.abs(signedValue)
     case U8:
-        value = cast(u64) dref cast(*u8) dataof
+        value64 = cast(u64) dref cast(*u8) dataof
     case U16:
-        value = cast(u64) dref cast(*u16) dataof
+        value64 = cast(u64) dref cast(*u16) dataof
     case U32:
-        value = cast(u64) dref cast(*u32) dataof
+        value64 = cast(u64) dref cast(*u32) dataof
     case U64:
-        value = dref cast(*u64) dataof
+        value64 = dref cast(*u64) dataof
     }
 
     const Tbl = "0123456789ABCDEF"
@@ -415,21 +402,21 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         switch fmt.base
         {
         case 2:
-            value = 4611686018427387904
+            value64 = 4611686018427387904
         case 10:
-            value = 922337203685477580
+            value64 = 922337203685477580
         case 16:
-            value = 576460752303423488
+            value64 = 576460752303423488
         }
     }
 
     loop bits
     {
-        let c = Tbl[value % fmt.base]
+        let c = Tbl[value64 % fmt.base]
         tmp[cpt] = c
         cpt -= 1
-        value /= cast(u64) fmt.base
-        if !value do
+        value64 /= cast(u64) fmt.base
+        if !value64 do
             break
     }
 
@@ -467,9 +454,8 @@ func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
     Debug.assert(@kindof(value).flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
     var fmt: ConvertFormatFloat
-    fmt.value = value
     fmt.setFormat(strFormat)
-    convertFloat(buf, fmt)
+    convertFloat(buf, value, fmt)
 }
 
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
@@ -479,9 +465,8 @@ func convertInt(buf: *ConcatBuffer, value: any, strFormat: string)
     Debug.assert(@kindof(value).flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
 
     var fmt: ConvertFormatInt
-    fmt.value = value
     fmt.setFormat(strFormat)
-    convertInt(buf, fmt)
+    convertInt(buf, value, fmt)
 }
 
 // Convert a 'bool' to a string, and put the result in a ConcatBuffer
@@ -510,16 +495,14 @@ func(T) convert(buf: *ConcatBuffer, value: T, strFormat: string)
     #if Reflection.isInteger(T)
     {
         var fmt: ConvertFormatInt
-        fmt.value = value
         fmt.setFormat(strFormat)
-        convertInt(buf, fmt)
+        convertInt(buf, value, fmt)
     }
     #elif Reflection.isFloat(T)
     {
         var fmt: ConvertFormatFloat
-        fmt.value = value
         fmt.setFormat(strFormat)
-        convertFloat(buf, fmt)
+        convertFloat(buf, value, fmt)
     }
     #elif Reflection.isBool(T)
     {

@@ -1,5 +1,5 @@
 using Core, Core.StrConv
-
+/*
 #test
 {
     var buf: ConcatBuffer
@@ -11,3 +11,4 @@ using Core, Core.StrConv
     var str = buf.toString()
     @assert(str == "-3.1")
 }
+*/

@@ -146,13 +146,11 @@ impl JSon
         }
         #elif Reflection.isFloat(NT)
         {
-            fmtFloat.value = value
-            StrConv.convertFloat(output, fmtFloat)
+            StrConv.convertFloat(output, value, fmtFloat)
         }
         #elif Reflection.isInteger(NT)
         {
-            fmtInt.value = value
-            StrConv.convertInt(output, fmtInt)
+            StrConv.convertInt(output, value, fmtInt)
         }
         #elif NT == string
         {

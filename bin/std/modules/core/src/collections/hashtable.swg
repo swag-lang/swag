@@ -466,7 +466,7 @@ impl HashTable
 
 impl StrConv.IConvert for HashTable
 {
-    mtd impl convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
+    mtd impl convert(buf: *ConcatBuffer, strFormat: string)
     {
         buf.addBytes("[")
         visit k, v: dref self

@@ -719,7 +719,7 @@ impl Array
 
 impl StrConv.IConvert for Array
 {
-    mtd impl convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
+    mtd impl convert(buf: *ConcatBuffer, strFormat: string)
     {
         buf.addBytes("[")
         loop i: count

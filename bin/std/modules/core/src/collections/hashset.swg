@@ -364,7 +364,7 @@ impl HashSet
 
 impl StrConv.IConvert for HashSet
 {
-    mtd impl convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
+    mtd impl convert(buf: *ConcatBuffer, strFormat: string)
     {
         buf.addBytes("[")
         visit k: dref self
