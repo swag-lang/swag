@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Semantic/Semantic.h"
 #include "Semantic/Error/SemanticError.h"
+#include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -58,7 +58,9 @@ namespace
             const auto altEnum = prevIdentifier->identifierExtension->alternateEnum;
             const auto msg     = formErr(Err0714, node->token.c_str(), altEnum->getDisplayNameC(), whereScopeName.c_str(), displayName.c_str());
             err                = new Diagnostic{node, node->token, msg};
-            notes.push_back(Diagnostic::hereIs(altEnum->declNode));
+            const auto note    = Diagnostic::hereIs(altEnum->declNode);
+            if (note)
+                notes.push_back(note);
         }
         else if (!typeWhere)
         {
@@ -103,7 +105,8 @@ namespace
             case AstNodeKind::EnumDecl:
             {
                 const auto note = Diagnostic::hereIs(identifierRef->startScope->owner);
-                notes.push_back(note);
+                if (note)
+                    notes.push_back(note);
                 break;
             }
             default:

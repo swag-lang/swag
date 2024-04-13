@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Backend/Context.h"
+#include "Report/Report.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
+#include "Backend/Context.h"
 #include "Jobs/SaveGenJob.h"
 #include "Report/Diagnostic.h"
 #include "Report/Log.h"
-#include "Report/Report.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
@@ -263,7 +263,10 @@ namespace
         const auto          c = new Diagnostic{err};
         notes.push_back(c);
         for (const auto n : inNotes)
-            notes.push_back(new Diagnostic{*n});
+        {
+            if (n)
+                notes.push_back(new Diagnostic{*n});
+        }
 
         cleanNotes(notes);
         g_Log.writeEol();
