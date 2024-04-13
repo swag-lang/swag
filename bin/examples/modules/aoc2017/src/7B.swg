@@ -32,12 +32,11 @@ func day7B() assume
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    var r = Parser.RegExp.create(#"(\l+) \((\d+)\)"#)
+    var r0 = Parser.RegExp.create(#"(\l+) \((\d+)\)"#)
     visit l: lines
     {
-        discard r.partialMatch(l)
-        var p: Pile{StrConv.toS32(r[2])}
-        set.add(r[1], p)
+        discard r0.partialMatch(l)
+        set.add(r0[1], Pile{StrConv.toS32(r0[2])})
     }
 
     var r1 = Parser.RegExp.create(#"\l+"#)
@@ -57,8 +56,8 @@ func day7B() assume
             return 0
 
         var total: u64
-
         var sums: Array'{rank: u64, total: s64}
+
         visit v, i: w.childs
         {
             let s = sum(set.find(v).value)
