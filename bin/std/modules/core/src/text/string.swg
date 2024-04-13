@@ -467,8 +467,11 @@ impl String
         if newCapacity <= StringSmallSize
         {
             // Free dynamic memory if this is not a small string
-            if buffer != acast &padding[0] do
+            if buffer and buffer != acast &padding[0]
+            {
+                Memory.copy(&padding[0], buffer, Math.min(newCapacity, length + 1))
                 Memory.free(buffer, capacity, allocator)
+            }
 
             // This is a small string again
             capacity = StringSmallSize
