@@ -8,7 +8,7 @@ struct A
 func toto(x: A)
 {
     var buf: ConcatBuffer
-    StrConv.convertAny(&buf, x, "")
+    StrConv.convertAny(&buf, x, {}, "")
 }
 
 #test

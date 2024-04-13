@@ -719,14 +719,14 @@ impl Array
 
 impl StrConv.IConvert for Array
 {
-    mtd impl convert(buf: *ConcatBuffer, strFormat: string)
+    mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
         loop i: count
         {
             if i do
                 buf.addBytes(", ")
-            StrConv.convert'T(buf, buffer[i], strFormat)
+            StrConv.convert'T(buf, buffer[i], convFmt, strFormat)
         }
         buf.addBytes("]")
     }

@@ -118,7 +118,7 @@ impl UUID
 
 impl StrConv.IConvert for UUID
 {
-    mtd impl convert(buf: *ConcatBuffer, strFormat: string)
+    mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes(toString())
     }

@@ -43,9 +43,11 @@ func silent(value: bool)
 // Write a bunch of parameters to the console
 func print(params: ...)
 {
-    var buf: ConcatBuffer
+    var buf:     ConcatBuffer
+    var convFmt: StrConv.ConvertFormat
+
     visit v: params do
-        StrConv.convertAny(&buf, v, null)
+        StrConv.convertAny(&buf, v, convFmt, null)
     printf(buf.toString())
 }
 

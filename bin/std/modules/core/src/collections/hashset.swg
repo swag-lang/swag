@@ -364,14 +364,14 @@ impl HashSet
 
 impl StrConv.IConvert for HashSet
 {
-    mtd impl convert(buf: *ConcatBuffer, strFormat: string)
+    mtd impl convert(buf: *ConcatBuffer, convFormat: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
         visit k: dref self
         {
             if #index do
                 buf.addBytes(", ")
-            StrConv.convert'K(buf, k, strFormat)
+            StrConv.convert'K(buf, k, convFormat, strFormat)
         }
         buf.addBytes("]")
     }

@@ -126,6 +126,8 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
     var paramIdx  = 0'u32
     let numParams = @countof(values)
 
+    var convFmt: StrConv.ConvertFormat
+
     while nextIdx < cpt
     {
         if ptr[nextIdx] == `%`'u8
@@ -165,7 +167,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 
             // Deal with the parameter
             Debug.assert(paramIdx < numParams, "not enough 'format' parameters")
-            StrConv.convertAny(buf, values[paramIdx], cast(string) strFormat)
+            StrConv.convertAny(buf, values[paramIdx], convFmt, cast(string) strFormat)
             paramIdx += 1
         }
         else
@@ -193,6 +195,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
     #ast
     {
         var sb: StrConv.StringBuilder
+        sb.appendString("var convFmt: StrConv.ConvertFormat\n")
 
         var idx = 0'u64
         while idx != @countof(exp)
@@ -232,7 +235,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
                 }
             }
 
-            sb.appendFormat("StrConv.convert(buf, #up %, \"%\")\n", value, format)
+            sb.appendFormat("StrConv.convert(buf, #up %, convFmt, \"%\")\n", value, format)
         }
 
         return sb.moveToString()

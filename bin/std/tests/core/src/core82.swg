@@ -3,13 +3,13 @@ using Core, Core.StrConv
 #test
 {
     var buf: ConcatBuffer
-    convertInt(&buf, 123's32, null)
+    convertInt(&buf, 123's32, {}, null)
 }
 
 #test
 {
     var buf: ConcatBuffer
-    convertInt(&buf, 123456's32, null)
+    convertInt(&buf, 123456's32, {}, null)
     var str = buf.toString()
     @assert(str == "123456")
 }
