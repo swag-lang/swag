@@ -18,25 +18,25 @@ Given that exactly one program is the wrong weight, what would its weight need t
 
 using Core
 
+private struct Pile
+{
+    val:    s32
+    childs: Array'string
+}
+
+private var set: HashTable'(string, Pile)
+private var result: s64
+
 func day7B() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    struct Pile
-    {
-        rank:       u64
-        val:        s32
-        childs:     Array'u64
-    }
-
-    var set: HashTable'(string, Pile)
-
     var r = Parser.RegExp.create(#"(\l+) \((\d+)\)"#)
     visit l: lines
     {
         discard r.partialMatch(l)
-        var p: Pile{set.count, StrConv.toS32(r[2])}
+        var p: Pile{StrConv.toS32(r[2])}
         set.add(r[1], p)
     }
 
@@ -48,8 +48,37 @@ func day7B() assume
             continue
         let me = set.find(n[0])
         visit v: n[1..] do
-            me.value.childs.add(set.find(v).value.rank)
+            me.value.childs.add(v)
     }
 
-    //Console.print(set)
+    func sum(w: Pile)->u64
+    {
+        if result do
+            return 0
+
+        var total: u64
+
+        var sums: Array'{rank: u64, total: s64}
+        visit v, i: w.childs
+        {
+            let s = sum(set.find(v).value)
+            sums.add({i, s})
+            total += s
+        }
+
+        if sums.count > 1 and result == 0
+        {
+            sums.sort(func(x, y) => x.total <=> y.total)
+            if sums[sums.count - 2].total != sums[sums.count - 1].total
+            {
+                let v = set.find(w.childs[sums[sums.count-1].rank])
+                result = sums[sums.count-2].total - sums[sums.count-1].total + v.value.val
+            }
+        }
+
+        return w.val + total
+    }
+
+    discard sum(set.find("eugwuhl").value)
+    @assert(result == 420)
 }
