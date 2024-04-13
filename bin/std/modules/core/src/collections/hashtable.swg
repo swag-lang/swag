@@ -8,14 +8,14 @@ struct(K, V) HashTableEntry
     value:     V
 }
 
+private const HASH_FREE    = 0'u32
+private const HASH_DELETED = 1'u32
+private const HASH_FIRST   = 2'u32
+private const HASH_MASK    = 2'u32
+
 // Map a key to a value.
 struct(K, V) HashTable
 {
-    const HASH_FREE        = 0'u32
-    const HASH_DELETED     = 1'u32
-    const HASH_FIRST       = 2'u32
-    const HASH_MASK        = 2'u32
-
     allocator:             IAllocator
     table:                 ^HashTableEntry
     count:                 u64                 // Number of valid entries
@@ -461,5 +461,24 @@ impl HashTable
                     break
             }
         }
+    }
+}
+
+impl StrConv.IConvert for HashTable
+{
+    mtd impl convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
+    {
+        buf.addBytes("[")
+        visit k, v: dref self
+        {
+            if #index do
+                buf.addBytes(", ")
+
+            buf.addBytes("key = ")
+            StrConv.convert'K(buf, k, strFormat)
+            buf.addBytes(" value = ")
+            StrConv.convert'V(buf, v, strFormat)
+        }
+        buf.addBytes("]")
     }
 }

@@ -10,6 +10,7 @@ using Core
 
         var str = buf.toString()
         //Console.print("%\n", str)
+        str.replace(" ", "")
         @assert(str == "[1,2,3,4]")
     }
 
@@ -17,6 +18,7 @@ using Core
         var x:  Array'string = ["a", "b", "c", "d"]
         var str = Format.toString("%", x)
         //Console.print("%\n", str)
+        str.replace(" ", "")
         @assert(str == "[a,b,c,d]")
     }
 
@@ -26,6 +28,7 @@ using Core
         x.add("titi")
         var str = Format.toString("arr=%", x)
         //Console.print("%\n", str)
+        str.replace(" ", "")
         @assert(str == "arr=[toto,titi]")
     }
 }

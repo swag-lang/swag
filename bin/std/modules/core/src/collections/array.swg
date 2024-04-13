@@ -716,3 +716,18 @@ impl Array
         count -= 1
     }
 }
+
+impl StrConv.IConvert for Array
+{
+    mtd impl convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
+    {
+        buf.addBytes("[")
+        loop i: count
+        {
+            if i do
+                buf.addBytes(", ")
+            StrConv.convert'T(buf, buffer[i], strFormat)
+        }
+        buf.addBytes("]")
+    }
+}

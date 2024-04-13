@@ -53,6 +53,8 @@ func day7A() assume
     let line     = assume File.readAllText(dataPath)
     let g        = Parser.RegExp.grepAll(#"\l+"#, line)
 
+Console.print(g)
+
     var set: HashTable'(string, s32)
     visit v: g
     {

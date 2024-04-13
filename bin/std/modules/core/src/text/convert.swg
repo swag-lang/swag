@@ -229,7 +229,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         loop @countof(sl)
         {
             if #index do
-                buf.addBytes(",")
+                buf.addBytes(", ")
             let v = @mkany(bufSlice, ptrSlice.pointedType)
             convertAny(buf, v, strFormat)
             bufSlice += ptrSlice.pointedType.sizeof
@@ -243,13 +243,13 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     if Reflection.isArray(type)
     {
         let ptrArr = cast(const *TypeInfoArray) type
-        buf.addBytes("[")
-
         var bufArr = cast(const ^u8) valueData
+
+        buf.addBytes("[")
         loop ptrArr.count
         {
             if #index do
-                buf.addBytes(",")
+                buf.addBytes(", ")
             let v = @mkany(bufArr, ptrArr.pointedType)
             convertAny(buf, v, strFormat)
             bufArr += ptrArr.pointedType.sizeof
@@ -275,11 +275,10 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     if Reflection.isAny(type)
     {
         let ptrAny = cast(const *any) valueData
-        buf.addBytes("{")
-        buf.addBytes("type: ")
+        buf.addBytes("{type = ")
         let typeAny = @kindof(dref ptrAny)
         convertAny(buf, typeAny, strFormat)
-        buf.addBytes(", value: ")
+        buf.addBytes(", value = ")
         convertAny(buf, dref ptrAny, strFormat)
         buf.addBytes("}")
         return
@@ -289,10 +288,13 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     {
     case bool:
         convertBool(buf, cast(bool) concreteValue)
+
     case rune:
         convertRune(buf, cast(rune) concreteValue)
+
     case string:
         buf.addBytes(cast(string) concreteValue)
+
     default:
         buf.addBytes("?")
     }
@@ -313,32 +315,6 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
         return
     }
 
-    // Core.Array
-    if kindof.fromGeneric == Array
-    {
-        let typeContent = kindof.generics[0].pointedType
-
-        // Trick to get the struct content
-        // This rely on the fact that the Array struct layout is the same whatever
-        // the underlying type is
-        let addrArr = cast(const *Array'u8) ptr
-        var bufArr  = addrArr.buffer
-
-        buf.addBytes("[")
-        var first = true
-        loop addrArr.count
-        {
-            if !first do
-                buf.addBytes(",")
-            first = false
-            let v = @mkany(bufArr, typeContent)
-            StrConv.convertAny(buf, v, strFormat)
-            bufArr += typeContent.sizeof
-        }
-        buf.addBytes("]")
-        return
-    }
-
     // A structure with an implementation of IConvert
     let itf = @mkinterface(ptr, kindof, IConvert)
     if itf != null
@@ -351,7 +327,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     buf.addBytes("{")
     visit field: kindof.fields
     {
-        if #index != 0 do
+        if #index do
             buf.addBytes(", ")
         buf.addBytes(field.name)
         buf.addBytes(" = ")
@@ -528,6 +504,7 @@ func convertRune(buf: *ConcatBuffer, value: rune)
 }
 
 // Templated version. Convert a value of type 'T'
+#[Swag.Warn("Wrn0006", Swag.WarnLevel.Disable)]
 func(T) convert(buf: *ConcatBuffer, value: T, strFormat: string)
 {
     #if Reflection.isInteger(T)
