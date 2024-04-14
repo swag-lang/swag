@@ -315,11 +315,8 @@ void ThreadManager::clearOptionalJobs()
 {
     {
         ScopedLock lk(mutexAdd);
-
         for (const auto p : queueJobsOpt.jobs)
-        {
             p->release();
-        }
         queueJobsOpt.jobs.clear();
 
         for (uint32_t i = 0; i < numWorkers; i++)

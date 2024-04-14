@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Scope.h"
 #include "Semantic/SemanticJob.h"
-#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -239,18 +239,42 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     // We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
     SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifierRef, identifier));
     YIELD();
-    findSymbolsInHierarchy(scopeHierarchy, symbolsMatch, identifier, identifierCrc);
-    if (!symbolsMatch.empty())
-        return true;
 
-    // It can happen than types are not completed when collecting hierarchies, so we can miss some scopes (because of using).
-    // If the types are completed between the collect and the waitTypeCompleted, then we won't find the missing hierarchies,
-    // because we won't parse again.
-    // So here, if we do not find symbols, then we restart until all types are completed.
+    bool retryOnce = false;
     for (const auto& sv : scopeHierarchyVars)
     {
-        waitTypeCompleted(job, sv.scope->owner->typeInfo);
-        YIELD();
+        if (sv.scope->is(ScopeKind::Struct))
+        {
+            const auto structNode = castAst<AstStruct>(sv.scope->owner, AstNodeKind::StructDecl);
+            ScopedLock lk(structNode->mutex);
+            if (!structNode->resolvedSymbolOverload())
+            {
+                retryOnce = true;
+                break;
+            }
+        }
+    }
+
+    while (true)
+    {
+        findSymbolsInHierarchy(scopeHierarchy, symbolsMatch, identifier, identifierCrc);
+        if (!symbolsMatch.empty())
+            return true;
+
+        // It can happen than types are not completed when collecting hierarchies, so we can miss some scopes (because of using).
+        // If the types are completed between the collect and the waitTypeCompleted, then we won't find the missing hierarchies,
+        // because we won't parse again.
+        // So here, if we do not find symbols, then we restart until all types are completed.
+        for (const auto& sv : scopeHierarchyVars)
+        {
+            waitTypeCompleted(job, sv.scope->owner->typeInfo);
+            YIELD();
+        }
+
+        if (!retryOnce)
+            break;
+
+        retryOnce = false;
     }
 
     // Error, no symbol !
