@@ -464,10 +464,10 @@ void initErrors()
     SWAG_ERROR(Err0338, "invalid number prefix                             $ expected [[0x]] for hexadecimal or [[0b]] for binary, found [[%s]] instead");
     SWAG_ERROR(Err0339, "invalid opaque struct                             $ a struct marked with [[#[Swag.Opaque]]] requires a [[public]] access");
     SWAG_ERROR(Err0340, "invalid opaque struct                             $ the struct can't be marked with [[#[Swag.Opaque]]] because the whole file is exported with [[#global export]]");
-    SWAG_ERROR(Err0341, "invalid operation                                 $ can't affect by index a type [[%s]] to [[%s]] because no corresponding [[opIndexAffect]] can be found");
-    SWAG_ERROR(Err0342, "invalid operation                                 $ can't initialize a type [[%s]] with [[%s]] because no corresponding [[opAffectLiteral]] can be found");
-    SWAG_ERROR(Err0343, "invalid operation                                 $ missing special function [[%s]] in [[%s]] when solving operator [[%s]]");
-    SWAG_ERROR(Err0344, "invalid operation                                 $ missing special function [[%s]] in [[%s]]");
+    SWAG_ERROR(Err0341, "invalid struct operation                          $ can't affect by index a type [[%s]] to [[%s]] because no corresponding [[opIndexAffect]] can be found");
+    SWAG_ERROR(Err0342, "invalid struct operation                          $ can't initialize a type [[%s]] with [[%s]] because no corresponding [[opAffectLiteral]] can be found");
+    SWAG_ERROR(Err0343, "invalid struct operation                          $ the special function [[%s]] is missing in [[%s]] to solve operator [[%s]]");
+    SWAG_ERROR(Err0344, "invalid struct operation                          $ the special function [[%s]] is missing in [[%s]]");
     SWAG_ERROR(Err0345, "invalid operation                                 $ the bit inversion operation [[~]] is not allowed on type [[%s]]");
     SWAG_ERROR(Err0346, "invalid operation                                 $ the operation [[%s]] does not accept the type [[%s]] as the left argument");
     SWAG_ERROR(Err0347, "invalid operation                                 $ the operation [[%s]] does not accept the type [[%s]] as the right argument");
