@@ -2,9 +2,10 @@
 struct A {}
 
 #[Swag.PrintBc]
-func toto(x: A)
+func toto()
 {
-    if ref x == null
+    var x: *A
+    if moveref x == null
     {
     }
 }

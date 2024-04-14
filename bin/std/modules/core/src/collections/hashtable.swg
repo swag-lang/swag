@@ -71,19 +71,25 @@ impl HashTable
     #[Overload]
     mtd const opIndex(key: K)->const &V
     {
+        #[Global]
+        var d: V
+
         let it = find(key)
         if it do
             return &it.value
-        return null
+        return &d
     }
 
     #[Overload]
     mtd opIndex(key: K)->&V
     {
+        #[Global]
+        var d: V
+
         let it = find(key)
         if it do
             return &it.value
-        return null
+        return &d
     }
 
     mtd opIndexAffect(key: K, val: V)

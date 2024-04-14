@@ -180,7 +180,7 @@ impl DebugAllocator
         var cpt = 0
         while scan
         {
-            checkIsAllocated(scan, null)
+            checkIsAllocated(scan)
 
             // One leak
             @print("\x1b[91m")
