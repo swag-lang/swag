@@ -292,13 +292,7 @@ bool FormatAst::outputClosureArguments(FormatContext& context, const AstFuncDecl
 
         if (child->is(AstNodeKind::MakePointer))
         {
-            if (child->hasSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF))
-            {
-                CONCAT_FIXED_STR(concat, "ref");
-                concat->addBlank();
-            }
-            else
-                concat->addChar('&');
+            concat->addChar('&');
             child = child->firstChild();
         }
 

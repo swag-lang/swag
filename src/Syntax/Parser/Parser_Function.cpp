@@ -1050,16 +1050,11 @@ bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams
         {
             auto parentId = castAst<AstNode>(capture);
             auto byRef    = false;
+
+            // Capture by reference
             if (tokenParse.is(TokenId::SymAmpersand))
             {
                 parentId              = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, this, capture);
-                parentId->semanticFct = Semantic::resolveMakePointer;
-                eatToken();
-                byRef = true;
-            }
-            else if (tokenParse.is(TokenId::KwdRef))
-            {
-                parentId              = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, this, parentId);
                 parentId->semanticFct = Semantic::resolveMakePointer;
                 parentId->addSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF);
                 eatToken();

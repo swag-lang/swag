@@ -24,7 +24,7 @@ A closure is declared like a lambda, with the captured variables between `|...|`
 }
 
 /**
-You can also capture by pointer with `&` (otherwise it's a copy).
+You can also capture by reference with `&` (otherwise it's a copy).
 */
 #test
 {
@@ -32,26 +32,6 @@ You can also capture by pointer with `&` (otherwise it's a copy).
 
     // Capture 'a' by pointer
     let fct: closure() = closure|&a|()
-    {
-        // We can change the value of the local variable 'a'
-        dref a += 1
-    }
-
-    fct()
-    @assert(a == 126)
-    fct()
-    @assert(a == 127)
-}
-
-/**
-You can also capture by reference with `ref`.
-*/
-#test
-{
-    var a = 125
-
-    // Capture 'a' by reference
-    let fct = closure|ref a|()
     {
         // We can change the value of the local variable 'a'
         a += 1

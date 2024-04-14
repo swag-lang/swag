@@ -4,7 +4,7 @@
 {
     var toto = 0
     //@breakpoint()
-    let x = closure|ref toto|()
+    let x = closure|&toto|()
     {
         toto += 1
     }

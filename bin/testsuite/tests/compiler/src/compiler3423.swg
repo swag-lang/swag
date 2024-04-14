@@ -6,7 +6,7 @@
     var a = 10
     let v: closure(s32) = closure|&a|(x: s32)
     {
-        dref a += x
+        a += x
     }
 
     v(5)

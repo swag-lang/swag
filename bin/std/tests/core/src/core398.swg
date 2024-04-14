@@ -39,7 +39,7 @@ func calcTotalDepth(tree: *Node)->s32
     var total = 0
     walk(tree, closure|&total|(node, depth)
     {
-        dref total += depth
+        total += depth
     }
 )
 
