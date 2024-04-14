@@ -215,6 +215,7 @@ struct Parser
     bool doCurlyStatement(AstNode* parent, AstNode** result);
     bool doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind = ScopeKind::Statement);
     bool doReturn(AstNode* parent, AstNode** result);
+    bool doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams* capture);
     bool doWith(AstNode* parent, AstNode** result);
     bool doPrivate(AstNode* parent, AstNode** result);
     bool doUsing(AstNode* parent, AstNode** result, bool isGlobal);

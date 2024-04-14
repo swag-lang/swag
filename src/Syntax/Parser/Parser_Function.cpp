@@ -1033,6 +1033,61 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams* capture)
+{
+    if (tokenParse.is(TokenId::SymVerticalVertical))
+    {
+        SWAG_CHECK(eatToken());
+    }
+    else
+    {
+        {
+            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [] { return toNte(Nte0011); });
+            SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the [[closure]] capture block"));
+        }
+
+        while (tokenParse.isNot(TokenId::SymVertical))
+        {
+            auto parentId = castAst<AstNode>(capture);
+            auto byRef    = false;
+            if (tokenParse.is(TokenId::SymAmpersand))
+            {
+                parentId              = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, this, capture);
+                parentId->semanticFct = Semantic::resolveMakePointer;
+                eatToken();
+                byRef = true;
+            }
+            else if (tokenParse.is(TokenId::KwdRef))
+            {
+                parentId              = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, this, parentId);
+                parentId->semanticFct = Semantic::resolveMakePointer;
+                parentId->addSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF);
+                eatToken();
+                byRef = true;
+            }
+
+            AstNode* idRef = nullptr;
+            SWAG_CHECK(doIdentifierRef(parentId, &idRef, IDENTIFIER_NO_PARAMS));
+
+            if (byRef)
+                setForceTakeAddress(idRef);
+
+            if (tokenParse.is(TokenId::SymVertical))
+                break;
+
+            SWAG_CHECK(eatToken(TokenId::SymComma, "in capture block"));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymVertical), error(tokenParse.token, toErr(Err0532)));
+        }
+
+        capture->token.endLocation = tokenParse.token.endLocation;
+        SWAG_CHECK(eatToken());
+    }
+
+    SWAG_VERIFY(tokenParse.is(TokenId::SymLeftParen), error(tokenParse.token, formErr(Err0529, tokenParse.token.c_str())));
+    typeInfo->addFlag(TYPEINFO_CLOSURE);
+    return true;
+}
+
 bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType)
 {
     ParserPushTryCatchAssume sc(this, nullptr);
@@ -1064,56 +1119,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         funcNode->captureParameters = capture;
 
         SWAG_CHECK(eatToken());
-        if (tokenParse.is(TokenId::SymVerticalVertical))
-        {
-            SWAG_CHECK(eatToken());
-        }
-        else
-        {
-            {
-                PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [] { return toNte(Nte0011); });
-                SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the [[closure]] capture block"));
-            }
-
-            while (tokenParse.isNot(TokenId::SymVertical))
-            {
-                auto parentId = castAst<AstNode>(capture);
-                auto byRef    = false;
-                if (tokenParse.is(TokenId::SymAmpersand))
-                {
-                    parentId              = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, this, capture);
-                    parentId->semanticFct = Semantic::resolveMakePointer;
-                    eatToken();
-                    byRef = true;
-                }
-                else if (tokenParse.is(TokenId::KwdRef))
-                {
-                    parentId              = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, this, parentId);
-                    parentId->semanticFct = Semantic::resolveMakePointer;
-                    parentId->addSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF);
-                    eatToken();
-                    byRef = true;
-                }
-
-                AstNode* idRef = nullptr;
-                SWAG_CHECK(doIdentifierRef(parentId, &idRef, IDENTIFIER_NO_PARAMS));
-
-                if (byRef)
-                    setForceTakeAddress(idRef);
-
-                if (tokenParse.is(TokenId::SymVertical))
-                    break;
-
-                SWAG_CHECK(eatToken(TokenId::SymComma, "in capture block"));
-                SWAG_VERIFY(tokenParse.isNot(TokenId::SymVertical), error(tokenParse.token, toErr(Err0532)));
-            }
-
-            capture->token.endLocation = tokenParse.token.endLocation;
-            SWAG_CHECK(eatToken());
-        }
-
-        SWAG_VERIFY(tokenParse.is(TokenId::SymLeftParen), error(tokenParse.token, formErr(Err0529, tokenParse.token.c_str())));
-        typeInfo->addFlag(TYPEINFO_CLOSURE);
+        SWAG_CHECK(doClosureCaptureBlock(typeInfo, capture));
     }
     else
     {
