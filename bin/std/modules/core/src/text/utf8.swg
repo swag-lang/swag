@@ -82,11 +82,11 @@ internal
     }
 
     const AcceptRanges: [] AcceptRange = [
-    {LoCB, HiCB},
-    {0xA0, HiCB},
-    {LoCB, 0x9F},
-    {0x90, HiCB},
-    {LoCB, 0x8F}]
+        {LoCB, HiCB},
+        {0xA0, HiCB},
+        {LoCB, 0x9F},
+        {0x90, HiCB},
+        {LoCB, 0x8F}]
 }
 
 // Get the last unicode rune of the utf8 slice, and the number of

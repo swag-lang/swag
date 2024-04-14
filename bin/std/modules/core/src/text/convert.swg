@@ -4,14 +4,14 @@ using Swag, Globalization
 
 struct ConvertFormat
 {
-    formatInt:      ConvertFormatInt
-    formatFloat:    ConvertFormatFloat
+    formatInt:       ConvertFormatInt
+    formatFloat:     ConvertFormatFloat
 }
 
 // Format structure to convert a float to a string
 struct ConvertFormatFloat
 {
-    precision:     s8 = -1           // -1 is for 'most possible precision'
+    precision:     s8 = -1         // -1 is for 'most possible precision'
     fmt:           u8 = `f`'u8
     forceSign:     bool
 }

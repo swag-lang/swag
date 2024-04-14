@@ -35,7 +35,7 @@ impl HashSet
         free()
     }
 
-    mtd opAffect(slice: const [..] K )
+    mtd opAffect(slice: const [..] K)
     {
         visit v: slice do
             add(v)

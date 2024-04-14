@@ -19,7 +19,7 @@ using Core, Core.StrConv
     var buf: ConcatBuffer
     var fmt: ConvertFormatInt
 
-    fmt.base  = 16
+    fmt.base = 16
     convertInt(&buf, 0xFFFFFFFF, fmt)
     var str = buf.toString()
     @assert(str == "FFFFFFFF")
