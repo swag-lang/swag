@@ -171,7 +171,7 @@ bool TypeInfoPointer::isSame(const TypeInfo* to, CastFlags castFlags) const
     {
         if (to->isKindGeneric() && !hasFlag(TYPEINFO_POINTER_MOVE_REF))
             return true;
-        if (this->isPointerNull() && to->isLambdaClosure())
+        if (isPointerNull() && to->isLambdaClosure())
             return true;
     }
 
@@ -180,9 +180,9 @@ bool TypeInfoPointer::isSame(const TypeInfo* to, CastFlags castFlags) const
 
     if (castFlags.has(CAST_FLAG_CAST))
     {
-        if (this->isPointerNull())
+        if (isPointerNull() && !to->isPointerRef())
             return true;
-        if (to->isPointerNull())
+        if (to->isPointerNull() && !isPointerRef())
             return true;
     }
 

@@ -146,7 +146,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         return true;
     }
 
-    if (typeInfo->isPointerToTypeInfo())
+    if (typeInfo->isPointerToTypeInfo() && value->storageOffset != UINT32_MAX)
     {
         storageSegment->addInitPtr(storageOffset, value->storageOffset, value->storageSegment->kind);
         *reinterpret_cast<void**>(ptrDest) = value->getStorageAddr();
