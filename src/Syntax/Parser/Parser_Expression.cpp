@@ -1278,15 +1278,17 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
 
     while (tokenParse.isNot(TokenId::SymRightSquare))
     {
+        AstNode* subExpr = nullptr;
         if (tokenParse.is(TokenId::SymLeftSquare))
-            SWAG_CHECK(doExpressionListArray(node, &dummyResult));
+            SWAG_CHECK(doExpressionListArray(node, &subExpr));
         else if (tokenParse.is(TokenId::SymLeftCurly))
-            SWAG_CHECK(doExpressionListTuple(node, &dummyResult));
+            SWAG_CHECK(doExpressionListTuple(node, &subExpr));
         else
-            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &subExpr));
 
         if (tokenParse.isNot(TokenId::SymComma))
             break;
+        FormatAst::inheritFormatAfter(this, subExpr, &tokenParse);
         SWAG_CHECK(eatToken());
     }
 

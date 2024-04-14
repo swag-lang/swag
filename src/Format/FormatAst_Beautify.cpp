@@ -24,7 +24,7 @@ void FormatAst::beautifyComment(const FormatContext& context, Vector<TokenCommen
 
         concat->addString(cmt);
 
-        if (v.flags.has(TOKEN_PARSE_EOL_AFTER))
+        if (v.flags.has(TOKEN_PARSE_EOL_AFTER) || v.flags.has(TOKEN_PARSE_ONE_LINE_COMMENT))
         {
             concat->addEol();
             concat->addIndent(context.indent);

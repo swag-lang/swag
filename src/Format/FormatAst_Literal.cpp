@@ -94,8 +94,8 @@ bool FormatAst::outputExpressionList(FormatContext& context, AstNode* node)
     else
         concat->addChar('[');
 
-    bool     first     = true;
     uint32_t addIndent = 0;
+    AstNode* prevChild = nullptr;
 
     for (uint32_t i = 0; i < exprNode->childCount(); i++)
     {
@@ -104,17 +104,19 @@ bool FormatAst::outputExpressionList(FormatContext& context, AstNode* node)
         if (!child)
             continue;
 
-        if (!first && child->isNot(AstNodeKind::EmptyNode))
+        if (prevChild)
         {
             concat->addChar(',');
-            concat->addBlank();
+            beautifyAfter(context, prevChild);
+            if (!concat->indent)
+                concat->addBlank();
         }
 
         if (const auto parse = getTokenParse(child))
         {
             if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE))
             {
-                if (first && !child->is(AstNodeKind::ExpressionList))
+                if (!prevChild)
                 {
                     context.indent++;
                     addIndent = 1;
@@ -125,8 +127,10 @@ bool FormatAst::outputExpressionList(FormatContext& context, AstNode* node)
             }
         }
 
-        SWAG_CHECK(outputNode(context, child));
-        first = false;
+        FormatContext cxt{context};
+        cxt.beautifyAfter = false;
+        SWAG_CHECK(outputNode(cxt, child));
+        prevChild = child;
     }
 
     context.indent -= addIndent;
