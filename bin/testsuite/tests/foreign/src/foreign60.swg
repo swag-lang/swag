@@ -2,5 +2,5 @@
 public func toto60(x: string)
 {
     var v = 0
-    var x = ref &v
+    var x =,ref &v
 }

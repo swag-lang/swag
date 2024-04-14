@@ -34,7 +34,7 @@ func day3B()
         {
             loop y: startY until startY + height
             {
-                let re = ref ids.ref2(x, y, 1000)
+                let re =,ref ids.ref2(x, y, 1000)
                 if re
                 {
                     alone = false

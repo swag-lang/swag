@@ -62,7 +62,7 @@ impl SelModel
         }
         else
         {
-            let range = ref selection[isSelectedRange]
+            let range =,ref selection[isSelectedRange]
             if range.start == range.end do
                 selection.removeAt(cast(u64) isSelectedRange)
             elif range.start == idx do

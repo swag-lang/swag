@@ -73,14 +73,14 @@ func day5A()
         if x0 != x1 do
             loop x: x0 to x1
             {
-                let c = ref (m.buffer + (x + y0 * W))
+                let c =,ref (m.buffer + (x + y0 * W))
                 total += (c == 1 ? 1 : 0)
                 c += 1
             }
         elif y0 != y1 do
             loop y: y0 to y1
             {
-                let c = ref (m.buffer + (x0 + y * W))
+                let c =,ref (m.buffer + (x0 + y * W))
                 total += (c == 1 ? 1 : 0)
                 c += 1
             }

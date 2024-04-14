@@ -191,8 +191,7 @@ bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t
             concat->alignToColumn(startColumn + maxLenName + alignTypeBanks);
         concat->addBlank();
         concat->addChar('=');
-        if (!varNode->assignment->is(AstNodeKind::Move) && !varNode->assignment->is(AstNodeKind::NoDrop))
-            concat->addBlank();
+        addBlank(varNode->assignment);
         SWAG_CHECK(outputNode(context, varNode->assignment));
     }
 

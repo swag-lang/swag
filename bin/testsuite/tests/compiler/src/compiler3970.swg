@@ -14,11 +14,11 @@ func toto1()->&s32
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    var y = ref toto()
+    var y =,ref toto()
     y = 42
     @assert(G == 42)
 
-    y = ref toto1()
+    y =,ref toto1()
     y = 5
     @assert(G1 == 5)
 }

@@ -721,7 +721,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = ref &__addr%u[#index]; )", id);
+            content += form(R"( =,ref &__addr%u[#index]; )", id);
         }
         else
         {
@@ -761,7 +761,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = ref &__addr%u[#index]; )", id);
+            content += form(R"( =,ref &__addr%u[#index]; )", id);
         }
         else
         {
@@ -800,7 +800,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = ref &__addr%u[#index]; )", id);
+            content += form(R"( =,ref &__addr%u[#index]; )", id);
         }
         else
         {

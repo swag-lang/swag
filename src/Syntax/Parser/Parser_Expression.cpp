@@ -450,16 +450,6 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
     return true;
 }
 
-bool Parser::doKeepRef(AstNode* parent, AstNode** result)
-{
-    const auto refNode   = Ast::newNode<AstNode>(AstNodeKind::KeepRef, this, parent);
-    *result              = refNode;
-    refNode->semanticFct = Semantic::resolveKeepRef;
-    SWAG_CHECK(eatToken());
-    SWAG_CHECK(doUnaryExpression(refNode, EXPR_FLAG_SIMPLE, &dummyResult));
-    return true;
-}
-
 bool Parser::doMoveRef(AstNode* parent, AstNode** result)
 {
     const auto refNode   = Ast::newNode<AstNode>(AstNodeKind::MoveRef, this, parent);
@@ -531,28 +521,7 @@ bool Parser::doPrimaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
         SWAG_CHECK(doDeRef(parent, &exprNode));
     }
 
-    // Force ref pointer
-    else if (tokenParse.is(TokenId::KwdConst))
-    {
-        const auto startLoc = tokenParse.token.startLocation;
-        tokenizer.saveState(tokenParse);
-        eatToken();
-        if (tokenParse.is(TokenId::KwdRef))
-        {
-            SWAG_CHECK(doKeepRef(parent, &exprNode));
-            exprNode->addAstFlag(AST_CONST);
-            exprNode->token.startLocation = startLoc;
-        }
-        else
-        {
-            tokenizer.restoreState(tokenParse);
-            SWAG_CHECK(doSinglePrimaryExpression(parent, exprFlags, &exprNode));
-        }
-    }
-    else if (tokenParse.is(TokenId::KwdRef))
-    {
-        SWAG_CHECK(doKeepRef(parent, &exprNode));
-    }
+    // Moveref modifier
     else if (tokenParse.is(TokenId::KwdMoveRef))
     {
         SWAG_CHECK(doMoveRef(parent, &exprNode));
@@ -657,6 +626,40 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_NO_LEFT_DROP), error(tokenParse.token, formErr(Err0070, tokenParse.token.c_str())));
             mdfFlags.add(MODIFIER_NO_LEFT_DROP);
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
+        if (tokenParse.token.text == g_LangSpec->name_ref)
+        {
+            switch (opId)
+            {
+                case TokenId::SymEqual:
+                    break;
+                default:
+                    return error(tokenParse.token, formErr(Err0694, tokenParse.token.c_str(), forNode.c_str()));
+            }
+
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_CONST_REF), error(tokenParse.token, formErr(Err0070, tokenParse.token.c_str())));
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_REF), error(tokenParse.token, formErr(Err0070, tokenParse.token.c_str())));
+            mdfFlags.add(MODIFIER_REF);
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
+        if (tokenParse.token.text == g_LangSpec->name_constref)
+        {
+            switch (opId)
+            {
+                case TokenId::SymEqual:
+                    break;
+                default:
+                    return error(tokenParse.token, formErr(Err0694, tokenParse.token.c_str(), forNode.c_str()));
+            }
+
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_CONST_REF), error(tokenParse.token, formErr(Err0070, tokenParse.token.c_str())));
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_REF), error(tokenParse.token, formErr(Err0070, tokenParse.token.c_str())));
+            mdfFlags.add(MODIFIER_CONST_REF);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -1060,6 +1063,27 @@ bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* p
             parent = exprNode;
             result = &dummyResult;
         }
+    }
+
+    // ref
+    if (mdfFlags.has(MODIFIER_REF))
+    {
+        const auto exprNode   = Ast::newNode<AstNode>(AstNodeKind::KeepRef, this, parent);
+        *result               = exprNode;
+        exprNode->semanticFct = Semantic::resolveKeepRef;
+        parent = exprNode;
+        result = &dummyResult;
+    }
+
+    // constref
+    if (mdfFlags.has(MODIFIER_CONST_REF))
+    {
+        const auto exprNode   = Ast::newNode<AstNode>(AstNodeKind::KeepRef, this, parent);
+        *result               = exprNode;
+        exprNode->semanticFct = Semantic::resolveKeepRef;
+        exprNode->addAstFlag(AST_CONST);
+        parent = exprNode;
+        result = &dummyResult;
     }
 
     SWAG_CHECK(doExpression(parent, exprFlags, result));

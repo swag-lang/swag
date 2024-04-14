@@ -83,7 +83,7 @@ func day6A() assume
             let y = i / W
             let d = Math.abs(c.x - x) + Math.abs(c.y - y)
 
-            var r = ref arr.ref2(x, y, W)
+            var r =,ref arr.ref2(x, y, W)
             if d < r.d or !r.who
             {
                 let border = cast(s32) (!x or !y or x == W - 1 or y == W - 1)

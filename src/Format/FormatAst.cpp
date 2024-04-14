@@ -37,6 +37,16 @@ bool FormatAst::hasEOLInside(AstNode* node)
     return false;
 }
 
+void FormatAst::addBlank(const AstNode* next) const
+{
+    if (!next->is(AstNodeKind::NoDrop) &&
+        !next->is(AstNodeKind::Move) &&
+        !next->is(AstNodeKind::KeepRef))
+    {
+        concat->addBlank();
+    }
+}
+
 AstNode* FormatAst::convertNode(FormatContext&, AstNode* node)
 {
     if (!node)

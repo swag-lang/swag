@@ -494,7 +494,6 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
                     case TokenId::KwdCast:
                     case TokenId::KwdAutoCast:
                     case TokenId::KwdDeRef:
-                    case TokenId::KwdRef:
                     case TokenId::KwdMoveRef:
                     case TokenId::KwdRetVal:
                     case TokenId::KwdTry:

@@ -56,6 +56,8 @@ constexpr ModifierFlags MODIFIER_NO_RIGHT_DROP = 0x00000010;
 constexpr ModifierFlags MODIFIER_BIT           = 0x00000020;
 constexpr ModifierFlags MODIFIER_UN_CONST      = 0x00000040;
 constexpr ModifierFlags MODIFIER_BACK          = 0x00000080;
+constexpr ModifierFlags MODIFIER_REF           = 0x00000100;
+constexpr ModifierFlags MODIFIER_CONST_REF     = 0x00000200;
 
 constexpr IdentifierFlags IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
 constexpr IdentifierFlags IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
@@ -186,7 +188,6 @@ struct Parser
     bool doLiteral(AstNode* parent, AstNode** result);
     bool doIntrinsicProp(AstNode* parent, AstNode** result);
     bool doIndex(AstNode* parent, AstNode** result);
-    bool doKeepRef(AstNode* parent, AstNode** result);
     bool doMoveRef(AstNode* parent, AstNode** result);
     bool doDeRef(AstNode* parent, AstNode** result);
     bool doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& mdfFlags, AstNode* node = nullptr);

@@ -60,16 +60,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             SWAG_CHECK(outputCompilerGlobal(context, node));
             break;
 
-        case AstNodeKind::KeepRef:
-            if (node->hasAstFlag(AST_CONST))
-            {
-                CONCAT_FIXED_STR(concat, "const");
-                concat->addBlank();
-            }
-            CONCAT_FIXED_STR(concat, "ref");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(context, node->firstChild()));
-            break;
         case AstNodeKind::MoveRef:
             CONCAT_FIXED_STR(concat, "moveref");
             concat->addBlank();
@@ -413,10 +403,18 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             SWAG_CHECK(outputConditionalExpression(context, node));
             return true;
 
+        case AstNodeKind::KeepRef:
+            if (node->hasAstFlag(AST_CONST))
+                CONCAT_FIXED_STR(concat, ",constref");
+            else
+                CONCAT_FIXED_STR(concat, ",ref");
+            addBlank(node->firstChild());
+            SWAG_CHECK(outputNode(context, node->firstChild()));
+            break;
+
         case AstNodeKind::NoDrop:
             CONCAT_FIXED_STR(concat, ",nodrop");
-            if (!node->firstChild()->is(AstNodeKind::Move))
-                concat->addBlank();
+            addBlank(node->firstChild());
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
 
@@ -424,16 +422,15 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             if (node->firstChild()->is(AstNodeKind::NoDrop))
             {
                 CONCAT_FIXED_STR(concat, ",moveraw");
-                concat->addBlank();
+                addBlank(node->firstChild()->firstChild());
                 SWAG_CHECK(outputNode(context, node->firstChild()->firstChild()));
             }
             else
             {
                 CONCAT_FIXED_STR(concat, ",move");
-                concat->addBlank();
+                addBlank(node->firstChild());
                 SWAG_CHECK(outputNode(context, node->firstChild()));
             }
-
             break;
 
         case AstNodeKind::AffectOp:

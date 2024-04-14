@@ -93,6 +93,7 @@ struct FormatAst
     static TokenParse*       getOrCreateTokenParse(AstNode* node);
 
     static bool     hasEOLInside(AstNode* node);
+    void            addBlank(const AstNode* next) const;
     static AstNode* convertNode(FormatContext& context, AstNode* node);
     void            addEOLOrSemi(const FormatContext& context, const AstNode* child) const;
     auto            outputChildrenEol(FormatContext& context, AstNode* node, uint32_t start = 0) -> bool;

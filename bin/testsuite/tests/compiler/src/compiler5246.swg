@@ -2,6 +2,6 @@
 #test
 {
     var x = 5
-    let y = const ref &x
-    y = ref &x
+    let y =,constref &x
+    y =,ref &x
 }

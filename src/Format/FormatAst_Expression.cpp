@@ -104,9 +104,7 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
         CONCAT_FIXED_STR(concat, ",up");
 
-    if (!node->secondChild()->is(AstNodeKind::NoDrop) && !node->secondChild()->is(AstNodeKind::Move))
-        concat->addBlank();
-
+    addBlank(node->secondChild());
     SWAG_CHECK(outputNode(context, node->secondChild()));
     beautifyAfter(context, node);
     return true;

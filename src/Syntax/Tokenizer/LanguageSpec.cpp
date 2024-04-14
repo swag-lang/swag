@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 #include "pch.h"
-#include "Syntax/Parser/Parser.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Syntax/Parser/Parser.h"
 
 LanguageSpec* g_LangSpec = nullptr;
 
@@ -154,16 +154,19 @@ void LanguageSpec::setupNames()
     name_location    = "location";
     name_version     = "version";
 
-    name_up      = "up";
-    name_over    = "over";
-    name_nodrop  = "nodrop";
-    name_move    = "move";
-    name_moveraw = "moveraw";
-    name_err     = "err";
-    name_noerr   = "noerr";
-    name_bit     = "bit";
-    name_unconst = "unconst";
-    name_back    = "back";
+    name_up       = "up";
+    name_over     = "over";
+    name_nodrop   = "nodrop";
+    name_move     = "move";
+    name_moveraw  = "moveraw";
+    name_bit      = "bit";
+    name_unconst  = "unconst";
+    name_back     = "back";
+    name_ref      = "ref";
+    name_constref = "constref";
+
+    name_err   = "err";
+    name_noerr = "noerr";
 
     name_boundcheck  = "boundcheck";
     name_overflow    = "overflow";

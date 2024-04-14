@@ -83,7 +83,7 @@ func day6A1() assume
     {
         visit c, i: l
         {
-            var v = ref &freq[i, c - `a`]
+            var v =,ref &freq[i, c - `a`]
             v += 1
 
             if v > best[i]

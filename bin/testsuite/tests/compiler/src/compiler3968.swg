@@ -22,7 +22,7 @@ func toto()->const &VV
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    let x = ref toto()
+    let x =,ref toto()
     let y = x
     @assert(@typeof(x) == const &VV)
     @assert(@typeof(y) == VV)
