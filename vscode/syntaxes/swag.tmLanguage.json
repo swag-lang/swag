@@ -453,7 +453,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "\\,(over|nodrop|bit|move|moveraw|up|unconst|back)\\b"
+          "match": "\\,(up|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
         }
       ]
     }
