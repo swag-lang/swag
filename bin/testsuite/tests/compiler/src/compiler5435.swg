@@ -1,4 +1,4 @@
-#global skip
+#global testerror "Err0751"
 struct A {}
 
 #[Swag.PrintBc]

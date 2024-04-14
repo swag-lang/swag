@@ -71,6 +71,8 @@ TODO
 ****************************************
 
 -------------------------------------
+format, floatext.swg, mauvais commentaire de fin de ligne
+-------------------------------------
 warning ?
     var a = 1
     a = 2

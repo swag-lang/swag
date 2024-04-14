@@ -524,6 +524,7 @@ bool Parser::doPrimaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     // Moveref modifier
     else if (tokenParse.is(TokenId::KwdMoveRef))
     {
+        SWAG_VERIFY(exprFlags.has(EXPR_FLAG_IN_CALL), error(tokenParse.token, toErr(Err0751)));
         SWAG_CHECK(doMoveRef(parent, &exprNode));
     }
     else
@@ -1071,8 +1072,8 @@ bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* p
         const auto exprNode   = Ast::newNode<AstNode>(AstNodeKind::KeepRef, this, parent);
         *result               = exprNode;
         exprNode->semanticFct = Semantic::resolveKeepRef;
-        parent = exprNode;
-        result = &dummyResult;
+        parent                = exprNode;
+        result                = &dummyResult;
     }
 
     // constref

@@ -874,7 +874,7 @@ void initErrors()
     SWAG_ERROR(Err0748, "unused return value                               $ the return value of the intrinsic [[%s]] should be used");
     SWAG_ERROR(Err0749, "unused return value                               $ the return value of the lambda [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err0750, "missing return type                               $ a [[public]] function must always define its return type");
-    SWAG_ERROR(Err0751, nullptr);
+    SWAG_ERROR(Err0751, "misplaced [[moveref]]                             $ [[moveref]] can only be used before a function argument");
     SWAG_ERROR(Err0752, nullptr);
     SWAG_ERROR(Err0753, nullptr);
     SWAG_ERROR(Err0754, nullptr);

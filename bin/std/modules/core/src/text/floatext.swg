@@ -8,7 +8,7 @@
 #global namespace StrConv
 #global #[Swag.Overflow(true)]
 
-// An extFloat represents an extended floating-point number, with more
+// A FloatExt represents an extended floating-point number, with more
 // precision than a float64. It does not try to save bits: the
 // number represented by the structure is mant*(2^exp), with a negative
 // sign if neg is true.
