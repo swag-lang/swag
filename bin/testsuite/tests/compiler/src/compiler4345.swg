@@ -8,7 +8,7 @@ impl Point
 {
     mtd gx()->&T
     {
-        return ref &x
+        return &x
     }
 }
 

@@ -7,6 +7,6 @@
     var myRef: const &s32 = &x
     @assert(myRef == 1)
 
-    myRef = const ref &y
+    myRef =,constref &y
     @assert(myRef == 1000)
 }

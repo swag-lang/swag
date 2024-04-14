@@ -165,7 +165,7 @@ func animate(wnd: *Wnd)
 
     for var i = 0'u64; i < g_Cells.count; i += 1
     {
-        let c = ref g_Cells[i]
+        let c =,ref g_Cells[i]
         if c.remove
         {
             g_Cells.removeAt(i)

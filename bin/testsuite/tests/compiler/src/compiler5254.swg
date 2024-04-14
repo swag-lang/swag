@@ -6,6 +6,6 @@ func(T) toto()->&T
 
 #test
 {
-    let str = const ref toto's32()
+    let str =,constref toto's32()
     toto's32() = 0
 }

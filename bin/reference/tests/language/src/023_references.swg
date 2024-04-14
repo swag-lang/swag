@@ -36,7 +36,7 @@ When an affectation is done outside of an initialization, you will change the po
 
 /**
 But unlike C++, you can change the reference (reassign it) and not the pointed value if you want.
-You must then use `ref` in the affectation.
+You must then use `ref` modifier in the affectation.
 */
 
 #test
@@ -44,12 +44,12 @@ You must then use `ref` in the affectation.
     var x = 1
     var y = 1000
 
-    var myRef: const &s32 = &x
+    var myRef: &s32 = &x
     @assert(myRef == 1)
 
     // Here we force 'myRef' to point to 'y' and not to 'x' anymore.
     // We do *NOT* change the value of 'x'.
-    myRef = const ref &y
+    myRef =,ref &y
     @assert(myRef == 1000)
 }
 
