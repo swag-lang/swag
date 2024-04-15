@@ -1353,7 +1353,8 @@ void GenDoc::constructPage()
 				}
 			}
         });
-    </script>\n)";
+    </script>)";
+    helpOutput += "\n";
 
     // User end of the <body> section
     const auto endBody = Utf8{module->buildCfg.genDoc.endBody};
