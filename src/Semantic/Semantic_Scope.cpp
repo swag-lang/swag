@@ -111,7 +111,11 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Alternati
     return true;
 }
 
-bool Semantic::collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopeHierarchy, VectorNative<AlternativeScopeVar>& scopeHierarchyVars, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
+bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
+                                     VectorNative<AlternativeScope>&    scopeHierarchy,
+                                     VectorNative<AlternativeScopeVar>& scopeHierarchyVars,
+                                     AstIdentifierRef*                  identifierRef,
+                                     AstIdentifier*                     identifier)
 {
     // :AutoScope
     // Auto scoping depending on the context
@@ -235,28 +239,13 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         identifier->addSemFlag(SEMFLAG_FORCE_UFCS);
     }
 
-    // We then search in the normal hierarchy
-    // We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
-    SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifierRef, identifier));
-    YIELD();
-
-    bool retryOnce = false;
-    for (const auto& sv : scopeHierarchyVars)
+    for (uint32_t i = 0; i < 2; i++)
     {
-        if (sv.scope->is(ScopeKind::Struct))
-        {
-            const auto structNode = castAst<AstStruct>(sv.scope->owner, AstNodeKind::StructDecl);
-            ScopedLock lk(structNode->mutex);
-            if (!structNode->resolvedSymbolOverload())
-            {
-                retryOnce = true;
-                break;
-            }
-        }
-    }
+        // We then search in the normal hierarchy
+        // We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
+        SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifierRef, identifier));
+        YIELD();
 
-    while (true)
-    {
         findSymbolsInHierarchy(scopeHierarchy, symbolsMatch, identifier, identifierCrc);
         if (!symbolsMatch.empty())
             return true;
@@ -265,16 +254,17 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         // If the types are completed between the collect and the waitTypeCompleted, then we won't find the missing hierarchies,
         // because we won't parse again.
         // So here, if we do not find symbols, then we restart until all types are completed.
+        for (const auto& sv : scopeHierarchy)
+        {
+            waitTypeCompleted(job, sv.scope->owner->typeInfo);
+            YIELD();
+        }
+        
         for (const auto& sv : scopeHierarchyVars)
         {
             waitTypeCompleted(job, sv.scope->owner->typeInfo);
             YIELD();
         }
-
-        if (!retryOnce)
-            break;
-
-        retryOnce = false;
     }
 
     // Error, no symbol !
@@ -398,6 +388,8 @@ void Semantic::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope
 {
     if (!scope)
         return;
+
+    SWAG_ASSERT(!hasAlternativeScope(scopes, scope));
 
     AlternativeScope as;
     as.scope = scope;
@@ -585,25 +577,25 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
             scopeUpMode = IdentifierScopeUpMode::None;
         }
 
-        addAlternativeScope(scopes, startScope);
-        addAlternativeScope(toProcess, startScope);
+        addAlternativeScopeOnce(scopes, startScope);
+        addAlternativeScopeOnce(toProcess, startScope);
     }
 
     // Add current file scope
-    addAlternativeScope(scopes, context->sourceFile->scopeFile);
-    addAlternativeScope(toProcess, context->sourceFile->scopeFile);
+    addAlternativeScopeOnce(scopes, context->sourceFile->scopeFile);
+    addAlternativeScopeOnce(toProcess, context->sourceFile->scopeFile);
 
     // Add bootstrap
     SWAG_ASSERT(g_Workspace->bootstrapModule);
-    addAlternativeScope(scopes, g_Workspace->bootstrapModule->scopeRoot);
-    addAlternativeScope(toProcess, g_Workspace->bootstrapModule->scopeRoot);
+    addAlternativeScopeOnce(scopes, g_Workspace->bootstrapModule->scopeRoot);
+    addAlternativeScopeOnce(toProcess, g_Workspace->bootstrapModule->scopeRoot);
 
     // Add runtime, except for the bootstrap
     if (!sourceFile->hasFlag(FILE_BOOTSTRAP))
     {
         SWAG_ASSERT(g_Workspace->runtimeModule);
-        addAlternativeScope(scopes, g_Workspace->runtimeModule->scopeRoot);
-        addAlternativeScope(toProcess, g_Workspace->runtimeModule->scopeRoot);
+        addAlternativeScopeOnce(scopes, g_Workspace->runtimeModule->scopeRoot);
+        addAlternativeScopeOnce(toProcess, g_Workspace->runtimeModule->scopeRoot);
     }
 
     for (uint32_t i = 0; i < toProcess.size(); i++)

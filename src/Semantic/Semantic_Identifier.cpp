@@ -379,6 +379,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
             if (symbol->isNot(SymbolKind::Function) && symbol->isNot(SymbolKind::Variable))
                 continue;
 
+            SharedLock lk(symbol->mutex);
             for (auto& overload : symbol->overloads)
             {
                 const auto concrete = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCE_ALIAS);

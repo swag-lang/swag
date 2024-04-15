@@ -204,7 +204,7 @@ void Semantic::waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl)
     if (!funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_FULL_RESOLVE))
     {
         funcDecl->dependentJobs.add(job);
-        job->setPending(JobWaitKind::SemFullResolve, funcDecl->resolvedSymbolName(), funcDecl, nullptr);
+        job->setPending(JobWaitKind::SemFullResolve, nullptr, funcDecl, nullptr);
     }
 }
 

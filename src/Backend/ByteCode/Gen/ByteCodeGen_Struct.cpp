@@ -1147,7 +1147,7 @@ bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
     const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     ScopedLock lk(structNode->mutex);
     structNode->addSemFlag(SEMFLAG_BYTECODE_GENERATED);
-    node->dependentJobs.setRunning();
+    structNode->dependentJobs.setRunning();
     return true;
 }
 
