@@ -624,6 +624,8 @@ void ByteCodeGen::emitSetZeroAtPointer(const ByteCodeGenContext* context, uint64
 {
     switch (sizeOf)
     {
+        case 0:
+            break;
         case 1:
             EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer8, registerIndex);
             break;
@@ -646,6 +648,8 @@ void ByteCodeGen::emitSetZeroStack(const ByteCodeGenContext* context, uint32_t o
 {
     switch (sizeOf)
     {
+        case 0:
+            break;
         case 1:
             EMIT_INST1(context, ByteCodeOp::SetZeroStack8, offset);
             break;
@@ -668,6 +672,8 @@ void ByteCodeGen::emitMemCpy(const ByteCodeGenContext* context, uint32_t r0, uin
 {
     switch (sizeOf)
     {
+        case 0:
+            break;
         case 1:
             EMIT_INST2(context, ByteCodeOp::MemCpy8, r0, r1);
             break;
