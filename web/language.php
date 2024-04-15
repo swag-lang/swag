@@ -556,7 +556,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">const</span>
 <span class="SKwd">var</span>
 <span class="SKwd">let</span>
-<span class="SKwd">ref</span>
+ref
 <span class="SKwd">moveref</span>
 <span class="SKwd">acast</span>
 <span class="SKwd">cast</span>
@@ -1179,24 +1179,24 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>A raw string starts and ends with the character <span class="code-inline">#</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> a = #<span class="SStr">"\u2F46"</span>#
+    <span class="SKwd">const</span> a = <span class="SStr">#"\u2F46"#</span>
     <span class="SCmp">#assert</span> a != <span class="SStr">"⽆"</span>
-    <span class="SCmp">#assert</span> a == #<span class="SStr">"\u2F46"</span>#
+    <span class="SCmp">#assert</span> a == <span class="SStr">#"\u2F46"#</span>
 }</span></div>
 <p>This are equivalent: </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> a = <span class="SStr">"\\hello \\world"</span>     <span class="SCmt">// By using an escape character</span>
-    <span class="SKwd">const</span> b = #<span class="SStr">"\hello \world"</span>#     <span class="SCmt">// Without, because they are not transformed</span>
+    <span class="SKwd">const</span> b = <span class="SStr">#"\hello \world"#</span>     <span class="SCmt">// Without, because they are not transformed</span>
     <span class="SCmp">#assert</span> a == b
 }</span></div>
 <p>A raw string can spawn on multiple lines because the line feed is now part of the string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> a = #<span class="SStr">"this is
+    <span class="SKwd">const</span> a = <span class="SStr">#"this is
                 a
                 string
-                "</span>#
+                "#</span>
 }</span></div>
 <p>Every blanks <b>before</b> the ending mark <span class="code-inline">"@</span> will be removed from every other lines, so the string before is equivalent to : </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -2042,18 +2042,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Remember that 'myRef' is an alias for 'x', so 'x' has also been changed.</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">66</span>)
 }</span></div>
-<p>But unlike C++, you can change the reference (reassign it) and not the pointed value if you want. You must then use <span class="code-inline">ref</span> in the affectation. </p>
+<p>But unlike C++, you can change the reference (reassign it) and not the pointed value if you want. You must then use <span class="code-inline">ref</span> modifier in the affectation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">1</span>
     <span class="SKwd">var</span> y = <span class="SNum">1000</span>
 
-    <span class="SKwd">var</span> myRef: <span class="SKwd">const</span> &<span class="STpe">s32</span> = &x
+    <span class="SKwd">var</span> myRef: &<span class="STpe">s32</span> = &x
     <span class="SItr">@assert</span>(myRef == <span class="SNum">1</span>)
 
     <span class="SCmt">// Here we force 'myRef' to point to 'y' and not to 'x' anymore.</span>
     <span class="SCmt">// We do *NOT* change the value of 'x'.</span>
-    myRef = <span class="SKwd">const</span> <span class="SKwd">ref</span> &y
+    myRef =,ref &y
     <span class="SItr">@assert</span>(myRef == <span class="SNum">1000</span>)
 }</span></div>
 <p>Most of the time, you have to take the address of a variable to make a reference to it. The only exception are function parameters, if the reference is <span class="code-inline">const</span>. In that case, taking the address is not necessary </p>
@@ -4599,30 +4599,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SFct">fct</span>()
 }</span></div>
-<p>You can also capture by pointer with <span class="code-inline">&</span> (otherwise it's a copy). </p>
+<p>You can also capture by reference with <span class="code-inline">&</span> (otherwise it's a copy). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a = <span class="SNum">125</span>
 
     <span class="SCmt">// Capture 'a' by pointer</span>
     <span class="SKwd">let</span> fct: <span class="SKwd">closure</span>() = <span class="SKwd">closure</span>|&a|()
-    {
-        <span class="SCmt">// We can change the value of the local variable 'a'</span>
-        <span class="SKwd">dref</span> a += <span class="SNum">1</span>
-    }
-
-    <span class="SFct">fct</span>()
-    <span class="SItr">@assert</span>(a == <span class="SNum">126</span>)
-    <span class="SFct">fct</span>()
-    <span class="SItr">@assert</span>(a == <span class="SNum">127</span>)
-}</span></div>
-<p>You can also capture by reference with <span class="code-inline">ref</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">var</span> a = <span class="SNum">125</span>
-
-    <span class="SCmt">// Capture 'a' by reference</span>
-    <span class="SKwd">let</span> fct = <span class="SKwd">closure</span>|<span class="SKwd">ref</span> a|()
     {
         <span class="SCmt">// We can change the value of the local variable 'a'</span>
         a += <span class="SNum">1</span>
@@ -7500,7 +7483,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation_md__231_003_Pages_md">Pages.md</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 08-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 15-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>
@@ -7529,5 +7512,6 @@ Generated on 08-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 
 				}
 			}
         });
-    </script>\n</body>
+    </script>
+</body>
 </html>

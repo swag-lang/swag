@@ -124,7 +124,7 @@
 <li>Note that if a test works as expected, <b>keep it</b>, and <b>write another one</b> ! This is useful for testing regression.</li>
 </ul>
 <div class="swag-watermark">
-Generated on 08-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 15-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>
@@ -153,5 +153,6 @@ Generated on 08-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 
 				}
 			}
         });
-    </script>\n</body>
+    </script>
+</body>
 </html>
