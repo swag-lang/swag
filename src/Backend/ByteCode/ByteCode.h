@@ -1,8 +1,8 @@
 #pragma once
 #include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/ByteCode/ByteCodeOp.h"
-#include "Backend/ByteCode/Register.h"
 #include "Backend/ByteCode/Profiler/Profiler.h"
+#include "Backend/ByteCode/Register.h"
 #include "Threading/Mutex.h"
 #include "Threading/RaceCondition.h"
 
@@ -153,10 +153,9 @@ struct ByteCode
     bool isAddedToList           = false;
     bool isDirtyRegistersRC      = false;
     bool isUsed                  = false;
-    bool forceEmit               = false;
+    bool isInDataSegment         = false;
     bool hasForeignFunctionCalls = false;
     bool sanDone                 = false;
-    bool isInSeg                 = false;
 
     std::atomic<bool> isEmpty;
 

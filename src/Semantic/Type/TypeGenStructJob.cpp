@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Backend/ByteCode/ByteCode.h"
-#include "Semantic/Semantic.h"
-#include "Semantic/Generic/Generic.h"
 #include "Semantic/Type/TypeGenStructJob.h"
+#include "Backend/ByteCode/ByteCode.h"
+#include "Semantic/Generic/Generic.h"
+#include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
 #include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
@@ -44,10 +44,9 @@ bool TypeGenStructJob::computeStruct()
         }
         else if (realType->opInit)
         {
-            concreteType->opInit        = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
-            realType->opInit->isUsed    = true;
-            realType->opInit->isInSeg   = true;
-            realType->opInit->forceEmit = true;
+            concreteType->opInit              = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
+            realType->opInit->isUsed          = true;
+            realType->opInit->isInDataSegment = true;
             storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opInit), realType->opInit->getCallNameFromDecl());
         }
 
@@ -58,10 +57,9 @@ bool TypeGenStructJob::computeStruct()
         }
         else if (realType->opDrop)
         {
-            concreteType->opDrop        = ByteCodeRun::makeLambda(baseContext, realType->opUserDropFct, realType->opDrop);
-            realType->opDrop->isUsed    = true;
-            realType->opDrop->isInSeg   = true;
-            realType->opDrop->forceEmit = true;
+            concreteType->opDrop              = ByteCodeRun::makeLambda(baseContext, realType->opUserDropFct, realType->opDrop);
+            realType->opDrop->isUsed          = true;
+            realType->opDrop->isInDataSegment = true;
             storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opDrop), realType->opDrop->getCallNameFromDecl());
         }
 
@@ -72,10 +70,9 @@ bool TypeGenStructJob::computeStruct()
         }
         else if (realType->opPostCopy)
         {
-            concreteType->opPostCopy        = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
-            realType->opPostCopy->isUsed    = true;
-            realType->opPostCopy->isInSeg   = true;
-            realType->opPostCopy->forceEmit = true;
+            concreteType->opPostCopy              = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
+            realType->opPostCopy->isUsed          = true;
+            realType->opPostCopy->isInDataSegment = true;
             storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opPostCopy), realType->opPostCopy->getCallNameFromDecl());
         }
 
@@ -86,10 +83,9 @@ bool TypeGenStructJob::computeStruct()
         }
         else if (realType->opPostMove)
         {
-            concreteType->opPostMove        = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
-            realType->opPostMove->isUsed    = true;
-            realType->opPostMove->isInSeg   = true;
-            realType->opPostMove->forceEmit = true;
+            concreteType->opPostMove              = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
+            realType->opPostMove->isUsed          = true;
+            realType->opPostMove->isInDataSegment = true;
             storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opPostMove), realType->opPostMove->getCallNameFromDecl());
         }
     }

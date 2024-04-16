@@ -345,7 +345,7 @@ void Module::buildGlobalVarsToDropSlice()
             SWAG_ASSERT(g.type->opDrop);
             const auto opDrop = g.type->opDrop;
             oneVar->opDrop    = opDrop;
-            opDrop->isInSeg   = true;
+            opDrop->isInDataSegment   = true;
 
             if (opDrop->node)
             {

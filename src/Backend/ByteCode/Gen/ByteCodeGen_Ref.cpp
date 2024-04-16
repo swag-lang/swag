@@ -479,9 +479,10 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     inst->c.pointer = nullptr;
     if (funcNode->hasExtByteCode() && funcNode->extByteCode()->bc)
     {
-        inst->c.pointer                        = reinterpret_cast<uint8_t*>(funcNode->extByteCode()->bc);
-        funcNode->extByteCode()->bc->isUsed    = true;
-        funcNode->extByteCode()->bc->forceEmit = true;
+        const auto bc       = funcNode->extByteCode()->bc;
+        inst->c.pointer     = reinterpret_cast<uint8_t*>(bc);
+        bc->isUsed          = true;
+        bc->isInDataSegment = true;
     }
 
     // :CaptureBlock

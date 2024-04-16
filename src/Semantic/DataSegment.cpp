@@ -1,8 +1,8 @@
 #include "pch.h"
+#include "Semantic/DataSegment.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
-#include "Semantic/DataSegment.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
@@ -389,10 +389,10 @@ void DataSegment::doPatchMethods(JobContext* context)
         }
         else if (funcNode->hasExtByteCode() && funcNode->extByteCode()->bc)
         {
-            bc            = funcNode->extByteCode()->bc;
-            bc->isInSeg   = true;
-            bc->forceEmit = true;
-            lambdaPtr     = ByteCodeRun::makeLambda(context, funcNode, bc);
+            bc                  = funcNode->extByteCode()->bc;
+            bc->isInDataSegment = true;
+            bc->isUsed          = true;
+            lambdaPtr           = ByteCodeRun::makeLambda(context, funcNode, bc);
             addInitPtrFunc(it.second, funcNode->getCallName());
         }
 

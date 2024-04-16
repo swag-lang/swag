@@ -4,8 +4,8 @@
 #include "Backend/ByteCode/Gen/ByteCodeGenJob.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Semantic/Semantic.h"
 #include "Semantic/Error/SemanticError.h"
+#include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -247,7 +247,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 child->extByteCode()->bc->sourceFile = child->token.sourceFile;
             }
 
-            child->extByteCode()->bc->forceEmit = true;
+            child->extByteCode()->bc->isUsed          = true;
+            child->extByteCode()->bc->isInDataSegment = true;
         }
 
         // Match function signature
@@ -358,8 +359,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         }
         else
         {
-            funcChild->extByteCode()->bc->isUsed  = true;
-            funcChild->extByteCode()->bc->isInSeg = true;
+            funcChild->extByteCode()->bc->isUsed          = true;
+            funcChild->extByteCode()->bc->isInDataSegment = true;
 
             *ptrITable = ByteCode::doByteCodeLambda(funcChild->extByteCode()->bc);
             constSegment->addInitPtrFunc(offset, funcChild->getCallName());

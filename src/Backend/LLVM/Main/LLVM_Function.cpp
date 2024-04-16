@@ -5923,7 +5923,7 @@ void LLVM::setFuncAttributes(const BuildParameters& buildParameters, const AstFu
     else if (funcNode &&
              !funcNode->token.sourceFile->hasFlag(FILE_RUNTIME) &&
              !funcNode->token.sourceFile->hasFlag(FILE_BOOTSTRAP) &&
-             !bc->isInSeg &&
+             !bc->isInDataSegment &&
              !funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
              numPreCompileBuffers == 2) // :SegZeroIsData
     {
