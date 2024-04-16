@@ -221,15 +221,24 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     const auto startScope = identifierRef->startScope;
     if (startScope)
     {
-        SWAG_CHECK(collectScopeHierarchy(startScope, scopeHierarchy, scopeHierarchyVars, symbolsMatch, identifierRef, identifier, identifierCrc));
-        if (!symbolsMatch.empty())
-            return true;
-        findSymbolsInHierarchy(scopeHierarchy, symbolsMatch, identifier, identifierCrc);
-        if (!symbolsMatch.empty())
-            return true;
+        for (uint32_t i = 0; i < 2; i++)
+        {
+            SWAG_CHECK(collectScopeHierarchy(startScope, scopeHierarchy, scopeHierarchyVars, symbolsMatch, identifierRef, identifier, identifierCrc));
+            if (!symbolsMatch.empty())
+                return true;
 
-        waitTypeCompleted(job, startScope->owner->typeInfo);
-        YIELD();
+            findSymbolsInHierarchy(scopeHierarchy, symbolsMatch, identifier, identifierCrc);
+            if (!symbolsMatch.empty())
+                return true;
+
+            // It can happen than types are not completed when collecting hierarchies, so we can miss some scopes (because of using).
+            // If the types are completed between the collect and the waitTypeCompleted, then we won't find the missing hierarchies,
+            // because we won't parse again.
+            // So here, if we do not find symbols, then we restart until all types are completed.
+            // :TryAgainOnce
+            waitTypeCompleted(job, startScope->owner->typeInfo);
+            YIELD();
+        }
 
         if (!identifierRef->previousResolvedNode && identifierRef->hasAstFlag(AST_SILENT_CHECK))
             return true;
@@ -239,10 +248,10 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         identifier->addSemFlag(SEMFLAG_FORCE_UFCS);
     }
 
+    // We then search in the normal hierarchy
+    // We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
     for (uint32_t i = 0; i < 2; i++)
     {
-        // We then search in the normal hierarchy
-        // We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
         SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifierRef, identifier));
         YIELD();
 
@@ -250,16 +259,13 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         if (!symbolsMatch.empty())
             return true;
 
-        // It can happen than types are not completed when collecting hierarchies, so we can miss some scopes (because of using).
-        // If the types are completed between the collect and the waitTypeCompleted, then we won't find the missing hierarchies,
-        // because we won't parse again.
-        // So here, if we do not find symbols, then we restart until all types are completed.
+        // :TryAgainOnce
         for (const auto& sv : scopeHierarchy)
         {
             waitTypeCompleted(job, sv.scope->owner->typeInfo);
             YIELD();
         }
-        
+
         for (const auto& sv : scopeHierarchyVars)
         {
             waitTypeCompleted(job, sv.scope->owner->typeInfo);
