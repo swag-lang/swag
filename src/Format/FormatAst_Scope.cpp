@@ -49,22 +49,22 @@ bool FormatAst::outputScopeContent(FormatContext& context, const Module* module,
             concat->addIndent(context.indent);
             if (funcNode->token.text == g_LangSpec->name_opInitGenerated)
             {
-                CONCAT_FIXED_STR(concat, "func opInit(using self);");
+                CONCAT_FIXED_STR(concat, "mtd opInit();");
                 concat->addEol();
             }
             else if (funcNode->token.text == g_LangSpec->name_opDropGenerated)
             {
-                CONCAT_FIXED_STR(concat, "func opDrop(using self);");
+                CONCAT_FIXED_STR(concat, "mtd opDrop();");
                 concat->addEol();
             }
             else if (funcNode->token.text == g_LangSpec->name_opPostCopyGenerated)
             {
-                CONCAT_FIXED_STR(concat, "func opPostCopy(using self);");
+                CONCAT_FIXED_STR(concat, "mtd opPostCopy();");
                 concat->addEol();
             }
             else if (funcNode->token.text == g_LangSpec->name_opPostMoveGenerated)
             {
-                CONCAT_FIXED_STR(concat, "func opPostMove(using self);");
+                CONCAT_FIXED_STR(concat, "mtd opPostMove();");
                 concat->addEol();
             }
             else
