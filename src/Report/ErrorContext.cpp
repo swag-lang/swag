@@ -89,10 +89,13 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
             Utf8 name;
             if (exp.node)
             {
-                if (exp.node->resolvedSymbolOverload() && exp.node->resolvedSymbolOverload()->node->ownerStructScope)
-                    name = form("%s.%s", exp.node->resolvedSymbolOverload()->node->ownerStructScope->name.c_str(), exp.node->resolvedSymbolOverload()->symbol->name.c_str());
-                else if (exp.node->resolvedSymbolName())
-                    name = exp.node->resolvedSymbolName()->name;
+                auto overload = exp.node->resolvedSymbolOverloadSafe();
+                auto sym      = exp.node->resolvedSymbolNameSafe();
+
+                if (overload && overload->node->ownerStructScope)
+                    name = form("%s.%s", overload->node->ownerStructScope->name.c_str(), overload->symbol->name.c_str());
+                else if (sym)
+                    name = sym->name;
                 else
                     name = exp.node->token.text;
             }

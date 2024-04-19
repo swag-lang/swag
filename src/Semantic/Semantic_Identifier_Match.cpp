@@ -570,11 +570,10 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     if (overload->hasFlag(OVERLOAD_VAR_STRUCT) && identifier->identifierRef()->startScope)
     {
         const auto parentStructNode = identifier->identifierRef()->startScope->owner;
-        if (parentStructNode->resolvedSymbolOverload())
-        {
-            waitOverloadCompleted(context->baseJob, parentStructNode->resolvedSymbolOverload());
-            YIELD();
-        }
+        waitStructOverloadDefined(context->baseJob, parentStructNode->typeInfo);
+        YIELD();
+        waitOverloadCompleted(context->baseJob, parentStructNode->resolvedSymbolOverload());
+        YIELD();
     }
 
     overload->flags.add(OVERLOAD_USED);

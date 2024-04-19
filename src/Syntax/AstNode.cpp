@@ -822,25 +822,31 @@ void AstNode::setOwnerBreakable(AstBreakable* bkp)
 
 void AstNode::setResolvedSymbolName(SymbolName* sym)
 {
+    if (sym == symbolName)
+        return;
+    SWAG_RACE_CONDITION_WRITE(raceSymbol);
     addSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
     symbolName = sym;
 }
 
 void AstNode::setResolvedSymbolOverload(SymbolOverload* over)
 {
-    if (over)
+    if (over && over != symbolOverload)
     {
+        SWAG_RACE_CONDITION_WRITE(raceSymbol);
         symbolOverload = over;
         removeSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
     }
-    else
+    else if (!over)
     {
+        SWAG_RACE_CONDITION_WRITE(raceSymbol);
         addSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
     }
 }
 
 void AstNode::setResolvedSymbol(SymbolName* sym, SymbolOverload* over)
 {
+    SWAG_RACE_CONDITION_WRITE(raceSymbol);
     if (!over)
     {
         addSemFlag(SEMFLAG_HAS_SYMBOL_NAME);

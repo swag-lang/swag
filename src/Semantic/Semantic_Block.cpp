@@ -162,7 +162,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
             {
                 SWAG_ASSERT(node->parametersScope);
                 AddSymbolTypeInfo toAdd;
-                toAdd.node                = funcParam;
+                toAdd.node                = Ast::clone(funcParam, nullptr);
                 toAdd.typeInfo            = funcParam->typeInfo;
                 toAdd.kind                = SymbolKind::Variable;
                 toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN;

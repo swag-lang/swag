@@ -382,6 +382,7 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
     const auto structDecl        = newStructDecl(nullptr, nullptr);
     structDecl->token.sourceFile = context->sourceFile;
     structDecl->addExtraPointer(ExtraPointerKind::ExportNode, typeStruct->declNode);
+    structDecl->addSpecFlag(AstStruct::SPEC_FLAG_NO_OVERLOAD);
     typeStruct->declNode = structDecl;
     typeStruct->declNode->addAstFlag(AST_GENERATED);
     typeStruct->declNode->typeInfo   = typeStruct;

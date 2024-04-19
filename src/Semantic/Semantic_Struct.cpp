@@ -1252,8 +1252,9 @@ bool Semantic::resolveStruct(SemanticContext* context)
         // :BecauseOfThat
         ScopedLock lk(node->mutex);
         node->addSemFlag(SEMFLAG_PRE_RESOLVE);
-        node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
-        SWAG_CHECK(node->resolvedSymbolOverload());
+        auto newOver = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
+        SWAG_CHECK(newOver);
+        SWAG_ASSERT(newOver == node->resolvedSymbolOverload());
         node->dependentJobs.setRunning();
     }
 

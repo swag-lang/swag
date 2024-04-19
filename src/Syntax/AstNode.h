@@ -523,8 +523,20 @@ struct AstNode
         SymbolOverload* symbolOverload;
     };
 
-    SymbolName*     resolvedSymbolName() const { return hasSemFlag(SEMFLAG_HAS_SYMBOL_NAME) ? symbolName : (symbolOverload ? symbolOverload->symbol : nullptr); }
-    SymbolOverload* resolvedSymbolOverload() const { return hasSemFlag(SEMFLAG_HAS_SYMBOL_NAME) ? nullptr : symbolOverload; }
+    SymbolName* resolvedSymbolName() const
+    {
+        SWAG_RACE_CONDITION_READ(raceSymbol);
+        return resolvedSymbolNameSafe();
+    }
+
+    SymbolOverload* resolvedSymbolOverload() const
+    {
+        SWAG_RACE_CONDITION_READ(raceSymbol);
+        return resolvedSymbolOverloadSafe();
+    }
+
+    SymbolName*     resolvedSymbolNameSafe() const { return hasSemFlag(SEMFLAG_HAS_SYMBOL_NAME) ? symbolName : (symbolOverload ? symbolOverload->symbol : nullptr); }
+    SymbolOverload* resolvedSymbolOverloadSafe() const { return hasSemFlag(SEMFLAG_HAS_SYMBOL_NAME) ? nullptr : symbolOverload; }
     void            setResolvedSymbolName(SymbolName* sym);
     void            setResolvedSymbolOverload(SymbolOverload* over);
     void            setResolvedSymbol(SymbolName* sym, SymbolOverload* over);
@@ -548,6 +560,7 @@ struct AstNode
 #endif
 
     SWAG_RACE_CONDITION_INSTANCE(raceC);
+    SWAG_RACE_CONDITION_INSTANCE(raceSymbol);
 };
 
 struct AstVarDecl : AstNode
@@ -968,6 +981,7 @@ struct AstStruct : AstNode
     static constexpr SpecFlags SPEC_FLAG_ANONYMOUS      = 0x0004;
     static constexpr SpecFlags SPEC_FLAG_GENERIC_PARAM  = 0x0008;
     static constexpr SpecFlags SPEC_FLAG_SPECIFIED_TYPE = 0x0010;
+    static constexpr SpecFlags SPEC_FLAG_NO_OVERLOAD    = 0x0020;
 
     ~        AstStruct();
     AstNode* clone(CloneContext& context);

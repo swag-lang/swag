@@ -177,7 +177,8 @@ void Semantic::waitForOverloads(Job* job, SymbolName* symbol)
 
 void Semantic::waitOverloadCompleted(Job* job, const SymbolOverload* overload)
 {
-    SWAG_ASSERT(overload);
+    if (!overload)
+        return;
 
     {
         // Note sure that we can have a problematic race condition here.
@@ -208,6 +209,25 @@ void Semantic::waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl)
     }
 }
 
+void Semantic::waitStructOverloadDefined(Job* job, TypeInfo* typeInfo)
+{
+    if (!typeInfo->isStruct() && !typeInfo->isInterface())
+        return;
+
+    //  :BecauseOfThat
+    const auto structNode = castAst<AstStruct>(typeInfo->declNode, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+    if (structNode->hasSpecFlag(AstStruct::SPEC_FLAG_NO_OVERLOAD))
+        return;
+
+    ScopedLock lk(structNode->mutex);
+    if (!structNode->resolvedSymbolOverload())
+    {
+        structNode->dependentJobs.add(job);
+        job->setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolName(), structNode, nullptr);
+        return;
+    }
+}
+
 void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
 {
     if (!typeInfo)
@@ -226,15 +246,9 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
     if (typeInfo->hasFlag(TYPEINFO_GHOST_TUPLE))
         return;
 
-    //  :BecauseOfThat
-    const auto structNode = castAst<AstStruct>(typeInfo->declNode, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-    ScopedLock lk(structNode->mutex);
-    if (!structNode->resolvedSymbolOverload())
-    {
-        structNode->dependentJobs.add(job);
-        job->setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolName(), structNode, nullptr);
+    waitStructOverloadDefined(job, typeInfo);
+    if (job->baseContext->result == ContextResult::Pending)
         return;
-    }
 
     waitOverloadCompleted(job, typeInfo->declNode->resolvedSymbolOverload());
     if (job->baseContext->result == ContextResult::Pending)
@@ -252,28 +266,26 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
         typeInfo->sizeOf = typeInfo->getConstAlias()->sizeOf;
 }
 
-bool Semantic::waitForStructUserOps(SemanticContext* context, const AstNode* node)
-{
-    SymbolName* symbol = nullptr;
-    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostCopy, node, &symbol));
-    YIELD();
-    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostMove, node, &symbol));
-    YIELD();
-    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opDrop, node, &symbol));
-    YIELD();
-    return true;
-}
-
 void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch& match)
 {
     for (const auto& val : match.genericReplaceTypes | std::views::values)
     {
         const auto typeInfo = val.typeInfoReplace;
         const auto declNode = typeInfo->declNode;
-        if (!declNode || !declNode->resolvedSymbolOverload())
+
+        if (!declNode)
             continue;
-        if (declNode->resolvedSymbolOverload()->symbol == match.symbolName)
+
+        waitStructOverloadDefined(context->baseJob, typeInfo);
+        if (context->result == ContextResult::Pending)
+            return;
+
+        const auto overload = declNode->resolvedSymbolOverload();
+        if (!overload)
             continue;
+        if (overload->symbol == match.symbolName)
+            continue;
+
         if (typeInfo->isStruct())
         {
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
@@ -285,10 +297,22 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
                 continue;
         }
 
-        waitOverloadCompleted(context->baseJob, declNode->resolvedSymbolOverload());
+        waitOverloadCompleted(context->baseJob, overload);
         if (context->result == ContextResult::Pending)
             return;
     }
+}
+
+bool Semantic::waitForStructUserOps(SemanticContext* context, const AstNode* node)
+{
+    SymbolName* symbol = nullptr;
+    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostCopy, node, &symbol));
+    YIELD();
+    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostMove, node, &symbol));
+    YIELD();
+    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opDrop, node, &symbol));
+    YIELD();
+    return true;
 }
 
 auto Semantic::needToCompleteSymbolNoLock(SemanticContext*, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads) -> bool

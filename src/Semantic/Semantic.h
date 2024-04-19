@@ -55,14 +55,15 @@ namespace Semantic
     void waitAllStructInterfacesReg(Job* job, TypeInfo* typeInfo);
     void waitAllStructMethods(Job* job, TypeInfo* typeInfo);
     void waitAllStructSpecialMethods(Job* job, TypeInfo* typeInfo);
-    void waitForGenericParameters(const SemanticContext* context, OneMatch& match);
     void waitForOverloads(Job* job, SymbolName* symbol);
     void waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl);
     void waitOverloadCompleted(Job* job, const SymbolOverload* overload);
     void waitStructGenerated(Job* job, TypeInfo* typeInfo);
     void waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo);
     void waitSymbolNoLock(Job* job, SymbolName* symbol);
+    void waitStructOverloadDefined(Job* job, TypeInfo* typeInfo);
     void waitTypeCompleted(Job* job, TypeInfo* typeInfo);
+    void waitForGenericParameters(const SemanticContext* context, OneMatch& match);
 
     bool valueEqualsTo(const ComputedValue* value, AstNode* node);
     bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, const TypeInfo* typeInfo, AstNodeFlags flags);

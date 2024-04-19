@@ -2652,17 +2652,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
         if (!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_HAS_USING))
             continue;
 
-        {
-            // :BecauseOfThat
-            ScopedLock lk(structNode->mutex);
-            if (!structNode->resolvedSymbolOverload())
-            {
-                structNode->dependentJobs.add(context->baseJob);
-                context->baseJob->setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolName(), structNode, nullptr);
-                return true;
-            }
-        }
-
+        Semantic::waitStructOverloadDefined(context->baseJob, it.typeStruct);
+        YIELD();
         Semantic::waitOverloadCompleted(context->baseJob, structNode->resolvedSymbolOverload());
         YIELD();
 
