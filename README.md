@@ -58,10 +58,10 @@ Here is a **screen capture software** fully written in Swag with the help of the
     <img width="70%" height="50%" src="https://github.com/swag-lang/swag/blob/master/web/imgs/captme.png">
 </p>
 
-Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
-
 > [!TIP]
-> Some [Advent of Code](https://adventofcode.com/) solutions written in Swag can be seen [here](https://github.com/swag-lang/swag/tree/master/bin/examples/modules).
+> The code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
+>
+> You can also find a bunch of [Advent of Code](https://adventofcode.com/) solutions written in Swag [here](https://github.com/swag-lang/swag/tree/master/bin/examples/modules).
 
 # For the braves
 
