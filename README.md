@@ -12,9 +12,6 @@ Swag is a native and/or interpreted system programming language made for fun bec
 
 You can visit the official [Website](https://swag-lang.org/) or the [YouTube](https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q) channel. If you want to take a first look at the language, this is [here](https://www.swag-lang.org/language.php).
 
-> [!TIP]
-> Some [Advent of Code](https://adventofcode.com/) solutions written in Swag can be seen [here](https://github.com/swag-lang/swag/tree/master/bin/examples/modules).
-
 Note that a simple `visual studio code` [extension](https://marketplace.visualstudio.com/items?itemName=swag-lang.swag) exists for syntax coloration.
 
 <p align="center">
@@ -62,6 +59,9 @@ Here is a **screen capture software** fully written in Swag with the help of the
 </p>
 
 Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
+
+> [!TIP]
+> Some [Advent of Code](https://adventofcode.com/) solutions written in Swag can be seen [here](https://github.com/swag-lang/swag/tree/master/bin/examples/modules).
 
 # For the braves
 
