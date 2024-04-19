@@ -32,11 +32,7 @@ func day10B() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
     var nums     = File.readAllText(dataPath)
-    nums += 17
-    nums += 31
-    nums += 73
-    nums += 47
-    nums += 23
+    nums += [17, 31, 73, 47, 23]
 
     var arr, tmp: Array's32
     loop i: 256 do arr.add(i)
@@ -58,6 +54,7 @@ func day10B() assume
     }
 
     var res: String
+
     loop i: 16
     {
         var v = arr[i * 16]
@@ -66,5 +63,14 @@ func day10B() assume
         res += Format.toString("%{X}", v)
     }
 
-    Console.print(res)
+    @assert(res == "62E2204D2CA4F4924F6E7A80F1288786")
+
+    res.clear()
+    loop i: 16
+    {
+        let v = arr[i*16 .. (i*16)+15]
+        res += Format.toString("%{X}", Slice.reduce(v, func(x, y) => x ^ y))
+    }
+
+    @assert(res == "62E2204D2CA4F4924F6E7A80F1288786")
 }

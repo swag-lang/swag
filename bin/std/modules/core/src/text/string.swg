@@ -105,6 +105,36 @@ impl String
     }
 
     #[Overload]
+    mtd(op: string) opAssign(value: const [..] string)
+    {
+        #if op == "+=" #do
+            visit v: value do
+                append(v)
+        #else #do
+            #error "invalid operator '" ++ op ++ "'"
+    }
+
+    #[Overload]
+    mtd(op: string) opAssign(value: const [..] rune)
+    {
+        #if op == "+=" #do
+            visit v: value do
+                append(v)
+        #else #do
+            #error "invalid operator '" ++ op ++ "'"
+    }
+
+    #[Overload]
+    mtd(op: string) opAssign(value: const [..] u8)
+    {
+        #if op == "+=" #do
+            visit v: value do
+                append(v)
+        #else #do
+            #error "invalid operator '" ++ op ++ "'"
+    }
+
+    #[Overload]
     mtd(op: string) opAssign(value: string)
     {
         #if op == "+=" #do
