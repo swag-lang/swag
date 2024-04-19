@@ -1,19 +1,19 @@
+> [!WARNING]
+> Work in progress ! There's no "official" release yet.
+
 <p align="center">
     <img src="https://github.com/swag-lang/swag/blob/master/web/imgs/swag_logo.png">
 </p>
 
-> [!WARNING]
-> Work in progress ! There's no "official" release yet.
- 
 > [!IMPORTANT]
 > To get the compiler latest version for Windows, go to the [release](https://github.com/swag-lang/swag/releases) page.
 
-> [!TIP]
-> [Advent of Code](https://adventofcode.com/) solutions written in Swag can be seen [here](https://github.com/swag-lang/swag/tree/master/bin/examples/modules).
-
-Swag is a native and/or interpreted system programming language made for fun because, let's be honest, C++ is now an horrible beast ! This is my third compiler (the other ones were developed for two game engines). But this one is by far the most advanced.
+Swag is a native and/or interpreted system programming language made for fun because, let's be honest, C++ is now an horrible beast ! This is my third compiler (the other ones were developed for two game engines), but this one is by far the most advanced.
 
 You can visit the official [Website](https://swag-lang.org/) or the [YouTube](https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q) channel. If you want to take a first look at the language, this is [here](https://www.swag-lang.org/language.php).
+
+> [!TIP]
+> Some [Advent of Code](https://adventofcode.com/) solutions written in Swag can be seen [here](https://github.com/swag-lang/swag/tree/master/bin/examples/modules).
 
 Note that a simple `visual studio code` [extension](https://marketplace.visualstudio.com/items?itemName=swag-lang.swag) exists for syntax coloration.
 
