@@ -4,7 +4,12 @@
 
 > [!WARNING]
 > Work in progress ! There's no "official" release yet.
+ 
+> [!IMPORTANT]
 > To get the compiler latest version for Windows, go to the [release](https://github.com/swag-lang/swag/releases) page.
+
+> [!TIP]
+> [Advent of Code](https://adventofcode.com/) solutions written in Swag can be seen [here](https://github.com/swag-lang/swag/tree/master/bin/examples/modules).
 
 Swag is a native and/or interpreted system programming language made for fun because, let's be honest, C++ is now an horrible beast ! This is my third compiler (the other ones were developed for two game engines). But this one is by far the most advanced.
 
