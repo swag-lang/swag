@@ -57,6 +57,8 @@ func(T) noneOf(values: const [..] T, cb: closure(T)->bool)->bool
 // Reverse the content of a slice
 func(T) reverse(values: [..] T)
 {
+    if @countof(values) <= 1 do
+        return
     var i = 0'u64
     var j = @countof(values) - 1
     let d = @dataof(values)
