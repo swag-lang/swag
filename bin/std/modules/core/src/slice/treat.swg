@@ -9,7 +9,8 @@ func(T) modify(values: [..] T, cb: closure(*T))
         cb(&values[i])
 }
 
-// Transform the content of a slice with a given lambda
+// Map the content of a slice to an array of type 'R'.
+// The lambda must return the value of 'R' for each element of the slice.
 func(T, R) map(values: const [..] T, cb: closure(T)->R)->Array'R
 {
     var result: retval
@@ -24,6 +25,24 @@ func(T) reduce(values: const [..] T, cb: closure(T, T)->T)->T
     var result = values[0]
     loop i: 1 to @countof(values)-1 do
         result = cb(result, values[i])
+    return result
+}
+
+// Get the minimum value of a slice
+func(T) min(values: const [..] T)->T
+{
+    var result = values[0]
+    loop i: 1 to @countof(values)-1 do
+        result = Math.min(result, values[i])
+    return result
+}
+
+// Get the maximum value of a slice
+func(T) max(values: const [..] T)->T
+{
+    var result = values[0]
+    loop i: 1 to @countof(values)-1 do
+        result = Math.max(result, values[i])
     return result
 }
 
