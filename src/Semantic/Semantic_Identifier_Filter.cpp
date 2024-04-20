@@ -784,7 +784,6 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
         }
 
         // Reference to a variable inside a struct, without a direct explicit reference
-        bool isValid = true;
         if (oneSymbol->isNot(SymbolKind::Function) &&
             oneSymbol->isNot(SymbolKind::GenericType) &&
             oneSymbol->isNot(SymbolKind::Struct) &&
@@ -793,19 +792,18 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
             oneSymbol->ownerTable->scope->is(ScopeKind::Struct) &&
             !identifierRef->startScope)
         {
-            isValid                  = false;
+            p.remove = true;
+
             auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
             for (const auto& dep : scopeHierarchyVars)
             {
                 if (dep.scope->getFullName() == oneSymbol->ownerTable->scope->getFullName())
                 {
-                    isValid = true;
+                    p.remove = false;
                     break;
                 }
             }
         }
-
-        p.remove = !isValid;
     }
 
     // Eliminate all matches tag as 'remove'
