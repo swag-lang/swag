@@ -68,9 +68,9 @@ func day10B()
 
     struct Pos
     {
-        pos:    Math.Vector2
-        angle:  f32
-        dist:   f32
+        pos:       Math.Vector2
+        angle:     f32
+        dist:      f32
     }
 
     var arr: Array'Pos
@@ -87,7 +87,7 @@ func day10B()
         let v0 = arr[i].pos
         loop j: i + 1 until arr.count
         {
-            let v1 = arr[j].pos
+            let v1  = arr[j].pos
             var hit = false
             loop k: arr
             {
@@ -109,17 +109,19 @@ func day10B()
         }
     }
 
-    let start = Slice.max(tot[..]).index
-    let posStart = arr[start].pos
-    arr.removeAt(start)
+    let idxStart = Slice.max(tot[..]).index
+    let posStart = arr[idxStart].pos
+    arr.removeAt(idxStart)
 
+    // Precompute angle between 0 and 2Pi, and distance to the start position
     visit &it: arr
     {
         let v = it.pos - posStart
         it.angle = v.angle0To2Pi({0, -1})
-        it.dist = v.length()
+        it.dist  = v.length()
     }
 
+    // Sort from small angle to big angle. If angles are the same, sort by distance (closest first)
     arr.sort(func(x, y)
     {
         if Math.isEqualEpsilon(x.angle, y.angle) do
@@ -130,22 +132,21 @@ func day10B()
     var total, index = 0'u64
     loop
     {
-
-        let curAngle = arr[index].angle
         total += 1
 
         if total == 200
         {
-            let result = (arr[index].pos.x * 100) + (arr[index].pos.y)
+            let result = (arr[index].pos.x * 100) + arr[index].pos.y
             @assert(result == 502)
             break
         }
 
+        let curAngle = arr[index].angle
         arr.removeAtOrdered(index)
 
         var nindex = index
         while Math.isEqualEpsilon(arr[nindex].angle, curAngle) do
-            nindex = (nindex+1) % arr.count
+            nindex = (nindex + 1) % arr.count
         index = nindex
     }
 }
