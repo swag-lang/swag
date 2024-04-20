@@ -140,5 +140,5 @@ func day10A()
         }
     }
 
-    @assert(Slice.max(tot[..]) == 214)
+    @assert(Slice.max(tot[..]).value == 214)
 }

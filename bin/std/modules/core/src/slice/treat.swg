@@ -19,7 +19,9 @@ func(T, R) map(values: const [..] T, cb: closure(T)->R)->Array'R
     return result
 }
 
-// Transform the content of a slice with a given lambda
+// Reduce the content of a slice to one single value.
+// The lambda is called with the previous reduced value and each element of the slice.
+// The first reduced value is the first element of the slice.
 func(T) reduce(values: const [..] T, cb: closure(T, T)->T)->T
 {
     var result = values[0]
@@ -28,21 +30,45 @@ func(T) reduce(values: const [..] T, cb: closure(T, T)->T)->T
     return result
 }
 
-// Get the minimum value of a slice
-func(T) min(values: const [..] T)->T
+// Get the minimum value of a slice, and the corresponding value index.
+func(T) min(values: const [..] T)->{value: T, index: u64}
 {
-    var result = values[0]
-    loop i: 1 to @countof(values)-1 do
-        result = Math.min(result, values[i])
+    var result: retval
+    result.value = values[0]
+    if @countof(values) == 1 do
+        return result
+
+    var index  = 0'u64
+    loop i: 1 to @countof(values)-1
+    {
+        if values[i] < result.value
+        {
+            result.value = values[i]
+            result.index = i
+        }
+    }
+
     return result
 }
 
-// Get the maximum value of a slice
-func(T) max(values: const [..] T)->T
+// Get the maximum value of a slice, and the corresponding value index.
+func(T) max(values: const [..] T)->{value: T, index: u64}
 {
-    var result = values[0]
-    loop i: 1 to @countof(values)-1 do
-        result = Math.max(result, values[i])
+    var result: retval
+    result.value = values[0]
+    if @countof(values) == 1 do
+        return result
+
+    var index  = 0'u64
+    loop i: 1 to @countof(values)-1
+    {
+        if values[i] > result.value
+        {
+            result.value = values[i]
+            result.index = i
+        }
+    }
+
     return result
 }
 
