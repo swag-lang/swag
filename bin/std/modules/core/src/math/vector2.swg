@@ -309,19 +309,25 @@ impl Vector2
     // Returns the cosine angle with another vector
     mtd const cosAngle(other: Self)->f32
     {
-        var vec1 = toNormalize()
-        var vec2 = other.toNormalize()
-        return vec1.dot(vec2)
+        return dot(other) / (length() * other.length())
     }
 
     // Returns the angle with another vector
     mtd const angle(other: Self)->f32
     {
-        let angle = Math.acos(cosAngle(other))
-        //var sign = (x * other.y) - (y * other.x)
-        //if sign < 0 angle = -angle;
+        return Math.acos(cosAngle(other))
+    }
+
+    // Returns the angle with another vector in the range [0, 2Pi]
+    mtd const angle0To2Pi(other: Self)->f32
+    {
+        var angle = Math.acos(cosAngle(other))
+        var sign = (x * other.y) - (y * other.x)
+        if sign > 0 do
+            angle = ConstF32.TwoPi - angle
         return angle
     }
+
 
     // Lerp one vector with another
     func lerp(src, dst: Vector2, factor: f32)->Vector2
