@@ -733,16 +733,6 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
         if (p.remove)
             continue;
 
-        // A variable inside a scope file has priority
-        if (p.altFlags.has(ALT_SCOPE_FILE_PRIVATE))
-        {
-            for (auto& p1 : dependentSymbols)
-            {
-                if (!p1.altFlags.has(ALT_SCOPE_FILE_PRIVATE))
-                    p1.remove = true;
-            }
-        }
-
         // A variable which is name as a function...
         if (!node->callParameters &&
             oneSymbol->is(SymbolKind::Function) &&

@@ -2,8 +2,7 @@
 
 private
 {
-
-    struct ToolTip
+    struct ToolTipVal
     {
         owner:          *Wnd
         surfacePos:     Math.Point
@@ -12,7 +11,7 @@ private
         startDelay:     f32
     }
 
-    var g_Pending:      *ToolTip
+    var g_Pending:      *ToolTipVal
     var g_Current:      *FrameWnd
     var g_CurrentOwner: *Wnd
 }
@@ -76,7 +75,7 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     if !g_Current and delay.timeInSeconds > 0
     {
         if !g_Pending do
-            g_Pending = Memory.new'ToolTip()
+            g_Pending = Memory.new'ToolTipVal()
         g_Pending.owner      = owner
         g_Pending.surfacePos = surfacePos
         g_Pending.str        = str
