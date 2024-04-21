@@ -764,11 +764,11 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
         }
 
         // If a generic type does not come from a 'using', it has priority
-        if (!p.altFlags.has(ALT_SCOPE_STRUCT_USING) && p.symbol->is(SymbolKind::GenericType))
+        if (!p.altFlags.has(COLLECTED_SCOPE_STRUCT_USING) && p.symbol->is(SymbolKind::GenericType))
         {
             for (auto& p1 : dependentSymbols)
             {
-                if (p1.altFlags.has(ALT_SCOPE_STRUCT_USING) && p1.symbol->is(SymbolKind::GenericType))
+                if (p1.altFlags.has(COLLECTED_SCOPE_STRUCT_USING) && p1.symbol->is(SymbolKind::GenericType))
                     p1.remove = true;
             }
         }

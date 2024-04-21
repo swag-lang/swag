@@ -605,7 +605,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         {
             if (dep.node->parent->is(AstNodeKind::With))
                 hasWith = true;
-            dep.flags.add(okForUFCS ? ALT_SCOPE_UFCS : 0);
+            dep.flags.add(okForUFCS ? COLLECTED_SCOPE_UFCS : 0);
             toCheck.push_back(dep);
         }
     }
@@ -627,7 +627,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
     {
         for (auto& dep : toCheck)
         {
-            if (!dep.flags.has(ALT_SCOPE_UFCS))
+            if (!dep.flags.has(COLLECTED_SCOPE_UFCS))
                 dep.node = nullptr;
         }
     }

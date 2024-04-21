@@ -92,10 +92,10 @@ struct CloneContext
     }
 };
 
-constexpr CollectedScopeFlags ALT_SCOPE_STRUCT_USING = 0x00000001;
-constexpr CollectedScopeFlags ALT_SCOPE_FILE_PRIVATE = 0x00000002;
-constexpr CollectedScopeFlags ALT_SCOPE_UFCS         = 0x00000004;
-constexpr CollectedScopeFlags ALT_SCOPE_USING        = 0x00000008;
+constexpr CollectedScopeFlags COLLECTED_SCOPE_STRUCT_USING = 0x00000001;
+constexpr CollectedScopeFlags COLLECTED_SCOPE_FILE_PRIVATE = 0x00000002;
+constexpr CollectedScopeFlags COLLECTED_SCOPE_UFCS         = 0x00000004;
+constexpr CollectedScopeFlags COLLECTED_SCOPE_USING        = 0x00000008;
 
 struct CollectedScope
 {

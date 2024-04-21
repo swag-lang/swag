@@ -401,7 +401,7 @@ void Semantic::addCollectedScope(VectorNative<CollectedScope>& scopes, Scope* sc
     as.scope = scope;
     as.flags = flags;
     if (scope->flags.has(SCOPE_FILE_PRIVATE))
-        as.flags.add(ALT_SCOPE_FILE_PRIVATE);
+        as.flags.add(COLLECTED_SCOPE_FILE_PRIVATE);
     scopes.push_back(as);
 }
 
@@ -423,7 +423,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
             auto&      toProcess = context->scopesToProcess;
             for (const auto& as : owner->extMisc()->alternativeScopes)
             {
-                if (!hasCollectedScope(scopes, as.scope) && as.flags.has(ALT_SCOPE_USING))
+                if (!hasCollectedScope(scopes, as.scope) && as.flags.has(COLLECTED_SCOPE_USING))
                 {
                     addCollectedScope(scopes, as.scope, as.flags);
                     addCollectedScopeOnce(toProcess, as.scope, as.flags);
