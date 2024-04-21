@@ -83,8 +83,24 @@ Find a chain that uses all of your adapters to connect the charging outlet to yo
 
 using Core
 
-func day10A()
+func day10A() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
-    let lines    = assume File.readAllLines(dataPath)
+    let lines    = File.readAllLines(dataPath)
+    var vals     = Slice.map(lines[..], func(x) => assume StrConv.toS64(x))
+
+    vals.sort()
+
+    var cpt1, cpt3, prev = 0's64
+    visit v: vals
+    {
+        if v - prev == 1 do
+            cpt1 += 1
+        elif v - prev == 3 do
+            cpt3 += 1
+        prev = v
+    }
+
+    let total = cpt1 * (cpt3 + 1)
+    @assert(total == 2368)
 }
