@@ -375,6 +375,7 @@ bool FormatAst::outputFuncCallParams(FormatContext& context, AstNode* node)
     }
 
     SWAG_CHECK(outputChildrenChar(context, node, ',', 0, 0));
+    concat->removeLastChar('\n');
     return true;
 }
 
