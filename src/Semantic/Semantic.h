@@ -99,19 +99,19 @@ namespace Semantic
 
     bool collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result);
     bool collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
-    bool collectAutoScope(SemanticContext* context, VectorNative<AlternativeScope>& scopeHierarchy, AstIdentifierRef* identifierRef, const AstIdentifier* identifier);
-    bool collectScopeHierarchy(Scope* startScope, VectorNative<AlternativeScope>& scopeHierarchy, VectorNative<AlternativeScopeVar>& scopeHierarchyVars, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifierRef* identifierRef, const AstIdentifier* identifier, uint32_t identifierCrc);
-    bool collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopeHierarchy, VectorNative<AlternativeScopeVar>& scopeHierarchyVars, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
-    bool collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, CollectFlags flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
+    bool collectAutoScope(SemanticContext* context, VectorNative<CollectedScope>& scopeHierarchy, AstIdentifierRef* identifierRef, const AstIdentifier* identifier);
+    bool collectScopeHierarchy(Scope* startScope, VectorNative<CollectedScope>& scopeHierarchy, VectorNative<CollectedScopeVar>& scopeHierarchyVars, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifierRef* identifierRef, const AstIdentifier* identifier, uint32_t identifierCrc);
+    bool collectScopeHierarchy(SemanticContext* context, VectorNative<CollectedScope>& scopeHierarchy, VectorNative<CollectedScopeVar>& scopeHierarchyVars, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
+    bool collectScopeHierarchy(SemanticContext* context, VectorNative<CollectedScope>& scopes, VectorNative<CollectedScopeVar>& scopesVars, AstNode* startNode, CollectFlags flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
     bool findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
     bool findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
-    bool hasAlternativeScope(VectorNative<AlternativeScope>& scopes, const Scope* scope);
-    void addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, AltScopeFlags flags = 0);
-    void addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, AltScopeFlags flags = 0);
-    void collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, CollectFlags flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
-    void collectAlternativeScopeVars(const AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
-    void collectAlternativeScopes(const AstNode* startNode, VectorNative<AlternativeScope>& scopes);
-    void findSymbolsInHierarchy(VectorNative<AlternativeScope>& scopeHierarchy, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier, uint32_t identifierCrc);
+    bool hasCollectedScope(VectorNative<CollectedScope>& scopes, const Scope* scope);
+    void addCollectedScope(VectorNative<CollectedScope>& scopes, Scope* scope, CollectedScopeFlags flags = 0);
+    void addCollectedScopeOnce(VectorNative<CollectedScope>& scopes, Scope* scope, CollectedScopeFlags flags = 0);
+    void collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<CollectedScope>& scopes, VectorNative<CollectedScopeVar>& scopesVars, AstNode* startNode, CollectFlags flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
+    void collectAlternativeScopeVars(const AstNode* startNode, VectorNative<CollectedScope>& scopes, VectorNative<CollectedScopeVar>& scopesVars);
+    void collectAlternativeScopes(const AstNode* startNode, VectorNative<CollectedScope>& scopes);
+    void findSymbolsInHierarchy(VectorNative<CollectedScope>& scopeHierarchy, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier, uint32_t identifierCrc);
 
     AstSemFlags attributeToAccess(AttributeFlags attribute);
     bool        canHaveAccess(const AstNode* node);
@@ -187,7 +187,7 @@ namespace Semantic
     bool           waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job);
     uint32_t       alignOf(const AstVarDecl* node);
     uint32_t       getMaxStackSize(AstNode* node);
-    void           addSymbolMatch(VectorNative<OneSymbolMatch>& symbolsMatch, SymbolName* symName, Scope* scope, AltScopeFlags altFlags);
+    void           addSymbolMatch(VectorNative<OneSymbolMatch>& symbolsMatch, SymbolName* symName, Scope* scope, CollectedScopeFlags altFlags);
     void           allocateOnStack(AstNode* node, const TypeInfo* typeInfo);
     void           decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
     void           decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);

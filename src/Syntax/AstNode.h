@@ -42,14 +42,14 @@ using SemanticFct       = bool       (*)(SemanticContext* context);
 using ByteCodeFct       = bool       (*)(ByteCodeGenContext* context);
 using ByteCodeNotifyFct = bool (*)(ByteCodeGenContext* context);
 
-using AstNodeFlags   = Flags<uint64_t>;
-using AstSemFlags    = Flags<uint64_t>;
-using AltScopeFlags  = Flags<uint32_t>;
-using BreakableFlags = Flags<uint32_t>;
-using CloneFlags     = Flags<uint32_t>;
-using SpecFlags      = Flags<uint16_t>;
-using SafetyFlags    = Flags<uint16_t>;
-using TypeFlags      = Flags<uint16_t>;
+using AstNodeFlags        = Flags<uint64_t>;
+using AstSemFlags         = Flags<uint64_t>;
+using CollectedScopeFlags = Flags<uint32_t>;
+using BreakableFlags      = Flags<uint32_t>;
+using CloneFlags          = Flags<uint32_t>;
+using SpecFlags           = Flags<uint16_t>;
+using SafetyFlags         = Flags<uint16_t>;
+using TypeFlags           = Flags<uint16_t>;
 
 constexpr CloneFlags CLONE_RAW             = 0x00000001;
 constexpr CloneFlags CLONE_FORCE_OWNER_FCT = 0x00000002;
@@ -92,23 +92,23 @@ struct CloneContext
     }
 };
 
-constexpr AltScopeFlags ALT_SCOPE_STRUCT_USING = 0x00000001;
-constexpr AltScopeFlags ALT_SCOPE_FILE_PRIVATE = 0x00000002;
-constexpr AltScopeFlags ALT_SCOPE_UFCS         = 0x00000004;
-constexpr AltScopeFlags ALT_SCOPE_USING        = 0x00000008;
+constexpr CollectedScopeFlags ALT_SCOPE_STRUCT_USING = 0x00000001;
+constexpr CollectedScopeFlags ALT_SCOPE_FILE_PRIVATE = 0x00000002;
+constexpr CollectedScopeFlags ALT_SCOPE_UFCS         = 0x00000004;
+constexpr CollectedScopeFlags ALT_SCOPE_USING        = 0x00000008;
 
-struct AlternativeScope
+struct CollectedScope
 {
-    Scope*        scope = nullptr;
-    AltScopeFlags flags = 0;
+    Scope*              scope = nullptr;
+    CollectedScopeFlags flags = 0;
 };
 
-struct AlternativeScopeVar
+struct CollectedScopeVar
 {
-    AstNode*      node     = nullptr;
-    AstNode*      leafNode = nullptr;
-    Scope*        scope    = nullptr;
-    AltScopeFlags flags    = 0;
+    AstNode*            node     = nullptr;
+    AstNode*            leafNode = nullptr;
+    Scope*              scope    = nullptr;
+    CollectedScopeFlags flags    = 0;
 };
 
 enum class IdentifierScopeUpMode : uint8_t
@@ -345,8 +345,8 @@ struct AstNode
     AstNode*     inSimpleReturn() const;
     bool         hasIntrinsicName() const;
     void         computeLocation(SourceLocation& start, SourceLocation& end);
-    void         addAlternativeScope(Scope* scope, AltScopeFlags altFlags = 0);
-    void         addAlternativeScopeVar(Scope* scope, AstNode* varNode, AltScopeFlags altFlags = 0);
+    void         addAlternativeScope(Scope* scope, CollectedScopeFlags altFlags = 0);
+    void         addAlternativeScopeVar(Scope* scope, AstNode* varNode, CollectedScopeFlags altFlags = 0);
     void         printLoc() const;
 
     bool is(AstNodeKind what) const { return kind == what; }
@@ -414,8 +414,8 @@ struct AstNode
     struct NodeExtensionMisc
     {
         SharedMutex                        mutexAltScopes;
-        VectorNative<AlternativeScope>     alternativeScopes;
-        VectorNative<AlternativeScopeVar>  alternativeScopesVars;
+        VectorNative<CollectedScope>       alternativeScopes;
+        VectorNative<CollectedScopeVar>    alternativeScopesVars;
         VectorNative<uint32_t>             registersToRelease;
         VectorMap<ExtraPointerKind, void*> extraPointers;
 

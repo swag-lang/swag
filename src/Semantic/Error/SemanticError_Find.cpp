@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Semantic/Scope.h"
 #include "Semantic/Error/SemanticError.h"
+#include "Semantic/Scope.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
 Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best)
@@ -74,7 +74,7 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const Vector<Utf8
     }
 }
 
-void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor)
+void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNative<CollectedScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor)
 {
     Vector<Utf8> searchList;
     for (auto& as : scopeHierarchy)
@@ -154,7 +154,7 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
     findClosestMatches(searchName, searchList, best);
 }
 
-Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor)
+Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const VectorNative<CollectedScope>& scopeHierarchy, IdentifierSearchFor searchFor)
 {
     Vector<Utf8> best;
     findClosestMatches(searchName, scopeHierarchy, best, searchFor);

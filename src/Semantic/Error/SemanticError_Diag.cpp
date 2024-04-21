@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Semantic/Semantic.h"
 #include "Semantic/Error/SemanticError.h"
+#include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -76,7 +76,7 @@ namespace
             else if (errorParam.oneTry->overload)
                 errorParam.addNote(Diagnostic::hereIs(errorParam.oneTry->overload));
 
-            AlternativeScope altScope;
+            CollectedScope altScope;
             altScope.scope = errorParam.destStructDecl->scope;
             const auto msg = SemanticError::findClosestMatchesMsg(isNamed->token.text, {altScope}, IdentifierSearchFor::Whatever);
             errorParam.addNote(Diagnostic::note(msg));

@@ -203,7 +203,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
         auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
         scopeHierarchy.clear();
         if (identifierRef->startScope)
-            Semantic::addAlternativeScopeOnce(scopeHierarchy, identifierRef->startScope);
+            Semantic::addCollectedScopeOnce(scopeHierarchy, identifierRef->startScope);
         else
             Semantic::collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, COLLECT_ALL);
         const Utf8 appendMsg = findClosestMatchesMsg(node->token.text, scopeHierarchy, searchFor);

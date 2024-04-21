@@ -128,10 +128,10 @@ struct OneOverload
 
 struct OneSymbolMatch
 {
-    SymbolName*   symbol   = nullptr;
-    Scope*        scope    = nullptr;
-    AltScopeFlags altFlags = 0;
-    bool          remove   = false;
+    SymbolName*         symbol   = nullptr;
+    Scope*              scope    = nullptr;
+    CollectedScopeFlags altFlags = 0;
+    bool                remove   = false;
 
     bool operator==(const OneSymbolMatch& other) const
     {
@@ -158,24 +158,24 @@ struct SemanticContext : JobContext
     CastFlags                         castErrorFlags    = 0;
     CastErrorType                     castErrorType     = CastErrorType::Zero;
 
-    VectorNative<OneSymbolMatch>      cacheSymbolsMatch;
-    VectorNative<AlternativeScope>    cacheScopeHierarchy;
-    VectorNative<AlternativeScopeVar> cacheScopeHierarchyVars;
-    VectorNative<OneOverload>         cacheToSolveOverload;
-    VectorNative<OneMatch*>           cacheMatches;
-    VectorNative<OneMatch*>           cacheFreeMatches;
-    VectorNative<OneMatch*>           cacheGenericMatches;
-    VectorNative<OneMatch*>           cacheGenericMatchesSI;
-    VectorNative<OneTryMatch*>        cacheListTryMatch;
-    VectorNative<OneTryMatch*>        cacheFreeTryMatch;
-    VectorNative<AlternativeScope>    scopesToProcess;
-    VectorNative<AstNode*>            tmpNodes;
-    FormatConcat                      tmpConcat;
-    AstIdentifierRef*                 tmpIdRef = nullptr;
-    AstFuncCallParam                  closureFirstParam;
-    MatchResult                       bestMatchResult;
-    BadSignatureInfos                 bestSignatureInfos;
-    SymbolOverload*                   bestOverload = nullptr;
-    bool                              canSpawn     = false;
-    bool                              forDebugger  = false;
+    VectorNative<OneSymbolMatch>    cacheSymbolsMatch;
+    VectorNative<CollectedScope>    cacheScopeHierarchy;
+    VectorNative<CollectedScopeVar> cacheScopeHierarchyVars;
+    VectorNative<OneOverload>       cacheToSolveOverload;
+    VectorNative<OneMatch*>         cacheMatches;
+    VectorNative<OneMatch*>         cacheFreeMatches;
+    VectorNative<OneMatch*>         cacheGenericMatches;
+    VectorNative<OneMatch*>         cacheGenericMatchesSI;
+    VectorNative<OneTryMatch*>      cacheListTryMatch;
+    VectorNative<OneTryMatch*>      cacheFreeTryMatch;
+    VectorNative<CollectedScope>    scopesToProcess;
+    VectorNative<AstNode*>          tmpNodes;
+    FormatConcat                    tmpConcat;
+    AstIdentifierRef*               tmpIdRef = nullptr;
+    AstFuncCallParam                closureFirstParam;
+    MatchResult                     bestMatchResult;
+    BadSignatureInfos               bestSignatureInfos;
+    SymbolOverload*                 bestOverload = nullptr;
+    bool                            canSpawn     = false;
+    bool                            forDebugger  = false;
 };

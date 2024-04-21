@@ -3,9 +3,9 @@
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
+#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Scope.h"
 #include "Semantic/SemanticJob.h"
-#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -562,9 +562,9 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             return true;
     }
 
-    const auto                  symbol   = overload->symbol;
-    const auto                  symScope = symbol->ownerTable->scope;
-    Vector<AlternativeScopeVar> toCheck;
+    const auto                symbol   = overload->symbol;
+    const auto                symScope = symbol->ownerTable->scope;
+    Vector<CollectedScopeVar> toCheck;
 
     // Collect all matches
     bool hasWith = false;

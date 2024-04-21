@@ -11,7 +11,7 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-void Semantic::addSymbolMatch(VectorNative<OneSymbolMatch>& symbolsMatch, SymbolName* symName, Scope* scope, AltScopeFlags altFlags)
+void Semantic::addSymbolMatch(VectorNative<OneSymbolMatch>& symbolsMatch, SymbolName* symName, Scope* scope, CollectedScopeFlags altFlags)
 {
     for (const auto& ds : symbolsMatch)
     {
@@ -31,7 +31,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef
     return findIdentifierInScopes(context, context->cacheSymbolsMatch, identifierRef, identifier);
 }
 
-bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<AlternativeScope>& scopeHierarchy, AstIdentifierRef* identifierRef, const AstIdentifier* identifier)
+bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<CollectedScope>& scopeHierarchy, AstIdentifierRef* identifierRef, const AstIdentifier* identifier)
 {
     VectorNative<TypeInfoEnum*>                      typeEnum;
     VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
@@ -57,7 +57,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Alternati
     {
         identifierRef->startScope = typeEnum[0]->scope;
         scopeHierarchy.clear();
-        addAlternativeScopeOnce(scopeHierarchy, typeEnum[0]->scope);
+        addCollectedScopeOnce(scopeHierarchy, typeEnum[0]->scope);
     }
 
     // No match, we will try 'with'
@@ -111,11 +111,11 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Alternati
     return true;
 }
 
-bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
-                                     VectorNative<AlternativeScope>&    scopeHierarchy,
-                                     VectorNative<AlternativeScopeVar>& scopeHierarchyVars,
-                                     AstIdentifierRef*                  identifierRef,
-                                     AstIdentifier*                     identifier)
+bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
+                                     VectorNative<CollectedScope>&    scopeHierarchy,
+                                     VectorNative<CollectedScopeVar>& scopeHierarchyVars,
+                                     AstIdentifierRef*                identifierRef,
+                                     AstIdentifier*                   identifier)
 {
     // :AutoScope
     // Auto scoping depending on the context
@@ -135,15 +135,15 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
     return true;
 }
 
-bool Semantic::collectScopeHierarchy(Scope*                             startScope,
-                                     VectorNative<AlternativeScope>&    scopeHierarchy,
-                                     VectorNative<AlternativeScopeVar>& scopeHierarchyVars,
-                                     VectorNative<OneSymbolMatch>&      symbolsMatch,
-                                     const AstIdentifierRef*            identifierRef,
-                                     const AstIdentifier*               identifier,
-                                     uint32_t                           identifierCrc)
+bool Semantic::collectScopeHierarchy(Scope*                           startScope,
+                                     VectorNative<CollectedScope>&    scopeHierarchy,
+                                     VectorNative<CollectedScopeVar>& scopeHierarchyVars,
+                                     VectorNative<OneSymbolMatch>&    symbolsMatch,
+                                     const AstIdentifierRef*          identifierRef,
+                                     const AstIdentifier*             identifier,
+                                     uint32_t                         identifierCrc)
 {
-    addAlternativeScopeOnce(scopeHierarchy, startScope);
+    addCollectedScopeOnce(scopeHierarchy, startScope);
 
     // No need to go further if we have found the symbol in the parent identifierRef scope (if specified).
     const auto symbol = startScope->symTable.find(identifier->token.text, identifierCrc);
@@ -172,7 +172,7 @@ bool Semantic::collectScopeHierarchy(Scope*                             startSco
     return true;
 }
 
-void Semantic::findSymbolsInHierarchy(VectorNative<AlternativeScope>& scopeHierarchy, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier, uint32_t identifierCrc)
+void Semantic::findSymbolsInHierarchy(VectorNative<CollectedScope>& scopeHierarchy, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier, uint32_t identifierCrc)
 {
     while (!scopeHierarchy.empty())
     {
@@ -279,12 +279,12 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
 }
 
-void Semantic::collectAlternativeScopes(const AstNode* startNode, VectorNative<AlternativeScope>& scopes)
+void Semantic::collectAlternativeScopes(const AstNode* startNode, VectorNative<CollectedScope>& scopes)
 {
     // Need to go deep for using vars, because we can have a using on a struct, which has also
     // a using itself, and so on...
-    VectorNative<AlternativeScope> toAdd;
-    VectorNative<Scope*>           done;
+    VectorNative<CollectedScope> toAdd;
+    VectorNative<Scope*>         done;
 
     if (startNode->hasExtMisc())
     {
@@ -300,7 +300,7 @@ void Semantic::collectAlternativeScopes(const AstNode* startNode, VectorNative<A
         if (!done.contains(it0.scope))
         {
             done.push_back(it0.scope);
-            addAlternativeScopeOnce(scopes, it0.scope, it0.flags);
+            addCollectedScopeOnce(scopes, it0.scope, it0.flags);
 
             if (it0.scope && it0.scope->is(ScopeKind::Struct))
             {
@@ -320,12 +320,12 @@ void Semantic::collectAlternativeScopes(const AstNode* startNode, VectorNative<A
     }
 }
 
-void Semantic::collectAlternativeScopeVars(const AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars)
+void Semantic::collectAlternativeScopeVars(const AstNode* startNode, VectorNative<CollectedScope>& scopes, VectorNative<CollectedScopeVar>& scopesVars)
 {
     // Need to go deep for using vars, because we can have a using on a struct, which has also
     // a using itself, and so on...
-    VectorNative<AlternativeScopeVar> toAdd;
-    VectorNative<Scope*>              done;
+    VectorNative<CollectedScopeVar> toAdd;
+    VectorNative<Scope*>            done;
 
     if (startNode->hasExtMisc())
     {
@@ -342,7 +342,7 @@ void Semantic::collectAlternativeScopeVars(const AstNode* startNode, VectorNativ
         if (!done.contains(it0.scope))
         {
             done.push_back(it0.scope);
-            addAlternativeScopeOnce(scopes, it0.scope, it0.flags);
+            addCollectedScopeOnce(scopes, it0.scope, it0.flags);
 
             if (it0.scope && it0.scope->is(ScopeKind::Struct))
             {
@@ -364,7 +364,7 @@ void Semantic::collectAlternativeScopeVars(const AstNode* startNode, VectorNativ
                     if (typeStruct->fromGeneric)
                     {
                         const auto structDecl = castAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-                        addAlternativeScopeOnce(scopes, structDecl->scope, 0);
+                        addCollectedScopeOnce(scopes, structDecl->scope, 0);
                     }
                 }
             }
@@ -372,14 +372,14 @@ void Semantic::collectAlternativeScopeVars(const AstNode* startNode, VectorNativ
     }
 }
 
-void Semantic::addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, AltScopeFlags flags)
+void Semantic::addCollectedScopeOnce(VectorNative<CollectedScope>& scopes, Scope* scope, CollectedScopeFlags flags)
 {
-    if (hasAlternativeScope(scopes, scope))
+    if (hasCollectedScope(scopes, scope))
         return;
-    addAlternativeScope(scopes, scope, flags);
+    addCollectedScope(scopes, scope, flags);
 }
 
-bool Semantic::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, const Scope* scope)
+bool Semantic::hasCollectedScope(VectorNative<CollectedScope>& scopes, const Scope* scope)
 {
     for (const auto& as : scopes)
     {
@@ -390,14 +390,14 @@ bool Semantic::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, const
     return false;
 }
 
-void Semantic::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, AltScopeFlags flags)
+void Semantic::addCollectedScope(VectorNative<CollectedScope>& scopes, Scope* scope, CollectedScopeFlags flags)
 {
     if (!scope)
         return;
 
-    SWAG_ASSERT(!hasAlternativeScope(scopes, scope));
+    SWAG_ASSERT(!hasCollectedScope(scopes, scope));
 
-    AlternativeScope as;
+    CollectedScope as;
     as.scope = scope;
     as.flags = flags;
     if (scope->flags.has(SCOPE_FILE_PRIVATE))
@@ -405,13 +405,13 @@ void Semantic::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope
     scopes.push_back(as);
 }
 
-void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                   context,
-                                                VectorNative<AlternativeScope>&    scopes,
-                                                VectorNative<AlternativeScopeVar>& scopesVars,
-                                                AstNode*                           startNode,
-                                                CollectFlags                       flags,
-                                                IdentifierScopeUpMode              scopeUpMode,
-                                                TokenParse*                        scopeUpValue)
+void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                 context,
+                                                VectorNative<CollectedScope>&    scopes,
+                                                VectorNative<CollectedScopeVar>& scopesVars,
+                                                AstNode*                         startNode,
+                                                CollectFlags                     flags,
+                                                IdentifierScopeUpMode            scopeUpMode,
+                                                TokenParse*                      scopeUpValue)
 {
     // Add registered alternative scopes of the node of the owner scope
     if (startNode->ownerScope && startNode->ownerScope->owner)
@@ -423,10 +423,10 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
             auto&      toProcess = context->scopesToProcess;
             for (const auto& as : owner->extMisc()->alternativeScopes)
             {
-                if (!hasAlternativeScope(scopes, as.scope) && as.flags.has(ALT_SCOPE_USING))
+                if (!hasCollectedScope(scopes, as.scope) && as.flags.has(ALT_SCOPE_USING))
                 {
-                    addAlternativeScope(scopes, as.scope, as.flags);
-                    addAlternativeScopeOnce(toProcess, as.scope, as.flags);
+                    addCollectedScope(scopes, as.scope, as.flags);
+                    addCollectedScopeOnce(toProcess, as.scope, as.flags);
                 }
             }
         }
@@ -439,10 +439,10 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
         auto&      toProcess = context->scopesToProcess;
         for (const auto& as : startNode->extMisc()->alternativeScopes)
         {
-            if (!hasAlternativeScope(scopes, as.scope))
+            if (!hasCollectedScope(scopes, as.scope))
             {
-                addAlternativeScope(scopes, as.scope, as.flags);
-                addAlternativeScopeOnce(toProcess, as.scope, as.flags);
+                addCollectedScope(scopes, as.scope, as.flags);
+                addCollectedScopeOnce(toProcess, as.scope, as.flags);
             }
         }
     }
@@ -462,7 +462,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     {
         const auto inlineNode = castAst<AstInline>(startNode, AstNodeKind::Inline);
         SWAG_ASSERT(inlineNode->parametersScope);
-        addAlternativeScopeOnce(scopes, inlineNode->parametersScope);
+        addCollectedScopeOnce(scopes, inlineNode->parametersScope);
     }
 
     if (startNode->is(AstNodeKind::CompilerMacro))
@@ -532,18 +532,18 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
         {
             const auto inlineNode = castAst<AstInline>(startNode, AstNodeKind::Inline);
             SWAG_ASSERT(inlineNode->parametersScope);
-            addAlternativeScopeOnce(scopes, inlineNode->parametersScope);
+            addCollectedScopeOnce(scopes, inlineNode->parametersScope);
         }
     }
 }
 
-bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
-                                     VectorNative<AlternativeScope>&    scopes,
-                                     VectorNative<AlternativeScopeVar>& scopesVars,
-                                     AstNode*                           startNode,
-                                     CollectFlags                       flags,
-                                     IdentifierScopeUpMode              scopeUpMode,
-                                     TokenParse*                        scopeUpValue)
+bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
+                                     VectorNative<CollectedScope>&    scopes,
+                                     VectorNative<CollectedScopeVar>& scopesVars,
+                                     AstNode*                         startNode,
+                                     CollectFlags                     flags,
+                                     IdentifierScopeUpMode            scopeUpMode,
+                                     TokenParse*                      scopeUpValue)
 {
     auto&      toProcess  = context->scopesToProcess;
     const auto sourceFile = context->sourceFile;
@@ -583,25 +583,25 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
             scopeUpMode = IdentifierScopeUpMode::None;
         }
 
-        addAlternativeScopeOnce(scopes, startScope);
-        addAlternativeScopeOnce(toProcess, startScope);
+        addCollectedScopeOnce(scopes, startScope);
+        addCollectedScopeOnce(toProcess, startScope);
     }
 
     // Add current file scope
-    addAlternativeScopeOnce(scopes, context->sourceFile->scopeFile);
-    addAlternativeScopeOnce(toProcess, context->sourceFile->scopeFile);
+    addCollectedScopeOnce(scopes, context->sourceFile->scopeFile);
+    addCollectedScopeOnce(toProcess, context->sourceFile->scopeFile);
 
     // Add bootstrap
     SWAG_ASSERT(g_Workspace->bootstrapModule);
-    addAlternativeScopeOnce(scopes, g_Workspace->bootstrapModule->scopeRoot);
-    addAlternativeScopeOnce(toProcess, g_Workspace->bootstrapModule->scopeRoot);
+    addCollectedScopeOnce(scopes, g_Workspace->bootstrapModule->scopeRoot);
+    addCollectedScopeOnce(toProcess, g_Workspace->bootstrapModule->scopeRoot);
 
     // Add runtime, except for the bootstrap
     if (!sourceFile->hasFlag(FILE_BOOTSTRAP))
     {
         SWAG_ASSERT(g_Workspace->runtimeModule);
-        addAlternativeScopeOnce(scopes, g_Workspace->runtimeModule->scopeRoot);
-        addAlternativeScopeOnce(toProcess, g_Workspace->runtimeModule->scopeRoot);
+        addCollectedScopeOnce(scopes, g_Workspace->runtimeModule->scopeRoot);
+        addCollectedScopeOnce(toProcess, g_Workspace->runtimeModule->scopeRoot);
     }
 
     for (uint32_t i = 0; i < toProcess.size(); i++)
@@ -640,15 +640,14 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
             if (scope->parentScope->is(ScopeKind::Struct) && flags.has(COLLECT_NO_STRUCT))
                 continue;
 
-            if (!hasAlternativeScope(scopes, scope->parentScope))
+            if (!hasCollectedScope(scopes, scope->parentScope))
             {
-                addAlternativeScope(scopes, scope->parentScope);
-                addAlternativeScope(toProcess, scope->parentScope);
+                addCollectedScope(scopes, scope->parentScope);
+                addCollectedScope(toProcess, scope->parentScope);
             }
         }
     }
 
     SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, toErr(Err0449)}));
-
     return true;
 }

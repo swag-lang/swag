@@ -622,9 +622,9 @@ uint32_t AstNode::childParentIdx() const
     return UINT32_MAX;
 }
 
-void AstNode::addAlternativeScope(Scope* scope, AltScopeFlags altFlags)
+void AstNode::addAlternativeScope(Scope* scope, CollectedScopeFlags altFlags)
 {
-    AlternativeScope sv;
+    CollectedScope sv;
     sv.scope = scope;
     sv.flags = altFlags;
 
@@ -633,9 +633,9 @@ void AstNode::addAlternativeScope(Scope* scope, AltScopeFlags altFlags)
     extMisc()->alternativeScopes.push_back(sv);
 }
 
-void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode, AltScopeFlags altFlags)
+void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode, CollectedScopeFlags altFlags)
 {
-    AlternativeScopeVar sv;
+    CollectedScopeVar sv;
     sv.scope    = scope;
     sv.node     = varNode;
     sv.leafNode = varNode;

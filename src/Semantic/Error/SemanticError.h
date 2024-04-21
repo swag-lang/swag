@@ -1,7 +1,7 @@
 #pragma once
 #include "Semantic/Symbol/Symbol.h"
 
-struct AlternativeScope;
+struct CollectedScope;
 struct AstIdentifier;
 struct AstIdentifierRef;
 struct AstNode;
@@ -35,8 +35,8 @@ namespace SemanticError
 {
     Utf8 findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best);
     void findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result);
-    void findClosestMatches(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor);
-    Utf8 findClosestMatchesMsg(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor);
+    void findClosestMatches(const Utf8& searchName, const VectorNative<CollectedScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor);
+    Utf8 findClosestMatchesMsg(const Utf8& searchName, const VectorNative<CollectedScope>& scopeHierarchy, IdentifierSearchFor searchFor);
 
     bool warnUnusedFunction(const Module* moduleToGen, const ByteCode* one);
     bool warnUnusedVariables(SemanticContext* context, const Scope* scope);

@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
+#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Report/Log.h"
 #include "Semantic/Scope.h"
@@ -224,10 +224,10 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext*, const Utf8& line, Utf8& t
 
     toComplete = tokens.back();
 
-    SemanticContext                   semContext;
-    SemanticJob                       semJob;
-    VectorNative<AlternativeScope>    scopeHierarchy;
-    VectorNative<AlternativeScopeVar> scopeHierarchyVars;
+    SemanticContext                 semContext;
+    SemanticJob                     semJob;
+    VectorNative<CollectedScope>    scopeHierarchy;
+    VectorNative<CollectedScopeVar> scopeHierarchyVars;
     semContext.sourceFile = cxtIp->node->token.sourceFile;
     semContext.node       = cxtIp->node;
     semContext.baseJob    = &semJob;

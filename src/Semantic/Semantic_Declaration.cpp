@@ -2,9 +2,9 @@
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Semantic.h"
-#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -19,7 +19,7 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
     SWAG_ASSERT(regNode);
     SWAG_VERIFY(node->ownerFct || node->ownerScope->is(ScopeKind::Struct), context->report({node, formErr(Err0477, Naming::kindName(node->ownerScope->kind).c_str())}));
 
-    const AltScopeFlags altFlags = node->hasAstFlag(AST_STRUCT_MEMBER) ? ALT_SCOPE_STRUCT_USING : 0;
+    const CollectedScopeFlags altFlags = node->hasAstFlag(AST_STRUCT_MEMBER) ? ALT_SCOPE_STRUCT_USING : 0;
 
     typeInfoVar = TypeManager::concretePtrRef(typeInfoVar);
     if (typeInfoVar->isStruct())
