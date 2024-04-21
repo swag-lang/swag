@@ -62,16 +62,17 @@ func day10B() assume
 
     vals.sort()
 
-    func count(i: s32, input: Array's64, storage: &HashTable'(s32, u64))->u64
+    func count(i: u64, input: Array's64, storage: &HashTable'(u64, u64))->u64
     {
         if i == input.count - 1 do
             return 1
+
         let it = storage.find(i)
         if it do
             return it.value
 
         var total = 0'u64
-        for var j = i + 1; j < input.count; j += 1
+        loop j: i + 1 until input.count
         {
             if input[j] - input[i] <= 3 do
                 total += count(j, input, storage)
@@ -84,7 +85,6 @@ func day10B() assume
     vals.insertAt(0, 0)
     vals.add(vals.back() + 3)
 
-    var dp: HashTable'(s32, u64)
-    let result = count(0, vals, &dp)
-    @assert(result == 1727094849536)
+    var dp: HashTable'(u64, u64)
+    @assert(count(0, vals, &dp) == 1727094849536)
 }
