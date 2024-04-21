@@ -288,7 +288,7 @@ impl String
     }
 
     // Replace all occurences of 'what' with 'by'
-    #[Swag.Overload]
+    #[Overload]
     mtd replace(what: rune, by: string)
     {
         if !length do
@@ -313,7 +313,7 @@ impl String
     }
 
     // Replace all occurences of 'what' with 'by'
-    #[Swag.Overload]
+    #[Overload]
     mtd replace(what, by: string, comparisonType = Utf8.ComparisonType.Latin1)
     {
         let whatLength = @countof(what)
