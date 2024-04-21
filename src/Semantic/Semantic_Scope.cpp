@@ -587,10 +587,6 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
         addCollectedScopeOnce(toProcess, startScope);
     }
 
-    // Add current file scope
-    addCollectedScopeOnce(scopes, context->sourceFile->scopeFile);
-    addCollectedScopeOnce(toProcess, context->sourceFile->scopeFile);
-
     // Add bootstrap
     SWAG_ASSERT(g_Workspace->bootstrapModule);
     addCollectedScopeOnce(scopes, g_Workspace->bootstrapModule->scopeRoot);

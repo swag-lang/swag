@@ -3,8 +3,8 @@
 #include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Semantic/Semantic.h"
 #include "Semantic/Error/SemanticError.h"
+#include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -54,6 +54,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse.token, formErr(Err0481, tokenParse.token.c_str())));
     SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(tokenParse.token, formErr(Err0615, tokenParse.token.c_str())));
 
+    Scope*     orgScope  = currentScope;
     Scope*     newScope  = currentScope;
     const auto tokenAttr = tokenParse;
 
@@ -97,7 +98,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 
     // Add original scope
     if (topStmt)
-        topStmt->addAlternativeScope(currentScope);
+        topStmt->addAlternativeScope(orgScope);
 
     return true;
 }

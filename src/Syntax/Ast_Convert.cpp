@@ -370,7 +370,8 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* parent, 
     const auto typeExpression = newTypeExpression(nullptr, parent);
     typeExpression->addAstFlag(AST_NO_BYTECODE_CHILDREN | AST_GENERATED);
     typeExpression->identifier = newIdentifierRef(structNode->token.text, nullptr, typeExpression);
-    *result                    = typeExpression;
+    typeExpression->addAlternativeScope(structNode->ownerScope);
+    *result = typeExpression;
     return true;
 }
 

@@ -388,6 +388,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags expr
     const auto idRef = Ast::newIdentifierRef(structNode->token.text, this, parent);
     *result          = idRef;
     idRef->addExtraPointer(ExtraPointerKind::ExportNode, structNode);
+    idRef->addAlternativeScope(sourceFile->scopeFile);
 
     idRef->lastChild()->addAstFlag(AST_GENERATED);
     Ast::removeFromParent(structNode);
