@@ -19,7 +19,7 @@ impl PropertyList
     attr EditSlider(min, max: f32)
 }
 
-interface IPropertyList
+interface IPropertyValue
 {
     mtd edit(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
 }
@@ -730,8 +730,8 @@ internal impl PropertyList
                 let item          = addItem(f, ptrData)
                 let typeSubStruct = cast(const *Swag.TypeInfoStruct) f.pointedType
 
-                // A structure with an implementation of IPropertyList
-                let iprop = @mkinterface(ptrData, f.pointedType, IPropertyList)
+                // A structure with an implementation of IPropertyValue
+                let iprop = @mkinterface(ptrData, f.pointedType, IPropertyValue)
                 if iprop != null
                 {
                     iprop.edit(self, item, ptrData, f)

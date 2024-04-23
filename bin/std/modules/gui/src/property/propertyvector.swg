@@ -43,7 +43,7 @@ func propertyVector(list: *PropertyList, typeStruct: const *Swag.TypeInfoStruct,
     }
 }
 
-public impl IPropertyList for Math.Vector2
+public impl IPropertyValue for Math.Vector2
 {
     mtd impl edit(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
     {
@@ -51,7 +51,7 @@ public impl IPropertyList for Math.Vector2
     }
 }
 
-public impl IPropertyList for Math.Vector3
+public impl IPropertyValue for Math.Vector3
 {
     mtd impl edit(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
     {
@@ -59,7 +59,7 @@ public impl IPropertyList for Math.Vector3
     }
 }
 
-public impl IPropertyList for Math.Vector4
+public impl IPropertyValue for Math.Vector4
 {
     mtd impl edit(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
     {
