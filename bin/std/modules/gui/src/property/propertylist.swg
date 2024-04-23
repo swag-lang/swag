@@ -362,22 +362,16 @@ internal impl PropertyList
     mtd validateBool(item: *PropertyListItem)
     {
         var ptrData = cast(*bool) item.ptrData
-        if item.checkBox
-        {
+        if item.checkBox do
             dref ptrData = item.checkBox.checked == .Checked ? true : false
-        }
-
         sigChanged.call(self)
     }
 
     mtd validateString(item: *PropertyListItem)
     {
         var ptrData = cast(*String) item.ptrData
-        if item.editBox
-        {
+        if item.editBox do
             dref ptrData = item.editBox.getText()
-        }
-
         sigChanged.call(self)
     }
 
@@ -467,12 +461,10 @@ internal impl PropertyList
         let line = StackLayoutCtrl.create(edView, .TopAutoSize)
         line.margin.x, line.margin.z = 15
         line.wndFlags.set(.PreChildsPaint)
+
         let item = items.addNewPtr()
         item.line        = line
-        line.hookOnEvent = closure|item|(wnd, evt)
-        {
-            return onEvent(item, wnd, evt)
-        }
+        line.hookOnEvent = closure|item|(wnd, evt) { return onEvent(item, wnd, evt); }
         item.type        = f.pointedType
         item.typeValue   = f
         item.ptrData     = ptrData
@@ -536,10 +528,7 @@ internal impl PropertyList
                 line1.margin.x, line1.margin.z = 15
                 line1.margin.y = enumFlagsMarginBefore
                 line1.wndFlags.set(.PreChildsPaint)
-                line1.hookOnEvent = closure|itemB|(wnd, evt)
-                {
-                    return onEvent(itemB, wnd, evt)
-                }
+                line1.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
 
                 let ed = CheckButton.create(line1, "", {0, 0, 30, 0})
                 ed.dockStyle = .Left
@@ -569,11 +558,7 @@ internal impl PropertyList
                 ed.userData     = cast,unconst(*void) v.value
 
                 refreshEnumFlags(itemB)
-
-                itemB.checkBox.sigChanged += closure|self, itemB|(ed)
-                {
-                    self.validateEnumFlags(itemB)
-                }
+                itemB.checkBox.sigChanged += closure|self, itemB|(ed) { self.validateEnumFlags(itemB); }
             }
         }
         else
@@ -582,18 +567,11 @@ internal impl PropertyList
             ed.maxSize.x   = maxSizeCombo
             ed.anchorStyle = .X
             item.comboBox  = ed
-
-            visit v, idx: typeEnum.values
-            {
+            visit v, idx: typeEnum.values do
                 ed.addItem(v.name)
-            }
 
             refreshEnum(item)
-
-            item.comboBox.sigChanged += closure|self, item|(ed, n)
-            {
-                self.validateEnum(item)
-            }
+            item.comboBox.sigChanged += closure|self, item|(ed, n) { self.validateEnum(item); }
         }
     }
 
@@ -602,10 +580,7 @@ internal impl PropertyList
         let item = addItem(f, ptrData)
         let ed   = EditBox.create(item.line, dref cast(*String) ptrData)
         item.editBox = ed
-        ed.sigLoseFocus += closure|self, item|(ed)
-        {
-            self.validateString(item)
-        }
+        ed.sigLoseFocus += closure|self, item|(ed) { self.validateString(item); }
     }
 
     mtd addBool(f: Swag.TypeValue, ptrData: *u8)
@@ -634,10 +609,7 @@ internal impl PropertyList
         }
 
         item.checkBox = ed
-        ed.sigChanged += closure|self, item|(ed)
-        {
-            self.validateBool(item)
-        }
+        ed.sigChanged += closure|self, item|(ed) { self.validateBool(item); }
 
         refreshBool(item)
     }
@@ -698,20 +670,10 @@ internal impl PropertyList
 
         refreshNative(item)
 
-        if item.sliderBox
-        {
-            item.sliderBox.sigChanged += closure|self, item|(ed)
-            {
-                self.validateNative(item)
-            }
-        }
-        elif item.editBox
-        {
-            item.editBox.sigLoseFocus += closure|self, item|(ed)
-            {
-                self.validateNative(item)
-            }
-        }
+        if item.sliderBox do
+            item.sliderBox.sigChanged += closure|self, item|(ed) { self.validateNative(item); }
+        elif item.editBox do
+            item.editBox.sigLoseFocus += closure|self, item|(ed) { self.validateNative(item); }
     }
 
     mtd addStruct(addr: ^u8, typeStruct: const *Swag.TypeInfoStruct)
@@ -743,33 +705,29 @@ internal impl PropertyList
             }
 
             // Value
-            if Reflection.isEnum(f.pointedType)
+            switch
             {
+            case Reflection.isEnum(f.pointedType):
                 let typeEnum = cast(const *Swag.TypeInfoEnum) f.pointedType
                 addEnum(f, typeEnum, ptrData)
-            }
-            elif f.pointedType == Core.String
-            {
+
+            case f.pointedType == Core.String:
                 addString(f, ptrData)
-            }
-            elif Reflection.isString(f.pointedType)
-            {
+
+            case Reflection.isString(f.pointedType):
                 let item = addItem(f, ptrData)
                 let ed   = EditBox.create(item.line, dref cast(*string) ptrData)
                 ed.editBoxFlags = .ReadOnly
                 item.editBox    = ed
-            }
-            elif Reflection.isBool(f.pointedType)
-            {
+
+            case Reflection.isBool(f.pointedType):
                 addBool(f, ptrData)
-            }
-            elif Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType)
-            {
+
+            case Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType):
                 let nativeType = cast(const *Swag.TypeInfoNative) f.pointedType
                 addNative(f, nativeType, ptrData)
-            }
-            elif Reflection.isStruct(f.pointedType)
-            {
+
+            case Reflection.isStruct(f.pointedType):
                 let item = addItem(f, ptrData)
                 item.label.style.setFont(&font2)
                 let typeSubStruct = cast(const *Swag.TypeInfoStruct) f.pointedType
@@ -824,29 +782,28 @@ impl PropertyList
         return ed
     }
 
-    // Add a new struct to display
+    // Add a new struct to display.
     #[Swag.Overload]
     mtd addItem(val: any)
     {
         let dataof = @dataof(val)
         let typeof = @kindof(val)
         Debug.assert(typeof.kind == .Struct)
+
         let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
         addStruct(dataof, typeStruct)
 
         edView.sendResizeEvent()
     }
 
-    // Refresh displayed values
+    // Refresh all displayed values.
     mtd refresh()
     {
-        visit it: items
-        {
+        visit it: items do
             refreshItem(it)
-        }
     }
 
-    // Show hidden content depending on the input filter
+    // Show hidden content depending on the input 'filter'.
     mtd setStringFilter(filter: string)
     {
         visit it: items
