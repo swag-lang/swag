@@ -29,7 +29,7 @@ struct AA
     #[Name("<b>Another name<b>"), EditSlider(0, 1)]
     xf32: f32 = 0.5
 
-    #[Name("<b>Another name<b>")]
+    #[Name("<b>Vector3<b>")]
     x1: Math.Vector3{11.5, 22, 33}
 
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]

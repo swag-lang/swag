@@ -728,10 +728,56 @@ internal impl PropertyList
                 addNative(f, nativeType, ptrData)
 
             case Reflection.isStruct(f.pointedType):
-                let item = addItem(f, ptrData)
-                item.label.style.setFont(&font2)
+                let item          = addItem(f, ptrData)
                 let typeSubStruct = cast(const *Swag.TypeInfoStruct) f.pointedType
-                addStruct(ptrData, typeSubStruct)
+                item.label.style.setFont(&font2)
+
+                if f.pointedType == Math.Vector3
+                {
+                    let line1 = Wnd.create'Wnd(item.line)
+                    visit v: typeSubStruct.fields
+                    {
+                        with let itemB = items.addNewPtr()
+                        {
+                            .type        = f32
+                            .typeValue   = v
+                            .ptrData     = ptrData + v.offset
+                            .extendFocus = 5
+                            .filter      = item.filter
+                            .line        = line1
+                            .forceShow   = item.line
+                        }
+
+                        with let label1 = Label.create(line1, v.name, {0, 0, 30, 30})
+                        {
+                            .dockStyle         = .Left
+                            .horzAlignmentText = .Center
+                        }
+
+                        with let ed = EditBox.create(line1, "")
+                        {
+                            .maxSize.x   = 70
+                            .anchorStyle = .X
+                            .dockStyle   = .Left
+                            .userData    = cast,unconst(*void) v.value
+                            .setInputF64()
+                            .sigLoseFocus += closure|self, itemB|(ed) { self.validateNative(itemB); }
+                        }
+
+                        itemB.editBox = ed
+                        refreshNative(itemB)
+                    }
+
+                    item.onResize += closure|line1|(item)
+                    {
+                        line1.position.height = 30
+                        item.line.applyLayout()
+                    }
+                }
+                else
+                {
+                    addStruct(ptrData, typeSubStruct)
+                }
             }
         }
     }
