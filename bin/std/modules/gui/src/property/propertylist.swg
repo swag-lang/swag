@@ -285,16 +285,10 @@ internal impl PropertyList
             refreshBool(item)
         elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed) do
             refreshNative(item)
-        elif Reflection.isString(pointed)
-        {
-            if item.editBox do
-                item.editBox.setText(dref cast(*string) item.ptrData)
-        }
-        elif pointed == Core.String
-        {
-            if item.editBox do
-                item.editBox.setText(dref cast(*String) item.ptrData)
-        }
+        elif Reflection.isString(pointed) and item.editBox do
+            item.editBox.setText(dref cast(*string) item.ptrData)
+        elif pointed == Core.String and item.editBox do
+            item.editBox.setText(dref cast(*String) item.ptrData)
     }
 
     ////////////////////////////
