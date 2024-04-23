@@ -35,6 +35,7 @@ struct AA
     #[Name("<b>Vector3<b>")]
     #[Description("This is a vector3.")]
     v3: Math.Vector3{11.5, 22, 33}
+    v4: Math.Vector4{11.5, 22, 33}
 
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     xb: bool = true

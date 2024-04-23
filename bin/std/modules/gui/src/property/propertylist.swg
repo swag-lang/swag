@@ -19,6 +19,11 @@ impl PropertyList
     attr EditSlider(min, max: f32)
 }
 
+interface IPropertyList
+{
+    mtd edit(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
+}
+
 struct PropertyList
 {
     using frameWnd:            FrameWnd
@@ -731,47 +736,11 @@ internal impl PropertyList
                 let item          = addItem(f, ptrData)
                 let typeSubStruct = cast(const *Swag.TypeInfoStruct) f.pointedType
 
-                if f.pointedType == Math.Vector3
+                // A structure with an implementation of IPropertyList
+                let iprop = @mkinterface(ptrData, f.pointedType, IPropertyList)
+                if iprop != null
                 {
-                    let line1 = Wnd.create'Wnd(item.line)
-                    visit v: typeSubStruct.fields
-                    {
-                        with let itemB = items.addNewPtr()
-                        {
-                            .type        = v.pointedType
-                            .typeValue   = v
-                            .ptrData     = ptrData + v.offset
-                            .extendFocus = 5
-                            .filter      = item.filter
-                            .line        = line1
-                            .forceShow   = item.line
-                        }
-
-                        with let label1 = Label.create(line1, v.name, {0, 0, 30, 30})
-                        {
-                            .dockStyle         = .Left
-                            .horzAlignmentText = .Center
-                        }
-
-                        with let ed = EditBox.create(line1, "")
-                        {
-                            .maxSize.x   = 70
-                            .anchorStyle = .X
-                            .dockStyle   = .Left
-                            .userData    = cast,unconst(*void) v.value
-                            .setInputF64()
-                            .sigLoseFocus += closure|self, itemB|(ed) { self.validateNative(itemB); }
-                        }
-
-                        itemB.editBox = ed
-                        refreshNative(itemB)
-                    }
-
-                    item.onResize += closure|line1|(item)
-                    {
-                        line1.position.height = 30
-                        item.line.applyLayout()
-                    }
+                    iprop.edit(self, item, ptrData, f)
                 }
                 else
                 {
