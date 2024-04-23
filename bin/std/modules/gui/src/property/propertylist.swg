@@ -730,7 +730,6 @@ internal impl PropertyList
             case Reflection.isStruct(f.pointedType):
                 let item          = addItem(f, ptrData)
                 let typeSubStruct = cast(const *Swag.TypeInfoStruct) f.pointedType
-                item.label.style.setFont(&font2)
 
                 if f.pointedType == Math.Vector3
                 {
@@ -739,7 +738,7 @@ internal impl PropertyList
                     {
                         with let itemB = items.addNewPtr()
                         {
-                            .type        = f32
+                            .type        = v.pointedType
                             .typeValue   = v
                             .ptrData     = ptrData + v.offset
                             .extendFocus = 5
@@ -776,6 +775,7 @@ internal impl PropertyList
                 }
                 else
                 {
+                    item.label.style.setFont(&font2)
                     addStruct(ptrData, typeSubStruct)
                 }
             }
