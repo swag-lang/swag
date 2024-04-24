@@ -28,6 +28,8 @@ struct PropertyList
 {
     using frameWnd:            FrameWnd
 
+    leftMargin:                s32 = 15
+    rightMargin:               s32 = 15
     nameMarginBefore:          s32 = 25
     nameHeight:                s32 = 25
     nameMarginAfter:           s32 = 5
@@ -457,16 +459,22 @@ internal impl PropertyList
     #[Swag.Overload]
     mtd addItem(f: Swag.TypeValue, ptrData: *u8, canDesc = true)->*PropertyListItem
     {
-        let line = StackLayoutCtrl.create(edView, .TopAutoSize)
-        line.margin.x, line.margin.z = 15
-        line.wndFlags.set(.PreChildsPaint)
+        with let line = StackLayoutCtrl.create(edView, .TopAutoSize)
+        {
+            .margin.x = leftMargin
+            .margin.z = rightMargin
+            .wndFlags.set(.PreChildsPaint)
+        }
 
-        let item = items.addNewPtr()
-        item.line        = line
+        with let item = items.addNewPtr()
+        {
+            .line        = line
+            .type        = f.pointedType
+            .typeValue   = f
+            .ptrData     = ptrData
+        }
+
         line.hookOnEvent = closure|item|(wnd, evt) { return onEvent(item, wnd, evt); }
-        item.type        = f.pointedType
-        item.typeValue   = f
-        item.ptrData     = ptrData
 
         // Name
         var dispName: String
@@ -510,27 +518,36 @@ internal impl PropertyList
     mtd addEnum(f: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, ptrData: *u8)
     {
         let item = addItem(f, ptrData)
-        let line = item.line
 
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {
             visit v: typeEnum.values
             {
-                let itemB = items.addNewPtr()
-                itemB.type        = typeEnum
-                itemB.typeValue   = v
-                itemB.ptrData     = ptrData
-                itemB.extendFocus = 5
-                itemB.filter      = item.filter
+                with let line1 = Wnd.create'Wnd(edView)
+                {
+                    .margin.x = leftMargin
+                    .margin.z = rightMargin
+                    .margin.y = enumFlagsMarginBefore
+                    .wndFlags.set(.PreChildsPaint)
+                }
 
-                let line1 = Wnd.create'Wnd(edView)
-                line1.margin.x, line1.margin.z = 15
-                line1.margin.y = enumFlagsMarginBefore
-                line1.wndFlags.set(.PreChildsPaint)
+                with let itemB = items.addNewPtr()
+                {
+                    .type        = typeEnum
+                    .typeValue   = v
+                    .ptrData     = ptrData
+                    .extendFocus = 5
+                    .filter      = item.filter
+                    .line        = line1
+                    .forceShow   = item.line
+                }
+
                 line1.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
 
                 let ed = CheckButton.create(line1, "", {0, 0, 30, 0})
                 ed.dockStyle = .Left
+                ed.userData     = cast,unconst(*void) v.value
+                itemB.checkBox  = ed
 
                 let dispDesc = Reflection.getAttributeValue(v, PropertyList.Description, "desc")
                 itemB.filter += cast(string) dispDesc
@@ -551,21 +568,17 @@ internal impl PropertyList
                     line1.applyLayout()
                 }
 
-                itemB.line      = line1
-                itemB.forceShow = item.line
-                itemB.checkBox  = ed
-                ed.userData     = cast,unconst(*void) v.value
-
                 refreshEnumFlags(itemB)
                 itemB.checkBox.sigChanged += closure|self, itemB|(ed) { self.validateEnumFlags(itemB); }
             }
         }
         else
         {
-            let ed = ComboBox.create(line, kind: .CheckBox)
+            let ed = ComboBox.create(item.line, kind: .CheckBox)
             ed.maxSize.x   = maxSizeCombo
             ed.anchorStyle = .X
             item.comboBox  = ed
+
             visit v, idx: typeEnum.values do
                 ed.addItem(v.name)
 

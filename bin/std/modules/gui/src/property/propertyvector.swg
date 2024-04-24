@@ -2,7 +2,8 @@ using Core, Pixel
 
 func propertyVector(list: *PropertyList, typeStruct: const *Swag.TypeInfoStruct, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
 {
-    let line1 = Wnd.create'Wnd(item.line)
+    let line = Wnd.create'Wnd(item.line)
+
     visit v: typeStruct.fields
     {
         with let itemB = list.items.addNewPtr()
@@ -12,17 +13,17 @@ func propertyVector(list: *PropertyList, typeStruct: const *Swag.TypeInfoStruct,
             .ptrData     = ptrData + v.offset
             .extendFocus = 5
             .filter      = item.filter
-            .line        = line1
+            .line        = line
             .forceShow   = item.line
         }
 
-        with let label1 = Label.create(line1, v.name, {0, 0, 30, 30})
+        with let label = Label.create(line, v.name, {0, 0, 30, 30})
         {
             .dockStyle         = .Left
             .horzAlignmentText = .Center
         }
 
-        with let ed = EditBox.create(line1, "")
+        with let ed = EditBox.create(line, "")
         {
             .maxSize.x   = 70
             .anchorStyle = .X
@@ -36,9 +37,9 @@ func propertyVector(list: *PropertyList, typeStruct: const *Swag.TypeInfoStruct,
         PropertyList.refreshNative(itemB)
     }
 
-    item.onResize += closure|line1|(item)
+    item.onResize += closure|line|(item)
     {
-        line1.position.height = 30
+        line.position.height = 30
         item.line.applyLayout()
     }
 }
