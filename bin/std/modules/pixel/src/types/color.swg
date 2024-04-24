@@ -35,7 +35,7 @@ impl Color
     func opEquals(self, other: Self) => self.argb == other.argb
 
     #[Inline]
-    mtd isOpaque() => a == 255
+    mtd const isOpaque() => a == 255
 
     // Set all components
     #[Inline]
