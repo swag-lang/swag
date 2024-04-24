@@ -19,11 +19,13 @@ impl PropertyList
     attr EditSlider(min, max: f32)
 }
 
+// To specialize the edition of a given struct.
 interface IPropertyValue
 {
-    mtd edit(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue);
+    mtd construct(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue);
 }
 
+#[Swag.Opaque]
 struct PropertyList
 {
     using frameWnd:            FrameWnd
@@ -325,7 +327,7 @@ internal impl PropertyList
             }
         }
 
-        sigChanged.call(self)
+        onChanged()
     }
 
     mtd validateEnum(item: *PropertyListItem)
@@ -357,7 +359,7 @@ internal impl PropertyList
             }
         }
 
-        sigChanged.call(self)
+        onChanged()
     }
 
     mtd validateBool(item: *PropertyListItem)
@@ -365,7 +367,7 @@ internal impl PropertyList
         var ptrData = cast(*bool) item.ptrData
         if item.checkBox do
             dref ptrData = item.checkBox.checked == .Checked ? true : false
-        sigChanged.call(self)
+        onChanged()
     }
 
     mtd validateString(item: *PropertyListItem)
@@ -373,7 +375,7 @@ internal impl PropertyList
         var ptrData = cast(*String) item.ptrData
         if item.editBox do
             dref ptrData = item.editBox.getText()
-        sigChanged.call(self)
+        onChanged()
     }
 
     mtd validateNative(item: *PropertyListItem)
@@ -449,6 +451,12 @@ internal impl PropertyList
             }
         }
 
+        onChanged()
+    }
+
+    mtd onChanged()
+    {
+        refresh()
         sigChanged.call(self)
     }
 
@@ -749,7 +757,7 @@ internal impl PropertyList
                 let iprop = @mkinterface(ptrData, f.pointedType, IPropertyValue)
                 if iprop != null
                 {
-                    iprop.edit(self, item, ptrData, f)
+                    iprop.construct(self, item, ptrData, f)
                 }
                 else
                 {

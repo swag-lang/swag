@@ -29,12 +29,15 @@ struct AA
     #[Name("<b>Another name<b>"), EditSlider(0, 1)]
     xf32: f32 = 0.5
 
+    col: Color
+
     #[Name("<b>Vector2<b>")]
     v2: Math.Vector2{11.5, 22}
 
     #[Name("<b>Vector3<b>")]
     #[Description("This is a vector3.")]
     v3: Math.Vector3{11.5, 22, 33}
+
     v4: Math.Vector4{11.5, 22, 33}
 
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
@@ -60,7 +63,7 @@ func createView7(_tabView: *Tab, view: *Wnd)
     aa.str = "String content"
     lt.addItem(aa)
 
-    let lt1 = PropertyListCtrl.create(view, {500, 10, 600, 600})
+    let lt1 = PropertyListCtrl.create(view, {500, 10, 650, 600})
     lt1.addItem(aa)
     lt1.splitter.setPaneSize(0, 150)
 
