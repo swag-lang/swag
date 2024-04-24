@@ -11,67 +11,51 @@ func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
 func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value: Swag.TypeValue, ptrData: ^u8)
 {
     let lineHeight = list.getThemeMetrics().editBox_Height
-    let line1 = Wnd.create'Wnd(item.line)
-
-    with let itemB = list.items.addNewPtr()
-    {
-        .type        = u32
-        .typeValue   = dref Reflection.getField(Color, @nameof(Color.argb))
-        .ptrData     = ptrData
-        .extendFocus = 5
-        .filter      = item.filter
-        .line        = line1
-        .forceShow   = item.line
-    }
+    let line1      = Wnd.create'Wnd(item.line)
 
     let ptrColor = cast(*Color) ptrData
     with let ed = EditBox.create(line1, "", {0, 0, lineHeight * 3, lineHeight})
     {
         .dockStyle = .Left
-        .margin.z = 4
+        .margin.z  = 4
         .setInputX64()
         .sigLoseFocus += closure|list, ptrColor|(ed)
         {
-            var res = catch StrConv.parseX64(ed.text)
-            ptrColor.argb = cast(u32) res.value
+            ptrColor.argb = cast(u32) catch StrConv.parseX64(ed.text).value
             list.onChanged()
         }
     }
 
-    itemB.onRefresh = closure|ed, ptrColor|(item)
+    item.onRefresh = closure|ed, ptrColor|(item)
     {
         ed.setText(Format.toString("%{X08}", ptrColor.argb))
     }
 
-    itemB.onRefresh(itemB)
+    item.onRefresh(item)
 
     with let btn = IconButton.create(line1, {}, {0, 0, 60, lineHeight})
     {
-        .dockStyle = .Left
+        .dockStyle   = .Left
+        .arrowPos    = .RightDown
+        .checkedForm = .None
         .setForm(.RoundSquare)
         .iconBtnFlags.add(.Popup | .CheckableToggle)
-        .arrowPos    = .RightDown
-        .textPos     = .Left
-        .checkedForm = .None
     }
 
-    btn.userData     = ptrData
-    btn.sigPaintIcon = func(btn, bc, pos)
+    btn.sigPaintIcon = closure|ptrColor|(btn, bc, pos)
     {
         bc.painter.setParams(.Antialiased)
-        let color = dref cast(*Color) btn.userData
-        if !color.isOpaque() do
+        if !ptrColor.isOpaque() do
             bc.painter.fillRoundRect(pos, 5, 5, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
-        bc.painter.fillRoundRect(pos, 5, 5, color)
+        bc.painter.fillRoundRect(pos, 5, 5, dref ptrColor)
     }
 
     btn.sigShowPopup += closure|list, ptrColor|(btn)
     {
         var picker = createColorPicker(btn, dref ptrColor)
-        picker.sigChanged += closure|list, btn|(pk)
+        picker.sigChanged += closure|list, ptrColor|(pk)
         {
-            let color = cast(*Color) btn.userData
-            dref color = pk.getColor().argb
+            ptrColor.argb = pk.getColor().argb
             list.onChanged()
         }
     }
