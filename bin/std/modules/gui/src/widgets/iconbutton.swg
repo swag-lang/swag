@@ -506,4 +506,28 @@ impl IconButton
         self.form = #self.form
         invalidate()
     }
+
+    // Creates a popup window linked to the button position.
+    mtd createAnchorPopup(w, h: f32)->*FrameWnd
+    {
+        var pos     = getSurfaceRect()
+        let topView = getTopView()
+        var pt      = topView.surfaceToLocal({pos.x, pos.bottom()})
+        pt.y += getThemeMetrics().frameWnd_AnchorHeight
+
+        var sdw = getThemeMetrics().frameWnd_SmallShadowSize
+
+        with let frame = Wnd.create'FrameWnd(topView, {pt.x, pt.y, w, h})
+        {
+            .setFrameForm(.Round)
+            .setFrameFlags(FrameWndFlags.SmallShadow)
+            .style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
+            .fitPosInParent(sdw.z, sdw.w)
+            .anchor    = .Top
+            .anchorPos = pos.horzCenter() - frame.getSurfaceRect().x
+        }
+
+        popup = frame
+        return frame
+    }
 }

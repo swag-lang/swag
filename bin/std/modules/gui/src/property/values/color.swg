@@ -1,82 +1,49 @@
 using Core, Pixel
 
-func createPopup(btn: *IconButton, w, h: f32)->*FrameWnd
-{
-    var pos     = btn.getSurfaceRect()
-    let topView = btn.getTopView()
-    var pt      = topView.surfaceToLocal({pos.x, pos.bottom()})
-    pt.y += btn.getThemeMetrics().frameWnd_AnchorHeight
-
-    var sdw = btn.getThemeMetrics().frameWnd_SmallShadowSize
-
-    with let frame = Wnd.create'FrameWnd(topView, {pt.x, pt.y, w, h})
-    {
-        .setFrameForm(.Round)
-        .setFrameFlags(FrameWndFlags.SmallShadow)
-        .style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
-        .fitPosInParent(sdw.z, sdw.w)
-        .anchor    = .Top
-        .anchorPos = pos.horzCenter() - frame.getSurfaceRect().x
-    }
-
-    btn.popup = frame
-    return frame
-}
-
 func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
 {
-    let frame = createPopup(btn, 356, 382)
-
-    let picker = ColorPickerCtrl.create(frame, {8, 54})
+    let frame = btn.createAnchorPopup(356, 382)
+    let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54})
     picker.setColor(color)
-
-    with let palette = PalettePicker.create(frame, {16, 16, 340, 48})
-    {
-        .addColor(Argb.White)
-        .addColor(Argb.Gray)
-        .addColor(Argb.Black)
-        .addColor(Argb.Red)
-        .addColor(Argb.Green)
-        .addColor(Argb.Blue)
-        .addColor(Argb.Yellow)
-        .addColor(Argb.Purple)
-        .addColor(Color.fromArgb(0))
-        .boxSize = 32
-        .sigChanged += closure|picker|(pal) { picker.setColor(pal.selectedColor); }
-    }
-
     return picker
 }
 
 func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value: Swag.TypeValue, ptrData: ^u8)
 {
     let lineHeight = list.getThemeMetrics().editBox_Height
-    let ptrColor = cast(*Color) ptrData
     let line1 = Wnd.create'Wnd(item.line)
-
-    let typeInfo = Color
 
     with let itemB = list.items.addNewPtr()
     {
         .type        = u32
-        .typeValue   = dref Reflection.getField(typeInfo, @nameof(Color.argb))
-        .ptrData     = ptrData
+        .typeValue   = dref Reflection.getField(Color, @nameof(Color.argb))
+        //.ptrData     = ptrData
         .extendFocus = 5
         .filter      = item.filter
         .line        = line1
         .forceShow   = item.line
     }
 
+    let ptrColor   = cast(*Color) ptrData
     with let ed = EditBox.create(line1, "", {0, 0, lineHeight * 3, lineHeight})
     {
         .dockStyle   = .Left
         .userData    = ptrData
-        .setInputU64()
-        .sigLoseFocus += closure|list, itemB|(ed) { list.validateNative(itemB); }
+        .setInputX64()
+        .sigLoseFocus += closure|list, ptrColor|(ed)
+        {
+            var res = catch StrConv.parseX64(ed.text)
+            ptrColor.argb = cast(u32) res.value
+            list.onChanged()
+        }
     }
 
-    itemB.editBox = ed
-    PropertyList.refreshNative(itemB)
+    itemB.onRefresh = closure|ed, ptrColor|(item)
+    {
+        ed.setText(Format.toString("%{X08}", ptrColor.argb))
+    }
+
+    itemB.onRefresh(itemB)
 
     with let btn = IconButton.create(line1, {}, {0, 0, 70, lineHeight})
     {

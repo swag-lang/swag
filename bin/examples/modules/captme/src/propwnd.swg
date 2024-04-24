@@ -166,60 +166,17 @@ impl PropWnd
         return btn
     }
 
-    func createPopup(btn: *IconButton, w, h: f32)->*FrameWnd
-    {
-        var pos     = btn.getSurfaceRect()
-        let topView = btn.getTopView()
-        var pt      = topView.surfaceToLocal({pos.x, pos.bottom()})
-        pt.y += btn.getThemeMetrics().frameWnd_AnchorHeight
-
-        var sdw = btn.getThemeMetrics().frameWnd_SmallShadowSize
-
-        with let frame = Wnd.create'FrameWnd(topView, {pt.x, pt.y, w, h})
-        {
-            .setFrameForm(.Round)
-            .setFrameFlags(FrameWndFlags.SmallShadow)
-            .style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
-            .fitPosInParent(sdw.z, sdw.w)
-            .anchor    = .Top
-            .anchorPos = pos.horzCenter() - frame.getSurfaceRect().x
-        }
-
-        btn.popup = frame
-        return frame
-    }
-
     func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
     {
-        let frame = createPopup(btn, 356, 382)
-
-        let picker = ColorPickerCtrl.create(frame, {8, 54})
+        let frame = btn.createAnchorPopup(356, 382)
+        let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54})
         picker.setColor(color)
-
-        with let palette = PalettePicker.create(frame, {16, 16, 340, 48})
-        {
-            .addColor(Argb.White)
-            .addColor(Argb.Gray)
-            .addColor(Argb.Black)
-            .addColor(Argb.Red)
-            .addColor(Argb.Green)
-            .addColor(Argb.Blue)
-            .addColor(Argb.Yellow)
-            .addColor(Argb.Purple)
-            .addColor(Color.fromArgb(0))
-            .boxSize = 32
-            .sigChanged += closure|picker|(pal)
-            {
-                picker.setColor(pal.selectedColor)
-            }
-        }
-
         return picker
     }
 
     mtd createPopupShapeKind(btn: *IconButton)
     {
-        let frame  = createPopup(btn, 180, 66)
+        let frame  = btn.createAnchorPopup(180, 66)
         let layout = frame.createView'WrapLayoutCtrl()
         layout.wrapWidth, layout.wrapHeight = 48
         layout.padding = 4
@@ -283,7 +240,7 @@ impl PropWnd
 
     mtd createPopupStepKind(btn: *IconButton)
     {
-        let frame  = createPopup(btn, 180, 66)
+        let frame  = btn.createAnchorPopup(180, 66)
         let layout = frame.createView'WrapLayoutCtrl()
         layout.wrapWidth, layout.wrapHeight = 48
         layout.padding = 4
@@ -329,7 +286,7 @@ impl PropWnd
 
     mtd createPopupStartCapStyle(btn: *IconButton)
     {
-        let frame  = createPopup(btn, 100, @countof(LineCapStyle) * 46.0)
+        let frame  = btn.createAnchorPopup(100, @countof(LineCapStyle) * 46.0)
         let layout = StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 
@@ -382,7 +339,7 @@ impl PropWnd
 
     mtd createPopupEndCapStyle(btn: *IconButton)
     {
-        let frame  = createPopup(btn, 100, @countof(LineCapStyle) * 46.0)
+        let frame  = btn.createAnchorPopup(100, @countof(LineCapStyle) * 46.0)
         let layout = StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 
@@ -435,7 +392,7 @@ impl PropWnd
 
     mtd createPopupDashStyle(btn: *IconButton)
     {
-        let frame  = createPopup(btn, 180, 170)
+        let frame  = btn.createAnchorPopup(180, 170)
         let layout = StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 

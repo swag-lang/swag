@@ -131,10 +131,10 @@ impl ColorPickerCtrl
             .staticRes = Wnd.create'Wnd(v, "", {245, 215, 40, 40})
             let picker = IconButton.create(v, v.getTheme().getIcon24(.Picker), {245, 215, 40, 40})
 
-            .editR = EditBox.create(v, "", {10, 265, 50})
-            .editG = EditBox.create(v, "", {65, 265, 50})
-            .editB = EditBox.create(v, "", {120, 265, 50})
-            .editA = EditBox.create(v, "", {185, 265, 50})
+            .editA = EditBox.create(v, "", {10, 265, 50})
+            .editR = EditBox.create(v, "", {70, 265, 50})
+            .editG = EditBox.create(v, "", {125, 265, 50})
+            .editB = EditBox.create(v, "", {180, 265, 50})
             .editH = EditBox.create(v, "", {240, 265, 90})
 
             var l = Label.create(v, "R", {.editR.position.x, .editR.position.bottom() + 0, .editR.position.width})
@@ -145,7 +145,7 @@ impl ColorPickerCtrl
             l.labelFlags |= .LightText
             l = Label.create(v, "A", {.editA.position.x, .editA.position.bottom() + 0, .editA.position.width})
             l.labelFlags |= .LightText
-            l = Label.create(v, "HEX", {.editH.position.x, .editH.position.bottom() + 0, .editH.position.width})
+            l = Label.create(v, "ARGB", {.editH.position.x, .editH.position.bottom() + 0, .editH.position.width})
             l.labelFlags |= .LightText
 
             .radioH = RadioButton.create(v, "H", {280, 10, 40})
@@ -177,8 +177,7 @@ impl ColorPickerCtrl
 
                     if app.mouse.isButtonPressed(.Left) do
                         app.exitModal()
-                }
-)
+                })
 
                 app.fadeDisabledSurface = sfade
                 app.popCursor()
@@ -294,6 +293,8 @@ impl ColorPickerCtrl
                 v.updateEdits()
             }
 
+            .editH.setInputX64(0, 0xFFFFFFFF)
+            .editH.maxLength = 8
             .editH.sigLoseFocus += closure|v|(ed)
             {
                 var res = catch StrConv.parseX64(ed.text)
@@ -302,41 +303,38 @@ impl ColorPickerCtrl
                 v.updateAll()
             }
 
-            .radioH.sigChanged += closure|v|(bt)
-            {
-                v.setMode(.SaturationLightness)
-                v.updateAll()
-            }
-            .radioS.sigChanged += closure|v|(bt)
-            {
-                v.setMode(.HueLightness)
-                v.updateAll()
-            }
-            .radioL.sigChanged += closure|v|(bt)
-            {
-                v.setMode(.HueSaturation)
-                v.updateAll()
-            }
-
-            .radioR.sigChanged += closure|v|(bt)
-            {
-                v.setMode(.GreenBlue)
-                v.updateAll()
-            }
-            .radioG.sigChanged += closure|v|(bt)
-            {
-                v.setMode(.RedBlue)
-                v.updateAll()
-            }
-            .radioB.sigChanged += closure|v|(bt)
-            {
-                v.setMode(.RedGreen)
-                v.updateAll()
-            }
+            .radioH.sigChanged += closure|v|(bt) { v.setMode(.SaturationLightness); v.updateAll(); }
+            .radioS.sigChanged += closure|v|(bt) { v.setMode(.HueLightness); v.updateAll(); }
+            .radioL.sigChanged += closure|v|(bt) { v.setMode(.HueSaturation); v.updateAll(); }
+            .radioR.sigChanged += closure|v|(bt) { v.setMode(.GreenBlue); v.updateAll(); }
+            .radioG.sigChanged += closure|v|(bt) { v.setMode(.RedBlue); v.updateAll(); }
+            .radioB.sigChanged += closure|v|(bt) { v.setMode(.RedGreen); v.updateAll(); }
         }
 
         v.setMode(v.mode)
         return v
+    }
+
+    #[Swag.Discardable]
+    func createWithPalette(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ColorPickerCtrl
+    {
+        let picker = ColorPickerCtrl.create(parent, position, id)
+        with let palette = PalettePicker.create(parent, {16, 16, picker.position.width - 16, 48})
+        {
+            .addColor(Argb.White)
+            .addColor(Argb.Gray)
+            .addColor(Argb.Black)
+            .addColor(Argb.Red)
+            .addColor(Argb.Green)
+            .addColor(Argb.Blue)
+            .addColor(Argb.Yellow)
+            .addColor(Argb.Purple)
+            .addColor(Color.fromArgb(0))
+            .boxSize = 32
+            .sigChanged += closure|picker|(pal) { picker.setColor(pal.selectedColor); }
+        }
+
+        return picker
     }
 
     // Change the display mode
@@ -376,13 +374,14 @@ impl ColorPickerCtrl
     // Set the selected color
     mtd setColor(color: Color)
     {
-        if self.color == #self.color do
-            return
-
         if !oldColorDone
         {
             oldColor     = #self.color
             oldColorDone = true
+        }
+        elif self.color == #self.color
+        {
+            return
         }
 
         self.color = #self.color

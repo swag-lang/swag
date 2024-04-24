@@ -15,6 +15,7 @@ enum EditBoxInputMode
     S64
     U64
     F64
+    X64
 }
 
 enum EditBoxCheckResult
@@ -470,6 +471,12 @@ internal impl EditBox
                 if @err() == null and eat == text.length and (val.value < minMaxU64.min or val.value > minMaxU64.max) do
                     res = .InvalidShow
 
+            case X64:
+                var val = catch StrConv.parseX64(text)
+                eat = val.eat
+                if @err() == null and eat == text.length and (val.value < minMaxU64.min or val.value > minMaxU64.max) do
+                    res = .InvalidShow
+
             case F64:
                 var val = catch StrConv.parseF64(text)
                 eat = val.eat
@@ -877,6 +884,14 @@ impl EditBox
     mtd setInputU64(min = 0'u64, max = Swag.U64.Max)
     {
         inputMode     = .U64
+        minMaxU64.min = min
+        minMaxU64.max = max
+    }
+
+    // Editbox will edit unsigned integers in hexadecimal form
+    mtd setInputX64(min = 0'u64, max = Swag.U64.Max)
+    {
+        inputMode     = .X64
         minMaxU64.min = min
         minMaxU64.max = max
     }

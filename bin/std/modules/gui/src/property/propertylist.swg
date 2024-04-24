@@ -69,6 +69,7 @@ struct PropertyListItem
     sliderBox:          *SliderCtrl
 
     onResize:           SigArray'closure(*Self)
+    onRefresh:          closure(*Self)
 
     aniFocusBk:         BlendColor
     aniFocusBorder:     BlendColor
@@ -277,22 +278,28 @@ internal impl PropertyList
 
     func refreshItem(item: *PropertyListItem)
     {
-        let pointed = item.type orelse item.typeValue.pointedType
-        if pointed == null do
+        if item.onRefresh
+        {
+            item.onRefresh(item)
             return
+        }
 
-        if Reflection.isEnum(pointed) and Reflection.hasAttribute(pointed, Swag.EnumFlags) do
-            refreshEnumFlags(item)
-        elif Reflection.isEnum(pointed) do
-            refreshEnum(item)
-        elif Reflection.isBool(pointed) do
-            refreshBool(item)
-        elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed) do
-            refreshNative(item)
-        elif Reflection.isString(pointed) and item.editBox do
-            item.editBox.setText(dref cast(*string) item.ptrData)
-        elif pointed == Core.String and item.editBox do
-            item.editBox.setText(dref cast(*String) item.ptrData)
+        let pointed = item.type orelse item.typeValue.pointedType
+        if pointed
+        {
+            if Reflection.isEnum(pointed) and Reflection.hasAttribute(pointed, Swag.EnumFlags) do
+                refreshEnumFlags(item)
+            elif Reflection.isEnum(pointed) do
+                refreshEnum(item)
+            elif Reflection.isBool(pointed) do
+                refreshBool(item)
+            elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed) do
+                refreshNative(item)
+            elif Reflection.isString(pointed) and item.editBox do
+                item.editBox.setText(dref cast(*string) item.ptrData)
+            elif pointed == Core.String and item.editBox do
+                item.editBox.setText(dref cast(*String) item.ptrData)
+        }
     }
 
     ////////////////////////////
