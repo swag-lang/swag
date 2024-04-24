@@ -2,7 +2,10 @@ using Core, Pixel
 
 func propertyVector(list: *PropertyList, typeStruct: const *Swag.TypeInfoStruct, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
 {
-    let line = Wnd.create'Wnd(item.line)
+    let line1 = Wnd.create'WrapLayoutCtrl(item.line)
+    let lineHeight = line1.getThemeMetrics().editBox_Height
+    line1.wrapWidth  = lineHeight * 4
+    line1.wrapHeight = lineHeight
 
     visit v: typeStruct.fields
     {
@@ -13,19 +16,19 @@ func propertyVector(list: *PropertyList, typeStruct: const *Swag.TypeInfoStruct,
             .ptrData     = ptrData + v.offset
             .extendFocus = 5
             .filter      = item.filter
-            .line        = line
+            .line        = line1
             .forceShow   = item.line
         }
 
-        let lineHeight = line.getThemeMetrics().editBox_Height
+        let one = Wnd.create'Wnd(line1)
 
-        with let label = Label.create(line, v.name, {0, 0, lineHeight, 0})
+        with let label = Label.create(one, v.name, {0, 0, lineHeight, lineHeight})
         {
             .dockStyle         = .Left
             .horzAlignmentText = .Center
         }
 
-        with let ed = EditBox.create(line, "", {0, 0, lineHeight * 2.5, 0})
+        with let ed = EditBox.create(one, "", {0, 0, lineHeight * 3, lineHeight})
         {
             .anchorStyle = .X
             .dockStyle   = .Left
@@ -38,9 +41,10 @@ func propertyVector(list: *PropertyList, typeStruct: const *Swag.TypeInfoStruct,
         PropertyList.refreshNative(itemB)
     }
 
-    item.onResize += closure|line|(item)
+    item.onResize += closure|line1|(item)
     {
-        line.position.height = line.getThemeMetrics().editBox_Height
+        line1.computeLayout()
+        line1.position.height = line1.resultHeight
         item.line.applyLayout()
     }
 }
