@@ -9,5 +9,5 @@ func get()->String
     return "boundcheck"
 }
 
-#[Swag.Safety(get(), false)]
+#[Swag.Safety(cast(string) get(), false)]
 func toto(f: bool) {}

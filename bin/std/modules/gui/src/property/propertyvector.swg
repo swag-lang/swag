@@ -1,6 +1,6 @@
 using Core, Pixel
 
-func propertyConstructVector(list: *PropertyList, item: *PropertyListItem, typeStruct: const *Swag.TypeInfoStruct, ptrData: ^u8, value: Swag.TypeValue)
+func propertyConstructVector(list: *PropertyList, item: *PropertyListItem, _value: Swag.TypeValue, typeStruct: const *Swag.TypeInfoStruct, ptrData: ^u8)
 {
     let lineHeight = list.getThemeMetrics().editBox_Height
     with let line1 = Wnd.create'WrapLayoutCtrl(item.line)
@@ -55,7 +55,7 @@ public impl IPropertyValue for Math.Vector2
 {
     mtd impl construct(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
     {
-        propertyConstructVector(list, item, Math.Vector2, ptrData, value)
+        propertyConstructVector(list, item, value, Math.Vector2, ptrData)
     }
 }
 
@@ -63,7 +63,7 @@ public impl IPropertyValue for Math.Vector3
 {
     mtd impl construct(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
     {
-        propertyConstructVector(list, item, Math.Vector3, ptrData, value)
+        propertyConstructVector(list, item, value, Math.Vector3, ptrData)
     }
 }
 
@@ -71,6 +71,6 @@ public impl IPropertyValue for Math.Vector4
 {
     mtd impl construct(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
     {
-        propertyConstructVector(list, item, Math.Vector4, ptrData, value)
+        propertyConstructVector(list, item, value, Math.Vector4, ptrData)
     }
 }

@@ -67,18 +67,10 @@ impl String
         buffer[length] = 0
     }
 
-    #[Overload]
     mtd const opSlice(lower, upper: u64)->string
     {
         Debug.assert(lower <= upper and lower < length and upper < length)
         return @mkstring(buffer + lower, (upper + 1) - lower)
-    }
-
-    #[Overload]
-    mtd opSlice(lower, upper: u64)->[..] u8
-    {
-        Debug.assert(lower <= upper and lower < length and upper < length)
-        return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
     mtd const opEquals(other: string)->bool
