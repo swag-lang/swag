@@ -11,11 +11,7 @@ func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
 func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value: Swag.TypeValue, ptrData: ^u8)
 {
     let lineHeight = list.getThemeMetrics().editBox_Height
-    with let line1 = Wnd.create'WrapLayoutCtrl(item.line)
-    {
-        .wrapWidth  = lineHeight * 4
-        .wrapHeight = lineHeight
-    }
+    let line1 = Wnd.create'Wnd(item.line)
 
     with let itemB = list.items.addNewPtr()
     {
@@ -31,6 +27,8 @@ func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value
     let ptrColor = cast(*Color) ptrData
     with let ed = EditBox.create(line1, "", {0, 0, lineHeight * 3, lineHeight})
     {
+        .dockStyle = .Left
+        .margin.z = 4
         .setInputX64()
         .sigLoseFocus += closure|list, ptrColor|(ed)
         {
@@ -49,6 +47,7 @@ func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value
 
     with let btn = IconButton.create(line1, {}, {0, 0, 70, lineHeight})
     {
+        .dockStyle = .Left
         .setForm(.RoundSquare)
         .style.addStyleSheetColors("btnIcon_Bk        $lighterMedium")
         .style.addStyleSheetColors("btnIcon_HotBk     $lighterBig")
@@ -80,10 +79,9 @@ func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value
         }
     }
 
-    item.onResize += closure|line1|(item)
+    item.onResize += closure|lineHeight, line1|(item)
     {
-        line1.computeLayout()
-        line1.position.height = line1.resultHeight
+        line1.position.height = lineHeight
         item.line.applyLayout()
     }
 }
