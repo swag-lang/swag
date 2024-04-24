@@ -2,10 +2,12 @@ using Core, Pixel
 
 func propertyVector(list: *PropertyList, typeStruct: const *Swag.TypeInfoStruct, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
 {
-    let line1 = Wnd.create'WrapLayoutCtrl(item.line)
-    let lineHeight = line1.getThemeMetrics().editBox_Height
-    line1.wrapWidth  = lineHeight * 4
-    line1.wrapHeight = lineHeight
+    let lineHeight = list.getThemeMetrics().editBox_Height
+    with let line1 = Wnd.create'WrapLayoutCtrl(item.line)
+    {
+        .wrapWidth  = lineHeight * 4
+        .wrapHeight = lineHeight
+    }
 
     visit v: typeStruct.fields
     {
