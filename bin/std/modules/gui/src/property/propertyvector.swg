@@ -17,15 +17,16 @@ func propertyVector(list: *PropertyList, typeStruct: const *Swag.TypeInfoStruct,
             .forceShow   = item.line
         }
 
-        with let label = Label.create(line, v.name, {0, 0, 30, 30})
+        let lineHeight = line.getThemeMetrics().editBox_Height
+
+        with let label = Label.create(line, v.name, {0, 0, lineHeight, 0})
         {
             .dockStyle         = .Left
             .horzAlignmentText = .Center
         }
 
-        with let ed = EditBox.create(line, "")
+        with let ed = EditBox.create(line, "", {0, 0, lineHeight * 2.5, 0})
         {
-            .maxSize.x   = 70
             .anchorStyle = .X
             .dockStyle   = .Left
             .userData    = cast,unconst(*void) v.value
@@ -39,7 +40,7 @@ func propertyVector(list: *PropertyList, typeStruct: const *Swag.TypeInfoStruct,
 
     item.onResize += closure|line|(item)
     {
-        line.position.height = 30
+        line.position.height = line.getThemeMetrics().editBox_Height
         item.line.applyLayout()
     }
 }

@@ -21,7 +21,7 @@ impl PropertyList
 
 interface IPropertyValue
 {
-    mtd edit(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
+    mtd edit(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue);
 }
 
 struct PropertyList
@@ -468,10 +468,10 @@ internal impl PropertyList
 
         with let item = items.addNewPtr()
         {
-            .line        = line
-            .type        = f.pointedType
-            .typeValue   = f
-            .ptrData     = ptrData
+            .line      = line
+            .type      = f.pointedType
+            .typeValue = f
+            .ptrData   = ptrData
         }
 
         line.hookOnEvent = closure|item|(wnd, evt) { return onEvent(item, wnd, evt); }
@@ -544,15 +544,16 @@ internal impl PropertyList
 
                 line1.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
 
-                let ed = CheckButton.create(line1, "", {0, 0, 30, 0})
-                ed.dockStyle = .Left
-                ed.userData     = cast,unconst(*void) v.value
-                itemB.checkBox  = ed
+                let checkBoxSize = getThemeMetrics().btnPush_Height
+                let ed           = CheckButton.create(line1, "", {0, 0, checkBoxSize, 0})
+                ed.dockStyle   = .Left
+                ed.userData    = cast,unconst(*void) v.value
+                itemB.checkBox = ed
 
                 let dispDesc = Reflection.getAttributeValue(v, PropertyList.Description, "desc")
                 itemB.filter += cast(string) dispDesc
 
-                with let label1 = Label.create(line1, "", {30, 0, position.width - 30})
+                with let label1 = Label.create(line1, "", {checkBoxSize, 0, position.width - checkBoxSize})
                 {
                     .dockStyle = .Center
                     .labelFlags |= .WordWrap | .AutoHeight
@@ -599,12 +600,13 @@ internal impl PropertyList
     {
         let item = addItem(f, ptrData, false)
 
-        let line1 = Wnd.create'Wnd(item.line)
-        let ed    = CheckButton.create(line1, "", {0, 0, 30, 0})
+        let line1        = Wnd.create'Wnd(item.line)
+        let checkBoxSize = getThemeMetrics().btnPush_Height
+        let ed           = CheckButton.create(line1, "", {0, 0, checkBoxSize, 0})
         ed.dockStyle = .Left
 
         let dispDesc = Reflection.getAttributeValue(f, PropertyList.Description, "desc")
-        with let label1 = Label.create(line1, "", {30, 0, position.width - 30})
+        with let label1 = Label.create(line1, "", {checkBoxSize, 0, position.width - checkBoxSize})
         {
             .dockStyle = .Center
             .labelFlags |= .WordWrap | .AutoHeight
@@ -774,11 +776,12 @@ impl PropertyList
             .scrollWnd.focusStrategy = .None
             .scrollWnd.padding       = 0
             .scrollWnd.scrollWndFlags |= .TransparentBar
-            .edView    = .scrollWnd.createView'PropertyListView()
-            .edView.ed = ed
-            .edView.wndFlags |= .NoScroll
+
+            .edView            = .scrollWnd.createView'PropertyListView()
+            .edView.ed         = ed
             .edView.layoutKind = .Top
             .edView.spacing    = 0
+            .edView.wndFlags |= .NoScroll
 
             let theme = parent.getTheme()
 
