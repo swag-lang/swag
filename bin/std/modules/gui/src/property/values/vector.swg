@@ -34,7 +34,6 @@ func propertyConstructVector(list: *PropertyList, item: *PropertyListItem, _valu
         {
             .anchorStyle = .X
             .dockStyle   = .Left
-            .userData    = cast,unconst(*void) v.value
             .setInputF64()
             .sigLoseFocus += closure|list, itemB|(ed) { list.validateNative(itemB); }
         }
