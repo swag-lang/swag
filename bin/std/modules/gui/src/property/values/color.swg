@@ -45,13 +45,10 @@ func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value
 
     itemB.onRefresh(itemB)
 
-    with let btn = IconButton.create(line1, {}, {0, 0, 70, lineHeight})
+    with let btn = IconButton.create(line1, {}, {0, 0, 60, lineHeight})
     {
         .dockStyle = .Left
         .setForm(.RoundSquare)
-        .style.addStyleSheetColors("btnIcon_Bk        $lighterMedium")
-        .style.addStyleSheetColors("btnIcon_HotBk     $lighterBig")
-        .style.addStyleSheetColors("btnIcon_PressedBk $lighterVeryBig")
         .iconBtnFlags.add(.Popup | .CheckableToggle)
         .arrowPos    = .RightDown
         .textPos     = .Left
