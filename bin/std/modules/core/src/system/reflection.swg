@@ -250,6 +250,19 @@ using Swag
 
     // Returns the given attribute value, or null
     #[Swag.Overload]
+    func(T) getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string, def: T)->T
+    {
+        let attrib = getAttribute(type, attribute)
+        if !attrib do
+            return def
+        let attribVal = getAttributeValue(attrib, value)
+        if attribVal == null do
+            return def
+        return cast(T) attribVal
+    }
+
+    // Returns the given attribute value, or null
+    #[Swag.Overload]
     func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->any
     {
         let attrib = getAttribute(type, attribute)

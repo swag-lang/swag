@@ -157,9 +157,14 @@ impl PropertyList
 
         if Reflection.hasAttribute(value, EditSlider)
         {
-            let slider = SliderCtrl.create(item.line, null)
-            slider.labelSize = 0
-            item.sliderBox   = slider
+            with let slider = SliderCtrl.create(item.line, null)
+            {
+                .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                .anchorStyle = .X
+                .labelSize   = 0
+            }
+
+            item.sliderBox = slider
 
             let minV = cast(f32) Reflection.getAttributeValue(value, EditSlider, "min")
             let maxV = cast(f32) Reflection.getAttributeValue(value, EditSlider, "max")
@@ -182,7 +187,7 @@ impl PropertyList
             {
                 if unit != null do
                     .unit = cast(string) unit
-                .maxSize.x   = maxSizeEditValue
+                .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
                 .anchorStyle = .X
             }
 

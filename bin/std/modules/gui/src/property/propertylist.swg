@@ -20,6 +20,9 @@ impl PropertyList
 
     // Editbox with a unit text
     attr EditUnit(value: string)
+
+    // Value edit size
+    attr EditSize(size: s32)
 }
 
 // To specialize the edition of a given struct.
@@ -39,8 +42,7 @@ struct PropertyList
     nameMarginAfter:           s32 = 5
     descMarginAfter:           s32 = 5
     enumFlagsMarginBefore:     s32 = 10
-    maxSizeCombo:              s32 = 200
-    maxSizeEditValue:          s32 = 200
+    sizeEditValue:             s32 = 200
 
     sigChanged:                SigArray'closure(*Self)
 
@@ -255,7 +257,7 @@ internal impl PropertyList
 
             case Reflection.isStruct(value.pointedType):
                 let typeSubStruct = cast(const *Swag.TypeInfoStruct) value.pointedType
-                let iprop = @mkinterface(data, value.pointedType, IPropertyValue)
+                let iprop         = @mkinterface(data, value.pointedType, IPropertyValue)
                 if iprop != null
                 {
                     let item = iprop.construct(self, value, data)

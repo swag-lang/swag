@@ -204,9 +204,12 @@ impl PropertyList
         }
 
         let item = addItem(value, data)
-        let ed   = ComboBox.create(item.line, kind: .CheckBox)
-        ed.maxSize.x   = maxSizeCombo
-        ed.anchorStyle = .X
+        with let ed   = ComboBox.create(item.line, kind: .CheckBox)
+        {
+            .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+            .anchorStyle = .X
+        }
+
         item.comboBox  = ed
 
         visit v, idx: typeEnum.values do
