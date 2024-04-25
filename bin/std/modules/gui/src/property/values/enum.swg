@@ -136,76 +136,80 @@ impl PropertyList
         onChanged()
     }
 
-    mtd constructEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8)
+    mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8)
     {
         let item = addItem(value, data)
+        visit v: typeEnum.values
+        {
+            with let line1 = Wnd.create'Wnd(edView)
+            {
+                .margin.x = leftMargin
+                .margin.z = rightMargin
+                .margin.y = enumFlagsMarginBefore
+                .wndFlags.set(.PreChildsPaint)
+            }
 
+            with let itemB = items.addNewPtr()
+            {
+                .type        = typeEnum
+                .typeValue   = v
+                .data        = data
+                .extendFocus = 5
+                .filter      = item.filter
+                .line        = line1
+                .forceShow   = item.line
+            }
+
+            line1.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
+
+            let lineHeight = getThemeMetrics().btnPush_Height
+            let ed         = CheckButton.create(line1, "", {0, 0, lineHeight, 0})
+            ed.dockStyle   = .Left
+            ed.userData    = cast,unconst(*void) v.value
+            itemB.checkBox = ed
+
+            let dispDesc = Reflection.getAttributeValue(v, PropertyList.Description, "desc")
+            itemB.filter += cast(string) dispDesc
+
+            with let label1 = Label.create(line1, "", {lineHeight, 0, position.width - lineHeight})
+            {
+                .dockStyle = .Center
+                .labelFlags |= .WordWrap | .AutoHeight
+                .horzAlignmentText = .Justify
+                .setText(dispDesc)
+            }
+
+            let minHeight = ed.position.height
+            itemB.sigResize += closure|label1, line1, minHeight|(itemB)
+            {
+                label1.autoHeight()
+                line1.position.height = Math.max(minHeight, label1.position.height)
+                line1.applyLayout()
+            }
+
+            refreshEnumFlags(itemB)
+            itemB.checkBox.sigChanged += closure|self, itemB|(ed) { self.validateEnumFlags(itemB); }
+        }
+    }
+
+    mtd constructEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8)
+    {
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {
-            visit v: typeEnum.values
-            {
-                with let line1 = Wnd.create'Wnd(edView)
-                {
-                    .margin.x = leftMargin
-                    .margin.z = rightMargin
-                    .margin.y = enumFlagsMarginBefore
-                    .wndFlags.set(.PreChildsPaint)
-                }
-
-                with let itemB = items.addNewPtr()
-                {
-                    .type        = typeEnum
-                    .typeValue   = v
-                    .data        = data
-                    .extendFocus = 5
-                    .filter      = item.filter
-                    .line        = line1
-                    .forceShow   = item.line
-                }
-
-                line1.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
-
-                let lineHeight = getThemeMetrics().btnPush_Height
-                let ed         = CheckButton.create(line1, "", {0, 0, lineHeight, 0})
-                ed.dockStyle   = .Left
-                ed.userData    = cast,unconst(*void) v.value
-                itemB.checkBox = ed
-
-                let dispDesc = Reflection.getAttributeValue(v, PropertyList.Description, "desc")
-                itemB.filter += cast(string) dispDesc
-
-                with let label1 = Label.create(line1, "", {lineHeight, 0, position.width - lineHeight})
-                {
-                    .dockStyle = .Center
-                    .labelFlags |= .WordWrap | .AutoHeight
-                    .horzAlignmentText = .Justify
-                    .setText(dispDesc)
-                }
-
-                let minHeight = ed.position.height
-                itemB.sigResize += closure|label1, line1, minHeight|(itemB)
-                {
-                    label1.autoHeight()
-                    line1.position.height = Math.max(minHeight, label1.position.height)
-                    line1.applyLayout()
-                }
-
-                refreshEnumFlags(itemB)
-                itemB.checkBox.sigChanged += closure|self, itemB|(ed) { self.validateEnumFlags(itemB); }
-            }
+            constructEnumFlags(value, typeEnum, data)
+            return
         }
-        else
-        {
-            let ed = ComboBox.create(item.line, kind: .CheckBox)
-            ed.maxSize.x   = maxSizeCombo
-            ed.anchorStyle = .X
-            item.comboBox  = ed
 
-            visit v, idx: typeEnum.values do
-                ed.addItem(v.name)
+        let item = addItem(value, data)
+        let ed = ComboBox.create(item.line, kind: .CheckBox)
+        ed.maxSize.x   = maxSizeCombo
+        ed.anchorStyle = .X
+        item.comboBox  = ed
 
-            refreshEnum(item)
-            item.comboBox.sigChanged += closure|self, item|(ed, n) { self.validateEnum(item); }
-        }
+        visit v, idx: typeEnum.values do
+            ed.addItem(v.name)
+
+        refreshEnum(item)
+        item.comboBox.sigChanged += closure|self, item|(ed, n) { self.validateEnum(item); }
     }
 }
