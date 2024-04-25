@@ -193,7 +193,7 @@ internal impl PropertyList
 
     func refreshNative(item: *PropertyListItem)
     {
-        let nativeType = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
+        let typeNative = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
         let data       = item.data
 
         if item.sliderBox
@@ -206,7 +206,7 @@ internal impl PropertyList
             }
 
             item.sliderBox.invalidate()
-            switch nativeType.nativeKind
+            switch typeNative.nativeKind
             {
             case U8:
                 setEd'u8()
@@ -240,7 +240,7 @@ internal impl PropertyList
             }
 
             item.editBox.invalidate()
-            switch nativeType.nativeKind
+            switch typeNative.nativeKind
             {
             case U8:
                 setEd'u8()
@@ -386,7 +386,7 @@ internal impl PropertyList
 
     mtd validateNative(item: *PropertyListItem)
     {
-        let nativeType = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
+        let typeNative = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
         let data       = item.data
 
         if item.sliderBox
@@ -398,7 +398,7 @@ internal impl PropertyList
                 dref p = cast(T) item.sliderBox.slider.getValue()
             }
 
-            switch nativeType.nativeKind
+            switch typeNative.nativeKind
             {
             case U8:
                 setEd'u8()
@@ -432,7 +432,7 @@ internal impl PropertyList
             }
 
             let txt = item.editBox.getText()
-            switch nativeType.nativeKind
+            switch typeNative.nativeKind
             {
             case U8:
                 setEd'u8()
@@ -471,7 +471,7 @@ internal impl PropertyList
     ////////////////////////////
 
     #[Swag.Overload]
-    mtd addItem(f: Swag.TypeValue, data: *u8, canDesc = true)->*PropertyListItem
+    mtd addItem(value: Swag.TypeValue, data: *u8, canDesc = true)->*PropertyListItem
     {
         with let line = StackLayoutCtrl.create(edView, .TopAutoSize)
         {
@@ -483,8 +483,8 @@ internal impl PropertyList
         with let item = items.addNewPtr()
         {
             .line      = line
-            .type      = f.pointedType
-            .typeValue = f
+            .type      = value.pointedType
+            .typeValue = value
             .data      = data
         }
 
@@ -492,11 +492,11 @@ internal impl PropertyList
 
         // Name
         var dispName: String
-        let attrName  = Reflection.getAttributeValue(f, PropertyList.Name, "name")
+        let attrName  = Reflection.getAttributeValue(value, PropertyList.Name, "name")
         if attrName != null do
             dispName = cast(string) attrName
         else do
-            dispName = Format.toString("<b>%<b>", f.name)
+            dispName = Format.toString("<b>%<b>", value.name)
 
         with let label = Label.create(line, dispName, {0, 0, position.width, nameHeight})
         {
@@ -510,7 +510,7 @@ internal impl PropertyList
         item.filter = dispName
 
         // Description
-        let dispDesc = Reflection.getAttributeValue(f, PropertyList.Description, "desc")
+        let dispDesc = Reflection.getAttributeValue(value, PropertyList.Description, "desc")
         if dispDesc != null
         {
             item.filter += " "
@@ -529,9 +529,9 @@ internal impl PropertyList
         return item
     }
 
-    mtd addEnum(f: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8)
+    mtd addEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8)
     {
-        let item = addItem(f, data)
+        let item = addItem(value, data)
 
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {
@@ -602,9 +602,9 @@ internal impl PropertyList
         }
     }
 
-    mtd addString(f: Swag.TypeValue, data: *u8)
+    mtd addString(value: Swag.TypeValue, data: *u8)
     {
-        let item = addItem(f, data)
+        let item = addItem(value, data)
         let ed   = EditBox.create(item.line, dref cast(*String) data)
         item.editBox = ed
         ed.sigLoseFocus += closure|self, item|(ed)
@@ -613,9 +613,9 @@ internal impl PropertyList
         }
     }
 
-    mtd addBool(f: Swag.TypeValue, data: *u8)
+    mtd addBool(value: Swag.TypeValue, data: *u8)
     {
-        let item = addItem(f, data, false)
+        let item = addItem(value, data, false)
 
         let lineHeight = getThemeMetrics().btnPush_Height
         let line       = Wnd.create'Wnd(item.line)
@@ -625,7 +625,7 @@ internal impl PropertyList
             .dockStyle = .Left
         }
 
-        let dispDesc = Reflection.getAttributeValue(f, PropertyList.Description, "desc")
+        let dispDesc = Reflection.getAttributeValue(value, PropertyList.Description, "desc")
         with let label = Label.create(line, "", {lineHeight, 0, position.width - lineHeight})
         {
             .dockStyle = .Center
@@ -649,21 +649,20 @@ internal impl PropertyList
         refreshBool(item)
     }
 
-    mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, data: *u8)
+    mtd addNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8)
     {
-        let item = addItem(f, data)
-        let line = item.line
+        let item = addItem(value, data)
 
-        if Reflection.hasAttribute(f, EditSlider)
+        if Reflection.hasAttribute(value, EditSlider)
         {
-            let slider = SliderCtrl.create(line, null)
+            let slider = SliderCtrl.create(item.line, null)
             slider.labelSize = 0
             item.sliderBox   = slider
 
-            let minV = cast(f32) Reflection.getAttributeValue(f, EditSlider, "min")
-            let maxV = cast(f32) Reflection.getAttributeValue(f, EditSlider, "max")
+            let minV = cast(f32) Reflection.getAttributeValue(value, EditSlider, "min")
+            let maxV = cast(f32) Reflection.getAttributeValue(value, EditSlider, "max")
 
-            switch nativeType.nativeKind
+            switch typeNative.nativeKind
             {
             case U8, U16, U32, U64:
                 slider.setMinMaxU64(acast minV, acast maxV)
@@ -675,12 +674,12 @@ internal impl PropertyList
         }
         else
         {
-            let ed = EditBox.create(line, f.name)
+            let ed = EditBox.create(item.line, value.name)
             ed.maxSize.x   = maxSizeEditValue
             ed.anchorStyle = .X
             item.editBox   = ed
 
-            switch nativeType.nativeKind
+            switch typeNative.nativeKind
             {
             case U8:
                 ed.setInputU64(Swag.U8.Min, Swag.U8.Max)
@@ -759,8 +758,8 @@ internal impl PropertyList
                 addBool(f, data)
 
             case Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType):
-                let nativeType = cast(const *Swag.TypeInfoNative) f.pointedType
-                addNative(f, nativeType, data)
+                let typeNative = cast(const *Swag.TypeInfoNative) f.pointedType
+                addNative(f, typeNative, data)
 
             case Reflection.isStruct(f.pointedType):
                 let item          = addItem(f, data)
