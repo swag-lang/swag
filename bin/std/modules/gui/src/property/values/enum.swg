@@ -141,7 +141,7 @@ impl PropertyList
         let item = addItem(value, data)
         visit v: typeEnum.values
         {
-            with let line1 = Wnd.create'Wnd(edView)
+            with let line = Wnd.create'Wnd(edView)
             {
                 .margin.x = leftMargin
                 .margin.z = rightMargin
@@ -156,14 +156,14 @@ impl PropertyList
                 .data        = data
                 .extendFocus = 5
                 .filter      = item.filter
-                .line        = line1
+                .line        = line
                 .forceShow   = item.line
             }
 
-            line1.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
+            line.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
 
             let lineHeight = getThemeMetrics().btnPush_Height
-            let ed         = CheckButton.create(line1, "", {0, 0, lineHeight, 0})
+            let ed         = CheckButton.create(line, "", {0, 0, lineHeight, 0})
             ed.dockStyle   = .Left
             ed.userData    = cast,unconst(*void) v.value
             itemB.checkBox = ed
@@ -171,7 +171,7 @@ impl PropertyList
             let dispDesc = Reflection.getAttributeValue(v, PropertyList.Description, "desc")
             itemB.filter += cast(string) dispDesc
 
-            with let label1 = Label.create(line1, "", {lineHeight, 0, position.width - lineHeight})
+            with let label1 = Label.create(line, "", {lineHeight, 0, position.width - lineHeight})
             {
                 .dockStyle = .Center
                 .labelFlags |= .WordWrap | .AutoHeight
@@ -180,15 +180,18 @@ impl PropertyList
             }
 
             let minHeight = ed.position.height
-            itemB.sigResize += closure|label1, line1, minHeight|(itemB)
+            itemB.sigResize += closure|label1, line, minHeight|(itemB)
             {
                 label1.autoHeight()
-                line1.position.height = Math.max(minHeight, label1.position.height)
-                line1.applyLayout()
+                line.position.height = Math.max(minHeight, label1.position.height)
+                line.applyLayout()
             }
 
             refreshEnumFlags(itemB)
-            itemB.checkBox.sigChanged += closure|self, itemB|(ed) { self.validateEnumFlags(itemB); }
+            itemB.checkBox.sigChanged += closure|self, itemB|(ed)
+            {
+                self.validateEnumFlags(itemB)
+            }
         }
     }
 
@@ -201,7 +204,7 @@ impl PropertyList
         }
 
         let item = addItem(value, data)
-        let ed = ComboBox.create(item.line, kind: .CheckBox)
+        let ed   = ComboBox.create(item.line, kind: .CheckBox)
         ed.maxSize.x   = maxSizeCombo
         ed.anchorStyle = .X
         item.comboBox  = ed
@@ -210,6 +213,9 @@ impl PropertyList
             ed.addItem(v.name)
 
         refreshEnum(item)
-        item.comboBox.sigChanged += closure|self, item|(ed, n) { self.validateEnum(item); }
+        item.comboBox.sigChanged += closure|self, item|(ed, n)
+        {
+            self.validateEnum(item)
+        }
     }
 }
