@@ -140,12 +140,6 @@ internal impl PropertyList
         }
     }
 
-    mtd onChanged()
-    {
-        refresh()
-        sigChanged.call(self)
-    }
-
     #[Swag.Overload]
     mtd addItem(value: Swag.TypeValue, data: *u8, canDesc = true)->*PropertyListItem
     {
@@ -205,7 +199,7 @@ internal impl PropertyList
         return item
     }
 
-    mtd addStruct(addr: ^u8, typeStruct: const *Swag.TypeInfoStruct)
+    mtd addStruct(typeStruct: const *Swag.TypeInfoStruct, addr: ^u8)
     {
         visit value: typeStruct.fields
         {
@@ -262,13 +256,14 @@ internal impl PropertyList
                 if iprop != null
                 {
                     let item = iprop.construct(self, value, data)
+                    Debug.assert(item != null)
                     item.sigRefresh.call(item)
                 }
                 else
                 {
                     let item = addItem(value, data)
                     item.label.style.setFont(&font2)
-                    addStruct(data, typeSubStruct)
+                    addStruct(typeSubStruct, data)
                 }
             }
         }
@@ -322,7 +317,6 @@ impl PropertyList
     }
 
     // Add a new struct to display.
-    #[Swag.Overload]
     mtd addItem(val: any)
     {
         let dataof = @dataof(val)
@@ -330,7 +324,7 @@ impl PropertyList
         Debug.assert(typeof.kind == .Struct)
 
         let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
-        addStruct(dataof, typeStruct)
+        addStruct(typeStruct, dataof)
 
         edView.sendResizeEvent()
     }
@@ -340,6 +334,13 @@ impl PropertyList
     {
         visit it: items do
             refreshItem(it)
+    }
+
+    // To be called when a value has changed.
+    mtd onChanged()
+    {
+        refresh()
+        sigChanged.call(self)
     }
 
     // Show hidden content depending on the input 'filter'.
