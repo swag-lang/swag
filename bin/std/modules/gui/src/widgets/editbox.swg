@@ -41,6 +41,7 @@ struct EditBox
 
     icon:                 Icon
     text:                 String
+    unit:                 String
     form                  = EditBoxForm.Square
     editBoxFlags          = EditBoxFlags.AutoLoseFocus
     inputMode             = EditBoxInputMode.String
@@ -110,6 +111,7 @@ impl IWnd for EditBox
         var colorBk:       Color = undefined
         var colorBorder:   Color = undefined
         var colorText:     Color = undefined
+        var colorUnit:     Color = undefined
 
         switch form
         {
@@ -125,6 +127,7 @@ impl IWnd for EditBox
         }
 
         colorText = colors.edit_Text
+        colorUnit = colors.edit_TextUnit
 
         switch
         {
@@ -215,6 +218,11 @@ impl IWnd for EditBox
         if editBoxFlags.has(.RightAlign) do
             clientRect.x = clientRect.right() - sizeX
         bc.painter.drawString(clientRect.x, y, text, fontR, colorText)
+
+        if !unit.isEmpty()
+        {
+            bc.painter.drawString(clientRect.x + sizeX, y, unit, fontR, colorUnit)
+        }
 
         // Caret
         if visibleCaret and hasFocus()

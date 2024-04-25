@@ -169,6 +169,7 @@ struct ThemeColors
     edit_FocusBk:                      Color = Gray6
     edit_Note:                         Color = Disabled
     edit_Text:                         Color = White
+    edit_TextUnit:                     Color = Disabled
     edit_DisabledText:                 Color = Disabled
     edit_SelectedText:                 Color = White
     edit_SelectedBk:                   Color = Blue

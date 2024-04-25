@@ -26,6 +26,9 @@ struct AA
     #[Category("Categ"), SubCategory("SubCateg"), Name("<b>This is a name<b>: <i>italic<i>"), Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     xu8: u8 = 30
 
+    #[EditUnit("ms")]
+    degs: f32 = 0.5
+
     #[Name("<b>Another name<b>"), EditSlider(0, 1)]
     xf32: f32 = 0.5
 

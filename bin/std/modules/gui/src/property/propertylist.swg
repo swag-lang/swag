@@ -17,6 +17,9 @@ impl PropertyList
 
     // Native float edit width a slider
     attr EditSlider(min, max: f32)
+
+    // Editbox with a unit text
+    attr EditUnit(value: string)
 }
 
 // To specialize the edition of a given struct.

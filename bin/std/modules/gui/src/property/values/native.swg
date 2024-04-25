@@ -176,11 +176,17 @@ impl PropertyList
         }
         else
         {
-            let ed = EditBox.create(item.line, value.name)
-            ed.maxSize.x   = maxSizeEditValue
-            ed.anchorStyle = .X
-            item.editBox   = ed
+            let unit = Reflection.getAttributeValue(value, EditUnit, "value")
 
+            with let ed = EditBox.create(item.line, value.name)
+            {
+                if unit != null do
+                    .unit = cast(string) unit
+                .maxSize.x   = maxSizeEditValue
+                .anchorStyle = .X
+            }
+
+            item.editBox = ed
             switch typeNative.nativeKind
             {
             case U8:
