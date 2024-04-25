@@ -11,29 +11,29 @@ func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
 func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value: Swag.TypeValue, ptrData: ^u8)
 {
     let lineHeight = list.getThemeMetrics().editBox_Height
-    let line1      = Wnd.create'Wnd(item.line)
+    let line       = Wnd.create'Wnd(item.line)
 
-    let ptrColor = cast(*Color) ptrData
-    with let ed = EditBox.create(line1, "", {0, 0, lineHeight * 3, lineHeight})
+    let color = cast(*Color) ptrData
+    with let ed = EditBox.create(line, "", {0, 0, lineHeight * 3, lineHeight})
     {
         .dockStyle = .Left
         .margin.z  = 4
         .setInputX64()
-        .sigLoseFocus += closure|list, ptrColor|(ed)
+        .sigLoseFocus += closure|list, color|(ed)
         {
-            ptrColor.argb = cast(u32) catch StrConv.parseX64(ed.text).value
+            color.argb = cast(u32) catch StrConv.parseX64(ed.text).value
             list.onChanged()
         }
     }
 
-    item.onRefresh = closure|ed, ptrColor|(item)
+    item.onRefresh = closure|ed, color|(item)
     {
-        ed.setText(Format.toString("%{X08}", ptrColor.argb))
+        ed.setText(Format.toString("%{X08}", color.argb))
     }
 
     item.onRefresh(item)
 
-    with let btn = IconButton.create(line1, {}, {0, 0, 60, lineHeight})
+    with let btn = IconButton.create(line, {}, {0, 0, 60, lineHeight})
     {
         .dockStyle   = .Left
         .arrowPos    = .RightDown
@@ -42,27 +42,27 @@ func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value
         .iconBtnFlags.add(.Popup | .CheckableToggle)
     }
 
-    btn.sigPaintIcon = closure|ptrColor|(btn, bc, pos)
+    btn.sigPaintIcon = closure|color|(btn, bc, pos)
     {
         bc.painter.setParams(.Antialiased)
-        if !ptrColor.isOpaque() do
+        if !color.isOpaque() do
             bc.painter.fillRoundRect(pos, 5, 5, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
-        bc.painter.fillRoundRect(pos, 5, 5, dref ptrColor)
+        bc.painter.fillRoundRect(pos, 5, 5, dref color)
     }
 
-    btn.sigShowPopup += closure|list, ptrColor|(btn)
+    btn.sigShowPopup += closure|list, color|(btn)
     {
-        var picker = createColorPicker(btn, dref ptrColor)
-        picker.sigChanged += closure|list, ptrColor|(pk)
+        var picker = createColorPicker(btn, dref color)
+        picker.sigChanged += closure|list, color|(pk)
         {
-            ptrColor.argb = pk.getColor().argb
+            color.argb = pk.getColor().argb
             list.onChanged()
         }
     }
 
-    item.onResize += closure|lineHeight, line1|(item)
+    item.onResize += closure|lineHeight, line|(item)
     {
-        line1.position.height = lineHeight
+        line.position.height = lineHeight
         item.line.applyLayout()
     }
 }

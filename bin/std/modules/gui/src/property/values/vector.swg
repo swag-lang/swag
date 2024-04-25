@@ -3,11 +3,7 @@ using Core, Pixel
 func propertyConstructVector(list: *PropertyList, item: *PropertyListItem, _value: Swag.TypeValue, typeStruct: const *Swag.TypeInfoStruct, ptrData: ^u8)
 {
     let lineHeight = list.getThemeMetrics().editBox_Height
-    with let line1 = Wnd.create'WrapLayoutCtrl(item.line)
-    {
-        .wrapWidth  = lineHeight * 4
-        .wrapHeight = lineHeight
-    }
+    let line       = Wnd.create'Wnd(item.line)
 
     visit v: typeStruct.fields
     {
@@ -18,19 +14,17 @@ func propertyConstructVector(list: *PropertyList, item: *PropertyListItem, _valu
             .ptrData     = ptrData + v.offset
             .extendFocus = 5
             .filter      = item.filter
-            .line        = line1
+            .line        = line
             .forceShow   = item.line
         }
 
-        let one = Wnd.create'Wnd(line1)
-
-        with let label = Label.create(one, v.name, {0, 0, lineHeight, lineHeight})
+        with let label = Label.create(line, v.name, {0, 0, lineHeight, lineHeight})
         {
             .dockStyle         = .Left
             .horzAlignmentText = .Center
         }
 
-        with let ed = EditBox.create(one, "", {0, 0, lineHeight * 3, lineHeight})
+        with let ed = EditBox.create(line, "", {0, 0, lineHeight * 3, lineHeight})
         {
             .anchorStyle = .X
             .dockStyle   = .Left
@@ -42,10 +36,9 @@ func propertyConstructVector(list: *PropertyList, item: *PropertyListItem, _valu
         PropertyList.refreshNative(itemB)
     }
 
-    item.onResize += closure|line1|(item)
+    item.onResize += closure|line, lineHeight|(item)
     {
-        line1.computeLayout()
-        line1.position.height = line1.resultHeight
+        line.position.height = lineHeight
         item.line.applyLayout()
     }
 }
