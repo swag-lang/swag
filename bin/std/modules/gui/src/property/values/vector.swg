@@ -25,7 +25,7 @@ impl PropertyList
                 .sigLoseFocus += closure|self, dataField|(ed)
                 {
                     dref dataField = catch StrConv.toF32(ed.text)
-                    self.onChanged()
+                    self.hasChanged()
                 }
             }
 

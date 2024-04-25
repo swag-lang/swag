@@ -61,10 +61,10 @@ func createView7(_tabView: *Tab, view: *Wnd)
 {
     let lt = PropertyList.create(view, {5, 55, 400, 600})
     aa.str = "String content"
-    lt.addItem(aa)
+    lt.addStruct(aa)
 
     let lt1 = PropertyListCtrl.create(view, {500, 10, 650, 600})
-    lt1.addItem(aa)
+    lt1.addStruct(aa)
     lt1.splitter.setPaneSize(0, 150)
 
     lt.sigChanged += closure|lt1|(lt)

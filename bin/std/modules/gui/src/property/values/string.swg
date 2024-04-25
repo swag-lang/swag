@@ -5,7 +5,7 @@ impl PropertyList
         var data = cast(*String) item.data
         if item.editBox do
             dref data = item.editBox.getText()
-        onChanged()
+        hasChanged()
     }
 
     mtd constructString(value: Swag.TypeValue, data: *u8)

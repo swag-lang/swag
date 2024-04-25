@@ -76,9 +76,9 @@ impl PropertyListCtrl
     }
 
     // Add a new struct to display
-    mtd addItem(val: any)
+    mtd addStruct(val: any)
     {
-        prop.addItem(val)
+        prop.addStruct(val)
         fillList()
     }
 }

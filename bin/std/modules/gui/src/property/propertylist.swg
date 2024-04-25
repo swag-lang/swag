@@ -140,7 +140,6 @@ internal impl PropertyList
         }
     }
 
-    #[Swag.Overload]
     mtd addItem(value: Swag.TypeValue, data: *u8, canDesc = true)->*PropertyListItem
     {
         with let line = StackLayoutCtrl.create(edView, .TopAutoSize)
@@ -199,6 +198,7 @@ internal impl PropertyList
         return item
     }
 
+    #[Swag.Overload]
     mtd addStruct(typeStruct: const *Swag.TypeInfoStruct, addr: ^u8)
     {
         visit value: typeStruct.fields
@@ -317,7 +317,8 @@ impl PropertyList
     }
 
     // Add a new struct to display.
-    mtd addItem(val: any)
+    #[Swag.Overload]
+    mtd addStruct(val: any)
     {
         let dataof = @dataof(val)
         let typeof = @kindof(val)
@@ -337,7 +338,7 @@ impl PropertyList
     }
 
     // To be called when a value has changed.
-    mtd onChanged()
+    mtd hasChanged()
     {
         refresh()
         sigChanged.call(self)

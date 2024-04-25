@@ -101,7 +101,7 @@ impl PropertyList
             }
         }
 
-        onChanged()
+        hasChanged()
     }
 
     mtd validateEnum(item: *PropertyListItem)
@@ -133,7 +133,7 @@ impl PropertyList
             }
         }
 
-        onChanged()
+        hasChanged()
     }
 
     mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8)

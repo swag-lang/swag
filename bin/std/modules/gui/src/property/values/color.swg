@@ -17,7 +17,7 @@ impl PropertyList
             .sigLoseFocus += closure|self, color|(ed)
             {
                 color.argb = cast(u32) catch StrConv.parseX64(ed.text).value
-                self.onChanged()
+                self.hasChanged()
             }
         }
 
@@ -46,7 +46,7 @@ impl PropertyList
             picker.sigChanged += closure|self, color|(pk)
             {
                 color.argb = pk.getColor().argb
-                self.onChanged()
+                self.hasChanged()
             }
         }
 
