@@ -54,7 +54,7 @@ struct PropertyListItem
 {
     filter:             String
     line:               *Wnd
-    ptrData:            *u8
+    data:               *u8
     type:               typeinfo
     typeValue:          Swag.TypeValue
     forceShow:          *Wnd
@@ -67,8 +67,8 @@ struct PropertyListItem
     comboBox:           *ComboBox
     sliderBox:          *SliderCtrl
 
-    sigResize:           SigArray'closure(*Self)
-    sigRefresh:          SigArray'closure(*Self)
+    sigResize:          SigArray'closure(*Self)
+    sigRefresh:         SigArray'closure(*Self)
 
     aniFocusBk:         BlendColor
     aniFocusBorder:     BlendColor
@@ -126,16 +126,16 @@ internal impl PropertyList
             switch item.typeValue.pointedType.sizeof
             {
             case 1:
-                val1 = cast(u64) dref cast(*u8) item.ptrData
+                val1 = cast(u64) dref cast(*u8) item.data
                 val2 = cast(u64) dref cast(const *u8) item.typeValue.value
             case 2:
-                val1 = cast(u64) dref cast(*u16) item.ptrData
+                val1 = cast(u64) dref cast(*u16) item.data
                 val2 = cast(u64) dref cast(const *u16) item.typeValue.value
             case 4:
-                val1 = cast(u64) dref cast(*u32) item.ptrData
+                val1 = cast(u64) dref cast(*u32) item.data
                 val2 = cast(u64) dref cast(const *u32) item.typeValue.value
             case 8:
-                val1 = cast(u64) dref cast(*u64) item.ptrData
+                val1 = cast(u64) dref cast(*u64) item.data
                 val2 = cast(u64) dref cast(const *u64) item.typeValue.value
             }
 
@@ -155,15 +155,15 @@ internal impl PropertyList
             switch typeEnum.rawType.sizeof
             {
             case 1:
-                val1 = cast(u64) dref cast(*u8) item.ptrData
+                val1 = cast(u64) dref cast(*u8) item.data
             case 2:
-                val1 = cast(u64) dref cast(*u16) item.ptrData
+                val1 = cast(u64) dref cast(*u16) item.data
             case 4:
-                val1 = cast(u64) dref cast(*u32) item.ptrData
+                val1 = cast(u64) dref cast(*u32) item.data
             case 8:
-                val1 = cast(u64) dref cast(*u64) item.ptrData
+                val1 = cast(u64) dref cast(*u64) item.data
             case 16:
-                val1s = dref cast(*string) item.ptrData
+                val1s = dref cast(*string) item.data
             }
 
             var idxSel = 0'u64
@@ -194,14 +194,14 @@ internal impl PropertyList
     func refreshNative(item: *PropertyListItem)
     {
         let nativeType = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
-        let ptrData    = item.ptrData
+        let data       = item.data
 
         if item.sliderBox
         {
             #[Swag.Mixin]
             func(T) setEd()
             {
-                let p = cast(*T) ptrData
+                let p = cast(*T) data
                 item.sliderBox.slider.setValue(cast(f32) dref p)
             }
 
@@ -235,7 +235,7 @@ internal impl PropertyList
             #[Swag.Mixin]
             func(T) setEd()
             {
-                let p = cast(*T) ptrData
+                let p = cast(*T) data
                 item.editBox.setText(Format.toString("%", dref p))
             }
 
@@ -270,7 +270,7 @@ internal impl PropertyList
     {
         if item.checkBox
         {
-            item.checkBox.checked = dref cast(*bool) item.ptrData ? .Checked : .UnChecked
+            item.checkBox.checked = dref cast(*bool) item.data ? .Checked : .UnChecked
             item.checkBox.invalidate()
         }
     }
@@ -295,9 +295,9 @@ internal impl PropertyList
             elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed) do
                 refreshNative(item)
             elif Reflection.isString(pointed) and item.editBox do
-                item.editBox.setText(dref cast(*string) item.ptrData)
+                item.editBox.setText(dref cast(*string) item.data)
             elif pointed == Core.String and item.editBox do
-                item.editBox.setText(dref cast(*String) item.ptrData)
+                item.editBox.setText(dref cast(*String) item.data)
         }
     }
 
@@ -312,7 +312,7 @@ internal impl PropertyList
             #[Swag.Mixin]
             func(T) setEd()
             {
-                let p  = cast(*T) item.ptrData
+                let p  = cast(*T) item.data
                 let p1 = cast(*T) item.checkBox.userData
                 if item.checkBox.checked == .Checked do
                     dref p |= dref p1
@@ -343,7 +343,7 @@ internal impl PropertyList
             #[Swag.Mixin]
             func(T) setEd()
             {
-                let p  = cast(*T) item.ptrData
+                let p  = cast(*T) item.data
                 let p1 = cast(const *T) typeEnum.values[sel].value
                 dref p = dref p1
             }
@@ -370,31 +370,31 @@ internal impl PropertyList
 
     mtd validateBool(item: *PropertyListItem)
     {
-        var ptrData = cast(*bool) item.ptrData
+        var data = cast(*bool) item.data
         if item.checkBox do
-            dref ptrData = item.checkBox.checked == .Checked ? true : false
+            dref data = item.checkBox.checked == .Checked ? true : false
         onChanged()
     }
 
     mtd validateString(item: *PropertyListItem)
     {
-        var ptrData = cast(*String) item.ptrData
+        var data = cast(*String) item.data
         if item.editBox do
-            dref ptrData = item.editBox.getText()
+            dref data = item.editBox.getText()
         onChanged()
     }
 
     mtd validateNative(item: *PropertyListItem)
     {
         let nativeType = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
-        let ptrData    = item.ptrData
+        let data       = item.data
 
         if item.sliderBox
         {
             #[Swag.Mixin]
             func(T) setEd()
             {
-                var p = cast(*T) ptrData
+                var p = cast(*T) data
                 dref p = cast(T) item.sliderBox.slider.getValue()
             }
 
@@ -427,7 +427,7 @@ internal impl PropertyList
             #[Swag.Mixin]
             func(T) setEd()
             {
-                var p = cast(*T) ptrData
+                var p = cast(*T) data
                 dref p = catch StrConv.toNum'T(txt)
             }
 
@@ -471,7 +471,7 @@ internal impl PropertyList
     ////////////////////////////
 
     #[Swag.Overload]
-    mtd addItem(f: Swag.TypeValue, ptrData: *u8, canDesc = true)->*PropertyListItem
+    mtd addItem(f: Swag.TypeValue, data: *u8, canDesc = true)->*PropertyListItem
     {
         with let line = StackLayoutCtrl.create(edView, .TopAutoSize)
         {
@@ -485,7 +485,7 @@ internal impl PropertyList
             .line      = line
             .type      = f.pointedType
             .typeValue = f
-            .ptrData   = ptrData
+            .data      = data
         }
 
         line.hookOnEvent = closure|item|(wnd, evt) { return onEvent(item, wnd, evt); }
@@ -529,9 +529,9 @@ internal impl PropertyList
         return item
     }
 
-    mtd addEnum(f: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, ptrData: *u8)
+    mtd addEnum(f: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8)
     {
-        let item = addItem(f, ptrData)
+        let item = addItem(f, data)
 
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {
@@ -549,7 +549,7 @@ internal impl PropertyList
                 {
                     .type        = typeEnum
                     .typeValue   = v
-                    .ptrData     = ptrData
+                    .data        = data
                     .extendFocus = 5
                     .filter      = item.filter
                     .line        = line1
@@ -558,8 +558,8 @@ internal impl PropertyList
 
                 line1.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
 
-                let checkBoxSize = getThemeMetrics().btnPush_Height
-                let ed           = CheckButton.create(line1, "", {0, 0, checkBoxSize, 0})
+                let lineHeight = getThemeMetrics().btnPush_Height
+                let ed         = CheckButton.create(line1, "", {0, 0, lineHeight, 0})
                 ed.dockStyle   = .Left
                 ed.userData    = cast,unconst(*void) v.value
                 itemB.checkBox = ed
@@ -567,7 +567,7 @@ internal impl PropertyList
                 let dispDesc = Reflection.getAttributeValue(v, PropertyList.Description, "desc")
                 itemB.filter += cast(string) dispDesc
 
-                with let label1 = Label.create(line1, "", {checkBoxSize, 0, position.width - checkBoxSize})
+                with let label1 = Label.create(line1, "", {lineHeight, 0, position.width - lineHeight})
                 {
                     .dockStyle = .Center
                     .labelFlags |= .WordWrap | .AutoHeight
@@ -602,25 +602,31 @@ internal impl PropertyList
         }
     }
 
-    mtd addString(f: Swag.TypeValue, ptrData: *u8)
+    mtd addString(f: Swag.TypeValue, data: *u8)
     {
-        let item = addItem(f, ptrData)
-        let ed   = EditBox.create(item.line, dref cast(*String) ptrData)
+        let item = addItem(f, data)
+        let ed   = EditBox.create(item.line, dref cast(*String) data)
         item.editBox = ed
-        ed.sigLoseFocus += closure|self, item|(ed) { self.validateString(item); }
+        ed.sigLoseFocus += closure|self, item|(ed)
+        {
+            self.validateString(item)
+        }
     }
 
-    mtd addBool(f: Swag.TypeValue, ptrData: *u8)
+    mtd addBool(f: Swag.TypeValue, data: *u8)
     {
-        let item = addItem(f, ptrData, false)
+        let item = addItem(f, data, false)
 
-        let line1        = Wnd.create'Wnd(item.line)
-        let checkBoxSize = getThemeMetrics().btnPush_Height
-        let ed           = CheckButton.create(line1, "", {0, 0, checkBoxSize, 0})
-        ed.dockStyle = .Left
+        let lineHeight = getThemeMetrics().btnPush_Height
+        let line       = Wnd.create'Wnd(item.line)
+
+        with let ed = CheckButton.create(line, "", {0, 0, lineHeight, 0})
+        {
+            .dockStyle = .Left
+        }
 
         let dispDesc = Reflection.getAttributeValue(f, PropertyList.Description, "desc")
-        with let label1 = Label.create(line1, "", {checkBoxSize, 0, position.width - checkBoxSize})
+        with let label = Label.create(line, "", {lineHeight, 0, position.width - lineHeight})
         {
             .dockStyle = .Center
             .labelFlags |= .WordWrap | .AutoHeight
@@ -628,23 +634,24 @@ internal impl PropertyList
             .setText(dispDesc)
         }
 
-        let minHeight = ed.position.height
-        item.sigResize += closure|label1, line1, minHeight|(item)
+        item.sigResize += closure|label, line, lineHeight|(item)
         {
-            label1.autoHeight()
-            line1.position.height = Math.max(minHeight, label1.position.height)
-            item.line.applyLayout()
+            label.autoHeight()
+            line.position.height = Math.max(lineHeight, label.position.height)
         }
 
         item.checkBox = ed
-        ed.sigChanged += closure|self, item|(ed) { self.validateBool(item); }
+        ed.sigChanged += closure|self, item|(ed)
+        {
+            self.validateBool(item)
+        }
 
         refreshBool(item)
     }
 
-    mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
+    mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, data: *u8)
     {
-        let item = addItem(f, ptrData)
+        let item = addItem(f, data)
         let line = item.line
 
         if Reflection.hasAttribute(f, EditSlider)
@@ -708,7 +715,7 @@ internal impl PropertyList
     {
         visit f: typeStruct.fields
         {
-            let ptrData = addr + f.offset
+            let data = addr + f.offset
 
             // Category
             let categ = Reflection.getAttributeValue(f, PropertyList.Category, "name")
@@ -737,39 +744,39 @@ internal impl PropertyList
             {
             case Reflection.isEnum(f.pointedType):
                 let typeEnum = cast(const *Swag.TypeInfoEnum) f.pointedType
-                addEnum(f, typeEnum, ptrData)
+                addEnum(f, typeEnum, data)
 
             case f.pointedType == Core.String:
-                addString(f, ptrData)
+                addString(f, data)
 
             case Reflection.isString(f.pointedType):
-                let item = addItem(f, ptrData)
-                let ed   = EditBox.create(item.line, dref cast(*string) ptrData)
+                let item = addItem(f, data)
+                let ed   = EditBox.create(item.line, dref cast(*string) data)
                 ed.editBoxFlags = .ReadOnly
                 item.editBox    = ed
 
             case Reflection.isBool(f.pointedType):
-                addBool(f, ptrData)
+                addBool(f, data)
 
             case Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType):
                 let nativeType = cast(const *Swag.TypeInfoNative) f.pointedType
-                addNative(f, nativeType, ptrData)
+                addNative(f, nativeType, data)
 
             case Reflection.isStruct(f.pointedType):
-                let item          = addItem(f, ptrData)
+                let item          = addItem(f, data)
                 let typeSubStruct = cast(const *Swag.TypeInfoStruct) f.pointedType
 
                 // A structure with an implementation of IPropertyValue
-                let iprop = @mkinterface(ptrData, f.pointedType, IPropertyValue)
+                let iprop = @mkinterface(data, f.pointedType, IPropertyValue)
                 if iprop != null
                 {
-                    iprop.construct(self, item, ptrData, f)
+                    iprop.construct(self, item, data, f)
                     item.sigRefresh.call(item)
                 }
                 else
                 {
                     item.label.style.setFont(&font2)
-                    addStruct(ptrData, typeSubStruct)
+                    addStruct(data, typeSubStruct)
                 }
             }
         }
