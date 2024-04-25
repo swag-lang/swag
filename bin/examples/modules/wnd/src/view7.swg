@@ -19,6 +19,12 @@ enum EnumFlags
     Val3
 }
 
+struct SubStruct
+{
+    #[Description("This is a custom color")]
+    color: Color
+}
+
 struct AA
 {
     tt: string = "static string"
@@ -32,7 +38,10 @@ struct AA
     #[Name("<b>Another name<b>"), EditSlider(0, 1)]
     xf32: f32 = 0.5
 
-    col: Color
+    struct0: SubStruct
+
+    #[Description("This is a custom color")]
+    color: Color
 
     #[Name("<b>Vector2<b>")]
     v2: Math.Vector2{11.5, 22}
