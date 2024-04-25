@@ -22,7 +22,7 @@ impl PropertyList
 // To specialize the edition of a given struct.
 interface IPropertyValue
 {
-    mtd construct(list: *PropertyList, item: *PropertyListItem, data: ^u8, value: Swag.TypeValue);
+    mtd construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8)->*PropertyListItem;
 }
 
 struct PropertyList
@@ -118,154 +118,6 @@ internal impl PropertyList
     // Refresh
     ////////////////////////////
 
-    func refreshEnumFlags(item: *PropertyListItem)
-    {
-        if item.checkBox
-        {
-            var val1, val2: u64
-            switch item.typeValue.pointedType.sizeof
-            {
-            case 1:
-                val1 = cast(u64) dref cast(*u8) item.data
-                val2 = cast(u64) dref cast(const *u8) item.typeValue.value
-            case 2:
-                val1 = cast(u64) dref cast(*u16) item.data
-                val2 = cast(u64) dref cast(const *u16) item.typeValue.value
-            case 4:
-                val1 = cast(u64) dref cast(*u32) item.data
-                val2 = cast(u64) dref cast(const *u32) item.typeValue.value
-            case 8:
-                val1 = cast(u64) dref cast(*u64) item.data
-                val2 = cast(u64) dref cast(const *u64) item.typeValue.value
-            }
-
-            item.checkBox.checked = val1 & val2 ? .Checked : .UnChecked
-            item.checkBox.invalidate()
-        }
-    }
-
-    func refreshEnum(item: *PropertyListItem)
-    {
-        if item.comboBox
-        {
-            let typeEnum = cast(const *Swag.TypeInfoEnum) item.typeValue.pointedType
-
-            var val1, val2: u64
-            var val1s, val2s: string
-            switch typeEnum.rawType.sizeof
-            {
-            case 1:
-                val1 = cast(u64) dref cast(*u8) item.data
-            case 2:
-                val1 = cast(u64) dref cast(*u16) item.data
-            case 4:
-                val1 = cast(u64) dref cast(*u32) item.data
-            case 8:
-                val1 = cast(u64) dref cast(*u64) item.data
-            case 16:
-                val1s = dref cast(*string) item.data
-            }
-
-            var idxSel = 0'u64
-            visit v, idx: typeEnum.values
-            {
-                switch typeEnum.rawType.sizeof
-                {
-                case 1:
-                    val2 = cast(u64) dref cast(const *u8) v.value
-                case 2:
-                    val2 = cast(u64) dref cast(const *u16) v.value
-                case 4:
-                    val2 = cast(u64) dref cast(const *u32) v.value
-                case 8:
-                    val2 = cast(u64) dref cast(const *u64) v.value
-                case 16:
-                    val2s = dref cast(const *string) v.value
-                }
-
-                if val1 == val2 and val1s == val2s do
-                    idxSel = idx
-            }
-
-            item.comboBox.selectItem(acast idxSel)
-        }
-    }
-
-    func refreshNative(item: *PropertyListItem)
-    {
-        let typeNative = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
-        let data       = item.data
-
-        if item.sliderBox
-        {
-            #[Swag.Mixin]
-            func(T) setEd()
-            {
-                let p = cast(*T) data
-                item.sliderBox.slider.setValue(cast(f32) dref p)
-            }
-
-            item.sliderBox.invalidate()
-            switch typeNative.nativeKind
-            {
-            case U8:
-                setEd'u8()
-            case U16:
-                setEd'u16()
-            case U32:
-                setEd'u32()
-            case U64:
-                setEd'u64()
-            case S8:
-                setEd's8()
-            case S16:
-                setEd's16()
-            case S32:
-                setEd's32()
-            case S64:
-                setEd's64()
-            case F32:
-                setEd'f32()
-            case F64:
-                setEd'f64()
-            }
-        }
-        elif item.editBox
-        {
-            #[Swag.Mixin]
-            func(T) setEd()
-            {
-                let p = cast(*T) data
-                item.editBox.setText(Format.toString("%", dref p))
-            }
-
-            item.editBox.invalidate()
-            switch typeNative.nativeKind
-            {
-            case U8:
-                setEd'u8()
-            case U16:
-                setEd'u16()
-            case U32:
-                setEd'u32()
-            case U64:
-                setEd'u64()
-            case S8:
-                setEd's8()
-            case S16:
-                setEd's16()
-            case S32:
-                setEd's32()
-            case S64:
-                setEd's64()
-            case F32:
-                setEd'f32()
-            case F64:
-                setEd'f64()
-            }
-        }
-    }
-
     func refreshBool(item: *PropertyListItem)
     {
         if item.checkBox
@@ -305,69 +157,6 @@ internal impl PropertyList
     // Validate
     ////////////////////////////
 
-    mtd validateEnumFlags(item: *PropertyListItem)
-    {
-        if item.checkBox
-        {
-            #[Swag.Mixin]
-            func(T) setEd()
-            {
-                let p  = cast(*T) item.data
-                let p1 = cast(*T) item.checkBox.userData
-                if item.checkBox.checked == .Checked do
-                    dref p |= dref p1
-                else do
-                    dref p &= ~(dref p1)
-            }
-
-            switch item.typeValue.pointedType.sizeof
-            {
-            case 1:
-                setEd'u8()
-            case 2:
-                setEd'u16()
-            case 4:
-                setEd'u32()
-            case 8:
-                setEd'u64()
-            }
-        }
-
-        onChanged()
-    }
-
-    mtd validateEnum(item: *PropertyListItem)
-    {
-        if item.comboBox
-        {
-            #[Swag.Mixin]
-            func(T) setEd()
-            {
-                let p  = cast(*T) item.data
-                let p1 = cast(const *T) typeEnum.values[sel].value
-                dref p = dref p1
-            }
-
-            let typeEnum = cast(const *Swag.TypeInfoEnum) item.typeValue.pointedType
-            let sel      = item.comboBox.selectedIdx
-            switch typeEnum.rawType.sizeof
-            {
-            case 1:
-                setEd'u8()
-            case 2:
-                setEd'u16()
-            case 4:
-                setEd'u32()
-            case 8:
-                setEd'u64()
-            case 16:
-                setEd'string()
-            }
-        }
-
-        onChanged()
-    }
-
     mtd validateBool(item: *PropertyListItem)
     {
         var data = cast(*bool) item.data
@@ -381,82 +170,6 @@ internal impl PropertyList
         var data = cast(*String) item.data
         if item.editBox do
             dref data = item.editBox.getText()
-        onChanged()
-    }
-
-    mtd validateNative(item: *PropertyListItem)
-    {
-        let typeNative = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
-        let data       = item.data
-
-        if item.sliderBox
-        {
-            #[Swag.Mixin]
-            func(T) setEd()
-            {
-                var p = cast(*T) data
-                dref p = cast(T) item.sliderBox.slider.getValue()
-            }
-
-            switch typeNative.nativeKind
-            {
-            case U8:
-                setEd'u8()
-            case U16:
-                setEd'u16()
-            case U32:
-                setEd'u32()
-            case U64:
-                setEd'u64()
-            case S8:
-                setEd's8()
-            case S16:
-                setEd's16()
-            case S32:
-                setEd's32()
-            case S64:
-                setEd's64()
-            case F32:
-                setEd'f32()
-            case F64:
-                setEd'f64()
-            }
-        }
-        elif item.editBox
-        {
-            #[Swag.Mixin]
-            func(T) setEd()
-            {
-                var p = cast(*T) data
-                dref p = catch StrConv.toNum'T(txt)
-            }
-
-            let txt = item.editBox.getText()
-            switch typeNative.nativeKind
-            {
-            case U8:
-                setEd'u8()
-            case U16:
-                setEd'u16()
-            case U32:
-                setEd'u32()
-            case U64:
-                setEd'u64()
-            case S8:
-                setEd's8()
-            case S16:
-                setEd's16()
-            case S32:
-                setEd's32()
-            case S64:
-                setEd's64()
-            case F32:
-                setEd'f32()
-            case F64:
-                setEd'f64()
-            }
-        }
-
         onChanged()
     }
 
@@ -529,80 +242,7 @@ internal impl PropertyList
         return item
     }
 
-    mtd addEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8)
-    {
-        let item = addItem(value, data)
-
-        if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
-        {
-            visit v: typeEnum.values
-            {
-                with let line1 = Wnd.create'Wnd(edView)
-                {
-                    .margin.x = leftMargin
-                    .margin.z = rightMargin
-                    .margin.y = enumFlagsMarginBefore
-                    .wndFlags.set(.PreChildsPaint)
-                }
-
-                with let itemB = items.addNewPtr()
-                {
-                    .type        = typeEnum
-                    .typeValue   = v
-                    .data        = data
-                    .extendFocus = 5
-                    .filter      = item.filter
-                    .line        = line1
-                    .forceShow   = item.line
-                }
-
-                line1.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
-
-                let lineHeight = getThemeMetrics().btnPush_Height
-                let ed         = CheckButton.create(line1, "", {0, 0, lineHeight, 0})
-                ed.dockStyle   = .Left
-                ed.userData    = cast,unconst(*void) v.value
-                itemB.checkBox = ed
-
-                let dispDesc = Reflection.getAttributeValue(v, PropertyList.Description, "desc")
-                itemB.filter += cast(string) dispDesc
-
-                with let label1 = Label.create(line1, "", {lineHeight, 0, position.width - lineHeight})
-                {
-                    .dockStyle = .Center
-                    .labelFlags |= .WordWrap | .AutoHeight
-                    .horzAlignmentText = .Justify
-                    .setText(dispDesc)
-                }
-
-                let minHeight = ed.position.height
-                itemB.sigResize += closure|label1, line1, minHeight|(itemB)
-                {
-                    label1.autoHeight()
-                    line1.position.height = Math.max(minHeight, label1.position.height)
-                    line1.applyLayout()
-                }
-
-                refreshEnumFlags(itemB)
-                itemB.checkBox.sigChanged += closure|self, itemB|(ed) { self.validateEnumFlags(itemB); }
-            }
-        }
-        else
-        {
-            let ed = ComboBox.create(item.line, kind: .CheckBox)
-            ed.maxSize.x   = maxSizeCombo
-            ed.anchorStyle = .X
-            item.comboBox  = ed
-
-            visit v, idx: typeEnum.values do
-                ed.addItem(v.name)
-
-            refreshEnum(item)
-            item.comboBox.sigChanged += closure|self, item|(ed, n) { self.validateEnum(item); }
-        }
-    }
-
-    mtd addString(value: Swag.TypeValue, data: *u8)
+    mtd constructString(value: Swag.TypeValue, data: *u8)
     {
         let item = addItem(value, data)
         let ed   = EditBox.create(item.line, dref cast(*String) data)
@@ -613,7 +253,7 @@ internal impl PropertyList
         }
     }
 
-    mtd addBool(value: Swag.TypeValue, data: *u8)
+    mtd constructBool(value: Swag.TypeValue, data: *u8)
     {
         let item = addItem(value, data, false)
 
@@ -649,75 +289,14 @@ internal impl PropertyList
         refreshBool(item)
     }
 
-    mtd addNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8)
-    {
-        let item = addItem(value, data)
-
-        if Reflection.hasAttribute(value, EditSlider)
-        {
-            let slider = SliderCtrl.create(item.line, null)
-            slider.labelSize = 0
-            item.sliderBox   = slider
-
-            let minV = cast(f32) Reflection.getAttributeValue(value, EditSlider, "min")
-            let maxV = cast(f32) Reflection.getAttributeValue(value, EditSlider, "max")
-
-            switch typeNative.nativeKind
-            {
-            case U8, U16, U32, U64:
-                slider.setMinMaxU64(acast minV, acast maxV)
-            case S8, S16, S32, S64:
-                slider.setMinMaxS64(acast minV, acast maxV)
-            case F32, F64:
-                slider.setMinMaxF32(minV, maxV)
-            }
-        }
-        else
-        {
-            let ed = EditBox.create(item.line, value.name)
-            ed.maxSize.x   = maxSizeEditValue
-            ed.anchorStyle = .X
-            item.editBox   = ed
-
-            switch typeNative.nativeKind
-            {
-            case U8:
-                ed.setInputU64(Swag.U8.Min, Swag.U8.Max)
-            case U16:
-                ed.setInputU64(Swag.U16.Min, Swag.U16.Max)
-            case U32:
-                ed.setInputU64(Swag.U32.Min, Swag.U32.Max)
-            case U64:
-                ed.setInputU64(Swag.U64.Min, Swag.U64.Max)
-            case S8:
-                ed.setInputS64(Swag.S8.Min, Swag.S8.Max)
-            case S16:
-                ed.setInputS64(Swag.S16.Min, Swag.S16.Max)
-            case S32:
-                ed.setInputS64(Swag.S32.Min, Swag.S32.Max)
-            case S64:
-                ed.setInputS64(Swag.S64.Min, Swag.S64.Max)
-            case F32, F64:
-                ed.setInputF64()
-            }
-        }
-
-        refreshNative(item)
-
-        if item.sliderBox do
-            item.sliderBox.sigChanged += closure|self, item|(ed) { self.validateNative(item); }
-        elif item.editBox do
-            item.editBox.sigLoseFocus += closure|self, item|(ed) { self.validateNative(item); }
-    }
-
     mtd addStruct(addr: ^u8, typeStruct: const *Swag.TypeInfoStruct)
     {
-        visit f: typeStruct.fields
+        visit value: typeStruct.fields
         {
-            let data = addr + f.offset
+            let data = addr + value.offset
 
             // Category
-            let categ = Reflection.getAttributeValue(f, PropertyList.Category, "name")
+            let categ = Reflection.getAttributeValue(value, PropertyList.Category, "name")
             if categ != null
             {
                 var v: Swag.TypeValue
@@ -728,7 +307,7 @@ internal impl PropertyList
             }
 
             // Sub Category
-            let subCateg = Reflection.getAttributeValue(f, PropertyList.SubCategory, "name")
+            let subCateg = Reflection.getAttributeValue(value, PropertyList.SubCategory, "name")
             if subCateg != null
             {
                 var v: Swag.TypeValue
@@ -741,39 +320,37 @@ internal impl PropertyList
             // Value
             switch
             {
-            case Reflection.isEnum(f.pointedType):
-                let typeEnum = cast(const *Swag.TypeInfoEnum) f.pointedType
-                addEnum(f, typeEnum, data)
+            case Reflection.isEnum(value.pointedType):
+                let typeEnum = cast(const *Swag.TypeInfoEnum) value.pointedType
+                constructEnum(value, typeEnum, data)
 
-            case f.pointedType == Core.String:
-                addString(f, data)
+            case value.pointedType == Core.String:
+                constructString(value, data)
 
-            case Reflection.isString(f.pointedType):
-                let item = addItem(f, data)
+            case Reflection.isString(value.pointedType):
+                let item = addItem(value, data)
                 let ed   = EditBox.create(item.line, dref cast(*string) data)
                 ed.editBoxFlags = .ReadOnly
                 item.editBox    = ed
 
-            case Reflection.isBool(f.pointedType):
-                addBool(f, data)
+            case Reflection.isBool(value.pointedType):
+                constructBool(value, data)
 
-            case Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType):
-                let typeNative = cast(const *Swag.TypeInfoNative) f.pointedType
-                addNative(f, typeNative, data)
+            case Reflection.isInteger(value.pointedType) or Reflection.isFloat(value.pointedType):
+                let typeNative = cast(const *Swag.TypeInfoNative) value.pointedType
+                constructNative(value, typeNative, data)
 
-            case Reflection.isStruct(f.pointedType):
-                let item          = addItem(f, data)
-                let typeSubStruct = cast(const *Swag.TypeInfoStruct) f.pointedType
-
-                // A structure with an implementation of IPropertyValue
-                let iprop = @mkinterface(data, f.pointedType, IPropertyValue)
+            case Reflection.isStruct(value.pointedType):
+                let typeSubStruct = cast(const *Swag.TypeInfoStruct) value.pointedType
+                let iprop = @mkinterface(data, value.pointedType, IPropertyValue)
                 if iprop != null
                 {
-                    iprop.construct(self, item, data, f)
+                    let item = iprop.construct(self, value, data)
                     item.sigRefresh.call(item)
                 }
                 else
                 {
+                    let item = addItem(value, data)
                     item.label.style.setFont(&font2)
                     addStruct(data, typeSubStruct)
                 }

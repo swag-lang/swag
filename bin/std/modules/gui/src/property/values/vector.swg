@@ -2,9 +2,10 @@ using Core, Pixel
 
 impl PropertyList
 {
-    mtd constructVector(item: *PropertyListItem, _value: Swag.TypeValue, typeStruct: const *Swag.TypeInfoStruct, data: ^u8)
+    mtd constructVector(value: Swag.TypeValue, typeStruct: const *Swag.TypeInfoStruct, data: ^u8)->*PropertyListItem
     {
         let lineHeight = getThemeMetrics().editBox_Height
+        let item       = addItem(value, data)
         let line       = Wnd.create'Wnd(item.line, {0, 0, 0, lineHeight})
 
         visit v: typeStruct.fields
@@ -33,29 +34,31 @@ impl PropertyList
                 ed.setText(Format.toString("%", dref dataField))
             }
         }
+
+        return item
     }
 }
 
 public impl IPropertyValue for Math.Vector2
 {
-    mtd impl construct(list: *PropertyList, item: *PropertyListItem, data: ^u8, value: Swag.TypeValue)
+    mtd impl construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8)->*PropertyListItem
     {
-        list.constructVector(item, value, Math.Vector2, data)
+        return list.constructVector(value, Math.Vector2, data)
     }
 }
 
 public impl IPropertyValue for Math.Vector3
 {
-    mtd impl construct(list: *PropertyList, item: *PropertyListItem, data: ^u8, value: Swag.TypeValue)
+    mtd impl construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8)->*PropertyListItem
     {
-        list.constructVector(item, value, Math.Vector3, data)
+        return list.constructVector(value, Math.Vector3, data)
     }
 }
 
 public impl IPropertyValue for Math.Vector4
 {
-    mtd impl construct(list: *PropertyList, item: *PropertyListItem, data: ^u8, value: Swag.TypeValue)
+    mtd impl construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8)->*PropertyListItem
     {
-        list.constructVector(item, value, Math.Vector4, data)
+        return list.constructVector(value, Math.Vector4, data)
     }
 }

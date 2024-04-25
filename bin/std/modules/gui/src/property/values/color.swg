@@ -2,9 +2,11 @@ using Core, Pixel
 
 impl PropertyList
 {
-    mtd constructColor(item: *PropertyListItem, _value: Swag.TypeValue, color: *Color)
+    mtd constructColor(value: Swag.TypeValue, data: ^u8)->*PropertyListItem
     {
         let lineHeight = getThemeMetrics().editBox_Height
+        let item       = addItem(value, data)
+        let color      = cast(*Color) data
         let line       = Wnd.create'Wnd(item.line, {0, 0, 0, lineHeight})
 
         with let ed = EditBox.create(line, "", {0, 0, lineHeight * 3, lineHeight})
@@ -53,13 +55,15 @@ impl PropertyList
             ed.setText(Format.toString("%{X08}", color.argb))
             btn.invalidate()
         }
+
+        return item
     }
 }
 
 public impl IPropertyValue for Color
 {
-    mtd impl construct(list: *PropertyList, item: *PropertyListItem, data: ^u8, value: Swag.TypeValue)
+    mtd impl construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8)->*PropertyListItem
     {
-        list.constructColor(item, value, cast(*Color) data)
+        return list.constructColor(value, data)
     }
 }
