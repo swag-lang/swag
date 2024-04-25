@@ -15,17 +15,23 @@ impl SigArray
         arr.add(fn)
     }
 
+    // Disable the calls.
     mtd disable()
     {
         disabled += 1
     }
 
+    // Enable the calls.
     mtd enable()
     {
         Debug.assert(disabled > 0)
         disabled -= 1
     }
 
+    // Returns 'true' if the array is empty.
+    mtd const isEmpty()->bool => arr.isEmpty()
+
+    // Call all registered lambdas.
     mtd call(params: ...)
     {
         if disabled do

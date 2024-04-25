@@ -8,12 +8,11 @@ func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
     return picker
 }
 
-func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value: Swag.TypeValue, ptrData: ^u8)
+func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value: Swag.TypeValue, color: *Color)
 {
     let lineHeight = list.getThemeMetrics().editBox_Height
     let line       = Wnd.create'Wnd(item.line)
 
-    let color = cast(*Color) ptrData
     with let ed = EditBox.create(line, "", {0, 0, lineHeight * 3, lineHeight})
     {
         .dockStyle = .Left
@@ -25,13 +24,6 @@ func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value
             list.onChanged()
         }
     }
-
-    item.onRefresh = closure|ed, color|(item)
-    {
-        ed.setText(Format.toString("%{X08}", color.argb))
-    }
-
-    item.onRefresh(item)
 
     with let btn = IconButton.create(line, {}, {0, 0, 60, lineHeight})
     {
@@ -60,7 +52,13 @@ func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value
         }
     }
 
-    item.onResize += closure|lineHeight, line|(item)
+    item.sigRefresh += closure|ed, btn, color|(item)
+    {
+        ed.setText(Format.toString("%{X08}", color.argb))
+        btn.invalidate()
+    }
+
+    item.sigResize += closure|lineHeight, line|(item)
     {
         line.position.height = lineHeight
         item.line.applyLayout()
@@ -69,8 +67,8 @@ func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value
 
 public impl IPropertyValue for Color
 {
-    mtd impl construct(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue)
+    mtd impl construct(list: *PropertyList, item: *PropertyListItem, data: ^u8, value: Swag.TypeValue)
     {
-        propertyConstructColor(list, item, value, ptrData)
+        propertyConstructColor(list, item, value, cast(*Color) data)
     }
 }

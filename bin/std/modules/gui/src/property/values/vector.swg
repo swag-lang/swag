@@ -36,7 +36,7 @@ func propertyConstructVector(list: *PropertyList, item: *PropertyListItem, _valu
         PropertyList.refreshNative(itemB)
     }
 
-    item.onResize += closure|line, lineHeight|(item)
+    item.sigResize += closure|line, lineHeight|(item)
     {
         line.position.height = lineHeight
         item.line.applyLayout()

@@ -24,7 +24,7 @@ impl IWnd for PropertyListView
                 item.label.autoHeight()
             if item.labelDesc do
                 item.labelDesc.autoHeight()
-            item.onResize.call(item)
+            item.sigResize.call(item)
             item.line.sendResizeEvent()
             if item.line.isVisible() do
                 lastItem = item

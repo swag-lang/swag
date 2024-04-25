@@ -68,8 +68,8 @@ struct PropertyListItem
     comboBox:           *ComboBox
     sliderBox:          *SliderCtrl
 
-    onResize:           SigArray'closure(*Self)
-    onRefresh:          closure(*Self)
+    sigResize:           SigArray'closure(*Self)
+    sigRefresh:          SigArray'closure(*Self)
 
     aniFocusBk:         BlendColor
     aniFocusBorder:     BlendColor
@@ -278,9 +278,9 @@ internal impl PropertyList
 
     func refreshItem(item: *PropertyListItem)
     {
-        if item.onRefresh
+        if !item.sigRefresh.isEmpty()
         {
-            item.onRefresh(item)
+            item.sigRefresh.call(item)
             return
         }
 
@@ -577,7 +577,7 @@ internal impl PropertyList
                 }
 
                 let minHeight = ed.position.height
-                itemB.onResize += closure|label1, line1, minHeight|(itemB)
+                itemB.sigResize += closure|label1, line1, minHeight|(itemB)
                 {
                     label1.autoHeight()
                     line1.position.height = Math.max(minHeight, label1.position.height)
@@ -630,7 +630,7 @@ internal impl PropertyList
         }
 
         let minHeight = ed.position.height
-        item.onResize += closure|label1, line1, minHeight|(item)
+        item.sigResize += closure|label1, line1, minHeight|(item)
         {
             label1.autoHeight()
             line1.position.height = Math.max(minHeight, label1.position.height)
@@ -765,6 +765,7 @@ internal impl PropertyList
                 if iprop != null
                 {
                     iprop.construct(self, item, ptrData, f)
+                    item.sigRefresh.call(item)
                 }
                 else
                 {
