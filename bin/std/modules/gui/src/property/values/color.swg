@@ -1,13 +1,5 @@
 using Core, Pixel
 
-func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
-{
-    let frame  = btn.createAnchorPopup(356, 382)
-    let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54})
-    picker.setColor(color)
-    return picker
-}
-
 func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value: Swag.TypeValue, color: *Color)
 {
     let lineHeight = list.getThemeMetrics().editBox_Height
@@ -44,7 +36,9 @@ func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value
 
     btn.sigShowPopup += closure|list, color|(btn)
     {
-        var picker = createColorPicker(btn, dref color)
+        let frame  = btn.createAnchorPopup(356, 382)
+        let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54})
+        picker.setColor(color)
         picker.sigChanged += closure|list, color|(pk)
         {
             color.argb = pk.getColor().argb
