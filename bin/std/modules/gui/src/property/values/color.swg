@@ -3,7 +3,7 @@ using Core, Pixel
 func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value: Swag.TypeValue, color: *Color)
 {
     let lineHeight = list.getThemeMetrics().editBox_Height
-    let line       = Wnd.create'Wnd(item.line)
+    let line       = Wnd.create'Wnd(item.line, {0, 0, 0, lineHeight})
 
     with let ed = EditBox.create(line, "", {0, 0, lineHeight * 3, lineHeight})
     {
@@ -50,12 +50,6 @@ func propertyConstructColor(list: *PropertyList, item: *PropertyListItem, _value
     {
         ed.setText(Format.toString("%{X08}", color.argb))
         btn.invalidate()
-    }
-
-    item.sigResize += closure|lineHeight, line|(item)
-    {
-        line.position.height = lineHeight
-        item.line.applyLayout()
     }
 }
 

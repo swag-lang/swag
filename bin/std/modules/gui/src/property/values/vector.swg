@@ -3,7 +3,7 @@ using Core, Pixel
 func propertyConstructVector(list: *PropertyList, item: *PropertyListItem, _value: Swag.TypeValue, typeStruct: const *Swag.TypeInfoStruct, data: ^u8)
 {
     let lineHeight = list.getThemeMetrics().editBox_Height
-    let line       = Wnd.create'Wnd(item.line)
+    let line       = Wnd.create'Wnd(item.line, {0, 0, 0, lineHeight})
 
     visit v: typeStruct.fields
     {
@@ -30,12 +30,6 @@ func propertyConstructVector(list: *PropertyList, item: *PropertyListItem, _valu
         {
             ed.setText(Format.toString("%", dref dataField))
         }
-    }
-
-    item.sigResize += closure|line, lineHeight|(item)
-    {
-        line.position.height = lineHeight
-        item.line.applyLayout()
     }
 }
 
