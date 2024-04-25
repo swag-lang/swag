@@ -114,10 +114,6 @@ internal impl PropertyList
         return false
     }
 
-    ////////////////////////////
-    // Refresh
-    ////////////////////////////
-
     func refreshItem(item: *PropertyListItem)
     {
         if !item.sigRefresh.isEmpty()
@@ -144,27 +140,11 @@ internal impl PropertyList
         }
     }
 
-    ////////////////////////////
-    // Validate
-    ////////////////////////////
-
-    mtd validateString(item: *PropertyListItem)
-    {
-        var data = cast(*String) item.data
-        if item.editBox do
-            dref data = item.editBox.getText()
-        onChanged()
-    }
-
     mtd onChanged()
     {
         refresh()
         sigChanged.call(self)
     }
-
-    ////////////////////////////
-    // Add
-    ////////////////////////////
 
     #[Swag.Overload]
     mtd addItem(value: Swag.TypeValue, data: *u8, canDesc = true)->*PropertyListItem
@@ -223,17 +203,6 @@ internal impl PropertyList
         }
 
         return item
-    }
-
-    mtd constructString(value: Swag.TypeValue, data: *u8)
-    {
-        let item = addItem(value, data)
-        let ed   = EditBox.create(item.line, dref cast(*String) data)
-        item.editBox = ed
-        ed.sigLoseFocus += closure|self, item|(ed)
-        {
-            self.validateString(item)
-        }
     }
 
     mtd addStruct(addr: ^u8, typeStruct: const *Swag.TypeInfoStruct)
