@@ -984,6 +984,22 @@ impl Wnd
         return false
     }
 
+    // Returns true if 'child' is in the owner/child hieararchy of 'self'
+    mtd isOwnerOf(child: *Wnd)->bool
+    {
+        if !child do
+            return false
+        var p = child.getOwner()
+        while p
+        {
+            if p == self do
+                return true
+            p = p.getOwner()
+        }
+
+        return false
+    }
+
     // Retrieve the child with the given id
     mtd getChildById(childId: string)->*Wnd
     {

@@ -217,8 +217,8 @@ impl PopupListCtrl
 
         with popup
         {
-            .setFrameFlags(FrameWndFlags.SmallShadow)
-            .setFrameForm(FrameWndForm.Square)
+            .setFrameFlags(.SmallShadow)
+            .setFrameForm(.Square)
             .scrollWnd               = .createView'ScrollWnd()
             .scrollWnd.dockStyle     = .Center
             .scrollWnd.focusStrategy = .None

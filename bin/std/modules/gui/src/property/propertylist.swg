@@ -22,10 +22,9 @@ impl PropertyList
 // To specialize the edition of a given struct.
 interface IPropertyValue
 {
-    mtd construct(list: *PropertyList, item: *PropertyListItem, ptrData: ^u8, value: Swag.TypeValue);
+    mtd construct(list: *PropertyList, item: *PropertyListItem, data: ^u8, value: Swag.TypeValue);
 }
 
-#[Swag.Opaque]
 struct PropertyList
 {
     using frameWnd:            FrameWnd
@@ -96,7 +95,7 @@ internal impl PropertyList
             let colors   = wnd.getThemeColors()
 
             var colBk, colBorder: Color
-            if wnd.isParentOf(wnd.getApp().keybFocusWnd)
+            if wnd.isOwnerOf(wnd.getApp().keybFocusWnd)
             {
                 colBk     = colors.propList_focusBk
                 colBorder = colors.propList_focusBorder

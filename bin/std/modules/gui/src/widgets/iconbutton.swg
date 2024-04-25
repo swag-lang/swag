@@ -519,8 +519,9 @@ impl IconButton
 
         with let frame = Wnd.create'FrameWnd(topView, {pt.x, pt.y, w, h})
         {
+            .owner = self
             .setFrameForm(.Round)
-            .setFrameFlags(FrameWndFlags.SmallShadow)
+            .setFrameFlags(.SmallShadow)
             .style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
             .fitPosInParent(sdw.z, sdw.w)
             .anchor    = .Top
