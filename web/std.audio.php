@@ -764,9 +764,9 @@
 </p>
 <p>Creates a voice and plays it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(file: *<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></div>
+<p>By default, the voice will be destroyed when stopped or finished. </p>
 <p>Plays a voice. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Zero</span>) <span class="SKwd">throw</span></span></div>
-<p>By default, the voice will be destroyed when stopped or finished. </p>
 <p>By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <span class="code-inline">DestroyOnStop</span> flag in <span class="code-inline">playFlags</span>. See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
 <table class="api-item">

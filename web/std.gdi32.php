@@ -1399,8 +1399,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetObjectA</span>(h: <span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">LPVOID</span>) <span class="SKwd">throw</span>
-<span class="SKwd">func</span> <span class="SCst">GetObjectA</span>(h: <span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">LPVOID</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetObjectA</span>(h: <span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">LPVOID</span>)-&gt;<span class="STpe">s32</span>
+<span class="SKwd">func</span> <span class="SCst">GetObjectA</span>(h: <span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">LPVOID</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1412,8 +1412,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetObjectW</span>(h: <span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">LPVOID</span>) <span class="SKwd">throw</span>
-<span class="SKwd">func</span> <span class="SCst">GetObjectW</span>(h: <span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">LPVOID</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetObjectW</span>(h: <span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">LPVOID</span>)-&gt;<span class="STpe">s32</span>
+<span class="SKwd">func</span> <span class="SCst">GetObjectW</span>(h: <span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">LPVOID</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
