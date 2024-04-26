@@ -790,6 +790,10 @@ void GenDoc::generateContent()
             {
                 outputTitle(c);
 
+                std::ranges::sort(c.nodes, [](const AstNode* a, const AstNode* b) {
+                    return a->token.startLocation.line < b->token.startLocation.line;
+                });
+
                 Utf8 code;
                 for (auto n : c.nodes)
                 {

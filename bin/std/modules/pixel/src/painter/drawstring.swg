@@ -102,7 +102,7 @@ impl Painter
         return measureString(arr)
     }
 
-    // Returns the bounding rectangle if a given text, at a given position
+    // Returns the bounding rectangle of a given text, at a given position
     #[Swag.Overload]
     func measureString(text: Array'(const *GlyphDesc))->StringMetrics
     {
