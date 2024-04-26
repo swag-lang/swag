@@ -526,6 +526,43 @@ void GenDoc::generateToc()
     generateTocSection(AstNodeKind::FuncDecl, "Functions");
 }
 
+void GenDoc::generateContentFuncSignature(Utf8& code, const AstFuncDecl* funcNode)
+{
+    if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
+        code += "#[Swag.Macro]\n";
+    else if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
+        code += "#[Swag.Mixin]\n";
+
+    code += "func";
+    code += getOutputNode(funcNode->genericParameters);
+    code += " ";
+    code += funcNode->token.text;
+    if (!funcNode->parameters)
+        code += "()";
+    else
+        code += getOutputNode(funcNode->parameters);
+
+    if (funcNode->typeInfo)
+    {
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+        if (typeFunc->returnType && !typeFunc->returnType->isVoid())
+        {
+            typeFunc->returnType->computeScopedNameExport();
+            code += "->";
+            code += typeFunc->returnType->scopedNameExport;
+        }
+    }
+    else
+    {
+        code += getOutputNode(funcNode->returnType);
+    }
+
+    if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
+        code += " throw";
+    else if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
+        code += " assume";
+}
+
 void GenDoc::generateContentFunc(OneRef& c)
 {
     outputTitle(c);
@@ -534,66 +571,49 @@ void GenDoc::generateContentFunc(OneRef& c)
         return a->token.startLocation.line < b->token.startLocation.line;
     });
 
-    Utf8 code;
-    for (const auto n : c.nodes)
+    Utf8     code;
+    uint32_t i = 0;
+    while (i < c.nodes.size())
     {
         UserComment subUserComment;
-        auto        subDocComment = getDocComment(n);
+        auto        subDocComment = getDocComment(c.nodes[i]);
         computeUserComments(subUserComment, subDocComment);
 
-        const auto funcNode = castAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
-
-        if (n->hasAttribute(ATTRIBUTE_MACRO))
-            code += "#[Swag.Macro]\n";
-        else if (n->hasAttribute(ATTRIBUTE_MIXIN))
-            code += "#[Swag.Mixin]\n";
-
-        code += "func";
-        code += getOutputNode(funcNode->genericParameters);
-        code += " ";
-        code += funcNode->token.text;
-        if (!funcNode->parameters)
-            code += "()";
-        else
-            code += getOutputNode(funcNode->parameters);
-
-        if (funcNode->typeInfo)
-        {
-            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-            if (typeFunc->returnType && !typeFunc->returnType->isVoid())
-            {
-                typeFunc->returnType->computeScopedNameExport();
-                code += "->";
-                code += typeFunc->returnType->scopedNameExport;
-            }
-        }
-        else
-        {
-            code += getOutputNode(funcNode->returnType);
-        }
-
-        if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
-            code += " throw";
-        else if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
-            code += " assume";
+        generateContentFuncSignature(code, castAst<AstFuncDecl>(c.nodes[i], AstNodeKind::FuncDecl));
         code += "\n";
 
-        if (!subUserComment.shortDesc.lines.empty())
+        i += 1;
+
+        if(subUserComment.blocks.empty())
         {
-            outputUserBlock(subUserComment.shortDesc);
-            outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
-            code.clear();
+            while (i < c.nodes.size())
+            {
+                UserComment subUserComment1;
+                auto        subDocComment1 = getDocComment(c.nodes[i]);
+                computeUserComments(subUserComment1, subDocComment1);
+
+                if(!subUserComment1.shortDesc.empty() && subUserComment.shortDesc.empty())
+                    break;
+                if(!subUserComment1.blocks.empty())
+                    break;
+
+                if (subUserComment1.shortDesc.empty() ||
+                    subUserComment1.shortDesc.lines[0] == subUserComment.shortDesc.lines[0])
+                {
+                    generateContentFuncSignature(code, castAst<AstFuncDecl>(c.nodes[i], AstNodeKind::FuncDecl));
+                    code += "\n";
+                    i += 1;
+                    continue;
+                }
+
+                break;
+            }
         }
-    }
 
-    outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
-
-    for (const auto n : c.nodes)
-    {
-        UserComment subUserComment;
-        auto        subDocComment = getDocComment(n);
-        computeUserComments(subUserComment, subDocComment);
+        outputUserBlock(subUserComment.shortDesc);
+        outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
         outputUserComment(subUserComment);
+        code.clear();
     }
 }
 

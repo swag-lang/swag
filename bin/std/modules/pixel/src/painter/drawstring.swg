@@ -437,8 +437,8 @@ impl Painter
     }
 
     // Draw a rich string.
-    // A rich string can be multiline, and accepts
-    // The layout will be computed at the first call, and each time 'pos' has changed
+    // A rich string can be multiline, and accepts internal formats.
+    // The layout will be computed at the first call, and each time 'pos' has changed.
     mtd drawRichString(pos: Math.Rectangle, text: *RichString, format: RichStringFormat, forceCompute = false)
     {
         text.compute()

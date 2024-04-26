@@ -45,6 +45,8 @@ struct GenDoc
         UserBlockKind      kind = UserBlockKind::Paragraph;
         Vector<UserBlock*> subBlocks;
         Vector<Utf8>       lines;
+
+        bool empty() const { return subBlocks.empty() && lines.empty(); }
     };
 
     struct UserComment
@@ -118,6 +120,7 @@ struct GenDoc
     void        generateTocCategory(bool& first, AstNodeKind kind, const char* sectionName, const char* categName, Vector<OneRef*>& pendingNodes);
     void        generateTocSection(AstNodeKind kind, const char* sectionName);
     void        generateToc();
+    void        generateContentFuncSignature(Utf8& code, const AstFuncDecl* funcNode);
     void        generateContentFunc(OneRef& c);
     void        generateContentAttr(OneRef& c);
     void        generateContentEnum(OneRef& c, AstNode* n0);
