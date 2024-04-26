@@ -594,7 +594,7 @@ impl Tesselate
     // To call to register the polyline
     public mtd endPolyLine()
     {
-        func initEdges(using self, polyline: [..] *Point)
+        mtd initEdges(polyline: [..] *Point)
         {
             visit pt, i: polyline
             {

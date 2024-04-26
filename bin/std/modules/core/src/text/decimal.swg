@@ -100,7 +100,7 @@ var LeftCheats: [] LeftCheat = [
 impl Decimal
 {
     // If we chop a at nd digits, should we round up?
-    func shouldRoundUp(using self, nd1: s64)->bool
+    mtd shouldRoundUp(nd1: s64)->bool
     {
         if nd1 < 0 or nd1 >= nd do
             return false
@@ -120,7 +120,7 @@ impl Decimal
     // If nd is zero, it means we're rounding
     // just to the left of the digits, as in
     // 0.09 -> 0.1.
-    func round(using self, nd1: s64)
+    mtd round(nd1: s64)
     {
         if nd1 < 0 or nd1 >= nd do
             return
@@ -131,7 +131,7 @@ impl Decimal
     }
 
     // Round a down to nd digits (or fewer).
-    func roundDown(using self, nd1: s64)
+    mtd roundDown(nd1: s64)
     {
         if nd1 < 0 or nd1 >= nd do
             return
@@ -140,7 +140,7 @@ impl Decimal
     }
 
     // Round a up to nd digits (or fewer).
-    func roundUp(using self, nd1: s64)
+    mtd roundUp(nd1: s64)
     {
         if nd1 < 0 or nd1 >= nd do
             return
@@ -163,7 +163,7 @@ impl Decimal
         dp += 1
     }
 
-    func assign(using self, mant: u64)
+    mtd assign(mant: u64)
     {
         var buf: [24] u8
 
@@ -193,7 +193,7 @@ impl Decimal
         trim()
     }
 
-    func trim(using self)
+    mtd trim()
     {
         while nd > 0 and d[nd - 1] == `0` do
             nd -= 1
@@ -202,7 +202,7 @@ impl Decimal
     }
 
     const MaxShift: u32 = 64 - 4
-    func rightShift(using self, k: u32)
+    mtd rightShift(k: u32)
     {
         var r = 0     // read pointer
         var w = 0     // write pointer
@@ -284,7 +284,7 @@ impl Decimal
         return false
     }
 
-    func leftShift(using self, k: u32)
+    mtd leftShift(k: u32)
     {
         var delta = LeftCheats[k].delta
         if prefixIsLessThan(@mkslice(&d[0], nd), LeftCheats[k].cutoff) do
@@ -330,7 +330,7 @@ impl Decimal
         trim()
     }
 
-    func shift(using self, kk: s32)
+    mtd shift(kk: s32)
     {
         var k = kk
         switch
@@ -358,7 +358,7 @@ impl Decimal
         }
     }
 
-    func readF64(using self, str: const [..] u8)->u32 throw
+    mtd readF64(str: const [..] u8)->u32 throw
     {
         var cpt     = 0'u32
         let countof = @countof(str)
@@ -487,7 +487,7 @@ impl Decimal
         return cpt
     }
 
-    func floatBits(using self)->{ b: u64, overflow: bool }
+    mtd floatBits()->{ b: u64, overflow: bool }
     {
         const PowTab: [] s64 = [1, 3, 6, 9, 13, 16, 19, 23, 26]
         var mant:     u64
@@ -602,7 +602,7 @@ impl Decimal
         return result
     }
 
-    func roundedInteger(using self)->u64
+    mtd roundedInteger()->u64
     {
         if dp > 20 do
             return 0xFFFFFFFFFFFFFFFF

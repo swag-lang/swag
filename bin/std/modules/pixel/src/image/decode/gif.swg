@@ -122,15 +122,15 @@ impl Decoder
 
     mtd readPlainTextExt() throw
     {
-        /* Discard plain text metadata. */
+        // Discard plain text metadata.
         seek(13)
-        /* Discard plain text sub-blocks. */
+        // Discard plain text sub-blocks.
         discardSubBlocks()
     }
 
     mtd readGraphicControlExt() throw
     {
-        /* Discard block size (always 0x04) */
+        // Discard block size (always 0x04)
         seek(1)
         let rdit = readU8()
         gce.disposal     = (rdit >> 2) & 3
@@ -138,7 +138,7 @@ impl Decoder
         gce.transparency = rdit & 1
         gce.delay        = readU16()
         gce.tindex       = readU8()
-        /* Skip block terminator */
+        // Skip block terminator
         seek(1)
     }
 
@@ -152,19 +152,19 @@ impl Decoder
         var app_id:        [8] u8
         var app_auth_code: [3] u8
 
-        /* Discard block size (always 0x0B) */
+        // Discard block size (always 0x0B)
         seek(1)
-        /* Application Identifier */
+        // Application Identifier
         read(app_id, 8)
-        /* Application Authentication Code */
+        // Application Authentication Code
         read(app_auth_code, 3)
 
         if !Memory.compare(app_id, @dataof("NETSCAPE"), @countof(app_id))
         {
-            /* Discard block size (0x03) and constant byte (0x01). */
+            // Discard block size (0x03) and constant byte (0x01).
             seek(2)
             loopCount = readU16()
-            /* Skip block terminator. */
+            // Skip block terminator.
             seek(1)
         }
         else
@@ -209,10 +209,10 @@ impl Decoder
             let rpad = (dref shift + bits_read) % 8
             if rpad == 0
             {
-                /* Update byte. */
+                // Update byte.
                 if dref subLen == 0
                 {
-                    dref subLen = readU8() /* Must be nonzero! */
+                    dref subLen = readU8() // Must be nonzero!
                     if dref subLen == 0 do
                         return 0x1000
                 }
@@ -225,7 +225,7 @@ impl Decoder
             key |= cast(u16) ((dref byte) >> rpad) << bits_read
         }
 
-        /* Clear extra bits to the left. */
+        // Clear extra bits to the left
         key &= cast(u16) ((1 << keySize) - 1)
         dref shift = cast(u8) ((dref shift + keySize) % 8)
         return key
@@ -262,7 +262,7 @@ impl Decoder
         if (y < p) do
             return y * 4 + 2
         y -= p
-        /* pass 4 */
+        // pass 4
         return y * 2 + 1
     }
 
@@ -287,7 +287,7 @@ impl Decoder
         keySize += 1
         let initKeySize = keySize
         var subLen, shift = 0'u8
-        var key         = getKey(keySize, &subLen, &shift, &byte)     /* clear code */
+        var key         = getKey(keySize, &subLen, &shift, &byte)     // clear code
         var frmOff      = 0
         var ret         = 0
         let frmSize     = cast(u32) fw * fh
@@ -341,14 +341,14 @@ impl Decoder
         }
 
         if key == stop do
-            subLen = readU8() /* Must be zero! */
+            subLen = readU8() // Must be zero!
         stream    = streamStart + end
         streamLen = remainEnd
     }
 
     mtd readImage() throw
     {
-        /* Image descriptor */
+        // Image descriptor
         fx = readU16()
         fy = readU16()
         if fx >= width or fy >= height do
@@ -362,8 +362,8 @@ impl Decoder
         let fisrz     = readU8()
         let interlace = fisrz & 0x40
 
-        /* Ignore Sort Flag. */
-        /* Local Color Table? */
+        // Ignore Sort Flag
+        // Local Color Table?
         if fisrz & 0x80
         {
             /* Read LCT */
@@ -447,35 +447,38 @@ public impl Decoder
         streamStart, stream = @dataof(buffer)
         streamLen = @countof(buffer)
 
-        /* Header */
+        // Header
         var sigver: [3] u8
         read(sigver, 3)
         if Memory.compare(sigver, @dataof("GIF"), 3) != 0 do
             throw InvalidFormatError{"invalid signature"}
 
-        /* Version */
+        // Version
         read(sigver, 3)
         if Memory.compare(sigver, @dataof("89a"), 3) != 0 do
             throw InvalidFormatError{"invalid version"}
 
-        /* Width x Height */
+        // Width x Height
         width  = readU16()
         height = readU16()
 
-        /* FDSZ */
+        // FDSZ
         var fdsz: u8
         read(&fdsz, 1)
         if !(fdsz & 0x80) do
             throw UnsupportedFormatError{"no global color table"}
 
-        /* Color space's depth */
+        // Color space's depth
         depth = acast (((fdsz >> 4) & 7) + 1)
-        /* Ignore sort flag */
-        /* GCT Size */
+
+        // Ignore sort flag
+        // GCT Size
         gct.size = 1 << ((fdsz & 0x07) + 1)
-        /* Background color index */
+
+        // Background color index
         bgIndex = readU8()
-        /* Aspect ratio */
+
+        // Aspect ratio
         discard readU8()
 
         read(gct.colors, 3'u64 * gct.size)

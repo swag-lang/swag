@@ -11,13 +11,13 @@ struct Event
 
 impl Event
 {
-    func opDrop(using self)
+    mtd opDrop()
     {
         release()
     }
 
     // Returns true if the event is valid
-    func isValid(using self)->bool
+    mtd isValid()->bool
     {
         return handle != null
     }
@@ -31,14 +31,14 @@ impl Event
     }
 
     // Initialize event
-    func init(using self, manual, initState = false)
+    mtd init(manual, initState = false)
     {
         Debug.assert(handle == null)
         handle = assume CreateEventA(null, manual ? TRUE : FALSE, initState ? TRUE : FALSE, null)
     }
 
     // Destroy an existing event
-    func release(using self)
+    mtd release()
     {
         if !handle do
             return
@@ -47,21 +47,21 @@ impl Event
     }
 
     // Signal the event
-    func signal(using self)
+    mtd signal()
     {
         Debug.assert(isValid())
         assume SetEvent(handle)
     }
 
     // Reset the event state
-    func reset(using self)
+    mtd reset()
     {
         Debug.assert(isValid())
         assume ResetEvent(handle)
     }
 
     // Wait for the event to be signaled
-    func wait(using self)
+    mtd wait()
     {
         Debug.assert(isValid())
         assume WaitForSingleObject(handle, INFINITE)

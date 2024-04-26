@@ -51,13 +51,13 @@ public impl NativeRenderOgl
     }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
-    func setCurrentContext(using self, rc: RenderingContext)
+    mtd setCurrentContext(rc: RenderingContext)
     {
         catch wglMakeCurrent(rc.hDC, rc.hRC)
     }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
-    func swapBuffers(using self, rc: RenderingContext)
+    mtd swapBuffers(rc: RenderingContext)
     {
         assume SwapBuffers(rc.hDC)
     }

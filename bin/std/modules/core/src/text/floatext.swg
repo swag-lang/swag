@@ -129,7 +129,7 @@ impl FloatExt
     // defined by mant, exp and precision given by flt. It returns
     // lower, upper such that any number in the closed interval
     // [lower, upper] is converted back to the same floating point number.
-    func assignComputeBounds(using self, mantp: u64, expp: s64, negp: bool)->{ lower: FloatExt, upper: FloatExt }
+    mtd assignComputeBounds(mantp: u64, expp: s64, negp: bool)->{ lower: FloatExt, upper: FloatExt }
     {
         var result: retval
 
@@ -158,7 +158,7 @@ impl FloatExt
 
     // Normalize normalizes f so that the highest bit of the mantissa is
     // set, and returns the number by which the mantissa was left-shifted.
-    func normalize(using self)
+    mtd normalize()
     {
         if mant == 0 do
             return
@@ -169,7 +169,7 @@ impl FloatExt
 
     // Multiply sets f to the product f*g: the result is correctly rounded,
     // but not normalized.
-    func multiply(using self, g: FloatExt)
+    mtd multiply(g: FloatExt)
     {
         let (hi, lo) = Math.mulU64(mant, g.mant)
         mant = hi + (lo >> 63)
@@ -202,7 +202,7 @@ impl FloatExt
     // f by an approximate power of ten 10^-exp, and returns exp10, so
     // that f*10^exp10 has the same value as the old f, up to an ulp,
     // as well as the index of 10^-exp in the powersOfTen table.
-    func frexp10(using self)->{ exp10: s64, index: s64 }
+    mtd frexp10()->{ exp10: s64, index: s64 }
     {
         // The constants expMin and expMax constrain the final value of the
         // binary exponent of f. We want a small integral part in the result
@@ -253,7 +253,7 @@ impl FloatExt
     // FixedDecimal stores in d the first n significant digits
     // of the decimal representation of f. It returns false
     // if it cannot be sure of the answer.
-    func fixedDecimal(using self, d: *DecimalSlice, n: s64)->bool
+    mtd fixedDecimal(d: *DecimalSlice, n: s64)->bool
     {
         if mant == 0
         {
@@ -422,7 +422,7 @@ impl FloatExt
     // which belongs to the open interval (lower, upper), where f is supposed
     // to lie. It returns false whenever the result is unsure. The implementation
     // uses the Grisu3 algorithm.
-    func shortestDecimal(using self, d: *DecimalSlice, lower, upper: *FloatExt)->bool
+    mtd shortestDecimal(d: *DecimalSlice, lower, upper: *FloatExt)->bool
     {
         if mant == 0
         {

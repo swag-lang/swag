@@ -127,9 +127,9 @@ public impl IImageDecoder for Decoder
         switch header.bpp
         {
         case 24:
-            result.init(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGR8)
+            result.init(header.width, header.height, PixelFormat.BGR8)
         case 32:
-            result.init(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGRA8)
+            result.init(header.width, header.height, PixelFormat.BGRA8)
         default:
             throw UnsupportedFormatError{"unsupported bit depth"}
         }

@@ -18,7 +18,7 @@ public struct TextReader
 
 impl TextReader
 {
-    func readBuffer(using self)
+    mtd readBuffer()
     {
         byteSeek = 0
 
@@ -49,7 +49,7 @@ impl TextReader
 public impl TextReader
 {
     // Open the reader.
-    func open(using self, fullname: string, encoding = TextEncoding.Utf8) throw
+    mtd open(fullname: string, encoding = TextEncoding.Utf8) throw
     {
         Debug.assert(!stream.isOpen())
 
@@ -64,7 +64,7 @@ public impl TextReader
     }
 
     // Close the reader.
-    func close(using self)
+    mtd close()
     {
         stream.close()
     }
@@ -72,7 +72,7 @@ public impl TextReader
     // Read one line of text.
     // Returns false if the end of the stream has been reached.
     #[Swag.Safety("boundcheck|overflow", false)]
-    func readLine(using self, result: &String)->bool
+    mtd readLine(result: &String)->bool
     {
         result.clear()
 
@@ -134,7 +134,7 @@ public impl TextReader
     }
 
     // Read from the current position to the end, and returns the corresponding utf8 string
-    func readToEnd(using self)->String
+    mtd readToEnd()->String
     {
         var result: retval
 

@@ -27,7 +27,7 @@ impl GamePadState
     internal var mapButtons: [@countof(GamePadButton)] GamePadButton = undefined
 
     // Compute the current state of the given pad index
-    func update(using self, padIndex: u32) throw
+    mtd update(padIndex: u32) throw
     {
         var state: XINPUT_STATE = undefined
         let res    = XInputGetState(padIndex, &state)
@@ -56,7 +56,7 @@ impl GamePadState
 
         // Simulate pressed with,move
         #[Swag.Inline]
-        func getToler(using self, btn: GamePadButton)->f32
+        mtd getToler(btn: GamePadButton)->f32
         {
             const SmallToler = 0.7'f32
             const BigToler   = 0.9'f32
