@@ -4146,7 +4146,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wctomb</span>(s: *<span class="STpe">u8</span>, wc: <a href="#Libc_wchar_t">wchar_t</a>)-&gt;<span class="STpe">s32</span></span></div>
 <div class="swag-watermark">
-Generated on 15-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 26-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>

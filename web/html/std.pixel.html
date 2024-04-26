@@ -2268,7 +2268,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isOpaque</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isOpaque</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3173,7 +3173,7 @@
 <span id="Pixel_Gif_Decoder_IImageDecoder_canDecode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IImageDecoder.</span><span class="api-item-title-strong">canDecode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L561" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L564" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3185,7 +3185,7 @@
 <span id="Pixel_Gif_Decoder_IImageDecoder_decode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IImageDecoder.</span><span class="api-item-title-strong">decode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L567" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L570" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3197,7 +3197,7 @@
 <span id="Pixel_Gif_Decoder_getFrame"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">getFrame</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L507" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L510" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3210,7 +3210,7 @@
 <span id="Pixel_Gif_Decoder_getNumFrames"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">getNumFrames</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L535" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L538" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3236,7 +3236,7 @@
 <span id="Pixel_Gif_Decoder_nextFrame"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">nextFrame</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L517" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L520" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3249,7 +3249,7 @@
 <span id="Pixel_Gif_Decoder_rewind"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">rewind</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L550" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\gif.swg#L553" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5928,6 +5928,14 @@
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawEllipse">drawEllipse</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>, <span class="SKwd">const</span> &<span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawEllipse">drawEllipse</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>, <span class="SKwd">const</span> &<span class="SCst">Pen</span>)</span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawEllipse">drawEllipse</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> &<span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></td>
 <td>Draw an empty ellipse. </td>
 </tr>
@@ -6049,6 +6057,14 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillCircle">fillCircle</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> &<span class="SCst">Color</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillEllipse">fillEllipse</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>, <span class="SKwd">const</span> &<span class="SCst">Brush</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillEllipse">fillEllipse</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>, <span class="SKwd">const</span> &<span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -6425,12 +6441,14 @@
 <span id="Pixel_Painter_drawEllipse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">drawEllipse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L78" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L112" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Draw an empty ellipse. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX, centerY: <span class="STpe">f32</span>, radiusX, radiusY: <span class="STpe">f32</span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span> = <span class="SNum">1</span>)
+<span class="SKwd">func</span> <span class="SFct">drawEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, pen: <span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)
+<span class="SKwd">func</span> <span class="SFct">drawEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX, centerY: <span class="STpe">f32</span>, radiusX, radiusY: <span class="STpe">f32</span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span> = <span class="SNum">1</span>)</span></div>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX, centerY: <span class="STpe">f32</span>, radiusX, radiusY: <span class="STpe">f32</span>, pen: <span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -6606,12 +6624,14 @@
 <span id="Pixel_Painter_fillEllipse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">fillEllipse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L113" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L145" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Draw a solid ellipse. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX, centerY: <span class="STpe">f32</span>, radiusX, radiusY: <span class="STpe">f32</span>, brush: <span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, brush: <span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)
+<span class="SKwd">func</span> <span class="SFct">fillEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)
+<span class="SKwd">func</span> <span class="SFct">fillEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX, centerY: <span class="STpe">f32</span>, radiusX, radiusY: <span class="STpe">f32</span>, brush: <span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></div>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX, centerY: <span class="STpe">f32</span>, radiusX, radiusY: <span class="STpe">f32</span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -9853,7 +9873,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 15-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 26-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>
