@@ -26,7 +26,7 @@ impl RWLock
     }
 
     // Unlock mutex
-    func unlockExclusive(using self)
+    mtd unlockExclusive()
     {
         ReleaseSRWLockExclusive(&v)
     }

@@ -11,19 +11,19 @@ struct Mutex
 impl Mutex
 {
     // Try to lock the mutex, and return 'true' if it's the case
-    func tryLock(using self)->bool
+    mtd tryLock()->bool
     {
         return TryAcquireSRWLockExclusive(&v) ? true : false
     }
 
     // Lock mutex
-    func lock(using self)
+    mtd lock()
     {
         AcquireSRWLockExclusive(&v)
     }
 
     // Unlock mutex
-    func unlock(using self)
+    mtd unlock()
     {
         ReleaseSRWLockExclusive(&v)
     }

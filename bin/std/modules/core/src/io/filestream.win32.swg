@@ -5,7 +5,7 @@ using Win32
 
 impl FileStream
 {
-    func opDrop(using self)
+    mtd opDrop()
     {
         close()
     }

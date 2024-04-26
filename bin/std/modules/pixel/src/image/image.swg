@@ -36,12 +36,12 @@ impl Image
         return result
     }
 
-    func opDrop(using self)
+    mtd opDrop()
     {
         Memory.delete'Image(workingBuffer)
     }
 
-    func opPostCopy(using self)
+    mtd opPostCopy()
     {
         workingBuffer = null
     }

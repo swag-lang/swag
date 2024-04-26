@@ -135,12 +135,12 @@ struct MutexRW
 #[Swag.NoDoc]
 impl MutexRW
 {
-    func lock(using self)
+    mtd lock()
     {
         __Win32RT.AcquireSRWLockExclusive(&v)
     }
 
-    func unlock(using self)
+    mtd unlock()
     {
         __Win32RT.ReleaseSRWLockExclusive(&v)
     }

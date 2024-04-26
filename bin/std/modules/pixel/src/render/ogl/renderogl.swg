@@ -73,7 +73,7 @@ internal impl RenderOgl
         }
     }
 
-    func createShaders(using self)
+    mtd createShaders()
     {
         {
             assume createShader(&shaderSimple, VertexShaderSimple, PixelShaderSimple)
