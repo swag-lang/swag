@@ -115,9 +115,16 @@ struct GenDoc
     void        outputType(AstNode* node);
     void        outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags);
     void        outputTitle(OneRef& c);
-    void        generateTocCateg(bool& first, AstNodeKind kind, const char* sectionName, const char* categName, Vector<OneRef*>& pendingNodes);
+    void        generateTocCategory(bool& first, AstNodeKind kind, const char* sectionName, const char* categName, Vector<OneRef*>& pendingNodes);
     void        generateTocSection(AstNodeKind kind, const char* sectionName);
     void        generateToc();
+    void        generateContentFunc(OneRef& c);
+    void        generateContentAttr(OneRef& c);
+    void        generateContentEnum(OneRef& c, AstNode* n0);
+    void        generateContentStruct(OneRef& c, AstNode* n0);
+    void        generateContentTypeAlias(uint32_t& i, OneRef& c);
+    void        generateContentConst(uint32_t& i, OneRef& c);
+    void        generateContentNamespace(OneRef& c, AstNode* n0);
     void        generateContent();
 
     FormatAst                       output;
