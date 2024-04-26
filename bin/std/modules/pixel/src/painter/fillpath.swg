@@ -64,7 +64,7 @@ public impl Painter
         }
     }
 
-    // Fill the line path
+    // Fill a list of paths.
     #[Swag.Overload]
     mtd fillPath(pathList: *LinePathList, color: Color)
     {
@@ -75,7 +75,6 @@ public impl Painter
         fillPath(pathList, sharedSolidBrush)
     }
 
-    // Fill the line path with the given 'brush'
     #[Swag.Overload]
     mtd fillPath(path: *LinePath, brush: Brush)
     {
@@ -162,7 +161,6 @@ public impl Painter
         }
     }
 
-    // Fill the line path
     #[Swag.Overload]
     mtd fillPath(path: *LinePath, color: Color)
     {
@@ -171,8 +169,8 @@ public impl Painter
         fillPath(path, sharedSolidBrush)
     }
 
-    // Fill the list of paths
-    // clockwise = fill, anti-clockwise = hole
+    // Fill a list of paths.
+    // If the path is clockwise, it will be filled. If the path is anti-clockwise, it will be considered as a hole.
     #[Swag.Overload]
     mtd fillPath(pathList: *LinePathList, brush: Brush)
     {

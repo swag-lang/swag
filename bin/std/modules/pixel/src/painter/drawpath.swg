@@ -677,7 +677,7 @@ impl Painter
 
 public impl Painter
 {
-    // Draw the line path
+    // Draw a line path.
     #[Swag.Overload]
     mtd drawPath(path: *LinePath, color: Color, penSize: f32)
     {
@@ -687,7 +687,6 @@ public impl Painter
         drawPath(path, sharedSolidPen)
     }
 
-    // Draw the line path with the given 'pen'
     #[Swag.Overload]
     mtd drawPath(path: *LinePath, pen: Pen)
     {
@@ -713,7 +712,7 @@ public impl Painter
         stopOverlapMode()
     }
 
-    // Draw the line path
+    // Draw a list of paths.
     #[Swag.Overload]
     mtd drawPath(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
     {
@@ -750,7 +749,6 @@ public impl Painter
         stopOverlapMode()
     }
 
-    // Draw the line path
     #[Swag.Overload]
     mtd drawPath(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
     {
