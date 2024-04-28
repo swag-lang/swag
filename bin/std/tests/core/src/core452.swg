@@ -33,34 +33,33 @@ const FILE = """
 
 struct Address
 {
-    street_address: String
-    city: String
-    state: String
-    postal_code: String
+    street_address:     String
+    city:               String
+    state:              String
+    postal_code:        String
 }
 
 struct Phone
 {
-    type:   String
-    number: String
+    type:       String
+    number:     String
 }
 
 struct Toto
 {
-    first_name:     String
-    last_name:      String
-    is_alive:       bool
-    age:            s32
-    address:        Address
-    phone_numbers:  Array'Phone
-    children:       Array'String
-    spouse:         String
+    first_name:        String
+    last_name:         String
+    is_alive:          bool
+    age:               s32
+    address:           Address
+    phone_numbers:     Array'Phone
+    children:          Array'String
+    spouse:            String
 }
 
 #test
 {
     var rea: Decoder'Read.JSon
     let v    = try rea.readAll'Toto(FILE)
-    Console.print(dref v)
     defer Memory.delete(v)
 }
