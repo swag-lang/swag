@@ -1256,7 +1256,7 @@ void GenDoc::constructPage()
     const auto startHead = Utf8{module->buildCfg.genDoc.startHead};
     helpOutput += startHead;
 
-    // Page title 
+    // Page title  
     if (!titleContent.empty())
         helpOutput += form("<title>%s</title>\n", titleContent.c_str());
 
