@@ -1,18 +1,19 @@
-#global namespace Serialization.Read
+#global namespace Serialization
+#global namespace Read
 using Swag, Core.Errors
 
 /*
-A simple JSON reader.
-In the case of a struct, the JSON file must represent the structure layout (order of fields matters).
+A simple XML reader.
+In the case of a struct, the XML file must represent the structure layout (order of fields matters).
 */
-public struct JSon
+public struct Xml
 {
     stream:        ByteStream
     line, col:     u64 = 1
     propName:      String
 }
 
-public impl JSon
+public impl Xml
 {
     mtd getError(val: string)->SyntaxError
     {
@@ -46,54 +47,41 @@ public impl JSon
         stream = ByteStream.openRead(input)
     }
 
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *u64)->bool throw
     {
-        zapBlanks()
-        let c = stream.readU8()
-        if c != `[` do
-            throw getError("malformed array, missing opening [[[]]")
         return false
     }
 
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endSequence() throw
     {
-        zapBlanks()
-        let c = stream.readU8()
-        if c != `]` do
-            throw getError("malformed array; missing closing [[]]]")
     }
 
     mtd toNextSequenceElement(_countElem: *u64)->bool
     {
-        zapBlanks()
         let c = stream.peekU8()
-        return c != `]`
+        return c != `<`
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd beginRoot() throw
     {
+        discard beginElement({})
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endRoot() throw
     {
+        endElement()
     }
 
     mtd beginSection(_kind: SectionKind) throw
     {
-        zapBlanks()
-        let c = stream.readU8()
-        if c != `{` do
-            throw getError("malformed struct, missing opening [[{]]")
+        discard beginElement({})
     }
 
     mtd endSection() throw
     {
-        zapBlanks()
-        let c = stream.readU8()
-        if c != `}` do
-            throw getError("malformed struct, missing closing [[}]]")
+        endElement()
     }
 
     mtd beginStruct(_structType: typeinfo, _structData: const *u8)->bool throw
@@ -107,57 +95,58 @@ public impl JSon
         endSection()
     }
 
-    mtd beginElement(val: TypeValue)->bool throw
+    mtd beginElement(_val: TypeValue)->bool throw
     {
         zapBlanks()
         var c = stream.readU8()
-        if c != `"` do
-            throw getError("malformed property name, missing opening [[\"]]")
+        if c != `<` do
+            throw getError("malformed element, missing opening [[<]]")
 
         propName.clear()
         c = stream.readU8()
-        while c and c != `"`
+        while c and c != `>`
         {
             propName += c
             c = stream.readU8()
         }
 
-        if propName != val.name do
-            throw getError("invalid property name")
-
-        if c != `"` do
-            throw getError("malformed property name, missing closing [[\"]]")
-
-        zapBlanks()
-        c = stream.readU8()
-        if c != `:` do
-            throw getError("malformed property, missing [[:]] after name")
+        if c != `>` do
+            throw getError("malformed element, missing closing [[>]]")
 
         return true
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endElement() throw
     {
-    }
-
-    #[Warn("Wrn0006", WarnLevel.Disable)]
-    mtd beginValue() throw
-    {
-    }
-
-    mtd endValue() throw
-    {
         zapBlanks()
-        let c = stream.peekU8()
-        if c == `,` do
-            stream.moveSeek()
+        var c = stream.readU8()
+        if c != `<` do
+            throw getError("malformed element, missing opening [[<]]")
+
+        while c and c != `>`
+        {
+            propName += c
+            c = stream.readU8()
+        }
+
+        if c != `>` do
+            throw getError("malformed element, missing closing [[>]]")
     }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
-    mtd getVersion()->u32
     {
-        return 0
+        mtd beginValue() throw
+        {
+        }
+
+        mtd endValue() throw
+        {
+        }
+
+        mtd getVersion()->u32
+        {
+            return 0
+        }
     }
 
     /////////////////////////////////
@@ -236,33 +225,13 @@ public impl JSon
         #elif NT == Core.String
         {
             var result: retval
-
-            zapBlanks()
-            var c = stream.readU8()
-            if c != `"`
-            {
-                if c == `n` and
-                   stream.readU8() == `u` and
-                   stream.readU8() == `l` and
-                   stream.readU8() == `l`
-                {
-                   return result
-                }
-
-                throw getError("malformed string, missing opening [[\"]]")
-            }
-
-            c = stream.peekU8()
-            while c and c != `"`
+            var c       = stream.peekU8()
+            while c and c != `<`
             {
                 c = stream.readU8()
                 result += c
                 c = stream.peekU8()
             }
-
-            c = stream.readU8()
-            if c != `"` do
-                throw getError("malformed string, missing closing [[\"]]")
 
             return result
         }

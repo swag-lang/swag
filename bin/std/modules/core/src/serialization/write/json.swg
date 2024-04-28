@@ -8,6 +8,9 @@ struct JSonOptions
     saveBlanks:      bool
 }
 
+/*
+A JSON writer.
+*/
 struct JSon
 {
     options:           JSonOptions

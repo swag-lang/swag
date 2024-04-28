@@ -272,7 +272,10 @@ func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strForma
         let typeAny = @kindof(dref ptrAny)
         convertAny(buf, typeAny, convFmt, strFormat)
         buf.addBytes(", value = ")
-        convertAny(buf, dref ptrAny, convFmt, strFormat)
+        if @dataof(dref ptrAny) do
+            convertAny(buf, dref ptrAny, convFmt, strFormat)
+        else do
+            buf.addBytes("null")
         buf.addBytes("}")
         return
     }
