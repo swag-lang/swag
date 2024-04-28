@@ -1245,7 +1245,7 @@ void GenDoc::constructPage()
     helpOutput += "<!DOCTYPE html>\n";
     helpOutput += "<html>\n";
 
-    // Head
+    // Head 
     /////////////////////////////////////
     helpOutput += "<head>\n";
     helpOutput += "<meta charset=\"UTF-8\">\n";
