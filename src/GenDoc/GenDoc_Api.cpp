@@ -584,7 +584,7 @@ void GenDoc::generateContentFunc(OneRef& c)
 
         i += 1;
 
-        if(subUserComment.blocks.empty())
+        if (subUserComment.blocks.empty())
         {
             while (i < c.nodes.size())
             {
@@ -592,9 +592,9 @@ void GenDoc::generateContentFunc(OneRef& c)
                 auto        subDocComment1 = getDocComment(c.nodes[i]);
                 computeUserComments(subUserComment1, subDocComment1);
 
-                if(!subUserComment1.shortDesc.empty() && subUserComment.shortDesc.empty())
+                if (!subUserComment1.shortDesc.empty() && subUserComment.shortDesc.empty())
                     break;
-                if(!subUserComment1.blocks.empty())
+                if (!subUserComment1.blocks.empty())
                     break;
 
                 if (subUserComment1.shortDesc.empty() ||
