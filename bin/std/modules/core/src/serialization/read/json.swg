@@ -1,5 +1,4 @@
-#global namespace Serialization
-#global namespace Read
+#global namespace Serialization.Read
 using Swag, Core.Errors
 
 public struct JSon
@@ -68,20 +67,14 @@ public impl JSon
         return c != `]`
     }
 
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd beginRoot() throw
     {
-        zapBlanks()
-        let c = stream.readU8()
-        if c != `{` do
-            throw getError("malformed root, missing opening [[{]]")
     }
 
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endRoot() throw
     {
-        zapBlanks()
-        let c = stream.readU8()
-        if c != `}` do
-            throw getError("malformed root, missing closing [[}]]")
     }
 
     mtd beginSection(_kind: SectionKind) throw
@@ -150,7 +143,6 @@ public impl JSon
     {
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endValue() throw
     {
         zapBlanks()
@@ -244,8 +236,18 @@ public impl JSon
 
             zapBlanks()
             var c = stream.readU8()
-            if c != `"` do
+            if c != `"`
+            {
+                if c == `n` and
+                   stream.readU8() == `u` and
+                   stream.readU8() == `l` and
+                   stream.readU8() == `l`
+                {
+                   return result
+                }
+
                 throw getError("malformed string, missing opening [[\"]]")
+            }
 
             c = stream.peekU8()
             while c and c != `"`

@@ -1,5 +1,4 @@
-#global namespace Serialization
-#global namespace Write
+#global namespace Serialization.Write
 #global public
 using Swag
 

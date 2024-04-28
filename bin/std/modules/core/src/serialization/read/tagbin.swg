@@ -1,5 +1,4 @@
-#global namespace Serialization
-#global namespace Read
+#global namespace Serialization.Read
 #global public
 using Swag, Core.Errors
 
