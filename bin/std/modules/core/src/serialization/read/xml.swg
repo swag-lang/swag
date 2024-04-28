@@ -48,14 +48,9 @@ public impl Xml
     }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
-    mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *u64)->bool throw
     {
-        return false
-    }
-
-    #[Warn("Wrn0006", WarnLevel.Disable)]
-    mtd endSequence() throw
-    {
+        mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *u64)->bool throw { return false; }
+        mtd endSequence() throw {}
     }
 
     mtd toNextSequenceElement(_countElem: *u64)->bool
@@ -135,18 +130,9 @@ public impl Xml
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
     {
-        mtd beginValue() throw
-        {
-        }
-
-        mtd endValue() throw
-        {
-        }
-
-        mtd getVersion()->u32
-        {
-            return 0
-        }
+        mtd beginValue() throw {}
+        mtd endValue() throw {}
+        mtd getVersion()->u32 { return 0; }
     }
 
     /////////////////////////////////

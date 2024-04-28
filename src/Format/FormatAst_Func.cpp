@@ -200,34 +200,30 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
         return true;
     }
 
-    // Content, empty function
+    // Content on same line
     if (context.keepSameLineFuncBody &&
         funcDecl->subDecl.empty() &&
         funcDecl->content &&
-        funcDecl->content->children.empty() &&
-        !funcDecl->hasAttribute(ATTRIBUTE_SHARP_FUNC))
-    {
-        concat->addBlank();
-        CONCAT_FIXED_STR(concat, "{}");
-        concat->addEol();
-    }
-
-    // Content on same line
-    else if (context.keepSameLineFuncBody &&
-             funcDecl->subDecl.empty() &&
-             funcDecl->content &&
-             funcDecl->content->is(AstNodeKind::Statement) &&
-             !funcDecl->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
-             !hasEOLInside(funcDecl->content))
+        (funcDecl->content->is(AstNodeKind::Statement) || funcDecl->content->is(AstNodeKind::Try) || funcDecl->content->is(AstNodeKind::Assume)) &&
+        !funcDecl->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
+        !hasEOLInside(funcDecl->content))
     {
         FormatContext cxt{context};
         cxt.canConcatStatement = true;
         concat->noEol++;
         concat->addBlank();
         concat->addChar('{');
-        concat->addBlank();
-        SWAG_CHECK(outputChildrenChar(cxt, funcDecl->content, ';', ';', 0));
-        concat->addBlank();
+
+        auto inside = funcDecl->content;
+        if (funcDecl->content->is(AstNodeKind::Try) || funcDecl->content->is(AstNodeKind::Assume))
+            inside = inside->firstChild();
+
+        if (inside->childCount())
+            concat->addBlank();
+        SWAG_CHECK(outputChildrenChar(cxt, inside, ';', ';', 0));
+        if (inside->childCount())
+            concat->addBlank();
+        
         concat->addChar('}');
         concat->noEol--;
         concat->addEol();
