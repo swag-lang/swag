@@ -191,7 +191,7 @@ internal impl FileDlg
             var icon = getApp().getFileDirectoryIcon(fname, fi.isDirectory())
             let line = listCtrl.createLine(fname, icon)
             line.userData0 = fi
-            line.setItem(1, fi.lastWriteTime.toString(.Iso))
+            line.setItem(1, fi.lastWriteTime.toString(.DateTimeIso))
         }
 
         listCtrl.computeLayout()

@@ -20,9 +20,9 @@ enum DateTimeFormat
 {
     DateTime       // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS`
     DateTimeMs     // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ`
-    Iso            // `YYYY-MM-DD HH:MM:SS`
-    IsoMs          // `YYYY-MM-DD HH:MM:SS.ZZZ`
-    IsoHM          // `YYYY-MM-DD HH:MM`
+    DateTimeIso    // `YYYY-MM-DD HH:MM:SS`
+    DateTimeIsoMs  // `YYYY-MM-DD HH:MM:SS.ZZZ`
+    DateTimeIsoHM  // `YYYY-MM-DD HH:MM`
 }
 
 // Represents an instant in time, typically expressed as a date and time of day
@@ -208,7 +208,7 @@ impl DateTime
             if checkDate and dayOfWeek != result.value.dayOfWeek() do
                 throw SyntaxError{}
         }
-        elif fmt == .Iso or fmt == .IsoMs or fmt == .IsoHM
+        elif fmt == .DateTimeIso or fmt == .DateTimeIsoMs or fmt == .DateTimeIsoHM
         {
             result.value.year = parseU16(&buf, &result.eat)
             parseSep(&buf, `-`, &result.eat)
@@ -223,14 +223,14 @@ impl DateTime
         result.value.minute = parseU8(&buf, &result.eat)
 
         // Seconds
-        if fmt != .IsoHM
+        if fmt != .DateTimeIsoHM
         {
             parseSep(&buf, `:`, &result.eat)
             result.value.second = parseU8(&buf, &result.eat)
         }
 
         // Milliseconds
-        if fmt == .DateTimeMs or fmt == .IsoMs
+        if fmt == .DateTimeMs or fmt == .DateTimeIsoMs
         {
             parseSep(&buf, `.`, &result.eat)
             result.value.millisecond = parseU16(&buf, &result.eat)
@@ -252,11 +252,11 @@ impl DateTime
             return Format.toString("% % % % %{02}:%{02}:%{02}", dayOfWeekName(dayOfWeek()), monthName(month), day, year, hour, minute, second)
         case DateTimeMs:
             return Format.toString("% % % % %{02}:%{02}:%{02}.%", dayOfWeekName(dayOfWeek()), monthName(month), day, year, hour, minute, second, millisecond)
-        case Iso:
+        case DateTimeIso:
             return Format.toString("%-%{02}-%{02} %{02}:%{02}:%{02}", year, month, day, hour, minute, second)
-        case IsoMs:
+        case DateTimeIsoMs:
             return Format.toString("%-%{02}-%{02} %{02}:%{02}:%{02}.%", year, month, day, hour, minute, second, millisecond)
-        case IsoHM:
+        case DateTimeIsoHM:
             return Format.toString("%-%{02}-%{02} %{02}:%{02}", year, month, day, hour, minute)
         }
 
@@ -270,9 +270,9 @@ impl StrConv.IConvert for DateTime
     // Used when printing a date with [[Core.Format.toString]].
     // | 'a' | `DateTimeFormat.DateTime`
     // | 'b' | `DateTimeFormat.DateTimeMs`
-    // | 'c' | `DateTimeFormat.Iso`
-    // | 'd' | `DateTimeFormat.IsoMs`
-    // | 'e' | `DateTimeFormat.IsoHM`
+    // | 'c' | `DateTimeFormat.DateTimeIso`
+    // | 'd' | `DateTimeFormat.DateTimeIsoMs`
+    // | 'e' | `DateTimeFormat.DateTimeIsoHM`
     //
     // ```swag
     // let myDate = DateTime.now()
@@ -293,11 +293,11 @@ impl StrConv.IConvert for DateTime
             case `b`:
                 str = toString(.DateTimeMs)
             case `c`:
-                str = toString(.Iso)
+                str = toString(.DateTimeIso)
             case `d`:
-                str = toString(.IsoMs)
+                str = toString(.DateTimeIsoMs)
             case `e`:
-                str = toString(.IsoHM)
+                str = toString(.DateTimeIsoHM)
             }
         }
 

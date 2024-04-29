@@ -5,7 +5,7 @@ using Core, Core.Time
 {
     {
         let str = "1971-13-05 12:24:08"
-        var (x1, eat) = catch DateTime.parse(str, .Iso)
+        var (x1, eat) = catch DateTime.parse(str, .DateTimeIso)
         @assert(@err() != null)
     }
 

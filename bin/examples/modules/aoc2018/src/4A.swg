@@ -59,8 +59,8 @@ func day4A()
 
     Slice.sort(lines[..], func(x, y)->s32
     {
-        let val0 = assume Time.DateTime.parse(x[1..16], Time.DateTimeFormat.IsoHM)
-        let val1 = assume Time.DateTime.parse(y[1..16], Time.DateTimeFormat.IsoHM)
+        let val0 = assume Time.DateTime.parse(x[1..16], Time.DateTimeFormat.DateTimeIsoHM)
+        let val1 = assume Time.DateTime.parse(y[1..16], Time.DateTimeFormat.DateTimeIsoHM)
         return val0.value <=> val1.value
     }
 )
