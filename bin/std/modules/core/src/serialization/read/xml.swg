@@ -10,15 +10,49 @@ public struct Xml
 {
     stream:        ByteStream
     line, col:     u64 = 1
-    propName:      String
+    stackTags:     Array'string
 }
 
 public impl Xml
 {
+    mtd readTag()->string throw
+    {
+        zapBlanks()
+
+        var c = stream.readU8()
+        if c != `<` do
+            throw getError("malformed tag, missing opening [[<]]")
+
+        let start = stream.getSeek()
+        c = stream.readU8()
+        while c and c != `>` do
+            c = stream.readU8()
+        if c != `>` do
+            throw getError("malformed tag, missing closing [[>]]")
+
+        let end = stream.getSeek() - 1
+        return Latin1.trim(cast(string) stream.readBuffer[start..<end])
+    }
+
+    mtd readStartTag()->string throw
+    {
+        let tag = readTag()
+        stackTags.add(tag)
+        return tag
+    }
+
+    mtd readEndTag() throw
+    {
+        let tag   = readTag()
+        let start = stackTags.popBack()
+        if tag[1..] != start do
+            throw getError(Format.toString("invalid end tag [[%]] for [[%]]", tag, start))
+    }
+
     mtd getError(val: string)->SyntaxError
     {
         var err: retval
-        err.message = val
+        err.message = Errors.mkString(val)
         err.line    = line
         err.col     = col
         err.seek    = stream.seek
@@ -36,8 +70,11 @@ public impl Xml
                 line += 1
                 col = 1
             }
-            else do
+            else
+            {
                 col += 1
+            }
+
             c = stream.peekU8()
         }
     }
@@ -47,36 +84,20 @@ public impl Xml
         stream = ByteStream.openRead(input)
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
-    {
-        mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *u64)->bool throw { return false; }
-        mtd endSequence() throw {}
-    }
-
     mtd toNextSequenceElement(_countElem: *u64)->bool
     {
         let c = stream.peekU8()
         return c != `<`
     }
 
-    mtd beginRoot() throw
-    {
-        discard beginElement({})
-    }
-
-    mtd endRoot() throw
-    {
-        endElement()
-    }
-
     mtd beginSection(_kind: SectionKind) throw
     {
-        discard beginElement({})
+        discard readTag()
     }
 
     mtd endSection() throw
     {
-        endElement()
+        discard readTag()
     }
 
     mtd beginStruct(_structType: typeinfo, _structData: const *u8)->bool throw
@@ -90,46 +111,25 @@ public impl Xml
         endSection()
     }
 
-    mtd beginElement(_val: TypeValue)->bool throw
+    mtd beginElement(val: TypeValue)->bool throw
     {
-        zapBlanks()
-        var c = stream.readU8()
-        if c != `<` do
-            throw getError("malformed element, missing opening [[<]]")
-
-        propName.clear()
-        c = stream.readU8()
-        while c and c != `>`
-        {
-            propName += c
-            c = stream.readU8()
-        }
-
-        if c != `>` do
-            throw getError("malformed element, missing closing [[>]]")
-
+        let tag = readStartTag()
+        if tag != val.name do
+            throw getError("invalid property name")
         return true
     }
 
     mtd endElement() throw
     {
-        zapBlanks()
-        var c = stream.readU8()
-        if c != `<` do
-            throw getError("malformed element, missing opening [[<]]")
-
-        while c and c != `>`
-        {
-            propName += c
-            c = stream.readU8()
-        }
-
-        if c != `>` do
-            throw getError("malformed element, missing closing [[>]]")
+        readEndTag()
     }
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
     {
+        mtd beginRoot() throw {}
+        mtd endRoot() throw {}
+        mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *u64)->bool throw { return false; }
+        mtd endSequence() throw {}
         mtd beginValue() throw {}
         mtd endValue() throw {}
         mtd getVersion()->u32 { return 0; }

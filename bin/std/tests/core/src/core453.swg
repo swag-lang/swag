@@ -1,16 +1,14 @@
 using Core, Core.Serialization
 
 const FILE = """
-<?xml version="1.0"?>
-    <book>
-        <author>Gambardella, Matthew</author>
-        <title>XML Developer's Guide</title>
-        <genre>Computer</genre>
-        <price>44</price>
-        <publish_date>2000-10-01</publish_date>
-        <description>An in-depth look at creating applications with XML.</description>
-    </book>
-</xml>
+<book>
+    <author>Gambardella, Matthew</author>
+    <title>XML Developer's Guide</title>
+    <genre>Computer</genre>
+    <price> 44 </price>
+    <publish_date>2000-10-01</publish_date>
+    <description>An in-depth look at creating applications with XML.</description>
+</book>
 """
 
 struct Book
@@ -27,6 +25,7 @@ struct Book
 {
     var rea: Decoder'Read.Xml
     let v    = catch rea.readAll'Book(FILE)
+    if @err() != null do Console.print(@err())
     @assert(v.price == 44)
     defer Memory.delete(v)
 }
