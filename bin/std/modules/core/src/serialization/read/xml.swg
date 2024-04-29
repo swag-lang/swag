@@ -100,15 +100,14 @@ public impl Xml
         discard readTag()
     }
 
-    mtd beginStruct(_structType: typeinfo, _structData: const *u8)->bool throw
+    mtd beginRoot() throw
     {
-        beginSection(.Ordered)
-        return false
+        discard readTag()
     }
 
-    mtd endStruct() throw
+    mtd endRoot() throw
     {
-        endSection()
+        discard readTag()
     }
 
     mtd beginElement(val: TypeValue)->bool throw
@@ -126,8 +125,8 @@ public impl Xml
 
     #[Warn("Wrn0006", WarnLevel.Disable)]
     {
-        mtd beginRoot() throw {}
-        mtd endRoot() throw {}
+        mtd beginStruct(structType: typeinfo, structData: const *u8)->bool throw { return false; }
+        mtd endStruct() throw {}
         mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *u64)->bool throw { return false; }
         mtd endSequence() throw {}
         mtd beginValue() throw {}
