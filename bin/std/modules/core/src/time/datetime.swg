@@ -18,6 +18,10 @@ enum DayOfWeek
 
 enum DateTimeFormat
 {
+    DateIso        // `YYYY-MM-DD`
+    TimeIso        // `HH:MM:SS`
+    TimeIsoMs      // `HH:MM:SS.ZZZ`
+    TimeIsoHM      // `HH:MM`
     DateTime       // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS`
     DateTimeMs     // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ`
     DateTimeIso    // `YYYY-MM-DD HH:MM:SS`
@@ -208,7 +212,7 @@ impl DateTime
             if checkDate and dayOfWeek != result.value.dayOfWeek() do
                 throw SyntaxError{}
         }
-        elif fmt == .DateTimeIso or fmt == .DateTimeIsoMs or fmt == .DateTimeIsoHM
+        elif fmt == .DateTimeIso or fmt == .DateTimeIsoMs or fmt == .DateTimeIsoHM or fmt == .DateIso
         {
             result.value.year = parseU16(&buf, &result.eat)
             parseSep(&buf, `-`, &result.eat)
@@ -217,23 +221,28 @@ impl DateTime
             result.value.day = parseU8(&buf, &result.eat)
         }
 
-        parseSep(&buf, ` `, &result.eat)
-        result.value.hour = parseU8(&buf, &result.eat)
-        parseSep(&buf, `:`, &result.eat)
-        result.value.minute = parseU8(&buf, &result.eat)
+        if fmt != .TimeIso and fmt != .TimeIsoMs and fmt != .TimeIsoHM do
+            parseSep(&buf, ` `, &result.eat)
 
-        // Seconds
-        if fmt != .DateTimeIsoHM
+        if fmt != .DateIso
         {
+            result.value.hour = parseU8(&buf, &result.eat)
             parseSep(&buf, `:`, &result.eat)
-            result.value.second = parseU8(&buf, &result.eat)
-        }
+            result.value.minute = parseU8(&buf, &result.eat)
 
-        // Milliseconds
-        if fmt == .DateTimeMs or fmt == .DateTimeIsoMs
-        {
-            parseSep(&buf, `.`, &result.eat)
-            result.value.millisecond = parseU16(&buf, &result.eat)
+            // Seconds
+            if fmt != .DateTimeIsoHM
+            {
+                parseSep(&buf, `:`, &result.eat)
+                result.value.second = parseU8(&buf, &result.eat)
+            }
+
+            // Milliseconds
+            if fmt == .DateTimeMs or fmt == .DateTimeIsoMs
+            {
+                parseSep(&buf, `.`, &result.eat)
+                result.value.millisecond = parseU16(&buf, &result.eat)
+            }
         }
 
         if checkDate and !result.value.isValid() do
@@ -248,6 +257,14 @@ impl DateTime
         #[Swag.Complete]
         switch fmt
         {
+        case DateIso:
+            return Format.toString("%-%{02}-%{02}", year, month, day)
+        case TimeIso:
+            return Format.toString("%{02}:%{02}:%{02}", hour, minute, second)
+        case TimeIsoMs:
+            return Format.toString("%{02}:%{02}:%{02}.%", hour, minute, second, millisecond)
+        case TimeIsoHM:
+            return Format.toString("%{02}:%{02}", hour, minute)
         case DateTime:
             return Format.toString("% % % % %{02}:%{02}:%{02}", dayOfWeekName(dayOfWeek()), monthName(month), day, year, hour, minute, second)
         case DateTimeMs:
@@ -273,6 +290,10 @@ impl StrConv.IConvert for DateTime
     // | 'c' | `DateTimeFormat.DateTimeIso`
     // | 'd' | `DateTimeFormat.DateTimeIsoMs`
     // | 'e' | `DateTimeFormat.DateTimeIsoHM`
+    // | 'f' | `DateTimeFormat.DateIso`
+    // | 'g' | `DateTimeFormat.TimeIso`
+    // | 'h' | `DateTimeFormat.TimeIsoMs`
+    // | 'i' | `DateTimeFormat.TimeIsoHM`
     //
     // ```swag
     // let myDate = DateTime.now()
@@ -298,6 +319,16 @@ impl StrConv.IConvert for DateTime
                 str = toString(.DateTimeIsoMs)
             case `e`:
                 str = toString(.DateTimeIsoHM)
+            case `f`:
+                str = toString(.DateIso)
+            case `g`:
+                str = toString(.TimeIso)
+            case `h`:
+                str = toString(.TimeIsoMs)
+            case `i`:
+                str = toString(.TimeIsoHM)
+            default:
+                str = toString(.DateTime)
             }
         }
 
