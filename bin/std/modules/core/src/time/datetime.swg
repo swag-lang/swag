@@ -121,6 +121,34 @@ impl DateTime
         return DayOfWeekNames[cast(u32) day]
     }
 
+    private func parseU8(buf: &string, eat: &u32)->u16 throw
+    {
+        let (year, eat0, ovf) = StrConv.parseU8(buf)
+        if ovf do
+            throw SyntaxError{}
+        eat += eat0
+        buf = Tokenize.eatCount(buf, cast(u64) eat0)
+        return year
+    }
+
+    private func parseU16(buf: &string, eat: &u32)->u16 throw
+    {
+        let (year, eat0, ovf) = StrConv.parseU16(buf)
+        if ovf do
+            throw SyntaxError{}
+        eat += eat0
+        buf = Tokenize.eatCount(buf, cast(u64) eat0)
+        return year
+    }
+
+    private func parseSep(buf: &string, sep: u8, eat: &u32) throw
+    {
+        if !@countof(buf) or buf[0] != sep do
+            throw SyntaxError{}
+        buf = Tokenize.eatCount(buf, 1)
+        eat += 1
+    }
+
     // Convert a string to a DateTime with the given format
     func parse(str: string, fmt = DateTimeFormat.DateTime, checkDate = true)->{ value: DateTime, eat: u32 } throw
     {
@@ -150,13 +178,9 @@ impl DateTime
 
             if !done do
                 throw SyntaxError{}
-            done = false
 
-            // Blank
-            if !@countof(buf) or buf[0] != ` ` do
-                throw SyntaxError{}
-            buf = Tokenize.eatCount(buf, 1)
-            result.eat += 1
+            done = false
+            parseSep(&buf, ` `, &result.eat)
 
             // Month name
             visit dow, idx: MonthNames
@@ -175,33 +199,10 @@ impl DateTime
             if !done do
                 throw SyntaxError{}
 
-            // Blank
-            if !@countof(buf) or buf[0] != ` ` do
-                throw SyntaxError{}
-            buf = Tokenize.eatCount(buf, 1)
-            result.eat += 1
-
-            // Day
-            let (day, eat2, ovf2) = StrConv.parseU8(buf)
-            if ovf2 do
-                throw SyntaxError{}
-            result.eat += eat2
-            result.value.day = day
-            buf              = Tokenize.eatCount(buf, cast(u64) eat2)
-
-            // Blank
-            if !@countof(buf) or buf[0] != ` ` do
-                throw SyntaxError{}
-            buf = Tokenize.eatCount(buf, 1)
-            result.eat += 1
-
-            // Year
-            let (year, eat3, ovf3) = StrConv.parseU16(buf)
-            if ovf3 do
-                throw SyntaxError{}
-            result.value.year = year
-            result.eat += eat3
-            buf = Tokenize.eatCount(buf, cast(u64) eat3)
+            parseSep(&buf, ` `, &result.eat)
+            result.value.day = parseU8(&buf, &result.eat)
+            parseSep(&buf, ` `, &result.eat)
+            result.value.year = parseU16(&buf, &result.eat)
 
             // Check day of week
             if checkDate and dayOfWeek != result.value.dayOfWeek() do
@@ -209,95 +210,30 @@ impl DateTime
         }
         elif fmt == .Iso or fmt == .IsoMs or fmt == .IsoHM
         {
-            // Year
-            let (year, eat0, ovf0) = StrConv.parseU16(buf)
-            if ovf0 do
-                throw SyntaxError{}
-            result.value.year = year
-            result.eat += eat0
-            buf = Tokenize.eatCount(buf, cast(u64) eat0)
-            if !@countof(buf) or buf[0] != `-` do
-                throw SyntaxError{}
-            buf = Tokenize.eatCount(buf, 1)
-            result.eat += 1
-
-            // Month
-            let (month, eat1, ovf1) = StrConv.parseU8(buf)
-            if ovf1 do
-                throw SyntaxError{}
-            result.eat += eat1
-            result.value.month = month
-            buf                = Tokenize.eatCount(buf, cast(u64) eat1)
-            if !@countof(buf) or buf[0] != `-` do
-                throw SyntaxError{}
-            buf = Tokenize.eatCount(buf, 1)
-            result.eat += 1
-
-            // Day
-            let (day, eat2, ovf2) = StrConv.parseU8(buf)
-            if ovf2 do
-                throw SyntaxError{}
-            result.eat += eat2
-            result.value.day = day
-            buf              = Tokenize.eatCount(buf, cast(u64) eat2)
+            result.value.year = parseU16(&buf, &result.eat)
+            parseSep(&buf, `-`, &result.eat)
+            result.value.month = parseU8(&buf, &result.eat)
+            parseSep(&buf, `-`, &result.eat)
+            result.value.day = parseU8(&buf, &result.eat)
         }
 
-        // Blank
-        if !@countof(buf) or buf[0] != ` ` do
-            throw SyntaxError{}
-        buf = Tokenize.eatCount(buf, 1)
-        result.eat += 1
-
-        // Hour
-        let (hour, eat3, ovf3) = StrConv.parseU8(buf)
-        if ovf3 do
-            throw SyntaxError{}
-        result.eat += eat3
-        result.value.hour = hour
-        buf               = Tokenize.eatCount(buf, cast(u64) eat3)
-        if !@countof(buf) or buf[0] != `:` do
-            throw SyntaxError{}
-        buf = Tokenize.eatCount(buf, 1)
-        result.eat += 1
-
-        // Minute
-        let (minute, eat4, ovf4) = StrConv.parseU8(buf)
-        if ovf4 do
-            throw SyntaxError{}
-        result.eat += eat4
-        result.value.minute = minute
-        buf                 = Tokenize.eatCount(buf, cast(u64) eat4)
+        parseSep(&buf, ` `, &result.eat)
+        result.value.hour = parseU8(&buf, &result.eat)
+        parseSep(&buf, `:`, &result.eat)
+        result.value.minute = parseU8(&buf, &result.eat)
 
         // Seconds
         if fmt != .IsoHM
         {
-            if !@countof(buf) or buf[0] != `:` do
-                throw SyntaxError{}
-            buf = Tokenize.eatCount(buf, 1)
-            result.eat += 1
-
-            let (second, eat5, ovf5) = StrConv.parseU8(buf)
-            if ovf5 do
-                throw SyntaxError{}
-            result.eat += eat5
-            result.value.second = second
-            buf                 = Tokenize.eatCount(buf, cast(u64) eat5)
+            parseSep(&buf, `:`, &result.eat)
+            result.value.second = parseU8(&buf, &result.eat)
         }
 
         // Milliseconds
         if fmt == .DateTimeMs or fmt == .IsoMs
         {
-            if !@countof(buf) or buf[0] != `.` do
-                throw SyntaxError{}
-            buf = Tokenize.eatCount(buf, 1)
-            result.eat += 1
-
-            let (millisecond, eat6, ovf6) = StrConv.parseU16(buf)
-            if ovf6 do
-                throw SyntaxError{}
-            result.eat += eat6
-            result.value.millisecond = millisecond
-            buf                      = Tokenize.eatCount(buf, cast(u64) eat6)
+            parseSep(&buf, `.`, &result.eat)
+            result.value.millisecond = parseU16(&buf, &result.eat)
         }
 
         if checkDate and !result.value.isValid() do
