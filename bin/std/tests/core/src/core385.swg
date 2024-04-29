@@ -5,19 +5,19 @@ using Core, Core.Time
 {
     {
         let str = "1971-13-05 12:24:08"
-        var (x1, eat) = catch DateTime.parse(str, .DateTimeIso)
+        var (x1, eat) = catch DateTime.parse(str)
         @assert(@err() != null)
     }
 
     {
         let str = "Monday September 5 1971 12:24:08"
-        var (x1, eat) = catch DateTime.parse(str, .DateTime)
+        var (x1, eat) = catch DateTime.parse(str)
         @assert(@err() != null)
     }
 
     {
         let str = "Sunday September 5 1971 12:24:68"
-        var (x1, eat) = catch DateTime.parse(str, .DateTime)
+        var (x1, eat) = catch DateTime.parse(str)
         @assert(@err() != null)
     }
 }

@@ -18,15 +18,15 @@ enum DayOfWeek
 
 enum DateTimeFormat
 {
-    DateIso        // `YYYY-MM-DD`
-    TimeIso        // `HH:MM:SS`
-    TimeIsoMs      // `HH:MM:SS.ZZZ`
-    TimeIsoHM      // `HH:MM`
-    DateTime       // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS`
-    DateTimeMs     // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ`
-    DateTimeIso    // `YYYY-MM-DD HH:MM:SS`
-    DateTimeIsoMs  // `YYYY-MM-DD HH:MM:SS.ZZZ`
-    DateTimeIsoHM  // `YYYY-MM-DD HH:MM`
+    DateIso           // `YYYY-MM-DD`
+    TimeIso           // `HH:MM:SS`
+    TimeIsoMs         // `HH:MM:SS.ZZZ`
+    TimeIsoHM         // `HH:MM`
+    DateTime          // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS`
+    DateTimeMs        // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ`
+    DateTimeIso       // `YYYY-MM-DD HH:MM:SS`
+    DateTimeIsoMs     // `YYYY-MM-DD HH:MM:SS.ZZZ`
+    DateTimeIsoHM     // `YYYY-MM-DD HH:MM`
 }
 
 // Represents an instant in time, typically expressed as a date and time of day
@@ -153,16 +153,17 @@ impl DateTime
         eat += 1
     }
 
-    // Convert a string to a DateTime with the given format
-    func parse(str: string, fmt = DateTimeFormat.DateTime, checkDate = true)->{ value: DateTime, eat: u32 } throw
+    // Convert a string to a DateTime with the given format.
+    func parse(str: string, checkDate = true)->{ value: DateTime, eat: u32 } throw
     {
         var result: retval
+        var buf     = str
 
-        var buf = str
         if !@countof(buf) do
             throw SyntaxError{}
 
-        if fmt == .DateTime or fmt == .DateTimeMs
+        if @countof(buf) >= 1 and
+           Latin1.isLetter(buf[0])
         {
             // Day of week name
             var done       = false
@@ -212,7 +213,17 @@ impl DateTime
             if checkDate and dayOfWeek != result.value.dayOfWeek() do
                 throw SyntaxError{}
         }
-        elif fmt == .DateTimeIso or fmt == .DateTimeIsoMs or fmt == .DateTimeIsoHM or fmt == .DateIso
+        elif @countof(buf) >= 10 and
+             Latin1.isDigit(buf[0]) and
+             Latin1.isDigit(buf[1]) and
+             Latin1.isDigit(buf[2]) and
+             Latin1.isDigit(buf[3]) and
+             buf[4] == `-` and
+             Latin1.isDigit(buf[5]) and
+             Latin1.isDigit(buf[6]) and
+             buf[7] == `-` and
+             Latin1.isDigit(buf[8]) and
+             Latin1.isDigit(buf[9])
         {
             result.value.year = parseU16(&buf, &result.eat)
             parseSep(&buf, `-`, &result.eat)
@@ -220,25 +231,43 @@ impl DateTime
             parseSep(&buf, `-`, &result.eat)
             result.value.day = parseU8(&buf, &result.eat)
         }
+        else
+        {
+            throw SyntaxError{}
+        }
 
-        if fmt != .TimeIso and fmt != .TimeIsoMs and fmt != .TimeIsoHM do
+        if @countof(buf) >= 1 and
+           buf[0] == ` `
+        {
             parseSep(&buf, ` `, &result.eat)
+        }
 
-        if fmt != .DateIso
+        // Time
+        if @countof(buf) >= 5 and
+           Latin1.isDigit(buf[0]) and
+           Latin1.isDigit(buf[1]) and
+           buf[2] == `:` and
+           Latin1.isDigit(buf[3]) and
+           Latin1.isDigit(buf[4])
         {
             result.value.hour = parseU8(&buf, &result.eat)
             parseSep(&buf, `:`, &result.eat)
             result.value.minute = parseU8(&buf, &result.eat)
 
             // Seconds
-            if fmt != .DateTimeIsoHM
+            if @countof(buf) >= 3 and
+               buf[0] == `:` and
+               Latin1.isDigit(buf[1]) and
+               Latin1.isDigit(buf[2])
             {
                 parseSep(&buf, `:`, &result.eat)
                 result.value.second = parseU8(&buf, &result.eat)
             }
 
             // Milliseconds
-            if fmt == .DateTimeMs or fmt == .DateTimeIsoMs
+            if @countof(buf) >= 2 and
+               buf[0] == `.` and
+               Latin1.isDigit(buf[1])
             {
                 parseSep(&buf, `.`, &result.eat)
                 result.value.millisecond = parseU16(&buf, &result.eat)

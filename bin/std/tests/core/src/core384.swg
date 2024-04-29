@@ -8,7 +8,7 @@ using Core, Core.Time
     {
         var str = x.toString(.DateTimeIso)
         @assert(str == "1971-09-05 12:24:08")
-        var (x1, eat) = try DateTime.parse(str, .DateTimeIso)
+        var (x1, eat) = try DateTime.parse(str)
         x1.millisecond = x.millisecond
         @assert(x1 == x)
     }
@@ -16,14 +16,14 @@ using Core, Core.Time
     {
         var str = x.toString(.DateTimeIsoMs)
         @assert(str == "1971-09-05 12:24:08.666")
-        var (x1, eat) = try DateTime.parse(str, .DateTimeIsoMs)
+        var (x1, eat) = try DateTime.parse(str)
         @assert(x1 == x)
     }
 
     {
         var str = x.toString(.DateTime)
         @assert(str == "Sunday September 5 1971 12:24:08")
-        var (x1, eat) = try DateTime.parse(str, .DateTime)
+        var (x1, eat) = try DateTime.parse(str)
         x1.millisecond = x.millisecond
         @assert(x1 == x)
     }
@@ -31,7 +31,7 @@ using Core, Core.Time
     {
         var str = x.toString(.DateTimeMs)
         @assert(str == "Sunday September 5 1971 12:24:08.666")
-        var (x1, eat) = try DateTime.parse(str, .DateTimeMs)
+        var (x1, eat) = try DateTime.parse(str)
         @assert(x1 == x)
     }
 }
