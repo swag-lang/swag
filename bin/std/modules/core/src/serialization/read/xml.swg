@@ -102,12 +102,12 @@ public impl Xml
 
     mtd beginRoot() throw
     {
-        discard readTag()
+        discard readStartTag()
     }
 
     mtd endRoot() throw
     {
-        discard readTag()
+        readEndTag()
     }
 
     mtd beginElement(val: TypeValue)->bool throw
