@@ -15,6 +15,18 @@ public struct Xml
 
 public impl Xml
 {
+    #[Warn("Wrn0006", WarnLevel.Disable)]
+    mtd getVersion()->u32
+    {
+        return 0
+    }
+
+    #[Warn("Wrn0006", WarnLevel.Disable)]
+    mtd isTextual()->bool
+    {
+        return true
+    }
+
     mtd readTag()->string throw
     {
         zapBlanks()
@@ -131,7 +143,6 @@ public impl Xml
         mtd endSequence() throw {}
         mtd beginValue() throw {}
         mtd endValue() throw {}
-        mtd getVersion()->u32 { return 0; }
     }
 
     /////////////////////////////////

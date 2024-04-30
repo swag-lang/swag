@@ -11,6 +11,8 @@ enum SectionKind
 
 interface IEncoder
 {
+    mtd isTextual()->bool;
+
     mtd start(result: *ConcatBuffer) throw;
     mtd end() throw;
 
@@ -33,6 +35,7 @@ interface IEncoder
     mtd writeU64(value: u64);
     mtd writeF32(value: f32);
     mtd writeF64(value: f64);
+    mtd writeString(value: string);
 }
 
 /*
@@ -273,6 +276,11 @@ impl Encoder
 
 impl IEncoder for Encoder
 {
+    mtd impl isTextual()->bool
+    {
+        return serializer.isTextual()
+    }
+
     // Start serialization
     mtd impl start(result: *ConcatBuffer) throw
     {
@@ -331,15 +339,16 @@ impl IEncoder for Encoder
         }
     }
 
-    mtd impl writeBool(value: bool) = serializer.writeNative(value)
-    mtd impl writeS8(value: s8)     = serializer.writeNative(value)
-    mtd impl writeS16(value: s16)   = serializer.writeNative(value)
-    mtd impl writeS32(value: s32)   = serializer.writeNative(value)
-    mtd impl writeS64(value: s64)   = serializer.writeNative(value)
-    mtd impl writeU8(value: u8)     = serializer.writeNative(value)
-    mtd impl writeU16(value: u16)   = serializer.writeNative(value)
-    mtd impl writeU32(value: u32)   = serializer.writeNative(value)
-    mtd impl writeU64(value: u64)   = serializer.writeNative(value)
-    mtd impl writeF32(value: f32)   = serializer.writeNative(value)
-    mtd impl writeF64(value: f64)   = serializer.writeNative(value)
+    mtd impl writeBool(value: bool)     = serializer.writeNative(value)
+    mtd impl writeS8(value: s8)         = serializer.writeNative(value)
+    mtd impl writeS16(value: s16)       = serializer.writeNative(value)
+    mtd impl writeS32(value: s32)       = serializer.writeNative(value)
+    mtd impl writeS64(value: s64)       = serializer.writeNative(value)
+    mtd impl writeU8(value: u8)         = serializer.writeNative(value)
+    mtd impl writeU16(value: u16)       = serializer.writeNative(value)
+    mtd impl writeU32(value: u32)       = serializer.writeNative(value)
+    mtd impl writeU64(value: u64)       = serializer.writeNative(value)
+    mtd impl writeF32(value: f32)       = serializer.writeNative(value)
+    mtd impl writeF64(value: f64)       = serializer.writeNative(value)
+    mtd impl writeString(value: string) = serializer.writeNative(value)
 }

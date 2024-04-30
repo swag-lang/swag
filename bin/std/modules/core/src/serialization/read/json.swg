@@ -14,6 +14,18 @@ public struct JSon
 
 public impl JSon
 {
+    #[Warn("Wrn0006", WarnLevel.Disable)]
+    mtd getVersion()->u32
+    {
+        return 0
+    }
+
+    #[Warn("Wrn0006", WarnLevel.Disable)]
+    mtd isTextual()->bool
+    {
+        return true
+    }
+
     mtd getError(val: string)->SyntaxError
     {
         var err: retval
@@ -152,12 +164,6 @@ public impl JSon
         let c = stream.peekU8()
         if c == `,` do
             stream.moveSeek()
-    }
-
-    #[Warn("Wrn0006", WarnLevel.Disable)]
-    mtd getVersion()->u32
-    {
-        return 0
     }
 
     /////////////////////////////////

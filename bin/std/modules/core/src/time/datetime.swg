@@ -30,6 +30,7 @@ enum DateTimeFormat
 }
 
 // Represents an instant in time, typically expressed as a date and time of day
+#[Serialization.PodFinal]
 struct DateTime
 {
     year:            u16
@@ -308,6 +309,47 @@ impl DateTime
 
         var result: retval
         return result
+    }
+}
+
+impl Serialization.ISerialize for DateTime
+{
+    mtd impl read(decoder: Serialization.IDecoder)->bool throw
+    {
+        if decoder.isTextual()
+        {
+            let val = decoder.readString()
+            dref self = parse(val).value
+            return true
+        }
+
+        return false
+    }
+
+    mtd impl write(encoder: Serialization.IEncoder)->bool throw
+    {
+        if encoder.isTextual()
+        {
+            let val = toString(.DateTimeIsoMs)
+            encoder.writeString(val)
+            return true
+        }
+
+        return false
+    }
+
+    mtd impl readElement(type: Swag.TypeValue, data: *void, decoder: Serialization.IDecoder)->bool throw
+    {
+        return false
+    }
+
+    mtd impl writeElement(type: Swag.TypeValue, data: const *void, decoder: Serialization.IEncoder)->bool throw
+    {
+        return false
+    }
+
+    mtd impl postRead(data: *void, decoder: Serialization.IDecoder) throw
+    {
     }
 }
 

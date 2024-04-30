@@ -488,6 +488,12 @@ impl TagBin
         return true
     }
 
+    #[Warn("Wrn0006", WarnLevel.Disable)]
+    mtd isTextual()->bool
+    {
+        return false
+    }
+
     mtd getVersion()->u32
     {
         if sections.isEmpty() do

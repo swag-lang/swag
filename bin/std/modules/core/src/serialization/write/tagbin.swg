@@ -48,6 +48,12 @@ internal impl TagBin
 
 impl TagBin
 {
+    #[Warn("Wrn0006", WarnLevel.Disable)]
+    mtd isTextual()->bool
+    {
+        return true
+    }
+
     mtd startWrite(buf: *ConcatBuffer)
     {
         output = buf

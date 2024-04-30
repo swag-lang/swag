@@ -4,6 +4,9 @@ using Swag
 
 interface IDecoder
 {
+    mtd getVersion()->u32;
+    mtd isTextual()->bool;
+
     mtd start(input: const [..] u8) throw;
     mtd end() throw;
 
@@ -11,7 +14,6 @@ interface IDecoder
     mtd endField() throw;
     mtd beginSection(kind: SectionKind) throw;
     mtd endSection() throw;
-    mtd getVersion()->u32;
 
     mtd read(data: *void, dataType: typeinfo) throw;
     mtd readBufferU8(count: u64)->*u8 throw;
@@ -27,6 +29,7 @@ interface IDecoder
     mtd readU64()->u64 throw;
     mtd readF32()->f32 throw;
     mtd readF64()->f64 throw;
+    mtd readString()->String throw;
 }
 
 #[Swag.EnumFlags]
@@ -209,7 +212,7 @@ impl Decoder
 
             // Inform user code we are done
             if itf do
-                itf.postSerialize(data, idecoder)
+                itf.postRead(data, idecoder)
 
             return
         }
@@ -307,6 +310,11 @@ impl IDecoder for Decoder
         return serializer.getVersion()
     }
 
+    mtd impl isTextual()->bool
+    {
+        return serializer.isTextual()
+    }
+
     mtd impl read(data: *void, dataType: typeinfo) throw
     {
         readValue(data, dataType)
@@ -335,15 +343,16 @@ impl IDecoder for Decoder
         return data
     }
 
-    mtd impl readBool()->bool throw => serializer.readNative'bool()
-    mtd impl readS8()->s8 throw     => serializer.readNative's8()
-    mtd impl readS16()->s16 throw   => serializer.readNative's16()
-    mtd impl readS32()->s32 throw   => serializer.readNative's32()
-    mtd impl readS64()->s64 throw   => serializer.readNative's64()
-    mtd impl readU8()->u8 throw     => serializer.readNative'u8()
-    mtd impl readU16()->u16 throw   => serializer.readNative'u16()
-    mtd impl readU32()->u32 throw   => serializer.readNative'u32()
-    mtd impl readU64()->u64 throw   => serializer.readNative'u64()
-    mtd impl readF32()->f32 throw   => serializer.readNative'f32()
-    mtd impl readF64()->f64 throw   => serializer.readNative'f64()
+    mtd impl readBool()->bool throw     => serializer.readNative'bool()
+    mtd impl readS8()->s8 throw         => serializer.readNative's8()
+    mtd impl readS16()->s16 throw       => serializer.readNative's16()
+    mtd impl readS32()->s32 throw       => serializer.readNative's32()
+    mtd impl readS64()->s64 throw       => serializer.readNative's64()
+    mtd impl readU8()->u8 throw         => serializer.readNative'u8()
+    mtd impl readU16()->u16 throw       => serializer.readNative'u16()
+    mtd impl readU32()->u32 throw       => serializer.readNative'u32()
+    mtd impl readU64()->u64 throw       => serializer.readNative'u64()
+    mtd impl readF32()->f32 throw       => serializer.readNative'f32()
+    mtd impl readF64()->f64 throw       => serializer.readNative'f64()
+    mtd impl readString()->String throw => serializer.readNative'String()
 }

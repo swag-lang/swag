@@ -23,6 +23,12 @@ struct JSon
 
 impl JSon
 {
+    #[Warn("Wrn0006", WarnLevel.Disable)]
+    mtd isTextual()->bool
+    {
+        return true
+    }
+
     mtd writeIndent()
     {
         if !options.saveBlanks do

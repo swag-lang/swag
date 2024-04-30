@@ -25,10 +25,10 @@ attr NoSerialize()
 interface ISerialize
 {
     mtd read(decoder: IDecoder)->bool throw;
-    mtd write(decoder: IEncoder)->bool throw;
+    mtd write(encoder: IEncoder)->bool throw;
     mtd readElement(type: TypeValue, data: *void, decoder: IDecoder)->bool throw;
-    mtd writeElement(type: TypeValue, data: const *void, decoder: IEncoder)->bool throw;
-    mtd postSerialize(data: *void, decoder: IDecoder) throw;
+    mtd writeElement(type: TypeValue, data: const *void, encoder: IEncoder)->bool throw;
+    mtd postRead(data: *void, decoder: IDecoder) throw;
 }
 
 struct Serializer
