@@ -84,6 +84,10 @@ namespace
             g_RunContext->push(r->pointer);
         }
 
+        // Return value, in case of an address to the result
+        if (CallConv::returnByStackAddress(typeFunc))
+            g_RunContext->registersRR[0] = *returnRegisters[0];
+
         // Simulate a LocalCall
         g_RunContext->push(g_RunContext->bp);
         g_RunContext->push(g_RunContext->bc);
