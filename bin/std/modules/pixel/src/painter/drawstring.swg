@@ -44,7 +44,9 @@ struct RichStringFormat
 {
     font:              FontFamily
     fontStyle:         FontFamilyStyle = Regular
-    palette:           [4] Color
+    palette:           [4] Color                       // Color of text between <p?>...<p?> markers
+    colorUrl:          Color = Argb.White              // Color of text between <url>...<url> markers
+    colorHotUrl:       Color = Argb.Blue               // Color of text between <url>...<url> markers when mouse is inside
     brush:             Brush
     horzAlignment:     StringHorzAlignment = Left
     vertAlignment:     StringVertAlignment = Top
@@ -356,6 +358,8 @@ impl Painter
             line.measure.ascent  = Math.max(line.measure.ascent, ms.ascent)
             line.measure.descent = Math.max(line.measure.descent, ms.descent)
             line.measure.height  = Math.max(line.measure.height, ms.height)
+
+            c.boundRect.height = format.font.regular.height
         }
 
         if startLine != text.chunks.count
@@ -465,7 +469,15 @@ impl Painter
         visit &c: text.chunks
         {
             brush.color = format.palette[c.colorIdx]
-            drawString(c.pos.x, c.pos.y, c.slice, c.font, brush, c.under)
+            if c.isHotUrl do
+                brush.color = format.colorHotUrl
+            elif c.isUrl do
+                brush.color = format.colorUrl
+
+            var under = c.under
+            if c.isHotUrl do
+                under = .Underline
+            drawString(c.pos.x, c.pos.y, c.slice, c.font, brush, under)
         }
 
         // Restore clipping to its previous value

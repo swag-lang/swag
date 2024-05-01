@@ -158,6 +158,9 @@ struct ThemeColors
     toolTip_Border:                    Color = 0xFF000000
     toolTip_Text:                      Color = 0xFF222222
 
+    url_Text:                          Color = Blue
+    url_HotText:                       Color = Color.getLighter(Color.fromArgb(Blue), 0.2)
+
     edit_Border:                       Color = Gray3
     edit_FocusBorder:                  Color = Blue
     edit_HotBorder:                    Color = Gray3

@@ -29,7 +29,7 @@ struct AA
 {
     tt: string = "static string"
 
-    #[Category("Categ"), SubCategory("SubCateg"), Name("<b>This is a name<b>: <i>italic<i>"), Description("This is something that needs to be done except if it not has do be done, and this is it.")]
+    #[Category("Categ"), SubCategory("SubCateg"), Name("<b>This is a name<b>: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has do be done, and this is it.")]
     xu8: u8 = 30
 
     #[EditUnit("ms")]

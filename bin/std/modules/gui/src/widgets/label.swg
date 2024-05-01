@@ -14,6 +14,7 @@ struct Label
 {
     using wnd:            Wnd
 
+    sigUrlClicked:        SigArray'closure(*Label, string)
     icon:                 Icon
     iconColor:            Color
     labelFlags            = LabelFlags.Zero
@@ -23,10 +24,51 @@ struct Label
     vertAlignmentText     = StringVertAlignment.Center
     paddingText:          Math.Vector4
     paddingIcon:          Math.Vector4
+
+    hotChunk:             *RichChunk
 }
 
 impl IWnd for Label
 {
+    mtd impl onMouseEvent(evt: *MouseEvent)
+    {
+        var pos = surfaceToLocal(evt.surfacePos)
+        switch evt.kind
+        {
+        case MousePressed:
+            if evt.button == .Left and hotChunk do
+                sigUrlClicked.call(self, hotChunk.slice)
+
+        case MouseMove:
+            let chunk = name.getUrlChunkAt(pos)
+            if chunk != hotChunk
+            {
+                invalidate()
+                if chunk
+                {
+                    chunk.isHotUrl = true
+                    getApp().pushCursor(Cursor.from(.Hand))
+                }
+                elif hotChunk
+                {
+                    hotChunk.isHotUrl = false
+                    getApp().popCursor()
+                }
+
+                hotChunk = chunk
+            }
+
+        case MouseLeave:
+            if hotChunk
+            {
+                hotChunk.isHotUrl = false
+                hotChunk = null
+                getApp().popCursor()
+                invalidate()
+            }
+        }
+    }
+
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
@@ -94,10 +136,12 @@ impl Label
 
         if isDisabled
         {
-            sf.palette[0] = theme.colors.label_DisabledText
-            sf.palette[1] = theme.colors.label_DisabledText
-            sf.palette[2] = theme.colors.label_DisabledText
-            sf.palette[3] = theme.colors.label_DisabledText
+            sf.palette[0]  = theme.colors.label_DisabledText
+            sf.palette[1]  = theme.colors.label_DisabledText
+            sf.palette[2]  = theme.colors.label_DisabledText
+            sf.palette[3]  = theme.colors.label_DisabledText
+            sf.colorUrl    = theme.colors.label_DisabledText
+            sf.colorHotUrl = theme.colors.label_DisabledText
         }
         else
         {
@@ -105,9 +149,11 @@ impl Label
                 sf.palette[0] = theme.colors.label_TextLight
             else do
                 sf.palette[0] = theme.colors.label_Text
-            sf.palette[1] = theme.colors.label_Text1
-            sf.palette[2] = theme.colors.label_Text2
-            sf.palette[3] = theme.colors.label_Text3
+            sf.palette[1]  = theme.colors.label_Text1
+            sf.palette[2]  = theme.colors.label_Text2
+            sf.palette[3]  = theme.colors.label_Text3
+            sf.colorUrl    = theme.colors.url_Text
+            sf.colorHotUrl = theme.colors.url_HotText
         }
 
         return sf

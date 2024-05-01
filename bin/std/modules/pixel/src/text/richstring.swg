@@ -3,19 +3,19 @@ using Core
 
 struct RichChunk
 {
-    // From 'set'
     slice:            string
     fontStyle:        FontFamilyStyle = Regular
     hasFontStyle:     bool
     isSpace:          bool
     isEol:            bool
+    isUrl:            bool
+    isHotUrl:         bool
     colorIdx:         s32
 
-    // From 'computeLayout'
-    boundRect:     Math.Rectangle
-    pos:           Math.Point
-    font:          *Font
-    under:         UnderlineStyle = None
+    boundRect:        Math.Rectangle
+    pos:              Math.Point
+    font:             *Font
+    under:            UnderlineStyle = None
 }
 
 // Represents a string with embedded formats.
@@ -33,6 +33,7 @@ struct RichString
     chunks:         Array'RichChunk     // The corresponding list of chunks
     layoutRect:     Math.Rectangle
     boundRect:      Math.Rectangle
+    hasUrl:         bool
     dirty:          bool                // If dirty, 'Compute'
 }
 
@@ -51,15 +52,20 @@ impl RichString
     }
 
     #[Swag.Mixin]
-    internal func addChunk(idx: u64, space, eol: bool = false)
+    internal func addChunk(idx: u64, space, eol, url: bool = false)
     {
         if idx - startChunk == 0 do
             return
+
         chunk.isSpace      = space
         chunk.isEol        = eol
+        chunk.isUrl        = url
         chunk.colorIdx     = colorFg
         chunk.under        = under
         chunk.hasFontStyle = false
+
+        if url do
+            hasUrl = true
 
         if isBold and isItalic
         {
@@ -106,6 +112,7 @@ impl RichString
     // * `<p1>` => color palette 1
     // * `<p2>` => color palette 2
     // * `<p3>` => color palette 3
+    // * `<url>` => clickable
     // ```swag
     // <b>this is bold<b> but this is normal <i>and this is italic</i>
     // ```swag
@@ -140,6 +147,10 @@ impl RichString
                 scan += 4
                 count -= 4
                 continue
+            case Utf8.startsWith(sl, "<url>"):
+                scan += 5
+                count -= 5
+                continue
             }
 
             result += dref scan
@@ -150,6 +161,29 @@ impl RichString
         return result
     }
 
+
+    // Get the url chunk at position 'at'.
+    // If an url does not exists, returns 'null'.
+    mtd getUrlChunkAt(at: Math.Point)->*RichChunk
+    {
+        if !hasUrl do
+            return null
+        visit &c: chunks
+        {
+            if !c.isUrl do
+                continue
+
+            var r = c.boundRect
+            r.offset(c.pos)
+            r.scale(1)
+
+            if r.contains(at) do
+                return c
+        }
+
+        return null
+    }
+
     // Compute layout.
     // This will transform the string in a serie of chunks, each chunk having its one style. The string
     // will only be recomputed if it's dirty (the text has changed) or if 'force' is true.
@@ -157,7 +191,9 @@ impl RichString
     {
         if !dirty or force do
             return
+
         dirty = false
+        hasUrl = false
         chunks.clear()
         layoutRect.clear()
 
@@ -216,6 +252,11 @@ impl RichString
                 colorFg = colorFg == 0 ? 3 : 0
                 byteIdx, scan, startChunk += 4
                 count -= 4
+                continue
+            case Utf8.startsWith(sl, "<url>"):
+                addChunk(byteIdx, url: true)
+                byteIdx, scan, startChunk += 5
+                count -= 5
                 continue
             }
 
