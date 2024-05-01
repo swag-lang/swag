@@ -101,7 +101,7 @@ impl IActionUI for ActionToolMode
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 17)
             evt.name    = "PixSel"
-            evt.toolTip = "Pixel selecton"
+            evt.toolTip = "Pixel selection"
             evt.checked = main.editMode == .PixSel
 
         case CmdIdModeFavorites:
