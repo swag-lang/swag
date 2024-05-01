@@ -15,6 +15,7 @@ struct Label
     using wnd:            Wnd
 
     sigUrlClicked:        SigArray'closure(*Label, string)
+
     icon:                 Icon
     iconColor:            Color
     labelFlags            = LabelFlags.Zero
@@ -62,7 +63,7 @@ impl IWnd for Label
             if hotChunk
             {
                 hotChunk.isHotUrl = false
-                hotChunk = null
+                hotChunk          = null
                 getApp().popCursor()
                 invalidate()
             }

@@ -120,3 +120,9 @@ func locateInExplorer(name: string)
     x = Format.toString("/select,\"%\"", x)
     discard catch Env.startProcess("explorer.exe", x)
 }
+
+// Locate file in the internet explorer
+func locateWebPage(name: string)
+{
+    discard catch ShellExecuteA(null, null, @dataof(name), null, null, SW_SHOW)
+}

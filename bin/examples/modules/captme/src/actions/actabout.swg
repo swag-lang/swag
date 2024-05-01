@@ -22,7 +22,7 @@ impl IActionUI for ActionAbout
         {
         case CmdIdAbout:
             evt.setFlags |= .Name
-            evt.name     = "About"
+            evt.name = "About"
         }
 
         return true
@@ -33,9 +33,19 @@ impl IActionUI for ActionAbout
         let main = cast(*MainWnd) cxt.wnd
         let view = main.editWnd.editView
 
-        var msg: String
-        msg = "<b>CaptMe<b> was written in <url>Swag<url>."
-        MessageDlg.ok(view.surface, msg, Icon.from(&main.icons48, 11))
+        var params: AboutDlgParams
+        params.dlgTitle = "About CaptMe"
+        params.messageTitle = "CaptMe"
+        params.message  = "<b>CaptMe<b> was written in <url>Swag<url>."
+
+        params.smallIcon = Icon.from(&main.icons48, 11)
+        params.bigIcon = Icon.from(&main.appIcon, 0)
+        params.bigIcon.sizeX, params.bigIcon.sizeY = 96
+
+        let dlg = AboutDlg.create(view.surface, params)
+        dlg.labelMessage.sigUrlClicked += func(lbl, txt) { File.locateWebPage("https://www.swag-lang.org/"); }
+        dlg.doModal(view.surface)
+
         return true
     }
 }

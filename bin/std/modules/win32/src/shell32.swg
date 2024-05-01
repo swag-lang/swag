@@ -307,6 +307,7 @@ private namespace Shell32Priv
         func SHGetStockIconInfo(siid: SHSTOCKICONID, uFlags: UINT, psii: SHSTOCKICONINFO)->SHSTDAPI;
         func Shell_NotifyIconA(dwMessage: DWORD, lpData: *NOTIFYICONDATAA)->BOOL;
         func Shell_NotifyIconW(dwMessage: DWORD, lpData: *NOTIFYICONDATAW)->BOOL;
+        func ShellExecuteA(hwnd: HWND, lpOperation: LPCSTR, lpFile: LPCSTR, lpParameters: LPCSTR, lpDirectory: LPCSTR, nShowCmd: INT)->HINSTANCE;
     }
 }
 
@@ -364,5 +365,13 @@ private namespace Shell32Priv
     {
         if !Shell32Priv.Shell_NotifyIconW(dwMessage, lpData) do
             throwWinError(GetLastError())
+    }
+
+    func ShellExecuteA(hwnd: HWND, lpOperation: LPCSTR, lpFile: LPCSTR, lpParameters: LPCSTR, lpDirectory: LPCSTR, nShowCmd: INT)->HINSTANCE throw
+    {
+        let result = Shell32Priv.ShellExecuteA(hwnd, lpOperation, lpFile, lpParameters, lpDirectory, nShowCmd)
+        if cast(u64) result <= 32 do // ?!
+            throwWinError(GetLastError())
+        return result
     }
 }

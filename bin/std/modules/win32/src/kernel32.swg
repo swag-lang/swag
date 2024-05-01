@@ -27,6 +27,7 @@ typealias LPDWORD       = *DWORD
 typealias LPOVERLAPPED  = *DWORD
 typealias DWORD_PTR     = u64
 typealias UINT          = u32
+typealias INT           = s32
 typealias SHORT         = s16
 typealias USHORT        = u16
 typealias LARGE_INTEGER = s64

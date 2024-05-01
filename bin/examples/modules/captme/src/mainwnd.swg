@@ -31,6 +31,7 @@ struct MainWnd
 
     icons24:               ImageList
     icons48:               ImageList
+    appIcon:               ImageList
     editToolBar:           *Wnd
     editWnd:               *EditWnd
     quickWnd:              *QuickWnd
@@ -77,6 +78,7 @@ struct MainWnd
 
 const Icons24 = #include "datas/icons24.png"
 const Icons48 = #include "datas/icons48.png"
+const AppIcon = #include "datas/appicon.png"
 
 impl IWnd for MainWnd
 {
@@ -509,14 +511,17 @@ impl MainWnd
     {
         parent.surface.minSize = {1024, 512}
 
-        var img24    = assume Image.decode(".png", Icons24)
-        var img48    = assume Image.decode(".png", Icons48)
+        var img24  = assume Image.decode(".png", Icons24)
+        var img48  = assume Image.decode(".png", Icons48)
+        var imgApp = assume Image.decode(".png", AppIcon)
+
         let renderer = parent.getApp().getRenderer()
 
         with let res = Wnd.create'MainWnd(parent, "captme.mainwnd")
         {
             .icons24.set(renderer.addImage(img24), 24, 24)
             .icons48.set(renderer.addImage(img48), 48, 48)
+            .appIcon.set(renderer.addImage(imgApp))
             .clipFmt         = catch Clipboard.registerFormat(ClipboardFormat)
             .backgroundStyle = .Window
             .mdlFavorite     = &res.mdlFormShape

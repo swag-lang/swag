@@ -106,6 +106,17 @@ impl Theme
         res.fontDefaultFs.boldItalic = Font.create(res.defaultFsTypeFaceBI, metrics.defaultFixedFontSize)
     }
 
+    // Create a default font family with the given size
+    mtd createDefaultFontfamily(size: u32)->FontFamily
+    {
+        var result: retval
+        result.regular    = Font.create(res.defaultTypeFaceR, size)
+        result.bold       = Font.create(res.defaultTypeFaceB, size)
+        result.italic     = Font.create(res.defaultTypeFaceI, size)
+        result.boldItalic = Font.create(res.defaultTypeFaceBI, size)
+        return result
+    }
+
     // Create a default font with the given size
     mtd createDefaultFont(size: u32, style = FontFamilyStyle.Regular)->*Font
     {
