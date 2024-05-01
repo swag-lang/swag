@@ -291,6 +291,7 @@ impl MainWnd
         registerAction'ActionQuickStyle()
         registerAction'ActionEdit()
         registerAction'ActionGlobal()
+        registerAction'ActionAbout()
     }
 
     mtd registerShortcuts()
@@ -459,6 +460,12 @@ impl MainWnd
             .addItem(CmdIdZoom1)
             .addItem(CmdIdZoomFit)
             topMenu.addPopup("View", viewMenu)
+        }
+
+        with let helpMenu = MenuCtrl.createPopup(parent, owner: self)
+        {
+            .addItem(CmdIdAbout)
+            topMenu.addPopup("Help", helpMenu)
         }
     }
 
