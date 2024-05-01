@@ -272,6 +272,9 @@ private
 
 func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
 {
+    let awareness = Win32.SetThreadDpiAwarenessContext(Win32.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE)
+    defer discard Win32.SetThreadDpiAwarenessContext(awareness)
+
     var result: retval
 
     if !g_InitDone
@@ -317,10 +320,10 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     elif captureMode >= .Screen0 and captureMode <= .Screen3
     {
         let idx = cast(s32) captureMode - cast(s32) CaptureMode.Screen0
-        g_StartGrabX = cast(s32) main.monitors[idx].rect.x
-        g_StartGrabY = cast(s32) main.monitors[idx].rect.y
-        g_EndGrabX   = g_StartGrabX + cast(s32) main.monitors[idx].rect.width
-        g_EndGrabY   = g_StartGrabY + cast(s32) main.monitors[idx].rect.height
+        g_StartGrabX = cast(s32) main.monitors[idx].rectReal.x
+        g_StartGrabY = cast(s32) main.monitors[idx].rectReal.y
+        g_EndGrabX   = g_StartGrabX + cast(s32) main.monitors[idx].rectReal.width
+        g_EndGrabY   = g_StartGrabY + cast(s32) main.monitors[idx].rectReal.height
     }
     elif captureMode == .LastArea and g_EndGrabX != g_StartGrabX and g_EndGrabY != g_StartGrabY
     {
