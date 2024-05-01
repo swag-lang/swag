@@ -211,6 +211,47 @@ const TRANSPARENT = 1
 const OPAQUE      = 2
 const BKMODE_LAST = 2
 
+const DRIVERVERSION   = 0
+const TECHNOLOGY      = 2
+const HORZSIZE        = 4
+const VERTSIZE        = 6
+const HORZRES         = 8
+const VERTRES         = 10
+const BITSPIXEL       = 12
+const PLANES          = 14
+const NUMBRUSHES      = 16
+const NUMPENS         = 18
+const NUMMARKERS      = 20
+const NUMFONTS        = 22
+const NUMCOLORS       = 24
+const PDEVICESIZE     = 26
+const CURVECAPS       = 28
+const LINECAPS        = 30
+const POLYGONALCAPS   = 32
+const TEXTCAPS        = 34
+const CLIPCAPS        = 36
+const RASTERCAPS      = 38
+const ASPECTX         = 40
+const ASPECTY         = 42
+const ASPECTXY        = 44
+const LOGPIXELSX      = 88
+const LOGPIXELSY      = 90
+const SIZEPALETTE     = 104
+const NUMRESERVED     = 106
+const COLORRES        = 108
+const PHYSICALWIDTH   = 110
+const PHYSICALHEIGHT  = 111
+const PHYSICALOFFSETX = 112
+const PHYSICALOFFSETY = 113
+const SCALINGFACTORX  = 114
+const SCALINGFACTORY  = 115
+const VREFRESH        = 116
+const DESKTOPVERTRES  = 117
+const DESKTOPHORZRES  = 118
+const BLTALIGNMENT    = 119
+const SHADEBLENDCAPS  = 120
+const COLORMGMTCAPS   = 121
+
 struct LOGFONTA
 {
     lfHeight:             LONG
@@ -388,6 +429,7 @@ func RGB(r, g, b: s32)->COLORREF
     func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)->s32;
     func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32;
     func SelectObject(hdc: HDC, h: HGDIOBJ)->HGDIOBJ;
+    func GetDeviceCaps(hdc: HDC, index: s32)->s32;
 
     func EnumFontFamiliesA(hdc: HDC, lpLogfont: LPCSTR, lpProc: FONTENUMPROCA, lParam: LPARAM)->s32;
     func EnumFontFamiliesW(hdc: HDC, lpLogfont: LPCWSTR, lpProc: FONTENUMPROCW, lParam: LPARAM)->s32;

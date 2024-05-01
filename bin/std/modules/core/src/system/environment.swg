@@ -33,10 +33,14 @@ enum SpecialDirectory
     CommonMusic
 }
 
+// Describes a physical monitor.
 struct Monitor
 {
-    rect:     Math.Rectangle
-    work:     Math.Rectangle
+    rect:         Math.Rectangle
+    work:         Math.Rectangle
+    scale:        f32                // Scale factor of this monitor
+    rectReal:     Math.Rectangle     // The real monitor rect, without scaling
+    workReal:     Math.Rectangle     // The real monitor work rect, without scaling
 }
 
 internal var g_CmdLineArgs: const [..] string

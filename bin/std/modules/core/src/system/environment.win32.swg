@@ -73,6 +73,22 @@ public func getMonitors()->Array'Monitor
         m.work.width  = mi.rcWork.right - mi.rcWork.left
         m.work.height = mi.rcWork.bottom - mi.rcWork.top
 
+        let last = Win32.SetThreadDpiAwarenessContext(Win32.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE)
+        defer discard Win32.SetThreadDpiAwarenessContext(last)
+        catch GetMonitorInfoA(hMonitor, &mi)
+
+        m.scale = (mi.rcMonitor.right - mi.rcMonitor.left) / m.rect.width
+
+        m.rectReal.x      = mi.rcMonitor.left
+        m.rectReal.y      = mi.rcMonitor.top
+        m.rectReal.width  = mi.rcMonitor.right - mi.rcMonitor.left
+        m.rectReal.height = mi.rcMonitor.bottom - mi.rcMonitor.top
+
+        m.workReal.x      = mi.rcWork.left
+        m.workReal.y      = mi.rcWork.top
+        m.workReal.width  = mi.rcWork.right - mi.rcWork.left
+        m.workReal.height = mi.rcWork.bottom - mi.rcWork.top
+
         ptr.add(m)
         return TRUE
     }
