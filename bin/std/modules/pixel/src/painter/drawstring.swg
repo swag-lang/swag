@@ -148,6 +148,8 @@ impl Painter
     {
         if @countof(text) == 0 or brush.color.a == 0 do
             return
+        if fake do
+            return
 
         var arr = getGlyphs(text, font)
         if arr.isEmpty() do

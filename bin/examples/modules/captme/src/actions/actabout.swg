@@ -34,7 +34,7 @@ impl IActionUI for ActionAbout
         let view = main.editWnd.editView
 
         var msg: String
-        msg = "CaptMe was written in Swag."
+        msg = "<b>CaptMe<b> was written in <url>Swag<url>."
         MessageDlg.ok(view.surface, msg, Icon.from(&main.icons48, 11))
         return true
     }
