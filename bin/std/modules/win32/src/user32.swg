@@ -954,6 +954,13 @@ struct ICONINFO
     hbmColor:     HBITMAP
 }
 
+typealias DPI_AWARENESS_CONTEXT = *void
+const DPI_AWARENESS_CONTEXT_UNAWARE               = cast(DPI_AWARENESS_CONTEXT) cast,bit(u64) -1's64
+const DPI_AWARENESS_CONTEXT_SYSTEM_AWARE          = cast(DPI_AWARENESS_CONTEXT) cast,bit(u64) -2's64
+const DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE     = cast(DPI_AWARENESS_CONTEXT) cast,bit(u64) -3's64
+const DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2  = cast(DPI_AWARENESS_CONTEXT) cast,bit(u64) -4's64
+const DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED     = cast(DPI_AWARENESS_CONTEXT) cast,bit(u64) -5's64
+
 func GET_X_LPARAM(lp: LPARAM) => cast(s32) LOWORD(lp)
 func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
 
@@ -1006,6 +1013,7 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
 
     func MonitorFromPoint(pt: POINT, dwFlags: DWORD)->HMONITOR;
     func MonitorFromWindow(hwnd: HWND, dwFlags: DWORD)->HMONITOR;
+    func SetThreadDpiAwarenessContext(dpiContext: DPI_AWARENESS_CONTEXT)->DPI_AWARENESS_CONTEXT;
 
     func GetSystemMetrics(nIndex: s32)->s32;
 }
