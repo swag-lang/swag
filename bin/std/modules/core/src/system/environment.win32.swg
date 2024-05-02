@@ -97,6 +97,21 @@ public func getMonitors()->Array'Monitor
     return result
 }
 
+// Locate file in the file explorer
+public func locateInExplorer(name: string)
+{
+    var x: String = name
+    x.replace("/", "\\")
+    x = Format.toString("/select,\"%\"", x)
+    discard catch Env.startProcess("explorer.exe", x)
+}
+
+// Locate file in the internet explorer
+public func locateWebPage(name: string)
+{
+    discard catch ShellExecuteA(null, null, @dataof(name), null, null, SW_SHOW)
+}
+
 var g_SysInfo: SYSTEM_INFO
 #init
 {

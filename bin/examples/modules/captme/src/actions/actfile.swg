@@ -125,7 +125,7 @@ impl IActionUI for ActionFile
             g_Library.addFile(file)
 
         case CmdIdFileLocation:
-            File.locateInExplorer(capture.file)
+            Env.locateInExplorer(capture.file)
         }
 
         return true

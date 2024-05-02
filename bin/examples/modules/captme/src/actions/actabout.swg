@@ -33,17 +33,34 @@ impl IActionUI for ActionAbout
         let main = cast(*MainWnd) cxt.wnd
         let view = main.editWnd.editView
 
-        var params: AboutDlgParams
-        params.dlgTitle = "About CaptMe"
-        params.messageTitle = "CaptMe"
-        params.message  = "<b>CaptMe<b> was written in <url>Swag<url>."
+        const Date = #run Time.DateTime.now()
 
-        params.smallIcon = Icon.from(&main.icons48, 11)
-        params.bigIcon = Icon.from(&main.appIcon, 0)
+        var params: AboutDlgParams
+        params.dlgTitle     = "About CaptMe"
+        params.messageTitle = Format.toString("CaptMe %.%.%", #swagversion, #swagrevision, #swagbuildnum).toString()
+
+        var msg: String
+        msg += Format.toString("Build on %{j}", Date)
+        msg += "\n\n"
+        msg += "<b>CaptMe<b> is open source and coded in <url>Swag<url>. You can find the code <url>here<url>."
+        msg += "\n\n"
+        msg += Format.toString("Copyright \u00A9 % Christophe Beaudet", Date.year)
+        params.message = msg.toString()
+
+        params.iconTitle = Icon.from(&main.icons48, 11)
+        params.bigIcon   = Icon.from(&main.appIcon, 0)
         params.bigIcon.sizeX, params.bigIcon.sizeY = 96
 
-        let dlg = AboutDlg.create(view.surface, params)
-        dlg.labelMessage.sigUrlClicked += func(lbl, txt) { File.locateWebPage("https://www.swag-lang.org/"); }
+        let dlg = AboutDlg.create(view.surface, params, height: 330)
+        dlg.labelMessage.sigUrlClicked += func(lbl, txt)
+        {
+            switch txt
+            {
+            case "Swag":    Env.locateWebPage("https://www.swag-lang.org/");
+            case "here":    Env.locateWebPage("https://github.com/swag-lang/swag/tree/master/bin/examples/modules/captme/");
+            }
+        }
+
         dlg.doModal(view.surface)
 
         return true

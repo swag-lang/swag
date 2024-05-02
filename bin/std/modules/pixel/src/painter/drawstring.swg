@@ -470,15 +470,20 @@ impl Painter
         var brush = format.brush
         visit &c: text.chunks
         {
-            brush.color = format.palette[c.colorIdx]
+            if c.isEol do
+                continue
+
             if c.isHotUrl do
                 brush.color = format.colorHotUrl
             elif c.isUrl do
                 brush.color = format.colorUrl
+            else do
+                brush.color = format.palette[c.colorIdx]
 
             var under = c.under
             if c.isHotUrl do
                 under = .Underline
+
             drawString(c.pos.x, c.pos.y, c.slice, c.font, brush, under)
         }
 

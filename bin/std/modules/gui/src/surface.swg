@@ -104,6 +104,7 @@ impl Surface
             .wnd.type          = SurfaceWnd
             .wnd.surface       = surface
             .wnd.focusStrategy = .None
+            .wnd.computeStyle()
             .applySurfaceFlags()
         }
 
@@ -113,6 +114,7 @@ impl Surface
         surface.minSize = {128, 128}
         let w = cast(f32) Math.max(surface.minSize.x, cast(f32) width)
         let h = cast(f32) Math.max(surface.minSize.y, cast(f32) height)
+
         surface.sendResizeEvent(w, h)
     }
 

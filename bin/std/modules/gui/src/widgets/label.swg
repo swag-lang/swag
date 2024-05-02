@@ -161,27 +161,16 @@ impl Label
     }
 
     #[Swag.Discardable]
-    func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*Label
+    func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null, flags: LabelFlags = .Zero)->*Label
     {
         Debug.assert(parent != null)
         var pos = position
         if pos.height == 0 do
             pos.height = parent.getThemeMetrics().label_Height
-        let lbl = Wnd.create'Label(parent, name, pos, id)
+        let lbl = Wnd.create'Label(parent, "", pos, id)
+        lbl.labelFlags = flags
+        lbl.setText(name)
         return lbl
-    }
-
-    internal mtd autoHeight()
-    {
-        // Recompute height
-        if labelFlags.has(.AutoHeight)
-        {
-            var painter: Painter{fake: true}
-            var sf       = getStringFormat(false)
-            name.compute()
-            painter.computeLayout(position, &name, sf)
-            position.height = name.boundRect.height
-        }
     }
 
     // Change the text
@@ -196,5 +185,19 @@ impl Label
     mtd getText()->string
     {
         return name.raw
+    }
+
+    // Recompute widget height.
+    // The widget must have the flag 'AutoHeight'.
+    mtd autoHeight()
+    {
+        if labelFlags.has(.AutoHeight)
+        {
+            var painter: Painter{fake: true}
+            var sf       = getStringFormat(false)
+            name.compute()
+            painter.computeLayout(position, &name, sf)
+            position.height = name.boundRect.height
+        }
     }
 }

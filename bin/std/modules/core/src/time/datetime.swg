@@ -22,6 +22,7 @@ enum DateTimeFormat
     TimeIso           // `HH:MM:SS`
     TimeIsoMs         // `HH:MM:SS.ZZZ`
     TimeIsoHM         // `HH:MM`
+    Date              // `DAYOFWEEK MONTH DAY YYYY`
     DateTime          // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS`
     DateTimeMs        // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ`
     DateTimeIso       // `YYYY-MM-DD HH:MM:SS`
@@ -295,6 +296,8 @@ impl DateTime
             return Format.toString("%{02}:%{02}:%{02}.%", hour, minute, second, millisecond)
         case TimeIsoHM:
             return Format.toString("%{02}:%{02}", hour, minute)
+        case Date:
+            return Format.toString("% % % %", dayOfWeekName(dayOfWeek()), monthName(month), day, year)
         case DateTime:
             return Format.toString("% % % % %{02}:%{02}:%{02}", dayOfWeekName(dayOfWeek()), monthName(month), day, year, hour, minute, second)
         case DateTimeMs:
@@ -365,6 +368,7 @@ impl StrConv.IConvert for DateTime
     // | 'g' | `DateTimeFormat.TimeIso`
     // | 'h' | `DateTimeFormat.TimeIsoMs`
     // | 'i' | `DateTimeFormat.TimeIsoHM`
+    // | 'j' | `DateTimeFormat.Date`
     //
     // ```swag
     // let myDate = DateTime.now()
@@ -398,6 +402,8 @@ impl StrConv.IConvert for DateTime
                 str = toString(.TimeIsoMs)
             case `i`:
                 str = toString(.TimeIsoHM)
+            case `j`:
+                str = toString(.Date)
             default:
                 str = toString(.DateTime)
             }

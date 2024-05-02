@@ -13,20 +13,20 @@ public struct AboutDlgParams
     dlgTitle:         string
     messageTitle:     string
     message:          string
-    smallIcon:        Icon       // Icon that will be displayed in the title bar
+    iconTitle:        Icon       // Icon that will be displayed in the title bar
     bigIcon:          Icon       // Big icon, inside the dialog
 }
 
 public impl AboutDlg
 {
     // Creates the message box
-    func create(from: *Surface, params: AboutDlgParams)->*AboutDlg
+    func create(from: *Surface, params: AboutDlgParams, width, height: s32 = 0)->*AboutDlg
     {
         let dlg = Wnd.create'AboutDlg()
-        let srf = dlg.createSurface(from, 0, 0, 500, 300)
+        let w = cast(s32) width orelse 500
+        let h = cast(s32) height orelse 300
+        let srf = dlg.createSurface(from, 0, 0, w, h, .CloseBtn)
         srf.setTitle(params.dlgTitle)
-
-        let metrics = from.wnd.getThemeMetrics()
 
         with let stackLayout = StackLayoutCtrl.create(srf.getView())
         {
@@ -34,25 +34,27 @@ public impl AboutDlg
             .padding.y = params.bigIcon.sizeY * 0.25
         }
 
-        with dlg.labelMessageTitle = Label.create(stackLayout, params.messageTitle, {})
+        with dlg.labelMessageTitle = Label.create(stackLayout, params.messageTitle)
         {
             let fontSize = cast(s32) (dlg.getThemeMetrics().defaultFontSize * 1.5)
             .style.setFont(dlg.getTheme().createDefaultFontfamily(fontSize))
             .dockStyle         = .Top
             .vertAlignmentText = .Top
-            .horzAlignmentText = .Justify
+            .horzAlignmentText = .Left
+            .labelFlags.add(.AutoHeight)
+            .autoHeight()
         }
 
-        with dlg.labelMessage = Label.create(stackLayout, params.message, {})
+        with dlg.labelMessage = Label.create(stackLayout, params.message, flags: .AutoHeight | .WordWrap)
         {
             .dockStyle         = .Top
             .vertAlignmentText = .Top
-            .horzAlignmentText = .Justify
+            .horzAlignmentText = .Left
         }
 
-        if params.smallIcon.isValid()
+        if params.iconTitle.isValid()
         {
-            var cpyIcon = params.smallIcon
+            var cpyIcon = params.iconTitle
             cpyIcon.sizeX, cpyIcon.sizeY = dlg.getThemeMetrics().wnd_BigCaptionCY * 0.8
             srf.setIcon(cpyIcon)
         }
@@ -63,7 +65,6 @@ public impl AboutDlg
             with dlg.labelIcon = Label.create(srf.wnd.view, "", {0, 0, widthIconPanel, 0})
             {
                 .dockStyle         = .Left
-                .iconColor         = Argb.White
                 .padding.y         = params.bigIcon.sizeY * 0.25
                 .icon              = params.bigIcon
                 .horzAlignmentIcon = .Center

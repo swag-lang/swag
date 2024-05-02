@@ -111,18 +111,3 @@ func openWrite(fullName: string)->FileStream throw
 {
     return open(fullName, FileMode.Create, FileAccess.Write, FileShare.Zero)
 }
-
-// Locate file in the file explorer
-func locateInExplorer(name: string)
-{
-    var x: String = name
-    x.replace("/", "\\")
-    x = Format.toString("/select,\"%\"", x)
-    discard catch Env.startProcess("explorer.exe", x)
-}
-
-// Locate file in the internet explorer
-func locateWebPage(name: string)
-{
-    discard catch ShellExecuteA(null, null, @dataof(name), null, null, SW_SHOW)
-}
