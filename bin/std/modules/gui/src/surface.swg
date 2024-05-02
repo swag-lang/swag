@@ -240,6 +240,11 @@ impl Surface
         painter.pushClippingRect(wnd.getSurfaceRect())
         painter.setColorMaskColor()
         wnd.paint(&cxt)
+
+        // var dbgColor = Random.shared().nextU32() & 0x00FFFFFF
+        // dbgColor |= 0x55000000
+        // painter.fillRect(clipRect, Color.fromArgb(dbgColor))
+
         painter.setColorMaskAlpha()
         painter.clear(Argb.Black)
         painter.end()

@@ -18,7 +18,7 @@ impl IWnd for Button
         if evt.id != id do
             return
 
-        if evt.setFlags & .Icon and icon != evt.icon
+        if evt.setFlags & .Icon and (icon.imageList != evt.icon.imageList or icon.index != evt.icon.index)
         {
             evt.accepted = true
             icon         = evt.icon
