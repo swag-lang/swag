@@ -393,6 +393,16 @@ impl MenuCtrl
         timer = null
     }
 
+    mtd resetAnim()
+    {
+        visit i: items
+        {
+            i.aniSel.reset()
+            i.aniText.reset()
+            i.aniRightText.reset()
+        }
+    }
+
     public mtd updateState()
     {
         visit i: items
@@ -424,6 +434,7 @@ impl MenuCtrl
             .bringToTop()
             .show()
             .captureMouse()
+            .resetAnim()
             .hotIdx      = Swag.U32.Max
             .selectedIdx = Swag.U32.Max
             .subVisible  = null

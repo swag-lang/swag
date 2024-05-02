@@ -1,6 +1,7 @@
 #global public
 using Pixel
 
+// Used to animate the blending of a color.
 struct BlendColor
 {
     curVec4:       Math.Vector4
@@ -57,6 +58,13 @@ impl BlendColor
         wnd.invalidate()
     }
 
+    // Reset the blend
+    mtd reset()
+    {
+        start = true
+    }
+
+    // Get the current color
     mtd cur()->Color
     {
         return Color.fromVector4(curVec4)
