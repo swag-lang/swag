@@ -147,7 +147,7 @@ namespace
     // That's why we have here lots of native identical functions, which are dynamically associated to a bytecode
     // when calling @mkcallback
 
-    void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6);
+    void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6, void* p7, void* p8, void* p9, void* p10);
 
     struct Callback
     {
@@ -155,10 +155,10 @@ namespace
         FuncCB cb;
     };
 
-#define DECL_CB(__idx)                                                                  \
-    void* __callback##__idx(void* p1, void* p2, void* p3, void* p4, void* p5, void* p6) \
-    {                                                                                   \
-        return doCallback(&__callback##__idx, p1, p2, p3, p4, p5, p6);                  \
+#define DECL_CB(__idx)                                                                                                           \
+    void* __callback##__idx(void* p1, void* p2, void* p3, void* p4, void* p5, void* p6, void* p7, void* p8, void* p9, void* p10) \
+    {                                                                                                                            \
+        return doCallback(&__callback##__idx, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);                                          \
     }
 
 #define USE_CB(__idx)              \
@@ -233,7 +233,7 @@ namespace
     };
 
     // This is the actual callback that will be called by external libraries
-    void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6)
+    void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6, void* p7, void* p8, void* p9, void* p10)
     {
         uint32_t cbIndex = UINT32_MAX;
 
@@ -259,9 +259,9 @@ namespace
         SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
 
         if (typeFunc->numReturnRegisters())
-            byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, &result, p1, p2, p3, p4, p5, p6);
+            byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, &result, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
         else
-            byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, p1, p2, p3, p4, p5, p6);
+            byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
 
         return result;
     }

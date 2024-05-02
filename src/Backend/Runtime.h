@@ -147,7 +147,7 @@ using SwagContext = struct SwagContext
     uint32_t                hasError;
 };
 
-using FuncCB = void* (*)(void*, void*, void*, void*, void*, void*);
+using FuncCB = void* (*)(void*, void*, void*, void*, void*, void*, void*, void*, void*, void*);
 
 using SwagBytecodeRun  = void (*)(void*, ...);
 using SwagThreadRun    = void (*)(void*);

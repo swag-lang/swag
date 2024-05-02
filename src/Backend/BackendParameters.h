@@ -12,7 +12,7 @@ constexpr uint32_t SWAG_LIMIT_MIN_STACK           = 1024;
 constexpr uint32_t SWAG_LIMIT_MAX_STACK           = 16 * 1024 * 1024;
 constexpr uint32_t SWAG_LIMIT_PAGE_STACK          = 0x1000;
 constexpr uint32_t SWAG_LIMIT_MAX_VARIADIC_PARAMS = 255;
-constexpr uint32_t SWAG_LIMIT_CB_MAX_PARAMS       = 6;
+constexpr uint32_t SWAG_LIMIT_CB_MAX_PARAMS       = 10;
 constexpr uint32_t SWAG_LIMIT_CLOSURE_SIZEOF      = 8 * sizeof(void*);
 
 struct BackendTarget
