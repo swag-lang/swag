@@ -107,7 +107,7 @@ public func locateInExplorer(name: string)
 }
 
 // Locate file in the internet explorer
-public func locateWebPage(name: string)
+public func locateUrl(name: string)
 {
     discard catch ShellExecuteA(null, null, @dataof(name), null, null, SW_SHOW)
 }

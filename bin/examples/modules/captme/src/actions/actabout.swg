@@ -56,8 +56,8 @@ impl IActionUI for ActionAbout
         {
             switch txt
             {
-            case "Swag":    Env.locateWebPage("https://www.swag-lang.org/");
-            case "here":    Env.locateWebPage("https://github.com/swag-lang/swag/tree/master/bin/examples/modules/captme/");
+            case "Swag":    Env.locateUrl("https://www.swag-lang.org/");
+            case "here":    Env.locateUrl("https://github.com/swag-lang/swag/tree/master/bin/examples/modules/captme/");
             }
         }
 
