@@ -85,10 +85,10 @@ impl Dialog
     const BtnCancel = "Dialog.cancel"
 
     // Creates a simple dialog box
-    func createDialog(from: *Surface, width = 512, height = 300, title: string = null)->*Dialog
+    func createDialog(from: *Surface, width = 512, height = 300, title: string = null, flags = SurfaceFlags.Zero)->*Dialog
     {
         let dlg = Wnd.create'Dialog()
-        let srf = dlg.createSurface(from, 0, 0, width, height)
+        let srf = dlg.createSurface(from, 0, 0, width, height, flags)
         srf.setTitle(title)
         srf.center(from)
         return dlg
@@ -114,8 +114,13 @@ impl Dialog
         }
 
         setFocus()
-
         return srf
+    }
+
+    // Returns the view where stuff can be put.
+    mtd getView()->*Wnd
+    {
+        return surface.wnd.view
     }
 
     // Display dialog as modal, and returns the user selected window id

@@ -427,15 +427,18 @@ impl Painter
             text.boundRect.x     = Math.min(text.boundRect.x, x1)
             text.boundRect.width = Math.max(text.boundRect.width, l.measure.width)
 
-            loop idx: l.start until l.end
+            if l.end > l.start
             {
-                let c = &text.chunks[idx]
-                c.pos.x = x1
-                if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !l.hasEol do
-                    x1 += (pos.width - l.measure.width) / l.countSpaces
-                else do
-                    x1 += c.boundRect.width
-                c.pos.y = y1
+                loop idx: l.start until l.end
+                {
+                    let c = &text.chunks[idx]
+                    c.pos.x = x1
+                    if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !l.hasEol do
+                        x1 += (pos.width - l.measure.width) / l.countSpaces
+                    else do
+                        x1 += c.boundRect.width
+                    c.pos.y = y1
+                }
             }
 
             y += format.font.regular.height + format.lineGap

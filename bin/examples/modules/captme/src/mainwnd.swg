@@ -294,6 +294,7 @@ impl MainWnd
         registerAction'ActionEdit()
         registerAction'ActionGlobal()
         registerAction'ActionAbout()
+        registerAction'ActionOptions()
     }
 
     mtd registerShortcuts()
@@ -466,6 +467,7 @@ impl MainWnd
 
         with let helpMenu = MenuCtrl.createPopup(parent, owner: self)
         {
+            .addItem(CmdIdOptions)
             .addItem(CmdIdAbout)
             topMenu.addPopup("Help", helpMenu)
         }

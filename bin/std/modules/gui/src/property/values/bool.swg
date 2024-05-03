@@ -35,7 +35,7 @@ impl PropertyList
             .dockStyle = .Center
             .labelFlags |= .WordWrap | .AutoHeight
             .horzAlignmentText = .Justify
-            .setText(dispDesc)
+            .setText(dispDesc == null ? "" : cast(string) dispDesc)
         }
 
         item.sigResize += closure|label, line, lineHeight|(item)

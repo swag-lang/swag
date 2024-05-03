@@ -22,7 +22,7 @@ impl IActionUI for ActionAbout
         {
         case CmdIdAbout:
             evt.setFlags |= .Name
-            evt.name = "About"
+            evt.name = "About..."
         }
 
         return true
