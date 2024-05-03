@@ -34,7 +34,7 @@ impl PropertyList
         {
             .dockStyle = .Center
             .labelFlags |= .WordWrap | .AutoHeight
-            .horzAlignmentText = .Justify
+            .horzAlignmentText = .Left
             .setText(dispDesc == null ? "" : cast(string) dispDesc)
         }
 
