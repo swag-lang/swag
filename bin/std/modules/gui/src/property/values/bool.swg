@@ -14,7 +14,7 @@ impl PropertyList
         var data = cast(*bool) item.data
         if item.checkBox do
             dref data = item.checkBox.checked == .Checked ? true : false
-        hasChanged()
+        hasChanged(item)
     }
 
     mtd constructBool(value: Swag.TypeValue, data: *u8)

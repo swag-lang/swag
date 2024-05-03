@@ -22,10 +22,10 @@ impl PropertyList
             {
                 .dockStyle = .Left
                 .setInputF64()
-                .sigLoseFocus += closure|self, dataField|(ed)
+                .sigLoseFocus += closure|self, dataField, item|(ed)
                 {
                     dref dataField = catch StrConv.toF32(ed.text)
-                    self.hasChanged()
+                    self.hasChanged(item)
                 }
             }
 

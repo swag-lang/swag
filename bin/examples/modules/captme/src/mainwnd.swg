@@ -331,6 +331,7 @@ impl MainWnd
         registerKeyShortcut(.Zero, .Up, CmdIdMoveSelTop)
         registerKeyShortcut(.Zero, .Right, CmdIdMoveSelRight)
         registerKeyShortcut(.Zero, .Down, CmdIdMoveSelBottom)
+        registerKeyShortcut(.CtrlAlt, .O, CmdIdOptions)
 
         var errorReg = false
 

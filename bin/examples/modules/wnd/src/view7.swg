@@ -79,12 +79,12 @@ func createView7(_tabView: *Tab, view: *Wnd)
     lt1.addStruct(aa)
     lt1.splitter.setPaneSize(0, 150)
 
-    lt.sigChanged += closure|lt1|(lt)
+    lt.sigChanged += closure|lt1|(lt, item)
     {
         lt1.prop.refresh()
     }
 
-    lt1.prop.sigChanged += closure|lt|(lt1)
+    lt1.prop.sigChanged += closure|lt|(lt1, item)
     {
         lt.refresh()
     }

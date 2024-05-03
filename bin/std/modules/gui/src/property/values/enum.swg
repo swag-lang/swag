@@ -101,7 +101,7 @@ impl PropertyList
             }
         }
 
-        hasChanged()
+        hasChanged(item)
     }
 
     mtd validateEnum(item: *PropertyListItem)
@@ -133,7 +133,7 @@ impl PropertyList
             }
         }
 
-        hasChanged()
+        hasChanged(item)
     }
 
     mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8)
@@ -175,7 +175,7 @@ impl PropertyList
             {
                 .dockStyle = .Center
                 .labelFlags |= .WordWrap | .AutoHeight
-                .horzAlignmentText = .Justify
+                .horzAlignmentText = .Left
                 .setText(dispDesc)
             }
 

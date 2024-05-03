@@ -61,7 +61,14 @@ impl IWnd for Dialog
                         break
                     }
                 }
+
             case Escape:
+                if surface.flags.has(.CloseBtn)
+                {
+                    validateId(BtnCancel)
+                    break
+                }
+
                 visit btn: buttons
                 {
                     if btn.id == BtnNo or btn.id == BtnCancel

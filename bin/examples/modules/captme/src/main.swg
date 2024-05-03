@@ -1,5 +1,12 @@
 var g_App: Application
 
+struct Options
+{
+    app:    ApplicationOptions
+}
+
+var g_Options: Options
+
 #main
 {
     try Jobs.setNumWorkers()

@@ -8,7 +8,7 @@ struct Application
     using native:           ApplicationNative
     sigFrame:               SigArray'closure(*Application)
 
-    options:                Options
+    options:                ApplicationOptions
     appIcon:                Pixel.Image
     renderer:               Pixel.RenderOgl
     theme:                  *Theme

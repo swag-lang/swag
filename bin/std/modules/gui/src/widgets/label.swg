@@ -36,6 +36,10 @@ impl IWnd for Label
         var pos = surfaceToLocal(evt.surfacePos)
         switch evt.kind
         {
+        case MouseWheel:
+            evt.accepted = false
+            return
+
         case MousePressed:
             if evt.button == .Left and hotChunk do
                 sigUrlClicked.call(self, hotChunk.slice)

@@ -148,7 +148,7 @@ impl PropertyList
             }
         }
 
-        hasChanged()
+        hasChanged(item)
     }
 
     mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8)

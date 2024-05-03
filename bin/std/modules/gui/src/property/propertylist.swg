@@ -44,7 +44,7 @@ struct PropertyList
     enumFlagsMarginBefore:     s32 = 10
     sizeEditValue:             s32 = 200
 
-    sigChanged:                SigArray'closure(*Self)
+    sigChanged:                SigArray'closure(*Self, *PropertyListItem)
 
     font0:                     FontFamily
     font1:                     FontFamily
@@ -175,7 +175,7 @@ internal impl PropertyList
         with let label = Label.create(line, dispName, {0, 0, position.width, nameHeight})
         {
             .labelFlags |= .WordWrap | .AutoHeight
-            .horzAlignmentText = .Justify
+            .horzAlignmentText = .Left
             .margin.y          = nameMarginBefore
             .margin.w          = nameMarginAfter
         }
@@ -193,7 +193,7 @@ internal impl PropertyList
             {
                 let labelDesc = Label.create(line, "", {0, 0, position.width, 0})
                 labelDesc.labelFlags |= .WordWrap | .AutoHeight
-                labelDesc.horzAlignmentText = .Justify
+                labelDesc.horzAlignmentText = .Left
                 labelDesc.setText(dispDesc)
                 labelDesc.margin.w = descMarginAfter
                 item.labelDesc     = labelDesc
@@ -343,10 +343,10 @@ impl PropertyList
     }
 
     // To be called when a value has changed.
-    mtd hasChanged()
+    mtd hasChanged(item: *PropertyListItem)
     {
         refresh()
-        sigChanged.call(self)
+        sigChanged.call(self, item)
     }
 
     // Show hidden content depending on the input 'filter'.

@@ -14,10 +14,10 @@ impl PropertyList
             .dockStyle = .Left
             .margin.z  = 4
             .setInputX64()
-            .sigLoseFocus += closure|self, color|(ed)
+            .sigLoseFocus += closure|self, color, item|(ed)
             {
                 color.argb = cast(u32) catch StrConv.parseX64(ed.text).value
-                self.hasChanged()
+                self.hasChanged(item)
             }
         }
 
@@ -38,15 +38,15 @@ impl PropertyList
             bc.painter.fillRoundRect(pos, 5, 5, dref color)
         }
 
-        btn.sigShowPopup += closure|self, color|(btn)
+        btn.sigShowPopup += closure|self, color, item|(btn)
         {
             let frame  = btn.createAnchorPopup(356, 382)
             let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54})
             picker.setColor(color)
-            picker.sigChanged += closure|self, color|(pk)
+            picker.sigChanged += closure|self, color, item|(pk)
             {
                 color.argb = pk.getColor().argb
-                self.hasChanged()
+                self.hasChanged(item)
             }
         }
 

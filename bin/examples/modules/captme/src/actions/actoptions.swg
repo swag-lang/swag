@@ -36,10 +36,14 @@ impl IActionUI for ActionOptions
         let dlg = Dialog.createDialog(view.surface, 800, 600, title: "Options", flags: .Border | .CloseBtn | .Sizeable)
         dlg.addButton("Close", Dialog.BtnYes)
 
-        let lt1 = PropertyListCtrl.create(dlg.getView())
-        lt1.setAllMargins(10)
-        lt1.dockStyle = .Center
-        lt1.addStruct(main.getApp().options)
+        let opt = PropertyListCtrl.create(dlg.getView())
+        opt.setAllMargins(10)
+        opt.dockStyle = .Center
+        opt.addStruct(g_Options)
+
+        opt.prop.sigChanged += func(opt, item)
+        {
+        }
 
         discard dlg.doModal()
         return true
