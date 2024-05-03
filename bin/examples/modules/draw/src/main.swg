@@ -552,7 +552,7 @@ func displayPage6(painter: *Pixel.Painter)
     format.palette[1] = Argb.Red
     format.palette[2] = Argb.Green
 
-    str = "<u>normal<u> <i>italic<b>bold<b><i> another <p1>one<p1> <p2><u>two<u><p2>"
+    str = "<u>normal</u> <i>italic<b>bold</b></i> another <p1>one</p> <p2><u>two</u></p>"
     painter.drawRichString({10, 10, 100, 100}, &str, format)
 
     str = "this is\na\ntext"
@@ -564,7 +564,7 @@ func displayPage6(painter: *Pixel.Painter)
     painter.fillRect({110, 10, 100, 100}, Argb.Gray)
     painter.drawRichString({110, 10, 100, 100}, &str, format)
 
-    str                  = "Lorem ipsum dolor sit amet, <b>consectetur<b> adipiscing elit. Sed non risus.\n<p1>Suspendisse<p1> lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, <u>dolor<u>."
+    str                  = "Lorem ipsum dolor sit amet, <b>consectetur</b> adipiscing elit. Sed non risus.\n<p1>Suspendisse</p> lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, <u>dolor</u>."
     format.horzAlignment = .Center
     format.flags         = .WordWrap
     painter.fillRect({10, 200, 200, 200}, Argb.Gray)

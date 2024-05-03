@@ -42,7 +42,7 @@ impl IActionUI for ActionAbout
         var msg: String
         msg += Format.toString("Build on %{j}", Date)
         msg += "\n\n"
-        msg += "<b>CaptMe<b> is open source and coded in <url>Swag<url>. You can find the code <url>here<url>."
+        msg += "<b>CaptMe</b> is open source and coded in <url>Swag</url>. You can find the code <url>here</url>."
         msg += "\n\n"
         msg += Format.toString("Copyright \u00A9 % Christophe Beaudet", Date.year)
         params.message = msg.toString()

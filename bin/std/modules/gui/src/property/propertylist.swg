@@ -168,9 +168,9 @@ internal impl PropertyList
         var dispName: String
         let attrName  = Reflection.getAttributeValue(value, PropertyList.Name, "name")
         if attrName != null do
-            dispName = cast(string) attrName
+            dispName = Format.toString("<b>%</b>", cast(string) attrName)
         else do
-            dispName = Format.toString("<b>%<b>", value.name)
+            dispName = Format.toString("<b>%</b>", value.name)
 
         with let label = Label.create(line, dispName, {0, 0, position.width, nameHeight})
         {

@@ -29,13 +29,13 @@ struct AA
 {
     tt: string = "static string"
 
-    #[Category("Categ"), SubCategory("SubCateg"), Name("<b>This is a name<b>: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has do be done, and this is it.")]
+    #[Category("Categ"), SubCategory("SubCateg"), Name("This is a name: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has do be done, and this is it.")]
     xu8: u8 = 30
 
     #[EditUnit("ms")]
     degs: f32 = 0.5
 
-    #[Name("<b>Another name<b>"), EditSlider(0, 1), EditSize(300)]
+    #[Name("Another name"), EditSlider(0, 1), EditSize(300)]
     xf32: f32 = 0.5
 
     struct0: SubStruct
@@ -43,10 +43,10 @@ struct AA
     #[Description("This is a custom color")]
     color: Color
 
-    #[Name("<b>Vector2<b>")]
+    #[Name("Vector2")]
     v2: Math.Vector2{11.5, 22}
 
-    #[Name("<b>Vector3<b>")]
+    #[Name("Vector3")]
     #[Description("This is a vector3.")]
     v3: Math.Vector3{11.5, 22, 33}
 
@@ -63,7 +63,7 @@ struct AA
     #[Category("Categ1"), Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     value: Enum = Third
 
-    #[Name("<b>Another name<b>")]
+    #[Name("Another name")]
     value2: EnumFlags = Val1 | Val3
 }
 

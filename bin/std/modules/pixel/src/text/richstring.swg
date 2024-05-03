@@ -22,8 +22,11 @@ struct RichChunk
 // This kind of string is a specific version of [Core.String] but specific for painting. It can contains
 // some special markers to change it's appearence.
 // ```swag
-// <b> this is bold<b>
-// <p1> this will have special color 1<p1>
+// <b>this is bold</b>
+// <i>this is italic</i>
+// <p1>this will have special color 1</p>
+// <p2>this will have special color 2</p>
+// <p3>this will have special color 3</p>
 // ...
 // ```swag
 // See [[RichString.set]] for a list of available markers.
@@ -60,24 +63,24 @@ impl RichString
         chunk.isSpace      = space
         chunk.isEol        = eol
         chunk.isUrl        = url
-        chunk.colorIdx     = colorFg
-        chunk.under        = under
+        chunk.colorIdx     = colorFg.back()
+        chunk.under        = under.back()
         chunk.hasFontStyle = false
 
         if url do
             hasUrl = true
 
-        if isBold and isItalic
+        if isBold.back() and isItalic.back()
         {
             chunk.hasFontStyle = true
             chunk.fontStyle    = .BoldItalic
         }
-        elif isBold
+        elif isBold.back()
         {
             chunk.hasFontStyle = true
             chunk.fontStyle    = .Bold
         }
-        elif isItalic
+        elif isItalic.back()
         {
             chunk.hasFontStyle = true
             chunk.fontStyle    = .Italic
@@ -114,7 +117,7 @@ impl RichString
     // * `<p3>` => color palette 3
     // * `<url>` => clickable
     // ```swag
-    // <b>this is bold<b> but this is normal <i>and this is italic</i>
+    // <b>this is bold</b> but this is normal <i>and this is italic</i>
     // ```swag
     mtd set(text: string)
     {
@@ -143,6 +146,10 @@ impl RichString
                 scan += 3
                 count -= 3
                 continue
+            case Utf8.startsWith(sl, "</u>"), Utf8.startsWith(sl, "</b>"), Utf8.startsWith(sl, "</i>"), Utf8.startsWith(sl, "</p>"):
+                scan += 4
+                count -= 4
+                continue
             case Utf8.startsWith(sl, "<p1>"), Utf8.startsWith(sl, "<p2>"), Utf8.startsWith(sl, "<p3>"):
                 scan += 4
                 count -= 4
@@ -150,6 +157,10 @@ impl RichString
             case Utf8.startsWith(sl, "<url>"):
                 scan += 5
                 count -= 5
+                continue
+            case Utf8.startsWith(sl, "</url>"):
+                scan += 6
+                count -= 6
                 continue
             }
 
@@ -160,7 +171,6 @@ impl RichString
 
         return result
     }
-
 
     // Get the url chunk at position 'at'.
     // If an url does not exists, returns 'null'.
@@ -192,7 +202,7 @@ impl RichString
         if !dirty or force do
             return
 
-        dirty = false
+        dirty  = false
         hasUrl = false
         chunks.clear()
         layoutRect.clear()
@@ -204,10 +214,16 @@ impl RichString
         var startChunk = 0'u64
         var chunk:     RichChunk
 
-        var byteIdx = 0'u64
-        var isBold, isItalic = false
-        var colorFg = 0
-        var under   = UnderlineStyle.None
+        var byteIdx   = 0'u64
+        var isBold:   Array'bool
+        var isItalic: Array'bool
+        var colorFg:  Array'u32
+        var under:    Array'UnderlineStyle
+
+        isBold.add(false)
+        isItalic.add(false)
+        colorFg.add(0)
+        under.add(UnderlineStyle.None)
 
         var scan = raw.buffer
         while count
@@ -219,44 +235,82 @@ impl RichString
                 break
             case Utf8.startsWith(sl, "<u>"):
                 addChunk(byteIdx)
-                under = under == .None ? .Underline : .None
+                under.add(UnderlineStyle.Underline)
                 byteIdx, scan, startChunk += 3
                 count -= 3
                 continue
+            case Utf8.startsWith(sl, "</u>"):
+                addChunk(byteIdx)
+                if under.count > 1 do
+                    under.removeBack()
+                byteIdx, scan, startChunk += 4
+                count -= 4
+                continue
+
             case Utf8.startsWith(sl, "<b>"):
                 addChunk(byteIdx)
-                isBold = !isBold
+                isBold.add(true)
                 byteIdx, scan, startChunk += 3
                 count -= 3
                 continue
+            case Utf8.startsWith(sl, "</b>"):
+                addChunk(byteIdx)
+                if isBold.count > 1 do
+                    isBold.removeBack()
+                byteIdx, scan, startChunk += 4
+                count -= 4
+                continue
+
             case Utf8.startsWith(sl, "<i>"):
                 addChunk(byteIdx)
-                isItalic = !isItalic
+                isItalic.add(true)
                 byteIdx, scan, startChunk += 3
                 count -= 3
                 continue
+            case Utf8.startsWith(sl, "</i>"):
+                addChunk(byteIdx)
+                if isItalic.count > 1 do
+                    isItalic.removeBack()
+                byteIdx, scan, startChunk += 4
+                count -= 4
+                continue
+
             case Utf8.startsWith(sl, "<p1>"):
                 addChunk(byteIdx)
-                colorFg = colorFg == 0 ? 1 : 0
+                colorFg.add(1)
                 byteIdx, scan, startChunk += 4
                 count -= 4
                 continue
             case Utf8.startsWith(sl, "<p2>"):
                 addChunk(byteIdx)
-                colorFg = colorFg == 0 ? 2 : 0
+                colorFg.add(2)
                 byteIdx, scan, startChunk += 4
                 count -= 4
                 continue
             case Utf8.startsWith(sl, "<p3>"):
                 addChunk(byteIdx)
-                colorFg = colorFg == 0 ? 3 : 0
+                colorFg.add(3)
                 byteIdx, scan, startChunk += 4
                 count -= 4
                 continue
+
+            case Utf8.startsWith(sl, "</p>"):
+                addChunk(byteIdx)
+                if colorFg.count > 1 do
+                    colorFg.removeBack()
+                byteIdx, scan, startChunk += 4
+                count -= 4
+                continue
+
             case Utf8.startsWith(sl, "<url>"):
-                addChunk(byteIdx, url: true)
+                addChunk(byteIdx)
                 byteIdx, scan, startChunk += 5
                 count -= 5
+                continue
+            case Utf8.startsWith(sl, "</url>"):
+                addChunk(byteIdx, url: true)
+                byteIdx, scan, startChunk += 6
+                count -= 6
                 continue
             }
 
