@@ -2,6 +2,14 @@ using Gui
 
 const CmdIdOptions = "CmdIdOptions"
 
+struct Options
+{
+    #[PropertyList.Category("Application")]
+    app:    ApplicationOptions
+}
+
+var g_Options: Options
+
 struct ActionOptions {}
 impl IActionUI for ActionOptions
 {
@@ -41,8 +49,10 @@ impl IActionUI for ActionOptions
         opt.dockStyle = .Center
         opt.addStruct(g_Options)
 
-        opt.prop.sigChanged += func(opt, item)
+        opt.prop.sigChanged += closure|main|(opt, item)
         {
+            main.getApp().options = g_Options.app
+            main.invalidate()
         }
 
         discard dlg.doModal()

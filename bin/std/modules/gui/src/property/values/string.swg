@@ -8,9 +8,9 @@ impl PropertyList
         hasChanged(item)
     }
 
-    mtd constructString(value: Swag.TypeValue, data: *u8)
+    mtd constructString(value: Swag.TypeValue, data: *u8, parent: *PropertyListItem)
     {
-        let item = addItem(value, data)
+        let item = addItem(value, data, parent)
         let ed   = EditBox.create(item.line, dref cast(*String) data)
         item.editBox = ed
         ed.sigLoseFocus += closure|self, item|(ed)

@@ -136,9 +136,9 @@ impl PropertyList
         hasChanged(item)
     }
 
-    mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8)
+    mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parent: *PropertyListItem)
     {
-        let item = addItem(value, data)
+        let item = addItem(value, data, parent)
         visit v: typeEnum.values
         {
             with let line = Wnd.create'Wnd(edView)
@@ -195,15 +195,15 @@ impl PropertyList
         }
     }
 
-    mtd constructEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8)
+    mtd constructEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parent: *PropertyListItem)
     {
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {
-            constructEnumFlags(value, typeEnum, data)
+            constructEnumFlags(value, typeEnum, data, parent)
             return
         }
 
-        let item = addItem(value, data)
+        let item = addItem(value, data, parent)
         with let ed   = ComboBox.create(item.line, kind: .CheckBox)
         {
             .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)

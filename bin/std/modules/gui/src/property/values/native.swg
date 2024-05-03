@@ -151,9 +151,9 @@ impl PropertyList
         hasChanged(item)
     }
 
-    mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8)
+    mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parent: *PropertyListItem)
     {
-        let item = addItem(value, data)
+        let item = addItem(value, data, parent)
 
         if Reflection.hasAttribute(value, EditSlider)
         {

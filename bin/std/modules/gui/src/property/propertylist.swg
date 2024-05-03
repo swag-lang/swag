@@ -28,7 +28,7 @@ impl PropertyList
 // To specialize the edition of a given struct.
 interface IPropertyValue
 {
-    mtd construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8)->*PropertyListItem;
+    mtd construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8, parent: *PropertyListItem)->*PropertyListItem;
 }
 
 struct PropertyList
@@ -63,6 +63,7 @@ struct PropertyListItem
     type:               typeinfo
     typeValue:          Swag.TypeValue
     forceShow:          *Wnd
+    parent:             *PropertyListItem
 
     label:              *Label
     labelDesc:          *Label
@@ -145,7 +146,7 @@ internal impl PropertyList
         }
     }
 
-    mtd addItem(value: Swag.TypeValue, data: *u8, canDesc = true)->*PropertyListItem
+    mtd addItem(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem, canDesc = true)->*PropertyListItem
     {
         with let line = StackLayoutCtrl.create(edView, .TopAutoSize)
         {
@@ -160,6 +161,7 @@ internal impl PropertyList
             .type      = value.pointedType
             .typeValue = value
             .data      = data
+            .parent    = parentItem
         }
 
         line.hookOnEvent = closure|item|(wnd, evt) { return onEvent(item, wnd, evt); }
@@ -204,7 +206,7 @@ internal impl PropertyList
     }
 
     #[Swag.Overload]
-    mtd addStruct(typeStruct: const *Swag.TypeInfoStruct, addr: ^u8)
+    mtd addStruct(typeStruct: const *Swag.TypeInfoStruct, addr: ^u8, parentItem: *PropertyListItem)
     {
         visit value: typeStruct.fields
         {
@@ -216,7 +218,7 @@ internal impl PropertyList
             {
                 var v: Swag.TypeValue
                 v.name = cast(string) categ
-                let item = addItem(v, null)
+                let item = addItem(v, null, parentItem)
                 item.label.style.setFont(&font0)
                 categs.add({item, 0})
             }
@@ -227,7 +229,7 @@ internal impl PropertyList
             {
                 var v: Swag.TypeValue
                 v.name = cast(string) subCateg
-                let item = addItem(v, null)
+                let item = addItem(v, null, parentItem)
                 item.label.style.setFont(&font1)
                 categs.add({item, 1})
             }
@@ -237,38 +239,38 @@ internal impl PropertyList
             {
             case Reflection.isEnum(value.pointedType):
                 let typeEnum = cast(const *Swag.TypeInfoEnum) value.pointedType
-                constructEnum(value, typeEnum, data)
+                constructEnum(value, typeEnum, data, parentItem)
 
             case value.pointedType == Core.String:
-                constructString(value, data)
+                constructString(value, data, parentItem)
 
             case Reflection.isString(value.pointedType):
-                let item = addItem(value, data)
+                let item = addItem(value, data, parentItem)
                 let ed   = EditBox.create(item.line, dref cast(*string) data)
                 ed.editBoxFlags = .ReadOnly
                 item.editBox    = ed
 
             case Reflection.isBool(value.pointedType):
-                constructBool(value, data)
+                constructBool(value, data, parentItem)
 
             case Reflection.isInteger(value.pointedType) or Reflection.isFloat(value.pointedType):
                 let typeNative = cast(const *Swag.TypeInfoNative) value.pointedType
-                constructNative(value, typeNative, data)
+                constructNative(value, typeNative, data, parentItem)
 
             case Reflection.isStruct(value.pointedType):
                 let typeSubStruct = cast(const *Swag.TypeInfoStruct) value.pointedType
                 let iprop         = @mkinterface(data, value.pointedType, IPropertyValue)
                 if iprop != null
                 {
-                    let item = iprop.construct(self, value, data)
+                    let item = iprop.construct(self, value, data, parentItem)
                     Debug.assert(item != null)
                     item.sigRefresh.call(item)
                 }
                 else
                 {
-                    let item = addItem(value, data)
+                    let item = addItem(value, data, parentItem)
                     item.label.style.setFont(&font2)
-                    addStruct(typeSubStruct, data)
+                    addStruct(typeSubStruct, data, item)
                 }
             }
         }
@@ -330,7 +332,7 @@ impl PropertyList
         Debug.assert(typeof.kind == .Struct)
 
         let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
-        addStruct(typeStruct, dataof)
+        addStruct(typeStruct, dataof, null)
 
         edView.sendResizeEvent()
     }

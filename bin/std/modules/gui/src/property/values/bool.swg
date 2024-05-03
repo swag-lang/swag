@@ -17,9 +17,9 @@ impl PropertyList
         hasChanged(item)
     }
 
-    mtd constructBool(value: Swag.TypeValue, data: *u8)
+    mtd constructBool(value: Swag.TypeValue, data: *u8, parent: *PropertyListItem)
     {
-        let item = addItem(value, data, false)
+        let item = addItem(value, data, parent, false)
 
         let lineHeight = getThemeMetrics().btnPush_Height
         let line       = Wnd.create'Wnd(item.line)

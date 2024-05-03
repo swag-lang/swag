@@ -2,10 +2,10 @@ using Core, Pixel
 
 impl PropertyList
 {
-    mtd constructColor(value: Swag.TypeValue, data: ^u8)->*PropertyListItem
+    mtd constructColor(value: Swag.TypeValue, data: ^u8, parentItem: *PropertyListItem)->*PropertyListItem
     {
         let lineHeight = getThemeMetrics().editBox_Height
-        let item       = addItem(value, data)
+        let item       = addItem(value, data, parentItem)
         let color      = cast(*Color) data
         let line       = Wnd.create'Wnd(item.line, {0, 0, 0, lineHeight})
 
@@ -62,8 +62,8 @@ impl PropertyList
 
 public impl IPropertyValue for Color
 {
-    mtd impl construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8)->*PropertyListItem
+    mtd impl construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8, parent: *PropertyListItem)->*PropertyListItem
     {
-        return list.constructColor(value, data)
+        return list.constructColor(value, data, parent)
     }
 }
