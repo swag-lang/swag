@@ -3,9 +3,6 @@ using Core, Pixel
 
 impl PropertyList
 {
-    // Start a new category
-    attr Category(name: string)
-
     // Start a new sub category
     attr SubCategory(name: string)
 
@@ -212,17 +209,6 @@ internal impl PropertyList
         {
             let data = addr + value.offset
 
-            // Category
-            let categ = Reflection.getAttributeValue(value, PropertyList.Category, "name")
-            if categ != null
-            {
-                var v: Swag.TypeValue
-                v.name = cast(string) categ
-                let item = addItem(v, null, parentItem)
-                item.label.style.setFont(&font0)
-                categs.add({item, 0})
-            }
-
             // Sub Category
             let subCateg = Reflection.getAttributeValue(value, PropertyList.SubCategory, "name")
             if subCateg != null
@@ -325,14 +311,25 @@ impl PropertyList
 
     // Add a new struct to display.
     #[Swag.Overload]
-    mtd addStruct(val: any)
+    mtd addStruct(val: any, category: string = null)
     {
         let dataof = @dataof(val)
         let typeof = @kindof(val)
         Debug.assert(typeof.kind == .Struct)
 
+        // Category
+        var item: *PropertyListItem
+        if category != null
+        {
+            var v: Swag.TypeValue
+            v.name = category
+            item = addItem(v, null, null)
+            item.label.style.setFont(&font0)
+            categs.add({item, 0})
+        }
+
         let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
-        addStruct(typeStruct, dataof, null)
+        addStruct(typeStruct, dataof, item)
 
         edView.sendResizeEvent()
     }

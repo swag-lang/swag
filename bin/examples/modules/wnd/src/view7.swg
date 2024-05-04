@@ -29,7 +29,7 @@ struct AA
 {
     tt: string = "static string"
 
-    #[Category("Categ"), SubCategory("SubCateg"), Name("This is a name: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has do be done, and this is it.")]
+    #[SubCategory("SubCateg"), Name("This is a name: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has do be done, and this is it.")]
     xu8: u8 = 30
 
     #[EditUnit("ms")]
@@ -60,7 +60,7 @@ struct AA
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     str: String
 
-    #[Category("Categ1"), Description("This is something that needs to be done except if it not has do be done, and this is it.")]
+    #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     value: Enum = Third
 
     #[Name("Another name")]

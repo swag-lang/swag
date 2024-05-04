@@ -195,15 +195,15 @@ impl PropertyList
         }
     }
 
-    mtd constructEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parent: *PropertyListItem)
+    mtd constructEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertyListItem)
     {
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {
-            constructEnumFlags(value, typeEnum, data, parent)
+            constructEnumFlags(value, typeEnum, data, parentItem)
             return
         }
 
-        let item = addItem(value, data, parent)
+        let item = addItem(value, data, parentItem)
         with let ed   = ComboBox.create(item.line, kind: .CheckBox)
         {
             .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)

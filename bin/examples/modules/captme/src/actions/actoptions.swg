@@ -4,8 +4,7 @@ const CmdIdOptions = "CmdIdOptions"
 
 struct Options
 {
-    #[PropertyList.Category("Application")]
-    app:    ApplicationOptions
+    app: ApplicationOptions
 }
 
 var g_Options: Options
@@ -47,11 +46,10 @@ impl IActionUI for ActionOptions
         let opt = PropertyListCtrl.create(dlg.getView())
         opt.setAllMargins(10)
         opt.dockStyle = .Center
-        opt.addStruct(g_Options)
+        opt.addStruct(main.getApp().options, "Application")
 
         opt.prop.sigChanged += closure|main|(opt, item)
         {
-            main.getApp().options = g_Options.app
             main.invalidate()
         }
 

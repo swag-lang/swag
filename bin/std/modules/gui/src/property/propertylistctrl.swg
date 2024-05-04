@@ -59,6 +59,8 @@ impl PropertyListCtrl
 
     internal mtd fillList()
     {
+        list.clear()
+
         var parentLine: *ListLine
         visit &it: prop.categs
         {
@@ -76,9 +78,9 @@ impl PropertyListCtrl
     }
 
     // Add a new struct to display
-    mtd addStruct(val: any)
+    mtd addStruct(val: any, category: string = null)
     {
-        prop.addStruct(val)
+        prop.addStruct(val, category)
         fillList()
     }
 }
