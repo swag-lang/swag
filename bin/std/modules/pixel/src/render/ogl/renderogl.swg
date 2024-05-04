@@ -275,6 +275,7 @@ impl RenderOgl
         glDisable(GL_SCISSOR_TEST)
     }
 
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     private func GLDebugMessageCallback(Source: GLenum, Type: GLenum, Id: GLuint, Severity: GLenum, Length: GLsizei, Message: const *GLchar, UserParam: const *void)
     {
         //@print(cast(cstring) (Message));
