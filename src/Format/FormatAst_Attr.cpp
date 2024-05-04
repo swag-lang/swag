@@ -311,6 +311,9 @@ bool FormatAst::outputAttributes(FormatContext& context, const AstNode* node, Ty
 
     SWAG_CHECK(outputAttributesGlobalUsing(context, node));
 
+    if(!typeInfo)
+        return true;
+
     const AttributeList* attr = nullptr;
     switch (typeInfo->kind)
     {
