@@ -32,6 +32,7 @@ struct MainWnd
     icons24:               ImageList
     icons48:               ImageList
     appIcon:               ImageList
+    topBar:                *Wnd
     editToolBar:           *Wnd
     editWnd:               *EditWnd
     quickWnd:              *QuickWnd
@@ -474,7 +475,7 @@ impl MainWnd
         }
     }
 
-    mtd createToolbar(topBar: *Wnd)
+    mtd createToolbar()
     {
         mtd createBtn(id: WndId, canCheck = true)
         {
@@ -486,6 +487,7 @@ impl MainWnd
                 if canCheck do
                     .iconBtnFlags.add(.Checkable)
                 .checkedForm = .Bottom
+                .iconSizeX, .iconSizeY = 48
             }
         }
 
@@ -508,6 +510,49 @@ impl MainWnd
         createBtn(CmdIdModeStep)
         createBtn(CmdIdModeImage)
         createBtn(CmdIdModePixSel)
+
+        captureBtn = IconButton.create(topBar, Icon.from(&icons48, 6), {0, 0, 64, 64}, id: CmdIdCapture)
+        libraryBtn = IconButton.create(topBar, Icon.from(&icons48, 8), {64, 0, 64, 64}, id: CmdIdLibrary)
+    }
+
+    mtd setTopBarHeight()
+    {
+        var icons: Array'(*IconButton)
+
+        visit c: topBar.childs
+        {
+            if c.type == IconButton do
+                icons.add(cast(*IconButton) c)
+        }
+
+        visit c: editToolBar.childs
+        {
+            if c.type == IconButton do
+                icons.add(cast(*IconButton) c)
+        }
+
+        visit c: icons
+        {
+            if g_EditorOptions.showToolBarLabels
+            {
+                c.iconBtnFlags.remove(.HideName)
+                c.position.width, c.position.height = 64
+                c.iconSizeX, c.iconSizeY = 48
+            }
+            else
+            {
+                c.iconBtnFlags.add(.HideName)
+                c.position.width, c.position.height = 40
+                c.iconSizeX, c.iconSizeY = 32
+            }
+        }
+
+        topBar.position.height = g_EditorOptions.showToolBarLabels ? 68 : 50
+        editWnd.sendResizeEvent()
+        topBar.sendResizeEvent()
+        editToolBar.sendResizeEvent()
+        applyLayout()
+        sendResizeEvent()
     }
 
     func create(parent: *Wnd)->*MainWnd
@@ -533,17 +578,14 @@ impl MainWnd
             .monitors        = Env.getMonitors()
         }
 
-        with let topBar = Wnd.create'Wnd(res, {0, 0, 64, 68})
+        with res.topBar = Wnd.create'Wnd(res, {0, 0, 64, 68})
         {
             .dockStyle       = .Top
             .backgroundStyle = .Window
             .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
         }
 
-        res.createToolbar(topBar)
-
-        res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), {0, 0, 64, 64}, id: CmdIdCapture)
-        res.libraryBtn = IconButton.create(topBar, Icon.from(&res.icons48, 8), {64, 0, 64, 64}, id: CmdIdLibrary)
+        res.createToolbar()
 
         // Main edit area
         with res.editWnd = EditWnd.create(res, res)
@@ -651,6 +693,7 @@ impl MainWnd
             .updateZoomDisplay()
             .updateSizeDisplay()
             .setBottomSize(.Medium)
+            .setTopBarHeight()
             .updateState()
             .libWnd = LibraryWnd.create(res)
             .libWnd.hide()

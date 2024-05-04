@@ -3,6 +3,8 @@ public struct Button
     using wnd:           Wnd
 
     icon:                Icon
+    iconSizeX:           f32
+    iconSizeY:           f32
     sigPressed:          SigArray'closure(*Self)
     sigRightPressed:     SigArray'closure(*Self)
     isPressed:           bool

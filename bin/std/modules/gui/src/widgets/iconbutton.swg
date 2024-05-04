@@ -16,6 +16,7 @@ enum IconButtonFlags
     CheckableToggle
     Popup
     Center
+    HideName
 }
 
 enum IconButtonArrowPos
@@ -197,6 +198,11 @@ impl IWnd for IconButton
         var pos     = getClientRectPadding()
         let hasIcon = icon.isValid() or sigPaintIcon != null
 
+        if iconSizeX do
+            icon.sizeX = iconSizeX
+        if iconSizeY do
+            icon.sizeY = iconSizeY
+
         // Center everything
         var marginArrow = metrics.btnIcon_MarginArrow
         if iconBtnFlags.has(.Center)
@@ -306,7 +312,7 @@ impl IWnd for IconButton
         }
 
         // Name
-        if !name.isEmpty()
+        if !name.isEmpty() and !iconBtnFlags.has(.HideName)
         {
             var sf: RichStringFormat
             theme.setTextColors(&sf, colorText)
@@ -399,7 +405,7 @@ impl IWnd for IconButton
         {
             sigPaintIcon(self, bc, pos)
         }
-        elif name.raw.isEmpty()
+        elif name.isEmpty() or iconBtnFlags.has(.HideName)
         {
             pos.x = pos.horzCenter() - icon.sizeX * 0.5
             pos.y = pos.vertCenter() - icon.sizeY * 0.5

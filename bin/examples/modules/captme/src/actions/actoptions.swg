@@ -1,13 +1,14 @@
-using Gui
+using Gui, PropertyList
 
 const CmdIdOptions = "CmdIdOptions"
 
-struct Options
+struct EditorOptions
 {
-    app: ApplicationOptions
+    #[Description("Display labels in the toolbar")]
+    showToolBarLabels: bool = true
 }
 
-var g_Options: Options
+var g_EditorOptions: EditorOptions
 
 struct ActionOptions {}
 impl IActionUI for ActionOptions
@@ -46,10 +47,12 @@ impl IActionUI for ActionOptions
         let opt = PropertyListCtrl.create(dlg.getView())
         opt.setAllMargins(10)
         opt.dockStyle = .Center
+        opt.addStruct(g_EditorOptions, "Editor")
         opt.addStruct(main.getApp().options, "Application")
 
         opt.prop.sigChanged += closure|main|(opt, item)
         {
+            main.setTopBarHeight()
             main.invalidate()
         }
 
