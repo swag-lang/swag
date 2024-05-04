@@ -17,19 +17,26 @@ impl PropertyList
         hasChanged(item)
     }
 
-    mtd constructBool(value: Swag.TypeValue, data: *u8, parent: *PropertyListItem)
+    mtd constructBool(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem)
     {
-        let item = addItem(value, data, parent, false)
+        let dispDesc = Reflection.getAttributeValue(value, PropertyList.Description, "desc")
+        var flags = AddItemFlags.Name
+        if dispDesc != null do
+            flags.remove(.Name)
+
+        let item = addItem(value, data, parentItem, flags)
 
         let lineHeight = getThemeMetrics().btnPush_Height
         let line       = Wnd.create'Wnd(item.line)
+
+        if !flags.has(.Name) do
+            line.margin.y = emptyNameMargin
 
         with let ed = CheckButton.create(line, "", {0, 0, lineHeight, 0})
         {
             .dockStyle = .Left
         }
 
-        let dispDesc = Reflection.getAttributeValue(value, PropertyList.Description, "desc")
         with let label = Label.create(line, "", {lineHeight, 0, position.width - lineHeight})
         {
             .dockStyle = .Center

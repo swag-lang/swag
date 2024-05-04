@@ -39,6 +39,7 @@ struct PropertyList
     nameMarginAfter:           s32 = 5
     descMarginAfter:           s32 = 5
     enumFlagsMarginBefore:     s32 = 10
+    emptyNameMargin:           s32 = 10
     sizeEditValue:             s32 = 200
 
     sigChanged:                SigArray'closure(*Self, *PropertyListItem)
@@ -50,6 +51,14 @@ struct PropertyList
     edView:                    *PropertyListView
     items:                     ArrayPtr'PropertyListItem
     categs:                    Array'{ item: *PropertyListItem, lvl: s32 }
+}
+
+#[Swag.EnumFlags]
+enum AddItemFlags
+{
+    Zero
+    Name
+    Description
 }
 
 struct PropertyListItem
@@ -143,7 +152,7 @@ internal impl PropertyList
         }
     }
 
-    mtd addItem(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem, canDesc = true)->*PropertyListItem
+    mtd addItem(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertyListItem
     {
         with let line = StackLayoutCtrl.create(edView, .TopAutoSize)
         {
@@ -164,23 +173,26 @@ internal impl PropertyList
         line.hookOnEvent = closure|item|(wnd, evt) { return onEvent(item, wnd, evt); }
 
         // Name
-        var dispName: String
-        let attrName  = Reflection.getAttributeValue(value, PropertyList.Name, "name")
-        if attrName != null do
-            dispName = Format.toString("<b>%</b>", cast(string) attrName)
-        else do
-            dispName = Format.toString("<b>%</b>", value.name)
-
-        with let label = Label.create(line, dispName, {0, 0, position.width, nameHeight})
+        if flags.has(.Name)
         {
-            .labelFlags |= .WordWrap | .AutoHeight
-            .horzAlignmentText = .Left
-            .margin.y          = nameMarginBefore
-            .margin.w          = nameMarginAfter
-        }
+            var dispName: String
+            let attrName  = Reflection.getAttributeValue(value, PropertyList.Name, "name")
+            if attrName != null do
+                dispName = Format.toString("<b>%</b>", cast(string) attrName)
+            else do
+                dispName = Format.toString("<b>%</b>", value.name)
 
-        item.label  = label
-        item.filter = dispName
+            with let label = Label.create(line, dispName, {0, 0, position.width, nameHeight})
+            {
+                .labelFlags |= .WordWrap | .AutoHeight
+                .horzAlignmentText = .Left
+                .margin.y          = nameMarginBefore
+                .margin.w          = nameMarginAfter
+            }
+
+            item.label  = label
+            item.filter = dispName
+        }
 
         // Description
         let dispDesc = Reflection.getAttributeValue(value, PropertyList.Description, "desc")
@@ -188,7 +200,7 @@ internal impl PropertyList
         {
             item.filter += " "
             item.filter += cast(string) dispDesc
-            if canDesc
+            if flags.has(.Description)
             {
                 let labelDesc = Label.create(line, "", {0, 0, position.width, 0})
                 labelDesc.labelFlags |= .WordWrap | .AutoHeight

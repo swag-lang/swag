@@ -552,7 +552,6 @@ impl MainWnd
         topBar.sendResizeEvent()
         editToolBar.sendResizeEvent()
         applyLayout()
-        sendResizeEvent()
     }
 
     func create(parent: *Wnd)->*MainWnd
