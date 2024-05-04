@@ -496,9 +496,8 @@ namespace
 
     void emitLocalVars(SCBE_CPU& pp, const CPUFunction& f, const Scope* scope, Concat& concat, TypeInfoFuncAttr* const typeFunc)
     {
-        for (uint32_t i = 0; i < f.node->extByteCode()->bc->localVars.size(); i++)
+        for(const auto localVar: f.node->extByteCode()->bc->localVars)
         {
-            const auto localVar = f.node->extByteCode()->bc->localVars[i];
             if (localVar->ownerScope != scope)
                 continue;
 
