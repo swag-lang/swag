@@ -29,8 +29,11 @@ impl PropertyList
         let lineHeight = getThemeMetrics().btnPush_Height
         let line       = Wnd.create'Wnd(item.line)
 
-        if !flags.has(.Name) do
+        if !flags.has(.Name)
+        {
             line.margin.y = emptyNameMargin
+            item.extendFocus = 5
+        }
 
         with let ed = CheckButton.create(line, "", {0, 0, lineHeight, 0})
         {

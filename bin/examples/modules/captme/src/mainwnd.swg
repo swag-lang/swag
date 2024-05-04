@@ -25,6 +25,12 @@ enum BottomSize
     Big
 }
 
+struct EditorOptions
+{
+    #[PropertyList.Description("Display labels in the toolbar")]
+    showToolBarLabels: bool = true
+}
+
 struct MainWnd
 {
     using wnd:             Wnd
@@ -63,6 +69,7 @@ struct MainWnd
     captureToEditor        = true
     captureToClipboard     = false
     captureDelay           = 0
+    editorOptions:         EditorOptions
 
     mdlFormShape:          FormShape
     mdlFormImage:          FormImage
@@ -168,6 +175,7 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.captureDelay", &captureDelay)
                 .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
                 .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
+                .serialize("MainWnd.editorOptions", &editorOptions)
             }
         }
 
@@ -175,6 +183,7 @@ impl IWnd for MainWnd
         {
             quickStyleBar.sendResizeEvent()
             setBottomSize(bottomSize)
+            setTopBarHeight()
             updateState()
         }
     }
@@ -533,21 +542,23 @@ impl MainWnd
 
         visit c: icons
         {
-            if g_EditorOptions.showToolBarLabels
+            if editorOptions.showToolBarLabels
             {
                 c.iconBtnFlags.remove(.HideName)
                 c.position.width, c.position.height = 64
                 c.iconSizeX, c.iconSizeY = 48
+                libraryBtn.position.x = 64
             }
             else
             {
                 c.iconBtnFlags.add(.HideName)
                 c.position.width, c.position.height = 40
                 c.iconSizeX, c.iconSizeY = 32
+                libraryBtn.position.x = 48
             }
         }
 
-        topBar.position.height = g_EditorOptions.showToolBarLabels ? 68 : 50
+        topBar.position.height = editorOptions.showToolBarLabels ? 68 : 50
         editWnd.sendResizeEvent()
         topBar.sendResizeEvent()
         editToolBar.sendResizeEvent()
