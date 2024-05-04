@@ -29,6 +29,9 @@ struct EditorOptions
 {
     #[PropertyList.Description("Display labels in the toolbar")]
     showToolBarLabels: bool = true
+
+    #[PropertyList.Description("The background color of the capture edit window")]
+    editBackColor: Color
 }
 
 struct MainWnd

@@ -136,9 +136,9 @@ impl PropertyList
         hasChanged(item)
     }
 
-    mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parent: *PropertyListItem)
+    mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertyListItem)
     {
-        let item = addItem(value, data, parent)
+        let item = addItem(value, data, parentItem)
         visit v: typeEnum.values
         {
             with let line = Wnd.create'Wnd(edView)

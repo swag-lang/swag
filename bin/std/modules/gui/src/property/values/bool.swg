@@ -32,7 +32,7 @@ impl PropertyList
         if !flags.has(.Name)
         {
             line.margin.y = emptyNameMargin
-            item.extendFocus = 4
+            item.extendFocus = 3
         }
 
         with let ed = CheckButton.create(line, "", {0, 0, lineHeight, 0})
