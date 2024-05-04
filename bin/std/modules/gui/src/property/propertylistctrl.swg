@@ -44,6 +44,7 @@ impl PropertyListCtrl
 
         with let filter = EditBox.create(ed, "", {0, 0, 0, 30})
         {
+            .icon = ed.getTheme().getIcon24(ThemeIcons24.Search, 18)
             .dockStyle = .Top
             .setNote("Search")
             .margin.w = 10
