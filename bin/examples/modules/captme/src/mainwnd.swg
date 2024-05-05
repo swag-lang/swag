@@ -31,7 +31,7 @@ struct EditorOptions
     showToolBarLabels: bool = true
 
     #[PropertyList.Description("The background color of the capture edit window")]
-    editBackColor: Color
+    editBackColor: Color = Argb.Black
 }
 
 struct MainWnd

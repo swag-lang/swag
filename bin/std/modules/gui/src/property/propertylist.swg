@@ -299,25 +299,14 @@ impl PropertyList
             .edView.spacing    = 0
             .edView.wndFlags |= .NoScroll
 
-            let theme = parent.getTheme()
-
             const Font0Size = 30'u32
-            .font0.regular    = Font.create(theme.res.defaultTypeFaceR, Font0Size)
-            .font0.bold       = Font.create(theme.res.defaultTypeFaceB, Font0Size)
-            .font0.italic     = Font.create(theme.res.defaultTypeFaceI, Font0Size)
-            .font0.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font0Size)
-
-            const Font1Size = 25'u32
-            .font1.regular    = Font.create(theme.res.defaultTypeFaceR, Font1Size)
-            .font1.bold       = Font.create(theme.res.defaultTypeFaceB, Font1Size)
-            .font1.italic     = Font.create(theme.res.defaultTypeFaceI, Font1Size)
-            .font1.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font1Size)
-
+            const Font1Size = 24'u32
             const Font2Size = 20'u32
-            .font2.regular    = Font.create(theme.res.defaultTypeFaceR, Font2Size)
-            .font2.bold       = Font.create(theme.res.defaultTypeFaceB, Font2Size)
-            .font2.italic     = Font.create(theme.res.defaultTypeFaceI, Font2Size)
-            .font2.boldItalic = Font.create(theme.res.defaultTypeFaceBI, Font2Size)
+
+            let theme = parent.getTheme()
+            .font0 = theme.createDefaultFontfamily(Font0Size)
+            .font1 = theme.createDefaultFontfamily(Font1Size)
+            .font2 = theme.createDefaultFontfamily(Font2Size)
         }
 
         return ed
