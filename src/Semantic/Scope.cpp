@@ -111,8 +111,25 @@ void Scope::allocPublicSet()
 void Scope::addPublicFunc(AstNode* node)
 {
     ScopedLock lk(mutex);
+
+    if (kind == ScopeKind::Impl && parentScope->owner && parentScope->owner->token.sourceFile->imported)
+    {
+        const auto scope = node->token.sourceFile->scopeFile->parentScope;
+        scope->addPublicImpl(this);
+        allocPublicSet();
+        publicSet->publicFunc.insert(node);
+        return;
+    }
+
     allocPublicSet();
     publicSet->publicFunc.insert(node);
+}
+
+void Scope::addPublicImpl(Scope* scope)
+{
+    ScopedLock lk(mutex);
+    allocPublicSet();
+    publicSet->publicImpl.insert(scope);
 }
 
 void Scope::addPublicAttribute(AstNode* node)
@@ -172,6 +189,19 @@ void Scope::addChildNoLock(Scope* child)
     child->parentScope = this;
 }
 
+Scope* Scope::allocScope(Scope* parentScope, AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind)
+{
+    const auto newScope   = Allocator::alloc<Scope>();
+    newScope->kind        = scopeKind;
+    newScope->parentScope = parentScope;
+    newScope->owner       = nodeOwner;
+    newScope->name        = scopeName;
+#ifdef SWAG_STATS
+    g_Stats.memScopes += sizeof(Scope);
+#endif
+    return newScope;
+}
+
 Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName)
 {
     ScopedLock lk(mutex);
@@ -188,16 +218,8 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind
         }
     }
 
-    const auto newScope   = Allocator::alloc<Scope>();
-    newScope->kind        = scopeKind;
-    newScope->parentScope = this;
     SWAG_ASSERT(nodeOwner);
-    newScope->owner = nodeOwner;
-    newScope->name  = scopeName;
-#ifdef SWAG_STATS
-    g_Stats.memScopes += sizeof(Scope);
-#endif
-
+    const auto newScope = allocScope(this, nodeOwner, scopeName, scopeKind);
     addChildNoLock(newScope);
     return newScope;
 }

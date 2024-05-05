@@ -1,4 +1,4 @@
-using Core, Pixel
+using Core, Core.Math, Pixel
 
 impl PropertyList
 {

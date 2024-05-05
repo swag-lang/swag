@@ -40,6 +40,7 @@ struct ScopePublicSet
     Set<AstNode*> publicFunc;
     Set<AstNode*> publicAttr;
     Set<AstNode*> publicNodes;
+    Set<Scope*>   publicImpl;
 };
 
 struct Scope
@@ -47,22 +48,24 @@ struct Scope
          Scope();
     void release();
     void addPublicFunc(AstNode* node);
+    void addPublicImpl(Scope* scope);
     void addPublicAttribute(AstNode* node);
     void addPublicNode(AstNode* node);
     void allocPublicSet();
 
-    static void makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
-    const Utf8& getFullName();
-    Utf8        getDisplayFullName();
-    static void collectScopeFromToExcluded(Scope* src, const Scope* to, VectorNative<Scope*>& result);
-    Scope*      getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
-    void        addChildNoLock(Scope* child);
-    void        removeChildNoLock(Scope* child);
-    bool        isParentOf(const Scope* child);
-    bool        isSameOrParentOf(const Scope* child) const;
-    bool        isGlobal() const;
-    bool        isTopLevel() const;
-    bool        isGlobalOrImpl() const;
+    static void   makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
+    const Utf8&   getFullName();
+    Utf8          getDisplayFullName();
+    static void   collectScopeFromToExcluded(Scope* src, const Scope* to, VectorNative<Scope*>& result);
+    static Scope* allocScope(Scope* parentScope, AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind);
+    Scope*        getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
+    void          addChildNoLock(Scope* child);
+    void          removeChildNoLock(Scope* child);
+    bool          isParentOf(const Scope* child);
+    bool          isSameOrParentOf(const Scope* child) const;
+    bool          isGlobal() const;
+    bool          isTopLevel() const;
+    bool          isGlobalOrImpl() const;
 
     bool is(ScopeKind what) const { return kind == what; }
     bool isNot(ScopeKind what) const { return kind != what; }

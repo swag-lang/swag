@@ -176,7 +176,10 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         ParserPushAstNodeFlags scopedFlags(this, AST_IN_IMPL);
         while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
         {
-            SWAG_CHECK(doTopLevelInstruction(implNode, &dummyResult));
+            AstNode* topNode;
+            SWAG_CHECK(doTopLevelInstruction(implNode, &topNode));
+            if (topNode)
+                topNode->addAlternativeScope(implNode->ownerScope);
         }
     }
 

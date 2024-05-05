@@ -155,7 +155,7 @@ struct FormatAst
     bool outputTypeExpression(FormatContext& context, AstNode* node);
     bool outputType(FormatContext& context, AstTypeExpression* node);
 
-    bool outputScopeContent(FormatContext& context, const Module* module, const Scope* scope);
+    bool outputScopeContent(FormatContext& context, Module* module, const Scope* scope);
     bool outputScopeContentAndChilds(FormatContext& context, Module* module, const Scope* scope);
     bool outputScopeBlock(FormatContext& context, Module* module, const Scope* scope);
     bool outputScope(FormatContext& context, Module* module, Scope* scope);

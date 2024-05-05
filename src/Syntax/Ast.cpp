@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "Syntax/Ast.h"
 #include "Format/FormatAst.h"
 #include "Semantic/Type/TypeManager.h"
-#include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Parser/Parser.h"
 
@@ -324,17 +324,7 @@ Scope* Ast::newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* pa
 {
     if (parentScope)
         return parentScope->getOrAddChild(owner, name, kind, matchName);
-
-    const auto newScope   = Allocator::alloc<Scope>();
-    newScope->kind        = kind;
-    newScope->parentScope = parentScope;
-    newScope->owner       = owner;
-    newScope->name        = name;
-#ifdef SWAG_STATS
-    g_Stats.memScopes += sizeof(Scope);
-#endif
-
-    return newScope;
+    return Scope::allocScope(nullptr, owner, name, kind);
 }
 
 void Ast::visit(AstNode* root, const std::function<void(AstNode*)>& fct)

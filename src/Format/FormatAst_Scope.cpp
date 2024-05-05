@@ -7,7 +7,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool FormatAst::outputScopeContent(FormatContext& context, const Module* module, const Scope* scope)
+bool FormatAst::outputScopeContent(FormatContext& context, Module* module, const Scope* scope)
 {
     const auto publicSet = scope->publicSet;
     if (!publicSet)
@@ -95,6 +95,15 @@ bool FormatAst::outputScopeContent(FormatContext& context, const Module* module,
         }
     }
 
+    // Impl
+    if (!publicSet->publicImpl.empty())
+    {
+        for (const auto one : publicSet->publicImpl)
+        {
+            outputScope(context, module, one);
+        }
+    }    
+
     return true;
 }
 
@@ -163,7 +172,7 @@ bool FormatAst::outputScope(FormatContext& context, Module* module, Scope* scope
             concat->addBlank();
             CONCAT_FIXED_STR(concat, "for");
             concat->addBlank();
-            concat->addString(scope->parentScope->name);
+            concat->addString(scope->parentScope->getFullName());
             concat->addEol();
         }
         else if (scope->is(ScopeKind::Enum))
