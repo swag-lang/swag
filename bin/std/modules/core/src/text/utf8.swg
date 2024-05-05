@@ -897,7 +897,7 @@ func beautifyName(name: const [..] u8)->String
 
     var first    = true
     var wasUpper = true
-    visitRunes(|c, i| name)
+    visitRunes(|c| name)
     {
         if Unicode.isUpper(c)
         {

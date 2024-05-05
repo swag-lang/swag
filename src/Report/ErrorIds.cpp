@@ -308,7 +308,7 @@ void initErrors()
     SWAG_ERROR(Err0182, "invalid address                                   $ can't take the address of a function returned value of type [[%s]]");
     SWAG_ERROR(Err0183, "invalid address                                   $ can't take the address of a macro");
     SWAG_ERROR(Err0184, "invalid address                                   $ can't take the address of a mixin");
-    SWAG_ERROR(Err0185, "invalid address                                   $ can't take the address of a variable declared with [[let]]");
+    SWAG_ERROR(Err0185, "invalid address                                   $ can't take the address of a variable declared with [[let]] $ consider using [[var]] instead of [[let]] for mutability");
     SWAG_ERROR(Err0186, "invalid address                                   $ can't take the address of an in-lined function");
     SWAG_ERROR(Err0187, "invalid address                                   $ can't take the address of the right expression");
     SWAG_ERROR(Err0188, "invalid alias name                                $ expected an identifier for name aliasing, found [[%s]] instead");
@@ -984,7 +984,7 @@ void initErrors()
     SWAG_ERROR(Nte0094, "occurred during the [[#validifx]] check of the call to [[%s]]");
     SWAG_ERROR(Nte0095, "occurred during the generic instantiation of [[%s]]");
     SWAG_ERROR(Nte0096, "occurred during the inline expansion of [[%s]]");
-    SWAG_ERROR(Nte0097, nullptr);
+    SWAG_ERROR(Nte0097, "[[%s]] is a mutable UFCS argument, so taking the address is implicit");
     SWAG_ERROR(Nte0098, "occurred in generated code");
     SWAG_ERROR(Nte0099, "one function declares [[throw]] while the other doesn't");
     SWAG_ERROR(Nte0100, "only the address of a returned reference can be taken, and this is %s");

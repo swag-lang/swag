@@ -174,21 +174,33 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
         TypeInfo* toType = nullptr;
         if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
         {
-            PushErrCxtStep ec(context, typeInfoFunc->declNode, ErrCxtStepKind::HereIs, nullptr);
-            context->castFlagsResult = 0;
+            {
+                PushErrCxtStep ec(context, typeInfoFunc->declNode, ErrCxtStepKind::HereIs, nullptr);
+                context->castFlagsResult = 0;
 
-            toType = oneMatch.solvedParameters[i]->typeInfo;
-            SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
-            YIELD();
+                toType = oneMatch.solvedParameters[i]->typeInfo;
+                SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
+                YIELD();
+            }
 
             // The UFCS parameter is a value, and we want a reference.
             // Mark the symbol with OVERLOAD_HAS_MAKE_POINTER because it will avoid warning of non usage.
             if (context->castFlagsResult.has(CAST_RESULT_FORCE_REF))
             {
-                const auto idRef = identifier->identifierRef();
-                const auto id    = idRef->children[idRef->childCount() - 2];
-                if (id->resolvedSymbolOverload())
-                    id->resolvedSymbolOverload()->flags.add(OVERLOAD_HAS_MAKE_POINTER);
+                const auto idRef  = identifier->identifierRef();
+                const auto id     = idRef->children[idRef->childCount() - 2];
+                const auto solved = id->resolvedSymbolOverload();
+                if (solved)
+                {
+                    if (solved->hasFlag(OVERLOAD_IS_LET))
+                    {
+                        Diagnostic err{id, id->token, toErr(Err0185)};
+                        err.addNote(formNte(Nte0097, id->token.c_str()));
+                        return context->report(err, Diagnostic::hereIs(oneMatch.solvedParameters[i]->declNode));
+                    }
+
+                    solved->flags.add(OVERLOAD_HAS_MAKE_POINTER);
+                }
             }
 
             const auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
