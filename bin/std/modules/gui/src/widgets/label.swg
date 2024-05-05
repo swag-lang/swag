@@ -8,6 +8,7 @@ enum LabelFlags
     WordWrap
     LightText
     AutoHeight
+    DontAdaptSingleLineHeight
 }
 
 struct Label
@@ -135,6 +136,8 @@ impl Label
         sf.flags |= .Clip
         if labelFlags.has(.WordWrap) do
             sf.flags.add(.WordWrap)
+        if labelFlags.has(.DontAdaptSingleLineHeight) do
+            sf.flags.add(.DontAdaptSingleLineHeight)
         sf.font          = getFont()
         sf.horzAlignment = horzAlignmentText
         sf.vertAlignment = vertAlignmentText

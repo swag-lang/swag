@@ -35,8 +35,8 @@ struct PropertyList
     leftMargin:                s32 = 15
     rightMargin:               s32 = 15
     nameMarginBefore:          s32 = 25
-    nameHeight:                s32 = 25
     nameMarginAfter:           s32 = 5
+    nameHeight:                s32 = 25
     descMarginAfter:           s32 = 5
     enumFlagsMarginBefore:     s32 = 10
     emptyNameMargin:           s32 = 10
@@ -180,11 +180,12 @@ internal impl PropertyList
             if attrName != null do
                 dispName = Format.toString("<b>%</b>", cast(string) attrName)
             else do
-                dispName = Format.toString("<b>%</b>", value.name)
+                dispName = Format.toString("<b>%</b>", Utf8.beautifyName(value.name))
 
             with let label = Label.create(line, dispName, {0, 0, position.width, nameHeight})
             {
-                .labelFlags |= .WordWrap | .AutoHeight
+                .labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
+                .vertAlignmentText = .Top
                 .horzAlignmentText = .Left
                 .margin.y          = nameMarginBefore
                 .margin.w          = nameMarginAfter
@@ -203,7 +204,8 @@ internal impl PropertyList
             if flags.has(.Description)
             {
                 let labelDesc = Label.create(line, "", {0, 0, position.width, 0})
-                labelDesc.labelFlags |= .WordWrap | .AutoHeight
+                labelDesc.labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
+                labelDesc.vertAlignmentText = .Top
                 labelDesc.horzAlignmentText = .Left
                 labelDesc.setText(dispDesc)
                 labelDesc.margin.w = descMarginAfter
@@ -335,7 +337,7 @@ impl PropertyList
         {
             var v: Swag.TypeValue
             v.name = category
-            item = addItem(v, null, null)
+            item   = addItem(v, null, null)
             item.label.style.setFont(&font0)
             categs.add({item, 0})
         }

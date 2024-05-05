@@ -890,3 +890,36 @@ func isValid(buffer: const [..] u8)->bool
 
     return true
 }
+
+func beautifyName(name: const [..] u8)->String
+{
+    var result: retval
+
+    var first    = true
+    var wasUpper = true
+    visitRunes(|c, i| name)
+    {
+        if Unicode.isUpper(c)
+        {
+            if !wasUpper
+            {
+                wasUpper = true
+                result += " "
+            }
+        }
+        else
+        {
+            wasUpper = false
+        }
+
+        if first
+        {
+            result += Unicode.toUpper(c)
+            first = false
+        }
+        else do
+            result += c
+    }
+
+    return result
+}
