@@ -34,10 +34,10 @@ struct ColorPickerCtrl
     pickBox:            *ColorPicker
     pickBar:            *ColorPicker
     pickAlpha:          *ColorPicker
+    editA:              *EditBox
     editR:              *EditBox
     editG:              *EditBox
     editB:              *EditBox
-    editA:              *EditBox
     editH:              *EditBox
     radioH:             *RadioButton
     radioL:             *RadioButton
@@ -106,7 +106,11 @@ internal impl ColorPickerCtrl
         editB.setText(t)
         t = Format.toString("%", color.a)
         editA.setText(t)
-        t = Format.toString("%{X08}", color.argb)
+
+        if pickerFlags.has(.Alpha) do
+            t = Format.toString("%{X08}", color.argb)
+        else do
+            t = Format.toString("%{X02}%{X02}%{X02}", color.r, color.g, color.b)
         editH.setText(t)
 
         staticRes.invalidate()
@@ -131,8 +135,8 @@ impl ColorPickerCtrl
             pos.width = 340
         if pos.height == 0 do
             pos.height = 330
-        let v = Wnd.create'ColorPickerCtrl(parent, "", pos, id)
 
+        let v = Wnd.create'ColorPickerCtrl(parent, "", pos, id)
         with v
         {
             .pickerFlags = flags
@@ -150,15 +154,16 @@ impl ColorPickerCtrl
             .editB = EditBox.create(v, "", {180, 265, 50})
             .editH = EditBox.create(v, "", {240, 265, 90})
 
-            var l = Label.create(v, "R", {.editR.position.x, .editR.position.bottom() + 0, .editR.position.width})
+            var l = Label.create(v, "A", {.editA.position.x, .editA.position.bottom() + 0, .editA.position.width})
+            l.labelFlags |= .LightText
+            l = Label.create(v, "R", {.editR.position.x, .editR.position.bottom() + 0, .editR.position.width})
             l.labelFlags |= .LightText
             l = Label.create(v, "G", {.editG.position.x, .editG.position.bottom() + 0, .editG.position.width})
             l.labelFlags |= .LightText
             l = Label.create(v, "B", {.editB.position.x, .editB.position.bottom() + 0, .editB.position.width})
             l.labelFlags |= .LightText
-            l = Label.create(v, "A", {.editA.position.x, .editA.position.bottom() + 0, .editA.position.width})
-            l.labelFlags |= .LightText
-            l = Label.create(v, "ARGB", {.editH.position.x, .editH.position.bottom() + 0, .editH.position.width})
+
+            l = Label.create(v, flags.has(.Alpha) ? "ARGB" : "RGB", {.editH.position.x, .editH.position.bottom() + 0, .editH.position.width})
             l.labelFlags |= .LightText
 
             .radioH = RadioButton.create(v, "H", {280, 10, 40})
@@ -198,6 +203,8 @@ impl ColorPickerCtrl
 
             .pickBox.sigChanged += closure|v|(cb)
             {
+                if !v.pickerFlags.has(.Alpha) do
+                    v.color.a = 255
                 switch v.mode
                 {
                 case SaturationLightness:
@@ -227,6 +234,7 @@ impl ColorPickerCtrl
                     v.color.g = cast(u8) (cb.g * 255)
                     v.updatePickers()
                 }
+
                 v.updateEdits()
             }
 
@@ -311,6 +319,8 @@ impl ColorPickerCtrl
             .editH.sigLoseFocus += closure|v|(ed)
             {
                 var res = catch StrConv.parseX64(ed.text)
+                if !v.pickerFlags.has(.Alpha) do
+                    res.value |= 0xFF000000
                 v.color.argb = cast(u32) res.value
                 v.pickAlpha.setColor(v.color)
                 v.updateAll()
@@ -322,6 +332,15 @@ impl ColorPickerCtrl
             .radioR.sigChanged += closure|v|(bt) { v.setMode(.GreenBlue); v.updateAll(); }
             .radioG.sigChanged += closure|v|(bt) { v.setMode(.RedBlue); v.updateAll(); }
             .radioB.sigChanged += closure|v|(bt) { v.setMode(.RedGreen); v.updateAll(); }
+        }
+
+        if !v.pickerFlags.has(.Alpha)
+        {
+            v.editA.enable(false)
+            v.pickAlpha.hide()
+            v.pickBar.position.height = 40
+            v.editH.setInputX64(0, 0x00FFFFFF)
+            v.editH.maxLength = 6
         }
 
         v.setMode(v.mode)
@@ -418,17 +437,21 @@ impl ColorPickerCtrl
     // Set the selected color
     mtd setColor(color: Color)
     {
+        var col = #self.color
+        if !pickerFlags.has(.Alpha) do
+            col.a = 255
+
         if !oldColorDone
         {
-            oldColor     = #self.color
+            oldColor     = col
             oldColorDone = true
         }
-        elif self.color == #self.color
+        elif self.color == col
         {
             return
         }
 
-        self.color = #self.color
+        self.color = col
         sigChanged.call(self)
 
         updateAll()

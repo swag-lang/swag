@@ -58,7 +58,7 @@ const MAX_PAGES = 8
         }
     }
     else do
-        tab.select(7)
+        tab.select(3)
     surface0.show()
 
     //var surface1 = try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
