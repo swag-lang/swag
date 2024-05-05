@@ -168,8 +168,9 @@ impl PropWnd
 
     func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
     {
-        let frame = btn.createAnchorPopup(356, 382)
-        let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54})
+        let frame  = btn.createAnchorPopup(356, 382)
+        var pal:   Array'Color
+        let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54}, pal)
         picker.setColor(color)
         return picker
     }

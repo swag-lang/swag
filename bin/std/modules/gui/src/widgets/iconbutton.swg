@@ -460,11 +460,7 @@ impl IWnd for IconButton
             // Display/Hide popup
             if iconBtnFlags.has(.Popup)
             {
-                if popup
-                {
-                    hidePopup()
-                }
-                else
+                if !popup
                 {
                     sigShowPopup.call(self)
                     if popup do

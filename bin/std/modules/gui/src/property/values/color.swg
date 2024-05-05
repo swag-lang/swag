@@ -41,7 +41,15 @@ impl PropertyList
         btn.sigShowPopup += closure|self, color, item|(btn)
         {
             let frame  = btn.createAnchorPopup(356, 382)
-            let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54})
+
+            var pal: Array'Color
+            loop i: 9 do
+                pal.add(Color.getBlendKeepAlpha(Argb.White, Argb.Black, i / 8.0))
+
+            var flags = ColorPickerFlags.All
+            flags.remove(ColorPickerFlags.Alpha)
+
+            let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54}, pal, flags)
             picker.setColor(color)
             picker.sigChanged += closure|self, color, item|(pk)
             {

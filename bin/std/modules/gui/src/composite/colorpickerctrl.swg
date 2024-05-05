@@ -11,12 +11,23 @@ enum ColorPickerViewMode
     RedGreen
 }
 
+#[Swag.EnumFlags]
+enum ColorPickerFlags
+{
+    Zero
+    Alpha
+    All   = Alpha
+}
+
 struct ColorPickerCtrl
 {
     using frameWnd:     FrameWnd
+
     sigChanged:         SigArray'closure(*Self)
     oldColor:           Color
     color:              Color
+    pickerFlags         = ColorPickerFlags.All
+
     oldColorDone:       bool
     mode                = ColorPickerViewMode.SaturationLightness
     staticRes:          *Wnd
@@ -113,7 +124,7 @@ internal impl ColorPickerCtrl
 impl ColorPickerCtrl
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ColorPickerCtrl
+    func create(parent: *Wnd, position: Math.Rectangle, flags = ColorPickerFlags.All, id: WndId = null)->*ColorPickerCtrl
     {
         var pos = position
         if pos.width == 0 do
@@ -124,6 +135,8 @@ impl ColorPickerCtrl
 
         with v
         {
+            .pickerFlags = flags
+
             .pickBox   = ColorPicker.create(v, {10, 10, 260, 185})
             .pickBar   = ColorPicker.create(v, {10, 215, 220, 16})
             .pickAlpha = ColorPicker.create(v, {10, 240, 220, 16})
@@ -315,21 +328,52 @@ impl ColorPickerCtrl
         return v
     }
 
+    // Creates a color picker with a palette on the top.
+    // 'pal' should contain the palette colors. Maximum is 9 colors.
+    // If less colors are provided, then default colors will be added instead (so if you keep 'pal' empty, all defaults colors will be added).
     #[Swag.Discardable]
-    func createWithPalette(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ColorPickerCtrl
+    func createWithPalette(parent: *Wnd, position: Math.Rectangle, pal: Array'Color, flags = ColorPickerFlags.All, id: WndId = null)->*ColorPickerCtrl
     {
-        let picker = ColorPickerCtrl.create(parent, position, id)
+        let picker = ColorPickerCtrl.create(parent, position, flags, id)
+
+        // Setup palette
         with let palette = PalettePicker.create(parent, {16, 16, picker.position.width - 16, 48})
         {
-            .addColor(Argb.White)
-            .addColor(Argb.Gray)
-            .addColor(Argb.Black)
-            .addColor(Argb.Red)
-            .addColor(Argb.Green)
-            .addColor(Argb.Blue)
-            .addColor(Argb.Yellow)
-            .addColor(Argb.Purple)
-            .addColor(Color.fromArgb(0))
+            loop i: 9
+            {
+                if i >= pal.count
+                {
+                    switch i
+                    {
+                    case 0:
+                        .addColor(Argb.White)
+                    case 1:
+                        .addColor(Argb.Gray)
+                    case 2:
+                        .addColor(Argb.Black)
+                    case 3:
+                        .addColor(Argb.Red)
+                    case 4:
+                        .addColor(Argb.Green)
+                    case 5:
+                        .addColor(Argb.Blue)
+                    case 6:
+                        .addColor(Argb.Yellow)
+                    case 7:
+                        .addColor(Argb.Purple)
+                    case 8:
+                        if flags.has(.Alpha) do
+                            .addColor(Color.fromArgb(0))
+                        else do
+                            .addColor(Argb.Gold)
+                    }
+                }
+                else
+                {
+                    palette.addColor(pal[i])
+                }
+            }
+
             .boxSize = 32
             .sigChanged += closure|picker|(pal) { picker.setColor(pal.selectedColor); }
         }
