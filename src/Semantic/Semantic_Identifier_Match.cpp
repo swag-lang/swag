@@ -3,8 +3,8 @@
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
-#include "Semantic/SemanticJob.h"
 #include "Semantic/Error/SemanticError.h"
+#include "Semantic/SemanticJob.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -180,6 +180,16 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             toType = oneMatch.solvedParameters[i]->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
             YIELD();
+
+            // The UFCS parameter is a value, and we want a reference.
+            // Mark the symbol with OVERLOAD_HAS_MAKE_POINTER because it will avoid warning of non usage.
+            if (context->castFlagsResult.has(CAST_RESULT_FORCE_REF))
+            {
+                const auto idRef = identifier->identifierRef();
+                const auto id    = idRef->children[idRef->childCount() - 2];
+                if (id->resolvedSymbolOverload())
+                    id->resolvedSymbolOverload()->flags.add(OVERLOAD_HAS_MAKE_POINTER);
+            }
 
             const auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
             if (!toType->isPointerRef() && typeCall->isPointerRef())
