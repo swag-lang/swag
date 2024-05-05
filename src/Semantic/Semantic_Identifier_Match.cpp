@@ -59,7 +59,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
 
     SWAG_ASSERT(!funcDecl->hasAstFlag(AST_GENERIC));
 
-    // Replace every parameters types
+    // Replace every parameter's types
     for (uint32_t paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
     {
         const auto childType = funcDecl->parameters->children[paramIdx];
@@ -1165,7 +1165,7 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
     }
 
     // If a variable on the left has only been used for scoping, and not evaluated as an UFCS source, then this is an
-    // error too, cause it's too strange.
+    // error too, because it's too strange.
     // x.toto() with toto taking no argument for example, but toto is 'in' x scope.
     if (symbol &&
         symbol->is(SymbolKind::Function) &&
@@ -1295,7 +1295,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         }
     }
 
-    // If this a L or R value
+    // If this is an L or R value
     if (overload->hasFlag(OVERLOAD_VAR_STRUCT))
     {
         if (symbol->isNot(SymbolKind::GenericType))
@@ -1667,7 +1667,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
 
     // If to match an instance, we always need an automatic opCast, then we only keep generic matches in order
     // to create an instance with the exact type.
-    // We only test the first match here, because the filtering of matches would have remove it if some other instances
+    // We only test the first match here, because the filtering of matches would have removed it if some other instances
     // without autoOpCast are present.
     if (!matches.empty() && matches[0]->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST) && (!genericMatches.empty() || !genericMatchesSI.empty()))
     {
@@ -1728,7 +1728,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
         return true;
     }
 
-    // One match, but want want none !
+    // One match, but want none !
     /////////////////////////////////////////////////////////////////////
     if (matches.size() == 1 && flags.has(MIP_FOR_ZERO_GHOSTING))
     {
