@@ -290,6 +290,7 @@ impl MainWnd
 
     mtd registerActions()
     {
+        registerAction'ActionAlign()
         registerAction'ActionUndo()
         registerAction'ActionDelay()
         registerAction'ActionPixSel()
