@@ -287,9 +287,10 @@ impl Capture
             if img.isValid()
             {
                 let formImg = Memory.new'FormImage()
-                formImg.w     = img.width
-                formImg.h     = img.height
-                formImg.image = img
+                formImg.w           = img.width
+                formImg.h           = img.height
+                formImg.image       = img
+                formImg.backColor.a = 0
                 res.add(cast(IForm) formImg)
             }
             else do
