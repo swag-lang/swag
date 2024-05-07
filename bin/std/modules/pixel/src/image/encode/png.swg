@@ -395,10 +395,9 @@ impl Encoder
         return acast bestFilter
     }
 
-    #[Swag.Safety("", false)]
-    func paeth(a, b, c: u8)->u32
+    func paeth(a, b, c: s32)->u32
     {
-        let p  = cast(s16) (a +,up b - c)
+        let p  = cast(s16) (a + b - c)
         let pa = Math.abs(cast(s16) (p - a))
         let pb = Math.abs(cast(s16) (p - b))
         let pc = Math.abs(cast(s16) (p - c))
@@ -410,14 +409,13 @@ impl Encoder
         return c
     }
 
-    #[Swag.Safety("", false)]
     mtd filterSum(size: u32, filter: Filter)->s32
     {
         if size > Swag.S32.Max / 128 do
             return Swag.S32.Max
 
         var sum: s32
-        var a, b, c: u8
+        var a, b, c: s32
 
         loop i: size
         {
@@ -457,12 +455,11 @@ impl Encoder
         return sum
     }
 
-    #[Swag.Safety("", false)]
     mtd filterScanline(filtered: ^u8, size: u32, filter: Filter)
     {
         loop i: size
         {
-            var a, b, c: u8
+            var a, b, c: s32
             if i >= bytesPerPixel
             {
                 a = scanline[i - bytesPerPixel]
