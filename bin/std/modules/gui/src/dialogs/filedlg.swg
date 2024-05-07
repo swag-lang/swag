@@ -354,7 +354,8 @@ impl FileDlg
                     txt += Path.getFileName(fi.fullname)
                 }
 
-                dlg.editFile.setText(txt)
+                if !txt.isEmpty() do
+                    dlg.editFile.setText(txt)
             }
 
             .sigSort = func(l1, l2, col, down)
