@@ -172,19 +172,22 @@ public impl MessageDlg
         return yesNo(from, txt.toString(), "Please confirm")
     }
 
-    // Message box to show an error
-    func error(from: *Surface, error: string, message: string = null)
+    // Message box to show the current raised error.
+    // @err() must still contain the raised error.
+    func error(from: *Surface, message: string = null)
     {
-        var txt: String
-        if message
-        {
-            txt = String.from(message)
+        var txt: String = String.from(message)
+        if !txt.isEmpty() do
             txt += "\n"
-            txt += error
-        }
-        else
+
+        if @err() != null
         {
-            txt = error
+            switch @err()
+            {
+            case Swag.SystemError:
+                let err = cast(Swag.SystemError) @err()
+                txt += err.message
+            }
         }
 
         var icon = from.app.theme.getIcon64(.Critical)
