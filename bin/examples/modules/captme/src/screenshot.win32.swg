@@ -15,7 +15,6 @@ enum CaptureMode
 
 private
 {
-
     var g_TryStartGrabX: s32
     var g_TryStartGrabY: s32
     var g_StartGrabX:    s32

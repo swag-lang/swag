@@ -16,6 +16,9 @@ impl Application
 {
     func pickColorAtMouse()->Color
     {
+        let awareness = Win32.SetThreadDpiAwarenessContext(Win32.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE)
+        defer discard Win32.SetThreadDpiAwarenessContext(awareness)
+
         let hdc = GetDC(null)
 
         var pt: POINT
