@@ -32,14 +32,37 @@ impl IWnd for SurfaceWnd
         if surface.flags.has(.Sizeable)
         {
             const SizeBorder = 10
-            if surfacePos.x > sdw - SizeBorder and surfacePos.x < sdw + SizeBorder do
+            if surfacePos.x > sdw - SizeBorder and
+               surfacePos.x < sdw + SizeBorder and
+               surfacePos.y > sdw - SizeBorder and
+               surfacePos.y < surface.position.height - sdw + SizeBorder
+            {
                 newSizingBorder |= .Left
-            if surfacePos.y > sdw - SizeBorder and surfacePos.y < sdw + SizeBorder do
+            }
+
+            if surfacePos.y > sdw - SizeBorder and
+               surfacePos.y < sdw + SizeBorder and
+               surfacePos.x > sdw - SizeBorder and
+               surfacePos.x < surface.position.width - sdw + SizeBorder
+            {
                 newSizingBorder |= .Top
-            if surfacePos.x > surface.position.width - sdw - SizeBorder and surfacePos.x < surface.position.width - sdw + SizeBorder do
+            }
+
+            if surfacePos.x > surface.position.width - sdw - SizeBorder and
+               surfacePos.x < surface.position.width - sdw + SizeBorder and
+               surfacePos.y > sdw - SizeBorder and
+               surfacePos.y < surface.position.height - sdw + SizeBorder
+            {
                 newSizingBorder |= .Right
-            if surfacePos.y > surface.position.height - sdw - SizeBorder and surfacePos.y < surface.position.height - sdw + SizeBorder do
+            }
+
+            if surfacePos.y > surface.position.height - sdw - SizeBorder and
+               surfacePos.y < surface.position.height - sdw + SizeBorder and
+               surfacePos.x > sdw - SizeBorder and
+               surfacePos.x < surface.position.width - sdw + SizeBorder
+            {
                 newSizingBorder |= .Bottom
+            }
         }
 
         return newSizingBorder
@@ -69,6 +92,13 @@ impl IWnd for SurfaceWnd
         case MouseReleased:
             if evt.button != .Left do
                 break
+
+            if cursorSet
+            {
+                cursorSet = false
+                surface.app.popCursor()
+            }
+
             releaseMouse()
             movingSurface = false
             fallthrough
