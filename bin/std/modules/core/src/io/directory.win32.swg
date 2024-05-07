@@ -141,6 +141,27 @@ func setCurrent(dirName: string) throw
 // Get the list of logical drives
 func getDrives()->Array'String throw
 {
+    var result:  retval
+    var volName: [MAX_PATH] u8
+
+    let slen = GetLogicalDriveStringsA(MAX_PATH, volName)
+    if slen >= MAX_PATH do
+        return result
+
+    var ptr = &volName[0]
+    while ptr[0]
+    {
+        let len = @strlen(ptr)
+        result.add(@mkstring(ptr, len))
+        ptr += len + 1
+    }
+
+    return result
+}
+
+// Get the list of volumes
+func getVolumes()->Array'String throw
+{
     var result: retval
 
     var volName:   [MAX_PATH] u8

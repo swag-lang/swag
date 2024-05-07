@@ -357,6 +357,8 @@ struct PROCESS_INFORMATION
     func WriteConsoleOutputCharacterA(hConsoleOutput: HANDLE, lpCharacter: LPCSTR, nLength: DWORD, dwWriteCoord: DWORD, lpNumberOfCharsWritten: LPDWORD)->BOOL;
     func WriteConsoleOutputCharacterW(hConsoleOutput: HANDLE, lpCharacter: LPCTSTR, nLength: DWORD, dwWriteCoord: DWORD, lpNumberOfCharsWritten: LPDWORD)->BOOL;
     func SetConsoleOutputCP(codePage: UINT);
+    func GetLogicalDriveStringsA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
+    func GetLogicalDriveStringsW(nBufferLength: DWORD, lpBuffer: LPWSTR)->DWORD;
 
     func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO);
     func GlobalAlloc(uFlags: UINT, dwBytes: SIZE_T)->HGLOBAL;
