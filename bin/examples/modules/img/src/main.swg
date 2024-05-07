@@ -8,8 +8,8 @@
 using Core, Win32, Ogl, Gdi32, Pixel
 
 var g_HDC:       HDC
-var g_ImageIdx:  u32 = 30
-var g_EffectIdx: u32 = 49
+var g_ImageIdx:  u32 = 7
+var g_EffectIdx: u32 = 0
 var g_MyImage:   Pixel.Image
 var g_TextureID: GLuint
 

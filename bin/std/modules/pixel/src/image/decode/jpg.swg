@@ -112,11 +112,11 @@ private
         44, 51, 58, 59, 52, 45, 38, 31, 39, 46, 53, 60, 61, 54, 47,
         55, 62, 63]
 
-    #[Inline, Safety("overflow", false)]
+    #[Inline]
     {
         func descale(x: s32, n: u32)->s16 => cast(s16) ((x + (1's32 << (n - 1))) >> n)
         func rol(i, j: u32)->u32          => cast(u32) ((i << j) | (i >> (32 - j)))
-        func clamp(i: s32)->u8            => cast(u8) ((i & 0xFFFFFF00) ? ((~i >> 31) & 0xFF) : i)
+        func clamp(i: s32)->u8            => cast(u8) ((i & cast,bit(s32) 0xFFFFFF00) ? ((~i >> 31) & 0xFF) : i)
     }
 }
 
@@ -185,7 +185,7 @@ public struct Decoder
     acHuffSeg:                    [MaxBocksPerMcu] *HuffTables
     blockMcuY:                    [MaxComponents] s32
     component:                    [MaxBocksPerMcu] *u32
-    lastDcVal:                    [MaxComponents] u32
+    lastDcVal:                    [MaxComponents] s32
     dcCoeffs:                     [MaxComponents] CoeffBuf
     acCoeffs:                     [MaxComponents] CoeffBuf
     tempBlock:                    [64] s16
@@ -431,8 +431,8 @@ impl Decoder
                     s = r < ExtendTest[s] ? r + ExtendOff[s] : r
                 }
 
-                s += cast,bit(s32) lastDcVal[componentId]
-                lastDcVal[componentId] = cast,bit(u32) s
+                s += lastDcVal[componentId]
+                lastDcVal[componentId] = s
 
                 p[0] = cast(s16) (s * q[0])
                 let prevNumSet = blockMaxZagSet[rowBlock]
@@ -709,7 +709,7 @@ impl Decoder
         var psrcPtr = blockSeg[0]
         var pdstPtr = pSampleBuf
 
-        loop maxBlocksPerRow - 1
+        loop maxBlocksPerRow
         {
             Memory.copy(tempBlock, psrcPtr, 64'u64 * @sizeof(s16))
             idct(tempBlock, pdstPtr)
@@ -856,14 +856,14 @@ impl Decoder
                 let bc = cbb[cb]
                 var yy = cast(s32) y[j]
 
-                d0[2] = clamp(yy +,over rc)
-                d0[1] = clamp(yy +,over gc)
-                d0[0] = clamp(yy +,over bc)
+                d0[2] = clamp(yy + rc)
+                d0[1] = clamp(yy + gc)
+                d0[0] = clamp(yy + bc)
 
                 yy    = y[8 + j]
-                d1[2] = clamp(yy +,over rc)
-                d1[1] = clamp(yy +,over gc)
-                d1[0] = clamp(yy +,over bc)
+                d1[2] = clamp(yy + rc)
+                d1[1] = clamp(yy + gc)
+                d1[0] = clamp(yy + bc)
 
                 d0, d1 += 3
             }
@@ -1065,7 +1065,7 @@ impl Decoder
         fix[2] = cast(s32) -((0.71414 / 2) * (1 << 16) + 0.5)
         fix[3] = cast(s32) -((0.34414 / 2) * (1 << 16) + 0.5)
 
-        loop i: 255
+        loop i: 256
         {
             let k = (i * 2) - 256
             crr[i] = (fix[0] * k + (1 << (16 - 1))) >> 16
@@ -1244,7 +1244,7 @@ impl Decoder
         {
             dcHuffSeg[i] = &h[compDcTab[mcuOrg[i]]]
             acHuffSeg[i] = &h[compAcTab[mcuOrg[i]]]
-            component[i] = &lastDcVal[mcuOrg[i]]
+            component[i] = cast(*u32) &lastDcVal[mcuOrg[i]]
         }
     }
 
@@ -1311,7 +1311,6 @@ impl Decoder
         return result
     }
 
-    #[Safety("overflow", false)]
     mtd decodeBlockDcFirst(cmpId: u32, blkX, blkY: s32) throw
     {
         var p = coeffBufGetp(dcCoeffs[cmpId], blkX, blkY)
@@ -1327,7 +1326,6 @@ impl Decoder
         p[0]             = cast(s16) (s << successiveLow)
     }
 
-    #[Safety("overflow", false)]
     mtd decodeBlockDcRefine(cmpId: u32, blkX, blkY: s32) throw
     {
         if getBits2(1)
@@ -1337,7 +1335,6 @@ impl Decoder
         }
     }
 
-    #[Safety("overflow", false)]
     mtd decodeBlockAcFirst(cmpId: u32, blkX, blkY: s32) throw
     {
         if eobRun
@@ -1386,7 +1383,6 @@ impl Decoder
         }
     }
 
-    #[Safety("overflow", false)]
     mtd decodeBlockAcRefine(cmpId: u32, blkX, blkY: s32) throw
     {
         let p1 = 1 << successiveLow
@@ -1617,7 +1613,7 @@ impl Decoder
             throw InvalidFormatError{"unexpected marker"}
     }
 
-    #[Safety("overflow", false), Discardable]
+    #[Discardable]
     mtd getBits1(numBits: s32)->u32
     {
         let i = bitBuf >> cast(u32) (16 - numBits) & ((1'u32 << cast(u32) numBits) - 1)
@@ -1638,7 +1634,7 @@ impl Decoder
         return i
     }
 
-    #[Safety("overflow", false), Discardable]
+    #[Discardable]
     mtd getBits2(numBits: s32)->u32
     {
         let i = (bitBuf >> cast(u32) (16 - numBits)) & ((1'u32 << cast(u32) numBits) - 1)
