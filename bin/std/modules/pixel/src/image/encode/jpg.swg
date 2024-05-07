@@ -525,18 +525,17 @@ impl Encoder
         writeByte(SOSinfo.bf)
     }
 
-    #[Swag.Safety("", false)]
     mtd loadFromRGB(xpos: u16, ypos: u16)
     {
         #[Swag.Inline]
         {
-            func Y(r, g, b: u8)  => cast(u8) (((TabYR[r] + TabYG[g] + TabYB[b]) >> 16) - 128)
-            func Cb(r, g, b: u8) => cast(u8) ((TabCbR[r] + TabCbG[g] + TabCbB[b]) >> 16)
-            func Cr(r, g, b: u8) => cast(u8) ((TabCrR[r] + TabCrG[g] + TabCrB[b]) >> 16)
+            func Y(r, g, b: u8)  => cast(s8) (((TabYR[r] + TabYG[g] + TabYB[b]) >> 16) - 128)
+            func Cb(r, g, b: u8) => cast(s8) ((TabCbR[r] + TabCbG[g] + TabCbB[b]) >> 16)
+            func Cr(r, g, b: u8) => cast(s8) ((TabCrR[r] + TabCrG[g] + TabCrB[b]) >> 16)
         }
 
         var pos      = 0
-        var location = ypos * imageX + xpos
+        var location = cast(s32) ypos * imageX + xpos
         let pdst     = bufferRGB.buffer
 
         loop y: 8
