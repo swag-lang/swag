@@ -23,6 +23,29 @@ public impl IImageEncoder for Encoder
         header.width         = cast(u16) image.width
         header.height        = cast(u16) image.height
         result.addStruct(header)
-        result.addBytes(image.pixels.toSlice())
+
+        // Need to encode as BGR or BGRA
+        switch image.pf
+        {
+        case RGB8:
+            for var i = 0; i < image.pixels.count; i += 3
+            {
+                result.addNative(image.pixels.buffer[i+2])
+                result.addNative(image.pixels.buffer[i+1])
+                result.addNative(image.pixels.buffer[i+0])
+            }
+
+        case RGBA8:
+            for var i = 0; i < image.pixels.count; i += 4
+            {
+                result.addNative(image.pixels.buffer[i+2])
+                result.addNative(image.pixels.buffer[i+1])
+                result.addNative(image.pixels.buffer[i+0])
+                result.addNative(image.pixels.buffer[i+3])
+            }
+
+        default:
+            result.addBytes(image.pixels.toSlice())
+        }
     }
 }

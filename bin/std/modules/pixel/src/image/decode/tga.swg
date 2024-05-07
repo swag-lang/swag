@@ -36,7 +36,7 @@ impl Decoder
         var dest     = dstBuffer
         var src      = srcBuffer
         var l        = length
-        let bpp8     = bpp >> 3
+        let bpp8     = cast(u32) (bpp >> 3)
 
         var invalid = false
         while l > 0
