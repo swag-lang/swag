@@ -56,8 +56,11 @@ public impl IImageEncoder for Encoder
                     psrc += 3
                 }
 
-                loop 4 - align do
-                    result.addNative(0'u8)
+                if align
+                {
+                    loop 4 - align do
+                        result.addNative(0'u8)
+                }
             }
         }
         elif image.bpp != 24 or !align
