@@ -277,11 +277,11 @@ namespace ResizeTools
                     ptr += bpp8
                 }
 
-                dstRow[0] = cast(u8) db
-                dstRow[1] = cast(u8) dg
-                dstRow[2] = cast(u8) dr
+                dstRow[0] = cast(u8) Math.round(db)
+                dstRow[1] = cast(u8) Math.round(dg)
+                dstRow[2] = cast(u8) Math.round(dr)
                 #if BPP == 32 #do
-                    dstRow[3] = cast(u8) da
+                    dstRow[3] = cast(u8) Math.round(da)
                 dstRow += bpp8
             }
         }
@@ -333,11 +333,11 @@ namespace ResizeTools
                     ptr += cast(u64) w8Src
                 }
 
-                dstCol[0] = cast(u8) db
-                dstCol[1] = cast(u8) dg
-                dstCol[2] = cast(u8) dr
+                dstCol[0] = cast(u8) Math.round(db)
+                dstCol[1] = cast(u8) Math.round(dg)
+                dstCol[2] = cast(u8) Math.round(dr)
                 #if BPP == 32 #do
-                    dstCol[3] = cast(u8) da
+                    dstCol[3] = cast(u8) Math.round(da)
                 dstCol += cast(u64) w8Dst
             }
         }
