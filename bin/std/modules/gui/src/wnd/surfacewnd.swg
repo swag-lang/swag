@@ -106,6 +106,8 @@ impl IWnd for SurfaceWnd
         case MouseMove:
             if surface.isMaximized do
                 break
+            if getApp().mouseEnterWnd != self do
+                break
 
             if !movingSurface and surface.flags.has(.Sizeable)
             {
