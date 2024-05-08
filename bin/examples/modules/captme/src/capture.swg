@@ -1321,6 +1321,7 @@ impl Capture
         updateEditModeFromSelection()
         updateModelFromSelection()
         editView.main.updateState()
+        editView.invalidate()
     }
 
     //////////////////////////////
