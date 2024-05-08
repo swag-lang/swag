@@ -110,9 +110,8 @@ impl Capture
         let render = app.getRenderer()
 
         painter.begin()
-        painter.setColorMaskAlpha()
-        painter.clear(Argb.Zero)
         painter.setColorMaskFull()
+        painter.clear(Argb.Zero)
         paintBackImage(&painter, 0, 0, zoom)
         painter.setColorMaskColor()
         painter.setParams(.Antialiased)
@@ -287,10 +286,11 @@ impl Capture
             if img.isValid()
             {
                 let formImg = Memory.new'FormImage()
-                formImg.w           = img.width
-                formImg.h           = img.height
-                formImg.image       = img
-                formImg.backColor.a = 0
+                formImg.w             = img.width
+                formImg.h             = img.height
+                formImg.image         = img
+                formImg.borderColor.a = 0
+                formImg.backColor.a   = 0
                 res.add(cast(IForm) formImg)
             }
             else do
@@ -376,6 +376,7 @@ impl Capture
         let rt = render.getRenderTarget(wt2, ht2)
         painter.bindRenderTarget(rt, true)
         painter.setAntialiased()
+        painter.setColorMaskFull()
         painter.clear(Argb.Zero)
         painter.setColorMaskColor()
         painter.setBlendingMode(.Alpha)
