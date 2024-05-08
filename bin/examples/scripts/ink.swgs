@@ -1,0 +1,164 @@
+// This Swag script has been done thanks to "The Coding Train" youtube channel.
+// https://www.youtube.com/watch?v=p7IGZTjC008
+//
+// Source code:
+// https://editor.p5js.org/codingtrain/sketches/HtEtm1vii
+
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Core, Gui, Pixel, Core.Math
+
+var Palette: [9] Color
+var newDrop = true
+var counter = 0
+var currentColor: Color
+var drops: Array'(*Drop)
+var mousePos: Point
+var lastPos: Vector2
+
+#init
+{
+    Palette[0] = Color.fromRgb(11, 106, 136)
+    Palette[1] = Color.fromRgb(45, 197, 244)
+    Palette[2] = Color.fromRgb(112, 50, 126)
+    Palette[3] = Color.fromRgb(146, 83, 161)
+    Palette[4] = Color.fromRgb(164, 41, 99)
+    Palette[5] = Color.fromRgb(236, 1, 90)
+    Palette[6] = Color.fromRgb(240, 99, 164)
+    Palette[7] = Color.fromRgb(241, 97, 100)
+    Palette[8] = Color.fromRgb(248, 158, 79)
+}
+
+struct Drop
+{
+    center:         Vector2
+    r:              f32 = 50
+    circleDetail:   u32 = 100
+    vertices:       Array'Vector2
+    col:            Color = Argb.Red
+    lp:             LinePath
+}
+
+impl Drop
+{
+    mtd constructPath()
+    {
+        lp.start(vertices[0].x, vertices[0].y)
+        visit v: vertices do
+            lp.lineTo(v.x, v.y)
+        lp.close()
+    }
+
+    mtd construct()
+    {
+        loop i: circleDetail
+        {
+            let angle = map(cast(f32) i, 0.0, cast(f32) circleDetail, 0, ConstF32.TwoPi)
+            var v = Vector2{cos(angle), sin(angle)}
+            v *= r
+            v += center
+            vertices.add(v)
+        }
+
+        constructPath()
+    }
+
+    mtd marble(other: Drop)
+    {
+        visit v: vertices
+        {
+            var p = v - other.center
+            let m = Math.max(p.length(), 0.1)
+            let root = sqrt(1 + (other.r * other.r) / (m * m))
+            p *= root
+            v = p + other.center
+        }
+
+        constructPath()
+    }
+
+    mtd show(painter: *Painter)
+    {
+        painter.fillPath(&lp, col)
+    }
+}
+
+func addInk(x, y, r: f32, col: Color)
+{
+    with let drop = Memory.new'Drop()
+    {
+        .center.x = x
+        .center.y = y
+        .r = r
+        .col = col
+        .construct()
+    }
+
+    visit other: drops do
+        other.marble(drop)
+    drops.add(drop)
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        break
+
+    case MouseMove, MousePressed:
+        let mouseEvt = cast(*MouseEvent) evt
+        mousePos = wnd.surfaceToLocal(mouseEvt.surfacePos)
+        return true
+
+    case Paint:
+        let paintEvt = cast(*PaintEvent) evt
+        let painter  = paintEvt.bc.painter
+
+        let leftPressed = wnd.getApp().mouse.isButtonPressed(.Left) or Env.hasArg("swag.test")
+        if leftPressed
+        {
+            if newDrop
+            {
+                currentColor = Palette[counter % @countof(Palette)]
+                newDrop = false
+                counter += 1
+                addInk(mousePos.x, mousePos.y, 25, currentColor)
+                lastPos = {mousePos.x, mousePos.y}
+            }
+            elif lastPos.distance({mousePos.x, mousePos.y}) > 2
+            {
+                addInk(mousePos.x, mousePos.y, 25, currentColor)
+                lastPos = {mousePos.x, mousePos.y}
+            }
+            else
+            {
+                visit other: drops do
+                    other.marble(dref drops.back())
+            }
+        }
+        else
+        {
+            newDrop = true
+        }
+
+        visit drop: drops do
+            drop.show(painter)
+
+        wnd.invalidate()
+    }
+
+    return false
+}
+
+
+#main
+{
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
+    Application.runSurface(100, 100, 1024, 1024, title: "Ink", canSize: false, hook: &onEvent, init: &test)
+}
+
