@@ -304,7 +304,7 @@ bool AstNode::hasIntrinsicName() const
 
 void AstNode::swap2Children()
 {
-    SWAG_ASSERT(childCount() == 2);
+    SWAG_ASSERT(childCount() >= 2);
     const auto tmp = children[0];
     children[0]    = children[1];
     children[1]    = tmp;

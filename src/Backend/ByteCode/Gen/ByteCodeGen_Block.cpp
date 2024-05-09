@@ -130,6 +130,10 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         // Sort children by parameter index
         Semantic::sortParameters(allParams);
 
+        // Or invert in case of commutative operator
+        if (allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS))
+            allParams->swap2Children();
+
         // Simple case, every parameters are covered by the call, and there's no named param
         if (numFuncParams == numCallParams)
         {

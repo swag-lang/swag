@@ -148,6 +148,8 @@ struct ByteCode
     uint32_t staticRegs            = 0;
     uint32_t registerGetContext    = UINT32_MAX;
     uint32_t registerStoreRR       = UINT32_MAX;
+    uint32_t emitSPPos             = UINT32_MAX;
+    uint32_t emitSPSize            = 0;
 
     bool isCompilerGenerated     = false;
     bool isAddedToList           = false;
