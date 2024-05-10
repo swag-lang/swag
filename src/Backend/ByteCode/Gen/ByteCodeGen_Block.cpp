@@ -115,6 +115,18 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         allParams     = &parameters;
         numCallParams = parameters.childCount();
     }
+    else if (parent->hasSpecialFuncCall(g_LangSpec->name_opBinary) ||
+             parent->hasSpecialFuncCall(g_LangSpec->name_opAffect) ||
+             parent->hasSpecialFuncCall(g_LangSpec->name_opAssign))
+    {
+        allParams     = parent;
+        numCallParams = 2;
+    }
+    else if (parent->hasSpecialFuncCall(g_LangSpec->name_opUnary))
+    {
+        allParams     = parent;
+        numCallParams = 1;
+    }
     else
     {
         allParams     = parent;

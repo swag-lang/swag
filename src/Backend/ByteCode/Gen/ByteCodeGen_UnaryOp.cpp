@@ -70,8 +70,12 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
     AstNode*   node  = context->node;
     const auto front = node->firstChild();
 
-    node->resultRegisterRc = front->resultRegisterRc;
-    ensureCanBeChangedRC(context, node->resultRegisterRc);
+    if (!node->hasSemFlag(SEMFLAG_CAST2))
+    {
+        node->resultRegisterRc = front->resultRegisterRc;
+        ensureCanBeChangedRC(context, node->resultRegisterRc);
+        node->addSemFlag(SEMFLAG_CAST2);
+    }
 
     if (!node->hasSemFlag(SEMFLAG_EMIT_OP))
     {

@@ -11,13 +11,13 @@
 
 using Core, Gui, Pixel, Core.Math
 
-var Palette: [9] Color
-var newDrop = true
-var counter = 0
+var Palette:      [9] Color
+var newDrop       = true
+var counter       = 0
 var currentColor: Color
-var drops: Array'(*Drop)
-var mousePos: Point
-var lastPos: Vector2
+var drops:        Array'(*Drop)
+var mousePos:     Point
+var lastPos:      Vector2
 
 #init
 {
@@ -34,12 +34,12 @@ var lastPos: Vector2
 
 struct Drop
 {
-    center:         Vector2
-    r:              f32 = 50
-    circleDetail:   u32 = 100
-    vertices:       Array'Vector2
-    col:            Color = Argb.Red
-    lp:             LinePath
+    center:           Vector2
+    r:                f32 = 50
+    circleDetail:     u32 = 100
+    vertices:         Array'Vector2
+    col:              Color = Argb.Red
+    lp:               LinePath
 }
 
 impl Drop
@@ -57,7 +57,7 @@ impl Drop
         loop i: circleDetail
         {
             let angle = map(cast(f32) i, 0.0, cast(f32) circleDetail, 0, ConstF32.TwoPi)
-            var v = Vector2{cos(angle), sin(angle)}
+            var v     = Vector2{cos(angle), sin(angle)}
             v *= r
             v += center
             vertices.add(v)
@@ -68,11 +68,12 @@ impl Drop
 
     mtd marble(other: Drop)
     {
+        let otherr = other.r * other.r
         visit v: vertices
         {
-            var p = v - other.center
-            let m = Math.max(p.length(), 0.1)
-            let root = sqrt(1 + (other.r * other.r) / (m * m))
+            var p    = v - other.center
+            let m    = p.length()
+            let root = sqrt(1 + otherr / (m * m))
             p *= root
             v = p + other.center
         }
@@ -92,8 +93,8 @@ func addInk(x, y, r: f32, col: Color)
     {
         .center.x = x
         .center.y = y
-        .r = r
-        .col = col
+        .r        = r
+        .col      = col
         .construct()
     }
 
@@ -124,7 +125,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             if newDrop
             {
                 currentColor = Palette[counter % @countof(Palette)]
-                newDrop = false
+                newDrop      = false
                 counter += 1
                 addInk(mousePos.x, mousePos.y, 25, currentColor)
                 lastPos = {mousePos.x, mousePos.y}
@@ -154,11 +155,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     return false
 }
 
-
 #main
 {
     func test(app: *Application) = if Env.hasArg("swag.test") do
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 1024, title: "Ink", canSize: false, hook: &onEvent, init: &test)
 }
-

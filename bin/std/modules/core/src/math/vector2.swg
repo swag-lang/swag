@@ -19,13 +19,13 @@ impl Vector2
     const NegMax:   Self{-Swag.F32.Max, -Swag.F32.Max}
     const Min:      Self{Swag.F32.Min, Swag.F32.Min}
 
-    #[Swag.Complete]
+    #[Swag.Complete, Swag.Inline]
     mtd opAffect(value: f32)
     {
         x, y = value
     }
 
-    #[Swag.Overload]
+    #[Swag.Overload, Swag.Inline]
     mtd(op: string) opAssign(other: Self)
     {
         #if op == "+="
@@ -52,7 +52,7 @@ impl Vector2
             #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
-    #[Swag.Overload]
+    #[Swag.Overload, Swag.Inline]
     mtd(op: string) opAssign(value: f32)
     {
         #if op == "+="
@@ -79,7 +79,7 @@ impl Vector2
             #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
-    #[Swag.Overload]
+    #[Swag.Overload, Swag.Inline]
     mtd(op: string) const opBinary(other: Self)->Self
     {
         #if op == "+" #do
@@ -94,7 +94,7 @@ impl Vector2
             #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
-    #[Swag.Overload]
+    #[Swag.Overload, Swag.Inline]
     mtd(op: string) const opBinary(value: f32)->Self
     {
         #if op == "+" #do
@@ -109,6 +109,7 @@ impl Vector2
             #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
+    #[Swag.Inline]
     mtd(op: string) const opUnary()->Self
     {
         #if op == "-" #do
@@ -126,36 +127,41 @@ impl Vector2
     }
 
     // Return sthe length of the vector
+    #[Swag.Inline]
     mtd const length()->f32 => sqrt((x * x) + (y * y))
 
     // Returns the squared length of the vector
+    #[Swag.Inline]
     mtd const lengthSquared()->f32 => (x * x) + (y * y)
 
     // Returns the dot product between two vectors
+    #[Swag.Inline]
     mtd const dot(other: Self)->f32 => (x * other.x) + (y * other.y)
 
     // Returns the perpendicular vector in the 2D plane.
     // 'axis' will give the sign of the result
-    #[Swag.Overload]
+    #[Swag.Overload, Swag.Inline]
     mtd const cross(axis: f32)->Self
     {
         return {y * axis, -x * axis}
     }
 
     // Returns the Z signed length of the perpendicular vector
-    #[Swag.Overload]
+    #[Swag.Overload, Swag.Inline]
     mtd const cross(other: Self)->f32
     {
         return x * other.y - y * other.x
     }
 
     // Set the vector to zero
+    #[Swag.Inline]
     mtd clear()
     {
         x, y = 0
     }
 
     // Negate the vector
+    #[Swag.Inline]
     mtd negate()
     {
         x = -x
@@ -163,6 +169,7 @@ impl Vector2
     }
 
     // Returns true if this vector is null
+    #[Swag.Inline]
     mtd const isZero()->bool
     {
         return x == 0 and y == 0

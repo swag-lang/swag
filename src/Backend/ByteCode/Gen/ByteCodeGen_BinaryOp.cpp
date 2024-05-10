@@ -655,7 +655,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             YIELD();
             node->addSemFlag(SEMFLAG_EMIT_OP);
         }
-        else if (node->token.is(TokenId::SymPlus) && node->hasSpecFlag(AstOp::SPEC_FLAG_FMA))
+        else if (node->token.is(TokenId::SymPlus) && node->hasSpecFlag(AstOp::SPEC_FLAG_FMA) && node->firstChild()->secondChild())
         {
             const auto front       = node->firstChild();
             const auto typeInfo    = TypeManager::concreteType(front->typeInfo);
@@ -664,12 +664,10 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             switch (typeInfo->nativeType)
             {
                 case NativeTypeKind::F32:
-                    EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF32, node->resultRegisterRc, front->firstChild()->resultRegisterRc, front->secondChild()->resultRegisterRc,
-                               node->secondChild()->resultRegisterRc);
+                    EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF32, node->resultRegisterRc, front->firstChild()->resultRegisterRc, front->secondChild()->resultRegisterRc, node->secondChild()->resultRegisterRc);
                     break;
                 case NativeTypeKind::F64:
-                    EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF64, node->resultRegisterRc, front->firstChild()->resultRegisterRc, front->secondChild()->resultRegisterRc,
-                               node->secondChild()->resultRegisterRc);
+                    EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF64, node->resultRegisterRc, front->firstChild()->resultRegisterRc, front->secondChild()->resultRegisterRc, node->secondChild()->resultRegisterRc);
                     break;
                 default:
                     return Report::internalError(context->node, "emitBinaryOpPlus, muladd, type not supported");
