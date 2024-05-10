@@ -120,7 +120,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
 
     Utf8 result;
     for (const auto l : funcDecl->parameters->children)
-        appendTypedValue(context, filter, l, g_ByteCodeDebugger.cxtBp, nullptr, result);
+    {
+        const auto over = l->resolvedSymbolOverload();
+        if (!over)
+            continue;
+        const auto addr = g_ByteCodeDebugger.cxtBp + over->computedValue.storageOffset + g_ByteCodeDebugger.cxtBc->stackSize;
+        appendTypedValue(context, filter, l, g_ByteCodeDebugger.cxtBp, addr, result);
+    }
+
     printLong(result);
 
     return BcDbgCommandResult::Continue;

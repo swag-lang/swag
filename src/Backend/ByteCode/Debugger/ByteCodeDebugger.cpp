@@ -38,7 +38,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({});
 
     commands.push_back({"execute", "e", "<stmt>", "execute the code statement <stmt> in the current context", cmdExecute});
-    commands.push_back({"print", "p", "[/format] <expr>", "print the result of the expression <expr> in the current context (/format is the same as 'x' command)", cmdPrint});
+    commands.push_back({"print", "p", "[/format] <expr>", "print the result of the expression <expr> in the current context", cmdPrint});
     commands.push_back({});
     commands.push_back({"display", "d", "[/format] <expr>", "same as 'print', but will be done at each step", cmdDisplay});
     commands.push_back({"display", "", "", "print all expressions to display", cmdDisplay});
@@ -56,7 +56,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"ii", "", "[name]", "print the current function (or function [name]) bytecode", cmdInstructionDump});
     commands.push_back({});
 
-    commands.push_back({"info", "o", "(reg)isters [/format]", "print all registers (/format is the same as 'x' command)", cmdInfo});
+    commands.push_back({"info", "o", "(reg)isters [/format]", "print all registers", cmdInfo});
     commands.push_back({"info", "o", "(loc)als [filter]", "print all current local variables", cmdInfo});
     commands.push_back({"info", "o", "(arg)uments [filter]", "print all current function arguments", cmdInfo});
     commands.push_back({"info", "o", "(func)tions [filter]", "print all functions", cmdInfo});
@@ -572,10 +572,10 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
                 }
             }
 
-            if (lastBreakIp->node->ownerInline())
+            if (lastBreakIp->node->safeOwnerInline())
             {
                 // If i am still in an inline, but not in a mixin block, and was in a mixin block, zap
-                if (ip->node->ownerInline() &&
+                if (ip->node->safeOwnerInline() &&
                     lastBreakIp->node->hasAstFlag(AST_IN_MIXIN) &&
                     !ip->node->hasAstFlag(AST_IN_MIXIN))
                 {
@@ -632,14 +632,14 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             }
 
             // If last break was in an inline block, and we are in a sub inline block
-            if (lastBreakIp->node->ownerInline() && lastBreakIp->node->ownerInline()->isParentOf(ip->node->ownerInline()))
+            if (lastBreakIp->node->hasOwnerInline() && lastBreakIp->node->ownerInline()->isParentOf(ip->node->safeOwnerInline()))
             {
                 zapCurrentIp = true;
                 break;
             }
 
             // We are in the same inline block
-            if (ip->node->ownerInline() && lastBreakIp->node->ownerInline() == ip->node->ownerInline())
+            if (lastBreakIp->node->safeOwnerInline() == ip->node->safeOwnerInline())
             {
                 zapCurrentIp = true;
                 break;
