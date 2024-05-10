@@ -355,7 +355,6 @@ struct TypeInfoFuncAttr final : TypeInfo
     TypeInfo* returnType = nullptr;
 
     uint32_t       firstDefaultValueIdx = UINT32_MAX;
-    uint32_t       stackSize            = 0;
     AttrUsageFlags attributeUsage       = ATTR_USAGE_ALL;
     CallConvKind   callConv             = Swag;
 };

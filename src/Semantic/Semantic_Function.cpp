@@ -274,7 +274,6 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     const auto sourceFile = context->sourceFile;
     const auto module     = sourceFile->module;
     auto       funcNode   = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-    const auto typeInfo   = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
     // Only one main per module !
     if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
@@ -326,7 +325,6 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         SWAG_VERIFY(funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED), context->report({funcNode, funcNode->getTokenName(), toErr(Err0750)}));
 
     funcNode->byteCodeFct = ByteCodeGen::emitLocalFuncDecl;
-    typeInfo->stackSize   = funcNode->stackSize;
 
     // Check attributes
     if (funcNode->isForeign() && funcNode->content)

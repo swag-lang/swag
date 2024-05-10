@@ -93,7 +93,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     uint32_t offsetStack  = offsetResult + sizeof(Register);
 
     // For float load (should be reserved only if we have floating point operations in that function)
-    uint32_t offsetFLT = offsetStack + typeFunc->stackSize;
+    uint32_t offsetFLT = offsetStack + bc->stackSize;
 
     uint32_t sizeStack = offsetFLT + 8;
     MK_ALIGN16(sizeStack);

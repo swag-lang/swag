@@ -72,9 +72,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Stack
     llvm::AllocaInst* allocStack = nullptr;
-    if (typeFunc->stackSize)
+    if (bc->stackSize)
     {
-        allocStack = builder.CreateAlloca(I8_TY(), builder.getInt32(typeFunc->stackSize));
+        allocStack = builder.CreateAlloca(I8_TY(), builder.getInt32(bc->stackSize));
         allocStack->setAlignment(llvm::Align(2 * sizeof(void*)));
     }
 

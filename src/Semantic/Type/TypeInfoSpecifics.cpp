@@ -521,7 +521,6 @@ TypeInfo* TypeInfoFuncAttr::clone()
     const auto newType            = makeType<TypeInfoFuncAttr>();
     newType->firstDefaultValueIdx = firstDefaultValueIdx;
     newType->returnType           = returnType;
-    newType->stackSize            = stackSize;
     newType->attributes           = attributes;
     newType->attributeUsage       = attributeUsage;
     newType->callConv             = callConv;

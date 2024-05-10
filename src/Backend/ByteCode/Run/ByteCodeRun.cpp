@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Backend/CompilerItf.h"
-#include "Backend/Context.h"
+#include "Backend/ByteCode/Run/ByteCodeRun.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCode_Math.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
-#include "Backend/ByteCode/Run/ByteCodeRun.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
+#include "Backend/CompilerItf.h"
+#include "Backend/Context.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
@@ -1072,73 +1072,73 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::GetParam8:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 1);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low) & 0xFF;
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 1);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize) & 0xFF;
             break;
         case ByteCodeOp::GetParam16:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 2);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low) & 0xFFFF;
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 2);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize) & 0xFFFF;
             break;
         case ByteCodeOp::GetParam32:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 4);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low) & 0xFFFFFFFF;
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 4);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize) & 0xFFFFFFFF;
             break;
 
         case ByteCodeOp::GetParam64:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low);
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize);
             break;
         case ByteCodeOp::GetParam64x2:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low);
-            SWAG_ASSERT(context->bp + ip->d.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->c.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->d.mergeU64U32.low);
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize);
+            SWAG_ASSERT(context->bp + ip->d.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->c.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->d.mergeU64U32.low + context->bc->stackSize);
             break;
         case ByteCodeOp::GetIncParam64:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low);
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize);
             registersRC[ip->a.u32].u64 += ip->d.u64;
             break;
 
         case ByteCodeOp::GetParam64DeRef8:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low);
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize);
             registersRC[ip->a.u32].u64 = *registersRC[ip->a.u32].pointer;
             break;
         case ByteCodeOp::GetParam64DeRef16:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low);
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize);
             registersRC[ip->a.u32].u64 = *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer);
             break;
         case ByteCodeOp::GetParam64DeRef32:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low);
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize);
             registersRC[ip->a.u32].u64 = *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer);
             break;
         case ByteCodeOp::GetParam64DeRef64:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low);
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize);
             registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer);
             break;
 
         case ByteCodeOp::GetIncParam64DeRef8:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low);
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize);
             registersRC[ip->a.u32].u64 = *(registersRC[ip->a.u32].pointer + ip->d.u64);
             break;
         case ByteCodeOp::GetIncParam64DeRef16:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low);
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize);
             registersRC[ip->a.u32].u64 = *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer + ip->d.u64);
             break;
         case ByteCodeOp::GetIncParam64DeRef32:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low);
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize);
             registersRC[ip->a.u32].u64 = *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer + ip->d.u64);
             break;
         case ByteCodeOp::GetIncParam64DeRef64:
-            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low <= context->stack + g_CommandLine.limitStackBC - 8);
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low);
+            SWAG_ASSERT(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize <= context->stack + g_CommandLine.limitStackBC - 8);
+            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.mergeU64U32.low + context->bc->stackSize);
             registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer + ip->d.u64);
             break;
 
@@ -2481,7 +2481,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         case ByteCodeOp::IntrinsicCVaStart:
         {
             auto ptr = reinterpret_cast<void**>(registersRC[ip->a.u32].pointer);
-            *ptr     = context->bp + ip->b.u32;
+            *ptr     = context->bp + ip->b.u32 + context->bc->stackSize;
             break;
         }
         case ByteCodeOp::IntrinsicCVaEnd:

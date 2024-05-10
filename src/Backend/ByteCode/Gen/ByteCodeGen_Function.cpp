@@ -2204,9 +2204,6 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
     // 3 pointers are already on that stack after BP : saved BP, BC and IP.
     uint32_t offset = 3 * sizeof(void*);
 
-    // Then add the full stack size of the function
-    offset += funcNode->stackSize;
-
     // Variadic parameter is the last one pushed on the stack
     SWAG_IF_ASSERT(uint32_t storageIndex = 0);
     if (funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
