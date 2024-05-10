@@ -48,7 +48,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
         bool ok = false;
         for (const auto& c : g_ByteCodeDebugger.commands)
         {
-            if (arg.split[1] == c.name || arg.split[1] == c.shortname)
+            if (!c.name)
+                continue;
+
+            if (arg.split[1] == c.name || (c.shortname && arg.split[1] == c.shortname))
             {
                 g_Log.setColor(LogColor::Gray);
                 g_Log.print(form("command:     %s%s %s%s\n", Log::colorToVTS(LogColor::Name).c_str(), c.name, Log::colorToVTS(LogColor::Type).c_str(), c.args));
