@@ -458,7 +458,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
 
     // An inline block contains a specific scope that contains the parameters.
     // That scope does not have a parent, so the hierarchy scan will stop at it.
-    if (startNode->is(AstNodeKind::Inline) && !flags.has(COLLECT_NO_INLINE_PARAMS))
+    if (startNode->is(AstNodeKind::Inline) && !flags.has(COLLECT_NO_INLINE_PARAMS) && !context->forDebugger)
     {
         const auto inlineNode = castAst<AstInline>(startNode, AstNodeKind::Inline);
         SWAG_ASSERT(inlineNode->parametersScope);
@@ -487,7 +487,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
 
     // If we are in an inline block, jump right to the function parent
     // Not that the function parent can be null in case of inlined expression in a global for example (compile time execution)
-    else if (startNode->is(AstNodeKind::Inline))
+    else if (startNode->is(AstNodeKind::Inline) && !context->forDebugger)
     {
         const auto inlineBlock = castAst<AstInline>(startNode, AstNodeKind::Inline);
         if (!inlineBlock->func->hasAttribute(ATTRIBUTE_MIXIN))
@@ -608,7 +608,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
             continue;
 
         // For an inline scope, stop here
-        if (scope->is(ScopeKind::Inline))
+        if (scope->is(ScopeKind::Inline) && !context->forDebugger)
         {
             continue;
         }

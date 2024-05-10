@@ -33,6 +33,12 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     parent.ownerFct         = castAst<AstFuncDecl>(cxtBc->node, AstNodeKind::FuncDecl);
     parent.token.sourceFile = sourceFile;
     parent.parent           = cxtIp->node;
+    
+    if (cxtIp->node->hasOwnerInline())
+    {
+        parent.allocateExtension(ExtensionKind::Owner);
+        parent.extOwner()->ownerInline = cxtIp->node->ownerInline();
+    }
 
     JobContext jobContext;
     Parser     parser;
