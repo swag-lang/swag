@@ -282,7 +282,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         if (res.value)
             addr = res.value->reg.pointer;
         auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        if (!printStruct)
+        if (!g_ByteCodeDebugger.printStruct)
         {
             str += "<hidden>";
         }
@@ -316,7 +316,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     {
         auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         str += form("0x%016llx ", addr);
-        if (!printArray)
+        if (!g_ByteCodeDebugger.printArray)
         {
             str += "<hidden>";
         }
@@ -351,7 +351,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         {
             str += form("(0x%016llx ", ptr);
             str += form("%llu) ", count);
-            if (!printArray)
+            if (!g_ByteCodeDebugger.printArray)
             {
                 str += "<hidden>";
             }
@@ -521,7 +521,7 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8&
     EvaluateResult res;
     res.type = over->typeInfo;
     res.addr = realAddr ? realAddr : baseAddr + over->computedValue.storageOffset;
-    g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
+    appendTypedValue(context, str, res, 0);
     str.trim();
     while (str.back() == '\n')
         str.removeBack();

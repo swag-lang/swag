@@ -104,8 +104,8 @@ struct ByteCodeDebugger
     bool addBreakpoint(ByteCodeRunContext* context, const DebugBreakpoint& bkp);
 
     static void appendTypedValue(ByteCodeRunContext* context, const Utf8& filter, const AstNode* node, uint8_t* baseAddr, uint8_t* realAddr, Utf8& result);
-    void        appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
-    void        appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
+    static void appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
+    static void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
     static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
     static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
 
@@ -160,7 +160,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdBreakLine(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBreakFileLine(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 
-    void                           commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const;
+    bool                           commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const;
     static void                    tokenizeCommand(const Utf8& line, BcDbgCommandArg& arg);
     void                           setup();
     static void                    printLong(const Utf8& all);
@@ -190,6 +190,8 @@ struct ByteCodeDebugger
     Vector<BcDbgCommand>    commands;
     Vector<DebugBreakpoint> breakpoints;
     Vector<Utf8>            display;
+    Vector<Utf8>            evalExpr;
+    Vector<Utf8>            evalExprResult;
     Utf8                    lastLine;
 
     ByteCodeInstruction* lastIp           = nullptr;

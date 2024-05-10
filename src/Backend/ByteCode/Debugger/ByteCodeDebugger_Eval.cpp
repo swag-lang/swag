@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Backend/Context.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Backend/ByteCode/Gen/ByteCodeGenContext.h"
 #include "Backend/ByteCode/Gen/ByteCodeGenJob.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
+#include "Backend/Context.h"
 #include "Report/Diagnostic.h"
 #include "Report/Log.h"
 #include "Report/Report.h"
@@ -22,7 +22,8 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     g_Log.setColor(LogColor::Default);
 
     auto expr = inExpr;
-    g_ByteCodeDebugger.commandSubstitution(context, expr);
+    if (!g_ByteCodeDebugger.commandSubstitution(context, expr))
+        return false;
 
     auto sourceFile = cxtBc->sourceFile;
 
@@ -33,7 +34,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     parent.ownerFct         = castAst<AstFuncDecl>(cxtBc->node, AstNodeKind::FuncDecl);
     parent.token.sourceFile = sourceFile;
     parent.parent           = cxtIp->node;
-    
+
     if (cxtIp->node->hasOwnerInline())
     {
         parent.allocateExtension(ExtensionKind::Owner);
@@ -47,13 +48,17 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     {
         if (silent)
             return false;
+
         if (g_SilentErrorMsg.empty())
+        {
             printCmdError("expression syntax error");
+        }
         else
         {
             g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
             printCmdError(form("%s", g_SilentErrorMsg.c_str()));
         }
+
         return false;
     }
 
@@ -141,12 +146,15 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         if (g_SilentErrorMsg.empty())
+        {
             printCmdError("cannot run expression");
+        }
         else
         {
             g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
             printCmdError(form("%s", g_SilentErrorMsg.c_str()));
         }
+
         return false;
     }
 
@@ -209,6 +217,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
 
     const auto concrete = res.type->getConcreteAlias();
     Utf8       str;
+    Utf8       strRes;
+
     if (hasFormat)
     {
         if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
@@ -219,14 +229,21 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
 
         if (!res.addr && res.value)
             res.addr = &res.value->reg;
-        appendLiteralValue(context, str, fmt, res.addr);
+
+        appendLiteralValue(context, strRes, fmt, res.addr);
     }
     else
     {
         str = form("(%s%s%s) ", Log::colorToVTS(LogColor::Type).c_str(), res.type->getDisplayNameC(), Log::colorToVTS(LogColor::Default).c_str());
-        g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
+        appendTypedValue(context, strRes, res, 0);
     }
 
+    str += strRes;
+    g_ByteCodeDebugger.evalExpr.push_back(expr);
+    g_ByteCodeDebugger.evalExprResult.push_back(strRes);
+
+    g_Log.setColor(LogColor::Gray);
+    g_Log.print(form("$%d = ", g_ByteCodeDebugger.evalExpr.size() - 1));
     g_Log.setColor(LogColor::Name);
     g_Log.print(expr);
     g_Log.setColor(LogColor::Default);

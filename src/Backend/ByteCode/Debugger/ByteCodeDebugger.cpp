@@ -792,7 +792,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
     return true;
 }
 
-void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const
+bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const
 {
     Utf8 result;
     result.reserve(cmdExpr.length());
@@ -824,7 +824,7 @@ void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
         {
             uint32_t regN;
             if (!getRegIdx(context, pz + 1, regN))
-                return;
+                return false;
 
             const auto& regP = context->getRegBuffer(cxtRc)[regN];
             result += form("0x%llx", regP.u64);
@@ -834,10 +834,31 @@ void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
             continue;
         }
 
+        if (SWAG_IS_DIGIT(pz[1]))
+        {
+            Utf8 value;
+            pz += 1;
+            while (SWAG_IS_DIGIT(*pz))
+            {
+                value += *pz++;
+            }
+
+            const int num = value.toInt();
+            if (num >= static_cast<int>(evalExpr.size()))
+            {
+                printCmdError(form("invalid expression number [[$%s]] (out of range)", value.c_str()));
+                return false;
+            }
+
+            result += evalExpr[num];
+            continue;
+        }
+
         result += *pz++;
     }
 
     cmdExpr = result;
+    return true;
 }
 
 void ByteCodeDebugger::tokenizeCommand(const Utf8& line, BcDbgCommandArg& arg)
