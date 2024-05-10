@@ -15,19 +15,13 @@ impl Vector2
 //#[Swag.PrintBc]
 func toto(other: Vector2)
 {
-    @assert(other.x == 1)
     let v = Vector2{}
-
     var p = v - other
-    /*@print(p.x)
-
-    var p1 = v.tt(other)
-    @print(p1.x)*/
+    @assert(p.x == -1)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var me: Vector2//{1}
     toto({1})
 }
