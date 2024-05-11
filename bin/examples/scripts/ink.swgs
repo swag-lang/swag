@@ -82,7 +82,7 @@ impl Drop
 
     mtd show(painter: *Painter)
     {
-        painter.fillPath(&lp, col)
+        painter.fillPolygon(&lp, col)
     }
 }
 
