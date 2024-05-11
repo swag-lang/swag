@@ -16,7 +16,6 @@ var newDrop       = true
 var counter       = 0
 var currentColor: Color
 var drops:        Array'(*Drop)
-var mousePos:     Point
 var lastPos:      Vector2
 
 #init
@@ -111,8 +110,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         break
 
     case MouseMove, MousePressed:
-        let mouseEvt = cast(*MouseEvent) evt
-        mousePos = wnd.surfaceToLocal(mouseEvt.surfacePos)
         return true
 
     case Paint:
@@ -120,7 +117,11 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         let painter  = paintEvt.bc.painter
 
         let leftPressed = wnd.getApp().mouse.isButtonPressed(.Left) or Env.hasArg("swag.test")
-        if leftPressed
+        var mousePos = wnd.getApp().mouse.getPosition()
+        mousePos = wnd.screenToSurface(mousePos)
+        mousePos = wnd.surfaceToLocal(mousePos)
+
+        if leftPressed and mousePos.y > 0
         {
             if newDrop
             {
