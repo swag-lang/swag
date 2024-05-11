@@ -35,7 +35,7 @@ struct Drop
 {
     center:           Vector2
     r:                f32 = 50
-    circleDetail:     u32 = 100
+    circleDetail:     u32 = 50
     vertices:         Array'Vector2
     col:              Color = Argb.Red
     lp:               LinePath
