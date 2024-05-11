@@ -38,6 +38,7 @@ struct Stats
     std::atomic<uint64_t> bootstrapTime            = 0;
     std::atomic<uint64_t> runtimeTime              = 0;
     std::atomic<uint64_t> outputDbgTime            = 0;
+    std::atomic<uint64_t> ffiGenTime               = 0;
 
     std::atomic<size_t> allocatedMemory    = 0;
     std::atomic<size_t> maxAllocatedMemory = 0;

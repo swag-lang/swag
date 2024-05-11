@@ -3,6 +3,7 @@
 #include "Backend/Context.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
+#include "Core/Timer.h"
 #include "Os/Os.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
@@ -937,64 +938,71 @@ namespace OS
 
         static constexpr int JIT_SIZE_BUFFER = 16 * 1024;
         auto&                gen             = g_X64GenFFI;
-        if (!gen.concat.firstBucket)
+        uint64_t             startOffset     = 0;
+
         {
-            // Generate a buffer big enough to store the call, and be aware that this could be recursive, that's
-            // why the buffer is kind of big
-            auto& concat = gen.concat;
-            concat.init(0);
-            concat.firstBucket->capacity = JIT_SIZE_BUFFER + 128;
-            concat.firstBucket->data     = static_cast<uint8_t*>(VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE));
-            concat.currentSP             = gen.concat.firstBucket->data;
+#ifdef SWAG_STATS
+            Timer timer(&g_Stats.ffiGenTime);
+#endif
+            if (!gen.concat.firstBucket)
+            {
+                // Generate a buffer big enough to store the call, and be aware that this could be recursive, that's
+                // why the buffer is kind of big
+                auto& concat = gen.concat;
+                concat.init(0);
+                concat.firstBucket->capacity = JIT_SIZE_BUFFER + 128;
+                concat.firstBucket->data     = static_cast<uint8_t*>(VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE));
+                concat.currentSP             = gen.concat.firstBucket->data;
 
-            // We need to generate unwind stuff to get a correct callstack, and in case the runtime raises an exception
-            // with 'RaiseException' (panic, error, etc.)
-            // The function information is always the same, that's why we generate only one table per SCBE_X64.
-            VectorNative<CPURegister> unwindRegs;
-            VectorNative<uint32_t>    unwindOffsetRegs;
-            VectorNative<uint16_t>    unwind;
+                // We need to generate unwind stuff to get a correct callstack, and in case the runtime raises an exception
+                // with 'RaiseException' (panic, error, etc.)
+                // The function information is always the same, that's why we generate only one table per SCBE_X64.
+                VectorNative<CPURegister> unwindRegs;
+                VectorNative<uint32_t>    unwindOffsetRegs;
+                VectorNative<uint16_t>    unwind;
 
-            // Fake emit in order to compute the unwind infos
+                // Fake emit in order to compute the unwind infos
+                gen.emitPush(RDI);
+                unwindRegs.push_back(RDI);
+                unwindOffsetRegs.push_back(gen.concat.totalCount());
+                gen.emitOpNImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
+                const auto sizeProlog = gen.concat.totalCount();
+                SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
+
+                // Add function table
+                auto* rtFunc              = new RUNTIME_FUNCTION(); // leak, but it's fine
+                rtFunc->BeginAddress      = 0;
+                rtFunc->EndAddress        = JIT_SIZE_BUFFER;
+                rtFunc->UnwindInfoAddress = JIT_SIZE_BUFFER;
+                uint32_t offset           = 0;
+                concat.currentSP          = gen.concat.firstBucket->data + JIT_SIZE_BUFFER;
+                SCBE_Coff::emitUnwind(gen.concat, offset, sizeProlog, unwind);
+                RtlAddFunctionTable(rtFunc, 1, reinterpret_cast<DWORD64>(gen.concat.firstBucket->data));
+
+                // Restore back the start of the buffer
+                concat.currentSP = gen.concat.firstBucket->data;
+            }
+
+            startOffset = gen.concat.currentSP - gen.concat.firstBucket->data;
+            SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
+
             gen.emitPush(RDI);
-            unwindRegs.push_back(RDI);
-            unwindOffsetRegs.push_back(gen.concat.totalCount());
             gen.emitOpNImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
-            const auto sizeProlog = gen.concat.totalCount();
-            SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
+            gen.emitLoad64Immediate(RDI, reinterpret_cast<uint64_t>(context->sp), true);
+            gen.emitCallParameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
+            gen.emitLoad64Immediate(RAX, reinterpret_cast<uint64_t>(foreignPtr), true);
+            gen.emitCallIndirect(RAX);
 
-            // Add function table
-            auto* rtFunc              = new RUNTIME_FUNCTION(); // leak, but it's fine
-            rtFunc->BeginAddress      = 0;
-            rtFunc->EndAddress        = JIT_SIZE_BUFFER;
-            rtFunc->UnwindInfoAddress = JIT_SIZE_BUFFER;
-            uint32_t offset           = 0;
-            concat.currentSP          = gen.concat.firstBucket->data + JIT_SIZE_BUFFER;
-            SCBE_Coff::emitUnwind(gen.concat, offset, sizeProlog, unwind);
-            RtlAddFunctionTable(rtFunc, 1, reinterpret_cast<DWORD64>(gen.concat.firstBucket->data));
+            if (!returnType->isVoid() && !retCopyAddr)
+            {
+                gen.emitLoad64Immediate(RDI, reinterpret_cast<uint64_t>(context->registersRR), true);
+                gen.emitCallResult(typeInfoFunc, 0);
+            }
 
-            // Restore back the start of the buffer
-            concat.currentSP = gen.concat.firstBucket->data;
+            gen.emitOpNImmediate(RSP, stackSize, CPUOp::ADD, CPUBits::B64);
+            gen.emitPop(RDI);
+            gen.emitRet();
         }
-
-        const auto startOffset = gen.concat.currentSP - gen.concat.firstBucket->data;
-        SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
-
-        gen.emitPush(RDI);
-        gen.emitOpNImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
-        gen.emitLoad64Immediate(RDI, reinterpret_cast<uint64_t>(context->sp), true);
-        gen.emitCallParameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
-        gen.emitLoad64Immediate(RAX, reinterpret_cast<uint64_t>(foreignPtr), true);
-        gen.emitCallIndirect(RAX);
-
-        if (!returnType->isVoid() && !retCopyAddr)
-        {
-            gen.emitLoad64Immediate(RDI, reinterpret_cast<uint64_t>(context->registersRR), true);
-            gen.emitCallResult(typeInfoFunc, 0);
-        }
-
-        gen.emitOpNImmediate(RSP, stackSize, CPUOp::ADD, CPUBits::B64);
-        gen.emitPop(RDI);
-        gen.emitRet();
 
         // The real deal : make the call
         using FuncPtr            = void (*)();

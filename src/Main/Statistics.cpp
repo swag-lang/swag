@@ -164,6 +164,7 @@ void Stats::print() const
     g_Log.messageHeaderDot("prep out 2 time", form("%.3fs (save obj: %.3fs)", OS::timerToSeconds(prepOutputStage2TimeJob.load()), OS::timerToSeconds(prepOutputTimeJobSaveObj.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("gen out time", form("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("optim bc time", form("%.3fs", OS::timerToSeconds(optimBCTime.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("ffi gen time", form("%.3fs", OS::timerToSeconds(ffiGenTime.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("total time", form("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())), LogColor::Header, LogColor::Value);
     g_Log.writeEol();
 
