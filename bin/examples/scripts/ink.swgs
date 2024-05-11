@@ -68,21 +68,17 @@ impl Drop
     mtd marble(other: Drop)
     {
         let otherr = other.r * other.r
-        visit v: vertices
+        visit v: lp.polygon.points
         {
             var p    = v - other.center
-            let m    = p.length()
-            let root = sqrt(1 + otherr / (m * m))
-            p *= root
-            v = p + other.center
+            let root = sqrt(1 + (otherr / p.lengthSquared()))
+            v = (p * root) + other.center
         }
-
-        constructPath()
     }
 
     mtd show(painter: *Painter)
     {
-        painter.fillPolygon(&lp, col)
+        painter.fillPath(&lp, col)
     }
 }
 
@@ -128,10 +124,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 currentColor = Palette[counter % @countof(Palette)]
                 newDrop      = false
                 counter += 1
-                addInk(mousePos.x, mousePos.y, 25, currentColor)
-                lastPos = {mousePos.x, mousePos.y}
             }
-            elif lastPos.distance({mousePos.x, mousePos.y}) > 2
+
+            if lastPos.distance({mousePos.x, mousePos.y}) > 1
             {
                 addInk(mousePos.x, mousePos.y, 25, currentColor)
                 lastPos = {mousePos.x, mousePos.y}
