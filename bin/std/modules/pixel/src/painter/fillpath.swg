@@ -14,23 +14,11 @@ public impl Painter
             t.triangulate()
 
             // "Eat" points, triangles and edges
-            p.points =,move t.points
-            p.points.add(t.head)
-            t.head = null
-            p.points.add(t.tail)
-            t.tail      = null
+            p.points    =,move t.points
             p.triangles =,move t.triangles
-            p.edgeList  =,move t.edgeList
+            p.edges     =,move t.edges
+            t.eatPoints()
 
-            // t.triangles only contains 'interior' triangles, so we need to delete all other
-            // allocated triangles to avoid a leak
-            visit tri: t.map
-            {
-                if !tri.interior do
-                    Memory.delete(tri)
-            }
-
-            t.map.clear()
             t.clear()
         }
 

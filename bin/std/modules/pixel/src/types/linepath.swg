@@ -35,7 +35,7 @@ public struct LinePath
     polygon:            Polygon
     points:             Array'*Poly2Tri.Point
     triangles:          Array'*Poly2Tri.Triangle
-    edgeList:           Array'*Poly2Tri.Edge
+    edges:              Array'*Poly2Tri.Edge
 }
 
 public impl LinePath
@@ -49,7 +49,7 @@ public impl LinePath
     {
         points.clear()
         triangles.clear()
-        edgeList.clear()
+        edges.clear()
     }
 
     // Clear internal cache
@@ -59,11 +59,11 @@ public impl LinePath
             Memory.delete(t)
         visit t: triangles do
             Memory.delete(t)
-        visit t: edgeList do
+        visit t: edges do
             Memory.delete(t)
         points.clear()
         triangles.clear()
-        edgeList.clear()
+        edges.clear()
         polygon.clear()
     }
 

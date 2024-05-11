@@ -17,9 +17,9 @@ enum Orientation
 
 public struct Point
 {
-    using v:      Math.Vector2
-    edgeList:     Array'*Edge
-    border:       [2] *Edge
+    using v:     Math.Vector2
+    edges:       Array'*Edge
+    border:      [2] *Edge
 }
 
 public struct Edge
@@ -52,7 +52,7 @@ impl Edge
             }
         }
 
-        q.edgeList.add(self)
+        q.edges.add(self)
         if p.border[0] do
             p.border[1] = self
         else do
@@ -518,20 +518,20 @@ impl AdvancingFront
 #[Swag.Opaque]
 public struct Tessellate
 {
-    basin:         Basin
-    edgeEvent:     EdgeEvent
-    triangles:     Array'*Triangle
-    map:           Array'*Triangle
-    edgeList:      Array'*Edge
-    points:        Array'*Point
-    nodes:         Array'*Node
-    front:         AdvancingFront
-    head:          *Point
-    tail:          *Point
-    afHead:        *Node
-    afMiddle:      *Node
-    afTail:        *Node
-    polyStart:     u64
+    basin:             Basin
+    edgeEvent:         EdgeEvent
+    triangles:         Array'*Triangle
+    map:               Array'*Triangle
+    edges:             Array'*Edge
+    points:            Array'*Point
+    nodes:             Array'*Node
+    front:             AdvancingFront
+    head:              *Point
+    tail:              *Point
+    afHead:            *Node
+    afMiddle:          *Node
+    afTail:            *Node
+    polyStart:         u64
 }
 
 impl Tessellate
@@ -539,6 +539,26 @@ impl Tessellate
     public mtd opDrop()
     {
         clear()
+    }
+
+    func newPoint()->*Point
+    {
+        return Memory.new'Point()
+    }
+
+    func newTriangle()->*Triangle
+    {
+        return Memory.new'Triangle()
+    }
+
+    func newEdge()->*Edge
+    {
+        return Memory.new'Edge()
+    }
+
+    func newNode()->*Node
+    {
+        return Memory.new'Node()
     }
 
     // Clear content
@@ -555,19 +575,33 @@ impl Tessellate
         Memory.delete(afTail)
         head, tail, afHead, afMiddle, afTail = null
 
+        visit p: points do
+            Memory.delete(p)
         visit p: map do
             Memory.delete(p)
-        visit p: edgeList do
+        visit p: edges do
             Memory.delete(p)
         visit p: nodes do
             Memory.delete(p)
-        visit p: points do
-            Memory.delete(p)
+
+        points.clear()
         triangles.clear()
         map.clear()
-        edgeList.clear()
+        edges.clear()
         nodes.clear()
-        points.clear()
+    }
+
+    public mtd eatPoints()
+    {
+        // t.triangles only contains 'interior' triangles, so we need to delete all other
+        // allocated triangles to avoid a leak
+        visit tri: map
+        {
+            if !tri.interior do
+                Memory.delete(tri)
+        }
+
+        map.clear()
     }
 
     // Returns the list of triangles
@@ -585,7 +619,7 @@ impl Tessellate
     // Register a new point
     public mtd addPoint(x, y: f32)
     {
-        let p = Memory.new'Point()
+        let p = newPoint()
         p.x = x
         p.y = y
         points.add(p)
@@ -599,9 +633,9 @@ impl Tessellate
             visit pt, i: polyline
             {
                 let nexti = (i + 1) % @countof(polyline)
-                let edge  = Memory.new'Edge()
+                let edge  = newEdge()
                 edge.set(polyline[i], polyline[nexti])
-                edgeList.add(edge)
+                edges.add(edge)
             }
         }
 
@@ -619,6 +653,11 @@ impl Tessellate
         createAdvancingFront()
         sweepPoints()
         finalizationPolygon()
+
+        points.add(head)
+        points.add(tail)
+        head = null
+        tail = null
     }
 
     mtd sweepPoints()
@@ -627,7 +666,7 @@ impl Tessellate
         {
             let point = points[i]
             let node  = pointEvent(point)
-            visit e: point.edgeList do
+            visit e: point.edges do
                 addEdgeEvent2(e, node)
         }
     }
@@ -924,11 +963,11 @@ impl Tessellate
     {
         let node = locateNode(point)
         Debug.assert(node and node.point and node.next and node.next.point, "null node")
-        let new_node = newFrontTriangle(point, node)
+        let newNode = newFrontTriangle(point, node)
         if point.x <= node.point.x + Math.ConstF64.Epsilon do
             fill(node)
-        fillAdvancingFront(new_node)
-        return new_node
+        fillAdvancingFront(newNode)
+        return newNode
     }
 
     mtd fillAdvancingFront(n: *Node)
@@ -1090,7 +1129,7 @@ impl Tessellate
 
     mtd fill(node: *Node)
     {
-        let triangle = Memory.new'Triangle()
+        let triangle = newTriangle()
         triangle.points[0] = node.prev.point
         triangle.points[1] = node.point
         triangle.points[2] = node.next.point
@@ -1108,7 +1147,7 @@ impl Tessellate
 
     mtd newFrontTriangle(point: *Point, node: *Node)->*Node
     {
-        let triangle = Memory.new'Triangle()
+        let triangle = newTriangle()
         triangle.points[0] = point
         triangle.points[1] = node.point
         triangle.points[2] = node.next.point
@@ -1116,20 +1155,20 @@ impl Tessellate
         triangle.markNeighbor(node.triangle)
         map.add(triangle)
 
-        let new_node = Memory.new'Node()
-        new_node.point = point
-        new_node.value = point.x
-        nodes.add(new_node)
+        let newNode = newNode()
+        newNode.point = point
+        newNode.value = point.x
+        nodes.add(newNode)
 
-        new_node.next  = node.next
-        new_node.prev  = node
-        node.next.prev = new_node
-        node.next      = new_node
+        newNode.next   = node.next
+        newNode.prev   = node
+        node.next.prev = newNode
+        node.next      = newNode
 
         if !legalize(triangle) do
             mapTriangleToNodes(triangle)
 
-        return new_node
+        return newNode
     }
 
     func orient2d(pa, pb, pc: *Point)->Orientation
@@ -1360,10 +1399,10 @@ impl Tessellate
         const KAlpha = 0.3'f32
         let dx       = KAlpha * (xmax - xmin)
         let dy       = KAlpha * (ymax - ymin)
-        head   = Memory.new'Point()
+        head   = newPoint()
         head.x = xmin - dx
         head.y = ymin - dy
-        tail   = Memory.new'Point()
+        tail   = newPoint()
         tail.x = xmax + dx
         tail.y = ymin - dy
 
@@ -1385,15 +1424,15 @@ impl Tessellate
 
     mtd createAdvancingFront()
     {
-        let triangle = Memory.new'Triangle()
+        let triangle = newTriangle()
         triangle.points[0] = points[0]
         triangle.points[1] = head
         triangle.points[2] = tail
         map.add(triangle)
 
-        afHead   = Memory.new'Node()
-        afMiddle = Memory.new'Node()
-        afTail   = Memory.new'Node()
+        afHead   = newNode()
+        afMiddle = newNode()
+        afTail   = newNode()
 
         front.head       = afHead
         front.tail       = afTail
