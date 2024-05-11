@@ -516,7 +516,7 @@ impl AdvancingFront
 }
 
 #[Swag.Opaque]
-public struct Tesselate
+public struct Tessellate
 {
     basin:         Basin
     edgeEvent:     EdgeEvent
@@ -534,7 +534,7 @@ public struct Tesselate
     polyStart:     u64
 }
 
-impl Tesselate
+impl Tessellate
 {
     public mtd opDrop()
     {

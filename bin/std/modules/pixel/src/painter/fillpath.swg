@@ -3,7 +3,7 @@ using Core, Core.Math
 public impl Painter
 {
     #[Swag.Overload]
-    internal mtd fillPath(t: *Poly2Tri.Tesselate, p: *LinePath, bvMin, bvMax: Vector2, brush: Brush)
+    internal mtd fillPath(t: *Poly2Tri.Tessellate, p: *LinePath, bvMin, bvMax: Vector2, brush: Brush)
     {
         setTexture0(bvMin, bvMax, brush)
         resetTextureFont()
@@ -233,7 +233,7 @@ public impl Painter
         // Full compute (triangulation)
         else
         {
-            var t: Poly2Tri.Tesselate
+            var t: Poly2Tri.Tessellate
             visit p: pathList.paths
             {
                 if (p.polygon.isClockwise or serial != p.serial) and flush

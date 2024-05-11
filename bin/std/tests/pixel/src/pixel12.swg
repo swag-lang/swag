@@ -2,7 +2,7 @@ using Core, Pixel
 
 #test
 {
-    var t: Poly2Tri.Tesselate
+    var t: Poly2Tri.Tessellate
     t.startPolyLine()
     t.addPoint(0, 0)
     t.addPoint(100, 0)
