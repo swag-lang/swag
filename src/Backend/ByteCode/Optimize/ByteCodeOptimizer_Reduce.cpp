@@ -1437,15 +1437,6 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
                 break;
             }
 
-            /*if (ip[1].op == ByteCodeOp::MemCpy64 &&
-                ip[0].a.u32 == ip[1].a.u32 &&
-                !ip[1].hasFlag(BCI_START_STMT))
-            {
-                SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer64);
-                ip[1].a.u32 = ip[0].b.u32;
-                break;
-            }*/
-
             if (ip[1].op == ByteCodeOp::DeRef8 &&
                 ip[0].a.u32 == ip[1].b.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT))
