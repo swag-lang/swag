@@ -259,7 +259,7 @@ impl Array
     }
 
     // Ensure the Array is big enough to store at least 'newCount' elements.
-    // The number of valid elements does not change. If you the number of valid elements to be changed also, use [[growResize]] instead.
+    // The number of valid elements does not change. If you want the number of valid elements to be changed also, use [[growResize]] instead.
     mtd grow(newCount: u64)
     {
         if newCount <= capacity do

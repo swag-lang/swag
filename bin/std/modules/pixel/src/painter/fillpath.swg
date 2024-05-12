@@ -209,17 +209,8 @@ public impl Painter
             if p.polygon.points.count >= 3
             {
                 flush = p
-                if dirty
-                {
-                    tess.startPolyLine()
-                    loop i: 0 until p.polygon.points.count - 1
-                    {
-                        var pt = p.polygon.getPoint(i)
-                        tess.addPoint(pt.x, pt.y)
-                    }
-
-                    tess.endPolyLine()
-                }
+                if dirty do
+                    tess.addPolyLine(p.polygon)
             }
         }
 

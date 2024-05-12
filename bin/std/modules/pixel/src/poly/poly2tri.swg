@@ -610,22 +610,25 @@ impl Tessellate
         return triangles.toSlice()
     }
 
-    // To call before adding a polyline
+    // To call before adding a polyline.
+    // A polyline is a polygon border.
+    // See [[addPoint]] and [[endPolyLine]]
     public mtd startPolyLine()
     {
         polyStart = points.count
     }
 
     // Register a new point
-    public mtd addPoint(x, y: f32)
+    public mtd addPoint(pt: Math.Vector2)
     {
         let p = newPoint()
-        p.x = x
-        p.y = y
+        p.x = pt.x
+        p.y = pt.y
         points.add(p)
     }
 
-    // To call to register the polyline
+    // To call to register the polyline.
+    // The polyline registration should have been done before with [[startPolyline]]
     public mtd endPolyLine()
     {
         mtd initEdges(polyline: [..] *Point)
@@ -641,6 +644,24 @@ impl Tessellate
 
         Debug.assert(polyStart != points.count, "no points !")
         initEdges(self, points[polyStart..points.count - 1])
+    }
+
+    // Register a polygon as a polyline
+    #[Swag.PrintBc]
+    public mtd addPolyLine(poly: Polygon)
+    {
+        points.grow(points.count + poly.points.count)
+
+        startPolyLine()
+        loop i: 0 until poly.points.count - 1
+        {
+            let p = newPoint()
+            let pt = poly.getPoint(i)
+            p.x = pt.x
+            p.y = pt.y
+            points.add(p)
+        }
+        endPolyLine()
     }
 
     // Triangulate

@@ -20,9 +20,15 @@ impl Polygon
 {
     // Get the given point
     #[Swag.Inline, Swag.Overload]
-    mtd getPoint(i: u64)->Vector2
+    mtd getPoint(i: u64)->&Vector2
     {
-        return points.buffer[i]
+        return points.buffer + i
+    }
+
+    #[Swag.Inline, Swag.Overload]
+    mtd const getPoint(i: u64)->const &Vector2
+    {
+        return points.buffer + i
     }
 
     // Get the given point, with an optional offset
