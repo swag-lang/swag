@@ -572,44 +572,16 @@ impl Tessellate
         clear()
     }
 
-    func newPoint()->*Point
+    #[Swag.Inline]
     {
-        return Memory.new'Point()
-    }
-
-    func deletePoint(ptr: *Point)
-    {
-        Memory.delete(ptr)
-    }
-
-    func newEdge()->*Edge
-    {
-        return Memory.new'Edge()
-    }
-
-    func deleteEdge(ptr: *Edge)
-    {
-        Memory.delete(ptr)
-    }
-
-    func newTriangle()->*Triangle
-    {
-        return Memory.new'Triangle()
-    }
-
-    func deleteTriangle(ptr: *Triangle)
-    {
-        Memory.delete(ptr)
-    }
-
-    func newNode()->*Node
-    {
-        return Memory.new'Node()
-    }
-
-    func deleteNode(ptr: *Node)
-    {
-        Memory.delete(ptr)
+        func newPoint()->*Point { return Memory.new'Point(); }
+        func deletePoint(ptr: *Point) { Memory.delete(ptr); }
+        func newEdge()->*Edge { return Memory.new'Edge(); }
+        func deleteEdge(ptr: *Edge) { Memory.delete(ptr); }
+        func newTriangle()->*Triangle { return Memory.new'Triangle(); }
+        func deleteTriangle(ptr: *Triangle) { Memory.delete(ptr); }
+        func newNode()->*Node { return Memory.new'Node(); }
+        func deleteNode(ptr: *Node) { Memory.delete(ptr); }
     }
 
     // Release the given tessellation result
