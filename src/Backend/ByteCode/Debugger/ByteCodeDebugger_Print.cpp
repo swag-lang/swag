@@ -500,6 +500,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
     g_ByteCodeDebugger.printInstructions(context, g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, regN);
     g_Log.setStoreMode(false);
     g_ByteCodeDebugger.printLong(g_Log.store);
+    g_ByteCodeDebugger.bcMode = true;
 
     return BcDbgCommandResult::Continue;
 }
@@ -528,6 +529,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext*, con
     toLogBc->print(opt);
     g_Log.setStoreMode(false);
     g_ByteCodeDebugger.printLong(g_Log.store);
+    g_ByteCodeDebugger.bcMode = true;
 
     return BcDbgCommandResult::Continue;
 }

@@ -732,7 +732,10 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         /////////////////////////////////////////
 
         g_Log.setColor(LogColor::Green);
-        g_Log.write("(bcdbg) > ");
+        if(bcMode)
+            g_Log.write("(dbg-bc) > ");
+        else
+            g_Log.write("(dbg-source) > ");
 
         // Get command from user
         bool ctrl  = false;
