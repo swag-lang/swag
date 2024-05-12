@@ -77,8 +77,6 @@ warning ?
 -------------------------------------
 fast math ? (faire les tests de float en u32/U64 comme avant la prise en charge de nan)
 -------------------------------------
-debugger, ajouter la logique des expressions $num qu'on peut récupérer dans le prompt ensuite
--------------------------------------
 DebugAllocator
 safety, sanitize access to stack/memory
 safety, exit stackframe (return local value)
@@ -143,6 +141,4 @@ pass orEq/andEq/xOrEq/shiftEq en mode Stack StackStack. Dans les faits, plein d'
 -------------------------------------
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
 rc[0] = r12 etc... chiant
--------------------------------------
-262810 262423 262422 262392 262093 260808
 -------------------------------------
