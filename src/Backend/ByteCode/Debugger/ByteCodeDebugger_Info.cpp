@@ -85,6 +85,28 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoVariables(ByteCodeRunContext* contex
     return BcDbgCommandResult::Continue;
 }
 
+BcDbgCommandResult ByteCodeDebugger::cmdInfoExpressions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+{
+    if (arg.split.size() > 3)
+        return BcDbgCommandResult::BadArguments;
+    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+
+    Utf8 result;
+    for (uint32_t i = g_ByteCodeDebugger.evalExpr.size() - 1; i != UINT32_MAX; i--)
+    {
+        result += form("$%d = ", i);
+        result += Log::colorToVTS(LogColor::Name);
+        result += g_ByteCodeDebugger.evalExpr[i];
+        result += Log::colorToVTS(LogColor::Gray);
+        result += " = ";
+        result += g_ByteCodeDebugger.evalExprResult[i];
+        result += "\n";
+    }
+
+    printLong(result);
+    return BcDbgCommandResult::Continue;
+}
+
 BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() > 3)
@@ -180,6 +202,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const 
         return cmdInfoFuncs(context, arg);
     if (arg.split[1] == "variables" || arg.split[1] == "var")
         return cmdInfoVariables(context, arg);
+    if (arg.split[1] == "expressions" || arg.split[1] == "exp")
+        return cmdInfoExpressions(context, arg);
     if (arg.split[1] == "modules")
         return cmdInfoModules(context, arg);
 
