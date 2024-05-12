@@ -15,6 +15,27 @@ enum Orientation
     Collinear
 }
 
+#[Swag.Opaque]
+public struct Tessellate
+{
+    basin:         Basin
+    edgeEvent:     EdgeEvent
+
+    triangles:     Array'*Triangle
+    map:           Array'*Triangle
+    edges:         Array'*Edge
+    points:        Array'*Point
+    nodes:         Array'*Node
+
+    front:         AdvancingFront
+    head:          *Point
+    tail:          *Point
+    afHead:        *Node
+    afMiddle:      *Node
+    afTail:        *Node
+    polyStart:     u64
+}
+
 public struct Point
 {
     using v:     Math.Vector2
@@ -26,6 +47,46 @@ public struct Edge
 {
     p:     *Point
     q:     *Point
+}
+
+public struct Triangle
+{
+    constrainedEdge:     [3] bool
+    delaunayEdge:        [3] bool
+    points:              [3] *Point
+    neighbors:           [3] *Triangle
+    interior:            bool
+}
+
+struct EdgeEvent
+{
+    constrainedEdge:     *Edge
+    right:               bool
+}
+
+struct Basin
+{
+    leftNode:        *Node
+    bottomNode:      *Node
+    rightNode:       *Node
+    width:           f64
+    leftHighest:     bool
+}
+
+struct Node
+{
+    point:        *Point
+    triangle:     *Triangle
+    next:         *Node
+    prev:         *Node
+    value:        f64
+}
+
+struct AdvancingFront
+{
+    head:           *Node
+    tail:           *Node
+    searchNode:     *Node
 }
 
 impl Edge
@@ -62,15 +123,6 @@ impl Edge
         else do
             q.border[0] = self
     }
-}
-
-public struct Triangle
-{
-    constrainedEdge:     [3] bool
-    delaunayEdge:        [3] bool
-    points:              [3] *Point
-    neighbors:           [3] *Triangle
-    interior:            bool
 }
 
 impl Triangle
@@ -402,37 +454,6 @@ impl Triangle
     }
 }
 
-struct EdgeEvent
-{
-    constrainedEdge:     *Edge
-    right:               bool
-}
-
-struct Basin
-{
-    leftNode:        *Node
-    bottomNode:      *Node
-    rightNode:       *Node
-    width:           f64
-    leftHighest:     bool
-}
-
-struct Node
-{
-    point:        *Point
-    triangle:     *Triangle
-    next:         *Node
-    prev:         *Node
-    value:        f64
-}
-
-struct AdvancingFront
-{
-    head:           *Node
-    tail:           *Node
-    searchNode:     *Node
-}
-
 impl AdvancingFront
 {
     mtd locatePoint(point: *Point)->*Node
@@ -513,25 +534,6 @@ impl AdvancingFront
 
         return null
     }
-}
-
-#[Swag.Opaque]
-public struct Tessellate
-{
-    basin:             Basin
-    edgeEvent:         EdgeEvent
-    triangles:         Array'*Triangle
-    map:               Array'*Triangle
-    edges:             Array'*Edge
-    points:            Array'*Point
-    nodes:             Array'*Node
-    front:             AdvancingFront
-    head:              *Point
-    tail:              *Point
-    afHead:            *Node
-    afMiddle:          *Node
-    afTail:            *Node
-    polyStart:         u64
 }
 
 impl Tessellate
@@ -647,7 +649,6 @@ impl Tessellate
     }
 
     // Register a polygon as a polyline
-    #[Swag.PrintBc]
     public mtd addPolyLine(poly: Polygon)
     {
         points.grow(points.count + poly.points.count)
@@ -655,7 +656,7 @@ impl Tessellate
         startPolyLine()
         loop i: 0 until poly.points.count - 1
         {
-            let p = newPoint()
+            let p  = newPoint()
             let pt = poly.getPoint(i)
             p.x = pt.x
             p.y = pt.y
