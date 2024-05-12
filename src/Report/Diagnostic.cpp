@@ -771,7 +771,27 @@ void Diagnostic::removeErrorId(Utf8& err)
 
 void Diagnostic::tokenizeError(const Utf8& err, Vector<Utf8>& tokens)
 {
-    Utf8::tokenize(err, '$', tokens, false, true);
+    const char* pz = err.c_str();
+    while (*pz)
+    {
+        Utf8 result;
+        if (!pz[0] || !pz[1] || !pz[2])
+        {
+            while (pz[0])
+                result += *pz++;
+        }
+        else
+        {
+            while (pz[0] && (pz[0] != ' ' || pz[1] != '$' || pz[2] != ' '))
+                result += *pz++;
+        }
+
+        result.trim();
+        if(!result.empty())
+            tokens.push_back(result);
+        if (*pz)
+            pz += 3;
+    }
 }
 
 Utf8 Diagnostic::oneLiner(const Utf8& err)
