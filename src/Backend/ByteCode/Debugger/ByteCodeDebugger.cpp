@@ -25,7 +25,7 @@ void ByteCodeDebugger::setup()
 
     commands.push_back({"bc", "", "", "swap between bytecode and source code mode", cmdBc});
     commands.push_back({});
-   
+
     commands.push_back({"step", "s", "[count]", "execute [count] source line(s) or bytecode instructions(s)", cmdStep});
     commands.push_back({"next", "n", "[count]", "like 'step', but does not enter functions or inlined code", cmdNext});
     commands.push_back({"until", "u", "<line|instruction>", "runs until the given <line> or <instruction> (in the current function) has been reached", cmdUntil});
@@ -790,70 +790,77 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
 bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const
 {
-    Utf8 result;
-    result.reserve(cmdExpr.length());
-
-    auto pz = cmdExpr.c_str();
-    while (*pz)
+    bool recom = true;
+    while (recom)
     {
-        if (*pz != '$')
+        recom = false;
+        Utf8 result;
+        result.reserve(cmdExpr.length());
+
+        auto pz = cmdExpr.c_str();
+        while (*pz)
         {
+            if (*pz != '$')
+            {
+                result += *pz++;
+                continue;
+            }
+
+            if (pz[1] == 's' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
+            {
+                result += form("0x%llx", context->sp);
+                pz += 3;
+                continue;
+            }
+
+            if (pz[1] == 'b' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
+            {
+                result += form("0x%llx", context->bp);
+                pz += 3;
+                continue;
+            }
+
+            if (pz[1] == 'r' && SWAG_IS_DIGIT(pz[2]))
+            {
+                uint32_t regN;
+                if (!getRegIdx(context, pz + 1, regN))
+                    return false;
+
+                const auto& regP = context->getRegBuffer(cxtRc)[regN];
+                result += form("0x%llx", regP.u64);
+                pz += 2;
+                while (SWAG_IS_DIGIT(*pz))
+                    pz++;
+                continue;
+            }
+
+            if (SWAG_IS_DIGIT(pz[1]))
+            {
+                Utf8 value;
+                pz += 1;
+                while (SWAG_IS_DIGIT(*pz))
+                {
+                    value += *pz++;
+                }
+
+                const int num = value.toInt();
+                if (num >= static_cast<int>(evalExpr.size()))
+                {
+                    printCmdError(form("invalid expression number [[$%s]] (out of range)", value.c_str()));
+                    return false;
+                }
+
+                recom = true;
+                result += evalExpr[num];
+                continue;
+            }
+
             result += *pz++;
-            continue;
         }
 
-        if (pz[1] == 's' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
-        {
-            result += form("0x%llx", context->sp);
-            pz += 3;
-            continue;
-        }
-
-        if (pz[1] == 'b' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
-        {
-            result += form("0x%llx", context->bp);
-            pz += 3;
-            continue;
-        }
-
-        if (pz[1] == 'r' && SWAG_IS_DIGIT(pz[2]))
-        {
-            uint32_t regN;
-            if (!getRegIdx(context, pz + 1, regN))
-                return false;
-
-            const auto& regP = context->getRegBuffer(cxtRc)[regN];
-            result += form("0x%llx", regP.u64);
-            pz += 2;
-            while (SWAG_IS_DIGIT(*pz))
-                pz++;
-            continue;
-        }
-
-        if (SWAG_IS_DIGIT(pz[1]))
-        {
-            Utf8 value;
-            pz += 1;
-            while (SWAG_IS_DIGIT(*pz))
-            {
-                value += *pz++;
-            }
-
-            const int num = value.toInt();
-            if (num >= static_cast<int>(evalExpr.size()))
-            {
-                printCmdError(form("invalid expression number [[$%s]] (out of range)", value.c_str()));
-                return false;
-            }
-
-            result += evalExpr[num];
-            continue;
-        }
-
-        result += *pz++;
+        cmdExpr = result;
     }
 
-    cmdExpr = result;
     return true;
 }
 
