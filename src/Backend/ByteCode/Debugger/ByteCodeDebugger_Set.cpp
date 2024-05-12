@@ -69,3 +69,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
 
     return BcDbgCommandResult::BadArguments;
 }
+
+BcDbgCommandResult ByteCodeDebugger::cmdBc(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+{
+    if (arg.split.size() != 1)
+        return BcDbgCommandResult::BadArguments;
+    
+    g_ByteCodeDebugger.bcMode = !g_ByteCodeDebugger.bcMode;
+    if (g_ByteCodeDebugger.bcMode)
+        printCmdResult("bytecode mode");
+    else
+        printCmdResult("source code mode");
+    return BcDbgCommandResult::Continue;
+}

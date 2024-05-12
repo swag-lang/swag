@@ -23,15 +23,13 @@ void ByteCodeDebugger::setup()
     commands.push_back({"<TAB>", "", "", "contextual completion of the current word", nullptr});
     commands.push_back({});
 
-    commands.push_back({"step", "s", "[count]", "execute [count] source line(s)", cmdStep});
-    commands.push_back({"next", "n", "[count]", "like 'step', but does not enter functions or inlined code", cmdNext});
-    commands.push_back({"until", "u", "<line>", "runs until the given <line> in the current function has been reached", cmdUntil});
-    commands.push_back({"jump", "j", "<line>", "jump to the given <line> in the current function", cmdJump});
+    commands.push_back({"bc", "", "", "swap between bytecode and source code mode", cmdBc});
     commands.push_back({});
-    commands.push_back({"stepi", "si", "[count]", "execute [count] bytecode instruction(s)", cmdStepi});
-    commands.push_back({"nexti", "ni", "[count]", "like 'stepi', but does not enter functions or inlined code", cmdNexti});
-    commands.push_back({"untili", "ui", "<instruction>", "runs until the given bytecode <instruction> has been reached", cmdUntili});
-    commands.push_back({"jumpi", "ji", "<instruction>", "jump to the given bytecode instruction", cmdJumpi});
+   
+    commands.push_back({"step", "s", "[count]", "execute [count] source line(s) or bytecode instructions(s)", cmdStep});
+    commands.push_back({"next", "n", "[count]", "like 'step', but does not enter functions or inlined code", cmdNext});
+    commands.push_back({"until", "u", "<line|instruction>", "runs until the given <line> or <instruction> (in the current function) has been reached", cmdUntil});
+    commands.push_back({"jump", "j", "<line|instruction>", "jump to the given <line> or <instruction> (in the current function)", cmdJump});
     commands.push_back({});
     commands.push_back({"finish", "f", "", "continue running until the current function is done", cmdFinish});
     commands.push_back({"continue", "c", "", "continue running until another breakpoint is reached", cmdContinue});
@@ -481,7 +479,6 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             {
                 context->debugOn = true;
                 stepMode         = DebugStepMode::None;
-                bcMode           = true;
             }
             else
             {
@@ -502,7 +499,6 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             {
                 context->debugOn = true;
                 stepMode         = DebugStepMode::None;
-                bcMode           = true;
             }
             else
             {

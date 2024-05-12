@@ -124,15 +124,11 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdDisplayClear(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdDisplay(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdStep(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdStepi(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdNext(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdNexti(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdFinish(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdContinue(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdJump(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdJumpi(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdUntil(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdUntili(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdMemory(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdWhere(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdInstruction(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
@@ -144,6 +140,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdHelp(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBreak(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdInfo(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdBc(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 
     static BcDbgCommandResult cmdInfoFuncs(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdInfoModules(ByteCodeRunContext* context, const BcDbgCommandArg& arg);

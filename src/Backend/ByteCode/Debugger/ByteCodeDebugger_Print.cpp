@@ -495,7 +495,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
     int regN = 4;
     if (arg.split.size() == 2)
         regN = arg.split[1].toInt();
-    g_ByteCodeDebugger.bcMode = true;
 
     g_Log.setStoreMode(true);
     g_ByteCodeDebugger.printInstructions(context, g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, regN);
@@ -510,9 +509,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext*, con
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    auto toLogBc              = g_ByteCodeDebugger.cxtBc;
-    auto toLogIp              = g_ByteCodeDebugger.cxtIp;
-    g_ByteCodeDebugger.bcMode = true;
+    auto toLogBc = g_ByteCodeDebugger.cxtBc;
+    auto toLogIp = g_ByteCodeDebugger.cxtIp;
 
     if (arg.split.size() > 1)
     {
