@@ -27,6 +27,7 @@ public struct Tessellate
     triIndices:     Array'u64
 
     nodes:          Array'*Node
+    freeNodes:      Array'*Node
 
     front:          AdvancingFront
     head:           *Point
@@ -112,9 +113,16 @@ impl Result
 
     mtd release()
     {
-        if !tess do
-            return
-        tess.release(self)
+        visit t: points do
+            Memory.delete(t)
+        visit t: edges do
+            Memory.delete(t)
+        visit t: triangles do
+            Memory.delete(t)
+        points.clear()
+        edges.clear()
+        triangles.clear()
+        triIndices.clear()
     }
 }
 
@@ -570,6 +578,7 @@ impl Tessellate
     public mtd opDrop()
     {
         clear()
+        clearCache()
     }
 
     #[Swag.Inline]
@@ -580,23 +589,23 @@ impl Tessellate
         func deleteEdge(ptr: *Edge) { Memory.delete(ptr); }
         func newTriangle()->*Triangle { return Memory.new'Triangle(); }
         func deleteTriangle(ptr: *Triangle) { Memory.delete(ptr); }
-        func newNode()->*Node { return Memory.new'Node(); }
-        func deleteNode(ptr: *Node) { Memory.delete(ptr); }
-    }
 
-    // Release the given tessellation result
-    mtd release(result: *Result)
-    {
-        visit t: result.points do
-            deletePoint(t)
-        visit t: result.edges do
-            deleteEdge(t)
-        visit t: result.triangles do
-            deleteTriangle(t)
-        result.points.clear()
-        result.edges.clear()
-        result.triangles.clear()
-        result.triIndices.clear()
+        mtd newNode()->*Node
+        {
+            if freeNodes.count
+            {
+                let p = freeNodes.popBack()
+                @init(p, 1)
+                return p
+            }
+
+            return Memory.new'Node()
+        }
+
+        mtd deleteNode(ptr: *Node)
+        {
+            freeNodes.add(ptr)
+        }
     }
 
     // Clear content
@@ -629,6 +638,14 @@ impl Tessellate
         nodes.clear()
     }
 
+    // Clear cache
+    mtd clearCache()
+    {
+        visit p: freeNodes do
+            Memory.delete(p)
+        freeNodes.clear()
+    }
+
     // Get the triangulation result
     public mtd getResult()->Result
     {
@@ -637,7 +654,6 @@ impl Tessellate
         result.edges      =,move edges
         result.triangles  =,move triangles
         result.triIndices =,move triIndices
-        result.tess       = self
         return result
     }
 
@@ -852,7 +868,7 @@ impl Tessellate
         return null
     }
 
-    mtd flipScanEdgeEvent(ep, eq: *Point, flip_triangle: *Triangle, t: *Triangle, p: *Point)
+    mtd flipScanEdgeEvent(ep, eq: *Point, flipTriangle: *Triangle, t: *Triangle, p: *Point)
     {
         let ot = t.neighborAcross(p)
         Debug.assert(ot != null, "FlipScanEdgeEvent - null neighbor across")
@@ -860,8 +876,8 @@ impl Tessellate
         let op = ot.oppositePoint(t, p)
         Debug.assert(op != null, "FlipScanEdgeEvent - null opposing point")
 
-        let p1 = flip_triangle.pointCCW(eq)
-        let p2 = flip_triangle.pointCW(eq)
+        let p1 = flipTriangle.pointCCW(eq)
+        let p2 = flipTriangle.pointCW(eq)
         Debug.assert(p1 != null and p2 != null, "FlipScanEdgeEvent - null on either of points")
 
         if inScanArea(eq, p1, p2, op) do
@@ -869,7 +885,7 @@ impl Tessellate
         else
         {
             let newP = nextFlipPoint(ep, eq, ot, op)
-            flipScanEdgeEvent(ep, eq, flip_triangle, ot, newP)
+            flipScanEdgeEvent(ep, eq, flipTriangle, ot, newP)
         }
     }
 
@@ -1314,12 +1330,12 @@ impl Tessellate
 
                     rotateTrianglePair(t, p, ot, op)
 
-                    var not_legalized = !legalize(t)
-                    if not_legalized do
+                    var notLegalized = !legalize(t)
+                    if notLegalized do
                         mapTriangleToNodes(t)
 
-                    not_legalized = !legalize(ot)
-                    if not_legalized do
+                    notLegalized = !legalize(ot)
+                    if notLegalized do
                         mapTriangleToNodes(ot)
 
                     t.delaunayEdge[i]   = false
