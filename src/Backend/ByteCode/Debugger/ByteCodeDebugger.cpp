@@ -851,7 +851,7 @@ bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
                 }
 
                 recom = true;
-                result += evalExpr[num];
+                result += evalExprResult[num];
                 continue;
             }
 
