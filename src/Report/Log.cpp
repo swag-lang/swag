@@ -218,7 +218,7 @@ Utf8 Log::format(const char* message)
             else if (curColor == colorToVTS(LogColor::White))
                 m += colorToVTS(LogColor::Gray);
             else if (curColor == colorToVTS(LogColor::Red))
-                m += colorToVTS(LogColor::DarkYellow);            
+                m += "'";            
             else
                 m += colorToVTS(LogColor::Bold);
             pz += 2;
@@ -228,11 +228,10 @@ Utf8 Log::format(const char* message)
             m += curColor;
             if (g_CommandLine.logColors == false)
                 m += "'";
+            else if (curColor == colorToVTS(LogColor::Red))
+                m += "'";
             else
-            {
                 m += colorToVTS(LogColor::UnBold);
-                m += colorToVTS(LogColor::UnUnderline);
-            }
             pz += 2;
         }
         else
