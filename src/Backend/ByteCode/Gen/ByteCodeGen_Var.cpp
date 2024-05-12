@@ -77,7 +77,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                 {
                     // No need to initialize the variable if we are doing a struct to struct copy
                     // No need to drop the left side either
-                    if (node->assignment && TypeManager::concreteType(node->assignment->typeInfo) == typeStruct)
+                    if (node->assignment && TypeManager::concretePtrRefType(node->assignment->typeInfo) == typeStruct)
                         mustDropLeft = false;
                     else
                         emitStructInit(context, typeStruct, UINT32_MAX, retVal);
