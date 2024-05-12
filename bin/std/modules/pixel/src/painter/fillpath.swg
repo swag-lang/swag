@@ -9,22 +9,17 @@ public impl Painter
         resetTextureFont()
 
         // Triangulation
-        if p.triangles.count == 0
+        if p.triangles.triIndices.count == 0
         {
             t.triangulate()
-
-            // "Eat" points, triangles and edges
-            p.points    =,move t.points
-            p.triangles =,move t.triangles
-            p.edges     =,move t.edges
-            t.eatPoints()
-
+            p.triangles = t.getResult()
             t.clear()
         }
 
         // Paint
-        visit tri, ii: p.triangles
+        visit i: p.triangles.triIndices
         {
+            let tri = p.triangles.triangles[i]
             let prim = pushTriangle(tri.points[0].v, tri.points[1].v, tri.points[2].v, brush.color)
             if curState.paintParams & .Antialiased
             {
@@ -174,7 +169,7 @@ public impl Painter
         {
             if (p.polygon.isClockwise or serial != p.serial) and flush
             {
-                if !flush.triangles.count
+                if !flush.triangles.triIndices.count
                 {
                     dirty = true
                     break
@@ -191,7 +186,7 @@ public impl Painter
         }
 
         // If everything has been computed, then just paint them (no need to generate polylines as 'triangulate' will not use them)
-        if flush and !flush.triangles.count do
+        if flush and !flush.triangles.triIndices.count do
             dirty = true
 
         serial = 0

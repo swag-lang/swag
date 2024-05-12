@@ -18,22 +18,32 @@ enum Orientation
 #[Swag.Opaque]
 public struct Tessellate
 {
-    basin:         Basin
-    edgeEvent:     EdgeEvent
+    basin:          Basin
+    edgeEvent:      EdgeEvent
 
-    triangles:     Array'*Triangle
-    map:           Array'*Triangle
-    edges:         Array'*Edge
-    points:        Array'*Point
-    nodes:         Array'*Node
+    triangles:      Array'*Triangle
+    edges:          Array'*Edge
+    points:         Array'*Point
+    triIndices:     Array'u64
 
-    front:         AdvancingFront
-    head:          *Point
-    tail:          *Point
-    afHead:        *Node
-    afMiddle:      *Node
-    afTail:        *Node
-    polyStart:     u64
+    nodes:          Array'*Node
+
+    front:          AdvancingFront
+    head:           *Point
+    tail:           *Point
+    afHead:         *Node
+    afMiddle:       *Node
+    afTail:         *Node
+    polyStart:      u64
+}
+
+public struct Result
+{
+    triangles:      Array'*Triangle
+    edges:          Array'*Edge
+    points:         Array'*Point
+    triIndices:     Array'u64
+    tess:           *Tessellate
 }
 
 public struct Point
@@ -55,6 +65,7 @@ public struct Triangle
     delaunayEdge:        [3] bool
     points:              [3] *Point
     neighbors:           [3] *Triangle
+    idx:                 u64
     interior:            bool
 }
 
@@ -87,6 +98,24 @@ struct AdvancingFront
     head:           *Node
     tail:           *Node
     searchNode:     *Node
+}
+
+impl Result
+{
+    mtd clear()
+    {
+        points.clear()
+        edges.clear()
+        triangles.clear()
+        triIndices.clear()
+    }
+
+    mtd release()
+    {
+        if !tess do
+            return
+        tess.release(self)
+    }
 }
 
 impl Edge
@@ -548,9 +577,9 @@ impl Tessellate
         return Memory.new'Point()
     }
 
-    func newTriangle()->*Triangle
+    func deletePoint(ptr: *Point)
     {
-        return Memory.new'Triangle()
+        Memory.delete(ptr)
     }
 
     func newEdge()->*Edge
@@ -558,9 +587,44 @@ impl Tessellate
         return Memory.new'Edge()
     }
 
+    func deleteEdge(ptr: *Edge)
+    {
+        Memory.delete(ptr)
+    }
+
+    func newTriangle()->*Triangle
+    {
+        return Memory.new'Triangle()
+    }
+
+    func deleteTriangle(ptr: *Triangle)
+    {
+        Memory.delete(ptr)
+    }
+
     func newNode()->*Node
     {
         return Memory.new'Node()
+    }
+
+    func deleteNode(ptr: *Node)
+    {
+        Memory.delete(ptr)
+    }
+
+    // Release the given tessellation result
+    mtd release(result: *Result)
+    {
+        visit t: result.points do
+            deletePoint(t)
+        visit t: result.edges do
+            deleteEdge(t)
+        visit t: result.triangles do
+            deleteTriangle(t)
+        result.points.clear()
+        result.edges.clear()
+        result.triangles.clear()
+        result.triIndices.clear()
     }
 
     // Clear content
@@ -570,46 +634,39 @@ impl Tessellate
         @init(&edgeEvent, 1)
         polyStart = 0
 
-        Memory.delete(head)
-        Memory.delete(tail)
-        Memory.delete(afHead)
-        Memory.delete(afMiddle)
-        Memory.delete(afTail)
+        deletePoint(head)
+        deletePoint(tail)
+        deleteNode(afHead)
+        deleteNode(afMiddle)
+        deleteNode(afTail)
         head, tail, afHead, afMiddle, afTail = null
 
         visit p: points do
-            Memory.delete(p)
-        visit p: map do
-            Memory.delete(p)
+            deletePoint(p)
         visit p: edges do
-            Memory.delete(p)
+            deleteEdge(p)
+        visit p: triangles do
+            deleteTriangle(p)
         visit p: nodes do
-            Memory.delete(p)
+            deleteNode(p)
 
         points.clear()
-        triangles.clear()
-        map.clear()
         edges.clear()
+        triangles.clear()
+        triIndices.clear()
         nodes.clear()
     }
 
-    public mtd eatPoints()
+    // Get the triangulation result
+    public mtd getResult()->Result
     {
-        // t.triangles only contains 'interior' triangles, so we need to delete all other
-        // allocated triangles to avoid a leak
-        visit tri: map
-        {
-            if !tri.interior do
-                Memory.delete(tri)
-        }
-
-        map.clear()
-    }
-
-    // Returns the list of triangles
-    public mtd getTriangles()->[..] *Triangle
-    {
-        return triangles.toSlice()
+        var result: retval
+        result.points     =,move points
+        result.edges      =,move edges
+        result.triangles  =,move triangles
+        result.triIndices =,move triIndices
+        result.tess       = self
+        return result
     }
 
     // To call before adding a polyline.
@@ -1158,7 +1215,9 @@ impl Tessellate
 
         triangle.markNeighbor(node.prev.triangle)
         triangle.markNeighbor(node.triangle)
-        map.add(triangle)
+
+        triangle.idx = triangles.count
+        triangles.add(triangle)
 
         node.prev.next = node.next
         node.next.prev = node.prev
@@ -1175,7 +1234,9 @@ impl Tessellate
         triangle.points[2] = node.next.point
 
         triangle.markNeighbor(node.triangle)
-        map.add(triangle)
+
+        triangle.idx = triangles.count
+        triangles.add(triangle)
 
         let newNode = newNode()
         newNode.point = point
@@ -1375,7 +1436,7 @@ impl Tessellate
         var stack: Array'*Triangle
         stack.add(triangle)
 
-        triangles.clear()
+        triIndices.clear()
 
         while stack.count
         {
@@ -1384,7 +1445,7 @@ impl Tessellate
                 continue
 
             t.interior = true
-            triangles.add(t)
+            triIndices.add(t.idx)
 
             if !t.constrainedEdge[0] do
                 stack.add(t.neighbors[0])
@@ -1395,8 +1456,9 @@ impl Tessellate
         }
 
         // Remove neighbors which are not part of the mesh
-        visit tri: triangles
+        visit i: triIndices
         {
+            let tri = triangles[i]
             loop e: 3
             {
                 let neighbor = tri.neighbors[e]
@@ -1450,7 +1512,9 @@ impl Tessellate
         triangle.points[0] = points[0]
         triangle.points[1] = head
         triangle.points[2] = tail
-        map.add(triangle)
+
+        triangle.idx = triangles.count
+        triangles.add(triangle)
 
         afHead   = newNode()
         afMiddle = newNode()

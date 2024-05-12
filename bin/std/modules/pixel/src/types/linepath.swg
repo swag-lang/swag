@@ -33,9 +33,7 @@ public struct LinePath
     bvMax:              Vector2
     endPosBuffer:       Vector2
     polygon:            Polygon
-    points:             Array'*Poly2Tri.Point
-    triangles:          Array'*Poly2Tri.Triangle
-    edges:              Array'*Poly2Tri.Edge
+    triangles:          Poly2Tri.Result
 }
 
 public impl LinePath
@@ -47,23 +45,13 @@ public impl LinePath
 
     mtd opPostCopy()
     {
-        points.clear()
         triangles.clear()
-        edges.clear()
     }
 
     // Clear internal cache
     mtd clearCache()
     {
-        visit t: points do
-            Memory.delete(t)
-        visit t: triangles do
-            Memory.delete(t)
-        visit t: edges do
-            Memory.delete(t)
-        points.clear()
-        triangles.clear()
-        edges.clear()
+        triangles.release()
         polygon.clear()
     }
 
