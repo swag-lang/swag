@@ -190,64 +190,41 @@ public impl Painter
             }
         }
 
+        // If everything has been computed, then just paint them (no need to generate polylines as 'triangulate' will not use them)
         if flush and !flush.triangles.count do
             dirty = true
 
         serial = 0
         flush  = null
 
-        // If everything has been computed, then just paint them (no need to generate polylines as 'triangulate' will not use them)
-        if !dirty
+        visit p: pathList.paths
         {
-            visit p: pathList.paths
+            if (p.polygon.isClockwise or serial != p.serial) and flush
             {
-                if (p.polygon.isClockwise or serial != p.serial) and flush
-                {
-                    serial = p.serial
-                    fillPath(null, flush, pathList.bvMin, pathList.bvMax, brush)
-                    flush = null
-                }
-
-                if p.polygon.points.count >= 3
-                {
-                    flush = p
-                }
+                serial = p.serial
+                fillPath(dirty ? &tess : null, flush, pathList.bvMin, pathList.bvMax, brush)
+                flush = null
             }
 
-            if flush do
-                fillPath(null, flush, pathList.bvMin, pathList.bvMax, brush)
-        }
-
-        // Full compute (triangulation)
-        else
-        {
-            var t: Poly2Tri.Tessellate
-            visit p: pathList.paths
+            if p.polygon.points.count >= 3
             {
-                if (p.polygon.isClockwise or serial != p.serial) and flush
+                flush = p
+                if dirty
                 {
-                    serial = p.serial
-                    fillPath(&t, flush, pathList.bvMin, pathList.bvMax, brush)
-                    flush = null
-                }
-
-                if p.polygon.points.count >= 3
-                {
-                    flush = p
-                    t.startPolyLine()
+                    tess.startPolyLine()
                     loop i: 0 until p.polygon.points.count - 1
                     {
                         var pt = p.polygon.getPoint(i)
-                        t.addPoint(pt.x, pt.y)
+                        tess.addPoint(pt.x, pt.y)
                     }
 
-                    t.endPolyLine()
+                    tess.endPolyLine()
                 }
             }
-
-            if flush do
-                fillPath(&t, flush, pathList.bvMin, pathList.bvMax, brush)
         }
+
+        if flush do
+            fillPath(dirty ? &tess : null, flush, pathList.bvMin, pathList.bvMax, brush)
     }
 
     // Fill the polygon with the given color

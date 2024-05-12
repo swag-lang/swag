@@ -153,6 +153,7 @@ struct Painter
     stackState:             Array'PaintState
     stackTransform:         Array'Transform2
     lastTexture0Type:       BrushType = SolidColor
+    tess:                   Poly2Tri.Tessellate
 
     stackRT:                Array'*RenderTarget
     curRT:                  *RenderTarget
