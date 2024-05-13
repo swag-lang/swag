@@ -18,6 +18,18 @@
 bool ByteCodeGen::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
     const auto   funcDecl = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+
+    // Stack size could have been increased because of last minute inline operators.
+    // So we must be sure the DecSPBP value is updated.
+    if (context->bc->emitSPSize != funcDecl->stackSize)
+    {
+        const auto ip             = context->bc->out + context->bc->emitSPPos;
+        ip->op                    = ByteCodeOp::DecSPBP;
+        ip->a.u32                 = funcDecl->stackSize;
+        context->bc->stackSize    = funcDecl->stackSize;
+        context->bc->dynStackSize = funcDecl->stackSize;
+    }
+
     PushLocation pl(context, &funcDecl->content->token.endLocation);
     PushNode     pn(context, funcDecl->content);
 
@@ -32,18 +44,6 @@ bool ByteCodeGen::emitLocalFuncDecl(ByteCodeGenContext* context)
 
     emitDebugLine(context);
     EMIT_INST0(context, ByteCodeOp::Ret)->a.u32 = funcDecl->stackSize;
-
-    // Stack size could have been increased because of last minute inline operators.
-    // So we must be sure the DecSPBP value is updated.
-    if (context->bc->emitSPSize != funcDecl->stackSize)
-    {
-        const auto ip             = context->bc->out + context->bc->emitSPPos;
-        ip->op                    = ByteCodeOp::DecSPBP;
-        ip->a.u32                 = funcDecl->stackSize;
-        context->bc->stackSize    = funcDecl->stackSize;
-        context->bc->dynStackSize = funcDecl->stackSize;
-    }
-
     return true;
 }
 
