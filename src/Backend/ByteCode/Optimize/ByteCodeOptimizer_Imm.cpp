@@ -273,11 +273,9 @@ bool ByteCodeOptimizer::optimizePassImmediate2(ByteCodeOptContext* context)
                     if (ByteCode::hasReadRefToRegD(ipn, ip->a.u32) && flags.has(OPFLAG_IMM_D))
                         canD = true;
 
+                    // To be sure...
                     if (canA + canB + canC + canD > 1)
-                    {
-                        printf("x");
                         break;
-                    }
 
                     if (canA)
                     {
@@ -286,7 +284,7 @@ bool ByteCodeOptimizer::optimizePassImmediate2(ByteCodeOptContext* context)
                             ipn->a.u64 = 0;
                         else
                             ipn->a.u64 = ip->b.u64;
-                        context->passHasDoneSomething = true;
+                        context->setDirtyPass();
                     }
                     else if (canB)
                     {
@@ -295,7 +293,7 @@ bool ByteCodeOptimizer::optimizePassImmediate2(ByteCodeOptContext* context)
                             ipn->b.u64 = 0;
                         else
                             ipn->b.u64 = ip->b.u64;
-                        context->passHasDoneSomething = true;
+                        context->setDirtyPass();
                     }
                     else if (canC)
                     {
@@ -304,7 +302,7 @@ bool ByteCodeOptimizer::optimizePassImmediate2(ByteCodeOptContext* context)
                             ipn->c.u64 = 0;
                         else
                             ipn->c.u64 = ip->b.u64;
-                        context->passHasDoneSomething = true;
+                        context->setDirtyPass();
                     }
                     else if (canD)
                     {
@@ -313,7 +311,7 @@ bool ByteCodeOptimizer::optimizePassImmediate2(ByteCodeOptContext* context)
                             ipn->d.u64 = 0;
                         else
                             ipn->d.u64 = ip->b.u64;
-                        context->passHasDoneSomething = true;
+                        context->setDirtyPass();
                     }
 
                     break;
