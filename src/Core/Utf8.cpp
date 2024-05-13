@@ -384,6 +384,30 @@ void Utf8::replaceAll(char src, char dst)
     }
 }
 
+void Utf8::replaceAll(const Utf8& src, const Utf8& dst)
+{
+    bool recom = true;
+    while (recom)
+    {
+        Utf8 result;
+        recom = false;
+
+        int  lastIt = 0;
+        auto it     = find(src);
+        while (it != -1)
+        {
+            recom = true;
+            result += Utf8(buffer + lastIt, it - lastIt);
+            result += dst;
+            lastIt = it + src.length();
+            it     = find(src, lastIt);
+        }
+
+        result += Utf8(buffer + lastIt, length() - lastIt);
+        *this = result;
+    }
+}
+
 void Utf8::trimLeft()
 {
     if (!count)

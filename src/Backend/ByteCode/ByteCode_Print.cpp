@@ -55,7 +55,7 @@ Utf8 ByteCode::getPrintRefName()
     return str;
 }
 
-void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile) const
+void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile, AstNode** lastInline) const
 {
     if (ip->op == ByteCodeOp::End)
         return;
@@ -70,18 +70,28 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
 
     if (!lastLine || !lastFile || loc.location->line != *lastLine || loc.file != *lastFile)
     {
-        if (lastLine)
-            *lastLine = loc.location->line;
-        if (lastFile)
-            *lastFile = loc.file;
+        const auto inl = ip->node ? ip->node->safeOwnerInline() : nullptr;
+        if (loc.file != *lastFile || *lastInline != inl)
+        {
+            *lastInline = inl;
+            g_Log.writeEol();
+            if (forDbg)
+                g_Log.write("   ");
+            g_Log.setColor(LogColor::Location);
+            g_Log.print(form("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
+            if (inl)
+                g_Log.print(form(" %s", inl->func->token.c_str()));
+            g_Log.writeEol();
+        }
+
         auto s = loc.file->getLine(loc.location->line);
         s.trim();
+        s.replaceAll("  ", " ");
 
         if (loc1.file != loc.file || loc1.location->line != loc.location->line)
             g_Log.setColor(LogColor::DarkBlue);
         else
             g_Log.setColor(LogColor::Yellow);
-        g_Log.write("         ");
         if (forDbg)
             g_Log.write("   ");
 
@@ -91,16 +101,8 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
             g_Log.print(s);
 
         g_Log.writeEol();
-
-        if (loc.file != sourceFile)
-        {
-            g_Log.write("         ");
-            if (forDbg)
-                g_Log.write("   ");
-            g_Log.setColor(LogColor::Location);
-            g_Log.print(form("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
-            g_Log.writeEol();
-        }
+        *lastLine = loc.location->line;
+        *lastFile = loc.file;
     }
 }
 
@@ -551,8 +553,6 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeIns
 
 void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count) const
 {
-    uint32_t                     lastLine = UINT32_MAX;
-    SourceFile*                  lastFile = nullptr;
     Vector<PrintInstructionLine> lines;
 
     auto ip = out + start;
@@ -567,12 +567,16 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
 
     alignPrintInstructions(options, lines);
 
+    uint32_t    lastLine   = UINT32_MAX;
+    SourceFile* lastFile   = nullptr;
+    AstNode*    lastInline = nullptr;
+
     ip = out + start;
     for (uint32_t i = 0; i < count; i++)
     {
         if (ip->op == ByteCodeOp::End)
             break;
-        printSourceCode(options, ip, &lastLine, &lastFile);
+        printSourceCode(options, ip, &lastLine, &lastFile, &lastInline);
         printInstruction(options, ip++, lines[i]);
     }
 }

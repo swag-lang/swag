@@ -69,6 +69,7 @@ struct Utf8
     void makeUpper();
     void makeLower();
     void replaceAll(char src, char dst);
+    void replaceAll(const Utf8& src, const Utf8& dst);
     void trimLeft();
     void trimRight();
     void trim();
