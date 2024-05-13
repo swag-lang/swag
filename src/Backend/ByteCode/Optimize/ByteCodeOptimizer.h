@@ -34,6 +34,7 @@ struct ByteCodeOptimizer
     static bool optimizePassDeadStore(ByteCodeOptContext* context);
     static bool optimizePassDeadStoreDup(ByteCodeOptContext* context);
     static bool optimizePassImmediate(ByteCodeOptContext* context);
+    static bool optimizePassImmediate2(ByteCodeOptContext* context);
     static bool optimizePassConst(ByteCodeOptContext* context);
     static bool optimizePassParam(ByteCodeOptContext* context);
     static bool optimizePassRetCopyLocal(ByteCodeOptContext* context);

@@ -213,3 +213,119 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 
     return true;
 }
+
+bool ByteCodeOptimizer::optimizePassImmediate2(ByteCodeOptContext* context)
+{
+    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+    {
+        if (ip->op == ByteCodeOp::SetImmediate32 || ip->op == ByteCodeOp::SetImmediate64 || ip->op == ByteCodeOp::ClearRA)
+        {
+            auto ipn = ip + 1;
+            while (ipn->op != ByteCodeOp::End)
+            {
+                if (ByteCode::hasReadRefToReg(ipn, ip->a.u32))
+                {
+                    bool bad           = false;
+                    bool hasJumpInside = false;
+                    for (const auto it : context->jumps)
+                    {
+                        if (it->op == ByteCodeOp::Nop)
+                            continue;
+
+                        const auto dest = it + it->b.s32;
+
+                        // If we have a jump from outside to inside, bad
+                        if ((it <= ip || it >= ipn) && (dest >= ip && dest <= ipn))
+                        {
+                            bad = true;
+                            break;
+                        }
+
+                        // If we have a jump from inside to outside, bad
+                        if ((it >= ip && it <= ipn) && (dest <= ip || dest >= ipn))
+                        {
+                            bad = true;
+                            break;
+                        }
+
+                        // But we need to have a jump from inside to inside, otherwise normal optim will be enough
+                        if (it >= ip && it <= ipn)
+                        {
+                            hasJumpInside = true;
+                        }
+                    }
+
+                    if (bad || !hasJumpInside)
+                        break;
+
+                    auto flags = g_ByteCodeOpDesc[static_cast<int>(ipn->op)].flags;
+                    bool canA  = false;
+                    bool canB  = false;
+                    bool canC  = false;
+                    bool canD  = false;
+
+                    if (ByteCode::hasReadRefToRegA(ipn, ip->a.u32) && flags.has(OPFLAG_IMM_A))
+                        canA = true;
+                    if (ByteCode::hasReadRefToRegB(ipn, ip->a.u32) && flags.has(OPFLAG_IMM_B))
+                        canB = true;
+                    if (ByteCode::hasReadRefToRegC(ipn, ip->a.u32) && flags.has(OPFLAG_IMM_C))
+                        canC = true;
+                    if (ByteCode::hasReadRefToRegD(ipn, ip->a.u32) && flags.has(OPFLAG_IMM_D))
+                        canD = true;
+
+                    if (canA + canB + canC + canD > 1)
+                    {
+                        printf("x");
+                        break;
+                    }
+
+                    if (canA)
+                    {
+                        ipn->flags.add(BCI_IMM_A);
+                        if (ip->op == ByteCodeOp::ClearRA)
+                            ipn->a.u64 = 0;
+                        else
+                            ipn->a.u64 = ip->b.u64;
+                        context->passHasDoneSomething = true;
+                    }
+                    else if (canB)
+                    {
+                        ipn->flags.add(BCI_IMM_B);
+                        if (ip->op == ByteCodeOp::ClearRA)
+                            ipn->b.u64 = 0;
+                        else
+                            ipn->b.u64 = ip->b.u64;
+                        context->passHasDoneSomething = true;
+                    }
+                    else if (canC)
+                    {
+                        ipn->flags.add(BCI_IMM_C);
+                        if (ip->op == ByteCodeOp::ClearRA)
+                            ipn->c.u64 = 0;
+                        else
+                            ipn->c.u64 = ip->b.u64;
+                        context->passHasDoneSomething = true;
+                    }
+                    else if (canD)
+                    {
+                        ipn->flags.add(BCI_IMM_D);
+                        if (ip->op == ByteCodeOp::ClearRA)
+                            ipn->d.u64 = 0;
+                        else
+                            ipn->d.u64 = ip->b.u64;
+                        context->passHasDoneSomething = true;
+                    }
+
+                    break;
+                }
+
+                if (ByteCode::hasRefToReg(ipn, ip->a.u32))
+                    break;
+
+                ipn++;
+            }
+        }
+    }
+
+    return true;
+}
