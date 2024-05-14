@@ -813,6 +813,7 @@
 <li><a href="#Core_Directory_exists">Directory.exists</a></li>
 <li><a href="#Core_Directory_getCurrent">Directory.getCurrent</a></li>
 <li><a href="#Core_Directory_getDrives">Directory.getDrives</a></li>
+<li><a href="#Core_Directory_getVolumes">Directory.getVolumes</a></li>
 <li><a href="#Core_Directory_setCurrent">Directory.setCurrent</a></li>
 <li><a href="#Core_File_delete">File.delete</a></li>
 <li><a href="#Core_File_duplicate">File.duplicate</a></li>
@@ -820,7 +821,6 @@
 <li><a href="#Core_File_getAttributes">File.getAttributes</a></li>
 <li><a href="#Core_File_getFileInfo">File.getFileInfo</a></li>
 <li><a href="#Core_File_getInfo">File.getInfo</a></li>
-<li><a href="#Core_File_locateInExplorer">File.locateInExplorer</a></li>
 <li><a href="#Core_File_open">File.open</a></li>
 <li><a href="#Core_File_openRead">File.openRead</a></li>
 <li><a href="#Core_File_openWrite">File.openWrite</a></li>
@@ -1115,7 +1115,7 @@
 </ul>
 <h4>serialization</h4>
 <ul>
-<li><a href="#Core_Serialization_ISerialize_postSerialize">ISerialize.postSerialize</a></li>
+<li><a href="#Core_Serialization_ISerialize_postRead">ISerialize.postRead</a></li>
 <li><a href="#Core_Serialization_ISerialize_read">ISerialize.read</a></li>
 <li><a href="#Core_Serialization_ISerialize_readElement">ISerialize.readElement</a></li>
 <li><a href="#Core_Serialization_ISerialize_write">ISerialize.write</a></li>
@@ -1138,6 +1138,7 @@
 <li><a href="#Core_Serialization_Decoder_IDecoder_endField">Decoder.IDecoder.endField</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_endSection">Decoder.IDecoder.endSection</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_getVersion">Decoder.IDecoder.getVersion</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_isTextual">Decoder.IDecoder.isTextual</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_read">Decoder.IDecoder.read</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_readBool">Decoder.IDecoder.readBool</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_readBufferU8">Decoder.IDecoder.readBufferU8</a></li>
@@ -1147,6 +1148,7 @@
 <li><a href="#Core_Serialization_Decoder_IDecoder_readS32">Decoder.IDecoder.readS32</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_readS64">Decoder.IDecoder.readS64</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_readS8">Decoder.IDecoder.readS8</a></li>
+<li><a href="#Core_Serialization_Decoder_IDecoder_readString">Decoder.IDecoder.readString</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_readU16">Decoder.IDecoder.readU16</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_readU32">Decoder.IDecoder.readU32</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_readU64">Decoder.IDecoder.readU64</a></li>
@@ -1171,6 +1173,7 @@
 <li><a href="#Core_Serialization_Read_JSon_endValue">JSon.endValue</a></li>
 <li><a href="#Core_Serialization_Read_JSon_getError">JSon.getError</a></li>
 <li><a href="#Core_Serialization_Read_JSon_getVersion">JSon.getVersion</a></li>
+<li><a href="#Core_Serialization_Read_JSon_isTextual">JSon.isTextual</a></li>
 <li><a href="#Core_Serialization_Read_JSon_readNative">JSon.readNative</a></li>
 <li><a href="#Core_Serialization_Read_JSon_startRead">JSon.startRead</a></li>
 <li><a href="#Core_Serialization_Read_JSon_toNextSequenceElement">JSon.toNextSequenceElement</a></li>
@@ -1181,6 +1184,7 @@
 <li><a href="#Core_Serialization_IDecoder_endField">Serialization.IDecoder.endField</a></li>
 <li><a href="#Core_Serialization_IDecoder_endSection">Serialization.IDecoder.endSection</a></li>
 <li><a href="#Core_Serialization_IDecoder_getVersion">Serialization.IDecoder.getVersion</a></li>
+<li><a href="#Core_Serialization_IDecoder_isTextual">Serialization.IDecoder.isTextual</a></li>
 <li><a href="#Core_Serialization_IDecoder_read">Serialization.IDecoder.read</a></li>
 <li><a href="#Core_Serialization_IDecoder_readBool">Serialization.IDecoder.readBool</a></li>
 <li><a href="#Core_Serialization_IDecoder_readBufferU8">Serialization.IDecoder.readBufferU8</a></li>
@@ -1190,6 +1194,7 @@
 <li><a href="#Core_Serialization_IDecoder_readS32">Serialization.IDecoder.readS32</a></li>
 <li><a href="#Core_Serialization_IDecoder_readS64">Serialization.IDecoder.readS64</a></li>
 <li><a href="#Core_Serialization_IDecoder_readS8">Serialization.IDecoder.readS8</a></li>
+<li><a href="#Core_Serialization_IDecoder_readString">Serialization.IDecoder.readString</a></li>
 <li><a href="#Core_Serialization_IDecoder_readU16">Serialization.IDecoder.readU16</a></li>
 <li><a href="#Core_Serialization_IDecoder_readU32">Serialization.IDecoder.readU32</a></li>
 <li><a href="#Core_Serialization_IDecoder_readU64">Serialization.IDecoder.readU64</a></li>
@@ -1208,6 +1213,7 @@
 <li><a href="#Core_Serialization_Read_TagBin_endStruct">TagBin.endStruct</a></li>
 <li><a href="#Core_Serialization_Read_TagBin_endValue">TagBin.endValue</a></li>
 <li><a href="#Core_Serialization_Read_TagBin_getVersion">TagBin.getVersion</a></li>
+<li><a href="#Core_Serialization_Read_TagBin_isTextual">TagBin.isTextual</a></li>
 <li><a href="#Core_Serialization_Read_TagBin_readNative">TagBin.readNative</a></li>
 <li><a href="#Core_Serialization_Read_TagBin_startRead">TagBin.startRead</a></li>
 <li><a href="#Core_Serialization_Read_TagBin_toNextSequenceElement">TagBin.toNextSequenceElement</a></li>
@@ -1225,6 +1231,7 @@
 <li><a href="#Core_Serialization_Read_Xml_endValue">Xml.endValue</a></li>
 <li><a href="#Core_Serialization_Read_Xml_getError">Xml.getError</a></li>
 <li><a href="#Core_Serialization_Read_Xml_getVersion">Xml.getVersion</a></li>
+<li><a href="#Core_Serialization_Read_Xml_isTextual">Xml.isTextual</a></li>
 <li><a href="#Core_Serialization_Read_Xml_readEndTag">Xml.readEndTag</a></li>
 <li><a href="#Core_Serialization_Read_Xml_readNative">Xml.readNative</a></li>
 <li><a href="#Core_Serialization_Read_Xml_readStartTag">Xml.readStartTag</a></li>
@@ -1240,6 +1247,7 @@
 <li><a href="#Core_Serialization_Encoder_IEncoder_end">Encoder.IEncoder.end</a></li>
 <li><a href="#Core_Serialization_Encoder_IEncoder_endField">Encoder.IEncoder.endField</a></li>
 <li><a href="#Core_Serialization_Encoder_IEncoder_endSection">Encoder.IEncoder.endSection</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_isTextual">Encoder.IEncoder.isTextual</a></li>
 <li><a href="#Core_Serialization_Encoder_IEncoder_start">Encoder.IEncoder.start</a></li>
 <li><a href="#Core_Serialization_Encoder_IEncoder_write">Encoder.IEncoder.write</a></li>
 <li><a href="#Core_Serialization_Encoder_IEncoder_writeBool">Encoder.IEncoder.writeBool</a></li>
@@ -1250,6 +1258,7 @@
 <li><a href="#Core_Serialization_Encoder_IEncoder_writeS32">Encoder.IEncoder.writeS32</a></li>
 <li><a href="#Core_Serialization_Encoder_IEncoder_writeS64">Encoder.IEncoder.writeS64</a></li>
 <li><a href="#Core_Serialization_Encoder_IEncoder_writeS8">Encoder.IEncoder.writeS8</a></li>
+<li><a href="#Core_Serialization_Encoder_IEncoder_writeString">Encoder.IEncoder.writeString</a></li>
 <li><a href="#Core_Serialization_Encoder_IEncoder_writeU16">Encoder.IEncoder.writeU16</a></li>
 <li><a href="#Core_Serialization_Encoder_IEncoder_writeU32">Encoder.IEncoder.writeU32</a></li>
 <li><a href="#Core_Serialization_Encoder_IEncoder_writeU64">Encoder.IEncoder.writeU64</a></li>
@@ -1271,6 +1280,7 @@
 <li><a href="#Core_Serialization_Write_JSon_endSequence">JSon.endSequence</a></li>
 <li><a href="#Core_Serialization_Write_JSon_endStruct">JSon.endStruct</a></li>
 <li><a href="#Core_Serialization_Write_JSon_endValue">JSon.endValue</a></li>
+<li><a href="#Core_Serialization_Write_JSon_isTextual">JSon.isTextual</a></li>
 <li><a href="#Core_Serialization_Write_JSon_startWrite">JSon.startWrite</a></li>
 <li><a href="#Core_Serialization_Write_JSon_writeIndent">JSon.writeIndent</a></li>
 <li><a href="#Core_Serialization_Write_JSon_writeNative">JSon.writeNative</a></li>
@@ -1279,6 +1289,7 @@
 <li><a href="#Core_Serialization_IEncoder_end">Serialization.IEncoder.end</a></li>
 <li><a href="#Core_Serialization_IEncoder_endField">Serialization.IEncoder.endField</a></li>
 <li><a href="#Core_Serialization_IEncoder_endSection">Serialization.IEncoder.endSection</a></li>
+<li><a href="#Core_Serialization_IEncoder_isTextual">Serialization.IEncoder.isTextual</a></li>
 <li><a href="#Core_Serialization_IEncoder_start">Serialization.IEncoder.start</a></li>
 <li><a href="#Core_Serialization_IEncoder_write">Serialization.IEncoder.write</a></li>
 <li><a href="#Core_Serialization_IEncoder_writeBool">Serialization.IEncoder.writeBool</a></li>
@@ -1289,6 +1300,7 @@
 <li><a href="#Core_Serialization_IEncoder_writeS32">Serialization.IEncoder.writeS32</a></li>
 <li><a href="#Core_Serialization_IEncoder_writeS64">Serialization.IEncoder.writeS64</a></li>
 <li><a href="#Core_Serialization_IEncoder_writeS8">Serialization.IEncoder.writeS8</a></li>
+<li><a href="#Core_Serialization_IEncoder_writeString">Serialization.IEncoder.writeString</a></li>
 <li><a href="#Core_Serialization_IEncoder_writeU16">Serialization.IEncoder.writeU16</a></li>
 <li><a href="#Core_Serialization_IEncoder_writeU32">Serialization.IEncoder.writeU32</a></li>
 <li><a href="#Core_Serialization_IEncoder_writeU64">Serialization.IEncoder.writeU64</a></li>
@@ -1305,6 +1317,7 @@
 <li><a href="#Core_Serialization_Write_TagBin_endSequence">TagBin.endSequence</a></li>
 <li><a href="#Core_Serialization_Write_TagBin_endStruct">TagBin.endStruct</a></li>
 <li><a href="#Core_Serialization_Write_TagBin_endValue">TagBin.endValue</a></li>
+<li><a href="#Core_Serialization_Write_TagBin_isTextual">TagBin.isTextual</a></li>
 <li><a href="#Core_Serialization_Write_TagBin_startWrite">TagBin.startWrite</a></li>
 <li><a href="#Core_Serialization_Write_TagBin_writeNative">TagBin.writeNative</a></li>
 </ul>
@@ -1349,6 +1362,8 @@
 <li><a href="#Core_Env_getMonitors">Env.getMonitors</a></li>
 <li><a href="#Core_Env_getSpecialDirectory">Env.getSpecialDirectory</a></li>
 <li><a href="#Core_Env_hasArg">Env.hasArg</a></li>
+<li><a href="#Core_Env_locateInExplorer">Env.locateInExplorer</a></li>
+<li><a href="#Core_Env_locateUrl">Env.locateUrl</a></li>
 <li><a href="#Core_Env_startProcess">Env.startProcess</a></li>
 <li><a href="#Core_Errors_mkString">Errors.mkString</a></li>
 <li><a href="#Core_Hardware_getMacAddress">Hardware.getMacAddress</a></li>
@@ -1580,6 +1595,7 @@
 <li><a href="#Core_Utf16_fromUtf8">Utf16.fromUtf8</a></li>
 <li><a href="#Core_Utf16_lengthZeroTerminated">Utf16.lengthZeroTerminated</a></li>
 <li><a href="#Core_Utf16_toZeroTerminated">Utf16.toZeroTerminated</a></li>
+<li><a href="#Core_Utf8_beautifyName">Utf8.beautifyName</a></li>
 <li><a href="#Core_Utf8_byteIndex">Utf8.byteIndex</a></li>
 <li><a href="#Core_Utf8_compare">Utf8.compare</a></li>
 <li><a href="#Core_Utf8_contains">Utf8.contains</a></li>
@@ -1670,6 +1686,11 @@
 <li><a href="#Core_Time_FrameTiming_unpause">FrameTiming.unpause</a></li>
 <li><a href="#Core_Time_FrameTiming_update">FrameTiming.update</a></li>
 <li><a href="#Core_Time_DateTime_IConvert_convert">IConvert.convert</a></li>
+<li><a href="#Core_Time_DateTime_ISerialize_postRead">ISerialize.postRead</a></li>
+<li><a href="#Core_Time_DateTime_ISerialize_read">ISerialize.read</a></li>
+<li><a href="#Core_Time_DateTime_ISerialize_readElement">ISerialize.readElement</a></li>
+<li><a href="#Core_Time_DateTime_ISerialize_write">ISerialize.write</a></li>
+<li><a href="#Core_Time_DateTime_ISerialize_writeElement">ISerialize.writeElement</a></li>
 <li><a href="#Core_Time_Stopwatch_elapsedMicroseconds">Stopwatch.elapsedMicroseconds</a></li>
 <li><a href="#Core_Time_Stopwatch_elapsedMicrosecondsNow">Stopwatch.elapsedMicrosecondsNow</a></li>
 <li><a href="#Core_Time_Stopwatch_elapsedMilliseconds">Stopwatch.elapsedMilliseconds</a></li>
@@ -2481,7 +2502,7 @@
 </p>
 <p>Ensure the Array is big enough to store at least <span class="code-inline">newCount</span> elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
-<p>The number of valid elements does not change. If you the number of valid elements to be changed also, use [[growResize]] instead. </p>
+<p>The number of valid elements does not change. If you want the number of valid elements to be changed also, use [[growResize]] instead. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5649,6 +5670,10 @@
 <td>Get the list of logical drives. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Directory_getVolumes">getVolumes</a></span></td>
+<td>Get the list of volumes. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Directory_setCurrent">setCurrent</a></span></td>
 <td>Set the current directory. </td>
 </tr>
@@ -5795,6 +5820,19 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Directory_getVolumes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">getVolumes</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.win32.swg#L163" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the list of volumes. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumes</span>()-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>) <span class="SKwd">throw</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Directory_setCurrent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">setCurrent</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -5817,7 +5855,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_Env_Monitor"><span class="SCst">Monitor</span></a></td>
-<td></td>
+<td>Describes a physical monitor. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Env_Process"><span class="SCst">Process</span></a></td>
@@ -5866,6 +5904,14 @@
 <td>Get a given argument, or null. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Env_locateInExplorer">locateInExplorer</a></span></td>
+<td>Locate file in the file explorer. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Env_locateUrl">locateUrl</a></span></td>
+<td>Locate file in the internet explorer. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Env_startProcess">startProcess</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SCst">StartInfo</span>)</span></td>
 <td>Starts a new process with arguments. </td>
 </tr>
@@ -5881,10 +5927,11 @@
 <span id="Core_Env_Monitor"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">Monitor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.swg#L36" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Describes a physical monitor. </p>
 <table class="table-enumeration">
 <tr>
 <td>rect</td>
@@ -5895,6 +5942,21 @@
 <td>work</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></td>
 <td></td>
+</tr>
+<tr>
+<td>scale</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td>Scale factor of this monitor. </td>
+</tr>
+<tr>
+<td>rectReal</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></td>
+<td>The real monitor rect, without scaling. </td>
+</tr>
+<tr>
+<td>workReal</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></td>
+<td>The real monitor work rect, without scaling. </td>
 </tr>
 </table>
 <p>
@@ -6106,6 +6168,32 @@
 </p>
 <p>Get a given argument, or null. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasArg</span>(arg: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Env_locateInExplorer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">locateInExplorer</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L101" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Locate file in the file explorer. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">locateInExplorer</span>(name: <span class="STpe">string</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Env_locateUrl"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">locateUrl</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L110" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Locate file in the internet explorer. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">locateUrl</span>(name: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6492,10 +6580,6 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_getInfo">getInfo</a></span></td>
 <td>Returns various file informations. </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_locateInExplorer">locateInExplorer</a></span></td>
-<td>Locate file in the file explorer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_open">open</a></span></td>
@@ -7309,19 +7393,6 @@
 </p>
 <p>Returns various file informations. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getInfo</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span> <span class="SKwd">throw</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_File_locateInExplorer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">locateInExplorer</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L116" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Locate file in the file explorer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">locateInExplorer</span>(name: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9588,7 +9659,7 @@
 <span id="Core_Input_Key"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Input.</span><span class="api-item-title-strong">Key</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\key.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\key.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10379,6 +10450,10 @@
 <td>CtrlShift</td>
 <td></td>
 </tr>
+<tr>
+<td>CtrlAlt</td>
+<td></td>
+</tr>
 </table>
 <p>
 <table class="api-item">
@@ -11008,7 +11083,7 @@
 <span id="Core_Input_getKeyName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Input.</span><span class="api-item-title-strong">getKeyName</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\key.swg#L211" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\key.swg#L212" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14785,7 +14860,7 @@
 <span id="Core_Math_Vector2_angle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">angle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L316" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L323" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14798,7 +14873,7 @@
 <span id="Core_Math_Vector2_angle0To2Pi"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">angle0To2Pi</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L322" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L329" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14811,7 +14886,7 @@
 <span id="Core_Math_Vector2_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L285" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L292" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14824,7 +14899,7 @@
 <span id="Core_Math_Vector2_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L153" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L158" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14837,7 +14912,7 @@
 <span id="Core_Math_Vector2_cosAngle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">cosAngle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L310" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L317" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14850,7 +14925,7 @@
 <span id="Core_Math_Vector2_cross"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">cross</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L147" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L151" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14866,7 +14941,7 @@
 <span id="Core_Math_Vector2_distance"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distance</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L184" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L191" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14879,7 +14954,7 @@
 <span id="Core_Math_Vector2_distanceSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distanceSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L192" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L199" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14918,7 +14993,7 @@
 <span id="Core_Math_Vector2_dot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">dot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L135" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L139" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14931,7 +15006,7 @@
 <span id="Core_Math_Vector2_floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">floor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L278" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L285" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14944,7 +15019,7 @@
 <span id="Core_Math_Vector2_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L178" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L185" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14983,7 +15058,7 @@
 <span id="Core_Math_Vector2_isZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isZero</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L166" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L173" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14996,7 +15071,7 @@
 <span id="Core_Math_Vector2_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L172" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L179" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15009,7 +15084,7 @@
 <span id="Core_Math_Vector2_length"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">length</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L131" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15022,7 +15097,7 @@
 <span id="Core_Math_Vector2_lengthSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">lengthSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L132" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L135" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15035,7 +15110,7 @@
 <span id="Core_Math_Vector2_lerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">lerp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L333" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L340" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15061,7 +15136,7 @@
 <span id="Core_Math_Vector2_max"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">max</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L269" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L276" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15074,7 +15149,7 @@
 <span id="Core_Math_Vector2_min"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">min</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L260" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L267" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15106,7 +15181,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_Vector2_negate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">negate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L159" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L165" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15119,7 +15194,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_Vector2_normalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">normalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L200" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L207" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15132,7 +15207,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_Vector2_normalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">normalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L235" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L242" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15183,7 +15258,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_Vector2_opUnary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">opUnary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L113" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15208,7 +15283,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_Vector2_rotate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">rotate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L299" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L306" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15221,7 +15296,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_Vector2_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">round</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L292" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L299" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15247,7 +15322,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_Vector2_set"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">set</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L122" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L123" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15260,7 +15335,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_Vector2_setLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">setLength</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L227" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L234" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15273,7 +15348,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_Vector2_setLengthSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">setLengthSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L219" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L226" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15286,7 +15361,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_Vector2_toNormalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toNormalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L210" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L217" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15299,7 +15374,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_Vector2_toNormalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toNormalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L250" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L257" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18977,7 +19052,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Serialization.</span><span class="api-item-title-strong">Decoder</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L49" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19029,7 +19104,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_beginField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">beginField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L281" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L284" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19041,7 +19116,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L295" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L298" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19053,7 +19128,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_end"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">end</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L276" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L279" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19065,7 +19140,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_endField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">endField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L289" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L292" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19077,7 +19152,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L300" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L303" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19089,7 +19164,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_getVersion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">getVersion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L305" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L308" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19098,10 +19173,22 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_Decoder_IDecoder_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">isTextual</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L313" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_Decoder_IDecoder_read"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">read</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L310" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L318" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19113,7 +19200,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_readBool"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readBool</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L338" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L346" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19125,7 +19212,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_readBufferU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readBufferU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L315" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L323" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19137,7 +19224,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_readF32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readF32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L347" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L355" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19149,7 +19236,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_readF64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readF64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L348" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L356" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19161,7 +19248,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_readS16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L340" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L348" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19173,7 +19260,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_readS32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L341" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L349" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19185,7 +19272,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_readS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L342" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L350" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19197,7 +19284,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_readS8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L339" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L347" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19206,10 +19293,22 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_Decoder_IDecoder_readString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readString</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L357" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span> <span class="SKwd">throw</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_Decoder_IDecoder_readU16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L344" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L352" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19221,7 +19320,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_readU32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L345" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L353" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19233,7 +19332,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_readU64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L346" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L354" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19245,7 +19344,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_readU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L343" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L351" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19257,7 +19356,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_IDecoder_start"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">start</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L270" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L273" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19269,7 +19368,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_end"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">end</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L246" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L249" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19282,7 +19381,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_readAll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">readAll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L252" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L255" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19295,7 +19394,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_readTypeValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">readTypeValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L57" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L60" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19307,7 +19406,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_readValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">readValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L64" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L67" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19319,7 +19418,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Decoder_start"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">start</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L239" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L242" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19332,7 +19431,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_DecoderFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Serialization.</span><span class="api-item-title-strong">DecoderFlags</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19353,7 +19452,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Serialization_Encoder"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Serialization.</span><span class="api-item-title-strong">Encoder</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L66" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19420,7 +19519,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_beginField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">beginField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L289" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L297" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19432,7 +19531,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L301" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L309" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19444,7 +19543,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_end"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">end</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L284" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L292" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19457,7 +19556,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_endField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">endField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L295" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L303" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19469,7 +19568,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L306" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L314" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19478,10 +19577,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_Encoder_IEncoder_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">isTextual</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L279" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_Encoder_IEncoder_start"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">start</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L277" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L285" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19494,7 +19605,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_write"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">write</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L311" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L319" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19506,7 +19617,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_writeBool"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeBool</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L334" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L342" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19518,7 +19629,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_writeBufferU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeBufferU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L316" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L324" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19530,7 +19641,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_writeF32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeF32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L343" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L351" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19542,7 +19653,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_writeF64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeF64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L344" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L352" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19554,7 +19665,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_writeS16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeS16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L336" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L344" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19566,7 +19677,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_writeS32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeS32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L337" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L345" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19578,7 +19689,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_writeS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeS64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L338" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L346" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19590,7 +19701,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_writeS8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeS8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L335" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L343" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19599,10 +19710,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_Encoder_IEncoder_writeString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeString</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L353" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">string</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_Encoder_IEncoder_writeU16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeU16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L340" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L348" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19614,7 +19737,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_writeU32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeU32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L341" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L349" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19626,7 +19749,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_writeU64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeU64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L342" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L350" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19638,7 +19761,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_IEncoder_writeU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L339" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L347" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19650,7 +19773,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_end"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Encoder.</span><span class="api-item-title-strong">end</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L82" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19663,7 +19786,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_start"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Encoder.</span><span class="api-item-title-strong">start</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L72" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L75" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19676,7 +19799,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_writeAll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Encoder.</span><span class="api-item-title-strong">writeAll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L265" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L268" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19690,7 +19813,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_writeTypeValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Encoder.</span><span class="api-item-title-strong">writeTypeValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L85" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L88" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19703,7 +19826,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Encoder_writeValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Encoder.</span><span class="api-item-title-strong">writeValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L93" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L96" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19737,6 +19860,16 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <table class="table-enumeration">
 <tr>
+<td>getVersion</td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u32</span></span></td>
+<td></td>
+</tr>
+<tr>
+<td>isTextual</td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td></td>
+</tr>
+<tr>
 <td>start</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
@@ -19764,11 +19897,6 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr>
 <td>endSection</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
-<td></td>
-</tr>
-<tr>
-<td>getVersion</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -19836,6 +19964,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">f64</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
+<tr>
+<td>readString</td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span> <span class="SKwd">throw</span></span></td>
+<td></td>
+</tr>
 </table>
 <p>
 <table class="api-item">
@@ -19844,7 +19977,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_beginField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">beginField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L10" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19856,7 +19989,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L12" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19868,7 +20001,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_end"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">end</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L8" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L11" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19880,7 +20013,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_endField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">endField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L11" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19892,7 +20025,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L13" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19904,7 +20037,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_getVersion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">getVersion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L14" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19913,10 +20046,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_IDecoder_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">isTextual</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L8" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_IDecoder_read"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">read</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L16" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19928,7 +20073,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_readBool"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readBool</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19940,7 +20085,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_readBufferU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readBufferU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L17" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19952,7 +20097,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_readF32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readF32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L28" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19964,7 +20109,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_readF64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readF64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19976,7 +20121,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_readS16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L21" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19988,7 +20133,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_readS32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20000,7 +20145,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_readS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20012,7 +20157,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_readS8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20021,10 +20166,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_IDecoder_readString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readString</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L32" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readString</span>(<span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span> <span class="SKwd">throw</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_IDecoder_readU16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20036,7 +20193,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_readU32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L28" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20048,7 +20205,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_readU64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20060,7 +20217,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_readU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L24" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20072,7 +20229,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IDecoder_start"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">start</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L7" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L10" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20089,6 +20246,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <table class="table-enumeration">
+<tr>
+<td>isTextual</td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td></td>
+</tr>
 <tr>
 <td>start</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></td>
@@ -20184,6 +20346,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">f64</span>)</span></td>
 <td></td>
 </tr>
+<tr>
+<td>writeString</td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">string</span>)</span></td>
+<td></td>
+</tr>
 </table>
 <p>
 <table class="api-item">
@@ -20192,7 +20359,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_beginField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">beginField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L17" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20204,7 +20371,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20216,7 +20383,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_end"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">end</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L15" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L17" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20228,7 +20395,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_endField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">endField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20240,7 +20407,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20249,10 +20416,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Serialization_IEncoder_start"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">start</span></span>
+<span id="Core_Serialization_IEncoder_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">isTextual</span></span>
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L14" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Serialization_IEncoder_start"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">start</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20264,7 +20443,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_write"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">write</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20276,7 +20455,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_writeBool"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeBool</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20288,7 +20467,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_writeBufferU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeBufferU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20300,7 +20479,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_writeF32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeF32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20312,7 +20491,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_writeF64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeF64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L35" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20324,7 +20503,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_writeS16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeS16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20336,7 +20515,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_writeS32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeS32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L28" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20348,7 +20527,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_writeS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeS64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20360,7 +20539,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_writeS8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeS8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L28" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20369,10 +20548,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_IEncoder_writeString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeString</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L38" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeString</span>(<span class="SKwd">self</span>, value: <span class="STpe">string</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_IEncoder_writeU16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeU16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20384,7 +20575,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_writeU32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeU32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L32" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L34" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20396,7 +20587,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_writeU64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeU64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20408,7 +20599,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_IEncoder_writeU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IEncoder.</span><span class="api-item-title-strong">writeU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\encoder.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20446,7 +20637,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 <tr>
-<td>postSerialize</td>
+<td>postRead</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, *<span class="STpe">void</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
@@ -20455,14 +20646,14 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Serialization_ISerialize_postSerialize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">postSerialize</span></span>
+<span id="Core_Serialization_ISerialize_postRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">postRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postSerialize</span>(<span class="SKwd">self</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postRead</span>(<span class="SKwd">self</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20498,7 +20689,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">self</span>, decoder: <span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">self</span>, encoder: <span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20510,7 +20701,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeElement</span>(<span class="SKwd">self</span>, type: <span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeElement</span>(<span class="SKwd">self</span>, type: <span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, encoder: <span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20667,6 +20858,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_isTextual">isTextual</a></span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_readNative">readNative</a></span></td>
 <td></td>
 </tr>
@@ -20690,7 +20885,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_beginElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L122" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20702,7 +20897,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_beginRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L74" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L86" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20714,7 +20909,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L83" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L95" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20726,7 +20921,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_beginSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L49" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L61" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20738,7 +20933,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_beginStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L99" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L111" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20750,7 +20945,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_beginValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L145" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L157" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20762,7 +20957,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_endElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L140" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L152" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20774,7 +20969,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_endRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L91" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20786,7 +20981,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L91" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L103" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20798,7 +20993,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_endSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L58" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L70" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20810,7 +21005,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_endStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L105" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L117" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20822,7 +21017,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_endValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L149" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L161" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20834,7 +21029,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_getError"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">getError</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L17" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20846,7 +21041,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_getVersion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">getVersion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L158" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20855,10 +21050,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_Read_JSon_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">isTextual</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L24" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_Read_JSon_readNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">readNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L167" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L173" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20870,7 +21077,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_startRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">startRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L56" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20882,7 +21089,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_toNextSequenceElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">toNextSequenceElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L66" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L78" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20894,7 +21101,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_JSon_zapBlanks"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">zapBlanks</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\json.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21021,6 +21228,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_getVersion">getVersion</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_isTextual">isTextual</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -21187,7 +21398,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_getVersion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">getVersion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L491" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L497" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21196,10 +21407,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_Read_TagBin_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">isTextual</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L492" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_Read_TagBin_readNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">readNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L502" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L508" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21378,6 +21601,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_Xml_isTextual">isTextual</a></span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_Xml_readEndTag">readEndTag</a></span></td>
 <td></td>
 </tr>
@@ -21413,7 +21640,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_beginElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">beginElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21425,7 +21652,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_beginRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">beginRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21437,7 +21664,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L93" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L105" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21449,7 +21676,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_beginSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">beginSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L142" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21461,11 +21688,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_beginStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">beginStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L103" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, structType: <span class="STpe">typeinfo</span>, structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21473,7 +21700,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_beginValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">beginValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L133" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L144" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21485,7 +21712,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_endElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">endElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L122" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L133" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21497,7 +21724,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_endRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">endRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L130" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L120" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21509,7 +21736,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L98" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21521,7 +21748,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_endSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">endSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L132" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L143" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21533,7 +21760,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_endStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">endStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L109" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L141" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21545,7 +21772,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_endValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">endValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L134" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L145" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21557,7 +21784,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_getError"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">getError</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L52" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21569,7 +21796,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_getVersion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">getVersion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L135" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21578,10 +21805,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_Read_Xml_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">isTextual</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L25" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_Read_Xml_readEndTag"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">readEndTag</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L56" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21593,7 +21832,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_readNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">readNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L142" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L152" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21605,7 +21844,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_readStartTag"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">readStartTag</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21617,7 +21856,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_readTag"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">readTag</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21629,7 +21868,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_startRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">startRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L82" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L94" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21641,7 +21880,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_toNextSequenceElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">toNextSequenceElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L87" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L99" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21653,7 +21892,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_Xml_zapBlanks"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Xml.</span><span class="api-item-title-strong">zapBlanks</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L62" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\xml.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21999,6 +22238,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_isTextual">isTextual</a></span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_startWrite">startWrite</a></span></td>
 <td></td>
 </tr>
@@ -22018,7 +22261,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L120" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22030,7 +22273,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L40" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22042,7 +22285,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L77" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L83" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22054,7 +22297,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L49" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L55" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22066,7 +22309,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L103" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22078,7 +22321,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L127" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L133" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22090,7 +22333,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L124" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L130" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22102,7 +22345,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L45" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22114,7 +22357,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L89" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L95" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22126,7 +22369,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22138,7 +22381,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L109" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22150,7 +22393,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L135" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22159,10 +22402,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_Write_JSon_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">isTextual</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L27" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_Write_JSon_startWrite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">startWrite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22174,7 +22429,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_writeIndent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">writeIndent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22186,7 +22441,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_writeNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">writeNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L142" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L148" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22293,6 +22548,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_isTextual">isTextual</a></span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_startWrite">startWrite</a></span></td>
 <td></td>
 </tr>
@@ -22308,7 +22567,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L135" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L141" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22320,7 +22579,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L56" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L62" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22332,7 +22591,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L66" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L72" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22344,7 +22603,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L166" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L172" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22356,7 +22615,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L112" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22368,7 +22627,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L161" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L167" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22380,7 +22639,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L158" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L164" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22392,7 +22651,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L61" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L67" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22404,7 +22663,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L85" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22416,7 +22675,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L205" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L211" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22428,7 +22687,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L130" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L136" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22440,7 +22699,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L164" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L170" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22449,10 +22708,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_Write_TagBin_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">isTextual</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L52" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_Write_TagBin_startWrite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">startWrite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L51" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L57" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22464,7 +22735,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_writeNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">writeNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L211" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L217" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26423,7 +26694,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Time.</span><span class="api-item-title-strong">DateTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26518,7 +26789,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_IConvert_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IConvert.</span><span class="api-item-title-strong">convert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L303" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L378" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26534,6 +26805,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr><td> <span class="code-inline">g</span> </td><td> <span class="code-inline">DateTimeFormat.TimeIso</span></td></tr>
 <tr><td> <span class="code-inline">h</span> </td><td> <span class="code-inline">DateTimeFormat.TimeIsoMs</span></td></tr>
 <tr><td> <span class="code-inline">i</span> </td><td> <span class="code-inline">DateTimeFormat.TimeIsoHM</span></td></tr>
+<tr><td> <span class="code-inline">j</span> </td><td> <span class="code-inline">DateTimeFormat.Date</span></td></tr>
 </table>
 <div class="code-block"><span class="SCde"><span class="SKwd">let</span> myDate = <span class="SCst">DateTime</span>.<span class="SFct">now</span>()
 <span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"%{a}"</span>, myDate))</span></div>
@@ -26542,10 +26814,70 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Time_DateTime_ISerialize_postRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">postRead</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L354" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postRead</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Time_DateTime_ISerialize_read"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">read</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L320" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Time_DateTime_ISerialize_readElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">readElement</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L344" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Time_DateTime_ISerialize_write"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">write</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L332" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, encoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Time_DateTime_ISerialize_writeElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">writeElement</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L349" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Time_DateTime_dayOfWeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">dayOfWeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L108" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26558,7 +26890,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_dayOfWeekName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">dayOfWeekName</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L123" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26571,7 +26903,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_isValid"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">isValid</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L86" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L88" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26584,7 +26916,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_monthName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">monthName</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L116" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L118" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26610,7 +26942,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_opCmp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">opCmp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L52" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26622,7 +26954,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">opEquals</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26634,12 +26966,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_parse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">parse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L157" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L159" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Convert a string to a DateTime with the given format. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(str: <span class="STpe">string</span>, fmt = <span class="SCst"><a href="#Core_Time_DateTimeFormat">DateTimeFormat</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>, checkDate = <span class="SKwd">true</span>)-&gt;{value:<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>,eat:<span class="STpe">u32</span>} <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(str: <span class="STpe">string</span>, checkDate = <span class="SKwd">true</span>)-&gt;{value:<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>,eat:<span class="STpe">u32</span>} <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26660,7 +26992,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">toString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L255" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L286" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -26693,6 +27025,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr>
 <td>TimeIsoHM</td>
 <td><span class="code-inline">HH:MM</span>. </td>
+</tr>
+<tr>
+<td>Date</td>
+<td><span class="code-inline">DAYOFWEEK MONTH DAY YYYY</span>. </td>
 </tr>
 <tr>
 <td>DateTime</td>
@@ -28434,6 +28770,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Utf8_beautifyName">beautifyName</a></span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_byteIndex">byteIndex</a></span></td>
 <td>Returns the byte index of the given rune index. </td>
 </tr>
@@ -28583,6 +28923,18 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 </table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Utf8_beautifyName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">beautifyName</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L894" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beautifyName</span>(name: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28989,7 +29341,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 29-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 14-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>

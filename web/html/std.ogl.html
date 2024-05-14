@@ -195,6 +195,7 @@
 <li><a href="#Ogl_GL_BOOL_VEC2">GL_BOOL_VEC2</a></li>
 <li><a href="#Ogl_GL_BOOL_VEC3">GL_BOOL_VEC3</a></li>
 <li><a href="#Ogl_GL_BOOL_VEC4">GL_BOOL_VEC4</a></li>
+<li><a href="#Ogl_GL_BUFFER">GL_BUFFER</a></li>
 <li><a href="#Ogl_GL_BUFFER_ACCESS">GL_BUFFER_ACCESS</a></li>
 <li><a href="#Ogl_GL_BUFFER_ACCESS_FLAGS">GL_BUFFER_ACCESS_FLAGS</a></li>
 <li><a href="#Ogl_GL_BUFFER_MAPPED">GL_BUFFER_MAPPED</a></li>
@@ -335,6 +336,7 @@
 <li><a href="#Ogl_GL_CONTEXT_COMPATIBILITY_PROFILE_BIT">GL_CONTEXT_COMPATIBILITY_PROFILE_BIT</a></li>
 <li><a href="#Ogl_GL_CONTEXT_CORE_PROFILE_BIT">GL_CONTEXT_CORE_PROFILE_BIT</a></li>
 <li><a href="#Ogl_GL_CONTEXT_FLAGS">GL_CONTEXT_FLAGS</a></li>
+<li><a href="#Ogl_GL_CONTEXT_FLAG_DEBUG_BIT">GL_CONTEXT_FLAG_DEBUG_BIT</a></li>
 <li><a href="#Ogl_GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT">GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT</a></li>
 <li><a href="#Ogl_GL_CONTEXT_FLAG_NO_ERROR_BIT">GL_CONTEXT_FLAG_NO_ERROR_BIT</a></li>
 <li><a href="#Ogl_GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT">GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT</a></li>
@@ -375,6 +377,32 @@
 <li><a href="#Ogl_GL_CURRENT_TEXTURE_COORDS">GL_CURRENT_TEXTURE_COORDS</a></li>
 <li><a href="#Ogl_GL_CURRENT_VERTEX_ATTRIB">GL_CURRENT_VERTEX_ATTRIB</a></li>
 <li><a href="#Ogl_GL_CW">GL_CW</a></li>
+<li><a href="#Ogl_GL_DEBUG_CALLBACK_FUNCTION">GL_DEBUG_CALLBACK_FUNCTION</a></li>
+<li><a href="#Ogl_GL_DEBUG_CALLBACK_USER_PARAM">GL_DEBUG_CALLBACK_USER_PARAM</a></li>
+<li><a href="#Ogl_GL_DEBUG_GROUP_STACK_DEPTH">GL_DEBUG_GROUP_STACK_DEPTH</a></li>
+<li><a href="#Ogl_GL_DEBUG_LOGGED_MESSAGES">GL_DEBUG_LOGGED_MESSAGES</a></li>
+<li><a href="#Ogl_GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH">GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH</a></li>
+<li><a href="#Ogl_GL_DEBUG_OUTPUT">GL_DEBUG_OUTPUT</a></li>
+<li><a href="#Ogl_GL_DEBUG_OUTPUT_SYNCHRONOUS">GL_DEBUG_OUTPUT_SYNCHRONOUS</a></li>
+<li><a href="#Ogl_GL_DEBUG_SEVERITY_HIGH">GL_DEBUG_SEVERITY_HIGH</a></li>
+<li><a href="#Ogl_GL_DEBUG_SEVERITY_LOW">GL_DEBUG_SEVERITY_LOW</a></li>
+<li><a href="#Ogl_GL_DEBUG_SEVERITY_MEDIUM">GL_DEBUG_SEVERITY_MEDIUM</a></li>
+<li><a href="#Ogl_GL_DEBUG_SEVERITY_NOTIFICATION">GL_DEBUG_SEVERITY_NOTIFICATION</a></li>
+<li><a href="#Ogl_GL_DEBUG_SOURCE_API">GL_DEBUG_SOURCE_API</a></li>
+<li><a href="#Ogl_GL_DEBUG_SOURCE_APPLICATION">GL_DEBUG_SOURCE_APPLICATION</a></li>
+<li><a href="#Ogl_GL_DEBUG_SOURCE_OTHER">GL_DEBUG_SOURCE_OTHER</a></li>
+<li><a href="#Ogl_GL_DEBUG_SOURCE_SHADER_COMPILER">GL_DEBUG_SOURCE_SHADER_COMPILER</a></li>
+<li><a href="#Ogl_GL_DEBUG_SOURCE_THIRD_PARTY">GL_DEBUG_SOURCE_THIRD_PARTY</a></li>
+<li><a href="#Ogl_GL_DEBUG_SOURCE_WINDOW_SYSTEM">GL_DEBUG_SOURCE_WINDOW_SYSTEM</a></li>
+<li><a href="#Ogl_GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR">GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR</a></li>
+<li><a href="#Ogl_GL_DEBUG_TYPE_ERROR">GL_DEBUG_TYPE_ERROR</a></li>
+<li><a href="#Ogl_GL_DEBUG_TYPE_MARKER">GL_DEBUG_TYPE_MARKER</a></li>
+<li><a href="#Ogl_GL_DEBUG_TYPE_OTHER">GL_DEBUG_TYPE_OTHER</a></li>
+<li><a href="#Ogl_GL_DEBUG_TYPE_PERFORMANCE">GL_DEBUG_TYPE_PERFORMANCE</a></li>
+<li><a href="#Ogl_GL_DEBUG_TYPE_POP_GROUP">GL_DEBUG_TYPE_POP_GROUP</a></li>
+<li><a href="#Ogl_GL_DEBUG_TYPE_PORTABILITY">GL_DEBUG_TYPE_PORTABILITY</a></li>
+<li><a href="#Ogl_GL_DEBUG_TYPE_PUSH_GROUP">GL_DEBUG_TYPE_PUSH_GROUP</a></li>
+<li><a href="#Ogl_GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR">GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR</a></li>
 <li><a href="#Ogl_GL_DECAL">GL_DECAL</a></li>
 <li><a href="#Ogl_GL_DECR">GL_DECR</a></li>
 <li><a href="#Ogl_GL_DECR_WRAP">GL_DECR_WRAP</a></li>
@@ -400,6 +428,7 @@
 <li><a href="#Ogl_GL_DEPTH_TEXTURE_MODE">GL_DEPTH_TEXTURE_MODE</a></li>
 <li><a href="#Ogl_GL_DEPTH_WRITEMASK">GL_DEPTH_WRITEMASK</a></li>
 <li><a href="#Ogl_GL_DIFFUSE">GL_DIFFUSE</a></li>
+<li><a href="#Ogl_GL_DISPLAY_LIST">GL_DISPLAY_LIST</a></li>
 <li><a href="#Ogl_GL_DITHER">GL_DITHER</a></li>
 <li><a href="#Ogl_GL_DOMAIN">GL_DOMAIN</a></li>
 <li><a href="#Ogl_GL_DONT_CARE">GL_DONT_CARE</a></li>
@@ -717,6 +746,9 @@
 <li><a href="#Ogl_GL_MAX_CONVOLUTION_HEIGHT">GL_MAX_CONVOLUTION_HEIGHT</a></li>
 <li><a href="#Ogl_GL_MAX_CONVOLUTION_WIDTH">GL_MAX_CONVOLUTION_WIDTH</a></li>
 <li><a href="#Ogl_GL_MAX_CUBE_MAP_TEXTURE_SIZE">GL_MAX_CUBE_MAP_TEXTURE_SIZE</a></li>
+<li><a href="#Ogl_GL_MAX_DEBUG_GROUP_STACK_DEPTH">GL_MAX_DEBUG_GROUP_STACK_DEPTH</a></li>
+<li><a href="#Ogl_GL_MAX_DEBUG_LOGGED_MESSAGES">GL_MAX_DEBUG_LOGGED_MESSAGES</a></li>
+<li><a href="#Ogl_GL_MAX_DEBUG_MESSAGE_LENGTH">GL_MAX_DEBUG_MESSAGE_LENGTH</a></li>
 <li><a href="#Ogl_GL_MAX_DRAW_BUFFERS">GL_MAX_DRAW_BUFFERS</a></li>
 <li><a href="#Ogl_GL_MAX_ELEMENTS_INDICES">GL_MAX_ELEMENTS_INDICES</a></li>
 <li><a href="#Ogl_GL_MAX_ELEMENTS_INDICES_WIN">GL_MAX_ELEMENTS_INDICES_WIN</a></li>
@@ -735,6 +767,7 @@
 <li><a href="#Ogl_GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS">GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS</a></li>
 <li><a href="#Ogl_GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS">GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS</a></li>
 <li><a href="#Ogl_GL_MAX_GEOMETRY_UNIFORM_COMPONENTS">GL_MAX_GEOMETRY_UNIFORM_COMPONENTS</a></li>
+<li><a href="#Ogl_GL_MAX_LABEL_LENGTH">GL_MAX_LABEL_LENGTH</a></li>
 <li><a href="#Ogl_GL_MAX_LIGHTS">GL_MAX_LIGHTS</a></li>
 <li><a href="#Ogl_GL_MAX_LIST_NESTING">GL_MAX_LIST_NESTING</a></li>
 <li><a href="#Ogl_GL_MAX_MODELVIEW_STACK_DEPTH">GL_MAX_MODELVIEW_STACK_DEPTH</a></li>
@@ -927,6 +960,8 @@
 <li><a href="#Ogl_GL_PRIMITIVE_RESTART">GL_PRIMITIVE_RESTART</a></li>
 <li><a href="#Ogl_GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED">GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED</a></li>
 <li><a href="#Ogl_GL_PRIMITIVE_RESTART_INDEX">GL_PRIMITIVE_RESTART_INDEX</a></li>
+<li><a href="#Ogl_GL_PROGRAM">GL_PROGRAM</a></li>
+<li><a href="#Ogl_GL_PROGRAM_PIPELINE">GL_PROGRAM_PIPELINE</a></li>
 <li><a href="#Ogl_GL_PROGRAM_POINT_SIZE">GL_PROGRAM_POINT_SIZE</a></li>
 <li><a href="#Ogl_GL_PROJECTION">GL_PROJECTION</a></li>
 <li><a href="#Ogl_GL_PROJECTION_MATRIX">GL_PROJECTION_MATRIX</a></li>
@@ -947,6 +982,7 @@
 <li><a href="#Ogl_GL_QUADRATIC_ATTENUATION">GL_QUADRATIC_ATTENUATION</a></li>
 <li><a href="#Ogl_GL_QUADS">GL_QUADS</a></li>
 <li><a href="#Ogl_GL_QUAD_STRIP">GL_QUAD_STRIP</a></li>
+<li><a href="#Ogl_GL_QUERY">GL_QUERY</a></li>
 <li><a href="#Ogl_GL_QUERY_BY_REGION_NO_WAIT">GL_QUERY_BY_REGION_NO_WAIT</a></li>
 <li><a href="#Ogl_GL_QUERY_BY_REGION_WAIT">GL_QUERY_BY_REGION_WAIT</a></li>
 <li><a href="#Ogl_GL_QUERY_COUNTER_BITS">GL_QUERY_COUNTER_BITS</a></li>
@@ -1041,6 +1077,7 @@
 <li><a href="#Ogl_GL_RG_SNORM">GL_RG_SNORM</a></li>
 <li><a href="#Ogl_GL_RIGHT">GL_RIGHT</a></li>
 <li><a href="#Ogl_GL_S">GL_S</a></li>
+<li><a href="#Ogl_GL_SAMPLER">GL_SAMPLER</a></li>
 <li><a href="#Ogl_GL_SAMPLER_1D">GL_SAMPLER_1D</a></li>
 <li><a href="#Ogl_GL_SAMPLER_1D_ARRAY">GL_SAMPLER_1D_ARRAY</a></li>
 <li><a href="#Ogl_GL_SAMPLER_1D_ARRAY_SHADOW">GL_SAMPLER_1D_ARRAY_SHADOW</a></li>
@@ -1082,6 +1119,7 @@
 <li><a href="#Ogl_GL_SEPARATE_ATTRIBS">GL_SEPARATE_ATTRIBS</a></li>
 <li><a href="#Ogl_GL_SEPARATE_SPECULAR_COLOR">GL_SEPARATE_SPECULAR_COLOR</a></li>
 <li><a href="#Ogl_GL_SET">GL_SET</a></li>
+<li><a href="#Ogl_GL_SHADER">GL_SHADER</a></li>
 <li><a href="#Ogl_GL_SHADER_BINARY_FORMAT_SPIR_V">GL_SHADER_BINARY_FORMAT_SPIR_V</a></li>
 <li><a href="#Ogl_GL_SHADER_INCLUDE_ARB">GL_SHADER_INCLUDE_ARB</a></li>
 <li><a href="#Ogl_GL_SHADER_SOURCE_LENGTH">GL_SHADER_SOURCE_LENGTH</a></li>
@@ -1411,6 +1449,7 @@
 <h3>Type Aliases</h3>
 <h4></h4>
 <ul>
+<li><a href="#Ogl_GLDEBUGPROC">GLDEBUGPROC</a></li>
 <li><a href="#Ogl_GLbitfield">GLbitfield</a></li>
 <li><a href="#Ogl_GLboolean">GLboolean</a></li>
 <li><a href="#Ogl_GLbyte">GLbyte</a></li>
@@ -1533,6 +1572,9 @@
 <li><a href="#Ogl_glCreateProgram">Ogl.glCreateProgram</a></li>
 <li><a href="#Ogl_glCreateShader">Ogl.glCreateShader</a></li>
 <li><a href="#Ogl_glCullFace">Ogl.glCullFace</a></li>
+<li><a href="#Ogl_glDebugMessageCallback">Ogl.glDebugMessageCallback</a></li>
+<li><a href="#Ogl_glDebugMessageControl">Ogl.glDebugMessageControl</a></li>
+<li><a href="#Ogl_glDebugMessageInsert">Ogl.glDebugMessageInsert</a></li>
 <li><a href="#Ogl_glDeleteBuffers">Ogl.glDeleteBuffers</a></li>
 <li><a href="#Ogl_glDeleteFramebuffers">Ogl.glDeleteFramebuffers</a></li>
 <li><a href="#Ogl_glDeleteLists">Ogl.glDeleteLists</a></li>
@@ -1621,6 +1663,7 @@
 <li><a href="#Ogl_glGetBufferSubData">Ogl.glGetBufferSubData</a></li>
 <li><a href="#Ogl_glGetClipPlane">Ogl.glGetClipPlane</a></li>
 <li><a href="#Ogl_glGetCompressedTexImage">Ogl.glGetCompressedTexImage</a></li>
+<li><a href="#Ogl_glGetDebugMessageLog">Ogl.glGetDebugMessageLog</a></li>
 <li><a href="#Ogl_glGetDoublev">Ogl.glGetDoublev</a></li>
 <li><a href="#Ogl_glGetError">Ogl.glGetError</a></li>
 <li><a href="#Ogl_glGetFloatv">Ogl.glGetFloatv</a></li>
@@ -1640,6 +1683,8 @@
 <li><a href="#Ogl_glGetNamedFramebufferParameterivEXT">Ogl.glGetNamedFramebufferParameterivEXT</a></li>
 <li><a href="#Ogl_glGetNamedStringARB">Ogl.glGetNamedStringARB</a></li>
 <li><a href="#Ogl_glGetNamedStringivARB">Ogl.glGetNamedStringivARB</a></li>
+<li><a href="#Ogl_glGetObjectLabel">Ogl.glGetObjectLabel</a></li>
+<li><a href="#Ogl_glGetObjectPtrLabel">Ogl.glGetObjectPtrLabel</a></li>
 <li><a href="#Ogl_glGetPixelMapfv">Ogl.glGetPixelMapfv</a></li>
 <li><a href="#Ogl_glGetPixelMapuiv">Ogl.glGetPixelMapuiv</a></li>
 <li><a href="#Ogl_glGetPixelMapusv">Ogl.glGetPixelMapusv</a></li>
@@ -1796,6 +1841,8 @@
 <li><a href="#Ogl_glNormal3s">Ogl.glNormal3s</a></li>
 <li><a href="#Ogl_glNormal3sv">Ogl.glNormal3sv</a></li>
 <li><a href="#Ogl_glNormalPointer">Ogl.glNormalPointer</a></li>
+<li><a href="#Ogl_glObjectLabel">Ogl.glObjectLabel</a></li>
+<li><a href="#Ogl_glObjectPtrLabel">Ogl.glObjectPtrLabel</a></li>
 <li><a href="#Ogl_glOrtho">Ogl.glOrtho</a></li>
 <li><a href="#Ogl_glPassThrough">Ogl.glPassThrough</a></li>
 <li><a href="#Ogl_glPixelMapfv">Ogl.glPixelMapfv</a></li>
@@ -1816,12 +1863,14 @@
 <li><a href="#Ogl_glPolygonStipple">Ogl.glPolygonStipple</a></li>
 <li><a href="#Ogl_glPopAttrib">Ogl.glPopAttrib</a></li>
 <li><a href="#Ogl_glPopClientAttrib">Ogl.glPopClientAttrib</a></li>
+<li><a href="#Ogl_glPopDebugGroup">Ogl.glPopDebugGroup</a></li>
 <li><a href="#Ogl_glPopMatrix">Ogl.glPopMatrix</a></li>
 <li><a href="#Ogl_glPopName">Ogl.glPopName</a></li>
 <li><a href="#Ogl_glPrimitiveRestartIndex">Ogl.glPrimitiveRestartIndex</a></li>
 <li><a href="#Ogl_glPrioritizeTextures">Ogl.glPrioritizeTextures</a></li>
 <li><a href="#Ogl_glPushAttrib">Ogl.glPushAttrib</a></li>
 <li><a href="#Ogl_glPushClientAttrib">Ogl.glPushClientAttrib</a></li>
+<li><a href="#Ogl_glPushDebugGroup">Ogl.glPushDebugGroup</a></li>
 <li><a href="#Ogl_glPushMatrix">Ogl.glPushMatrix</a></li>
 <li><a href="#Ogl_glPushName">Ogl.glPushName</a></li>
 <li><a href="#Ogl_glRasterPos2d">Ogl.glRasterPos2d</a></li>
@@ -2533,6 +2582,11 @@
 <td></td>
 </tr>
 <tr>
+<td id="Ogl_GL_BUFFER">GL_BUFFER</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Ogl_GL_BUFFER_ACCESS">GL_BUFFER_ACCESS</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
@@ -3233,6 +3287,11 @@
 <td></td>
 </tr>
 <tr>
+<td id="Ogl_GL_CONTEXT_FLAG_DEBUG_BIT">GL_CONTEXT_FLAG_DEBUG_BIT</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Ogl_GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT">GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
@@ -3433,6 +3492,136 @@
 <td></td>
 </tr>
 <tr>
+<td id="Ogl_GL_DEBUG_CALLBACK_FUNCTION">GL_DEBUG_CALLBACK_FUNCTION</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_CALLBACK_USER_PARAM">GL_DEBUG_CALLBACK_USER_PARAM</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_GROUP_STACK_DEPTH">GL_DEBUG_GROUP_STACK_DEPTH</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_LOGGED_MESSAGES">GL_DEBUG_LOGGED_MESSAGES</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH">GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_OUTPUT">GL_DEBUG_OUTPUT</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_OUTPUT_SYNCHRONOUS">GL_DEBUG_OUTPUT_SYNCHRONOUS</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_SEVERITY_HIGH">GL_DEBUG_SEVERITY_HIGH</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_SEVERITY_LOW">GL_DEBUG_SEVERITY_LOW</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_SEVERITY_MEDIUM">GL_DEBUG_SEVERITY_MEDIUM</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_SEVERITY_NOTIFICATION">GL_DEBUG_SEVERITY_NOTIFICATION</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_SOURCE_API">GL_DEBUG_SOURCE_API</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_SOURCE_APPLICATION">GL_DEBUG_SOURCE_APPLICATION</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_SOURCE_OTHER">GL_DEBUG_SOURCE_OTHER</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_SOURCE_SHADER_COMPILER">GL_DEBUG_SOURCE_SHADER_COMPILER</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_SOURCE_THIRD_PARTY">GL_DEBUG_SOURCE_THIRD_PARTY</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_SOURCE_WINDOW_SYSTEM">GL_DEBUG_SOURCE_WINDOW_SYSTEM</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR">GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_TYPE_ERROR">GL_DEBUG_TYPE_ERROR</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_TYPE_MARKER">GL_DEBUG_TYPE_MARKER</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_TYPE_OTHER">GL_DEBUG_TYPE_OTHER</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_TYPE_PERFORMANCE">GL_DEBUG_TYPE_PERFORMANCE</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_TYPE_POP_GROUP">GL_DEBUG_TYPE_POP_GROUP</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_TYPE_PORTABILITY">GL_DEBUG_TYPE_PORTABILITY</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_TYPE_PUSH_GROUP">GL_DEBUG_TYPE_PUSH_GROUP</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR">GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Ogl_GL_DECAL">GL_DECAL</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
@@ -3554,6 +3743,11 @@
 </tr>
 <tr>
 <td id="Ogl_GL_DIFFUSE">GL_DIFFUSE</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DISPLAY_LIST">GL_DISPLAY_LIST</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -5143,6 +5337,21 @@
 <td></td>
 </tr>
 <tr>
+<td id="Ogl_GL_MAX_DEBUG_GROUP_STACK_DEPTH">GL_MAX_DEBUG_GROUP_STACK_DEPTH</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_DEBUG_LOGGED_MESSAGES">GL_MAX_DEBUG_LOGGED_MESSAGES</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_DEBUG_MESSAGE_LENGTH">GL_MAX_DEBUG_MESSAGE_LENGTH</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Ogl_GL_MAX_DRAW_BUFFERS">GL_MAX_DRAW_BUFFERS</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
@@ -5229,6 +5438,11 @@
 </tr>
 <tr>
 <td id="Ogl_GL_MAX_GEOMETRY_UNIFORM_COMPONENTS">GL_MAX_GEOMETRY_UNIFORM_COMPONENTS</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_LABEL_LENGTH">GL_MAX_LABEL_LENGTH</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -6193,6 +6407,16 @@
 <td></td>
 </tr>
 <tr>
+<td id="Ogl_GL_PROGRAM">GL_PROGRAM</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROGRAM_PIPELINE">GL_PROGRAM_PIPELINE</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Ogl_GL_PROGRAM_POINT_SIZE">GL_PROGRAM_POINT_SIZE</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
@@ -6289,6 +6513,11 @@
 </tr>
 <tr>
 <td id="Ogl_GL_QUAD_STRIP">GL_QUAD_STRIP</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_QUERY">GL_QUERY</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -6763,6 +6992,11 @@
 <td></td>
 </tr>
 <tr>
+<td id="Ogl_GL_SAMPLER">GL_SAMPLER</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Ogl_GL_SAMPLER_1D">GL_SAMPLER_1D</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
@@ -6964,6 +7198,11 @@
 </tr>
 <tr>
 <td id="Ogl_GL_SET">GL_SET</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SHADER">GL_SHADER</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -8597,14 +8836,19 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Ogl_GLbitfield"><span class="api-item-title-kind">type alias</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">Type Aliases</span></span>
+<span id="Ogl_GLDEBUGPROC"><span class="api-item-title-kind">type alias</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">Type Aliases</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_1_1.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_khr.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="table-enumeration">
+<tr>
+<td id="Ogl_GLDEBUGPROC">GLDEBUGPROC</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLDEBUGPROC">GLDEBUGPROC</a></span></span></td>
+<td></td>
+</tr>
 <tr>
 <td id="Ogl_GLbitfield">GLbitfield</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Ogl_GLbitfield">GLbitfield</a></span></span></td>
@@ -9879,6 +10123,42 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Ogl_glDebugMessageCallback"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glDebugMessageCallback</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_khr.swg#L50" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glDebugMessageCallback</span>(callback: <span class="SCst"><a href="#Ogl_GLDEBUGPROC">GLDEBUGPROC</a></span>, userParam: <span class="SKwd">const</span> *<span class="STpe">void</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Ogl_glDebugMessageControl"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glDebugMessageControl</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_khr.swg#L51" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glDebugMessageControl</span>(source: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, type: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, severity: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, count: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, ids: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, enabled: <span class="SCst"><a href="#Ogl_GLboolean">GLboolean</a></span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Ogl_glDebugMessageInsert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glDebugMessageInsert</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_khr.swg#L52" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glDebugMessageInsert</span>(source: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, type: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, id: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, severity: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, length: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, buf: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Ogl_glDeleteBuffers"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glDeleteBuffers</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -10935,6 +11215,18 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Ogl_glGetDebugMessageLog"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glGetDebugMessageLog</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_khr.swg#L53" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetDebugMessageLog</span>(count: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, bufSize: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, sources: *<span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, types: *<span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, ids: *<span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, severities: *<span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, lengths: *<span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, messageLog: *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Ogl_glGetDoublev"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glGetDoublev</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -11159,6 +11451,30 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetNamedStringivARB</span>(namelen: <span class="SCst"><a href="#Ogl_GLint">GLint</a></span>, name: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>, pname: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, params: *<span class="SCst"><a href="#Ogl_GLint">GLint</a></span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Ogl_glGetObjectLabel"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glGetObjectLabel</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_khr.swg#L54" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetObjectLabel</span>(identifier: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, name: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, bufSize: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, length: *<span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, label: <span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Ogl_glGetObjectPtrLabel"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glGetObjectPtrLabel</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_khr.swg#L55" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glGetObjectPtrLabel</span>(ptr: *<span class="STpe">void</span>, bufSize: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, length: *<span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, label: <span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13035,6 +13351,30 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Ogl_glObjectLabel"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glObjectLabel</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_khr.swg#L56" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glObjectLabel</span>(identifier: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, name: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, length: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, label: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Ogl_glObjectPtrLabel"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glObjectPtrLabel</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_khr.swg#L57" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glObjectPtrLabel</span>(ptr: *<span class="STpe">void</span>, length: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, label: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Ogl_glOrtho"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glOrtho</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -13275,6 +13615,18 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Ogl_glPopDebugGroup"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glPopDebugGroup</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_khr.swg#L58" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glPopDebugGroup</span>()</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Ogl_glPopMatrix"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glPopMatrix</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -13343,6 +13695,18 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glPushClientAttrib</span>(mask: <span class="SCst"><a href="#Ogl_GLbitfield">GLbitfield</a></span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Ogl_glPushDebugGroup"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Ogl.</span><span class="api-item-title-strong">glPushDebugGroup</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl\src\ogl_khr.swg#L59" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">glPushDebugGroup</span>(source: <span class="SCst"><a href="#Ogl_GLenum">GLenum</a></span>, id: <span class="SCst"><a href="#Ogl_GLuint">GLuint</a></span>, length: <span class="SCst"><a href="#Ogl_GLsizei">GLsizei</a></span>, message: <span class="SKwd">const</span> *<span class="SCst"><a href="#Ogl_GLchar">GLchar</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16596,7 +16960,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wglShareLists</span>(hRc0, hRc1: <span class="SCst"><a href="#Ogl_HGLRC">HGLRC</a></span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 29-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 14-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>

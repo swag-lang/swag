@@ -132,7 +132,11 @@
 <li><a href="#Gdi32_ANSI_FIXED_FONT">ANSI_FIXED_FONT</a></li>
 <li><a href="#Gdi32_ANSI_VAR_FONT">ANSI_VAR_FONT</a></li>
 <li><a href="#Gdi32_ARABIC_CHARSET">ARABIC_CHARSET</a></li>
+<li><a href="#Gdi32_ASPECTX">ASPECTX</a></li>
+<li><a href="#Gdi32_ASPECTXY">ASPECTXY</a></li>
+<li><a href="#Gdi32_ASPECTY">ASPECTY</a></li>
 <li><a href="#Gdi32_BALTIC_CHARSET">BALTIC_CHARSET</a></li>
+<li><a href="#Gdi32_BITSPIXEL">BITSPIXEL</a></li>
 <li><a href="#Gdi32_BI_BITFIELDS">BI_BITFIELDS</a></li>
 <li><a href="#Gdi32_BI_JPEG">BI_JPEG</a></li>
 <li><a href="#Gdi32_BI_PNG">BI_PNG</a></li>
@@ -143,15 +147,23 @@
 <li><a href="#Gdi32_BLACKNESS">BLACKNESS</a></li>
 <li><a href="#Gdi32_BLACK_BRUSH">BLACK_BRUSH</a></li>
 <li><a href="#Gdi32_BLACK_PEN">BLACK_PEN</a></li>
+<li><a href="#Gdi32_BLTALIGNMENT">BLTALIGNMENT</a></li>
 <li><a href="#Gdi32_CAPTUREBLT">CAPTUREBLT</a></li>
 <li><a href="#Gdi32_CHINESEBIG5_CHARSET">CHINESEBIG5_CHARSET</a></li>
+<li><a href="#Gdi32_CLIPCAPS">CLIPCAPS</a></li>
+<li><a href="#Gdi32_COLORMGMTCAPS">COLORMGMTCAPS</a></li>
+<li><a href="#Gdi32_COLORRES">COLORRES</a></li>
+<li><a href="#Gdi32_CURVECAPS">CURVECAPS</a></li>
 <li><a href="#Gdi32_DEFAULT_CHARSET">DEFAULT_CHARSET</a></li>
 <li><a href="#Gdi32_DEFAULT_PALETTE">DEFAULT_PALETTE</a></li>
+<li><a href="#Gdi32_DESKTOPHORZRES">DESKTOPHORZRES</a></li>
+<li><a href="#Gdi32_DESKTOPVERTRES">DESKTOPVERTRES</a></li>
 <li><a href="#Gdi32_DEVICE_DEFAULT_FONT">DEVICE_DEFAULT_FONT</a></li>
 <li><a href="#Gdi32_DEVICE_FONTTYPE">DEVICE_FONTTYPE</a></li>
 <li><a href="#Gdi32_DIB_PAL_COLORS">DIB_PAL_COLORS</a></li>
 <li><a href="#Gdi32_DIB_RGB_COLORS">DIB_RGB_COLORS</a></li>
 <li><a href="#Gdi32_DKGRAY_BRUSH">DKGRAY_BRUSH</a></li>
+<li><a href="#Gdi32_DRIVERVERSION">DRIVERVERSION</a></li>
 <li><a href="#Gdi32_DSTINVERT">DSTINVERT</a></li>
 <li><a href="#Gdi32_EASTEUROPE_CHARSET">EASTEUROPE_CHARSET</a></li>
 <li><a href="#Gdi32_FW_BLACK">FW_BLACK</a></li>
@@ -177,9 +189,14 @@
 <li><a href="#Gdi32_HANGUL_CHARSET">HANGUL_CHARSET</a></li>
 <li><a href="#Gdi32_HEBREW_CHARSET">HEBREW_CHARSET</a></li>
 <li><a href="#Gdi32_HOLLOW_BRUSH">HOLLOW_BRUSH</a></li>
+<li><a href="#Gdi32_HORZRES">HORZRES</a></li>
+<li><a href="#Gdi32_HORZSIZE">HORZSIZE</a></li>
 <li><a href="#Gdi32_JOHAB_CHARSET">JOHAB_CHARSET</a></li>
 <li><a href="#Gdi32_LF_FACESIZE">LF_FACESIZE</a></li>
 <li><a href="#Gdi32_LF_FULLFACESIZE">LF_FULLFACESIZE</a></li>
+<li><a href="#Gdi32_LINECAPS">LINECAPS</a></li>
+<li><a href="#Gdi32_LOGPIXELSX">LOGPIXELSX</a></li>
+<li><a href="#Gdi32_LOGPIXELSY">LOGPIXELSY</a></li>
 <li><a href="#Gdi32_LTGRAY_BRUSH">LTGRAY_BRUSH</a></li>
 <li><a href="#Gdi32_MAC_CHARSET">MAC_CHARSET</a></li>
 <li><a href="#Gdi32_MERGECOPY">MERGECOPY</a></li>
@@ -189,12 +206,19 @@
 <li><a href="#Gdi32_NOTSRCERASE">NOTSRCERASE</a></li>
 <li><a href="#Gdi32_NULL_BRUSH">NULL_BRUSH</a></li>
 <li><a href="#Gdi32_NULL_PEN">NULL_PEN</a></li>
+<li><a href="#Gdi32_NUMBRUSHES">NUMBRUSHES</a></li>
+<li><a href="#Gdi32_NUMCOLORS">NUMCOLORS</a></li>
+<li><a href="#Gdi32_NUMFONTS">NUMFONTS</a></li>
+<li><a href="#Gdi32_NUMMARKERS">NUMMARKERS</a></li>
+<li><a href="#Gdi32_NUMPENS">NUMPENS</a></li>
+<li><a href="#Gdi32_NUMRESERVED">NUMRESERVED</a></li>
 <li><a href="#Gdi32_OEM_CHARSET">OEM_CHARSET</a></li>
 <li><a href="#Gdi32_OEM_FIXED_FONT">OEM_FIXED_FONT</a></li>
 <li><a href="#Gdi32_OPAQUE">OPAQUE</a></li>
 <li><a href="#Gdi32_PATCOPY">PATCOPY</a></li>
 <li><a href="#Gdi32_PATINVERT">PATINVERT</a></li>
 <li><a href="#Gdi32_PATPAINT">PATPAINT</a></li>
+<li><a href="#Gdi32_PDEVICESIZE">PDEVICESIZE</a></li>
 <li><a href="#Gdi32_PFD_DEPTH_DONTCARE">PFD_DEPTH_DONTCARE</a></li>
 <li><a href="#Gdi32_PFD_DIRECT3D_ACCELERATED">PFD_DIRECT3D_ACCELERATED</a></li>
 <li><a href="#Gdi32_PFD_DOUBLEBUFFER">PFD_DOUBLEBUFFER</a></li>
@@ -219,6 +243,12 @@
 <li><a href="#Gdi32_PFD_TYPE_COLORINDEX">PFD_TYPE_COLORINDEX</a></li>
 <li><a href="#Gdi32_PFD_TYPE_RGBA">PFD_TYPE_RGBA</a></li>
 <li><a href="#Gdi32_PFD_UNDERLAY_PLANE">PFD_UNDERLAY_PLANE</a></li>
+<li><a href="#Gdi32_PHYSICALHEIGHT">PHYSICALHEIGHT</a></li>
+<li><a href="#Gdi32_PHYSICALOFFSETX">PHYSICALOFFSETX</a></li>
+<li><a href="#Gdi32_PHYSICALOFFSETY">PHYSICALOFFSETY</a></li>
+<li><a href="#Gdi32_PHYSICALWIDTH">PHYSICALWIDTH</a></li>
+<li><a href="#Gdi32_PLANES">PLANES</a></li>
+<li><a href="#Gdi32_POLYGONALCAPS">POLYGONALCAPS</a></li>
 <li><a href="#Gdi32_PS_ALTERNATE">PS_ALTERNATE</a></li>
 <li><a href="#Gdi32_PS_DASH">PS_DASH</a></li>
 <li><a href="#Gdi32_PS_DASHDOT">PS_DASHDOT</a></li>
@@ -229,9 +259,14 @@
 <li><a href="#Gdi32_PS_SOLID">PS_SOLID</a></li>
 <li><a href="#Gdi32_PS_STYLE_MASK">PS_STYLE_MASK</a></li>
 <li><a href="#Gdi32_PS_USERSTYLE">PS_USERSTYLE</a></li>
+<li><a href="#Gdi32_RASTERCAPS">RASTERCAPS</a></li>
 <li><a href="#Gdi32_RASTER_FONTTYPE">RASTER_FONTTYPE</a></li>
 <li><a href="#Gdi32_RUSSIAN_CHARSET">RUSSIAN_CHARSET</a></li>
+<li><a href="#Gdi32_SCALINGFACTORX">SCALINGFACTORX</a></li>
+<li><a href="#Gdi32_SCALINGFACTORY">SCALINGFACTORY</a></li>
+<li><a href="#Gdi32_SHADEBLENDCAPS">SHADEBLENDCAPS</a></li>
 <li><a href="#Gdi32_SHIFTJIS_CHARSET">SHIFTJIS_CHARSET</a></li>
+<li><a href="#Gdi32_SIZEPALETTE">SIZEPALETTE</a></li>
 <li><a href="#Gdi32_SRCAND">SRCAND</a></li>
 <li><a href="#Gdi32_SRCCOPY">SRCCOPY</a></li>
 <li><a href="#Gdi32_SRCERASE">SRCERASE</a></li>
@@ -240,11 +275,16 @@
 <li><a href="#Gdi32_SYMBOL_CHARSET">SYMBOL_CHARSET</a></li>
 <li><a href="#Gdi32_SYSTEM_FIXED_FONT">SYSTEM_FIXED_FONT</a></li>
 <li><a href="#Gdi32_SYSTEM_FONT">SYSTEM_FONT</a></li>
+<li><a href="#Gdi32_TECHNOLOGY">TECHNOLOGY</a></li>
+<li><a href="#Gdi32_TEXTCAPS">TEXTCAPS</a></li>
 <li><a href="#Gdi32_THAI_CHARSET">THAI_CHARSET</a></li>
 <li><a href="#Gdi32_TRANSPARENT">TRANSPARENT</a></li>
 <li><a href="#Gdi32_TRUETYPE_FONTTYPE">TRUETYPE_FONTTYPE</a></li>
 <li><a href="#Gdi32_TURKISH_CHARSET">TURKISH_CHARSET</a></li>
+<li><a href="#Gdi32_VERTRES">VERTRES</a></li>
+<li><a href="#Gdi32_VERTSIZE">VERTSIZE</a></li>
 <li><a href="#Gdi32_VIETNAMESE_CHARSET">VIETNAMESE_CHARSET</a></li>
+<li><a href="#Gdi32_VREFRESH">VREFRESH</a></li>
 <li><a href="#Gdi32_WHITENESS">WHITENESS</a></li>
 <li><a href="#Gdi32_WHITE_BRUSH">WHITE_BRUSH</a></li>
 <li><a href="#Gdi32_WHITE_PEN">WHITE_PEN</a></li>
@@ -279,6 +319,7 @@
 <li><a href="#Gdi32_EnumFontFamiliesW">Gdi32.EnumFontFamiliesW</a></li>
 <li><a href="#Gdi32_GetBitmapBits">Gdi32.GetBitmapBits</a></li>
 <li><a href="#Gdi32_GetDIBits">Gdi32.GetDIBits</a></li>
+<li><a href="#Gdi32_GetDeviceCaps">Gdi32.GetDeviceCaps</a></li>
 <li><a href="#Gdi32_GetFontData">Gdi32.GetFontData</a></li>
 <li><a href="#Gdi32_GetObjectA">Gdi32.GetObjectA</a></li>
 <li><a href="#Gdi32_GetObjectW">Gdi32.GetObjectW</a></li>
@@ -337,7 +378,27 @@
 <td></td>
 </tr>
 <tr>
+<td id="Gdi32_ASPECTX">ASPECTX</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_ASPECTXY">ASPECTXY</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_ASPECTY">ASPECTY</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Gdi32_BALTIC_CHARSET">BALTIC_CHARSET</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_BITSPIXEL">BITSPIXEL</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -392,6 +453,11 @@
 <td></td>
 </tr>
 <tr>
+<td id="Gdi32_BLTALIGNMENT">BLTALIGNMENT</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Gdi32_CAPTUREBLT">CAPTUREBLT</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></td>
 <td>Include layered windows. </td>
@@ -402,12 +468,42 @@
 <td></td>
 </tr>
 <tr>
+<td id="Gdi32_CLIPCAPS">CLIPCAPS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_COLORMGMTCAPS">COLORMGMTCAPS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_COLORRES">COLORRES</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_CURVECAPS">CURVECAPS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Gdi32_DEFAULT_CHARSET">DEFAULT_CHARSET</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Gdi32_DEFAULT_PALETTE">DEFAULT_PALETTE</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_DESKTOPHORZRES">DESKTOPHORZRES</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_DESKTOPVERTRES">DESKTOPVERTRES</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -433,6 +529,11 @@
 </tr>
 <tr>
 <td id="Gdi32_DKGRAY_BRUSH">DKGRAY_BRUSH</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_DRIVERVERSION">DRIVERVERSION</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -562,6 +663,16 @@
 <td></td>
 </tr>
 <tr>
+<td id="Gdi32_HORZRES">HORZRES</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_HORZSIZE">HORZSIZE</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Gdi32_JOHAB_CHARSET">JOHAB_CHARSET</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
@@ -573,6 +684,21 @@
 </tr>
 <tr>
 <td id="Gdi32_LF_FULLFACESIZE">LF_FULLFACESIZE</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_LINECAPS">LINECAPS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_LOGPIXELSX">LOGPIXELSX</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_LOGPIXELSY">LOGPIXELSY</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -622,6 +748,36 @@
 <td></td>
 </tr>
 <tr>
+<td id="Gdi32_NUMBRUSHES">NUMBRUSHES</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_NUMCOLORS">NUMCOLORS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_NUMFONTS">NUMFONTS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_NUMMARKERS">NUMMARKERS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_NUMPENS">NUMPENS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_NUMRESERVED">NUMRESERVED</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Gdi32_OEM_CHARSET">OEM_CHARSET</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
@@ -650,6 +806,11 @@
 <td id="Gdi32_PATPAINT">PATPAINT</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></td>
 <td>dest = DPSnoo. </td>
+</tr>
+<tr>
+<td id="Gdi32_PDEVICESIZE">PDEVICESIZE</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
 </tr>
 <tr>
 <td id="Gdi32_PFD_DEPTH_DONTCARE">PFD_DEPTH_DONTCARE</td>
@@ -772,6 +933,36 @@
 <td></td>
 </tr>
 <tr>
+<td id="Gdi32_PHYSICALHEIGHT">PHYSICALHEIGHT</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PHYSICALOFFSETX">PHYSICALOFFSETX</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PHYSICALOFFSETY">PHYSICALOFFSETY</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PHYSICALWIDTH">PHYSICALWIDTH</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PLANES">PLANES</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_POLYGONALCAPS">POLYGONALCAPS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Gdi32_PS_ALTERNATE">PS_ALTERNATE</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
@@ -822,6 +1013,11 @@
 <td></td>
 </tr>
 <tr>
+<td id="Gdi32_RASTERCAPS">RASTERCAPS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Gdi32_RASTER_FONTTYPE">RASTER_FONTTYPE</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
@@ -832,7 +1028,27 @@
 <td></td>
 </tr>
 <tr>
+<td id="Gdi32_SCALINGFACTORX">SCALINGFACTORX</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_SCALINGFACTORY">SCALINGFACTORY</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_SHADEBLENDCAPS">SHADEBLENDCAPS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Gdi32_SHIFTJIS_CHARSET">SHIFTJIS_CHARSET</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_SIZEPALETTE">SIZEPALETTE</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -877,6 +1093,16 @@
 <td></td>
 </tr>
 <tr>
+<td id="Gdi32_TECHNOLOGY">TECHNOLOGY</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_TEXTCAPS">TEXTCAPS</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Gdi32_THAI_CHARSET">THAI_CHARSET</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
@@ -897,7 +1123,22 @@
 <td></td>
 </tr>
 <tr>
+<td id="Gdi32_VERTRES">VERTRES</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_VERTSIZE">VERTSIZE</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Gdi32_VIETNAMESE_CHARSET">VIETNAMESE_CHARSET</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_VREFRESH">VREFRESH</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -924,7 +1165,7 @@
 <span id="Gdi32_FONTENUMPROCA"><span class="api-item-title-kind">type alias</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">Type Aliases</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L371" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L412" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1101,7 +1342,7 @@
 <span id="Gdi32_BitBlt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">BitBlt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L496" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L538" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1113,7 +1354,7 @@
 <span id="Gdi32_ChoosePixelFormat"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">ChoosePixelFormat</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L437" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L479" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1125,7 +1366,7 @@
 <span id="Gdi32_CreateCompatibleBitmap"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">CreateCompatibleBitmap</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L474" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L516" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1137,7 +1378,7 @@
 <span id="Gdi32_CreateCompatibleDC"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">CreateCompatibleDC</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L466" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L508" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1149,7 +1390,7 @@
 <span id="Gdi32_CreateDIBSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">CreateDIBSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L580" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L622" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1161,7 +1402,7 @@
 <span id="Gdi32_CreateFontIndirectA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">CreateFontIndirectA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L539" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L581" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1173,7 +1414,7 @@
 <span id="Gdi32_CreateFontIndirectW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">CreateFontIndirectW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L547" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L589" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1185,7 +1426,7 @@
 <span id="Gdi32_CreatePen"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">CreatePen</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L563" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L605" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1197,7 +1438,7 @@
 <span id="Gdi32_CreateSolidBrush"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">CreateSolidBrush</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L555" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L597" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1209,7 +1450,7 @@
 <span id="Gdi32_DeleteDC"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">DeleteDC</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L482" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L524" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1221,7 +1462,7 @@
 <span id="Gdi32_DeleteObject"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">DeleteObject</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L489" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L531" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1233,7 +1474,7 @@
 <span id="Gdi32_DescribePixelFormat"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">DescribePixelFormat</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L458" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L500" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1245,7 +1486,7 @@
 <span id="Gdi32_ENUMLOGFONTEXA"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">ENUMLOGFONTEXA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L251" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L292" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1278,7 +1519,7 @@
 <span id="Gdi32_ENUMLOGFONTEXW"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">ENUMLOGFONTEXW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L259" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L300" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1311,7 +1552,7 @@
 <span id="Gdi32_EnumFontFamiliesA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">EnumFontFamiliesA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L392" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L434" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1323,7 +1564,7 @@
 <span id="Gdi32_EnumFontFamiliesExA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">EnumFontFamiliesExA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L394" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L436" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1335,7 +1576,7 @@
 <span id="Gdi32_EnumFontFamiliesExW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">EnumFontFamiliesExW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L395" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L437" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1347,7 +1588,7 @@
 <span id="Gdi32_EnumFontFamiliesW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">EnumFontFamiliesW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L393" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L435" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1359,7 +1600,7 @@
 <span id="Gdi32_GetBitmapBits"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">GetBitmapBits</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L517" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L559" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1371,7 +1612,7 @@
 <span id="Gdi32_GetDIBits"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">GetDIBits</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L572" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L614" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1380,10 +1621,22 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Gdi32_GetDeviceCaps"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">GetDeviceCaps</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L432" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDeviceCaps</span>(hdc: <span class="SCst">HDC</span>, index: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Gdi32_GetFontData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">GetFontData</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L531" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L573" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1395,7 +1648,7 @@
 <span id="Gdi32_GetObjectA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">GetObjectA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L503" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L545" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1408,7 +1661,7 @@
 <span id="Gdi32_GetObjectW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">GetObjectW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L510" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L552" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1421,7 +1674,7 @@
 <span id="Gdi32_GetPixel"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">GetPixel</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L382" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L423" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1433,7 +1686,7 @@
 <span id="Gdi32_GetStockObject"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">GetStockObject</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L383" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L424" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1445,7 +1698,7 @@
 <span id="Gdi32_LOGFONTA"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">LOGFONTA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L214" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L255" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1528,7 +1781,7 @@
 <span id="Gdi32_LOGFONTW"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">LOGFONTW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L232" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L273" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1611,7 +1864,7 @@
 <span id="Gdi32_LineTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">LineTo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L404" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L446" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1623,7 +1876,7 @@
 <span id="Gdi32_MoveTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">MoveTo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L403" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L445" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1635,7 +1888,7 @@
 <span id="Gdi32_NEWTEXTMETRICA"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">NEWTEXTMETRICA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L315" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L356" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1768,7 +2021,7 @@
 <span id="Gdi32_NEWTEXTMETRICW"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">NEWTEXTMETRICW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L343" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L384" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2044,7 +2297,7 @@
 <span id="Gdi32_RGB"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">RGB</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L375" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L416" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2089,7 +2342,7 @@
 <span id="Gdi32_Rectangle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">Rectangle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L405" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L447" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2101,7 +2354,7 @@
 <span id="Gdi32_SelectObject"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">SelectObject</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L390" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L431" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2113,7 +2366,7 @@
 <span id="Gdi32_SetBitmapBits"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">SetBitmapBits</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L524" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L566" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2125,7 +2378,7 @@
 <span id="Gdi32_SetBkColor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">SetBkColor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L398" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L440" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2137,7 +2390,7 @@
 <span id="Gdi32_SetBkMode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">SetBkMode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L397" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L439" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2149,7 +2402,7 @@
 <span id="Gdi32_SetPixelFormat"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">SetPixelFormat</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L445" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L487" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2161,7 +2414,7 @@
 <span id="Gdi32_SetTextColor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">SetTextColor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L399" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L441" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2173,7 +2426,7 @@
 <span id="Gdi32_SwapBuffers"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">SwapBuffers</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L451" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L493" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2185,7 +2438,7 @@
 <span id="Gdi32_TEXTMETRICA"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">TEXTMETRICA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L267" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L308" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2298,7 +2551,7 @@
 <span id="Gdi32_TEXTMETRICW"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">TEXTMETRICW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L291" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L332" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2411,7 +2664,7 @@
 <span id="Gdi32_TextOutA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">TextOutA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L401" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L443" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2423,13 +2676,13 @@
 <span id="Gdi32_TextOutW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Gdi32.</span><span class="api-item-title-strong">TextOutW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L402" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L444" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TextOutW</span>(hdc: <span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, lpString: <span class="SCst">LPCWSTR</span>, c: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></div>
 <div class="swag-watermark">
-Generated on 29-04-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 14-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>
