@@ -7,12 +7,6 @@
 #global namespace Noise
 #global #[Swag.Safety("", false)]
 
-#[Swag.Inline]
-{
-    func fastFloor(f: f32)     => f >= 0 ? cast(s32) f : cast(s32) f - 1
-    func interpQuintic(t: f32) => t * t * t * (t * (t * 6 - 15) + 10)
-}
-
 const Gradients2D: [] f32 = [
     0.130526192220052, 0.99144486137381, 0.38268343236509, 0.923879532511287, 0.608761429008721, 0.793353340291235, 0.793353340291235, 0.608761429008721,
     0.923879532511287, 0.38268343236509, 0.99144486137381, 0.130526192220051, 0.99144486137381, -0.130526192220051, 0.923879532511287, -0.38268343236509,
@@ -112,20 +106,21 @@ func gradCoord(seed: s32, xPrimed, yPrimed, zPrimed: s32, xd, yd, zd: f32)->f32
     return xd * xg + yd * yg + zd * zg
 }
 
-// Perlin
+// Perlin noise.
+// Result range is [-1, 1]
 #[Swag.Overload]
 public func perlin(x, y: f32, seed: s32 = 1337)->f32
 {
-    var x0 = fastFloor(x)
-    var y0 = fastFloor(y)
+    var x0 = cast(s32) Math.floor(x)
+    var y0 = cast(s32) Math.floor(y)
 
     let xd0 = x - x0
     let yd0 = y - y0
     let xd1 = xd0 - 1
     let yd1 = yd0 - 1
 
-    let xs = interpQuintic(xd0)
-    let ys = interpQuintic(yd0)
+    let xs = Math.interpQuintic(xd0)
+    let ys = Math.interpQuintic(yd0)
 
     x0 *= PrimeX
     y0 *= PrimeY
@@ -141,9 +136,9 @@ public func perlin(x, y: f32, seed: s32 = 1337)->f32
 #[Swag.Overload]
 public func perlin(x, y, z: f32, seed: s32 = 1337)->f32
 {
-    var x0 = fastFloor(x)
-    var y0 = fastFloor(y)
-    var z0 = fastFloor(z)
+    var x0 = cast(s32) Math.floor(x)
+    var y0 = cast(s32) Math.floor(y)
+    var z0 = cast(s32) Math.floor(z)
 
     let xd0 = x - x0
     let yd0 = y - y0
@@ -152,9 +147,9 @@ public func perlin(x, y, z: f32, seed: s32 = 1337)->f32
     let yd1 = yd0 - 1
     let zd1 = zd0 - 1
 
-    let xs = interpQuintic(xd0)
-    let ys = interpQuintic(yd0)
-    let zs = interpQuintic(zd0)
+    let xs = Math.interpQuintic(xd0)
+    let ys = Math.interpQuintic(yd0)
+    let zs = Math.interpQuintic(zd0)
 
     x0 *= PrimeX
     y0 *= PrimeY

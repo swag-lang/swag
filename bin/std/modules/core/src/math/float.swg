@@ -31,10 +31,18 @@ typealias ConstF64 = Const'f64
     func sign(x: f32) => x < 0 ? -1 : 1
     func sign(x: f64) => x < 0 ? -1 : 1
 
-    func saturate(x: f32)        => clamp(x, 0'f32, 1'f32)
-    func saturate(x: f64)        => clamp(x, 0'f64, 1'f64)
+    func saturate(x: f32) => clamp(x, 0'f32, 1'f32)
+    func saturate(x: f64) => clamp(x, 0'f64, 1'f64)
+
     func lerp(x, y, factor: f32) => x + factor * (y - x)
     func lerp(x, y, factor: f64) => x + factor * (y - x)
+    func cubicLerp(a, b, c, d, t: f32)->f32 { let p = (d - c) - (a - b); return t * t * t * p + t * t * ((a - b) - p) + t * (c - a) + b; }
+    func cubicLerp(a, b, c, d, t: f64)->f64 { let p = (d - c) - (a - b); return t * t * t * p + t * t * ((a - b) - p) + t * (c - a) + b; }
+
+    func interpHermite(t: f32) => t * t * (3 - 2 * t)
+    func interpHermite(t: f64) => t * t * (3 - 2 * t)
+    func interpQuintic(t: f32) => t * t * t * (t * (t * 6 - 15) + 10)
+    func interpQuintic(t: f64) => t * t * t * (t * (t * 6 - 15) + 10)
 
     func toDegrees(x: f32) => x * 57.295779513082320876798154814105'f32
     func toRadians(x: f32) => x * 0.017453292519943295769236907684886'f32
