@@ -546,6 +546,7 @@
 <li><a href="#Gui_PopupListView_IWnd_onPaintEvent">PopupListView.IWnd.onPaintEvent</a></li>
 <li><a href="#Gui_SliderCtrl_IWnd_onResizeEvent">SliderCtrl.IWnd.onResizeEvent</a></li>
 <li><a href="#Gui_SliderCtrl_create">SliderCtrl.create</a></li>
+<li><a href="#Gui_SliderCtrl_getValue">SliderCtrl.getValue</a></li>
 <li><a href="#Gui_SliderCtrl_setMinMaxF32">SliderCtrl.setMinMaxF32</a></li>
 <li><a href="#Gui_SliderCtrl_setMinMaxS64">SliderCtrl.setMinMaxS64</a></li>
 <li><a href="#Gui_SliderCtrl_setMinMaxU64">SliderCtrl.setMinMaxU64</a></li>
@@ -13802,6 +13803,10 @@
 <td>Create the popup list, but do not display it. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_SliderCtrl_getValue">getValue</a></span></td>
+<td>Get the slider current value. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_SliderCtrl_setMinMaxF32">setMinMaxF32</a></span></td>
 <td>Set a f32 range. </td>
 </tr>
@@ -13843,6 +13848,19 @@
 </p>
 <p>Create the popup list, but do not display it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_SliderCtrl_getValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">SliderCtrl.</span><span class="api-item-title-strong">getValue</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L126" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the slider current value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20481,7 +20499,7 @@
 <p>Create a layout control. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
-Generated on 14-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 15-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>

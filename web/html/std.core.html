@@ -232,6 +232,7 @@
 <h4>rand</h4>
 <ul>
 <li><a href="#Core_Random_CMWC4096">CMWC4096</a></li>
+<li><a href="#Core_Noise_FastNoise">FastNoise</a></li>
 <li><a href="#Core_Random_MWC">MWC</a></li>
 <li><a href="#Core_Random_Mt64">Mt64</a></li>
 <li><a href="#Core_Random_Rng">Rng</a></li>
@@ -358,6 +359,10 @@
 <li><a href="#Core_File_FileShare">FileShare</a></li>
 <li><a href="#Core_File_SeekOrigin">SeekOrigin</a></li>
 <li><a href="#Core_File_TextEncoding">TextEncoding</a></li>
+</ul>
+<h4>rand</h4>
+<ul>
+<li><a href="#Core_Noise_FastNoiseKind">FastNoiseKind</a></li>
 </ul>
 <h4>serialization/read</h4>
 <ul>
@@ -886,12 +891,15 @@
 <li><a href="#Core_Math_cos">Math.cos</a></li>
 <li><a href="#Core_Math_cosh">Math.cosh</a></li>
 <li><a href="#Core_Math_countOnes">Math.countOnes</a></li>
+<li><a href="#Core_Math_cubicLerp">Math.cubicLerp</a></li>
 <li><a href="#Core_Math_exp">Math.exp</a></li>
 <li><a href="#Core_Math_exp2">Math.exp2</a></li>
 <li><a href="#Core_Math_floor">Math.floor</a></li>
 <li><a href="#Core_Math_gcd">Math.gcd</a></li>
 <li><a href="#Core_Math_hasByte">Math.hasByte</a></li>
 <li><a href="#Core_Math_hasZeroByte">Math.hasZeroByte</a></li>
+<li><a href="#Core_Math_interpHermite">Math.interpHermite</a></li>
+<li><a href="#Core_Math_interpQuintic">Math.interpQuintic</a></li>
 <li><a href="#Core_Math_isEqualEpsilon">Math.isEqualEpsilon</a></li>
 <li><a href="#Core_Math_isNan">Math.isNan</a></li>
 <li><a href="#Core_Math_isPowerOf2">Math.isPowerOf2</a></li>
@@ -1095,6 +1103,11 @@
 <ul>
 <li><a href="#Core_Random_CMWC4096_nextU32">CMWC4096.nextU32</a></li>
 <li><a href="#Core_Random_CMWC4096_seedU32">CMWC4096.seedU32</a></li>
+<li><a href="#Core_Noise_FastNoise_noise">FastNoise.noise</a></li>
+<li><a href="#Core_Noise_FastNoise_perlinFractalBillow">FastNoise.perlinFractalBillow</a></li>
+<li><a href="#Core_Noise_FastNoise_perlinFractalFBM">FastNoise.perlinFractalFBM</a></li>
+<li><a href="#Core_Noise_FastNoise_perlinFractalRigidMulti">FastNoise.perlinFractalRigidMulti</a></li>
+<li><a href="#Core_Noise_FastNoise_update">FastNoise.update</a></li>
 <li><a href="#Core_Random_MWC_nextU32">MWC.nextU32</a></li>
 <li><a href="#Core_Random_MWC_seedU32">MWC.seedU32</a></li>
 <li><a href="#Core_Random_Mt64_nextU64">Mt64.nextU64</a></li>
@@ -12484,6 +12497,14 @@
 <td>Returns the number of bits set to 1. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_cubicLerp">cubicLerp</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_cubicLerp">cubicLerp</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_exp">exp</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
@@ -12533,6 +12554,22 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_hasZeroByte">hasZeroByte</a></span><span class="SCde">(<span class="STpe">u64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_interpHermite">interpHermite</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_interpHermite">interpHermite</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_interpQuintic">interpQuintic</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_interpQuintic">interpQuintic</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -15940,7 +15977,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_abs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">abs</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L124" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L132" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15957,7 +15994,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_acos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">acos</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L103" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L111" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15970,7 +16007,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_asin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">asin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L101" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15983,7 +16020,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_atan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">atan</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L105" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L113" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15996,7 +16033,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_atan2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">atan2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L81" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L89" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16037,7 +16074,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L117" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16062,7 +16099,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_cos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">cos</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L89" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L97" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16075,7 +16112,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_cosh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">cosh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L96" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L104" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16101,10 +16138,23 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Math_cubicLerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">cubicLerp</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L39" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cubicLerp</span>(a, b, c, d, t: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<span class="SKwd">func</span> <span class="SFct">cubicLerp</span>(a, b, c, d, t: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Math_exp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">exp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L127" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L135" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16117,7 +16167,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_exp2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">exp2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L137" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16130,7 +16180,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">floor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L115" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L123" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16183,10 +16233,36 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Math_interpHermite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">interpHermite</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L42" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">interpHermite</span>(t: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<span class="SKwd">func</span> <span class="SFct">interpHermite</span>(t: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_interpQuintic"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">interpQuintic</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L44" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">interpQuintic</span>(t: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<span class="SKwd">func</span> <span class="SFct">interpQuintic</span>(t: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Math_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L46" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16199,7 +16275,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_isNan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isNan</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L50" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L58" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16224,7 +16300,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16266,7 +16342,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_lerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">lerp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L36" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16292,7 +16368,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_log"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L108" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L116" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16305,7 +16381,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_log10"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log10</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L120" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16318,7 +16394,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_log2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L118" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16383,7 +16459,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_map"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">map</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L66" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16440,7 +16516,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_mulAdd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">mulAdd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L134" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L142" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16478,7 +16554,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_pow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">pow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L139" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16539,7 +16615,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">round</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L121" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L129" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16606,7 +16682,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_sin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L87" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L95" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16619,7 +16695,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_sinh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sinh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L94" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L102" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16632,7 +16708,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_smoothstep"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">smoothstep</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L54" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L62" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16645,7 +16721,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_sqrt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sqrt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L84" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16658,7 +16734,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_tan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">tan</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L91" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L99" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16671,7 +16747,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_tanh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">tanh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L98" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L106" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16684,7 +16760,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_toDegrees"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">toDegrees</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L39" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16697,7 +16773,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_toRadians"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">toRadians</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L40" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16726,7 +16802,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Math_trunc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">trunc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L119" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L127" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17089,6 +17165,20 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Noise_FastNoise"><span class="SCst">FastNoise</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Enums</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Noise_FastNoiseKind"><span class="SCst">FastNoiseKind</span></a></td>
+<td></td>
+</tr>
+</table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -17097,7 +17187,174 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Noise_perlin">perlin</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">s32</span>)</span></td>
-<td>Perlin. </td>
+<td>Perlin noise. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Noise_FastNoise"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Noise.</span><span class="api-item-title-strong">FastNoise</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L19" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="table-enumeration">
+<tr>
+<td>seed</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>kind</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Noise">Noise</a></span>.<span class="SCst"><a href="#Core_Noise_FastNoiseKind">FastNoiseKind</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td>octaves</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>frequency</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>lacunarity</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>gain</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>fractalBounding</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td></td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_noise">noise</a></span></td>
+<td>Get a noise result. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_perlinFractalBillow">perlinFractalBillow</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_perlinFractalFBM">perlinFractalFBM</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_perlinFractalRigidMulti">perlinFractalRigidMulti</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_update">update</a></span></td>
+<td>Update internal values. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Noise_FastNoise_noise"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">noise</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L113" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get a noise result. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">noise</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Noise_FastNoise_perlinFractalBillow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">perlinFractalBillow</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L78" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalBillow</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Noise_FastNoise_perlinFractalFBM"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">perlinFractalFBM</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L61" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalFBM</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Noise_FastNoise_perlinFractalRigidMulti"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">perlinFractalRigidMulti</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L95" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalRigidMulti</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Noise_FastNoise_update"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">update</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L56" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Update internal values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<p>Should be called each time an internal parameter has been changed. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Noise_FastNoiseKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Noise.</span><span class="api-item-title-strong">FastNoiseKind</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L10" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="table-enumeration">
+<tr>
+<td>Perlin</td>
+<td></td>
+</tr>
+<tr>
+<td>PerlinFractalFBM</td>
+<td></td>
+</tr>
+<tr>
+<td>PerlinFractalBillow</td>
+<td></td>
+</tr>
+<tr>
+<td>PerlinFractalRigidMulti</td>
+<td></td>
+</tr>
+<tr>
+<td>Value</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -17107,13 +17364,14 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Noise_perlin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Noise.</span><span class="api-item-title-strong">perlin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\noise.swg#L142" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\noise.swg#L155" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Perlin. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlin</span>(x, y: <span class="STpe">f32</span>, seed: <span class="STpe">s32</span> = <span class="SNum">1337</span>)-&gt;<span class="STpe">f32</span>
-<span class="SKwd">func</span> <span class="SFct">perlin</span>(x, y, z: <span class="STpe">f32</span>, seed: <span class="STpe">s32</span> = <span class="SNum">1337</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Perlin noise. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlin</span>(x, y: <span class="STpe">f32</span>, seed: <span class="STpe">s32</span> = <span class="SNum">1337</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Result range is [-1, 1] </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlin</span>(x, y, z: <span class="STpe">f32</span>, seed: <span class="STpe">s32</span> = <span class="SNum">1337</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29341,7 +29599,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 14-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 15-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>

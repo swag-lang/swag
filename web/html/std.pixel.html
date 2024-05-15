@@ -379,6 +379,7 @@
 <li><a href="#Pixel_Image_grayScale">Image.grayScale</a></li>
 <li><a href="#Pixel_Image_invert">Image.invert</a></li>
 <li><a href="#Pixel_Image_lightness">Image.lightness</a></li>
+<li><a href="#Pixel_Image_noise">Image.noise</a></li>
 <li><a href="#Pixel_Image_setAlpha">Image.setAlpha</a></li>
 <li><a href="#Pixel_Image_setChannel">Image.setChannel</a></li>
 <li><a href="#Pixel_Image_toApplyKernel">Image.toApplyKernel</a></li>
@@ -3781,6 +3782,10 @@
 <td>Mix with another image. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_noise">noise</a></span></td>
+<td>Fill the image with a noise. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_release">release</a></span></td>
 <td>Release the content of the image. </td>
 </tr>
@@ -4646,6 +4651,19 @@
 </p>
 <p>Mix with another image. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mix</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, srcImage: <span class="SCst"><a href="#Pixel_Image">Image</a></span>, x, y: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_MixMode">MixMode</a></span>.<span class="SCst">Copy</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Image_noise"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">noise</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\filter\noise.swg#L6" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Fill the image with a noise. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">noise</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, noise: *<span class="SCst">Noise</span>.<span class="SCst">FastNoise</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9975,7 +9993,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 14-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 15-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>
