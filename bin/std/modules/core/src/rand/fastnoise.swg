@@ -21,10 +21,10 @@ public struct FastNoise
     seed:               s32 = 1337
     kind                = FastNoiseKind.Perlin
 
-    octaves:            s32 = 3
-    frequency           = 0.01
-    lacunarity          = 2.0
-    gain                = 0.5
+    frequency           = 0.01                     // The period in which we sample the noise. A higher frequency results in more frequent noise change.
+    octaves:            s32 = 3                    // The number of layers of noise. More octaves create a more varied look but are also more resource-intensive to calculate.
+    lacunarity          = 2.0                      // The rate of change of the frequency for each successive octave. A 'lacunarity' value of 1 results in each octave having the same frequency.
+    gain                = 0.5                      // The scaling factor applied to each octave. 'gain' is only used when 'octaves' is set to a value higher than 1.
 
     fractalBounding     = 1.0
 }
@@ -120,16 +120,16 @@ impl FastNoise
         #[Swag.Complete]
         switch kind
         {
-            case Perlin:
-                result = Noise.perlin(xi, yi)
-            case PerlinFractalFBM:
-                result = perlinFractalFBM(xi, yi)
-            case PerlinFractalBillow:
-                result = perlinFractalBillow(xi, yi)
-            case PerlinFractalRigidMulti:
-                result = perlinFractalRigidMulti(xi, yi)
-            case Value:
-                result = Noise.value(xi, yi)
+        case Perlin:
+            result = Noise.perlin(xi, yi)
+        case PerlinFractalFBM:
+            result = perlinFractalFBM(xi, yi)
+        case PerlinFractalBillow:
+            result = perlinFractalBillow(xi, yi)
+        case PerlinFractalRigidMulti:
+            result = perlinFractalRigidMulti(xi, yi)
+        case Value:
+            result = Noise.value(xi, yi)
         }
 
         return Math.clamp(result, -1.0, 1.0)
