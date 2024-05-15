@@ -14,6 +14,9 @@ public enum FastNoiseKind
     PerlinFractalBillow
     PerlinFractalRigidMulti
     Value
+    ValueFractalFBM
+    ValueFractalBillow
+    ValueFractalRigidMulti
 }
 
 public struct FastNoise
@@ -109,6 +112,57 @@ impl FastNoise
         return sum * fractalBounding
     }
 
+    public mtd const valueFractalFBM(x, y: f32)->f32
+    {
+        var xi  = x
+        var yi  = y
+        var sum = Noise.value(xi, yi, seed)
+        var amp = 1.0
+
+        loop i: octaves
+        {
+            xi, yi *= lacunarity
+            amp *= gain
+            sum += Noise.value(xi, yi, seed) * amp
+        }
+
+        return sum * fractalBounding
+    }
+
+    public mtd const valueFractalBillow(x, y: f32)->f32
+    {
+        var xi  = x
+        var yi  = y
+        var sum = Math.abs(Noise.value(xi, yi, seed)) * 2 - 1
+        var amp = 1.0
+
+        loop i: octaves
+        {
+            xi, yi *= lacunarity
+            amp *= gain
+            sum += (Math.abs(Noise.value(xi, yi, seed)) * 2 - 1) * amp
+        }
+
+        return sum * fractalBounding
+    }
+
+    public mtd const valueFractalRigidMulti(x, y: f32)->f32
+    {
+        var xi  = x
+        var yi  = y
+        var sum = 1 - Math.abs(Noise.value(xi, yi, seed))
+        var amp = 1.0
+
+        loop i: octaves
+        {
+            xi, yi *= lacunarity
+            amp *= gain
+            sum += (1 - Math.abs(Noise.value(xi, yi, seed))) * amp
+        }
+
+        return sum * fractalBounding
+    }
+
     // Get a noise result.
     public mtd const noise(x, y: f32)->f32
     {
@@ -130,6 +184,12 @@ impl FastNoise
             result = perlinFractalRigidMulti(xi, yi)
         case Value:
             result = Noise.value(xi, yi)
+        case ValueFractalFBM:
+            result = valueFractalFBM(xi, yi)
+        case ValueFractalBillow:
+            result = valueFractalBillow(xi, yi)
+        case ValueFractalRigidMulti:
+            result = valueFractalRigidMulti(xi, yi)
         }
 
         return Math.clamp(result, -1.0, 1.0)
