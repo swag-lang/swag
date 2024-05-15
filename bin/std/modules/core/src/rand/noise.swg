@@ -148,7 +148,7 @@ public func perlin(x, y: f32, seed: s32 = 1337)->f32
     let xf0 = Math.lerp(gradCoord(seed, x0, y0, xd0, yd0), gradCoord(seed, x1, y0, xd1, yd0), xs)
     let xf1 = Math.lerp(gradCoord(seed, x0, y1, xd0, yd1), gradCoord(seed, x1, y1, xd1, yd1), xs)
 
-    return Math.lerp(xf0, xf1, ys) * 1.4247691104677813
+    return Math.clamp(Math.lerp(xf0, xf1, ys) * 1.4247691104677813, -1.0, 1.0)
 }
 
 #[Swag.Overload]
@@ -184,7 +184,7 @@ public func perlin(x, y, z: f32, seed: s32 = 1337)->f32
     let yf0 = Math.lerp(xf00, xf10, ys)
     let yf1 = Math.lerp(xf01, xf11, ys)
 
-    return Math.lerp(yf0, yf1, zs) * 0.964921414852142333984375
+    return Math.clamp(Math.lerp(yf0, yf1, zs) * 0.964921414852142333984375, -1.0, 1.0)
 }
 
 // Value noise.
@@ -206,7 +206,7 @@ func value(x, y: f32, seed: s32 = 1337)->f32
     let xf0 = Math.lerp(valCoord(seed, x0, y0), valCoord(seed, x1, y0), xs)
     let xf1 = Math.lerp(valCoord(seed, x0, y1), valCoord(seed, x1, y1), xs)
 
-    return Math.lerp(xf0, xf1, ys)
+    return Math.clamp(Math.lerp(xf0, xf1, ys), -1.0, 1.0)
 }
 
 #[Swag.Overload]
@@ -235,5 +235,5 @@ func value(x, y, z: f32, seed: s32 = 1337)->f32
     let yf0 = Math.lerp(xf00, xf10, ys)
     let yf1 = Math.lerp(xf01, xf11, ys)
 
-    return Math.lerp(yf0, yf1, zs)
+    return Math.clamp(Math.lerp(yf0, yf1, zs), -1.0, 1.0)
 }
