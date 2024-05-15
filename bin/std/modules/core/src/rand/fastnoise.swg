@@ -1,15 +1,24 @@
 /*
     :LICENCE
-    This code is based on FastNoise by Jordan Peck (https://github.com/Auburn/FastNoiseLite/blob/FastNoise-Legacy/FastNoise.cpp)
+    This code is based on FastNoise by Jordan Peck (https://github.com/Auburn/FastNoiseLite/tree/FastNoise-Legacy)
     See LICENCE.md for the corresponding licence.
 */
 
 #global namespace Noise
 #global #[Swag.Safety("", false)]
 
+public enum FastNoiseKind
+{
+    Perlin
+    PerlinFractalFBM
+    PerlinFractalBillow
+    PerlinFractalRigidMulti
+}
+
 public struct FastNoise
 {
     seed:               s32 = 1337
+    kind                = FastNoiseKind.Perlin
 
     octaves:            s32 = 3
     frequency           = 0.01
@@ -32,7 +41,7 @@ impl FastNoise
         var amp        = gain
         var ampFractal = 1.0
 
-        loop i: 1 until octaves
+        loop i: octaves - 1
         {
             ampFractal += amp
             amp *= gain
@@ -50,8 +59,8 @@ impl FastNoise
 
     public mtd const perlinFractalFBM(x, y: f32)->f32
     {
-        var xi  = x * frequency
-        var yi  = y * frequency
+        var xi  = x
+        var yi  = y
         var sum = perlin(xi, yi, seed)
         var amp = 1.0
 
@@ -63,5 +72,63 @@ impl FastNoise
         }
 
         return sum * fractalBounding
+    }
+
+    public mtd const perlinFractalBillow(x, y: f32)->f32
+    {
+        var xi  = x
+        var yi  = y
+        var sum = Math.abs(perlin(xi, yi, seed)) * 2 - 1
+        var amp = 1.0
+
+        loop i: octaves
+        {
+            xi, yi *= lacunarity
+            amp *= gain
+            sum += (Math.abs(perlin(xi, yi, seed)) * 2 - 1) * amp
+        }
+
+        return sum * fractalBounding
+    }
+
+    public mtd const perlinFractalRigidMulti(x, y: f32)->f32
+    {
+        var xi  = x
+        var yi  = y
+        var sum = 1 - Math.abs(perlin(xi, yi, seed))
+        var amp = 1.0
+
+        loop i: octaves
+        {
+            xi, yi *= lacunarity
+            amp *= gain
+            sum += (1 - Math.abs(perlin(xi, yi, seed))) * amp
+        }
+
+        return sum * fractalBounding
+    }
+
+    // Get a noise result.
+    public mtd const noise(x, y: f32)->f32
+    {
+        var result: f32 = undefined
+
+        var xi = x * frequency
+        var yi = y * frequency
+
+        #[Swag.Complete]
+        switch kind
+        {
+            case Perlin:
+                result = Noise.perlin(xi, yi)
+            case PerlinFractalFBM:
+                result = perlinFractalFBM(xi, yi)
+            case PerlinFractalBillow:
+                result = perlinFractalBillow(xi, yi)
+            case PerlinFractalRigidMulti:
+                result = perlinFractalRigidMulti(xi, yi)
+        }
+
+        return Math.clamp(result, -1.0, 1.0)
     }
 }

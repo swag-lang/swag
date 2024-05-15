@@ -9,7 +9,7 @@ var g_Texture:   Texture
 var g_Image:     Image
 var g_Noise:     Noise.FastNoise
 
-const W, H = 512
+const W, H = 800
 const UX = 300
 
 func compute()
@@ -22,6 +22,23 @@ func createUI(wnd: *Wnd)
 {
     let layout = StackLayoutCtrl.create(wnd, .Top, {0, 0, UX, H})
     layout.padding = 10
+
+    with let comboKind = ComboCtrl.create(layout, "kind")
+    {
+        .comboSize = 150
+        .combo.addItem("perlin")
+        .combo.addItem("perlin fractal fbm")
+        .combo.addItem("perlin fractal billow")
+        .combo.addItem("perlin fractal rigid multi")
+        .combo.selectItem(0)
+        .combo.sigChanged += closure|wnd|(w, idx)
+        {
+            @print(idx, " ")
+            g_Noise.kind = cast(Noise.FastNoiseKind) idx
+            compute()
+            wnd.invalidate()
+        }
+    }
 
     with let sliderFreq = SliderCtrl.create(layout, "freq")
     {
