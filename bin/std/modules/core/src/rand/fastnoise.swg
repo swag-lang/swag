@@ -13,6 +13,7 @@ public enum FastNoiseKind
     PerlinFractalFBM
     PerlinFractalBillow
     PerlinFractalRigidMulti
+    Value
 }
 
 public struct FastNoise
@@ -127,6 +128,8 @@ impl FastNoise
                 result = perlinFractalBillow(xi, yi)
             case PerlinFractalRigidMulti:
                 result = perlinFractalRigidMulti(xi, yi)
+            case Value:
+                result = Noise.value(xi, yi)
         }
 
         return Math.clamp(result, -1.0, 1.0)

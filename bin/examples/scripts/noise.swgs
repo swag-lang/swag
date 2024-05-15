@@ -30,6 +30,7 @@ func createUI(wnd: *Wnd)
         .combo.addItem("perlin fractal fbm")
         .combo.addItem("perlin fractal billow")
         .combo.addItem("perlin fractal rigid multi")
+        .combo.addItem("value")
         .combo.selectItem(0)
         .combo.sigChanged += closure|wnd|(w, idx)
         {
