@@ -25,7 +25,7 @@ func createUI(wnd: *Wnd)
 
     with let comboKind = ComboCtrl.create(layout, "kind")
     {
-        .comboSize = 150
+        .comboSize = 215
         .combo.addItem("perlin")
         .combo.addItem("perlin fractal fbm")
         .combo.addItem("perlin fractal billow")
@@ -33,7 +33,6 @@ func createUI(wnd: *Wnd)
         .combo.selectItem(0)
         .combo.sigChanged += closure|wnd|(w, idx)
         {
-            @print(idx, " ")
             g_Noise.kind = cast(Noise.FastNoiseKind) idx
             compute()
             wnd.invalidate()
@@ -88,8 +87,6 @@ func createUI(wnd: *Wnd)
             wnd.invalidate()
         }
     }
-
-
 }
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
@@ -109,6 +106,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         let painter  = paintEvt.bc.painter
         let renderer = paintEvt.bc.renderer
         renderer.updateTexture(g_Texture, g_Image.pixels.buffer)
+        painter.fillRect(0, 0, acast UX, acast H, wnd.getThemeColors().wnd_Bk)
         painter.drawTexture(acast UX, 0, acast W, acast H, g_Texture)
     }
 
@@ -121,5 +119,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     func test(app: *Application) = if Env.hasArg("swag.test") do
         app.maxRunFrame = 100
-    Application.runSurface(4100, 100, W + UX, H, title: "Noise", canSize: false, hook: &onEvent, init: &test)
+    Application.runSurface(4000, 100, W + UX, H, title: "Noise", canSize: false, hook: &onEvent, init: &test)
 }
