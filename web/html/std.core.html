@@ -17213,24 +17213,24 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <td></td>
 </tr>
 <tr>
-<td>octaves</td>
-<td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
-</tr>
-<tr>
 <td>frequency</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>The period in which we sample the noise. A higher frequency results in more frequent noise change. </td>
+</tr>
+<tr>
+<td>octaves</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td>The number of layers of noise. More octaves create a more varied look but are also more resource-intensive to calculate. </td>
 </tr>
 <tr>
 <td>lacunarity</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>The rate of change of the frequency for each successive octave. A lacunarity value of 1 results in each octave having the same frequency. </td>
 </tr>
 <tr>
 <td>gain</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>The scaling factor applied to each octave. Gain is only used when <span class="code-inline">octaves</span> is set to a value higher than 1. </td>
 </tr>
 <tr>
 <td>fractalBounding</td>
