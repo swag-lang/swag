@@ -1,0 +1,108 @@
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Core, Gui, Pixel, Core.Math
+
+var g_Texture:   Texture
+var g_Image:     Image
+var g_Noise:     Noise.FastNoise
+
+const W, H = 512
+const UX = 300
+
+func compute()
+{
+    g_Noise.update()
+    g_Image.noise(&g_Noise)
+}
+
+func createUI(wnd: *Wnd)
+{
+    let layout = StackLayoutCtrl.create(wnd, .Top, {0, 0, UX, H})
+    layout.padding = 10
+
+    with let sliderFreq = SliderCtrl.create(layout, "freq")
+    {
+        .setMinMaxF32(0.01, 0.1)
+        .setValue(g_Noise.frequency)
+        .sigChanged += closure|wnd, sliderFreq|(s)
+        {
+            g_Noise.frequency = sliderFreq.getValue()
+            compute()
+            wnd.invalidate()
+        }
+    }
+
+    with let sliderOctave = SliderCtrl.create(layout, "octave")
+    {
+        .slider.sliderFlags.add(.Integer)
+        .setMinMaxU64(1, 6)
+        .setValue(g_Noise.octaves)
+        .sigChanged += closure|wnd, sliderOctave|(s)
+        {
+            g_Noise.octaves = cast(s32) sliderOctave.getValue()
+            compute()
+            wnd.invalidate()
+        }
+    }
+
+    with let sliderGain = SliderCtrl.create(layout, "gain")
+    {
+        .setMinMaxF32(0.01, 1.0)
+        .setValue(g_Noise.gain)
+        .sigChanged += closure|wnd, sliderGain|(s)
+        {
+            g_Noise.gain = sliderGain.getValue()
+            compute()
+            wnd.invalidate()
+        }
+    }
+
+    with let sliderLacunarity = SliderCtrl.create(layout, "lacunarity")
+    {
+        .setMinMaxF32(1.0, 3.0)
+        .setValue(g_Noise.lacunarity)
+        .sigChanged += closure|wnd, sliderLacunarity|(s)
+        {
+            g_Noise.lacunarity = sliderLacunarity.getValue()
+            compute()
+            wnd.invalidate()
+        }
+    }
+
+
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        g_Image   = Image.create(W, H, .BGR8)
+        g_Texture = wnd.getApp().renderer.addImage(g_Image)
+        g_Noise.update()
+        createUI(wnd)
+        compute()
+        break
+
+    case Paint:
+        let paintEvt = cast(*PaintEvent) evt
+        let painter  = paintEvt.bc.painter
+        let renderer = paintEvt.bc.renderer
+        renderer.updateTexture(g_Texture, g_Image.pixels.buffer)
+        painter.drawTexture(acast UX, 0, acast W, acast H, g_Texture)
+    }
+
+    return false
+}
+
+#main
+{
+    try Jobs.setNumWorkers()
+
+    func test(app: *Application) = if Env.hasArg("swag.test") do
+        app.maxRunFrame = 100
+    Application.runSurface(4100, 100, W + UX, H, title: "Noise", canSize: false, hook: &onEvent, init: &test)
+}

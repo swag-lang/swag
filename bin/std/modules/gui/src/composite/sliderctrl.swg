@@ -121,4 +121,10 @@ impl SliderCtrl
     {
         slider.setValue(value)
     }
+
+    // Get the slider current value
+    mtd getValue()->f32
+    {
+        return slider.getValue()
+    }
 }
