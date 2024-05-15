@@ -114,8 +114,8 @@ impl FastNoise
     {
         var result: f32 = undefined
 
-        var xi = x * frequency
-        var yi = y * frequency
+        let xi = x * frequency
+        let yi = y * frequency
 
         #[Swag.Complete]
         switch kind
