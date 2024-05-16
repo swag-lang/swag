@@ -41,6 +41,7 @@ struct EditBox
 
     icon:                 Icon
     text:                 String
+    originalText:         String
     unit:                 String
     form                  = EditBoxForm.Square
     editBoxFlags          = EditBoxFlags.AutoLoseFocus
@@ -82,6 +83,7 @@ impl IWnd for EditBox
         switch evt.kind
         {
         case SetFocus:
+            originalText = text
             timerCaret   = surface.app.addTimer(500'ms, self)
             visibleCaret = true
             computeCaretPos()
@@ -880,6 +882,13 @@ impl EditBox
         return text.toString()
     }
 
+    // Restore the original text.
+    // The original text is the one stored when the editbox has gained the focus.
+    mtd restoreText()
+    {
+        setText(originalText)
+    }
+
     // Editbox will edit signed integers
     mtd setInputS64(min = Swag.S64.Min, max = Swag.S64.Max)
     {
@@ -932,4 +941,8 @@ impl EditBox
 
         invalidate()
     }
+
+    // Returns true if the value is valid.
+    // Depends if the editbox has some max and min registered values.
+    mtd isValid()->bool => !isInvalid
 }

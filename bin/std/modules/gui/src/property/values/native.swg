@@ -155,7 +155,7 @@ impl PropertyList
     {
         let item = addItem(value, data, parent)
 
-        if Reflection.hasAttribute(value, EditSlider)
+        if Reflection.hasAttribute(value, SliderMinMax)
         {
             with let slider = SliderCtrl.create(item.line, null)
             {
@@ -166,8 +166,8 @@ impl PropertyList
 
             item.sliderBox = slider
 
-            let minV = cast(f32) Reflection.getAttributeValue(value, EditSlider, "min")
-            let maxV = cast(f32) Reflection.getAttributeValue(value, EditSlider, "max")
+            let minV = cast(f32) Reflection.getAttributeValue(value, SliderMinMax, "min")
+            let maxV = cast(f32) Reflection.getAttributeValue(value, SliderMinMax, "max")
 
             switch typeNative.nativeKind
             {
@@ -181,7 +181,7 @@ impl PropertyList
         }
         else
         {
-            let unit = Reflection.getAttributeValue(value, EditUnit, "value")
+            let unit = Reflection.getAttributeValue(value, Unit, "value")
 
             with let ed = EditBox.create(item.line, value.name)
             {
@@ -191,35 +191,86 @@ impl PropertyList
                 .anchorStyle = .X
             }
 
+            var minV, maxV: s64
+            var hasMinMax = false
+            if Reflection.hasAttribute(value, MinMax)
+            {
+                hasMinMax = true
+                minV      = cast(s64) Reflection.getAttributeValue(value, MinMax, "min")
+                maxV      = cast(s64) Reflection.getAttributeValue(value, MinMax, "max")
+            }
+
             item.editBox = ed
             switch typeNative.nativeKind
             {
             case U8:
-                ed.setInputU64(Swag.U8.Min, Swag.U8.Max)
+                if !hasMinMax do
+                    ed.setInputU64(Swag.U8.Min, Swag.U8.Max)
+                else do
+                    ed.setInputU64(acast minV, acast maxV)
             case U16:
-                ed.setInputU64(Swag.U16.Min, Swag.U16.Max)
+                if !hasMinMax do
+                    ed.setInputU64(Swag.U16.Min, Swag.U16.Max)
+                else do
+                    ed.setInputU64(acast minV, acast maxV)
             case U32:
-                ed.setInputU64(Swag.U32.Min, Swag.U32.Max)
+                if !hasMinMax do
+                    ed.setInputU64(Swag.U32.Min, Swag.U32.Max)
+                else do
+                    ed.setInputU64(acast minV, acast maxV)
             case U64:
-                ed.setInputU64(Swag.U64.Min, Swag.U64.Max)
+                if !hasMinMax do
+                    ed.setInputU64(Swag.U64.Min, Swag.U64.Max)
+                else do
+                    ed.setInputU64(acast minV, acast maxV)
+
             case S8:
-                ed.setInputS64(Swag.S8.Min, Swag.S8.Max)
+                if !hasMinMax do
+                    ed.setInputS64(Swag.S8.Min, Swag.S8.Max)
+                else do
+                    ed.setInputS64(acast minV, acast maxV)
             case S16:
-                ed.setInputS64(Swag.S16.Min, Swag.S16.Max)
+                if !hasMinMax do
+                    ed.setInputS64(Swag.S16.Min, Swag.S16.Max)
+                else do
+                    ed.setInputS64(acast minV, acast maxV)
             case S32:
-                ed.setInputS64(Swag.S32.Min, Swag.S32.Max)
+                if !hasMinMax do
+                    ed.setInputS64(Swag.S32.Min, Swag.S32.Max)
+                else do
+                    ed.setInputS64(acast minV, acast maxV)
             case S64:
-                ed.setInputS64(Swag.S64.Min, Swag.S64.Max)
+                if !hasMinMax do
+                    ed.setInputS64(Swag.S64.Min, Swag.S64.Max)
+                else do
+                    ed.setInputS64(acast minV, acast maxV)
+
             case F32, F64:
-                ed.setInputF64()
+                if !hasMinMax do
+                    ed.setInputF64()
+                else do
+                    ed.setInputF64(acast minV, acast maxV)
             }
         }
 
         refreshNative(item)
 
-        if item.sliderBox do
-            item.sliderBox.sigChanged += closure|self, item|(ed) { self.validateNative(item); }
-        elif item.editBox do
-            item.editBox.sigLoseFocus += closure|self, item|(ed) { self.validateNative(item); }
+        if item.sliderBox
+        {
+            item.sliderBox.sigChanged += closure|self, item|(ed)
+            {
+                self.validateNative(item)
+            }
+        }
+        elif item.editBox
+        {
+            item.editBox.sigLoseFocus += closure|self, item|(ed)
+            {
+                if ed.isValid() do
+                    self.validateNative(item)
+                else do
+                    ed.restoreText()
+            }
+        }
     }
 }

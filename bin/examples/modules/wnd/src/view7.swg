@@ -35,7 +35,7 @@ struct AA
     #[Unit("ms")]
     degs: f32 = 0.5
 
-    #[Name("Another name"), Slider(0, 1), EditSize(300)]
+    #[Name("Another name"), SliderMinMax(0, 1), EditSize(300)]
     xf32: f32 = 0.5
 
     struct0: SubStruct

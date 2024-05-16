@@ -12,11 +12,14 @@ impl PropertyList
     // Add a description
     attr Description(desc: string)
 
+    // Min and max values
+    attr MinMax(min, max: s64)
+
     // Native float edit width a slider
-    attr EditSlider(min, max: f32)
+    attr SliderMinMax(min, max: f32)
 
     // Editbox with a unit text
-    attr EditUnit(value: string)
+    attr Unit(value: string)
 
     // Value edit size
     attr EditSize(size: s32)
