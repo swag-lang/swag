@@ -75,7 +75,7 @@ func createView7(_tabView: *Tab, view: *Wnd)
     aa.str = "String content"
     lt.addStruct(aa)
 
-    let lt1 = PropertyListCtrl.create(view, {500, 10, 650, 600})
+    let lt1 = PropertyListCtrl.create(view, {500, 10, 600, 600})
     lt1.addStruct(aa)
     lt1.splitter.setPaneSize(0, 150)
 
