@@ -52,12 +52,14 @@ func compute()
 
 func createUI(wnd: *Wnd)
 {
-    with let prop = PropertyList.create(wnd, {0, 0, UX, H-70})
+    with let prop = PropertyListCtrl.create(wnd, {0, 0, UX, H-70})
     {
+        .padding = 10
         .backgroundStyle = .Window
-        .sizeEditValue   = 260
-        .addStruct(g_NoiseParams)
-        .sigChanged += closure|wnd|(list, item)
+        .splitter.showPane(0, false)
+        .prop.sizeEditValue   = 260
+        .prop.addStruct(g_NoiseParams)
+        .prop.sigChanged += closure|wnd|(list, item)
         {
             compute()
             wnd.invalidate()
@@ -94,5 +96,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     func test(app: *Application) = if Env.hasArg("swag.test") do
         app.maxRunFrame = 100
-    Application.runSurface(100, 100, W + UX, H, title: "Noise", canSize: false, hook: &onEvent, init: &test)
+    Application.runSurface(4100, 100, W + UX, H, title: "Noise", canSize: false, hook: &onEvent, init: &test)
 }

@@ -23,14 +23,15 @@ struct SplitterItem
 
 struct SplitterCtrl
 {
-    using frameWnd:     FrameWnd
-    splitterFlags       = SplitterFlags.Zero
-    titleSize:          f32 = 30
+    using frameWnd:      FrameWnd
+    splitterFlags        = SplitterFlags.Zero
+    titleSize:           f32 = 30
 
-    items:              ArrayPtr'SplitterItem
-    correctMoving:      f32
-    hotIdx              = Swag.U32.Max
-    moving:             bool
+    items:               ArrayPtr'SplitterItem
+    correctMoving:       f32
+    hotIdx               = Swag.U32.Max
+    moving:              bool
+    numVisiblePanes:     s32
 }
 
 impl IWnd for SplitterCtrl
@@ -113,6 +114,7 @@ impl IWnd for SplitterCtrl
         {
             if !item.visible do
                 continue
+
             if isVertical()
             {
                 var paneRect = Math.Rectangle{client.x, y, client.width, item.size}
@@ -210,12 +212,13 @@ internal impl SplitterCtrl
             {
                 if !item.visible do
                     continue
+
                 totalSize += item.size
                 countPreserve += item.tryPreserveSize ? 1 : 0
                 countNotPreserve += item.tryPreserveSize ? 0 : 1
             }
 
-            totalSize += cast(f32) ((items.count - 1) * barSize)
+            totalSize += cast(f32) ((numVisiblePanes - 1) * barSize)
 
             // Compute the size to adapt
             if isVertical() do
@@ -223,7 +226,7 @@ internal impl SplitterCtrl
             else do
                 dispatch = cast(f32) (rect.width - totalSize)
 
-            // Dispatch the size change first to all panoes not marked as 'tryPreserveSize'
+            // Dispatch the size change first to all panes not marked as 'tryPreserveSize'
             if countNotPreserve
             {
                 let diff = cast(f32) Math.round(dispatch / countNotPreserve)
@@ -276,6 +279,7 @@ internal impl SplitterCtrl
         {
             if !item.visible do
                 continue
+
             setPaneSizePrivate(cast(u32) idx, item.size)
         }
     }
@@ -418,6 +422,7 @@ impl SplitterCtrl
     mtd addPane(pane: *Wnd, paneSize: f32 = 100, title = false)->*SplitterItem
     {
         pane.setParent(self)
+        numVisiblePanes += 1
 
         let item = items.newPtr()
         item.view = pane
@@ -462,8 +467,23 @@ impl SplitterCtrl
     mtd showPane(idx: u32, show: bool)
     {
         Debug.assert(idx < items.count)
-        items[idx].visible = show
-        items[idx].view.show(show)
+        let pane = items[idx]
+
+        if pane.visible == show do
+            return
+
+        numVisiblePanes += show ? 1 : -1
+        pane.visible = show
+        if pane.view do
+            pane.view.show(show)
+
+        if show
+        {
+            let mem = pane.size
+            pane.size = 0
+            setPaneSize(idx, mem)
+        }
+
         sendResizeEvent()
     }
 
