@@ -88,4 +88,10 @@ func createView7(_tabView: *Tab, view: *Wnd)
     {
         lt.refresh()
     }
+
+    let btn = PushButton.create(view, "show/hide", {500, 650, 600})
+    btn.sigPressed += closure|lt1|(btn)
+    {
+        lt1.splitter.showPane(0, lt1.splitter.isPaneVisible(0) ? false : true)
+    }
 }

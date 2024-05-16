@@ -17,6 +17,7 @@ struct SplitterItem
     maxSize:             f32 = 0
     label:               *Label
     tryPreserveSize:     bool
+    visible              = true
     aniBar:              BlendColor
 }
 
@@ -110,6 +111,8 @@ impl IWnd for SplitterCtrl
 
         visit item: items
         {
+            if !item.visible do
+                continue
             if isVertical()
             {
                 var paneRect = Math.Rectangle{client.x, y, client.width, item.size}
@@ -161,6 +164,9 @@ impl IWnd for SplitterCtrl
 
         loop idx: items.count - 1
         {
+            if !items[idx].visible do
+                continue
+
             var rect  = getBarRect(cast(u32) idx)
             let isHot = hotIdx == idx
             if isHot or !splitterFlags.has(.HideBars)
@@ -202,6 +208,8 @@ internal impl SplitterCtrl
             var totalSize = 0'f32
             visit item, idx: items
             {
+                if !item.visible do
+                    continue
                 totalSize += item.size
                 countPreserve += item.tryPreserveSize ? 1 : 0
                 countNotPreserve += item.tryPreserveSize ? 0 : 1
@@ -222,6 +230,8 @@ internal impl SplitterCtrl
                 visit item, idx: items
                 {
                     if item.tryPreserveSize do
+                        continue
+                    if !item.visible do
                         continue
 
                     countNotPreserve -= 1
@@ -245,6 +255,8 @@ internal impl SplitterCtrl
                 {
                     if !item.tryPreserveSize do
                         continue
+                    if !item.visible do
+                        continue
 
                     countPreserve -= 1
 
@@ -262,6 +274,8 @@ internal impl SplitterCtrl
 
         visit item, idx: items
         {
+            if !item.visible do
+                continue
             setPaneSizePrivate(cast(u32) idx, item.size)
         }
     }
@@ -275,12 +289,14 @@ internal impl SplitterCtrl
         var y       = client.y
         let barSize = getThemeMetrics().splitView_BarSize
 
-        visit v, idx: items
+        visit item, idx: items
         {
+            if !item.visible do
+                continue
             var rect = client
             if isVertical()
             {
-                rect.y      = y + v.size
+                rect.y      = y + item.size
                 rect.height = barSize
                 if rect.contains(local) do
                     return cast(u32) idx
@@ -288,7 +304,7 @@ internal impl SplitterCtrl
             }
             else
             {
-                rect.x     = x + v.size
+                rect.x     = x + item.size
                 rect.width = barSize
                 if rect.contains(local) do
                     return cast(u32) idx
@@ -440,5 +456,21 @@ impl SplitterCtrl
         Debug.assert(idx < items.count)
         setPaneSizePrivate(idx, newSize)
         sendResizeEvent()
+    }
+
+    // Show or hide a given pane.
+    mtd showPane(idx: u32, show: bool)
+    {
+        Debug.assert(idx < items.count)
+        items[idx].visible = show
+        items[idx].view.show(show)
+        sendResizeEvent()
+    }
+
+    // Returns true if the given pane is visible.
+    mtd isPaneVisible(idx: u32)->bool
+    {
+        Debug.assert(idx < items.count)
+        return items[idx].visible
     }
 }
