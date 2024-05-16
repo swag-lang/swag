@@ -1,5 +1,6 @@
 ..\bin\swag clean --script --ignore-bad-params %1 %2 %3 %4
 
+..\bin\swag ..\bin\examples\scripts\noise.swgs      --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag ..\bin\examples\scripts\ink.swgs        --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag ..\bin\examples\scripts\pacman.swgs     --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag ..\bin\examples\scripts\taquin.swgs     --args:"swag.test" %1 %2 %3 %4
