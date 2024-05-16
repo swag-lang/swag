@@ -32,10 +32,10 @@ struct AA
     #[SubCategory("SubCateg"), Name("This is a name: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has do be done, and this is it.")]
     xu8: u8 = 30
 
-    #[EditUnit("ms")]
+    #[Unit("ms")]
     degs: f32 = 0.5
 
-    #[Name("Another name"), EditSlider(0, 1), EditSize(300)]
+    #[Name("Another name"), Slider(0, 1), EditSize(300)]
     xf32: f32 = 0.5
 
     struct0: SubStruct

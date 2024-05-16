@@ -21,11 +21,10 @@ public enum FastNoiseKind
 
 public struct FastNoise
 {
-    seed:               s32 = 1337
     kind                = FastNoiseKind.Perlin
-
+    seed                = 1337
+    octaves             = 3                        // The number of layers of noise. More octaves create a more varied look but are also more resource-intensive to calculate.
     frequency           = 0.01                     // The period in which we sample the noise. A higher frequency results in more frequent noise change.
-    octaves:            s32 = 3                    // The number of layers of noise. More octaves create a more varied look but are also more resource-intensive to calculate.
     lacunarity          = 2.0                      // The rate of change of the frequency for each successive octave. A 'lacunarity' value of 1 results in each octave having the same frequency.
     gain                = 0.5                      // The scaling factor applied to each octave. 'gain' is only used when 'octaves' is set to a value higher than 1.
 

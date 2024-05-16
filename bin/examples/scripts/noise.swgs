@@ -5,88 +5,60 @@
 
 using Core, Gui, Pixel, Core.Math
 
-var g_Texture:   Texture
-var g_Image:     Image
-var g_Noise:     Noise.FastNoise
+var g_Texture: Texture
+var g_Image:   Image
 
-const W, H = 800
+const W, H = 1024
 const UX = 300
+
+#[Swag.Using(Gui.PropertyList)]
+struct NoiseParams
+{
+    kind           = Noise.FastNoiseKind.Perlin
+    seed           = 1337
+
+    #[Description("The number of layers of noise. More octaves create a more varied look but are also more resource-intensive to calculate")]
+    #[MinMax(1, 10)]
+    octaves        = 3
+
+    #[SliderMinMax(0.01, 1)]
+    #[Description("The period in which we sample the noise. A higher frequency results in more frequent noise change")]
+    frequency      = 0.01
+
+    #[SliderMinMax(1.0, 3.0)]
+    #[Description("The rate of change of the frequency for each successive octave. A 'lacunarity' value of 1 results in each octave having the same frequency")]
+    lacunarity     = 2.0
+
+    #[SliderMinMax(0.01, 0.5)]
+    #[Description("The scaling factor applied to each octave. 'gain' is only used when 'octaves' is set to a value higher than 1.")]
+    gain           = 0.5
+}
+
+var g_NoiseParams: NoiseParams
+var g_Noise:       Noise.FastNoise
 
 func compute()
 {
+    g_Noise.seed       = g_NoiseParams.seed
+    g_Noise.kind       = g_NoiseParams.kind
+    g_Noise.frequency  = g_NoiseParams.frequency
+    g_Noise.octaves    = g_NoiseParams.octaves
+    g_Noise.lacunarity = g_NoiseParams.lacunarity
+    g_Noise.gain       = g_NoiseParams.gain
     g_Noise.update()
+
     g_Image.noise(&g_Noise)
 }
 
 func createUI(wnd: *Wnd)
 {
-    let layout = StackLayoutCtrl.create(wnd, .Top, {0, 0, UX, H})
-    layout.padding = 10
-
-    with let comboKind = ComboCtrl.create(layout, "kind")
+    with let prop = PropertyList.create(wnd, {0, 0, UX, H-70})
     {
-        .comboSize = 215
-        .combo.addItem("perlin")
-        .combo.addItem("perlin fractal fbm")
-        .combo.addItem("perlin fractal billow")
-        .combo.addItem("perlin fractal rigid multi")
-        .combo.addItem("value")
-        .combo.addItem("value fractal fbm")
-        .combo.addItem("value fractal billow")
-        .combo.addItem("value fractal rigid multi")
-        .combo.selectItem(0)
-        .combo.sigChanged += closure|wnd|(w, idx)
+        .backgroundStyle = .Window
+        .sizeEditValue   = 260
+        .addStruct(g_NoiseParams)
+        .sigChanged += closure|wnd|(list, item)
         {
-            g_Noise.kind = cast(Noise.FastNoiseKind) idx
-            compute()
-            wnd.invalidate()
-        }
-    }
-
-    with let sliderFreq = SliderCtrl.create(layout, "freq")
-    {
-        .setMinMaxF32(0.01, 0.1)
-        .setValue(g_Noise.frequency)
-        .sigChanged += closure|wnd, sliderFreq|(s)
-        {
-            g_Noise.frequency = sliderFreq.getValue()
-            compute()
-            wnd.invalidate()
-        }
-    }
-
-    with let sliderOctave = SliderCtrl.create(layout, "octave")
-    {
-        .slider.sliderFlags.add(.Integer)
-        .setMinMaxU64(1, 6)
-        .setValue(g_Noise.octaves)
-        .sigChanged += closure|wnd, sliderOctave|(s)
-        {
-            g_Noise.octaves = cast(s32) sliderOctave.getValue()
-            compute()
-            wnd.invalidate()
-        }
-    }
-
-    with let sliderGain = SliderCtrl.create(layout, "gain")
-    {
-        .setMinMaxF32(0.01, 1.0)
-        .setValue(g_Noise.gain)
-        .sigChanged += closure|wnd, sliderGain|(s)
-        {
-            g_Noise.gain = sliderGain.getValue()
-            compute()
-            wnd.invalidate()
-        }
-    }
-
-    with let sliderLacunarity = SliderCtrl.create(layout, "lacunarity")
-    {
-        .setMinMaxF32(1.0, 3.0)
-        .setValue(g_Noise.lacunarity)
-        .sigChanged += closure|wnd, sliderLacunarity|(s)
-        {
-            g_Noise.lacunarity = sliderLacunarity.getValue()
             compute()
             wnd.invalidate()
         }
@@ -110,7 +82,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         let painter  = paintEvt.bc.painter
         let renderer = paintEvt.bc.renderer
         renderer.updateTexture(g_Texture, g_Image.pixels.buffer)
-        painter.fillRect(0, 0, acast UX, acast H, wnd.getThemeColors().wnd_Bk)
         painter.drawTexture(acast UX, 0, acast W, acast H, g_Texture)
     }
 
@@ -123,5 +94,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     func test(app: *Application) = if Env.hasArg("swag.test") do
         app.maxRunFrame = 100
-    Application.runSurface(4000, 100, W + UX, H, title: "Noise", canSize: false, hook: &onEvent, init: &test)
+    Application.runSurface(3800, 100, W + UX, H, title: "Noise", canSize: false, hook: &onEvent, init: &test)
 }
