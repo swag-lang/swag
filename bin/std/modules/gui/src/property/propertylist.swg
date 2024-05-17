@@ -7,6 +7,13 @@ interface IPropertyValue
     mtd construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8, parent: *PropertyListItem)->*PropertyListItem;
 }
 
+#[Swag.EnumFlags]
+enum PropertyListCreateFlags
+{
+    Zero = 0
+    HideDesc    // Hide description and shot it in a tooltip instead
+}
+
 struct PropertyList
 {
     using frameWnd:            FrameWnd
@@ -23,6 +30,7 @@ struct PropertyList
 
     sigChanged:                SigArray'closure(*Self, *PropertyListItem)
 
+    propFlags:                 PropertyListCreateFlags
     font0:                     FontFamily
     font1:                     FontFamily
     font2:                     FontFamily
@@ -90,7 +98,7 @@ internal impl PropertyList
         {
         case .MouseLeave:
             let mouseEvt = cast(*MouseEvent) evt
-            if prop.hotItem and prop.hotItem.labelDesc do
+            if prop.hotItem and prop.hotItem.labelDesc and prop.propFlags.has(.HideDesc) do
                 ToolTip.hide(prop.hotItem.line)
             prop.hotItem = null
             wnd.invalidate()
@@ -102,7 +110,7 @@ internal impl PropertyList
             if hit != prop.hotItem
             {
                 prop.hotItem = hit
-                if hit and hit.label and hit.labelDesc
+                if hit and hit.label and hit.labelDesc and prop.propFlags.has(.HideDesc)
                 {
                     pt = hit.label.surfaceToLocal(mouseEvt.surfacePos)
                     if hit.label.getClientRect().contains(pt) do
@@ -241,7 +249,8 @@ internal impl PropertyList
                 labelDesc.horzAlignmentText = .Left
                 labelDesc.setText(dispDesc)
                 labelDesc.margin.w = descMarginAfter
-                //labelDesc.hide()
+                if propFlags.has(.HideDesc) do
+                    labelDesc.hide()
                 item.labelDesc     = labelDesc
             }
         }
@@ -314,12 +323,14 @@ impl PropertyList
 {
     // Creates a new PropertyList instance
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*PropertyList
+    func create(parent: *Wnd, position: Math.Rectangle = {}, flags = PropertyListCreateFlags.Zero, id: WndId = null)->*PropertyList
     {
         let ed = Wnd.create'PropertyList(parent, "", position, id)
 
         with ed
         {
+            .propFlags = flags
+
             .scrollWnd               = .createView'ScrollWnd()
             .scrollWnd.dockStyle     = .Center
             .scrollWnd.focusStrategy = .None
