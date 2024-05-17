@@ -89,16 +89,26 @@ internal impl PropertyList
         switch evt.kind
         {
         case .MouseLeave:
+            let mouseEvt = cast(*MouseEvent) evt
+            if prop.hotItem and prop.hotItem.labelDesc do
+                ToolTip.hide(prop.hotItem.line)
             prop.hotItem = null
             wnd.invalidate()
 
         case .MouseMove:
             let mouseEvt = cast(*MouseEvent) evt
-            let pt       = wnd.surfaceToLocal(mouseEvt.surfacePos)
+            var pt       = wnd.surfaceToLocal(mouseEvt.surfacePos)
             let hit      = prop.hitTest(pt)
             if hit != prop.hotItem
             {
                 prop.hotItem = hit
+                if hit and hit.label and hit.labelDesc
+                {
+                    pt = hit.label.surfaceToLocal(mouseEvt.surfacePos)
+                    if hit.label.getClientRect().contains(pt) do
+                        ToolTip.show(hit.line, mouseEvt.surfacePos, hit.labelDesc.name.raw)
+                }
+
                 wnd.invalidate()
             }
         }
@@ -231,6 +241,7 @@ internal impl PropertyList
                 labelDesc.horzAlignmentText = .Left
                 labelDesc.setText(dispDesc)
                 labelDesc.margin.w = descMarginAfter
+                //labelDesc.hide()
                 item.labelDesc     = labelDesc
             }
         }
