@@ -1,30 +1,6 @@
 #global public
 using Core, Pixel
 
-impl PropertyList
-{
-    // Start a new sub category
-    attr SubCategory(name: string)
-
-    // Change the field display name
-    attr Name(name: string)
-
-    // Add a description
-    attr Description(desc: string)
-
-    // Min and max values
-    attr MinMax(min, max: s64)
-
-    // Native float edit width a slider
-    attr SliderMinMax(min, max: f32)
-
-    // Editbox with a unit text
-    attr Unit(value: string)
-
-    // Value edit size
-    attr EditSize(size: s32)
-}
-
 // To specialize the edition of a given struct.
 interface IPropertyValue
 {
@@ -54,6 +30,7 @@ struct PropertyList
     edView:                    *PropertyListView
     items:                     ArrayPtr'PropertyListItem
     categs:                    Array'{ item: *PropertyListItem, lvl: s32 }
+    hitTestItem:               *PropertyListItem
 }
 
 #[Swag.EnumFlags]
@@ -92,7 +69,39 @@ struct PropertyListItem
 
 internal impl PropertyList
 {
-    func onEvent(item: *PropertyListItem, wnd: *Wnd, evt: *Event)->bool
+    mtd hitTest(pt: Math.Point)->*PropertyListItem
+    {
+        visit item: items
+        {
+            if !item.line.isVisible() do
+                continue
+            if item.line.position.contains(pt) do
+                return item
+        }
+
+        return null
+    }
+
+    func onHookChildEvent(wnd: *Wnd, evt: *Event)->bool
+    {
+        if evt.kind != .MouseMove do
+            return false
+
+        let mouseEvt = cast(*MouseEvent) evt
+
+        let prop = cast(*PropertyList) wnd
+        let pt   = wnd.surfaceToLocal(mouseEvt.surfacePos)
+        let hit  = prop.hitTest(pt)
+        if hit != prop.hitTestItem
+        {
+            prop.hitTestItem = hit
+            wnd.invalidate()
+        }
+
+        return false
+    }
+
+    func onItemEvent(item: *PropertyListItem, wnd: *Wnd, evt: *Event)->bool
     {
         switch evt.kind
         {
@@ -173,7 +182,7 @@ internal impl PropertyList
             .parent    = parentItem
         }
 
-        line.hookOnEvent = closure|item|(wnd, evt) { return onEvent(item, wnd, evt); }
+        line.hookOnEvent = closure|item|(wnd, evt) { return onItemEvent(item, wnd, evt); }
 
         // Name
         if flags.has(.Name)
@@ -310,6 +319,8 @@ impl PropertyList
             .font0 = theme.createDefaultFontfamily(Font0Size)
             .font1 = theme.createDefaultFontfamily(Font1Size)
             .font2 = theme.createDefaultFontfamily(Font2Size)
+
+            .hookOnChildEvent = func(wnd, evt) { return onHookChildEvent(wnd, evt); }
         }
 
         return ed

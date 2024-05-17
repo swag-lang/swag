@@ -160,7 +160,7 @@ impl PropertyList
                 .forceShow   = item.line
             }
 
-            line.hookOnEvent = closure|itemB|(wnd, evt) { return onEvent(itemB, wnd, evt); }
+            line.hookOnEvent = closure|itemB|(wnd, evt) { return onItemEvent(itemB, wnd, evt); }
 
             let lineHeight = getThemeMetrics().btnPush_Height
             let ed         = CheckButton.create(line, "", {0, 0, lineHeight, 0})

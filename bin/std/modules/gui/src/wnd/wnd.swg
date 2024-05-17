@@ -126,7 +126,8 @@ struct Wnd
     isPendingDestroy:      bool
     createEventDone:       bool
 
-    hookOnEvent:           HookEvent
+    hookOnEvent:           HookEvent                         // Will be called before processing the event of the window
+    hookOnChildEvent:      HookEvent                         // Will be called before processing whatever event of a child window
 }
 
 impl IWnd for Wnd

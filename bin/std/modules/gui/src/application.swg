@@ -19,7 +19,7 @@ struct Application
     postedEvents:           Array'(*Event)
     surfaces:               Array'(*Surface)
     postDestroy:            Array'(*Wnd)
-    hookEvents:             Array'(*Wnd)
+    hookOnEvent:            Array'(*Wnd)
     cursorStack:            Array'(Cursor)
     endModalExit:           WndId
     inModalLoop:            u32
@@ -53,7 +53,8 @@ internal impl Application
     // Send and process an event
     mtd sendEventPrivate(event: *Event, stopAt: *Wnd)
     {
-        visit hook: hookEvents do
+        // Global hook events
+        visit hook: hookOnEvent do
             hook.itf.onHookEvent(event)
 
         if event.kind == .Quit
@@ -67,6 +68,15 @@ internal impl Application
         // Be sure we have a target
         if !event.target do
             return
+
+        // Parent hook events
+        var scan = event.target.getOwner()
+        while scan
+        {
+            if scan.hookOnChildEvent and scan.hookOnChildEvent(scan, event) do
+                return
+            scan = scan.getOwner()
+        }
 
         // Send event to the target
         // If the target does not accept the event, then pass it to the parent
@@ -358,7 +368,7 @@ internal impl Application
 
         // Remove from various lists
         frameEvents.remove(wnd)
-        hookEvents.remove(wnd)
+        hookOnEvent.remove(wnd)
 
         // Be sure there's no posted event for that window
         visit e: postedEvents
@@ -757,14 +767,14 @@ impl Application
     // Register a window to receive hook events
     mtd registerHookEvents(target: *Wnd)
     {
-        Debug.assert(!hookEvents.contains(target))
-        hookEvents.add(target)
+        Debug.assert(!hookOnEvent.contains(target))
+        hookOnEvent.add(target)
     }
 
     // Unregister a window to receive hook events
     mtd unregisterHookEvents(target: *Wnd)
     {
-        hookEvents.remove(target)
+        hookOnEvent.remove(target)
     }
 
     // Push a new mouse cursor
