@@ -336,4 +336,6 @@ struct ThemeColors
 
     propList_focusBk:                  Color = 0x10888888
     propList_focusBorder:              Color = Blue
+    propList_hotBk:                    Color = 0x10888888
+    propList_hotBorder:                Color = Transparent
 }

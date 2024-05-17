@@ -30,7 +30,7 @@ struct PropertyList
     edView:                    *PropertyListView
     items:                     ArrayPtr'PropertyListItem
     categs:                    Array'{ item: *PropertyListItem, lvl: s32 }
-    hitTestItem:               *PropertyListItem
+    hotItem:                   *PropertyListItem
 }
 
 #[Swag.EnumFlags]
@@ -84,24 +84,29 @@ internal impl PropertyList
 
     func onHookChildEvent(wnd: *Wnd, evt: *Event)->bool
     {
-        if evt.kind != .MouseMove do
-            return false
-
-        let mouseEvt = cast(*MouseEvent) evt
-
         let prop = cast(*PropertyList) wnd
-        let pt   = wnd.surfaceToLocal(mouseEvt.surfacePos)
-        let hit  = prop.hitTest(pt)
-        if hit != prop.hitTestItem
+
+        switch evt.kind
         {
-            prop.hitTestItem = hit
+        case .MouseLeave:
+            prop.hotItem = null
             wnd.invalidate()
+
+        case .MouseMove:
+            let mouseEvt = cast(*MouseEvent) evt
+            let pt       = wnd.surfaceToLocal(mouseEvt.surfacePos)
+            let hit      = prop.hitTest(pt)
+            if hit != prop.hotItem
+            {
+                prop.hotItem = hit
+                wnd.invalidate()
+            }
         }
 
         return false
     }
 
-    func onItemEvent(item: *PropertyListItem, wnd: *Wnd, evt: *Event)->bool
+    mtd onItemEvent(item: *PropertyListItem, wndItem: *Wnd, evt: *Event)->bool
     {
         switch evt.kind
         {
@@ -109,7 +114,7 @@ internal impl PropertyList
             let ntfyEvt = cast(*NotifyEvent) evt
             if ntfyEvt.ntfyKind == .ChildFocusChanged
             {
-                wnd.invalidate()
+                wndItem.invalidate()
                 return true
             }
 
@@ -119,17 +124,22 @@ internal impl PropertyList
             let colors   = wnd.getThemeColors()
 
             var colBk, colBorder: Color
-            if wnd.isOwnerOf(wnd.getApp().keybFocusWnd)
+            if wndItem.isOwnerOf(wndItem.getApp().keybFocusWnd)
             {
                 colBk     = colors.propList_focusBk
                 colBorder = colors.propList_focusBorder
             }
+            elif hotItem == item
+            {
+                colBk     = colors.propList_hotBk
+                colBorder = colors.propList_hotBorder
+            }
 
-            item.aniFocusBk.apply(wnd, colBk)
-            item.aniFocusBorder.apply(wnd, colBorder)
+            item.aniFocusBk.apply(wndItem, colBk)
+            item.aniFocusBorder.apply(wndItem, colBorder)
 
-            var r = wnd.getClientRect()
-            r.moveTop(wnd.childs.front().position.y)
+            var r = wndItem.getClientRect()
+            r.moveTop(wndItem.childs.front().position.y)
             r.inflate(item.extendFocus)
             painter.fillRoundRect(r, 4, 4, item.aniFocusBk.cur())
             painter.drawRoundRect(r, 4, 4, item.aniFocusBorder.cur())
@@ -182,7 +192,7 @@ internal impl PropertyList
             .parent    = parentItem
         }
 
-        line.hookOnEvent = closure|item|(wnd, evt) { return onItemEvent(item, wnd, evt); }
+        line.hookOnEvent = closure|self, item|(wnd, evt) { return self.onItemEvent(item, wnd, evt); }
 
         // Name
         if flags.has(.Name)
