@@ -10,8 +10,8 @@ interface IPropertyValue
 #[Swag.EnumFlags]
 enum PropertyListCreateFlags
 {
-    Zero = 0
-    HideDesc    // Hide description and shot it in a tooltip instead
+    Zero     = 0
+    HideDesc         // Hide description and shot it in a tooltip instead
 }
 
 struct PropertyList
@@ -145,7 +145,8 @@ internal impl PropertyList
             let colors   = wnd.getThemeColors()
 
             var colBk, colBorder: Color
-            if wndItem == wndItem.getApp().keybFocusWnd or wndItem.isOwnerOf(wndItem.getApp().keybFocusWnd)
+            let focusWnd = wndItem.getApp().keybFocusWnd
+            if wndItem == focusWnd or wndItem.isOwnerOf(focusWnd)
             {
                 colBk     = colors.propList_focusBk
                 colBorder = colors.propList_focusBorder
@@ -235,7 +236,14 @@ internal impl PropertyList
             }
 
             item.label  = label
-            item.filter = dispName
+            if parentItem
+            {
+                item.filter += " "
+                item.filter = parentItem.filter
+                item.filter += " "
+            }
+
+            item.filter += dispName
         }
 
         // Description
@@ -254,7 +262,7 @@ internal impl PropertyList
                 labelDesc.margin.w = descMarginAfter
                 if propFlags.has(.HideDesc) do
                     labelDesc.hide()
-                item.labelDesc     = labelDesc
+                item.labelDesc = labelDesc
             }
         }
 
@@ -264,6 +272,8 @@ internal impl PropertyList
     #[Swag.Overload]
     mtd addStruct(typeStruct: const *Swag.TypeInfoStruct, addr: ^u8, parentItem: *PropertyListItem)
     {
+        var newParent = parentItem
+
         visit value: typeStruct.fields
         {
             let data = addr + value.offset
@@ -277,6 +287,7 @@ internal impl PropertyList
                 let item = addItem(v, null, parentItem)
                 item.label.style.setFont(&font1)
                 categs.add({item, 1})
+                newParent = item
             }
 
             // Value
@@ -284,36 +295,36 @@ internal impl PropertyList
             {
             case Reflection.isEnum(value.pointedType):
                 let typeEnum = cast(const *Swag.TypeInfoEnum) value.pointedType
-                constructEnum(value, typeEnum, data, parentItem)
+                constructEnum(value, typeEnum, data, newParent)
 
             case value.pointedType == Core.String:
-                constructString(value, data, parentItem)
+                constructString(value, data, newParent)
 
             case Reflection.isString(value.pointedType):
-                let item = addItem(value, data, parentItem)
+                let item = addItem(value, data, newParent)
                 let ed   = EditBox.create(item.line, dref cast(*string) data)
                 ed.editBoxFlags = .ReadOnly
                 item.editBox    = ed
 
             case Reflection.isBool(value.pointedType):
-                constructBool(value, data, parentItem)
+                constructBool(value, data, newParent)
 
             case Reflection.isInteger(value.pointedType) or Reflection.isFloat(value.pointedType):
                 let typeNative = cast(const *Swag.TypeInfoNative) value.pointedType
-                constructNative(value, typeNative, data, parentItem)
+                constructNative(value, typeNative, data, newParent)
 
             case Reflection.isStruct(value.pointedType):
                 let typeSubStruct = cast(const *Swag.TypeInfoStruct) value.pointedType
                 let iprop         = @mkinterface(data, value.pointedType, IPropertyValue)
                 if iprop != null
                 {
-                    let item = iprop.construct(self, value, data, parentItem)
+                    let item = iprop.construct(self, value, data, newParent)
                     Debug.assert(item != null)
                     item.sigRefresh.call(item)
                 }
                 else
                 {
-                    let item = addItem(value, data, parentItem)
+                    let item = addItem(value, data, newParent)
                     item.label.style.setFont(&font2)
                     addStruct(typeSubStruct, data, item)
                 }
