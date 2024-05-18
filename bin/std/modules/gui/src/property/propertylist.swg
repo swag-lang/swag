@@ -77,13 +77,16 @@ struct PropertyListItem
 
 internal impl PropertyList
 {
-    mtd hitTest(pt: Math.Point)->*PropertyListItem
+    mtd hitTest(ptLoc: Math.Point)->*PropertyListItem
     {
+        var pt = ptLoc + scrollWnd.getScrollPos()
         visit item: items
         {
             if !item.line.isVisible() do
                 continue
-            if item.line.position.contains(pt) do
+            var r = item.line.position
+            r.inflate(item.extendFocus)
+            if r.contains(pt) do
                 return item
         }
 
@@ -105,7 +108,7 @@ internal impl PropertyList
 
         case .MouseMove:
             let mouseEvt = cast(*MouseEvent) evt
-            var pt       = wnd.surfaceToLocal(mouseEvt.surfacePos)
+            var pt       = prop.surfaceToLocal(mouseEvt.surfacePos)
             let hit      = prop.hitTest(pt)
             if hit != prop.hotItem
             {
@@ -142,7 +145,7 @@ internal impl PropertyList
             let colors   = wnd.getThemeColors()
 
             var colBk, colBorder: Color
-            if wndItem.isOwnerOf(wndItem.getApp().keybFocusWnd)
+            if wndItem == wndItem.getApp().keybFocusWnd or wndItem.isOwnerOf(wndItem.getApp().keybFocusWnd)
             {
                 colBk     = colors.propList_focusBk
                 colBorder = colors.propList_focusBorder
