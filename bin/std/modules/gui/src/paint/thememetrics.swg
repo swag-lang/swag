@@ -33,6 +33,7 @@ struct ThemeMetrics
     editBox_FlatPadding:                   Math.Vector4 = {12, 0, 12, 5}
     editBox_Width:                         f32 = 100
     editBox_Height:                        f32 = 32
+    editBox_UnitMargin:                    f32 = 3
 
     btnToggle_Width:                       f32 = 50
     btnToggle_Height:                      f32 = 26

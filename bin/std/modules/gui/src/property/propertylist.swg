@@ -9,23 +9,24 @@ interface IPropertyValue
 
 enum PropertyListKind
 {
-    List    // This is a flat list
-    Grid    // This is a more compact property grid
+    List     // This is a flat list
+    Grid     // This is a more compact property grid
 }
 
 struct PropertyList
 {
-    using frameWnd:            FrameWnd
+    using frameWnd:     FrameWnd
 
-    kind                       = PropertyListKind.List
+    kind                = PropertyListKind.List
 
-    leftMargin:                s32 = 15
-    rightMargin:               s32 = 15
-    sizeEditValue:             s32 = 200
+    leftMargin:         s32 = 15
+    rightMargin:        s32 = 15
+    sizeEditValue:      s32 = 200
 
     // For grid kind
-    gridLineMargin:            s32 = 12
-    gridColumnSize:            s32 = 120
+    gridLineMargin:       s32 = 12
+    gridColumnSize:       s32 = 150
+    gridMarginColumn:     s32 = 16
 
     // For list kind
     listNameHeight:            s32 = 25
@@ -45,6 +46,8 @@ struct PropertyList
     items:                     ArrayPtr'PropertyListItem
     categs:                    Array'{ item: *PropertyListItem, lvl: s32 }
     hotItem:                   *PropertyListItem
+    cursorSet:                 bool
+    resizingColumn:            bool
 }
 
 #[Swag.EnumFlags]
@@ -84,6 +87,11 @@ struct PropertyListItem
 
 internal impl PropertyList
 {
+    mtd getColumnX()->f32
+    {
+        return gridColumnSize + leftMargin + gridMarginColumn * 0.5
+    }
+
     mtd hitTest(ptLoc: Math.Point)->*PropertyListItem
     {
         var pt = ptLoc + scrollWnd.getScrollPos()
@@ -106,17 +114,50 @@ internal impl PropertyList
 
         switch evt.kind
         {
+        case .MousePressed:
+            if prop.cursorSet
+            {
+                let mouseEvt = cast(*MouseEvent) evt
+                if mouseEvt.button == .Left
+                {
+                    prop.resizingColumn = true
+                    return true
+                }
+            }
+
+        case .MouseReleased:
+            if prop.resizingColumn
+            {
+                prop.resizingColumn = false
+            }
+
         case .MouseLeave:
             let mouseEvt = cast(*MouseEvent) evt
+
             if prop.hotItem and prop.kind == .Grid do
                 ToolTip.hide(prop.hotItem.line)
             prop.hotItem = null
             wnd.invalidate()
 
+            if prop.cursorSet
+            {
+                prop.cursorSet = false
+                prop.getApp().popCursor()
+            }
+
         case .MouseMove:
             let mouseEvt = cast(*MouseEvent) evt
             var pt       = prop.surfaceToLocal(mouseEvt.surfacePos)
-            let hit      = prop.hitTest(pt)
+
+            // Resize of the grid column
+            if prop.resizingColumn
+            {
+                prop.setColumnSize(acast (pt.x - prop.leftMargin - prop.gridMarginColumn * 0.5))
+                break
+            }
+
+            // Hot item
+            let hit = prop.hitTest(pt)
             if hit != prop.hotItem
             {
                 prop.hotItem = hit
@@ -128,6 +169,23 @@ internal impl PropertyList
                 }
 
                 wnd.invalidate()
+            }
+
+            // On the column size bar
+            if prop.kind == .Grid
+            {
+                let x = prop.getColumnX()
+                if pt.x >= x - 3 and pt.x <= x + 3
+                {
+                    if !prop.cursorSet do
+                        prop.getApp().pushCursor(Cursor.from(.SizeWE))
+                    prop.cursorSet = true
+                }
+                elif prop.cursorSet
+                {
+                    prop.cursorSet = false
+                    prop.getApp().popCursor()
+                }
             }
         }
 
@@ -155,13 +213,13 @@ internal impl PropertyList
             let focusWnd = wndItem.getApp().keybFocusWnd
             if wndItem == focusWnd or wndItem.isOwnerOf(focusWnd)
             {
-                colBk     = colors.propList_focusBk
-                colBorder = colors.propList_focusBorder
+                colBk     = colors.propList_FocusBk
+                colBorder = colors.propList_FocusBorder
             }
             elif hotItem == item
             {
-                colBk     = colors.propList_hotBk
-                colBorder = colors.propList_hotBorder
+                colBk     = colors.propList_HotBk
+                colBorder = colors.propList_HotBorder
             }
 
             item.aniFocusBk.apply(wndItem, colBk)
@@ -170,6 +228,16 @@ internal impl PropertyList
             var r = wndItem.getClientRect()
             r.moveTop(wndItem.childs.front().position.y)
             r.inflate(item.extendFocus)
+
+            if kind == .Grid
+            {
+                var r1 = r
+                r1.height += 1
+                painter.drawRect(r1, colors.propList_GridBorder)
+                let x = cast(f32) gridColumnSize + leftMargin - gridMarginColumn * 0.5
+                painter.drawLine(x, r1.y, x, r1.bottom(), getThemeColors().propList_GridBorder, 1)
+            }
+
             painter.fillRoundRect(r, 4, 4, item.aniFocusBk.cur())
             painter.drawRoundRect(r, 4, 4, item.aniFocusBorder.cur())
         }
@@ -220,8 +288,8 @@ internal impl PropertyList
 
             if kind == .Grid
             {
-                .margin.y = gridLineMargin*0.5
-                .margin.w = gridLineMargin*0.5
+                .margin.y = gridLineMargin * 0.5
+                .margin.w = gridLineMargin * 0.5
             }
         }
 
@@ -233,7 +301,7 @@ internal impl PropertyList
             .data      = data
             .parent    = parentItem
             if kind == .Grid do
-                .extendFocus = gridLineMargin*0.5
+                .extendFocus = gridLineMargin * 0.5
         }
 
         line.hookOnEvent = closure|self, item|(wnd, evt) { return self.onItemEvent(item, wnd, evt); }
@@ -255,6 +323,7 @@ internal impl PropertyList
                     .vertAlignmentText = .Center
                     .horzAlignmentText = .Left
                     .dockStyle         = .Left
+                    .margin.z          = gridMarginColumn
                 }
                 else
                 {
@@ -266,7 +335,7 @@ internal impl PropertyList
                 }
             }
 
-            item.label  = label
+            item.label = label
             if parentItem
             {
                 item.filter += " "
@@ -295,7 +364,7 @@ internal impl PropertyList
                     labelDesc.horzAlignmentText = .Left
                     labelDesc.setText(dispDesc)
                     labelDesc.margin.w = listDescMarginAfter
-                    item.labelDesc = labelDesc
+                    item.labelDesc     = labelDesc
                 }
             }
         }
@@ -461,5 +530,21 @@ impl PropertyList
 
         applyLayout()
         scrollWnd.view.sendResizeEvent()
+    }
+
+    // Set the grid mode column size
+    mtd setColumnSize(size: s32)
+    {
+        if kind != .Grid do
+            return
+
+        gridColumnSize = Math.clamp(size, gridMarginColumn, cast(s32) position.width - gridMarginColumn - leftMargin - rightMargin)
+        visit item: items
+        {
+            item.label.position.width = gridColumnSize
+        }
+
+        applyLayout()
+        invalidate()
     }
 }

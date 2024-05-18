@@ -334,8 +334,9 @@ struct ThemeColors
     embInfo_CriticalBk:                Color = 0xFF8F0000
     embInfo_InformationBk:             Color = 0xFF303050
 
-    propList_focusBk:                  Color = 0x10888888
-    propList_focusBorder:              Color = Blue
-    propList_hotBk:                    Color = 0x10888888
-    propList_hotBorder:                Color = Transparent
+    propList_FocusBk:                  Color = 0x10888888
+    propList_FocusBorder:              Color = Blue
+    propList_HotBk:                    Color = 0x10888888
+    propList_HotBorder:                Color = Transparent
+    propList_GridBorder:               Color = Gray7
 }

@@ -72,6 +72,9 @@ func resetTimer(mousePos: Math.Point)
 // Show a tooltip
 public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.Duration = 500'ms)
 {
+    if str == null or @countof(str) == 0 do
+        return
+
     if !g_Current and delay.timeInSeconds > 0
     {
         if !g_Pending do

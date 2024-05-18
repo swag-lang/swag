@@ -13,16 +13,11 @@ impl PropertyList
         let item = addItem(value, data, parentItem, getThemeMetrics().editBox_Height)
         with let ed = EditBox.create(item.line, dref cast(*String) data)
         {
-            if kind == .Grid
-            {
+            .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+            if kind == .Grid do
                 .dockStyle = .CenterKeepSizeVert
-            }
-            else
-            {
-                .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+            else do
                 .anchorStyle = .X
-            }
-
             .sigLoseFocus += closure|self, item|(ed) { self.validateDynamicString(item); }
         }
 
@@ -34,16 +29,11 @@ impl PropertyList
         let item = addItem(value, data, parentItem, getThemeMetrics().editBox_Height)
         with let ed = EditBox.create(item.line, dref cast(*string) data)
         {
-            if kind == .Grid
-            {
+            .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+            if kind == .Grid do
                 .dockStyle = .CenterKeepSizeVert
-            }
-            else
-            {
-                .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+            else do
                 .anchorStyle = .X
-            }
-
             .editBoxFlags = .ReadOnly
         }
 

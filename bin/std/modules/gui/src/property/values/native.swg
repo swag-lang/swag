@@ -159,17 +159,12 @@ impl PropertyList
         {
             with let slider = SliderCtrl.create(item.line, null)
             {
-                if kind == .Grid
-                {
-                    slider.dockStyle = .CenterKeepSizeVert
-                    .labelSize       = 0
-                }
-                else
-                {
-                    .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                .labelSize = 0
+                .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                if kind == .Grid do
+                    .dockStyle = .CenterKeepSizeVert
+                else do
                     .anchorStyle = .X
-                    .labelSize   = 0
-                }
             }
 
             item.sliderBox = slider
@@ -195,16 +190,11 @@ impl PropertyList
             {
                 if unit != null do
                     .unit = cast(string) unit
-
-                if kind == .Grid
-                {
+                .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                if kind == .Grid do
                     .dockStyle = .CenterKeepSizeVert
-                }
-                else
-                {
-                    .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                else do
                     .anchorStyle = .X
-                }
             }
 
             var minV, maxV: s64

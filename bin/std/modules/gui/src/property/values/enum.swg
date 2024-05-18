@@ -206,15 +206,11 @@ impl PropertyList
         let item = addItem(value, data, parentItem, getThemeMetrics().comboBox_Height)
         with let ed = ComboBox.create(item.line, kind: .CheckBox)
         {
-            if kind == .Grid
-            {
+            .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+            if kind == .Grid do
                 .dockStyle = .CenterKeepSizeVert
-            }
-            else
-            {
-                .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+            else do
                 .anchorStyle = .X
-            }
         }
 
         item.comboBox = ed
