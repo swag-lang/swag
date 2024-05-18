@@ -4,14 +4,16 @@ using Core, Pixel
 typealias WndId     = string
 typealias HookEvent = closure(*Wnd, *Event)->bool
 
+// Automatic placement and size of the window in the parent client rectangle
 enum DockStyle
 {
     None
-    Top
-    Left
-    Right
-    Bottom
-    Center
+    Top                    // Stack to the top, keeping the vertical size
+    Left                   // Stack to the left, keeping the horizontal size
+    Right                  // Stack to the right, keeping the horizontal size
+    Bottom                 // Stack to the bottom, keeping the vertical size
+    Center                 // Fill the remaining parent rect
+    CenterKeepSizeVert     // Fill the remaining parent rect horizontally, but keep the vertical size
 }
 
 #[Swag.EnumFlags]
@@ -889,7 +891,7 @@ impl Wnd
                 let diff = c.margin.w + pos.height + c.margin.y
                 clientRect.height -= diff
 
-            case Center:
+            case Center, CenterKeepSizeVert:
                 centerLayout.add(c)
             }
         }
@@ -897,7 +899,20 @@ impl Wnd
         visit c: centerLayout
         {
             var pos = clientRect
-            pos.applyPadding(c.margin)
+
+            // Fill the remaining room horizontally, but keep vertical size and center
+            if c.dockStyle == .CenterKeepSizeVert
+            {
+                pos.y      = pos.vertCenter() - c.position.height * 0.5
+                pos.height = c.position.height
+            }
+
+            // Fill the remaining room
+            else
+            {
+                pos.applyPadding(c.margin)
+            }
+
             c.setPosition(pos, false)
         }
 

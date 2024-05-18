@@ -138,7 +138,7 @@ impl PropertyList
 
     mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertyListItem)
     {
-        let item = addItem(value, data, parentItem)
+        let item = addItem(value, data, parentItem, listNameHeight)
         visit v: typeEnum.values
         {
             with let line = Wnd.create'Wnd(edView)
@@ -203,14 +203,21 @@ impl PropertyList
             return
         }
 
-        let item = addItem(value, data, parentItem)
-        with let ed   = ComboBox.create(item.line, kind: .CheckBox)
+        let item = addItem(value, data, parentItem, getThemeMetrics().comboBox_Height)
+        with let ed = ComboBox.create(item.line, kind: .CheckBox)
         {
-            .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
-            .anchorStyle = .X
+            if kind == .Grid
+            {
+                .dockStyle = .CenterKeepSizeVert
+            }
+            else
+            {
+                .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                .anchorStyle = .X
+            }
         }
 
-        item.comboBox  = ed
+        item.comboBox = ed
 
         visit v, idx: typeEnum.values do
             ed.addItem(v.name)
@@ -220,7 +227,5 @@ impl PropertyList
         {
             self.validateEnum(item)
         }
-
-        item.line.position.height = getThemeMetrics().comboBox_Height
     }
 }

@@ -153,15 +153,23 @@ impl PropertyList
 
     mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parent: *PropertyListItem)
     {
-        let item = addItem(value, data, parent)
+        let item = addItem(value, data, parent, getThemeMetrics().editBox_Height)
 
         if Reflection.hasAttribute(value, SliderMinMax)
         {
             with let slider = SliderCtrl.create(item.line, null)
             {
-                .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
-                .anchorStyle = .X
-                .labelSize   = 0
+                if kind == .Grid
+                {
+                    slider.dockStyle = .CenterKeepSizeVert
+                    .labelSize       = 0
+                }
+                else
+                {
+                    .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                    .anchorStyle = .X
+                    .labelSize   = 0
+                }
             }
 
             item.sliderBox = slider
@@ -187,8 +195,16 @@ impl PropertyList
             {
                 if unit != null do
                     .unit = cast(string) unit
-                .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
-                .anchorStyle = .X
+
+                if kind == .Grid
+                {
+                    .dockStyle = .CenterKeepSizeVert
+                }
+                else
+                {
+                    .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                    .anchorStyle = .X
+                }
             }
 
             var minV, maxV: s64
@@ -272,7 +288,5 @@ impl PropertyList
                     ed.restoreText()
             }
         }
-
-        item.line.position.height = getThemeMetrics().editBox_Height
     }
 }

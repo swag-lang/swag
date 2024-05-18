@@ -21,18 +21,23 @@ struct PropertyList
 
     leftMargin:                s32 = 15
     rightMargin:               s32 = 15
-    nameHeight:                s32 = 25
+    sizeEditValue:             s32 = 200
 
-    nameMarginBefore:          s32 = 25
-    nameMarginAfter:           s32 = 5
-    descMarginAfter:           s32 = 5
+    // For grid kind
+    gridLineMargin:            s32 = 12
+    gridColumnSize:            s32 = 120
+
+    // For list kind
+    listNameHeight:            s32 = 25
+    listNameMarginBefore:      s32 = 25
+    listNameMarginAfter:       s32 = 5
+    listDescMarginAfter:       s32 = 5
+
     enumFlagsMarginBefore:     s32 = 10
     emptyNameMargin:           s32 = 10
-    sizeEditValue:             s32 = 200
 
     sigChanged:                SigArray'closure(*Self, *PropertyListItem)
 
-    columnSize                 = 120
     font0:                     FontFamily
     font1:                     FontFamily
     font2:                     FontFamily
@@ -199,12 +204,12 @@ internal impl PropertyList
         }
     }
 
-    mtd addItem(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertyListItem
+    mtd addItem(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem, height: f32, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertyListItem
     {
-        var line: *StackLayoutCtrl
+        var line: *Wnd
 
         if kind == .Grid do
-            line = StackLayoutCtrl.create(edView, .Left, {0, 0, position.width, nameHeight})
+            line = Wnd.create'Wnd(edView, {0, 0, position.width, height})
         else do
             line = StackLayoutCtrl.create(edView, .TopAutoSize)
 
@@ -213,6 +218,12 @@ internal impl PropertyList
             .margin.x = leftMargin
             .margin.z = rightMargin
             .wndFlags.set(.PreChildsPaint)
+
+            if kind == .Grid
+            {
+                .margin.y = gridLineMargin*0.5
+                .margin.w = gridLineMargin*0.5
+            }
         }
 
         with let item = items.addNewPtr()
@@ -222,6 +233,8 @@ internal impl PropertyList
             .typeValue = value
             .data      = data
             .parent    = parentItem
+            if kind == .Grid do
+                .extendFocus = gridLineMargin*0.5
         }
 
         line.hookOnEvent = closure|self, item|(wnd, evt) { return self.onItemEvent(item, wnd, evt); }
@@ -236,20 +249,21 @@ internal impl PropertyList
             else do
                 dispName = Format.toString("<b>%</b>", Utf8.beautifyName(value.name))
 
-            with let label = Label.create(line, dispName, {0, 0, columnSize, nameHeight})
+            with let label = Label.create(line, dispName, {0, 0, gridColumnSize, listNameHeight})
             {
                 if kind == .Grid
                 {
                     .vertAlignmentText = .Center
                     .horzAlignmentText = .Left
+                    .dockStyle         = .Left
                 }
                 else
                 {
                     .labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
                     .vertAlignmentText = kind == .Grid ? .Center : .Top
                     .horzAlignmentText = .Left
-                    .margin.y          = nameMarginBefore
-                    .margin.w          = nameMarginAfter
+                    .margin.y          = listNameMarginBefore
+                    .margin.w          = listNameMarginAfter
                 }
             }
 
@@ -281,7 +295,7 @@ internal impl PropertyList
                     labelDesc.vertAlignmentText = .Top
                     labelDesc.horzAlignmentText = .Left
                     labelDesc.setText(dispDesc)
-                    labelDesc.margin.w = descMarginAfter
+                    labelDesc.margin.w = listDescMarginAfter
                     item.labelDesc = labelDesc
                 }
             }
@@ -305,7 +319,7 @@ internal impl PropertyList
             {
                 var v: Swag.TypeValue
                 v.name = cast(string) subCateg
-                let item = addItem(v, null, parentItem)
+                let item = addItem(v, null, parentItem, font1.regular.height)
                 item.label.style.setFont(&font1)
                 categs.add({item, 1})
                 newParent = item
@@ -342,7 +356,7 @@ internal impl PropertyList
                 }
                 else
                 {
-                    let item = addItem(value, data, newParent)
+                    let item = addItem(value, data, newParent, font2.regular.height)
                     item.label.style.setFont(&font2)
                     addStruct(typeSubStruct, data, item)
                 }
@@ -404,7 +418,7 @@ impl PropertyList
         {
             var v: Swag.TypeValue
             v.name = category
-            item   = addItem(v, null, null)
+            item   = addItem(v, null, null, font0.regular.height)
             item.label.style.setFont(&font0)
             categs.add({item, 0})
         }

@@ -5,8 +5,9 @@ impl PropertyList
     mtd constructVector(value: Swag.TypeValue, typeStruct: const *Swag.TypeInfoStruct, data: ^u8, parentItem: *PropertyListItem)->*PropertyListItem
     {
         let lineHeight = getThemeMetrics().editBox_Height
-        let item       = addItem(value, data, parentItem)
+        let item       = addItem(value, data, parentItem, lineHeight)
         let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, lineHeight})
+        line.dockStyle = .CenterKeepSizeVert
 
         visit v: typeStruct.fields
         {
@@ -35,7 +36,6 @@ impl PropertyList
             }
         }
 
-        item.line.position.height = getThemeMetrics().editBox_Height
         return item
     }
 }

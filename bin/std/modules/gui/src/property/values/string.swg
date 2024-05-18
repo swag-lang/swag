@@ -10,23 +10,25 @@ impl PropertyList
 
     mtd constructDynamicString(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem)
     {
-        let item = addItem(value, data, parentItem)
-        let ed   = EditBox.create(item.line, dref cast(*String) data)
-        item.editBox = ed
-        ed.sigLoseFocus += closure|self, item|(ed)
+        let item = addItem(value, data, parentItem, getThemeMetrics().editBox_Height)
+        with let ed   = EditBox.create(item.line, dref cast(*String) data)
         {
-            self.validateDynamicString(item)
+            .dockStyle    = .CenterKeepSizeVert
+            .sigLoseFocus += closure|self, item|(ed) { self.validateDynamicString(item); }
         }
 
-        item.line.position.height = getThemeMetrics().editBox_Height
+        item.editBox = ed
     }
 
     mtd constructStaticString(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem)
     {
-        let item = addItem(value, data, parentItem)
-        let ed   = EditBox.create(item.line, dref cast(*string) data)
-        ed.editBoxFlags = .ReadOnly
-        item.editBox    = ed
-        item.line.position.height = getThemeMetrics().editBox_Height
+        let item = addItem(value, data, parentItem, getThemeMetrics().editBox_Height)
+        with let ed = EditBox.create(item.line, dref cast(*string) data)
+        {
+            .dockStyle    = .CenterKeepSizeVert
+            .editBoxFlags = .ReadOnly
+        }
+
+        item.editBox = ed
     }
 }

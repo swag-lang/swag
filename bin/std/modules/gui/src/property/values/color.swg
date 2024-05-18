@@ -5,9 +5,10 @@ impl PropertyList
     mtd constructColor(value: Swag.TypeValue, data: ^u8, parentItem: *PropertyListItem)->*PropertyListItem
     {
         let lineHeight = getThemeMetrics().editBox_Height
-        let item       = addItem(value, data, parentItem)
+        let item       = addItem(value, data, parentItem, lineHeight)
         let color      = cast(*Color) data
         let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, lineHeight})
+        line.dockStyle = .CenterKeepSizeVert
 
         with let ed = EditBox.create(line, "", {0, 0, lineHeight * 3, lineHeight})
         {
@@ -64,7 +65,6 @@ impl PropertyList
             btn.invalidate()
         }
 
-        item.line.position.height = getThemeMetrics().editBox_Height
         return item
     }
 }
