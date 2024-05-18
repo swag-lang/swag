@@ -220,5 +220,7 @@ impl PropertyList
         {
             self.validateEnum(item)
         }
+
+        item.line.position.height = getThemeMetrics().comboBox_Height
     }
 }

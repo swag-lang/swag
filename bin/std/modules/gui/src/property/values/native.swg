@@ -272,5 +272,7 @@ impl PropertyList
                     ed.restoreText()
             }
         }
+
+        item.line.position.height = getThemeMetrics().editBox_Height
     }
 }

@@ -7,7 +7,7 @@ impl PropertyList
         let lineHeight = getThemeMetrics().editBox_Height
         let item       = addItem(value, data, parentItem)
         let color      = cast(*Color) data
-        let line       = Wnd.create'Wnd(item.line, {0, 0, 0, lineHeight})
+        let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, lineHeight})
 
         with let ed = EditBox.create(line, "", {0, 0, lineHeight * 3, lineHeight})
         {
@@ -64,6 +64,7 @@ impl PropertyList
             btn.invalidate()
         }
 
+        item.line.position.height = getThemeMetrics().editBox_Height
         return item
     }
 }

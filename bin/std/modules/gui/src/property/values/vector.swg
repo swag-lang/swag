@@ -6,7 +6,7 @@ impl PropertyList
     {
         let lineHeight = getThemeMetrics().editBox_Height
         let item       = addItem(value, data, parentItem)
-        let line       = Wnd.create'Wnd(item.line, {0, 0, 0, lineHeight})
+        let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, lineHeight})
 
         visit v: typeStruct.fields
         {
@@ -35,6 +35,7 @@ impl PropertyList
             }
         }
 
+        item.line.position.height = getThemeMetrics().editBox_Height
         return item
     }
 }

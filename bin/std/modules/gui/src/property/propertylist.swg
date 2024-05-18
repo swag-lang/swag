@@ -7,22 +7,24 @@ interface IPropertyValue
     mtd construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8, parent: *PropertyListItem)->*PropertyListItem;
 }
 
-#[Swag.EnumFlags]
-enum PropertyListCreateFlags
+enum PropertyListKind
 {
-    Zero     = 0
-    HideDesc         // Hide description and shot it in a tooltip instead
+    List    // This is a flat list
+    Grid    // This is a more compact property grid
 }
 
 struct PropertyList
 {
     using frameWnd:            FrameWnd
 
+    kind                       = PropertyListKind.List
+
     leftMargin:                s32 = 15
     rightMargin:               s32 = 15
+    nameHeight:                s32 = 25
+
     nameMarginBefore:          s32 = 25
     nameMarginAfter:           s32 = 5
-    nameHeight:                s32 = 25
     descMarginAfter:           s32 = 5
     enumFlagsMarginBefore:     s32 = 10
     emptyNameMargin:           s32 = 10
@@ -30,7 +32,7 @@ struct PropertyList
 
     sigChanged:                SigArray'closure(*Self, *PropertyListItem)
 
-    propFlags:                 PropertyListCreateFlags
+    columnSize                 = 120
     font0:                     FontFamily
     font1:                     FontFamily
     font2:                     FontFamily
@@ -60,6 +62,7 @@ struct PropertyListItem
     parent:             *PropertyListItem
 
     label:              *Label
+    description:        String
     labelDesc:          *Label
 
     editBox:            *EditBox
@@ -101,7 +104,7 @@ internal impl PropertyList
         {
         case .MouseLeave:
             let mouseEvt = cast(*MouseEvent) evt
-            if prop.hotItem and prop.hotItem.labelDesc and prop.propFlags.has(.HideDesc) do
+            if prop.hotItem and prop.kind == .Grid do
                 ToolTip.hide(prop.hotItem.line)
             prop.hotItem = null
             wnd.invalidate()
@@ -113,11 +116,11 @@ internal impl PropertyList
             if hit != prop.hotItem
             {
                 prop.hotItem = hit
-                if hit and hit.label and hit.labelDesc and prop.propFlags.has(.HideDesc)
+                if hit and hit.label and prop.kind == .Grid
                 {
                     pt = hit.label.surfaceToLocal(mouseEvt.surfacePos)
                     if hit.label.getClientRect().contains(pt) do
-                        ToolTip.show(hit.line, mouseEvt.surfacePos, hit.labelDesc.name.raw)
+                        ToolTip.show(hit.line, mouseEvt.surfacePos, hit.description)
                 }
 
                 wnd.invalidate()
@@ -198,7 +201,14 @@ internal impl PropertyList
 
     mtd addItem(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertyListItem
     {
-        with let line = StackLayoutCtrl.create(edView, .TopAutoSize)
+        var line: *StackLayoutCtrl
+
+        if kind == .Grid do
+            line = StackLayoutCtrl.create(edView, .Left, {0, 0, position.width, nameHeight})
+        else do
+            line = StackLayoutCtrl.create(edView, .TopAutoSize)
+
+        with line
         {
             .margin.x = leftMargin
             .margin.z = rightMargin
@@ -226,13 +236,21 @@ internal impl PropertyList
             else do
                 dispName = Format.toString("<b>%</b>", Utf8.beautifyName(value.name))
 
-            with let label = Label.create(line, dispName, {0, 0, position.width, nameHeight})
+            with let label = Label.create(line, dispName, {0, 0, columnSize, nameHeight})
             {
-                .labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
-                .vertAlignmentText = .Top
-                .horzAlignmentText = .Left
-                .margin.y          = nameMarginBefore
-                .margin.w          = nameMarginAfter
+                if kind == .Grid
+                {
+                    .vertAlignmentText = .Center
+                    .horzAlignmentText = .Left
+                }
+                else
+                {
+                    .labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
+                    .vertAlignmentText = kind == .Grid ? .Center : .Top
+                    .horzAlignmentText = .Left
+                    .margin.y          = nameMarginBefore
+                    .margin.w          = nameMarginAfter
+                }
             }
 
             item.label  = label
@@ -252,17 +270,20 @@ internal impl PropertyList
         {
             item.filter += " "
             item.filter += cast(string) dispDesc
+            item.description = cast(string) dispDesc
+
             if flags.has(.Description)
             {
-                let labelDesc = Label.create(line, "", {0, 0, position.width, 0})
-                labelDesc.labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
-                labelDesc.vertAlignmentText = .Top
-                labelDesc.horzAlignmentText = .Left
-                labelDesc.setText(dispDesc)
-                labelDesc.margin.w = descMarginAfter
-                if propFlags.has(.HideDesc) do
-                    labelDesc.hide()
-                item.labelDesc = labelDesc
+                if kind != .Grid
+                {
+                    let labelDesc = Label.create(line, "", {0, 0, position.width, 0})
+                    labelDesc.labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
+                    labelDesc.vertAlignmentText = .Top
+                    labelDesc.horzAlignmentText = .Left
+                    labelDesc.setText(dispDesc)
+                    labelDesc.margin.w = descMarginAfter
+                    item.labelDesc = labelDesc
+                }
             }
         }
 
@@ -298,13 +319,10 @@ internal impl PropertyList
                 constructEnum(value, typeEnum, data, newParent)
 
             case value.pointedType == Core.String:
-                constructString(value, data, newParent)
+                constructDynamicString(value, data, newParent)
 
             case Reflection.isString(value.pointedType):
-                let item = addItem(value, data, newParent)
-                let ed   = EditBox.create(item.line, dref cast(*string) data)
-                ed.editBoxFlags = .ReadOnly
-                item.editBox    = ed
+                constructStaticString(value, data, newParent)
 
             case Reflection.isBool(value.pointedType):
                 constructBool(value, data, newParent)
@@ -337,13 +355,13 @@ impl PropertyList
 {
     // Creates a new PropertyList instance
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = {}, flags = PropertyListCreateFlags.Zero, id: WndId = null)->*PropertyList
+    func create(parent: *Wnd, position: Math.Rectangle = {}, kind = PropertyListKind.List, id: WndId = null)->*PropertyList
     {
         let ed = Wnd.create'PropertyList(parent, "", position, id)
 
         with ed
         {
-            .propFlags = flags
+            .kind = kind
 
             .scrollWnd               = .createView'ScrollWnd()
             .scrollWnd.dockStyle     = .Center

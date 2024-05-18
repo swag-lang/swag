@@ -14,7 +14,7 @@ impl PropertyListCtrl
 {
     // Creates a new PropertyList instance
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = {}, flags = PropertyListCreateFlags.Zero, id: WndId = null)->*PropertyListCtrl
+    func create(parent: *Wnd, position: Math.Rectangle = {}, kind = PropertyListKind.List, id: WndId = null)->*PropertyListCtrl
     {
         let ed = Wnd.create'PropertyListCtrl(parent, "", position, id)
 
@@ -36,7 +36,7 @@ impl PropertyListCtrl
                 ed.prop.scrollWnd.setScrollPos(0, pos.y)
             }
 
-            .prop = PropertyList.create(.splitter, flags: #self.flags)
+            .prop = PropertyList.create(.splitter, kind: kind)
 
             .splitter.addPane(.list)
             .splitter.addPane(.prop)
