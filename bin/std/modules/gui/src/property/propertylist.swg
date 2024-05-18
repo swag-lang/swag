@@ -34,7 +34,6 @@ struct PropertyList
     listDescMarginAfter:       s32 = 5
 
     enumFlagsMarginBefore:     s32 = 10
-    emptyNameMargin:           s32 = 10
 
     sigChanged:                SigArray'closure(*Self, *PropertyListItem)
 

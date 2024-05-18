@@ -223,7 +223,7 @@ impl IWnd for EditBox
 
         if !unit.isEmpty()
         {
-            bc.painter.drawString(clientRect.x + sizeX, y, unit, fontR, colorUnit)
+            bc.painter.drawString(clientRect.x + sizeX + metrics.editBox_UnitMargin, y, unit, fontR, colorUnit)
         }
 
         // Caret

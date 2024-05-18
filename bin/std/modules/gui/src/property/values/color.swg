@@ -10,25 +10,29 @@ impl PropertyList
         let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, lineHeight})
         line.dockStyle = .CenterKeepSizeVert
 
-        with let ed = EditBox.create(line, "", {0, 0, lineHeight * 3, lineHeight})
-        {
-            .dockStyle = .Left
-            .margin.z  = 4
-            .setInputX64()
-            .sigLoseFocus += closure|self, color, item|(ed)
-            {
-                color.argb = cast(u32) catch StrConv.parseX64(ed.text).value
-                self.hasChanged(item)
-            }
-        }
+        let width = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+        const MarginBtn = 4
+        const WidthBtn = 60
 
-        with let btn = IconButton.create(line, {}, {0, 0, 60, lineHeight})
+        with let btn = IconButton.create(line, {}, {0, 0, WidthBtn, lineHeight})
         {
             .dockStyle   = .Left
             .arrowPos    = .RightDown
             .checkedForm = .None
             .setForm(.RoundSquare)
             .iconBtnFlags.add(.Popup | .CheckableToggle)
+        }
+
+        with let ed = EditBox.create(line, "", {0, 0, width - MarginBtn - WidthBtn, lineHeight})
+        {
+            .dockStyle = .Left
+            .margin.z  = MarginBtn
+            .setInputX64()
+            .sigLoseFocus += closure|self, color, item|(ed)
+            {
+                color.argb = cast(u32) catch StrConv.parseX64(ed.text).value
+                self.hasChanged(item)
+            }
         }
 
         btn.sigPaintIcon = closure|color|(btn, bc, pos)

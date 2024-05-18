@@ -19,20 +19,23 @@ impl PropertyList
 
     mtd constructBool(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem)
     {
-        let dispDesc = Reflection.getAttributeValue(value, PropertyList.Description, "desc")
         var flags = AddItemFlags.Name
-        if dispDesc != null do
+        let dispDesc = Reflection.getAttributeValue(value, PropertyList.Description, "desc")
+
+        // Display description instead of field name in list mode
+        if kind == .List and dispDesc != null do
             flags.remove(.Name)
 
-        let item = addItem(value, data, parentItem, flags)
+        let item = addItem(value, data, parentItem, getThemeMetrics().btnCheck_Size, flags)
 
         let lineHeight = getThemeMetrics().btnPush_Height
-        let line       = Wnd.create'Wnd(item.line)
+        let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, lineHeight})
+        line.dockStyle = .CenterKeepSizeVert
 
         if !flags.has(.Name)
         {
-            line.margin.y = emptyNameMargin
-            item.extendFocus = 3
+            line.margin.y = listNameMarginBefore
+            line.margin.w = listNameMarginAfter
         }
 
         with let ed = CheckButton.create(line, "", {0, 0, lineHeight, 0})
@@ -40,18 +43,21 @@ impl PropertyList
             .dockStyle = .Left
         }
 
-        with let label = Label.create(line, "", {lineHeight, 0, position.width - lineHeight})
+        if kind == .List
         {
-            .dockStyle = .Center
-            .labelFlags |= .WordWrap | .AutoHeight
-            .horzAlignmentText = .Left
-            .setText(dispDesc == null ? "" : cast(string) dispDesc)
-        }
+            with let label = Label.create(line, "", {lineHeight, 0, position.width - lineHeight})
+            {
+                .dockStyle = .Center
+                .labelFlags |= .WordWrap | .AutoHeight
+                .horzAlignmentText = .Left
+                .setText(dispDesc == null ? "" : cast(string) dispDesc)
+            }
 
-        item.sigResize += closure|label, line, lineHeight|(item)
-        {
-            label.autoHeight()
-            line.position.height = Math.max(lineHeight, label.position.height)
+            item.sigResize += closure|label, line, lineHeight|(item)
+            {
+                label.autoHeight()
+                line.position.height = Math.max(lineHeight, label.position.height)
+            }
         }
 
         item.checkBox = ed

@@ -11,9 +11,18 @@ impl PropertyList
     mtd constructDynamicString(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem)
     {
         let item = addItem(value, data, parentItem, getThemeMetrics().editBox_Height)
-        with let ed   = EditBox.create(item.line, dref cast(*String) data)
+        with let ed = EditBox.create(item.line, dref cast(*String) data)
         {
-            .dockStyle    = .CenterKeepSizeVert
+            if kind == .Grid
+            {
+                .dockStyle = .CenterKeepSizeVert
+            }
+            else
+            {
+                .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                .anchorStyle = .X
+            }
+
             .sigLoseFocus += closure|self, item|(ed) { self.validateDynamicString(item); }
         }
 
@@ -25,7 +34,16 @@ impl PropertyList
         let item = addItem(value, data, parentItem, getThemeMetrics().editBox_Height)
         with let ed = EditBox.create(item.line, dref cast(*string) data)
         {
-            .dockStyle    = .CenterKeepSizeVert
+            if kind == .Grid
+            {
+                .dockStyle = .CenterKeepSizeVert
+            }
+            else
+            {
+                .maxSize.x   = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                .anchorStyle = .X
+            }
+
             .editBoxFlags = .ReadOnly
         }
 
