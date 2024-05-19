@@ -164,7 +164,7 @@ impl IWnd for Wnd
             itf.onSetThemeEvent(cast(*SetThemeEvent) evt)
         case Timer:
             itf.onTimerEvent(cast(*TimerEvent) evt)
-        case SetFocus, KillFocus:
+        case SetFocus, KillFocus, CanSetFocus, CanKillFocus:
             itf.onFocusEvent(cast(*FocusEvent) evt)
         case Command:
             if executeAction(cast(*CommandEvent) evt) do
@@ -200,9 +200,9 @@ impl IWnd for Wnd
 
     mtd impl onSysCommandEvent(evt: *SysCommandEvent) { evt.accepted = false; }
     mtd impl onSysUserEvent(evt: *SysUserEvent) { evt.accepted = false; }
-    mtd impl onFocusEvent(evt: *FocusEvent) { evt.accepted = false; }
     mtd impl onKeyEvent(evt: *KeyEvent) { evt.accepted = false; }
     mtd impl onMouseEvent(evt: *MouseEvent) { evt.accepted = false; }
+    mtd impl onFocusEvent(evt: *FocusEvent) { evt.accepted = false; }
     mtd impl onCommandEvent(evt: *CommandEvent) { evt.accepted = false; }
     mtd impl onComputeStateEvent(evt: *CommandStateEvent) { evt.accepted = false; }
     mtd impl onApplyStateEvent(evt: *CommandStateEvent) { evt.accepted = false; }
@@ -1046,6 +1046,26 @@ impl Wnd
             return
 
         let last = surface.app.keybFocusWnd
+
+        // Ask the window with the current focus if we can steal it
+        if last
+        {
+            var evt = FocusEvent{kind: EventKind.CanKillFocus}
+            evt.other = self
+            last.sendEvent(&evt)
+            if !evt.canChangeFocus do
+                return
+        }
+
+        // Ask the new window if it wants the focus
+        {
+            var evt = FocusEvent{kind: EventKind.CanSetFocus}
+            evt.other = last
+            sendEvent(&evt)
+            if !evt.canChangeFocus do
+                return
+        }
+
         if last
         {
             var evt = FocusEvent{kind: EventKind.KillFocus}
@@ -1057,6 +1077,7 @@ impl Wnd
         }
 
         surface.setFocus()
+
         var evt = FocusEvent{kind: EventKind.SetFocus}
         evt.other                = last
         surface.app.keybFocusWnd = self

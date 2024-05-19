@@ -129,6 +129,11 @@ internal impl Properties
 
         switch evt.kind
         {
+        case .CanSetFocus:
+            let focusEvt = cast(*FocusEvent) evt
+            if prop.cursorSet do
+                focusEvt.canChangeFocus = false
+
         case .MousePressed:
             if prop.cursorSet
             {

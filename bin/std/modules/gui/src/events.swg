@@ -28,6 +28,8 @@ enum EventKind
     Timer
     SetFocus
     KillFocus
+    CanSetFocus
+    CanKillFocus
     Command
     ComputeCommandState
     ApplyCommandState
@@ -177,6 +179,7 @@ struct FocusEvent
 {
     using base:     Event
     other:          *Wnd
+    canChangeFocus  = true
 }
 
 struct SysUserEvent
