@@ -34,17 +34,14 @@ struct PropertyList
     listNameMarginAfter:       s32 = 5
     listDescMarginAfter:       s32 = 5
 
-    enumFlagsMarginBefore:     s32 = 10
-
     sigChanged:                SigArray'closure(*Self, *PropertyListItem)
 
-    font0:                     FontFamily
-    font1:                     FontFamily
-    font2:                     FontFamily
+    fontSection:               FontFamily
+    fontCategory:              FontFamily
     scrollWnd:                 *ScrollWnd
     edView:                    *PropertyListView
     items:                     ArrayPtr'PropertyListItem
-    categs:                    Array'{ item: *PropertyListItem, lvl: s32 }
+    sections:                  Array'{ item: *PropertyListItem, lvl: s32 }
     hotItem:                   *PropertyListItem
     cursorSet:                 bool
     resizingColumn:            bool
@@ -53,9 +50,17 @@ struct PropertyList
 #[Swag.EnumFlags]
 enum AddItemFlags
 {
-    Zero
+    Zero = 0
     Name
     Description
+}
+
+#[Swag.EnumFlags]
+enum ItemFlags
+{
+    Zero = 0
+    NoSeparator
+    CategoryBk
 }
 
 struct PropertyListItem
@@ -67,6 +72,7 @@ struct PropertyListItem
     typeValue:          Swag.TypeValue
     forceShow:          *Wnd
     parent:             *PropertyListItem
+    flags:              ItemFlags
 
     label:              *Label
     description:        String
@@ -153,7 +159,7 @@ internal impl PropertyList
             if prop.resizingColumn
             {
                 prop.setColumnSize(acast (pt.x - prop.leftMargin - prop.gridMarginColumn * 0.5))
-                break
+                return true
             }
 
             // Hot item
@@ -175,7 +181,7 @@ internal impl PropertyList
             if prop.kind == .Grid
             {
                 let x = prop.getColumnX()
-                if pt.x >= x - 3 and pt.x <= x + 3
+                if pt.x >= x - 3 and pt.x <= x + 3 and hit and !hit.flags.has(.NoSeparator)
                 {
                     if !prop.cursorSet do
                         prop.getApp().pushCursor(Cursor.from(.SizeWE))
@@ -228,14 +234,26 @@ internal impl PropertyList
             var r = wndItem.getClientRect()
             r.moveTop(wndItem.childs.front().position.y)
             r.inflate(item.extendFocus)
+            r.x     = -leftMargin + 1
+            r.width = edView.position.width - 1
 
             if kind == .Grid
             {
                 var r1 = r
                 r1.height += 1
+
+                if !item.flags.has(.NoSeparator)
+                {
+                    let x = cast(f32) gridColumnSize + leftMargin - gridMarginColumn * 0.5
+                    painter.drawLine(x, r1.y, x, r1.bottom(), getThemeColors().propList_GridBorder, 1)
+                }
+
+                if item.flags.has(.CategoryBk)
+                {
+                    painter.fillRect(r1, colors.propList_CategBk)
+                }
+
                 painter.drawRect(r1, colors.propList_GridBorder)
-                let x = cast(f32) gridColumnSize + leftMargin - gridMarginColumn * 0.5
-                painter.drawLine(x, r1.y, x, r1.bottom(), getThemeColors().propList_GridBorder, 1)
             }
 
             painter.fillRoundRect(r, 4, 4, item.aniFocusBk.cur())
@@ -309,12 +327,20 @@ internal impl PropertyList
         // Name
         if flags.has(.Name)
         {
-            var dispName: String
+            var dispNameContent: String
+
             let attrName  = Reflection.getAttributeValue(value, PropertyList.Name, "name")
             if attrName != null do
-                dispName = Format.toString("<b>%</b>", cast(string) attrName)
+                dispNameContent = cast(string) attrName
             else do
-                dispName = Format.toString("<b>%</b>", Utf8.beautifyName(value.name))
+                dispNameContent = Utf8.beautifyName(value.name)
+
+            // Name is bold in list mode, and regular in grid mode
+            var dispName: String
+            if kind == .Grid do
+                dispName = dispNameContent
+            else do
+                dispName = Format.toString("<b>%</b>", dispNameContent)
 
             with let label = Label.create(line, dispName, {0, 0, gridColumnSize, listNameHeight})
             {
@@ -381,15 +407,15 @@ internal impl PropertyList
         {
             let data = addr + value.offset
 
-            // Sub Category
-            let subCateg = Reflection.getAttributeValue(value, PropertyList.SubCategory, "name")
+            // Category
+            let subCateg = Reflection.getAttributeValue(value, PropertyList.Category, "name")
             if subCateg != null
             {
-                var v: Swag.TypeValue
-                v.name = cast(string) subCateg
-                let item = addItem(v, null, parentItem, font1.regular.height)
-                item.label.style.setFont(&font1)
-                categs.add({item, 1})
+                var v: Swag.TypeValue{name: cast(string) subCateg}
+                let item = addItem(v, null, parentItem, fontCategory.regular.height)
+                item.label.style.setFont(&fontCategory)
+                item.flags.add(.CategoryBk)
+                sections.add({item, 1})
                 newParent = item
             }
 
@@ -424,8 +450,7 @@ internal impl PropertyList
                 }
                 else
                 {
-                    let item = addItem(value, data, newParent, font2.regular.height)
-                    item.label.style.setFont(&font2)
+                    let item = addItem(value, data, newParent, getThemeMetrics().editBox_Height)
                     addStruct(typeSubStruct, data, item)
                 }
             }
@@ -457,14 +482,12 @@ impl PropertyList
             .edView.spacing    = 0
             .edView.wndFlags |= .NoScroll
 
-            const Font0Size = 30'u32
-            const Font1Size = 24'u32
-            const Font2Size = 20'u32
+            const FontSectionSize = 30'u32
+            const FontCategorySize = 24'u32
 
             let theme = parent.getTheme()
-            .font0 = theme.createDefaultFontfamily(Font0Size)
-            .font1 = theme.createDefaultFontfamily(Font1Size)
-            .font2 = theme.createDefaultFontfamily(Font2Size)
+            .fontSection = theme.createDefaultFontfamily(FontSectionSize)
+            .fontCategory = theme.createDefaultFontfamily(FontCategorySize)
 
             .hookOnChildEvent = func(wnd, evt) { return onHookChildEvent(wnd, evt); }
         }
@@ -474,21 +497,21 @@ impl PropertyList
 
     // Add a new struct to display.
     #[Swag.Overload]
-    mtd addStruct(val: any, category: string = null)
+    mtd addStruct(val: any, section: string = null)
     {
         let dataof = @dataof(val)
         let typeof = @kindof(val)
         Debug.assert(typeof.kind == .Struct)
 
-        // Category
+        // Section
         var item: *PropertyListItem
-        if category != null
+        if section != null
         {
-            var v: Swag.TypeValue
-            v.name = category
-            item   = addItem(v, null, null, font0.regular.height)
-            item.label.style.setFont(&font0)
-            categs.add({item, 0})
+            var v: Swag.TypeValue{name: section}
+            item = addItem(v, null, null, fontSection.regular.height)
+            item.flags.add(.CategoryBk)
+            item.label.style.setFont(&fontSection)
+            sections.add({item, 0})
         }
 
         let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
@@ -541,6 +564,8 @@ impl PropertyList
         gridColumnSize = Math.clamp(size, gridMarginColumn, cast(s32) position.width - gridMarginColumn - leftMargin - rightMargin)
         visit item: items
         {
+            if !item.label do
+                continue
             item.label.position.width = gridColumnSize
         }
 

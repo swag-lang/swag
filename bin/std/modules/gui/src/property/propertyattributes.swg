@@ -3,8 +3,8 @@ using Core, Pixel
 
 impl PropertyList
 {
-    // Start a new sub category
-    attr SubCategory(name: string)
+    // Start a new category
+    attr Category(name: string)
 
     // Change the field display name
     attr Name(name: string)

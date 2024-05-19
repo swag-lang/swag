@@ -339,4 +339,5 @@ struct ThemeColors
     propList_HotBk:                    Color = 0x10888888
     propList_HotBorder:                Color = Transparent
     propList_GridBorder:               Color = Gray7
+    propList_CategBk:                  Color = Color.getLighter(Color.fromArgb(Gray5), 0.05)
 }

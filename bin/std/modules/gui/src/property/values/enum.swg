@@ -139,13 +139,16 @@ impl PropertyList
     mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertyListItem)
     {
         let item = addItem(value, data, parentItem, listNameHeight)
+        item.flags.add(.NoSeparator)
+
         visit v: typeEnum.values
         {
             with let line = Wnd.create'Wnd(edView)
             {
                 .margin.x = leftMargin
                 .margin.z = rightMargin
-                .margin.y = enumFlagsMarginBefore
+                .margin.y = listNameMarginAfter
+                .margin.w = listNameMarginAfter
                 .wndFlags.set(.PreChildsPaint)
             }
 
@@ -158,6 +161,7 @@ impl PropertyList
                 .filter      = item.filter
                 .line        = line
                 .forceShow   = item.line
+                .flags.add(.NoSeparator)
             }
 
             line.hookOnEvent = closure|self, itemB|(wnd, evt) { return self.onItemEvent(itemB, wnd, evt); }

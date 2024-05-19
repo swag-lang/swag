@@ -58,12 +58,12 @@ impl PropertyListCtrl
         return ed
     }
 
-    internal mtd fillList()
+    internal mtd fillSections()
     {
         list.clear()
 
         var parentLine: *ListLine
-        visit &it: prop.categs
+        visit &it: prop.sections
         {
             if it.item1 == 0 do
                 parentLine = null
@@ -82,6 +82,6 @@ impl PropertyListCtrl
     mtd addStruct(val: any, category: string = null)
     {
         prop.addStruct(val, category)
-        fillList()
+        fillSections()
     }
 }
