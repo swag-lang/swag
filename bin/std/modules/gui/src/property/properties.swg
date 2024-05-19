@@ -36,29 +36,29 @@ struct Properties
     gridMarginColumn:     s32 = 16
 
     // For list kind
-    listNameHeight:            s32 = 25
-    listNameMarginBefore:      s32 = 25
-    listNameMarginAfter:       s32 = 5
-    listDescMarginAfter:       s32 = 5
+    listNameHeight:           s32 = 25
+    listNameMarginBefore:     s32 = 25
+    listNameMarginAfter:      s32 = 5
+    listDescMarginAfter:      s32 = 5
 
-    sigChanged:                SigArray'closure(*Self, *PropertiesItem)
+    sigChanged:               SigArray'closure(*Self, *PropertiesItem)
 
-    fontSection:               FontFamily
-    fontCategory:              FontFamily
-    scrollWnd:                 *ScrollWnd
-    edView:                    *PropertiesView
-    items:                     ArrayPtr'PropertiesItem
-    sections:                  Array'{ item: *PropertiesItem, lvl: s32 }
-    hotItem:                   *PropertiesItem
-    stringFilter:              String
-    cursorSet:                 bool
-    resizingColumn:            bool
+    fontSection:              FontFamily
+    fontCategory:             FontFamily
+    scrollWnd:                *ScrollWnd
+    edView:                   *PropertiesView
+    items:                    ArrayPtr'PropertiesItem
+    sections:                 Array'{ item: *PropertiesItem, lvl: s32 }
+    hotItem:                  *PropertiesItem
+    stringFilter:             String
+    cursorSet:                bool
+    resizingColumn:           bool
 }
 
 #[Swag.EnumFlags]
 enum AddItemFlags
 {
-    Zero = 0
+    Zero        = 0
     Name
     Description
 }
@@ -66,7 +66,7 @@ enum AddItemFlags
 #[Swag.EnumFlags]
 enum ItemFlags
 {
-    Zero = 0
+    Zero        = 0
     NoSeparator
     CategoryBk
 }
@@ -366,7 +366,7 @@ internal impl Properties
         {
             var dispNameContent: String
 
-            let attrName  = Reflection.getAttributeValue(value, Properties.Name, "name")
+            let attrName = Reflection.getAttributeValue(value, Properties.Name, "name")
             if attrName != null do
                 dispNameContent = cast(string) attrName
             else do
@@ -452,7 +452,7 @@ internal impl Properties
             let subCateg = Reflection.getAttributeValue(value, Properties.Category, "name")
             if subCateg != null
             {
-                var v: Swag.TypeValue{name: cast(string) subCateg}
+                var v:   Swag.TypeValue{name: cast(string) subCateg}
                 let item = addItem(v, null, parentItem, fontCategory.regular.height)
                 item.label.style.setFont(&fontCategory)
                 item.flags.add(.CategoryBk)
@@ -524,12 +524,21 @@ impl Properties
             .edView.spacing    = 0
             .edView.wndFlags |= .NoScroll
 
-            const FontSectionSize = 30'u32
-            const FontCategorySize = 24'u32
-
             let theme = parent.getTheme()
-            .fontSection = theme.createDefaultFontfamily(FontSectionSize)
-            .fontCategory = theme.createDefaultFontfamily(FontCategorySize)
+
+            if kind == .List
+            {
+                const FontSectionSize  = 30'u32
+                const FontCategorySize = 24'u32
+                .fontSection  = theme.createDefaultFontfamily(FontSectionSize)
+                .fontCategory = theme.createDefaultFontfamily(FontCategorySize)
+            }
+            else
+            {
+                const FontSectionSize = 24'u32
+                .fontSection  = theme.createDefaultFontfamily(FontSectionSize)
+                .fontCategory = theme.res.fontDefault
+            }
 
             .hookOnChildEvent = func(wnd, evt) { return onHookChildEvent(wnd, evt); }
         }
