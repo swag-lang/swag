@@ -160,7 +160,7 @@ impl Properties
                 .extendFocus = 5
                 .filter      = item.filter
                 .line        = line
-                .forceShow   = item.line
+                .parent      = item
                 .flags.add(.NoSeparator)
             }
 

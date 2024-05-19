@@ -14,16 +14,19 @@ const UX = 300
 #[Swag.Using(Gui.Properties)]
 struct NoiseParams
 {
+    #[RecalcLayout]
     kind           = Noise.FastNoiseKind.Perlin
-    seed           = 1337
 
-    #[Description("The number of layers of noise. More octaves create a more varied look but are also more resource-intensive to calculate")]
-    #[MinMax(1, 10)]
-    octaves        = 3
+    seed           = 1337
 
     #[SliderMinMax(0.01, 1)]
     #[Description("The period in which we sample the noise. A higher frequency results in more frequent noise change")]
     frequency      = 0.01
+
+    #[Description("The number of layers of noise. More octaves create a more varied look but are also more resource-intensive to calculate")]
+    #[MinMax(1, 10)]
+    #[RecalcLayout]
+    octaves        = 3
 
     #[SliderMinMax(1.0, 3.0)]
     #[Description("The rate of change of the frequency for each successive octave. A 'lacunarity' value of 1 results in each octave having the same frequency")]
@@ -32,6 +35,32 @@ struct NoiseParams
     #[SliderMinMax(0.01, 0.5)]
     #[Description("The scaling factor applied to each octave. 'gain' is only used when 'octaves' is set to a value higher than 1.")]
     gain           = 0.5
+}
+
+impl IPropertyNotify for NoiseParams
+{
+    mtd impl hasChangedItem(list: *Properties, item: *PropertiesItem)
+    {
+    }
+
+    mtd impl isVisibleItem(list: *Properties, item: *PropertiesItem)->bool
+    {
+        let isFractal = kind != Noise.FastNoiseKind.Perlin and kind != Noise.FastNoiseKind.Value
+
+        switch item.typeValue.name
+        {
+        case @nameof(NoiseParams.octaves):
+            return isFractal
+
+        case @nameof(NoiseParams.lacunarity):
+            return isFractal and octaves > 1
+
+        case @nameof(NoiseParams.gain):
+            return isFractal and octaves > 1
+        }
+
+        return true
+    }
 }
 
 var g_NoiseParams: NoiseParams

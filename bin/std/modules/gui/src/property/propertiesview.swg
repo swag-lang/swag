@@ -1,13 +1,13 @@
 using Core, Pixel
 
 #[Swag.Opaque]
-public struct PropertyListView
+public struct PropertiesView
 {
     using stackWnd:     StackLayoutCtrl
-    ed:                 *PropertyList
+    ed:                 *Properties
 }
 
-impl IWnd for PropertyListView
+impl IWnd for PropertiesView
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
@@ -17,7 +17,7 @@ impl IWnd for PropertyListView
 
         applyLayout()
 
-        var lastItem: *PropertyListItem
+        var lastItem: *PropertiesItem
         visit item: ed.items
         {
             if item.label do
