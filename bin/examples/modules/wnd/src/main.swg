@@ -34,7 +34,7 @@ const MAX_PAGES = 8
     let view6 = Wnd.create'Wnd(tab)
     tab.addItem("LayoutCtrl", {}, view6)
     let view7 = Wnd.create'Wnd(tab)
-    tab.addItem("PropertyList", {}, view7)
+    tab.addItem("Properties", {}, view7)
 
     createView0(tab, view0)
     createView1(tab, view1)

@@ -1,6 +1,6 @@
-impl PropertyList
+impl Properties
 {
-    func refreshNative(item: *PropertyListItem)
+    func refreshNative(item: *PropertiesItem)
     {
         let typeNative = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
         let data       = item.data
@@ -75,7 +75,7 @@ impl PropertyList
         }
     }
 
-    mtd validateNative(item: *PropertyListItem)
+    mtd validateNative(item: *PropertiesItem)
     {
         let typeNative = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
         let data       = item.data
@@ -151,7 +151,7 @@ impl PropertyList
         hasChanged(item)
     }
 
-    mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parent: *PropertyListItem)
+    mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parent: *PropertiesItem)
     {
         let item = addItem(value, data, parent, getThemeMetrics().editBox_Height)
 

@@ -1,6 +1,6 @@
-impl PropertyList
+impl Properties
 {
-    mtd validateDynamicString(item: *PropertyListItem)
+    mtd validateDynamicString(item: *PropertiesItem)
     {
         var data = cast(*String) item.data
         if item.editBox do
@@ -8,7 +8,7 @@ impl PropertyList
         hasChanged(item)
     }
 
-    mtd constructDynamicString(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem)
+    mtd constructDynamicString(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
     {
         let item = addItem(value, data, parentItem, getThemeMetrics().editBox_Height)
         with let ed = EditBox.create(item.line, dref cast(*String) data)
@@ -24,7 +24,7 @@ impl PropertyList
         item.editBox = ed
     }
 
-    mtd constructStaticString(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem)
+    mtd constructStaticString(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
     {
         let item = addItem(value, data, parentItem, getThemeMetrics().editBox_Height)
         with let ed = EditBox.create(item.line, dref cast(*string) data)

@@ -1,6 +1,6 @@
-impl PropertyList
+impl Properties
 {
-    func refreshEnumFlags(item: *PropertyListItem)
+    func refreshEnumFlags(item: *PropertiesItem)
     {
         if item.checkBox
         {
@@ -26,7 +26,7 @@ impl PropertyList
         }
     }
 
-    func refreshEnum(item: *PropertyListItem)
+    func refreshEnum(item: *PropertiesItem)
     {
         if item.comboBox
         {
@@ -73,7 +73,7 @@ impl PropertyList
         }
     }
 
-    mtd validateEnumFlags(item: *PropertyListItem)
+    mtd validateEnumFlags(item: *PropertiesItem)
     {
         if item.checkBox
         {
@@ -104,7 +104,7 @@ impl PropertyList
         hasChanged(item)
     }
 
-    mtd validateEnum(item: *PropertyListItem)
+    mtd validateEnum(item: *PropertiesItem)
     {
         if item.comboBox
         {
@@ -136,7 +136,7 @@ impl PropertyList
         hasChanged(item)
     }
 
-    mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertyListItem)
+    mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
     {
         let item = addItem(value, data, parentItem, listNameHeight)
         item.flags.add(.NoSeparator)
@@ -172,7 +172,7 @@ impl PropertyList
             ed.userData    = cast,unconst(*void) v.value
             itemB.checkBox = ed
 
-            let dispDesc = Reflection.getAttributeValue(v, PropertyList.Description, "desc")
+            let dispDesc = Reflection.getAttributeValue(v, Properties.Description, "desc")
             itemB.filter += cast(string) dispDesc
 
             with let label1 = Label.create(line, "", {lineHeight, 0, position.width - lineHeight})
@@ -199,7 +199,7 @@ impl PropertyList
         }
     }
 
-    mtd constructEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertyListItem)
+    mtd constructEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
     {
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {

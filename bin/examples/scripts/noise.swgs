@@ -11,7 +11,7 @@ var g_Image:   Image
 const W, H = 1024
 const UX = 300
 
-#[Swag.Using(Gui.PropertyList)]
+#[Swag.Using(Gui.Properties)]
 struct NoiseParams
 {
     kind           = Noise.FastNoiseKind.Perlin
@@ -52,7 +52,7 @@ func compute()
 
 func createUI(wnd: *Wnd)
 {
-    with let prop = PropertyListCtrl.create(wnd, {0, 0, UX, H-70}, .Grid)
+    with let prop = PropertiesCtrl.create(wnd, {0, 0, UX, H-70}, .Grid)
     {
         .padding = 10
         .backgroundStyle = .Window

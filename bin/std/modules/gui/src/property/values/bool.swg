@@ -1,6 +1,6 @@
-impl PropertyList
+impl Properties
 {
-    func refreshBool(item: *PropertyListItem)
+    func refreshBool(item: *PropertiesItem)
     {
         if item.checkBox
         {
@@ -9,7 +9,7 @@ impl PropertyList
         }
     }
 
-    mtd validateBool(item: *PropertyListItem)
+    mtd validateBool(item: *PropertiesItem)
     {
         var data = cast(*bool) item.data
         if item.checkBox do
@@ -17,10 +17,10 @@ impl PropertyList
         hasChanged(item)
     }
 
-    mtd constructBool(value: Swag.TypeValue, data: *u8, parentItem: *PropertyListItem)
+    mtd constructBool(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
     {
         var flags = AddItemFlags.Name
-        let dispDesc = Reflection.getAttributeValue(value, PropertyList.Description, "desc")
+        let dispDesc = Reflection.getAttributeValue(value, Properties.Description, "desc")
 
         // Display description instead of field name in list mode
         if kind == .List and dispDesc != null do

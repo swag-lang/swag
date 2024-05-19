@@ -1,5 +1,5 @@
 using Core, Gui, Pixel
-using PropertyList
+using Properties
 
 enum Enum
 {
@@ -71,11 +71,11 @@ var aa: AA
 
 func createView7(_tabView: *Tab, view: *Wnd)
 {
-    let lt = PropertyList.create(view, {5, 55, 480, 600}, .Grid)
+    let lt = Properties.create(view, {5, 55, 480, 600}, .Grid)
     aa.str = "String content"
     lt.addStruct(aa)
 
-    let lt1 = PropertyListCtrl.create(view, {500, 10, 600, 600})
+    let lt1 = PropertiesCtrl.create(view, {500, 10, 600, 600})
     lt1.addStruct(aa)
     lt1.splitter.setPaneSize(0, 150)
 

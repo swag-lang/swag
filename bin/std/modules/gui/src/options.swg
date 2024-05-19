@@ -1,5 +1,5 @@
 #global public
-using Core, Serialization, PropertyList
+using Core, Serialization, Properties
 
 struct ApplicationOptions
 {

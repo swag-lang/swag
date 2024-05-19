@@ -1,8 +1,8 @@
 using Core, Core.Math, Pixel
 
-impl PropertyList
+impl Properties
 {
-    mtd constructVector(value: Swag.TypeValue, typeStruct: const *Swag.TypeInfoStruct, data: ^u8, parentItem: *PropertyListItem)->*PropertyListItem
+    mtd constructVector(value: Swag.TypeValue, typeStruct: const *Swag.TypeInfoStruct, data: ^u8, parentItem: *PropertiesItem)->*PropertiesItem
     {
         let lineHeight = getThemeMetrics().editBox_Height
         let item       = addItem(value, data, parentItem, lineHeight)
@@ -42,7 +42,7 @@ impl PropertyList
 
 public impl IPropertyValue for Math.Vector2
 {
-    mtd impl construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8, parent: *PropertyListItem)->*PropertyListItem
+    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
     {
         return list.constructVector(value, Math.Vector2, data, parent)
     }
@@ -50,7 +50,7 @@ public impl IPropertyValue for Math.Vector2
 
 public impl IPropertyValue for Math.Vector3
 {
-    mtd impl construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8, parent: *PropertyListItem)->*PropertyListItem
+    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
     {
         return list.constructVector(value, Math.Vector3, data, parent)
     }
@@ -58,7 +58,7 @@ public impl IPropertyValue for Math.Vector3
 
 public impl IPropertyValue for Math.Vector4
 {
-    mtd impl construct(list: *PropertyList, value: Swag.TypeValue, data: ^u8, parent: *PropertyListItem)->*PropertyListItem
+    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
     {
         return list.constructVector(value, Math.Vector4, data, parent)
     }
