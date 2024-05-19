@@ -10,7 +10,7 @@ interface IPropertyValue
 // To notify a struct about properties changes
 interface IPropertyNotify
 {
-    mtd hasChangedItem(list: *Properties, item: *PropertiesItem);
+    mtd itemHasChanged(list: *Properties, item: *PropertiesItem);
     mtd isVisibleItem(list: *Properties, item: *PropertiesItem)->bool;
 }
 
@@ -206,6 +206,55 @@ internal impl Properties
         return false
     }
 
+    mtd paintBackItem(painter: *Painter, item: *PropertiesItem, wndItem: *Wnd)
+    {
+        let colors = wnd.getThemeColors()
+
+        var colBk, colBorder: Color
+        let focusWnd = wndItem.getApp().keybFocusWnd
+        if wndItem == focusWnd or wndItem.isOwnerOf(focusWnd)
+        {
+            colBk     = colors.propList_FocusBk
+            colBorder = colors.propList_FocusBorder
+        }
+        elif hotItem == item
+        {
+            colBk     = colors.propList_HotBk
+            colBorder = colors.propList_HotBorder
+        }
+
+        item.aniFocusBk.apply(wndItem, colBk)
+        item.aniFocusBorder.apply(wndItem, colBorder)
+
+        var r = wndItem.getClientRect()
+        r.moveTop(wndItem.childs.front().position.y)
+        r.inflate(item.extendFocus)
+        r.x     = -leftMargin + 1
+        r.width = edView.position.width - 1
+
+        if kind == .Grid
+        {
+            var r1 = r
+            r1.height += 1
+
+            if !item.flags.has(.NoSeparator)
+            {
+                let x = cast(f32) gridColumnSize + leftMargin - gridMarginColumn * 0.5
+                painter.drawLine(x, r1.y, x, r1.bottom(), getThemeColors().propList_GridColumn, 1)
+            }
+
+            if item.flags.has(.CategoryBk)
+            {
+                painter.fillRect(r1, colors.propList_CategBk)
+            }
+
+            painter.drawRect(r1, colors.propList_GridBorder)
+        }
+
+        painter.fillRoundRect(r, 4, 4, item.aniFocusBk.cur())
+        painter.drawRoundRect(r, 4, 4, item.aniFocusBorder.cur())
+    }
+
     mtd onItemEvent(item: *PropertiesItem, wndItem: *Wnd, evt: *Event)->bool
     {
         if wndItem.childs.isEmpty() do
@@ -223,52 +272,7 @@ internal impl Properties
 
         case PrePaint:
             let paintEvt = cast(*PaintEvent) evt
-            let painter  = paintEvt.bc.painter
-            let colors   = wnd.getThemeColors()
-
-            var colBk, colBorder: Color
-            let focusWnd = wndItem.getApp().keybFocusWnd
-            if wndItem == focusWnd or wndItem.isOwnerOf(focusWnd)
-            {
-                colBk     = colors.propList_FocusBk
-                colBorder = colors.propList_FocusBorder
-            }
-            elif hotItem == item
-            {
-                colBk     = colors.propList_HotBk
-                colBorder = colors.propList_HotBorder
-            }
-
-            item.aniFocusBk.apply(wndItem, colBk)
-            item.aniFocusBorder.apply(wndItem, colBorder)
-
-            var r = wndItem.getClientRect()
-            r.moveTop(wndItem.childs.front().position.y)
-            r.inflate(item.extendFocus)
-            r.x     = -leftMargin + 1
-            r.width = edView.position.width - 1
-
-            if kind == .Grid
-            {
-                var r1 = r
-                r1.height += 1
-
-                if !item.flags.has(.NoSeparator)
-                {
-                    let x = cast(f32) gridColumnSize + leftMargin - gridMarginColumn * 0.5
-                    painter.drawLine(x, r1.y, x, r1.bottom(), getThemeColors().propList_GridBorder, 1)
-                }
-
-                if item.flags.has(.CategoryBk)
-                {
-                    painter.fillRect(r1, colors.propList_CategBk)
-                }
-
-                painter.drawRect(r1, colors.propList_GridBorder)
-            }
-
-            painter.fillRoundRect(r, 4, 4, item.aniFocusBk.cur())
-            painter.drawRoundRect(r, 4, 4, item.aniFocusBorder.cur())
+            paintBackItem(paintEvt.bc.painter, item, wndItem)
         }
 
         return false
@@ -535,8 +539,9 @@ impl Properties
         let typeof = @kindof(val)
         Debug.assert(typeof.kind == .Struct)
 
-        // Section
         var item: *PropertiesItem
+
+        // Section
         if section != null
         {
             var v: Swag.TypeValue{name: section}
@@ -545,6 +550,8 @@ impl Properties
             item.label.style.setFont(&fontSection)
             sections.add({item, 0})
         }
+
+        // Creates an empty parent item
         else
         {
             var v: Swag.TypeValue
@@ -576,7 +583,7 @@ impl Properties
         while scan
         {
             if scan.ntfyItf do
-                scan.ntfyItf.hasChangedItem(self, item)
+                scan.ntfyItf.itemHasChanged(self, item)
             scan = scan.parent
         }
 

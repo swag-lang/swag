@@ -39,7 +39,7 @@ struct NoiseParams
 
 impl IPropertyNotify for NoiseParams
 {
-    mtd impl hasChangedItem(list: *Properties, item: *PropertiesItem)
+    mtd impl itemHasChanged(list: *Properties, item: *PropertiesItem)
     {
     }
 
