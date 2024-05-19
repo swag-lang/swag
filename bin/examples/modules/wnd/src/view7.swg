@@ -29,13 +29,13 @@ struct AA
 {
     tt: string = "static string"
 
-    #[SubCategory("SubCateg"), Name("This is a name: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has do be done, and this is it.")]
+    #[Category("Category"), Name("This is a name: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has do be done, and this is it.")]
     xu8: u8 = 30
 
     #[Unit("ms")]
     degs: f32 = 0.5
 
-    #[Name("Another name"), SliderMinMax(0, 1), EditSize(300)]
+    #[Name("Another name"), SliderMinMax(0, 1), EditSize(250)]
     xf32: f32 = 0.5
 
     struct0: SubStruct
@@ -71,7 +71,7 @@ var aa: AA
 
 func createView7(_tabView: *Tab, view: *Wnd)
 {
-    let lt = PropertyList.create(view, {5, 55, 400, 600})
+    let lt = PropertyList.create(view, {5, 55, 480, 600}, .Grid)
     aa.str = "String content"
     lt.addStruct(aa)
 
