@@ -73,10 +73,10 @@ func createView7(_tabView: *Tab, view: *Wnd)
 {
     let lt = Properties.create(view, {5, 55, 480, 600}, .Grid)
     aa.str = "String content"
-    lt.addStruct(aa)
+    lt.addStruct(aa, "Section")
 
     let lt1 = PropertiesCtrl.create(view, {500, 10, 600, 600})
-    lt1.addStruct(aa)
+    lt1.addStruct(aa, "Section")
     lt1.splitter.setPaneSize(0, 150)
 
     lt.sigChanged += closure|lt1|(lt, item)

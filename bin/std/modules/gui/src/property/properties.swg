@@ -481,6 +481,7 @@ internal impl Properties
                 constructNative(value, typeNative, data, newParent)
 
             case Reflection.isStruct(value.pointedType):
+                newParent.flags.add(.NoSeparator)
                 let typeSubStruct = cast(const *Swag.TypeInfoStruct) value.pointedType
                 let iprop         = @mkinterface(data, value.pointedType, IPropertyValue)
                 if iprop != null
