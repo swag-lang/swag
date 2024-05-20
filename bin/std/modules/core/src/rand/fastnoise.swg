@@ -174,7 +174,7 @@ impl FastNoise
         switch kind
         {
         case Perlin:
-            result = Noise.perlin(xi, yi)
+            result = Noise.perlin(xi, yi, seed)
         case PerlinFractalFBM:
             result = perlinFractalFBM(xi, yi)
         case PerlinFractalBillow:
@@ -182,7 +182,7 @@ impl FastNoise
         case PerlinFractalRigidMulti:
             result = perlinFractalRigidMulti(xi, yi)
         case Value:
-            result = Noise.value(xi, yi)
+            result = Noise.value(xi, yi, seed)
         case ValueFractalFBM:
             result = valueFractalFBM(xi, yi)
         case ValueFractalBillow:
