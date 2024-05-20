@@ -72,6 +72,7 @@ impl PropertiesCtrl
         {
             with ed.tab = Tab.create(ed, {0, 0, 0, 30})
             {
+                filter.margin.w = 5
                 .margin.w = 10
                 .dockStyle = .Top
                 .setForm(.PushButton)
