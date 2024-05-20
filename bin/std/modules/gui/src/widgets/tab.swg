@@ -6,6 +6,7 @@ enum TabForm
     Flat
     Round
     Button
+    PushButton
 }
 
 enum TabBarForm
@@ -22,6 +23,7 @@ enum TabItemForm
     Flat
     Round
     Button
+    PushButton
 }
 
 enum TabViewForm
@@ -45,6 +47,7 @@ struct TabItem
     width:          f32
     view:           *Wnd
     aniImg:         BlendColor
+    aniBorder:      BlendColor
     aniText:        BlendColor
 }
 
@@ -78,6 +81,7 @@ impl IWnd for Tab
     {
         var clientRect = getClientRect()
         clientRect.height = barHeight
+
         var labelPos = clientRect
         labelPos.width = v.width
         labelPos.x     = v.pos
@@ -88,10 +92,13 @@ impl IWnd for Tab
         let rects   = getThemeRects()
 
         // Item image
-        var subRect:   *ThemeImageRect
-        var colorImg:  Color
-        var colorText: Color
+        var subRect:       *ThemeImageRect
+        var subRectBorder: *ThemeImageRect
+        var colorImg:      Color
+        var colorText:     Color
+        var colorBorder:   Color
 
+        #[Swag.Complete]
         switch itemForm
         {
         case Flat:
@@ -111,6 +118,7 @@ impl IWnd for Tab
             {
                 colorText = colors.tabItem_UnSelectedText
             }
+
         case Round:
             if idx == selectedIdx
             {
@@ -128,6 +136,7 @@ impl IWnd for Tab
             {
                 colorText = colors.tabItem_UnSelectedText
             }
+
         case Button:
             if idx == selectedIdx
             {
@@ -145,11 +154,44 @@ impl IWnd for Tab
             {
                 colorText = colors.tabItem_UnSelectedText
             }
+
+        case PushButton:
+            if idx == selectedIdx
+            {
+                subRect       = &rects.tabItem_PushButtonSelected
+                subRectBorder = &rects.tabItem_PushButtonBorder
+                colorImg      = colors.tabItem_PushButtonSelected
+                colorText     = colors.tabItem_SelectedText
+                colorBorder   = colors.tabItem_PushButtonSelectedBorder
+            }
+            elif idx == hotIdx
+            {
+                subRect       = &rects.tabItem_PushButtonHot
+                subRectBorder = &rects.tabItem_PushButtonBorder
+                colorImg      = colors.tabItem_PushButtonHot
+                colorText     = colors.tabItem_SelectedText
+                colorBorder   = colors.tabItem_PushButtonHotBorder
+            }
+            else
+            {
+                subRect       = &rects.tabItem_PushButtonBk
+                subRectBorder = &rects.tabItem_PushButtonBorder
+                colorImg      = colors.tabItem_PushButtonBk
+                colorText     = colors.tabItem_UnSelectedText
+                colorBorder   = colors.tabItem_PushButtonBkBorder
+            }
+
+        case Transparent:
+            break
         }
 
         v.aniImg.apply(self, colorImg)
+        v.aniBorder.apply(self, colorBorder)
+
         if subRect do
             theme.drawSubRect(painter, labelPos, subRect, v.aniImg.cur())
+        if subRectBorder do
+            theme.drawSubRect(painter, labelPos, subRectBorder, v.aniBorder.cur())
 
         var format: RichStringFormat
         v.aniText.apply(self, colorText)
@@ -437,13 +479,14 @@ impl Tab
         Debug.assert(parent != null)
         let res = Wnd.create'Tab(parent, null, position, id)
         res.focusStrategy = .None
-        res.setForm(TabForm.Flat)
+        res.setForm(.Flat)
         return res
     }
 
     // Set the tab form
     mtd setForm(tabForm: TabForm)
     {
+        #[Swag.Complete]
         switch tabForm
         {
         case Flat:
@@ -464,6 +507,13 @@ impl Tab
             viewForm  = .None
             barForm   = .Round
             itemForm  = .Button
+            barLayout = .Auto
+            barHeight = getThemeMetrics().tabBar_ButtonHeight
+
+        case PushButton:
+            viewForm  = .None
+            barForm   = .Transparent
+            itemForm  = .PushButton
             barLayout = .Auto
             barHeight = getThemeMetrics().tabBar_ButtonHeight
         }

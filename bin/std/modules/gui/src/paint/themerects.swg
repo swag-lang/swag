@@ -80,6 +80,10 @@ struct ThemeImageRects
     tabItem_RoundHot:             ThemeImageRect = {{85, 95, 39, 25}, 10}
     tabItem_ButtonSelected:       ThemeImageRect = {{113, 309, 27, 27}, 9}
     tabItem_ButtonHot:            ThemeImageRect = {{113, 309, 27, 27}, 9}
+    tabItem_PushButtonSelected:   ThemeImageRect = {{113, 309, 27, 27}, 9}
+    tabItem_PushButtonHot:        ThemeImageRect = {{113, 309, 27, 27}, 9}
+    tabItem_PushButtonBk:         ThemeImageRect = {{113, 309, 27, 27}, 9}
+    tabItem_PushButtonBorder:     ThemeImageRect = {{141, 309, 27, 27}, 9}
     tabBar_FlatBk:                ThemeImageRect = {{57, 95, 27, 27}, 5}
     tabBar_FlatRoundBk:           ThemeImageRect = {{57, 253, 27, 27}, 13}
     tabBar_RoundBk:               ThemeImageRect = {{85, 309, 27, 27}, 9}

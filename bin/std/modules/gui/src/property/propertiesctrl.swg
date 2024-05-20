@@ -74,8 +74,7 @@ impl PropertiesCtrl
             {
                 .margin.w = 10
                 .dockStyle = .Top
-                .setForm(.Button)
-                .barForm = .Transparent
+                .setForm(.PushButton)
                 .sigSelChanged += closure|ed|(tab) { ed.prop.setCurrentSection(cast(u32) cast(u64) tab.getSelectedItem().userData0); }
             }
         }

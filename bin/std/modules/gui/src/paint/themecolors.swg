@@ -232,6 +232,12 @@ struct ThemeColors
     tabItem_RoundHot:                  Color = Gray4
     tabItem_ButtonSelected:            Color = Gray4
     tabItem_ButtonHot:                 Color = Gray5
+    tabItem_PushButtonSelected:        Color = Blue
+    tabItem_PushButtonSelectedBorder:  Color = White
+    tabItem_PushButtonHot:             Color = Gray5
+    tabItem_PushButtonHotBorder:       Color = Gray2
+    tabItem_PushButtonBk:              Color = Gray6
+    tabItem_PushButtonBkBorder:        Color = Gray3
     tabBar_FlatBk:                     Color = Gray4
     tabBar_RoundBk:                    Color = Gray6
     tabView_FlatBk:                    Color = Gray6
