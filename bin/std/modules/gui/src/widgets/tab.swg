@@ -470,7 +470,8 @@ impl Tab
     }
 
     // Add a new view
-    mtd addItem(tabName: string, icon: Icon, view: *Wnd = null)
+    #[Swag.Discardable]
+    mtd addItem(tabName: string, icon: Icon = {}, view: *Wnd = null)->*TabItem
     {
         if view
         {
@@ -488,6 +489,13 @@ impl Tab
         views.add(item)
 
         sendResizeEvent()
+        return item
+    }
+
+    // Remove all items
+    mtd clear()
+    {
+        views.clear()
     }
 
     // Select one tab at the given index
@@ -506,5 +514,13 @@ impl Tab
 
         sendResizeEvent()
         invalidate()
+    }
+
+    // Returns the current selected item, or 'null'
+    mtd getSelectedItem()->*TabItem
+    {
+        if selectedIdx >= views.count do
+            return null
+        return views[selectedIdx]
     }
 }

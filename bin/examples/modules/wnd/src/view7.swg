@@ -46,13 +46,12 @@ struct AA
     #[Name("Vector2")]
     v2: Math.Vector2{11.5, 22}
 
-    #[Name("Vector3")]
-    #[Description("This is a vector3.")]
+    #[Name("Vector3"), Description("This is a vector3.")]
     v3: Math.Vector3{11.5, 22, 33}
 
-    v4: Math.Vector4{11.5, 22, 33}
-    pt: Math.Point{11.5, 22}
-    rect: Math.Rectangle{1, 2, 3, 4}
+    v4:       Math.Vector4{11.5, 22, 33}
+    pt:       Math.Point{11.5, 22}
+    rect:     Math.Rectangle{1, 2, 3, 4}
 
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     xb: bool = true
@@ -77,25 +76,15 @@ func createView7(_tabView: *Tab, view: *Wnd)
     aa.str = "String content"
     lt.addStruct(aa, "Section")
 
-    let lt1 = PropertiesCtrl.create(view, {500, 10, 600, 600})
+    let lt1 = PropertiesCtrl.create(view, {500, 10, 600, 600}, flags: .SectionFilter | .SectionPane)
     lt1.addStruct(aa, "Section 0")
     lt1.addStruct(aa, "Section 1")
     lt1.addStruct(aa, "Section 2")
     lt1.splitter.setPaneSize(0, 150)
 
-    lt.sigChanged += closure|lt1|(lt, item)
-    {
-        lt1.prop.refresh()
-    }
-
-    lt1.prop.sigChanged += closure|lt|(lt1, item)
-    {
-        lt.refresh()
-    }
+    lt.sigChanged += closure|lt1|(lt, item) { lt1.prop.refresh(); }
+    lt1.prop.sigChanged += closure|lt|(lt1, item) { lt.refresh(); }
 
     let btn = PushButton.create(view, "show/hide", {500, 650, 600})
-    btn.sigPressed += closure|lt1|(btn)
-    {
-        lt1.splitter.showPane(0, lt1.splitter.isPaneVisible(0) ? false : true)
-    }
+    btn.sigPressed += closure|lt1|(btn) { lt1.splitter.showPane(0, lt1.splitter.isPaneVisible(0) ? false : true); }
 }

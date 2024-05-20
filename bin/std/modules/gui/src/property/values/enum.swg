@@ -162,6 +162,7 @@ impl Properties
                 .line        = line
                 .parent      = item
                 .level       = item.level + 1
+                .section     = item.section
                 .flags.add(.NoSeparator)
             }
 

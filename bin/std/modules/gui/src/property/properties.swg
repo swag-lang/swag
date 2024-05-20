@@ -50,6 +50,7 @@ struct Properties
     items:                    ArrayPtr'PropertiesItem
     sections:                 Array'{ item: *PropertiesItem, lvl: s32 }
     hotItem:                  *PropertiesItem
+    currentSectionIndex:      u32 = Swag.U32.Max
     stringFilter:             String
     cursorSet:                bool
     resizingColumn:           bool
@@ -98,7 +99,8 @@ struct PropertiesItem
 
     aniFocusBk:         BlendColor
     aniFocusBorder:     BlendColor
-    level:              s32
+    level:              u32
+    section:            u32
     extendFocus:        f32 = 10
 }
 
@@ -385,6 +387,7 @@ internal impl Properties
             .data      = data
             .parent    = parentItem
             .level     = parentItem ? parentItem.level + 1 : 0
+            .section   = parentItem ? parentItem.section : 0
             if kind == .Grid do
                 .extendFocus = gridLineMargin * 0.5
         }
@@ -593,6 +596,7 @@ impl Properties
             item = addItem(v, null, null, fontSection.regular.height)
             item.flags.add(.CategoryBk | .NoSeparator)
             item.label.style.setFont(&fontSection)
+            item.section = cast(u32) sections.count
             sections.add({item, 0})
         }
 
@@ -645,19 +649,30 @@ impl Properties
         updateVisibleItems()
     }
 
+    // Only display a given section.
+    // If 'sectionIndex' is too big, all sections will be displayed.
+    mtd setCurrentSection(sectionIndex: u32)
+    {
+        currentSectionIndex = sectionIndex
+        updateVisibleItems()
+    }
+
     // Update the show/hide state of all content
     mtd updateVisibleItems()
     {
         visit it: items
         {
             var mustShow = false
-            if stringFilter.length == 0 do
-                mustShow = true
-            elif Utf8.indexOf(it.filter.toSlice(), stringFilter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max do
-                mustShow = true
 
-            if mustShow do
-                mustShow = askVisibleItem(it)
+            if it.section == currentSectionIndex or currentSectionIndex >= sections.count
+            {
+                if stringFilter.length == 0 do
+                    mustShow = true
+                elif Utf8.indexOf(it.filter.toSlice(), stringFilter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max do
+                    mustShow = true
+                if mustShow do
+                    mustShow = askVisibleItem(it)
+            }
 
             it.line.show(mustShow)
 

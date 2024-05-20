@@ -1,25 +1,37 @@
 #global public
 using Core, Pixel
 
+#[Swag.EnumFlags]
+enum PropertiesCtrlFlags
+{
+    Zero          = 0
+    SectionPane           // Display all sections in a pane on the left
+    SectionFilter         // Display a section filter bar
+}
+
 struct PropertiesCtrl
 {
     using frameWnd:     FrameWnd
 
     splitter:           *SplitterCtrl
     list:               *ListCtrl
+    tab:                *Tab
     prop:               *Properties
+    propFlags:          PropertiesCtrlFlags
 }
 
 impl PropertiesCtrl
 {
     // Creates a new Properties instance
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = {}, kind = PropertiesKind.List, id: WndId = null)->*PropertiesCtrl
+    func create(parent: *Wnd, position: Math.Rectangle = {}, kind = PropertiesKind.List, flags = PropertiesCtrlFlags.SectionPane, id: WndId = null)->*PropertiesCtrl
     {
         let ed = Wnd.create'PropertiesCtrl(parent, "", position, id)
 
         with ed
         {
+            .propFlags = flags
+
             .splitter           = SplitterCtrl.create(ed, vertical: false)
             .splitter.dockStyle = .Center
 
@@ -40,17 +52,31 @@ impl PropertiesCtrl
 
             .splitter.addPane(.list)
             .splitter.addPane(.prop)
+
+            if !flags.has(.SectionPane) do
+                .splitter.showPane(0, false)
         }
 
+        // Filter bar
         with let filter = EditBox.create(ed, "", {0, 0, 0, 30})
         {
-            .icon = ed.getTheme().getIcon24(ThemeIcons24.Search, 18)
+            .icon      = ed.getTheme().getIcon24(ThemeIcons24.Search, 18)
             .dockStyle = .Top
             .setNote("Search")
             .margin.w = 10
-            .sigChanged += closure|ed|(fil)
+            .sigChanged += closure|ed|(fil) { ed.prop.setStringFilter(fil.text); }
+        }
+
+        // Section filter bar
+        if flags.has(.SectionFilter)
+        {
+            with ed.tab = Tab.create(ed, {0, 0, 0, 30})
             {
-                ed.prop.setStringFilter(fil.text)
+                .margin.w = 10
+                .dockStyle = .Top
+                .setForm(.Button)
+                .barForm = .Transparent
+                .sigSelChanged += closure|ed|(tab) { ed.prop.setCurrentSection(cast(u32) cast(u64) tab.getSelectedItem().userData0); }
             }
         }
 
@@ -62,15 +88,32 @@ impl PropertiesCtrl
     {
         list.clear()
 
-        var parentLine: *ListLine
-        visit &it: prop.sections
+        // In the filter bar
+        if tab
         {
+            tab.clear()
+            let tabItem = tab.addItem("All")
+            tabItem.userData0 = cast(*void) prop.sections.count
+        }
+
+        var parentLine: *ListLine
+        visit &it, idx: prop.sections
+        {
+            let str   = it.item0.label.getText()
+            let naked = RichString.getNaked(str)
+
+            // In the filter bar
+            if tab and it.item1 == 0
+            {
+                let tabItem = tab.addItem(naked)
+                tabItem.userData0 = cast(*void) idx
+            }
+
+            // In the left pane
             if it.item1 == 0 do
                 parentLine = null
 
-            let str   = it.item0.label.getText()
-            let naked = RichString.getNaked(str)
-            let line  = list.createLine(naked, parentLine: parentLine)
+            let line = list.createLine(naked, parentLine: parentLine)
             line.userData0 = it.item0
 
             if it.item1 == 0 do
