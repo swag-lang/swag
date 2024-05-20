@@ -341,7 +341,7 @@ struct ThemeColors
     embInfo_InformationBk:             Color = 0xFF303050
 
     propList_FocusBk:                  Color = Color.getLighter(Color.fromArgb(Gray5), 0.05)
-    propList_FocusBorder:              Color = Blue
+    propList_FocusBorder:              Color = Gray3
     propList_HotBk:                    Color = Color.getDarker(Color.fromArgb(Gray5), 0.03)
     propList_HotBorder:                Color = Transparent
     propList_GridBorder:               Color = Gray7
