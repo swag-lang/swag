@@ -13,7 +13,7 @@ impl Properties
         {
             let dataField = cast(*f32) (data + v.offset)
 
-            with let label = Label.create(line, v.name, {0, 0, lineHeight, lineHeight})
+            with let label = Label.create(line, v.name[0..0], {0, 0, lineHeight, lineHeight})
             {
                 .dockStyle         = .Left
                 .horzAlignmentText = .Center
@@ -61,5 +61,21 @@ public impl IPropertyValue for Math.Vector4
     mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
     {
         return list.constructVector(value, Math.Vector4, data, parent)
+    }
+}
+
+public impl IPropertyValue for Math.Point
+{
+    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
+    {
+        return list.constructVector(value, Math.Point, data, parent)
+    }
+}
+
+public impl IPropertyValue for Math.Rectangle
+{
+    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
+    {
+        return list.constructVector(value, Math.Rectangle, data, parent)
     }
 }

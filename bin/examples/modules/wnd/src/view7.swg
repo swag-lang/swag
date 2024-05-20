@@ -51,6 +51,8 @@ struct AA
     v3: Math.Vector3{11.5, 22, 33}
 
     v4: Math.Vector4{11.5, 22, 33}
+    pt: Math.Point{11.5, 22}
+    rect: Math.Rectangle{1, 2, 3, 4}
 
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     xb: bool = true
