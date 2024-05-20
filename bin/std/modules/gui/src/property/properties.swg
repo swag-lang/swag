@@ -53,6 +53,7 @@ struct Properties
     stringFilter:             String
     cursorSet:                bool
     resizingColumn:           bool
+    aniBar:                   BlendColor
 }
 
 #[Swag.EnumFlags]
@@ -97,7 +98,17 @@ struct PropertiesItem
 
     aniFocusBk:         BlendColor
     aniFocusBorder:     BlendColor
+    level:              s32
     extendFocus:        f32 = 10
+}
+
+impl IWnd for Properties
+{
+    mtd impl onPaintEvent(evt: *PaintEvent)
+    {
+        var colorBar = cursorSet ? getThemeColors().splitView_BarHot : getThemeColors().propList_GridColumn
+        aniBar.apply(self, colorBar)
+    }
 }
 
 internal impl Properties
@@ -154,14 +165,13 @@ internal impl Properties
         case .MouseLeave:
             if prop.hotItem and prop.kind == .Grid do
                 ToolTip.hide(prop.hotItem.line)
-
             prop.hotItem = null
-            wnd.invalidate()
 
             if prop.cursorSet
             {
                 prop.cursorSet = false
                 prop.getApp().popCursor()
+                prop.invalidate()
             }
 
         case .MouseMove:
@@ -199,11 +209,13 @@ internal impl Properties
                     if !prop.cursorSet do
                         prop.getApp().pushCursor(Cursor.from(.SizeWE))
                     prop.cursorSet = true
+                    prop.invalidate()
                 }
                 elif prop.cursorSet
                 {
                     prop.cursorSet = false
                     prop.getApp().popCursor()
+                    prop.invalidate()
                 }
             }
         }
@@ -216,6 +228,7 @@ internal impl Properties
         let colors = wnd.getThemeColors()
 
         var colBk, colBorder: Color
+
         let focusWnd = wndItem.getApp().keybFocusWnd
         if wndItem == focusWnd or wndItem.isOwnerOf(focusWnd)
         {
@@ -227,6 +240,14 @@ internal impl Properties
             colBk     = colors.propList_HotBk
             colBorder = colors.propList_HotBorder
         }
+        elif kind == .Grid and item.flags.has(.CategoryBk)
+        {
+            colBk = colors.propList_CategBk
+        }
+        elif kind == .Grid and item.level > 2
+        {
+            colBk = colors.propList_Bk1
+        }
 
         item.aniFocusBk.apply(wndItem, colBk)
         item.aniFocusBorder.apply(wndItem, colBorder)
@@ -237,27 +258,35 @@ internal impl Properties
         r.x     = -leftMargin + 1
         r.width = edView.position.width - 1
 
+        // Hot and focus background
+        {
+            var r1 = r
+            r1.inflate(-2)
+            painter.fillRoundRect(r1, 4, 4, item.aniFocusBk.cur())
+        }
+
+        // In grid mode, display borders and column separator
         if kind == .Grid
         {
             var r1 = r
             r1.height += 1
+            painter.drawRect(r1, colors.propList_GridBorder)
 
             if !item.flags.has(.NoSeparator)
             {
-                let x = cast(f32) gridColumnSize + leftMargin - gridMarginColumn * 0.5
-                painter.drawLine(x, r1.y, x, r1.bottom(), getThemeColors().propList_GridColumn, 1)
+                let x    = cast(f32) gridColumnSize + leftMargin - gridMarginColumn * 0.5
+                let size = cursorSet ? 4 : 1
+                let rect = Math.Rectangle{x - size * 0.5, r1.y, size, r1.height}
+                painter.fillRect(rect, aniBar.cur())
             }
-
-            if item.flags.has(.CategoryBk)
-            {
-                painter.fillRect(r1, colors.propList_CategBk)
-            }
-
-            painter.drawRect(r1, colors.propList_GridBorder)
         }
 
-        painter.fillRoundRect(r, 4, 4, item.aniFocusBk.cur())
-        painter.drawRoundRect(r, 4, 4, item.aniFocusBorder.cur())
+        // Hot and focus border
+        {
+            var r1 = r
+            r1.inflate(-2)
+            painter.drawRoundRect(r1, 4, 4, item.aniFocusBorder.cur())
+        }
     }
 
     mtd onItemEvent(item: *PropertiesItem, wndItem: *Wnd, evt: *Event)->bool
@@ -355,6 +384,7 @@ internal impl Properties
             .typeValue = value
             .data      = data
             .parent    = parentItem
+            .level     = parentItem ? parentItem.level + 1 : 0
             if kind == .Grid do
                 .extendFocus = gridLineMargin * 0.5
         }
@@ -561,7 +591,7 @@ impl Properties
         {
             var v: Swag.TypeValue{name: section}
             item = addItem(v, null, null, fontSection.regular.height)
-            item.flags.add(.CategoryBk)
+            item.flags.add(.CategoryBk | .NoSeparator)
             item.label.style.setFont(&fontSection)
             sections.add({item, 0})
         }

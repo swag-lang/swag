@@ -161,6 +161,7 @@ impl Properties
                 .filter      = item.filter
                 .line        = line
                 .parent      = item
+                .level       = item.level + 1
                 .flags.add(.NoSeparator)
             }
 
