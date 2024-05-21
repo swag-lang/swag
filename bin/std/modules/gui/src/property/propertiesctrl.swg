@@ -58,13 +58,14 @@ impl PropertiesCtrl
         }
 
         // Filter bar
-        with let filter = EditBox.create(ed, "", {0, 0, 0, 30})
+        with let filter = EditBox.create(ed, "")
         {
             .icon      = ed.getTheme().getIcon24(ThemeIcons24.Search, 18)
             .dockStyle = .Top
             .setNote("Search")
-            .margin.w = 10
+            .margin.w = 8
             .sigChanged += closure|ed|(fil) { ed.prop.setStringFilter(fil.text); }
+            .editBoxFlags.add(.ClearButton)
         }
 
         // Section filter bar
@@ -72,8 +73,7 @@ impl PropertiesCtrl
         {
             with ed.tab = Tab.create(ed, {0, 0, 0, 30})
             {
-                filter.margin.w = 5
-                .margin.w = 10
+                .margin.w = 12
                 .dockStyle = .Top
                 .setForm(.PushButton)
                 .sigSelChanged += closure|ed|(tab) { ed.prop.setCurrentSection(cast(u32) cast(u64) tab.getSelectedItem().userData0); }

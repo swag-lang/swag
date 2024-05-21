@@ -33,6 +33,7 @@ enum EditBoxFlags
     AutoLoseFocus
     ReadOnly
     RightAlign
+    ClearButton
 }
 
 struct EditBox
@@ -69,6 +70,7 @@ struct EditBox
     isDragging:         bool
     selBeg, selEnd:     u64
     timerCaret:         *Timer
+    clearBtn:           *IconButton
     visibleCaret:       bool
     posSelBeg:          f32
     posSelEnd:          f32
@@ -319,6 +321,30 @@ impl IWnd for EditBox
 
 internal impl EditBox
 {
+    mtd showHideClearButon()
+    {
+        if !editBoxFlags.has(.ClearButton) do
+            return
+
+        if text != null and @countof(text)
+        {
+            if !clearBtn
+            {
+                clearBtn = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.WndClose, 18), {0, 0, 24, 24})
+                clearBtn.dockStyle = .Right
+                clearBtn.setForm(IconButtonForm.Round)
+                clearBtn.sigPressed += closure|self|(btn) { self.setText(null); }
+                applyLayout()
+            }
+        }
+        elif clearBtn
+        {
+            clearBtn.destroy()
+            clearBtn = null
+            applyLayout()
+        }
+    }
+
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {
         let ctrl  = mdf & .Control
@@ -802,6 +828,7 @@ internal impl EditBox
     {
         sigChanged.call(self)
         computeCaretPos()
+        showHideClearButon()
         invalidate()
     }
 }
@@ -873,6 +900,7 @@ impl EditBox
         selBeg, selEnd = 0
         countRunes = 0
         insertString(str)
+        showHideClearButon()
         notifyChanged()
     }
 
