@@ -751,11 +751,12 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->hasAstFlag(AST_GENERIC))
     {
         shortLambda = false;
-        funcNode->content->addAstFlag(AST_NO_SEMANTIC);
+        if (funcNode->content)
+            funcNode->content->addAstFlag(AST_NO_SEMANTIC);
     }
 
     // Macro will not evaluate its content before being inline
-    if (funcNode->hasAttribute(ATTRIBUTE_MACRO) && !shortLambda)
+    if (funcNode->hasAttribute(ATTRIBUTE_MACRO) && !shortLambda && funcNode->content)
         funcNode->content->addAstFlag(AST_NO_SEMANTIC);
 
     // Register symbol
@@ -833,7 +834,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     // To avoid ambiguity, we do not want a function to declare a generic type 'T' if the struct
     // has the same generic parameter name (this is useless and implicit)
-    if (funcNode->genericParameters && funcNode->ownerStructScope)
+    if (funcNode->genericParameters && funcNode->ownerStructScope && funcNode->ownerStructScope->owner->is(AstNodeKind::StructDecl))
     {
         const auto structDecl = castAst<AstStruct>(funcNode->ownerStructScope->owner, AstNodeKind::StructDecl);
         if (structDecl->typeInfo->isGeneric())

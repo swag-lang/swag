@@ -1,7 +1,7 @@
 #global testerror "Err0720"
 interface I
 {
-    mtd toto()
+    mtd toto();
 }
 
 struct S {}

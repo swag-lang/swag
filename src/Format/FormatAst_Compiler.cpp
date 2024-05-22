@@ -38,7 +38,7 @@ bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, AstNo
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputNode(context, ifNode->ifBlock->firstChild()));
+        SWAG_CHECK(outputNode(context, ifNode->ifBlock->lastChild()));
         context.indent--;
         concat->addEol();
     }

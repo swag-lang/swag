@@ -4,7 +4,7 @@
 struct A {}
 interface I
 {
-    mtd x()
+    mtd x();
 }
 
 impl I for A

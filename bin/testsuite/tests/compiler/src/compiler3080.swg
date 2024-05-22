@@ -1,6 +1,6 @@
 interface AA
 {
-    func toto(self)
+    func toto(self);
 }
 
 struct BB

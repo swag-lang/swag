@@ -52,9 +52,9 @@ AstNode* FormatAst::convertNode(FormatContext&, AstNode* node)
     if (!node)
         return nullptr;
 
-    if (const auto subExportNode = node->extraPointer<AstNode>(ExtraPointerKind::ExportNode))
+    if (const auto subExportNode0 = node->extraPointer<AstNode>(ExtraPointerKind::ExportNode))
     {
-        node = subExportNode;
+        node = subExportNode0;
         if (node->hasAstFlag(AST_GENERATED_EXCEPT_EXPORT))
             return node;
     }

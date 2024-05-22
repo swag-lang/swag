@@ -1,5 +1,5 @@
 interface I {
-    mtd toto()
+    mtd toto();
 }
 struct A {}
 impl I for A {

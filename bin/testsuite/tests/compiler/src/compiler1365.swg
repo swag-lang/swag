@@ -1,6 +1,6 @@
 interface IIncrementable
 {
-	func incr(self)
+	func incr(self);
     //decr: func(self)
     //done: func(self)->bool
 }

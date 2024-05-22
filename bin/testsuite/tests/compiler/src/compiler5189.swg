@@ -1,7 +1,7 @@
 //#global skip
-interface I 
-{    
-    mtd toto()
+interface I
+{
+    mtd toto();
 }
 
 struct X {}
@@ -13,7 +13,7 @@ impl I for X
 
 #test
 {
-    var x: X    
+    var x: X
     let i = cast(I) x
     switch i
     {

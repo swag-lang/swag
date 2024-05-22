@@ -5,8 +5,8 @@ struct(T) Arr
 
 interface IT
 {
-    func toto(self)
-    func toto1(self)
+    func toto(self);
+    func toto1(self);
 }
 
 var G: s32 = 0

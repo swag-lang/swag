@@ -2,7 +2,7 @@ var G: s32
 
 interface IWnd
 {
-    func titi(self, x: s32)
+    func titi(self, x: s32);
 }
 
 struct Wnd

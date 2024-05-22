@@ -1,7 +1,7 @@
 #global testerror "Err0535"
 interface I
 {
-    mtd toto()->s32
+    mtd toto()->s32;
 }
 
 struct A{}

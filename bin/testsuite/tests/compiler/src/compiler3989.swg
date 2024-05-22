@@ -5,7 +5,7 @@ struct AA
 
 interface IHash
 {
-    func hash(self)->u32
+    func hash(self)->u32;
 }
 
 impl IHash for AA

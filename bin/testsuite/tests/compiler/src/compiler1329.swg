@@ -1,8 +1,8 @@
-#global testerror "Err0550"
+#global testerror "Err0262"
 
 interface toto
 {
-    func print(self) = &titi
+    func print(self) = &titi;
 }
 
 func titi()

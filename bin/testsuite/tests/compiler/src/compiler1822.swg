@@ -5,7 +5,7 @@ struct Point
 
 interface IPrintable
 {
-    func print(self)
+    func print(self);
 }
 
 impl IPrintable for Point

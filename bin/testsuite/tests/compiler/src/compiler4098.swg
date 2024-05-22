@@ -1,8 +1,8 @@
 //#global skip
 interface I
 {
-    mtd call1()
-    mtd call()
+    mtd call1();
+    mtd call();
 }
 
 struct A {}

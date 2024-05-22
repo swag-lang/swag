@@ -357,37 +357,21 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
 bool Parser::doInterfaceMtdDecl(AstNode* parent, AstNode** result)
 {
-    auto       savedToken = tokenParse;
-    const auto kind       = tokenParse.token.id;
-    SWAG_CHECK(eatToken());
+    auto savedToken = tokenParse;
 
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse.token, toErr(Err0685)));
-
-    const bool isMethod      = kind == TokenId::KwdMethod;
-    bool       isConstMethod = false;
-
-    if (tokenParse.is(TokenId::KwdConst))
-    {
-        SWAG_VERIFY(isMethod, error(tokenParse.token, toErr(Err0458)));
-        isConstMethod = true;
-        SWAG_CHECK(eatToken());
-    }
-
-    const auto funcNode = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, nullptr);
-    if (kind == TokenId::KwdMethod)
-        funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD);
-    FormatAst::inheritFormatBefore(this, funcNode, &savedToken);
-
-    SWAG_CHECK(checkIsValidUserName(funcNode));
-    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0295, tokenParse.token.c_str())));
-    SWAG_CHECK(eatToken());
-
-    const auto scope = Ast::newScope(funcNode, "", ScopeKind::Function, parent->ownerStructScope);
+    AstFuncDecl* funcNode;
 
     {
-        ParserPushScope scoped(this, scope);
-        SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, false, nullptr, isMethod, isConstMethod, true));
+        const auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
+        stmt->addAstFlag(AST_GENERATED);
+        stmt->ownerScope = Ast::newScope(parent, "__default", ScopeKind::Statement, parent->ownerStructScope);
+        ParserPushScope ps(this, stmt->ownerScope);
+        AstNode*        resultNode;
+        SWAG_CHECK(doFuncDecl(stmt, &resultNode));
+        funcNode = castAst<AstFuncDecl>(resultNode, AstNodeKind::FuncDecl);
     }
+
+    SWAG_VERIFY(!funcNode->genericParameters, error(tokenParse.token, toErr(Err0685)));
 
     ParserPushFreezeFormat ff{this};
     ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
@@ -400,36 +384,30 @@ bool Parser::doInterfaceMtdDecl(AstNode* parent, AstNode** result)
     typeNode->semanticFct = Semantic::resolveTypeLambdaClosure;
     varNode->type         = typeNode;
     varNode->type->inheritTokenLocation(funcNode->token);
-    Ast::removeFromParent(funcNode->parameters);
-    Ast::addChildFront(typeNode, funcNode->parameters);
-    typeNode->parameters = funcNode->parameters;
-    if (typeNode->parameters)
+
+    const auto scope = Ast::newScope(varNode, varNode->token.text, ScopeKind::TypeLambda, currentScope);
+
+    CloneContext cloneContext;
+    cloneContext.parent      = typeNode;
+    cloneContext.parentScope = scope;
+
+    if (funcNode->parameters)
+    {
+        const auto params    = funcNode->parameters->clone(cloneContext);
+        typeNode->parameters = params;
         typeNode->parameters->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
-
-    if (tokenParse.is(TokenId::SymMinusGreat))
-    {
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeNode->returnType));
-
-        const auto retNode = Ast::newNode<AstNode>(AstNodeKind::FuncDeclType, this, funcNode);
-        retNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED);
-        funcNode->returnType = retNode;
-        funcNode->returnType->addExtraPointer(ExtraPointerKind::ExportNode, typeNode->returnType);
-
-        CloneContext cloneContext;
-        cloneContext.parent = retNode;
-        typeNode->returnType->clone(cloneContext);
     }
 
-    if (tokenParse.is(TokenId::KwdThrow))
+    if (funcNode->returnType && funcNode->returnType->firstChild())
     {
-        SWAG_CHECK(eatToken());
+        const auto retType   = funcNode->returnType->firstChild()->clone(cloneContext);
+        typeNode->returnType = retType;
+    }
+
+    if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
         typeNode->addSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW);
-        funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_THROW);
-    }
 
     varNode->addExtraPointer(ExtraPointerKind::ExportNode, funcNode);
-    SWAG_CHECK(eatSemiCol("interface function definition"));
     *result = varNode;
 
     return true;

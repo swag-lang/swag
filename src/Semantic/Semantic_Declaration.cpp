@@ -32,10 +32,13 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
     else if (typeInfoVar->isPointer())
     {
         const auto typePointer = castTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePointer->pointedType->isStruct(), context->report({node, formErr(Err0476, typePointer->pointedType->getDisplayNameC())}));
-        const auto typeStruct = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-        regNode->addAlternativeScope(typeStruct->scope, altFlags);
-        regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
+        if(!typePointer->pointedType->isInterface())
+        {
+            SWAG_VERIFY(typePointer->pointedType->isStruct(), context->report({node, formErr(Err0476, typePointer->pointedType->getDisplayNameC())}));
+            const auto typeStruct = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            regNode->addAlternativeScope(typeStruct->scope, altFlags);
+            regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
+        }
     }
     else
     {

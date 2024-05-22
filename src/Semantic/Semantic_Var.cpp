@@ -156,12 +156,6 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 {
     const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
-    // When exporting func inside interfaces, we need the "func" form to be typed, in order
-    // to export correctly
-    const auto exportNode = node->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
-    if (exportNode)
-        exportNode->typeInfo = node->type->typeInfo;
-
     // Ghosting check
     // We simulate a reference to the local variable, in the same context, to raise an error
     // if ambiguous. That way we have a direct error at the declaration, even if the variable

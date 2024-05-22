@@ -4,7 +4,7 @@ struct Pt { x, y: f32; }
 
 interface I
 {
-    mtd toto(y: Pt)
+    mtd toto(y: Pt);
 }
 
 struct A
