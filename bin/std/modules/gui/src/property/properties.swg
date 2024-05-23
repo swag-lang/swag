@@ -10,8 +10,8 @@ interface IPropertyValue
 // To notify a struct about properties changes
 interface IPropertyNotify
 {
-    mtd itemHasChanged(list: *Properties, item: *PropertiesItem);
-    mtd isVisibleItem(list: *Properties, item: *PropertiesItem)->bool;
+    mtd itemHasChanged(list: *Properties, item: *PropertiesItem) {}
+    mtd isItemVisible(list: *Properties, item: *PropertiesItem)->bool { return true; }
 }
 
 enum PropertiesKind
@@ -312,49 +312,6 @@ internal impl Properties
         }
 
         return false
-    }
-
-    mtd askVisibleItem(item: *PropertiesItem)->bool
-    {
-        var scan = item
-        while scan
-        {
-            if scan.ntfyItf
-            {
-                if !scan.ntfyItf.isVisibleItem(self, item) do
-                    return false
-            }
-
-            scan = scan.parent
-        }
-
-        return true
-    }
-
-    func refreshItem(item: *PropertiesItem)
-    {
-        if !item.sigRefresh.isEmpty()
-        {
-            item.sigRefresh.call(item)
-            return
-        }
-
-        let pointed = item.type orelse item.typeValue.pointedType
-        if pointed
-        {
-            if Reflection.isEnum(pointed) and Reflection.hasAttribute(pointed, Swag.EnumFlags) do
-                refreshEnumFlags(item)
-            elif Reflection.isEnum(pointed) do
-                refreshEnum(item)
-            elif Reflection.isBool(pointed) do
-                refreshBool(item)
-            elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed) do
-                refreshNative(item)
-            elif Reflection.isString(pointed) and item.editBox do
-                item.editBox.setText(dref cast(*string) item.data)
-            elif pointed == Core.String and item.editBox do
-                item.editBox.setText(dref cast(*String) item.data)
-        }
     }
 
     mtd addItem(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem, height: f32, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertiesItem
@@ -671,7 +628,7 @@ impl Properties
                 elif Utf8.indexOf(it.filter.toSlice(), stringFilter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max do
                     mustShow = true
                 if mustShow do
-                    mustShow = askVisibleItem(it)
+                    mustShow = isItemVisible(it)
             }
 
             it.line.show(mustShow)
@@ -709,5 +666,48 @@ impl Properties
 
         applyLayout()
         invalidate()
+    }
+
+    mtd isItemVisible(item: *PropertiesItem)->bool
+    {
+        var scan = item
+        while scan
+        {
+            if scan.ntfyItf
+            {
+                if !scan.ntfyItf.isItemVisible(self, item) do
+                    return false
+            }
+
+            scan = scan.parent
+        }
+
+        return true
+    }
+
+    func refreshItem(item: *PropertiesItem)
+    {
+        if !item.sigRefresh.isEmpty()
+        {
+            item.sigRefresh.call(item)
+            return
+        }
+
+        let pointed = item.type orelse item.typeValue.pointedType
+        if pointed
+        {
+            if Reflection.isEnum(pointed) and Reflection.hasAttribute(pointed, Swag.EnumFlags) do
+                refreshEnumFlags(item)
+            elif Reflection.isEnum(pointed) do
+                refreshEnum(item)
+            elif Reflection.isBool(pointed) do
+                refreshBool(item)
+            elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed) do
+                refreshNative(item)
+            elif Reflection.isString(pointed) and item.editBox do
+                item.editBox.setText(dref cast(*string) item.data)
+            elif pointed == Core.String and item.editBox do
+                item.editBox.setText(dref cast(*String) item.data)
+        }
     }
 }
