@@ -364,7 +364,38 @@ bool Parser::doInterfaceMtdDecl(AstNode* parent, AstNode** result)
     {
         const auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
         stmt->addAstFlag(AST_GENERATED);
-        stmt->ownerScope = Ast::newScope(parent, "__default", ScopeKind::Statement, parent->ownerStructScope);
+
+        ScopedLock lk(currentScope->symTable.mutex);
+        const auto symbol   = currentScope->symTable.findNoLock("__default");
+        Scope*     subScope = nullptr;
+        if (!symbol)
+        {
+            subScope = Ast::newScope(stmt, "__default", ScopeKind::Impl, currentScope, false);
+
+            // :FakeImplForType
+            const auto typeInfo  = makeType<TypeInfoStruct>();
+            typeInfo->name       = "__default";
+            typeInfo->structName = "__default";
+            typeInfo->scope      = subScope;
+            typeInfo->declNode   = stmt;
+
+            AddSymbolTypeInfo toAdd;
+            toAdd.node       = stmt;
+            toAdd.typeInfo   = typeInfo;
+            toAdd.kind       = SymbolKind::Struct;
+            toAdd.flags      = OVERLOAD_IMPL_IN_STRUCT;
+            toAdd.aliasName  = "__default";
+            toAdd.symbolName = currentScope->symTable.registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, &toAdd.aliasName);
+            currentScope->symTable.addSymbolTypeInfoNoLock(context, toAdd);
+        }
+        else
+        {
+            const auto typeInfo = castTypeInfo<TypeInfoStruct>(symbol->overloads[0]->typeInfo, TypeInfoKind::Struct);
+            subScope            = typeInfo->scope;
+        }
+
+        stmt->ownerScope = subScope;
+
         ParserPushScope ps(this, stmt->ownerScope);
         AstNode*        resultNode;
         SWAG_CHECK(doFuncDecl(stmt, &resultNode));

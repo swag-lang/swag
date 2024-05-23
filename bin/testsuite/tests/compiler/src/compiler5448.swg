@@ -1,0 +1,23 @@
+var G = 0
+
+interface Toto
+{
+    func print(self)
+    {
+        G = 1
+    }
+}
+
+struct A {}
+
+impl Toto for A
+{
+}
+
+#test
+{
+    var a: A
+    let i = cast(Toto) a
+    i.print()
+    @assert(G == 1)
+}

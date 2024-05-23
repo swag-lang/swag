@@ -116,12 +116,25 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
             YIELD();
         }
 
-        const auto missingNode = typeInterface->fields[idx];
+        const auto     missingNode       = typeInterface->fields[idx];
+        const AstNode* defaultExportNode = nullptr;
+
         if (!itfRef.itf)
         {
-            Diagnostic err{node, node->getTokenName(), formErr(Err0129, typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
-            err.addNote(missingNode->declNode, missingNode->declNode->getTokenName(), form("missing [[%s]]", missingNode->name.c_str()));
-            return context->report(err);
+            defaultExportNode = missingNode->declNode->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
+            if (defaultExportNode)
+            {
+                const auto defaultFunc = castAst<AstFuncDecl>(defaultExportNode, AstNodeKind::FuncDecl);
+                if (!defaultFunc->content)
+                    defaultExportNode = nullptr;
+            }
+
+            if (!defaultExportNode)
+            {
+                Diagnostic err{node, node->getTokenName(), formErr(Err0129, typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
+                err.addNote(missingNode->declNode, missingNode->declNode->getTokenName(), form("missing [[%s]]", missingNode->name.c_str()));
+                return context->report(err);
+            }
         }
 
         content += "func impl ";
@@ -139,19 +152,35 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         content += ")";
 
         content += " => ";
-        content += itfRef.fieldRef;
-        content += ".";
-        content += typeBaseInterface->name;
-        content += ".";
-        content += missingNode->name;
 
-        content += "(";
-        for (uint32_t i = 1; i < typeFunc->parameters.size(); i++)
+        if (defaultExportNode)
         {
-            if (i != 1)
-                content += ",";
-            content += form("p%d", i);
+            content += typeBaseInterface->name;
+            content += ".__default.";
+            content += missingNode->name;
+            content += form("(cast(*%s) self", typeBaseInterface->name.c_str());
+            for (uint32_t i = 1; i < typeFunc->parameters.size(); i++)
+            {
+                content += ", ";
+                content += form("p%d", i);
+            }
         }
+        else
+        {
+            content += itfRef.fieldRef;
+            content += ".";
+            content += typeBaseInterface->name;
+            content += ".";
+            content += missingNode->name;
+            content += "(";
+            for (uint32_t i = 1; i < typeFunc->parameters.size(); i++)
+            {
+                if (i != 1)
+                    content += ", ";
+                content += form("p%d", i);
+            }
+        }
+
         content += ")\n";
     }
 
