@@ -369,9 +369,6 @@
 <li><a href="#Swag_DebugAllocator_printLeaks">DebugAllocator.printLeaks</a></li>
 <li><a href="#Swag_DebugAllocator_setup">DebugAllocator.setup</a></li>
 <li><a href="#Swag_DebugAllocator_IAllocator_releaseLast">IAllocator.releaseLast</a></li>
-<li><a href="#Swag_ICompiler_compileString">ICompiler.compileString</a></li>
-<li><a href="#Swag_ICompiler_getBuildCfg">ICompiler.getBuildCfg</a></li>
-<li><a href="#Swag_ICompiler_getMessage">ICompiler.getMessage</a></li>
 <li><a href="#Swag_ScratchAllocator_IAllocator_alloc">ScratchAllocator.IAllocator.alloc</a></li>
 <li><a href="#Swag_ScratchAllocator_IAllocator_free">ScratchAllocator.IAllocator.free</a></li>
 <li><a href="#Swag_ScratchAllocator_IAllocator_req">ScratchAllocator.IAllocator.req</a></li>
@@ -381,7 +378,6 @@
 <li><a href="#Swag_ScratchAllocator_freeAll">ScratchAllocator.freeAll</a></li>
 <li><a href="#Swag_ScratchAllocator_release">ScratchAllocator.release</a></li>
 <li><a href="#Swag_ScratchAllocator_setCapacity">ScratchAllocator.setCapacity</a></li>
-<li><a href="#Swag_IAllocator_req">Swag.IAllocator.req</a></li>
 <li><a href="#Swag_SystemAllocator_IAllocator_free">SystemAllocator.IAllocator.free</a></li>
 <li><a href="#Swag_SystemAllocator_IAllocator_req">SystemAllocator.IAllocator.req</a></li>
 </ul>
@@ -3726,18 +3722,6 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Swag_IAllocator_req"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">req</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L346" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
 <span id="Swag_ICompiler"><span class="api-item-title-kind">interface</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">ICompiler</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -3764,44 +3748,6 @@
 </tr>
 </table>
 <p>The intrinsic <span class="code-inline">@compiler</span> will return that interface at compile-time, and <span class="code-inline">null</span> at runtime. </p>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Swag_ICompiler_compileString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ICompiler.</span><span class="api-item-title-strong">compileString</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L870" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Returns the build configuration of the current module. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compileString</span>(<span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Swag_ICompiler_getBuildCfg"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ICompiler.</span><span class="api-item-title-strong">getBuildCfg</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L869" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Returns the compiler message in a <span class="code-inline">#message</span> function. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBuildCfg</span>(<span class="SKwd">self</span>)-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfg">BuildCfg</a></span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Swag_ICompiler_getMessage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ICompiler.</span><span class="api-item-title-strong">getMessage</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L868" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMessage</span>(<span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5460,7 +5406,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 15-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 23-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>

@@ -231,6 +231,9 @@
 </ul>
 <li><a href="#_070_union_swg">Union.swg</a></li>
 <li><a href="#_075_interface_swg">Interface.swg</a></li>
+<ul>
+<li><a href="#_075_interface_swg_Default_implementation">Default implementation</a></li>
+</ul>
 <li><a href="#_100_function_swg">Function.swg</a></li>
 <ul>
 <li><a href="#_100_function_swg__101_001_declaration_swg">Declaration.swg</a></li>
@@ -4265,7 +4268,7 @@ ref
 }</span></div>
 
 <h2 id="_075_interface_swg">Interface.swg</h2><p>Interfaces are <b>virtual tables</b> (a list of function pointers) that can be associated to a struct. </p>
-<p>Unlike C++, the virtual table is not embedded with the struct. It is a separate object. You can then <i>implement</i> an interface for a given struct without changing the struct definition. </p>
+<p>Unlike C++, the virtual table is not embedded within the struct. It is a <b>separate</b> object. You can then <i>implement</i> an interface for a given struct without changing the struct definition. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Point2</span>
 {
     x, y: <span class="STpe">f32</span>
@@ -4275,7 +4278,7 @@ ref
 {
     x, y, z: <span class="STpe">f32</span>
 }</span></div>
-<p>Here we declare an interface, with two functions <span class="code-inline">set</span> and <span class="code-inline">reset</span>. </p>
+<p>Here we declare an interface <span class="code-inline">IReset</span>, with two functions <span class="code-inline">set</span> and <span class="code-inline">reset</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">interface</span> <span class="SCst">IReset</span>
 {
     <span class="SCmt">// The first parameter must be 'self'</span>
@@ -4370,6 +4373,36 @@ ref
     <span class="SItr">@assert</span>(<span class="SItr">@dataof</span>(itf) == &pt2)
     itf = <span class="SKwd">cast</span>(<span class="SCst">IReset</span>) pt3
     <span class="SItr">@assert</span>(<span class="SItr">@dataof</span>(itf) == &pt3)
+}</span></div>
+<h3 id="_075_interface_swg_Default_implementation">Default implementation </h3>
+<p>When you declare an interface, you can define a default implementation for each function. In that case, if a struct does not redefine the function, then the default implementation will be called instead. </p>
+<p>Just declare a body in the interface function to have a default implementation. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">interface</span> <span class="SCst">ITest</span>
+{
+    <span class="SKwd">mtd</span> <span class="SFct">isImplemented</span>()-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
+}</span></div>
+<p>Here we define a specific version of <span class="code-inline">isImplemented</span> for <span class="code-inline">Point2</span>, and no specific implementation for <span class="code-inline">Point3</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">ITest</span> <span class="SLgc">for</span> <span class="SCst">Point2</span>
+{
+    <span class="SKwd">mtd</span> <span class="SKwd">impl</span> <span class="SFct">isImplemented</span>()-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
+}
+
+<span class="SKwd">impl</span> <span class="SCst">ITest</span> <span class="SLgc">for</span> <span class="SCst">Point3</span>
+{
+}</span></div>
+<p>So for <span class="code-inline">Point3</span>, <span class="code-inline">isImplemented</span> will return <span class="code-inline">false</span> because this is the default implementation. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> v2: <span class="SCst">Point2</span>
+    <span class="SKwd">var</span> v3: <span class="SCst">Point3</span>
+
+    <span class="SCmt">// 'isImplemented' has been redefined, and will return 'true' for Point2</span>
+    <span class="SKwd">var</span> i2 = <span class="SKwd">cast</span>(<span class="SCst">ITest</span>) v2
+    <span class="SItr">@assert</span>(i2.<span class="SFct">isImplemented</span>())
+
+    <span class="SCmt">// 'isImplemented' is not redefined, it will return false for Point3</span>
+    <span class="SKwd">var</span> i3 = <span class="SKwd">cast</span>(<span class="SCst">ITest</span>) v3
+    <span class="SItr">@assert</span>(!i3.<span class="SFct">isImplemented</span>())
 }</span></div>
 
 <h2 id="_100_function_swg">Function.swg</h2>
@@ -7483,7 +7516,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation_md__231_003_Pages_md">Pages.md</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 15-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 23-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
 </div>
 </div>
 </div>

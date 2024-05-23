@@ -1,7 +1,7 @@
 /**
 Interfaces are **virtual tables** (a list of function pointers) that can be associated to a struct.
 
-Unlike C++, the virtual table is not embedded with the struct. It is a separate object.
+Unlike C++, the virtual table is not embedded within the struct. It is a **separate** object.
 You can then *implement* an interface for a given struct without changing the struct definition.
 */
 
@@ -16,7 +16,7 @@ struct Point3
 }
 
 /**
-Here we declare an interface, with two functions `set` and `reset`.
+Here we declare an interface 'IReset', with two functions `set` and `reset`.
 */
 interface IReset
 {
@@ -130,4 +130,47 @@ An interface is a real type, with a size equivalent to 2 pointers. A pointer to 
     @assert(@dataof(itf) == &pt2)
     itf = cast(IReset) pt3
     @assert(@dataof(itf) == &pt3)
+}
+
+/**
+# Default implementation
+When you declare an interface, you can define a default implementation for each function. In that case, if a struct does not redefine the function, then the default implementation will be called instead.
+*/
+
+
+/**
+Just declare a body in the interface function to have a default implementation.
+*/
+interface ITest
+{
+    mtd isImplemented()->bool { return false; }
+}
+
+/**
+Here we define a specific version of 'isImplemented' for 'Point2', and no specific implementation for 'Point3'.
+*/
+impl ITest for Point2
+{
+    mtd impl isImplemented()->bool { return true; }
+}
+
+impl ITest for Point3
+{
+}
+
+/**
+So for 'Point3', 'isImplemented()' will return 'false' because this is the default implementation.
+*/
+#test
+{
+    var v2: Point2
+    var v3: Point3
+
+    // 'isImplemented' has been redefined, and will return 'true' for Point2
+    var i2 = cast(ITest) v2
+    @assert(i2.isImplemented())
+
+    // 'isImplemented' is not redefined, it will return false for Point3
+    var i3 = cast(ITest) v3
+    @assert(!i3.isImplemented())
 }
