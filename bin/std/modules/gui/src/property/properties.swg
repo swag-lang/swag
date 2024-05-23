@@ -12,6 +12,7 @@ interface IPropertyNotify
 {
     mtd itemHasChanged(list: *Properties, item: *PropertiesItem) {}
     mtd isItemVisible(list: *Properties, item: *PropertiesItem)->bool { return true; }
+    mtd isItemActive(list: *Properties, item: *PropertiesItem)->bool { return true; }
 }
 
 enum PropertiesKind
@@ -237,7 +238,7 @@ internal impl Properties
             colBk     = colors.propList_FocusBk
             colBorder = colors.propList_FocusBorder
         }
-        elif hotItem == item
+        elif hotItem == item and hotItem.line.isEnabled()
         {
             colBk     = colors.propList_HotBk
             colBorder = colors.propList_HotBorder
@@ -312,6 +313,56 @@ internal impl Properties
         }
 
         return false
+    }
+
+    mtd getItemState(item: *PropertiesItem)->{visible, enable: bool}
+    {
+        var result: retval{true, true}
+        var scan = item
+
+        while scan
+        {
+            if scan.ntfyItf
+            {
+                if !scan.ntfyItf.isItemVisible(self, item) do
+                    result.visible = false
+                if !scan.ntfyItf.isItemActive(self, item) do
+                    result.enable = false
+            }
+
+            if !result.visible and !result.enable do
+                return result
+
+            scan = scan.parent
+        }
+
+        return result
+    }
+
+    func refreshItem(item: *PropertiesItem)
+    {
+        if !item.sigRefresh.isEmpty()
+        {
+            item.sigRefresh.call(item)
+            return
+        }
+
+        let pointed = item.type orelse item.typeValue.pointedType
+        if pointed
+        {
+            if Reflection.isEnum(pointed) and Reflection.hasAttribute(pointed, Swag.EnumFlags) do
+                refreshEnumFlags(item)
+            elif Reflection.isEnum(pointed) do
+                refreshEnum(item)
+            elif Reflection.isBool(pointed) do
+                refreshBool(item)
+            elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed) do
+                refreshNative(item)
+            elif Reflection.isString(pointed) and item.editBox do
+                item.editBox.setText(dref cast(*string) item.data)
+            elif pointed == Core.String and item.editBox do
+                item.editBox.setText(dref cast(*String) item.data)
+        }
     }
 
     mtd addItem(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem, height: f32, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertiesItem
@@ -567,7 +618,7 @@ impl Properties
         let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
         addStruct(typeStruct, dataof, item)
 
-        updateVisibleItems()
+        updateState()
         edView.sendResizeEvent()
     }
 
@@ -594,7 +645,7 @@ impl Properties
         }
 
         if Reflection.hasAttribute(item.typeValue, RecalcLayout) do
-            updateVisibleItems()
+            updateState()
     }
 
     // Show hidden content depending on the input 'filter'.
@@ -603,7 +654,7 @@ impl Properties
         if stringFilter == filter do
             return
         stringFilter = filter
-        updateVisibleItems()
+        updateState()
     }
 
     // Only display a given section.
@@ -611,15 +662,16 @@ impl Properties
     mtd setCurrentSection(sectionIndex: u32)
     {
         currentSectionIndex = sectionIndex
-        updateVisibleItems()
+        updateState()
     }
 
     // Update the show/hide state of all content
-    mtd updateVisibleItems()
+    mtd updateState()
     {
         visit it: items
         {
             var mustShow = false
+            var mustEnable = false
 
             if it.section == currentSectionIndex or currentSectionIndex >= sections.count
             {
@@ -627,11 +679,13 @@ impl Properties
                     mustShow = true
                 elif Utf8.indexOf(it.filter.toSlice(), stringFilter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max do
                     mustShow = true
+
                 if mustShow do
-                    mustShow = isItemVisible(it)
+                    (mustShow, mustEnable) = getItemState(it)
             }
 
             it.line.show(mustShow)
+            it.line.enable(mustEnable)
 
             // If an item is visible, then we show also all of its parents, in order
             // to put the item in context
@@ -666,48 +720,5 @@ impl Properties
 
         applyLayout()
         invalidate()
-    }
-
-    mtd isItemVisible(item: *PropertiesItem)->bool
-    {
-        var scan = item
-        while scan
-        {
-            if scan.ntfyItf
-            {
-                if !scan.ntfyItf.isItemVisible(self, item) do
-                    return false
-            }
-
-            scan = scan.parent
-        }
-
-        return true
-    }
-
-    func refreshItem(item: *PropertiesItem)
-    {
-        if !item.sigRefresh.isEmpty()
-        {
-            item.sigRefresh.call(item)
-            return
-        }
-
-        let pointed = item.type orelse item.typeValue.pointedType
-        if pointed
-        {
-            if Reflection.isEnum(pointed) and Reflection.hasAttribute(pointed, Swag.EnumFlags) do
-                refreshEnumFlags(item)
-            elif Reflection.isEnum(pointed) do
-                refreshEnum(item)
-            elif Reflection.isBool(pointed) do
-                refreshBool(item)
-            elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed) do
-                refreshNative(item)
-            elif Reflection.isString(pointed) and item.editBox do
-                item.editBox.setText(dref cast(*string) item.data)
-            elif pointed == Core.String and item.editBox do
-                item.editBox.setText(dref cast(*String) item.data)
-        }
     }
 }

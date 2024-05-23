@@ -39,7 +39,7 @@ struct NoiseParams
 
 impl IPropertyNotify for NoiseParams
 {
-    mtd impl isItemVisible(list: *Properties, item: *PropertiesItem)->bool
+    mtd impl isItemActive(list: *Properties, item: *PropertiesItem)->bool
     {
         let isFractal = kind != Noise.FastNoiseKind.Perlin and kind != Noise.FastNoiseKind.Value
 
