@@ -12,7 +12,7 @@ interface IPropertyNotify
 {
     mtd itemHasChanged(list: *Properties, item: *PropertiesItem) {}
     mtd isItemVisible(list: *Properties, item: *PropertiesItem)->bool { return true; }
-    mtd isItemActive(list: *Properties, item: *PropertiesItem)->bool { return true; }
+    mtd isItemEnabled(list: *Properties, item: *PropertiesItem)->bool { return true; }
 }
 
 enum PropertiesKind
@@ -326,7 +326,7 @@ internal impl Properties
             {
                 if !scan.ntfyItf.isItemVisible(self, item) do
                     result.visible = false
-                if !scan.ntfyItf.isItemActive(self, item) do
+                if !scan.ntfyItf.isItemEnabled(self, item) do
                     result.enable = false
             }
 
