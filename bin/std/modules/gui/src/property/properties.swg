@@ -154,14 +154,13 @@ internal impl Properties
                 focusEvt.canChangeFocus = false
 
         case .MousePressed:
+            let mouseEvt = cast(*MouseEvent) evt
+            if mouseEvt.button != .Left do
+                break
             if prop.cursorSet
             {
-                let mouseEvt = cast(*MouseEvent) evt
-                if mouseEvt.button == .Left
-                {
-                    prop.resizingColumn = true
-                    return true
-                }
+                prop.resizingColumn = true
+                return true
             }
             elif prop.kind == .Grid and prop.hotItem and prop.hotItem.flags.has(.HasChilds)
             {
