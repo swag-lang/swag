@@ -109,7 +109,7 @@ impl IWnd for Properties
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var colorBar = cursorSet ? getThemeColors().splitView_BarHot : getThemeColors().propList_GridColumn
+        var colorBar = cursorSet ? getThemeColors().splitView_BarHot : getThemeColors().prop_GridColumn
         aniBar.apply(self, colorBar)
     }
 }
@@ -230,26 +230,18 @@ internal impl Properties
     {
         let colors = wnd.getThemeColors()
 
-        var colBk, colBorder: Color
+        var colBkBk, colBk, colBorder: Color
 
         let focusWnd = wndItem.getApp().keybFocusWnd
         if wndItem == focusWnd or wndItem.isOwnerOf(focusWnd)
         {
-            colBk     = colors.propList_FocusBk
-            colBorder = colors.propList_FocusBorder
+            colBk     = colors.prop_FocusBk
+            colBorder = colors.prop_FocusBorder
         }
         elif hotItem == item and hotItem.line.isEnabled()
         {
-            colBk     = colors.propList_HotBk
-            colBorder = colors.propList_HotBorder
-        }
-        elif kind == .Grid and item.flags.has(.CategoryBk)
-        {
-            colBk = colors.propList_CategBk
-        }
-        elif kind == .Grid and item.level > 2
-        {
-            colBk = colors.propList_Bk1
+            colBk     = colors.prop_HotBk
+            colBorder = colors.prop_HotBorder
         }
 
         item.aniFocusBk.apply(wndItem, colBk)
@@ -261,7 +253,14 @@ internal impl Properties
         r.x     = -leftMargin + 1
         r.width = edView.position.width - 1
 
-        // Hot and focus background
+        // Background
+        if kind == .Grid and item.flags.has(.CategoryBk) do
+            colBkBk = colors.prop_CategBk
+        elif kind == .Grid and item.level > 2 do
+            colBkBk = colors.prop_Bk1
+        painter.fillRect(r, colBkBk)
+
+        // Hot and focus box background
         {
             var r1 = r
             r1.inflate(-2)
@@ -273,7 +272,7 @@ internal impl Properties
         {
             var r1 = r
             r1.height += 1
-            painter.drawRect(r1, colors.propList_GridBorder)
+            painter.drawRect(r1, colors.prop_GridBorder)
 
             if !item.flags.has(.NoSeparator)
             {
