@@ -664,7 +664,7 @@ internal impl ListView
                 {
                     if canExpand
                     {
-                        var expand = theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight)
+                        var expand = theme.getIcon24(line.expanded ? .Expanded : .Collapsed)
                         expand.paint(painter, labelPos.x, labelPos.vertCenter() - expand.sizeY * 0.5, colorExpand)
                     }
 

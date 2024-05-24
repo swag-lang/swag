@@ -26,6 +26,8 @@ enum ThemeIcons24
     Copy
     Paste
     Cut
+    Expanded
+    Collapsed
 }
 
 enum ThemeIcons64

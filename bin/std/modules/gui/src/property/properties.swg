@@ -27,8 +27,6 @@ struct Properties
 
     kind                = PropertiesKind.List
 
-    leftMargin:         s32 = 15
-    rightMargin:        s32 = 15
     sizeEditValue:      s32 = 200
 
     // For grid kind
@@ -44,6 +42,8 @@ struct Properties
 
     sigChanged:               SigArray'closure(*Self, *PropertiesItem)
 
+    leftMargin:               s32 = 15
+    rightMargin:              s32 = 15
     fontSection:              FontFamily
     fontCategory:             FontFamily
     scrollWnd:                *ScrollWnd
@@ -161,7 +161,7 @@ internal impl Properties
                     return true
                 }
             }
-            elif prop.hotItem and prop.hotItem.flags.has(.HasChilds)
+            elif prop.kind == .Grid and prop.hotItem and prop.hotItem.flags.has(.HasChilds)
             {
                 prop.hotItem.flags.toggle(.Expanded)
                 prop.updateState()
@@ -286,7 +286,7 @@ internal impl Properties
 
             if !item.flags.has(.NoSeparator)
             {
-                let x    = cast(f32) gridColumnSize + leftMargin - gridMarginColumn * 0.5
+                let x    = getColumnX() - item.line.position.x
                 let size = cursorSet ? 4 : 1
                 let rect = Math.Rectangle{x - size * 0.5, r1.y, size, r1.height}
                 painter.fillRect(rect, aniBar.cur())
@@ -298,6 +298,13 @@ internal impl Properties
             var r1 = r
             r1.inflate(-2)
             painter.drawRoundRect(r1, 4, 4, item.aniFocusBorder.cur())
+        }
+
+        // Expand/Collapse icon
+        if kind == .Grid and item.flags.has(.HasChilds)
+        {
+            var expand = getTheme().getIcon24(item.flags.has(.Expanded) ? .Expanded : .Collapsed)
+            expand.paint(painter, r.x, r.vertCenter() - expand.sizeY * 0.5, Argb.White)
         }
     }
 
@@ -590,11 +597,15 @@ impl Properties
                 const FontCategorySize = 24'u32
                 .fontSection  = theme.createDefaultFontfamily(FontSectionSize)
                 .fontCategory = theme.createDefaultFontfamily(FontCategorySize)
+                .leftMargin   = 15
+                .rightMargin  = 15
             }
             else
             {
                 .fontSection  = theme.res.fontDefault
                 .fontCategory = theme.res.fontDefault
+                .leftMargin   = 25
+                .rightMargin  = 15
             }
 
             .hookOnChildEvent = func(wnd, evt) { return onHookChildEvent(wnd, evt); }
