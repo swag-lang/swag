@@ -150,6 +150,8 @@ internal impl Properties
             let focusEvt = cast(*FocusEvent) evt
             if prop.cursorSet do
                 focusEvt.canChangeFocus = false
+            elif prop.hotItem and prop.hotItem.flags.has(.Section | .Category) do
+                focusEvt.canChangeFocus = false
 
         case .MousePressed:
             if prop.cursorSet

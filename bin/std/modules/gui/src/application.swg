@@ -349,11 +349,11 @@ internal impl Application
 
     mtd unregisterWnd(wnd: *Wnd)
     {
-        if wnd == mouseEnterWnd do
+        if wnd == mouseEnterWnd or wnd.isOwnerOf(mouseEnterWnd) do
             mouseEnterWnd = null
-        if wnd == mouseCaptureWnd do
+        if wnd == mouseCaptureWnd or wnd.isOwnerOf(mouseCaptureWnd) do
             mouseCaptureWnd = null
-        if wnd == keybFocusWnd do
+        if wnd == keybFocusWnd or wnd.isOwnerOf(keybFocusWnd) do
             keybFocusWnd = null
 
         // Be sure there's no timer for that window
