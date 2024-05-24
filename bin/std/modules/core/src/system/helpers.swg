@@ -38,3 +38,10 @@ func(T) set(flags: &T, value: T)
 {
     flags = value
 }
+
+#[Inline]
+func(T) toggle(flags: &T, value: T)
+    #validif Reflection.isEnumFlags(T)
+{
+    flags ^= value
+}
