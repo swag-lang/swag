@@ -71,7 +71,10 @@ enum ItemFlags
 {
     Zero        = 0
     NoSeparator
-    CategoryBk
+    Section
+    Category
+    Expanded
+    HasChilds
 }
 
 struct PropertiesItem
@@ -157,6 +160,11 @@ internal impl Properties
                     prop.resizingColumn = true
                     return true
                 }
+            }
+            elif prop.hotItem and prop.hotItem.flags.has(.HasChilds)
+            {
+                prop.hotItem.flags.toggle(.Expanded)
+                prop.updateState()
             }
 
         case .MouseReleased:
@@ -254,7 +262,9 @@ internal impl Properties
         r.width = edView.position.width - 1
 
         // Background
-        if kind == .Grid and item.flags.has(.CategoryBk) do
+        if kind == .Grid and item.flags.has(.Section) do
+            colBkBk = colors.prop_SectionBk
+        elif kind == .Grid and item.flags.has(.Category) do
             colBkBk = colors.prop_CategBk
         elif kind == .Grid and item.level > 2 do
             colBkBk = colors.prop_Bk1
@@ -314,10 +324,10 @@ internal impl Properties
         return false
     }
 
-    mtd getItemState(item: *PropertiesItem)->{visible, enable: bool}
+    mtd getItemState(item: *PropertiesItem)->{ visible, enable: bool }
     {
         var result: retval{true, true}
-        var scan = item
+        var scan    = item
 
         while scan
         {
@@ -333,6 +343,9 @@ internal impl Properties
                 return result
 
             scan = scan.parent
+
+            if scan and scan.flags.has(.HasChilds) and !scan.flags.has(.Expanded) do
+                result.visible = false
         }
 
         return result
@@ -385,6 +398,9 @@ internal impl Properties
                 .margin.w = gridLineMargin * 0.5
             }
         }
+
+        if parentItem do
+            parentItem.flags.add(.HasChilds)
 
         with let item = items.addNewPtr()
         {
@@ -492,10 +508,12 @@ internal impl Properties
             let subCateg = Reflection.getAttributeValue(value, Properties.Category, "name")
             if subCateg != null
             {
-                var v:   Swag.TypeValue{name: cast(string) subCateg}
-                let item = addItem(v, null, parentItem, fontCategory.regular.height)
+                var strName = Format.toString("<b>%</b>", cast(string) subCateg)
+                var v:      Swag.TypeValue{name: strName.toString()}
+                let h       = Math.max(getThemeMetrics().editBox_Height, fontCategory.regular.height)
+                let item    = addItem(v, null, parentItem, h)
                 item.label.style.setFont(&fontCategory)
-                item.flags.add(.CategoryBk)
+                item.flags.add(.Category | .NoSeparator | .Expanded)
                 sections.add({item, 1})
                 newParent = item
             }
@@ -575,8 +593,7 @@ impl Properties
             }
             else
             {
-                const FontSectionSize = 24'u32
-                .fontSection  = theme.createDefaultFontfamily(FontSectionSize)
+                .fontSection  = theme.res.fontDefault
                 .fontCategory = theme.res.fontDefault
             }
 
@@ -599,9 +616,11 @@ impl Properties
         // Section
         if section != null
         {
-            var v: Swag.TypeValue{name: section}
-            item = addItem(v, null, null, fontSection.regular.height)
-            item.flags.add(.CategoryBk | .NoSeparator)
+            var strName = Format.toString("<b>%</b>", section)
+            var v:      Swag.TypeValue{name: strName.toString()}
+            let h       = Math.max(getThemeMetrics().editBox_Height, fontSection.regular.height)
+            item = addItem(v, null, null, h)
+            item.flags.add(.Section | .NoSeparator | .Expanded)
             item.label.style.setFont(&fontSection)
             item.section = cast(u32) sections.count
             sections.add({item, 0})
@@ -669,7 +688,7 @@ impl Properties
     {
         visit it: items
         {
-            var mustShow = false
+            var mustShow   = false
             var mustEnable = false
 
             if it.section == currentSectionIndex or currentSectionIndex >= sections.count

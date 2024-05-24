@@ -346,6 +346,7 @@ struct ThemeColors
     prop_HotBorder:                    Color = Transparent
     prop_GridBorder:                   Color = Gray7
     prop_GridColumn:                   Color = Gray7
-    prop_CategBk:                      Color = Gray6
+    prop_SectionBk:                    Color = Gray6
+    prop_CategBk:                      Color = Transparent
     prop_Bk1:                          Color = Color.getDarker(Color.fromArgb(Gray5), 0.04)
 }
