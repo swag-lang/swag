@@ -362,7 +362,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
         for (const auto& sm : symbolMatch)
         {
             const auto symbol = sm.symbol;
-            if (symbol->isNot(SymbolKind::Function) && symbol->isNot(SymbolKind::Variable))
+            if (symbol->isNot(SymbolKind::Function) && symbol->isNot(SymbolKind::Variable) && symbol->isNot(SymbolKind::Attribute))
                 continue;
 
             ScopedLock ls(symbol->mutex);
@@ -376,7 +376,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
         for (const auto& sm : symbolMatch)
         {
             const auto symbol = sm.symbol;
-            if (symbol->isNot(SymbolKind::Function) && symbol->isNot(SymbolKind::Variable))
+            if (symbol->isNot(SymbolKind::Function) && symbol->isNot(SymbolKind::Variable) && symbol->isNot(SymbolKind::Attribute))
                 continue;
 
             SharedLock lk(symbol->mutex);
