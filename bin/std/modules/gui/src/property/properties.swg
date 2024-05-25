@@ -71,6 +71,7 @@ enum ItemFlags
 {
     Zero        = 0
     NoSeparator
+    NoFocus
     Section
     Category
     Expanded
@@ -150,7 +151,7 @@ internal impl Properties
             let focusEvt = cast(*FocusEvent) evt
             if prop.cursorSet do
                 focusEvt.canChangeFocus = false
-            elif prop.hotItem and prop.hotItem.flags.has(.Section | .Category) do
+            elif prop.hotItem and prop.hotItem.flags.has(.NoFocus) do
                 focusEvt.canChangeFocus = false
 
         case .MousePressed:
@@ -521,7 +522,7 @@ internal impl Properties
                 let h       = fontCategory.regular.height
                 let item    = addItem(v, null, parentItem, h)
                 item.label.style.setFont(&fontCategory)
-                item.flags.add(.Category | .NoSeparator | .Expanded)
+                item.flags.add(.Category | .NoSeparator | .Expanded | .NoFocus)
                 sections.add({item, 1})
                 newParent = item
             }
@@ -547,7 +548,7 @@ internal impl Properties
                 constructNative(value, typeNative, data, newParent)
 
             case Reflection.isStruct(value.pointedType):
-                newParent.flags.add(.NoSeparator)
+                newParent.flags.add(.NoSeparator | .NoFocus)
                 let typeSubStruct = cast(const *Swag.TypeInfoStruct) value.pointedType
                 let iprop         = @mkinterface(data, value.pointedType, IPropertyValue)
                 if iprop != null
@@ -632,7 +633,7 @@ impl Properties
             var v:      Swag.TypeValue{name: strName.toString()}
             let h       = fontSection.regular.height
             item = addItem(v, null, null, h)
-            item.flags.add(.Section | .NoSeparator | .Expanded)
+            item.flags.add(.Section | .NoSeparator | .Expanded | .NoFocus)
             item.label.style.setFont(&fontSection)
             item.section = cast(u32) sections.count
             sections.add({item, 0})
