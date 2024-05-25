@@ -518,7 +518,7 @@ internal impl Properties
             {
                 var strName = Format.toString("<b>%</b>", cast(string) subCateg)
                 var v:      Swag.TypeValue{name: strName.toString()}
-                let h       = Math.max(getThemeMetrics().editBox_Height, fontCategory.regular.height)
+                let h       = fontCategory.regular.height
                 let item    = addItem(v, null, parentItem, h)
                 item.label.style.setFont(&fontCategory)
                 item.flags.add(.Category | .NoSeparator | .Expanded)
@@ -558,7 +558,7 @@ internal impl Properties
                 }
                 else
                 {
-                    let item = addItem(value, data, newParent, getThemeMetrics().editBox_Height)
+                    let item = addItem(value, data, newParent, getTheme().res.fontDefault.regular.height)
                     addStruct(typeSubStruct, data, item)
                 }
             }
@@ -630,7 +630,7 @@ impl Properties
         {
             var strName = Format.toString("<b>%</b>", section)
             var v:      Swag.TypeValue{name: strName.toString()}
-            let h       = Math.max(getThemeMetrics().editBox_Height, fontSection.regular.height)
+            let h       = fontSection.regular.height
             item = addItem(v, null, null, h)
             item.flags.add(.Section | .NoSeparator | .Expanded)
             item.label.style.setFont(&fontSection)
