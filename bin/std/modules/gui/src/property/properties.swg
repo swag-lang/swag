@@ -47,6 +47,7 @@ struct Properties
     rightMargin:              s32 = 15
     fontSection:              FontFamily
     fontCategory:             FontFamily
+    fontName:                 FontFamily
     scrollWnd:                *ScrollWnd
     edView:                   *PropertiesView
     items:                    ArrayPtr'PropertiesItem
@@ -430,20 +431,13 @@ internal impl Properties
         // Name
         if flags.has(.Name)
         {
-            var dispNameContent: String
+            var dispName: String
 
             let attrName = Reflection.getAttributeValue(value, Properties.Name, "name")
             if attrName != null do
-                dispNameContent = cast(string) attrName
+                dispName = cast(string) attrName
             else do
-                dispNameContent = Utf8.beautifyName(value.name)
-
-            // Name is bold in list mode, and regular in grid mode
-            var dispName: String
-            if kind == .Grid do
-                dispName = dispNameContent
-            else do
-                dispName = Format.toString("<b>%</b>", dispNameContent)
+                dispName = Utf8.beautifyName(value.name)
 
             with let label = Label.create(line, dispName, {0, 0, gridColumnSize, listNameHeight})
             {
@@ -462,6 +456,8 @@ internal impl Properties
                     .margin.y          = listNameMarginBefore
                     .margin.w          = listNameMarginAfter
                 }
+
+                label.style.setFont(fontName)
             }
 
             item.label = label
@@ -518,10 +514,9 @@ internal impl Properties
             let subCateg = Reflection.getAttributeValue(value, Properties.Category, "name")
             if subCateg != null
             {
-                var strName = Format.toString("<b>%</b>", cast(string) subCateg)
-                var v:      Swag.TypeValue{name: strName.toString()}
-                let h       = fontCategory.regular.height
-                let item    = addItem(v, null, parentItem, h)
+                var v:   Swag.TypeValue{name: cast(string) subCateg}
+                let h    = fontCategory.regular.height
+                let item = addItem(v, null, parentItem, h)
                 item.label.style.setFont(&fontCategory)
                 item.flags.add(.Category | .NoSeparator | .Expanded | .NoFocus)
                 sections.add({item, 1})
@@ -598,17 +593,24 @@ impl Properties
             {
                 const FontSectionSize  = 30'u32
                 const FontCategorySize = 24'u32
-                .fontSection  = theme.createDefaultFontfamily(FontSectionSize)
-                .fontCategory = theme.createDefaultFontfamily(FontCategorySize)
-                .leftMargin   = 15
-                .rightMargin  = 15
+                .fontName             = theme.res.fontDefault
+                .fontSection          = theme.createDefaultFontfamily(FontSectionSize)
+                .fontCategory         = theme.createDefaultFontfamily(FontCategorySize)
+                .fontSection.regular  = .fontSection.bold
+                .fontCategory.regular = .fontCategory.bold
+                .fontName.regular     = .fontName.bold
+                .leftMargin           = 15
+                .rightMargin          = 15
             }
             else
             {
-                .fontSection  = theme.res.fontDefault
-                .fontCategory = theme.res.fontDefault
-                .leftMargin   = 25
-                .rightMargin  = 15
+                .fontName             = theme.res.fontDefault
+                .fontSection          = theme.res.fontDefault
+                .fontCategory         = theme.res.fontDefault
+                .fontSection.regular  = .fontSection.bold
+                .fontCategory.regular = .fontCategory.bold
+                .leftMargin           = 25
+                .rightMargin          = 15
             }
 
             .hookOnChildEvent = func(wnd, evt) { return onHookChildEvent(wnd, evt); }
@@ -630,9 +632,8 @@ impl Properties
         // Section
         if section != null
         {
-            var strName = Format.toString("<b>%</b>", section)
-            var v:      Swag.TypeValue{name: strName.toString()}
-            let h       = fontSection.regular.height
+            var v: Swag.TypeValue{name: section}
+            let h  = fontSection.regular.height
             item = addItem(v, null, null, h)
             item.flags.add(.Section | .NoSeparator | .Expanded | .NoFocus)
             item.label.style.setFont(&fontSection)
