@@ -14,13 +14,13 @@ public struct JSon
 
 public impl JSon
 {
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd getVersion()->u32
     {
         return 0
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd isTextual()->bool
     {
         return true
@@ -82,12 +82,12 @@ public impl JSon
         return c != `]`
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd beginRoot() throw
     {
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endRoot() throw
     {
     }
@@ -148,12 +148,12 @@ public impl JSon
         return true
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endElement() throw
     {
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd beginValue() throw
     {
     }

@@ -1,5 +1,5 @@
 //#global testwarning
-#global #[Swag.Warn("Wrn0006", Swag.WarnLevel.Error)]
+#global #[Swag.Warning("Wrn0006", Swag.WarningLevel.Error)]
 #test
 {
     var x: closure(y: s32)

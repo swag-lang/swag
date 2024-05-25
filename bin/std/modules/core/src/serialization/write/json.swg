@@ -23,7 +23,7 @@ struct JSon
 
 impl JSon
 {
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd isTextual()->bool
     {
         return true
@@ -42,12 +42,12 @@ impl JSon
         output = buf
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd beginRoot()
     {
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endRoot()
     {
     }
@@ -126,10 +126,10 @@ impl JSon
             output.addBytes(" ")
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endElement() {}
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd beginValue() {}
 
     mtd endValue()

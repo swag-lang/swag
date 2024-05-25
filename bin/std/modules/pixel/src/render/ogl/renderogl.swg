@@ -243,7 +243,7 @@ impl RenderOgl
     }
 
     // Clear current render buffers
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd clear()
     {
         glClearStencil(0)
@@ -269,13 +269,13 @@ impl RenderOgl
     }
 
     // Reset the scissor
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd resetScissorRect()
     {
         glDisable(GL_SCISSOR_TEST)
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     private func GLDebugMessageCallback(Source: GLenum, Type: GLenum, Id: GLuint, Severity: GLenum, Length: GLsizei, Message: const *GLchar, UserParam: const *void)
     {
         //@print(cast(cstring) (Message));
@@ -418,7 +418,7 @@ impl RenderOgl
     }
 
     // Create a render target
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd createRenderTarget(w, h: s32)->RenderTarget
     {
         var colorID: GLuint
@@ -452,7 +452,7 @@ impl RenderOgl
     }
 
     // Delete a render target
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd deleteRenderTarget(rt: *RenderTarget)
     {
         if rt.handle == InvalidRenderTargetHandle or !rt.colorBuffer.valid do
@@ -480,7 +480,7 @@ impl RenderOgl
     }
 
     // Register an image for rendering
-    #[Warn("Wrn0006", WarnLevel.Disable), Swag.Overload]
+    #[Warning("Wrn0006", WarningLevel.Disable), Swag.Overload]
     mtd addImage(image: Image)->Texture
     {
         if !image.isValid() do
@@ -559,7 +559,7 @@ impl RenderOgl
     }
 
     // Unregister a texture created with 'addImage'
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd removeTexture(texture: *Texture)
     {
         if !texture.valid do

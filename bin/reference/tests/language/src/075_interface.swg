@@ -167,10 +167,10 @@ So for 'Point3', 'isImplemented()' will return 'false' because this is the defau
     var v3: Point3
 
     // 'isImplemented' has been redefined, and will return 'true' for Point2
-    var i2 = cast(ITest) v2
+    let i2 = cast(ITest) v2
     @assert(i2.isImplemented())
 
     // 'isImplemented' is not redefined, it will return false for Point3
-    var i3 = cast(ITest) v3
+    let i3 = cast(ITest) v3
     @assert(!i3.isImplemented())
 }

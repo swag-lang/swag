@@ -48,7 +48,7 @@ internal impl TagBin
 
 impl TagBin
 {
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd isTextual()->bool
     {
         return true
@@ -160,13 +160,13 @@ impl TagBin
         output.addNative(val.pointedType.crc32)
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endElement() {}
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd beginValue() {}
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endValue() {}
 
     mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: u64)->bool
@@ -207,7 +207,7 @@ impl TagBin
         return false
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endSequence() {}
 
     /////////////////////////////////

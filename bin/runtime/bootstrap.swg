@@ -168,8 +168,8 @@ namespace Swag
     #[AttrUsage(AttributeUsage.All | AttributeUsage.File)]
     attr Overflow(value: bool)
 
-    // Warning behavior for [[Warn]] attribute
-    enum WarnLevel: u8
+    // Warning behavior for [[Warning]] attribute
+    enum WarningLevel: u8
     {
         Enable      // Enable the given warning
         Disable     // Disable the given warning
@@ -179,13 +179,13 @@ namespace Swag
     // Change the behavior of a given warning or list of warnings.
     // For example:
     // ```swag
-    // #[Swag.Warn("Wrn0006", Swag.WarnLevel.Error)
-    // #[Swag.Warn("Wrn0002|Wrn0006", Swag.WarnLevel.Disable)
-    // #global #[Swag.Warn("Wrn0005", Swag.WarnLevel.Enable)]
+    // #[Swag.Warning("Wrn0006", Swag.WarningLevel.Error)
+    // #[Swag.Warning("Wrn0002|Wrn0006", Swag.WarningLevel.Disable)
+    // #global #[Swag.Warning("Wrn0005", Swag.WarningLevel.Enable)]
     // ```
     // You can also change the warning behaviors for the whole module in your [[BuildCfg]]
     #[AttrUsage(AttributeUsage.All | AttributeUsage.File), AttrMulti]
-    attr Warn(what: string, level: WarnLevel)
+    attr Warning(what: string, level: WarningLevel)
 
     #[AttrUsage(AttributeUsage.All)]
     attr Match(what: string, value: bool)

@@ -1,5 +1,5 @@
 #global testwarning "Wrn0005"
-#[Swag.Warn("Wrn0005", Swag.WarnLevel.Enable)]
+#[Swag.Warning("Wrn0005", Swag.WarningLevel.Enable)]
 func toto()
 {
     unreachable

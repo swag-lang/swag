@@ -1,5 +1,5 @@
 #global testwarning "Wrn0006"
-#global #[Swag.Warn("Wrn0006", Swag.WarnLevel.Enable)]
+#global #[Swag.Warning("Wrn0006", Swag.WarningLevel.Enable)]
 
 #test
 {

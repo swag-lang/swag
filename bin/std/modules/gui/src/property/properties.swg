@@ -8,6 +8,7 @@ interface IPropertyValue
 }
 
 // To notify a struct about properties changes
+#[Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
 interface IPropertyNotify
 {
     mtd itemHasChanged(list: *Properties, item: *PropertiesItem) {}

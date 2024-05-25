@@ -13,13 +13,13 @@ public struct RenderingContext
 
 public impl NativeRenderOgl
 {
-    #[Warn("Wrn0006", WarnLevel.Disable), Overload]
+    #[Warning("Wrn0006", WarningLevel.Disable), Overload]
     mtd createContext(hWnd: HWND, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
         return try createContext(GetDC(hWnd), width, height, mainRC)
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable), Overload]
+    #[Warning("Wrn0006", WarningLevel.Disable), Overload]
     mtd createContext(hdc: HDC, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
         var result: retval
@@ -43,20 +43,20 @@ public impl NativeRenderOgl
         return result
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd dropContext(rc: RenderingContext)
     {
         catch wglMakeCurrent(null, null)
         catch wglDeleteContext(rc.hRC)
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd setCurrentContext(rc: RenderingContext)
     {
         catch wglMakeCurrent(rc.hDC, rc.hRC)
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd swapBuffers(rc: RenderingContext)
     {
         assume SwapBuffers(rc.hDC)

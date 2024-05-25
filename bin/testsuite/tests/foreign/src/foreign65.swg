@@ -1,5 +1,5 @@
-#global #[Swag.Warn("Wrn0006", Swag.WarnLevel.Disable)]
-#global #[Swag.Warn("wrn0008", Swag.WarnLevel.Disable)]
+#global #[Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
+#global #[Swag.Warning("wrn0008", Swag.WarningLevel.Disable)]
 
 public struct Toto65
 {

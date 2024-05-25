@@ -9,7 +9,7 @@ struct A
 
 impl I for A
 {
-    #[Swag.Warn("Wrn0006", Swag.WarnLevel.Enable)]
+    #[Swag.Warning("Wrn0006", Swag.WarningLevel.Enable)]
     mtd impl toto()
     {
     }

@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#[Swag.Warn("Wrn0003", Swag.WarnLevel.Disable)]
+#[Swag.Warning("Wrn0003", Swag.WarningLevel.Disable)]
 #test
 {
 	var c = 666

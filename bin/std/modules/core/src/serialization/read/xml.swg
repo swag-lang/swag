@@ -15,13 +15,13 @@ public struct Xml
 
 public impl Xml
 {
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd getVersion()->u32
     {
         return 0
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd isTextual()->bool
     {
         return true
@@ -135,7 +135,7 @@ public impl Xml
         readEndTag()
     }
 
-    #[Warn("Wrn0006", WarnLevel.Disable)]
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     {
         mtd beginStruct(structType: typeinfo, structData: const *u8)->bool throw { return false; }
         mtd endStruct() throw {}
