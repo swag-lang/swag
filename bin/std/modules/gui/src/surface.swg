@@ -205,8 +205,8 @@ impl Surface
         if !rt.colorBuffer.valid or rt.colorBuffer.width < rc.width or rt.colorBuffer.height < rc.height
         {
             app.renderer.deleteRenderTarget(&rt)
-            let w: s32 = Math.roundUpToPowerOf2(rc.width)
-            let h: s32 = Math.roundUpToPowerOf2(rc.height)
+            let w = Math.roundUpToPowerOf2(cast(u32) rc.width)
+            let h = Math.roundUpToPowerOf2(cast(u32) rc.height)
             rt = app.renderer.createRenderTarget(w, h)
             invalidate()
         }
