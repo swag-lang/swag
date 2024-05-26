@@ -14,7 +14,8 @@ struct SourceLocation;
 
 struct ByteCodePrintOptions
 {
-    ByteCodeInstruction* curIp = nullptr;
+    ByteCodeInstruction* curIp           = nullptr;
+    bool                 printSourceCode = true;
 };
 
 struct ByteCode

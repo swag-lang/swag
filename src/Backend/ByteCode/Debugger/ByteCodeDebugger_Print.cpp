@@ -348,7 +348,8 @@ void ByteCodeDebugger::printInstructions(const ByteCodeRunContext*, const ByteCo
     }
 
     ByteCodePrintOptions opt;
-    opt.curIp = cxtIp;
+    opt.curIp           = cxtIp;
+    opt.printSourceCode = printBcCode;
     bc->print(opt, static_cast<uint32_t>(ip - bc->out), cpt + count - 1);
 }
 
@@ -523,7 +524,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext*, con
     }
 
     ByteCodePrintOptions opt;
-    opt.curIp = toLogIp;
+    opt.curIp           = toLogIp;
+    opt.printSourceCode = g_ByteCodeDebugger.printBcCode;
 
     g_Log.setStoreMode(true);
     toLogBc->print(opt);

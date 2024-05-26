@@ -87,6 +87,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"set", "", "bkp <on|off>", "enable/disable @breakpoint()", cmdSet});
     commands.push_back({"set", "", "print struct <on|off>", "print the content of structs when printing values", cmdSet});
     commands.push_back({"set", "", "print array <on|off>", "print the content of arrays when printing values", cmdSet});
+    commands.push_back({"set", "", "print bccode <on|off>", "print the source code with bytecodes", cmdSet});
     commands.push_back({});
 
     commands.push_back({"help", "?", "", "print this list of commands", cmdHelp});

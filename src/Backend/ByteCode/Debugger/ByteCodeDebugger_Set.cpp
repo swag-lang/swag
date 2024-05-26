@@ -4,9 +4,10 @@
 
 void ByteCodeDebugger::printSet(ByteCodeRunContext*)
 {
-    g_Log.messageHeaderDot("stop on @breakpoint()", !g_CommandLine.dbgOff ? "on" : "off", LogColor::Name, LogColor::White, " ");
+    g_Log.messageHeaderDot("stop on @breakpoint()", g_CommandLine.dbgOff ? "off" : "on", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("print struct content", g_ByteCodeDebugger.printStruct ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("print array content", g_ByteCodeDebugger.printArray ? "on" : "off", LogColor::Name, LogColor::White, " ");
+    g_Log.messageHeaderDot("print bytecode source", g_ByteCodeDebugger.printBcCode ? "on" : "off", LogColor::Name, LogColor::White, " ");
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
@@ -21,15 +22,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
     {
         if (arg.split.size() != 3)
             return BcDbgCommandResult::BadArguments;
+        
         if (arg.split[2] != "on" && arg.split[2] != "off")
             return BcDbgCommandResult::BadArguments;
-
         g_CommandLine.dbgOff = arg.split[2] == "off";
 
         if (g_CommandLine.dbgOff)
-            printCmdResult("stop on @breakpoint(): on");
-        else
             printCmdResult("stop on @breakpoint(): off");
+        else
+            printCmdResult("stop on @breakpoint(): on");
         return BcDbgCommandResult::Continue;
     }
 
@@ -42,10 +43,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         {
             if (arg.split[3] != "on" && arg.split[3] != "off")
                 return BcDbgCommandResult::BadArguments;
+            g_ByteCodeDebugger.printStruct = arg.split[3] == "on";
 
-            g_ByteCodeDebugger.printStruct = arg.split[2] == "on";
-
-            if (g_CommandLine.dbgOff)
+            if (g_ByteCodeDebugger.printStruct)
                 printCmdResult("print struct content: on");
             else
                 printCmdResult("print struct content: off");
@@ -56,15 +56,27 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         {
             if (arg.split[3] != "on" && arg.split[3] != "off")
                 return BcDbgCommandResult::BadArguments;
+            g_ByteCodeDebugger.printArray = arg.split[3] == "on";
 
-            g_ByteCodeDebugger.printArray = arg.split[2] == "on";
-
-            if (g_CommandLine.dbgOff)
+            if (g_ByteCodeDebugger.printArray)
                 printCmdResult("print array content: on");
             else
                 printCmdResult("print array content: off");
             return BcDbgCommandResult::Continue;
         }
+
+        if (arg.split[2] == "bccode")
+        {
+            if (arg.split[3] != "on" && arg.split[3] != "off")
+                return BcDbgCommandResult::BadArguments;
+            g_ByteCodeDebugger.printBcCode = arg.split[3] == "on";
+
+            if (g_ByteCodeDebugger.printBcCode)
+                printCmdResult("print bytecode source: on");
+            else
+                printCmdResult("print bytecode source: off");
+            return BcDbgCommandResult::Continue;
+        }        
     }
 
     return BcDbgCommandResult::BadArguments;

@@ -215,6 +215,7 @@ struct ByteCodeDebugger
     bool forcePrintContext = false;
     bool printStruct       = true;
     bool printArray        = true;
+    bool printBcCode       = true;
 };
 
 extern ByteCodeDebugger g_ByteCodeDebugger;

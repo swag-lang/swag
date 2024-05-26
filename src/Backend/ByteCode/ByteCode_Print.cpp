@@ -405,10 +405,15 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     // Instruction rank
     g_Log.print(line.rank);
 
+    // This is the current instruction
     if (forDbg && ip == options.curIp)
         g_Log.setColor(LogColor::CurInstruction);
-    else if (ip->node && ip->node->hasOwnerInline())
+
+    // The instruction comes from an inline function
+    else if (ip->node && ip->node->hasOwnerInline() && options.printSourceCode)
         g_Log.setColor(LogColor::Gray);
+    
+    // Normal instruction
     else
         g_Log.setColor(LogColor::White);
 
@@ -576,7 +581,8 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
     {
         if (ip->op == ByteCodeOp::End)
             break;
-        printSourceCode(options, ip, &lastLine, &lastFile, &lastInline);
+        if(options.printSourceCode)
+            printSourceCode(options, ip, &lastLine, &lastFile, &lastInline);
         printInstruction(options, ip++, lines[i]);
     }
 }
