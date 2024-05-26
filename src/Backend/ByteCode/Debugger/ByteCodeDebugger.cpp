@@ -83,11 +83,11 @@ void ByteCodeDebugger::setup()
     commands.push_back({"frame", "", "<num>", "set stack frame to level <num>", cmdFrame});
     commands.push_back({});
 
-    commands.push_back({"set", "", "", "print all actual debug parameters", cmdSet});
-    commands.push_back({"set", "", "bkp <on|off>", "enable/disable @breakpoint()", cmdSet});
-    commands.push_back({"set", "", "print struct <on|off>", "print the content of structs when printing values", cmdSet});
-    commands.push_back({"set", "", "print array <on|off>", "print the content of arrays when printing values", cmdSet});
-    commands.push_back({"set", "", "print bccode <on|off>", "print also source code when printing bytecode", cmdSet});
+    commands.push_back({"set", "", "", "print all the current 'set' values", cmdSet});
+    commands.push_back({"set", "", "bkp [on|off]", "enable/disable @breakpoint()", cmdSet});
+    commands.push_back({"set", "", "print struct [on|off]", "display the content of structs when printing values", cmdSet});
+    commands.push_back({"set", "", "print array [on|off]", "display the content of arrays when printing values", cmdSet});
+    commands.push_back({"set", "", "print bccode [on|off]", "display source code when printing bytecode", cmdSet});
     commands.push_back({});
 
     commands.push_back({"help", "?", "", "print this list of commands", cmdHelp});
