@@ -36,15 +36,15 @@ void ByteCodeDebugger::setup()
     commands.push_back({});
 
     commands.push_back({"execute", "e", "<stmt>", "execute the code statement <stmt> in the current context", cmdExecute});
-    commands.push_back({"print", "p", "[/format] <expr>", "print the result of the expression <expr> in the current context", cmdPrint});
+    commands.push_back({"print", "p", "<expr> [--format]", "print the result of the expression <expr> in the current context", cmdPrint});
     commands.push_back({});
-    commands.push_back({"display", "d", "[/format] <expr>", "same as 'print', but will be done at each step", cmdDisplay});
+    commands.push_back({"display", "d", "<expr> [--format]", "same as 'print', but will be done at each step", cmdDisplay});
     commands.push_back({"display", "", "", "print all expressions to display", cmdDisplay});
     commands.push_back({"display", "d", "(cl)ear", "remove all expressions to display", cmdDisplay});
     commands.push_back({"display", "d", "(cl)ear <num>", "remove expression <num>", cmdDisplay});
     commands.push_back({});
 
-    commands.push_back({"x", "", "[/format] [/num] <address>", "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory});
+    commands.push_back({"x", "", "<address> [--num] [--format]", "print memory", cmdMemory});
     commands.push_back({});
 
     commands.push_back({"list", "l", "[num]", "print the current source code line and [num] lines around", cmdList});
@@ -54,7 +54,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"ii", "", "[name]", "print the current function (or function [name]) bytecode", cmdInstructionDump});
     commands.push_back({});
 
-    commands.push_back({"info", "o", "(reg)isters [/format]", "print all registers", cmdInfo});
+    commands.push_back({"info", "o", "(reg)isters [--format]", "print all registers", cmdInfo});
     commands.push_back({"info", "o", "(loc)als [filter]", "print all current local variables", cmdInfo});
     commands.push_back({"info", "o", "(arg)uments [filter]", "print all current function arguments", cmdInfo});
     commands.push_back({"info", "o", "(func)tions [filter]", "print all functions", cmdInfo});
@@ -87,7 +87,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"set", "", "bkp <on|off>", "enable/disable @breakpoint()", cmdSet});
     commands.push_back({"set", "", "print struct <on|off>", "print the content of structs when printing values", cmdSet});
     commands.push_back({"set", "", "print array <on|off>", "print the content of arrays when printing values", cmdSet});
-    commands.push_back({"set", "", "print bccode <on|off>", "print the source code with bytecodes", cmdSet});
+    commands.push_back({"set", "", "print bccode <on|off>", "print also source code when printing bytecode", cmdSet});
     commands.push_back({});
 
     commands.push_back({"help", "?", "", "print this list of commands", cmdHelp});

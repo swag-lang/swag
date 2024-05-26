@@ -9,11 +9,11 @@
 
 bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
 {
-    if (cmd.empty() || cmd[0] != '/')
+    if (cmd.length() <= 2 || cmd[0] != '-' || cmd[1] != '-')
         return false;
 
     auto cmd1 = cmd;
-    cmd1.remove(0, 1);
+    cmd1.remove(0, 2);
 
     // Format
     if (cmd1 == "s8")

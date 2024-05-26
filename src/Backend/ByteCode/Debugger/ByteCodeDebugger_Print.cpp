@@ -363,21 +363,20 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 
     // Print format
     ValueFormat fmt;
-    uint32_t    startIdx = 0;
-    if (!exprCmds.empty() && getValueFormat(exprCmds[0], fmt))
-        startIdx++;
+    if (!exprCmds.empty() && getValueFormat(exprCmds.back(), fmt))
+        exprCmds.pop_back();
     fmt.print0X = false;
 
     // Count
     int count = 64;
-    if (startIdx < exprCmds.size() &&
-        exprCmds[startIdx].length() > 1 &&
-        exprCmds[startIdx][0] == '/' &&
-        Utf8::isNumber(exprCmds[startIdx] + 1) &&
-        exprCmds.size() != 1)
+    if (exprCmds.size() != 1 &&
+        exprCmds.back().length() > 2 &&
+        exprCmds.back()[0] == '-' &&
+        exprCmds.back()[1] == '-' &&
+        Utf8::isNumber(exprCmds.back() + 2))
     {
-        count = exprCmds[startIdx].toInt(1);
-        startIdx++;
+        count = exprCmds.back().toInt(2);
+        exprCmds.pop_back();
     }
 
     count = max(count, 1);
@@ -385,9 +384,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 
     // Expression
     Utf8 expr;
-    for (uint32_t i = startIdx; i < exprCmds.size(); i++)
+    for (const auto& e: exprCmds)
     {
-        expr += exprCmds[i];
+        expr += e;
         expr += " ";
     }
 

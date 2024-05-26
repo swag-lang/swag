@@ -196,12 +196,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     bool hasFormat = false;
     if (arg.split.size() > 1)
     {
-        if (getValueFormat(arg.split[1], fmt))
+        if (getValueFormat(arg.split.back(), fmt))
         {
             hasFormat = true;
-            expr.clear();
-            for (uint32_t i = 2; i < arg.split.size(); i++)
-                expr += arg.split[i] + " ";
+            expr.remove(expr.length() - arg.split.back().length(), arg.split.back().length());
             expr.trim();
             if (expr.empty())
                 return BcDbgCommandResult::BadArguments;

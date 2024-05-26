@@ -165,7 +165,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
     fmt.bitCount = 64;
     if (arg.split.size() > 2)
     {
-        if (!getValueFormat(arg.split[2], fmt))
+        if (!getValueFormat(arg.split.back(), fmt))
             return BcDbgCommandResult::BadArguments;
     }
 
