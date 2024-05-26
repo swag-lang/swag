@@ -2,12 +2,11 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
-#include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoFunctions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
@@ -57,43 +56,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* /*contex
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoVariables(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
-{
-    if (arg.split.size() > 3)
-        return BcDbgCommandResult::BadArguments;
-    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
-
-    Utf8       result;
-    const auto m = context->jc.sourceFile->module;
-
-    VectorNative<AstNode*> nodes;
-    VectorNative<uint8_t*> addrs;
-
-    for (const auto n : m->globalVarsBss)
-        nodes.push_back(n);
-    for (const auto n : m->globalVarsMutable)
-        nodes.push_back(n);
-
-    for (const auto& n : nodes)
-    {
-        const auto over = n->resolvedSymbolOverloadSafe();
-        if (!over)
-            continue;
-        const Utf8 str = form("(%s%s%s) %s%s%s",
-                              Log::colorToVTS(LogColor::Type).c_str(),
-                              over->typeInfo->getDisplayNameC(),
-                              Log::colorToVTS(LogColor::Default).c_str(),
-                              Log::colorToVTS(LogColor::Name).c_str(),
-                              over->symbol->name.c_str(),
-                              Log::colorToVTS(LogColor::Default).c_str());
-        result += str;
-        result += "\n";
-    }
-
-    printLong(result);
-    return BcDbgCommandResult::Continue;
-}
-
 BcDbgCommandResult ByteCodeDebugger::cmdInfoExpressions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() > 3)
@@ -128,9 +90,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
         return BcDbgCommandResult::Continue;
     }
 
-    Utf8 result;
-    for (const auto l : g_ByteCodeDebugger.cxtBc->localVars)
-        appendTypedValue(context, filter, l, g_ByteCodeDebugger.cxtBp, nullptr, result);
+    VectorNative<AstNode*> nodes;
+    VectorNative<uint8_t*> addrs;
+    for (const auto n : g_ByteCodeDebugger.cxtBc->localVars)
+    {
+        const auto over = n->resolvedSymbolOverloadSafe();
+        if (!over)
+            continue;
+        nodes.push_back(n);
+        addrs.push_back(nullptr);
+    }
+
+    const auto result = printSymbols(context, filter, g_ByteCodeDebugger.cxtBp, nodes, addrs);
     printLong(result);
 
     return BcDbgCommandResult::Continue;
@@ -149,16 +120,53 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
         return BcDbgCommandResult::Continue;
     }
 
-    Utf8 result;
-    for (const auto l : funcDecl->parameters->children)
+    VectorNative<AstNode*> nodes;
+    VectorNative<uint8_t*> addrs;
+    for (const auto n : funcDecl->parameters->children)
     {
-        const auto over = l->resolvedSymbolOverload();
+        const auto over = n->resolvedSymbolOverloadSafe();
         if (!over)
             continue;
-        const auto addr = g_ByteCodeDebugger.cxtBp + over->computedValue.storageOffset + g_ByteCodeDebugger.cxtBc->stackSize;
-        appendTypedValue(context, filter, l, g_ByteCodeDebugger.cxtBp, addr, result);
+        nodes.push_back(n);
+        addrs.push_back(g_ByteCodeDebugger.cxtBp + over->computedValue.storageOffset + g_ByteCodeDebugger.cxtBc->stackSize);
     }
 
+    const auto result = printSymbols(context, filter, g_ByteCodeDebugger.cxtBp, nodes, addrs);
+    printLong(result);
+
+    return BcDbgCommandResult::Continue;
+}
+
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
+BcDbgCommandResult ByteCodeDebugger::cmdInfoGlobals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.split.size() > 3)
+        return BcDbgCommandResult::BadArguments;
+    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+
+    VectorNative<AstNode*> nodes;
+    VectorNative<uint8_t*> addrs;
+
+    const auto m = context->jc.sourceFile->module;
+    for (const auto n : m->globalVarsBss)
+    {
+        const auto over = n->resolvedSymbolOverloadSafe();
+        if (!over)
+            continue;
+        nodes.push_back(n);
+        addrs.push_back(m->bssSegment.address(over->computedValue.storageOffset));
+    }
+
+    for (const auto n : m->globalVarsMutable)
+    {
+        const auto over = n->resolvedSymbolOverloadSafe();
+        if (!over)
+            continue;
+        nodes.push_back(n);
+        addrs.push_back(m->mutableSegment.address(over->computedValue.storageOffset));
+    }
+
+    const auto result = printSymbols(context, filter, nullptr, nodes, addrs);
     printLong(result);
 
     return BcDbgCommandResult::Continue;
@@ -208,9 +216,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const 
     if (arg.split[1] == "registers" || arg.split[1] == "reg")
         return cmdInfoRegs(context, arg);
     if (arg.split[1] == "functions" || arg.split[1] == "func")
-        return cmdInfoFuncs(context, arg);
-    if (arg.split[1] == "variables" || arg.split[1] == "var")
-        return cmdInfoVariables(context, arg);
+        return cmdInfoFunctions(context, arg);
+    if (arg.split[1] == "globals" || arg.split[1] == "glo")
+        return cmdInfoGlobals(context, arg);
     if (arg.split[1] == "expressions" || arg.split[1] == "exp")
         return cmdInfoExpressions(context, arg);
     if (arg.split[1] == "modules")

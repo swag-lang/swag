@@ -103,6 +103,38 @@ void ByteCodeDebugger::printMsgBkp(const Utf8& msg)
     g_Log.writeEol();
 }
 
+Utf8 ByteCodeDebugger::printSymbols(ByteCodeRunContext* context, const Utf8& filter, uint8_t* baseAddr, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs)
+{
+    Utf8 result;
+    for (uint32_t i = 0; i < nodes.size(); i++)
+    {
+        const auto n    = nodes[i];
+        const auto over = n->resolvedSymbolOverload();
+        if (!testNameFilter(over->symbol->name, filter))
+            continue;
+
+        if(over->typeInfo->isNative() || over->typeInfo->isPointer())
+        {
+            appendTypedValue(context, filter, n, baseAddr, addrs[i], result);
+        }
+        else
+        {
+            const Utf8 str = form("(%s%s%s) %s%s%s",
+                                  Log::colorToVTS(LogColor::Type).c_str(),
+                                  over->typeInfo->getDisplayNameC(),
+                                  Log::colorToVTS(LogColor::Default).c_str(),
+                                  Log::colorToVTS(LogColor::Name).c_str(),
+                                  over->symbol->name.c_str(),
+                                  Log::colorToVTS(LogColor::Default).c_str());
+            result += str;
+            result += " = ...";
+            result += "\n";
+        }
+    }
+
+    return result;
+}
+
 void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force)
 {
     SWAG_ASSERT(cxtBc);
@@ -384,7 +416,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 
     // Expression
     Utf8 expr;
-    for (const auto& e: exprCmds)
+    for (const auto& e : exprCmds)
     {
         expr += e;
         expr += " ";
