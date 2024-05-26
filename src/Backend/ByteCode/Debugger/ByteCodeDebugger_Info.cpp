@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
+#include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
@@ -65,20 +66,28 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoVariables(ByteCodeRunContext* contex
     Utf8       result;
     const auto m = context->jc.sourceFile->module;
 
-    for (const auto n : m->globalVarsBss)
-    {
-        if (!n->resolvedSymbolOverload())
-            continue;
-        uint8_t* addr = m->bssSegment.address(n->resolvedSymbolOverload()->computedValue.storageOffset);
-        appendTypedValue(context, filter, n, nullptr, addr, result);
-    }
+    VectorNative<AstNode*> nodes;
+    VectorNative<uint8_t*> addrs;
 
+    for (const auto n : m->globalVarsBss)
+        nodes.push_back(n);
     for (const auto n : m->globalVarsMutable)
+        nodes.push_back(n);
+
+    for (const auto& n : nodes)
     {
-        if (!n->resolvedSymbolOverload())
+        const auto over = n->resolvedSymbolOverloadSafe();
+        if (!over)
             continue;
-        uint8_t* addr = m->mutableSegment.address(n->resolvedSymbolOverload()->computedValue.storageOffset);
-        appendTypedValue(context, filter, n, nullptr, addr, result);
+        const Utf8 str = form("(%s%s%s) %s%s%s",
+                              Log::colorToVTS(LogColor::Type).c_str(),
+                              over->typeInfo->getDisplayNameC(),
+                              Log::colorToVTS(LogColor::Default).c_str(),
+                              Log::colorToVTS(LogColor::Name).c_str(),
+                              over->symbol->name.c_str(),
+                              Log::colorToVTS(LogColor::Default).c_str());
+        result += str;
+        result += "\n";
     }
 
     printLong(result);
