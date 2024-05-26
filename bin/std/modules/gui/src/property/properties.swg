@@ -646,6 +646,7 @@ impl Properties
         {
             var v: Swag.TypeValue
             item = addItem(v, null, null, 0, .Zero)
+            item.flags.add(.Section | .NoSeparator | .Expanded | .NoFocus)
         }
 
         let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
