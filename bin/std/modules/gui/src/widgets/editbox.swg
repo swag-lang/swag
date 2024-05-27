@@ -846,7 +846,7 @@ impl EditBox
             pos.width = parent.getThemeMetrics().editBox_Width
         let res = Wnd.create'EditBox(parent, null, pos, id)
 
-        res.setForm(EditBoxForm.Square)
+        res.setForm(.Square)
         res.text          = content
         res.focusStrategy = .MousePressed
         return res
