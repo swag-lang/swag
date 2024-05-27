@@ -1,15 +1,15 @@
 #include "pch.h"
-#include "Main/CommandLine.h"
 #include "Main/CommandLineParser.h"
+#include "Main/CommandLine.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
 #include "Report/Report.h"
 
 CommandLineArgument::CommandLineArgument(const char* commands, CommandLineType type, void* buffer, const char* param, const char* help) :
-                                                                                                                                        buffer{buffer},
-                                                                                                                                        param{param},
-                                                                                                                                        help{help},
-                                                                                                                                        type{type}
+    buffer{buffer},
+    param{param},
+    help{help},
+    type{type}
 {
     Vector<Utf8> all;
     Utf8::tokenize(commands, ' ', all);
@@ -103,7 +103,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc doc", "--devmode", nullptr, CommandLineType::Bool, &cmdLine->dbgDevMode, nullptr, "message box in case of exception");
 #endif
 
-    addArg("bu cl sc", "--cfg", nullptr, CommandLineType::String, &cmdLine->buildCfg, nullptr, "set the build configuration (debug|fast-debug|fast-compile|release are predefined)");
+    addArg("bu cl sc", "--cfg", nullptr, CommandLineType::String, &cmdLine->buildCfg, nullptr, "set the build configuration (debug, fast-debug, fast-compile and release are predefined)");
     addArg("bu cl sc", "--cfg-debug", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgDebug, "true|false|default", "generate debug information");
     addArg("bu cl sc", "--cfg-safety", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgSafety, "true|false|default", "generate safety guards");
     addArg("bu cl sc", "--cfg-inline-bc", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgInlineBC, "true|false|default", "inline marked functions");
@@ -253,6 +253,7 @@ void CommandLineParser::logArguments(const Utf8& cmd) const
     g_Log.messageInfo(line0);
     g_Log.messageInfo(line1);
 
+    Vector<Utf8> lines;
     for (const auto& arg : longNameArgs)
     {
         auto oneArg = arg.second;
@@ -307,8 +308,12 @@ void CommandLineParser::logArguments(const Utf8& cmd) const
             }
         }
 
-        g_Log.messageInfo(line0);
+        lines.push_back(line0);
     }
+
+    std::ranges::sort(lines, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
+    for (const auto& line : lines)
+        g_Log.messageInfo(line);
 }
 
 void CommandLineParser::addArg(const char* commands, const char* longName, const char* shortName, CommandLineType type, void* address, const char* param, const char* help)
