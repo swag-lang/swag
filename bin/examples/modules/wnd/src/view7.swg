@@ -27,6 +27,8 @@ struct SubStruct
 
 struct AA
 {
+    v4a:    [4] Math.Vector2
+
     tt: string = "static string"
 
     #[Category("Category"), Name("This is a name: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has do be done, and this is it.")]

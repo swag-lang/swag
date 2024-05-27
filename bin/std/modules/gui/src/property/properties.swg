@@ -270,7 +270,7 @@ internal impl Properties
             colBkBk = colors.prop_SectionBk
         elif kind == .Grid and item.flags.has(.Category) do
             colBkBk = colors.prop_CategBk
-        elif kind == .Grid and item.level > 2 do
+        elif kind == .Grid and item.level > 1 do
             colBkBk = colors.prop_Bk1
         painter.fillRect(r, colBkBk)
 
@@ -497,8 +497,60 @@ internal impl Properties
         return item
     }
 
-    #[Swag.Overload]
-    mtd addStruct(typeStruct: const *Swag.TypeInfoStruct, addr: ^u8, parentItem: *PropertiesItem)
+    mtd addValue(value: Swag.TypeValue, data: ^u8, parentItem: *PropertiesItem)
+    {
+        // Value
+        switch
+        {
+        case Reflection.isArray(value.pointedType):
+            let item = addItem(value, data, parentItem, getTheme().res.fontDefault.regular.height)
+            let typeArr = cast(const *Swag.TypeInfoArray) value.pointedType
+            var newData = data
+            loop i: typeArr.count
+            {
+                var subValue: Swag.TypeValue
+                subValue.name = Format.toString("%", i).toString()
+                subValue.pointedType = typeArr.pointedType
+                addValue(subValue, newData, item)
+                newData += typeArr.pointedType.sizeof
+            }
+
+        case Reflection.isEnum(value.pointedType):
+            let typeEnum = cast(const *Swag.TypeInfoEnum) value.pointedType
+            constructEnum(value, typeEnum, data, parentItem)
+
+        case value.pointedType == Core.String:
+            constructDynamicString(value, data, parentItem)
+
+        case Reflection.isString(value.pointedType):
+            constructStaticString(value, data, parentItem)
+
+        case Reflection.isBool(value.pointedType):
+            constructBool(value, data, parentItem)
+
+        case Reflection.isInteger(value.pointedType) or Reflection.isFloat(value.pointedType):
+            let typeNative = cast(const *Swag.TypeInfoNative) value.pointedType
+            constructNative(value, typeNative, data, parentItem)
+
+        case Reflection.isStruct(value.pointedType):
+            parentItem.flags.add(.NoSeparator | .NoFocus)
+            let typeSubStruct = cast(const *Swag.TypeInfoStruct) value.pointedType
+            let iprop         = @mkinterface(data, value.pointedType, IPropertyValue)
+            if iprop != null
+            {
+                let item = iprop.construct(self, value, data, parentItem)
+                Debug.assert(item != null)
+                item.sigRefresh.call(item)
+            }
+            else
+            {
+                let item = addItem(value, data, parentItem, getTheme().res.fontDefault.regular.height)
+                addStructInternal(typeSubStruct, data, item)
+            }
+        }
+    }
+
+    mtd addStructInternal(typeStruct: const *Swag.TypeInfoStruct, addr: ^u8, parentItem: *PropertiesItem)
     {
         var newParent = parentItem
 
@@ -508,8 +560,6 @@ internal impl Properties
 
         visit value: typeStruct.fields
         {
-            let data = addr + value.offset
-
             // Category
             let subCateg = Reflection.getAttributeValue(value, Properties.Category, "name")
             if subCateg != null
@@ -519,46 +569,12 @@ internal impl Properties
                 let item = addItem(v, null, parentItem, h)
                 item.label.style.setFont(&fontCategory)
                 item.flags.add(.Category | .NoSeparator | .Expanded | .NoFocus)
+                item.level = 0
                 sections.add({item, 1})
                 newParent = item
             }
 
-            // Value
-            switch
-            {
-            case Reflection.isEnum(value.pointedType):
-                let typeEnum = cast(const *Swag.TypeInfoEnum) value.pointedType
-                constructEnum(value, typeEnum, data, newParent)
-
-            case value.pointedType == Core.String:
-                constructDynamicString(value, data, newParent)
-
-            case Reflection.isString(value.pointedType):
-                constructStaticString(value, data, newParent)
-
-            case Reflection.isBool(value.pointedType):
-                constructBool(value, data, newParent)
-
-            case Reflection.isInteger(value.pointedType) or Reflection.isFloat(value.pointedType):
-                let typeNative = cast(const *Swag.TypeInfoNative) value.pointedType
-                constructNative(value, typeNative, data, newParent)
-
-            case Reflection.isStruct(value.pointedType):
-                newParent.flags.add(.NoSeparator | .NoFocus)
-                let typeSubStruct = cast(const *Swag.TypeInfoStruct) value.pointedType
-                let iprop         = @mkinterface(data, value.pointedType, IPropertyValue)
-                if iprop != null
-                {
-                    let item = iprop.construct(self, value, data, newParent)
-                    Debug.assert(item != null)
-                    item.sigRefresh.call(item)
-                }
-                else
-                {
-                    let item = addItem(value, data, newParent, getTheme().res.fontDefault.regular.height)
-                    addStruct(typeSubStruct, data, item)
-                }
-            }
+            addValue(value, addr + value.offset, newParent)
         }
     }
 }
@@ -620,7 +636,6 @@ impl Properties
     }
 
     // Add a new struct to display.
-    #[Swag.Overload]
     mtd addStruct(val: any, section: string = null)
     {
         let dataof = @dataof(val)
@@ -650,7 +665,7 @@ impl Properties
         }
 
         let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
-        addStruct(typeStruct, dataof, item)
+        addStructInternal(typeStruct, dataof, item)
 
         updateState()
         edView.sendResizeEvent()
