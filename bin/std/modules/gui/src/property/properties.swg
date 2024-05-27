@@ -182,7 +182,7 @@ internal impl Properties
                 ToolTip.hide(prop.hotItem.line)
             prop.hotItem = null
 
-            if prop.cursorSet
+            if prop.cursorSet and !prop.resizingColumn
             {
                 prop.cursorSet = false
                 prop.getApp().popCursor()
