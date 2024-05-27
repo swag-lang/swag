@@ -355,7 +355,7 @@ internal impl Properties
 
             scan = scan.parent
 
-            if scan and scan.flags.has(.HasChilds) and !scan.flags.has(.Expanded) do
+            if scan and kind == .Grid and scan.flags.has(.HasChilds) and !scan.flags.has(.Expanded) do
                 result.visible = false
         }
 
