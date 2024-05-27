@@ -28,6 +28,7 @@ struct SubStruct
 struct AA
 {
     v4a:    [4] Math.Vector2
+    v4b:    Array'String
 
     tt: string = "static string"
 
@@ -76,6 +77,8 @@ func createView7(_tabView: *Tab, view: *Wnd)
 {
     let lt = Properties.create(view, {5, 55, 480, 600}, .Grid)
     aa.str = "String content"
+    aa.v4b.add("toto")
+    aa.v4b.add("titi")
     lt.addStruct(aa, "Section")
 
     let lt1 = PropertiesCtrl.create(view, {500, 10, 600, 600}, flags: .SectionFilter | .SectionPane)

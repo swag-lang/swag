@@ -532,9 +532,18 @@ internal impl Properties
             let typeNative = cast(const *Swag.TypeInfoNative) value.pointedType
             constructNative(value, typeNative, data, parentItem)
 
+        case value.pointedType == Array:
+            constructArray(value, data, parentItem)
+
         case Reflection.isStruct(value.pointedType):
-            parentItem.flags.add(.NoSeparator | .NoFocus)
             let typeSubStruct = cast(const *Swag.TypeInfoStruct) value.pointedType
+            if typeSubStruct.fromGeneric == Array
+            {
+                constructArray(value, data, parentItem)
+                break
+            }
+
+            parentItem.flags.add(.NoSeparator | .NoFocus)
             let iprop         = @mkinterface(data, value.pointedType, IPropertyValue)
             if iprop != null
             {
