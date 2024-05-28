@@ -26,7 +26,7 @@ impl Properties
         if kind == .List and dispDesc != null do
             flags.remove(.Name)
 
-        let item = addItem(value, data, parentItem, getThemeMetrics().btnCheck_Size, flags)
+        let item = addItem(value, data, parentItem, flags: flags)
 
         let lineHeight = getThemeMetrics().btnPush_Height
         let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, lineHeight})

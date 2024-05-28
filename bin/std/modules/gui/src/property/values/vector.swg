@@ -4,22 +4,21 @@ impl Properties
 {
     mtd constructVector(value: Swag.TypeValue, typeStruct: const *Swag.TypeInfoStruct, data: ^u8, parentItem: *PropertiesItem)->*PropertiesItem
     {
-        let lineHeight = getThemeMetrics().editBox_Height
-        let item       = addItem(value, data, parentItem, lineHeight)
-        let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, lineHeight})
+        let item       = addItem(value, data, parentItem)
+        let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, getThemeMetrics().editBox_Height})
         line.dockStyle = .CenterKeepSizeVert
 
         visit v: typeStruct.fields
         {
             let dataField = cast(*f32) (data + v.offset)
 
-            with let label = Label.create(line, v.name[0..0], {0, 0, lineHeight, lineHeight})
+            with let label = Label.create(line, v.name[0..0], {0, 0, item.line.position.height})
             {
                 .dockStyle         = .Left
                 .horzAlignmentText = .Center
             }
 
-            with let ed = EditBox.create(line, "", {0, 0, lineHeight * 3, lineHeight})
+            with let ed = EditBox.create(line, "", {0, 0, item.line.position.height * 3})
             {
                 .dockStyle = .Left
                 .setInputF64()

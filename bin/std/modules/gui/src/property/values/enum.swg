@@ -138,18 +138,19 @@ impl Properties
 
     mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
     {
-        let item = addItem(value, data, parentItem, listNameHeight)
+        let item = addItem(value, data, parentItem)
         item.flags.add(.NoSeparator)
 
         visit v: typeEnum.values
         {
             with let line = Wnd.create'Wnd(edView)
             {
-                .margin.x = leftMargin
+                .wndFlags.set(.PreChildsPaint)
+                if kind == .List do
+                    .margin.x = leftMargin
                 .margin.z = rightMargin
                 .margin.y = listNameMarginAfter
                 .margin.w = listNameMarginAfter
-                .wndFlags.set(.PreChildsPaint)
             }
 
             with let itemB = items.addNewPtr()
@@ -168,16 +169,20 @@ impl Properties
 
             line.hookOnEvent = closure|self, itemB|(wnd, evt) { return self.onItemEvent(itemB, wnd, evt); }
 
-            let lineHeight = getThemeMetrics().btnPush_Height
-            let ed         = CheckButton.create(line, "", {0, 0, lineHeight, 0})
-            ed.dockStyle   = .Left
-            ed.userData    = cast,unconst(*void) v.value
+            with let ed = CheckButton.create(line, "", {0, 0, gridLineHeight, 0})
+            {
+                if kind == .Grid do
+                    .margin.x = leftMargin
+                .dockStyle   = .Left
+                .userData    = cast,unconst(*void) v.value
+            }
+
             itemB.checkBox = ed
 
             let dispDesc = Reflection.getAttributeValue(v, Properties.Description, "desc")
             itemB.filter += cast(string) dispDesc
 
-            with let label1 = Label.create(line, "", {lineHeight, 0, position.width - lineHeight})
+            with let label1 = Label.create(line, "", {item.line.position.height, 0, position.width - item.line.position.height})
             {
                 .dockStyle = .Center
                 .labelFlags |= .WordWrap | .AutoHeight
@@ -209,7 +214,7 @@ impl Properties
             return
         }
 
-        let item = addItem(value, data, parentItem, getThemeMetrics().comboBox_Height)
+        let item = addItem(value, data, parentItem)
         with let ed = ComboBox.create(item.line, kind: .CheckBox)
         {
             .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)

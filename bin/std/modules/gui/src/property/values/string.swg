@@ -10,7 +10,7 @@ impl Properties
 
     mtd constructDynamicString(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
     {
-        let item = addItem(value, data, parentItem, getThemeMetrics().editBox_Height)
+        let item = addItem(value, data, parentItem)
         with let ed = EditBox.create(item.line, dref cast(*String) data)
         {
             .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
@@ -26,7 +26,7 @@ impl Properties
 
     mtd constructStaticString(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
     {
-        let item = addItem(value, data, parentItem, getThemeMetrics().editBox_Height)
+        let item = addItem(value, data, parentItem)
         with let ed = EditBox.create(item.line, dref cast(*string) data)
         {
             .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)

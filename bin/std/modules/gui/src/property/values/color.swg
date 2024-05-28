@@ -4,17 +4,16 @@ impl Properties
 {
     mtd constructColor(value: Swag.TypeValue, data: ^u8, parentItem: *PropertiesItem)->*PropertiesItem
     {
-        let lineHeight = getThemeMetrics().editBox_Height
-        let item       = addItem(value, data, parentItem, lineHeight)
+        let item       = addItem(value, data, parentItem)
         let color      = cast(*Color) data
-        let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, lineHeight})
+        let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, getThemeMetrics().editBox_Height})
         line.dockStyle = .CenterKeepSizeVert
 
         let width = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
         const MarginBtn = 4
         const WidthBtn = 60
 
-        with let btn = IconButton.create(line, {}, {0, 0, WidthBtn, lineHeight})
+        with let btn = IconButton.create(line, {}, {0, 0, WidthBtn, item.line.position.height})
         {
             .dockStyle   = .Left
             .arrowPos    = .RightDown
@@ -23,7 +22,7 @@ impl Properties
             .iconBtnFlags.add(.Popup | .CheckableToggle)
         }
 
-        with let ed = EditBox.create(line, "", {0, 0, width - MarginBtn - WidthBtn, lineHeight})
+        with let ed = EditBox.create(line, "", {0, 0, width - MarginBtn - WidthBtn, item.line.position.height})
         {
             .dockStyle = .Left
             .margin.z  = MarginBtn

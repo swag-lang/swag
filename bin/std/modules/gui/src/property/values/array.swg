@@ -2,7 +2,7 @@ impl Properties
 {
     mtd constructArray(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
     {
-        let item = addItem(value, data, parentItem, getThemeMetrics().editBox_Height)
+        let item = addItem(value, data, parentItem)
         item.flags.add(.NoSeparator)
 
         let typeArr = cast(const *Swag.TypeInfoStruct) value.pointedType

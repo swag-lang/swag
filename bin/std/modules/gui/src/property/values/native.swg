@@ -153,7 +153,7 @@ impl Properties
 
     mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parent: *PropertiesItem)
     {
-        let item = addItem(value, data, parent, getThemeMetrics().editBox_Height)
+        let item = addItem(value, data, parent)
 
         if Reflection.hasAttribute(value, SliderMinMax)
         {

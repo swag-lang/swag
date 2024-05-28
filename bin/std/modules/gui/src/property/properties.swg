@@ -31,12 +31,12 @@ struct Properties
     sizeEditValue:      s32 = 200
 
     // For grid kind
+    gridLineHeight:       f32 = 35
     gridLineMargin:       s32 = 12
     gridColumnSize:       s32 = 150
     gridMarginColumn:     s32 = 16
 
     // For list kind
-    listNameHeight:           s32 = 25
     listNameMarginBefore:     s32 = 25
     listNameMarginAfter:      s32 = 5
     listDescMarginAfter:      s32 = 5
@@ -259,8 +259,16 @@ internal impl Properties
         var r = wndItem.getClientRect()
         r.moveTop(wndItem.childs.front().position.y)
         r.inflate(item.extendFocus)
-        r.x     = 0
-        r.width = edView.position.width - 1
+        if kind == .Grid
+        {
+            r.x     = 0
+            r.width = edView.position.width - 1
+        }
+        else
+        {
+            r.x = -leftMargin + 1
+            r.width = edView.position.width - 1
+        }
 
         // Background
         if kind == .Grid and item.flags.has(.Section) do
@@ -305,7 +313,7 @@ internal impl Properties
         if kind == .Grid and item.flags.has(.HasChilds)
         {
             var expand = getTheme().getIcon24(item.flags.has(.Expanded) ? .Expanded : .Collapsed)
-            expand.paint(painter, r.x, r.vertCenter() - expand.sizeY * 0.5, Argb.White)
+            expand.paint(painter, r.x + 2, r.vertCenter() - expand.sizeY * 0.5, Argb.White)
         }
     }
 
@@ -385,14 +393,14 @@ internal impl Properties
         }
     }
 
-    mtd addItem(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem, height: f32, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertiesItem
+    mtd addItem(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem, height: f32 = 0, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertiesItem
     {
         var line: *Wnd
 
         if kind == .Grid do
-            line = Wnd.create'Wnd(edView, {0, 0, position.width, height})
+            line = Wnd.create'Wnd(edView, {0, 0, position.width, height orelse gridLineHeight})
         else do
-            line = StackLayoutCtrl.create(edView, .TopAutoSize)
+            line = StackLayoutCtrl.create(edView, .TopAutoSize, {0, 0, position.width, height orelse gridLineHeight})
 
         with line
         {
@@ -437,7 +445,7 @@ internal impl Properties
             else do
                 dispName = Utf8.beautifyName(value.name)
 
-            with let label = Label.create(line, dispName, {0, 0, gridColumnSize, listNameHeight})
+            with let label = Label.create(line, dispName, {0, 0, gridColumnSize, item.line.position.height})
             {
                 if kind == .Grid
                 {
@@ -502,7 +510,7 @@ internal impl Properties
         switch
         {
         case Reflection.isArray(value.pointedType):
-            let item    = addItem(value, data, parentItem, getTheme().res.fontDefault.regular.height)
+            let item    = addItem(value, data, parentItem)
             let typeArr = cast(const *Swag.TypeInfoArray) value.pointedType
             var newData = data
             loop i: typeArr.count
@@ -552,7 +560,7 @@ internal impl Properties
             }
             else
             {
-                let item = addItem(value, data, parentItem, getTheme().res.fontDefault.regular.height)
+                let item = addItem(value, data, parentItem)
                 addStructInternal(typeSubStruct, data, item)
             }
         }
@@ -573,8 +581,7 @@ internal impl Properties
             if subCateg != null
             {
                 var v:   Swag.TypeValue{name: cast(string) subCateg}
-                let h    = fontCategory.regular.height
-                let item = addItem(v, null, parentItem, h)
+                let item = addItem(v, null, parentItem)
                 item.label.style.setFont(&fontCategory)
                 item.flags.add(.Category | .NoSeparator | .Expanded | .NoFocus)
                 item.level = 0
@@ -656,8 +663,7 @@ impl Properties
         if section != null
         {
             var v: Swag.TypeValue{name: section}
-            let h  = fontSection.regular.height
-            item = addItem(v, null, null, h)
+            item = addItem(v, null, null)
             item.flags.add(.Section | .NoSeparator | .Expanded | .NoFocus)
             item.label.style.setFont(&fontSection)
             item.section = cast(u32) sections.count
