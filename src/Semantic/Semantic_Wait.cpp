@@ -123,6 +123,7 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     ScopedLock lk(structNode->mutex);
     if (!structNode->hasSemFlag(SEMFLAG_STRUCT_OP_ALLOCATED))
     {
+        SWAG_ASSERT(!typeInfoStruct->hasFlag(TYPEINFO_SPEC_OP_GENERATED));
         structNode->dependentJobs.add(job);
         job->setPending(JobWaitKind::SemByteCodeGenerated3, structNode->resolvedSymbolName(), structNode, nullptr);
     }

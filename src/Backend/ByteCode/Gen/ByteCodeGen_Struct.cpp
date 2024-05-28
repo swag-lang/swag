@@ -408,11 +408,11 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
         }
     }
 
-    typeInfoStruct->addFlag(TYPEINFO_SPEC_OP_GENERATED);
-
     ScopedLock lk1(structNode->mutex);
+    typeInfoStruct->addFlag(TYPEINFO_SPEC_OP_GENERATED);
     structNode->addSemFlag(SEMFLAG_STRUCT_OP_ALLOCATED);
     structNode->dependentJobs.setRunning();
+    SWAG_ASSERT(structNode->hasSemFlag(SEMFLAG_STRUCT_OP_ALLOCATED));
 }
 
 void ByteCodeGen::emitOpCallUserArrayOfStruct(const ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset)
