@@ -97,7 +97,6 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
 {
     const auto     node            = castAst<AstImpl>(context->node, AstNodeKind::Impl);
     const uint32_t numFctInterface = typeInterface->fields.size();
-    const auto     typeInfo        = node->identifier->typeInfo;
 
     Vector<const Diagnostic*> notes;
     InterfaceRef              itfRef;

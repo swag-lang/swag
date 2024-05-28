@@ -60,7 +60,10 @@ enum class JobResult
 enum class JobWaitKind
 {
     None,
-    SemByteCodeGenerated,
+    SemByteCodeGenerated1,
+    SemByteCodeGenerated2,
+    SemByteCodeGenerated3,
+    SemByteCodeGenerated4,
     SemByteCodeResolved,
     SemFullResolve,
     SemPartialResolve,

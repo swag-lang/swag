@@ -247,7 +247,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
         if (flags & ASKBC_WAIT_DONE)
         {
             SWAG_ASSERT(job);
-            job->setPending(JobWaitKind::SemByteCodeGenerated, nullptr, node, nullptr);
+            job->setPending(JobWaitKind::SemByteCodeGenerated1, nullptr, node, nullptr);
         }
 
         node->allocateExtensionNoLock(ExtensionKind::ByteCode);
@@ -318,6 +318,7 @@ void ByteCodeGen::releaseByteCodeJob(AstNode* node)
     ScopedLock lk(node->mutex);
     node->addSemFlag(SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED);
     SWAG_ASSERT(node->hasExtByteCode());
+    node->extByteCode()->byteCodeJob->dependentJobs.setRunning();
     node->extByteCode()->byteCodeJob = nullptr;
 }
 

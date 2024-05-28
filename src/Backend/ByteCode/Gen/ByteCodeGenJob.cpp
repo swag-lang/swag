@@ -43,7 +43,7 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
                 ScopedLock lk(node->mutex);
                 if (!node->hasSemFlag(SEMFLAG_BYTECODE_GENERATED))
                 {
-                    waitingKind = JobWaitKind::SemByteCodeGenerated;
+                    waitingKind = JobWaitKind::SemByteCodeGenerated2;
                     waitingNode = node;
                     ScopedLock lk1(node->extByteCode()->byteCodeJob->mutexDependent);
                     node->extByteCode()->byteCodeJob->dependentJobs.add(this);

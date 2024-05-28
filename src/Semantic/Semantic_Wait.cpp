@@ -124,7 +124,7 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     if (!structNode->hasSemFlag(SEMFLAG_STRUCT_OP_ALLOCATED))
     {
         structNode->dependentJobs.add(job);
-        job->setPending(JobWaitKind::SemByteCodeGenerated, structNode->resolvedSymbolName(), structNode, nullptr);
+        job->setPending(JobWaitKind::SemByteCodeGenerated3, structNode->resolvedSymbolName(), structNode, nullptr);
     }
 }
 
@@ -155,7 +155,7 @@ void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
     if (!structNode->hasSemFlag(SEMFLAG_BYTECODE_GENERATED))
     {
         structNode->dependentJobs.add(job);
-        job->setPending(JobWaitKind::SemByteCodeGenerated, structNode->resolvedSymbolName(), structNode, nullptr);
+        job->setPending(JobWaitKind::SemByteCodeGenerated4, structNode->resolvedSymbolName(), structNode, nullptr);
     }
 }
 

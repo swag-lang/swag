@@ -525,13 +525,13 @@ struct AstNode
 
     SymbolName* resolvedSymbolName() const
     {
-        SWAG_RACE_CONDITION_READ(raceSymbol);
+        SWAG_RACE_CONDITION_READ(raceSymbolName);
         return resolvedSymbolNameSafe();
     }
 
     SymbolOverload* resolvedSymbolOverload() const
     {
-        SWAG_RACE_CONDITION_READ(raceSymbol);
+        SWAG_RACE_CONDITION_READ(raceSymbolOver);
         return resolvedSymbolOverloadSafe();
     }
 
@@ -560,7 +560,8 @@ struct AstNode
 #endif
 
     SWAG_RACE_CONDITION_INSTANCE(raceC);
-    SWAG_RACE_CONDITION_INSTANCE(raceSymbol);
+    SWAG_RACE_CONDITION_INSTANCE(raceSymbolName);
+    SWAG_RACE_CONDITION_INSTANCE(raceSymbolOver);
 };
 
 struct AstVarDecl : AstNode
