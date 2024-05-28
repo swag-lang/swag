@@ -124,7 +124,7 @@ internal impl Properties
 {
     mtd getColumnX()->f32
     {
-        return gridColumnSize + leftMargin + gridMarginColumn * 0.5
+        return gridColumnSize + gridMarginColumn * 0.5
     }
 
     mtd hitTest(ptLoc: Math.Point)->*PropertiesItem
@@ -153,29 +153,26 @@ internal impl Properties
             let focusEvt = cast(*FocusEvent) evt
             if prop.cursorSet do
                 focusEvt.canChangeFocus = false
-            elif prop.hotItem and prop.hotItem.flags.has(.NoFocus) do
-                focusEvt.canChangeFocus = false
 
         case .MousePressed:
             let mouseEvt = cast(*MouseEvent) evt
             if mouseEvt.button != .Left do
                 break
+
             if prop.cursorSet
             {
                 prop.resizingColumn = true
                 return true
             }
-            elif prop.kind == .Grid and prop.hotItem and prop.hotItem.flags.has(.HasChilds)
+
+            if prop.kind == .Grid and prop.hotItem and prop.hotItem.flags.has(.HasChilds)
             {
                 prop.hotItem.flags.toggle(.Expanded)
                 prop.updateState()
             }
 
         case .MouseReleased:
-            if prop.resizingColumn
-            {
-                prop.resizingColumn = false
-            }
+            prop.resizingColumn = false
 
         case .MouseLeave:
             if prop.hotItem and prop.kind == .Grid do
@@ -196,7 +193,7 @@ internal impl Properties
             // Resize of the grid column
             if prop.resizingColumn
             {
-                prop.setColumnSize(acast (pt.x - prop.leftMargin - prop.gridMarginColumn * 0.5))
+                prop.setColumnSize(acast (pt.x - prop.gridMarginColumn * 0.5))
                 return true
             }
 
@@ -240,11 +237,11 @@ internal impl Properties
 
     mtd paintBackItem(painter: *Painter, item: *PropertiesItem, wndItem: *Wnd)
     {
-        let colors = wnd.getThemeColors()
-
         var colBkBk, colBk, colBorder: Color
 
+        let colors   = wnd.getThemeColors()
         let focusWnd = wndItem.getApp().keybFocusWnd
+
         if wndItem == focusWnd or wndItem.isOwnerOf(focusWnd)
         {
             colBk     = colors.prop_FocusBk
@@ -262,7 +259,7 @@ internal impl Properties
         var r = wndItem.getClientRect()
         r.moveTop(wndItem.childs.front().position.y)
         r.inflate(item.extendFocus)
-        r.x     = -leftMargin + 1
+        r.x     = 0
         r.width = edView.position.width - 1
 
         // Background
@@ -399,7 +396,6 @@ internal impl Properties
 
         with line
         {
-            .margin.x = leftMargin
             .margin.z = rightMargin
             .wndFlags.set(.PreChildsPaint)
 
@@ -408,6 +404,8 @@ internal impl Properties
                 .margin.y = gridLineMargin * 0.5
                 .margin.w = gridLineMargin * 0.5
             }
+            else do
+                .margin.x = leftMargin
         }
 
         if parentItem do
@@ -447,6 +445,7 @@ internal impl Properties
                     .horzAlignmentText = .Left
                     .dockStyle         = .Left
                     .margin.z          = gridMarginColumn
+                    .paddingText.x     = leftMargin
                 }
                 else
                 {
@@ -457,7 +456,7 @@ internal impl Properties
                     .margin.w          = listNameMarginAfter
                 }
 
-                label.style.setFont(fontName)
+                .style.setFont(fontName)
             }
 
             item.label = label
@@ -503,13 +502,13 @@ internal impl Properties
         switch
         {
         case Reflection.isArray(value.pointedType):
-            let item = addItem(value, data, parentItem, getTheme().res.fontDefault.regular.height)
+            let item    = addItem(value, data, parentItem, getTheme().res.fontDefault.regular.height)
             let typeArr = cast(const *Swag.TypeInfoArray) value.pointedType
             var newData = data
             loop i: typeArr.count
             {
                 var subValue: Swag.TypeValue
-                subValue.name = Format.toString("%", i).toString()
+                subValue.name        = Format.toString("%", i).toString()
                 subValue.pointedType = typeArr.pointedType
                 addValue(subValue, newData, item)
                 newData += typeArr.pointedType.sizeof
@@ -544,7 +543,7 @@ internal impl Properties
             }
 
             parentItem.flags.add(.NoSeparator | .NoFocus)
-            let iprop         = @mkinterface(data, value.pointedType, IPropertyValue)
+            let iprop = @mkinterface(data, value.pointedType, IPropertyValue)
             if iprop != null
             {
                 let item = iprop.construct(self, value, data, parentItem)
