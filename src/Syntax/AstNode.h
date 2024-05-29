@@ -373,9 +373,9 @@ struct AstNode
     void addAstFlag(AstNodeFlags fl) { flags.add(fl); }
     void removeAstFlag(AstNodeFlags fl) { flags.remove(fl); }
 
-    bool hasSemFlag(AstSemFlags fl) const { return semFlags.has(fl); }
-    void addSemFlag(AstSemFlags fl) { semFlags.add(fl); }
-    void removeSemFlag(AstSemFlags fl) { semFlags.remove(fl); }
+    bool hasSemFlag(const AstSemFlags& fl) const { return semFlags.has(fl); }
+    void addSemFlag(const AstSemFlags& fl) { semFlags.add(fl); }
+    void removeSemFlag(const AstSemFlags& fl) { semFlags.remove(fl); }
 
     bool hasAttribute(AttributeFlags attr) const { return attributeFlags.has(attr); }
     void addAttribute(AttributeFlags attr) { attributeFlags.add(attr); }

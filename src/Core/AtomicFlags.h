@@ -6,49 +6,67 @@ struct AtomicFlags
     AtomicFlags() = default;
 
     // ReSharper disable once CppNonExplicitConvertingConstructor
-    constexpr AtomicFlags(T other) :
+    AtomicFlags(T other) :
         flags{other}
     {
     }
+
+    AtomicFlags(const AtomicFlags& other)
+    {
+        flags.store(other.flags);
+    }
+
+    const AtomicFlags &operator=(T other)
+    {
+        flags.store(other);
+        return *this;
+    }
+
+    const AtomicFlags &operator=(const AtomicFlags& other)
+    {
+        flags.store(other.flags);
+        return *this;
+    }    
 
     bool operator==(const AtomicFlags& other) const
     {
         return flags == other.flags;
     }
 
-    constexpr AtomicFlags friend operator|(AtomicFlags a, AtomicFlags b)
+    constexpr AtomicFlags friend operator|(const AtomicFlags& a, const AtomicFlags& b)
     {
         return a.flags | b.flags;
     }
 
-    bool has(AtomicFlags fl) const
+    bool has(const AtomicFlags& fl) const
     {
         return flags & fl.flags;
     }
-    AtomicFlags with(AtomicFlags fl) const
+
+    AtomicFlags with(const AtomicFlags& fl) const
     {
         return flags | fl.flags;
     }
 
-    AtomicFlags mask(AtomicFlags fl) const
+    AtomicFlags mask(const AtomicFlags& fl) const
     {
         return flags & fl.flags;
     }
 
-    AtomicFlags maskInvert(AtomicFlags fl) const
+    AtomicFlags maskInvert(const AtomicFlags& fl) const
     {
         return flags & ~fl.flags;
     }
 
-    void add(AtomicFlags fl)
+    void add(const AtomicFlags& fl)
     {
         flags |= fl.flags;
     }
 
-    void remove(AtomicFlags fl)
+    void remove(const AtomicFlags& fl)
     {
         flags &= ~fl.flags;
     }
 
-    T flags = 0;
+    std::atomic<T> flags = 0;
 };
