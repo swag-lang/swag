@@ -254,6 +254,7 @@
     <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_Coff.h" />
     <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_SaveObjJob.h" />
     <ClInclude Include="..\src\Core\Allocator.h" />
+    <ClInclude Include="..\src\Core\AtomicFlags.h" />
     <ClInclude Include="..\src\Core\Concat.h" />
     <ClInclude Include="..\src\Core\Crc32.h" />
     <ClInclude Include="..\src\Core\Flags.h" />

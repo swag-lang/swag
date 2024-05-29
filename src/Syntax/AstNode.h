@@ -1,5 +1,6 @@
 #pragma once
 #include "Backend/ByteCode/Register.h"
+#include "Core/AtomicFlags.h"
 #include "Jobs/DependentJobs.h"
 #include "Semantic/Attribute.h"
 #include "Semantic/Symbol/Symbol.h"
@@ -43,7 +44,7 @@ using ByteCodeFct       = bool       (*)(ByteCodeGenContext* context);
 using ByteCodeNotifyFct = bool (*)(ByteCodeGenContext* context);
 
 using AstNodeFlags        = Flags<uint64_t>;
-using AstSemFlags         = Flags<uint64_t>;
+using AstSemFlags         = AtomicFlags<uint64_t>;
 using CollectedScopeFlags = Flags<uint32_t>;
 using BreakableFlags      = Flags<uint32_t>;
 using CloneFlags          = Flags<uint32_t>;

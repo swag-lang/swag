@@ -1,7 +1,8 @@
 #pragma once
+#include "Core/AtomicFlags.h"
 
 using AstNodeFlags = Flags<uint64_t>;
-using AstSemFlags  = Flags<uint64_t>;
+using AstSemFlags  = AtomicFlags<uint64_t>;
 
 constexpr AstNodeFlags AST_CONST_EXPR                 = 0x00000000'00000001;
 constexpr AstNodeFlags AST_COMPUTED_VALUE             = 0x00000000'00000002;
