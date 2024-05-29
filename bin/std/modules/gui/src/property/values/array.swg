@@ -8,7 +8,7 @@ impl Properties
         let typeArr = cast(const *Swag.TypeInfoStruct) value.pointedType
         let valueType = typeArr.generics[0].pointedType
 
-        var arrData = cast(*Array'u8) data
+        let arrData = cast(*Array'u8) data
         var newData = arrData.buffer
 
         loop i: arrData.count
