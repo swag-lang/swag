@@ -28,7 +28,7 @@ struct Utf8;
 
 enum class AstNodeKind : uint8_t;
 
-using AstNodeFlags    = Flags<uint64_t>;
+using AstNodeFlags    = AtomicFlags<uint64_t>;
 using ModifierFlags   = Flags<uint32_t>;
 using IdentifierFlags = Flags<uint32_t>;
 using ExprFlags       = Flags<uint32_t>;

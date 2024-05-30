@@ -6,23 +6,23 @@ struct AtomicFlags
     AtomicFlags() = default;
 
     // ReSharper disable once CppNonExplicitConvertingConstructor
-    AtomicFlags(T other) :
+    constexpr AtomicFlags(T other) :
         flags{other}
     {
     }
 
-    AtomicFlags(const AtomicFlags& other)
+    constexpr AtomicFlags(const AtomicFlags& other)
     {
         flags.store(other.flags);
     }
 
-    const AtomicFlags &operator=(T other)
+    const AtomicFlags& operator=(T other)
     {
         flags.store(other);
         return *this;
     }
 
-    const AtomicFlags &operator=(const AtomicFlags& other)
+    const AtomicFlags& operator=(const AtomicFlags& other)
     {
         flags.store(other.flags);
         return *this;
@@ -33,12 +33,12 @@ struct AtomicFlags
         return flags == other.flags;
     }
 
-    constexpr AtomicFlags friend operator|(const AtomicFlags& a, const AtomicFlags& b)
+    constexpr AtomicFlags friend operator|(AtomicFlags a, AtomicFlags b)
     {
         return a.flags | b.flags;
     }
 
-    bool has(const AtomicFlags& fl) const
+    constexpr bool has(const AtomicFlags& fl) const
     {
         return flags & fl.flags;
     }
@@ -58,7 +58,7 @@ struct AtomicFlags
         return flags & ~fl.flags;
     }
 
-    void add(const AtomicFlags& fl)
+    constexpr void add(const AtomicFlags& fl)
     {
         flags |= fl.flags;
     }
@@ -66,6 +66,11 @@ struct AtomicFlags
     void remove(const AtomicFlags& fl)
     {
         flags &= ~fl.flags;
+    }
+
+    void clear()
+    {
+        flags = 0;
     }
 
     std::atomic<T> flags = 0;
