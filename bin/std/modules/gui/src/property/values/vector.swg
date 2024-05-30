@@ -18,7 +18,7 @@ impl Properties
                 .horzAlignmentText = .Center
             }
 
-            with let ed = EditBox.create(line, "", {0, 0, item.line.position.height * 3})
+            with let ed = EditBox.create(line, "", {0, 0, item.line.position.height * 2})
             {
                 .dockStyle = .Left
                 .setInputF64()

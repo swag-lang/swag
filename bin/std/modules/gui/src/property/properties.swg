@@ -165,7 +165,12 @@ internal impl Properties
                 return true
             }
 
-            if prop.kind == .Grid and prop.hotItem and prop.hotItem.flags.has(.HasChilds)
+            // Toggle/Expand
+            var pt = prop.surfaceToLocal(mouseEvt.surfacePos)
+            if prop.kind == .Grid and
+               prop.hotItem and
+               prop.hotItem.flags.has(.HasChilds) and
+               pt.x < prop.leftMargin
             {
                 prop.hotItem.flags.toggle(.Expanded)
                 prop.updateState()
