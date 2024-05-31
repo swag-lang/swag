@@ -2,31 +2,78 @@ impl Properties
 {
     mtd appendValue(item: *PropertiesItem, valueType: typeinfo)
     {
+        let arrData = cast(*Array'u8) item.data
+        let itemIdx = Slice.findLinear(self.items.toSlice(), item)
+
+        let oldBuffer = arrData.buffer
         discard Reflection.roomInArray(item.data, valueType)
 
-        let insertItemIdx    = Slice.findLinear(self.items.toSlice(), item) + item.numChilds + 1
-        let countItemsBefore = items.count
-
-        var subValue: Swag.TypeValue
-        let arrData   = cast(*Array'u8) item.data
-
-        subValue.name        = Format.toString("%", arrData.count - 1).toString()
-        subValue.pointedType = valueType
-        addValue(subValue, arrData.buffer + (arrData.count - 1) * valueType.sizeof, item)
-
-        let numAddedChilds = cast(u32) (items.count - countItemsBefore)
-        loop i: numAddedChilds
+        // If the array buffer has been reallocated, and this is not a pod, then we must reconstruct
+        // the full array.
+        if oldBuffer != arrData.buffer and (Reflection.hasDrop(valueType) or Reflection.hasPostCopy(valueType))
         {
-            items.insertAt(insertItemIdx + i, items[items.count - numAddedChilds + i])
-            edView.childs.insertAt(insertItemIdx + i, edView.childs[edView.childs.count - numAddedChilds + i])
+            let insertItemIdx    = itemIdx + item.numChilds + 1
+            let countItemsBefore = items.count
+
+            var newData = arrData.buffer
+            loop i: arrData.count
+            {
+                var subValue: Swag.TypeValue
+                subValue.name        = Format.toString("%", i).toString()
+                subValue.pointedType = valueType
+                addValue(subValue, newData, item)
+                newData += valueType.sizeof
+            }
+
+            let numAddedChilds = cast(u32) (items.count - countItemsBefore)
+            loop i: numAddedChilds
+            {
+                items.insertAt(insertItemIdx + i, items[items.count - numAddedChilds + i])
+                edView.childs.insertAt(insertItemIdx + i, edView.childs[edView.childs.count - numAddedChilds + i])
+            }
+
+            items.count -= numAddedChilds
+            edView.childs.count -= numAddedChilds
+
+            loop item.numChilds
+            {
+                items.deletePtr(items[itemIdx + 1])
+                items.removeAtOrdered(itemIdx + 1)
+                edView.childs[itemIdx + 1].destroyNow()
+            }
+
+            item.numChilds = numAddedChilds
+
+            loop i: item.numChilds do
+                updateState(self.items[itemIdx + i + 1])
         }
 
-        items.count -= numAddedChilds
-        edView.childs.count -= numAddedChilds
-        item.numChilds += numAddedChilds
+        // Do not reconstruct the full array. Append items, and move them at the correct position.
+        else
+        {
+            let insertItemIdx    = itemIdx + item.numChilds + 1
+            let countItemsBefore = items.count
 
-        loop i: numAddedChilds do
-            updateState(self.items[insertItemIdx + i])
+            var subValue: Swag.TypeValue
+            subValue.name        = Format.toString("%", arrData.count - 1).toString()
+            subValue.pointedType = valueType
+            addValue(subValue, arrData.buffer + (arrData.count - 1) * valueType.sizeof, item)
+
+            let numAddedChilds = cast(u32) (items.count - countItemsBefore)
+            loop i: numAddedChilds
+            {
+                items.insertAt(insertItemIdx + i, items[items.count - numAddedChilds + i])
+                edView.childs.insertAt(insertItemIdx + i, edView.childs[edView.childs.count - numAddedChilds + i])
+            }
+
+            items.count -= numAddedChilds
+            edView.childs.count -= numAddedChilds
+            item.numChilds += numAddedChilds
+
+            loop i: numAddedChilds do
+                updateState(self.items[insertItemIdx + i])
+        }
+
         edView.sendResizeEvent()
     }
 
