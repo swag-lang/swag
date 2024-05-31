@@ -77,7 +77,6 @@ enum ItemFlags
     Section
     Category
     Expanded
-    HasChilds
 }
 
 struct PropertiesItem
@@ -107,6 +106,7 @@ struct PropertiesItem
     aniFocusBk:         BlendColor
     aniFocusBorder:     BlendColor
     level:              u32
+    numChilds:          u32
     section:            u32
     extendFocus:        f32 = 10
 }
@@ -169,7 +169,7 @@ internal impl Properties
             var pt = prop.surfaceToLocal(mouseEvt.surfacePos)
             if prop.kind == .Grid and
                prop.hotItem and
-               prop.hotItem.flags.has(.HasChilds) and
+               prop.hotItem.numChilds and
                pt.x < prop.leftMargin
             {
                 prop.hotItem.flags.toggle(.Expanded)
@@ -271,7 +271,7 @@ internal impl Properties
         }
         else
         {
-            r.x = -leftMargin + 1
+            r.x     = -leftMargin + 1
             r.width = edView.position.width - 1
         }
 
@@ -315,7 +315,7 @@ internal impl Properties
         }
 
         // Expand/Collapse icon
-        if kind == .Grid and item.flags.has(.HasChilds)
+        if kind == .Grid and item.numChilds
         {
             var expand = getTheme().getIcon24(item.flags.has(.Expanded) ? .Expanded : .Collapsed)
             expand.paint(painter, r.x + 2, r.vertCenter() - expand.sizeY * 0.5, Argb.White)
@@ -365,7 +365,7 @@ internal impl Properties
 
             scan = scan.parent
 
-            if scan and kind == .Grid and scan.flags.has(.HasChilds) and !scan.flags.has(.Expanded) do
+            if scan and kind == .Grid and scan.numChilds and !scan.flags.has(.Expanded) do
                 result.visible = false
         }
 
@@ -420,9 +420,6 @@ internal impl Properties
             else do
                 .margin.x = leftMargin
         }
-
-        if parentItem do
-            parentItem.flags.add(.HasChilds)
 
         with let item = items.addNewPtr()
         {
@@ -515,8 +512,10 @@ internal impl Properties
         switch
         {
         case Reflection.isArray(value.pointedType):
-            let item    = addItem(value, data, parentItem)
-            let typeArr = cast(const *Swag.TypeInfoArray) value.pointedType
+            let item           = addItem(value, data, parentItem)
+            let typeArr        = cast(const *Swag.TypeInfoArray) value.pointedType
+            let numItemsBefore = items.count
+
             var newData = data
             loop i: typeArr.count
             {
@@ -526,6 +525,8 @@ internal impl Properties
                 addValue(subValue, newData, item)
                 newData += typeArr.pointedType.sizeof
             }
+
+            item.numChilds += cast(u32) (items.count - numItemsBefore)
 
         case Reflection.isEnum(value.pointedType):
             let typeEnum = cast(const *Swag.TypeInfoEnum) value.pointedType
@@ -579,6 +580,7 @@ internal impl Properties
         if parentItem do
             parentItem.ntfyItf = @mkinterface(addr, typeStruct, IPropertyNotify)
 
+        var categItem: *PropertiesItem
         visit value: typeStruct.fields
         {
             // Category
@@ -592,9 +594,13 @@ internal impl Properties
                 item.level = 0
                 sections.add({item, 1})
                 newParent = item
+                categItem = item
             }
 
+            let numItemsBefore = items.count
             addValue(value, addr + value.offset, newParent)
+            if categItem do
+                categItem.numChilds += cast(u32) (items.count - numItemsBefore)
         }
     }
 }
@@ -662,7 +668,8 @@ impl Properties
         let typeof = @kindof(val)
         Debug.assert(typeof.kind == .Struct)
 
-        var item: *PropertiesItem
+        var item:          *PropertiesItem
+        let numItemsBefore = items.count
 
         // Section
         if section != null
@@ -685,6 +692,8 @@ impl Properties
 
         let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
         addStructInternal(typeStruct, dataof, item)
+
+        item.numChilds = cast(u32) (items.count - numItemsBefore)
 
         updateStates()
         edView.sendResizeEvent()
