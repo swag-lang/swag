@@ -88,6 +88,8 @@ struct PropertiesItem
     typeValue:          Swag.TypeValue
     parent:             *PropertiesItem
     flags:              ItemFlags
+    userData0:          *void
+    userData1:          *void
 
     label:              *Label
     description:        String
@@ -372,7 +374,7 @@ internal impl Properties
         return result
     }
 
-    func refreshItem(item: *PropertiesItem)
+    mtd refreshItem(item: *PropertiesItem)
     {
         if !item.sigRefresh.isEmpty()
         {
@@ -395,6 +397,12 @@ internal impl Properties
                 item.editBox.setText(dref cast(*string) item.data)
             elif pointed == Core.String and item.editBox do
                 item.editBox.setText(dref cast(*String) item.data)
+            elif Reflection.isStruct(pointed)
+            {
+                let typeStruct = cast(const *Swag.TypeInfoStruct) pointed
+                if typeStruct.fromGeneric == Array do
+                    refreshArray(item)
+            }
         }
     }
 

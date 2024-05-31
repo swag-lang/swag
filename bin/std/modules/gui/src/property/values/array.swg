@@ -1,9 +1,57 @@
 impl Properties
 {
-    mtd appendValue(item: *PropertiesItem, valueType: typeinfo)
+    mtd refreshArray(item: *PropertiesItem)
     {
         let arrData = cast(*Array'u8) item.data
-        let itemIdx = Slice.findLinear(self.items.toSlice(), item)
+        if arrData.count == cast(u64) item.userData0 do
+            return
+        item.userData0 = cast(*void) arrData.count
+
+        let typeArr       = cast(const *Swag.TypeInfoStruct) item.typeValue.pointedType
+        let valueType     = typeArr.generics[0].pointedType
+        let itemIdx       = Slice.findLinear(self.items.toSlice(), item)
+        let insertItemIdx = itemIdx + item.numChilds + 1
+
+        let countItemsBefore = items.count
+
+        var newData = arrData.buffer
+        loop i: arrData.count
+        {
+            var subValue: Swag.TypeValue
+            subValue.name        = Format.toString("%", i).toString()
+            subValue.pointedType = valueType
+            addValue(subValue, newData, item)
+            newData += valueType.sizeof
+        }
+
+        let numAddedChilds = cast(u32) (items.count - countItemsBefore)
+        loop i: numAddedChilds
+        {
+            items.insertAt(insertItemIdx + i, items[items.count - numAddedChilds + i])
+            edView.childs.insertAt(insertItemIdx + i, edView.childs[edView.childs.count - numAddedChilds + i])
+        }
+
+        items.count -= numAddedChilds
+        edView.childs.count -= numAddedChilds
+
+        loop item.numChilds
+        {
+            items.deletePtr(items[itemIdx + 1])
+            items.removeAtOrdered(itemIdx + 1)
+            edView.childs[itemIdx + 1].destroyNow()
+        }
+
+        item.numChilds = numAddedChilds
+        loop i: item.numChilds do
+            updateState(self.items[itemIdx + i + 1])
+        edView.sendResizeEvent()
+    }
+
+    mtd appendArrayValue(item: *PropertiesItem, valueType: typeinfo)
+    {
+        let arrData       = cast(*Array'u8) item.data
+        let itemIdx       = Slice.findLinear(self.items.toSlice(), item)
+        let insertItemIdx = itemIdx + item.numChilds + 1
 
         let oldBuffer = arrData.buffer
         discard Reflection.roomInArray(item.data, valueType)
@@ -12,7 +60,6 @@ impl Properties
         // the full array.
         if oldBuffer != arrData.buffer and (Reflection.hasDrop(valueType) or Reflection.hasPostCopy(valueType))
         {
-            let insertItemIdx    = itemIdx + item.numChilds + 1
             let countItemsBefore = items.count
 
             var newData = arrData.buffer
@@ -51,7 +98,6 @@ impl Properties
         // Do not reconstruct the full array. Append items, and move them at the correct position.
         else
         {
-            let insertItemIdx    = itemIdx + item.numChilds + 1
             let countItemsBefore = items.count
 
             var subValue: Swag.TypeValue
@@ -88,6 +134,8 @@ impl Properties
         let arrData   = cast(*Array'u8) data
         var newData   = arrData.buffer
 
+        item.userData0 = cast(*void) arrData.count
+
         loop i: arrData.count
         {
             var subValue: Swag.TypeValue
@@ -103,7 +151,8 @@ impl Properties
         addBtn.setForm(IconButtonForm.Round)
         addBtn.sigPressed += closure|self, item, valueType|(btn)
         {
-            self.appendValue(item, valueType)
+            self.appendArrayValue(item, valueType)
+            self.hasChanged(item)
         }
 
         var numDesc = Format.toString("% elements", arrData.count)
