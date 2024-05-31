@@ -173,7 +173,7 @@ internal impl Properties
                pt.x < prop.leftMargin
             {
                 prop.hotItem.flags.toggle(.Expanded)
-                prop.updateState()
+                prop.updateStates()
             }
 
         case .MouseReleased:
@@ -686,7 +686,7 @@ impl Properties
         let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
         addStructInternal(typeStruct, dataof, item)
 
-        updateState()
+        updateStates()
         edView.sendResizeEvent()
     }
 
@@ -713,7 +713,7 @@ impl Properties
         }
 
         if Reflection.hasAttribute(item.typeValue, RecalcLayout) do
-            updateState()
+            updateStates()
     }
 
     // Show hidden content depending on the input 'filter'.
@@ -722,7 +722,7 @@ impl Properties
         if stringFilter == filter do
             return
         stringFilter = filter
-        updateState()
+        updateStates()
     }
 
     // Only display a given section.
@@ -730,44 +730,46 @@ impl Properties
     mtd setCurrentSection(sectionIndex: u32)
     {
         currentSectionIndex = sectionIndex
-        updateState()
+        updateStates()
+    }
+
+    mtd updateState(item: *PropertiesItem)
+    {
+        var mustShow   = false
+        var mustEnable = false
+
+        if item.section == currentSectionIndex or currentSectionIndex >= sections.count
+        {
+            if stringFilter.length == 0 do
+                mustShow = true
+            elif Utf8.indexOf(item.filter.toSlice(), stringFilter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max do
+                mustShow = true
+
+            if mustShow do
+                (mustShow, mustEnable) = getItemState(item)
+        }
+
+        item.line.show(mustShow)
+        item.line.enable(mustEnable)
+
+        // If an item is visible, then we show also all of its parents, in order
+        // to put the item in context
+        if mustShow
+        {
+            var scan = item.parent
+            while scan and !scan.line.isVisible()
+            {
+                scan.line.show()
+                scan = scan.parent
+            }
+        }
     }
 
     // Update the show/hide state of all content
-    mtd updateState()
+    mtd updateStates()
     {
-        visit it: items
-        {
-            var mustShow   = false
-            var mustEnable = false
-
-            if it.section == currentSectionIndex or currentSectionIndex >= sections.count
-            {
-                if stringFilter.length == 0 do
-                    mustShow = true
-                elif Utf8.indexOf(it.filter.toSlice(), stringFilter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max do
-                    mustShow = true
-
-                if mustShow do
-                    (mustShow, mustEnable) = getItemState(it)
-            }
-
-            it.line.show(mustShow)
-            it.line.enable(mustEnable)
-
-            // If an item is visible, then we show also all of its parents, in order
-            // to put the item in context
-            if mustShow
-            {
-                var scan = it.parent
-                while scan and !scan.line.isVisible()
-                {
-                    scan.line.show()
-                    scan = scan.parent
-                }
-            }
-        }
-
+        visit it: items do
+            updateState(it)
         applyLayout()
         scrollWnd.view.sendResizeEvent()
     }
