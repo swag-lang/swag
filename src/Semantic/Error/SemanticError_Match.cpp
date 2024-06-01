@@ -2,9 +2,9 @@
 #include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Semantic.h"
-#include "Semantic/Error/SemanticError.h"
 #include "Syntax/Ast.h"
 #include "Syntax/Naming.h"
 #include "Syntax/SyntaxColor.h"
@@ -54,17 +54,20 @@ namespace
             case MatchResult::ValidIfFailed:
                 note = Diagnostic::note(node, node->token, "all [[#validif]] have failed");
                 break;
-            case MatchResult::TooManyParameters:
+            case MatchResult::TooManyArguments:
                 note = Diagnostic::note(node, node->token, "too many arguments");
                 break;
-            case MatchResult::TooManyGenericParameters:
+            case MatchResult::TooManyGenericArguments:
                 note = Diagnostic::note(node, node->token, "too many generic arguments");
                 break;
-            case MatchResult::NotEnoughParameters:
+            case MatchResult::NotEnoughArguments:
                 note = Diagnostic::note(node, node->token, "not enough arguments");
                 break;
-            case MatchResult::NotEnoughGenericParameters:
+            case MatchResult::NotEnoughGenericArguments:
                 note = Diagnostic::note(node, node->token, "not enough generic arguments");
+                break;
+            case MatchResult::InvalidNamedArgument:
+                note = Diagnostic::note(node, node->token, "invalid named argument");
                 break;
             case MatchResult::BadSignature:
                 if (tryResult[0]->ufcs && paramIdx == 0)
@@ -192,10 +195,11 @@ namespace
 
         int overloadIndex = 1;
         cannotMatchIdentifier(context, MatchResult::ValidIfFailed, 0, tryMatches, node, notes, overloadIndex);
-        cannotMatchIdentifier(context, MatchResult::NotEnoughParameters, 0, tryMatches, node, notes, overloadIndex);
-        cannotMatchIdentifier(context, MatchResult::TooManyParameters, 0, tryMatches, node, notes, overloadIndex);
-        cannotMatchIdentifier(context, MatchResult::NotEnoughGenericParameters, 0, tryMatches, node, notes, overloadIndex);
-        cannotMatchIdentifier(context, MatchResult::TooManyGenericParameters, 0, tryMatches, node, notes, overloadIndex);
+        cannotMatchIdentifier(context, MatchResult::NotEnoughArguments, 0, tryMatches, node, notes, overloadIndex);
+        cannotMatchIdentifier(context, MatchResult::TooManyArguments, 0, tryMatches, node, notes, overloadIndex);
+        cannotMatchIdentifier(context, MatchResult::NotEnoughGenericArguments, 0, tryMatches, node, notes, overloadIndex);
+        cannotMatchIdentifier(context, MatchResult::TooManyGenericArguments, 0, tryMatches, node, notes, overloadIndex);
+        cannotMatchIdentifier(context, MatchResult::InvalidNamedArgument, 0, tryMatches, node, notes, overloadIndex);
 
         // For a bad signature, only show the ones with the greatest match
         for (int what = 0; what < 2; what++)
@@ -241,13 +245,13 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
             {
                 case MatchResult::BadSignature:
                 case MatchResult::DuplicatedNamedParameter:
-                case MatchResult::InvalidNamedParameter:
+                case MatchResult::InvalidNamedArgument:
                 case MatchResult::MissingNamedParameter:
                 case MatchResult::MissingParameters:
-                case MatchResult::NotEnoughParameters:
-                case MatchResult::TooManyParameters:
+                case MatchResult::NotEnoughArguments:
+                case MatchResult::TooManyArguments:
                 case MatchResult::ValidIfFailed:
-                case MatchResult::NotEnoughGenericParameters:
+                case MatchResult::NotEnoughGenericArguments:
                 case MatchResult::CannotDeduceGenericType:
                     n.push_back(oneMatch);
                     break;
@@ -287,7 +291,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
                     oneMatch->overload = nullptr;
 
                 // Otherwise, if with UFCS we do not have enough argument, we use UFCS in priority
-                else if (oneMatch->ufcs && oneMatch1->symMatchContext.result == MatchResult::NotEnoughParameters)
+                else if (oneMatch->ufcs && oneMatch1->symMatchContext.result == MatchResult::NotEnoughArguments)
                     oneMatch1->overload = nullptr;
 
                 // Otherwise we remove the UFCS error and take the other one

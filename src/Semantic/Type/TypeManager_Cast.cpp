@@ -2277,7 +2277,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
     {
         case MatchResult::MissingNamedParameter:
         case MatchResult::DuplicatedNamedParameter:
-        case MatchResult::InvalidNamedParameter:
+        case MatchResult::InvalidNamedArgument:
         {
             Vector<const Diagnostic*> result0;
             Vector<const Diagnostic*> result1;

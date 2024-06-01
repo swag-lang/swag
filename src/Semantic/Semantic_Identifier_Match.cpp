@@ -1791,7 +1791,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
             VectorNative<OneTryMatch*> cpyOverloads;
             for (auto& oneMatch : tryMatches)
             {
-                if (oneMatch->symMatchContext.result == MatchResult::NotEnoughGenericParameters &&
+                if (oneMatch->symMatchContext.result == MatchResult::NotEnoughGenericArguments &&
                     oneMatch->symMatchContext.genericParameters.empty())
                 {
                     cpyOverloads.push_back(oneMatch);
@@ -1906,8 +1906,8 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         bool forcedFine = false;
 
         // Be sure this is not because of a generic error
-        if (oneOverload.symMatchContext.result != MatchResult::NotEnoughGenericParameters &&
-            oneOverload.symMatchContext.result != MatchResult::TooManyGenericParameters &&
+        if (oneOverload.symMatchContext.result != MatchResult::NotEnoughGenericArguments &&
+            oneOverload.symMatchContext.result != MatchResult::TooManyGenericArguments &&
             oneOverload.symMatchContext.result != MatchResult::BadGenericSignature)
         {
             if (isFunctionButNotACall(context, node, symbol))
@@ -1925,7 +1925,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         }
 
         // Function type without call parameters
-        if (emptyParams && oneOverload.symMatchContext.result == MatchResult::NotEnoughParameters)
+        if (emptyParams && oneOverload.symMatchContext.result == MatchResult::NotEnoughArguments)
         {
             if (symbol->is(SymbolKind::Variable))
                 oneOverload.symMatchContext.result = MatchResult::Ok;

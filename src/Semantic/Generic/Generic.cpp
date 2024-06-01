@@ -174,7 +174,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
     {
         context.badSignatureInfos.badSignatureNum1 = numGenericParams;
         context.badSignatureInfos.badSignatureNum2 = wantedNumGenericParams;
-        context.result                             = MatchResult::TooManyGenericParameters;
+        context.result                             = MatchResult::TooManyGenericArguments;
         return;
     }
 

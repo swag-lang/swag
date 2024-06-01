@@ -44,7 +44,7 @@ namespace
                 context.badSignatureInfos.badSignatureParameterIdx = i;
                 context.badSignatureInfos.badSignatureNum1         = numParams;
                 context.badSignatureInfos.badSignatureNum2         = parameters.size();
-                context.result                                     = MatchResult::TooManyParameters;
+                context.result                                     = MatchResult::TooManyArguments;
                 return;
             }
 
@@ -324,7 +324,7 @@ namespace
                 if (!param->resolvedParameter)
                 {
                     context.badSignatureInfos.badSignatureParameterIdx = i;
-                    context.result                                     = MatchResult::InvalidNamedParameter;
+                    context.result                                     = MatchResult::InvalidNamedArgument;
                     return;
                 }
             }
@@ -378,7 +378,7 @@ namespace
                             {
                                 if (symbolParameter->value && !Semantic::valueEqualsTo(it->second, symbolParameter->value, symbolParameter->typeInfo, 0))
                                 {
-                                    context.result = MatchResult::NotEnoughGenericParameters;
+                                    context.result = MatchResult::NotEnoughGenericArguments;
                                     return;
                                 }
 
@@ -392,7 +392,7 @@ namespace
                             {
                                 if (genType != it1->second.typeInfoReplace)
                                 {
-                                    context.result = MatchResult::NotEnoughGenericParameters;
+                                    context.result = MatchResult::NotEnoughGenericArguments;
                                     return;
                                 }
                             }
@@ -415,7 +415,7 @@ namespace
         {
             if (userGenericParams || !myTypeInfo->isGeneric())
             {
-                context.result = MatchResult::NotEnoughGenericParameters;
+                context.result = MatchResult::NotEnoughGenericArguments;
                 return;
             }
         }
@@ -434,12 +434,12 @@ namespace
                         // This will force a new instance with deduced types if necessary
                         if (context.genericReplaceTypes.empty() && context.matchFlags & SymbolMatchContext::MATCH_FOR_LAMBDA)
                         {
-                            context.result = MatchResult::NotEnoughGenericParameters;
+                            context.result = MatchResult::NotEnoughGenericArguments;
                             return;
                         }
                         if (myTypeInfo->isGeneric())
                         {
-                            context.result = MatchResult::NotEnoughGenericParameters;
+                            context.result = MatchResult::NotEnoughGenericArguments;
                             return;
                         }
                     }
@@ -462,7 +462,7 @@ namespace
                         auto it = typeMyFunc->replaceTypes.find(one.first);
                         if (it == typeMyFunc->replaceTypes.end() || it->second.typeInfoReplace != one.second.typeInfoReplace)
                         {
-                            context.result = MatchResult::NotEnoughGenericParameters;
+                            context.result = MatchResult::NotEnoughGenericArguments;
                             return;
                         }
                     }
@@ -681,13 +681,13 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
         const auto back = typeFunc->parameters.back()->typeInfo;
         if (!back->isVariadic() && !back->isTypedVariadic() && !back->isCVariadic())
         {
-            context.result = MatchResult::NotEnoughParameters;
+            context.result = MatchResult::NotEnoughArguments;
             return;
         }
 
         if (typeFunc->parameters.size() > 1 && context.cptResolved < min(typeFunc->parameters.size() - 1, firstDefault))
         {
-            context.result = MatchResult::NotEnoughParameters;
+            context.result = MatchResult::NotEnoughArguments;
             return;
         }
     }

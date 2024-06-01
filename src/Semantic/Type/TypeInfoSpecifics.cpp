@@ -661,13 +661,13 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
     {
         if (other->parameters.size() > parameters.size())
         {
-            bi.matchResult = MatchResult::TooManyParameters;
+            bi.matchResult = MatchResult::TooManyArguments;
             return false;
         }
 
         if (other->parameters.size() < parameters.size())
         {
-            bi.matchResult = MatchResult::NotEnoughParameters;
+            bi.matchResult = MatchResult::NotEnoughArguments;
             return false;
         }
     }

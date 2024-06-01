@@ -545,7 +545,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
             errorMissingNamedParameter(context, errorParam);
             break;
 
-        case MatchResult::InvalidNamedParameter:
+        case MatchResult::InvalidNamedArgument:
             errorInvalidNamedParameter(context, errorParam);
             break;
 
@@ -557,19 +557,19 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
             errorMissingParameters(context, errorParam);
             break;
 
-        case MatchResult::NotEnoughParameters:
+        case MatchResult::NotEnoughArguments:
             errorNotEnoughParameters(context, errorParam);
             break;
 
-        case MatchResult::NotEnoughGenericParameters:
+        case MatchResult::NotEnoughGenericArguments:
             errorNotEnoughGenericParameters(context, errorParam);
             break;
 
-        case MatchResult::TooManyParameters:
+        case MatchResult::TooManyArguments:
             errorTooManyParameters(context, errorParam);
             break;
 
-        case MatchResult::TooManyGenericParameters:
+        case MatchResult::TooManyGenericArguments:
             errorTooManyGenericParameters(context, errorParam);
             break;
 
