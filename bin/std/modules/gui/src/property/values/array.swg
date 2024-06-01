@@ -49,7 +49,14 @@ impl Properties
             return
         item.userData0 = cast(*void) arrData.count
         reconstructArray(item)
+        setDescEditBox(item)
         edView.sendResizeEvent()
+    }
+
+    mtd setDescEditBox(item: *PropertiesItem)
+    {
+        let arrData = cast(*Array'u8) item.data
+        item.editBox.setText(Format.toString("% elements", arrData.count))
     }
 
     mtd appendArrayValue(item: *PropertiesItem, valueType: typeinfo)
@@ -60,6 +67,7 @@ impl Properties
 
         let oldBuffer = arrData.buffer
         discard Reflection.roomInArray(item.data, valueType)
+        setDescEditBox(item)
 
         // If the array buffer has been reallocated, and this is not a pod, then we must reconstruct
         // the full array.
@@ -128,14 +136,14 @@ impl Properties
             self.hasChanged(item)
         }
 
-        var numDesc = Format.toString("% elements", arrData.count)
-        with let desc = EditBox.create(item.line, numDesc)
+        with item.editBox = EditBox.create(item.line, "")
         {
             .dockStyle = .Left
             .setForm(.Transparent)
             .enable(false)
         }
 
+        setDescEditBox(item)
         item.numChilds += cast(u32) (items.count - numItemsBefore)
     }
 }
