@@ -317,9 +317,11 @@ void ByteCodeGen::releaseByteCodeJob(AstNode* node)
 {
     ScopedLock lk(node->mutex);
     node->addSemFlag(SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED);
-    SWAG_ASSERT(node->hasExtByteCode());
-    node->extByteCode()->byteCodeJob->dependentJobs.setRunning();
-    node->extByteCode()->byteCodeJob = nullptr;
+    if (node->hasExtByteCode() && node->extByteCode()->byteCodeJob)
+    {
+        node->extByteCode()->byteCodeJob->dependentJobs.setRunning();
+        node->extByteCode()->byteCodeJob = nullptr;
+    }
 }
 
 void ByteCodeGen::getDependantCalls(const AstNode* depNode, VectorNative<AstNode*>& dep)
