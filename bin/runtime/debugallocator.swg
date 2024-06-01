@@ -183,6 +183,7 @@ impl DebugAllocator
             checkIsAllocated(scan)
 
             // One leak
+            @print("--------------------------------------------\n")
             @print("\x1b[91m")
             @print("leak error: ")
             @print("id [", scan.allocId, "] sizeAlloc [")
@@ -195,6 +196,7 @@ impl DebugAllocator
             @print("\x1b[36m")
             @print("--> ")
             @print(scan.loc.fileName, ":", scan.loc.lineStart + 1, "\n")
+            @print("--------------------------------------------\n")
 
             // Stack
             if scan.stackCount
@@ -209,6 +211,7 @@ impl DebugAllocator
             cpt += 1
             if showMaxLeaks and cpt >= showMaxLeaks
             {
+                @print("--------------------------------------------\n")
                 @print("\x1b[91m")
                 @print("... too many leaks (")
                 @print(countAlloc)
@@ -217,6 +220,8 @@ impl DebugAllocator
                 break
             }
         }
+
+        @print("############################################\n")
     }
 
     // This function will assert if the given user address is not conform
