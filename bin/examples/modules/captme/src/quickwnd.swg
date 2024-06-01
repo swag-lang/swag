@@ -827,7 +827,7 @@ impl QuickWnd
             }
 
             // Button to add a new style
-            let ico  = getTheme().getIcon24(ThemeIcons24.Plus)
+            let ico  = getTheme().getIcon24(.Plus)
             let btn1 = IconButton.create(btn, ico, {64 - 26, 2, 24, 24})
             btn1.style.addStyleSheetColors("btnIcon_Bk          $hilight")
             btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")

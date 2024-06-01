@@ -667,7 +667,7 @@ impl MainWnd
             .backgroundStyle = .Window
         }
 
-        var ic = res.getTheme().getIcon24(ThemeIcons24.Search, 20)
+        var ic = res.getTheme().getIcon24(.Search, 20)
         with res.zoomBtn = IconButton.create(res.editZoomBar, ic, {0, 0, 120, 32})
         {
             .iconBtnFlags.add(.Center)

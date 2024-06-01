@@ -44,6 +44,8 @@ impl IWnd for Label
         case MousePressed:
             if evt.button == .Left and hotChunk do
                 sigUrlClicked.call(self, hotChunk.slice)
+            else do
+                evt.accepted = false
 
         case MouseMove:
             let chunk = name.getUrlChunkAt(pos)

@@ -28,6 +28,7 @@ enum ThemeIcons24
     Cut
     Expanded
     Collapsed
+    RemoveAll
 }
 
 enum ThemeIcons64

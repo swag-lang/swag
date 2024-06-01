@@ -14,6 +14,7 @@ interface IPropertyNotify
     mtd itemHasChanged(list: *Properties, item: *PropertiesItem) {}
     mtd isItemVisible(list: *Properties, item: *PropertiesItem)->bool { return true; }
     mtd isItemEnabled(list: *Properties, item: *PropertiesItem)->bool { return true; }
+    mtd fillPopupMenu(list: *Properties, item: *PropertiesItem, menu: *MenuCtrl) {}
 }
 
 enum PropertiesKind
@@ -145,6 +146,45 @@ internal impl Properties
         return null
     }
 
+    mtd popupMenu(item: *PropertiesItem, pt: Math.Point)
+    {
+        let pointed = item.type
+        var typeStruct: const *Swag.TypeInfoStruct
+        if Reflection.isStruct(pointed) do
+            typeStruct = cast(const *Swag.TypeInfoStruct) pointed
+
+        let menu = MenuCtrl.createPopup(self)
+        var scan = hotItem
+        while scan
+        {
+            if scan.ntfyItf do
+                scan.ntfyItf.fillPopupMenu(self, hotItem, menu)
+            scan = scan.parent
+        }
+
+        if hotItem and typeStruct.fromGeneric == Core.Array
+        {
+            if menu.items.count do
+                menu.addSeparator()
+            let arrData = cast(*Array'u8) item.data
+            menu.addItem("Remove All", "ClearArray", getTheme().getIcon24(.RemoveAll), disabled: arrData.count == 0)
+        }
+
+        if !menu.items.count
+        {
+            menu.destroy()
+            return
+        }
+
+        let result = menu.doModal(pt)
+        switch result
+        {
+        case "ClearArray":
+            if MessageDlg.confirm(wnd.surface, "This will remove all elements") != Dialog.BtnYes do
+                break
+        }
+    }
+
     func onHookChildEvent(wnd: *Wnd, evt: *Event)->bool
     {
         let prop = cast(*Properties) wnd
@@ -161,6 +201,7 @@ internal impl Properties
             if mouseEvt.button != .Left do
                 break
 
+            // On column bar
             if prop.cursorSet
             {
                 prop.resizingColumn = true
@@ -170,9 +211,9 @@ internal impl Properties
             // Toggle/Expand
             var pt = prop.surfaceToLocal(mouseEvt.surfacePos)
             if prop.kind == .Grid and
-               prop.hotItem and
-               prop.hotItem.numChilds and
-               pt.x < prop.leftMargin
+                prop.hotItem and
+                prop.hotItem.numChilds and
+                pt.x < prop.leftMargin
             {
                 prop.hotItem.flags.toggle(.Expanded)
                 prop.updateStates()
@@ -331,6 +372,14 @@ internal impl Properties
 
         switch evt.kind
         {
+        case .MousePressed:
+            let mouseEvt = cast(*MouseEvent) evt
+            if mouseEvt.button == .Right
+            {
+                popupMenu(item, mouseEvt.surfacePos)
+                return true
+            }
+
         case Notify:
             let ntfyEvt = cast(*NotifyEvent) evt
             if ntfyEvt.ntfyKind == .ChildFocusChanged
