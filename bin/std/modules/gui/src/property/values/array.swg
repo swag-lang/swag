@@ -9,6 +9,7 @@ impl Properties
         let itemIdx          = Slice.findLinear(self.items.toSlice(), item)
         let insertItemIdx    = itemIdx + item.numChilds + 1
 
+        // Reconstruct all items (add the end)
         var newData = arrData.buffer
         loop i: arrData.count
         {
@@ -19,6 +20,7 @@ impl Properties
             newData += valueType.sizeof
         }
 
+        // Move all newly reconstructed items at the right place
         let numAddedChilds = cast(u32) (items.count - countItemsBefore)
         loop i: numAddedChilds
         {
@@ -29,15 +31,16 @@ impl Properties
         items.count -= numAddedChilds
         edView.childs.count -= numAddedChilds
 
-        loop item.numChilds
+        // Remove all old items and childs
+        loop i: item.numChilds
         {
             items.deletePtr(items[itemIdx + 1])
             items.removeAtOrdered(itemIdx + 1)
             edView.childs[itemIdx + 1].destroyNow()
         }
 
+        // Update state of all newly added items
         item.numChilds = numAddedChilds
-
         loop i: item.numChilds do
             updateState(self.items[itemIdx + i + 1])
     }
@@ -48,6 +51,7 @@ impl Properties
         if arrData.count == cast(u64) item.userData0 do
             return
         item.userData0 = cast(*void) arrData.count
+
         reconstructArray(item)
         setDescEditBox(item)
         edView.sendResizeEvent()
@@ -68,6 +72,7 @@ impl Properties
         let oldBuffer = arrData.buffer
         discard Reflection.roomInArray(item.data, valueType)
         setDescEditBox(item)
+        item.userData0 = cast(*void) arrData.count
 
         // If the array buffer has been reallocated, and this is not a pod, then we must reconstruct
         // the full array.

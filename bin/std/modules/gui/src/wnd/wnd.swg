@@ -267,6 +267,8 @@ impl Wnd
     mtd destroyNow()
     {
         Debug.assert(!isPendingDestroy)
+        visit c: childs do
+            c.destroyNow()
         surface.app.destroyWnd(self)
     }
 
