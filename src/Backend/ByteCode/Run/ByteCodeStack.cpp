@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Run/ByteCodeRunContext.h"
-#include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Report/Log.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/AstNode.h"
@@ -48,7 +48,7 @@ namespace
     }
 }
 
-Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
+Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step, bool sourceCode)
 {
     auto bc = step.bc;
     auto ip = step.ip;
@@ -92,8 +92,12 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     str += Log::colorToVTS(LogColor::Location);
     if (sourceFile)
         str += form("%s:%d:%d", sourceFile->path.c_str(), location->line + 1, location->column + 1);
-    str += "\n";
-    str += sourceLine(sourceFile, location->line);
+    if (sourceCode)
+    {
+        str += "\n";
+        str += sourceLine(sourceFile, location->line);
+    }
+
     str += "\n";
 
     // #mixin
@@ -119,8 +123,11 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
                             owner->token.startLocation.column + 1,
                             owner->token.endLocation.line + 1,
                             owner->token.endLocation.column + 1);
-                str += "\n";
-                str += sourceLine(owner->token.sourceFile, owner->token.startLocation.line);
+                if (sourceCode)
+                {
+                    str += "\n";
+                    str += sourceLine(owner->token.sourceFile, owner->token.startLocation.line);
+                }
             }
 
             str += "\n";
@@ -146,8 +153,11 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
                         parent->token.startLocation.column + 1,
                         parent->token.endLocation.line + 1,
                         parent->token.endLocation.column + 1);
-            str += "\n";
-            str += sourceLine(parent->token.sourceFile, parent->token.startLocation.line);
+            if (sourceCode)
+            {
+                str += "\n";
+                str += sourceLine(parent->token.sourceFile, parent->token.startLocation.line);
+            }
         }
 
         str += "\n";
@@ -177,7 +187,7 @@ void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, const B
     }
 }
 
-Utf8 ByteCodeStack::log(const ByteCodeRunContext* runContext) const
+Utf8 ByteCodeStack::log(const ByteCodeRunContext* runContext, bool sourceCode) const
 {
     // Add one step for the current context if necessary
     VectorNative<ByteCodeStackStep> copySteps;
@@ -193,7 +203,7 @@ Utf8 ByteCodeStack::log(const ByteCodeRunContext* runContext) const
         bool current = false;
         if (runContext && runContext->debugOn)
             current = static_cast<size_t>(i) == copySteps.size() - 1 - runContext->debugStackFrameOffset;
-        str += getLogStep(i, current, copySteps[static_cast<size_t>(i)]);
+        str += getLogStep(i, current, copySteps[static_cast<size_t>(i)], sourceCode);
 
         maxSteps--;
         if (maxSteps == 0)

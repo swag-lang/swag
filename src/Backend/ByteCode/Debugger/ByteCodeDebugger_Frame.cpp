@@ -10,7 +10,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, c
 
     if (arg.split.size() != 1)
         return BcDbgCommandResult::BadArguments;
-    printLong(g_ByteCodeStackTrace->log(context));
+    printLong(g_ByteCodeStackTrace->log(context, g_ByteCodeDebugger.printBtCode));
     return BcDbgCommandResult::Continue;
 }
 

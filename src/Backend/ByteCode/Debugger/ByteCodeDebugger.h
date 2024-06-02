@@ -219,6 +219,7 @@ struct ByteCodeDebugger
     bool printStruct       = true;
     bool printArray        = true;
     bool printBcCode       = true;
+    bool printBtCode       = false;
 };
 
 extern ByteCodeDebugger g_ByteCodeDebugger;

@@ -7,7 +7,8 @@ void ByteCodeDebugger::printSet(ByteCodeRunContext*)
     g_Log.messageHeaderDot("stop on @breakpoint()", g_CommandLine.dbgOff ? "off" : "on", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("print struct content", g_ByteCodeDebugger.printStruct ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("print array content", g_ByteCodeDebugger.printArray ? "on" : "off", LogColor::Name, LogColor::White, " ");
-    g_Log.messageHeaderDot("print bytecode + source", g_ByteCodeDebugger.printBcCode ? "on" : "off", LogColor::Name, LogColor::White, " ");
+    g_Log.messageHeaderDot("bytecode source code", g_ByteCodeDebugger.printBcCode ? "on" : "off", LogColor::Name, LogColor::White, " ");
+    g_Log.messageHeaderDot("backtrack source code", g_ByteCodeDebugger.printBtCode ? "on" : "off", LogColor::Name, LogColor::White, " ");
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
@@ -76,8 +77,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
                 printCmdResult("print array content: off");
             return BcDbgCommandResult::Continue;
         }
+    }
 
-        if (arg.split[2] == "bccode")
+    if (arg.split[1] == "bytecode" || arg.split[1] == "bc")
+    {
+        if (arg.split[2] == "code")
         {
             if (arg.split.size() == 3)
                 g_ByteCodeDebugger.printBcCode = !g_ByteCodeDebugger.printBcCode;
@@ -89,12 +93,33 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
                 g_ByteCodeDebugger.printBcCode = arg.split[3] == "on";
 
             if (g_ByteCodeDebugger.printBcCode)
-                printCmdResult("print bytecode + source: on");
+                printCmdResult("bytecode source code: on");
             else
-                printCmdResult("print bytecode + source: off");
+                printCmdResult("bytecode source code: off");
             return BcDbgCommandResult::Continue;
         }
     }
+    
+    if (arg.split[1] == "backtrack" || arg.split[1] == "bt")
+    {
+        if (arg.split[2] == "code")
+        {
+            if (arg.split.size() == 3)
+                g_ByteCodeDebugger.printBtCode = !g_ByteCodeDebugger.printBtCode;
+            else if (arg.split.size() != 4)
+                return BcDbgCommandResult::BadArguments;
+            else if (arg.split[3] != "on" && arg.split[3] != "off")
+                return BcDbgCommandResult::BadArguments;
+            else
+                g_ByteCodeDebugger.printBtCode = arg.split[3] == "on";
+
+            if (g_ByteCodeDebugger.printBtCode)
+                printCmdResult("backtrack source code: on");
+            else
+                printCmdResult("backtrack source code: off");
+            return BcDbgCommandResult::Continue;
+        }
+    }    
 
     return BcDbgCommandResult::BadArguments;
 }
