@@ -8,6 +8,9 @@
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoFunctions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+    
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
 
@@ -45,6 +48,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFunctions(ByteCodeRunContext* /*cont
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+    
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
@@ -58,6 +64,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* /*contex
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoExpressions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+    
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
@@ -80,6 +89,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoExpressions(ByteCodeRunContext* /*co
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+    
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
@@ -109,6 +121,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+    
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
@@ -140,6 +155,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdInfoGlobals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
@@ -174,6 +192,17 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoGlobals(ByteCodeRunContext* context,
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+    {
+        g_Log.writeEol();
+        
+        g_Log.print("--format\n");
+        g_Log.setColor(LogColor::White);
+        g_Log.print("    The display format of each register. Can be one of the following values:\n");
+        g_Log.print("    s8 s16 s32 s64 u8 u16 u32 u64 x8 x16 x32 x64 f32 f64\n");        
+        return BcDbgCommandResult::Continue;
+    }
+    
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
 
@@ -206,9 +235,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (arg.help)
-        return BcDbgCommandResult::Continue;
-    
     if (arg.split.size() < 2)
         return BcDbgCommandResult::BadArguments;
 

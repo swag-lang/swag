@@ -56,8 +56,14 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)
 
 void ByteCodeDebugger::printHelp() const
 {
+    Utf8 lastName;
     for (auto& c : commands)
+    {
+        if (lastName == c.name)
+            continue;
+        lastName = c.name;
         printHelp(c);
+    }
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCommandArg& arg)
@@ -65,7 +71,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
     if (arg.help)
         return BcDbgCommandResult::Continue;
 
-    if (arg.split.size() > 2)
+    if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
 
     // List all commands
@@ -76,40 +82,74 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
     }
 
     // Help on a specific command
-    bool ok = false;
+    Vector<BcDbgCommand> toPrint;
     for (const auto& c : g_ByteCodeDebugger.commands)
     {
-        if (!c.name)
+        if (!c.name || !c.cb)
             continue;
         if (arg.split[1] != c.name && (!c.shortname || arg.split[1] != c.shortname))
             continue;
+        toPrint.push_back(c);
+    }
+
+    if (toPrint.empty())
+    {
+        printCmdError(form("unknown debugger command [[%s]]", arg.split[1].c_str()));
+        return BcDbgCommandResult::BadArguments;
+    }
+
+    // Sub command
+    if (arg.split.size() == 3)
+    {
+        const auto toScan = toPrint;
+        toPrint.clear();
+
+        for (const auto& cmd : toScan)
+        {
+            if (!cmd.args[0])
+                continue;
+
+            Vector<Utf8> subCmds;
+            Utf8::tokenizeBlanks(cmd.args, subCmds);
+            subCmds[0].replace("(", "");
+            subCmds[0].replace(")", "");
+            if (arg.split[2] != subCmds[0])
+                continue;
+
+            toPrint.push_back(cmd);
+        }
+    }
+
+    // One single command to display
+    if (toPrint.size() == 1)
+    {
+        const auto& c = toPrint[0];
 
         g_Log.setColor(LogColor::Gray);
         g_Log.print(form("command:     %s%s %s%s\n", Log::colorToVTS(LogColor::Name).c_str(), c.name, Log::colorToVTS(LogColor::Type).c_str(), c.args));
-
-        if (c.shortname)
+        if (c.shortname[0])
         {
             g_Log.setColor(LogColor::Gray);
             g_Log.print(form("short name:  %s%s\n", Log::colorToVTS(LogColor::Name).c_str(), c.shortname));
         }
-
         g_Log.setColor(LogColor::Gray);
         g_Log.print(form("description: %s%s\n", Log::colorToVTS(LogColor::White).c_str(), c.help));
         g_Log.setColor(LogColor::Gray);
-        g_Log.writeEol();
 
-        if(c.cb)
+        if (c.cb)
         {
             BcDbgCommandArg arg1 = arg;
+            arg1.split.erase(arg1.split.begin());
             arg1.help = true;
             c.cb(nullptr, arg1);
         }
 
-        ok = true;
+        return BcDbgCommandResult::Continue;
     }
 
-    if (!ok)
-        printCmdError(form("unknown debugger command [[%s]]", arg.split[1].c_str()));
+    // Print all commands
+    for (const auto& cmd : toPrint)
+        printHelp(cmd);
 
     return BcDbgCommandResult::Continue;
 }

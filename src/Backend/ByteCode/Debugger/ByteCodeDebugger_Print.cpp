@@ -392,6 +392,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 {
     if (arg.help)
     {
+        g_Log.writeEol();
+        
         g_Log.setColor(LogColor::Gray);
         g_Log.print("--num\n");
         g_Log.setColor(LogColor::White);
@@ -401,7 +403,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         g_Log.print("--format\n");
         g_Log.setColor(LogColor::White);
         g_Log.print("    The display format of each value. Can be one of the following values:\n");
-        g_Log.print("    s8 | s16 | s32 | s64 | u8 | u16 | u32 | u64 | x8 | x16 | x32 | x64 | f32 | f64\n");
+        g_Log.print("    s8 s16 s32 s64 u8 u16 u32 u64 x8 x16 x32 x64 f32 f64\n");
+        
         return BcDbgCommandResult::Continue;
     }
     

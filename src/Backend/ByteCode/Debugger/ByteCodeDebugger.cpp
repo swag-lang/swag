@@ -21,10 +21,8 @@ void ByteCodeDebugger::setup()
 
     commands.push_back({"<RET>", "", "", "repeat the last command", nullptr});
     commands.push_back({"<TAB>", "", "", "contextual completion of the current word", nullptr});
-    commands.push_back({});
 
     commands.push_back({"bc", "", "", "swap between bytecode and source code mode", cmdBc});
-    commands.push_back({});
 
     commands.push_back({"step", "s", "[count]", "execute [count] source line(s) or bytecode instructions(s)", cmdStep});
     commands.push_back({"next", "n", "[count]", "like 'step', but does not enter functions or inlined code", cmdNext});
@@ -32,29 +30,25 @@ void ByteCodeDebugger::setup()
     commands.push_back({"jump", "j", "<line|instruction>", "jump to the given <line> or <instruction> (in the current function)", cmdJump});
     commands.push_back({"finish", "f", "", "continue running until the current function is done", cmdFinish});
     commands.push_back({"continue", "c", "", "continue running until another breakpoint is reached", cmdContinue});
-    commands.push_back({});
 
     commands.push_back({"execute", "e", "<stmt>", "execute the code statement <stmt> in the current context", cmdExecute});
     commands.push_back({"print", "p", "<expr> [--format]", "print the result of the expression <expr> in the current context", cmdPrint});
-    commands.push_back({});
 
+    commands.push_back({"display", "", "<subcommand>", "automatic display of some expressions", nullptr});
     commands.push_back({"display", "", "", "print all expressions to display", cmdDisplay});
     commands.push_back({"display", "d", "<expr> [--format]", "same as 'print', but will be done at each step", cmdDisplay});
     commands.push_back({"display", "d", "(cl)ear", "remove all expressions to display", cmdDisplay});
     commands.push_back({"display", "d", "(cl)ear <num>", "remove expression <num>", cmdDisplay});
-    commands.push_back({});
 
     commands.push_back({"x", "", "<address> [--num] [--format]", "print memory", cmdMemory});
-    commands.push_back({});
 
     commands.push_back({"list", "l", "[num]", "print the current source code line and [num] lines around", cmdList});
     commands.push_back({"ll", "", "[name]", "print the current function (or function [name]) source code", cmdLongList});
-    commands.push_back({});
 
     commands.push_back({"i", "", "[num]", "print the current bytecode instruction and [num] instructions around", cmdInstruction});
     commands.push_back({"ii", "", "[name]", "print the current function (or function [name]) bytecode", cmdInstructionDump});
-    commands.push_back({});
 
+    commands.push_back({"info", "", "<subcommand>", "display various information", nullptr});
     commands.push_back({"info", "o", "(reg)isters [--format]", "print all registers", cmdInfo});
     commands.push_back({"info", "o", "(loc)als [filter]", "print all current local variables", cmdInfo});
     commands.push_back({"info", "o", "(arg)uments [filter]", "print all current function arguments", cmdInfo});
@@ -62,11 +56,10 @@ void ByteCodeDebugger::setup()
     commands.push_back({"info", "o", "(glo)bals [filter]", "print all global variables", cmdInfo});
     commands.push_back({"info", "o", "(exp)ressions [filter]", "print all dynamic expressions", cmdInfo});
     commands.push_back({"info", "o", "(mod)ules", "print all modules", cmdInfo});
-    commands.push_back({});
 
     commands.push_back({"where", "w", "", "print contextual information", cmdWhere});
-    commands.push_back({});
 
+    commands.push_back({"break", "", "<subcommand>", "add/remove breakpoints", nullptr});
     commands.push_back({"break", "b", "", "print all breakpoints", cmdBreak});
     commands.push_back({"break", "b", "(f)unc <name>", "add breakpoint when entering function with exact <name>", cmdBreak});
     commands.push_back({"break", "b", "(f)unc *<name>", "add breakpoint when entering function containing <name>", cmdBreak});
@@ -77,24 +70,22 @@ void ByteCodeDebugger::setup()
     commands.push_back({"break", "b", "(en)able <num>", "enable breakpoint <num>", cmdBreak});
     commands.push_back({"break", "b", "(di)sable <num>", "disable breakpoint <num>", cmdBreak});
     commands.push_back({"tbreak", "tb", "", "same as 'break' except that the breakpoint will be automatically removed on hit", cmdBreak});
-    commands.push_back({});
 
     commands.push_back({"bt", "", "", "backtrace, print callstack", cmdBackTrace});
     commands.push_back({"up", "", "[num]", "move stack frame [num] level up", cmdFrameUp});
     commands.push_back({"down", "", "[num]", "move stack frame [num] level down", cmdFrameDown});
     commands.push_back({"frame", "", "<num>", "set stack frame to level <num>", cmdFrame});
-    commands.push_back({});
 
+    commands.push_back({"set", "", "<subcommand>", "change bcdbg behaviour", nullptr});
     commands.push_back({"set", "", "", "print all the current 'set' values", cmdSet});
     commands.push_back({"set", "", "bkp [on|off]", "enable/disable @breakpoint()", cmdSet});
     commands.push_back({"set", "", "print struct [on|off]", "display the content of structs when printing values", cmdSet});
     commands.push_back({"set", "", "print array [on|off]", "display the content of arrays when printing values", cmdSet});
     commands.push_back({"set", "", "print bccode [on|off]", "display source code when printing bytecode", cmdSet});
-    commands.push_back({});
 
+    commands.push_back({"help", "?", "[command] [subcommand]", "display help", nullptr});
     commands.push_back({"help", "?", "", "print this list of commands", cmdHelp});
     commands.push_back({"help", "?", "<command>", "print help about a specific command", cmdHelp});
-    commands.push_back({});
 
     commands.push_back({"quit", "q", "", "quit the compiler", cmdQuit});
 }

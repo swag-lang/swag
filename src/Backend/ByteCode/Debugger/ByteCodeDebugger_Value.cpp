@@ -325,7 +325,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += "\n";
             for (uint32_t idx = 0; idx < typeArray->count; idx++)
             {
-                for (int i = 0; i < indent; i++)
+                for (uint32_t i = 0; i < indent; i++)
                     str += "   ";
                 str += form(" [%d] ", idx);
                 EvaluateResult res1;
@@ -360,7 +360,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 str += "\n";
                 for (uint64_t idx = 0; idx < count; idx++)
                 {
-                    for (int i = 0; i < indent; i++)
+                    for (uint32_t i = 0; i < indent; i++)
                         str += "   ";
                     str += form(" [%d] ", idx);
                     EvaluateResult res1;

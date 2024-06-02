@@ -24,6 +24,7 @@ struct BcDbgCommandArg
     bool         help = false;
 };
 
+using BcDbgCommandCB = std::function<BcDbgCommandResult(ByteCodeRunContext*, const BcDbgCommandArg&)>;
 struct BcDbgCommand
 {
     const char* name;
@@ -31,7 +32,7 @@ struct BcDbgCommand
     const char* args;
     const char* help;
 
-    std::function<BcDbgCommandResult(ByteCodeRunContext*, const BcDbgCommandArg&)> cb;
+    BcDbgCommandCB cb;
 };
 
 struct ByteCodeDebugger
