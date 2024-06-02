@@ -8,9 +8,23 @@ BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, c
     if (arg.help)
         return BcDbgCommandResult::Continue;
 
-    if (arg.split.size() != 1)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
-    printLong(g_ByteCodeStackTrace->log(context, g_ByteCodeDebugger.printBtCode));
+
+    uint32_t maxSteps = 0; 
+    if (arg.split.size() == 2)
+    {
+        if (!Utf8::isNumber(arg.split[1].c_str()))
+        {
+            printCmdError("invalid 'backtrace' number");
+            return BcDbgCommandResult::Continue;
+        }
+
+        maxSteps = arg.split[1].toInt();
+        maxSteps = min(maxSteps, g_ByteCodeStackTrace->maxLevel(context));
+    }
+
+    printLong(g_ByteCodeStackTrace->log(context, maxSteps, g_ByteCodeDebugger.printBtCode));
     return BcDbgCommandResult::Continue;
 }
 
@@ -53,7 +67,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
+
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
     if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))

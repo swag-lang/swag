@@ -66,7 +66,7 @@ struct ByteCodeStack
     void        getSteps(VectorNative<ByteCodeStackStep>& copySteps, const ByteCodeRunContext* runContext) const;
     static Utf8 getStepName(const AstNode* node, const ByteCodeInstruction* ip);
     static Utf8 getLogStep(int level, bool current, ByteCodeStackStep& step, bool sourceCode);
-    Utf8        log(const ByteCodeRunContext* runContext, bool sourceCode = false) const;
+    Utf8        log(const ByteCodeRunContext* runContext, uint32_t maxSteps = 20, bool sourceCode = false) const;
 
     VectorNative<ByteCodeStackStep> steps;
 };

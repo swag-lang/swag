@@ -187,7 +187,7 @@ void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, const B
     }
 }
 
-Utf8 ByteCodeStack::log(const ByteCodeRunContext* runContext, bool sourceCode) const
+Utf8 ByteCodeStack::log(const ByteCodeRunContext* runContext, uint32_t maxSteps, bool sourceCode) const
 {
     // Add one step for the current context if necessary
     VectorNative<ByteCodeStackStep> copySteps;
@@ -195,19 +195,21 @@ Utf8 ByteCodeStack::log(const ByteCodeRunContext* runContext, bool sourceCode) c
     if (copySteps.empty())
         return "";
 
-    Utf8      str;
-    int       maxSteps = 20;
-    const int nb       = static_cast<int>(copySteps.size()) - 1;
-    for (int i = nb; i >= 0; i--)
+    Utf8           str;
+    const uint32_t nb = copySteps.size() - 1;
+    for (uint32_t i = nb; i != UINT32_MAX; i--)
     {
         bool current = false;
         if (runContext && runContext->debugOn)
             current = static_cast<size_t>(i) == copySteps.size() - 1 - runContext->debugStackFrameOffset;
         str += getLogStep(i, current, copySteps[static_cast<size_t>(i)], sourceCode);
 
-        maxSteps--;
-        if (maxSteps == 0)
-            break;
+        if (maxSteps)
+        {
+            maxSteps--;
+            if (maxSteps == 0)
+                break;
+        }
     }
 
     return str;

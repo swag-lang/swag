@@ -71,7 +71,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"break", "b", "(di)sable <num>", "disable breakpoint <num>", cmdBreak});
     commands.push_back({"tbreak", "tb", "", "same as 'break' except that the breakpoint will be automatically removed on hit", cmdBreak});
 
-    commands.push_back({"bt", "", "", "backtrace, print callstack", cmdBackTrace});
+    commands.push_back({"bt", "", "[num]", "backtrace, print [num] frames (0 for all)", cmdBackTrace});
     commands.push_back({"up", "", "[num]", "move stack frame [num] level up", cmdFrameUp});
     commands.push_back({"down", "", "[num]", "move stack frame [num] level down", cmdFrameDown});
     commands.push_back({"frame", "", "<num>", "set stack frame to level <num>", cmdFrame});
@@ -82,7 +82,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"set", "", "print struct [on|off]", "display the content of structs when printing values", cmdSet});
     commands.push_back({"set", "", "print array [on|off]", "display the content of arrays when printing values", cmdSet});
     commands.push_back({"set", "", "(b)yte(c)ode code [on|off]", "display source code when printing bytecode", cmdSet});
-    commands.push_back({"set", "", "(b)ack(t)rack code [on|off]", "display source code when printing stack frames", cmdSet});
+    commands.push_back({"set", "", "(b)ack(t)race code [on|off]", "display source code when printing stack frames", cmdSet});
 
     commands.push_back({"help", "?", "[command] [subcommand]", "display help", nullptr});
     commands.push_back({"help", "?", "", "print this list of commands", cmdHelp});
