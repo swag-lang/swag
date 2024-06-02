@@ -112,6 +112,8 @@ Utf8 ByteCodeDebugger::printSymbols(ByteCodeRunContext* context, const Utf8& fil
         const auto over = n->resolvedSymbolOverload();
         if (!testNameFilter(over->symbol->name, filter))
             continue;
+        if(over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
+            continue;
 
         if(over->typeInfo->isNative() || over->typeInfo->isPointer())
         {
