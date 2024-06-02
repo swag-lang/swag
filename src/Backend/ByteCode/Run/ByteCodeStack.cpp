@@ -58,12 +58,12 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     if (current)
         header += form("[%03u] ", level);
     else
-        header += form("-%03u- ", level);
+        header += form(" %03u  ", level);
     header += Log::colorToVTS(LogColor::Name);
 
     Utf8 inl;
     inl += Log::colorToVTS(LogColor::Index);
-    inl += "----- ";
+    inl += " ---  ";
     inl += Log::colorToVTS(LogColor::Name);
 
     if (!ip)
@@ -87,11 +87,11 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
 
     Utf8 str = ip->node->hasOwnerInline() ? inl : header;
     str += name;
-    str += "\n";
-    str += "      ";
+    str += Log::colorToVTS(LogColor::White);
+    str += " at ";
     str += Log::colorToVTS(LogColor::Location);
     if (sourceFile)
-        str += form(" %s:%d:%d", sourceFile->path.c_str(), location->line + 1, location->column + 1);
+        str += form("%s:%d:%d", sourceFile->path.c_str(), location->line + 1, location->column + 1);
     str += "\n";
     str += sourceLine(sourceFile, location->line);
     str += "\n";
@@ -110,10 +110,10 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
 
             if (owner->token.sourceFile)
             {
-                str += "\n";
-                str += "      ";
+                str += Log::colorToVTS(LogColor::White);
+                str += " at ";
                 str += Log::colorToVTS(LogColor::Location);
-                str += form(" %s:%d:%d:%d:%d",
+                str += form("%s:%d:%d:%d:%d",
                             owner->token.sourceFile->path.c_str(),
                             owner->token.startLocation.line + 1,
                             owner->token.startLocation.column + 1,
@@ -137,10 +137,10 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
 
         if (parent->token.sourceFile)
         {
-            str += "\n";
-            str += "      ";
+            str += Log::colorToVTS(LogColor::White);
+            str += " at ";
             str += Log::colorToVTS(LogColor::Location);
-            str += form(" %s:%d:%d:%d:%d",
+            str += form("%s:%d:%d:%d:%d",
                         parent->token.sourceFile->path.c_str(),
                         parent->token.startLocation.line + 1,
                         parent->token.startLocation.column + 1,

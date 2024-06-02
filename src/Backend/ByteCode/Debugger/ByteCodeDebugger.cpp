@@ -185,7 +185,7 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
     context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
     uint32_t ns                    = 0;
 
-    for (uint32_t i = maxLevel; i > UINT32_MAX; i--)
+    for (uint32_t i = maxLevel; i != UINT32_MAX; i--)
     {
         if (i >= steps.size())
             continue;

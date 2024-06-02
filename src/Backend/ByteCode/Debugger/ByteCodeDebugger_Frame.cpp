@@ -99,7 +99,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
         off = arg.split[1].toInt();
     if (context->debugStackFrameOffset == 0)
     {
-        printCmdError("bottom(innermost) frame selected; you cannot go down");
+        printCmdError("bottom (innermost) frame selected; you cannot go down");
         return BcDbgCommandResult::Continue;
     }
 
