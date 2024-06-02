@@ -198,7 +198,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     // Print instruction
     if (bcMode)
     {
-        printInstructions(context, cxtBc, cxtIp, 4);
+        printInstructions(context, cxtBc, cxtIp, 3);
     }
 
     // Print source line
@@ -371,7 +371,7 @@ void ByteCodeDebugger::printInstructions(const ByteCodeRunContext*, const ByteCo
 {
     const int count = num;
     int       cpt   = 1;
-    while (--num)
+    while (num--)
     {
         if (ip == bc->out)
             break;
@@ -382,7 +382,7 @@ void ByteCodeDebugger::printInstructions(const ByteCodeRunContext*, const ByteCo
     ByteCodePrintOptions opt;
     opt.curIp           = cxtIp;
     opt.printSourceCode = printBcCode;
-    bc->print(opt, static_cast<uint32_t>(ip - bc->out), cpt + count - 1);
+    bc->print(opt, static_cast<uint32_t>(ip - bc->out), cpt + count);
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
@@ -524,7 +524,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
     if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    int regN = 4;
+    int regN = 3;
     if (arg.split.size() == 2)
         regN = arg.split[1].toInt();
 
