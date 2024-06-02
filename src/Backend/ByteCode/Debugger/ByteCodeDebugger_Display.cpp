@@ -66,6 +66,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayPrint(ByteCodeRunContext*, const 
 
 BcDbgCommandResult ByteCodeDebugger::cmdDisplay(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+    
     if (arg.split.size() == 1)
         return cmdDisplayPrint(context, arg);
     if (arg.split[1] == "clear" || arg.split[1] == "cl")

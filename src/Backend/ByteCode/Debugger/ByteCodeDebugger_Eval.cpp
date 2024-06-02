@@ -175,6 +175,9 @@ bool ByteCodeDebugger::evalExpression(ByteCodeRunContext* context, const Utf8& e
 
 BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() < 2)
         return BcDbgCommandResult::BadArguments;
 
@@ -185,6 +188,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, con
 
 BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+    
     if (arg.split.size() < 2)
         return BcDbgCommandResult::BadArguments;
 

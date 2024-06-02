@@ -21,6 +21,7 @@ struct BcDbgCommandArg
     Utf8         cmd;
     Utf8         cmdExpr;
     Vector<Utf8> split;
+    bool         help = false;
 };
 
 struct BcDbgCommand

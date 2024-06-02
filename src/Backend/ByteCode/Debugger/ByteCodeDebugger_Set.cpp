@@ -12,6 +12,9 @@ void ByteCodeDebugger::printSet(ByteCodeRunContext*)
 
 BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() == 1)
     {
         g_ByteCodeDebugger.printSet(context);
@@ -98,6 +101,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
 
 BcDbgCommandResult ByteCodeDebugger::cmdBc(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() != 1)
         return BcDbgCommandResult::BadArguments;
 

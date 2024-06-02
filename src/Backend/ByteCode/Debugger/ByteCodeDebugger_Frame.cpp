@@ -5,6 +5,9 @@
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() != 1)
         return BcDbgCommandResult::BadArguments;
     printLong(g_ByteCodeStackTrace->log(context));
@@ -13,6 +16,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, c
 
 BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() == 1)
         return BcDbgCommandResult::BadArguments;
     if (arg.split.size() > 2)
@@ -45,6 +51,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
 
 BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+    
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
     if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
@@ -77,6 +86,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
 
 BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
     if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))

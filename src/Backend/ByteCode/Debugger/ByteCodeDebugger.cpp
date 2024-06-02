@@ -37,7 +37,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"execute", "e", "<stmt>", "execute the code statement <stmt> in the current context", cmdExecute});
     commands.push_back({"print", "p", "<expr> [--format]", "print the result of the expression <expr> in the current context", cmdPrint});
     commands.push_back({});
-    
+
     commands.push_back({"display", "", "", "print all expressions to display", cmdDisplay});
     commands.push_back({"display", "d", "<expr> [--format]", "same as 'print', but will be done at each step", cmdDisplay});
     commands.push_back({"display", "d", "(cl)ear", "remove all expressions to display", cmdDisplay});
@@ -50,7 +50,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"list", "l", "[num]", "print the current source code line and [num] lines around", cmdList});
     commands.push_back({"ll", "", "[name]", "print the current function (or function [name]) source code", cmdLongList});
     commands.push_back({});
-    
+
     commands.push_back({"i", "", "[num]", "print the current bytecode instruction and [num] instructions around", cmdInstruction});
     commands.push_back({"ii", "", "[name]", "print the current function (or function [name]) bytecode", cmdInstructionDump});
     commands.push_back({});
@@ -63,7 +63,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"info", "o", "(exp)ressions [filter]", "print all dynamic expressions", cmdInfo});
     commands.push_back({"info", "o", "(mod)ules", "print all modules", cmdInfo});
     commands.push_back({});
-    
+
     commands.push_back({"where", "w", "", "print contextual information", cmdWhere});
     commands.push_back({});
 
@@ -94,6 +94,8 @@ void ByteCodeDebugger::setup()
 
     commands.push_back({"help", "?", "", "print this list of commands", cmdHelp});
     commands.push_back({"help", "?", "<command>", "print help about a specific command", cmdHelp});
+    commands.push_back({});
+
     commands.push_back({"quit", "q", "", "quit the compiler", cmdQuit});
 }
 
@@ -735,7 +737,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         /////////////////////////////////////////
 
         g_Log.setColor(LogColor::Green);
-        if(bcMode)
+        if (bcMode)
             g_Log.write("(dbg-bc) > ");
         else
             g_Log.write("(dbg-source) > ");

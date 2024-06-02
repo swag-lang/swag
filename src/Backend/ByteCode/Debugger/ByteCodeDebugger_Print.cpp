@@ -225,6 +225,9 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+    
     if (arg.split.size() != 1)
         return BcDbgCommandResult::BadArguments;
 
@@ -387,6 +390,21 @@ void ByteCodeDebugger::printInstructions(const ByteCodeRunContext*, const ByteCo
 
 BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+    {
+        g_Log.setColor(LogColor::Gray);
+        g_Log.print("--num\n");
+        g_Log.setColor(LogColor::White);
+        g_Log.print("    The number of values to display\n");
+        
+        g_Log.setColor(LogColor::Gray);
+        g_Log.print("--format\n");
+        g_Log.setColor(LogColor::White);
+        g_Log.print("    The display format of each value. Can be one of the following values:\n");
+        g_Log.print("    s8 | s16 | s32 | s64 | u8 | u16 | u32 | u64 | x8 | x16 | x32 | x64 | f32 | f64\n");
+        return BcDbgCommandResult::Continue;
+    }
+    
     if (arg.split.size() < 2)
         return BcDbgCommandResult::BadArguments;
 
@@ -519,6 +537,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
     if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
@@ -539,6 +560,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
 
 BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext*, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
@@ -570,6 +594,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext*, con
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+    
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
     if (arg.split.size() > 1 && !Utf8::isNumber(arg.split[1].c_str()))
@@ -606,6 +633,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 

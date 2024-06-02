@@ -304,6 +304,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
 
 BcDbgCommandResult ByteCodeDebugger::cmdBreak(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() == 1)
         return cmdBreakPrint(context, arg);
     if (arg.split[1] == "enable" || arg.split[1] == "en")
