@@ -69,7 +69,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step,
     if (!ip)
     {
         auto str = header;
-        str += Log::colorToVTS(LogColor::Location);
+        str += Log::colorToVTS(LogColor::Name);
         str += "<foreign code>";
         str += "\n";
         return str;
