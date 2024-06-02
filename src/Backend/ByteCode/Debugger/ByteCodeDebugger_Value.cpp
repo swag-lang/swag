@@ -186,7 +186,7 @@ void ByteCodeDebugger::appendLiteralValue(ByteCodeRunContext* context, Utf8& res
     }
 }
 
-void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent)
+void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, uint32_t level, uint32_t indent)
 {
     auto typeInfo = res.type->getConcreteAlias();
     auto addr     = res.addr;
@@ -205,7 +205,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             auto res1 = res;
             res1.type = TypeManager::concretePtrRef(typeInfo);
             res1.addr = *static_cast<void**>(res1.addr);
-            appendTypedValue(context, str, res1, indent + 1);
+            appendTypedValue(context, str, res1, level, indent + 1);
         }
 
         return;
@@ -282,7 +282,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         if (res.value)
             addr = res.value->reg.pointer;
         auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        if (!g_ByteCodeDebugger.printStruct)
+        if (!g_ByteCodeDebugger.printStruct && level)
         {
             str += "<hidden>";
         }
@@ -291,7 +291,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += "\n";
             for (auto p : typeStruct->fields)
             {
-                for (int i = 0; i < indent + 1; i++)
+                for (uint32_t i = 0; i < indent + 1; i++)
                     str += "   ";
                 str += form("(%s%s%s) %s%s%s = ",
                             Log::colorToVTS(LogColor::Type).c_str(),
@@ -303,7 +303,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 EvaluateResult res1;
                 res1.type = p->typeInfo;
                 res1.addr = static_cast<uint8_t*>(addr) + p->offset;
-                appendTypedValue(context, str, res1, indent + 1);
+                appendTypedValue(context, str, res1, level + 1, indent + 1);
                 if (str.back() != '\n')
                     str += "\n";
             }
@@ -316,7 +316,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     {
         auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         str += form("0x%016llx ", addr);
-        if (!g_ByteCodeDebugger.printArray)
+        if (!g_ByteCodeDebugger.printArray && level)
         {
             str += "<hidden>";
         }
@@ -331,7 +331,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 EvaluateResult res1;
                 res1.type = typeArray->pointedType;
                 res1.addr = static_cast<uint8_t*>(addr) + static_cast<size_t>(idx * typeArray->pointedType->sizeOf);
-                appendTypedValue(context, str, res1, indent + 1);
+                appendTypedValue(context, str, res1, level + 1, indent + 1);
                 if (str.back() != '\n')
                     str += "\n";
             }
@@ -366,7 +366,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                     EvaluateResult res1;
                     res1.type = typeSlice->pointedType;
                     res1.addr = ptr + idx * typeSlice->pointedType->sizeOf;
-                    appendTypedValue(context, str, res1, indent + 1);
+                    appendTypedValue(context, str, res1, level + 1, indent + 1);
                     if (str.back() != '\n')
                         str += "\n";
                 }
@@ -405,7 +405,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                     EvaluateResult res1;
                     res1.type = g_Workspace->swagScope.regTypeInfo;
                     res1.addr = static_cast<void**>(addr)[1];
-                    appendTypedValue(context, str, res1, indent + 1);
+                    appendTypedValue(context, str, res1, level, indent + 1);
                     if (str.back() != '\n')
                         str += "\n";
                 }
@@ -488,11 +488,11 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     str += "?";
 }
 
-void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent)
+void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, uint32_t level, uint32_t indent)
 {
     SWAG_TRY
     {
-        appendTypedValueProtected(context, str, res, indent);
+        appendTypedValueProtected(context, str, res, level, indent);
     }
     SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
     {
@@ -521,7 +521,7 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8&
     EvaluateResult res;
     res.type = over->typeInfo;
     res.addr = realAddr ? realAddr : baseAddr + over->computedValue.storageOffset;
-    appendTypedValue(context, str, res, 0);
+    appendTypedValue(context, str, res, 0, 0);
     str.trim();
     while (str.back() == '\n')
         str.removeBack();

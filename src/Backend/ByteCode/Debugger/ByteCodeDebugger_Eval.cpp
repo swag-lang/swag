@@ -233,7 +233,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     else
     {
         str = form("(%s%s%s) ", Log::colorToVTS(LogColor::Type).c_str(), res.type->getDisplayNameC(), Log::colorToVTS(LogColor::Default).c_str());
-        appendTypedValue(context, strRes, res, 0);
+        appendTypedValue(context, strRes, res, 0, 0);
     }
 
     str += strRes;
