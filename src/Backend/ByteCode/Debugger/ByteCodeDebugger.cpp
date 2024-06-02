@@ -637,7 +637,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             }
 
             // We are in the same inline block
-            if (lastBreakIp->node->safeOwnerInline() == ip->node->safeOwnerInline())
+            if (lastBreakIp->node->safeOwnerInline() == ip->node->safeOwnerInline() && ip->node->safeOwnerInline())
             {
                 zapCurrentIp = true;
                 break;
