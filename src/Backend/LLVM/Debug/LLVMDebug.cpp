@@ -613,32 +613,35 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
     }
 
     // Local variables
-    uint32_t idxRetVal = 0;
-    for (const auto localVar : bc->localVars)
+    if (bc->stackSize)
     {
-        const SymbolOverload* overload = localVar->resolvedSymbolOverload();
-        if (overload->node->hasAstFlag(AST_GENERATED))
-            continue;
-
-        const auto  typeInfo = overload->typeInfo;
-        const auto& loc      = localVar->token.startLocation;
-
-        if (overload->hasFlag(OVERLOAD_RETVAL) && idxRetVal < allocaRetval.size())
+        uint32_t idxRetVal = 0;
+        for (const auto localVar : bc->localVars)
         {
-            llvm::DIType*          type   = getPointerToType(typeInfo, file);
-            const auto             scope  = getOrCreateScope(file, localVar->ownerScope);
-            llvm::DILocalVariable* var    = dbgBuilder->createAutoVariable(scope, localVar->token.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
-            const auto             allocA = allocaRetval[idxRetVal++];
-            dbgBuilder->insertDeclare(allocA, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
-            builder.CreateStore(func->getArg(static_cast<uint32_t>(func->arg_size()) - 1), allocA);
-        }
-        else
-        {
-            llvm::DIType*          type  = getType(typeInfo, file);
-            const auto             scope = getOrCreateScope(file, localVar->ownerScope);
-            llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
-            const auto             v     = builder.CreateInBoundsGEP(I8_TY(), stack, pp.builder->getInt32(overload->computedValue.storageOffset));
-            dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+            const SymbolOverload* overload = localVar->resolvedSymbolOverload();
+            if (overload->node->hasAstFlag(AST_GENERATED))
+                continue;
+
+            const auto  typeInfo = overload->typeInfo;
+            const auto& loc      = localVar->token.startLocation;
+
+            if (overload->hasFlag(OVERLOAD_RETVAL) && idxRetVal < allocaRetval.size())
+            {
+                llvm::DIType*          type   = getPointerToType(typeInfo, file);
+                const auto             scope  = getOrCreateScope(file, localVar->ownerScope);
+                llvm::DILocalVariable* var    = dbgBuilder->createAutoVariable(scope, localVar->token.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
+                const auto             allocA = allocaRetval[idxRetVal++];
+                dbgBuilder->insertDeclare(allocA, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+                builder.CreateStore(func->getArg(static_cast<uint32_t>(func->arg_size()) - 1), allocA);
+            }
+            else
+            {
+                llvm::DIType*          type  = getType(typeInfo, file);
+                const auto             scope = getOrCreateScope(file, localVar->ownerScope);
+                llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
+                const auto             v     = builder.CreateInBoundsGEP(I8_TY(), stack, pp.builder->getInt32(overload->computedValue.storageOffset));
+                dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+            }
         }
     }
 }

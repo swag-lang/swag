@@ -121,7 +121,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::End:
             case ByteCodeOp::Nop:
             case ByteCodeOp::DecSPBP:
-            case ByteCodeOp::SetBP:
             case ByteCodeOp::IntrinsicBcBreakpoint:
             case ByteCodeOp::PushRR:
             case ByteCodeOp::PopRR:
@@ -4190,8 +4189,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             /////////////////////////////////////
 
-            case ByteCodeOp::CopyRBtoRRRet:
-                getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_B), ip->b, allocR, allocResult);
+            case ByteCodeOp::CopyRAtoRRRet:
+                getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
                 [[fallthrough]];
             case ByteCodeOp::Ret:
                 // :OptimizedAwayDebugCrap

@@ -46,7 +46,7 @@ struct ByteCode
     static bool isJump(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_JUMP); }
     static bool isJumpDyn(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_JUMP_DYN); }
     static bool isJumpOrDyn(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_JUMP | OPFLAG_IS_JUMP_DYN); }
-    static bool isRet(const ByteCodeInstruction* inst) { return inst->op == ByteCodeOp::Ret || inst->op == ByteCodeOp::CopyRBtoRRRet; }
+    static bool isRet(const ByteCodeInstruction* inst) { return inst->op == ByteCodeOp::Ret || inst->op == ByteCodeOp::CopyRAtoRRRet; }
 
     static bool hasRefToRegA(const ByteCodeInstruction* inst, uint32_t reg) { return inst->a.u32 == reg && !inst->hasFlag(BCI_IMM_A) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_A | OPFLAG_WRITE_A); }
     static bool hasRefToRegB(const ByteCodeInstruction* inst, uint32_t reg) { return inst->b.u32 == reg && !inst->hasFlag(BCI_IMM_B) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_B | OPFLAG_WRITE_B); }
@@ -149,7 +149,6 @@ struct ByteCode
     uint32_t staticRegs            = 0;
     uint32_t registerGetContext    = UINT32_MAX;
     uint32_t registerStoreRR       = UINT32_MAX;
-    uint32_t emitSPPos             = UINT32_MAX;
     uint32_t emitSPSize            = 0;
 
     bool isCompilerGenerated     = false;

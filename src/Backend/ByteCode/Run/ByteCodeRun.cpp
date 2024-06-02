@@ -541,12 +541,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         case ByteCodeOp::Jump:
             context->ip += ip->b.s32;
             break;
-        case ByteCodeOp::CopyRBtoRRRet:
-            context->registersRR[0].u64 = IMMB_U64(ip);
+        case ByteCodeOp::CopyRAtoRRRet:
+            context->registersRR[0].u64 = IMMA_U64(ip);
             [[fallthrough]];
         case ByteCodeOp::Ret:
         {
-            context->incSP(ip->a.u32);
+            context->incSP(context->bc->stackSize);
             if (context->sp == context->stack + g_CommandLine.limitStackBC)
                 return false;
             leaveByteCode(context, context->bc);
@@ -743,11 +743,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->incSP(ip->a.u32);
             break;
 
-        case ByteCodeOp::SetBP:
-            context->bp = context->sp;
-            break;
         case ByteCodeOp::DecSPBP:
-            context->decSP(ip->a.u32);
+            context->decSP(context->bc->stackSize);
             context->bp = context->sp;
             break;
 

@@ -501,15 +501,6 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                 break;
             }
 
-            if (ip[1].op == ByteCodeOp::SetBP &&
-                ip[2].op == ByteCodeOp::InternalInitStackTrace &&
-                !ip[1].hasFlag(BCI_START_STMT) &&
-                !ip[2].hasFlag(BCI_START_STMT))
-            {
-                setNop(context, ip + 2);
-                break;
-            }
-
             if (ip[1].op == ByteCodeOp::DecSPBP &&
                 ip[2].op == ByteCodeOp::InternalInitStackTrace &&
                 !ip[1].hasFlag(BCI_START_STMT) &&
@@ -859,19 +850,20 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
     switch (ip->op)
     {
         case ByteCodeOp::DecSPBP:
-            if (ip[1].op == ByteCodeOp::CopyRBtoRRRet &&
+            if (ip[1].op == ByteCodeOp::CopyRAtoRRRet &&
                 ip[2].op == ByteCodeOp::End)
             {
                 setNop(context, ip);
-                ip[1].a.u64 = 0;
+                context->bc->stackSize = 0;
+                context->bc->dynStackSize = 0;
                 break;
             }
             break;
 
-        case ByteCodeOp::CopyRBtoRRRet:
-            if (ip[1].op == ByteCodeOp::CopyRBtoRRRet &&
-                ip[0].b.u64 == ip[1].b.u64 &&
-                ip[0].hasFlag(BCI_IMM_B) == ip[1].hasFlag(BCI_IMM_B))
+        case ByteCodeOp::CopyRAtoRRRet:
+            if (ip[1].op == ByteCodeOp::CopyRAtoRRRet &&
+                ip[0].a.u64 == ip[1].a.u64 &&
+                ip[0].hasFlag(BCI_IMM_A) == ip[1].hasFlag(BCI_IMM_A))
             {
                 setNop(context, ip);
                 break;
@@ -881,11 +873,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
         case ByteCodeOp::CopyRAtoRR:
             if (ip[1].op == ByteCodeOp::Ret)
             {
-                ip[0].b.u64 = ip[0].a.u64;
-                ip[0].a.u64 = ip[1].a.u64;
-                ip[0].flags.add(ip[0].hasFlag(BCI_IMM_A) ? BCI_IMM_B : 0);
-                ip[0].removeFlag(BCI_IMM_A);
-                SET_OP(ip, ByteCodeOp::CopyRBtoRRRet);
+                SET_OP(ip, ByteCodeOp::CopyRAtoRRRet);
                 if (!ip[1].hasFlag(BCI_START_STMT))
                     setNop(context, ip + 1);
                 break;
@@ -1040,16 +1028,8 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 setNop(context, ip);
-                ip[1].a.u32 = 0;
-                break;
-            }
-            break;
-
-        case ByteCodeOp::SetBP:
-            if (ip[1].op == ByteCodeOp::Ret &&
-                !ip[1].hasFlag(BCI_START_STMT))
-            {
-                setNop(context, ip);
+                context->bc->stackSize = 0;
+                context->bc->dynStackSize = 0;
                 break;
             }
             break;
@@ -5846,7 +5826,7 @@ void ByteCodeOptimizer::reduceLateStack(ByteCodeOptContext* context, ByteCodeIns
         case ByteCodeOp::CopyStack16:
         case ByteCodeOp::CopyStack32:
         case ByteCodeOp::CopyStack64:
-            if (ip[1].op == ByteCodeOp::CopyRBtoRRRet || ip[1].op == ByteCodeOp::Ret)
+            if (ip[1].op == ByteCodeOp::CopyRAtoRRRet || ip[1].op == ByteCodeOp::Ret)
             {
                 setNop(context, ip);
                 break;

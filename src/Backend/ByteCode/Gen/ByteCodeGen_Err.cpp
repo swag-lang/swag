@@ -176,7 +176,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
     }
     else
     {
-        EMIT_INST0(context, ByteCodeOp::Ret)->a.u32 = node->ownerFct->stackSize;
+        EMIT_INST0(context, ByteCodeOp::Ret);
     }
 
     return true;

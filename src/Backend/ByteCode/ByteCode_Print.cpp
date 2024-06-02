@@ -333,6 +333,11 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
 
     switch (ip->op)
     {
+        case ByteCodeOp::DecSPBP:
+            line.pretty += form("%d", stackSize);
+            line.pretty += " ";
+            break;
+
         case ByteCodeOp::InternalPanic:
             if (ip->d.pointer)
             {
@@ -412,7 +417,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     // The instruction comes from an inline function
     else if (ip->node && ip->node->hasOwnerInline() && options.printSourceCode)
         g_Log.setColor(LogColor::Gray);
-    
+
     // Normal instruction
     else
         g_Log.setColor(LogColor::White);
@@ -581,7 +586,7 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
     {
         if (ip->op == ByteCodeOp::End)
             break;
-        if(options.printSourceCode)
+        if (options.printSourceCode)
             printSourceCode(options, ip, &lastLine, &lastFile, &lastInline);
         printInstruction(options, ip++, lines[i]);
     }

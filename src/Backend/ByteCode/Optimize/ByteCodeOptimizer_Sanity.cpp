@@ -605,7 +605,6 @@ namespace
                 case ByteCodeOp::IntrinsicPanic:
                     return true;
 
-                case ByteCodeOp::SetBP:
                 case ByteCodeOp::DecSPBP:
                 case ByteCodeOp::IncSPPostCall:
                 case ByteCodeOp::IncSPPostCallCond:

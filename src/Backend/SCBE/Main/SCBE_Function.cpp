@@ -227,7 +227,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::End:
             case ByteCodeOp::Nop:
             case ByteCodeOp::DecSPBP:
-            case ByteCodeOp::SetBP:
             case ByteCodeOp::PushRR:
             case ByteCodeOp::PopRR:
             case ByteCodeOp::IntrinsicBcBreakpoint:
@@ -3801,20 +3800,20 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pushRVParams.clear();
                 break;
 
-            case ByteCodeOp::CopyRBtoRRRet:
+            case ByteCodeOp::CopyRAtoRRRet:
                 pp.emitLoadAddressIndirect(offsetResult, RAX, RDI);
-                if (ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
+                if (ip->hasFlag(BCI_IMM_A) && ip->a.u64 <= 0x7FFFFFFF)
                 {
-                    pp.emitStore64Immediate(0, ip->b.u64, RAX);
+                    pp.emitStore64Immediate(0, ip->a.u64, RAX);
                 }
-                else if (ip->hasFlag(BCI_IMM_B))
+                else if (ip->hasFlag(BCI_IMM_A))
                 {
-                    pp.emitLoad64Immediate(RCX, ip->b.u64);
+                    pp.emitLoad64Immediate(RCX, ip->a.u64);
                     pp.emitStore64Indirect(0, RCX, RAX);
                 }
                 else
                 {
-                    pp.emitLoad64Indirect(REG_OFFSET(ip->b.u32), RCX);
+                    pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                     pp.emitStore64Indirect(0, RCX, RAX);
                 }
                 [[fallthrough]];

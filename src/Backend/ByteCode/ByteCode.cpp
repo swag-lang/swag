@@ -145,13 +145,6 @@ bool ByteCode::isDoingNothing() const
             {
                 return true;
             }
-
-            if (out[0].op == ByteCodeOp::SetBP &&
-                out[1].op == ByteCodeOp::Ret)
-            {
-                return true;
-            }
-
             break;
 
         case 4:
@@ -161,7 +154,6 @@ bool ByteCode::isDoingNothing() const
             {
                 return true;
             }
-
             break;
     }
 

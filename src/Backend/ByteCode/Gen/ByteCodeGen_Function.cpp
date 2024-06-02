@@ -17,18 +17,12 @@
 
 bool ByteCodeGen::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
-    const auto   funcDecl = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    const auto funcDecl = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
 
     // Stack size could have been increased because of last minute inline operators.
     // So we must be sure the DecSPBP value is updated.
-    if (context->bc->emitSPSize != funcDecl->stackSize)
-    {
-        const auto ip             = context->bc->out + context->bc->emitSPPos;
-        ip->op                    = ByteCodeOp::DecSPBP;
-        ip->a.u32                 = funcDecl->stackSize;
-        context->bc->stackSize    = funcDecl->stackSize;
-        context->bc->dynStackSize = funcDecl->stackSize;
-    }
+    context->bc->stackSize    = funcDecl->stackSize;
+    context->bc->dynStackSize = funcDecl->stackSize;
 
     PushLocation pl(context, &funcDecl->content->token.endLocation);
     PushNode     pn(context, funcDecl->content);
@@ -43,7 +37,7 @@ bool ByteCodeGen::emitLocalFuncDecl(ByteCodeGenContext* context)
     YIELD();
 
     emitDebugLine(context);
-    EMIT_INST0(context, ByteCodeOp::Ret)->a.u32 = funcDecl->stackSize;
+    EMIT_INST0(context, ByteCodeOp::Ret);
     return true;
 }
 
@@ -314,7 +308,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     }
     else
     {
-        EMIT_INST0(context, ByteCodeOp::Ret)->a.u32 = funcNode->stackSize;
+        EMIT_INST0(context, ByteCodeOp::Ret);
     }
 
     return true;
@@ -2284,13 +2278,8 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
     context->bc->stackSize    = funcNode->stackSize;
     context->bc->dynStackSize = funcNode->stackSize;
-    context->bc->emitSPPos    = context->bc->numInstructions;
     context->bc->emitSPSize   = funcNode->stackSize;
-
-    if (funcNode->stackSize == 0)
-        EMIT_INST0(context, ByteCodeOp::SetBP);
-    else
-        EMIT_INST0(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
+    EMIT_INST0(context, ByteCodeOp::DecSPBP);
 
     return true;
 }

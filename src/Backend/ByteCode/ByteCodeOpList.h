@@ -9,9 +9,8 @@ BYTECODE_OP(InternalUnreachable, 0, "unreachable")
 
 BYTECODE_OP(IncSPPostCallCond, OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "if _ra_ popstack _rbu32_")
 BYTECODE_OP(IncSPPostCall, OPFLAG_READ_VAL32_A, "popstack _rau32_")
-BYTECODE_OP(DecSPBP, OPFLAG_READ_VAL32_A, "stacksize _rau32_")
-BYTECODE_OP(SetBP, 0, "stacksize 0")
-BYTECODE_OP(Ret, OPFLAG_READ_VAL32_A, "return(pop _rau32_)")
+BYTECODE_OP(DecSPBP, 0, "stacksize")
+BYTECODE_OP(Ret, 0, "return")
 
 BYTECODE_OP(CloneString, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_A, "")
 
@@ -237,8 +236,8 @@ BYTECODE_OP(IncrementRA64, OPFLAG_IS_REG_ONLY | OPFLAG_WRITE_A | OPFLAG_READ_A, 
 BYTECODE_OP(DecrementRA32, OPFLAG_IS_REG_ONLY | OPFLAG_WRITE_A | OPFLAG_READ_A, "_ra_--")
 BYTECODE_OP(DecrementRA64, OPFLAG_IS_REG_ONLY | OPFLAG_WRITE_A | OPFLAG_READ_A, "_ra_--")
 
-BYTECODE_OP(CopyRBtoRRRet, OPFLAG_READ_VAL32_A | OPFLAG_READ_B | OPFLAG_IMM_B, "my_result = _rbu64_; pop _rau32_; return")
 BYTECODE_OP(CopyRAtoRR, OPFLAG_READ_A | OPFLAG_IMM_A, "my_result = _rau64_")
+BYTECODE_OP(CopyRAtoRRRet, OPFLAG_READ_A | OPFLAG_IMM_A, "my_result = _rau64_; return")
 BYTECODE_OP(CopyRARBtoRR2, OPFLAG_READ_A | OPFLAG_READ_B, "my_result = _ra_, _rb_")
 BYTECODE_OP(CopyRRtoRA, OPFLAG_WRITE_A | OPFLAG_READ_VAL64_B, "_ra_ = my_result + _rbu64_")
 BYTECODE_OP(SaveRRtoRA, OPFLAG_WRITE_A, "_ra_ = my_result")

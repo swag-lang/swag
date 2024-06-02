@@ -57,7 +57,7 @@ impl Properties
         edView.sendResizeEvent()
     }
 
-    mtd setDescEditBox(item: *PropertiesItem)
+    func setDescEditBox(item: *PropertiesItem)
     {
         let arrData = cast(*Array'u8) item.data
         item.editBox.setText(Format.toString("% elements", arrData.count))
