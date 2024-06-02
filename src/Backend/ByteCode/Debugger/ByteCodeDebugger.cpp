@@ -30,7 +30,6 @@ void ByteCodeDebugger::setup()
     commands.push_back({"next", "n", "[count]", "like 'step', but does not enter functions or inlined code", cmdNext});
     commands.push_back({"until", "u", "<line|instruction>", "runs until the given <line> or <instruction> (in the current function) has been reached", cmdUntil});
     commands.push_back({"jump", "j", "<line|instruction>", "jump to the given <line> or <instruction> (in the current function)", cmdJump});
-    commands.push_back({});
     commands.push_back({"finish", "f", "", "continue running until the current function is done", cmdFinish});
     commands.push_back({"continue", "c", "", "continue running until another breakpoint is reached", cmdContinue});
     commands.push_back({});
@@ -38,8 +37,9 @@ void ByteCodeDebugger::setup()
     commands.push_back({"execute", "e", "<stmt>", "execute the code statement <stmt> in the current context", cmdExecute});
     commands.push_back({"print", "p", "<expr> [--format]", "print the result of the expression <expr> in the current context", cmdPrint});
     commands.push_back({});
-    commands.push_back({"display", "d", "<expr> [--format]", "same as 'print', but will be done at each step", cmdDisplay});
+    
     commands.push_back({"display", "", "", "print all expressions to display", cmdDisplay});
+    commands.push_back({"display", "d", "<expr> [--format]", "same as 'print', but will be done at each step", cmdDisplay});
     commands.push_back({"display", "d", "(cl)ear", "remove all expressions to display", cmdDisplay});
     commands.push_back({"display", "d", "(cl)ear <num>", "remove expression <num>", cmdDisplay});
     commands.push_back({});
@@ -50,6 +50,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"list", "l", "[num]", "print the current source code line and [num] lines around", cmdList});
     commands.push_back({"ll", "", "[name]", "print the current function (or function [name]) source code", cmdLongList});
     commands.push_back({});
+    
     commands.push_back({"i", "", "[num]", "print the current bytecode instruction and [num] instructions around", cmdInstruction});
     commands.push_back({"ii", "", "[name]", "print the current function (or function [name]) bytecode", cmdInstructionDump});
     commands.push_back({});
@@ -60,8 +61,9 @@ void ByteCodeDebugger::setup()
     commands.push_back({"info", "o", "(func)tions [filter]", "print all functions", cmdInfo});
     commands.push_back({"info", "o", "(glo)bals [filter]", "print all global variables", cmdInfo});
     commands.push_back({"info", "o", "(exp)ressions [filter]", "print all dynamic expressions", cmdInfo});
-    commands.push_back({"info", "o", "modules", "print all modules", cmdInfo});
+    commands.push_back({"info", "o", "(mod)ules", "print all modules", cmdInfo});
     commands.push_back({});
+    
     commands.push_back({"where", "w", "", "print contextual information", cmdWhere});
     commands.push_back({});
 

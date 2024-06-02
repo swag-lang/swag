@@ -221,7 +221,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const 
         return cmdInfoGlobals(context, arg);
     if (arg.split[1] == "expressions" || arg.split[1] == "exp")
         return cmdInfoExpressions(context, arg);
-    if (arg.split[1] == "modules")
+    if (arg.split[1] == "modules" || arg.split[1] == "mod")
         return cmdInfoModules(context, arg);
 
     return BcDbgCommandResult::BadArguments;
