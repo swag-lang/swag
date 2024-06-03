@@ -9,15 +9,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, c
         return BcDbgCommandResult::Continue;
 
     if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
-    uint32_t maxSteps = 0; 
+    uint32_t maxSteps = 0;
     if (arg.split.size() == 2)
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
         {
-            printCmdError("invalid 'backtrace' number");
-            return BcDbgCommandResult::Continue;
+            printCmdError(form("invalid backtrace number [[%s]]", arg.split[1].c_str()));
+            return BcDbgCommandResult::Error;
         }
 
         maxSteps = arg.split[1].toInt();
@@ -33,14 +33,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
     if (arg.help)
         return BcDbgCommandResult::Continue;
 
-    if (arg.split.size() == 1)
-        return BcDbgCommandResult::BadArguments;
+    if (arg.split.size() < 2)
+        return BcDbgCommandResult::NotEnoughArguments;
     if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
     if (!Utf8::isNumber(arg.split[1].c_str()))
     {
-        printCmdError("invalid 'frame' number");
+        printCmdError(form("invalid frame number [[%s]]", arg.split[1].c_str()));
         return BcDbgCommandResult::Continue;
     }
 
@@ -69,10 +69,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
         return BcDbgCommandResult::Continue;
 
     if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
-    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
+    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
+    {
+        printCmdError(form("invalid frame number [[%s]]", arg.split[1].c_str()));
+        return BcDbgCommandResult::Error;
+    }
     uint32_t off = 1;
     if (arg.split.size() == 2)
         off = arg.split[1].toInt();
@@ -104,9 +107,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
         return BcDbgCommandResult::Continue;
 
     if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
+
     if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
-        return BcDbgCommandResult::BadArguments;
+    {
+        printCmdError(form("invalid frame number [[%s]]", arg.split[1].c_str()));
+        return BcDbgCommandResult::Error;
+    }
 
     uint32_t off = 1;
     if (arg.split.size() == 2)
