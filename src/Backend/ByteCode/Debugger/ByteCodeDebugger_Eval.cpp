@@ -179,10 +179,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, con
         return BcDbgCommandResult::Continue;
 
     if (arg.split.size() < 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::NotEnoughArguments;
 
     EvaluateResult res;
-    g_ByteCodeDebugger.evalDynExpression(context, arg.cmdExpr, res, CompilerAstKind::EmbeddedInstruction);
+    if (!g_ByteCodeDebugger.evalDynExpression(context, arg.cmdExpr, res, CompilerAstKind::EmbeddedInstruction))
+        return BcDbgCommandResult::Error;
     return BcDbgCommandResult::Continue;
 }
 
@@ -198,12 +199,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
         g_Log.print("    The display format of the result, if applicable. Can be one of the following values:\n");
         g_Log.setColor(LogColor::Type);
         g_Log.print("    s8 s16 s32 s64 u8 u16 u32 u64 x8 x16 x32 x64 f32 f64\n");
-        
+
         return BcDbgCommandResult::Continue;
-    }    
-    
+    }
+
     if (arg.split.size() < 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::NotEnoughArguments;
 
     auto expr = arg.cmdExpr;
 
@@ -219,14 +220,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
             expr.remove(expr.length() - arg.split.back().length(), arg.split.back().length());
             expr.trim();
             if (expr.empty())
-                return BcDbgCommandResult::BadArguments;
+            {
+                printCmdError("expression to evaluate is empty");
+                return BcDbgCommandResult::Error;
+            }
         }
     }
 
     EvaluateResult res;
 
     if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
-        return BcDbgCommandResult::Continue;
+        return BcDbgCommandResult::Error;
+
     if (res.type->isVoid())
         return BcDbgCommandResult::Continue;
 
@@ -239,7 +244,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
         if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
         {
             printCmdError(form("cannot apply print format to type [[%s]]", concrete->getDisplayNameC()));
-            return BcDbgCommandResult::Continue;
+            return BcDbgCommandResult::Error;
         }
 
         if (!res.addr && res.value)
