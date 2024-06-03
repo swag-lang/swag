@@ -2,17 +2,52 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
+#include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
+
+Utf8 ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, const Utf8& filter, uint8_t* baseAddr, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs)
+{
+    Utf8 result;
+    for (uint32_t i = 0; i < nodes.size(); i++)
+    {
+        const auto n    = nodes[i];
+        const auto over = n->resolvedSymbolOverload();
+        if (!testNameFilter(over->symbol->name, filter))
+            continue;
+        if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
+            continue;
+
+        if (over->typeInfo->isNative() || over->typeInfo->isPointer())
+        {
+            appendTypedValue(context, filter, n, baseAddr, addrs[i], result);
+        }
+        else
+        {
+            const Utf8 str = form("(%s%s%s) %s%s%s",
+                                  Log::colorToVTS(LogColor::Type).c_str(),
+                                  over->typeInfo->getDisplayNameC(),
+                                  Log::colorToVTS(LogColor::Default).c_str(),
+                                  Log::colorToVTS(LogColor::Name).c_str(),
+                                  over->symbol->name.c_str(),
+                                  Log::colorToVTS(LogColor::Default).c_str());
+            result += str;
+            result += " = ...";
+            result += "\n";
+        }
+    }
+
+    return result;
+}
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoFunctions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
+
     if (arg.split.size() > 3)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
@@ -37,7 +72,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFunctions(ByteCodeRunContext* /*cont
 
     if (all.empty())
     {
-        printCmdError(form("...no match (%d parsed functions)", total));
+        printCmdError(form("...no match with filter [[%s]] (%d found functions)", filter.c_str(), total));
         return BcDbgCommandResult::Continue;
     }
 
@@ -50,9 +85,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* /*contex
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
+
     if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
     Vector<Utf8> all;
     for (const auto m : g_Workspace->modules)
@@ -66,10 +101,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoExpressions(ByteCodeRunContext* /*co
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
-    if (arg.split.size() > 3)
-        return BcDbgCommandResult::BadArguments;
-    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+
+    if (arg.split.size() > 2)
+        return BcDbgCommandResult::TooManyArguments;
 
     Utf8 result;
     for (uint32_t i = g_ByteCodeDebugger.evalExpr.size() - 1; i != UINT32_MAX; i--)
@@ -91,14 +125,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
+
     if (arg.split.size() > 3)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
+
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
     if (g_ByteCodeDebugger.cxtBc->localVars.empty())
     {
-        printCmdError("no locals");
+        printCmdError("no local variables");
         return BcDbgCommandResult::Continue;
     }
 
@@ -113,9 +148,20 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
         addrs.push_back(nullptr);
     }
 
-    const auto result = printSymbols(context, filter, g_ByteCodeDebugger.cxtBp, nodes, addrs);
-    printLong(result);
+    if (nodes.empty())
+    {
+        printCmdError("no local variables");
+        return BcDbgCommandResult::Continue;
+    }
 
+    const auto result = getPrintSymbols(context, filter, g_ByteCodeDebugger.cxtBp, nodes, addrs);
+    if (result.empty())
+    {
+        printCmdError(form("...no match with filter [[%s]] (%d found local variables)", filter.c_str(), nodes.size()));
+        return BcDbgCommandResult::Continue;
+    }
+
+    printLong(result);
     return BcDbgCommandResult::Continue;
 }
 
@@ -123,9 +169,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
+
     if (arg.split.size() > 3)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
+
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
     const auto funcDecl = castAst<AstFuncDecl>(g_ByteCodeDebugger.cxtBc->node, AstNodeKind::FuncDecl);
@@ -146,9 +193,20 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
         addrs.push_back(g_ByteCodeDebugger.cxtBp + over->computedValue.storageOffset + g_ByteCodeDebugger.cxtBc->stackSize);
     }
 
-    const auto result = printSymbols(context, filter, g_ByteCodeDebugger.cxtBp, nodes, addrs);
-    printLong(result);
+    if (nodes.empty())
+    {
+        printCmdError("no arguments");
+        return BcDbgCommandResult::Continue;
+    }
 
+    const auto result = getPrintSymbols(context, filter, g_ByteCodeDebugger.cxtBp, nodes, addrs);
+    if (result.empty())
+    {
+        printCmdError(form("...no match with filter [[%s]] (%d found arguments)", filter.c_str(), nodes.size()));
+        return BcDbgCommandResult::Continue;
+    }
+
+    printLong(result);
     return BcDbgCommandResult::Continue;
 }
 
@@ -159,8 +217,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoGlobals(ByteCodeRunContext* context,
         return BcDbgCommandResult::Continue;
 
     if (arg.split.size() > 3)
-        return BcDbgCommandResult::BadArguments;
-    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+        return BcDbgCommandResult::TooManyArguments;
 
     VectorNative<AstNode*> nodes;
     VectorNative<uint8_t*> addrs;
@@ -184,9 +241,21 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoGlobals(ByteCodeRunContext* context,
         addrs.push_back(m->mutableSegment.address(over->computedValue.storageOffset));
     }
 
-    const auto result = printSymbols(context, filter, nullptr, nodes, addrs);
-    printLong(result);
+    if (nodes.empty())
+    {
+        printCmdError("no global variables");
+        return BcDbgCommandResult::Continue;
+    }
 
+    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+    const auto result = getPrintSymbols(context, filter, nullptr, nodes, addrs);
+    if (result.empty())
+    {
+        printCmdError(form("...no match with filter [[%s]] (%d found global variables)", filter.c_str(), nodes.size()));
+        return BcDbgCommandResult::Continue;
+    }
+
+    printLong(result);
     return BcDbgCommandResult::Continue;
 }
 
@@ -195,17 +264,17 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
     if (arg.help)
     {
         g_Log.writeEol();
-        
+
         g_Log.print("--format\n");
         g_Log.setColor(LogColor::White);
         g_Log.print("    The display format of each register. Can be one of the following values:\n");
         g_Log.setColor(LogColor::Type);
-        g_Log.print("    s8 s16 s32 s64 u8 u16 u32 u64 x8 x16 x32 x64 f32 f64\n");        
+        g_Log.print("    s8 s16 s32 s64 u8 u16 u32 u64 x8 x16 x32 x64 f32 f64\n");
         return BcDbgCommandResult::Continue;
     }
-    
+
     if (arg.split.size() > 3)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
     ValueFormat fmt;
     fmt.isHexa   = true;
@@ -213,7 +282,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
     if (arg.split.size() > 2)
     {
         if (!getValueFormat(arg.split.back(), fmt))
-            return BcDbgCommandResult::BadArguments;
+        {
+            printCmdError(form("invalid format [[%s]]", arg.split.back().c_str()));
+            return BcDbgCommandResult::Error;
+        }
     }
 
     g_Log.setColor(LogColor::Gray);
@@ -237,22 +309,23 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
 BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() < 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::NotEnoughArguments;
 
     if (arg.split[1] == "locals" || arg.split[1] == "loc")
         return cmdInfoLocals(context, arg);
-    if (arg.split[1] == "arguments" || arg.split[1] == "arg")
+    if (arg.split[1] == "arguments" || arg.split[1] == "arg" || arg.split[1] == "args")
         return cmdInfoArgs(context, arg);
-    if (arg.split[1] == "registers" || arg.split[1] == "reg")
+    if (arg.split[1] == "registers" || arg.split[1] == "reg" || arg.split[1] == "regs")
         return cmdInfoRegs(context, arg);
-    if (arg.split[1] == "functions" || arg.split[1] == "func")
+    if (arg.split[1] == "functions" || arg.split[1] == "fun" || arg.split[1] == "func" || arg.split[1] == "fn")
         return cmdInfoFunctions(context, arg);
-    if (arg.split[1] == "globals" || arg.split[1] == "glo")
+    if (arg.split[1] == "globals" || arg.split[1] == "glo" || arg.split[1] == "globs")
         return cmdInfoGlobals(context, arg);
-    if (arg.split[1] == "expressions" || arg.split[1] == "exp")
+    if (arg.split[1] == "expressions" || arg.split[1] == "exp" || arg.split[1] == "expr" || arg.split[1] == "exprs")
         return cmdInfoExpressions(context, arg);
     if (arg.split[1] == "modules" || arg.split[1] == "mod")
         return cmdInfoModules(context, arg);
 
-    return BcDbgCommandResult::BadArguments;
+    printCmdError(form("invalid [[info]] command [[%s]]", arg.split[1].c_str()));
+    return BcDbgCommandResult::Error;
 }

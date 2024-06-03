@@ -50,12 +50,12 @@ void ByteCodeDebugger::setup()
 
     commands.push_back({"info", "", "<subcommand>", "display various information", nullptr});
     commands.push_back({"info", "o", "(reg)isters [--format]", "print all registers", cmdInfo});
+    commands.push_back({"info", "o", "(exp)ressions", "print all dynamic expressions", cmdInfo});
+    commands.push_back({"info", "o", "(mod)ules", "print all modules", cmdInfo});
     commands.push_back({"info", "o", "(loc)als [filter]", "print all current local variables", cmdInfo});
     commands.push_back({"info", "o", "(arg)uments [filter]", "print all current function arguments", cmdInfo});
-    commands.push_back({"info", "o", "(func)tions [filter]", "print all functions", cmdInfo});
+    commands.push_back({"info", "o", "(fun)ctions [filter]", "print all functions", cmdInfo});
     commands.push_back({"info", "o", "(glo)bals [filter]", "print all global variables", cmdInfo});
-    commands.push_back({"info", "o", "(exp)ressions [filter]", "print all dynamic expressions", cmdInfo});
-    commands.push_back({"info", "o", "(mod)ules", "print all modules", cmdInfo});
 
     commands.push_back({"where", "w", "", "print contextual information", cmdWhere});
 

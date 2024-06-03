@@ -72,7 +72,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
         return BcDbgCommandResult::Continue;
 
     if (arg.split.size() > 3)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
     // List all commands
     if (arg.split.size() == 1)
