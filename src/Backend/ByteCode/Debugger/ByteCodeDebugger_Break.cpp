@@ -151,14 +151,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* /*contex
 
     if (!Utf8::isNumber(arg.split[2].c_str()))
     {
-        printCmdError(form("invalid breakpoint number [[%d]]", arg.split[2].c_str()));
+        printCmdError(form("invalid breakpoint number [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Error;
     }
 
     const int numB = arg.split[2].toInt();
     if (!numB || numB - 1 >= static_cast<int>(g_ByteCodeDebugger.breakpoints.size()))
     {
-        printCmdError(form("breakpoint number [[%d]] does not exist", arg.split[2].c_str()));
+        printCmdError(form("breakpoint number [[%d]] does not exist", numB));
         return BcDbgCommandResult::Error;
     }
 
@@ -176,14 +176,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext*, const 
 
     if (!Utf8::isNumber(arg.split[2].c_str()))
     {
-        printCmdError(form("invalid breakpoint number [[%d]]", arg.split[2].c_str()));
+        printCmdError(form("invalid breakpoint number [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Error;
     }
 
     const int numB = arg.split[2].toInt();
     if (!numB || numB - 1 >= static_cast<int>(g_ByteCodeDebugger.breakpoints.size()))
     {
-        printCmdError(form("breakpoint number [[%d]] does not exist", arg.split[2].c_str()));
+        printCmdError(form("breakpoint number [[%d]] does not exist", numB));
         return BcDbgCommandResult::Error;
     }
 
@@ -211,14 +211,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext*, const Bc
 
     if (!Utf8::isNumber(arg.split[2].c_str()))
     {
-        printCmdError(form("invalid breakpoint number [[%d]]", arg.split[2].c_str()));
+        printCmdError(form("invalid breakpoint number [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Error;
     }
 
     const int numB = arg.split[2].toInt();
     if (!numB || numB - 1 >= static_cast<int>(g_ByteCodeDebugger.breakpoints.size()))
     {
-        printCmdError(form("breakpoint number [[%d]] does not exist", arg.split[2].c_str()));
+        printCmdError(form("breakpoint number [[%d]] does not exist", numB));
         return BcDbgCommandResult::Error;
     }
 
