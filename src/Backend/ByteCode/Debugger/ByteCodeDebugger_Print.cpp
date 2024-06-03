@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
+#include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Report/Log.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
@@ -233,7 +234,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
         g_ByteCodeDebugger.printTitleNameType("instruction location", loc, "");
     }
 
-    g_ByteCodeDebugger.printTitleNameType("stack level", form("%u", context->debugStackFrameOffset), "");
+    const uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
+    g_ByteCodeDebugger.printTitleNameType("stack frame", form("%u", maxLevel - context->debugStackFrameOffset), "");
     return BcDbgCommandResult::Continue;
 }
 
