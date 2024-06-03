@@ -13,7 +13,10 @@ enum class BcDbgCommandResult
     Break,
     Continue,
     BadArguments,
+    NotEnoughArguments,
+    TooManyArguments,
     Return,
+    Error,
 };
 
 struct BcDbgCommandArg

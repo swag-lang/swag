@@ -777,10 +777,23 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             break;
         if (result == BcDbgCommandResult::Return)
             return false;
-        if (result == BcDbgCommandResult::BadArguments)
-            printCmdError(form("bad [[%s]] arguments", arg.cmd.c_str()));
-        else if (result == BcDbgCommandResult::Invalid)
-            printCmdError(form("unknown debugger command [[%s]]", arg.cmd.c_str()));
+
+        switch (result)
+        {
+            case BcDbgCommandResult::BadArguments:
+                printCmdError(form("bad arguments for command [[%s]]", arg.cmd.c_str()));
+                break;
+            case BcDbgCommandResult::NotEnoughArguments:
+                printCmdError(form("not enough arguments for command [[%s]]", arg.cmd.c_str()));
+                break;
+            case BcDbgCommandResult::TooManyArguments:
+                printCmdError(form("too many arguments for command [[%s]]", arg.cmd.c_str()));
+                break;
+            case BcDbgCommandResult::Invalid:
+                printCmdError(form("unknown debugger command [[%s]]", arg.cmd.c_str()));
+                break;
+        }
+
         continue;
     }
 

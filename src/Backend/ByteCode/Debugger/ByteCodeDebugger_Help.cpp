@@ -95,7 +95,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
     if (toPrint.empty())
     {
         printCmdError(form("unknown debugger command [[%s]]", arg.split[1].c_str()));
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::Error;
     }
 
     // Sub command
