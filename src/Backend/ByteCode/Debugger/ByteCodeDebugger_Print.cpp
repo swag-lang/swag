@@ -195,9 +195,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
-    if (arg.split.size() != 1)
-        return BcDbgCommandResult::BadArguments;
+
+    if (arg.split.size() > 1)
+        return BcDbgCommandResult::TooManyArguments;
 
     const auto ipNode = g_ByteCodeDebugger.cxtIp->node;
     const auto bc     = g_ByteCodeDebugger.cxtBc;
@@ -361,24 +361,24 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     if (arg.help)
     {
         g_Log.writeEol();
-        
+
         g_Log.setColor(LogColor::Gray);
         g_Log.print("--num\n");
         g_Log.setColor(LogColor::White);
         g_Log.print("    The number of values to display\n");
-        
+
         g_Log.setColor(LogColor::Gray);
         g_Log.print("--format\n");
         g_Log.setColor(LogColor::White);
         g_Log.print("    The display format of each value. Can be one of the following values:\n");
         g_Log.setColor(LogColor::Type);
         g_Log.print("    s8 s16 s32 s64 u8 u16 u32 u64 x8 x16 x32 x64 f32 f64\n");
-        
+
         return BcDbgCommandResult::Continue;
     }
-    
+
     if (arg.split.size() < 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::NotEnoughArguments;
 
     Vector<Utf8> exprCmds;
     Utf8::tokenize(arg.cmdExpr, ' ', exprCmds);
@@ -423,7 +423,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     EvaluateResult res;
 
     if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
-        return BcDbgCommandResult::Continue;
+        return BcDbgCommandResult::Error;
 
     if (!res.addr)
     {
@@ -513,9 +513,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
         return BcDbgCommandResult::Continue;
 
     if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
+
     if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
-        return BcDbgCommandResult::BadArguments;
+    {
+        printCmdError(form("invalid instruction count [[%s]]", arg.split[1].c_str()));
+        return BcDbgCommandResult::Error;
+    }
 
     int regN = 3;
     if (arg.split.size() == 2)
@@ -536,7 +540,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext*, con
         return BcDbgCommandResult::Continue;
 
     if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
     auto toLogBc = g_ByteCodeDebugger.cxtBc;
     auto toLogIp = g_ByteCodeDebugger.cxtIp;
@@ -546,7 +550,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext*, con
         const auto name = arg.split[1];
         toLogBc         = findCmdBc(name);
         if (!toLogBc)
-            return BcDbgCommandResult::Continue;
+            return BcDbgCommandResult::Error;
         toLogIp = toLogBc->out;
     }
 
@@ -568,11 +572,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
+
     if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
+
     if (arg.split.size() > 1 && !Utf8::isNumber(arg.split[1].c_str()))
-        return BcDbgCommandResult::BadArguments;
+    {
+        printCmdError(form("invalid line count [[%s]]", arg.split[1].c_str()));
+        return BcDbgCommandResult::Error;
+    }
 
     const auto toLogBc        = g_ByteCodeDebugger.cxtBc;
     const auto toLogIp        = g_ByteCodeDebugger.cxtIp;
@@ -609,7 +617,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         return BcDbgCommandResult::Continue;
 
     if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
     auto toLogBc              = g_ByteCodeDebugger.cxtBc;
     auto toLogIp              = g_ByteCodeDebugger.cxtIp;
@@ -620,7 +628,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         const auto name = arg.split[1];
         toLogBc         = findCmdBc(name);
         if (!toLogBc)
-            return BcDbgCommandResult::Continue;
+            return BcDbgCommandResult::Error;
         toLogIp = toLogBc->out;
     }
 
