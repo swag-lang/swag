@@ -11,14 +11,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
         return BcDbgCommandResult::Continue;
 
     if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
     g_ByteCodeDebugger.stepCount = 0;
     if (arg.split.size() > 1)
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
         {
-            printCmdError("invalid 'step' number");
+            printCmdError(form("invalid step count [[%s]]", arg.split[1].c_str()));
             return BcDbgCommandResult::Continue;
         }
 
@@ -34,17 +34,17 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
+
     if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
     g_ByteCodeDebugger.stepCount = 0;
     if (arg.split.size() > 1)
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
         {
-            printCmdError("invalid 'next' number");
-            return BcDbgCommandResult::Continue;
+            printCmdError(form("invalid next count [[%s]]", arg.split[1].c_str()));
+            return BcDbgCommandResult::Error;
         }
 
         g_ByteCodeDebugger.stepCount = arg.split[1].toInt();
@@ -60,9 +60,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, cons
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
+
     if (arg.split.size() > 1)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
     context->debugStackFrameOffset = 0;
     g_ByteCodeDebugger.stepMode    = DebugStepMode::FinishedFunction;
@@ -77,9 +77,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, co
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
+
     if (arg.split.size() > 1)
-        return BcDbgCommandResult::BadArguments;
+        return BcDbgCommandResult::TooManyArguments;
 
     printCmdResult("continue...");
     context->debugOn               = false;
@@ -92,11 +92,20 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
-    if (arg.split.size() != 2)
-        return BcDbgCommandResult::BadArguments;
+
+    if (arg.split.size() < 2)
+        return BcDbgCommandResult::NotEnoughArguments;
+    if (arg.split.size() > 2)
+        return BcDbgCommandResult::TooManyArguments;
+
     if (!Utf8::isNumber(arg.split[1].c_str()))
-        return BcDbgCommandResult::BadArguments;
+    {
+        if (g_ByteCodeDebugger.bcMode)
+            printCmdError(form("invalid instruction index [[%s]]", arg.split[1].c_str()));
+        else
+            printCmdError(form("invalid line number [[%s]]", arg.split[1].c_str()));
+        return BcDbgCommandResult::Error;
+    }
 
     context->debugStackFrameOffset = 0;
 
@@ -106,8 +115,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
     {
         if (to >= context->bc->numInstructions - 1)
         {
-            printCmdError("cannot reach this 'jump' destination");
-            return BcDbgCommandResult::Continue;
+            printCmdError("cannot reach this jump destination");
+            return BcDbgCommandResult::Error;
         }
 
         context->ip              = context->bc->out + to;
@@ -120,8 +129,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
         {
             if (curIp >= context->bc->out + context->bc->numInstructions - 1)
             {
-                printCmdError("cannot reach this 'jump' destination");
-                return BcDbgCommandResult::Continue;
+                printCmdError("cannot reach this jump destination");
+                return BcDbgCommandResult::Error;
             }
 
             const auto loc = ByteCode::getLocation(context->bc, curIp);
@@ -144,11 +153,20 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
-    
-    if (arg.split.size() != 2)
-        return BcDbgCommandResult::BadArguments;
+
+    if (arg.split.size() < 2)
+        return BcDbgCommandResult::NotEnoughArguments;
+    if (arg.split.size() > 2)
+        return BcDbgCommandResult::TooManyArguments;
+
     if (!Utf8::isNumber(arg.split[1].c_str()))
-        return BcDbgCommandResult::BadArguments;
+    {
+        if (g_ByteCodeDebugger.bcMode)
+            printCmdError(form("invalid instruction index [[%s]]", arg.split[1].c_str()));
+        else
+            printCmdError(form("invalid line number [[%s]]", arg.split[1].c_str()));
+        return BcDbgCommandResult::Error;
+    }
 
     DebugBreakpoint bkp;
     bkp.type       = g_ByteCodeDebugger.bcMode ? DebugBkpType::InstructionIndex : DebugBkpType::FileLine;
@@ -167,8 +185,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdQuit(ByteCodeRunContext* /*context*/, co
     if (arg.help)
         return BcDbgCommandResult::Continue;
 
-    if (arg.split.size() != 1)
-        return BcDbgCommandResult::BadArguments;
+    if (arg.split.size() > 1)
+        return BcDbgCommandResult::TooManyArguments;
 
     g_Log.setDefaultColor();
     return BcDbgCommandResult::Return;
