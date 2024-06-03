@@ -49,12 +49,12 @@ struct CommandLine
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
 
-    bool dbgCatch      = false;
-    bool dbgMain       = false;
-    bool dbgOff        = false;
-    bool dbgCallStack  = false;
-    bool dbgPrintBcExt = false;
-    bool dbgDevMode    = false;
+    bool dbgCatch            = false;
+    bool dbgMain             = false;
+    bool dbgStopOnBreakpoint = true;
+    bool dbgCallStack        = false;
+    bool dbgPrintBcExt       = false;
+    bool dbgDevMode          = false;
 
 #ifdef SWAG_DEV_MODE
     bool forceFormat = false;
