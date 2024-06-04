@@ -1,5 +1,11 @@
 impl Properties
 {
+    func setDescEditBox(item: *PropertiesItem)
+    {
+        let arrData = cast(*Array'u8) item.data
+        item.editBox.setText(Format.toString("% elements", arrData.count))
+    }
+
     mtd reconstructArray(item: *PropertiesItem)
     {
         let arrData          = cast(*Array'u8) item.data
@@ -57,14 +63,19 @@ impl Properties
         edView.sendResizeEvent()
     }
 
-    func setDescEditBox(item: *PropertiesItem)
+    mtd clearArray(item: *PropertiesItem)
     {
-        let arrData = cast(*Array'u8) item.data
-        item.editBox.setText(Format.toString("% elements", arrData.count))
+        let typeArr   = cast(const *Swag.TypeInfoStruct) item.typeValue.pointedType
+        let valueType = typeArr.generics[0].pointedType
+        Reflection.clearArray(item.data, valueType)
+        refreshArray(item)
+        hasChanged(item)
     }
 
-    mtd appendArrayValue(item: *PropertiesItem, valueType: typeinfo)
+    mtd appendArrayValue(item: *PropertiesItem)
     {
+        let typeArr       = cast(const *Swag.TypeInfoStruct) item.typeValue.pointedType
+        let valueType     = typeArr.generics[0].pointedType
         let arrData       = cast(*Array'u8) item.data
         let itemIdx       = Slice.findLinear(self.items.toSlice(), item)
         let insertItemIdx = itemIdx + item.numChilds + 1
@@ -135,9 +146,9 @@ impl Properties
         let addBtn       = IconButton.create(parentForBtn, getTheme().getIcon24(ThemeIcons24.Plus, 20), {0, 0, 24, 24})
         addBtn.dockStyle = .Right
         addBtn.setForm(IconButtonForm.Round)
-        addBtn.sigPressed += closure|self, item, valueType|(btn)
+        addBtn.sigPressed += closure|self, item|(btn)
         {
-            self.appendArrayValue(item, valueType)
+            self.appendArrayValue(item)
             self.hasChanged(item)
         }
 
