@@ -179,7 +179,7 @@ impl Encoder
             }
 
             // Core.String
-            if type == String
+            if type == Core.String
             {
                 let strBuf = cast(const *String) data
                 serializer.writeNative(strBuf.toString())
@@ -187,13 +187,11 @@ impl Encoder
             }
 
             // Core.Array
-            let structType = cast(const *TypeInfoStruct) type
-            if structType.fromGeneric == @typeof(Core.Array)
+            if Reflection.isStructArray(type)
             {
-                let valueType = structType.generics[0].pointedType
+                let valueType = Reflection.getStructArrayType(type)
                 let ptrArr    = cast(const *Array) data
-
-                let treated = serializer.beginSequence(type, data, ptrArr.count)
+                let treated   = serializer.beginSequence(type, data, ptrArr.count)
                 defer serializer.endSequence()
 
                 if !treated
@@ -218,7 +216,8 @@ impl Encoder
             }
 
             // Start a fields section
-            let treated = serializer.beginStruct(structType, data)
+            let structType = cast(const *TypeInfoStruct) type
+            let treated    = serializer.beginStruct(structType, data)
             defer(noerr) serializer.endStruct()
             if treated do
                 return

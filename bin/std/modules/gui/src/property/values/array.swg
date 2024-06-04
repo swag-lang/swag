@@ -123,8 +123,7 @@ impl Properties
         let numItemsBefore = items.count
         item.flags.add(.NoSeparator)
 
-        let typeArr   = cast(const *Swag.TypeInfoStruct) value.pointedType
-        let valueType = typeArr.generics[0].pointedType
+        let valueType = Reflection.getStructArrayType(item.type)
         let arrData   = cast(*Array'u8) data
         var newData   = arrData.buffer
 

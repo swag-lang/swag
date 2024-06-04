@@ -18,21 +18,17 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
     var one   = Tokenize.eatSpaces(buf)
 
     // Dynamic Core.Array
-    if Reflection.isStruct(type)
+    if Reflection.isStructArray(type)
     {
-        let structType = cast(const *TypeInfoStruct) type
-        if structType.fromGeneric == @typeof(Array)
+        let valueType = Reflection.getStructArrayType(type)
+        while @countof(one) and one[0] != `#`
         {
-            let valueType = structType.generics[0].pointedType
-            while @countof(one) and one[0] != `#`
-            {
-                let addrVal = Reflection.appendValueStructArray(addr, valueType)
-                one = parseValue(addrVal, valueType, one)
-                one = Tokenize.eatSpaces(one)
-            }
-
-            return one
+            let addrVal = Reflection.appendValueStructArray(addr, valueType)
+            one = parseValue(addrVal, valueType, one)
+            one = Tokenize.eatSpaces(one)
         }
+
+        return one
     }
 
     // Static array

@@ -1,4 +1,5 @@
-#global namespace Serialization.Read
+#global namespace Serialization
+#global namespace Read
 #global public
 using Swag, Core.Errors
 
@@ -107,9 +108,9 @@ internal impl TagBin
             elif toStruct
             {
                 // Static array to dynamic array
-                if toStruct.fromGeneric == Core.Array
+                if Reflection.isStructArray(toStruct)
                 {
-                    if canConvertType(toStruct.generics[0].pointedType, fromArr.pointedType) do
+                    if canConvertType(Reflection.getStructArrayType(toStruct), fromArr.pointedType) do
                         return true
                 }
 
@@ -137,19 +138,19 @@ internal impl TagBin
                 if Reflection.isStaticArray(toType)
                 {
                     let toArr = cast(const *Swag.TypeInfoArray) toType
-                    if canConvertType(toArr.pointedType, fromStruct.generics[0].pointedType) do
+                    if canConvertType(toArr.pointedType, Reflection.getStructArrayType(fromStruct)) do
                         return true
                 }
 
                 // Dynamic array to dynamic array
                 elif toStruct and toStruct.fromGeneric == Core.Array
                 {
-                    if canConvertType(toStruct.generics[0].pointedType, fromStruct.generics[0].pointedType) do
+                    if canConvertType(Reflection.getStructArrayType(toStruct), Reflection.getStructArrayType(fromStruct)) do
                         return true
                 }
 
                 // Dynamic array to single value
-                elif canConvertType(toType, fromStruct.generics[0].pointedType)
+                elif canConvertType(toType, Reflection.getStructArrayType(fromStruct))
                 {
                     convertArrayToVal = true
                     return true
@@ -171,10 +172,10 @@ internal impl TagBin
         elif toStruct
         {
             // To dynamic array...
-            if toStruct.fromGeneric == Core.Array
+            if Reflection.isStructArray(toStruct)
             {
                 // Conversion from simple value to Core.Array
-                if (!fromStruct or fromStruct.fromGeneric != Core.Array) and canConvertType(fromType, toStruct.generics[0].pointedType)
+                if (!fromStruct or !Reflection.isStructArray(fromStruct)) and canConvertType(fromType, Reflection.getStructArrayType(toStruct))
                 {
                     convertValToArray = true
                     return true
@@ -182,7 +183,7 @@ internal impl TagBin
             }
 
             // Struct to struct...
-            elif fromStruct and fromStruct.fromGeneric != Core.Array
+            elif fromStruct and !Reflection.isStructArray(fromStruct)
             {
                 // 2 pod structs with the same size
                 if Reflection.hasAttribute(toType, Serialization.PodFinal) and
@@ -438,28 +439,24 @@ impl TagBin
 
         // Dynamic array of raw serializable types
         // Just read them in one batch
-        if typeElem.kind == .Struct
+        if Reflection.isStructArray(typeElem)
         {
-            let structType = cast(const *TypeInfoStruct) typeElem
-            if structType.fromGeneric == @typeof(Array)
-            {
-                let valueType = structType.generics[0].pointedType
-                let (raw, sizeof) = isPodFinal(valueType)
+            let valueType = Reflection.getStructArrayType(typeElem)
+            let (raw, sizeof) = isPodFinal(valueType)
 
-                if raw
-                {
-                    let bufArr = cast(*Array'u8) data
-                    bufArr.count = dref countElem
-                    bufArr.reserve(bufArr.count * sizeof)
-                    bufArr.capacity = bufArr.count
-                    stream.readBytes(bufArr.buffer, bufArr.count * sizeof)
-                    return true
-                }
+            if raw
+            {
+                let bufArr = cast(*Array'u8) data
+                bufArr.count = dref countElem
+                bufArr.reserve(bufArr.count * sizeof)
+                bufArr.capacity = bufArr.count
+                stream.readBytes(bufArr.buffer, bufArr.count * sizeof)
+                return true
             }
         }
 
         // Static array of raw serializable types
-        else
+        elif typeElem.kind != .Struct
         {
             dref countElem = Math.min(orgCount, dref countElem)
 

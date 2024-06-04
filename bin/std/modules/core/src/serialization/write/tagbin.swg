@@ -176,25 +176,21 @@ impl TagBin
 
         // Dynamic array of raw serializable types
         // Just write them in one batch
-        if typeElem.kind == .Struct
+        if Reflection.isStructArray(typeElem)
         {
-            let structType = cast(const *TypeInfoStruct) typeElem
-            if structType.fromGeneric == @typeof(Array)
-            {
-                let valueType = structType.generics[0].pointedType
-                let (raw, sizeof) = isPodFinal(valueType)
+            let valueType = Reflection.getStructArrayType(typeElem)
+            let (raw, sizeof) = isPodFinal(valueType)
 
-                if raw
-                {
-                    let bufArr = cast(const *Array'u8) data
-                    output.addBytes(@mkslice(bufArr.buffer, countElem * sizeof))
-                    return true
-                }
+            if raw
+            {
+                let bufArr = cast(const *Array'u8) data
+                output.addBytes(@mkslice(bufArr.buffer, countElem * sizeof))
+                return true
             }
         }
 
         // Static array of raw serializable types
-        else
+        elif typeElem.kind != .Struct
         {
             let (raw, sizeof) = isPodFinal(typeElem)
             if raw

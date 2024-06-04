@@ -153,47 +153,37 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         }
 
         // Dynamic array of values
-        elif Reflection.isStruct(typeField)
+        elif Reflection.isStructArray(typeField)
         {
-            let typeStruct = cast(const *Swag.TypeInfoStruct) typeField
-            if typeStruct.fromGeneric == @typeof(Core.Array)
+            try checkNext()
+
+            // If it's an array of strings, we will need to add string delimiters
+            // to each value
+            let isString = Reflection.getStructArrayType(typeField) == Core.String
+
+            // Make one single string with all values, for pokeValue
+            var collect: String
+            while itp + 1 != maxItp and !isOption(allArgs[itp + 1], options)
             {
-                try checkNext()
-
-                // If it's an array of strings, we will need to add string delimiters
-                // to each value
-                var isString = false
-                if typeStruct.generics[0].pointedType == Core.String do
-                    isString = true
-
-                // Make one single string with all values, for pokeValue
-                var collect: String
-                while itp + 1 != maxItp and !isOption(allArgs[itp + 1], options)
+                var other = allArgs[itp + 1]
+                if isString
                 {
-                    var other = allArgs[itp + 1]
-                    if isString
-                    {
-                        other = Tokenize.eatQuotes(other)
-                        collect.append("\"")
-                    }
-
-                    collect.append(other)
-
-                    if isString do
-                        collect.append("\"")
-
-                    collect.append(" ")
-                    itp += 1
+                    other = Tokenize.eatQuotes(other)
+                    collect.append("\"")
                 }
 
-                discard catch StrConv.parseValue(addr, typeField, collect.toString())
-                if @err() != null do
-                    throw SyntaxError{Errors.mkString(Format.toString("invalid value for option [[%]]", oneArg))}
+                collect.append(other)
+
+                if isString do
+                    collect.append("\"")
+
+                collect.append(" ")
+                itp += 1
             }
-            else
-            {
-                throw UnsupportedFormatError{Errors.mkString(Format.toString("unsupported type [[%]] for option [[%]]", typeField.name, oneArg))}
-            }
+
+            discard catch StrConv.parseValue(addr, typeField, collect.toString())
+            if @err() != null do
+                throw SyntaxError{Errors.mkString(Format.toString("invalid value for option [[%]]", oneArg))}
         }
         else
         {

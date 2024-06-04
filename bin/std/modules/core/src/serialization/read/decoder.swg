@@ -151,13 +151,11 @@ impl Decoder
             }
 
             // Core.Array
-            let structType = cast(const *TypeInfoStruct) type
-            if structType.fromGeneric == Core.Array
+            if Reflection.isStructArray(type)
             {
-                let valueType = structType.generics[0].pointedType
-
-                var count   = 0'u64
-                let treated = serializer.beginSequence(type, data, &count)
+                let valueType = Reflection.getStructArrayType(type)
+                var count     = 0'u64
+                let treated   = serializer.beginSequence(type, data, &count)
                 defer(noerr) serializer.endSequence()
 
                 if !treated
@@ -182,7 +180,8 @@ impl Decoder
             }
 
             // Generic struct load
-            let treated = serializer.beginStruct(structType, data)
+            let structType = cast(const *TypeInfoStruct) type
+            let treated    = serializer.beginStruct(structType, data)
             defer(noerr) serializer.endStruct()
             if treated do
                 return
