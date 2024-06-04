@@ -1,11 +1,11 @@
 #global public
-#global namespace Reflection.Array
+#global namespace Reflection
 using Swag
 
 // Used to clear a 'Core.Array' without knowing the type of the element at compile time but knowing it at runtime (valueType)
-func clear(addr: *void, valueType: typeinfo)
+func clearArray(addr: *void, valueType: typeinfo)
 {
-    let arr = cast(*Core.Array'u8) addr
+    let arr = cast(*Array'u8) addr
 
     if isStruct(valueType)
     {
@@ -25,10 +25,10 @@ func clear(addr: *void, valueType: typeinfo)
 }
 
 // Used to add an element in a 'Core.Array' without knowing the type of the element at compile time but knowing it at runtime (valueType)
-func appendValue(addr: *void, valueType: typeinfo)->*void
+func appendValueArray(addr: *void, valueType: typeinfo)->*void
 {
     // We will treat the array as a buffer of bytes, just to be able to access the fields
-    let arr       = cast(*Core.Array'u8) addr
+    let arr       = cast(*Array'u8) addr
     let sizeValue = valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct

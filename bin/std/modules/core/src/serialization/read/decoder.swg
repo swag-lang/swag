@@ -164,7 +164,7 @@ impl Decoder
                 {
                     while serializer.toNextSequenceElement(&count)
                     {
-                        let bufArr = Reflection.Array.appendValue(data, valueType)
+                        let bufArr = Reflection.appendValueArray(data, valueType)
                         readValue(bufArr, valueType)
                     }
                 }

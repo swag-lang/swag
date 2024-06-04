@@ -67,7 +67,7 @@ impl Properties
     {
         let typeArr   = cast(const *Swag.TypeInfoStruct) item.typeValue.pointedType
         let valueType = typeArr.generics[0].pointedType
-        Reflection.Array.clear(item.data, valueType)
+        Reflection.clearArray(item.data, valueType)
         refreshArray(item)
         hasChanged(item)
     }
@@ -81,7 +81,7 @@ impl Properties
         let insertItemIdx = itemIdx + item.numChilds + 1
 
         let oldBuffer = arrData.buffer
-        discard Reflection.Array.appendValue(item.data, valueType)
+        discard Reflection.appendValueArray(item.data, valueType)
         setDescEditBox(item)
         item.userData0 = cast(*void) arrData.count
 

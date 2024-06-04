@@ -26,7 +26,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
             let valueType = structType.generics[0].pointedType
             while @countof(one) and one[0] != `#`
             {
-                let addrVal = Reflection.Array.appendValue(addr, valueType)
+                let addrVal = Reflection.appendValueArray(addr, valueType)
                 one = parseValue(addrVal, valueType, one)
                 one = Tokenize.eatSpaces(one)
             }
