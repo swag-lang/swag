@@ -824,7 +824,7 @@ void AstNode::setResolvedSymbolName(SymbolName* sym)
 {
     if (sym == symbolName)
         return;
-    SWAG_RACE_CONDITION_WRITE(raceSymbolName);
+    SWAG_RACE_CONDITION_WRITE(raceSymbol);
     addSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
     symbolName = sym;
 }
@@ -833,13 +833,13 @@ void AstNode::setResolvedSymbolOverload(SymbolOverload* over)
 {
     if (over && over != symbolOverload)
     {
-        SWAG_RACE_CONDITION_WRITE(raceSymbolOver);
+        SWAG_RACE_CONDITION_WRITE(raceSymbol);
         symbolOverload = over;
         removeSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
     }
     else if (!over)
     {
-        SWAG_RACE_CONDITION_WRITE(raceSymbolName);
+        SWAG_RACE_CONDITION_WRITE(raceSymbol);
         addSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
     }
 }
@@ -848,13 +848,13 @@ void AstNode::setResolvedSymbol(SymbolName* sym, SymbolOverload* over)
 {
     if (!over)
     {
-        SWAG_RACE_CONDITION_WRITE(raceSymbolName);
+        SWAG_RACE_CONDITION_WRITE(raceSymbol);
         addSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
         symbolName = sym;
     }
     else
     {
-        SWAG_RACE_CONDITION_WRITE(raceSymbolOver);
+        SWAG_RACE_CONDITION_WRITE(raceSymbol);
         SWAG_ASSERT(sym == over->symbol);
         removeSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
         symbolOverload = over;
