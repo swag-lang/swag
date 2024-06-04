@@ -92,12 +92,12 @@ internal impl TagBin
             return true
         }
 
-        if Reflection.isArray(fromType)
+        if Reflection.isStaticArray(fromType)
         {
             let fromArr = cast(const *Swag.TypeInfoArray) fromType
 
             // Array to array, this is fine, we will deal with size change
-            if Reflection.isArray(toType)
+            if Reflection.isStaticArray(toType)
             {
                 let toArr = cast(const *Swag.TypeInfoArray) toType
                 if canConvertType(toArr.pointedType, fromArr.pointedType) do
@@ -134,7 +134,7 @@ internal impl TagBin
             if fromStruct.fromGeneric == Core.Array
             {
                 // Dynamic array to Static array
-                if Reflection.isArray(toType)
+                if Reflection.isStaticArray(toType)
                 {
                     let toArr = cast(const *Swag.TypeInfoArray) toType
                     if canConvertType(toArr.pointedType, fromStruct.generics[0].pointedType) do
@@ -157,7 +157,7 @@ internal impl TagBin
             }
         }
 
-        if Reflection.isArray(toType)
+        if Reflection.isStaticArray(toType)
         {
             let toArr = cast(const *Swag.TypeInfoArray) toType
 

@@ -10,7 +10,7 @@ using Swag
         func isPointer(t: typeinfo)     => t.kind == TypeInfoKind.Pointer
         func isEnum(t: typeinfo)        => t.kind == TypeInfoKind.Enum
         func isStruct(t: typeinfo)      => t.kind == TypeInfoKind.Struct
-        func isArray(t: typeinfo)       => t.kind == TypeInfoKind.Array
+        func isStaticArray(t: typeinfo)       => t.kind == TypeInfoKind.Array
     }
 }
 

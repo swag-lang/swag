@@ -148,11 +148,6 @@ internal impl Properties
 
     mtd popupMenu(item: *PropertiesItem, pt: Math.Point)
     {
-        let pointed = item.type
-        var typeStruct: const *Swag.TypeInfoStruct
-        if Reflection.isStruct(pointed) do
-            typeStruct = cast(const *Swag.TypeInfoStruct) pointed
-
         let menu = MenuCtrl.createPopup(self)
         var scan = item
         while scan
@@ -162,12 +157,15 @@ internal impl Properties
             scan = scan.parent
         }
 
-        if typeStruct and typeStruct.fromGeneric == Core.Array
+        if Reflection.isStructArray(item.type)
         {
-            if menu.items.count do
-                menu.addSeparator()
             let arrData = cast(*Array'u8) item.data
             menu.addItem("Remove All", "ClearArray", getTheme().getIcon24(.RemoveAll), disabled: arrData.count == 0)
+        }
+
+        if item.parent and item.parent.type and Reflection.isStructArray(item.parent.type)
+        {
+            menu.addItem("Remove", "ClearElementArray", getTheme().getIcon24(.RemoveAll))
         }
 
         if !menu.items.count
@@ -250,7 +248,7 @@ internal impl Properties
             }
 
             // Hot item
-            var hit = prop.hitTest(pt)
+            let hit = prop.hitTest(pt)
             if hit != prop.hotItem
             {
                 prop.hotItem = hit
@@ -572,7 +570,7 @@ internal impl Properties
         // Value
         switch
         {
-        case Reflection.isArray(value.pointedType):
+        case Reflection.isStaticArray(value.pointedType):
             let item           = addItem(value, data, parentItem)
             let typeArr        = cast(const *Swag.TypeInfoArray) value.pointedType
             let numItemsBefore = items.count

@@ -9,8 +9,7 @@ impl Properties
     mtd reconstructArray(item: *PropertiesItem)
     {
         let arrData          = cast(*Array'u8) item.data
-        let typeArr          = cast(const *Swag.TypeInfoStruct) item.typeValue.pointedType
-        let valueType        = typeArr.generics[0].pointedType
+        let valueType        = Reflection.getStructArrayType(item.type)
         let countItemsBefore = items.count
         let itemIdx          = Slice.findLinear(self.items.toSlice(), item)
         let insertItemIdx    = itemIdx + item.numChilds + 1
@@ -65,23 +64,21 @@ impl Properties
 
     mtd clearArray(item: *PropertiesItem)
     {
-        let typeArr   = cast(const *Swag.TypeInfoStruct) item.typeValue.pointedType
-        let valueType = typeArr.generics[0].pointedType
-        Reflection.clearArray(item.data, valueType)
+        let valueType = Reflection.getStructArrayType(item.type)
+        Reflection.clearStructArray(item.data, valueType)
         refreshArray(item)
         hasChanged(item)
     }
 
     mtd appendArrayValue(item: *PropertiesItem)
     {
-        let typeArr       = cast(const *Swag.TypeInfoStruct) item.typeValue.pointedType
-        let valueType     = typeArr.generics[0].pointedType
+        let valueType     = Reflection.getStructArrayType(item.type)
         let arrData       = cast(*Array'u8) item.data
         let itemIdx       = Slice.findLinear(self.items.toSlice(), item)
         let insertItemIdx = itemIdx + item.numChilds + 1
 
         let oldBuffer = arrData.buffer
-        discard Reflection.appendValueArray(item.data, valueType)
+        discard Reflection.appendValueStructArray(item.data, valueType)
         setDescEditBox(item)
         item.userData0 = cast(*void) arrData.count
 

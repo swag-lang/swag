@@ -233,7 +233,7 @@ func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strForma
     }
 
     // A static array
-    if Reflection.isArray(type)
+    if Reflection.isStaticArray(type)
     {
         let ptrArr = cast(const *TypeInfoArray) type
         var bufArr = cast(const ^u8) valueData

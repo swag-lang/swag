@@ -2,8 +2,29 @@
 #global namespace Reflection
 using Swag
 
+// Returns true if the type 't' is a 'Core.Array' type
+func isStructArray(t: typeinfo)->bool
+{
+    if !isStruct(t) do
+        return false
+
+    let tt = cast(const *TypeInfoStruct) t
+    return tt.fromGeneric == Core.Array
+}
+
+// Returns the generic type of the 'Core.Array' typeinfo.
+// If 't' is not a 'Core.Array', returns null
+func getStructArrayType(t: typeinfo)->typeinfo
+{
+    if !isStructArray(t) do
+        return null
+
+    let tt = cast(const *TypeInfoStruct) t
+    return tt.generics[0].pointedType
+}
+
 // Used to clear a 'Core.Array' without knowing the type of the element at compile time but knowing it at runtime (valueType)
-func clearArray(addr: *void, valueType: typeinfo)
+func clearStructArray(addr: *void, valueType: typeinfo)
 {
     let arr = cast(*Array'u8) addr
 
@@ -25,7 +46,7 @@ func clearArray(addr: *void, valueType: typeinfo)
 }
 
 // Used to add an element in a 'Core.Array' without knowing the type of the element at compile time but knowing it at runtime (valueType)
-func appendValueArray(addr: *void, valueType: typeinfo)->*void
+func appendValueStructArray(addr: *void, valueType: typeinfo)->*void
 {
     // We will treat the array as a buffer of bytes, just to be able to access the fields
     let arr       = cast(*Array'u8) addr

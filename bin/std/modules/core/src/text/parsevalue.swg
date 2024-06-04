@@ -26,7 +26,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
             let valueType = structType.generics[0].pointedType
             while @countof(one) and one[0] != `#`
             {
-                let addrVal = Reflection.appendValueArray(addr, valueType)
+                let addrVal = Reflection.appendValueStructArray(addr, valueType)
                 one = parseValue(addrVal, valueType, one)
                 one = Tokenize.eatSpaces(one)
             }
@@ -36,7 +36,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
     }
 
     // Static array
-    if Reflection.isArray(type)
+    if Reflection.isStaticArray(type)
     {
         let arrayType = cast(const *TypeInfoArray) type
         var addrVal   = cast(^u8) addr

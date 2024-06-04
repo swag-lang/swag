@@ -4,14 +4,14 @@ using Swag
 
 #[ConstExpr, Inline]
 {
-    func isNative(t: typeinfo)    => t.kind == .Native
-    func isPointer(t: typeinfo)   => t.kind == .Pointer
-    func isEnum(t: typeinfo)      => t.kind == .Enum
-    func isStruct(t: typeinfo)    => t.kind == .Struct
-    func isArray(t: typeinfo)     => t.kind == .Array
-    func isSlice(t: typeinfo)     => t.kind == .Slice
-    func isTypeAlias(t: typeinfo) => t.kind == .Alias
-    func isInterface(t: typeinfo) => t.kind == .Interface
+    func isNative(t: typeinfo)      => t.kind == .Native
+    func isPointer(t: typeinfo)     => t.kind == .Pointer
+    func isEnum(t: typeinfo)        => t.kind == .Enum
+    func isStruct(t: typeinfo)      => t.kind == .Struct
+    func isStaticArray(t: typeinfo) => t.kind == .Array
+    func isSlice(t: typeinfo)       => t.kind == .Slice
+    func isTypeAlias(t: typeinfo)   => t.kind == .Alias
+    func isInterface(t: typeinfo)   => t.kind == .Interface
 
     func isInteger(t: typeinfo)           => t.flags & .Integer
     func isFloat(t: typeinfo)             => t.flags & .Float

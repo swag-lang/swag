@@ -164,7 +164,7 @@ impl Decoder
                 {
                     while serializer.toNextSequenceElement(&count)
                     {
-                        let bufArr = Reflection.appendValueArray(data, valueType)
+                        let bufArr = Reflection.appendValueStructArray(data, valueType)
                         readValue(bufArr, valueType)
                     }
                 }
@@ -218,7 +218,7 @@ impl Decoder
         }
 
         // Static array
-        if Reflection.isArray(type)
+        if Reflection.isStaticArray(type)
         {
             let typeArr = cast(const *TypeInfoArray) type
             var count   = typeArr.count
