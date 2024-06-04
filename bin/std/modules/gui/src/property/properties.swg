@@ -158,11 +158,11 @@ internal impl Properties
         while scan
         {
             if scan.ntfyItf do
-                scan.ntfyItf.fillPopupMenu(self, hotItem, menu)
+                scan.ntfyItf.fillPopupMenu(self, item, menu)
             scan = scan.parent
         }
 
-        if typeStruct.fromGeneric == Core.Array
+        if typeStruct and typeStruct.fromGeneric == Core.Array
         {
             if menu.items.count do
                 menu.addSeparator()
@@ -189,6 +189,9 @@ internal impl Properties
     func onHookChildEvent(wnd: *Wnd, evt: *Event)->bool
     {
         let prop = cast(*Properties) wnd
+
+        if prop.getApp().inModalLoop do
+            return false
 
         switch evt.kind
         {
@@ -247,7 +250,7 @@ internal impl Properties
             }
 
             // Hot item
-            let hit = prop.hitTest(pt)
+            var hit = prop.hitTest(pt)
             if hit != prop.hotItem
             {
                 prop.hotItem = hit

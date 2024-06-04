@@ -791,8 +791,10 @@ public impl MenuCtrl
 
         endModal       = false
         endModalResult = null
+        getApp().inModalLoop += 1
         while !endModal do
             surface.app.runFrame()
+        getApp().inModalLoop -= 1
 
         hideSubVisible()
         hide()
