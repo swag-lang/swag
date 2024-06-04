@@ -154,7 +154,7 @@ internal impl Properties
             typeStruct = cast(const *Swag.TypeInfoStruct) pointed
 
         let menu = MenuCtrl.createPopup(self)
-        var scan = hotItem
+        var scan = item
         while scan
         {
             if scan.ntfyItf do
@@ -162,7 +162,7 @@ internal impl Properties
             scan = scan.parent
         }
 
-        if hotItem and typeStruct.fromGeneric == Core.Array
+        if typeStruct.fromGeneric == Core.Array
         {
             if menu.items.count do
                 menu.addSeparator()
@@ -182,7 +182,7 @@ internal impl Properties
         case "ClearArray":
             if MessageDlg.confirm(wnd.surface, "This will remove all elements") != Dialog.BtnYes do
                 break
-            clearArray(hotItem)
+            clearArray(item)
         }
     }
 
