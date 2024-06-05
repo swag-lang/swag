@@ -1,6 +1,7 @@
 #pragma once
 #include "Backend/CallConv.h"
 #include "Backend/Runtime.h"
+#include "Core/AtomicFlags.h"
 #include "Report/Assert.h"
 #include "Semantic/Attribute.h"
 #include "Semantic/Type/TypeMatch.h"
@@ -23,7 +24,7 @@ struct TypeInfoFuncAttr;
 struct TypeInfoParam;
 struct TypeInfoStruct;
 
-using TypeInfoFlags  = Flags<uint64_t>;
+using TypeInfoFlags  = AtomicFlags<uint64_t>;
 using TypeParamFlags = Flags<uint32_t>;
 
 constexpr TypeInfoFlags TYPEINFO_SELF                     = 0x00000000'00000001;
