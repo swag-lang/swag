@@ -78,7 +78,8 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
             if (forDbg)
                 g_Log.write("   ");
             g_Log.setColor(LogColor::Location);
-            g_Log.print(form("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
+            g_Log.write(form("%08d ", loc.location->line + 1));
+            g_Log.print(form("%s", loc.file->name.c_str()));
             if (inl)
                 g_Log.print(form(" %s", inl->func->token.c_str()));
             g_Log.writeEol();
@@ -95,7 +96,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
 
         if (forDbg)
             g_Log.write("   ");
-        g_Log.write(form("%08d ", loc.location->line));
+        g_Log.write(form("%08d ", loc.location->line + 1));
 
         if (s.empty())
             g_Log.write("<blank>");
