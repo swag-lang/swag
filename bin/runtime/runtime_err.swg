@@ -40,6 +40,7 @@ func __pushErr()
     let cxt = @getcontext()
     cxt.errors[cxt.errorIndex].pushTraceIndex = cast(u32) cxt.traceIndex
     cxt.errors[cxt.errorIndex].pushUsedAlloc  = cast(u32) cxt.errorAllocator.used
+    cxt.errors[cxt.errorIndex].pushHasError   = cxt.hasError
 
     cxt.hasError = 0
     cxt.errorIndex += 1
@@ -52,11 +53,11 @@ func __popErr()
     cxt.errors[cxt.errorIndex].value = null
 
     cxt.errorIndex -= 1
-    cxt.hasError = 1
 
+    cxt.hasError            = cxt.errors[cxt.errorIndex].pushHasError
     cxt.curError            = cxt.errors[cxt.errorIndex].value
-    cxt.traceIndex          = cast(u32) cxt.errors[cxt.errorIndex].pushTraceIndex
-    cxt.errorAllocator.used = cast(u32) cxt.errors[cxt.errorIndex].pushUsedAlloc
+    cxt.traceIndex          = cxt.errors[cxt.errorIndex].pushTraceIndex
+    cxt.errorAllocator.used = cxt.errors[cxt.errorIndex].pushUsedAlloc
 }
 
 func __catchErr()

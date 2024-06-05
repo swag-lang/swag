@@ -399,6 +399,8 @@ namespace Swag
         value:              any     // Error value (or null)
         pushUsedAlloc:      u32     // Internal
         pushTraceIndex:     u32     // Internal
+        pushHasError:       u32     // Internal
+        padding:            u32
     }
 
     // Thread context as returned by [@context].
