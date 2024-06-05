@@ -6,21 +6,21 @@ namespace
 {
     BcDbgCommandResult setOnOff(const Utf8& msg, const BcDbgCommandArg& arg, bool& val)
     {
-        if (arg.split.size() > 3)
+        if (arg.split.size() > 4)
             return BcDbgCommandResult::TooManyArguments;
 
-        if (arg.split.size() == 2)
+        if (arg.split.size() == 3)
         {
             val = !val;
         }
-        else if (arg.split[2] != "on" && arg.split[2] != "off")
+        else if (arg.split[3] != "on" && arg.split[3] != "off")
         {
-            ByteCodeDebugger::printCmdError(form("invalid on/off argument [[%s]]", arg.split[2].c_str()));
-            return BcDbgCommandResult::BadArguments;
+            ByteCodeDebugger::printCmdError(form("invalid on/off argument [[%s]]", arg.split[3].c_str()));
+            return BcDbgCommandResult::Error;
         }
         else
         {
-            val = arg.split[2] == "on";
+            val = arg.split[3] == "on";
         }
 
         g_Log.print(msg, LogColor::Gray);
@@ -61,7 +61,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
     {
         if (arg.split.size() < 3)
             return BcDbgCommandResult::NotEnoughArguments;
-        if (arg.split.size() > 3)
+        if (arg.split.size() > 4)
             return BcDbgCommandResult::TooManyArguments;
 
         if (arg.split[2] == "struct")
@@ -77,7 +77,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
     {
         if (arg.split.size() < 3)
             return BcDbgCommandResult::NotEnoughArguments;
-        if (arg.split.size() > 3)
+        if (arg.split.size() > 4)
             return BcDbgCommandResult::TooManyArguments;
 
         if (arg.split[2] == "code")
@@ -91,7 +91,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
     {
         if (arg.split.size() < 3)
             return BcDbgCommandResult::NotEnoughArguments;
-        if (arg.split.size() > 3)
+        if (arg.split.size() > 4)
             return BcDbgCommandResult::TooManyArguments;
 
         if (arg.split[2] == "code")

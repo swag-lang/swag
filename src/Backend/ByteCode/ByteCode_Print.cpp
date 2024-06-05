@@ -92,8 +92,10 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
             g_Log.setColor(LogColor::DarkBlue);
         else
             g_Log.setColor(LogColor::Yellow);
+
         if (forDbg)
             g_Log.write("   ");
+        g_Log.write(form("%08d ", loc.location->line));
 
         if (s.empty())
             g_Log.write("<blank>");
