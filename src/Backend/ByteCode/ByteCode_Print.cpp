@@ -74,10 +74,12 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
         if (loc.file != *lastFile || *lastInline != inl)
         {
             *lastInline = inl;
-            g_Log.writeEol();
+            if (loc1.file != loc.file || loc1.location->line != loc.location->line)
+                g_Log.setColor(LogColor::DarkBlue);
+            else
+                g_Log.setColor(LogColor::Location);
             if (forDbg)
                 g_Log.write("   ");
-            g_Log.setColor(LogColor::Location);
             g_Log.write(form("%08d ", loc.location->line + 1));
             g_Log.print(form("%s", loc.file->name.c_str()));
             if (inl)
@@ -89,14 +91,10 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
         s.trim();
         s.replaceAll("  ", " ");
 
+        g_Log.setColor(LogColor::Gray);
+
         if (forDbg)
             g_Log.write("   ");
-
-        if (loc1.file != loc.file || loc1.location->line != loc.location->line)
-            g_Log.setColor(LogColor::DarkBlue);
-        else
-            g_Log.setColor(LogColor::Yellow);
-
         g_Log.write(form("%08d ", loc.location->line + 1));
 
         if (s.empty())
@@ -419,8 +417,8 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
         g_Log.setColor(LogColor::CurInstruction);
 
     // The instruction comes from an inline function
-    else if (ip->node && ip->node->hasOwnerInline() && options.printSourceCode)
-        g_Log.setColor(LogColor::Gray);
+    // else if (ip->node && ip->node->hasOwnerInline() && options.printSourceCode)
+    //    g_Log.setColor(LogColor::Gray);
 
     // Normal instruction
     else
