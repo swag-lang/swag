@@ -34,8 +34,9 @@ void LLVM::createRuntime(const BuildParameters& buildParameters) const
             PTR_I8_TY(), // value
             PTR_I8_TY(), // value
             I32_TY(),    // pushUsedAlloc
-            I16_TY(),    // pushHasError
-            I16_TY()};   // pushTraceIndex
+            I32_TY(),    // pushTraceIndex
+            I32_TY(),    // pushHasError
+            I32_TY()};   // padding
         pp.errorTy = llvm::StructType::create(context, members, "SwagErrorValue");
     }
 
@@ -78,7 +79,7 @@ void LLVM::createRuntime(const BuildParameters& buildParameters) const
             I32_TY(),                                                       // hasError
         };
 
-        static_assert(sizeof(SwagContext) == 1344);
+        static_assert(sizeof(SwagContext) == 1600);
         pp.contextTy = llvm::StructType::create(context, members, "SwagContext");
         SWAG_ASSERT(pp.contextTy->isSized());
     }

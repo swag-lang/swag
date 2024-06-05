@@ -288,7 +288,6 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     SWAG_ASSERT(cxt);
     cxt->flags = getDefaultContextFlags(this);
     cxt->flags |= static_cast<uint64_t>(ContextFlags::ByteCode);
-    cxt->hasError = 0;
 
     // Global setup
     g_ByteCodeStackTrace->clear();
@@ -365,5 +364,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     // Get result
     SWAG_CHECK(computeExecuteResult(g_RunContext, sourceFile, node, callerContext, params));
+
+    // Be sure there's no pending error
+    SWAG_ASSERT(cxt->hasError == 0);
     return true;
 }

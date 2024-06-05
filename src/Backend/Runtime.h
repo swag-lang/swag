@@ -122,6 +122,8 @@ using SwagError = struct SwagErrorValue
     SwagAny  value;
     uint32_t pushUsedAlloc;
     uint32_t pushTraceIndex;
+    uint32_t pushHasError;
+    uint32_t padding;
 };
 
 using SwagContext = struct SwagContext

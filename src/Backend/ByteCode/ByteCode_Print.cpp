@@ -89,13 +89,14 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
         s.trim();
         s.replaceAll("  ", " ");
 
+        if (forDbg)
+            g_Log.write("   ");
+
         if (loc1.file != loc.file || loc1.location->line != loc.location->line)
             g_Log.setColor(LogColor::DarkBlue);
         else
             g_Log.setColor(LogColor::Yellow);
 
-        if (forDbg)
-            g_Log.write("   ");
         g_Log.write(form("%08d ", loc.location->line + 1));
 
         if (s.empty())
