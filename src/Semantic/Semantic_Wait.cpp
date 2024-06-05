@@ -125,7 +125,7 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     {
         SWAG_ASSERT(!typeInfoStruct->hasFlag(TYPEINFO_SPEC_OP_GENERATED));
         structNode->dependentJobs.add(job);
-        job->setPending(JobWaitKind::SemByteCodeGenerated3, structNode->resolvedSymbolName(), structNode, nullptr);
+        job->setPending(JobWaitKind::SemByteCodeGenerated3, structNode->resolvedSymbolNameSafe(), structNode, nullptr);
     }
 }
 
@@ -156,7 +156,7 @@ void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
     if (!structNode->hasSemFlag(SEMFLAG_BYTECODE_GENERATED))
     {
         structNode->dependentJobs.add(job);
-        job->setPending(JobWaitKind::SemByteCodeGenerated4, structNode->resolvedSymbolName(), structNode, nullptr);
+        job->setPending(JobWaitKind::SemByteCodeGenerated4, structNode->resolvedSymbolNameSafe(), structNode, nullptr);
     }
 }
 
@@ -224,7 +224,7 @@ void Semantic::waitStructOverloadDefined(Job* job, TypeInfo* typeInfo)
     if (!structNode->resolvedSymbolOverload())
     {
         structNode->dependentJobs.add(job);
-        job->setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolName(), structNode, nullptr);
+        job->setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolNameSafe(), structNode, nullptr);
         return;
     }
 }
