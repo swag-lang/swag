@@ -95,43 +95,8 @@ impl Properties
         let oldBuffer = arrData.buffer
         discard Reflection.appendValueStructArray(item.data, valueType)
 
-        // If the array buffer has been reallocated, and this is not a pod, then we must reconstruct
-        // the full array.
-        if oldBuffer != arrData.buffer and (Reflection.hasDrop(valueType) or Reflection.hasPostCopy(valueType))
-        {
-            refreshArray(item)
-        }
-
-        // Do not reconstruct the full array. Append items, and move them at the correct position.
-        else
-        {
-            setDescEditBox(item)
-            item.userData0 = cast(*void) arrData.count
-
-            let countItemsBefore = items.count
-
-            var subValue: Swag.TypeValue
-            subValue.name        = Format.toString("%", arrData.count - 1).toString()
-            subValue.pointedType = valueType
-            addValue(subValue, arrData.buffer + (arrData.count - 1) * valueType.sizeof, item)
-
-            let numAddedChilds = cast(u32) (items.count - countItemsBefore)
-            loop i: numAddedChilds
-            {
-                items.insertAt(insertItemIdx + i, items[items.count - numAddedChilds + i])
-                edView.childs.insertAt(insertItemIdx + i, edView.childs[edView.childs.count - numAddedChilds + i])
-            }
-
-            items.count -= numAddedChilds
-            edView.childs.count -= numAddedChilds
-            item.numChilds += numAddedChilds
-
-            loop i: numAddedChilds do
-                updateState(self.items[insertItemIdx + i])
-
-            edView.sendResizeEvent()
-            hasChanged(item)
-        }
+        refreshArray(item)
+        hasChanged(item)
     }
 
     mtd constructArray(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)

@@ -60,9 +60,10 @@ impl IActionUI for ActionFile
             evt.disabled = !capture or capture.linkedImage.length == 0
 
         case CmdIdDeleteCapture:
-            evt.setFlags |= .Name | .Disabled
+            evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Delete"
             evt.disabled = !capture
+            evt.icon = main.getTheme().getIcon24(.Remove)
 
         case CmdIdDupCapture:
             evt.setFlags |= .Name | .Disabled

@@ -165,7 +165,7 @@ internal impl Properties
 
         if item.parent and item.parent.type and Reflection.isStructArray(item.parent.type)
         {
-            menu.addItem("Remove", "ClearElementArray", getTheme().getIcon24(.RemoveAll))
+            menu.addItem("Remove", "ClearElementArray", getTheme().getIcon24(.Remove))
         }
 
         if !menu.items.count
