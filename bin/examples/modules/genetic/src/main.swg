@@ -1,7 +1,7 @@
 using Core, Pixel, Gui, Core.Math
 
 const W = 1024
-const H = 1024
+const H = 512
 
 var g_Image0:   Image
 var g_Image1:   Image
@@ -28,12 +28,16 @@ impl IWnd for MyView
         painter.clear(Argb.White)
 
         painter.drawTexture({20, 20, 256, 256}, g_Texture0)
-        painter.drawTexture({296, 296, 256, 256}, g_Texture1)
 
         let best = genGo()
         if best do
             surface.app.getRenderer().updateTexture(g_Texture2, best)
-        painter.drawTexture({20, 296, 256, 256}, g_Texture2)
+        painter.drawTexture({300, 20, 256, 256}, g_Texture2)
+
+        painter.drawTexture({580, 20, 256, 256}, g_Texture1)
+
+        painter.drawString(20, 300, Format.toString("gen %", g_NumGen), g_Font, Argb.Black)
+        painter.drawString(20, 340, Format.toString("score %", g_BestScore), g_Font, Argb.Black)
 
         invalidate()
     }
@@ -54,6 +58,7 @@ impl IWnd for MyView
         let dataPath = Path.getDirectoryName(#location.fileName)
         g_Image0 = Image.load(Path.combine(dataPath, "/datas/img1.jpg"))
         g_Image1 = Image.load(Path.combine(dataPath, "/datas/img2.jpg"))
+        g_Font   = view.getTheme().createDefaultFont(30)
 
         const SIZE = 64
         g_Image0.resize(SIZE, SIZE, .Bilinear)

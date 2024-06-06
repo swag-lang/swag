@@ -1,8 +1,8 @@
 using Core
 
-const PopulationCount = 200'u32
+const PopulationCount = 100'u32
 const TakeBest        = 50'u32
-const TakeWorst       = 0'u32
+const TakeWorst       = 1'u32
 
 #[Swag.Tls]
 var g_Rng: Random.Rng
@@ -13,6 +13,7 @@ var g_TotalWeight = 0'f32
 var g_BestScore   = Swag.F32.Max
 var g_NumGen:     u32
 var g_Result:     Array'u8
+var g_Font:       *Pixel.Font
 
 struct Generation
 {
@@ -28,7 +29,7 @@ struct Solution
 
 func genInit()
 {
-    assume Jobs.setNumWorkers(4)
+    assume Jobs.setNumWorkers()
 
     g_NumGenes = g_Image0.width * g_Image0.height
 
