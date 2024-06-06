@@ -41,6 +41,7 @@ enum ThemeIcons24
     OpenFile
     Update
     Duplicate
+    Quit
 }
 
 enum ThemeIcons64

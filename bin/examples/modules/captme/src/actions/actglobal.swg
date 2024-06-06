@@ -29,8 +29,9 @@ impl IActionUI for ActionGlobal
             evt.name = "Show Editor"
 
         case CmdIdExit:
-            evt.setFlags |= .Name
-            evt.name = "Exit"
+            evt.setFlags |= .Name | .Icon
+            evt.name = "Quit"
+            evt.icon = main.getTheme().getIcon24(.Quit)
 
         case CmdIdLibrary:
             evt.setFlags |= .Name | .ToolTip | .Checked
