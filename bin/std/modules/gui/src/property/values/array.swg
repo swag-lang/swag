@@ -70,28 +70,44 @@ impl Properties
         hasChanged(item)
     }
 
+    mtd removeArrayValue(item: *PropertiesItem)
+    {
+        let valueType     = Reflection.getStructArrayType(item.parent.type)
+        let arrData       = cast(*Array'u8) item.data
+        let parentItemIdx = Slice.findLinear(items.toSlice(), item.parent)
+        let itemIdx       = Slice.findLinear(items.toSlice(), item)
+        let removeItemIdx = itemIdx - parentItemIdx - 1
+
+        Reflection.removeValueStructArray(item.parent.data, valueType, removeItemIdx)
+
+        let parentItem = items[parentItemIdx]
+        refreshArray(parentItem)
+        hasChanged(parentItem)
+    }
+
     mtd appendArrayValue(item: *PropertiesItem)
     {
         let valueType     = Reflection.getStructArrayType(item.type)
         let arrData       = cast(*Array'u8) item.data
-        let itemIdx       = Slice.findLinear(self.items.toSlice(), item)
+        let itemIdx       = Slice.findLinear(items.toSlice(), item)
         let insertItemIdx = itemIdx + item.numChilds + 1
 
         let oldBuffer = arrData.buffer
         discard Reflection.appendValueStructArray(item.data, valueType)
-        setDescEditBox(item)
-        item.userData0 = cast(*void) arrData.count
 
         // If the array buffer has been reallocated, and this is not a pod, then we must reconstruct
         // the full array.
         if oldBuffer != arrData.buffer and (Reflection.hasDrop(valueType) or Reflection.hasPostCopy(valueType))
         {
-            reconstructArray(item)
+            refreshArray(item)
         }
 
         // Do not reconstruct the full array. Append items, and move them at the correct position.
         else
         {
+            setDescEditBox(item)
+            item.userData0 = cast(*void) arrData.count
+
             let countItemsBefore = items.count
 
             var subValue: Swag.TypeValue
@@ -112,9 +128,10 @@ impl Properties
 
             loop i: numAddedChilds do
                 updateState(self.items[insertItemIdx + i])
-        }
 
-        edView.sendResizeEvent()
+            edView.sendResizeEvent()
+            hasChanged(item)
+        }
     }
 
     mtd constructArray(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
@@ -145,7 +162,6 @@ impl Properties
         addBtn.sigPressed += closure|self, item|(btn)
         {
             self.appendArrayValue(item)
-            self.hasChanged(item)
         }
 
         with item.editBox = EditBox.create(item.line, "")

@@ -24,9 +24,9 @@ func getStructArrayType(t: typeinfo)->typeinfo
 }
 
 // Used to clear a 'Core.Array' without knowing the type of the element at compile time but knowing it at runtime (valueType)
-func clearStructArray(addr: *void, valueType: typeinfo)
+func clearStructArray(arrayPtr: *void, valueType: typeinfo)
 {
-    let arr = cast(*Array'u8) addr
+    let arr = cast(*Array'u8) arrayPtr
 
     if isStruct(valueType)
     {
@@ -45,11 +45,43 @@ func clearStructArray(addr: *void, valueType: typeinfo)
     arr.count = 0
 }
 
-// Used to add an element in a 'Core.Array' without knowing the type of the element at compile time but knowing it at runtime (valueType)
-func appendValueStructArray(addr: *void, valueType: typeinfo)->*void
+// Remove an element in a 'Core.Array' without knowing the type of the element at compile time but knowing it at runtime (valueType)
+func removeValueStructArray(arrayPtr: *void, valueType: typeinfo, index: u64)
 {
     // We will treat the array as a buffer of bytes, just to be able to access the fields
-    let arr       = cast(*Array'u8) addr
+    let arr       = cast(*Array'u8) arrayPtr
+    let sizeValue = valueType.sizeof
+
+    var valueTypeStruct: const *TypeInfoStruct
+    if isStruct(valueType) do
+        valueTypeStruct = acast valueType
+
+    Debug.assert(index < arr.count)
+
+    // Move all elements at the remove position
+    if index != arr.count - 1
+    {
+        let countMove = arr.count - index - 1;
+        Memory.copy(arr.buffer + (index * sizeValue), arr.buffer + (index + 1) * sizeValue, countMove * sizeValue)
+        if valueTypeStruct and Reflection.hasPostMove(valueTypeStruct)
+        {
+            loop i: index until arr.count - 1 do
+                valueTypeStruct.opPostMove(arr.buffer + (i * sizeValue))
+        }
+    }
+
+    // Drop the last element
+    if valueTypeStruct and Reflection.hasDrop(valueTypeStruct) do
+        valueTypeStruct.opDrop(arr.buffer + (arr.count - 1) * sizeValue)
+
+    arr.count -= 1
+}
+
+// Add an element in a 'Core.Array' without knowing the type of the element at compile time but knowing it at runtime (valueType)
+func appendValueStructArray(arrayPtr: *void, valueType: typeinfo)->*void
+{
+    // We will treat the array as a buffer of bytes, just to be able to access the fields
+    let arr       = cast(*Array'u8) arrayPtr
     let sizeValue = valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct

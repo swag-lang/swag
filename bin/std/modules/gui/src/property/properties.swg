@@ -181,6 +181,10 @@ internal impl Properties
             if MessageDlg.confirm(wnd.surface, "This will remove all elements") != Dialog.BtnYes do
                 break
             clearArray(item)
+        case "ClearElementArray":
+            if MessageDlg.confirm(wnd.surface, "This will remove the element") != Dialog.BtnYes do
+                break
+            removeArrayValue(item)
         }
     }
 
