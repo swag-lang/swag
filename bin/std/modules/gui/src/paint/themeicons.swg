@@ -30,6 +30,17 @@ enum ThemeIcons24
     Collapsed
     RemoveAll
     Remove
+    Options
+    About
+    ZoomIn
+    ZoomOut
+    Save
+    SaveAs
+    Export
+    Download
+    OpenFile
+    Update
+    Duplicate
 }
 
 enum ThemeIcons64

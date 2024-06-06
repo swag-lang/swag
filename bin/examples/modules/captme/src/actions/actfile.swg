@@ -41,39 +41,45 @@ impl IActionUI for ActionFile
             evt.disabled = !Clipboard.hasImage()
 
         case CmdIdSaveAsImage:
-            evt.setFlags |= .Name | .Disabled
+            evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Save As Image..."
             evt.disabled = !capture
+            evt.icon     = main.getTheme().getIcon24(.SaveAs)
 
         case CmdIdSaveAsLinkedImage:
-            evt.setFlags |= .Name | .Disabled
+            evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Save As Linked Image..."
             evt.disabled = !capture
+            evt.icon     = main.getTheme().getIcon24(.Export)
 
         case CmdIdOpenImage:
-            evt.setFlags |= .Name
+            evt.setFlags |= .Name | .Icon
             evt.name = "Open Image..."
+            evt.icon = main.getTheme().getIcon24(.OpenFile)
 
         case CmdIdUpdateLinkedImage:
-            evt.setFlags |= .Name | .Disabled
+            evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Update Linked Image"
             evt.disabled = !capture or capture.linkedImage.length == 0
+            evt.icon     = main.getTheme().getIcon24(.Update)
 
         case CmdIdDeleteCapture:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Delete"
             evt.disabled = !capture
-            evt.icon = main.getTheme().getIcon24(.Remove)
+            evt.icon     = main.getTheme().getIcon24(.Remove)
 
         case CmdIdDupCapture:
-            evt.setFlags |= .Name | .Disabled
+            evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Duplicate"
             evt.disabled = !capture
+            evt.icon     = main.getTheme().getIcon24(.Duplicate)
 
         case CmdIdFileLocation:
-            evt.setFlags |= .Name | .Disabled
+            evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Open File Location"
             evt.disabled = !capture
+            evt.icon     = main.getTheme().getIcon24(.OpenFile)
         }
 
         return true

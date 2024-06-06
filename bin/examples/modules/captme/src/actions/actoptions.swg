@@ -18,11 +18,14 @@ impl IActionUI for ActionOptions
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
+        let main = cast(*MainWnd) cxt.wnd
+
         switch cxt.id
         {
         case CmdIdOptions:
-            evt.setFlags |= .Name
+            evt.setFlags |= .Name | .Icon
             evt.name = "Options..."
+            evt.icon = main.getTheme().getIcon24(.Options)
         }
 
         return true

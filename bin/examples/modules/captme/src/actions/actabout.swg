@@ -18,11 +18,13 @@ impl IActionUI for ActionAbout
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
+        let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
         case CmdIdAbout:
-            evt.setFlags |= .Name
+            evt.setFlags |= .Name | .Icon
             evt.name = "About..."
+            evt.icon = main.getTheme().getIcon24(.About)
         }
 
         return true

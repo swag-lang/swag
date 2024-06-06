@@ -115,8 +115,7 @@ public impl IWnd for MenuCtrl
             // Icon
             if i.icon.isValid()
             {
-                i.icon.sizeX = i.size
-                i.icon.sizeY = i.size
+                i.icon.sizeX, i.icon.sizeY = i.size - 4
                 i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
             }
 
@@ -211,8 +210,7 @@ public impl IWnd for MenuCtrl
             }
             elif i.icon.isValid()
             {
-                i.icon.sizeX = i.size
-                i.icon.sizeY = i.size
+                i.icon.sizeX, i.icon.sizeY = i.size - 4
                 i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
             }
 
