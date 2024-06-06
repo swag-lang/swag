@@ -47,8 +47,7 @@ func genInit()
     g_Gen[0].all.sort(func(x, y)
     {
         return x.score <=> y.score
-    }
-)
+    })
 
     // Placeholder for the next generation
     loop PopulationCount
@@ -255,8 +254,7 @@ func genGo()->*u8
     g_Gen[nextGenIdx].all.sort(func(x, y)
     {
         return x.score <=> y.score
-    }
-)
+    })
 
     visit child, idx: g_Gen[nextGenIdx].all
     {
@@ -270,8 +268,7 @@ func genGo()->*u8
     g_Gen[g_CurGen].all.sort(func(x, y)
     {
         return x.score <=> y.score
-    }
-)
+    })
 
     // Returns the best score
     let best      = g_Gen[g_CurGen].all[0]

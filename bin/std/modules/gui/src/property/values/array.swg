@@ -73,7 +73,6 @@ impl Properties
     mtd removeArrayValue(item: *PropertiesItem)
     {
         let valueType     = Reflection.getStructArrayType(item.parent.type)
-        let arrData       = cast(*Array'u8) item.data
         let parentItemIdx = Slice.findLinear(items.toSlice(), item.parent)
         let itemIdx       = Slice.findLinear(items.toSlice(), item)
         let removeItemIdx = itemIdx - parentItemIdx - 1
@@ -87,12 +86,8 @@ impl Properties
 
     mtd appendArrayValue(item: *PropertiesItem)
     {
-        let valueType     = Reflection.getStructArrayType(item.type)
-        let arrData       = cast(*Array'u8) item.data
-        let itemIdx       = Slice.findLinear(items.toSlice(), item)
-        let insertItemIdx = itemIdx + item.numChilds + 1
+        let valueType = Reflection.getStructArrayType(item.type)
 
-        let oldBuffer = arrData.buffer
         discard Reflection.appendValueStructArray(item.data, valueType)
 
         refreshArray(item)
