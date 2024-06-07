@@ -160,6 +160,7 @@ impl Decoder
 
                 if !treated
                 {
+                    Reflection.clearStructArray(data, valueType)
                     while serializer.toNextSequenceElement(&count)
                     {
                         let bufArr = Reflection.appendValueStructArray(data, valueType)

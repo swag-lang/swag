@@ -202,9 +202,11 @@ internal impl Properties
             Clipboard.addTypedValue(item.data, item.type)
 
         case "Paste":
-            discard Clipboard.getTypedValue(item.data, item.type)
-            refreshItem(item)
-            hasChanged(item)
+            if Clipboard.getTypedValue(item.data, item.type)
+            {
+                refreshItem(item)
+                hasChanged(item)
+            }
         }
     }
 
