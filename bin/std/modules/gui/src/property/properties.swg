@@ -230,6 +230,20 @@ internal impl Properties
                 prop.updateStates()
             }
 
+        case .MouseDoubleClick:
+            let mouseEvt = cast(*MouseEvent) evt
+            if mouseEvt.button != .Left do
+                break
+
+            // Toggle/Expand
+            if prop.kind == .Grid and
+               prop.selItem and
+               prop.selItem.numChilds
+            {
+                prop.selItem.flags.toggle(.Expanded)
+                prop.updateStates()
+            }
+
         case .MouseReleased:
             prop.resizingColumn = false
 
