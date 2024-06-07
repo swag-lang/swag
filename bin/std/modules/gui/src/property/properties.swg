@@ -54,6 +54,7 @@ struct Properties
     items:                    ArrayPtr'PropertiesItem
     sections:                 Array'{ item: *PropertiesItem, lvl: s32 }
     hotItem:                  *PropertiesItem
+    selItem:                  *PropertiesItem
     currentSectionIndex:      u32 = Swag.U32.Max
     stringFilter:             String
     cursorSet:                bool
@@ -204,6 +205,11 @@ internal impl Properties
 
         case .MousePressed:
             let mouseEvt = cast(*MouseEvent) evt
+            var pt       = prop.surfaceToLocal(mouseEvt.surfacePos)
+
+            prop.selItem = prop.hitTest(pt)
+            wnd.invalidate()
+
             if mouseEvt.button != .Left do
                 break
 
@@ -215,13 +221,12 @@ internal impl Properties
             }
 
             // Toggle/Expand
-            var pt = prop.surfaceToLocal(mouseEvt.surfacePos)
             if prop.kind == .Grid and
-                prop.hotItem and
-                prop.hotItem.numChilds and
-                pt.x < prop.leftMargin
+               prop.selItem and
+               prop.selItem.numChilds and
+               pt.x < prop.leftMargin
             {
-                prop.hotItem.flags.toggle(.Expanded)
+                prop.selItem.flags.toggle(.Expanded)
                 prop.updateStates()
             }
 
@@ -293,10 +298,8 @@ internal impl Properties
     {
         var colBkBk, colBk, colBorder: Color
 
-        let colors   = wnd.getThemeColors()
-        let focusWnd = wndItem.getApp().keybFocusWnd
-
-        if wndItem == focusWnd or wndItem.isOwnerOf(focusWnd)
+        let colors = wnd.getThemeColors()
+        if item == selItem
         {
             colBk     = colors.prop_FocusBk
             colBorder = colors.prop_FocusBorder
@@ -629,7 +632,7 @@ internal impl Properties
             }
             else
             {
-                let item = addItem(value, data, parentItem)
+                let item           = addItem(value, data, parentItem)
                 let numItemsBefore = items.count
                 addStructInternal(typeSubStruct, data, item)
                 item.numChilds = cast(u32) (items.count - numItemsBefore)

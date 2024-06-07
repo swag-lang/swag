@@ -5,7 +5,7 @@ using Swag
 // Returns true if the type 't' is a 'Core.Array' type
 func isStructArray(t: typeinfo)->bool
 {
-    if !isStruct(t) do
+    if !t or !isStruct(t) do
         return false
 
     let tt = cast(const *TypeInfoStruct) t
