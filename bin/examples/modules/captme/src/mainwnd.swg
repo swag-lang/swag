@@ -47,7 +47,7 @@ struct MainWnd
     quickWnd:              *QuickWnd
     propWnd:               *PropWnd
     libWnd:                *LibraryWnd
-    clipFmt:               Clipboard.Format
+    clipFmt:               Clipboard.ValueFormat
     captureBtn:            *IconButton
     libraryBtn:            *IconButton
     zoomBtn:               *IconButton

@@ -149,6 +149,8 @@ internal impl Properties
 
     mtd popupMenu(item: *PropertiesItem, pt: Math.Point)
     {
+        ToolTip.hide(item.line)
+
         let menu = MenuCtrl.createPopup(self)
         var scan = item
         while scan
@@ -169,6 +171,14 @@ internal impl Properties
             menu.addItem("Remove", "ClearElementArray", getTheme().getIcon24(.Remove))
         }
 
+        if item.data and item.type
+        {
+            if menu.items.count do
+                menu.addSeparator()
+            menu.addItem("Copy", "Copy", getTheme().getIcon24(.Copy))
+            menu.addItem("Paste", "Paste", getTheme().getIcon24(.Paste), disabled: !Clipboard.hasTypedValue(item.type))
+        }
+
         if !menu.items.count
         {
             menu.destroy()
@@ -182,10 +192,19 @@ internal impl Properties
             if MessageDlg.confirm(wnd.surface, "This will remove all elements") != Dialog.BtnYes do
                 break
             clearArray(item)
+
         case "ClearElementArray":
             if MessageDlg.confirm(wnd.surface, "This will remove the element") != Dialog.BtnYes do
                 break
             removeArrayValue(item)
+
+        case "Copy":
+            Clipboard.addTypedValue(item.data, item.type)
+
+        case "Paste":
+            discard Clipboard.getTypedValue(item.data, item.type)
+            refreshItem(item)
+            hasChanged(item)
         }
     }
 

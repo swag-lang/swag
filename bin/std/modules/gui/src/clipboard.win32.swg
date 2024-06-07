@@ -3,18 +3,18 @@
 #global public
 using Core, Win32, Pixel
 
-typealias Format = u64
+typealias ValueFormat = u64
 
 internal var g_PngFormat: UINT
 
 // Register a new format
-func registerFormat(name: string)->Format throw
+func registerFormat(name: string)->ValueFormat throw
 {
     return try RegisterClipboardFormatA(@dataof(name))
 }
 
 // Returns true if the clipboard contains the given format
-func hasFormat(fmt: Format)->bool
+func hasFormat(fmt: ValueFormat)->bool
 {
     if !OpenClipboard(GetDesktopWindow()) do
         return false
@@ -24,7 +24,7 @@ func hasFormat(fmt: Format)->bool
 }
 
 // Add data of a given format to the clipboard
-func addData(fmt: Format, data: const [..] u8)
+func addData(fmt: ValueFormat, data: const [..] u8)
 {
     if !OpenClipboard(GetDesktopWindow()) do
         return
@@ -41,7 +41,7 @@ func addData(fmt: Format, data: const [..] u8)
 }
 
 // Get data of the given format
-func getData(fmt: Format)->Array'u8
+func getData(fmt: ValueFormat, clampCount: u64 = 0)->Array'u8
 {
     var result: retval
 
@@ -56,7 +56,9 @@ func getData(fmt: Format)->Array'u8
         {
             let pz    = cast(^u8) GlobalLock(hglob)
             let pzu   = cast(^u64) pz
-            let count = dref pzu
+            var count = dref pzu
+            if clampCount do
+                count = Math.min(count, clampCount)
             result.add(@mkslice(pz + @sizeof(u64), count))
             discard GlobalUnlock(pz)
             return result
