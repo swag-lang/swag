@@ -630,7 +630,9 @@ internal impl Properties
             else
             {
                 let item = addItem(value, data, parentItem)
+                let numItemsBefore = items.count
                 addStructInternal(typeSubStruct, data, item)
+                item.numChilds = cast(u32) (items.count - numItemsBefore)
             }
         }
     }
