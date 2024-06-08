@@ -19,7 +19,7 @@ Supported type changes are :
 * Conversion from a static array to a dynamic `Core.Array`, and vice versa.
 * Conversion from a single value to a static array or `Core.Array`, and vice versa.
 * Rename a struct with 'Serialization.Alias'.
-* Add 'Serialization.PodFinal' to an existing not final type
+* Convert an existing complexe type to 'Serialization.PodFinal'
 
 Supported attributes are :
 
