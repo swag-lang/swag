@@ -160,15 +160,20 @@ internal impl Properties
             scan = scan.parent
         }
 
+        let canChange = canChangeItem(item)
+        var itemDisabled: bool
+
         if Reflection.isStructArray(item.type)
         {
             let arrData = cast(*Array'u8) item.data
-            menu.addItem("Remove All", "ClearArray", getTheme().getIcon24(.RemoveAll), disabled: arrData.count == 0)
+            itemDisabled = !canChange or arrData.isEmpty()
+            menu.addItem("Remove All", "ClearArray", getTheme().getIcon24(.RemoveAll), disabled: itemDisabled)
         }
 
         if item.parent and item.parent.type and Reflection.isStructArray(item.parent.type)
         {
-            menu.addItem("Remove", "ClearElementArray", getTheme().getIcon24(.Remove))
+            itemDisabled = !canChange
+            menu.addItem("Remove", "ClearElementArray", getTheme().getIcon24(.Remove), disabled: itemDisabled)
         }
 
         if item.data and item.type
@@ -176,7 +181,8 @@ internal impl Properties
             if menu.items.count do
                 menu.addSeparator()
             menu.addItem("Copy", "Copy", getTheme().getIcon24(.Copy))
-            menu.addItem("Paste", "Paste", getTheme().getIcon24(.Paste), disabled: !Clipboard.hasTypedValue(item.type))
+            itemDisabled = !canChange or !Clipboard.hasTypedValue(item.type)
+            menu.addItem("Paste", "Paste", getTheme().getIcon24(.Paste), disabled: itemDisabled)
         }
 
         if !menu.items.count
@@ -511,7 +517,7 @@ internal impl Properties
         with line
         {
             .margin.z = rightMargin
-            .wndFlags.set(.PreChildsPaint)
+            .wndFlags.add(.PreChildsPaint)
 
             if kind == .Grid
             {
@@ -845,7 +851,28 @@ impl Properties
         updateStates()
     }
 
-    mtd updateState(item: *PropertiesItem)
+    // Returns true if the given item can be changed
+    mtd canChangeItem(item: *PropertiesItem)->bool
+    {
+        if !item.data or !item.type do
+            return false
+
+        if item.type == string do
+            return false
+
+        var scan = item
+        while scan
+        {
+            if scan.line and scan.line.isDisabled() do
+                return false
+            scan = scan.parent
+        }
+
+        return true
+    }
+
+    // Update the state of the given item
+    mtd updateItemState(item: *PropertiesItem)
     {
         var mustShow   = false
         var mustEnable = false
@@ -881,7 +908,7 @@ impl Properties
     mtd updateStates()
     {
         visit it: items do
-            updateState(it)
+            updateItemState(it)
         applyLayout()
         scrollWnd.view.sendResizeEvent()
     }

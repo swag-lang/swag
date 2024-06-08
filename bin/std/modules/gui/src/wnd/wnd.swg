@@ -399,7 +399,7 @@ impl Wnd
         enable(false)
     }
 
-    // Returns true if window, and all its parents, are visible
+    // Returns true if window and all its parents are visible
     mtd isVisible(onlyMe = false)->bool
     {
         var check = self
@@ -415,21 +415,35 @@ impl Wnd
         return true
     }
 
-    mtd isVisibleState()->bool => wndFlags.has(.Hidden) ? false : true
+    // Returns true if window, or one of its parent, is hidden
+    mtd isHidden()->bool => !isVisible()
+
+    // Returns true if the window has the visible state.
+    // Will return true even if one of the parent is hidden.
+    mtd isVisibleState()->bool => !wndFlags.has(.Hidden)
 
     // Returns true if window, and all its parents, are enabled
-    mtd isEnabled()->bool
+    mtd isEnabled(onlyMe = false)->bool
     {
         var check = self
         while check
         {
             if check.wndFlags.has(.Disabled) do
                 return false
+            if onlyMe do
+                return true
             check = check.parent
         }
 
         return true
     }
+
+    // Returns true if window, or one of its parent, is disabled
+    mtd isDisabled()->bool => !isEnabled()
+
+    // Returns true if the window has the enabled state.
+    // Will return true even if one of the parent is hidden.
+    mtd isEnabledState()->bool => !wndFlags.has(.Hidden)
 
     //////////////////////////////////////////////
     // Paint
