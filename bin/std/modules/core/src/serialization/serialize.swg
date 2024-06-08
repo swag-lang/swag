@@ -14,7 +14,7 @@ attr Final()
 #[AttrUsage(AttributeUsage.Struct)]
 attr PodFinal()
 
-// Accept this other name for the field
+// Accept this other name for the struct field or the struct itself
 #[AttrUsage(AttributeUsage.Struct | AttributeUsage.StructVariable | AttributeUsage.Multi)]
 attr Alias(name: string)
 

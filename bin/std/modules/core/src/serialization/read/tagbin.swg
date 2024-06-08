@@ -11,7 +11,6 @@ Changes that are supported from V to V+1 are :
 * Remove a field. It will just be ignored.
 * Reorder of fields, as long as their name/type are the same.
 * Rename a field with 'Serialization.Alias'.
-* Rename a struct with 'Serialization.Alias'.
 
 Supported type changes are :
 
@@ -19,6 +18,8 @@ Supported type changes are :
 * Change the size of a static array.
 * Conversion from a static array to a dynamic `Core.Array`, and vice versa.
 * Conversion from a single value to a static array or `Core.Array`, and vice versa.
+* Rename a struct with 'Serialization.Alias'.
+* Add 'Serialization.PodFinal' to an existing not final type
 
 Supported attributes are :
 
