@@ -271,7 +271,7 @@ impl RichEditCtrl
 
         registerClipboardFormat()
         if clipFormat do
-            Clipboard.addData(clipFormat, res.styles.toSlice())
+            Clipboard.addTypedData(clipFormat, null, res.styles.toSlice())
 
         var txt = Utf8.fromUnicode(res.text.toSlice())
         Clipboard.addString(txt)
@@ -287,7 +287,7 @@ impl RichEditCtrl
 
         if clipFormat and Clipboard.hasFormat(clipFormat)
         {
-            var st = Clipboard.getData(clipFormat)
+            var st = Clipboard.getTypedData(clipFormat, null)
             insertText(txt, st)
         }
         else do

@@ -19,8 +19,6 @@ public func addTypedValue(value: *void, type: typeinfo)
 
     var buf:    ConcatBuffer
     var encode: Encoder'Write.TagBin
-
-    buf.addNative(type.crc32)
     trycatch
     {
         encode.start(&buf)
@@ -29,7 +27,7 @@ public func addTypedValue(value: *void, type: typeinfo)
     }
 
     buf.makeLinear()
-    addData(g_ValueFormat, buf.toSlice())
+    addTypedData(g_ValueFormat, type, buf.toSlice())
 }
 
 // Get whatever value with a given 'type'
@@ -43,12 +41,7 @@ public func hasTypedValue(type: typeinfo)->bool
         return hasImage()
     }
 
-    if !hasFormat(g_ValueFormat) do
-        return false
-
-    let data   = getData(g_ValueFormat, 4)
-    let ptrCrc = cast(*u32) data.buffer
-    return dref ptrCrc == type.crc32
+    return hasTypedData(g_ValueFormat, type)
 }
 
 // Get whatever value with a given 'type'
@@ -67,12 +60,12 @@ public func getTypedValue(value: *void, type: typeinfo)->bool
         return true
     }
 
-    let data = getData(g_ValueFormat)
+    let data = getTypedData(g_ValueFormat, type)
 
     var decoder: Decoder'Read.TagBin
     trycatch
     {
-        decoder.start(data[4..])
+        decoder.start(data.toSlice())
         decoder.readValue(value, type)
         decoder.end()
     }

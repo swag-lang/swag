@@ -23,25 +23,55 @@ func hasFormat(fmt: ValueFormat)->bool
     return IsClipboardFormatAvailable(cast(UINT) fmt) ? true : false
 }
 
-// Add data of a given format to the clipboard
-func addData(fmt: ValueFormat, data: const [..] u8)
+// Returns true if the clipboard contains the given format of the given 'type'.
+// 'type' can be null to just check for the given clipboard format.
+func hasTypedData(fmt: ValueFormat, type: typeinfo)->bool
+{
+    if !OpenClipboard(GetDesktopWindow()) do
+        return false
+    defer discard CloseClipboard()
+
+    if !IsClipboardFormatAvailable(cast(UINT) fmt) do
+        return false
+    if !type do
+        return true
+
+    let hglob = GetClipboardData(cast(UINT) fmt)
+    let pz    = cast(*u32) GlobalLock(hglob)
+    defer discard GlobalUnlock(pz)
+    return dref pz == type.crc32
+}
+
+// Add data of a given format of the given 'type' to the clipboard
+// 'type' can be null to just check for the given clipboard format.
+func addTypedData(fmt: ValueFormat, type: typeinfo, data: const [..] u8)
 {
     if !OpenClipboard(GetDesktopWindow()) do
         return
     defer discard CloseClipboard()
 
-    // Store the size in the first u64
-    let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(data) + @sizeof(u64))
+    let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(data) + @sizeof(u32) + @sizeof(u64))
     let pz    = cast(^u8) GlobalLock(hglob)
-    let pzu   = cast(^u64) pz
+    defer discard GlobalUnlock(pz)
+
+    // Store type crc32
+    var pzi   = cast(^u32) pz
+    dref pzi = type ? type.crc32 : 0
+    pzi += 1
+
+    // Store data size
+    var pzu   = cast(^u64) pzi
     dref pzu = @countof(data)
-    Memory.copy(pz + @sizeof(u64), @dataof(data), @countof(data))
-    discard GlobalUnlock(pz)
+    pzu += 1
+
+    // Store data
+    Memory.copy(pzu, @dataof(data), @countof(data))
     discard SetClipboardData(cast(UINT) fmt, hglob)
 }
 
-// Get data of the given format
-func getData(fmt: ValueFormat, clampCount: u64 = 0)->Array'u8
+// Get data of the given format and 'type'
+// 'type' can be null to just check for the given clipboard format.
+func getTypedData(fmt: ValueFormat, type: typeinfo)->Array'u8
 {
     var result: retval
 
@@ -55,12 +85,20 @@ func getData(fmt: ValueFormat, clampCount: u64 = 0)->Array'u8
         if hglob
         {
             let pz    = cast(^u8) GlobalLock(hglob)
-            let pzu   = cast(^u64) pz
-            var count = dref pzu
-            if clampCount do
-                count = Math.min(count, clampCount)
-            result.add(@mkslice(pz + @sizeof(u64), count))
-            discard GlobalUnlock(pz)
+            defer discard GlobalUnlock(pz)
+
+            // Get type crc32, check this is correct
+            var pzi   = cast(^u32) pz
+            if type and dref pzi != type.crc32 do
+                return result
+            pzi += 1
+
+            // Get data count
+            var pzu   = cast(^u64) pzi
+            let count = dref pzu
+            pzu += 1
+
+            result.add(@mkslice(cast(^u8) pzu, count))
             return result
         }
     }

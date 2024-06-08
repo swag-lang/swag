@@ -47,7 +47,6 @@ struct MainWnd
     quickWnd:              *QuickWnd
     propWnd:               *PropWnd
     libWnd:                *LibraryWnd
-    clipFmt:               Clipboard.ValueFormat
     captureBtn:            *IconButton
     libraryBtn:            *IconButton
     zoomBtn:               *IconButton
@@ -584,7 +583,6 @@ impl MainWnd
             .icons24.set(renderer.addImage(img24), 24, 24)
             .icons48.set(renderer.addImage(img48), 48, 48)
             .appIcon.set(renderer.addImage(imgApp))
-            .clipFmt         = catch Clipboard.registerFormat(ClipboardFormat)
             .backgroundStyle = .Window
             .mdlFavorite     = &res.mdlFormShape
             .mdlHighlight    = &res.mdlFormShape

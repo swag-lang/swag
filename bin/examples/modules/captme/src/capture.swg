@@ -230,18 +230,7 @@ impl Capture
             arr.add(itf)
         }
 
-        var buf:    ConcatBuffer
-        var encode: Encoder'Write.TagBin
-
-        trycatch
-        {
-            encode.start(&buf)
-            encode.writeValue(&arr, @typeof(arr))
-            encode.end()
-        }
-
-        buf.makeLinear()
-        Clipboard.addData(editView.main.clipFmt, buf.toSlice())
+        Clipboard.addTypedValue(&arr, @typeof(arr))
     }
 
     mtd pasteImageInside()
@@ -265,22 +254,8 @@ impl Capture
 
     mtd paste()
     {
-        var decode: Decoder'Read.TagBin
-        var res:    Array'IForm
-
-        var arr = Clipboard.getData(editView.main.clipFmt)
-        if arr.count
-        {
-            trycatch
-            {
-                decode.start(arr.toSlice())
-                decode.readValue(&res, Array'IForm)
-                if !res.count do
-                    return
-                decode.end()
-            }
-        }
-        else
+        var res: Array'IForm
+        if !Clipboard.getTypedValue(&res, @typeof(res))
         {
             var img = Clipboard.getImage()
             if img.isValid()

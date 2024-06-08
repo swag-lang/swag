@@ -852,7 +852,7 @@ impl Properties
     }
 
     // Returns true if the given item can be changed
-    mtd canChangeItem(item: *PropertiesItem)->bool
+    func canChangeItem(item: *PropertiesItem)->bool
     {
         if !item.data or !item.type do
             return false
