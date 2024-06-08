@@ -60,6 +60,9 @@ impl IWnd for MyView
         g_Image1 = Image.load(Path.combine(dataPath, "/datas/img2.jpg"))
         g_Font   = view.getTheme().createDefaultFont(30)
 
+        g_Image0.grayScale()
+        g_Image1.grayScale()
+
         const SIZE = 64
         g_Image0.resize(SIZE, SIZE, .Bilinear)
         g_Image1.resize(SIZE, SIZE, .Bilinear)
