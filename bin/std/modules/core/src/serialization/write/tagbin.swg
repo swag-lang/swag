@@ -189,7 +189,7 @@ impl TagBin
         }
 
         // Static array of raw serializable types
-        elif typeElem.kind != .Struct
+        else
         {
             let (raw, sizeof) = isPodFinal(typeElem)
             if raw
