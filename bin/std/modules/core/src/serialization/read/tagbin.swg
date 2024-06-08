@@ -11,6 +11,7 @@ Changes that are supported from V to V+1 are :
 * Remove a field. It will just be ignored.
 * Reorder of fields, as long as their name/type are the same.
 * Rename a field with 'Serialization.Alias'.
+* Rename a struct with 'Serialization.Alias'.
 
 Supported type changes are :
 
@@ -22,7 +23,7 @@ Supported type changes are :
 Supported attributes are :
 
 * 'Serialisation.Version'. If version is specified, then loading will not have versioning if versions are the same
-* 'Serialization.Alias'. To rename a field. Multiple aliases are supported.
+* 'Serialization.Alias'. To rename a field or a struct type. Multiple aliases are supported.
 * 'Serialization.Final'. The struct will be loaded/saved without versioning (faster and lower serialization size)
 * 'Serialization.PodFinal'. The struct will be loaded/saved in place without versioning
 */
@@ -185,12 +186,15 @@ internal impl TagBin
             // Struct to struct...
             elif fromStruct and !Reflection.isStructArray(fromStruct)
             {
-                // 2 pod structs with the same size
-                if Reflection.hasAttribute(toType, Serialization.PodFinal) and
-                   Reflection.hasAttribute(fromType, Serialization.PodFinal) and
-                   toType.sizeof == fromType.sizeof
+                // Alias
+                var aliases = Reflection.getAttributes(toType, Serialization.Alias)
+                visit al: aliases
                 {
-                    return true
+                    let value = Reflection.getAttributeValue(al, "name")
+                    if cast(string) value == fromType.name
+                    {
+                        return true
+                    }
                 }
             }
         }
@@ -456,8 +460,7 @@ impl TagBin
             return false
         }
 
-        // Dynamic array of raw serializable types
-        // Just read them in one batch
+        // Dynamic array
         if Reflection.isStructArray(typeElem)
         {
             let valueType = Reflection.getStructArrayType(typeElem)
@@ -467,6 +470,8 @@ impl TagBin
             if sig != Write.TagBinSignatures.Raw and sig != Write.TagBinSignatures.UnRaw do
                 throw SerializationError{"stream is corrupted"}
 
+            // Dynamic array of raw serializable types
+            // Just read them in one batch
             if raw
             {
                 let bufArr = cast(*Array'u8) data
@@ -478,7 +483,7 @@ impl TagBin
             }
         }
 
-        // Static array of raw serializable types
+        // Static array
         else
         {
             dref countElem = Math.min(orgCount, dref countElem)
@@ -488,6 +493,7 @@ impl TagBin
             if sig != Write.TagBinSignatures.Raw and sig != Write.TagBinSignatures.UnRaw do
                 throw SerializationError{"stream is corrupted"}
 
+            // Static array of raw serializable types
             if raw
             {
                 stream.readBytes(data, dref countElem * sizeof)

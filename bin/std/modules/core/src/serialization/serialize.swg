@@ -15,7 +15,7 @@ attr Final()
 attr PodFinal()
 
 // Accept this other name for the field
-#[AttrUsage(AttributeUsage.StructVariable | AttributeUsage.Multi)]
+#[AttrUsage(AttributeUsage.Struct | AttributeUsage.StructVariable | AttributeUsage.Multi)]
 attr Alias(name: string)
 
 // Do not serialize a struct or a field
