@@ -278,18 +278,23 @@ impl TagBin
 
     mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool throw
     {
-        let sig = stream.readNative'u32()
+        var sig = stream.readNative'u32()
         if sig == Write.TagBinSignatures.Raw
         {
-            if !Reflection.hasAttribute(structType, Serialization.Final) and
-               !Reflection.hasAttribute(structType, Serialization.PodFinal) do
+            // If the stream contains a 'raw' representation of the struct, and the requested
+            // type is not a POD, then we can load in place.
+            if !Reflection.hasAttribute(structType, Serialization.PodFinal) do
                 throw SerializationError{"cannot convert a type from final to non final"}
 
             beginSection(.Raw)
         }
         else
         {
-            // Read version
+            // Skip array in case of an array to value conversion
+            if sig == Write.TagBinSignatures.UnRaw do
+                sig = stream.readNative'u32()
+
+            // Read struct version
             if sig != Write.TagBinSignatures.Version do
                 throw SerializationError{"invalid version signature"}
             let streamVersion = stream.readNative'u32()
