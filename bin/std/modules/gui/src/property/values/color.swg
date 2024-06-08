@@ -4,14 +4,14 @@ impl Properties
 {
     mtd constructColor(value: Swag.TypeValue, data: ^u8, parentItem: *PropertiesItem)->*PropertiesItem
     {
-        let item       = addItem(value, data, parentItem)
-        let color      = cast(*Color) data
-        let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, getThemeMetrics().editBox_Height})
+        let item  = addItem(value, data, parentItem)
+        let color = cast(*Color) data
+        let line  = Wnd.create'Wnd(item.line, {0, 0, position.width, getThemeMetrics().editBox_Height})
         line.dockStyle = .CenterKeepSizeVert
 
-        let width = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+        let width       = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
         const MarginBtn = 4
-        const WidthBtn = 60
+        const WidthBtn  = 60
 
         with let btn = IconButton.create(line, {}, {0, 0, WidthBtn, item.line.position.height})
         {
@@ -44,7 +44,8 @@ impl Properties
 
         btn.sigShowPopup += closure|self, color, item|(btn)
         {
-            let frame  = btn.createAnchorPopup(356, 382)
+            let frame = btn.createAnchorPopup(356, 382)
+            self.editPopup = frame
 
             var pal: Array'Color
             loop i: 9 do
@@ -60,6 +61,11 @@ impl Properties
                 color.argb = pk.getColor().argb
                 self.hasChanged(item)
             }
+        }
+
+        btn.sigHidePopup += closure|self|(btn)
+        {
+            self.editPopup = null
         }
 
         item.sigRefresh += closure|ed, btn, color|(item)

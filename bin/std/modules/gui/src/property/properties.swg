@@ -60,6 +60,7 @@ struct Properties
     cursorSet:                bool
     resizingColumn:           bool
     aniBar:                   BlendColor
+    editPopup:                *Wnd
 }
 
 #[Swag.EnumFlags]
@@ -191,7 +192,10 @@ internal impl Properties
             return
         }
 
+        editPopup = menu
         let result = menu.doModal(pt)
+        editPopup = null
+
         switch result
         {
         case "ClearArray":
@@ -219,8 +223,7 @@ internal impl Properties
     func onHookChildEvent(wnd: *Wnd, evt: *Event)->bool
     {
         let prop = cast(*Properties) wnd
-
-        if prop.getApp().inModalLoop do
+        if prop.editPopup do
             return false
 
         switch evt.kind
