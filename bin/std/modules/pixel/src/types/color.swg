@@ -2,6 +2,7 @@
 using Swag, Core, Core.Errors, Core.StrConv
 
 #[ConstExpr]
+//#[Core.Serialization.PodFinal]
 struct Color
 {
     #if Core.BIG_ENDIAN

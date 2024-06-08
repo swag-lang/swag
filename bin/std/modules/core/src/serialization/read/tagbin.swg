@@ -425,7 +425,6 @@ impl TagBin
         else
         {
             let sig = stream.readNative'u32()
-
             if sig != Write.TagBinSignatures.Sequence do
                 throw SerializationError{"stream is corrupted"}
 
@@ -433,7 +432,7 @@ impl TagBin
             dref countElem = stream.readNative'u64()
         }
 
-        // If we need to type conversion, we must read element by element
+        // If we need a type conversion, we must read element by element
         if convertNextNative do
             return false
 
@@ -456,11 +455,11 @@ impl TagBin
         }
 
         // Static array of raw serializable types
-        elif typeElem.kind != .Struct
+        else
         {
             dref countElem = Math.min(orgCount, dref countElem)
-
             let (raw, sizeof) = isPodFinal(typeElem)
+
             if raw
             {
                 stream.readBytes(data, dref countElem * sizeof)

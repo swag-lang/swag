@@ -73,37 +73,36 @@ impl TagBin
     {
         let sec = newSection()
         sec.kind = kind
-        if sec.kind != .Unordered do
-            return
 
-        output.addNative(TagBinSignatures.Fat)
-        sec.startSeek = output.getSeek()
-        output.addNative(0'u64) // Will store the fat offset here
-        output.addNative(0'u64) // Will store the fat count here
+        if sec.kind == .Unordered
+        {
+            output.addNative(TagBinSignatures.Fat)
+            sec.startSeek = output.getSeek()
+            output.addNative(0'u64) // Will store the fat offset here
+            output.addNative(0'u64) // Will store the fat count here
+        }
     }
 
     mtd endSection()
     {
         let sec = sections.back()
-        if sec.kind != .Unordered
-        {
-            releaseSection()
-            return
-        }
 
-        // Patch fat table seek and count
-        var curSeek = output.getSeek()
-        output.setSeek(sec.startSeek)
-        output.addNative(ConcatBuffer.getOffset(curSeek))
-        output.addNative(sec.mapSeek.count)
-        output.setSeek(curSeek)
-
-        // Write fat table
-        output.addNative(TagBinSignatures.Fat)
-        visit k, v: sec.mapSeek
+        if sec.kind == .Unordered
         {
-            output.addNative(k) // Crc
-            output.addNative(ConcatBuffer.getOffset(v)) // Linear seek inside the buffer
+            // Patch fat table seek and count
+            var curSeek = output.getSeek()
+            output.setSeek(sec.startSeek)
+            output.addNative(ConcatBuffer.getOffset(curSeek))
+            output.addNative(sec.mapSeek.count)
+            output.setSeek(curSeek)
+
+            // Write fat table
+            output.addNative(TagBinSignatures.Fat)
+            visit k, v: sec.mapSeek
+            {
+                output.addNative(k) // Crc
+                output.addNative(ConcatBuffer.getOffset(v)) // Linear seek inside the buffer
+            }
         }
 
         releaseSection()
