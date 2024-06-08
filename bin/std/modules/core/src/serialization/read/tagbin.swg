@@ -278,15 +278,18 @@ impl TagBin
 
     mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool throw
     {
-        if Reflection.hasAttribute(structType, Serialization.Final) or
-           Reflection.hasAttribute(structType, Serialization.PodFinal)
+        let sig = stream.readNative'u32()
+        if sig == Write.TagBinSignatures.Raw
         {
+            if !Reflection.hasAttribute(structType, Serialization.Final) and
+               !Reflection.hasAttribute(structType, Serialization.PodFinal) do
+                throw SerializationError{"cannot convert a type from final to non final"}
+
             beginSection(.Raw)
         }
         else
         {
             // Read version
-            let sig = stream.readNative'u32()
             if sig != Write.TagBinSignatures.Version do
                 throw SerializationError{"invalid version signature"}
             let streamVersion = stream.readNative'u32()
@@ -419,8 +422,7 @@ impl TagBin
         let orgCount = dref countElem
         if convertValToArray
         {
-            convertValToArray = false
-            dref countElem    = 1
+            dref countElem = 1
         }
         else
         {
@@ -432,9 +434,22 @@ impl TagBin
             dref countElem = stream.readNative'u64()
         }
 
-        // If we need a type conversion, we must read element by element
-        if convertNextNative do
+        // If we need a value conversion, we must read element by element
+        if convertValToArray
+        {
+            convertValToArray = false
             return false
+        }
+
+        // If we need a type conversion, we must read element by element
+        if convertNextNative
+        {
+            let sig = stream.readNative'u32()
+            if sig != Write.TagBinSignatures.Raw and sig != Write.TagBinSignatures.UnRaw do
+                throw SerializationError{"stream is corrupted"}
+
+            return false
+        }
 
         // Dynamic array of raw serializable types
         // Just read them in one batch
@@ -442,6 +457,10 @@ impl TagBin
         {
             let valueType = Reflection.getStructArrayType(typeElem)
             let (raw, sizeof) = isPodFinal(valueType)
+
+            let sig = stream.readNative'u32()
+            if sig != Write.TagBinSignatures.Raw and sig != Write.TagBinSignatures.UnRaw do
+                throw SerializationError{"stream is corrupted"}
 
             if raw
             {
@@ -459,6 +478,10 @@ impl TagBin
         {
             dref countElem = Math.min(orgCount, dref countElem)
             let (raw, sizeof) = isPodFinal(typeElem)
+
+            let sig = stream.readNative'u32()
+            if sig != Write.TagBinSignatures.Raw and sig != Write.TagBinSignatures.UnRaw do
+                throw SerializationError{"stream is corrupted"}
 
             if raw
             {

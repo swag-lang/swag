@@ -8,6 +8,8 @@ enum TagBinSignatures: u32
     Fat      = 0xC0DE0001
     Sequence = 0xC0DE0002
     Version  = 0xC0DE0003
+    Raw      = 0xC0DE0004
+    UnRaw    = 0xC0DE0005
 }
 
 struct TagBinSection
@@ -113,6 +115,7 @@ impl TagBin
         if Reflection.hasAttribute(structType, Serialization.Final) or
            Reflection.hasAttribute(structType, Serialization.PodFinal)
         {
+            output.addNative(TagBinSignatures.Raw)
             beginSection(.Raw)
         }
         else
@@ -182,9 +185,14 @@ impl TagBin
 
             if raw
             {
+                output.addNative(TagBinSignatures.Raw)
                 let bufArr = cast(const *Array'u8) data
                 output.addBytes(@mkslice(bufArr.buffer, countElem * sizeof))
                 return true
+            }
+            else
+            {
+                output.addNative(TagBinSignatures.UnRaw)
             }
         }
 
@@ -194,8 +202,13 @@ impl TagBin
             let (raw, sizeof) = isPodFinal(typeElem)
             if raw
             {
+                output.addNative(TagBinSignatures.Raw)
                 output.addBytes(@mkslice(cast(const ^u8) data, countElem * sizeof))
                 return true
+            }
+            else
+            {
+                output.addNative(TagBinSignatures.UnRaw)
             }
         }
 
