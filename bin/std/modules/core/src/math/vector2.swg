@@ -1,7 +1,7 @@
 #global namespace Math
 #global public
 
-#[Serialization.PodFinal]
+#[Serialization.Final]
 struct Vector2
 {
     x, y: f32

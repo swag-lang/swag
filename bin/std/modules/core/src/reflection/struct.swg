@@ -131,6 +131,7 @@ func hasMethod(type: typeinfo, name: string)->bool => getMethod(type, name) != n
     func hasPostMove(type: typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostMove) ? true : false
     func hasPostCopy(type: typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostCopy) ? true : false
     func canCopy(type: typeinfo)->bool     => (type.flags & TypeInfoFlags.CanCopy) ? true : false
+    func isPod(type: typeinfo)->bool       => (type.flags & (TypeInfoFlags.HasDrop | TypeInfoFlags.HasPostMove | TypeInfoFlags.HasPostCopy) ? false : true)
 }
 
 // Returns true if the interface 'itf' is implemented in the given structure type.

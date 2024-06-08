@@ -2,7 +2,7 @@
 #global namespace Math
 
 // A simple Point with 2 coordinates X and Y
-#[Serialization.PodFinal]
+#[Serialization.Final]
 struct Point
 {
     x:     f32

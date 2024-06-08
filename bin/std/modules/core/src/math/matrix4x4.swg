@@ -1,7 +1,7 @@
 #global namespace Math
 #global public
 
-#[Serialization.PodFinal]
+#[Serialization.Final]
 struct Matrix4x4
 {
     m: [4, 4] f32

@@ -19,14 +19,13 @@ Supported type changes are :
 * Conversion from a static array to a dynamic `Core.Array`, and vice versa.
 * Conversion from a single value to a static array or `Core.Array`, and vice versa.
 * Rename a struct with 'Serialization.Alias'.
-* Convert an existing complexe type to 'Serialization.PodFinal'
+* Convert an existing complexe type to 'Serialization.Final'
 
 Supported attributes are :
 
 * 'Serialisation.Version'. If version is specified, then loading will not have versioning if versions are the same
 * 'Serialization.Alias'. To rename a field or a struct type. Multiple aliases are supported.
 * 'Serialization.Final'. The struct will be loaded/saved without versioning (faster and lower serialization size)
-* 'Serialization.PodFinal'. The struct will be loaded/saved in place without versioning
 */
 struct TagBin
 {
@@ -288,7 +287,7 @@ impl TagBin
         {
             // If the stream contains a 'raw' representation of the struct, and the requested
             // type is not a POD, then we can load in place.
-            if !Reflection.hasAttribute(structType, Serialization.PodFinal) do
+            if !Reflection.hasAttribute(structType, Serialization.Final) do
                 throw SerializationError{"cannot convert a type from final to non final"}
 
             beginSection(.Raw)

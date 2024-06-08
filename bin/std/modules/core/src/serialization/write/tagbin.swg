@@ -112,8 +112,8 @@ impl TagBin
 
     mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool
     {
-        if Reflection.hasAttribute(structType, Serialization.Final) or
-           Reflection.hasAttribute(structType, Serialization.PodFinal)
+        let (pod, ?) = Serialization.isPodFinal(structType)
+        if pod
         {
             output.addNative(TagBinSignatures.Raw)
             beginSection(.Raw)

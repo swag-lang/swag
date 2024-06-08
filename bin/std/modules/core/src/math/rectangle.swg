@@ -2,7 +2,7 @@
 #global namespace Math
 
 // A simple rectangle with 4 coordinates
-#[Serialization.PodFinal]
+#[Serialization.Final]
 struct Rectangle
 {
     x:          f32     // Left position

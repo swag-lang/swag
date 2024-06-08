@@ -1,6 +1,6 @@
 using Core, Core.Serialization
 
-#[PodFinal]
+#[Final]
 struct AA
 {
     x, y, z: f32

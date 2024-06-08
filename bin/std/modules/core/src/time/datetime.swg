@@ -31,7 +31,7 @@ enum DateTimeFormat
 }
 
 // Represents an instant in time, typically expressed as a date and time of day
-#[Serialization.PodFinal]
+#[Serialization.Final]
 struct DateTime
 {
     year:            u16

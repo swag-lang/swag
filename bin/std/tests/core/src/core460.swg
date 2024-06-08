@@ -11,7 +11,7 @@ struct Toto1
 }
 
 #[Alias("AA")]
-#[PodFinal]
+#[Final]
 struct BB
 {
     x, y, z: f32
