@@ -102,7 +102,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
     }
 
     printCmdError(form("invalid [[set]] command [[%s]]", arg.split[1].c_str()));
-    return BcDbgCommandResult::BadArguments;
+    return BcDbgCommandResult::Error;
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdBc(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
