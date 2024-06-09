@@ -144,8 +144,9 @@ namespace
         {
             const Diagnostic* note;
             const auto        kindName = Naming::aKindName(prev->resolvedSymbolName()->kind);
-            if (prev->typeInfo)
-                note = Diagnostic::note(prev, formNte(Nte0004, prev->token.c_str(), kindName.c_str(), prev->typeInfo->getDisplayNameC()));
+            const auto        prevType = TypeManager::concreteType(prev->typeInfo, CONCRETE_FORCE_ALIAS);
+            if (prevType)
+                note = Diagnostic::note(prev, formNte(Nte0004, prev->token.c_str(), kindName.c_str(), prevType->getDisplayNameC()));
             else
                 note = Diagnostic::note(prev, formNte(Nte0003, prev->token.c_str(), kindName.c_str()));
             notes.push_back(note);
