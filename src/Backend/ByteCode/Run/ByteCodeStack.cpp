@@ -12,6 +12,8 @@ thread_local ByteCodeStack* g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
 
 uint32_t ByteCodeStack::maxLevel(const ByteCodeRunContext* runContext)
 {
+    if(steps.empty())
+        return 0;
     if (!runContext)
         return steps.size() - 1;
 

@@ -88,6 +88,8 @@ void ByteCodeDebugger::setup()
     commands.push_back({"help", "?", "", "print this list of commands", cmdHelp});
     commands.push_back({"help", "?", "<command>", "print help about a specific command", cmdHelp});
 
+    commands.push_back({"clear", "cls", "", "clear the console", cmdClear});
+
     commands.push_back({"quit", "q", "", "quit the compiler", cmdQuit});
 }
 

@@ -14,6 +14,7 @@ func roundDownToPowerOf2B(x: u32)->u32
 
 #test
 {
+    @breakpoint()
     @assert(roundDownToPowerOf2A(5) == roundDownToPowerOf2B(5))
     @assert(roundDownToPowerOf2A(37) == roundDownToPowerOf2B(37))
     @assert(roundDownToPowerOf2A(1555) == roundDownToPowerOf2B(1555))

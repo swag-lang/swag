@@ -28,6 +28,7 @@ namespace OS
     void                 setup();
     bool                 setupBuild();
     const BackendTarget& getNativeTarget();
+    void                 cls();
 
     bool  doProcess(Module* module, const Utf8& cmdline, const std::string& currentDirectory, uint32_t& numErrors);
     void  setThreadName(std::thread* thread, const char* threadName);

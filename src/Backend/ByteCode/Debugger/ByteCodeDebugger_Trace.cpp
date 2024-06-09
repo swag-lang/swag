@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
+#include "Os/Os.h"
 #include "Report/Log.h"
 #include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
@@ -178,6 +179,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
     context->debugStackFrameOffset = 0;
     g_ByteCodeDebugger.stepMode    = DebugStepMode::ToNextBreakpoint;
     return BcDbgCommandResult::Break;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdClear(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
+    if (arg.split.size() > 1)
+        return BcDbgCommandResult::TooManyArguments;
+
+    OS::cls();
+    return BcDbgCommandResult::Continue;
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdQuit(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
