@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/AtomicFlags.h"
 #include "Main/CommandLine.h"
 #include "Syntax/Tokenizer/Token.h"
 #include "Threading/Mutex.h"
@@ -10,7 +11,8 @@ struct Diagnostic;
 struct Module;
 struct Scope;
 
-using AttributeFlags = Flags<uint64_t>;
+using AttributeFlagsV = uint64_t;
+using AttributeFlags  = AtomicFlags<AttributeFlagsV>;
 
 using FileFlags                              = Flags<uint32_t>;
 constexpr FileFlags FILE_EXTERNAL            = 0x00000001;

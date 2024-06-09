@@ -6,7 +6,8 @@
 #include "Syntax/Tokenizer/Token.h"
 
 struct TypeInfoNative;
-using AttributeFlags = Flags<uint64_t>;
+using AttributeFlagsV = uint64_t;
+using AttributeFlags  = AtomicFlags<AttributeFlagsV>;
 
 struct LanguageSpec
 {

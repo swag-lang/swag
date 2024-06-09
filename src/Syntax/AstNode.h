@@ -43,8 +43,10 @@ using SemanticFct       = bool       (*)(SemanticContext* context);
 using ByteCodeFct       = bool       (*)(ByteCodeGenContext* context);
 using ByteCodeNotifyFct = bool (*)(ByteCodeGenContext* context);
 
-using AstNodeFlags        = AtomicFlags<uint64_t>;
-using AstSemFlags         = AtomicFlags<uint64_t>;
+using AstNodeFlagsV       = uint64_t;
+using AstNodeFlags        = AtomicFlags<AstNodeFlagsV>;
+using AstSemFlagsV        = uint64_t;
+using AstSemFlags         = AtomicFlags<AstSemFlagsV>;
 using CollectedScopeFlags = Flags<uint32_t>;
 using BreakableFlags      = Flags<uint32_t>;
 using CloneFlags          = Flags<uint32_t>;

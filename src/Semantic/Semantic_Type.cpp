@@ -476,7 +476,7 @@ bool Semantic::resolveType(SemanticContext* context)
     // In fact this is a reference
     if (typeNode->typeFlags.has(TYPEFLAG_IS_REF))
     {
-        auto ptrFlags = TYPEINFO_POINTER_REF;
+        TypeInfoFlags ptrFlags = TYPEINFO_POINTER_REF;
         if (typeNode->typeFlags.has(TYPEFLAG_IS_CONST))
             ptrFlags.add(TYPEINFO_CONST);
         ptrFlags.add(typeNode->typeInfo->flags.mask(TYPEINFO_GENERIC));

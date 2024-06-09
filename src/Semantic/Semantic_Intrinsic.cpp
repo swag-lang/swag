@@ -431,7 +431,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         const auto ptrSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        auto       ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
+        TypeInfoFlags ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
         if (ptrSlice->isConst())
             ptrFlags.add(TYPEINFO_CONST);
         node->typeInfo = g_TypeMgr->makePointerTo(ptrSlice->pointedType, ptrFlags);
@@ -462,7 +462,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         const auto ptrArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto       ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
+        TypeInfoFlags ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
         if (ptrArray->isConst())
             ptrFlags.add(TYPEINFO_CONST);
         node->typeInfo = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrFlags);
