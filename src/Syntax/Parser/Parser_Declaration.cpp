@@ -97,7 +97,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     attrUse->content->setOwnerAttrUse(attrUse);
 
     // Add original scope
-    if (topStmt)
+    if (topStmt && orgScope != newScope)
         topStmt->addAlternativeScope(orgScope);
 
     return true;

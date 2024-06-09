@@ -186,11 +186,11 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         }
     }
 
-    // If we are in a function, inherit also the scopes from the function.
-    // Be careful that if the call is inside a #macro, we do not want to inherit the function (3550)
+    // If we are in a function, inherit also the scopes from the function if we are in the same struct.
     if (node->ownerFct &&
         node->ownerFct->hasExtMisc() &&
-        !node->findParent(AstNodeKind::CompilerMacro))
+        node->ownerStructScope &&
+        node->ownerStructScope == node->ownerFct->ownerStructScope)
     {
         newFunc->addAlternativeScopes(node->ownerFct->extMisc());
     }
