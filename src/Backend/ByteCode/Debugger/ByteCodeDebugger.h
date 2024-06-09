@@ -30,6 +30,7 @@ struct BcDbgCommandArg
 using BcDbgCommandCB = std::function<BcDbgCommandResult(ByteCodeRunContext*, const BcDbgCommandArg&)>;
 struct BcDbgCommand
 {
+    const char* category;
     const char* name;
     const char* shortname;
     const char* args;

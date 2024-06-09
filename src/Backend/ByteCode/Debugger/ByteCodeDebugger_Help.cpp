@@ -57,11 +57,23 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)
 void ByteCodeDebugger::printHelp() const
 {
     Utf8 lastName;
+    Utf8 lastCateg;
+
     for (auto& c : commands)
     {
         if (lastName == c.name)
             continue;
         lastName = c.name;
+
+        if (lastCateg != c.category)
+        {
+            g_Log.writeEol();
+            g_Log.print(c.category, LogColor::Gray);
+            g_Log.writeEol();
+            g_Log.writeEol();
+            lastCateg = c.category;
+        }
+
         printHelp(c);
     }
 }
