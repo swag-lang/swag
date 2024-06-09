@@ -130,3 +130,4 @@ constexpr AstSemFlagsV SEMFLAG_ACCESS_MASK                = SEMFLAG_ACCESS_PUBLI
 constexpr AstSemFlagsV SEMFLAG_ACCESS_COMPUTED            = 0x04000000'00000000;
 constexpr AstSemFlagsV SEMFLAG_FROM_PTR_REF               = 0x08000000'00000000;
 constexpr AstSemFlagsV SEMFLAG_PRE_RESOLVE                = 0x10000000'00000000;
+constexpr AstSemFlagsV SEMFLAG_NO_PUBLIC                  = 0x20000000'00000000;

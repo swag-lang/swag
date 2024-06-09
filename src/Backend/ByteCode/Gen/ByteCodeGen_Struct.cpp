@@ -345,8 +345,6 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                     funcNode->typeInfo   = opSpecial->typeInfoFunc;
                     funcNode->ownerScope = structNode->scope;
                     funcNode->token.text = g_LangSpec->name_opInitGenerated;
-                    if (typeInfoStruct->opUserInitFct)
-                        typeInfoStruct->opUserInitFct->removeAttribute(ATTRIBUTE_PUBLIC);
                     funcNode->allocateExtension(ExtensionKind::ByteCode);
                     funcNode->extByteCode()->bc = opSpecial;
                     opSpecial->node             = funcNode;
@@ -362,8 +360,6 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                     funcNode->ownerScope = structNode->scope;
                     funcNode->token.text = g_LangSpec->name_opDropGenerated;
                     funcNode->addAttribute(ATTRIBUTE_PUBLIC);
-                    if (typeInfoStruct->opUserDropFct)
-                        typeInfoStruct->opUserDropFct->removeAttribute(ATTRIBUTE_PUBLIC);
                     funcNode->allocateExtension(ExtensionKind::ByteCode);
                     funcNode->extByteCode()->bc = opSpecial;
                     opSpecial->node             = funcNode;
@@ -379,8 +375,6 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                     funcNode->ownerScope = structNode->scope;
                     funcNode->token.text = g_LangSpec->name_opPostCopyGenerated;
                     funcNode->addAttribute(ATTRIBUTE_PUBLIC);
-                    if (typeInfoStruct->opUserPostCopyFct)
-                        typeInfoStruct->opUserPostCopyFct->removeAttribute(ATTRIBUTE_PUBLIC);
                     funcNode->allocateExtension(ExtensionKind::ByteCode);
                     funcNode->extByteCode()->bc = opSpecial;
                     opSpecial->node             = funcNode;
@@ -396,8 +390,6 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                     funcNode->ownerScope = structNode->scope;
                     funcNode->token.text = g_LangSpec->name_opPostMoveGenerated;
                     funcNode->addAttribute(ATTRIBUTE_PUBLIC);
-                    if (typeInfoStruct->opUserPostMoveFct)
-                        typeInfoStruct->opUserPostMoveFct->removeAttribute(ATTRIBUTE_PUBLIC);
                     funcNode->allocateExtension(ExtensionKind::ByteCode);
                     funcNode->extByteCode()->bc = opSpecial;
                     opSpecial->node             = funcNode;

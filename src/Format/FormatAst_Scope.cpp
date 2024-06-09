@@ -32,10 +32,6 @@ bool FormatAst::outputScopeContent(FormatContext& context, Module* module, const
     {
         for (const auto one : publicSet->publicFunc)
         {
-            // Can be removed in case of special functions
-            if (!one->hasAttribute(ATTRIBUTE_PUBLIC))
-                continue;
-
             concat->addBlankLine();
 
             // Remap special functions to their generated equivalent

@@ -112,6 +112,9 @@ void Scope::addPublicFunc(AstNode* node)
 {
     ScopedLock lk(mutex);
 
+    if (node->hasSemFlag(SEMFLAG_NO_PUBLIC))
+        return;
+
     if (kind == ScopeKind::Impl && parentScope->owner && parentScope->owner->token.sourceFile->imported)
     {
         const auto scope = node->token.sourceFile->scopeFile->parentScope;

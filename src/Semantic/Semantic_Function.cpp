@@ -3,8 +3,8 @@
 #include "Os/Os.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Semantic/SemanticJob.h"
 #include "Semantic/Error/SemanticError.h"
+#include "Semantic/SemanticJob.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -792,6 +792,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserInitFct = funcNode;
+            funcNode->addSemFlag(SEMFLAG_NO_PUBLIC);
         }
         else if (funcNode->token.text == g_LangSpec->name_opDrop)
         {
@@ -799,6 +800,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
+            funcNode->addSemFlag(SEMFLAG_NO_PUBLIC);
             SWAG_VERIFY(!typeStruct->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->tokenName, formErr(Err0102, typeStruct->getDisplayNameC())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
@@ -807,6 +809,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
+            funcNode->addSemFlag(SEMFLAG_NO_PUBLIC);
             SWAG_VERIFY(!typeStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->tokenName, formErr(Err0103, typeStruct->name.c_str())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostMove)
@@ -815,6 +818,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostMoveFct = funcNode;
+            funcNode->addSemFlag(SEMFLAG_NO_PUBLIC);
         }
     }
 
