@@ -630,7 +630,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
         if (!parentStruct->hasSemFlag(SEMFLAG_PRE_RESOLVE))
         {
             parentStruct->dependentJobs.add(context->baseJob);
-            context->baseJob->setPending(JobWaitKind::WaitPreResolve, parentStruct->resolvedSymbolNameSafe(), parentStruct, nullptr);
+            context->baseJob->setPending(JobWaitKind::WaitPreResolve, parentStruct->resolvedSymbolName(), parentStruct, nullptr);
             return true;
         }
     }
@@ -642,7 +642,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
         if (!parentFunc->hasSemFlag(SEMFLAG_PRE_RESOLVE))
         {
             parentFunc->dependentJobs.add(context->baseJob);
-            context->baseJob->setPending(JobWaitKind::WaitPreResolve, parentFunc->resolvedSymbolNameSafe(), parentFunc, nullptr);
+            context->baseJob->setPending(JobWaitKind::WaitPreResolve, parentFunc->resolvedSymbolName(), parentFunc, nullptr);
             return true;
         }
     }

@@ -518,29 +518,19 @@ struct AstNode
     TypeInfo* typeInfo;
     TypeInfo* castedTypeInfo;
 
-    union
-    {
-        SymbolName*     symbolName;
-        SymbolOverload* symbolOverload;
-    };
+    std::atomic<SymbolName*>     symbolName;
+    std::atomic<SymbolOverload*> symbolOverload;
 
-    SymbolName* resolvedSymbolName() const
+    SymbolName*     resolvedSymbolName() const { return symbolName; }
+    SymbolOverload* resolvedSymbolOverload() const { return symbolOverload; }
+    void            setResolvedSymbolName(SymbolName* sym) { symbolName = sym; }
+    void            setResolvedSymbolOverload(SymbolOverload* over) { symbolOverload = over; }
+
+    void setResolvedSymbol(SymbolName* sym, SymbolOverload* over)
     {
-        SWAG_RACE_CONDITION_READ(raceSymbol);
-        return resolvedSymbolNameSafe();
+        symbolName     = sym;
+        symbolOverload = over;
     }
-
-    SymbolOverload* resolvedSymbolOverload() const
-    {
-        SWAG_RACE_CONDITION_READ(raceSymbol);
-        return resolvedSymbolOverloadSafe();
-    }
-
-    SymbolName*     resolvedSymbolNameSafe() const { return hasSemFlag(SEMFLAG_HAS_SYMBOL_NAME) ? symbolName : (symbolOverload ? symbolOverload->symbol : nullptr); }
-    SymbolOverload* resolvedSymbolOverloadSafe() const { return hasSemFlag(SEMFLAG_HAS_SYMBOL_NAME) ? nullptr : symbolOverload; }
-    void            setResolvedSymbolName(SymbolName* sym);
-    void            setResolvedSymbolOverload(SymbolOverload* over);
-    void            setResolvedSymbol(SymbolName* sym, SymbolOverload* over);
 
     AstNode*       parent;
     NodeExtension* extension;
@@ -561,7 +551,6 @@ struct AstNode
 #endif
 
     SWAG_RACE_CONDITION_INSTANCE(raceC);
-    SWAG_RACE_CONDITION_INSTANCE(raceSymbol);
 };
 
 struct AstVarDecl : AstNode

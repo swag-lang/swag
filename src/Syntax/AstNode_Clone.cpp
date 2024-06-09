@@ -76,8 +76,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         castedTypeInfo = from->castedTypeInfo;
     }
 
-    addSemFlag(from->semFlags.mask(SEMFLAG_HAS_SYMBOL_NAME));
-    symbolName = from->symbolName;
+    symbolName     = from->symbolName.load();
+    symbolOverload = from->symbolOverload.load();
 
     token = from->token;
     if (context.forceLocation)

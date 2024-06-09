@@ -141,7 +141,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
     VectorNative<uint8_t*> addrs;
     for (const auto n : g_ByteCodeDebugger.cxtBc->localVars)
     {
-        const auto over = n->resolvedSymbolOverloadSafe();
+        const auto over = n->resolvedSymbolOverload();
         if (!over)
             continue;
         nodes.push_back(n);
@@ -186,7 +186,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
     VectorNative<uint8_t*> addrs;
     for (const auto n : funcDecl->parameters->children)
     {
-        const auto over = n->resolvedSymbolOverloadSafe();
+        const auto over = n->resolvedSymbolOverload();
         if (!over)
             continue;
         nodes.push_back(n);
@@ -225,7 +225,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoGlobals(ByteCodeRunContext* context,
     const auto m = context->jc.sourceFile->module;
     for (const auto n : m->globalVarsBss)
     {
-        const auto over = n->resolvedSymbolOverloadSafe();
+        const auto over = n->resolvedSymbolOverload();
         if (!over)
             continue;
         nodes.push_back(n);
@@ -234,7 +234,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoGlobals(ByteCodeRunContext* context,
 
     for (const auto n : m->globalVarsMutable)
     {
-        const auto over = n->resolvedSymbolOverloadSafe();
+        const auto over = n->resolvedSymbolOverload();
         if (!over)
             continue;
         nodes.push_back(n);

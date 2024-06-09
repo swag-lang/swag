@@ -897,7 +897,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     if (!funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_PARTIAL_RESOLVE))
     {
         funcDecl->dependentJobs.add(context->baseJob);
-        context->baseJob->setPending(JobWaitKind::SemPartialResolve, funcDecl->resolvedSymbolNameSafe(), funcDecl, nullptr);
+        context->baseJob->setPending(JobWaitKind::SemPartialResolve, funcDecl->resolvedSymbolName(), funcDecl, nullptr);
         return true;
     }
 

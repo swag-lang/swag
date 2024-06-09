@@ -127,5 +127,4 @@ constexpr AstSemFlags SEMFLAG_ACCESS_PRIVATE             = 0x02000000'00000000;
 constexpr AstSemFlags SEMFLAG_ACCESS_MASK                = 0x00800000'00000000 | 0x01000000'00000000 | 0x02000000'00000000;
 constexpr AstSemFlags SEMFLAG_ACCESS_COMPUTED            = 0x04000000'00000000;
 constexpr AstSemFlags SEMFLAG_FROM_PTR_REF               = 0x08000000'00000000;
-constexpr AstSemFlags SEMFLAG_HAS_SYMBOL_NAME            = 0x10000000'00000000;
-constexpr AstSemFlags SEMFLAG_PRE_RESOLVE                = 0x20000000'00000000;
+constexpr AstSemFlags SEMFLAG_PRE_RESOLVE                = 0x10000000'00000000;
