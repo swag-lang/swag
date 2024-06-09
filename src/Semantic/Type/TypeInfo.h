@@ -131,23 +131,9 @@ struct TypeInfo
     const TypeInfo* getConstAlias() const;
     TypeInfo*       getConcreteAlias() const;
 
-    bool hasFlag(TypeInfoFlags fl) const 
-    { 
-        SharedLock lk(mutexFlags);
-        return flags.has(fl); 
-    }
-
-    void addFlag(TypeInfoFlags fl) 
-    { 
-        ScopedLock lk(mutexFlags);
-        flags.add(fl); 
-    }
-
-    void removeFlag(TypeInfoFlags fl) 
-    { 
-        ScopedLock lk(mutexFlags);
-        flags.remove(fl); 
-    }
+    bool hasFlag(const TypeInfoFlags& fl) const { return flags.has(fl); }
+    void addFlag(const TypeInfoFlags& fl) { flags.add(fl); }
+    void removeFlag(const TypeInfoFlags& fl) { flags.remove(fl); }
 
     bool isSlice() const { return kind == TypeInfoKind::Slice; }
     bool isInterface() const { return kind == TypeInfoKind::Interface; }
@@ -223,7 +209,6 @@ struct TypeInfo
     const Utf8& computeWhateverNameNoLock(ComputeNameKind nameKind);
 
     mutable SharedMutex mutex;
-    mutable SharedMutex mutexFlags;
 
     Utf8 name;
     Utf8 displayName;
