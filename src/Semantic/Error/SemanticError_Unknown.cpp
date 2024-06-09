@@ -150,6 +150,9 @@ namespace
             else
                 note = Diagnostic::note(prev, formNte(Nte0003, prev->token.c_str(), kindName.c_str()));
             notes.push_back(note);
+            
+            if(prev->typeInfo && prev->typeInfo->declNode)
+                notes.push_back(Diagnostic::hereIs(prev->typeInfo->declNode));
         }
 
         return true;
