@@ -203,6 +203,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     const auto ipNode = g_ByteCodeDebugger.cxtIp->node;
     const auto bc     = g_ByteCodeDebugger.cxtBc;
 
+    // Node
     if (ipNode && ipNode->ownerFct)
     {
         auto inlined = ipNode->hasExtOwner() ? ipNode->extOwner()->ownerInline : nullptr;
@@ -213,8 +214,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
         }
 
         g_ByteCodeDebugger.printTitleNameType("function", ipNode->ownerFct->getScopedName(), ipNode->ownerFct->typeInfo->getDisplayNameC());
+
+        if(ipNode->ownerFct->token.sourceFile)
+        {
+            const auto loc = form("%s:%u:%u", ipNode->ownerFct->token.sourceFile->path.c_str(), ipNode->ownerFct->token.startLocation.line + 1, ipNode->ownerFct->token.startLocation.column + 1);
+            g_ByteCodeDebugger.printTitleNameType("function location", loc, "");
+        }
     }
 
+    // ByteCode
     g_ByteCodeDebugger.printTitleNameType("bytecode", bc->getPrintName(), bc->typeInfoFunc->getDisplayNameC());
     if (bc->sourceFile && bc->node)
     {
