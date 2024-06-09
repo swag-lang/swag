@@ -20,7 +20,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
         if (!Utf8::isNumber(arg.split[1].c_str()))
         {
             printCmdError(form("invalid step count [[%s]]", arg.split[1].c_str()));
-            return BcDbgCommandResult::Continue;
+            return BcDbgCommandResult::Error;
         }
 
         g_ByteCodeDebugger.stepCount = arg.split[1].toInt();
