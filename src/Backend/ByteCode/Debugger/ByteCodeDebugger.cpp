@@ -211,6 +211,11 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext*, const Utf8& line, Utf8& t
     if (tokens.empty())
         return "";
 
+    if(tokens[0] == "?" || tokens[0] == "help")
+        tokens.erase(tokens.begin());
+    if (tokens.empty())
+        return "";
+    
     toComplete = tokens.back();
 
     // Command

@@ -169,16 +169,38 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
         const auto& c = toPrint[0];
 
         g_Log.setColor(LogColor::Gray);
-        g_Log.print(form("command:     %s%s %s%s\n", Log::colorToVTS(LogColor::Name).c_str(), c.name, Log::colorToVTS(LogColor::Type).c_str(), c.args));
+        g_Log.print("command:     ");
+        g_Log.setColor(LogColor::Name);
+        g_Log.print(c.name);
+        if(c.subcommand[0])
+        {
+            g_Log.print(" ");
+            g_Log.print(c.subcommand);
+        }
+        g_Log.writeEol();
+
+        g_Log.setColor(LogColor::Gray);
+        g_Log.print("arguments:   ");
+        g_Log.setColor(LogColor::Type);
+        g_Log.print(c.args);
+        g_Log.writeEol();
+        
         if (c.shortname[0])
         {
             g_Log.setColor(LogColor::Gray);
-            g_Log.print(form("short name:  %s%s\n", Log::colorToVTS(LogColor::Name).c_str(), c.shortname));
+            g_Log.print("short name:  ");
+            g_Log.setColor(LogColor::Name);
+            g_Log.print(c.shortname);
+            g_Log.writeEol();
         }
+        
         g_Log.setColor(LogColor::Gray);
-        g_Log.print(form("description: %s%s\n", Log::colorToVTS(LogColor::White).c_str(), c.help));
-        g_Log.setColor(LogColor::Gray);
+        g_Log.print("description: ");
+        g_Log.setColor(LogColor::White);
+        g_Log.print(c.help);
+        g_Log.writeEol();
 
+        g_Log.setColor(LogColor::Gray);
         if (c.cb)
         {
             BcDbgCommandArg arg1 = arg;
