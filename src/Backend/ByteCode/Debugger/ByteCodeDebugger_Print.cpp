@@ -210,7 +210,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
 
         g_ByteCodeDebugger.printTitleNameType("function", ipNode->ownerFct->getScopedName(), ipNode->ownerFct->typeInfo->getDisplayNameC());
 
-        if(ipNode->ownerFct->token.sourceFile)
+        if (ipNode->ownerFct->token.sourceFile)
         {
             const auto loc = form("%s:%u:%u", ipNode->ownerFct->token.sourceFile->path.c_str(), ipNode->ownerFct->token.startLocation.line + 1, ipNode->ownerFct->token.startLocation.column + 1);
             g_ByteCodeDebugger.printTitleNameType("function location", loc, "");
@@ -424,12 +424,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         return BcDbgCommandResult::Continue;
     }
 
-    uint64_t       addrVal;
     EvaluateResult res;
-
     if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
         return BcDbgCommandResult::Error;
 
+    uint64_t addrVal;
     if (!res.addr)
     {
         res.addr = res.value->reg.pointer;

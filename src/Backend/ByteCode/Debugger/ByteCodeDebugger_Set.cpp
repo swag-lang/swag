@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
+#include "Syntax/ComputedValue.h"
 
 namespace
 {
@@ -39,6 +40,55 @@ void ByteCodeDebugger::printSet(ByteCodeRunContext*)
     g_Log.messageHeaderDot("print array content", g_ByteCodeDebugger.printArray ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("bytecode source code", g_ByteCodeDebugger.printBcCode ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("backtrace source code", g_ByteCodeDebugger.printBtCode ? "on" : "off", LogColor::Name, LogColor::White, " ");
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdSetRegister(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
+    if (arg.split.size() < 3)
+        return BcDbgCommandResult::NotEnoughArguments;
+
+    if (arg.split[2][0] != '$')
+    {
+        printCmdError(form("invalid register [[%s]]", arg.split[2].c_str()));
+        return BcDbgCommandResult::Error;
+    }
+
+    if (arg.split[2] == "$sp")
+    {
+        printCmdError("cannot modify stack address [[$sp]]");
+        return BcDbgCommandResult::Error;
+    }
+
+    if (arg.split[2] == "$bp")
+    {
+        printCmdError("cannot modify base address [[$bp]]");
+        return BcDbgCommandResult::Error;
+    }
+
+    uint32_t regN;
+    if (!g_ByteCodeDebugger.getRegIdx(context, arg.split[2].c_str() + 1, regN))
+        return BcDbgCommandResult::Error;
+
+    Utf8 expr;
+    for (uint32_t i = 3; i < arg.split.size(); i++)
+        expr += arg.split[i];
+    EvaluateResult res;
+    if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
+        return BcDbgCommandResult::Error;
+
+    if (!res.value)
+    {
+        printCmdError("cannot change register with that expression");
+        return BcDbgCommandResult::Error;
+    }
+
+    auto& regP = context->getRegBuffer(g_ByteCodeDebugger.cxtRc)[regN];
+    regP       = res.value->reg;
+
+    return BcDbgCommandResult::Continue;
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
@@ -100,6 +150,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         printCmdError(form("invalid [[set backtrace]] argument [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Error;
     }
+
+    if (arg.split[1] == "register" || arg.split[1] == "reg")
+        return cmdSetRegister(context, arg);
 
     printCmdError(form("invalid [[set]] command [[%s]]", arg.split[1].c_str()));
     return BcDbgCommandResult::Error;

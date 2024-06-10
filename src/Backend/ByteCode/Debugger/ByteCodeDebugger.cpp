@@ -74,6 +74,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"modifying state", "set", "", "print array [on|off]", "display the content of arrays when printing values", cmdSet});
     commands.push_back({"modifying state", "set", "", "(b)yte(c)ode code [on|off]", "display source code when printing bytecode", cmdSet});
     commands.push_back({"modifying state", "set", "", "(b)ack(t)race code [on|off]", "display source code when printing stack frames", cmdSet});
+    commands.push_back({"modifying state", "set", "", "(reg)ister <$register> <expr>", "modify the given register with the result of <expr>", cmdSet});
     
     commands.push_back({"bcdbg", "help", "?", "[command] [subcommand]", "display help", nullptr});
     commands.push_back({"bcdbg", "help", "?", "", "print this list of commands", cmdHelp});
