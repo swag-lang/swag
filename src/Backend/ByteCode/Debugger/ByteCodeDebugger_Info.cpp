@@ -93,8 +93,40 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* /*contex
     Vector<Utf8> all;
     for (const auto m : g_Workspace->modules)
         all.push_back(m->name);
+
     std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
     printLong(all);
+
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdInfoFiles(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
+    if (arg.split.size() > 3)
+        return BcDbgCommandResult::TooManyArguments;
+
+    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+
+    SetUtf8 set;
+    for (const auto m : g_Workspace->modules)
+    {
+        for (const auto f : m->files)
+        {
+            if (testNameFilter(f->path, filter))
+                set.insert(f->path);
+        }
+    }
+
+    Vector<Utf8> all;
+    for (const auto f : set)
+        all.push_back(f);
+
+    std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
+    printLong(all);
+
     return BcDbgCommandResult::Continue;
 }
 
@@ -328,6 +360,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const 
         return cmdInfoExpressions(context, arg);
     if (arg.split[1] == "modules" || arg.split[1] == "mod")
         return cmdInfoModules(context, arg);
+    if (arg.split[1] == "files" || arg.split[1] == "f")
+        return cmdInfoFiles(context, arg);
 
     printCmdError(form("invalid [[info]] command [[%s]]", arg.split[1].c_str()));
     return BcDbgCommandResult::Error;

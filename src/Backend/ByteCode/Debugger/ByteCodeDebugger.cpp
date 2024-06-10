@@ -59,6 +59,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"examining state", "info", "o", "registers|reg", "[--format]", "print all registers", cmdInfo});
     commands.push_back({"examining state", "info", "o", "expressions|exp", "", "print all dynamic expressions", cmdInfo});
     commands.push_back({"examining state", "info", "o", "modules|mod", "", "print all modules", cmdInfo});
+    commands.push_back({"examining state", "info", "o", "files|f", "[filter]", "print all files", cmdInfo});
     commands.push_back({"examining state", "info", "o", "locals|loc", "[filter]", "print all current local variables", cmdInfo});
     commands.push_back({"examining state", "info", "o", "arguments|arg", "[filter]", "print all current function arguments", cmdInfo});
     commands.push_back({"examining state", "info", "o", "functions|func", "[filter]", "print all functions", cmdInfo});
