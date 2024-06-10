@@ -184,6 +184,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, con
     EvaluateResult res;
     if (!g_ByteCodeDebugger.evalDynExpression(context, arg.cmdExpr, res, CompilerAstKind::EmbeddedInstruction))
         return BcDbgCommandResult::Error;
+    
     return BcDbgCommandResult::Continue;
 }
 

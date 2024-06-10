@@ -712,10 +712,6 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
     while (true)
     {
-        // Bar
-        /////////////////////////////////////////
-        printSeparator();
-
         // Prompt
         /////////////////////////////////////////
 
@@ -743,7 +739,6 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         // Split in command + parameters
         BcDbgCommandArg arg;
         tokenizeCommand(line, arg);
-        g_Log.writeEol();
 
         // Command
         /////////////////////////////////////////

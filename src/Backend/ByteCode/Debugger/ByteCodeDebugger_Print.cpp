@@ -63,11 +63,6 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
     }
 }
 
-void ByteCodeDebugger::printSeparator()
-{
-    g_Log.writeEol();
-}
-
 void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type)
 {
     g_Log.print(title, LogColor::Gray);

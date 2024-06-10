@@ -170,7 +170,6 @@ struct ByteCodeDebugger
     void                           setup();
     static void                    printLong(const Utf8& all);
     static void                    printLong(const Vector<Utf8>& all);
-    static void                    printSeparator();
     bool                           getRegIdx(ByteCodeRunContext* context, const Utf8& arg, uint32_t& regN) const;
     static Utf8                    getPrintSymbols(ByteCodeRunContext* context, const Utf8& filter, uint8_t* baseAddr, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs);
     void                           printDebugContext(ByteCodeRunContext* context, bool force = false);
