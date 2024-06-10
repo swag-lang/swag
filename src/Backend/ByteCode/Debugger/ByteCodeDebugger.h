@@ -159,6 +159,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdInfoGlobals(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdInfoExpressions(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 
+    static BcDbgCommandResult cmdBreakEnableDisable(ByteCodeRunContext* context, const BcDbgCommandArg& arg, int& numB, bool enable);
     static BcDbgCommandResult cmdBreakEnable(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBreakDisable(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBreakClear(ByteCodeRunContext* context, const BcDbgCommandArg& arg);

@@ -142,10 +142,21 @@ bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext* /*context*/, const Debu
     return true;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakEnableDisable(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg, int& numB, bool enable)
 {
+    if (g_ByteCodeDebugger.breakpoints.empty())
+    {
+        printCmdError("no breakpoint");
+        return BcDbgCommandResult::Error;
+    }
+
     if (arg.split.size() < 3)
-        return BcDbgCommandResult::NotEnoughArguments;
+    {
+        for (auto& bkp : g_ByteCodeDebugger.breakpoints)
+            bkp.disabled = !enable;
+        return BcDbgCommandResult::Continue;
+    }
+
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
 
@@ -155,45 +166,55 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* /*contex
         return BcDbgCommandResult::Error;
     }
 
-    const int numB = arg.split[2].toInt();
+    numB = arg.split[2].toInt();
     if (!numB || numB - 1 >= static_cast<int>(g_ByteCodeDebugger.breakpoints.size()))
     {
         printCmdError(form("breakpoint number [[%d]] does not exist", numB));
         return BcDbgCommandResult::Error;
     }
 
-    g_ByteCodeDebugger.breakpoints[numB - 1].disabled = false;
-    printCmdResult(form("breakpoint #%d has been enabled", numB));
+    g_ByteCodeDebugger.breakpoints[numB - 1].disabled = !enable;
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext*, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (arg.split.size() < 3)
-        return BcDbgCommandResult::NotEnoughArguments;
-    if (arg.split.size() > 3)
-        return BcDbgCommandResult::TooManyArguments;
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
 
-    if (!Utf8::isNumber(arg.split[2].c_str()))
-    {
-        printCmdError(form("invalid breakpoint number [[%s]]", arg.split[2].c_str()));
-        return BcDbgCommandResult::Error;
-    }
+    int        numB = 0;
+    const auto res  = cmdBreakEnableDisable(context, arg, numB, true);
+    if (res != BcDbgCommandResult::Continue)
+        return res;
 
-    const int numB = arg.split[2].toInt();
-    if (!numB || numB - 1 >= static_cast<int>(g_ByteCodeDebugger.breakpoints.size()))
-    {
-        printCmdError(form("breakpoint number [[%d]] does not exist", numB));
-        return BcDbgCommandResult::Error;
-    }
+    if (numB)
+        printCmdResult(form("breakpoint #%d has been enabled", numB));
+    else
+        printCmdResult(form("all breakpoints have been enabled", numB));
+    return BcDbgCommandResult::Continue;
+}
 
-    g_ByteCodeDebugger.breakpoints[numB - 1].disabled = true;
-    printCmdResult(form("breakpoint #%d has been disabled", numB));
+BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
+    int        numB = 0;
+    const auto res  = cmdBreakEnableDisable(context, arg, numB, false);
+    if (res != BcDbgCommandResult::Continue)
+        return res;
+    if (numB)
+        printCmdResult(form("breakpoint #%d has been disabled", numB));
+    else
+        printCmdResult(form("all breakpoints have been disabled", numB));
     return BcDbgCommandResult::Continue;
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext*, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() == 2)
     {
         if (g_ByteCodeDebugger.breakpoints.empty())
@@ -227,14 +248,20 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext*, const Bc
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakPrint(ByteCodeRunContext* context, const BcDbgCommandArg&)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakPrint(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     g_ByteCodeDebugger.printBreakpoints(context);
     return BcDbgCommandResult::Continue;
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() < 3)
         return BcDbgCommandResult::NotEnoughArguments;
     if (arg.split.size() > 3)
@@ -260,6 +287,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
 
 BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() < 3)
         return BcDbgCommandResult::NotEnoughArguments;
     if (arg.split.size() > 3)
@@ -292,6 +322,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
 
 BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
     if (arg.split.size() < 4)
         return BcDbgCommandResult::NotEnoughArguments;
     if (arg.split.size() > 4)
@@ -333,9 +366,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
 
 BcDbgCommandResult ByteCodeDebugger::cmdBreak(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (arg.help)
-        return BcDbgCommandResult::Continue;
-
     if (arg.split.size() == 1)
         return cmdBreakPrint(context, arg);
     if (arg.split[1] == "enable" || arg.split[1] == "en")
