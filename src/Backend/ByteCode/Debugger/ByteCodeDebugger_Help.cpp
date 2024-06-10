@@ -27,6 +27,8 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd, bool commandMode)
     lineRaw += " ";
 
     // Sub command
+    line += Log::colorToVTS(LogColor::Type);
+    
     uint32_t colArgAdd = 0;
     if (!commandMode && cmd.subcommand[0])
     {
@@ -38,7 +40,6 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd, bool commandMode)
         colArgAdd = 10;
 
     // Arguments
-    line += Log::colorToVTS(LogColor::Type);
     while (lineRaw.length() < 14 + colArgAdd)
     {
         line += " ";
