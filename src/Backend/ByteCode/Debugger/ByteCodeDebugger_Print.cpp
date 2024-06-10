@@ -111,13 +111,11 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     const auto loc = ByteCode::getLocation(cxtBc, cxtIp, true);
 
     // Print file
-    bool printSomething = false;
     if (loc.file)
     {
         if (force || loc.file != stepLastFile)
         {
             printTitleNameType("=> file", loc.file->name, "");
-            printSomething = true;
         }
     }
 
@@ -146,18 +144,12 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
             if (isInlined)
                 printTitleNameType("=> inlined", newFunc->getScopedName(), newFunc->typeInfo->getDisplayNameC());
             printTitleNameType("=> function", node->ownerFct->getScopedName(), node->ownerFct->typeInfo->getDisplayNameC());
-            printSomething = true;
         }
     }
     else if (force || lastBc != cxtBc)
     {
         printTitleNameType("=> generated", cxtBc->name, cxtBc->typeInfoFunc ? cxtBc->typeInfoFunc->getDisplayNameC() : "");
-        printSomething = true;
     }
-
-    // Separation
-    if (printSomething)
-        g_Log.writeEol();
 
     // Print instruction
     if (bcMode)
@@ -181,8 +173,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     stepLastLocation = loc.location;
     stepLastFunc     = newFunc;
 
-    if (!display.empty())
-        g_Log.writeEol();
+    // Print current display expressions
     printDisplay(context);
 }
 
