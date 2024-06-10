@@ -10,6 +10,17 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)
     Utf8 lineRaw;
 
     line += Log::colorToVTS(LogColor::Name);
+
+    // Short name
+    line += cmd.shortname;
+    lineRaw += cmd.shortname;
+    while (lineRaw.length() < 3)
+    {
+        line += " ";
+        lineRaw += " ";
+    }
+
+    // Long name
     line += cmd.name;
     lineRaw += cmd.name;
     line += " ";
@@ -21,11 +32,7 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)
         lineRaw += " ";
     }
 
-    line += cmd.shortname;
-    lineRaw += cmd.shortname;
-    line += " ";
-    lineRaw += " ";
-
+    // Arguments
     line += Log::colorToVTS(LogColor::Type);
     while (lineRaw.length() < 14)
     {
@@ -38,6 +45,7 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)
     line += " ";
     lineRaw += " ";
 
+    // Help
     line += Log::colorToVTS(LogColor::White);
     while (lineRaw.length() < 44)
     {
@@ -122,13 +130,17 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
                 continue;
 
             Vector<Utf8> subCmds;
+            Vector<Utf8> subCmds1;
             Utf8::tokenizeBlanks(cmd.args, subCmds);
-            subCmds[0].replace("(", "");
-            subCmds[0].replace(")", "");
-            if (arg.split[2] != subCmds[0])
-                continue;
-
-            toPrint.push_back(cmd);
+            Utf8::tokenize(subCmds[0], '|', subCmds1);
+            for (const auto& c : subCmds1)
+            {
+                if (arg.split[2] == c)
+                {
+                    toPrint.push_back(cmd);
+                    break;
+                }
+            }
         }
     }
 
