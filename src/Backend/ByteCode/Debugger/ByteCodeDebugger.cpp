@@ -211,11 +211,11 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext*, const Utf8& line, Utf8& t
     if (tokens.empty())
         return "";
 
-    if(tokens[0] == "?" || tokens[0] == "help")
+    if (tokens[0] == "?" || tokens[0] == "help")
         tokens.erase(tokens.begin());
     if (tokens.empty())
         return "";
-    
+
     toComplete = tokens.back();
 
     // Command
@@ -860,6 +860,20 @@ bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
                 pz += 3;
                 continue;
             }
+
+            if (pz[1] == 'r' && pz[2] == 'r' && pz[3] == '0' && (SWAG_IS_BLANK(pz[4]) || !pz[4]))
+            {
+                result += form("0x%llx", context->registersRR[0]);
+                pz += 4;
+                continue;
+            }
+
+            if (pz[1] == 'r' && pz[2] == 'r' && pz[3] == '1' && (SWAG_IS_BLANK(pz[4]) || !pz[4]))
+            {
+                result += form("0x%llx", context->registersRR[1]);
+                pz += 4;
+                continue;
+            }            
 
             if (pz[1] == 'r' && SWAG_IS_DIGIT(pz[2]))
             {
