@@ -42,12 +42,12 @@ void ByteCodeDebugger::setup()
     commands.push_back({"source code", "ll", "", "", "[name]", "print the current function (or function [name]) source code", cmdLongList});
     commands.push_back({"source code", "i", "", "", "[num]", "print the current bytecode instruction and [num] instructions around", cmdInstruction});
     commands.push_back({"source code", "ii", "", "", "[name]", "print the current function (or function [name]) bytecode", cmdInstructionDump});
-       
+
     commands.push_back({"stack", "backtrace", "bt", "", "[num]", "backtrace, print [num] frames (0 for all)", cmdBackTrace});
     commands.push_back({"stack", "up", "", "", "[num]", "move stack frame [num] level up", cmdFrameUp});
     commands.push_back({"stack", "down", "", "", "[num]", "move stack frame [num] level down", cmdFrameDown});
     commands.push_back({"stack", "frame", "", "", "<num>", "set stack frame to level <num>", cmdFrame});
-    
+
     commands.push_back({"examining state", "print", "p", "", "<expr> [--format]", "print the result of the expression <expr> in the current context", cmdPrint});
     commands.push_back({"examining state", "examine", "x", "", "<address> [--num] [--format]", "print memory", cmdMemory});
     commands.push_back({"examining state", "display", "d", "<subcommand>", "", "automatic display of some expressions", nullptr});
@@ -75,12 +75,12 @@ void ByteCodeDebugger::setup()
     commands.push_back({"modifying state", "set", "", "bytecode|bc", "code [on|off]", "display source code when printing bytecode", cmdSet});
     commands.push_back({"modifying state", "set", "", "backtrace|bt", "code [on|off]", "display source code when printing stack frames", cmdSet});
     commands.push_back({"modifying state", "set", "", "register|reg", "<$reg> <expr>", "modify the given register <$reg> with the result of <expr>", cmdSet});
-    
+
     commands.push_back({"bcdbg", "help", "?", "", "[command] [subcommand]", "display help", nullptr});
     commands.push_back({"bcdbg", "help", "?", "", "", "print this list of commands", cmdHelp});
     commands.push_back({"bcdbg", "help", "?", "<command>", "", "print help about a specific command", cmdHelp});
     commands.push_back({"bcdbg", "help", "?", "<command> <subcommand>", "", "print help about a specific command and sub command", cmdHelp});
-    commands.push_back({"bcdbg", "cls",  "", "", "", "clear the console", cmdClear});
+    commands.push_back({"bcdbg", "cls", "", "", "", "clear the console", cmdClear});
     commands.push_back({"bcdbg", "quit", "q", "", "", "quit the compiler", cmdQuit});
 }
 
@@ -212,6 +212,40 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext*, const Utf8& line, Utf8& t
         return "";
 
     toComplete = tokens.back();
+
+    // Command
+    if (tokens.size() == 1)
+    {
+        for (const auto& c : commands)
+        {
+            Utf8 cmd{c.name};
+            if (cmd.find(toComplete) == 0)
+                return c.name;
+        }
+
+        return "";
+    }
+
+    // Sub command
+    if (tokens.size() == 2)
+    {
+        for (const auto& c : commands)
+        {
+            if (tokens[0] == c.name || tokens[0] == c.shortname)
+            {
+                if (c.subcommand[0] == 0)
+                    continue;
+
+                Vector<Utf8> subCmds;
+                Utf8::tokenize(c.subcommand, '|', subCmds);
+                for (const auto& c1 : subCmds)
+                {
+                    if (c1.find(toComplete) == 0)
+                        return c1;
+                }
+            }
+        }
+    }
 
     SemanticContext                 semContext;
     SemanticJob                     semJob;
