@@ -1,6 +1,7 @@
 #pragma once
 #include "Backend/ByteCode/Run/ByteCodeRunContext.h"
 #include "Os/Os.h"
+#include "Report/Log.h"
 
 struct TypeInfo;
 struct ComputedValue;
@@ -173,7 +174,7 @@ struct ByteCodeDebugger
     static void                    tokenizeCommand(const Utf8& line, BcDbgCommandArg& arg);
     void                           setup();
     static void                    printLong(const Utf8& all);
-    static void                    printLong(const Vector<Utf8>& all);
+    static void                    printLong(const Vector<Utf8>& all, LogColor color = LogColor::Gray);
     bool                           getRegIdx(ByteCodeRunContext* context, const Utf8& arg, uint32_t& regN) const;
     static Utf8                    getPrintSymbols(ByteCodeRunContext* context, const Utf8& filter, uint8_t* baseAddr, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs);
     void                           printDebugContext(ByteCodeRunContext* context, bool force = false);

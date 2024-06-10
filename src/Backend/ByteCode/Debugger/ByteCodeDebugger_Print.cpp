@@ -15,7 +15,7 @@ void ByteCodeDebugger::printLong(const Utf8& all)
     printLong(lines);
 }
 
-void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
+void ByteCodeDebugger::printLong(const Vector<Utf8>& all, LogColor color)
 {
     if (all.empty())
     {
@@ -23,7 +23,7 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
         return;
     }
 
-    g_Log.setColor(LogColor::Gray);
+    g_Log.setColor(color);
 
     int  cpt     = 0;
     bool canStop = true;

@@ -125,7 +125,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFiles(ByteCodeRunContext* /*context*
         all.push_back(f);
 
     std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
-    printLong(all);
+    printLong(all, LogColor::Location);
 
     return BcDbgCommandResult::Continue;
 }
