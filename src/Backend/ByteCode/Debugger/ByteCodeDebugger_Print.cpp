@@ -43,7 +43,10 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
                 if (key == OS::Key::Return)
                     break;
                 if (key == OS::Key::Ascii && c == 'q')
+                {
+                    g_Log.writeEol();
                     return;
+                }
                 if (key == OS::Key::Ascii && c == 'c')
                 {
                     canStop = false;
