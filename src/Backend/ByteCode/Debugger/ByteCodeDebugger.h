@@ -33,6 +33,7 @@ struct BcDbgCommand
     const char* category;
     const char* name;
     const char* shortname;
+    const char* subcommand;
     const char* args;
     const char* help;
 
@@ -188,7 +189,7 @@ struct ByteCodeDebugger
     static void printCmdResult(const Utf8& msg);
     static void printMsgBkp(const Utf8& msg);
     void        printHelp() const;
-    static void printHelp(const BcDbgCommand& cmd);
+    static void printHelp(const BcDbgCommand& cmd, bool commandMode);
     void        printDisplayList() const;
     void        printDisplay(ByteCodeRunContext* context) const;
     static void printSet(ByteCodeRunContext* context);

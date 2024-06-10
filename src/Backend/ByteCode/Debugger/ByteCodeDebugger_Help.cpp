@@ -2,7 +2,7 @@
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
 
-void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)
+void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd, bool commandMode)
 {
     g_Log.setColor(LogColor::Gray);
 
@@ -26,28 +26,43 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)
     line += " ";
     lineRaw += " ";
 
-    while (lineRaw.length() < 10)
+    // Sub command
+    uint32_t colArgAdd = 0;
+    if (!commandMode && cmd.subcommand[0])
     {
-        line += " ";
-        lineRaw += " ";
+        line += cmd.subcommand;
+        lineRaw += cmd.subcommand;
     }
+
+    if (!commandMode)
+        colArgAdd = 10;
 
     // Arguments
     line += Log::colorToVTS(LogColor::Type);
-    while (lineRaw.length() < 14)
+    while (lineRaw.length() < 14 + colArgAdd)
     {
         line += " ";
         lineRaw += " ";
     }
 
-    line += cmd.args;
-    lineRaw += cmd.args;
-    line += " ";
-    lineRaw += " ";
+    if (commandMode && cmd.subcommand[0])
+    {
+        line += cmd.subcommand;
+        lineRaw += cmd.subcommand;
+        line += " ";
+        lineRaw += " ";
+    }
+    else
+    {
+        line += cmd.args;
+        lineRaw += cmd.args;
+        line += " ";
+        lineRaw += " ";
+    }
 
     // Help
     line += Log::colorToVTS(LogColor::White);
-    while (lineRaw.length() < 44)
+    while (lineRaw.length() < 44 + colArgAdd)
     {
         line += " ";
         lineRaw += " ";
@@ -82,7 +97,7 @@ void ByteCodeDebugger::printHelp() const
             lastCateg = c.category;
         }
 
-        printHelp(c);
+        printHelp(c, true);
     }
 }
 
@@ -173,7 +188,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
 
     // Print all commands
     for (const auto& cmd : toPrint)
-        printHelp(cmd);
+        printHelp(cmd, false);
 
     return BcDbgCommandResult::Continue;
 }
