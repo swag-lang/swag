@@ -14,7 +14,8 @@ Utf8 ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, const Utf8& 
     {
         const auto n    = nodes[i];
         const auto over = n->resolvedSymbolOverload();
-        if (!testNameFilter(over->symbol->name, filter))
+        const Utf8 name = over->symbol->getFullName();
+        if (!testNameFilter(name, filter))
             continue;
         if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
             continue;
@@ -30,7 +31,7 @@ Utf8 ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, const Utf8& 
                                   over->typeInfo->getDisplayNameC(),
                                   Log::colorToVTS(LogColor::Default).c_str(),
                                   Log::colorToVTS(LogColor::Name).c_str(),
-                                  over->symbol->name.c_str(),
+                                  name.c_str(),
                                   Log::colorToVTS(LogColor::Default).c_str());
             result += str;
             result += " = ...";
