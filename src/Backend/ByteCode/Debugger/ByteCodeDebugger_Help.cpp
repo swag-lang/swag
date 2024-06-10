@@ -101,6 +101,7 @@ void ByteCodeDebugger::printHelp() const
     }
 }
 
+#pragma optimize("", off)
 BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCommandArg& arg)
 {
     if (arg.help)
@@ -146,7 +147,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
 
             Vector<Utf8> subCmds;
             Vector<Utf8> subCmds1;
-            Utf8::tokenizeBlanks(cmd.args, subCmds);
+            Utf8::tokenizeBlanks(cmd.subcommand, subCmds);
             Utf8::tokenize(subCmds[0], '|', subCmds1);
             for (const auto& c : subCmds1)
             {
@@ -157,6 +158,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
                 }
             }
         }
+
+        if(toPrint.empty())
+            toPrint = toScan;
     }
 
     // One single command to display
