@@ -108,7 +108,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     g_ThreadMgr.debuggerMode = false;
 
 #ifdef SWAG_DEV_MODE
-    ext->bc->print({});
+    // ext->bc->print({});
 #endif
 
     if (!g_SilentErrorMsg.empty())
@@ -125,13 +125,16 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     ByteCodeRunContext runContext;
     ByteCodeStack      stackTrace;
     ExecuteNodeParams  execParams;
-    execParams.inheritSp    = cxtSp;
-    execParams.inheritSpAlt = cxtSpAlt;
-    execParams.inheritStack = cxtStack;
-    execParams.inheritBp    = cxtBp;
-    execParams.forDebugger  = true;
-    runContext.debugAccept  = false;
-    runContext.sharedStack  = true;
+    execParams.inheritSp      = cxtSp;
+    execParams.inheritSpAlt   = cxtSpAlt;
+    execParams.inheritStack   = cxtStack;
+    execParams.inheritBp      = cxtBp;
+    execParams.forDebugger    = true;
+    execParams.inheritRR      = true;
+    runContext.debugAccept    = false;
+    runContext.sharedStack    = true;
+    runContext.registersRR[0] = g_RunContext->registersRR[0];
+    runContext.registersRR[1] = g_RunContext->registersRR[1];
 
     g_RunContext         = &runContext;
     g_ByteCodeStackTrace = &stackTrace;

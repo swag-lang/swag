@@ -117,6 +117,7 @@ struct ExecuteNodeParams
     bool  forDebugger  = false;
     bool  breakOnStart = false;
     bool  forConstExpr = false;
+    bool  inheritRR = false;
 };
 
 struct CompilerMessage

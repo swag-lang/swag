@@ -102,7 +102,6 @@ void ByteCodeDebugger::printHelp() const
     }
 }
 
-#pragma optimize("", off)
 BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCommandArg& arg)
 {
     if (arg.help)

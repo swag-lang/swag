@@ -32,10 +32,6 @@ void ByteCodeRunContext::releaseStack()
 
 void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodeBC)
 {
-#ifdef SWAG_DEV_MODE
-    memset(registersRR, 0xFE, MAX_ALLOC_RR * sizeof(Register));
-#endif
-
     if (!stack)
     {
         // To avoid wasting memory, we recycle bytecode stacks

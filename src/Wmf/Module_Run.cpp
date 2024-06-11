@@ -346,6 +346,14 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
         }
     }
 
+    if (params &&
+        params->inheritRR &&
+        bc->registerStoreRR != UINT32_MAX &&
+        bc->registerStoreRR < bc->maxReservedRegisterRC)
+    {
+        g_RunContext->curRegistersRC[bc->registerStoreRR].pointer = g_RunContext->registersRR[0].pointer;
+    }
+
     bool result = true;
 
     if (foreignCall)
