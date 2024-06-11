@@ -268,9 +268,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     // Append to automatic expressions
     if (res.type)
     {
-        Vector<Utf8> tokens;
-        Utf8::tokenize(expr, ' ', tokens);
-        if (tokens.size() != 1 || tokens[0][0] != '$')
+        // Do not add a new expression if this is already an expression number 
+        auto expr1 = expr;
+        expr1.trim();
+        if (expr1[0] == '$')
+            expr1.remove(0, 1);
+        while(!expr1.empty() && SWAG_IS_DIGIT(expr1[0]))
+            expr1.remove(0, 1);
+        expr1.trim();
+       
+        if (expr1.length())
         {
             g_ByteCodeDebugger.evalExpr.push_back(expr);
             if (res.type->isNativeIntegerOrRune() || res.type->isPointer() || res.type->isNativeFloat() || res.type->isBool())
