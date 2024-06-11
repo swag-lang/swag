@@ -268,13 +268,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     // Append to automatic expressions
     if (res.type)
     {
-        g_ByteCodeDebugger.evalExpr.push_back(expr);
-        if (res.type->isNativeIntegerOrRune() || res.type->isPointer() || res.type->isNativeFloat() || res.type->isBool())
-            g_ByteCodeDebugger.evalExprResult.push_back(strRes);
-        else
-            g_ByteCodeDebugger.evalExprResult.push_back(expr);
-        g_Log.setColor(LogColor::Gray);
-        g_Log.print(form("$%d = ", g_ByteCodeDebugger.evalExpr.size() - 1));
+        Vector<Utf8> tokens;
+        Utf8::tokenize(expr, ' ', tokens);
+        if (tokens.size() != 1 || tokens[0][0] != '$')
+        {
+            g_ByteCodeDebugger.evalExpr.push_back(expr);
+            if (res.type->isNativeIntegerOrRune() || res.type->isPointer() || res.type->isNativeFloat() || res.type->isBool())
+                g_ByteCodeDebugger.evalExprResult.push_back(strRes);
+            else
+                g_ByteCodeDebugger.evalExprResult.push_back(expr);
+            g_Log.setColor(LogColor::Gray);
+            g_Log.print(form("$%d = ", g_ByteCodeDebugger.evalExpr.size() - 1));
+        }
     }
 
     g_Log.setColor(LogColor::Name);
