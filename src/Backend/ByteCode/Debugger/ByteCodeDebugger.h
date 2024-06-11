@@ -152,14 +152,15 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdShow(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBc(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 
-    static BcDbgCommandResult cmdInfoFunctions(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdInfoModules(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdInfoFiles(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdInfoLocals(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdInfoRegs(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdInfoArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdInfoGlobals(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdInfoExpressions(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowFunctions(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowModules(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowFiles(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowValues(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowLocals(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowRegs(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowGlobals(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowExpressions(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 
     static BcDbgCommandResult cmdBreakEnableDisable(ByteCodeRunContext* context, const BcDbgCommandArg& arg, int& numB, bool enable);
     static BcDbgCommandResult cmdBreakEnable(ByteCodeRunContext* context, const BcDbgCommandArg& arg);

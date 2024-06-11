@@ -42,7 +42,7 @@ Utf8 ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, const Utf8& 
     return result;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoFunctions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowFunctions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
@@ -82,7 +82,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFunctions(ByteCodeRunContext* /*cont
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowModules(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
@@ -100,7 +100,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* /*contex
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoFiles(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowFiles(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
@@ -130,7 +130,29 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFiles(ByteCodeRunContext* /*context*
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoExpressions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowValues(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
+    if (arg.split.size() > 2)
+        return BcDbgCommandResult::TooManyArguments;
+
+    Vector<Utf8> all;
+    for (uint32_t idx = g_ByteCodeDebugger.evalExpr.size() - 1; idx != UINT32_MAX; idx--)
+    {
+        const auto expr = g_ByteCodeDebugger.evalExpr[idx];
+        const auto val  = g_ByteCodeDebugger.evalExprResult[idx];
+        Utf8       str  = form("$%d = %s%s%s = %s", idx, Log::colorToVTS(LogColor::Name).c_str(), expr.c_str(), Log::colorToVTS(LogColor::Default).c_str(), val.c_str());
+        all.push_back(str);
+    }
+
+    printLong(all, LogColor::Gray);
+
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdShowExpressions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
@@ -143,7 +165,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoExpressions(ByteCodeRunContext* /*co
         printCmdError("no expressions");
         return BcDbgCommandResult::Continue;
     }
-    
+
     Utf8 result;
     for (uint32_t i = g_ByteCodeDebugger.evalExpr.size() - 1; i != UINT32_MAX; i--)
     {
@@ -160,7 +182,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoExpressions(ByteCodeRunContext* /*co
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowLocals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
@@ -204,7 +226,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
@@ -250,7 +272,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
 }
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
-BcDbgCommandResult ByteCodeDebugger::cmdInfoGlobals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowGlobals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
@@ -298,7 +320,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoGlobals(ByteCodeRunContext* context,
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowRegs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
     {
@@ -353,21 +375,23 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
         return BcDbgCommandResult::NotEnoughArguments;
 
     if (arg.split[1] == "locals" || arg.split[1] == "loc")
-        return cmdInfoLocals(context, arg);
+        return cmdShowLocals(context, arg);
     if (arg.split[1] == "arguments" || arg.split[1] == "arg" || arg.split[1] == "args")
-        return cmdInfoArgs(context, arg);
+        return cmdShowArgs(context, arg);
     if (arg.split[1] == "registers" || arg.split[1] == "reg" || arg.split[1] == "regs")
-        return cmdInfoRegs(context, arg);
+        return cmdShowRegs(context, arg);
     if (arg.split[1] == "functions" || arg.split[1] == "fun" || arg.split[1] == "func" || arg.split[1] == "fn")
-        return cmdInfoFunctions(context, arg);
+        return cmdShowFunctions(context, arg);
     if (arg.split[1] == "globals" || arg.split[1] == "glo" || arg.split[1] == "globs")
-        return cmdInfoGlobals(context, arg);
+        return cmdShowGlobals(context, arg);
     if (arg.split[1] == "expressions" || arg.split[1] == "exp" || arg.split[1] == "expr" || arg.split[1] == "exprs")
-        return cmdInfoExpressions(context, arg);
+        return cmdShowExpressions(context, arg);
     if (arg.split[1] == "modules" || arg.split[1] == "mod")
-        return cmdInfoModules(context, arg);
+        return cmdShowModules(context, arg);
     if (arg.split[1] == "files" || arg.split[1] == "f")
-        return cmdInfoFiles(context, arg);
+        return cmdShowFiles(context, arg);
+    if (arg.split[1] == "values" || arg.split[1] == "val")
+        return cmdShowValues(context, arg);
 
     printCmdError(form("invalid [[info]] command [[%s]]", arg.split[1].c_str()));
     return BcDbgCommandResult::Error;
