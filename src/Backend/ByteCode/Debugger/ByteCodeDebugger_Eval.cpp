@@ -95,11 +95,12 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     genJob->context.contextFlags |= BCC_FLAG_FOR_DEBUGGER;
     genJob->nodes.push_back(child);
     child->allocateExtension(ExtensionKind::ByteCode);
-    auto ext            = child->extByteCode();
-    ext->bc             = Allocator::alloc<ByteCode>();
-    ext->bc->node       = child;
-    ext->bc->sourceFile = sourceFile;
-    ext->bc->stackSize  = context->bc->stackSize;
+    auto ext                 = child->extByteCode();
+    ext->bc                  = Allocator::alloc<ByteCode>();
+    ext->bc->node            = child;
+    ext->bc->sourceFile      = sourceFile;
+    ext->bc->stackSize       = context->bc->stackSize;
+    ext->bc->registerStoreRR = context->bc->registerStoreRR;
 
     g_ThreadMgr.debuggerMode = true;
     g_ThreadMgr.addJob(genJob);
@@ -107,7 +108,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     g_ThreadMgr.debuggerMode = false;
 
 #ifdef SWAG_DEV_MODE
-    // ext->bc->print();
+    ext->bc->print({});
 #endif
 
     if (!g_SilentErrorMsg.empty())
@@ -184,7 +185,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, con
     EvaluateResult res;
     if (!g_ByteCodeDebugger.evalDynExpression(context, arg.cmdExpr, res, CompilerAstKind::EmbeddedInstruction))
         return BcDbgCommandResult::Error;
-    
+
     return BcDbgCommandResult::Continue;
 }
 
