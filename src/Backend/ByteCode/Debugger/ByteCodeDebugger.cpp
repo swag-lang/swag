@@ -55,16 +55,16 @@ void ByteCodeDebugger::setup()
     commands.push_back({"examining state", "display", "d", "", "<expr> [--format]", "same as 'print', but will be done at each step", cmdDisplay});
     commands.push_back({"examining state", "display", "d", "clear|cl", "", "remove all expressions to display", cmdDisplay});
     commands.push_back({"examining state", "display", "d", "clear|cl", "<num>", "remove expression <num>", cmdDisplay});
-    commands.push_back({"examining state", "info", "o", "<subcommand>", "", "display various information", nullptr});
-    commands.push_back({"examining state", "info", "o", "registers|reg", "[--format]", "print all registers", cmdInfo});
-    commands.push_back({"examining state", "info", "o", "expressions|exp", "", "print all dynamic expressions", cmdInfo});
-    commands.push_back({"examining state", "info", "o", "modules|mod", "", "print all modules", cmdInfo});
-    commands.push_back({"examining state", "info", "o", "files|f", "[filter]", "print all files", cmdInfo});
-    commands.push_back({"examining state", "info", "o", "locals|loc", "[filter]", "print all current local variables", cmdInfo});
-    commands.push_back({"examining state", "info", "o", "arguments|arg", "[filter]", "print all current function arguments", cmdInfo});
-    commands.push_back({"examining state", "info", "o", "functions|func", "[filter]", "print all functions", cmdInfo});
-    commands.push_back({"examining state", "info", "o", "globals|glo", "[filter]", "print all global variables", cmdInfo});
-    commands.push_back({"examining state", "where", "w", "", "", "print contextual information", cmdWhere});
+    commands.push_back({"examining state", "show", "o", "<subcommand>", "", "display various information", nullptr});
+    commands.push_back({"examining state", "show", "o", "registers|reg", "[--format]", "print all registers", cmdShow});
+    commands.push_back({"examining state", "show", "o", "expressions|exp", "", "print all dynamic expressions", cmdShow});
+    commands.push_back({"examining state", "show", "o", "modules|mod", "", "print all modules", cmdShow});
+    commands.push_back({"examining state", "show", "o", "files|f", "[filter]", "print all files", cmdShow});
+    commands.push_back({"examining state", "show", "o", "locals|loc", "[filter]", "print all current local variables", cmdShow});
+    commands.push_back({"examining state", "show", "o", "arguments|arg", "[filter]", "print all current function arguments", cmdShow});
+    commands.push_back({"examining state", "show", "o", "functions|func", "[filter]", "print all functions", cmdShow});
+    commands.push_back({"examining state", "show", "o", "globals|glo", "[filter]", "print all global variables", cmdShow});
+    commands.push_back({"examining state", "where", "w", "", "", "print current execution context", cmdWhere});
 
     commands.push_back({"modifying state", "bytecode", "bc", "", "", "swap between bytecode and source code mode", cmdBc});
     commands.push_back({"modifying state", "execute", "e", "", "<stmt>", "execute the code statement <stmt> in the current context", cmdExecute});

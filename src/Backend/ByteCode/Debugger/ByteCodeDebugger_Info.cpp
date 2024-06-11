@@ -138,6 +138,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoExpressions(ByteCodeRunContext* /*co
     if (arg.split.size() > 2)
         return BcDbgCommandResult::TooManyArguments;
 
+    if (g_ByteCodeDebugger.evalExpr.empty())
+    {
+        printCmdError("no expressions");
+        return BcDbgCommandResult::Continue;
+    }
+    
     Utf8 result;
     for (uint32_t i = g_ByteCodeDebugger.evalExpr.size() - 1; i != UINT32_MAX; i--)
     {
@@ -341,7 +347,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() < 2)
         return BcDbgCommandResult::NotEnoughArguments;

@@ -149,7 +149,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdQuit(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdHelp(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBreak(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdInfo(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShow(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBc(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 
     static BcDbgCommandResult cmdInfoFunctions(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
