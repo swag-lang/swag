@@ -32,9 +32,12 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all, LogColor color)
         if (cpt == 60 && canStop)
         {
             cpt = 0;
+
             g_Log.setColor(LogColor::Gray);
             static constexpr auto MSG = "-- Type <RET> for more, 'q' to quit, 'c' to continue without paging --";
             g_Log.write(MSG);
+            g_Log.setColor(color);
+
             bool ctrl, shift;
             int  c = 0;
             while (true)
