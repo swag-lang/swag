@@ -28,8 +28,7 @@ void ByteCodeDebugger::setup()
 
     commands.push_back({"breakpoints", "break", "b", "<subcommand>", "", "add/remove breakpoints", nullptr});
     commands.push_back({"breakpoints", "break", "b", "", "", "print all breakpoints", cmdBreak});
-    commands.push_back({"breakpoints", "break", "b", "func|f", "<name>", "add breakpoint when entering function with exact <name>", cmdBreak});
-    commands.push_back({"breakpoints", "break", "b", "func|f", "*<name>", "add breakpoint when entering function containing <name>", cmdBreak});
+    commands.push_back({"breakpoints", "break", "b", "func|f", "<name>", "add breakpoint when entering function containing <name>", cmdBreak});
     commands.push_back({"breakpoints", "break", "b", "line", "<line>", "add breakpoint in the current source file at <line>", cmdBreak});
     commands.push_back({"breakpoints", "break", "b", "file", "<file> <line>", "add breakpoint in <file> at <line>", cmdBreak});
     commands.push_back({"breakpoints", "break", "b", "clear|cl", "", "remove all breakpoints", cmdBreak});
