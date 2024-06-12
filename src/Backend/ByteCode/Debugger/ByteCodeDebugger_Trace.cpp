@@ -19,7 +19,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
         {
-            printCmdError(form("invalid step count [[%s]]", arg.split[1].c_str()));
+            printCmdError(form("invalid [[step]] count [[%s]]", arg.split[1].c_str()));
             return BcDbgCommandResult::Error;
         }
 
@@ -44,7 +44,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
         {
-            printCmdError(form("invalid next count [[%s]]", arg.split[1].c_str()));
+            printCmdError(form("invalid [[next]] count [[%s]]", arg.split[1].c_str()));
             return BcDbgCommandResult::Error;
         }
 

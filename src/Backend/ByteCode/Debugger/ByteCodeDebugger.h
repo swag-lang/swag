@@ -76,6 +76,7 @@ struct ByteCodeDebugger
         FuncName,
         FileLine,
         InstructionIndex,
+        Watch,
     };
 
     struct DebugBreakpoint
@@ -83,6 +84,9 @@ struct ByteCodeDebugger
         DebugBkpType type;
         Utf8         name;
         ByteCode*    bc           = nullptr;
+        void*        addr         = nullptr;
+        uint64_t     lastValue    = 0;
+        uint32_t     addrCount    = 0;
         uint32_t     line         = 0;
         bool         disabled     = false;
         bool         autoDisabled = false;
@@ -149,6 +153,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdQuit(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdHelp(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBreak(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdWatch(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShow(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBc(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 

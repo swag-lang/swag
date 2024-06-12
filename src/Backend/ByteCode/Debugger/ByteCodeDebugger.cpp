@@ -35,6 +35,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"breakpoints", "break", "b", "clear|cl", "<num>", "remove breakpoint <num>", cmdBreak});
     commands.push_back({"breakpoints", "break", "b", "enable|en", "<num>", "enable breakpoint <num>", cmdBreak});
     commands.push_back({"breakpoints", "break", "b", "disable|di", "<num>", "disable breakpoint <num>", cmdBreak});
+    commands.push_back({"breakpoints", "watch", "", "[--size]", "<address>", "add a memory breakpoint", cmdWatch});
     commands.push_back({"breakpoints", "tbreak", "tb", "", "", "same as 'break' except that the breakpoint will be automatically removed on hit", cmdBreak});
 
     commands.push_back({"source code", "list", "l", "", "[num]", "print the current source code line and [num] lines around", cmdList});

@@ -2,7 +2,40 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
+#include "Semantic/Type/TypeInfo.h"
 #include "Wmf/Workspace.h"
+
+namespace
+{
+    uint64_t readWatchValue(void* addr, uint32_t count, bool& err)
+    {
+        SWAG_TRY
+        {
+            err = false;
+            switch (count)
+            {
+                case 1:
+                    return *(uint8_t*) addr;
+                    break;
+                case 2:
+                    return *(uint16_t*) addr;
+                    break;
+                case 4:
+                default:
+                    return *(uint32_t*) addr;
+                    break;
+                case 8:
+                    return *(uint64_t*) addr;
+                    break;
+            }
+        }
+        SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+        {
+            err = true;
+            return 0;
+        }
+    }
+}
 
 void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* /*context*/) const
 {
@@ -27,6 +60,9 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* /*context*/) const
                 break;
             case DebugBkpType::InstructionIndex:
                 g_Log.print(form("instruction [[%d]]", bkp.line));
+                break;
+            case DebugBkpType::Watch:
+                g_Log.print(form("watch address [[0x%llx]], size [[%d]]", bkp.addr, bkp.addrCount));
                 break;
         }
 
@@ -123,6 +159,27 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                 }
                 break;
             }
+
+            case DebugBkpType::Watch:
+            {
+                bool           err      = false;
+                const uint64_t newValue = readWatchValue(bkp.addr, bkp.addrCount, err);
+                if (err)
+                    bkp.disabled = true;
+                else if (newValue != bkp.lastValue)
+                {
+                    printMsgBkp(form("watchpoint change #%d, last value is [[0x%llx]], new value is [[0x%llx]]", idxBkp, bkp.lastValue, newValue));
+                    stepMode          = DebugStepMode::None;
+                    context->debugOn  = true;
+                    forcePrintContext = true;
+                    if (bkp.autoRemove)
+                        breakpoints.erase(it);
+                    else
+                        bkp.autoDisabled = true;
+                    bkp.lastValue = newValue;
+                    return;
+                }
+            }
         }
     }
 }
@@ -131,7 +188,23 @@ bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext* /*context*/, const Debu
 {
     for (const auto& b : breakpoints)
     {
-        if (b.type == bkp.type && b.name == bkp.name && b.line == bkp.line && b.autoRemove == bkp.autoRemove)
+        if (b.type != bkp.type)
+            continue;
+
+        bool exists = false;
+        switch (b.type)
+        {
+            case DebugBkpType::Watch:
+                if (b.addr == bkp.addr && b.addrCount == bkp.addrCount && b.autoRemove == bkp.autoRemove)
+                    exists = true;
+                break;
+            default:
+                if (b.name == bkp.name && b.line == bkp.line && b.autoRemove == bkp.autoRemove)
+                    exists = true;
+                break;
+        }
+
+        if (exists)
         {
             printCmdError("breakpoint already exists");
             return false;
@@ -188,9 +261,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context,
         return res;
 
     if (numB)
-        printCmdResult(form("breakpoint #%d has been enabled", numB));
+        printCmdResult(form("breakpoint [[#%d]] has been [[enabled]]", numB));
     else
-        printCmdResult(form("all breakpoints have been enabled", numB));
+        printCmdResult(form("all breakpoints have been [[enabled]]", numB));
     return BcDbgCommandResult::Continue;
 }
 
@@ -204,9 +277,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context
     if (res != BcDbgCommandResult::Continue)
         return res;
     if (numB)
-        printCmdResult(form("breakpoint #%d has been disabled", numB));
+        printCmdResult(form("breakpoint [[#%d]] has been [[disabled]]", numB));
     else
-        printCmdResult(form("all breakpoints have been disabled", numB));
+        printCmdResult(form("all breakpoints have been [[disabled]]", numB));
     return BcDbgCommandResult::Continue;
 }
 
@@ -220,7 +293,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext*, const Bc
         if (g_ByteCodeDebugger.breakpoints.empty())
             printCmdError("no breakpoint to remove");
         else
-            printCmdResult(form("%d breakpoint(s) have been removed", g_ByteCodeDebugger.breakpoints.size()));
+            printCmdResult(form("[[%d]] breakpoint(s) have been removed", g_ByteCodeDebugger.breakpoints.size()));
         g_ByteCodeDebugger.breakpoints.clear();
         return BcDbgCommandResult::Continue;
     }
@@ -244,7 +317,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext*, const Bc
     }
 
     g_ByteCodeDebugger.breakpoints.erase(g_ByteCodeDebugger.breakpoints.begin() + numB - 1);
-    printCmdResult(form("breakpoint #%d has been removed", numB));
+    printCmdResult(form("breakpoint [[#%d]] has been removed", numB));
     return BcDbgCommandResult::Continue;
 }
 
@@ -281,7 +354,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
     if (!g_ByteCodeDebugger.addBreakpoint(context, bkp))
         return BcDbgCommandResult::Error;
 
-    printCmdResult(form("breakpoint #%d function with a match on [[%s]]", g_ByteCodeDebugger.breakpoints.size(), bkp.name.c_str()));
+    printCmdResult(form("breakpoint [[#%d]] function with a match on [[%s]]", g_ByteCodeDebugger.breakpoints.size(), bkp.name.c_str()));
     return BcDbgCommandResult::Continue;
 }
 
@@ -316,7 +389,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     if (!g_ByteCodeDebugger.addBreakpoint(context, bkp))
         return BcDbgCommandResult::Error;
 
-    printCmdResult(form("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.breakpoints.size(), bkp.name.c_str(), bkp.line));
+    printCmdResult(form("breakpoint [[#%d]], file [[%s]], line [[%d]]", g_ByteCodeDebugger.breakpoints.size(), bkp.name.c_str(), bkp.line));
     return BcDbgCommandResult::Continue;
 }
 
@@ -360,7 +433,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     if (!g_ByteCodeDebugger.addBreakpoint(context, bkp))
         return BcDbgCommandResult::Error;
 
-    printCmdResult(form("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.breakpoints.size(), bkp.name.c_str(), bkp.line));
+    printCmdResult(form("breakpoint [[#%d]], file [[%s]], line [[%d]]", g_ByteCodeDebugger.breakpoints.size(), bkp.name.c_str(), bkp.line));
     return BcDbgCommandResult::Continue;
 }
 
@@ -383,4 +456,92 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreak(ByteCodeRunContext* context, const
 
     printCmdError(form("invalid [[break]] command [[%s]]", arg.split[1].c_str()));
     return BcDbgCommandResult::Error;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdWatch(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
+    if (arg.split.size() < 2)
+        return BcDbgCommandResult::NotEnoughArguments;
+    if (arg.split.size() > 3)
+        return BcDbgCommandResult::TooManyArguments;
+
+    Vector<Utf8> exprCmds;
+    Utf8::tokenize(arg.cmdExpr, ' ', exprCmds);
+
+    // Count
+    int count = 0;
+    if (exprCmds.size() != 1 &&
+        exprCmds.back().length() > 2 &&
+        exprCmds.back()[0] == '-' &&
+        exprCmds.back()[1] == '-' &&
+        Utf8::isNumber(exprCmds.back() + 2))
+    {
+        count = exprCmds.back().toInt(2);
+        exprCmds.pop_back();
+    }
+
+    // Expression
+    Utf8 expr;
+    for (const auto& e : exprCmds)
+    {
+        expr += e;
+        expr += " ";
+    }
+
+    expr.trim();
+    if (expr.empty())
+    {
+        printCmdError("invalid [[watch]] address");
+        return BcDbgCommandResult::Continue;
+    }
+
+    EvaluateResult res;
+    if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
+        return BcDbgCommandResult::Error;
+
+    void* addr = res.addr;
+    if (!addr)
+    {
+        addr = res.value->reg.pointer;
+        if (count == 0 && res.type)
+            count = res.type->sizeOf;
+    }
+    else if (res.type->isPointer())
+    {
+        addr = *static_cast<void**>(res.addr);
+        if (count == 0)
+        {
+            const auto typePtr = castTypeInfo<TypeInfoPointer>(res.type, TypeInfoKind::Pointer);
+            count              = typePtr->pointedType->sizeOf;
+        }
+    }
+
+    if (count != 1 && count != 2 && count != 4 && count != 8)
+    {
+        printCmdError(form("invalid watch size [[%d]] (must be 1, 2, 4 or 8)", count));
+        return BcDbgCommandResult::Error;
+    }
+
+    DebugBreakpoint bkp;
+
+    bool err      = false;
+    bkp.lastValue = readWatchValue(addr, count, err);
+    if (err)
+    {
+        printCmdError(form("cannot read address [[0x%llx]], size [[%d]]", addr, count));
+        return BcDbgCommandResult::Error;
+    }
+
+    bkp.type       = DebugBkpType::Watch;
+    bkp.addr       = addr;
+    bkp.addrCount  = count;
+    bkp.autoRemove = false;
+    if (!g_ByteCodeDebugger.addBreakpoint(context, bkp))
+        return BcDbgCommandResult::Error;
+
+    printCmdResult(form("watchpoint [[#%d]] at address [[0x%llx]], size [[%d]]", g_ByteCodeDebugger.breakpoints.size(), bkp.addr, bkp.addrCount));
+    return BcDbgCommandResult::Continue;
 }

@@ -417,7 +417,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     expr.trim();
     if (expr.empty())
     {
-        printCmdError("invalid 'x' expression");
+        printCmdError("invalid [[examine]] address");
         return BcDbgCommandResult::Continue;
     }
 
@@ -425,16 +425,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
         return BcDbgCommandResult::Error;
 
-    uint64_t addrVal;
-    if (!res.addr)
-    {
-        res.addr = res.value->reg.pointer;
-        addrVal  = reinterpret_cast<uint64_t>(res.addr);
-    }
+    void* addr = res.addr;
+    if (!addr)
+        addr = res.value->reg.pointer;
     else if (res.type->isPointer())
-        addrVal = *static_cast<uint64_t*>(res.addr);
-    else
-        addrVal = reinterpret_cast<uint64_t>(res.addr);
+        addr = *static_cast<uint8_t**>(res.addr);
 
     int perLine = 8;
     switch (fmt.bitCount)
@@ -453,7 +448,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
             break;
     }
 
-    auto addrB = reinterpret_cast<const uint8_t*>(addrVal);
+    auto addrB = static_cast<uint8_t*>(addr);
     while (count > 0)
     {
         const auto addrLine = addrB;
