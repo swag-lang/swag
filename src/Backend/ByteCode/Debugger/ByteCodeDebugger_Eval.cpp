@@ -259,7 +259,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     }
     else
     {
-        str = form("(%s%s%s) ", Log::colorToVTS(LogColor::Type).c_str(), res.type->getDisplayNameC(), Log::colorToVTS(LogColor::Default).c_str());
+        str = getPrintValue("", res.type);
         appendTypedValue(context, strRes, res, 0, 0);
     }
 
@@ -268,15 +268,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     // Append to automatic expressions
     if (res.type)
     {
-        // Do not add a new expression if this is already an expression number 
+        // Do not add a new expression if this is already an expression number
         auto expr1 = expr;
         expr1.trim();
         if (expr1[0] == '$')
             expr1.remove(0, 1);
-        while(!expr1.empty() && SWAG_IS_DIGIT(expr1[0]))
+        while (!expr1.empty() && SWAG_IS_DIGIT(expr1[0]))
             expr1.remove(0, 1);
         expr1.trim();
-       
+
         if (expr1.length())
         {
             g_ByteCodeDebugger.evalExpr.push_back(expr);

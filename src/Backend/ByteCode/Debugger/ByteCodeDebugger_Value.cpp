@@ -293,17 +293,13 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             {
                 for (uint32_t i = 0; i < indent + 1; i++)
                     str += "   ";
-                str += form("(%s%s%s) %s%s%s = ",
-                            Log::colorToVTS(LogColor::Type).c_str(),
-                            p->typeInfo->getDisplayNameC(),
-                            Log::colorToVTS(LogColor::Default).c_str(),
-                            Log::colorToVTS(LogColor::Name).c_str(),
-                            p->name.c_str(),
-                            Log::colorToVTS(LogColor::Default).c_str());
+                str += getPrintValue(p->name, p->typeInfo);
+                str += " = ";
                 EvaluateResult res1;
                 res1.type = p->typeInfo;
                 res1.addr = static_cast<uint8_t*>(addr) + p->offset;
                 appendTypedValue(context, str, res1, level + 1, indent + 1);
+                str += " = ";
                 if (str.back() != '\n')
                     str += "\n";
             }
@@ -510,14 +506,8 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8&
     if (!testNameFilter(over->symbol->name, filter))
         return;
 
-    Utf8 str = form("(%s%s%s) %s%s%s = ",
-                    Log::colorToVTS(LogColor::Type).c_str(),
-                    over->typeInfo->getDisplayNameC(),
-                    Log::colorToVTS(LogColor::Default).c_str(),
-                    Log::colorToVTS(LogColor::Name).c_str(),
-                    over->symbol->name.c_str(),
-                    Log::colorToVTS(LogColor::Default).c_str());
-
+    auto str = getPrintValue(over->symbol->name, over->typeInfo);
+    str += " = ";
     EvaluateResult res;
     res.type = over->typeInfo;
     res.addr = realAddr ? realAddr : baseAddr + over->computedValue.storageOffset;

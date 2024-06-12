@@ -7,41 +7,6 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-Utf8 ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, const Utf8& filter, uint8_t* baseAddr, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs)
-{
-    Utf8 result;
-    for (uint32_t i = 0; i < nodes.size(); i++)
-    {
-        const auto n    = nodes[i];
-        const auto over = n->resolvedSymbolOverload();
-        const Utf8 name = over->symbol->getFullName();
-        if (!testNameFilter(name, filter))
-            continue;
-        if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
-            continue;
-
-        if (over->typeInfo->isNative() || over->typeInfo->isPointer())
-        {
-            appendTypedValue(context, filter, n, baseAddr, addrs[i], result);
-        }
-        else
-        {
-            const Utf8 str = form("(%s%s%s) %s%s%s",
-                                  Log::colorToVTS(LogColor::Type).c_str(),
-                                  over->typeInfo->getDisplayNameC(),
-                                  Log::colorToVTS(LogColor::Default).c_str(),
-                                  Log::colorToVTS(LogColor::Name).c_str(),
-                                  name.c_str(),
-                                  Log::colorToVTS(LogColor::Default).c_str());
-            result += str;
-            result += " = ...";
-            result += "\n";
-        }
-    }
-
-    return result;
-}
-
 BcDbgCommandResult ByteCodeDebugger::cmdShowFunctions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.help)
