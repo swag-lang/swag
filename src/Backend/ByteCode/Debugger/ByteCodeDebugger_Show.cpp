@@ -3,6 +3,7 @@
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
@@ -20,30 +21,19 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowFunctions(ByteCodeRunContext* /*cont
     Vector<Utf8> all;
     g_Log.setColor(LogColor::Gray);
 
-    uint32_t total = 0;
     for (const auto m : g_Workspace->modules)
     {
         for (const auto bc : m->byteCodeFunc)
         {
             if (!bc->out)
                 continue;
-            total++;
-            if (testNameFilter(bc->getPrintName(), filter) ||
-                testNameFilter(bc->getPrintFileName(), filter))
-            {
-                all.push_back(bc->getPrintRefName());
-            }
+            all.push_back(bc->getPrintRefName());
         }
     }
 
-    if (all.empty())
-    {
-        printCmdError(form("...no match with filter [[%s]] (%d found functions)", filter.c_str(), total));
-        return BcDbgCommandResult::Continue;
-    }
-
     std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
-    printLong(all);
+    printLong(all, &filter);
+
     return BcDbgCommandResult::Continue;
 }
 
@@ -90,6 +80,47 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowFiles(ByteCodeRunContext* /*context*
 
     std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
     printLong(all, &filter, LogColor::Location);
+
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdShowTypes(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
+    if (arg.split.size() > 3)
+        return BcDbgCommandResult::TooManyArguments;
+
+    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+
+    SetUtf8 set;
+    for (const auto m : g_Workspace->modules)
+    {
+        const auto& map = m->typeGen.getMapPerSeg(&m->constantSegment);
+        for (const auto& exp : map.exportedTypes)
+        {
+            auto typeInfo = exp.second.realType->getStructOrPointedStruct();
+            if (!typeInfo)
+                continue;
+            Utf8 value;
+            value += Log::colorToVTS(LogColor::Name);
+            value += typeInfo->declNode->getScopedName();
+            value += " ";
+            value += Log::colorToVTS(LogColor::Location);
+            value += typeInfo->declNode->token.sourceFile->path;
+            value += ":";
+            value += form("%d", typeInfo->declNode->token.startLocation.line + 1);
+            set.insert(value);
+        }
+    }
+
+    Vector<Utf8> all;
+    for (const auto& f : set)
+        all.push_back(f);
+
+    std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
+    printLong(all, &filter);
 
     return BcDbgCommandResult::Continue;
 }
@@ -221,7 +252,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowArgs(ByteCodeRunContext* context, co
 
     const auto result = getPrintSymbols(context, nodes, addrs);
     printLong(result, &filter);
-    
+
     return BcDbgCommandResult::Continue;
 }
 
@@ -265,7 +296,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowGlobals(ByteCodeRunContext* context,
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
     const auto result = getPrintSymbols(context, nodes, addrs);
     printLong(result, &filter);
-    
+
     return BcDbgCommandResult::Continue;
 }
 
@@ -337,10 +368,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
         return cmdShowExpressions(context, arg);
     if (arg.split[1] == "modules" || arg.split[1] == "mod")
         return cmdShowModules(context, arg);
-    if (arg.split[1] == "files" || arg.split[1] == "f")
+    if (arg.split[1] == "files")
         return cmdShowFiles(context, arg);
-    if (arg.split[1] == "values" || arg.split[1] == "val")
+    if (arg.split[1] == "values" || arg.split[1] == "val" || arg.split[1] == "vals")
         return cmdShowValues(context, arg);
+    if (arg.split[1] == "types")
+        return cmdShowTypes(context, arg);
 
     printCmdError(form("invalid [[info]] command [[%s]]", arg.split[1].c_str()));
     return BcDbgCommandResult::Error;

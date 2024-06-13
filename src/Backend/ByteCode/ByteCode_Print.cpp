@@ -49,7 +49,7 @@ Utf8 ByteCode::getPrintRefName()
     if (loc.location)
     {
         str += Log::colorToVTS(LogColor::Location);
-        str += form(":%d", loc.location->line - 1);
+        str += form(":%d", loc.location->line);
     }
 
     return str;

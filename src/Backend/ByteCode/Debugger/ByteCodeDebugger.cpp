@@ -60,11 +60,12 @@ void ByteCodeDebugger::setup()
     commands.push_back({"examining state", "show", "o", "expressions|exp", "", "print all dynamic expressions", cmdShow});
     commands.push_back({"examining state", "show", "o", "values|val", "", "print all automatic expression values", cmdShow});
     commands.push_back({"examining state", "show", "o", "modules|mod", "", "print all modules", cmdShow});
-    commands.push_back({"examining state", "show", "o", "files|f", "[filter]", "print all files", cmdShow});
+    commands.push_back({"examining state", "show", "o", "files", "[filter]", "print all files", cmdShow});
     commands.push_back({"examining state", "show", "o", "locals|loc", "[filter]", "print all current local variables", cmdShow});
     commands.push_back({"examining state", "show", "o", "arguments|arg", "[filter]", "print all current function arguments", cmdShow});
     commands.push_back({"examining state", "show", "o", "functions|func", "[filter]", "print all functions", cmdShow});
     commands.push_back({"examining state", "show", "o", "globals|glo", "[filter]", "print all global variables", cmdShow});
+    commands.push_back({"examining state", "show", "o", "types", "[filter]", "print all exported types", cmdShow});
     commands.push_back({"examining state", "where", "wh", "", "", "print current execution context", cmdWhere});
 
     commands.push_back({"modifying state", "bytecode", "bc", "", "", "swap between bytecode and source code mode", cmdBc});
