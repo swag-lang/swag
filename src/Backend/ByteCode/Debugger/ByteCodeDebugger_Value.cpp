@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
+#include "Semantic/DataSegment.h"
 #include "Semantic/Symbol/Symbol.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
@@ -192,7 +193,14 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     auto addr     = res.addr;
 
     if (!addr && res.value)
-        addr = &res.value->reg;
+    {
+        if (res.value->storageSegment && res.value->storageOffset != UINT32_MAX)
+            addr = res.value->storageSegment->address(res.value->storageOffset);
+        else if (typeInfo->isStruct())
+            addr = res.value->reg.pointer;
+        else
+            addr = &res.value->reg;
+    }
 
     if (typeInfo->isPointerRef())
     {
@@ -279,8 +287,6 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 
     if (typeInfo->isStruct())
     {
-        if (res.value)
-            addr = res.value->reg.pointer;
         auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         if (!g_ByteCodeDebugger.printStruct && level)
         {

@@ -15,6 +15,7 @@
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
 
+#pragma optimize("", off)
 bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& inExpr, EvaluateResult& res, CompilerAstKind kind, bool silent) const
 {
     PushSilentError se;
