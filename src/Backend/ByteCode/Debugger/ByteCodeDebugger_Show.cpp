@@ -356,25 +356,25 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
 
     if (arg.split[1] == "locals" || arg.split[1] == "loc")
         return cmdShowLocals(context, arg);
-    if (arg.split[1] == "arguments" || arg.split[1] == "arg" || arg.split[1] == "args")
+    if (arg.split[1] == "arguments" || arg.split[1] == "args")
         return cmdShowArgs(context, arg);
-    if (arg.split[1] == "registers" || arg.split[1] == "reg" || arg.split[1] == "regs")
+    if (arg.split[1] == "registers" || arg.split[1] == "regs")
         return cmdShowRegs(context, arg);
-    if (arg.split[1] == "functions" || arg.split[1] == "fun" || arg.split[1] == "func" || arg.split[1] == "fn")
+    if (arg.split[1] == "functions" || arg.split[1] == "funcs")
         return cmdShowFunctions(context, arg);
-    if (arg.split[1] == "globals" || arg.split[1] == "glo" || arg.split[1] == "globs")
+    if (arg.split[1] == "globals")
         return cmdShowGlobals(context, arg);
-    if (arg.split[1] == "expressions" || arg.split[1] == "exp" || arg.split[1] == "expr" || arg.split[1] == "exprs")
+    if (arg.split[1] == "expressions" || arg.split[1] == "exprs")
         return cmdShowExpressions(context, arg);
-    if (arg.split[1] == "modules" || arg.split[1] == "mod")
+    if (arg.split[1] == "modules")
         return cmdShowModules(context, arg);
     if (arg.split[1] == "files")
         return cmdShowFiles(context, arg);
-    if (arg.split[1] == "values" || arg.split[1] == "val" || arg.split[1] == "vals")
+    if (arg.split[1] == "values" || arg.split[1] == "vals")
         return cmdShowValues(context, arg);
     if (arg.split[1] == "structs")
         return cmdShowStructs(context, arg);
 
-    printCmdError(form("invalid [[info]] command [[%s]]", arg.split[1].c_str()));
+    printCmdError(form("invalid [[show]] command [[%s]]", arg.split[1].c_str()));
     return BcDbgCommandResult::Error;
 }
