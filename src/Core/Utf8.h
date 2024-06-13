@@ -74,6 +74,8 @@ struct Utf8
     void trimRight();
     void trim();
     void removeBack();
+    void trimLeftEol();
+    void trimRightEol();
     void remove(uint32_t index, uint32_t len);
     void insert(uint32_t index, const char* str);
     void insert(uint32_t index, char c);

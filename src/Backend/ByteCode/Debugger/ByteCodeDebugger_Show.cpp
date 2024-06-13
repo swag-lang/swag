@@ -80,8 +80,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowFiles(ByteCodeRunContext* /*context*
     {
         for (const auto f : m->files)
         {
-            if (testNameFilter(f->path, filter))
-                set.insert(f->path);
+            set.insert(f->path);
         }
     }
 
@@ -90,7 +89,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowFiles(ByteCodeRunContext* /*context*
         all.push_back(f);
 
     std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
-    printLong(all, LogColor::Location);
+    printLong(all, &filter, LogColor::Location);
 
     return BcDbgCommandResult::Continue;
 }
@@ -112,7 +111,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowValues(ByteCodeRunContext* /*context
         all.push_back(str);
     }
 
-    printLong(all, LogColor::Gray);
+    printLong(all, nullptr, LogColor::Gray);
 
     return BcDbgCommandResult::Continue;
 }
@@ -180,14 +179,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowLocals(ByteCodeRunContext* context, 
         return BcDbgCommandResult::Continue;
     }
 
-    const auto result = getPrintSymbols(context, filter, g_ByteCodeDebugger.cxtBp, nodes, addrs);
-    if (result.empty())
-    {
-        printCmdError(form("...no match with filter [[%s]] (%d found local variables)", filter.c_str(), nodes.size()));
-        return BcDbgCommandResult::Continue;
-    }
+    const auto result = getPrintSymbols(context, nodes, addrs);
+    printLong(result, &filter);
 
-    printLong(result);
     return BcDbgCommandResult::Continue;
 }
 
@@ -225,14 +219,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowArgs(ByteCodeRunContext* context, co
         return BcDbgCommandResult::Continue;
     }
 
-    const auto result = getPrintSymbols(context, filter, g_ByteCodeDebugger.cxtBp, nodes, addrs);
-    if (result.empty())
-    {
-        printCmdError(form("...no match with filter [[%s]] (%d found arguments)", filter.c_str(), nodes.size()));
-        return BcDbgCommandResult::Continue;
-    }
-
-    printLong(result);
+    const auto result = getPrintSymbols(context, nodes, addrs);
+    printLong(result, &filter);
+    
     return BcDbgCommandResult::Continue;
 }
 
@@ -274,14 +263,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowGlobals(ByteCodeRunContext* context,
     }
 
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
-    const auto result = getPrintSymbols(context, filter, nullptr, nodes, addrs);
-    if (result.empty())
-    {
-        printCmdError(form("...no match with filter [[%s]] (%d found global variables)", filter.c_str(), nodes.size()));
-        return BcDbgCommandResult::Continue;
-    }
-
-    printLong(result);
+    const auto result = getPrintSymbols(context, nodes, addrs);
+    printLong(result, &filter);
+    
     return BcDbgCommandResult::Continue;
 }
 

@@ -299,7 +299,6 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 res1.type = p->typeInfo;
                 res1.addr = static_cast<uint8_t*>(addr) + p->offset;
                 appendTypedValue(context, str, res1, level + 1, indent + 1);
-                str += " = ";
                 if (str.back() != '\n')
                     str += "\n";
             }
@@ -494,27 +493,4 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, 
     {
         str += "<error>";
     }
-}
-
-void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8& filter, const AstNode* node, uint8_t* baseAddr, uint8_t* realAddr, Utf8& result)
-{
-    const auto over = node->resolvedSymbolOverload();
-    if (!over)
-        return;
-    if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_') // Generated
-        return;
-    if (!testNameFilter(over->symbol->name, filter))
-        return;
-
-    auto str = getPrintValue(over->symbol->name, over->typeInfo);
-    str += " = ";
-    EvaluateResult res;
-    res.type = over->typeInfo;
-    res.addr = realAddr ? realAddr : baseAddr + over->computedValue.storageOffset;
-    appendTypedValue(context, str, res, 0, 0);
-    str.trim();
-    while (str.back() == '\n')
-        str.removeBack();
-    result += str;
-    result += "\n";
 }

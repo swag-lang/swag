@@ -460,6 +460,26 @@ void Utf8::removeBack()
     buffer[count] = 0;
 }
 
+void Utf8::trimLeftEol()
+{
+    trimLeft();
+    while (length() && buffer[0] == '\n')
+    {
+        remove(0, 1);
+        trimLeft();
+    }
+}
+
+void Utf8::trimRightEol()
+{
+    trimRight();
+    while (length() && back() == '\n')
+    {
+        removeBack();
+        trimRight();
+    }
+}
+
 bool Utf8::containsNoCase(const Utf8& str) const
 {
     auto me = *this;

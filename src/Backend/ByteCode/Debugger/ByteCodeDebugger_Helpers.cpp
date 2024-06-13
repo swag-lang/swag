@@ -28,42 +28,52 @@ Utf8 ByteCodeDebugger::getPrintValue(const Utf8& name, TypeInfo* typeinfo)
     return str;
 }
 
-Utf8 ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, const Utf8& filter, uint8_t* baseAddr, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs)
+Utf8 ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs)
 {
     Utf8 result;
     for (uint32_t i = 0; i < nodes.size(); i++)
     {
         const auto n    = nodes[i];
         const auto over = n->resolvedSymbolOverload();
-        const Utf8 name = over->symbol->getFullName();
-        if (!testNameFilter(name, filter))
-            continue;
         if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
             continue;
 
+        Utf8 value = getPrintValue(over->symbol->getFullName(), over->typeInfo);
+
         if (over->typeInfo->isNative() || over->typeInfo->isPointer())
         {
-            appendTypedValue(context, filter, n, baseAddr, addrs[i], result);
+            value += " = ";
+
+            EvaluateResult res;
+            res.type = over->typeInfo;
+            res.addr = addrs[i];
+            appendTypedValue(context, value, res, 0, 0);
+            value.trimRightEol();
         }
-        else
+
+        result += value;
+
+        if (over->node && over->node->token.sourceFile)
         {
-            result += getPrintValue(name, over->typeInfo);
-            result += " = ...";
-            result += "\n";
+            result += Log::colorToVTS(LogColor::Location);
+            result += " ";
+            result += over->node->token.sourceFile->path;
         }
+
+        result += "\n";
     }
 
     return result;
 }
 
-void ByteCodeDebugger::printLong(const Utf8& all)
+void ByteCodeDebugger::printLong(const Utf8& all, const Utf8* filter)
 {
     Vector<Utf8> lines;
     Utf8::tokenize(all, '\n', lines, true);
-    printLong(lines);
+    printLong(lines, filter);
 }
 
-void ByteCodeDebugger::printLong(const Vector<Utf8>& all, LogColor color)
+void ByteCodeDebugger::printLong(const Vector<Utf8>& all, const Utf8* filter, LogColor color)
 {
     if (all.empty())
     {
@@ -73,10 +83,15 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all, LogColor color)
 
     g_Log.setColor(color);
 
-    int  cpt     = 0;
-    bool canStop = true;
+    int  cpt          = 0;
+    bool canStop      = true;
+    bool hasSomething = false;
+
     for (const auto& i : all)
     {
+        if (filter && !testNameFilter(i, *filter))
+            continue;
+
         if (cpt == 60 && canStop)
         {
             cpt = 0;
@@ -112,8 +127,14 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all, LogColor color)
 
         cpt++;
 
+        hasSomething = true;
         g_Log.print(i);
         g_Log.writeEol();
+    }
+
+    if (!hasSomething && filter)
+    {
+        printCmdError(form("...no match with filter [[%s]] (%d found elements)", filter->c_str(), all.size()));
     }
 }
 

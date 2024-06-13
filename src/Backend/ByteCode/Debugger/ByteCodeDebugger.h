@@ -114,8 +114,7 @@ struct ByteCodeDebugger
     void printBreakpoints(ByteCodeRunContext* context) const;
     void checkBreakpoints(ByteCodeRunContext* context);
     bool addBreakpoint(ByteCodeRunContext* context, const DebugBreakpoint& bkp);
-
-    static void appendTypedValue(ByteCodeRunContext* context, const Utf8& filter, const AstNode* node, uint8_t* baseAddr, uint8_t* realAddr, Utf8& result);
+    
     static void appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, uint32_t level, uint32_t indent);
     static void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, uint32_t level, uint32_t indent);
     static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
@@ -179,11 +178,11 @@ struct ByteCodeDebugger
     bool                           commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const;
     static void                    tokenizeCommand(const Utf8& line, BcDbgCommandArg& arg);
     void                           setup();
-    static void                    printLong(const Utf8& all);
-    static void                    printLong(const Vector<Utf8>& all, LogColor color = LogColor::Gray);
+    static void                    printLong(const Utf8& all, const Utf8* filter = nullptr);
+    static void                    printLong(const Vector<Utf8>& all, const Utf8* filter = nullptr, LogColor color = LogColor::Gray);
     bool                           getRegIdx(ByteCodeRunContext* context, const Utf8& arg, uint32_t& regN) const;
     static Utf8                    getPrintValue(const Utf8& name, TypeInfo* typeinfo);
-    static Utf8                    getPrintSymbols(ByteCodeRunContext* context, const Utf8& filter, uint8_t* baseAddr, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs);
+    static Utf8                    getPrintSymbols(ByteCodeRunContext* context, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs);
     void                           printDebugContext(ByteCodeRunContext* context, bool force = false);
     void                           computeDebugContext(ByteCodeRunContext* context);
     Utf8                           completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete) const;

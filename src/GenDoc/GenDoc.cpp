@@ -189,19 +189,10 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
     if (code.empty())
         return;
 
-    // Remove trailing eol
+    // Remove eol at the start and at the end
     auto repl = code;
-    repl.trim();
-    while (repl.length() && repl[0] == '\n')
-    {
-        repl.remove(0, 1);
-        repl.trim();
-    }
-    while (repl.length() && repl.back() == '\n')
-    {
-        repl.removeBack();
-        repl.trim();
-    }
+    repl.trimLeftEol();
+    repl.trimRightEol();
     if (repl.empty())
         return;
 
