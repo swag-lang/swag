@@ -48,6 +48,7 @@ struct ByteCodeDebugger
         TypeInfo*      type  = nullptr;
         void*          addr  = nullptr;
         ComputedValue* value = nullptr;
+        AstNode*       node  = nullptr;
         void*          storage[2];
     };
 
@@ -114,7 +115,7 @@ struct ByteCodeDebugger
     void printBreakpoints(ByteCodeRunContext* context) const;
     void checkBreakpoints(ByteCodeRunContext* context);
     bool addBreakpoint(ByteCodeRunContext* context, const DebugBreakpoint& bkp);
-    
+
     static void appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, uint32_t level, uint32_t indent);
     static void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, uint32_t level, uint32_t indent);
     static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
@@ -160,7 +161,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdShowModules(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShowFiles(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShowValues(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdShowTypes(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowStructs(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShowLocals(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShowRegs(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShowArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
@@ -236,6 +237,7 @@ struct ByteCodeDebugger
     bool printArray        = true;
     bool printBcCode       = false;
     bool printBtCode       = false;
+    bool printEvalBc       = false;
 };
 
 extern ByteCodeDebugger g_ByteCodeDebugger;

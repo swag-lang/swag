@@ -65,7 +65,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"examining state", "show", "o", "arguments|arg", "[filter]", "print all current function arguments", cmdShow});
     commands.push_back({"examining state", "show", "o", "functions|func", "[filter]", "print all functions", cmdShow});
     commands.push_back({"examining state", "show", "o", "globals|glo", "[filter]", "print all global variables", cmdShow});
-    commands.push_back({"examining state", "show", "o", "types", "[filter]", "print all exported types", cmdShow});
+    commands.push_back({"examining state", "show", "o", "structs", "[filter]", "print all exported structs", cmdShow});
     commands.push_back({"examining state", "where", "wh", "", "", "print current execution context", cmdWhere});
 
     commands.push_back({"modifying state", "bytecode", "bc", "", "", "swap between bytecode and source code mode", cmdBc});
@@ -75,6 +75,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"modifying state", "set", "", "bkp", "[on|off]", "enable/disable @breakpoint()", cmdSet});
     commands.push_back({"modifying state", "set", "", "print", "struct [on|off]", "display the content of structs when printing values", cmdSet});
     commands.push_back({"modifying state", "set", "", "print", "array [on|off]", "display the content of arrays when printing values", cmdSet});
+    commands.push_back({"modifying state", "set", "", "print", "eval [on|off]", "display the bytecode content of a debugger expression to evaluate", cmdSet});
     commands.push_back({"modifying state", "set", "", "bytecode|bc", "code [on|off]", "display source code when printing bytecode", cmdSet});
     commands.push_back({"modifying state", "set", "", "backtrace|bt", "code [on|off]", "display source code when printing stack frames", cmdSet});
     commands.push_back({"modifying state", "set", "", "register|reg", "<$reg> <expr>", "modify the given register <$reg> with the result of <expr>", cmdSet});

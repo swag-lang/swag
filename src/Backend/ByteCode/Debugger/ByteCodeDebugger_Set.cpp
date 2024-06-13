@@ -33,11 +33,28 @@ namespace
     }
 }
 
+BcDbgCommandResult ByteCodeDebugger::cmdBc(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
+    if (arg.split.size() > 1)
+        return BcDbgCommandResult::TooManyArguments;
+
+    g_ByteCodeDebugger.bcMode = !g_ByteCodeDebugger.bcMode;
+    if (g_ByteCodeDebugger.bcMode)
+        printCmdResult("bytecode mode");
+    else
+        printCmdResult("source code mode");
+    return BcDbgCommandResult::Continue;
+}
+
 void ByteCodeDebugger::printSet(ByteCodeRunContext*)
 {
     g_Log.messageHeaderDot("stop on @breakpoint()", g_CommandLine.dbgStopOnBreakpoint ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("print struct content", g_ByteCodeDebugger.printStruct ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("print array content", g_ByteCodeDebugger.printArray ? "on" : "off", LogColor::Name, LogColor::White, " ");
+    g_Log.messageHeaderDot("print eval bytecode", g_ByteCodeDebugger.printEvalBc ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("bytecode source code", g_ByteCodeDebugger.printBcCode ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("backtrace source code", g_ByteCodeDebugger.printBtCode ? "on" : "off", LogColor::Name, LogColor::White, " ");
 }
@@ -118,7 +135,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
             return setOnOff("print struct content", arg, g_ByteCodeDebugger.printStruct);
         if (arg.split[2] == "array")
             return setOnOff("print array content", arg, g_ByteCodeDebugger.printArray);
-
+        if (arg.split[2] == "eval")
+            return setOnOff("print eval expression bytecode", arg, g_ByteCodeDebugger.printEvalBc);
+        
         printCmdError(form("invalid [[set print]] argument [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Error;
     }
@@ -150,26 +169,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         printCmdError(form("invalid [[set backtrace]] argument [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Error;
     }
-
+    
     if (arg.split[1] == "register" || arg.split[1] == "reg")
         return cmdSetRegister(context, arg);
 
     printCmdError(form("invalid [[set]] command [[%s]]", arg.split[1].c_str()));
     return BcDbgCommandResult::Error;
-}
-
-BcDbgCommandResult ByteCodeDebugger::cmdBc(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
-{
-    if (arg.help)
-        return BcDbgCommandResult::Continue;
-
-    if (arg.split.size() > 1)
-        return BcDbgCommandResult::TooManyArguments;
-
-    g_ByteCodeDebugger.bcMode = !g_ByteCodeDebugger.bcMode;
-    if (g_ByteCodeDebugger.bcMode)
-        printCmdResult("bytecode mode");
-    else
-        printCmdResult("source code mode");
-    return BcDbgCommandResult::Continue;
 }

@@ -5,6 +5,7 @@
 #include "Backend/ByteCode/Gen/ByteCodeGenJob.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Backend/Context.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/Log.h"
 #include "Report/Report.h"
@@ -12,10 +13,10 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/Parser/Parser.h"
+#include "Syntax/SyntaxColor.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
 
-#pragma optimize("", off)
 bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& inExpr, EvaluateResult& res, CompilerAstKind kind, bool silent) const
 {
     PushSilentError se;
@@ -71,6 +72,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     g_ThreadMgr.addJob(semanticJob);
     g_ThreadMgr.waitEndJobsSync();
     g_ThreadMgr.debuggerMode = true;
+    res.node                 = child;
 
     if (!g_SilentErrorMsg.empty())
     {
@@ -108,9 +110,8 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     g_ThreadMgr.waitEndJobsSync();
     g_ThreadMgr.debuggerMode = false;
 
-#ifdef SWAG_DEV_MODE
-    // ext->bc->print({});
-#endif
+    if (g_ByteCodeDebugger.printEvalBc)
+        ext->bc->print({});
 
     if (!g_SilentErrorMsg.empty())
     {
@@ -237,6 +238,38 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
 
     if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
         return BcDbgCommandResult::Error;
+
+    if (res.node && res.node->resolvedSymbolOverload())
+    {
+        switch (res.node->resolvedSymbolName()->kind)
+        {
+            case SymbolKind::Struct:
+            case SymbolKind::Enum:
+            case SymbolKind::TypeAlias:
+                FormatConcat  tmpConcat;
+                FormatAst     fmtAst{tmpConcat};
+                FormatContext fmtCxt;
+                tmpConcat.init(1024);
+                const auto node = res.node->resolvedSymbolOverload()->node;
+                if (fmtAst.outputNode(fmtCxt, node))
+                {
+                    Utf8         result = fmtAst.getUtf8();
+                    Vector<Utf8> lines;
+                    Utf8::tokenize(result, '\n', lines);
+
+                    SyntaxColorContext cxt;
+                    cxt.mode = SyntaxColorMode::ForLog;
+                    Vector<Utf8> toPrint;
+                    toPrint.push_back(form("%s%s:%d", Log::colorToVTS(LogColor::Location).c_str(), node->token.sourceFile->path.c_str(), node->token.startLocation.line + 1));
+                    for (const auto& line : lines)
+                        toPrint.push_back(syntaxColor(line, cxt));
+
+                    printLong(toPrint);
+                }
+
+                return BcDbgCommandResult::Continue;
+        }
+    }
 
     if (res.type->isVoid())
         return BcDbgCommandResult::Continue;
