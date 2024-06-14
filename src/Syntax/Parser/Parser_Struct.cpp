@@ -348,6 +348,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[struct]] body"));
         while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(contentNode, structType, &dummyResult));
+        contentNode->token.endLocation = tokenParse.token.endLocation;
         SWAG_CHECK(eatFormat(contentNode));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[struct]] body"));
     }

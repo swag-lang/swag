@@ -2,9 +2,12 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
+#include "Format/FormatAst.h"
+#include "Format/FormatConcat.h"
 #include "Report/Log.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
+#include "Syntax/SyntaxColor.h"
 #include "Wmf/Workspace.h"
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
@@ -161,6 +164,51 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     }
     else
         printCmdError("no source code");
+
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdSource(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
+    if (arg.split.size() > 2)
+        return BcDbgCommandResult::TooManyArguments;
+    if (arg.split.size() < 2)
+        return BcDbgCommandResult::NotEnoughArguments;
+
+    EvaluateResult res;
+    if (!g_ByteCodeDebugger.evalExpression(context, arg.cmdExpr, res, false, false))
+        return BcDbgCommandResult::Error;
+
+    if (!res.node || !res.node->resolvedSymbolOverload())
+    {
+        printCmdError(form("cannot evaluate expression [[%s]]", arg.cmdExpr.c_str()));
+        return BcDbgCommandResult::Error;
+    }
+
+    const auto node = res.node->resolvedSymbolOverload()->node;
+
+    FormatConcat  tmpConcat;
+    FormatAst     fmtAst{tmpConcat};
+    FormatContext fmtCxt;
+    tmpConcat.init(1024);
+    if (fmtAst.outputNode(fmtCxt, node))
+    {
+        const Utf8   result = fmtAst.getUtf8();
+        Vector<Utf8> lines;
+        Utf8::tokenize(result, '\n', lines);
+
+        SyntaxColorContext cxt;
+        cxt.mode = SyntaxColorMode::ForLog;
+        Vector<Utf8> toPrint;
+        toPrint.push_back(form("%s%s:%d", Log::colorToVTS(LogColor::Location).c_str(), node->token.sourceFile->path.c_str(), node->token.startLocation.line + 1));
+        for (const auto& line : lines)
+            toPrint.push_back(syntaxColor(line, cxt));
+
+        printLong(toPrint);
+    }
 
     return BcDbgCommandResult::Continue;
 }

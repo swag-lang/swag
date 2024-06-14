@@ -273,7 +273,8 @@ bool Semantic::isFunctionButNotACall(SemanticContext*, AstNode* node, const Symb
                     return true;
             }
 
-            if (grandParent->is(AstNodeKind::TypeAlias) ||
+            if (grandParent->hasAstFlag(AST_DEBUG_NODE) ||
+                grandParent->is(AstNodeKind::TypeAlias) ||
                 grandParent->is(AstNodeKind::NameAlias) ||
                 grandParent->is(AstNodeKind::IntrinsicDefined) ||
                 grandParent->is(AstNodeKind::IntrinsicLocation) ||

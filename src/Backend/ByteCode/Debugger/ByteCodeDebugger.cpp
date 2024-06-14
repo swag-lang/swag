@@ -42,6 +42,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"source code", "longlist", "ll", "", "[name]", "print the source code of the current function (or function [name])", cmdLongList});
     commands.push_back({"source code", "bytecode", "bc", "", "[num]", "print the current bytecode instruction and [num] instructions around", cmdInstruction});
     commands.push_back({"source code", "longbc", "lb", "", "[name]", "print the bytecode of the current function (or function [name])", cmdInstructionDump});
+    commands.push_back({"source code", "source", "sc", "", "<symbol>", "print the source code of <symbol>, if applicable", cmdSource});
 
     commands.push_back({"stack", "backtrace", "bt", "", "[num]", "backtrace, print [num] frames (0 for all)", cmdBackTrace});
     commands.push_back({"stack", "up", "", "", "[num]", "move stack frame [num] level up", cmdFrameUp});

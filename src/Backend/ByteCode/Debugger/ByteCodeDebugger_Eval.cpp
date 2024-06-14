@@ -17,7 +17,7 @@
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
 
-bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& inExpr, EvaluateResult& res, CompilerAstKind kind, bool silent) const
+bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& inExpr, EvaluateResult& res, CompilerAstKind kind, bool silent, bool execute) const
 {
     PushSilentError se;
 
@@ -36,6 +36,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     parent.ownerFct         = castAst<AstFuncDecl>(cxtBc->node, AstNodeKind::FuncDecl);
     parent.token.sourceFile = sourceFile;
     parent.parent           = cxtIp->node;
+    parent.addAstFlag(AST_DEBUG_NODE);
 
     if (cxtIp->node->hasOwnerInline())
     {
@@ -74,7 +75,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     g_ThreadMgr.debuggerMode = true;
     res.node                 = child;
 
-    if (kind == CompilerAstKind::Expression)
+    if (kind == CompilerAstKind::Expression && execute)
         Semantic::checkIsConcrete(&semanticJob->context, child);
 
     if (!g_SilentErrorMsg.empty())
@@ -93,6 +94,9 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         res.value = child->computedValue();
         return true;
     }
+
+    if(!execute)
+        return true;
 
     // Gen bytecode for expression
     auto genJob        = Allocator::alloc<ByteCodeGenJob>();
@@ -177,9 +181,9 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     return true;
 }
 
-bool ByteCodeDebugger::evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent) const
+bool ByteCodeDebugger::evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent, bool execute) const
 {
-    return evalDynExpression(context, expr, res, CompilerAstKind::Expression, silent);
+    return evalDynExpression(context, expr, res, CompilerAstKind::Expression, silent, execute);
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, const BcDbgCommandArg& arg)

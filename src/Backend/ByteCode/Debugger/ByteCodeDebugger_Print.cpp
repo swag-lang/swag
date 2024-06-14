@@ -266,41 +266,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     }
 
     EvaluateResult res;
-
     if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
         return BcDbgCommandResult::Error;
-
-    if (res.node && res.node->resolvedSymbolOverload())
-    {
-        switch (res.node->resolvedSymbolName()->kind)
-        {
-            case SymbolKind::Struct:
-            case SymbolKind::Enum:
-            case SymbolKind::TypeAlias:
-                FormatConcat  tmpConcat;
-                FormatAst     fmtAst{tmpConcat};
-                FormatContext fmtCxt;
-                tmpConcat.init(1024);
-                const auto node = res.node->resolvedSymbolOverload()->node;
-                if (fmtAst.outputNode(fmtCxt, node))
-                {
-                    Utf8         result = fmtAst.getUtf8();
-                    Vector<Utf8> lines;
-                    Utf8::tokenize(result, '\n', lines);
-
-                    SyntaxColorContext cxt;
-                    cxt.mode = SyntaxColorMode::ForLog;
-                    Vector<Utf8> toPrint;
-                    toPrint.push_back(form("%s%s:%d", Log::colorToVTS(LogColor::Location).c_str(), node->token.sourceFile->path.c_str(), node->token.startLocation.line + 1));
-                    for (const auto& line : lines)
-                        toPrint.push_back(syntaxColor(line, cxt));
-
-                    printLong(toPrint);
-                }
-
-                return BcDbgCommandResult::Continue;
-        }
-    }
 
     if (res.type->isVoid())
         return BcDbgCommandResult::Continue;
