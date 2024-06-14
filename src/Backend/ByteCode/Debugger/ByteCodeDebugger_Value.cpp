@@ -125,10 +125,14 @@ void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* /*context
     {
         case 8:
         default:
-            if (fmt.isSigned)
+            if (fmt.isSigned && fmt.align)
                 result = form("%4d ", getAddrValue<int8_t>(addr));
-            else if (!fmt.isHexa)
+            else if (fmt.isSigned)
+                result = form("%d ", getAddrValue<int8_t>(addr));
+            else if (!fmt.isHexa && fmt.align)
                 result = form("%3u ", getAddrValue<uint8_t>(addr));
+            else if (!fmt.isHexa)
+                result = form("%u ", getAddrValue<uint8_t>(addr));
             else if (fmt.print0X)
                 result = form("0x%02llx ", getAddrValue<uint8_t>(addr));
             else
@@ -136,10 +140,14 @@ void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* /*context
             break;
 
         case 16:
-            if (fmt.isSigned)
+            if (fmt.isSigned && fmt.align)
                 result = form("%6d ", getAddrValue<int16_t>(addr));
-            else if (!fmt.isHexa)
+            else if (fmt.isSigned)
+                result = form("%d ", getAddrValue<int16_t>(addr));
+            else if (!fmt.isHexa && fmt.align)
                 result = form("%5u ", getAddrValue<uint16_t>(addr));
+            else if (!fmt.isHexa)
+                result = form("%u ", getAddrValue<uint16_t>(addr));
             else if (fmt.print0X)
                 result = form("0x%04llx ", getAddrValue<uint16_t>(addr));
             else
@@ -147,12 +155,18 @@ void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* /*context
             break;
 
         case 32:
-            if (fmt.isFloat)
+            if (fmt.isFloat && fmt.align)
                 result = form("%16.5g ", getAddrValue<float>(addr));
-            else if (fmt.isSigned)
+            else if (fmt.isFloat)
+                result = form("%f ", getAddrValue<double>(addr));
+            else if (fmt.isSigned && fmt.align)
                 result = form("%11d ", getAddrValue<int32_t>(addr));
-            else if (!fmt.isHexa)
+            else if (fmt.isSigned)
+                result = form("%d ", getAddrValue<int32_t>(addr));
+            else if (!fmt.isHexa && fmt.align)
                 result = form("%10u ", getAddrValue<uint32_t>(addr));
+            else if (!fmt.isHexa)
+                result = form("%u ", getAddrValue<uint32_t>(addr));
             else if (fmt.print0X)
                 result = form("0x%08llx ", getAddrValue<uint32_t>(addr));
             else
@@ -160,12 +174,18 @@ void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* /*context
             break;
 
         case 64:
-            if (fmt.isFloat)
+            if (fmt.isFloat && fmt.align)
                 result = form("%16.5g ", getAddrValue<double>(addr));
-            else if (fmt.isSigned)
+            else if (fmt.isFloat)
+                result = form("%f ", getAddrValue<double>(addr));
+            else if (fmt.isSigned && fmt.align)
                 result = form("%21lld ", getAddrValue<int64_t>(addr));
-            else if (!fmt.isHexa)
+            else if (fmt.isSigned)
+                result = form("%d ", getAddrValue<int64_t>(addr));
+            else if (!fmt.isHexa && fmt.align)
                 result = form("%20llu ", getAddrValue<uint64_t>(addr));
+            else if (!fmt.isHexa)
+                result = form("%u ", getAddrValue<uint64_t>(addr));
             else if (fmt.print0X)
                 result = form("0x%016llx ", getAddrValue<uint64_t>(addr));
             else

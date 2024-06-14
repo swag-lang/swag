@@ -104,6 +104,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     }
 
     fmt.print0X = false;
+    fmt.align   = true;
 
     // Count
     int count = 64;

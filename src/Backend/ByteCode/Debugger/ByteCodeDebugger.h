@@ -59,6 +59,7 @@ struct ByteCodeDebugger
         bool isFloat  = false;
         bool isHexa   = true;
         bool print0X  = true;
+        bool align    = false;
     };
 
     enum class DebugStepMode
