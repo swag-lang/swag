@@ -33,22 +33,6 @@ namespace
     }
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBc(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
-{
-    if (arg.help)
-        return BcDbgCommandResult::Continue;
-
-    if (arg.split.size() > 1)
-        return BcDbgCommandResult::TooManyArguments;
-
-    g_ByteCodeDebugger.bcMode = !g_ByteCodeDebugger.bcMode;
-    if (g_ByteCodeDebugger.bcMode)
-        printCmdResult("bytecode mode");
-    else
-        printCmdResult("source code mode");
-    return BcDbgCommandResult::Continue;
-}
-
 void ByteCodeDebugger::printSet(ByteCodeRunContext*)
 {
     g_Log.messageHeaderDot("stop on @breakpoint()", g_CommandLine.dbgStopOnBreakpoint ? "on" : "off", LogColor::Name, LogColor::White, " ");

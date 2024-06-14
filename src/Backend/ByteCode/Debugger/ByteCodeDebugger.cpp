@@ -39,9 +39,9 @@ void ByteCodeDebugger::setup()
     commands.push_back({"breakpoints", "tbreak", "tb", "", "", "same as 'break' except that the breakpoint will be automatically removed on hit", cmdBreak});
 
     commands.push_back({"source code", "list", "l", "", "[num]", "print the current source code line and [num] lines around", cmdList});
-    commands.push_back({"source code", "ll", "", "", "[name]", "print the current function (or function [name]) source code", cmdLongList});
-    commands.push_back({"source code", "i", "", "", "[num]", "print the current bytecode instruction and [num] instructions around", cmdInstruction});
-    commands.push_back({"source code", "ii", "", "", "[name]", "print the current function (or function [name]) bytecode", cmdInstructionDump});
+    commands.push_back({"source code", "longlist", "ll", "", "[name]", "print the current function (or function [name]) source code", cmdLongList});
+    commands.push_back({"source code", "bytecode", "bc", "", "[num]", "print the current bytecode instruction and [num] instructions around", cmdInstruction});
+    commands.push_back({"source code", "longbytecode", "lbc", "", "[name]", "print the current function (or function [name]) bytecode", cmdInstructionDump});
 
     commands.push_back({"stack", "backtrace", "bt", "", "[num]", "backtrace, print [num] frames (0 for all)", cmdBackTrace});
     commands.push_back({"stack", "up", "", "", "[num]", "move stack frame [num] level up", cmdFrameUp});
@@ -68,7 +68,6 @@ void ByteCodeDebugger::setup()
     commands.push_back({"examining state", "show", "o", "types", "[filter]", "print all exported types", cmdShow});
     commands.push_back({"examining state", "where", "wh", "", "", "print current execution context", cmdWhere});
 
-    commands.push_back({"modifying state", "bytecode", "bc", "", "", "swap between bytecode and source code mode", cmdBc});
     commands.push_back({"modifying state", "execute", "e", "", "<stmt>", "execute the code statement <stmt> in the current context", cmdExecute});
     commands.push_back({"modifying state", "set", "", "<subcommand>", "", "change bcdbg behaviour", nullptr});
     commands.push_back({"modifying state", "set", "", "", "", "print all the current 'set' values", cmdSet});
