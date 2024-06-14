@@ -2,9 +2,12 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
+#include "Format/FormatAst.h"
+#include "Format/FormatConcat.h"
 #include "Report/Log.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
+#include "Syntax/SyntaxColor.h"
 #include "Wmf/Workspace.h"
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
@@ -217,160 +220,145 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     return BcDbgCommandResult::Continue;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
-BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
-        return BcDbgCommandResult::Continue;
-
-    if (arg.split.size() > 2)
-        return BcDbgCommandResult::TooManyArguments;
-
-    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
     {
-        printCmdError(form("invalid instruction count [[%s]]", arg.split[1].c_str()));
-        return BcDbgCommandResult::Error;
+        g_Log.writeEol();
+
+        g_Log.setColor(LogColor::Gray);
+        g_Log.print("--format\n");
+        g_Log.setColor(LogColor::White);
+        g_Log.print("    The display format of the result, if applicable. Can be one of the following:\n");
+        g_Log.setColor(LogColor::Type);
+        g_Log.print("    s8 s16 s32 s64 u8 u16 u32 u64 x8 x16 x32 x64 f32 f64\n");
+
+        return BcDbgCommandResult::Continue;
     }
 
-    int regN = 3;
-    if (arg.split.size() == 2)
-        regN = arg.split[1].toInt();
+    if (arg.split.size() < 2)
+        return BcDbgCommandResult::NotEnoughArguments;
 
-    g_Log.setStoreMode(true);
-    g_ByteCodeDebugger.printInstructions(context, g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, regN);
-    g_Log.setStoreMode(false);
-    g_ByteCodeDebugger.printLong(g_Log.store);
-    g_ByteCodeDebugger.bcMode = true;
+    auto expr = arg.cmdExpr;
 
-    return BcDbgCommandResult::Continue;
-}
-
-BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext*, const BcDbgCommandArg& arg)
-{
-    if (arg.help)
-        return BcDbgCommandResult::Continue;
-
-    if (arg.split.size() > 2)
-        return BcDbgCommandResult::TooManyArguments;
-
-    auto toLogBc = g_ByteCodeDebugger.cxtBc;
-    auto toLogIp = g_ByteCodeDebugger.cxtIp;
-
+    ValueFormat fmt;
+    fmt.isHexa     = true;
+    fmt.bitCount   = 64;
+    bool hasFormat = false;
     if (arg.split.size() > 1)
     {
-        const auto name = arg.split[1];
-        toLogBc         = findCmdBc(name);
-        if (!toLogBc)
+        if (getValueFormat(arg.split.back(), fmt))
+        {
+            hasFormat = true;
+            expr.remove(expr.length() - arg.split.back().length(), arg.split.back().length());
+            expr.trim();
+            if (expr.empty())
+            {
+                printCmdError("expression to evaluate is empty");
+                return BcDbgCommandResult::Error;
+            }
+        }
+        else if (arg.split.back().startsWith("--"))
+        {
+            printCmdError(form("invalid format [[%s]]", arg.split.back().c_str()));
             return BcDbgCommandResult::Error;
-        toLogIp = toLogBc->out;
+        }
     }
 
-    ByteCodePrintOptions opt;
-    opt.curIp           = toLogIp;
-    opt.printSourceCode = g_ByteCodeDebugger.printBcCode;
+    EvaluateResult res;
 
-    g_Log.setStoreMode(true);
-    toLogBc->print(opt);
-    g_Log.setStoreMode(false);
-    g_ByteCodeDebugger.printLong(g_Log.store);
-    g_ByteCodeDebugger.bcMode = true;
+    if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
+        return BcDbgCommandResult::Error;
 
-    return BcDbgCommandResult::Continue;
-}
+    if (res.node && res.node->resolvedSymbolOverload())
+    {
+        switch (res.node->resolvedSymbolName()->kind)
+        {
+            case SymbolKind::Struct:
+            case SymbolKind::Enum:
+            case SymbolKind::TypeAlias:
+                FormatConcat  tmpConcat;
+                FormatAst     fmtAst{tmpConcat};
+                FormatContext fmtCxt;
+                tmpConcat.init(1024);
+                const auto node = res.node->resolvedSymbolOverload()->node;
+                if (fmtAst.outputNode(fmtCxt, node))
+                {
+                    Utf8         result = fmtAst.getUtf8();
+                    Vector<Utf8> lines;
+                    Utf8::tokenize(result, '\n', lines);
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
-BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
-{
-    if (arg.help)
+                    SyntaxColorContext cxt;
+                    cxt.mode = SyntaxColorMode::ForLog;
+                    Vector<Utf8> toPrint;
+                    toPrint.push_back(form("%s%s:%d", Log::colorToVTS(LogColor::Location).c_str(), node->token.sourceFile->path.c_str(), node->token.startLocation.line + 1));
+                    for (const auto& line : lines)
+                        toPrint.push_back(syntaxColor(line, cxt));
+
+                    printLong(toPrint);
+                }
+
+                return BcDbgCommandResult::Continue;
+        }
+    }
+
+    if (res.type->isVoid())
         return BcDbgCommandResult::Continue;
 
-    if (arg.split.size() > 2)
-        return BcDbgCommandResult::TooManyArguments;
+    const auto concrete = res.type->getConcreteAlias();
+    Utf8       str;
+    Utf8       strRes;
 
-    if (arg.split.size() > 1 && !Utf8::isNumber(arg.split[1].c_str()))
+    if (hasFormat)
     {
-        printCmdError(form("invalid line count [[%s]]", arg.split[1].c_str()));
-        return BcDbgCommandResult::Error;
-    }
-
-    const auto toLogBc        = g_ByteCodeDebugger.cxtBc;
-    const auto toLogIp        = g_ByteCodeDebugger.cxtIp;
-    g_ByteCodeDebugger.bcMode = false;
-
-    if (toLogBc->node && toLogBc->node->is(AstNodeKind::FuncDecl) && toLogBc->node->token.sourceFile)
-    {
-        uint32_t offset = 3;
-        if (arg.split.size() == 2)
-            offset = arg.split[1].toInt();
-
-        const auto inl = g_ByteCodeDebugger.lastBreakIp->node->safeOwnerInline();
-        if (inl)
+        if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
         {
-            const auto loc = ByteCode::getLocation(toLogBc, toLogIp, true);
-            g_ByteCodeDebugger.printSourceLines(context, toLogBc, inl->func->token.sourceFile, loc.location, offset);
+            printCmdError(form("cannot apply print format to type [[%s]]", concrete->getDisplayNameC()));
+            return BcDbgCommandResult::Error;
         }
-        else
-        {
-            const auto loc = ByteCode::getLocation(toLogBc, toLogIp, false);
-            g_ByteCodeDebugger.printSourceLines(context, toLogBc, toLogBc->node->token.sourceFile, loc.location, offset);
-        }
+
+        if (!res.addr && res.value)
+            res.addr = &res.value->reg;
+
+        appendLiteralValue(context, strRes, fmt, res.addr);
     }
     else
-        printCmdError("no source code");
-
-    return BcDbgCommandResult::Continue;
-}
-
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
-BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
-{
-    if (arg.help)
-        return BcDbgCommandResult::Continue;
-
-    if (arg.split.size() > 2)
-        return BcDbgCommandResult::TooManyArguments;
-
-    auto toLogBc              = g_ByteCodeDebugger.cxtBc;
-    auto toLogIp              = g_ByteCodeDebugger.cxtIp;
-    g_ByteCodeDebugger.bcMode = false;
-
-    if (arg.split.size() > 1)
     {
-        const auto name = arg.split[1];
-        toLogBc         = findCmdBc(name);
-        if (!toLogBc)
-            return BcDbgCommandResult::Error;
-        toLogIp = toLogBc->out;
+        str = getPrintValue("", res.type);
+        appendTypedValue(context, strRes, res, 0, 0);
     }
 
-    if (toLogBc->node && toLogBc->node->is(AstNodeKind::FuncDecl) && toLogBc->node->token.sourceFile)
-    {
-        const auto funcNode = castAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
-        if (funcNode->content)
-        {
-            toLogBc->printName();
+    str += strRes;
 
-            const auto inl = g_ByteCodeDebugger.lastBreakIp->node->safeOwnerInline();
-            if (inl)
-            {
-                const auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, true);
-                const uint32_t startLine = inl->func->token.startLocation.line;
-                const uint32_t endLine   = inl->func->content->token.endLocation.line;
-                g_ByteCodeDebugger.printSourceLines(context, toLogBc, inl->func->token.sourceFile, loc.location, startLine, endLine);
-            }
+    // Append to automatic expressions
+    if (res.type)
+    {
+        // Do not add a new expression if this is already an expression number
+        auto expr1 = expr;
+        expr1.trim();
+        if (expr1[0] == '$')
+            expr1.remove(0, 1);
+        while (!expr1.empty() && SWAG_IS_DIGIT(expr1[0]))
+            expr1.remove(0, 1);
+        expr1.trim();
+
+        if (expr1.length())
+        {
+            g_ByteCodeDebugger.evalExpr.push_back(expr);
+            if (res.type->isNativeIntegerOrRune() || res.type->isPointer() || res.type->isNativeFloat() || res.type->isBool())
+                g_ByteCodeDebugger.evalExprResult.push_back(strRes);
             else
-            {
-                const auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, false);
-                const uint32_t startLine = toLogBc->node->token.startLocation.line;
-                const uint32_t endLine   = funcNode->content->token.endLocation.line;
-                g_ByteCodeDebugger.printSourceLines(context, toLogBc, toLogBc->node->token.sourceFile, loc.location, startLine, endLine);
-            }
+                g_ByteCodeDebugger.evalExprResult.push_back(expr);
+            g_Log.setColor(LogColor::Gray);
+            g_Log.print(form("$%d = ", g_ByteCodeDebugger.evalExpr.size() - 1));
         }
-        else
-            printCmdError("no source code");
     }
-    else
-        printCmdError("no source code");
 
+    g_Log.setColor(LogColor::Name);
+    g_Log.print(expr);
+    g_Log.setColor(LogColor::Default);
+    g_Log.write(" = ");
+
+    printLong(str);
     return BcDbgCommandResult::Continue;
 }

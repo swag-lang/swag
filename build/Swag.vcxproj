@@ -362,6 +362,7 @@
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Frame.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Help.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Helpers.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_List.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Show.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Print.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Set.cpp" />
