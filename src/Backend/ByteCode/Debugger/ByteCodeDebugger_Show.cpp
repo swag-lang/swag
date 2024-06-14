@@ -84,7 +84,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowFiles(ByteCodeRunContext* /*context*
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdShowStructs(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowTypes(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
@@ -372,8 +372,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
         return cmdShowFiles(context, arg);
     if (arg.split[1] == "values" || arg.split[1] == "vals")
         return cmdShowValues(context, arg);
-    if (arg.split[1] == "structs")
-        return cmdShowStructs(context, arg);
+    if (arg.split[1] == "types")
+        return cmdShowTypes(context, arg);
 
     printCmdError(form("invalid [[show]] command [[%s]]", arg.split[1].c_str()));
     return BcDbgCommandResult::Error;

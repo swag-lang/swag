@@ -151,8 +151,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     else if (resolved->hasFlag(OVERLOAD_VAR_STRUCT))
     {
         node->resultRegisterRc = identifier->identifierRef()->resultRegisterRc;
-        SWAG_VERIFY(node->resultRegisterRc.size() > 0,
-                    Report::internalError(context->node, form("emitIdentifier, cannot reference identifier [[%s]]", identifier->token.c_str()).c_str()));
+        SWAG_VERIFY(node->resultRegisterRc.size() > 0, Report::internalError(context->node, form("emitIdentifier, cannot reference identifier [[%s]]", identifier->token.c_str()).c_str()));
         forStruct = true;
     }
 

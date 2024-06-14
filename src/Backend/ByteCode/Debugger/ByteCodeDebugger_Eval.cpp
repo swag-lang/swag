@@ -74,6 +74,9 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     g_ThreadMgr.debuggerMode = true;
     res.node                 = child;
 
+    if (kind == CompilerAstKind::Expression)
+        Semantic::checkIsConcrete(&semanticJob->context, child);
+
     if (!g_SilentErrorMsg.empty())
     {
         if (silent)
