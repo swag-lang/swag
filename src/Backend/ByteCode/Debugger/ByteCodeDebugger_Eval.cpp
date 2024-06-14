@@ -199,11 +199,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     if (arg.help)
     {
         g_Log.writeEol();
-
+        
         g_Log.setColor(LogColor::Gray);
         g_Log.print("--format\n");
         g_Log.setColor(LogColor::White);
-        g_Log.print("    The display format of the result, if applicable. Can be one of the following values:\n");
+        g_Log.print("    The display format of the result, if applicable. Can be one of the following:\n");
         g_Log.setColor(LogColor::Type);
         g_Log.print("    s8 s16 s32 s64 u8 u16 u32 u64 x8 x16 x32 x64 f32 f64\n");
 
@@ -231,6 +231,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
                 printCmdError("expression to evaluate is empty");
                 return BcDbgCommandResult::Error;
             }
+        }
+        else if(arg.split.back().startsWith("--"))
+        {
+            printCmdError(form("invalid format [[%s]]", arg.split.back().c_str()));
+            return BcDbgCommandResult::Error;
         }
     }
 

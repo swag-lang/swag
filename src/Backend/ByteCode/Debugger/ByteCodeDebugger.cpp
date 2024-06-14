@@ -49,7 +49,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"stack", "frame", "", "", "<num>", "set stack frame to level <num>", cmdFrame});
 
     commands.push_back({"examining state", "print", "p", "", "<expr> [--format]", "print the result of the expression <expr> in the current context", cmdPrint});
-    commands.push_back({"examining state", "examine", "x", "", "<address> [--num] [--format]", "print memory", cmdMemory});
+    commands.push_back({"examining state", "examine", "x", "", "<address> [--num] [--format]", "print memory at the given <address>", cmdMemory});
     commands.push_back({"examining state", "display", "d", "<subcommand>", "", "automatic display of some expressions", nullptr});
     commands.push_back({"examining state", "display", "d", "", "", "print all expressions to display", cmdDisplay});
     commands.push_back({"examining state", "display", "d", "", "<expr> [--format]", "same as 'print', but will be done at each step", cmdDisplay});
@@ -76,9 +76,9 @@ void ByteCodeDebugger::setup()
     commands.push_back({"modifying state", "set", "", "print", "struct [on|off]", "display the content of structs when printing values", cmdSet});
     commands.push_back({"modifying state", "set", "", "print", "array [on|off]", "display the content of arrays when printing values", cmdSet});
     commands.push_back({"modifying state", "set", "", "print", "eval [on|off]", "display the bytecode content of a debugger expression to evaluate", cmdSet});
-    commands.push_back({"modifying state", "set", "", "bytecode|bc", "code [on|off]", "display source code when printing bytecode", cmdSet});
-    commands.push_back({"modifying state", "set", "", "backtrace|bt", "code [on|off]", "display source code when printing stack frames", cmdSet});
-    commands.push_back({"modifying state", "set", "", "register|reg", "<$reg> <expr>", "modify the given register <$reg> with the result of <expr>", cmdSet});
+    commands.push_back({"modifying state", "set", "", "bytecode", "code [on|off]", "display source code when printing bytecode", cmdSet});
+    commands.push_back({"modifying state", "set", "", "backtrace", "code [on|off]", "display source code when printing stack frames", cmdSet});
+    commands.push_back({"modifying state", "set", "", "register", "<$reg> <expr>", "modify the given register <$reg> with the result of <expr>", cmdSet});
 
     commands.push_back({"bcdbg", "help", "?", "", "[command] [subcommand]", "display help", nullptr});
     commands.push_back({"bcdbg", "help", "?", "", "", "print this list of commands", cmdHelp});

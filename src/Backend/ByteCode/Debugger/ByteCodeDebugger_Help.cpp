@@ -28,7 +28,7 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd, bool commandMode)
 
     // Sub command
     line += Log::colorToVTS(LogColor::Type);
-    
+
     uint32_t colArgAdd = 0;
     if (!commandMode && cmd.subcommand[0])
     {
@@ -159,7 +159,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
             }
         }
 
-        if(toPrint.empty())
+        if (toPrint.empty())
             toPrint = toScan;
     }
 
@@ -172,19 +172,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
         g_Log.print("command:     ");
         g_Log.setColor(LogColor::Name);
         g_Log.print(c.name);
-        if(c.subcommand[0])
+        if (c.subcommand[0])
         {
             g_Log.print(" ");
             g_Log.print(c.subcommand);
         }
         g_Log.writeEol();
 
-        g_Log.setColor(LogColor::Gray);
-        g_Log.print("arguments:   ");
-        g_Log.setColor(LogColor::Type);
-        g_Log.print(c.args);
-        g_Log.writeEol();
-        
         if (c.shortname[0])
         {
             g_Log.setColor(LogColor::Gray);
@@ -193,7 +187,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
             g_Log.print(c.shortname);
             g_Log.writeEol();
         }
-        
+
+        g_Log.setColor(LogColor::Gray);
+        g_Log.print("arguments:   ");
+        g_Log.setColor(LogColor::Type);
+        g_Log.print(c.args);
+        g_Log.writeEol();
+
         g_Log.setColor(LogColor::Gray);
         g_Log.print("description: ");
         g_Log.setColor(LogColor::White);

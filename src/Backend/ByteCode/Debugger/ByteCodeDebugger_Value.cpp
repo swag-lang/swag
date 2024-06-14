@@ -3,7 +3,6 @@
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
 #include "Semantic/DataSegment.h"
-#include "Semantic/Symbol/Symbol.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Wmf/Workspace.h"
