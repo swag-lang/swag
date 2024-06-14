@@ -188,7 +188,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdSource(ByteCodeRunContext* context, cons
         return BcDbgCommandResult::Error;
     }
 
-    const auto node = res.node->resolvedSymbolOverload()->node;
+    const auto   node = res.node->resolvedSymbolOverload()->node;
+    Vector<Utf8> toPrint;
+    toPrint.push_back(form("%s%s:%d", Log::colorToVTS(LogColor::Location).c_str(), node->token.sourceFile->path.c_str(), node->token.startLocation.line + 1));
 
     FormatConcat  tmpConcat;
     FormatAst     fmtAst{tmpConcat};
@@ -202,13 +204,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdSource(ByteCodeRunContext* context, cons
 
         SyntaxColorContext cxt;
         cxt.mode = SyntaxColorMode::ForLog;
-        Vector<Utf8> toPrint;
-        toPrint.push_back(form("%s%s:%d", Log::colorToVTS(LogColor::Location).c_str(), node->token.sourceFile->path.c_str(), node->token.startLocation.line + 1));
         for (const auto& line : lines)
             toPrint.push_back(syntaxColor(line, cxt));
-
-        printLong(toPrint);
     }
 
+    printLong(toPrint);
     return BcDbgCommandResult::Continue;
 }
