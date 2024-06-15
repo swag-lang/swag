@@ -437,8 +437,8 @@ func day9B()
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "9.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    var set: HashSet'{ x, y: s32 }
     struct W { x, y: s32 }
+    var set:  HashSet'W
     var rope: [10] W
 
     visit l: lines
@@ -466,8 +466,8 @@ func day9B()
 
             loop i: 1 until @countof(rope)
             {
-                var dx  = rope[i-1].x - rope[i].x
-                var dy  = rope[i-1].y - rope[i].y
+                var dx  = rope[i - 1].x - rope[i].x
+                var dy  = rope[i - 1].y - rope[i].y
                 let sdx = Math.sign(dx)
                 let sdy = Math.sign(dy)
                 dx = Math.abs(dx)
