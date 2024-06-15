@@ -7,9 +7,9 @@
 #pragma optimize("", off)
 bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
-    //if(!context->bc->getPrintName().containsNoCase("day9B"))
-    //    return true;
-    
+    // if(!context->bc->getPrintName().containsNoCase("day9B"))
+    //     return true;
+
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (!ByteCode::isJump(ip) || ip->b.s32 > 0)
@@ -20,8 +20,8 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         if (ipScan->op == ByteCodeOp::IncJumpIfEqual64)
             ipScan++;
 
-        VectorNative<ByteCodeInstruction> vecInst1;
         context->vecInst.clear();
+        context->vecInstCopy.clear();
         context->vecReg.clear();
         uint32_t countReg[RegisterList::MAX_REGISTERS] = {0};
 
@@ -140,9 +140,9 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                     break;
 
                 uint32_t newReg = 0;
-                for (uint32_t i = 0; i < vecInst1.count; i++)
+                for (uint32_t i = 0; i < context->vecInstCopy.count; i++)
                 {
-                    const auto& it1 = vecInst1[i];
+                    const auto& it1 = context->vecInstCopy[i];
                     if (it1.op == cstOp->op &&
                         it1.b.u64 == cstOp->b.u64 &&
                         it1.c.u64 == cstOp->c.u64 &&
@@ -170,7 +170,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
                 cstOp    = it + shift;
                 *ipStart = *cstOp;
-                vecInst1.push_back(*cstOp);
+                context->vecInstCopy.push_back(*cstOp);
                 context->vecReg.push_back(newReg);
 
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
