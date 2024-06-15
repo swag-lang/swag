@@ -284,7 +284,7 @@ Module* EnumerateModuleJob::addModule(const Path& path)
     Workspace::computeModuleName(path, moduleName, moduleFolder, kind);
 
     // Create theModule
-    const auto theModule = g_Workspace->createOrUseModule(moduleName, moduleFolder, kind);
+    const auto theModule = g_Workspace->createModule(moduleName, moduleFolder, kind);
 
     // Parse all files in the source tree
     enumerateFilesInModule(path, theModule);
@@ -351,7 +351,7 @@ JobResult EnumerateModuleJob::execute()
         const auto parentFolder = Path(g_CommandLine.fileName.c_str()).parent_path();
         const auto file         = Allocator::alloc<SourceFile>();
         file->name              = Path(g_CommandLine.fileName).filename().replace_extension();
-        const auto scriptModule = g_Workspace->createOrUseModule(file->name, parentFolder, ModuleKind::Script);
+        const auto scriptModule = g_Workspace->createModule(file->name, parentFolder, ModuleKind::Script);
         file->path              = g_CommandLine.fileName;
         file->module            = scriptModule;
         file->addFlag(FILE_SCRIPT);

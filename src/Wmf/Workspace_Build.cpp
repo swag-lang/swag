@@ -15,9 +15,9 @@
 #include "Syntax/SyntaxJob.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Threading/ThreadManager.h"
+#include "Wmf/DepManager/ModuleDepManager.h"
 #include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
-#include "Wmf/DepManager/ModuleDepManager.h"
 
 void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)
 {
@@ -80,7 +80,7 @@ Module* Workspace::getModuleByName(const Utf8& moduleName)
     return it->second;
 }
 
-Module* Workspace::createOrUseModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule)
+Module* Workspace::createModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule)
 {
     Module* module = Allocator::alloc<Module>();
 

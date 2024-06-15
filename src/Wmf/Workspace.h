@@ -51,7 +51,7 @@ struct Workspace
     static bool        buildRTModule(Module* module);
     bool               buildTarget();
     bool               build();
-    Module*            createOrUseModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule = false);
+    Module*            createModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule = false);
 
     Module*     getModuleByName(const Utf8& moduleName);
     OneTag*     hasTag(const Utf8& name);

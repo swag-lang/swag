@@ -585,7 +585,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         // Put the file in its own module, because of errors/warnings
         if (!sourceFile->module->isErrorModule && !parserFlags.has(PARSER_TRACK_FORMAT))
         {
-            const auto newModule = g_Workspace->createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind, true);
+            const auto newModule = g_Workspace->createModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind, true);
             const auto oldModule = sourceFile->module;
             oldModule->removeFile(sourceFile);
             newModule->addFile(sourceFile);
