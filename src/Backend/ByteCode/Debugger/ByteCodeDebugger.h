@@ -236,7 +236,7 @@ struct ByteCodeDebugger
     bool forcePrintContext = false;
     bool printStruct       = true;
     bool printArray        = true;
-    bool printBcCode       = false;
+    bool printBcCode       = true;
     bool printBtCode       = false;
     bool printEvalBc       = false;
 };

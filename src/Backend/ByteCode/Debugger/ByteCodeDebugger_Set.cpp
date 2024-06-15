@@ -133,7 +133,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         if (arg.split.size() > 4)
             return BcDbgCommandResult::TooManyArguments;
 
-        if (arg.split[2] == "code")
+        if (arg.split[2] == "source")
             return setOnOff("bytecode source code", arg, g_ByteCodeDebugger.printBcCode);
 
         printCmdError(form("invalid [[set bytecode]] argument [[%s]]", arg.split[2].c_str()));
@@ -147,7 +147,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         if (arg.split.size() > 4)
             return BcDbgCommandResult::TooManyArguments;
 
-        if (arg.split[2] == "code")
+        if (arg.split[2] == "source")
             return setOnOff("bytecode source code", arg, g_ByteCodeDebugger.printBtCode);
 
         printCmdError(form("invalid [[set backtrace]] argument [[%s]]", arg.split[2].c_str()));
