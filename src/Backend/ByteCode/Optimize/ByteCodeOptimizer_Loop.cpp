@@ -4,8 +4,12 @@
 
 // We detect loops, and then we try to move constant instructions outside of the loop.
 // For example a GetParam64 does not need to be done at each iteration, it could be done once before the loop.
+#pragma optimize("", off)
 bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
+    //if(!context->bc->getPrintName().containsNoCase("day9B"))
+    //    return true;
+    
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (!ByteCode::isJump(ip) || ip->b.s32 > 0)
@@ -16,7 +20,9 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         if (ipScan->op == ByteCodeOp::IncJumpIfEqual64)
             ipScan++;
 
+        VectorNative<ByteCodeInstruction> vecInst1;
         context->vecInst.clear();
+        context->vecReg.clear();
         uint32_t countReg[RegisterList::MAX_REGISTERS] = {0};
 
         while (ipScan != ip)
@@ -133,18 +139,44 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 if (context->bc->maxReservedRegisterRC == RegisterList::MAX_REGISTERS)
                     break;
 
+                uint32_t newReg = 0;
+                for (uint32_t i = 0; i < vecInst1.count; i++)
+                {
+                    const auto& it1 = vecInst1[i];
+                    if (it1.op == cstOp->op &&
+                        it1.b.u64 == cstOp->b.u64 &&
+                        it1.c.u64 == cstOp->c.u64 &&
+                        it1.d.u64 == cstOp->d.u64 &&
+                        it1.flags == cstOp->flags)
+                    {
+                        newReg = context->vecReg[i];
+                        break;
+                    }
+                }
+
+                if (newReg)
+                {
+                    SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
+                    cstOp->b.u32 = newReg;
+                    continue;
+                }
+
                 if (!insertNopBefore(context, ipStart))
                     break;
-
                 shift += 1;
+
+                newReg = context->bc->maxReservedRegisterRC;
+                context->bc->maxReservedRegisterRC++;
+
                 cstOp    = it + shift;
                 *ipStart = *cstOp;
+                vecInst1.push_back(*cstOp);
+                context->vecReg.push_back(newReg);
 
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
-                cstOp->b.u32 = context->bc->maxReservedRegisterRC;
+                cstOp->b.u32 = newReg;
 
-                ipStart->a.u32 = context->bc->maxReservedRegisterRC;
-                context->bc->maxReservedRegisterRC++;
+                ipStart->a.u32 = newReg;
             }
 
             // If the register is written only once in the loop, then we can just move the instruction outside of the loop.
