@@ -75,7 +75,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowFiles(ByteCodeRunContext* /*context*
     }
 
     Vector<Utf8> all;
-    for (const auto f : set)
+    for (const auto &f : set)
         all.push_back(f);
 
     std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });

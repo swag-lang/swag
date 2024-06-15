@@ -14,7 +14,6 @@
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Eval.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Frame.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Help.cpp" />
-    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Info.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Print.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Set.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Trace.cpp" />
@@ -250,6 +249,9 @@
     <ClCompile Include="..\src\Wmf\Workspace_Script.cpp" />
     <ClCompile Include="..\src\Wmf\Workspace_Tags.cpp" />
     <ClCompile Include="..\src\Format\FormatAst_Enum.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Helpers.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_List.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Show.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/pch.h" />
@@ -379,6 +381,7 @@
     <ClInclude Include="..\src\Wmf\SourceFile.h" />
     <ClInclude Include="..\src\Wmf\Workspace.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Gen\ByteCodeGenJob.h" />
+    <ClInclude Include="..\src\Core\AtomicFlags.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />
