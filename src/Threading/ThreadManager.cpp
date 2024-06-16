@@ -118,8 +118,11 @@ void ThreadManager::addJobNoLock(Job* job)
 
 void ThreadManager::wakeUpThreads()
 {
-    ScopedLock lk(mutexAdd);
-    wakeUpThreadsNoLock();
+    if (g_ThreadMgr.numWorkers != 1)
+    {
+        ScopedLock lk(mutexAdd);
+        wakeUpThreadsNoLock();
+    }
 }
 
 void ThreadManager::wakeUpThreadsNoLock()
@@ -472,9 +475,6 @@ Job* ThreadManager::getJob()
     SharedLock lk(g_Workspace->mutexModules);
     for (const auto p : g_Workspace->modules)
     {
-        if (!p->addedToBuild)
-            continue;
-
         job = p->syntaxJobGroup.pickJob();
         if (job)
         {
