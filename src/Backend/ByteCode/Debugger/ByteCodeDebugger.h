@@ -85,6 +85,7 @@ struct ByteCodeDebugger
     {
         DebugBkpType type;
         Utf8         name;
+        SourceFile*  file         = nullptr;
         ByteCode*    bc           = nullptr;
         void*        addr         = nullptr;
         uint64_t     lastValue    = 0;
@@ -113,6 +114,7 @@ struct ByteCodeDebugger
 
     static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt);
 
+    void printBreakpoint(const ByteCodeRunContext* context, uint32_t index) const;
     void printBreakpoints(ByteCodeRunContext* context) const;
     void checkBreakpoints(ByteCodeRunContext* context);
     bool addBreakpoint(ByteCodeRunContext* context, const DebugBreakpoint& bkp);
@@ -124,6 +126,7 @@ struct ByteCodeDebugger
 
     void printSourceLines(const ByteCodeRunContext* context, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, int startLine, int endLine) const;
     void printSourceLines(const ByteCodeRunContext* context, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, uint32_t offset = 3) const;
+    void printSourceLines(const ByteCodeRunContext* context, SourceFile* file, int line, int offset) const;
     void printInstructions(const ByteCodeRunContext* context, const ByteCode* bc, const ByteCodeInstruction* ip, int num = 1) const;
 
     static BcDbgCommandResult cmdBackTrace(ByteCodeRunContext* context, const BcDbgCommandArg& arg);

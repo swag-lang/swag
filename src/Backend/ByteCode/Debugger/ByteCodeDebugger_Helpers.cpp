@@ -265,7 +265,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
     for (const auto& l : lines)
     {
         Utf8       oneLine;
-        const bool currentLine = curLocation->line == startLine + lineIdx;
+        const bool currentLine = curLocation && curLocation->line == startLine + lineIdx;
 
         // Current line
         if (currentLine)
@@ -340,6 +340,13 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
     }
 
     printLong(toPrint);
+}
+
+void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, SourceFile* file, int line, int offset) const
+{
+    const int startLine = max(line - offset, 0);
+    const int endLine   = min(line + offset, (int) file->allLines.size() - 1);
+    printSourceLines(context, nullptr, file, nullptr, startLine, endLine);
 }
 
 void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, uint32_t offset) const

@@ -37,7 +37,52 @@ namespace
     }
 }
 
-void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* /*context*/) const
+void ByteCodeDebugger::printBreakpoint(const ByteCodeRunContext* context, uint32_t index) const
+{
+    g_Log.setColor(LogColor::Gray);
+    g_Log.print(form("#%d: ", index + 1));
+
+    const auto& bkp = breakpoints[index];
+    switch (bkp.type)
+    {
+        case DebugBkpType::FuncName:
+            g_Log.print(form("function with a match on [[%s]]", bkp.name.c_str()));
+            break;
+        case DebugBkpType::FileLine:
+            g_Log.print(form("file [[%s]], line [[%d]]", bkp.file->path.c_str(), bkp.line));
+            break;
+        case DebugBkpType::InstructionIndex:
+            g_Log.print(form("instruction [[%d]]", bkp.line));
+            break;
+        case DebugBkpType::Watch:
+            g_Log.print(form("watch address [[0x%llx]], size [[%d]]", bkp.addr, bkp.addrCount));
+            break;
+    }
+
+    if (bkp.disabled)
+        g_Log.write(" (DISABLED)");
+    if (bkp.autoRemove)
+        g_Log.write(" (ONE SHOT)");
+
+    switch (bkp.type)
+    {
+        case DebugBkpType::FileLine:
+            g_Log.writeEol();
+            g_ByteCodeDebugger.printSourceLines(context, bkp.file, bkp.line - 1, 1);
+            break;
+        case DebugBkpType::FuncName:
+            g_Log.writeEol();
+            break;
+        case DebugBkpType::InstructionIndex:
+            g_Log.writeEol();
+            break;
+        case DebugBkpType::Watch:
+            g_Log.writeEol();
+            break;
+    }
+}
+
+void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context) const
 {
     if (breakpoints.empty())
     {
@@ -45,32 +90,9 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* /*context*/) const
         return;
     }
 
-    g_Log.setColor(LogColor::Gray);
     for (uint32_t i = 0; i < breakpoints.size(); i++)
     {
-        const auto& bkp = breakpoints[i];
-        g_Log.print(form("#%d: ", i + 1));
-        switch (bkp.type)
-        {
-            case DebugBkpType::FuncName:
-                g_Log.print(form("function with a match on [[%s]]", bkp.name.c_str()));
-                break;
-            case DebugBkpType::FileLine:
-                g_Log.print(form("file %s, line [[%d]]", bkp.name.c_str(), bkp.line));
-                break;
-            case DebugBkpType::InstructionIndex:
-                g_Log.print(form("instruction [[%d]]", bkp.line));
-                break;
-            case DebugBkpType::Watch:
-                g_Log.print(form("watch address [[0x%llx]], size [[%d]]", bkp.addr, bkp.addrCount));
-                break;
-        }
-
-        if (bkp.disabled)
-            g_Log.write(" (DISABLED)");
-        if (bkp.autoRemove)
-            g_Log.write(" (ONE SHOT)");
-        g_Log.writeEol();
+        printBreakpoint(context, i);
     }
 }
 
@@ -184,7 +206,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
     }
 }
 
-bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext* /*context*/, const DebugBreakpoint& bkp)
+bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext*, const DebugBreakpoint& bkp)
 {
     for (const auto& b : breakpoints)
     {
@@ -353,8 +375,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
 
     if (!g_ByteCodeDebugger.addBreakpoint(context, bkp))
         return BcDbgCommandResult::Error;
-
-    printCmdResult(form("breakpoint [[#%d]] function with a match on [[%s]]", g_ByteCodeDebugger.breakpoints.size(), bkp.name.c_str()));
+    g_ByteCodeDebugger.printBreakpoint(context, g_ByteCodeDebugger.breakpoints.size() - 1);
+    
     return BcDbgCommandResult::Continue;
 }
 
@@ -383,13 +405,22 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
 
     DebugBreakpoint bkp;
     bkp.type       = DebugBkpType::FileLine;
+    bkp.file       = loc.file;
     bkp.name       = loc.file->name;
     bkp.line       = arg.split[2].toInt();
     bkp.autoRemove = oneShot;
+
+    loc.file->getLine(0);
+    if (bkp.line == 0 || bkp.line >= loc.file->allLines.size() + 1)
+    {
+        printCmdError(form("out of range line number [[%s]]", arg.split[2].c_str()));
+        return BcDbgCommandResult::Error;
+    }
+
     if (!g_ByteCodeDebugger.addBreakpoint(context, bkp))
         return BcDbgCommandResult::Error;
+    g_ByteCodeDebugger.printBreakpoint(context, g_ByteCodeDebugger.breakpoints.size() - 1);
 
-    printCmdResult(form("breakpoint [[#%d]], file [[%s]], line [[%d]]", g_ByteCodeDebugger.breakpoints.size(), bkp.name.c_str(), bkp.line));
     return BcDbgCommandResult::Continue;
 }
 
@@ -427,13 +458,22 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
 
     DebugBreakpoint bkp;
     bkp.type       = DebugBkpType::FileLine;
+    bkp.file       = curFile;
     bkp.name       = curFile->name;
     bkp.line       = arg.split[3].toInt();
     bkp.autoRemove = oneShot;
+
+    curFile->getLine(0);
+    if (bkp.line == 0 || bkp.line >= curFile->allLines.size() + 1)
+    {
+        printCmdError(form("out of range line number [[%s]]", arg.split[3].c_str()));
+        return BcDbgCommandResult::Error;
+    }
+
     if (!g_ByteCodeDebugger.addBreakpoint(context, bkp))
         return BcDbgCommandResult::Error;
+    g_ByteCodeDebugger.printBreakpoint(context, g_ByteCodeDebugger.breakpoints.size() - 1);
 
-    printCmdResult(form("breakpoint [[#%d]], file [[%s]], line [[%d]]", g_ByteCodeDebugger.breakpoints.size(), bkp.name.c_str(), bkp.line));
     return BcDbgCommandResult::Continue;
 }
 
@@ -541,7 +581,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWatch(ByteCodeRunContext* context, const
     bkp.autoRemove = false;
     if (!g_ByteCodeDebugger.addBreakpoint(context, bkp))
         return BcDbgCommandResult::Error;
+    g_ByteCodeDebugger.printBreakpoint(context, g_ByteCodeDebugger.breakpoints.size() - 1);
 
-    printCmdResult(form("watchpoint [[#%d]] at address [[0x%llx]], size [[%d]]", g_ByteCodeDebugger.breakpoints.size(), bkp.addr, bkp.addrCount));
     return BcDbgCommandResult::Continue;
 }
