@@ -28,6 +28,7 @@ struct ByteCode
 
     struct PrintInstructionLine
     {
+        Utf8 bkp;
         Utf8 rank;
         Utf8 name;
         Utf8 instRef;

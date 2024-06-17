@@ -276,6 +276,8 @@ void Log::write(const char* message, bool raw)
 
 void Log::print(const Utf8& message, bool raw)
 {
+    if (message.length() == 0)
+        return;
     write(message.c_str(), raw);
 }
 

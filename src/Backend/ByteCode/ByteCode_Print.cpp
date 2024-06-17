@@ -314,10 +314,11 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
         if (hasBkp)
         {
             if (hasBkp->disabled)
-                line.rank += Log::colorToVTS(LogColor::Default);
+                line.bkp += Log::colorToVTS(LogColor::Default);
             else
-                line.rank += Log::colorToVTS(LogColor::Breakpoint);
-            line.rank += Utf8("\xe2\x96\xa0");
+                line.bkp += Log::colorToVTS(LogColor::Breakpoint);
+            line.bkp += Utf8("\xe2\x96\xa0");
+            
             if (ip == options.curIp)
                 line.rank += "> ";
             else
@@ -433,11 +434,14 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
 {
     const bool forDbg = options.curIp != nullptr;
 
+    // Bkp
+    g_Log.print(line.bkp);
+    
     if (forDbg && ip == options.curIp)
         g_Log.setColor(LogColor::CurInstruction);
     else
         g_Log.setColor(LogColor::Index);
-
+   
     // Instruction rank
     g_Log.print(line.rank);
 
