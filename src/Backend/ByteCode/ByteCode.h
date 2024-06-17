@@ -96,8 +96,8 @@ struct ByteCode
     void              printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip) const;
     static void       alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen = false);
     void              print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count) const;
-    void              print(const ByteCodePrintOptions& options);
-    void              printName();
+    void              print(const ByteCodePrintOptions& options) const;
+    void              printName() const;
     Utf8              getPrintRefName() const;
     Utf8              getPrintName() const;
     Utf8              getPrintFileName() const;

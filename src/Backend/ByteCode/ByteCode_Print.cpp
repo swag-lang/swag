@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
@@ -289,17 +290,45 @@ Utf8 ByteCode::getInstructionReg(const char* name, const Register& reg, bool reg
 
 void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const
 {
-    const int  i      = static_cast<int>(ip - out);
-    const bool forDbg = options.curIp != nullptr;
+    const uint32_t i      = static_cast<uint32_t>(ip - out);
+    const bool     forDbg = options.curIp != nullptr;
 
     // Instruction rank
     if (forDbg)
     {
-        if (ip == options.curIp)
+        // Line breakpoint
+        const ByteCodeDebugger::DebugBreakpoint* hasBkp = nullptr;
+        for (const auto& bkp : g_ByteCodeDebugger.breakpoints)
+        {
+            switch (bkp.type)
+            {
+                case ByteCodeDebugger::DebugBkpType::InstructionIndex:
+                    if (bkp.bc == this && bkp.line == i)
+                        hasBkp = &bkp;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (hasBkp)
+        {
+            if (hasBkp->disabled)
+                line.rank += Log::colorToVTS(LogColor::Default);
+            else
+                line.rank += Log::colorToVTS(LogColor::Breakpoint);
+            line.rank += Utf8("\xe2\x96\xa0");
+            if (ip == options.curIp)
+                line.rank += "> ";
+            else
+                line.rank += "  ";            
+        }
+        else if (ip == options.curIp)
             line.rank += "-> ";
         else
             line.rank += "   ";
     }
+
     line.rank += form("%08d", i);
 
     // Instruction name
@@ -594,14 +623,14 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
     }
 }
 
-void ByteCode::printName()
+void ByteCode::printName() const
 {
     const auto str = getPrintRefName();
     g_Log.print(str);
     g_Log.writeEol();
 }
 
-void ByteCode::print(const ByteCodePrintOptions& options)
+void ByteCode::print(const ByteCodePrintOptions& options) const
 {
     g_Log.lock();
 

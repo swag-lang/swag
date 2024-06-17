@@ -5,7 +5,6 @@
 #include "Format/FormatAst.h"
 #include "Format/FormatConcat.h"
 #include "Report/Log.h"
-#include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 #include "Syntax/SyntaxColor.h"
 #include "Wmf/Workspace.h"
