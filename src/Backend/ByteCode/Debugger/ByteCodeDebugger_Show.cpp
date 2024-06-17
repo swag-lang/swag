@@ -18,18 +18,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowFunctions(ByteCodeRunContext* /*cont
 
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
-    Vector<Utf8> all;
-    g_Log.setColor(LogColor::Gray);
+    VectorNative<ByteCode*> result;
+    g_Workspace->getAllByteCodes(result);
 
-    for (const auto m : g_Workspace->modules)
-    {
-        for (const auto bc : m->byteCodeFunc)
-        {
-            if (!bc->out)
-                continue;
-            all.push_back(bc->getPrintRefName());
-        }
-    }
+    Vector<Utf8> all;
+    for (const auto bc : result)
+        all.push_back(bc->getPrintRefName());
 
     std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
     printLong(all, &filter);
@@ -75,7 +69,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowFiles(ByteCodeRunContext* /*context*
     }
 
     Vector<Utf8> all;
-    for (const auto &f : set)
+    for (const auto& f : set)
         all.push_back(f);
 
     std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
@@ -356,22 +350,22 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
 
     if (arg.split[1] == "locals" || arg.split[1] == "loc")
         return cmdShowLocals(context, arg);
-    if (arg.split[1] == "arguments" || arg.split[1] == "args")
+    if (arg.split[1] == "arguments" || arg.split[1] == "arg" || arg.split[1] == "args")
         return cmdShowArgs(context, arg);
-    if (arg.split[1] == "registers" || arg.split[1] == "regs")
+    if (arg.split[1] == "registers" || arg.split[1] == "reg" || arg.split[1] == "regs")
         return cmdShowRegs(context, arg);
-    if (arg.split[1] == "functions" || arg.split[1] == "funcs")
+    if (arg.split[1] == "functions" || arg.split[1] == "func" || arg.split[1] == "funcs")
         return cmdShowFunctions(context, arg);
+    if (arg.split[1] == "expressions" || arg.split[1] == "expr" || arg.split[1] == "exprs")
+        return cmdShowExpressions(context, arg);
+    if (arg.split[1] == "values" || arg.split[1] == "val" || arg.split[1] == "vals")
+        return cmdShowValues(context, arg);
     if (arg.split[1] == "globals")
         return cmdShowGlobals(context, arg);
-    if (arg.split[1] == "expressions" || arg.split[1] == "exprs")
-        return cmdShowExpressions(context, arg);
     if (arg.split[1] == "modules")
         return cmdShowModules(context, arg);
     if (arg.split[1] == "files")
         return cmdShowFiles(context, arg);
-    if (arg.split[1] == "values" || arg.split[1] == "vals")
-        return cmdShowValues(context, arg);
     if (arg.split[1] == "types")
         return cmdShowTypes(context, arg);
 

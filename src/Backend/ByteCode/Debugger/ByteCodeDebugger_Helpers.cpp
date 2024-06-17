@@ -134,7 +134,7 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all, const Utf8* filter, Lo
 
     if (!hasSomething && filter)
     {
-        printCmdError(form("...no match with filter [[%s]] (%d found elements)", filter->c_str(), all.size()));
+        printCmdError(form("...no match with filter [[%s]] (on %d tested elements)", filter->c_str(), all.size()));
     }
 }
 
@@ -291,8 +291,12 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
             {
                 case DebugBkpType::FuncName:
                 {
+                    if(!bc)
+                        bc = bkp.bc;
+                    if(!bc)
+                        break;
                     const auto loc = ByteCode::getLocation(bc, bc->out);
-                    if (context->bc->getPrintName().find(bkp.name) != -1 && loc.location && startLine + lineIdx + 1 == loc.location->line)
+                    if (bc->getPrintName().find(bkp.name) != -1 && loc.location && startLine + lineIdx + 1 == loc.location->line)
                         hasBkp = &bkp;
                     break;
                 }
@@ -344,6 +348,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
 
 void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, SourceFile* file, int line, int offset) const
 {
+    file->getLine(0);
     const int startLine = max(line - offset, 0);
     const int endLine   = min(line + offset, (int) file->allLines.size() - 1);
     printSourceLines(context, nullptr, file, nullptr, startLine, endLine);

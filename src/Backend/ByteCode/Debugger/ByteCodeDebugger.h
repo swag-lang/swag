@@ -85,15 +85,16 @@ struct ByteCodeDebugger
     {
         DebugBkpType type;
         Utf8         name;
-        SourceFile*  file         = nullptr;
-        ByteCode*    bc           = nullptr;
-        void*        addr         = nullptr;
-        uint64_t     lastValue    = 0;
-        uint32_t     addrCount    = 0;
-        uint32_t     line         = 0;
-        bool         disabled     = false;
-        bool         autoDisabled = false;
-        bool         autoRemove   = false;
+        SourceFile*  file          = nullptr;
+        ByteCode*    bc            = nullptr;
+        void*        addr          = nullptr;
+        uint64_t     lastValue     = 0;
+        uint32_t     addrCount     = 0;
+        uint32_t     funcNameCount = 0;
+        uint32_t     line          = 0;
+        bool         disabled      = false;
+        bool         autoDisabled  = false;
+        bool         autoRemove    = false;
     };
 
     template<typename T>
@@ -115,7 +116,7 @@ struct ByteCodeDebugger
     static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt);
 
     void printBreakpoint(const ByteCodeRunContext* context, uint32_t index) const;
-    void printBreakpoints(ByteCodeRunContext* context) const;
+    void printBreakpoints(const ByteCodeRunContext* context) const;
     void checkBreakpoints(ByteCodeRunContext* context);
     bool addBreakpoint(ByteCodeRunContext* context, const DebugBreakpoint& bkp);
 

@@ -54,7 +54,16 @@ void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& modu
     moduleFolder = path;
 }
 
-SourceFile* Workspace::findFile(const char* fileName) const
+Module* Workspace::getModuleByName(const Utf8& moduleName)
+{
+    SharedLock lk(mutexModules);
+    const auto it = mapModulesNames.find(moduleName);
+    if (it == mapModulesNames.end())
+        return nullptr;
+    return it->second;
+}
+
+SourceFile* Workspace::getFileByName(const char* fileName) const
 {
     SourceFile* sourceFile = nullptr;
     for (const auto& val : mapModulesNames | std::views::values)
@@ -71,13 +80,17 @@ SourceFile* Workspace::findFile(const char* fileName) const
     return sourceFile;
 }
 
-Module* Workspace::getModuleByName(const Utf8& moduleName)
+void Workspace::getAllByteCodes(VectorNative<ByteCode*>& result) const
 {
-    SharedLock lk(mutexModules);
-    const auto it = mapModulesNames.find(moduleName);
-    if (it == mapModulesNames.end())
-        return nullptr;
-    return it->second;
+    for (const auto m : modules)
+    {
+        for (const auto bc : m->byteCodeFunc)
+        {
+            if (!bc->out)
+                continue;
+            result.push_back(bc);
+        }
+    }
 }
 
 Module* Workspace::createModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule)

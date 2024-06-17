@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
+#include "Core/Math.h"
 #include "Report/Log.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Syntax/AstNode.h"
 #include "Wmf/Workspace.h"
 
 namespace
@@ -34,65 +36,6 @@ namespace
             err = true;
             return 0;
         }
-    }
-}
-
-void ByteCodeDebugger::printBreakpoint(const ByteCodeRunContext* context, uint32_t index) const
-{
-    g_Log.setColor(LogColor::Gray);
-    g_Log.print(form("#%d: ", index + 1));
-
-    const auto& bkp = breakpoints[index];
-    switch (bkp.type)
-    {
-        case DebugBkpType::FuncName:
-            g_Log.print(form("function with a match on [[%s]]", bkp.name.c_str()));
-            break;
-        case DebugBkpType::FileLine:
-            g_Log.print(form("file [[%s]], line [[%d]]", bkp.file->path.c_str(), bkp.line));
-            break;
-        case DebugBkpType::InstructionIndex:
-            g_Log.print(form("instruction [[%d]]", bkp.line));
-            break;
-        case DebugBkpType::Watch:
-            g_Log.print(form("watch address [[0x%llx]], size [[%d]]", bkp.addr, bkp.addrCount));
-            break;
-    }
-
-    if (bkp.disabled)
-        g_Log.write(" (DISABLED)");
-    if (bkp.autoRemove)
-        g_Log.write(" (ONE SHOT)");
-
-    switch (bkp.type)
-    {
-        case DebugBkpType::FileLine:
-            g_Log.writeEol();
-            g_ByteCodeDebugger.printSourceLines(context, bkp.file, bkp.line - 1, 1);
-            break;
-        case DebugBkpType::FuncName:
-            g_Log.writeEol();
-            break;
-        case DebugBkpType::InstructionIndex:
-            g_Log.writeEol();
-            break;
-        case DebugBkpType::Watch:
-            g_Log.writeEol();
-            break;
-    }
-}
-
-void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context) const
-{
-    if (breakpoints.empty())
-    {
-        printCmdError("no breakpoint");
-        return;
-    }
-
-    for (uint32_t i = 0; i < breakpoints.size(); i++)
-    {
-        printBreakpoint(context, i);
     }
 }
 
@@ -237,6 +180,70 @@ bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext*, const DebugBreakpoint&
     return true;
 }
 
+void ByteCodeDebugger::printBreakpoint(const ByteCodeRunContext* context, uint32_t index) const
+{
+    g_Log.setColor(LogColor::Gray);
+    g_Log.print(form("#%d: ", index + 1));
+
+    const auto& bkp = breakpoints[index];
+    switch (bkp.type)
+    {
+        case DebugBkpType::FuncName:
+            if (bkp.funcNameCount == 1)
+                g_Log.print(form("start of function [[%s]] in file [[%s]]:[[%d]]", bkp.name.c_str(), bkp.bc->node->token.sourceFile->path.c_str(), bkp.bc->node->token.startLocation.line + 1));
+            else
+                g_Log.print(form("function with a match on [[%s]] (%d matches)", bkp.name.c_str(), bkp.funcNameCount));
+            break;
+        case DebugBkpType::FileLine:
+            g_Log.print(form("file [[%s]]:[[%d]]", bkp.file->path.c_str(), bkp.line));
+            break;
+        case DebugBkpType::InstructionIndex:
+            g_Log.print(form("instruction [[%d]]", bkp.line));
+            break;
+        case DebugBkpType::Watch:
+            g_Log.print(form("watch address [[0x%llx]], size [[%d]]", bkp.addr, bkp.addrCount));
+            break;
+    }
+
+    if (bkp.disabled)
+        g_Log.write(" (DISABLED)");
+    if (bkp.autoRemove)
+        g_Log.write(" (ONE SHOT)");
+
+    switch (bkp.type)
+    {
+        case DebugBkpType::FileLine:
+            g_Log.writeEol();
+            g_ByteCodeDebugger.printSourceLines(context, bkp.file, bkp.line - 1, 0);
+            break;
+        case DebugBkpType::FuncName:
+            g_Log.writeEol();
+            if (bkp.funcNameCount == 1 && bkp.bc)
+                g_ByteCodeDebugger.printSourceLines(context, bkp.bc->node->token.sourceFile, bkp.bc->node->token.startLocation.line, 0);
+            break;
+        case DebugBkpType::InstructionIndex:
+            g_Log.writeEol();
+            break;
+        case DebugBkpType::Watch:
+            g_Log.writeEol();
+            break;
+    }
+}
+
+void ByteCodeDebugger::printBreakpoints(const ByteCodeRunContext* context) const
+{
+    if (breakpoints.empty())
+    {
+        printCmdError("no breakpoint");
+        return;
+    }
+
+    for (uint32_t i = 0; i < breakpoints.size(); i++)
+    {
+        printBreakpoint(context, i);
+    }
+}
+
 BcDbgCommandResult ByteCodeDebugger::cmdBreakEnableDisable(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg, int& numB, bool enable)
 {
     if (g_ByteCodeDebugger.breakpoints.empty())
@@ -368,15 +375,31 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
         oneShot = true;
 
     DebugBreakpoint bkp;
-    bkp.name = arg.split[2];
-
+    bkp.name       = arg.split[2];
     bkp.type       = DebugBkpType::FuncName;
     bkp.autoRemove = oneShot;
 
+    VectorNative<ByteCode*> all;
+    VectorNative<ByteCode*> match;
+    g_Workspace->getAllByteCodes(all);
+    for (const auto bc : all)
+    {
+        if (testNameFilter(bc->getPrintName(), bkp.name))
+            match.push_back(bc);
+    }
+
+    if (match.empty())
+    {
+        printCmdError(form("no function match for [[%s]]", bkp.name.c_str()));
+        return BcDbgCommandResult::Error;
+    }
+
+    bkp.funcNameCount = match.size();
+    bkp.bc            = match[0];
     if (!g_ByteCodeDebugger.addBreakpoint(context, bkp))
         return BcDbgCommandResult::Error;
     g_ByteCodeDebugger.printBreakpoint(context, g_ByteCodeDebugger.breakpoints.size() - 1);
-    
+
     return BcDbgCommandResult::Continue;
 }
 
@@ -445,11 +468,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;
 
-    auto curFile = g_Workspace->findFile(arg.split[2].c_str());
+    auto curFile = g_Workspace->getFileByName(arg.split[2].c_str());
     if (!curFile)
-        curFile = g_Workspace->findFile(arg.split[2] + ".swg");
+        curFile = g_Workspace->getFileByName(arg.split[2] + ".swg");
     if (!curFile)
-        curFile = g_Workspace->findFile(arg.split[2] + ".swgs");
+        curFile = g_Workspace->getFileByName(arg.split[2] + ".swgs");
     if (!curFile)
     {
         printCmdError(form("cannot find file [[%s]]", arg.split[2].c_str()));

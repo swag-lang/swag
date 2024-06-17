@@ -628,7 +628,7 @@ namespace
                     Utf8 str;
                     for (uint32_t i = context->traceIndex - 1; i != UINT32_MAX; i--)
                     {
-                        const auto sourceFile1 = g_Workspace->findFile(static_cast<const char*>(context->traces[i]->fileName.buffer));
+                        const auto sourceFile1 = g_Workspace->getFileByName(static_cast<const char*>(context->traces[i]->fileName.buffer));
                         if (sourceFile1)
                         {
                             str += Log::colorToVTS(LogColor::DarkYellow);

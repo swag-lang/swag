@@ -6,7 +6,7 @@
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/Module.h"
 
-Utf8 ByteCode::getPrintName()
+Utf8 ByteCode::getPrintName() const
 {
     if (out && node)
         return node->getScopedName();
@@ -20,7 +20,7 @@ Utf8 ByteCode::getPrintFileName() const
     return "";
 }
 
-Utf8 ByteCode::getPrintRefName()
+Utf8 ByteCode::getPrintRefName() const
 {
     Utf8 str = Log::colorToVTS(LogColor::Name);
     str += getPrintName();

@@ -98,8 +98,8 @@ struct ByteCode
     void              print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count) const;
     void              print(const ByteCodePrintOptions& options);
     void              printName();
-    Utf8              getPrintRefName();
-    Utf8              getPrintName();
+    Utf8              getPrintRefName() const;
+    Utf8              getPrintName() const;
     Utf8              getPrintFileName() const;
     Utf8              getCallNameFromDecl();
     Utf8              getCallName();

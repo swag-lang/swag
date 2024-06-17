@@ -54,9 +54,11 @@ struct Workspace
     Module*            createModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule = false);
 
     Module*     getModuleByName(const Utf8& moduleName);
+    SourceFile* getFileByName(const char* fileName) const;
+    void        getAllByteCodes(VectorNative<ByteCode*>& result) const;
+
     OneTag*     hasTag(const Utf8& name);
     Path        getTargetPath() const;
-    SourceFile* findFile(const char* fileName) const;
     static Utf8 getTargetFullName(const Utf8& buildCfg, const BackendTarget& target);
     static void cleanFolderContent(const Path& path);
     static void computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind);
