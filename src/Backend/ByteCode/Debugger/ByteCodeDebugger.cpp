@@ -28,9 +28,10 @@ void ByteCodeDebugger::setup()
 
     commands.push_back({"breakpoints", "break", "b", "<subcommand>", "", "add/remove breakpoints", nullptr});
     commands.push_back({"breakpoints", "break", "b", "", "", "print all breakpoints", cmdBreak});
-    commands.push_back({"breakpoints", "break", "b", "func|f", "<name>", "add breakpoint when entering function containing <name>", cmdBreak});
-    commands.push_back({"breakpoints", "break", "b", "line", "<line>", "add breakpoint in the current source file at <line>", cmdBreak});
-    commands.push_back({"breakpoints", "break", "b", "file", "<file> <line>", "add breakpoint in <file> at <line>", cmdBreak});
+    commands.push_back({"breakpoints", "break", "b", "func|f", "<name>", "add a breakpoint when entering function containing <name>", cmdBreak});
+    commands.push_back({"breakpoints", "break", "b", "line", "<line>", "add a breakpoint in the current source file at <line>", cmdBreak});
+    commands.push_back({"breakpoints", "break", "b", "instruction|inst", "<index>", "add an instruction breakpoint in the current function at <index>", cmdBreak});
+    commands.push_back({"breakpoints", "break", "b", "file", "<file> <line>", "add a breakpoint in <file> at <line>", cmdBreak});
     commands.push_back({"breakpoints", "break", "b", "clear|cl", "", "remove all breakpoints", cmdBreak});
     commands.push_back({"breakpoints", "break", "b", "clear|cl", "<num>", "remove breakpoint <num>", cmdBreak});
     commands.push_back({"breakpoints", "break", "b", "enable|en", "<num>", "enable breakpoint <num>", cmdBreak});
@@ -40,8 +41,8 @@ void ByteCodeDebugger::setup()
 
     commands.push_back({"source code", "list", "l", "", "[num]", "print the current source code line and [num] lines around", cmdList});
     commands.push_back({"source code", "longlist", "ll", "", "[name]", "print the source code of the current function (or function [name])", cmdLongList});
-    commands.push_back({"source code", "bytecode", "bc", "", "[num]", "print the current bytecode instruction and [num] instructions around", cmdInstruction});
-    commands.push_back({"source code", "longbc", "lb", "", "[name]", "print the bytecode of the current function (or function [name])", cmdInstructionDump});
+    commands.push_back({"source code", "instruction", "i", "", "[num]", "print the current bytecode instruction and [num] instructions around", cmdInstruction});
+    commands.push_back({"source code", "longinst", "li", "", "[name]", "print the bytecode of the current function (or function [name])", cmdInstructionDump});
     commands.push_back({"source code", "source", "sc", "", "<symbol>", "print the source code of <symbol>, if applicable", cmdSource});
 
     commands.push_back({"stack", "backtrace", "bt", "", "[num]", "backtrace, print [num] frames (0 for all)", cmdBackTrace});
@@ -877,7 +878,7 @@ bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
                 result += form("0x%llx", context->registersRR[1]);
                 pz += 4;
                 continue;
-            }            
+            }
 
             if (pz[1] == 'r' && SWAG_IS_DIGIT(pz[2]))
             {

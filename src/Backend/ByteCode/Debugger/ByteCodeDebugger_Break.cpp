@@ -198,7 +198,7 @@ void ByteCodeDebugger::printBreakpoint(const ByteCodeRunContext* context, uint32
             g_Log.print(form("file [[%s]]:[[%d]]", bkp.file->path.c_str(), bkp.line));
             break;
         case DebugBkpType::InstructionIndex:
-            g_Log.print(form("instruction [[%d]]", bkp.line));
+            g_Log.print(form("instruction index [[%d]] in [[%s]]", bkp.line, bkp.bc->getPrintName().c_str()));
             break;
         case DebugBkpType::Watch:
             g_Log.print(form("watch address [[0x%llx]], size [[%d]]", bkp.addr, bkp.addrCount));
@@ -447,6 +447,46 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     return BcDbgCommandResult::Continue;
 }
 
+BcDbgCommandResult ByteCodeDebugger::cmdBreakInstruction(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
+    if (arg.split.size() < 3)
+        return BcDbgCommandResult::NotEnoughArguments;
+    if (arg.split.size() > 3)
+        return BcDbgCommandResult::TooManyArguments;
+
+    if (!Utf8::isNumber(arg.split[2].c_str()))
+    {
+        printCmdError(form("invalid instruction index [[%s]]", arg.split[2].c_str()));
+        return BcDbgCommandResult::Error;
+    }
+
+    const auto cmd     = arg.split[0];
+    bool       oneShot = false;
+    if (cmd == "tb" || cmd == "tbreak")
+        oneShot = true;
+
+    DebugBreakpoint bkp;
+    bkp.type       = DebugBkpType::InstructionIndex;
+    bkp.bc         = g_ByteCodeDebugger.cxtBc;
+    bkp.line       = arg.split[2].toInt();
+    bkp.autoRemove = oneShot;
+
+    if (bkp.line >= g_ByteCodeDebugger.cxtBc->numInstructions)
+    {
+        printCmdError(form("out of range instructionindex [[%s]]", arg.split[2].c_str()));
+        return BcDbgCommandResult::Error;
+    }
+
+    if (!g_ByteCodeDebugger.addBreakpoint(context, bkp))
+        return BcDbgCommandResult::Error;
+    g_ByteCodeDebugger.printBreakpoint(context, g_ByteCodeDebugger.breakpoints.size() - 1);
+
+    return BcDbgCommandResult::Continue;
+}
+
 BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
@@ -514,6 +554,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreak(ByteCodeRunContext* context, const
         return cmdBreakFunc(context, arg);
     if (arg.split[1] == "line")
         return cmdBreakLine(context, arg);
+    if (arg.split[1] == "instruction" || arg.split[1] == "inst")
+        return cmdBreakInstruction(context, arg);
     if (arg.split[1] == "file")
         return cmdBreakFileLine(context, arg);
 
