@@ -267,22 +267,6 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         Utf8       oneLine;
         const bool currentLine = curLocation && curLocation->line == startLine + lineIdx;
 
-        // Current line
-        if (currentLine)
-        {
-            oneLine += Log::colorToVTS(LogColor::CurInstruction);
-            oneLine += "-> ";
-        }
-        else
-        {
-            oneLine += Log::colorToVTS(LogColor::Index);
-            oneLine += "   ";
-        }
-
-        // Line
-        oneLine += form("%-5u ", startLine + lineIdx + 1);
-        oneLine += Log::colorToVTS(LogColor::Default);
-
         // Line breakpoint
         const DebugBreakpoint* hasBkp = nullptr;
         for (auto& bkp : breakpoints)
@@ -291,9 +275,9 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
             {
                 case DebugBkpType::FuncName:
                 {
-                    if(!bc)
+                    if (!bc)
                         bc = bkp.bc;
-                    if(!bc)
+                    if (!bc)
                         break;
                     const auto loc = ByteCode::getLocation(bc, bc->out);
                     if (bc->getPrintName().find(bkp.name) != -1 && loc.location && startLine + lineIdx + 1 == loc.location->line)
@@ -318,10 +302,32 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
             else
                 oneLine += Log::colorToVTS(LogColor::Breakpoint);
             oneLine += Utf8("\xe2\x96\xa0");
+
+            if (currentLine)
+            {
+                oneLine += Log::colorToVTS(LogColor::CurInstruction);
+                oneLine += "> ";
+            }
+            else
+            {
+                oneLine += Log::colorToVTS(LogColor::Index);
+                oneLine += "  ";
+            }
+        }
+        else if (currentLine)
+        {
+            oneLine += Log::colorToVTS(LogColor::CurInstruction);
+            oneLine += "-> ";
         }
         else
-            oneLine += " ";
-        oneLine += " ";
+        {
+            oneLine += Log::colorToVTS(LogColor::Index);
+            oneLine += "   ";
+        }
+
+        // Line
+        oneLine += form("%-5u ", startLine + lineIdx + 1);
+        oneLine += Log::colorToVTS(LogColor::Default);
 
         // Code
         if (currentLine)
