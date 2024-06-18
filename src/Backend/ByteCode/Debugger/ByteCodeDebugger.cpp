@@ -317,6 +317,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         (void) fputs("\x1B[1C", stdout); \
         cursorX++;                       \
     } while (0)
+#define IS_WORD(__i) (isalnum(line[__i]) || line[__i] == '_' || isdigit(line[__i]))
 
         switch (key)
         {
@@ -331,9 +332,14 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
                         while (cursorX && isblank(line[cursorX - 1]))
                             MOVE_LEFT();
                     }
+                    else if (IS_WORD(cursorX - 1))
+                    {
+                        while (cursorX && IS_WORD(cursorX - 1))
+                            MOVE_LEFT();
+                    }
                     else
                     {
-                        while (cursorX && (isalnum(line[cursorX - 1]) || line[cursorX - 1] == '_' || isdigit(line[cursorX - 1])))
+                        while (cursorX && !IS_WORD(cursorX - 1))
                             MOVE_LEFT();
                     }
                 }
@@ -352,9 +358,14 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
                         while (cursorX != line.count && isblank(line[cursorX]))
                             MOVE_RIGHT();
                     }
+                    else if (IS_WORD(cursorX))
+                    {
+                        while (cursorX != line.count && IS_WORD(cursorX))
+                            MOVE_RIGHT();
+                    }
                     else
                     {
-                        while (cursorX != line.count && (isalnum(line[cursorX]) || line[cursorX] == '_' || isdigit(line[cursorX])))
+                        while (cursorX != line.count && !IS_WORD(cursorX))
                             MOVE_RIGHT();
                     }
                 }
