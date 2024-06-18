@@ -544,7 +544,6 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 
         case DebugStepMode::NextLineStepIn:
         {
-            bcMode         = false;
             const auto loc = ByteCode::getLocation(context->bc, ip, true);
             if (!loc.file || !loc.location)
             {
@@ -571,8 +570,6 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         }
         case DebugStepMode::NextLineStepOut:
         {
-            bcMode = false;
-
             // If inside a sub function
             if (context->curRC > stepRc)
             {

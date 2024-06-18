@@ -88,7 +88,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                         return;
                     }
                 }
-                else
+                else if (context->curRC <= stepRc)
                 {
                     bkp.autoDisabled = false;
                 }
