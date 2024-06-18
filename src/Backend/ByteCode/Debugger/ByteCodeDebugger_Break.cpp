@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
-#include "Core/Math.h"
 #include "Report/Log.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/AstNode.h"
@@ -18,17 +17,13 @@ namespace
             {
                 case 1:
                     return *(uint8_t*) addr;
-                    break;
                 case 2:
                     return *(uint16_t*) addr;
-                    break;
                 case 4:
                 default:
                     return *(uint32_t*) addr;
-                    break;
                 case 8:
                     return *(uint64_t*) addr;
-                    break;
             }
         }
         SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
@@ -125,7 +120,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                 break;
             }
 
-            case DebugBkpType::Watch:
+            case DebugBkpType::Memory:
             {
                 bool           err      = false;
                 const uint64_t newValue = readWatchValue(bkp.addr, bkp.addrCount, err);
@@ -133,7 +128,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                     bkp.disabled = true;
                 else if (newValue != bkp.lastValue)
                 {
-                    printMsgBkp(form("watchpoint change #%d, last value is [[0x%llx]], new value is [[0x%llx]]", idxBkp, bkp.lastValue, newValue));
+                    printMsgBkp(form("memory breakpoint change #%d, last value is [[0x%llx]], new value is [[0x%llx]]", idxBkp, bkp.lastValue, newValue));
                     stepMode          = DebugStepMode::None;
                     context->debugOn  = true;
                     forcePrintContext = true;
@@ -159,7 +154,7 @@ bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext*, const DebugBreakpoint&
         bool exists = false;
         switch (b.type)
         {
-            case DebugBkpType::Watch:
+            case DebugBkpType::Memory:
                 if (b.addr == bkp.addr && b.addrCount == bkp.addrCount && b.autoRemove == bkp.autoRemove)
                     exists = true;
                 break;
@@ -203,8 +198,8 @@ void ByteCodeDebugger::printBreakpoint(const ByteCodeRunContext* context, uint32
             g_Log.print(form("instruction index [[%d]] in [[%s]]", bkp.line, bkp.bc->getPrintName().c_str()));
             break;
 
-        case DebugBkpType::Watch:
-            g_Log.print(form("watch address [[0x%llx]], size [[%d]]", bkp.addr, bkp.addrCount));
+        case DebugBkpType::Memory:
+            g_Log.print(form("breakpoint on memory change [[0x%llx]], size [[%d]]", bkp.addr, bkp.addrCount));
             break;
     }
 
@@ -239,7 +234,7 @@ void ByteCodeDebugger::printBreakpoint(const ByteCodeRunContext* context, uint32
         }
         break;
 
-        case DebugBkpType::Watch:
+        case DebugBkpType::Memory:
             g_Log.writeEol();
             break;
     }
@@ -555,66 +550,41 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreak(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
-{
-    if (arg.split.size() == 1)
-        return cmdBreakPrint(context, arg);
-    if (arg.split[1] == "enable" || arg.split[1] == "en")
-        return cmdBreakEnable(context, arg);
-    if (arg.split[1] == "disable" || arg.split[1] == "dis")
-        return cmdBreakDisable(context, arg);
-    if (arg.split[1] == "clear" || arg.split[1] == "cl")
-        return cmdBreakClear(context, arg);
-    if (arg.split[1] == "func" || arg.split[1] == "f")
-        return cmdBreakFunc(context, arg);
-    if (arg.split[1] == "line")
-        return cmdBreakLine(context, arg);
-    if (arg.split[1] == "instruction" || arg.split[1] == "inst")
-        return cmdBreakInstruction(context, arg);
-    if (arg.split[1] == "file")
-        return cmdBreakFileLine(context, arg);
-
-    printCmdError(form("invalid [[break]] command [[%s]]", arg.split[1].c_str()));
-    return BcDbgCommandResult::Error;
-}
-
-BcDbgCommandResult ByteCodeDebugger::cmdWatch(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakMemory(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
 
-    if (arg.split.size() < 2)
+    if (arg.split.size() < 3)
         return BcDbgCommandResult::NotEnoughArguments;
-    if (arg.split.size() > 3)
+    if (arg.split.size() > 4)
         return BcDbgCommandResult::TooManyArguments;
 
-    Vector<Utf8> exprCmds;
-    Utf8::tokenize(arg.cmdExpr, ' ', exprCmds);
+    auto endExpr = arg.split.size();
 
     // Count
     int count = 0;
-    if (exprCmds.size() != 1 &&
-        exprCmds.back().length() > 2 &&
-        exprCmds.back()[0] == '-' &&
-        exprCmds.back()[1] == '-' &&
-        Utf8::isNumber(exprCmds.back() + 2))
+    if (arg.split.back().length() > 2 &&
+        arg.split.back()[0] == '-' &&
+        arg.split.back()[1] == '-' &&
+        Utf8::isNumber(arg.split.back() + 2))
     {
-        count = exprCmds.back().toInt(2);
-        exprCmds.pop_back();
+        count   = arg.split.back().toInt(2);
+        endExpr = arg.split.size() - 1;
     }
 
     // Expression
     Utf8 expr;
-    for (const auto& e : exprCmds)
+    for (uint32_t i = 2; i < endExpr; i++)
     {
-        expr += e;
+        expr += arg.split[i];
         expr += " ";
     }
 
     expr.trim();
     if (expr.empty())
     {
-        printCmdError("invalid [[watch]] address");
+        printCmdError("missing breakpoint address");
         return BcDbgCommandResult::Continue;
     }
 
@@ -641,7 +611,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWatch(ByteCodeRunContext* context, const
 
     if (count != 1 && count != 2 && count != 4 && count != 8)
     {
-        printCmdError(form("invalid watch size [[%d]] (must be 1, 2, 4 or 8)", count));
+        printCmdError(form("invalid memory size [[%d]] (must be 1, 2, 4 or 8)", count));
         return BcDbgCommandResult::Error;
     }
 
@@ -655,7 +625,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWatch(ByteCodeRunContext* context, const
         return BcDbgCommandResult::Error;
     }
 
-    bkp.type       = DebugBkpType::Watch;
+    bkp.type       = DebugBkpType::Memory;
     bkp.addr       = addr;
     bkp.addrCount  = count;
     bkp.autoRemove = false;
@@ -664,4 +634,29 @@ BcDbgCommandResult ByteCodeDebugger::cmdWatch(ByteCodeRunContext* context, const
     g_ByteCodeDebugger.printBreakpoint(context, g_ByteCodeDebugger.breakpoints.size() - 1);
 
     return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdBreak(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.split.size() == 1)
+        return cmdBreakPrint(context, arg);
+    if (arg.split[1] == "enable" || arg.split[1] == "en")
+        return cmdBreakEnable(context, arg);
+    if (arg.split[1] == "disable" || arg.split[1] == "dis")
+        return cmdBreakDisable(context, arg);
+    if (arg.split[1] == "clear" || arg.split[1] == "cl")
+        return cmdBreakClear(context, arg);
+    if (arg.split[1] == "func" || arg.split[1] == "f")
+        return cmdBreakFunc(context, arg);
+    if (arg.split[1] == "instruction" || arg.split[1] == "inst")
+        return cmdBreakInstruction(context, arg);
+    if (arg.split[1] == "memory" || arg.split[1] == "mem")
+        return cmdBreakMemory(context, arg);
+    if (arg.split[1] == "file")
+        return cmdBreakFileLine(context, arg);
+    if (arg.split[1] == "line")
+        return cmdBreakLine(context, arg);
+
+    printCmdError(form("invalid [[break]] command [[%s]]", arg.split[1].c_str()));
+    return BcDbgCommandResult::Error;
 }

@@ -79,7 +79,7 @@ struct ByteCodeDebugger
         FuncName,
         FileLine,
         InstructionIndex,
-        Watch,
+        Memory,
     };
 
     struct DebugBreakpoint
@@ -160,7 +160,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdQuit(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdHelp(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBreak(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdWatch(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdBreakMemory(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShow(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 
     static BcDbgCommandResult cmdShowFunctions(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
