@@ -194,12 +194,15 @@ void ByteCodeDebugger::printBreakpoint(const ByteCodeRunContext* context, uint32
             else
                 g_Log.print(form("function with a match on [[%s]] (%d matches)", bkp.name.c_str(), bkp.funcNameCount));
             break;
+
         case DebugBkpType::FileLine:
             g_Log.print(form("file [[%s]]:[[%d]]", bkp.file->path.c_str(), bkp.line));
             break;
+
         case DebugBkpType::InstructionIndex:
             g_Log.print(form("instruction index [[%d]] in [[%s]]", bkp.line, bkp.bc->getPrintName().c_str()));
             break;
+
         case DebugBkpType::Watch:
             g_Log.print(form("watch address [[0x%llx]], size [[%d]]", bkp.addr, bkp.addrCount));
             break;
@@ -216,14 +219,26 @@ void ByteCodeDebugger::printBreakpoint(const ByteCodeRunContext* context, uint32
             g_Log.writeEol();
             g_ByteCodeDebugger.printSourceLines(context, bkp.file, bkp.line - 1, 0);
             break;
+
         case DebugBkpType::FuncName:
             g_Log.writeEol();
             if (bkp.funcNameCount == 1 && bkp.bc)
                 g_ByteCodeDebugger.printSourceLines(context, bkp.bc->node->token.sourceFile, bkp.bc->node->token.startLocation.line, 0);
             break;
+
         case DebugBkpType::InstructionIndex:
+        {
             g_Log.writeEol();
-            break;
+            g_Log.setStoreMode(true);
+            ByteCodePrintOptions opt;
+            opt.curIp           = cxtIp;
+            opt.printSourceCode = false;
+            bkp.bc->print(opt, bkp.line, 1);
+            g_Log.setStoreMode(false);
+            printLong(g_Log.store);
+        }
+        break;
+
         case DebugBkpType::Watch:
             g_Log.writeEol();
             break;
