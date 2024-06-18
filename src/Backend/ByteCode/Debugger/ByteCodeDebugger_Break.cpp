@@ -560,6 +560,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakMemory(ByteCodeRunContext* context,
     if (arg.split.size() > 4)
         return BcDbgCommandResult::TooManyArguments;
 
+    const auto cmd     = arg.split[0];
+    bool       oneShot = false;
+    if (cmd == "tb" || cmd == "tbreak")
+        oneShot = true;
+
     auto endExpr = arg.split.size();
 
     // Count
@@ -597,7 +602,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakMemory(ByteCodeRunContext* context,
     {
         addr = res.value->reg.pointer;
         if (count == 0 && res.type)
+        {
             count = res.type->sizeOf;
+            count &= ~1;
+            count = min(count, 8);
+        }
     }
     else if (res.type->isPointer())
     {
@@ -606,6 +615,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakMemory(ByteCodeRunContext* context,
         {
             const auto typePtr = castTypeInfo<TypeInfoPointer>(res.type, TypeInfoKind::Pointer);
             count              = typePtr->pointedType->sizeOf;
+            count &= ~1;
+            count = min(count, 8);
         }
     }
 
@@ -628,7 +639,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakMemory(ByteCodeRunContext* context,
     bkp.type       = DebugBkpType::Memory;
     bkp.addr       = addr;
     bkp.addrCount  = count;
-    bkp.autoRemove = false;
+    bkp.autoRemove = oneShot;
     if (!g_ByteCodeDebugger.addBreakpoint(context, bkp))
         return BcDbgCommandResult::Error;
     g_ByteCodeDebugger.printBreakpoint(context, g_ByteCodeDebugger.breakpoints.size() - 1);
