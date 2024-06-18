@@ -58,6 +58,7 @@ struct ByteCodeDebugger
         bool isSigned = false;
         bool isFloat  = false;
         bool isHexa   = true;
+        
         bool print0X  = true;
         bool align    = false;
     };
@@ -238,12 +239,13 @@ struct ByteCodeDebugger
     uint32_t      stepCount = 0;
     uint32_t      bcMode    = false;
 
-    bool forcePrintContext = false;
-    bool printStruct       = true;
-    bool printArray        = true;
-    bool printBcCode       = true;
-    bool printBtCode       = false;
-    bool printEvalBc       = false;
+    ValueFormat examineFormat;
+    bool        forcePrintContext = false;
+    bool        printStruct       = true;
+    bool        printArray        = true;
+    bool        printBcCode       = true;
+    bool        printBtCode       = false;
+    bool        printEvalBc       = false;
 };
 
 extern ByteCodeDebugger g_ByteCodeDebugger;

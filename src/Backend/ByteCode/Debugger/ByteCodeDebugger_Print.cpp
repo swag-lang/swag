@@ -94,10 +94,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     Utf8::tokenize(arg.cmdExpr, ' ', exprCmds);
 
     // Print format
-    ValueFormat fmt;
     if (!exprCmds.empty())
     {
-        if (getValueFormat(exprCmds.back(), fmt))
+        if (getValueFormat(exprCmds.back(), g_ByteCodeDebugger.examineFormat))
             exprCmds.pop_back();
         else if (exprCmds.back().startsWith("--"))
         {
@@ -106,8 +105,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         }
     }
 
-    fmt.print0X = false;
-    fmt.align   = true;
+    g_ByteCodeDebugger.examineFormat.print0X = false;
+    g_ByteCodeDebugger.examineFormat.align   = true;
 
     // Count
     int count = 64;
@@ -150,7 +149,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         addr = *static_cast<uint8_t**>(res.addr);
 
     int perLine = 8;
-    switch (fmt.bitCount)
+    switch (g_ByteCodeDebugger.examineFormat.bitCount)
     {
         case 8:
             perLine = 16;
@@ -177,20 +176,20 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         for (int i = 0; i < min(count, perLine); i++)
         {
             Utf8 str;
-            appendLiteralValue(context, str, fmt, addrB);
+            appendLiteralValue(context, str, g_ByteCodeDebugger.examineFormat, addrB);
             g_Log.print(str);
-            addrB += fmt.bitCount / 8;
+            addrB += g_ByteCodeDebugger.examineFormat.bitCount / 8;
         }
 
         addrB = addrLine;
-        if (fmt.bitCount == 8)
+        if (g_ByteCodeDebugger.examineFormat.bitCount == 8)
         {
             // Align to the right
             for (int i = 0; i < perLine - min(count, perLine); i++)
             {
-                if (fmt.isHexa)
+                if (g_ByteCodeDebugger.examineFormat.isHexa)
                     g_Log.write("   ");
-                else if (!fmt.isSigned)
+                else if (!g_ByteCodeDebugger.examineFormat.isSigned)
                     g_Log.write("    ");
                 else
                     g_Log.write("     ");
@@ -211,7 +210,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         g_Log.writeEol();
 
         addrB = addrLine;
-        addrB += static_cast<int64_t>(min(count, perLine)) * (fmt.bitCount / 8);
+        addrB += static_cast<int64_t>(min(count, perLine)) * (g_ByteCodeDebugger.examineFormat.bitCount / 8);
         count -= min(count, perLine);
         if (!count)
             break;

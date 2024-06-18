@@ -20,6 +20,7 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     {
         fmt.bitCount = 8;
         fmt.isSigned = true;
+        fmt.isFloat  = false;
         fmt.isHexa   = false;
         return true;
     }
@@ -28,6 +29,7 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     {
         fmt.bitCount = 16;
         fmt.isSigned = true;
+        fmt.isFloat  = false;
         fmt.isHexa   = false;
         return true;
     }
@@ -36,6 +38,7 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     {
         fmt.bitCount = 32;
         fmt.isSigned = true;
+        fmt.isFloat  = false;
         fmt.isHexa   = false;
         return true;
     }
@@ -44,6 +47,7 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     {
         fmt.bitCount = 64;
         fmt.isSigned = true;
+        fmt.isFloat  = false;
         fmt.isHexa   = false;
         return true;
     }
@@ -51,6 +55,8 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     if (cmd1 == "u8")
     {
         fmt.bitCount = 8;
+        fmt.isSigned = false;
+        fmt.isFloat  = false;
         fmt.isHexa   = false;
         return true;
     }
@@ -58,6 +64,8 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     if (cmd1 == "u16")
     {
         fmt.bitCount = 16;
+        fmt.isSigned = false;
+        fmt.isFloat  = false;
         fmt.isHexa   = false;
         return true;
     }
@@ -65,6 +73,8 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     if (cmd1 == "u32")
     {
         fmt.bitCount = 32;
+        fmt.isSigned = false;
+        fmt.isFloat  = false;
         fmt.isHexa   = false;
         return true;
     }
@@ -72,6 +82,8 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     if (cmd1 == "u64")
     {
         fmt.bitCount = 64;
+        fmt.isSigned = false;
+        fmt.isFloat  = false;
         fmt.isHexa   = false;
         return true;
     }
@@ -79,30 +91,43 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     if (cmd1 == "x8")
     {
         fmt.bitCount = 8;
+        fmt.isSigned = false;
+        fmt.isFloat  = false;
+        fmt.isHexa   = true;
         return true;
     }
 
     if (cmd1 == "x16")
     {
         fmt.bitCount = 16;
+        fmt.isSigned = false;
+        fmt.isFloat  = false;
+        fmt.isHexa   = true;
         return true;
     }
 
     if (cmd1 == "x32")
     {
         fmt.bitCount = 32;
+        fmt.isSigned = false;
+        fmt.isFloat  = false;
+        fmt.isHexa   = true;
         return true;
     }
 
     if (cmd1 == "x64")
     {
         fmt.bitCount = 64;
+        fmt.isSigned = false;
+        fmt.isFloat  = false;
+        fmt.isHexa   = true;
         return true;
     }
 
     if (cmd1 == "f32")
     {
         fmt.bitCount = 32;
+        fmt.isSigned = true;
         fmt.isFloat  = true;
         fmt.isHexa   = false;
         return true;
@@ -111,6 +136,7 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     if (cmd1 == "f64")
     {
         fmt.bitCount = 64;
+        fmt.isSigned = true;
         fmt.isFloat  = true;
         fmt.isHexa   = false;
         return true;
