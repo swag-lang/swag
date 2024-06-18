@@ -70,8 +70,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 {
     if (arg.help)
     {
-        g_Log.writeEol();
-
         g_Log.setColor(LogColor::Gray);
         g_Log.print("--num\n");
         g_Log.setColor(LogColor::White);
@@ -223,8 +221,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
 {
     if (arg.help)
     {
-        g_Log.writeEol();
-
         g_Log.setColor(LogColor::Gray);
         g_Log.print("--format\n");
         g_Log.setColor(LogColor::White);

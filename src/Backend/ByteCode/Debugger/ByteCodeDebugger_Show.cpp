@@ -298,8 +298,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowRegs(ByteCodeRunContext* context, co
 {
     if (arg.help)
     {
-        g_Log.writeEol();
-
         g_Log.print("--format\n");
         g_Log.setColor(LogColor::White);
         g_Log.print("    The display format of each register. Can be one of the following:\n");

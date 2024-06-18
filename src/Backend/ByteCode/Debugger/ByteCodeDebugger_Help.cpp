@@ -169,8 +169,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
         const auto& c = toPrint[0];
 
         g_Log.setColor(LogColor::Gray);
-        g_Log.print("command:     ");
+        g_Log.print("command\n");
         g_Log.setColor(LogColor::Name);
+        g_Log.print("    ");
         g_Log.print(c.name);
         if (c.subcommand[0])
         {
@@ -182,21 +183,24 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
         if (c.shortname[0])
         {
             g_Log.setColor(LogColor::Gray);
-            g_Log.print("short name:  ");
+            g_Log.print("short name\n");
             g_Log.setColor(LogColor::Name);
+            g_Log.print("    ");
             g_Log.print(c.shortname);
             g_Log.writeEol();
         }
 
         g_Log.setColor(LogColor::Gray);
-        g_Log.print("arguments:   ");
+        g_Log.print("arguments\n");
         g_Log.setColor(LogColor::Type);
+        g_Log.print("    ");        
         g_Log.print(c.args);
         g_Log.writeEol();
 
         g_Log.setColor(LogColor::Gray);
-        g_Log.print("description: ");
+        g_Log.print("description\n");
         g_Log.setColor(LogColor::White);
+        g_Log.print("    ");
         g_Log.print(c.help);
         g_Log.writeEol();
 
