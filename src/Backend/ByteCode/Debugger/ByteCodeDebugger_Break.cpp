@@ -561,7 +561,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreak(ByteCodeRunContext* context, const
         return cmdBreakPrint(context, arg);
     if (arg.split[1] == "enable" || arg.split[1] == "en")
         return cmdBreakEnable(context, arg);
-    if (arg.split[1] == "disable" || arg.split[1] == "di")
+    if (arg.split[1] == "disable" || arg.split[1] == "dis")
         return cmdBreakDisable(context, arg);
     if (arg.split[1] == "clear" || arg.split[1] == "cl")
         return cmdBreakClear(context, arg);
