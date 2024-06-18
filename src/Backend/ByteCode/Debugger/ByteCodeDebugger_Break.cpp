@@ -128,7 +128,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                     bkp.disabled = true;
                 else if (newValue != bkp.lastValue)
                 {
-                    printMsgBkp(form("memory breakpoint change #%d, last value is [[0x%llx]], new value is [[0x%llx]]", idxBkp, bkp.lastValue, newValue));
+                    printMsgBkp(form("breakpoint hit #%d, last value is [[0x%llx]], new value is [[0x%llx]]", idxBkp, bkp.lastValue, newValue));
                     stepMode          = DebugStepMode::None;
                     context->debugOn  = true;
                     forcePrintContext = true;
@@ -191,7 +191,7 @@ void ByteCodeDebugger::printBreakpoint(const ByteCodeRunContext* context, uint32
             break;
 
         case DebugBkpType::FileLine:
-            g_Log.print(form("file [[%s]]:[[%d]]", bkp.file->path.c_str(), bkp.line));
+            g_Log.print(form("location [[%s]]:[[%d]]", bkp.file->path.c_str(), bkp.line));
             break;
 
         case DebugBkpType::InstructionIndex:
