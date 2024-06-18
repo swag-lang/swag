@@ -92,7 +92,7 @@ struct ByteCode
     void              printSourceCode(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile, AstNode** lastInline) const;
     static Utf8       getPrettyInstruction(ByteCodeInstruction* ip);
     static Utf8       getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
-    void              getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const;
+    void              fillPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const;
     static void       printInstruction(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, const PrintInstructionLine& line);
     void              printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip) const;
     static void       alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen = false);

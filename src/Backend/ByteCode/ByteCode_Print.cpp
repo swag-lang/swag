@@ -288,15 +288,15 @@ Utf8 ByteCode::getInstructionReg(const char* name, const Register& reg, bool reg
     return str;
 }
 
-void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const
+void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const
 {
     const uint32_t i      = static_cast<uint32_t>(ip - out);
     const bool     forDbg = options.curIp != nullptr;
 
-    // Instruction rank
+    // Print for bcdbg
     if (forDbg)
     {
-        // Line breakpoint
+        // Instruction index breakpoint
         const ByteCodeDebugger::DebugBreakpoint* hasBkp = nullptr;
         for (const auto& bkp : g_ByteCodeDebugger.breakpoints)
         {
@@ -318,11 +318,11 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
             else
                 line.bkp += Log::colorToVTS(LogColor::Breakpoint);
             line.bkp += Utf8("\xe2\x96\xa0");
-            
+
             if (ip == options.curIp)
                 line.rank += "> ";
             else
-                line.rank += "  ";            
+                line.rank += "  ";
         }
         else if (ip == options.curIp)
             line.rank += "-> ";
@@ -330,6 +330,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
             line.rank += "   ";
     }
 
+    // Instruction rank
     line.rank += form("%08d", i);
 
     // Instruction name
@@ -436,12 +437,12 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
 
     // Bkp
     g_Log.print(line.bkp);
-    
+
     if (forDbg && ip == options.curIp)
         g_Log.setColor(LogColor::CurInstruction);
     else
         g_Log.setColor(LogColor::Index);
-   
+
     // Instruction rank
     g_Log.print(line.rank);
 
@@ -587,7 +588,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeIns
 {
     PrintInstructionLine line;
 
-    getPrintInstruction(options, ip, line);
+    fillPrintInstruction(options, ip, line);
 
     Vector<PrintInstructionLine> lines;
     lines.push_back(line);
@@ -606,7 +607,7 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
         if (ip->op == ByteCodeOp::End)
             break;
         PrintInstructionLine line;
-        getPrintInstruction(options, ip++, line);
+        fillPrintInstruction(options, ip++, line);
         lines.push_back(line);
     }
 
