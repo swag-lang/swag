@@ -28,9 +28,10 @@ Utf8 ByteCodeDebugger::getPrintValue(const Utf8& name, TypeInfo* typeinfo)
     return str;
 }
 
-Utf8 ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs)
+void ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, Vector<std::pair<Utf8, Utf8>>& result, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs)
 {
-    Utf8 result;
+    result.clear();
+
     for (uint32_t i = 0; i < nodes.size(); i++)
     {
         const auto n    = nodes[i];
@@ -51,19 +52,15 @@ Utf8 ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, const Vector
             value.trimRightEol();
         }
 
-        result += value;
-
         if (over->node && over->node->token.sourceFile)
         {
-            result += Log::colorToVTS(LogColor::Location);
-            result += " ";
-            result += over->node->token.sourceFile->path;
+            value += Log::colorToVTS(LogColor::Location);
+            value += " ";
+            value += over->node->token.sourceFile->path;
         }
 
-        result += "\n";
+        result.push_back({value, over->symbol->getFullName()});
     }
-
-    return result;
 }
 
 void ByteCodeDebugger::printLong(const Utf8& all)
@@ -115,7 +112,7 @@ void ByteCodeDebugger::printLong(const Vector<std::pair<Utf8, Utf8>>& all, const
 
     for (const auto& i : all)
     {
-        if (!testNameFilter(i.second, filter))
+        if (!testNameFilter(i.second, filter, i.first))
             continue;
 
         if (cpt == 60 && canStop)

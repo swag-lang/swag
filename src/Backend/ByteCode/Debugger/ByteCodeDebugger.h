@@ -193,7 +193,7 @@ struct ByteCodeDebugger
     static void                    printLong(const Vector<std::pair<Utf8, Utf8>>& all, const Utf8& filter, LogColor color = LogColor::Gray);
     bool                           getRegIdx(ByteCodeRunContext* context, const Utf8& arg, uint32_t& regN) const;
     static Utf8                    getPrintValue(const Utf8& name, TypeInfo* typeinfo);
-    static Utf8                    getPrintSymbols(ByteCodeRunContext* context, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs);
+    static void                    getPrintSymbols(ByteCodeRunContext* context, Vector<std::pair<Utf8, Utf8>>& result, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs);
     void                           printDebugContext(ByteCodeRunContext* context, bool force = false);
     void                           computeDebugContext(ByteCodeRunContext* context);
     Utf8                           completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete) const;
@@ -201,7 +201,7 @@ struct ByteCodeDebugger
     bool                           mustBreak(ByteCodeRunContext* context);
     bool                           step(ByteCodeRunContext* context);
     static VectorNative<ByteCode*> findBc(const char* bcName);
-    static bool                    testNameFilter(const Utf8& name, const Utf8& filter);
+    static bool                    testNameFilter(const Utf8& name, const Utf8& filter, const Utf8& alternate);
 
     static void printHelpValue(const Utf8& title, const Vector<Utf8>& values, LogColor colorValue = LogColor::White);
     static void printHelpFormat();

@@ -217,7 +217,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowLocals(ByteCodeRunContext* context, 
         return BcDbgCommandResult::Continue;
     }
 
-    const auto result = getPrintSymbols(context, nodes, addrs);
+    Vector<std::pair<Utf8, Utf8>> result;
+    getPrintSymbols(context, result, nodes, addrs);
     printLong(result, filter);
 
     return BcDbgCommandResult::Continue;
@@ -260,7 +261,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowArgs(ByteCodeRunContext* context, co
         return BcDbgCommandResult::Continue;
     }
 
-    const auto result = getPrintSymbols(context, nodes, addrs);
+    Vector<std::pair<Utf8, Utf8>> result;
+    getPrintSymbols(context, result, nodes, addrs);
     printLong(result, filter);
 
     return BcDbgCommandResult::Continue;
@@ -307,7 +309,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowGlobals(ByteCodeRunContext* context,
     }
 
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
-    const auto result = getPrintSymbols(context, nodes, addrs);
+
+    Vector<std::pair<Utf8, Utf8>> result;
+    getPrintSymbols(context, result, nodes, addrs);
     printLong(result, filter);
 
     return BcDbgCommandResult::Continue;
@@ -363,7 +367,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
 
     if (arg.split[1] == "locals" || arg.split[1] == "loc")
         return cmdShowLocals(context, arg);
-    if (arg.split[1] == "globals")
+    if (arg.split[1] == "globals" || arg.split[1] == "glob")
         return cmdShowGlobals(context, arg);
     if (arg.split[1] == "arguments" || arg.split[1] == "arg" || arg.split[1] == "args")
         return cmdShowArgs(context, arg);
@@ -375,13 +379,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
     if (arg.split[1] == "values" || arg.split[1] == "val" || arg.split[1] == "vals")
         return cmdShowValues(context, arg);
 
-    if (arg.split[1] == "modules")
+    if (arg.split[1] == "modules" || arg.split[1] == "mod" || arg.split[1] == "mods")
         return cmdShowModules(context, arg);
-    if (arg.split[1] == "files")
+    if (arg.split[1] == "files" || arg.split[1] == "fil")
         return cmdShowFiles(context, arg);
     if (arg.split[1] == "functions" || arg.split[1] == "func" || arg.split[1] == "funcs")
         return cmdShowFunctions(context, arg);
-    if (arg.split[1] == "types")
+    if (arg.split[1] == "types" || arg.split[1] == "tp")
         return cmdShowTypes(context, arg);
 
     printCmdError(form("invalid [[show]] command [[%s]]", arg.split[1].c_str()));

@@ -47,7 +47,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
         {
             case DebugBkpType::FuncName:
             {
-                if (context->ip == context->bc->out && testNameFilter(context->bc->getPrintName(), bkp.name))
+                if (context->ip == context->bc->out && testNameFilter(context->bc->getPrintName(), bkp.name, ""))
                 {
                     if (!bkp.autoDisabled)
                     {
@@ -394,7 +394,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
     g_Workspace->getAllByteCodes(all);
     for (const auto bc : all)
     {
-        if (testNameFilter(bc->getPrintName(), bkp.name))
+        if (testNameFilter(bc->getPrintName(), bkp.name, bc->getPrintRefName()))
             match.push_back(bc);
     }
 

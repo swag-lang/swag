@@ -116,7 +116,7 @@ VectorNative<ByteCode*> ByteCodeDebugger::findBc(const char* bcName)
     return tryMatch;
 }
 
-bool ByteCodeDebugger::testNameFilter(const Utf8& name, const Utf8& filter)
+bool ByteCodeDebugger::testNameFilter(const Utf8& name, const Utf8& filter, const Utf8& alternate)
 {
     if (filter.empty())
         return true;
@@ -145,9 +145,12 @@ bool ByteCodeDebugger::testNameFilter(const Utf8& name, const Utf8& filter)
         if (atStart && pos != 0)
             return false;
         if (atEnd && pos != static_cast<int>(name.length()) - static_cast<int>(filter.length()) + 1)
-            return false;            
+            return false;
         return true;
     }
+
+    if (!alternate.empty() && alternate.find(test) != -1)
+        return true;
 
     return false;
 }
