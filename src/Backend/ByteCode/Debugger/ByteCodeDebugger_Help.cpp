@@ -2,6 +2,36 @@
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
 
+void ByteCodeDebugger::printHelpValue(const Utf8& title, const Vector<Utf8>& values, LogColor colorValue)
+{
+    g_Log.setColor(LogColor::Gray);
+    g_Log.print(title);
+    g_Log.writeEol();
+    g_Log.setColor(colorValue);
+
+    for (const auto& line : values)
+    {
+        g_Log.print("    ");
+        g_Log.print(line);
+        g_Log.writeEol();
+    }
+
+    g_Log.writeEol();
+}
+
+void ByteCodeDebugger::printHelpFormat()
+{
+    Vector<Utf8> values;
+    values.push_back("The display format of each value. Can be one of the following:");
+    values.push_back("s8 s16 s32 s64 u8 u16 u32 u64 x8 x16 x32 x64 f32 f64");
+    printHelpValue("--format", values);
+}
+
+void ByteCodeDebugger::printHelpFilter()
+{
+    printHelpValue("filter", {"The filter matches"});
+}
+
 void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd, bool commandMode)
 {
     g_Log.setColor(LogColor::Gray);
@@ -168,41 +198,19 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCom
     {
         const auto& c = toPrint[0];
 
-        g_Log.setColor(LogColor::Gray);
-        g_Log.print("command\n");
-        g_Log.setColor(LogColor::Name);
-        g_Log.print("    ");
-        g_Log.print(c.name);
+        Utf8 cmd = c.name;
         if (c.subcommand[0])
         {
-            g_Log.print(" ");
-            g_Log.print(c.subcommand);
+            cmd += " ";
+            cmd += c.subcommand;
         }
-        g_Log.writeEol();
 
+        printHelpValue("command", {cmd}, LogColor::Name);
         if (c.shortname[0])
-        {
-            g_Log.setColor(LogColor::Gray);
-            g_Log.print("short name\n");
-            g_Log.setColor(LogColor::Name);
-            g_Log.print("    ");
-            g_Log.print(c.shortname);
-            g_Log.writeEol();
-        }
-
-        g_Log.setColor(LogColor::Gray);
-        g_Log.print("arguments\n");
-        g_Log.setColor(LogColor::Type);
-        g_Log.print("    ");        
-        g_Log.print(c.args);
-        g_Log.writeEol();
-
-        g_Log.setColor(LogColor::Gray);
-        g_Log.print("description\n");
-        g_Log.setColor(LogColor::White);
-        g_Log.print("    ");
-        g_Log.print(c.help);
-        g_Log.writeEol();
+            printHelpValue("short name", {c.shortname}, LogColor::Name);
+        if (c.args[0])
+            printHelpValue("arguments", {c.args}, LogColor::Type);
+        printHelpValue("description", {c.help});
 
         g_Log.setColor(LogColor::Gray);
         if (c.cb)

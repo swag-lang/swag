@@ -58,9 +58,9 @@ struct ByteCodeDebugger
         bool isSigned = false;
         bool isFloat  = false;
         bool isHexa   = true;
-        
-        bool print0X  = true;
-        bool align    = false;
+
+        bool print0X = true;
+        bool align   = false;
     };
 
     enum class DebugStepMode
@@ -202,10 +202,14 @@ struct ByteCodeDebugger
     static VectorNative<ByteCode*> findBc(const char* bcName);
     static bool                    testNameFilter(const Utf8& name, const Utf8& filter);
 
+    static void printHelpValue(const Utf8& title, const Vector<Utf8> &values, LogColor colorValue = LogColor::White);
+    static void printHelpFormat();
+    static void printHelpFilter();
     static void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type);
     static void printCmdError(const Utf8& msg);
     static void printCmdResult(const Utf8& msg);
     static void printMsgBkp(const Utf8& msg);
+
     void        printHelp() const;
     static void printHelp(const BcDbgCommand& cmd, bool commandMode);
     void        printDisplayList() const;
