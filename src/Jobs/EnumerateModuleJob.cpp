@@ -11,7 +11,6 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-#pragma optimize("", off)
 SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
                                                 Vector<SourceFile*>& allFiles,
                                                 const Path&          dirName,

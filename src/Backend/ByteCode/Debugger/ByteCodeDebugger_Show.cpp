@@ -195,7 +195,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowLocals(ByteCodeRunContext* context, 
         if (!over)
             continue;
         nodes.push_back(n);
-        addrs.push_back(nullptr);
+        addrs.push_back(g_ByteCodeDebugger.cxtBp + over->computedValue.storageOffset);
     }
 
     if (nodes.empty())
@@ -348,22 +348,24 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
 
     if (arg.split[1] == "locals" || arg.split[1] == "loc")
         return cmdShowLocals(context, arg);
+    if (arg.split[1] == "globals")
+        return cmdShowGlobals(context, arg);
     if (arg.split[1] == "arguments" || arg.split[1] == "arg" || arg.split[1] == "args")
         return cmdShowArgs(context, arg);
+    
     if (arg.split[1] == "registers" || arg.split[1] == "reg" || arg.split[1] == "regs")
         return cmdShowRegs(context, arg);
-    if (arg.split[1] == "functions" || arg.split[1] == "func" || arg.split[1] == "funcs")
-        return cmdShowFunctions(context, arg);
     if (arg.split[1] == "expressions" || arg.split[1] == "expr" || arg.split[1] == "exprs")
         return cmdShowExpressions(context, arg);
     if (arg.split[1] == "values" || arg.split[1] == "val" || arg.split[1] == "vals")
         return cmdShowValues(context, arg);
-    if (arg.split[1] == "globals")
-        return cmdShowGlobals(context, arg);
+
     if (arg.split[1] == "modules")
         return cmdShowModules(context, arg);
     if (arg.split[1] == "files")
         return cmdShowFiles(context, arg);
+    if (arg.split[1] == "functions" || arg.split[1] == "func" || arg.split[1] == "funcs")
+        return cmdShowFunctions(context, arg);
     if (arg.split[1] == "types")
         return cmdShowTypes(context, arg);
 

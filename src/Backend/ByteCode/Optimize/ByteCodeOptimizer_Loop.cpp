@@ -4,7 +4,6 @@
 
 // We detect loops, and then we try to move constant instructions outside of the loop.
 // For example a GetParam64 does not need to be done at each iteration, it could be done once before the loop.
-#pragma optimize("", off)
 bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
     // if(!context->bc->getPrintName().containsNoCase("day9B"))
