@@ -200,7 +200,6 @@ struct ByteCodeDebugger
     Utf8                           getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift) const;
     bool                           mustBreak(ByteCodeRunContext* context);
     bool                           step(ByteCodeRunContext* context);
-    static ByteCode*               findCmdBc(const Utf8& name);
     static VectorNative<ByteCode*> findBc(const char* bcName);
     static bool                    testNameFilter(const Utf8& name, const Utf8& filter);
 

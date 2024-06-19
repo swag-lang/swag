@@ -42,20 +42,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext*, con
     if (arg.help)
         return BcDbgCommandResult::Continue;
 
-    if (arg.split.size() > 2)
+    if (arg.split.size() > 1)
         return BcDbgCommandResult::TooManyArguments;
 
-    auto toLogBc = g_ByteCodeDebugger.cxtBc;
-    auto toLogIp = g_ByteCodeDebugger.cxtIp;
-
-    if (arg.split.size() > 1)
-    {
-        const auto name = arg.split[1];
-        toLogBc         = findCmdBc(name);
-        if (!toLogBc)
-            return BcDbgCommandResult::Error;
-        toLogIp = toLogBc->out;
-    }
+    const auto toLogBc = g_ByteCodeDebugger.cxtBc;
+    const auto toLogIp = g_ByteCodeDebugger.cxtIp;
 
     ByteCodePrintOptions opt;
     opt.curIp           = toLogIp;
@@ -119,21 +110,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     if (arg.help)
         return BcDbgCommandResult::Continue;
 
-    if (arg.split.size() > 2)
+    if (arg.split.size() > 1)
         return BcDbgCommandResult::TooManyArguments;
 
-    auto toLogBc              = g_ByteCodeDebugger.cxtBc;
-    auto toLogIp              = g_ByteCodeDebugger.cxtIp;
+    const auto toLogBc        = g_ByteCodeDebugger.cxtBc;
+    const auto toLogIp        = g_ByteCodeDebugger.cxtIp;
     g_ByteCodeDebugger.bcMode = false;
-
-    if (arg.split.size() > 1)
-    {
-        const auto name = arg.split[1];
-        toLogBc         = findCmdBc(name);
-        if (!toLogBc)
-            return BcDbgCommandResult::Error;
-        toLogIp = toLogBc->out;
-    }
 
     if (toLogBc->node && toLogBc->node->is(AstNodeKind::FuncDecl) && toLogBc->node->token.sourceFile)
     {

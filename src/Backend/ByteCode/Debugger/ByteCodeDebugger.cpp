@@ -40,9 +40,9 @@ void ByteCodeDebugger::setup()
     commands.push_back({"breakpoints", "tbreak", "tb", "", "", "Same as 'break' except that the breakpoint will be automatically removed on hit", cmdBreak});
 
     commands.push_back({"source code", "list", "l", "", "[num]", "Print the current source code line and [num] lines around", cmdList});
-    commands.push_back({"source code", "longlist", "ll", "", "[name]", "Print the source code of the current function (or function [name])", cmdLongList});
+    commands.push_back({"source code", "longlist", "ll", "", "", "Print the source code of the current function", cmdLongList});
     commands.push_back({"source code", "instruction", "i", "", "[num]", "Print the current bytecode instruction and [num] instructions around", cmdInstruction});
-    commands.push_back({"source code", "longinst", "li", "", "[name]", "Print the bytecode of the current function (or function [name])", cmdInstructionDump});
+    commands.push_back({"source code", "longinst", "li", "", "", "Print the bytecode of the current function", cmdInstructionDump});
     commands.push_back({"source code", "source", "sc", "", "<symbol>", "Print the source code of <symbol>, if applicable", cmdSource});
 
     commands.push_back({"stack", "backtrace", "bt", "", "[num]", "Print [num] frames (0 for all)", cmdBackTrace});
@@ -87,24 +87,6 @@ void ByteCodeDebugger::setup()
     commands.push_back({"bcdbg", "help", "?", "<command> <subcommand>", "", "Print help about a specific command and sub command", cmdHelp});
     commands.push_back({"bcdbg", "cls", "", "", "", "Clear the console", cmdClear});
     commands.push_back({"bcdbg", "quit", "q", "", "", "Quit the compiler", cmdQuit});
-}
-
-ByteCode* ByteCodeDebugger::findCmdBc(const Utf8& name)
-{
-    auto bc = findBc(name.c_str());
-    if (bc.size() == 1)
-        return bc[0];
-
-    if (bc.size() > 1)
-    {
-        printCmdError("multiple functions");
-        for (const auto one : bc)
-            one->printName();
-        return nullptr;
-    }
-
-    printCmdError(form("cannot find function [[%s]]", name.c_str()));
-    return nullptr;
 }
 
 VectorNative<ByteCode*> ByteCodeDebugger::findBc(const char* bcName)
