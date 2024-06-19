@@ -51,7 +51,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                 {
                     if (!bkp.autoDisabled)
                     {
-                        printMsgBkp(form("breakpoint hit #%d function with a match on [[%s]]", idxBkp, bkp.name.c_str()));
+                        printMsgBkp(form("breakpoint hit #%d: function with a match on [[%s]]", idxBkp, bkp.name.c_str()));
                         stepMode          = DebugStepMode::None;
                         context->debugOn  = true;
                         forcePrintContext = true;
@@ -77,7 +77,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                 {
                     if (!bkp.autoDisabled)
                     {
-                        printMsgBkp(form("breakpoint hit #%d at line [[%d]]", idxBkp, bkp.line));
+                        printMsgBkp(form("breakpoint hit #%d: line [[%d]]", idxBkp, bkp.line));
                         stepMode          = DebugStepMode::None;
                         context->debugOn  = true;
                         forcePrintContext = true;
@@ -102,7 +102,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                 {
                     if (!bkp.autoDisabled)
                     {
-                        printMsgBkp(form("breakpoint hit #%d at instruction [[%d]]", idxBkp, bkp.line));
+                        printMsgBkp(form("breakpoint hit #%d: instruction [[%d]]", idxBkp, bkp.line));
                         stepMode          = DebugStepMode::None;
                         context->debugOn  = true;
                         forcePrintContext = true;
@@ -128,7 +128,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                     bkp.disabled = true;
                 else if (newValue != bkp.lastValue)
                 {
-                    printMsgBkp(form("breakpoint hit #%d, last value is [[0x%llx]], new value is [[0x%llx]]", idxBkp, bkp.lastValue, newValue));
+                    printMsgBkp(form("memory breakpoint hit #%d: last value is [[0x%llx]], new value is [[0x%llx]]", idxBkp, bkp.lastValue, newValue));
                     stepMode          = DebugStepMode::None;
                     context->debugOn  = true;
                     forcePrintContext = true;
