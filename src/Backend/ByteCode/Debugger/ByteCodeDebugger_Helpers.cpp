@@ -206,9 +206,9 @@ void ByteCodeDebugger::printCmdResult(const Utf8& msg)
 void ByteCodeDebugger::printMsgBkp(const Utf8& msg)
 {
     g_Log.writeEol();
-    g_Log.print("#### ", LogColor::Green);
-    g_Log.print(msg, LogColor::Green);
-    g_Log.print(" ####", LogColor::Green);
+    g_Log.print(">> ", LogColor::Blue);
+    g_Log.print(msg, LogColor::Blue);
+    g_Log.print(" <<", LogColor::Blue);
     g_Log.writeEol();
     g_Log.writeEol();
 }
