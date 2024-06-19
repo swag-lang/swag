@@ -29,7 +29,7 @@ void ByteCodeDebugger::printHelpFormat()
 
 void ByteCodeDebugger::printHelpFilter()
 {
-    printHelpValue("filter", {"The filter matches"});
+    printHelpValue("filter", {"The filter to apply to get matches. Can start with '^' or end with '$' like in a regexp."});
 }
 
 void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd, bool commandMode)

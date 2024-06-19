@@ -140,8 +140,33 @@ bool ByteCodeDebugger::testNameFilter(const Utf8& name, const Utf8& filter)
         return true;
     if (name == filter)
         return true;
-    if (name.find(filter) != -1)
+
+    bool atStart = false;
+    bool atEnd   = false;
+
+    Utf8 test = filter;
+    if (test[0] == '^')
+    {
+        atStart = true;
+        test    = Utf8{filter.buffer + 1, filter.length() - 1};
+    }
+
+    if (test.back() == '$')
+    {
+        atEnd = true;
+        test  = Utf8{filter.buffer, filter.length() - 1};
+    }
+
+    const int pos = name.find(test);
+    if (pos != -1)
+    {
+        if (atStart && pos != 0)
+            return false;
+        if (atEnd && pos != static_cast<int>(name.length()) - static_cast<int>(filter.length()) + 1)
+            return false;            
         return true;
+    }
+
     return false;
 }
 

@@ -11,7 +11,10 @@
 BcDbgCommandResult ByteCodeDebugger::cmdShowFunctions(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.help)
+    {
+        printHelpFilter();
         return BcDbgCommandResult::Continue;
+    }
 
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
@@ -21,12 +24,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowFunctions(ByteCodeRunContext* /*cont
     VectorNative<ByteCode*> result;
     g_Workspace->getAllByteCodes(result);
 
-    Vector<Utf8> all;
+    Vector<std::pair<Utf8, Utf8>> all;
     for (const auto bc : result)
-        all.push_back(bc->getPrintRefName());
+    {
+        all.push_back({bc->getPrintRefName(), bc->getPrintName()});
+    }
 
-    std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
-    printLong(all, &filter);
+    std::ranges::sort(all, [](const std::pair<Utf8, Utf8>& a, const std::pair<Utf8, Utf8>& b) { return strcmp(a.first, b.first) < 0; });
+    printLong(all, filter);
 
     return BcDbgCommandResult::Continue;
 }
@@ -52,7 +57,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowModules(ByteCodeRunContext* /*contex
 BcDbgCommandResult ByteCodeDebugger::cmdShowFiles(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.help)
+    {
+        printHelpFilter();
         return BcDbgCommandResult::Continue;
+    }
 
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
@@ -68,12 +76,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowFiles(ByteCodeRunContext* /*context*
         }
     }
 
-    Vector<Utf8> all;
+    Vector<std::pair<Utf8, Utf8>> all;
     for (const auto& f : set)
-        all.push_back(f);
+        all.push_back({f, f});
 
-    std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
-    printLong(all, &filter, LogColor::Location);
+    std::ranges::sort(all, [](const std::pair<Utf8, Utf8>& a, const std::pair<Utf8, Utf8>& b) { return strcmp(a.first, b.first) < 0; });
+    printLong(all, filter, LogColor::Location);
 
     return BcDbgCommandResult::Continue;
 }
@@ -81,7 +89,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowFiles(ByteCodeRunContext* /*context*
 BcDbgCommandResult ByteCodeDebugger::cmdShowTypes(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.help)
+    {
+        printHelpFilter();
         return BcDbgCommandResult::Continue;
+    }
 
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
@@ -109,12 +120,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowTypes(ByteCodeRunContext* /*context*
         }
     }
 
-    Vector<Utf8> all;
+    Vector<std::pair<Utf8, Utf8>> all;
     for (const auto& f : set)
-        all.push_back(f);
+        all.push_back({f, f});
 
-    std::ranges::sort(all, [](const Utf8& a, const Utf8& b) { return strcmp(a, b) < 0; });
-    printLong(all, &filter);
+    std::ranges::sort(all, [](const std::pair<Utf8, Utf8>& a, const std::pair<Utf8, Utf8>& b) { return strcmp(a.first, b.first) < 0; });
+    printLong(all, filter);
 
     return BcDbgCommandResult::Continue;
 }
@@ -127,17 +138,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowValues(ByteCodeRunContext* /*context
     if (arg.split.size() > 2)
         return BcDbgCommandResult::TooManyArguments;
 
-    Vector<Utf8> all;
+    Vector<std::pair<Utf8, Utf8>> all;
     for (uint32_t idx = g_ByteCodeDebugger.evalExpr.size() - 1; idx != UINT32_MAX; idx--)
     {
         const auto expr = g_ByteCodeDebugger.evalExpr[idx];
         const auto val  = g_ByteCodeDebugger.evalExprResult[idx];
         Utf8       str  = form("$%d = %s%s%s = %s", idx, Log::colorToVTS(LogColor::Name).c_str(), expr.c_str(), Log::colorToVTS(LogColor::Default).c_str(), val.c_str());
-        all.push_back(str);
+        all.push_back({str, ""});
     }
 
-    printLong(all, nullptr, LogColor::Gray);
-
+    printLong(all, "");
     return BcDbgCommandResult::Continue;
 }
 
@@ -174,7 +184,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowExpressions(ByteCodeRunContext* /*co
 BcDbgCommandResult ByteCodeDebugger::cmdShowLocals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
+    {
+        printHelpFilter();
         return BcDbgCommandResult::Continue;
+    }
 
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
@@ -205,7 +218,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowLocals(ByteCodeRunContext* context, 
     }
 
     const auto result = getPrintSymbols(context, nodes, addrs);
-    printLong(result, &filter);
+    printLong(result, filter);
 
     return BcDbgCommandResult::Continue;
 }
@@ -213,7 +226,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowLocals(ByteCodeRunContext* context, 
 BcDbgCommandResult ByteCodeDebugger::cmdShowArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
+    {
+        printHelpFilter();
         return BcDbgCommandResult::Continue;
+    }
 
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
@@ -245,7 +261,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowArgs(ByteCodeRunContext* context, co
     }
 
     const auto result = getPrintSymbols(context, nodes, addrs);
-    printLong(result, &filter);
+    printLong(result, filter);
 
     return BcDbgCommandResult::Continue;
 }
@@ -254,7 +270,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowArgs(ByteCodeRunContext* context, co
 BcDbgCommandResult ByteCodeDebugger::cmdShowGlobals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
+    {
+        printHelpFilter();
         return BcDbgCommandResult::Continue;
+    }
 
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
@@ -289,7 +308,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowGlobals(ByteCodeRunContext* context,
 
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
     const auto result = getPrintSymbols(context, nodes, addrs);
-    printLong(result, &filter);
+    printLong(result, filter);
 
     return BcDbgCommandResult::Continue;
 }
@@ -298,11 +317,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowRegs(ByteCodeRunContext* context, co
 {
     if (arg.help)
     {
-        g_Log.print("--format\n");
-        g_Log.setColor(LogColor::White);
-        g_Log.print("    The display format of each register. Can be one of the following:\n");
-        g_Log.setColor(LogColor::Type);
-        g_Log.print("    s8 s16 s32 s64 u8 u16 u32 u64 x8 x16 x32 x64 f32 f64\n");
+        printHelpFormat();
         return BcDbgCommandResult::Continue;
     }
 
@@ -352,7 +367,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
         return cmdShowGlobals(context, arg);
     if (arg.split[1] == "arguments" || arg.split[1] == "arg" || arg.split[1] == "args")
         return cmdShowArgs(context, arg);
-    
+
     if (arg.split[1] == "registers" || arg.split[1] == "reg" || arg.split[1] == "regs")
         return cmdShowRegs(context, arg);
     if (arg.split[1] == "expressions" || arg.split[1] == "expr" || arg.split[1] == "exprs")

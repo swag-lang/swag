@@ -187,8 +187,10 @@ struct ByteCodeDebugger
     bool                           commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const;
     static void                    tokenizeCommand(const Utf8& line, BcDbgCommandArg& arg);
     void                           setup();
-    static void                    printLong(const Utf8& all, const Utf8* filter = nullptr);
-    static void                    printLong(const Vector<Utf8>& all, const Utf8* filter = nullptr, LogColor color = LogColor::Gray);
+    static void                    printLong(const Utf8& all);
+    static void                    printLong(const Utf8& all, const Utf8& filter);
+    static void                    printLong(const Vector<Utf8>& all);
+    static void                    printLong(const Vector<std::pair<Utf8, Utf8>>& all, const Utf8& filter, LogColor color = LogColor::Gray);
     bool                           getRegIdx(ByteCodeRunContext* context, const Utf8& arg, uint32_t& regN) const;
     static Utf8                    getPrintValue(const Utf8& name, TypeInfo* typeinfo);
     static Utf8                    getPrintSymbols(ByteCodeRunContext* context, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs);
@@ -202,7 +204,7 @@ struct ByteCodeDebugger
     static VectorNative<ByteCode*> findBc(const char* bcName);
     static bool                    testNameFilter(const Utf8& name, const Utf8& filter);
 
-    static void printHelpValue(const Utf8& title, const Vector<Utf8> &values, LogColor colorValue = LogColor::White);
+    static void printHelpValue(const Utf8& title, const Vector<Utf8>& values, LogColor colorValue = LogColor::White);
     static void printHelpFormat();
     static void printHelpFilter();
     static void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type);

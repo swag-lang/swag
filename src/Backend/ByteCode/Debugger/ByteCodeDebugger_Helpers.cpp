@@ -66,14 +66,40 @@ Utf8 ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, const Vector
     return result;
 }
 
-void ByteCodeDebugger::printLong(const Utf8& all, const Utf8* filter)
+void ByteCodeDebugger::printLong(const Utf8& all)
 {
     Vector<Utf8> lines;
     Utf8::tokenize(all, '\n', lines, true);
-    printLong(lines, filter);
+
+    Vector<std::pair<Utf8, Utf8>> pairs;
+    for (const auto& line : lines)
+        pairs.push_back({line, ""});
+
+    printLong(pairs, "");
 }
 
-void ByteCodeDebugger::printLong(const Vector<Utf8>& all, const Utf8* filter, LogColor color)
+void ByteCodeDebugger::printLong(const Utf8& all, const Utf8& filter)
+{
+    Vector<Utf8> lines;
+    Utf8::tokenize(all, '\n', lines, true);
+
+    Vector<std::pair<Utf8, Utf8>> pairs;
+    for (const auto& line : lines)
+        pairs.push_back({line, line});
+
+    printLong(pairs, filter);    
+}
+
+void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
+{
+    Vector<std::pair<Utf8, Utf8>> pairs;
+    for (const auto& line : all)
+        pairs.push_back({line, ""});
+
+    printLong(pairs, "");
+}
+
+void ByteCodeDebugger::printLong(const Vector<std::pair<Utf8, Utf8>>& all, const Utf8& filter, LogColor color)
 {
     if (all.empty())
     {
@@ -89,7 +115,7 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all, const Utf8* filter, Lo
 
     for (const auto& i : all)
     {
-        if (filter && !testNameFilter(i, *filter))
+        if (!testNameFilter(i.second, filter))
             continue;
 
         if (cpt == 60 && canStop)
@@ -128,13 +154,13 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all, const Utf8* filter, Lo
         cpt++;
 
         hasSomething = true;
-        g_Log.print(i);
+        g_Log.print(i.first);
         g_Log.writeEol();
     }
 
-    if (!hasSomething && filter)
+    if (!hasSomething && !filter.empty())
     {
-        printCmdError(form("...no match with filter [[%s]] (on %d tested elements)", filter->c_str(), all.size()));
+        printCmdError(form("...no match with filter [[%s]] (on %d tested elements)", filter.c_str(), all.size()));
     }
 }
 
