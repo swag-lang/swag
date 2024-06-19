@@ -206,7 +206,7 @@ struct ByteCodeDebugger
     static void printHelpValue(const Utf8& title, const Vector<Utf8>& values, LogColor colorValue = LogColor::White);
     static void printHelpFormat();
     static void printHelpFilter();
-    static void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type);
+    static void printTitleNameTypeLoc(const Utf8& title, const Utf8& name, const Utf8& type, const Utf8& loc);
     static void printCmdError(const Utf8& msg);
     static void printCmdResult(const Utf8& msg);
     static void printMsgBkp(const Utf8& msg);

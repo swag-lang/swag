@@ -87,7 +87,7 @@ void ByteCodeDebugger::printLong(const Utf8& all, const Utf8& filter)
     for (const auto& line : lines)
         pairs.push_back({line, line});
 
-    printLong(pairs, filter);    
+    printLong(pairs, filter);
 }
 
 void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
@@ -164,7 +164,7 @@ void ByteCodeDebugger::printLong(const Vector<std::pair<Utf8, Utf8>>& all, const
     }
 }
 
-void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type)
+void ByteCodeDebugger::printTitleNameTypeLoc(const Utf8& title, const Utf8& name, const Utf8& type, const Utf8& loc)
 {
     g_Log.print(title, LogColor::Gray);
     g_Log.write(" ");
@@ -172,9 +172,25 @@ void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, c
     while (len++ < 25)
         g_Log.write(".");
     g_Log.write(" ");
-    g_Log.print(name, LogColor::Name);
-    g_Log.write(" ");
-    g_Log.print(type, LogColor::Type);
+
+    if (!name.empty())
+    {
+        g_Log.print(name, LogColor::Name);
+        g_Log.write(" ");
+    }
+
+    if (!type.empty())
+    {
+        g_Log.print(type, LogColor::Type);
+        g_Log.write(" ");
+    }
+
+    if (!loc.empty())
+    {
+        g_Log.print(loc, LogColor::Location);
+        g_Log.write(" ");
+    }
+
     g_Log.writeEol();
 }
 
@@ -216,7 +232,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     {
         if (force || loc.file != stepLastFile)
         {
-            printTitleNameType("=> file", loc.file->name, "");
+            printTitleNameTypeLoc("=> file", loc.file->name, "", "");
         }
     }
 
@@ -243,13 +259,13 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
         if (force || newFunc != stepLastFunc)
         {
             if (isInlined)
-                printTitleNameType("=> inlined", newFunc->getScopedName(), newFunc->typeInfo->getDisplayNameC());
-            printTitleNameType("=> function", node->ownerFct->getScopedName(), node->ownerFct->typeInfo->getDisplayNameC());
+                printTitleNameTypeLoc("=> inlined", newFunc->getScopedName(), newFunc->typeInfo->getDisplayNameC(), "");
+            printTitleNameTypeLoc("=> function", node->ownerFct->getScopedName(), node->ownerFct->typeInfo->getDisplayNameC(), "");
         }
     }
     else if (force || lastBc != cxtBc)
     {
-        printTitleNameType("=> generated", cxtBc->name, cxtBc->typeInfoFunc ? cxtBc->typeInfoFunc->getDisplayNameC() : "");
+        printTitleNameTypeLoc("=> generated", cxtBc->name, cxtBc->typeInfoFunc ? cxtBc->typeInfoFunc->getDisplayNameC() : "", "");
     }
 
     // Print instruction

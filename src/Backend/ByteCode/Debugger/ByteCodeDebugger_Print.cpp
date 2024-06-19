@@ -25,25 +25,25 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
         auto inlined = ipNode->hasExtOwner() ? ipNode->extOwner()->ownerInline : nullptr;
         while (inlined)
         {
-            printTitleNameType("inlined", inlined->func->getScopedName(), inlined->func->typeInfo->getDisplayNameC());
+            printTitleNameTypeLoc("inlined", inlined->func->getScopedName(), inlined->func->typeInfo->getDisplayNameC(), "");
             inlined = inlined->safeOwnerInline();
         }
 
-        printTitleNameType("function", ipNode->ownerFct->getScopedName(), ipNode->ownerFct->typeInfo->getDisplayNameC());
+        printTitleNameTypeLoc("function", ipNode->ownerFct->getScopedName(), ipNode->ownerFct->typeInfo->getDisplayNameC(), "");
 
         if (ipNode->ownerFct->token.sourceFile)
         {
             const auto loc = form("%s:%u:%u", ipNode->ownerFct->token.sourceFile->path.c_str(), ipNode->ownerFct->token.startLocation.line + 1, ipNode->ownerFct->token.startLocation.column + 1);
-            printTitleNameType("function location", loc, "");
+            printTitleNameTypeLoc("function location", "", "", loc);
         }
     }
 
     // ByteCode
-    printTitleNameType("bytecode", bc->getPrintName(), bc->typeInfoFunc->getDisplayNameC());
+    printTitleNameTypeLoc("bytecode", bc->getPrintName(), bc->typeInfoFunc->getDisplayNameC(), "");
     if (bc->sourceFile && bc->node)
     {
         const auto loc = form("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1);
-        printTitleNameType("bytecode location", loc, "");
+        printTitleNameTypeLoc("bytecode location", "", "", loc);
     }
     else if (bc->sourceFile)
     {
@@ -55,11 +55,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     if (ipNode && ipNode->token.sourceFile)
     {
         const auto loc = form("%s:%u:%u", ipNode->token.sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1);
-        printTitleNameType("instruction location", loc, "");
+        printTitleNameTypeLoc("instruction location", "", "", loc);
     }
 
     const uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
-    printTitleNameType("stack frame", form("%u", maxLevel - context->debugStackFrameOffset), "");
+    printTitleNameTypeLoc("stack frame", form("%u", maxLevel - context->debugStackFrameOffset), "", "");
     return BcDbgCommandResult::Continue;
 }
 
