@@ -210,7 +210,7 @@ void Semantic::waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl)
     }
 }
 
-void Semantic::waitStructOverloadDefined(Job* job, TypeInfo* typeInfo)
+void Semantic::waitStructOverloadDefined(Job* job, const TypeInfo* typeInfo)
 {
     if (!typeInfo->isStruct() && !typeInfo->isInterface())
         return;

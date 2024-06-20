@@ -61,7 +61,7 @@ namespace Semantic
     void waitStructGenerated(Job* job, TypeInfo* typeInfo);
     void waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo);
     void waitSymbolNoLock(Job* job, SymbolName* symbol);
-    void waitStructOverloadDefined(Job* job, TypeInfo* typeInfo);
+    void waitStructOverloadDefined(Job* job, const TypeInfo* typeInfo);
     void waitTypeCompleted(Job* job, TypeInfo* typeInfo);
     void waitForGenericParameters(const SemanticContext* context, OneMatch& match);
 

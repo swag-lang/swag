@@ -291,7 +291,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     printDisplay(context);
 }
 
-void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, int startLine, int endLine) const
+void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, int startLine, int endLine) const
 {
     Vector<Utf8> lines;
     bool         eof = false;

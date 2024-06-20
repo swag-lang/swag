@@ -425,7 +425,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
         // Job is not done, and we do not wait for a specific other job...
         if (pendingJob->waitingJobs.empty())
         {
-            std::ranges::sort(g_ThreadMgr.waitingJobs, [](Job* n1, Job* n2) {
+            std::ranges::sort(g_ThreadMgr.waitingJobs, [](const Job* n1, const Job* n2) {
                 if (!n1->sourceFile && n2->sourceFile)
                     return true;
                 if (!n1->sourceFile || !n2->sourceFile)

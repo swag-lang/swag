@@ -8,6 +8,9 @@
 #include "Report/Log.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
+#ifdef SWAG_STATS
+#include "Core/Timer.h"
+#endif
 #include "Wmf/Workspace.h"
 #include <DbgHelp.h>
 
