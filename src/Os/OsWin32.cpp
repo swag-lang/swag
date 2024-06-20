@@ -3,7 +3,6 @@
 #include "Backend/Context.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
-#include "Core/Timer.h"
 #include "Os/Os.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"

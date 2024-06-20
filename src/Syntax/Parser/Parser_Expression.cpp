@@ -1463,7 +1463,7 @@ bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, const Ast
     }
 }
 
-bool Parser::doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, AttributeFlags opAttrFlags, TokenParse& savedToken)
+bool Parser::doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, const AttributeFlags& opAttrFlags, TokenParse& savedToken)
 {
     savedToken.token.startLocation = tokenParse.token.startLocation;
     const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
@@ -1521,7 +1521,7 @@ bool Parser::doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode*
     return true;
 }
 
-bool Parser::doTupleUnpacking(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, AttributeFlags opAttrFlags, TokenParse& savedToken)
+bool Parser::doTupleUnpacking(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, const AttributeFlags& opAttrFlags, TokenParse& savedToken)
 {
     savedToken.token.startLocation = tokenParse.token.startLocation;
     const auto parentNode          = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
@@ -1582,7 +1582,7 @@ bool Parser::doTupleUnpacking(AstNode* parent, AstNode** result, AstNode* leftNo
     return true;
 }
 
-bool Parser::doSingleIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, AttributeFlags opAttrFlags, const TokenParse& savedToken)
+bool Parser::doSingleIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, const AttributeFlags& opAttrFlags, const TokenParse& savedToken)
 {
     const auto affectNode = Ast::newAffectOp(opFlags, opAttrFlags, this, parent);
     affectNode->token     = savedToken.token;

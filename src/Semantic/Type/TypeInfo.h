@@ -255,7 +255,7 @@ struct TypeInfoNative final : TypeInfo
         valueInteger = 0;
     }
 
-    TypeInfoNative(NativeTypeKind type, const char* ptrName, int sof, TypeInfoFlags fl)
+    TypeInfoNative(NativeTypeKind type, const char* ptrName, int sof, const TypeInfoFlags& fl)
     {
         kind       = TypeInfoKind::Native;
         nativeType = type;

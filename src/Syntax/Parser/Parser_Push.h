@@ -97,7 +97,7 @@ struct ParserPushCompilerIfBlock
 
 struct ParserPushAstNodeFlags
 {
-    explicit ParserPushAstNodeFlags(Parser* parser, AstNodeFlags newFlags) :
+    explicit ParserPushAstNodeFlags(Parser* parser, const AstNodeFlags& newFlags) :
         savedParser(parser)
     {
         savedFlags = parser->currentAstNodeFlags;

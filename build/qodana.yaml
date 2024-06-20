@@ -29,3 +29,8 @@ profile:
 #  - id: <plugin.id> #(plugin id can be found at https://plugins.jetbrains.com)
 exclude:
   - name: CppClangTidyModernizeUseNodiscard
+  - name: CppRedundantParentheses
+  - name: CppRedundantControlFlowJump
+  - name: CppClangTidyReadabilityUseAnyofallof
+  - name: CppClangTidyModernizeUseTransparentFunctors
+  - name: CppClangTidyCppcoreguidelinesSpecialMemberFunctions

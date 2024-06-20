@@ -7,35 +7,35 @@
 #include "Syntax/Parser/Parser.h"
 #include "Wmf/Module.h"
 
-void AstNode::inheritAstFlagsOr(AstNodeFlags flag)
+void AstNode::inheritAstFlagsOr(const AstNodeFlags& flag)
 {
     for (const auto child : children)
         flags.add(child->flags.mask(flag));
 }
 
-void AstNode::inheritAstFlagsOr(const AstNode* op, AstNodeFlags flag)
+void AstNode::inheritAstFlagsOr(const AstNode* op, const AstNodeFlags& flag)
 {
     if (!op)
         return;
     flags.add(op->flags.mask(flag));
 }
 
-void AstNode::inheritAstFlagsAnd(AstNodeFlags flag)
+void AstNode::inheritAstFlagsAnd(const AstNodeFlags& flag)
 {
     inheritAstFlagsAnd(this, flag);
 }
 
-void AstNode::inheritAstFlagsAnd(AstNodeFlags flag1, AstNodeFlags flag2)
+void AstNode::inheritAstFlagsAnd(const AstNodeFlags& flag1, const AstNodeFlags& flag2)
 {
     inheritAstFlagsAnd(this, flag1, flag2);
 }
 
-void AstNode::inheritAstFlagsAnd(AstNodeFlags flag1, AstNodeFlags flag2, AstNodeFlags flag3)
+void AstNode::inheritAstFlagsAnd(const AstNodeFlags& flag1, const AstNodeFlags& flag2, const AstNodeFlags& flag3)
 {
     inheritAstFlagsAnd(this, flag1, flag2, flag3);
 }
 
-void AstNode::inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag)
+void AstNode::inheritAstFlagsAnd(AstNode* who, const AstNodeFlags& flag)
 {
     for (const auto child : who->children)
     {
@@ -46,7 +46,7 @@ void AstNode::inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag)
     flags.add(flag);
 }
 
-void AstNode::inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag1, AstNodeFlags flag2)
+void AstNode::inheritAstFlagsAnd(AstNode* who, const AstNodeFlags& flag1, const AstNodeFlags& flag2)
 {
     flags.add(flag1);
     flags.add(flag2);
@@ -62,7 +62,7 @@ void AstNode::inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag1, AstNodeFlags 
     }
 }
 
-void AstNode::inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag1, AstNodeFlags flag2, AstNodeFlags flag3)
+void AstNode::inheritAstFlagsAnd(AstNode* who, const AstNodeFlags& flag1, const AstNodeFlags& flag2, const AstNodeFlags& flag3)
 {
     flags.add(flag1);
     flags.add(flag2);

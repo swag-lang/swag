@@ -66,7 +66,7 @@ namespace Semantic
     void waitForGenericParameters(const SemanticContext* context, OneMatch& match);
 
     bool valueEqualsTo(const ComputedValue* value, AstNode* node);
-    bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, const TypeInfo* typeInfo, AstNodeFlags flags);
+    bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, const TypeInfo* typeInfo, const AstNodeFlags& flags);
 
     Utf8 checkLiteralValue(ComputedValue& computedValue, LiteralType& literalType, const Register& literalValue, TypeInfo* typeSuffix, bool negApplied);
     bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
@@ -113,7 +113,7 @@ namespace Semantic
     void collectAlternativeScopes(const AstNode* startNode, VectorNative<CollectedScope>& scopes);
     void findSymbolsInHierarchy(VectorNative<CollectedScope>& scopeHierarchy, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier, uint32_t identifierCrc);
 
-    AstSemFlags attributeToAccess(AttributeFlags attribute);
+    AstSemFlags attributeToAccess(const AttributeFlags& attribute);
     bool        canHaveAccess(const AstNode* node);
     bool        canHaveGlobalAccess(const AstNode* node);
     bool        canInheritAccess(const AstNode* node);
@@ -195,7 +195,7 @@ namespace Semantic
     void           disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
     void           flattenStructChildren(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
     void           forceConstType(SemanticContext* context, AstTypeExpression* node);
-    void           inheritAttributesFrom(AstNode* child, AttributeFlags attributeFlags, SafetyFlags safetyOn, SafetyFlags safetyOff);
+    void           inheritAttributesFrom(AstNode* child, const AttributeFlags& attributeFlags, SafetyFlags safetyOn, SafetyFlags safetyOff);
     void           inheritAttributesFromOwnerFunc(AstNode* child);
     void           inheritAttributesFromParent(AstNode* child);
     void           launchResolveSubDecl(const JobContext* context, AstNode* node);

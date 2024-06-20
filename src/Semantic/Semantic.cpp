@@ -94,7 +94,7 @@ bool Semantic::valueEqualsTo(const ComputedValue* value, AstNode* node)
     return valueEqualsTo(value, node->computedValue(), node->typeInfo, node->flags);
 }
 
-bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, const TypeInfo* typeInfo, AstNodeFlags flags)
+bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, const TypeInfo* typeInfo, const AstNodeFlags& flags)
 {
     if (!value1 || !value2)
         return true;

@@ -466,7 +466,7 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
     return typeConst;
 }
 
-TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, TypeInfoFlags ptrFlags)
+TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, const TypeInfoFlags& ptrFlags)
 {
     ScopedLock lk(mutex);
 

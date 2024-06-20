@@ -5,7 +5,6 @@
 #include "Backend/ByteCode/Gen/ByteCodeGenJob.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Backend/Context.h"
-#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/Log.h"
 #include "Report/Report.h"
@@ -13,7 +12,6 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/Parser/Parser.h"
-#include "Syntax/SyntaxColor.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
 

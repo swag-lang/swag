@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Syntax/Ast.h"
 #include "Format/FormatAst.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Parser/Parser.h"
 
@@ -352,7 +352,7 @@ Ast::VisitResult Ast::visit(ErrorContext* context, AstNode* root, const std::fun
     return Continue;
 }
 
-AstNode* Ast::cloneRaw(AstNode* source, AstNode* parent, AstNodeFlags forceFlags, AstNodeFlags removeFlags)
+AstNode* Ast::cloneRaw(AstNode* source, AstNode* parent, const AstNodeFlags& forceFlags, const AstNodeFlags& removeFlags)
 {
     if (!source)
         return nullptr;
@@ -364,7 +364,7 @@ AstNode* Ast::cloneRaw(AstNode* source, AstNode* parent, AstNodeFlags forceFlags
     return source->clone(cloneContext);
 }
 
-AstNode* Ast::clone(AstNode* source, AstNode* parent, AstNodeFlags forceFlags, AstNodeFlags removeFlags)
+AstNode* Ast::clone(AstNode* source, AstNode* parent, const AstNodeFlags& forceFlags, const AstNodeFlags& removeFlags)
 {
     if (!source)
         return nullptr;

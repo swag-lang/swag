@@ -34,8 +34,8 @@ namespace Ast
     Utf8        enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped = true);
     Utf8        literalToString(const TypeInfo* typeInfo, const ComputedValue& value);
     void        normalizeIdentifierName(const Utf8& name);
-    AstNode*    cloneRaw(AstNode* source, AstNode* parent, AstNodeFlags forceFlags = 0, AstNodeFlags removeFlags = 0);
-    AstNode*    clone(AstNode* source, AstNode* parent, AstNodeFlags forceFlags = 0, AstNodeFlags removeFlags = 0);
+    AstNode*    cloneRaw(AstNode* source, AstNode* parent, const AstNodeFlags& forceFlags = 0, const AstNodeFlags& removeFlags = 0);
+    AstNode*    clone(AstNode* source, AstNode* parent, const AstNodeFlags& forceFlags = 0, const AstNodeFlags& removeFlags = 0);
 
     Scope*             newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
     AstStruct*         newStructDecl(Parser* parser, AstNode* parent);
@@ -51,7 +51,7 @@ namespace Ast
     AstIdentifierRef*  newIdentifierRef(const Utf8& name, Parser* parser, AstNode* parent);
     AstIdentifierRef*  newMultiIdentifierRef(const Utf8& name, Parser* parser, AstNode* parent);
     AstInline*         newInline(Parser* parser, AstNode* parent);
-    AstNode*           newAffectOp(SpecFlags specFlags, AttributeFlags attributeFlags, Parser* parser, AstNode* parent);
+    AstNode*           newAffectOp(SpecFlags specFlags, const AttributeFlags& attributeFlags, Parser* parser, AstNode* parent);
 
     bool     convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType = false);
     bool     convertLiteralTupleToStructType(JobContext* context, AstNode* paramNode, TypeInfoStruct* toType, AstNode* fromNode);

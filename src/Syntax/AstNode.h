@@ -298,14 +298,14 @@ struct AstNode
     void     cloneChildren(CloneContext& context, AstNode* from);
     void     copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
 
-    void inheritAstFlagsOr(AstNodeFlags flag);
-    void inheritAstFlagsOr(const AstNode* op, AstNodeFlags flag);
-    void inheritAstFlagsAnd(AstNodeFlags flag);
-    void inheritAstFlagsAnd(AstNodeFlags flag1, AstNodeFlags flag2);
-    void inheritAstFlagsAnd(AstNodeFlags flag1, AstNodeFlags flag2, AstNodeFlags flag3);
-    void inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag);
-    void inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag1, AstNodeFlags flag2);
-    void inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag1, AstNodeFlags flag2, AstNodeFlags flag3);
+    void inheritAstFlagsOr(const AstNodeFlags& flag);
+    void inheritAstFlagsOr(const AstNode* op, const AstNodeFlags& flag);
+    void inheritAstFlagsAnd(const AstNodeFlags& flag);
+    void inheritAstFlagsAnd(const AstNodeFlags& flag1, const AstNodeFlags& flag2);
+    void inheritAstFlagsAnd(const AstNodeFlags& flag1, const AstNodeFlags& flag2, const AstNodeFlags& flag3);
+    void inheritAstFlagsAnd(AstNode* who, const AstNodeFlags& flag);
+    void inheritAstFlagsAnd(AstNode* who, const AstNodeFlags& flag1, const AstNodeFlags& flag2);
+    void inheritAstFlagsAnd(AstNode* who, const AstNodeFlags& flag1, const AstNodeFlags& flag2, const AstNodeFlags& flag3);
     void inheritTokenName(Token& tkn);
     void inheritTokenLocation(const Token& tkn);
     void inheritOwners(const AstNode* from);
@@ -371,18 +371,18 @@ struct AstNode
     AstNode* lastChild() const { return children.empty() ? nullptr : children.back(); }
     uint32_t childCount() const { return children.size(); }
 
-    bool hasAstFlag(AstNodeFlags fl) const { return flags.has(fl); }
-    void addAstFlag(AstNodeFlags fl) { flags.add(fl); }
-    void removeAstFlag(AstNodeFlags fl) { flags.remove(fl); }
+    bool hasAstFlag(const AstNodeFlags& fl) const { return flags.has(fl); }
+    void addAstFlag(const AstNodeFlags& fl) { flags.add(fl); }
+    void removeAstFlag(const AstNodeFlags& fl) { flags.remove(fl); }
 
     bool hasSemFlag(const AstSemFlags& fl) const { return semFlags.has(fl); }
     void addSemFlag(const AstSemFlags& fl) { semFlags.add(fl); }
     void removeSemFlag(const AstSemFlags& fl) { semFlags.remove(fl); }
 
-    bool hasAttribute(AttributeFlags attr) const { return attributeFlags.has(attr); }
-    void addAttribute(AttributeFlags attr) { attributeFlags.add(attr); }
-    void removeAttribute(AttributeFlags attr) { attributeFlags.remove(attr); }
-    void inheritAttribute(const AstNode* from, AttributeFlags w) { attributeFlags.add(from->attributeFlags.mask(w)); }
+    bool hasAttribute(const AttributeFlags& attr) const { return attributeFlags.has(attr); }
+    void addAttribute(const AttributeFlags& attr) { attributeFlags.add(attr); }
+    void removeAttribute(const AttributeFlags& attr) { attributeFlags.remove(attr); }
+    void inheritAttribute(const AstNode* from, const AttributeFlags& w) { attributeFlags.add(from->attributeFlags.mask(w)); }
 
     bool hasSpecFlag(SpecFlags fl) const { return specFlags.has(fl); }
     void addSpecFlag(SpecFlags fl) { specFlags.add(fl); }

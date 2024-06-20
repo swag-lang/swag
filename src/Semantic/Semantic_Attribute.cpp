@@ -204,7 +204,7 @@ void Semantic::inheritAttributesFromParent(AstNode* child)
     child->safetyOff.add(child->parent->safetyOff);
 }
 
-void Semantic::inheritAttributesFrom(AstNode* child, AttributeFlags attributeFlags, SafetyFlags safetyOn, SafetyFlags safetyOff)
+void Semantic::inheritAttributesFrom(AstNode* child, const AttributeFlags& attributeFlags, SafetyFlags safetyOn, SafetyFlags safetyOff)
 {
     INHERIT_SAFETY(child, SAFETY_BOUND_CHECK);
     INHERIT_SAFETY(child, SAFETY_OVERFLOW);

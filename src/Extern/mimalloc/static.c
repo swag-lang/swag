@@ -22,19 +22,19 @@ terms of the MIT license. A copy of the license can be found in the file
 // functions (on Unix's).
 #include "alloc-aligned.c"
 #include "alloc-posix.c"
-#include "alloc.c"          // includes alloc-override.c
+#include "alloc.c" // includes alloc-override.c
 #include "arena.c"
 #include "bitmap.c"
 #include "heap.c"
 #include "init.c"
 #include "options.c"
 #include "os.c"
-#include "page.c"           // includes page-queue.c
+#include "page.c" // includes page-queue.c
+#include "prim/prim.c"
 #include "random.c"
 #include "segment-map.c"
 #include "segment.c"
 #include "stats.c"
-#include "prim/prim.c"
 #if MI_OSX_ZONE
 #include "prim/osx/alloc-override-zone.c"
 #endif

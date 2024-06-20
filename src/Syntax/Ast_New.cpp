@@ -15,7 +15,7 @@ AstInline* Ast::newInline(Parser* parser, AstNode* parent)
     return node;
 }
 
-AstNode* Ast::newAffectOp(SpecFlags specFlags, AttributeFlags attributeFlags, Parser* parser, AstNode* parent)
+AstNode* Ast::newAffectOp(SpecFlags specFlags, const AttributeFlags& attributeFlags, Parser* parser, AstNode* parent)
 {
     const auto node   = Ast::newNode<AstOp>(AstNodeKind::AffectOp, parser, parent);
     node->semanticFct = Semantic::resolveAffect;

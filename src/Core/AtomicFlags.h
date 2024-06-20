@@ -16,13 +16,13 @@ struct AtomicFlags
         flags.store(other.flags);
     }
 
-    const AtomicFlags& operator=(T other)
+    AtomicFlags& operator=(T other)
     {
         flags.store(other);
         return *this;
     }
 
-    const AtomicFlags& operator=(const AtomicFlags& other)
+    AtomicFlags& operator=(const AtomicFlags& other)
     {
         flags.store(other.flags);
         return *this;

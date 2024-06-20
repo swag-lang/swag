@@ -143,7 +143,7 @@ struct TypeManager
 
     TypeInfo*             makeUnConst(TypeInfo* typeInfo);
     TypeInfo*             makeConst(TypeInfo* typeInfo);
-    TypeInfoPointer*      makePointerTo(TypeInfo* toType, TypeInfoFlags ptrFlags = 0);
+    TypeInfoPointer*      makePointerTo(TypeInfo* toType, const TypeInfoFlags& ptrFlags = 0);
     static TypeInfoParam* makeParam();
     void                  registerTypeType();
 

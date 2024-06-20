@@ -141,7 +141,7 @@ void Semantic::computeAccessRec(AstNode* node)
     }
 }
 
-AstSemFlags Semantic::attributeToAccess(AttributeFlags attribute)
+AstSemFlags Semantic::attributeToAccess(const AttributeFlags& attribute)
 {
     AstSemFlags result = 0;
     if (attribute.has(ATTRIBUTE_PRIVATE))

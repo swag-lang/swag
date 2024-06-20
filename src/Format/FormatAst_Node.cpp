@@ -5,7 +5,6 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
-#include "Wmf/Module.h"
 
 bool FormatAst::outputNode(FormatContext& context, AstNode* node)
 {
