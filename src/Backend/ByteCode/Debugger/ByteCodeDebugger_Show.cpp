@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
+#include "Semantic/Scope.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 #include "Wmf/Module.h"
@@ -230,7 +231,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowArgs(ByteCodeRunContext* context, co
         printHelpFilter();
         return BcDbgCommandResult::Continue;
     }
-
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
 
@@ -263,6 +263,106 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowArgs(ByteCodeRunContext* context, co
     Vector<std::pair<Utf8, Utf8>> result;
     getPrintSymbols(context, result, nodes, addrs);
     printLong(result, filter);
+
+    return BcDbgCommandResult::Continue;
+}
+
+#pragma optimize("", off)
+BcDbgCommandResult ByteCodeDebugger::cmdShowScopes(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+        return BcDbgCommandResult::Continue;
+
+    if (arg.split.size() > 2)
+        return BcDbgCommandResult::TooManyArguments;
+
+    Vector<std::pair<Utf8, Utf8>> result;
+
+    auto node = g_ByteCodeDebugger.cxtIp->node;
+    if (!node || !node->ownerScope)
+    {
+        printCmdError("cannot evaluate current scope");
+        return BcDbgCommandResult::Error;
+    }
+
+    auto     scope = node->ownerScope;
+    uint32_t idx   = 0;
+    while (scope)
+    {
+        Utf8 value = form("%d ", idx++);
+
+        switch (scope->kind)
+        {
+            case ScopeKind::Module:
+                value += "[module] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::File:
+                value += "[file] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::Namespace:
+                value += "[namespace] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::Enum:
+                value += "[enum] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::Struct:
+                value += "[struct] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::Impl:
+                value += "[impl] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::Function:
+                value += "[function] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::FunctionBody:
+                value += "[function body] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::TypeLambda:
+                value += "[type lambda] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::Attribute:
+                value += "[attribute] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::Statement:
+                value += "[statement] ";
+                break;
+            case ScopeKind::EmptyStatement:
+                value += "[statement] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::Breakable:
+                value += "[breakable] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::TypeList:
+                value += "[type list] ";
+                value += scope->getDisplayFullName();
+                break;
+            case ScopeKind::Inline:
+                value += "[inline] ";
+                value += scope->owner->getScopedName();
+                break;
+            case ScopeKind::Macro:
+                value += "[macro] ";
+                value += scope->owner->getScopedName();
+                break;
+        }
+
+        result.push_back({value, ""});
+        scope = scope->parentScope;
+    }
+
+    printLong(result, "");
 
     return BcDbgCommandResult::Continue;
 }
@@ -370,6 +470,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
         return cmdShowGlobals(context, arg);
     if (arg.split[1] == "arguments" || arg.split[1] == "arg" || arg.split[1] == "args")
         return cmdShowArgs(context, arg);
+    if (arg.split[1] == "scopes" || arg.split[1] == "sc")
+        return cmdShowScopes(context, arg);
 
     if (arg.split[1] == "registers" || arg.split[1] == "reg" || arg.split[1] == "regs")
         return cmdShowRegs(context, arg);
