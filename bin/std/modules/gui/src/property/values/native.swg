@@ -151,9 +151,9 @@ impl Properties
         hasChanged(item)
     }
 
-    mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parent: *PropertiesItem)
+    mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parentItem: *PropertiesItem)
     {
-        let item = addItem(value, data, parent)
+        let item = addItem(value, data, parentItem)
 
         if Reflection.hasAttribute(value, SliderMinMax)
         {
