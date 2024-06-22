@@ -14,11 +14,14 @@ struct LanguageSpec
     void setup();
     void setupNames();
     void setupKeywords();
+    void setupBcKeywords();
     void setupNativeTypes();
     void setupAttributesFlags();
     void setupModifiers();
 
     LangHashTable<TokenId, 4096>       keywords;
+    SetUtf8                            bckeywords;
+    SetUtf8                            bcconstants;
     LangHashTable<LiteralType, 64>     nativeTypes;
     LangHashTable<AttributeFlags, 256> attributesFlags;
     LangHashTable<ModifierFlags, 64>   modifiers;

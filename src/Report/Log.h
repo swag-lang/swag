@@ -34,6 +34,7 @@ enum class LogColor
     Location       = DarkMagenta,
     Index          = Cyan,
     Default        = Gray,
+    PrintBcFlags   = Gray,
 };
 
 enum class LogSymbol

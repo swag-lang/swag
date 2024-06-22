@@ -337,7 +337,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, const ByteCod
         if (hasBkp)
         {
             if (hasBkp->disabled)
-                oneLine += Log::colorToVTS(LogColor::Default);
+                oneLine += Log::colorToVTS(LogColor::Gray);
             else
                 oneLine += Log::colorToVTS(LogColor::Breakpoint);
             oneLine += Utf8("\xe2\x96\xa0");

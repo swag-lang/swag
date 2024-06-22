@@ -135,6 +135,15 @@ namespace
                     case SyntaxColor::SyntaxNumber:
                         colorName = SYN_NUMBER;
                         break;
+                    case SyntaxColor::SyntaxBcRegister:
+                        colorName = SYN_BC_REGISTER;
+                        break;
+                    case SyntaxColor::SyntaxBcKeyword:
+                        colorName = SYN_BC_KEYWORD;
+                        break;
+                    case SyntaxColor::SyntaxBcConstant:
+                        colorName = SYN_BC_CONSTANT;
+                        break;
                     case SyntaxColor::SyntaxString:
                         colorName = SYN_STRING;
                         break;
@@ -198,6 +207,17 @@ uint32_t getSyntaxColor(SyntaxColorMode /*mode*/, SyntaxColor color, float lum)
         case SyntaxColor::SyntaxAttribute:
             rgb = {0xaa, 0xaa, 0xaa};
             break;
+
+        case SyntaxColor::SyntaxBcKeyword:
+            rgb = {0x76, 0xBc, 0xF6};
+            break;
+        case SyntaxColor::SyntaxBcConstant:
+            rgb = {0x76, 0xF6, 0xBc};
+            break;
+        case SyntaxColor::SyntaxBcRegister:
+            rgb = {0x00, 0xAF, 0x00};
+            break;
+
         case SyntaxColor::SyntaxInvalid:
             rgb = {0xFF, 0x47, 0x47};
             break;
@@ -439,6 +459,19 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
             continue;
         }
 
+        // Bytecode register
+        if (context.forByteCode && c == '$' && SWAG_IS_ALPHA(pz[0]))
+        {
+            result += getColor(mode, SyntaxColor::SyntaxBcRegister);
+            result += c;
+
+            while (*pz && SWAG_IS_AL_NUM(*pz))
+                result += *pz++;
+            pz = Utf8::decodeUtf8(pz, c, offset);
+            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            continue;
+        }
+
         // Modifier
         if (c == ',')
         {
@@ -476,6 +509,32 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
             {
                 identifier += c;
                 pz = Utf8::decodeUtf8(pz, c, offset);
+            }
+
+            // Bytecode keyword
+            if (context.forByteCode)
+            {
+                auto it = g_LangSpec->bckeywords.find(identifier);
+                if (it != g_LangSpec->bckeywords.end())
+                {
+                    result += getColor(mode, SyntaxColor::SyntaxBcKeyword);
+                    result += identifier;
+                    result += getColor(mode, SyntaxColor::SyntaxDefault);
+                    continue;
+                }
+            }
+
+            // Bytecode constant
+            if (context.forByteCode)
+            {
+                auto it = g_LangSpec->bcconstants.find(identifier);
+                if (it != g_LangSpec->bcconstants.end())
+                {
+                    result += getColor(mode, SyntaxColor::SyntaxBcConstant);
+                    result += identifier;
+                    result += getColor(mode, SyntaxColor::SyntaxDefault);
+                    continue;
+                }
             }
 
             auto it = g_LangSpec->keywords.find(identifier);

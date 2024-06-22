@@ -4,6 +4,7 @@
 #include "Report/Log.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
+#include "Syntax/SyntaxColor.h"
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/Module.h"
 
@@ -314,7 +315,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
         if (hasBkp)
         {
             if (hasBkp->disabled)
-                line.bkp += Log::colorToVTS(LogColor::Default);
+                line.bkp += Log::colorToVTS(LogColor::Gray);
             else
                 line.bkp += Log::colorToVTS(LogColor::Breakpoint);
             line.bkp += Utf8("\xe2\x96\xa0");
@@ -374,7 +375,9 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
         case ByteCodeOp::InternalPanic:
             if (ip->d.pointer)
             {
+                line.pretty += "\"";
                 line.pretty += Utf8::truncateDisplay(reinterpret_cast<const char*>(ip->d.pointer), 30);
+                line.pretty += "\"";
                 line.pretty += " ";
             }
             break;
@@ -395,6 +398,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
         {
             const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
             line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
+            line.pretty += "()";
             line.pretty += " ";
             break;
         }
@@ -407,17 +411,24 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
             const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
             SWAG_ASSERT(bc);
             line.pretty += bc->name;
+            line.pretty += "()";
+
             if (bc->node && bc->node->typeInfo)
             {
                 line.pretty += " ";
                 line.pretty += bc->node->typeInfo->name;
             }
+
             line.pretty += " ";
             break;
         }
     }
 
-        // DevMode
+    SyntaxColorContext synCxt;
+    synCxt.forByteCode = true;
+    line.pretty        = syntaxColor(line.pretty, synCxt);
+
+    // DevMode
 #ifdef SWAG_DEV_MODE
     if (!forDbg && g_CommandLine.dbgPrintBcExt)
     {
@@ -465,6 +476,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     g_Log.print(line.instRef);
 
     // Flags
+    g_Log.setColor(LogColor::PrintBcFlags);
     g_Log.print(line.flags);
 
     // Pretty

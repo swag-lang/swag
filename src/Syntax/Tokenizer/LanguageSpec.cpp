@@ -265,6 +265,19 @@ void LanguageSpec::setupNames()
     name_exp2    = "exp2";
 }
 
+void LanguageSpec::setupBcKeywords()
+{
+    bckeywords.insert("jump");
+    bckeywords.insert("intern");
+    bckeywords.insert("pushparam");
+    bckeywords.insert("push");
+    bckeywords.insert("pop");
+    bckeywords.insert("stacksize");
+
+    bcconstants.insert("my_result");
+    bcconstants.insert("result_ptr");
+}
+
 void LanguageSpec::setupKeywords()
 {
     keywords.add("#global", TokenId::CompilerGlobal);
@@ -573,6 +586,7 @@ void LanguageSpec::setup()
 {
     setupNames();
     setupKeywords();
+    setupBcKeywords();
     setupNativeTypes();
     setupAttributesFlags();
     setupModifiers();

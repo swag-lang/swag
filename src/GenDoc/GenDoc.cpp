@@ -122,6 +122,9 @@ void GenDoc::outputStyles()
     helpOutput += form("    .%s { color: #%x; }\n", SYN_NUMBER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxNumber, lum));
     helpOutput += form("    .%s { color: #%x; }\n", SYN_STRING, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxString, lum));
     helpOutput += form("    .%s { color: #%x; }\n", SYN_ATTRIBUTE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxAttribute, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_BC_REGISTER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxBcRegister, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_BC_KEYWORD, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxBcKeyword, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_BC_KEYWORD, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxBcConstant, lum));
     helpOutput += form("    .%s { color: #%x; }\n", SYN_INVALID, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxInvalid, lum));
 
     helpOutput += "</style>\n";
