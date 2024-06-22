@@ -15,8 +15,6 @@ void ByteCodeDebugger::printHelpValue(const Utf8& title, const Vector<Utf8>& val
         g_Log.print(line);
         g_Log.writeEol();
     }
-
-    g_Log.writeEol();
 }
 
 void ByteCodeDebugger::printHelpFormat()
