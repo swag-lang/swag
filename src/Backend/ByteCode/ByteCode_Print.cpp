@@ -424,11 +424,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
         }
     }
 
-    SyntaxColorContext synCxt;
-    synCxt.forByteCode = true;
-    line.pretty        = syntaxColor(line.pretty, synCxt);
-
-    // DevMode
+        // DevMode
 #ifdef SWAG_DEV_MODE
     if (!forDbg && g_CommandLine.dbgPrintBcExt)
     {
@@ -476,11 +472,24 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     g_Log.print(line.instRef);
 
     // Flags
-    g_Log.setColor(LogColor::PrintBcFlags);
+    if (forDbg && ip == options.curIp)
+        g_Log.setColor(LogColor::CurInstruction);
+    else
+        g_Log.setColor(LogColor::PrintBcFlags);
     g_Log.print(line.flags);
 
     // Pretty
-    g_Log.print(line.pretty);
+    if (forDbg && ip == options.curIp)
+    {
+        g_Log.setColor(LogColor::CurInstruction);
+        g_Log.print(line.pretty);
+    }
+    else
+    {
+        SyntaxColorContext synCxt;
+        synCxt.forByteCode = true;
+        g_Log.print(syntaxColor(line.pretty, synCxt));
+    }
 
 #ifdef SWAG_DEV_MODE
     if (!forDbg)
