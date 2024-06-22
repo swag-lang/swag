@@ -376,7 +376,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, const ByteCod
         }
         else if (g_CommandLine.logColors)
         {
-            oneLine += syntaxColor(l, cxt);
+            oneLine += doSyntaxColor(l, cxt);
         }
         else
         {

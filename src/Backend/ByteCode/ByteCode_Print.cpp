@@ -488,7 +488,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     {
         SyntaxColorContext synCxt;
         synCxt.forByteCode = true;
-        g_Log.print(syntaxColor(line.pretty, synCxt));
+        g_Log.print(doSyntaxColor(line.pretty, synCxt));
     }
 
 #ifdef SWAG_DEV_MODE

@@ -428,7 +428,7 @@ void Diagnostic::printSourceCode() const
 
     g_Log.setColor(LogColor::White);
 
-    const auto colored = syntaxColor(lineCode.c_str() + minBlanks, cxt);
+    const auto colored = doSyntaxColor(lineCode.c_str() + minBlanks, cxt);
     g_Log.print(colored, true);
     g_Log.writeEol();
 }

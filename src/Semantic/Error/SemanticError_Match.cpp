@@ -142,7 +142,7 @@ namespace
                 n.count--;
 
             SyntaxColorContext cxt;
-            n = syntaxColor(n, cxt);
+            n = doSyntaxColor(n, cxt);
 
             note->preRemarks.push_back(form("overload %d: %s", overloadIndex++, n.c_str()));
 

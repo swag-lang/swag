@@ -85,88 +85,88 @@ namespace
         result.b = static_cast<unsigned char>(b * 255.0f);
         return result;
     }
-
-    Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
-    {
-        switch (mode)
-        {
-            case SyntaxColorMode::ForLog:
-            {
-                if (color == SyntaxColor::SyntaxDefault)
-                    color = SyntaxColor::SyntaxCode;
-                const auto rgb = getSyntaxColor(mode, color, g_CommandLine.errorSyntaxColorLum);
-                return form("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
-            }
-
-            case SyntaxColorMode::ForDoc:
-            {
-                const char* colorName = nullptr;
-                switch (color)
-                {
-                    case SyntaxColor::SyntaxDefault:
-                        return "</span>";
-                    case SyntaxColor::SyntaxCode:
-                        colorName = SYN_CODE;
-                        break;
-                    case SyntaxColor::SyntaxComment:
-                        colorName = SYN_COMMENT;
-                        break;
-                    case SyntaxColor::SyntaxCompiler:
-                        colorName = SYN_COMPILER;
-                        break;
-                    case SyntaxColor::SyntaxFunction:
-                        colorName = SYN_FUNCTION;
-                        break;
-                    case SyntaxColor::SyntaxConstant:
-                        colorName = SYN_CONSTANT;
-                        break;
-                    case SyntaxColor::SyntaxIntrinsic:
-                        colorName = SYN_INTRINSIC;
-                        break;
-                    case SyntaxColor::SyntaxType:
-                        colorName = SYN_TYPE;
-                        break;
-                    case SyntaxColor::SyntaxKeyword:
-                        colorName = SYN_KEYWORD;
-                        break;
-                    case SyntaxColor::SyntaxLogic:
-                        colorName = SYN_LOGIC;
-                        break;
-                    case SyntaxColor::SyntaxNumber:
-                        colorName = SYN_NUMBER;
-                        break;
-                    case SyntaxColor::SyntaxBcRegister:
-                        colorName = SYN_BC_REGISTER;
-                        break;
-                    case SyntaxColor::SyntaxBcKeyword:
-                        colorName = SYN_BC_KEYWORD;
-                        break;
-                    case SyntaxColor::SyntaxBcConstant:
-                        colorName = SYN_BC_CONSTANT;
-                        break;
-                    case SyntaxColor::SyntaxString:
-                        colorName = SYN_STRING;
-                        break;
-                    case SyntaxColor::SyntaxAttribute:
-                        colorName = SYN_ATTRIBUTE;
-                        break;
-                    case SyntaxColor::SyntaxInvalid:
-                        colorName = SYN_INVALID;
-                        break;
-                }
-
-                if (colorName)
-                    return form("<span class=\"%s\">", colorName);
-                break;
-            }
-        }
-
-        SWAG_ASSERT(false);
-        return "";
-    }
 }
 
-uint32_t getSyntaxColor(SyntaxColorMode /*mode*/, SyntaxColor color, float lum)
+Utf8 syntaxColorToVTS(SyntaxColor color, SyntaxColorMode mode)
+{
+    switch (mode)
+    {
+        case SyntaxColorMode::ForLog:
+        {
+            if (color == SyntaxColor::SyntaxDefault)
+                color = SyntaxColor::SyntaxCode;
+            const auto rgb = getSyntaxColorRgb(mode, color, g_CommandLine.errorSyntaxColorLum);
+            return form("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
+        }
+
+        case SyntaxColorMode::ForDoc:
+        {
+            const char* colorName = nullptr;
+            switch (color)
+            {
+                case SyntaxColor::SyntaxDefault:
+                    return "</span>";
+                case SyntaxColor::SyntaxCode:
+                    colorName = SYN_CODE;
+                    break;
+                case SyntaxColor::SyntaxComment:
+                    colorName = SYN_COMMENT;
+                    break;
+                case SyntaxColor::SyntaxCompiler:
+                    colorName = SYN_COMPILER;
+                    break;
+                case SyntaxColor::SyntaxFunction:
+                    colorName = SYN_FUNCTION;
+                    break;
+                case SyntaxColor::SyntaxConstant:
+                    colorName = SYN_CONSTANT;
+                    break;
+                case SyntaxColor::SyntaxIntrinsic:
+                    colorName = SYN_INTRINSIC;
+                    break;
+                case SyntaxColor::SyntaxType:
+                    colorName = SYN_TYPE;
+                    break;
+                case SyntaxColor::SyntaxKeyword:
+                    colorName = SYN_KEYWORD;
+                    break;
+                case SyntaxColor::SyntaxLogic:
+                    colorName = SYN_LOGIC;
+                    break;
+                case SyntaxColor::SyntaxNumber:
+                    colorName = SYN_NUMBER;
+                    break;
+                case SyntaxColor::SyntaxBcRegister:
+                    colorName = SYN_BC_REGISTER;
+                    break;
+                case SyntaxColor::SyntaxBcKeyword:
+                    colorName = SYN_BC_KEYWORD;
+                    break;
+                case SyntaxColor::SyntaxBcConstant:
+                    colorName = SYN_BC_CONSTANT;
+                    break;
+                case SyntaxColor::SyntaxString:
+                    colorName = SYN_STRING;
+                    break;
+                case SyntaxColor::SyntaxAttribute:
+                    colorName = SYN_ATTRIBUTE;
+                    break;
+                case SyntaxColor::SyntaxInvalid:
+                    colorName = SYN_INVALID;
+                    break;
+            }
+
+            if (colorName)
+                return form("<span class=\"%s\">", colorName);
+            break;
+        }
+    }
+
+    SWAG_ASSERT(false);
+    return "";
+}
+
+uint32_t getSyntaxColorRgb(SyntaxColorMode /*mode*/, SyntaxColor color, float lum)
 {
     RgbColor rgb;
     switch (color)
@@ -215,7 +215,7 @@ uint32_t getSyntaxColor(SyntaxColorMode /*mode*/, SyntaxColor color, float lum)
             rgb = {0x76, 0xF6, 0xBc};
             break;
         case SyntaxColor::SyntaxBcRegister:
-            rgb = {0x00, 0xAF, 0x00};
+            rgb = {0xAF, 0xAF, 0x00};
             break;
 
         case SyntaxColor::SyntaxInvalid:
@@ -237,7 +237,7 @@ uint32_t getSyntaxColor(SyntaxColorMode /*mode*/, SyntaxColor color, float lum)
     return rgb.r << 16 | rgb.g << 8 | rgb.b;
 }
 
-Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
+Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context)
 {
     if (!g_CommandLine.errorSyntaxColor)
         return line;
@@ -256,7 +256,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
         // Multi-line comment
         if (context.multiLineCommentLevel || (c == '/' && pz[0] == '*'))
         {
-            result += getColor(mode, SyntaxColor::SyntaxComment);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxComment, mode);
 
             result += c;
             if (!context.multiLineCommentLevel)
@@ -289,26 +289,26 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
             }
 
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             continue;
         }
 
         // Line comment
         if (c == '/' && pz[0] == '/')
         {
-            result += getColor(mode, SyntaxColor::SyntaxComment);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxComment, mode);
             result += c;
             while (*pz && SWAG_IS_NOT_EOL(*pz))
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             continue;
         }
 
         // Attribute
         if (c == '#' && *pz == '[')
         {
-            result += getColor(mode, SyntaxColor::SyntaxAttribute);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxAttribute, mode);
             result += c;
             result += *pz++;
 
@@ -340,14 +340,14 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
             }
 
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             continue;
         }
 
         // Raw string
         if (c == '#' && *pz == '"')
         {
-            result += getColor(mode, SyntaxColor::SyntaxString);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxString, mode);
             result += c;
             while (*pz && (pz[0] != '"' || pz[1] != '#'))
                 result += *pz++;
@@ -359,14 +359,14 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
             }
 
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             continue;
         }
 
         // String
         if (c == '"')
         {
-            result += getColor(mode, SyntaxColor::SyntaxString);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxString, mode);
             result += c;
             while (*pz && *pz != '"')
             {
@@ -379,14 +379,14 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
             if (*pz == '"')
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             continue;
         }
 
         // Character
         if (c == '`')
         {
-            result += getColor(mode, SyntaxColor::SyntaxString);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxString, mode);
             result += c;
             while (*pz && *pz != '`')
             {
@@ -399,40 +399,40 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
             if (*pz == '`')
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             continue;
         }
 
         // Binary literal
         if (c == '0' && (*pz == 'b' || *pz == 'B'))
         {
-            result += getColor(mode, SyntaxColor::SyntaxNumber);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxNumber, mode);
             result += c;
             result += *pz++;
             while (*pz && (SWAG_IS_HEX(*pz) || *pz == '_'))
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             continue;
         }
 
         // Hexadecimal literal
         if (c == '0' && (*pz == 'x' || *pz == 'X'))
         {
-            result += getColor(mode, SyntaxColor::SyntaxNumber);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxNumber, mode);
             result += c;
             result += *pz++;
             while (*pz && (SWAG_IS_HEX(*pz) || *pz == '_'))
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             continue;
         }
 
         // Number
         if (SWAG_IS_DIGIT(c))
         {
-            result += getColor(mode, SyntaxColor::SyntaxNumber);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxNumber, mode);
             result += c;
 
             while (*pz && (SWAG_IS_DIGIT(*pz) || *pz == '_'))
@@ -455,20 +455,20 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
             }
 
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             continue;
         }
 
         // Bytecode register
         if (context.forByteCode && c == '$' && SWAG_IS_ALPHA(pz[0]))
         {
-            result += getColor(mode, SyntaxColor::SyntaxBcRegister);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxBcRegister, mode);
             result += c;
 
             while (*pz && SWAG_IS_AL_NUM(*pz))
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             continue;
         }
 
@@ -488,13 +488,13 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
             auto it = g_LangSpec->modifiers.find(identifier);
             if (it)
             {
-                result += getColor(mode, SyntaxColor::SyntaxIntrinsic);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
                 result += ',';
                 result += identifier;
                 pz     = pz1;
                 c      = c1;
                 offset = offset1;
-                result += getColor(mode, SyntaxColor::SyntaxDefault);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                 continue;
             }
         }
@@ -517,9 +517,9 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
                 auto it = g_LangSpec->bckeywords.find(identifier);
                 if (it != g_LangSpec->bckeywords.end())
                 {
-                    result += getColor(mode, SyntaxColor::SyntaxBcKeyword);
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxBcKeyword, mode);
                     result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxDefault);
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                     continue;
                 }
             }
@@ -530,9 +530,9 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
                 auto it = g_LangSpec->bcconstants.find(identifier);
                 if (it != g_LangSpec->bcconstants.end())
                 {
-                    result += getColor(mode, SyntaxColor::SyntaxBcConstant);
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxBcConstant, mode);
                     result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxDefault);
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                     continue;
                 }
             }
@@ -543,9 +543,9 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
                 switch (*it)
                 {
                     case TokenId::KwdReserved:
-                        result += getColor(mode, SyntaxColor::SyntaxInvalid);
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxInvalid, mode);
                         result += identifier;
-                        result += getColor(mode, SyntaxColor::SyntaxDefault);
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                         break;
 
                     case TokenId::KwdUsing:
@@ -587,18 +587,18 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
                     case TokenId::KwdPublic:
                     case TokenId::KwdInternal:
                     case TokenId::KwdPrivate:
-                        result += getColor(mode, SyntaxColor::SyntaxKeyword);
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxKeyword, mode);
                         result += identifier;
-                        result += getColor(mode, SyntaxColor::SyntaxDefault);
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                         break;
 
                     case TokenId::KwdCode:
                     case TokenId::KwdCVarArgs:
                     case TokenId::NativeType:
                     case TokenId::CompilerType:
-                        result += getColor(mode, SyntaxColor::SyntaxType);
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxType, mode);
                         result += identifier;
-                        result += getColor(mode, SyntaxColor::SyntaxDefault);
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                         break;
 
                     case TokenId::KwdIf:
@@ -623,9 +623,9 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
                     case TokenId::KwdTo:
                     case TokenId::KwdUntil:
                     case TokenId::KwdDo:
-                        result += getColor(mode, SyntaxColor::SyntaxLogic);
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxLogic, mode);
                         result += identifier;
-                        result += getColor(mode, SyntaxColor::SyntaxDefault);
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                         break;
 
                     case TokenId::CompilerDependencies:
@@ -637,23 +637,23 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
                     case TokenId::CompilerFuncMain:
                     case TokenId::CompilerFuncPreMain:
                     case TokenId::CompilerFuncTest:
-                        result += getColor(mode, SyntaxColor::SyntaxFunction);
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxFunction, mode);
                         result += identifier;
-                        result += getColor(mode, SyntaxColor::SyntaxDefault);
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                         break;
 
                     default:
                         if (identifier[0] == '@')
                         {
-                            result += getColor(mode, SyntaxColor::SyntaxIntrinsic);
+                            result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
                             result += identifier;
-                            result += getColor(mode, SyntaxColor::SyntaxDefault);
+                            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                         }
                         else if (identifier[0] == '#')
                         {
-                            result += getColor(mode, SyntaxColor::SyntaxCompiler);
+                            result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
                             result += identifier;
-                            result += getColor(mode, SyntaxColor::SyntaxDefault);
+                            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                         }
                         else
                         {
@@ -665,33 +665,33 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
             }
             else if (identifier[0] == '@')
             {
-                result += getColor(mode, SyntaxColor::SyntaxIntrinsic);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
                 result += identifier;
-                result += getColor(mode, SyntaxColor::SyntaxDefault);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             }
             else if (identifier == g_LangSpec->name_self)
             {
-                result += getColor(mode, SyntaxColor::SyntaxKeyword);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxKeyword, mode);
                 result += identifier;
-                result += getColor(mode, SyntaxColor::SyntaxDefault);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             }
             else if (identifier == g_LangSpec->name_Self)
             {
-                result += getColor(mode, SyntaxColor::SyntaxType);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxType, mode);
                 result += identifier;
-                result += getColor(mode, SyntaxColor::SyntaxDefault);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             }
             else if (identifier[0] >= 'a' and identifier[0] <= 'z' && (c == '(' || c == '\''))
             {
-                result += getColor(mode, SyntaxColor::SyntaxFunction);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxFunction, mode);
                 result += identifier;
-                result += getColor(mode, SyntaxColor::SyntaxDefault);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             }
             else if (identifier[0] >= 'A' and identifier[0] <= 'Z')
             {
-                result += getColor(mode, SyntaxColor::SyntaxConstant);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxConstant, mode);
                 result += identifier;
-                result += getColor(mode, SyntaxColor::SyntaxDefault);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             }
             else
             {
@@ -709,8 +709,8 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
 
     if (hasCode)
     {
-        result.insert(0, getColor(mode, SyntaxColor::SyntaxCode));
-        result += getColor(mode, SyntaxColor::SyntaxDefault);
+        result.insert(0, syntaxColorToVTS(SyntaxColor::SyntaxCode, mode));
+        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
     }
 
     return result;

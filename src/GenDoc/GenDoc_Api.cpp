@@ -195,13 +195,13 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
             helpContent += form(R"(<span class="%s"><a href="#%s">%s</a></span>)", SYN_FUNCTION, toRef(n1->getScopedName()).c_str(), n1->token.text.c_str());
             SyntaxColorContext cxt;
             cxt.mode = SyntaxColorMode::ForDoc;
-            helpContent += syntaxColor(parameters, cxt);
+            helpContent += doSyntaxColor(parameters, cxt);
         }
         else
         {
             SyntaxColorContext cxt;
             cxt.mode  = SyntaxColorMode::ForDoc;
-            auto name = syntaxColor(n1->token.text, cxt);
+            auto name = doSyntaxColor(n1->token.text, cxt);
             helpContent += form("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).c_str(), name.c_str());
         }
 

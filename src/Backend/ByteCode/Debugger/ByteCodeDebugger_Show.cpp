@@ -5,6 +5,7 @@
 #include "Semantic/Scope.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
+#include "Syntax/SyntaxColor.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
@@ -446,15 +447,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowRegisters(ByteCodeRunContext* contex
         Utf8  str;
         appendLiteralValue(context, str, fmt, &regP);
         str.trim();
-        g_Log.print(form("%s$r%d%s = ", Log::colorToVTS(LogColor::Name).c_str(), i, Log::colorToVTS(LogColor::Default).c_str()));
+        g_Log.print(form("%s$r%d%s = ", syntaxColorToVTS(SyntaxColor::SyntaxBcRegister).c_str(), i, Log::colorToVTS(LogColor::Default).c_str()));
         g_Log.print(str);
         g_Log.writeEol();
     }
 
-    g_Log.print(form("%s$sp%s = 0x%016llx\n", Log::colorToVTS(LogColor::Name).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->sp));
-    g_Log.print(form("%s$bp%s = 0x%016llx\n", Log::colorToVTS(LogColor::Name).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->bp));
-    g_Log.print(form("%s$rr0%s = 0x%016llx\n", Log::colorToVTS(LogColor::Name).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->registersRR[0]));
-    g_Log.print(form("%s$rr1%s = 0x%016llx\n", Log::colorToVTS(LogColor::Name).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->registersRR[1]));
+    g_Log.print(form("%s$sp%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxBcRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->sp));
+    g_Log.print(form("%s$bp%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxBcRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->bp));
+    g_Log.print(form("%s$rr0%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxBcRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->registersRR[0]));
+    g_Log.print(form("%s$rr1%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxBcRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->registersRR[1]));
 
     return BcDbgCommandResult::Continue;
 }
@@ -470,7 +471,7 @@ namespace
         for (const auto& b : seg->buckets)
         {
             g_Log.print(form("%s$%s%d%s = 0x%016llx (%d)\n",
-                             Log::colorToVTS(LogColor::Name).c_str(),
+                             syntaxColorToVTS(SyntaxColor::SyntaxBcRegister).c_str(),
                              name,
                              index++,
                              Log::colorToVTS(LogColor::Default).c_str(),

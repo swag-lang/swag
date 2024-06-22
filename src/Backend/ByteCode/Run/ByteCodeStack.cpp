@@ -44,7 +44,7 @@ namespace
         auto code = sourceFile->getLine(line);
         code.trim();
         SyntaxColorContext cxt;
-        code = syntaxColor(code, cxt);
+        code = doSyntaxColor(code, cxt);
         code = "      " + code;
         return code;
     }

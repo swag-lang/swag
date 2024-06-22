@@ -186,7 +186,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSource(ByteCodeRunContext* context, cons
         SyntaxColorContext cxt;
         cxt.mode = SyntaxColorMode::ForLog;
         for (const auto& line : lines)
-            toPrint.push_back(syntaxColor(line, cxt));
+            toPrint.push_back(doSyntaxColor(line, cxt));
     }
 
     printLong(toPrint);
