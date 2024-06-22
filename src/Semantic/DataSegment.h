@@ -69,9 +69,10 @@ struct DataSegment
         uint32_t size;
     };
 
-    void setup(SegmentKind myKind, Module* myModule);
-    void initFrom(DataSegment* other);
-    void release();
+    static void getNames(const char** name, const char** shortName, SegmentKind kind);
+    void        setup(SegmentKind myKind, Module* myModule);
+    void        initFrom(DataSegment* other);
+    void        release();
 
     void     align(uint32_t alignOf);
     void     alignNoLock(uint32_t alignOf);

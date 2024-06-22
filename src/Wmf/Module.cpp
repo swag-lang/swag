@@ -469,9 +469,9 @@ void Module::allocateBackend()
     }
 }
 
-DataSegment* Module::getSegment(SegmentKind kind)
+DataSegment* Module::getSegment(SegmentKind segKind)
 {
-    switch (kind)
+    switch (segKind)
     {
         case SegmentKind::Bss:
             return &bssSegment;

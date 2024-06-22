@@ -7,6 +7,41 @@
 #include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
 
+void DataSegment::getNames(const char** name, const char** shortName, SegmentKind kind)
+{
+    switch (kind)
+    {
+        case SegmentKind::Compiler:
+            *name      = "compiler segment";
+            *shortName = "cmp";
+            break;
+        case SegmentKind::Tls:
+            *name      = "tls segment";
+            *shortName = "tls";
+            break;
+        case SegmentKind::Data:
+            *name      = "data segment";
+            *shortName = "dat";
+            break;
+        case SegmentKind::Bss:
+            *name      = "bss segment";
+            *shortName = "bss";
+            break;
+        case SegmentKind::Constant:
+            *name      = "constant segment";
+            *shortName = "cst";
+            break;
+        case SegmentKind::Global:
+            *name      = "global segment";
+            *shortName = "glb";
+            break;
+        case SegmentKind::String:
+            *name      = "string segment";
+            *shortName = "str";
+            break;
+    }
+}
+
 void DataSegment::setup(SegmentKind myKind, Module* myModule)
 {
     kind   = myKind;
@@ -20,37 +55,7 @@ void DataSegment::setup(SegmentKind myKind, Module* myModule)
     else
         granularity = 4 * 1024;
 
-    switch (kind)
-    {
-        case SegmentKind::Compiler:
-            name      = "compiler segment";
-            shortName = "cdata";
-            break;
-        case SegmentKind::Tls:
-            name      = "tls segment";
-            shortName = "tdata";
-            break;
-        case SegmentKind::Data:
-            name      = "data segment";
-            shortName = "data";
-            break;
-        case SegmentKind::Bss:
-            name      = "bss segment";
-            shortName = "bss";
-            break;
-        case SegmentKind::Constant:
-            name      = "constant segment";
-            shortName = "rdata";
-            break;
-        case SegmentKind::Global:
-            name      = "global segment";
-            shortName = "gdata";
-            break;
-        case SegmentKind::String:
-            name      = "string segment";
-            shortName = "strd";
-            break;
-    }
+    getNames(&name, &shortName, kind);
 }
 
 void DataSegment::initFrom(DataSegment* other)
