@@ -23,25 +23,32 @@ void DataSegment::setup(SegmentKind myKind, Module* myModule)
     switch (kind)
     {
         case SegmentKind::Compiler:
-            name = "compiler segment";
+            name      = "compiler segment";
+            shortName = "cdata";
             break;
         case SegmentKind::Tls:
-            name = "tls segment";
+            name      = "tls segment";
+            shortName = "tdata";
             break;
         case SegmentKind::Data:
-            name = "data segment";
+            name      = "data segment";
+            shortName = "data";
             break;
         case SegmentKind::Bss:
-            name = "bss segment";
+            name      = "bss segment";
+            shortName = "bss";
             break;
         case SegmentKind::Constant:
-            name = "constant segment";
+            name      = "constant segment";
+            shortName = "rdata";
             break;
         case SegmentKind::Global:
-            name = "global segment";
+            name      = "global segment";
+            shortName = "gdata";
             break;
         case SegmentKind::String:
-            name = "string segment";
+            name      = "string segment";
+            shortName = "strd";
             break;
     }
 }

@@ -224,7 +224,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowLocals(ByteCodeRunContext* context, 
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdShowArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowArguments(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
     {
@@ -416,7 +416,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowGlobals(ByteCodeRunContext* context,
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdShowRegs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowRegisters(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)
     {
@@ -459,6 +459,55 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowRegs(ByteCodeRunContext* context, co
     return BcDbgCommandResult::Continue;
 }
 
+namespace
+{
+    void printSegmentRegisters(Module* module, SegmentKind kind)
+    {
+        const auto seg  = module->getSegment(kind);
+        const auto name = seg->shortName;
+
+        uint32_t index = 0;
+        for (const auto& b : seg->buckets)
+        {
+            g_Log.print(form("%s$%s%d%s = 0x%016llx (%d)\n",
+                             Log::colorToVTS(LogColor::Name).c_str(),
+                             name,
+                             index++,
+                             Log::colorToVTS(LogColor::Default).c_str(),
+                             b.buffer,
+                             b.size));
+        }
+    }
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdShowSegments(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.help)
+    {
+        printHelpFormat();
+        return BcDbgCommandResult::Continue;
+    }
+
+    if (arg.split.size() > 2)
+        return BcDbgCommandResult::TooManyArguments;
+
+    if (!g_ByteCodeDebugger.cxtBc || !g_ByteCodeDebugger.cxtBc->sourceFile || !g_ByteCodeDebugger.cxtBc->sourceFile->module)
+    {
+        printCmdError("cannot find segments");
+        return BcDbgCommandResult::Error;
+    }
+
+    g_Log.setColor(LogColor::Gray);
+
+    printSegmentRegisters(g_ByteCodeDebugger.cxtBc->sourceFile->module, SegmentKind::Bss);
+    printSegmentRegisters(g_ByteCodeDebugger.cxtBc->sourceFile->module, SegmentKind::Data);
+    printSegmentRegisters(g_ByteCodeDebugger.cxtBc->sourceFile->module, SegmentKind::Constant);
+    printSegmentRegisters(g_ByteCodeDebugger.cxtBc->sourceFile->module, SegmentKind::Compiler);
+    printSegmentRegisters(g_ByteCodeDebugger.cxtBc->sourceFile->module, SegmentKind::Tls);
+
+    return BcDbgCommandResult::Continue;
+}
+
 BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() < 2)
@@ -469,12 +518,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
     if (arg.split[1] == "globals" || arg.split[1] == "glob")
         return cmdShowGlobals(context, arg);
     if (arg.split[1] == "arguments" || arg.split[1] == "arg" || arg.split[1] == "args")
-        return cmdShowArgs(context, arg);
+        return cmdShowArguments(context, arg);
     if (arg.split[1] == "scopes" || arg.split[1] == "sc")
         return cmdShowScopes(context, arg);
 
     if (arg.split[1] == "registers" || arg.split[1] == "reg" || arg.split[1] == "regs")
-        return cmdShowRegs(context, arg);
+        return cmdShowRegisters(context, arg);
+    if (arg.split[1] == "segments" || arg.split[1] == "seg" || arg.split[1] == "segs")
+        return cmdShowSegments(context, arg);
     if (arg.split[1] == "expressions" || arg.split[1] == "expr" || arg.split[1] == "exprs")
         return cmdShowExpressions(context, arg);
     if (arg.split[1] == "values" || arg.split[1] == "val" || arg.split[1] == "vals")

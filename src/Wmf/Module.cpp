@@ -1,6 +1,7 @@
 #include "pch.h"
-#include "Backend/Context.h"
+#include "Wmf/Module.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/Context.h"
 #include "Backend/LLVM/Main/LLVM.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Jobs/SaveGenJob.h"
@@ -8,13 +9,12 @@
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
 #include "Report/Report.h"
-#include "Semantic/SemanticJob.h"
 #include "Semantic/Error/SemanticError.h"
+#include "Semantic/SemanticJob.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Parser/Parser.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Threading/ThreadManager.h"
-#include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
 
@@ -343,9 +343,9 @@ void Module::buildGlobalVarsToDropSlice()
         else
         {
             SWAG_ASSERT(g.type->opDrop);
-            const auto opDrop = g.type->opDrop;
-            oneVar->opDrop    = opDrop;
-            opDrop->isInDataSegment   = true;
+            const auto opDrop       = g.type->opDrop;
+            oneVar->opDrop          = opDrop;
+            opDrop->isInDataSegment = true;
 
             if (opDrop->node)
             {
@@ -467,6 +467,26 @@ void Module::allocateBackend()
         // Dummy backend which does nothing, as unittest errors have no output
         backend = new Backend(this);
     }
+}
+
+DataSegment* Module::getSegment(SegmentKind kind)
+{
+    switch (kind)
+    {
+        case SegmentKind::Bss:
+            return &bssSegment;
+        case SegmentKind::Compiler:
+            return &compilerSegment;
+        case SegmentKind::Constant:
+            return &constantSegment;
+        case SegmentKind::Data:
+            return &mutableSegment;
+        case SegmentKind::Tls:
+            return &tlsSegment;
+    }
+
+    SWAG_ASSERT(false);
+    return nullptr;
 }
 
 void Module::inheritCfgFrom(const Module* from)

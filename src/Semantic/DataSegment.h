@@ -116,8 +116,9 @@ struct DataSegment
     Vector<PatchPtrRef>                       patchPtr;
     Vector<std::pair<AstFuncDecl*, uint32_t>> patchMethods;
 
-    const char* name   = nullptr;
-    Module*     module = nullptr;
+    const char* name      = nullptr;
+    const char* shortName = nullptr;
+    Module*     module    = nullptr;
 
     SegmentKind kind              = SegmentKind::Me;
     uint32_t    granularity       = 0;

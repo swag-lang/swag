@@ -117,7 +117,7 @@ struct ExecuteNodeParams
     bool  forDebugger  = false;
     bool  breakOnStart = false;
     bool  forConstExpr = false;
-    bool  inheritRR = false;
+    bool  inheritRR    = false;
 };
 
 struct CompilerMessage
@@ -135,19 +135,20 @@ constexpr uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER | BUI
 
 struct Module
 {
-    static bool isValidName(const Utf8& name, Utf8& errorStr);
-    void        setup(const Utf8& moduleName, const Path& modulePath);
-    void        release();
-    void        allocateBackend();
-    void        initFrom(Module* other);
-    void        computePublicPath();
-    void        buildModulesSlice();
-    void        buildGlobalVarsToDropSlice();
-    void        buildTypesSlice();
-    void        initProcessInfos();
-    void        callPreMain();
-    Utf8        getGlobalPrivFct(const Utf8& nameFct) const;
-    void        inheritCfgFrom(const Module* from);
+    static bool  isValidName(const Utf8& name, Utf8& errorStr);
+    void         setup(const Utf8& moduleName, const Path& modulePath);
+    void         release();
+    void         allocateBackend();
+    void         initFrom(Module* other);
+    void         computePublicPath();
+    void         buildModulesSlice();
+    void         buildGlobalVarsToDropSlice();
+    void         buildTypesSlice();
+    void         initProcessInfos();
+    void         callPreMain();
+    Utf8         getGlobalPrivFct(const Utf8& nameFct) const;
+    void         inheritCfgFrom(const Module* from);
+    DataSegment* getSegment(SegmentKind kind);
 
     void        addExportSourceFile(SourceFile* file);
     void        addFile(SourceFile* file);

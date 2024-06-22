@@ -7,6 +7,7 @@ struct TypeInfo;
 struct ComputedValue;
 struct Utf8;
 enum class CompilerAstKind;
+enum class SegmentKind;
 
 enum class BcDbgCommandResult
 {
@@ -169,8 +170,9 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdShowValues(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShowTypes(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShowLocals(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdShowRegs(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdShowArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowRegisters(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowSegments(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdShowArguments(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShowScopes(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShowGlobals(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdShowExpressions(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
@@ -185,6 +187,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdBreakInstruction(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBreakFileLine(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 
+    bool                           replaceSegmentPointer(Utf8& result, const Utf8& name, SegmentKind kind, bool& err) const;
     bool                           commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const;
     static void                    tokenizeCommand(const Utf8& line, BcDbgCommandArg& arg);
     void                           setup();

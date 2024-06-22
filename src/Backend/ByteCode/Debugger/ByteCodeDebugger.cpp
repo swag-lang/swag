@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
+#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Report/Log.h"
 #include "Semantic/Scope.h"
@@ -59,6 +59,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"examining state", "display", "d", "clear|cl", "<num>", "Remove expression <num>", cmdDisplay});
     commands.push_back({"examining state", "show", "o", "<subcommand>", "", "Display various information", nullptr});
     commands.push_back({"examining state", "show", "o", "registers", "[--format]", "Print all registers", cmdShow});
+    commands.push_back({"examining state", "show", "o", "segments", "", "Print all segments addresses", cmdShow});
     commands.push_back({"examining state", "show", "o", "expressions", "", "Print all dynamic expressions", cmdShow});
     commands.push_back({"examining state", "show", "o", "values", "", "Print all automatic expression values", cmdShow});
     commands.push_back({"examining state", "show", "o", "modules", "", "Print all modules", cmdShow});
@@ -852,6 +853,37 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
     return true;
 }
 
+bool ByteCodeDebugger::replaceSegmentPointer(Utf8& result, const Utf8& name, SegmentKind kind, bool& err) const
+{
+    if (!cxtBc || !cxtBc->sourceFile || !cxtBc->sourceFile->module)
+        return false;
+
+    const auto seg     = cxtBc->sourceFile->module->getSegment(kind);
+    const Utf8 segName = seg->shortName;
+
+    if (!name.startsWith(segName))
+        return false;
+
+    auto cpy = name;
+    cpy.remove(0, segName.length());
+    uint32_t idx = cpy.toInt();
+
+    for (const auto& b : seg->buckets)
+    {
+        if (!idx)
+        {
+            result += form("0x%llx", b.buffer);
+            return true;
+        }
+
+        idx--;
+    }
+
+    err = true;
+    printCmdError(form("no corresponding [[%s]] segment pointer", segName.c_str()));
+    return false;
+}
+
 bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const
 {
     bool recom = true;
@@ -870,34 +902,59 @@ bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
                 continue;
             }
 
-            if (pz[1] == 's' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
+            Utf8 what;
+            auto pze = pz + 1;
+            while (SWAG_IS_AL_NUM(*pze))
             {
-                result += form("0x%llx", context->sp);
-                pz += 3;
-                continue;
+                what += *pze;
+                pze++;
             }
 
-            if (pz[1] == 'b' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
+            if (SWAG_IS_BLANK(*pze) || *pze == 0)
             {
-                result += form("0x%llx", context->bp);
-                pz += 3;
-                continue;
+                if (what == "sp")
+                {
+                    result += form("0x%llx", context->sp);
+                    pz += 3;
+                    continue;
+                }
+
+                if (what == "bp")
+                {
+                    result += form("0x%llx", context->bp);
+                    pz += 3;
+                    continue;
+                }
+
+                if (what == "rr0")
+                {
+                    result += form("0x%llx", context->registersRR[0].u64);
+                    pz += 4;
+                    continue;
+                }
+
+                if (what == "rr1")
+                {
+                    result += form("0x%llx", context->registersRR[1].u64);
+                    pz += 4;
+                    continue;
+                }
+
+                bool err = false;
+                if (replaceSegmentPointer(result, what, SegmentKind::Bss, err) ||
+                    replaceSegmentPointer(result, what, SegmentKind::Data, err) ||
+                    replaceSegmentPointer(result, what, SegmentKind::Compiler, err) ||
+                    replaceSegmentPointer(result, what, SegmentKind::Constant, err) ||
+                    replaceSegmentPointer(result, what, SegmentKind::Tls, err))
+                {
+                    pz += what.length() + 1;
+                    continue;
+                }
+                if (err)
+                    return false;
             }
 
-            if (pz[1] == 'r' && pz[2] == 'r' && pz[3] == '0' && (SWAG_IS_BLANK(pz[4]) || !pz[4]))
-            {
-                result += form("0x%llx", context->registersRR[0]);
-                pz += 4;
-                continue;
-            }
-
-            if (pz[1] == 'r' && pz[2] == 'r' && pz[3] == '1' && (SWAG_IS_BLANK(pz[4]) || !pz[4]))
-            {
-                result += form("0x%llx", context->registersRR[1]);
-                pz += 4;
-                continue;
-            }
-
+            // Register number
             if (pz[1] == 'r' && SWAG_IS_DIGIT(pz[2]))
             {
                 uint32_t regN;
@@ -912,6 +969,7 @@ bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
                 continue;
             }
 
+            // Historical expression
             if (SWAG_IS_DIGIT(pz[1]))
             {
                 Utf8 value;
