@@ -90,33 +90,6 @@ void ByteCodeDebugger::setup()
     commands.push_back({"bcdbg", "quit", "q", "", "", "Quit the compiler", cmdQuit});
 }
 
-VectorNative<ByteCode*> ByteCodeDebugger::findBc(const char* bcName)
-{
-    VectorNative<Module*> modules;
-    for (auto val : g_Workspace->mapModulesNames | std::views::values)
-        modules.push_back(val);
-    modules.push_back(g_Workspace->bootstrapModule);
-    modules.push_back(g_Workspace->runtimeModule);
-
-    VectorNative<ByteCode*> tryMatch;
-    for (const auto m : modules)
-    {
-        for (auto bc : m->byteCodeFunc)
-        {
-            if (bc->getPrintName() == bcName)
-                return {bc};
-
-            if (bc->getPrintName().find(bcName) != -1)
-                tryMatch.push_back(bc);
-        }
-    }
-
-    if (tryMatch.size() == 1)
-        return {tryMatch[0]};
-
-    return tryMatch;
-}
-
 bool ByteCodeDebugger::testNameFilter(const Utf8& name, const Utf8& filter, const Utf8& alternate)
 {
     if (filter.empty())
@@ -948,6 +921,7 @@ bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
                     replaceSegmentPointer(result, what, SegmentKind::Tls, err))
                 {
                     pz += what.length() + 1;
+                    
                     continue;
                 }
                 if (err)
