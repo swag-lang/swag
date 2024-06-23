@@ -32,8 +32,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
     g_ByteCodeDebugger.printInstructionsAround(context, g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, regN);
     g_Log.setStoreMode(false);
     printLong(g_Log.store);
+    
     g_ByteCodeDebugger.bcMode = true;
-
     return BcDbgCommandResult::Continue;
 }
 
@@ -56,8 +56,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext*, con
     toLogBc->print(opt);
     g_Log.setStoreMode(false);
     printLong(g_Log.store);
+    
     g_ByteCodeDebugger.bcMode = true;
-
     return BcDbgCommandResult::Continue;
 }
 
@@ -88,6 +88,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     }
 
     g_ByteCodeDebugger.printSourceLinesAround(context, loc.file, static_cast<int>(loc.location->line), num);
+
+    g_ByteCodeDebugger.bcMode = false;
     return BcDbgCommandResult::Continue;
 }
 
@@ -99,8 +101,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
 
     if (arg.split.size() > 1)
         return BcDbgCommandResult::TooManyArguments;
-
-    g_ByteCodeDebugger.bcMode = false;
 
     const auto loc = ByteCode::getLocation(g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, true);
     if (!loc.node)
@@ -119,6 +119,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     const int startLine = static_cast<int>(funcNode->token.startLocation.line);
     const int endLine   = static_cast<int>(funcNode->content->token.endLocation.line);
     g_ByteCodeDebugger.printSourceLines(context, loc.file, startLine, endLine);
+
+    g_ByteCodeDebugger.bcMode = false;
     return BcDbgCommandResult::Continue;
 }
 

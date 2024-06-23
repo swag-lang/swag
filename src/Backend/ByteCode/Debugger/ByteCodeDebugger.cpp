@@ -595,7 +595,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
                 }
             }
 
-            if (lastBreakIp->node->safeOwnerInline())
+            if (lastBreakIp->node->hasOwnerInline())
             {
                 // If I am still in an inline, but not in a mixin block, and was in a mixin block, zap
                 if (ip->node->safeOwnerInline() &&
