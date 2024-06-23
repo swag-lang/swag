@@ -12,6 +12,8 @@
 
 bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 {
+    emitDebugNop(context);
+
     auto node         = castAst<AstInline>(context->node, AstNodeKind::Inline);
     auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(node->func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
     auto returnType   = typeInfoFunc->concreteReturnType();

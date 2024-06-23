@@ -493,6 +493,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
     return line;
 }
 
+#pragma optimize("", off)
 bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 {
     const auto ip           = context->ip;
@@ -537,34 +538,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             }
             break;
 
-        case DebugStepMode::NextLineStepIn:
-        {
-            const auto loc = ByteCode::getLocation(context->bc, ip, true);
-            if (!loc.file || !loc.location)
-            {
-                zapCurrentIp = true;
-                break;
-            }
-
-            if (stepLastFile == loc.file && stepLastLocation && stepLastLocation->line == loc.location->line)
-            {
-                zapCurrentIp = true;
-            }
-            else if (stepCount == 0)
-            {
-                context->debugOn = true;
-                stepMode         = DebugStepMode::None;
-            }
-            else
-            {
-                stepCount--;
-                zapCurrentIp           = true;
-                stepLastLocation->line = loc.location->line;
-            }
-            break;
-        }
         case DebugStepMode::NextLineStepOut:
-        {
             // If inside a sub function
             if (context->curRC > stepRc)
             {
@@ -614,6 +588,9 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
                 }
             }
 
+            [[fallthrough]];
+        case DebugStepMode::NextLineStepIn:
+        {
             const auto loc = ByteCode::getLocation(context->bc, ip, true);
             if (!loc.file || !loc.location)
             {
@@ -633,11 +610,12 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             else
             {
                 stepCount--;
-                stepLastLocation->line = loc.location->line;
                 zapCurrentIp           = true;
+                stepLastLocation->line = loc.location->line;
             }
             break;
         }
+
         case DebugStepMode::FinishedFunction:
         {
             // Top level function, break on ret
@@ -921,7 +899,7 @@ bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
                     replaceSegmentPointer(result, what, SegmentKind::Tls, err))
                 {
                     pz += what.length() + 1;
-                    
+
                     continue;
                 }
                 if (err)
