@@ -41,7 +41,7 @@ void ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, Vector<std::
 
         Utf8 value = getPrintValue(over->symbol->getFullName(), over->typeInfo);
 
-        if (over->typeInfo->isNative() || over->typeInfo->isPointer())
+        if (over->typeInfo->isNative() || (over->typeInfo->isPointer() && !over->typeInfo->isPointerRef()))
         {
             value += " = ";
 
