@@ -493,7 +493,6 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
     return line;
 }
 
-#pragma optimize("", off)
 bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 {
     const auto ip           = context->ip;
