@@ -71,8 +71,9 @@ struct CommandLine
     // Display
     bool silent                = false;
     bool ignoreBadParams       = false;
-    bool logColors             = true;
+    bool logColor             = true;
     bool logAscii              = false;
+    bool syntaxColor           = true;
     bool verbose               = false;
     bool verboseCmdLine        = false;
     bool verbosePath           = false;
@@ -85,9 +86,8 @@ struct CommandLine
 
     bool     errorOneLine        = false;
     bool     errorAbsolute       = false;
-    bool     errorSyntaxColor    = true;
     uint32_t errorRightColumn    = 80;
-    float    errorSyntaxColorLum = -1.0f;
+    float    syntaxColorLum = -1.0f;
 
     // Output
     Utf8 buildCfg           = "fast-debug";

@@ -16,7 +16,7 @@ void Log::unlock()
 
 Utf8 Log::colorToVTS(LogColor color)
 {
-    if (!g_CommandLine.logColors)
+    if (!g_CommandLine.logColor)
         return "";
 
     switch (color)
@@ -213,7 +213,7 @@ Utf8 Log::format(const char* message)
         }
         else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
         {
-            if (g_CommandLine.logColors == false)
+            if (g_CommandLine.logColor == false)
                 m += "'";
             else if (curColor == colorToVTS(LogColor::White))
                 m += colorToVTS(LogColor::Gray);
@@ -226,7 +226,7 @@ Utf8 Log::format(const char* message)
         else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
         {
             m += curColor;
-            if (g_CommandLine.logColors == false)
+            if (g_CommandLine.logColor == false)
                 m += "'";
             else if (curColor == colorToVTS(LogColor::Red))
                 m += "'";

@@ -51,7 +51,7 @@ CommandLineArgument::CommandLineArgument(const char* commands, CommandLineType t
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
     addArg("all", "--silent", "-s", CommandLineType::Bool, &cmdLine->silent, nullptr, "do not log messages");
-    addArg("all", "--log-colors", nullptr, CommandLineType::Bool, &cmdLine->logColors, nullptr, "output to console can be colored");
+    addArg("all", "--log-color", nullptr, CommandLineType::Bool, &cmdLine->logColor, nullptr, "output to console can be colored");
     addArg("all", "--log-ascii", nullptr, CommandLineType::Bool, &cmdLine->logAscii, nullptr, "output to console only use ascii characters (no unicode)");
     addArg("all", "--ignore-bad-params", nullptr, CommandLineType::Bool, &cmdLine->ignoreBadParams, nullptr, "ignore unknown command line parameters instead of raising an error");
 
@@ -65,9 +65,10 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("bu sc doc fmt", "--error-one-line", "-el", CommandLineType::Bool, &cmdLine->errorOneLine, nullptr, "display errors in a single line");
     addArg("bu sc doc fmt", "--error-absolute", "-ea", CommandLineType::Bool, &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
-    addArg("bu sc doc fmt", "--error-syntax-color", "-es", CommandLineType::Bool, &cmdLine->errorSyntaxColor, nullptr, "syntax color code when an error is raised");
-    addArg("bu sc doc fmt", "--error-syntax-color-lum", nullptr, CommandLineType::Bool, &cmdLine->errorSyntaxColorLum, nullptr, "syntax color luminosity factor [0..1]");
 
+    addArg("bu sc doc fmt", "--syntax-color", "-es", CommandLineType::Bool, &cmdLine->syntaxColor, nullptr, "syntax color code");
+    addArg("bu sc doc fmt", "--syntax-color-lum", nullptr, CommandLineType::Bool, &cmdLine->syntaxColorLum, nullptr, "syntax color luminosity factor [0..1]");
+    
     addArg("bu ne cl li ge doc", "--workspace", "-w", CommandLineType::StringPath, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne doc", "--module", "-m", CommandLineType::String, &cmdLine->moduleName, nullptr, "module name");
     addArg("ne sc fmt", "--file", "-f", CommandLineType::String, &cmdLine->fileName, nullptr, "the script file name|format:the source file to reformat");

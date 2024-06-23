@@ -54,4 +54,4 @@ struct SyntaxColorContext
 
 Utf8     syntaxColorToVTS(SyntaxColor color, SyntaxColorMode mode = SyntaxColorMode::ForLog);
 uint32_t getSyntaxColorRgb(SyntaxColorMode mode, SyntaxColor color, float lum);
-Utf8     doSyntaxColor(const Utf8& line, SyntaxColorContext& context);
+Utf8     doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force = false);

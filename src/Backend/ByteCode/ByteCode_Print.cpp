@@ -486,6 +486,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     }
     else
     {
+        g_Log.setColor(LogColor::White);
         SyntaxColorContext synCxt;
         synCxt.forByteCode = true;
         g_Log.print(doSyntaxColor(line.pretty, synCxt));

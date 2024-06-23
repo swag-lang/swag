@@ -217,7 +217,7 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
     {
         SyntaxColorContext cxt;
         cxt.mode = SyntaxColorMode::ForDoc;
-        codeText = doSyntaxColor(repl, cxt);
+        codeText = doSyntaxColor(repl, cxt, true);
     }
     else
     {

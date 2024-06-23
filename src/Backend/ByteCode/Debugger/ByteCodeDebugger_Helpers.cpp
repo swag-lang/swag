@@ -163,7 +163,7 @@ void ByteCodeDebugger::printLong(const Vector<std::pair<Utf8, Utf8>>& all, const
 
 void ByteCodeDebugger::printTitleNameTypeLoc(const Utf8& title, const Utf8& name, const Utf8& type, const Utf8& loc)
 {
-    if(!title.empty())
+    if (!title.empty())
     {
         g_Log.print(title, LogColor::Gray);
         g_Log.write(" ");
@@ -359,7 +359,6 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, SourceFile* f
 
         // Line
         oneLine += form("%-5u ", startLine + 1);
-        oneLine += Log::colorToVTS(LogColor::Default);
 
         // Code
         if (currentLine)
@@ -367,14 +366,10 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, SourceFile* f
             oneLine += Log::colorToVTS(LogColor::CurInstruction);
             oneLine += l;
         }
-        else if (g_CommandLine.logColors)
-        {
-            oneLine += doSyntaxColor(l, cxt);
-        }
         else
         {
-            oneLine += Log::colorToVTS(LogColor::Default);
-            oneLine += l;
+            oneLine += Log::colorToVTS(LogColor::White);
+            oneLine += doSyntaxColor(l, cxt);
         }
 
         toPrint.push_back(oneLine);

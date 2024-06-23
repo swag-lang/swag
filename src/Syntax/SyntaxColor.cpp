@@ -95,7 +95,7 @@ Utf8 syntaxColorToVTS(SyntaxColor color, SyntaxColorMode mode)
         {
             if (color == SyntaxColor::SyntaxDefault)
                 color = SyntaxColor::SyntaxCode;
-            const auto rgb = getSyntaxColorRgb(mode, color, g_CommandLine.errorSyntaxColorLum);
+            const auto rgb = getSyntaxColorRgb(mode, color, g_CommandLine.syntaxColorLum);
             return form("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
         }
 
@@ -237,12 +237,15 @@ uint32_t getSyntaxColorRgb(SyntaxColorMode /*mode*/, SyntaxColor color, float lu
     return rgb.r << 16 | rgb.g << 8 | rgb.b;
 }
 
-Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context)
+Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
 {
-    if (!g_CommandLine.errorSyntaxColor)
-        return line;
-    if (!g_CommandLine.logColors)
-        return line;
+    if (!force)
+    {
+        if (!g_CommandLine.syntaxColor)
+            return line;
+        if (!g_CommandLine.logColor)
+            return line;
+    }
 
     auto     mode = context.mode;
     auto     pz   = line.c_str();
