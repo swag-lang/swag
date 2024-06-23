@@ -198,7 +198,7 @@ struct ByteCodeDebugger
     bool        getRegIdx(ByteCodeRunContext* context, const Utf8& arg, uint32_t& regN) const;
     static Utf8 getPrintValue(const Utf8& name, TypeInfo* typeinfo);
     static void getPrintSymbols(ByteCodeRunContext* context, Vector<std::pair<Utf8, Utf8>>& result, const VectorNative<AstNode*>& nodes, const VectorNative<uint8_t*>& addrs);
-    void        printDebugContext(ByteCodeRunContext* context, bool force = false);
+    void        printOneStepContext(ByteCodeRunContext* context, bool force = false, bool update = true);
     void        computeDebugContext(ByteCodeRunContext* context);
     Utf8        completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete) const;
     Utf8        getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift) const;
@@ -217,7 +217,7 @@ struct ByteCodeDebugger
     void        printHelp() const;
     static void printHelp(const BcDbgCommand& cmd, bool commandMode);
     void        printDisplayList() const;
-    void        printDisplay(ByteCodeRunContext* context) const;
+    void        printDisplayExpressions(ByteCodeRunContext* context) const;
     static void printSet(ByteCodeRunContext* context);
 
     Vector<BcDbgCommand>    commands;
@@ -233,7 +233,7 @@ struct ByteCodeDebugger
     SourceLocation*      stepLastLocation = nullptr;
     AstNode*             stepLastFunc     = nullptr;
     ByteCode*            cxtBc            = nullptr;
-    ByteCode*            lastBc           = nullptr;
+    ByteCode*            stepLastBc           = nullptr;
     ByteCodeInstruction* cxtIp            = nullptr;
     uint8_t*             cxtBp            = nullptr;
     uint8_t*             cxtSp            = nullptr;
@@ -251,7 +251,7 @@ struct ByteCodeDebugger
     bool        forcePrintContext = false;
     bool        printStruct       = true;
     bool        printArray        = true;
-    bool        printBcCode       = true;
+    bool        printBcCode       = false;
     bool        printBtCode       = false;
     bool        printEvalBc       = false;
 };

@@ -146,7 +146,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
         }
     }
 
-    g_ByteCodeDebugger.printDebugContext(context);
+    g_ByteCodeDebugger.printOneStepContext(context);
     return BcDbgCommandResult::Continue;
 }
 

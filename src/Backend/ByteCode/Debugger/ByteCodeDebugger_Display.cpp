@@ -12,7 +12,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayAdd(ByteCodeRunContext* context, 
 
     const auto line = arg.cmd + " " + arg.cmdExpr;
     g_ByteCodeDebugger.display.push_back(line);
-    g_ByteCodeDebugger.printDisplay(context);
+    g_ByteCodeDebugger.printDisplayExpressions(context);
     return BcDbgCommandResult::Continue;
 }
 
@@ -79,7 +79,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayPrint(ByteCodeRunContext*, const 
     return BcDbgCommandResult::Continue;
 }
 
-void ByteCodeDebugger::printDisplay(ByteCodeRunContext* context) const
+void ByteCodeDebugger::printDisplayExpressions(ByteCodeRunContext* context) const
 {
     if (display.empty())
         return;

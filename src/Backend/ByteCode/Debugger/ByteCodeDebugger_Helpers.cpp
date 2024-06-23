@@ -163,12 +163,15 @@ void ByteCodeDebugger::printLong(const Vector<std::pair<Utf8, Utf8>>& all, const
 
 void ByteCodeDebugger::printTitleNameTypeLoc(const Utf8& title, const Utf8& name, const Utf8& type, const Utf8& loc)
 {
-    g_Log.print(title, LogColor::Gray);
-    g_Log.write(" ");
-    uint32_t len = title.length();
-    while (len++ < 25)
-        g_Log.write(".");
-    g_Log.write(" ");
+    if(!title.empty())
+    {
+        g_Log.print(title, LogColor::Gray);
+        g_Log.write(" ");
+        uint32_t len = title.length();
+        while (len++ < 15)
+            g_Log.write(".");
+        g_Log.write(" ");
+    }
 
     if (!name.empty())
     {
@@ -213,7 +216,7 @@ void ByteCodeDebugger::printMsgBkp(const Utf8& msg)
     g_Log.writeEol();
 }
 
-void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force)
+void ByteCodeDebugger::printOneStepContext(ByteCodeRunContext* context, bool force, bool update)
 {
     SWAG_ASSERT(cxtBc);
     SWAG_ASSERT(cxtIp);
@@ -231,7 +234,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     {
         if (force || loc.file != stepLastFile)
         {
-            printTitleNameTypeLoc("=> file", loc.file->name, "", "");
+            printTitleNameTypeLoc("=> file", "", "", loc.file->path.c_str());
         }
     }
 
@@ -256,7 +259,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
             printTitleNameTypeLoc("=> function", node->ownerFct->getScopedName(), node->ownerFct->typeInfo->getDisplayNameC(), "");
         }
     }
-    else if (force || lastBc != cxtBc)
+    else if (force || stepLastBc != cxtBc)
     {
         printTitleNameTypeLoc("=> generated", cxtBc->name, cxtBc->typeInfoFunc ? cxtBc->typeInfoFunc->getDisplayNameC() : "", "");
     }
@@ -278,13 +281,16 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
         }
     }
 
-    lastBc           = cxtBc;
-    stepLastFile     = loc.file;
-    stepLastLocation = loc.location;
-    stepLastFunc     = newFunc;
-
     // Print current display expressions
-    printDisplay(context);
+    printDisplayExpressions(context);
+
+    if (update)
+    {
+        stepLastBc       = cxtBc;
+        stepLastFile     = loc.file;
+        stepLastLocation = loc.location;
+        stepLastFunc     = newFunc;
+    }
 }
 
 void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, SourceFile* file, int startLine, int endLine) const

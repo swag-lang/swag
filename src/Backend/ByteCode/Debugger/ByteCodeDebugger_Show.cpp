@@ -268,7 +268,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowArguments(ByteCodeRunContext* contex
     return BcDbgCommandResult::Continue;
 }
 
-#pragma optimize("", off)
 BcDbgCommandResult ByteCodeDebugger::cmdShowScopes(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.help)

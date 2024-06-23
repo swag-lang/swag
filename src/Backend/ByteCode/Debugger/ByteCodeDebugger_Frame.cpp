@@ -59,7 +59,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
         return BcDbgCommandResult::Continue;
     }
 
-    g_ByteCodeDebugger.printDebugContext(context);
+    g_ByteCodeDebugger.printOneStepContext(context);
     return BcDbgCommandResult::Continue;
 }
 
@@ -97,7 +97,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
         return BcDbgCommandResult::Continue;
     }
 
-    g_ByteCodeDebugger.printDebugContext(context);
+    g_ByteCodeDebugger.printOneStepContext(context);
     return BcDbgCommandResult::Continue;
 }
 
@@ -135,6 +135,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
         return BcDbgCommandResult::Continue;
     }
 
-    g_ByteCodeDebugger.printDebugContext(context);
+    g_ByteCodeDebugger.printOneStepContext(context);
     return BcDbgCommandResult::Continue;
 }

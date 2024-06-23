@@ -723,11 +723,11 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
     }
 
     computeDebugContext(context);
-    printDebugContext(context);
+    printOneStepContext(context);
 
     while (true)
     {
-        // Prompt
+        // Promptq
         /////////////////////////////////////////
 
         g_Log.setColor(LogColor::Green);

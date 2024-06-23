@@ -118,8 +118,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         printCmdError("no source code");
         return BcDbgCommandResult::Error;
     }
-
-    g_ByteCodeDebugger.printDebugContext(context, true);
     
     const int startLine = static_cast<int>(funcNode->token.startLocation.line);
     const int endLine   = static_cast<int>(funcNode->content->token.endLocation.line);
