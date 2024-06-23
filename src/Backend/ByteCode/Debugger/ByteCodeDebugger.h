@@ -127,10 +127,10 @@ struct ByteCodeDebugger
     static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
     static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
 
-    void printSourceLines(const ByteCodeRunContext* context, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, int startLine, int endLine) const;
-    void printSourceLines(const ByteCodeRunContext* context, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, uint32_t offset = 3) const;
-    void printSourceLines(const ByteCodeRunContext* context, SourceFile* file, int line, int offset) const;
-    void printInstructions(const ByteCodeRunContext* context, const ByteCode* bc, const ByteCodeInstruction* ip, int num = 1) const;
+    void printSourceLines(const ByteCodeRunContext* context, SourceFile* file, int startLine, int endLine) const;
+    void printSourceLinesAround(const ByteCodeRunContext* context, SourceFile* file, int num = 3) const;
+    void printSourceLinesAround(const ByteCodeRunContext* context, SourceFile* file, int line, int num) const;
+    void printInstructionsAround(const ByteCodeRunContext* context, const ByteCode* bc, const ByteCodeInstruction* ip, int num = 1) const;
 
     static BcDbgCommandResult cmdBackTrace(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdFrame(ByteCodeRunContext* context, const BcDbgCommandArg& arg);

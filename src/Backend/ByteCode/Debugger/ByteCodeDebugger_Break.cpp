@@ -212,13 +212,13 @@ void ByteCodeDebugger::printBreakpoint(const ByteCodeRunContext* context, uint32
     {
         case DebugBkpType::FileLine:
             g_Log.writeEol();
-            g_ByteCodeDebugger.printSourceLines(context, bkp.file, bkp.line - 1, 0);
+            g_ByteCodeDebugger.printSourceLinesAround(context, bkp.file, static_cast<int>(bkp.line) - 1, 0);
             break;
 
         case DebugBkpType::FuncName:
             g_Log.writeEol();
             if (bkp.funcNameCount == 1 && bkp.bc)
-                g_ByteCodeDebugger.printSourceLines(context, bkp.bc->node->token.sourceFile, bkp.bc->node->token.startLocation.line, 0);
+                g_ByteCodeDebugger.printSourceLinesAround(context, bkp.bc->node->token.sourceFile, static_cast<int>(bkp.bc->node->token.startLocation.line), 0);
             break;
 
         case DebugBkpType::InstructionIndex:

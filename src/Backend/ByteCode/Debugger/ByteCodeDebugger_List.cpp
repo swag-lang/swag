@@ -29,7 +29,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
         regN = arg.split[1].toInt();
 
     g_Log.setStoreMode(true);
-    g_ByteCodeDebugger.printInstructions(context, g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, regN);
+    g_ByteCodeDebugger.printInstructionsAround(context, g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, regN);
     g_Log.setStoreMode(false);
     printLong(g_Log.store);
     g_ByteCodeDebugger.bcMode = true;
@@ -76,31 +76,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
         return BcDbgCommandResult::Error;
     }
 
-    const auto toLogBc        = g_ByteCodeDebugger.cxtBc;
-    const auto toLogIp        = g_ByteCodeDebugger.cxtIp;
-    g_ByteCodeDebugger.bcMode = false;
+    int num = 3;
+    if (arg.split.size() == 2)
+        num = arg.split[1].toInt();
 
-    if (toLogBc->node && toLogBc->node->is(AstNodeKind::FuncDecl) && toLogBc->node->token.sourceFile)
+    const auto loc = ByteCode::getLocation(g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, true);
+    if (!loc.node)
     {
-        uint32_t offset = 3;
-        if (arg.split.size() == 2)
-            offset = arg.split[1].toInt();
-
-        const auto inl = g_ByteCodeDebugger.lastBreakIp->node->safeOwnerInline();
-        if (inl)
-        {
-            const auto loc = ByteCode::getLocation(toLogBc, toLogIp, true);
-            g_ByteCodeDebugger.printSourceLines(context, toLogBc, inl->func->token.sourceFile, loc.location, offset);
-        }
-        else
-        {
-            const auto loc = ByteCode::getLocation(toLogBc, toLogIp, false);
-            g_ByteCodeDebugger.printSourceLines(context, toLogBc, toLogBc->node->token.sourceFile, loc.location, offset);
-        }
-    }
-    else
         printCmdError("no source code");
+        return BcDbgCommandResult::Error;
+    }
 
+    g_ByteCodeDebugger.printSourceLinesAround(context, loc.file, static_cast<int>(loc.location->line), num);
     return BcDbgCommandResult::Continue;
 }
 
@@ -123,17 +110,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         return BcDbgCommandResult::Error;
     }
 
-    const auto inl      = loc.node->safeOwnerInline();
-    const auto funcNode = inl ? inl->func : loc.node->ownerFct;
+    const auto funcNode = loc.node->ownerFct;
     if (!funcNode || !funcNode->content || !funcNode->token.sourceFile)
     {
         printCmdError("no source code");
         return BcDbgCommandResult::Error;
     }
 
-    const uint32_t startLine = funcNode->token.startLocation.line;
-    const uint32_t endLine   = funcNode->content->token.endLocation.line;
-    g_ByteCodeDebugger.printSourceLines(context, g_ByteCodeDebugger.cxtBc, loc.file, loc.location, startLine, endLine);
+    const int startLine = static_cast<int>(funcNode->token.startLocation.line);
+    const int endLine   = static_cast<int>(funcNode->content->token.endLocation.line);
+    g_ByteCodeDebugger.printSourceLines(context, loc.file, startLine, endLine);
     return BcDbgCommandResult::Continue;
 }
 

@@ -236,20 +236,14 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     }
 
     // Get current function
-    AstNode*   newFunc   = nullptr;
-    bool       isInlined = false;
-    const auto node      = cxtIp->node;
+    const auto node    = cxtIp->node;
+    AstNode*   newFunc = nullptr;
     if (node)
     {
         if (node->hasOwnerInline())
-        {
-            isInlined = true;
-            newFunc   = node->ownerInline();
-        }
+            newFunc = node->ownerInline();
         else
-        {
             newFunc = node->ownerFct;
-        }
     }
 
     // Print function name
@@ -257,7 +251,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     {
         if (force || newFunc != stepLastFunc)
         {
-            if (isInlined)
+            if (newFunc != node->ownerFct)
                 printTitleNameTypeLoc("=> inlined", newFunc->getScopedName(), newFunc->typeInfo->getDisplayNameC(), "");
             printTitleNameTypeLoc("=> function", node->ownerFct->getScopedName(), node->ownerFct->typeInfo->getDisplayNameC(), "");
         }
@@ -270,7 +264,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     // Print instruction
     if (bcMode)
     {
-        printInstructions(context, cxtBc, cxtIp, 3);
+        printInstructionsAround(context, cxtBc, cxtIp, 3);
     }
 
     // Print source line
@@ -280,7 +274,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
             stepLastFile != loc.file ||
             (stepLastLocation && stepLastLocation->line != loc.location->line))
         {
-            printSourceLines(context, cxtBc, loc.file, loc.location, 3);
+            printSourceLinesAround(context, loc.file, 3);
         }
     }
 
@@ -293,20 +287,23 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     printDisplay(context);
 }
 
-void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, int startLine, int endLine) const
+void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, SourceFile* file, int startLine, int endLine) const
 {
-    Vector<Utf8> lines;
+    SWAG_ASSERT(startLine <= endLine);
+
     bool         eof = false;
-    for (int l = startLine; l <= endLine && !eof; l++)
+    Vector<Utf8> lines;
+    for (auto l = startLine; l <= endLine && !eof; l++)
         lines.push_back(file->getLine(l, &eof));
 
+    const auto loc = ByteCode::getLocation(g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, true);
+
     SyntaxColorContext cxt;
-    uint32_t           lineIdx = 0;
     Vector<Utf8>       toPrint;
     for (const auto& l : lines)
     {
         Utf8       oneLine;
-        const bool currentLine = curLocation && curLocation->line == startLine + lineIdx;
+        const bool currentLine = loc.location && static_cast<int>(loc.location->line) == startLine;
 
         // Line breakpoint
         const DebugBreakpoint* hasBkp = nullptr;
@@ -314,20 +311,8 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, const ByteCod
         {
             switch (bkp.type)
             {
-                case DebugBkpType::FuncName:
-                {
-                    if (!bc)
-                        bc = bkp.bc;
-                    if (!bc)
-                        break;
-                    const auto loc = ByteCode::getLocation(bc, bc->out);
-                    if (bc->getPrintName().find(bkp.name) != -1 && loc.location && startLine + lineIdx + 1 == loc.location->line)
-                        hasBkp = &bkp;
-                    break;
-                }
-
                 case DebugBkpType::FileLine:
-                    if (file->name == bkp.name && startLine + lineIdx + 1 == bkp.line)
+                    if (file->name == bkp.name && startLine + 1 == static_cast<int>(bkp.line))
                         hasBkp = &bkp;
                     break;
 
@@ -367,7 +352,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, const ByteCod
         }
 
         // Line
-        oneLine += form("%-5u ", startLine + lineIdx + 1);
+        oneLine += form("%-5u ", startLine + 1);
         oneLine += Log::colorToVTS(LogColor::Default);
 
         // Code
@@ -387,32 +372,27 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, const ByteCod
         }
 
         toPrint.push_back(oneLine);
-        lineIdx++;
+        startLine++;
     }
 
     printLong(toPrint);
 }
 
-void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, SourceFile* file, int line, int offset) const
+void ByteCodeDebugger::printSourceLinesAround(const ByteCodeRunContext* context, SourceFile* file, int line, int num) const
 {
     file->getLine(0);
-    const int startLine = max(line - offset, 0);
-    const int endLine   = min(line + offset, (int) file->allLines.size() - 1);
-    printSourceLines(context, nullptr, file, nullptr, startLine, endLine);
+    const int startLine = max(line - num, 0);
+    const int endLine   = min(line + num, static_cast<int>(file->allLines.size()) - 1);
+    printSourceLines(context, file, startLine, endLine);
 }
 
-void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, uint32_t offset) const
+void ByteCodeDebugger::printSourceLinesAround(const ByteCodeRunContext* context, SourceFile* file, int num) const
 {
-    int startLine;
-    if (offset > curLocation->line)
-        startLine = 0;
-    else
-        startLine = curLocation->line - offset;
-    const int endLine = curLocation->line + offset;
-    printSourceLines(context, bc, file, curLocation, startLine, endLine);
+    const auto loc = ByteCode::getLocation(g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, true);
+    printSourceLinesAround(context, file, static_cast<int>(loc.location->line), num);
 }
 
-void ByteCodeDebugger::printInstructions(const ByteCodeRunContext*, const ByteCode* bc, const ByteCodeInstruction* ip, int num) const
+void ByteCodeDebugger::printInstructionsAround(const ByteCodeRunContext*, const ByteCode* bc, const ByteCodeInstruction* ip, int num) const
 {
     const int count = num;
     int       cpt   = 1;
