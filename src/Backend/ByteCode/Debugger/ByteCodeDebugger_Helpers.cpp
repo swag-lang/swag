@@ -219,8 +219,10 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     SWAG_ASSERT(cxtIp);
 
     if (forcePrintContext)
-        force = true;
-    forcePrintContext = false;
+    {
+        force             = true;
+        forcePrintContext = false;
+    }
 
     const auto loc = ByteCode::getLocation(cxtBc, cxtIp, true);
 
@@ -239,10 +241,10 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     const auto node      = cxtIp->node;
     if (node)
     {
-        if (node->hasExtOwner() && node->extOwner()->ownerInline)
+        if (node->hasOwnerInline())
         {
             isInlined = true;
-            newFunc   = node->extOwner()->ownerInline->func;
+            newFunc   = node->ownerInline();
         }
         else
         {
