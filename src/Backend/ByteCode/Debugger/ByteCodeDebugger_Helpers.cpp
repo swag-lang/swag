@@ -267,7 +267,7 @@ void ByteCodeDebugger::printOneStepContext(ByteCodeRunContext* context, bool for
     // Print instruction
     if (bcMode)
     {
-        printInstructionsAround(context, cxtBc, cxtIp, 3);
+        printInstructionsAround(context, cxtBc, cxtIp, g_ByteCodeDebugger.printInstrNum);
     }
 
     // Print source line
@@ -277,7 +277,7 @@ void ByteCodeDebugger::printOneStepContext(ByteCodeRunContext* context, bool for
             stepLastFile != loc.file ||
             (stepLastLocation && stepLastLocation->line != loc.location->line))
         {
-            printSourceLinesAround(context, loc.file, 3);
+            printSourceLinesAround(context, loc.file, g_ByteCodeDebugger.printListNum);
         }
     }
 

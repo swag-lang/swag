@@ -24,12 +24,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
         return BcDbgCommandResult::Error;
     }
 
-    int regN = 3;
     if (arg.split.size() == 2)
-        regN = arg.split[1].toInt();
+        g_ByteCodeDebugger.printInstrNum = arg.split[1].toInt();
 
     g_Log.setStoreMode(true);
-    g_ByteCodeDebugger.printInstructionsAround(context, g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, regN);
+    g_ByteCodeDebugger.printInstructionsAround(context, g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, g_ByteCodeDebugger.printInstrNum);
     g_Log.setStoreMode(false);
     printLong(g_Log.store);
 
@@ -76,9 +75,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
         return BcDbgCommandResult::Error;
     }
 
-    int num = 3;
     if (arg.split.size() == 2)
-        num = arg.split[1].toInt();
+        g_ByteCodeDebugger.printListNum = arg.split[1].toInt();
 
     const auto loc = ByteCode::getLocation(g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, true);
     if (!loc.node)
@@ -87,7 +85,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
         return BcDbgCommandResult::Error;
     }
 
-    g_ByteCodeDebugger.printSourceLinesAround(context, loc.file, static_cast<int>(loc.location->line), num);
+    g_ByteCodeDebugger.printSourceLinesAround(context, loc.file, static_cast<int>(loc.location->line), g_ByteCodeDebugger.printListNum);
 
     g_ByteCodeDebugger.bcMode = false;
     return BcDbgCommandResult::Continue;
@@ -118,7 +116,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         printCmdError("no source code");
         return BcDbgCommandResult::Error;
     }
-    
+
     const int startLine = static_cast<int>(funcNode->token.startLocation.line);
     const int endLine   = static_cast<int>(funcNode->content->token.endLocation.line);
     g_ByteCodeDebugger.printSourceLines(context, loc.file, startLine, endLine);

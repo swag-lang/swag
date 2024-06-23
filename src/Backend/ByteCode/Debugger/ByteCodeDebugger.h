@@ -233,7 +233,7 @@ struct ByteCodeDebugger
     SourceLocation*      stepLastLocation = nullptr;
     AstNode*             stepLastFunc     = nullptr;
     ByteCode*            cxtBc            = nullptr;
-    ByteCode*            stepLastBc           = nullptr;
+    ByteCode*            stepLastBc       = nullptr;
     ByteCodeInstruction* cxtIp            = nullptr;
     uint8_t*             cxtBp            = nullptr;
     uint8_t*             cxtSp            = nullptr;
@@ -254,6 +254,8 @@ struct ByteCodeDebugger
     bool        printBcCode       = false;
     bool        printBtCode       = false;
     bool        printEvalBc       = false;
+    int         printListNum      = 3;
+    int         printInstrNum     = 3;
 };
 
 extern ByteCodeDebugger g_ByteCodeDebugger;
