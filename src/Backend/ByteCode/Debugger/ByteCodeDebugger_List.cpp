@@ -104,6 +104,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     return BcDbgCommandResult::Continue;
 }
 
+#pragma optimize("", off)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
@@ -113,39 +114,26 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     if (arg.split.size() > 1)
         return BcDbgCommandResult::TooManyArguments;
 
-    const auto toLogBc        = g_ByteCodeDebugger.cxtBc;
-    const auto toLogIp        = g_ByteCodeDebugger.cxtIp;
     g_ByteCodeDebugger.bcMode = false;
 
-    if (toLogBc->node && toLogBc->node->is(AstNodeKind::FuncDecl) && toLogBc->node->token.sourceFile)
+    const auto loc = ByteCode::getLocation(g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, true);
+    if (!loc.node)
     {
-        const auto funcNode = castAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
-        if (funcNode->content)
-        {
-            toLogBc->printName();
-
-            const auto inl = g_ByteCodeDebugger.lastBreakIp->node->safeOwnerInline();
-            if (inl)
-            {
-                const auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, true);
-                const uint32_t startLine = inl->func->token.startLocation.line;
-                const uint32_t endLine   = inl->func->content->token.endLocation.line;
-                g_ByteCodeDebugger.printSourceLines(context, toLogBc, inl->func->token.sourceFile, loc.location, startLine, endLine);
-            }
-            else
-            {
-                const auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, false);
-                const uint32_t startLine = toLogBc->node->token.startLocation.line;
-                const uint32_t endLine   = funcNode->content->token.endLocation.line;
-                g_ByteCodeDebugger.printSourceLines(context, toLogBc, toLogBc->node->token.sourceFile, loc.location, startLine, endLine);
-            }
-        }
-        else
-            printCmdError("no source code");
-    }
-    else
         printCmdError("no source code");
+        return BcDbgCommandResult::Error;
+    }
 
+    const auto inl      = loc.node->safeOwnerInline();
+    const auto funcNode = inl ? inl->func : loc.node->ownerFct;
+    if (!funcNode || !funcNode->content || !funcNode->token.sourceFile)
+    {
+        printCmdError("no source code");
+        return BcDbgCommandResult::Error;
+    }
+
+    const uint32_t startLine = funcNode->token.startLocation.line;
+    const uint32_t endLine   = funcNode->content->token.endLocation.line;
+    g_ByteCodeDebugger.printSourceLines(context, g_ByteCodeDebugger.cxtBc, loc.file, loc.location, startLine, endLine);
     return BcDbgCommandResult::Continue;
 }
 

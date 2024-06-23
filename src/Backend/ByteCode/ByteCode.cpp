@@ -20,7 +20,7 @@ void ByteCode::release()
     out = nullptr;
 }
 
-ByteCode::Location ByteCode::getLocation(const ByteCode* bc, const ByteCodeInstruction* ip, bool getInline)
+ByteCode::Location ByteCode::getLocation(const ByteCode* bc, const ByteCodeInstruction* ip, bool wantInline)
 {
     SWAG_ASSERT(bc && ip);
     if (!ip->node || !ip->node->ownerScope || !bc->sourceFile)
@@ -28,21 +28,23 @@ ByteCode::Location ByteCode::getLocation(const ByteCode* bc, const ByteCodeInstr
 
     Location loc;
 
-    loc.file = ip && ip->node && ip->node->token.sourceFile ? ip->node->token.sourceFile : bc->sourceFile;
+    loc.node = ip->node;
+    loc.file = ip->node->token.sourceFile ? ip->node->token.sourceFile : bc->sourceFile;
     if (loc.file && loc.file->fileForSourceLocation)
         loc.file = loc.file->fileForSourceLocation;
     loc.location = ip->location;
 
-    if (!getInline)
+    if (!wantInline &&
+        ip->node->hasOwnerInline() &&
+        !ip->node->hasAstFlag(AST_IN_MIXIN) &&
+        ip->node->ownerInline()->ownerFct == ip->node->ownerFct)
     {
-        if (ip->node->hasOwnerInline() && !ip->node->hasAstFlag(AST_IN_MIXIN) && ip->node->ownerInline()->ownerFct == ip->node->ownerFct)
-        {
-            auto n = ip->node;
-            while (n->hasOwnerInline() && !n->hasAstFlag(AST_IN_MIXIN) && n->ownerInline()->ownerFct == n->ownerFct)
-                n = n->ownerInline();
-            loc.file     = n->token.sourceFile;
-            loc.location = &n->token.startLocation;
-        }
+        auto n = ip->node;
+        while (n->hasOwnerInline() && !n->hasAstFlag(AST_IN_MIXIN) && n->ownerInline()->ownerFct == n->ownerFct)
+            n = n->ownerInline();
+        loc.node = n;
+        loc.file = n->token.sourceFile;
+        loc.location = &n->token.startLocation;
     }
 
     return loc;

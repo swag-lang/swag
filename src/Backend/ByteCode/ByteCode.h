@@ -1,8 +1,8 @@
 #pragma once
 #include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/ByteCode/ByteCodeOp.h"
-#include "Backend/ByteCode/Register.h"
 #include "Backend/ByteCode/Profiler/Profiler.h"
+#include "Backend/ByteCode/Register.h"
 #include "Threading/Mutex.h"
 #include "Threading/RaceCondition.h"
 
@@ -24,6 +24,7 @@ struct ByteCode
     {
         SourceFile*     file     = nullptr;
         SourceLocation* location = nullptr;
+        AstNode*        node     = nullptr;
     };
 
     struct PrintInstructionLine
@@ -85,7 +86,7 @@ struct ByteCode
     static void*    doByteCodeLambda(void* ptr);
     static void*    undoByteCodeLambda(void* ptr);
     static bool     isByteCodeLambda(void* ptr);
-    static Location getLocation(const ByteCode* bc, const ByteCodeInstruction* ip, bool getInline = false);
+    static Location getLocation(const ByteCode* bc, const ByteCodeInstruction* ip, bool wantInline = false);
 
     static uint32_t   getSetZeroAtPointerSize(const ByteCodeInstruction* inst, uint32_t& offset);
     static uint32_t   getSetZeroStackSize(const ByteCodeInstruction* inst, uint32_t& offset);
