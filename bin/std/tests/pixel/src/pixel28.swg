@@ -4,7 +4,7 @@ func cmp(a, b: Image)
 {
     var ptra = a.pixels.buffer
     var ptrb = b.pixels.buffer
-    var m = 0
+    var m    = 0
     loop a.size / 3
     {
         var ca = Color.fromRgb(ptra[0], ptra[1], ptra[2])

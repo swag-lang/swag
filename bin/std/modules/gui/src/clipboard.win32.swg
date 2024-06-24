@@ -55,12 +55,12 @@ func addTypedData(fmt: ValueFormat, type: typeinfo, data: const [..] u8)
     defer discard GlobalUnlock(pz)
 
     // Store type crc32
-    var pzi   = cast(^u32) pz
+    var pzi = cast(^u32) pz
     dref pzi = type ? type.crc32 : 0
     pzi += 1
 
     // Store data size
-    var pzu   = cast(^u64) pzi
+    var pzu = cast(^u64) pzi
     dref pzu = @countof(data)
     pzu += 1
 
@@ -84,11 +84,11 @@ func getTypedData(fmt: ValueFormat, type: typeinfo)->Array'u8
         let hglob = GetClipboardData(cast(UINT) fmt)
         if hglob
         {
-            let pz    = cast(^u8) GlobalLock(hglob)
+            let pz = cast(^u8) GlobalLock(hglob)
             defer discard GlobalUnlock(pz)
 
             // Get type crc32, check this is correct
-            var pzi   = cast(^u32) pz
+            var pzi = cast(^u32) pz
             if type and dref pzi != type.crc32 do
                 return result
             pzi += 1

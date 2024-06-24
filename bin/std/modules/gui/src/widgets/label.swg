@@ -4,7 +4,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum LabelFlags
 {
-    Zero       = 0
+    Zero                      = 0
     WordWrap
     LightText
     AutoHeight

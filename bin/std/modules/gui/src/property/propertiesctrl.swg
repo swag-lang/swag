@@ -73,7 +73,7 @@ impl PropertiesCtrl
         {
             with ed.tab = Tab.create(ed, {0, 0, 0, 30})
             {
-                .margin.w = 12
+                .margin.w  = 12
                 .dockStyle = .Top
                 .setForm(.PushButton)
                 .sigSelChanged += closure|ed|(tab) { ed.prop.setCurrentSection(cast(u32) cast(u64) tab.getSelectedItem().userData0); }

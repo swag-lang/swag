@@ -161,7 +161,7 @@ internal impl Properties
             scan = scan.parent
         }
 
-        let canChange = canChangeItem(item)
+        let canChange     = canChangeItem(item)
         var itemDisabled: bool
 
         if Reflection.isStructArray(item.type)

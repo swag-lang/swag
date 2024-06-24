@@ -25,21 +25,21 @@ func(T, R) map(values: const [..] T, cb: closure(T)->R)->Array'R
 func(T) reduce(values: const [..] T, cb: closure(T, T)->T)->T
 {
     var result = values[0]
-    loop i: 1 to @countof(values)-1 do
+    loop i: 1 to @countof(values) - 1 do
         result = cb(result, values[i])
     return result
 }
 
 // Get the minimum value of a slice, and the corresponding value index.
-func(T) min(values: const [..] T)->{value: T, index: u64}
+func(T) min(values: const [..] T)->{ value: T, index: u64 }
 {
     var result: retval
     result.value = values[0]
     if @countof(values) == 1 do
         return result
 
-    var index  = 0'u64
-    loop i: 1 to @countof(values)-1
+    var index = 0'u64
+    loop i: 1 to @countof(values) - 1
     {
         if values[i] < result.value
         {
@@ -52,15 +52,15 @@ func(T) min(values: const [..] T)->{value: T, index: u64}
 }
 
 // Get the maximum value of a slice, and the corresponding value index.
-func(T) max(values: const [..] T)->{value: T, index: u64}
+func(T) max(values: const [..] T)->{ value: T, index: u64 }
 {
     var result: retval
     result.value = values[0]
     if @countof(values) == 1 do
         return result
 
-    var index  = 0'u64
-    loop i: 1 to @countof(values)-1
+    var index = 0'u64
+    loop i: 1 to @countof(values) - 1
     {
         if values[i] > result.value
         {

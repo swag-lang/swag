@@ -89,8 +89,7 @@ impl FontFamily
         result.sort(func(a, b)
         {
             return a.name <=> b.name
-        }
-)
+        })
         return result
     }
 

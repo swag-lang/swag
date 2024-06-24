@@ -1,8 +1,7 @@
 #global public
 using Swag, Core, Core.Errors, Core.StrConv
 
-#[ConstExpr]
-#[Core.Serialization.Final]
+#[ConstExpr, Core.Serialization.Final]
 struct Color
 {
     #if Core.BIG_ENDIAN

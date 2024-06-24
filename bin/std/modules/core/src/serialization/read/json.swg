@@ -1,4 +1,5 @@
-#global namespace Serialization.Read
+#global namespace Serialization
+#global namespace Read
 using Swag, Core.Errors
 
 /*
@@ -252,7 +253,7 @@ public impl JSon
                    stream.readU8() == `l` and
                    stream.readU8() == `l`
                 {
-                   return result
+                    return result
                 }
 
                 throw getError("malformed string, missing opening [[\"]]")

@@ -330,7 +330,7 @@ internal impl EditBox
         {
             if !clearBtn
             {
-                clearBtn = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.WndClose, 18), {0, 0, 24, 24})
+                clearBtn           = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.WndClose, 18), {0, 0, 24, 24})
                 clearBtn.dockStyle = .Right
                 clearBtn.setForm(IconButtonForm.Round)
                 clearBtn.sigPressed += closure|self|(btn) { self.setText(null); }

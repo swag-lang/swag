@@ -19,7 +19,7 @@ public impl Painter
         // Paint
         visit i: p.triangles.triIndices
         {
-            let tri = p.triangles.triangles[i]
+            let tri  = p.triangles.triangles[i]
             let prim = pushTriangle(tri.points[0].v, tri.points[1].v, tri.points[2].v, brush.color)
             if curState.paintParams & .Antialiased
             {

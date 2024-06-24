@@ -150,4 +150,3 @@ func hasInterface(type: typeinfo, itf: typeinfo)->bool
 
     return false
 }
-

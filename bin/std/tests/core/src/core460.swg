@@ -10,8 +10,7 @@ struct Toto1
     x: [4] AA
 }
 
-#[Alias("AA")]
-#[Final]
+#[Alias("AA"), Final]
 struct BB
 {
     x, y, z: f32

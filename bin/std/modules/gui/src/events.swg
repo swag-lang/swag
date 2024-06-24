@@ -177,9 +177,9 @@ struct QuitEvent
 
 struct FocusEvent
 {
-    using base:     Event
-    other:          *Wnd
-    canChangeFocus  = true
+    using base:        Event
+    other:             *Wnd
+    canChangeFocus     = true
 }
 
 struct SysUserEvent

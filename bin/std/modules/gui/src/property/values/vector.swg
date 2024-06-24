@@ -4,8 +4,8 @@ impl Properties
 {
     mtd constructVector(value: Swag.TypeValue, typeStruct: const *Swag.TypeInfoStruct, data: ^u8, parentItem: *PropertiesItem)->*PropertiesItem
     {
-        let item       = addItem(value, data, parentItem)
-        let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, getThemeMetrics().editBox_Height})
+        let item = addItem(value, data, parentItem)
+        let line = Wnd.create'Wnd(item.line, {0, 0, position.width, getThemeMetrics().editBox_Height})
         line.dockStyle = .CenterKeepSizeVert
 
         visit v: typeStruct.fields

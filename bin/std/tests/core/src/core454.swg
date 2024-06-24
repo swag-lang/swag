@@ -20,19 +20,20 @@ const FILE = """
 
 struct Book
 {
-    author:         String
-    title:          String
-    genre:          String
-    price:          s32
-    publish_date:   AA
-    description:    String
+    author:           String
+    title:            String
+    genre:            String
+    price:            s32
+    publish_date:     AA
+    description:      String
 }
 
 #test
 {
     var rea: Decoder'Read.Xml
     let v    = catch rea.readAll'Book(FILE)
-    if @err() != null do Console.print(@err())
+    if @err() != null do
+        Console.print(@err())
     @assert(v.price == 44)
     @assert(v.publish_date.x == 42)
     defer Memory.delete(v)

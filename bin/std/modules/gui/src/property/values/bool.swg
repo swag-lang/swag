@@ -19,7 +19,7 @@ impl Properties
 
     mtd constructBool(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
     {
-        var flags = AddItemFlags.Name
+        var flags    = AddItemFlags.Name
         let dispDesc = Reflection.getAttributeValue(value, Properties.Description, "desc")
 
         // Display description instead of field name in list mode

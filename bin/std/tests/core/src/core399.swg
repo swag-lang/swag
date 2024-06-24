@@ -23,8 +23,7 @@ func print(tree: const &Node)
     walk(tree, func(node, depth)
     {
         //Console.printf("% %\n", 2 * depth, node)
-    }
-)
+    })
 }
 
 func calcTotalDepth(tree: const &Node)->s32
@@ -33,8 +32,7 @@ func calcTotalDepth(tree: const &Node)->s32
     walk(tree, closure|&total|(node, depth)
     {
         total += depth
-    }
-)
+    })
 
     return total
 }

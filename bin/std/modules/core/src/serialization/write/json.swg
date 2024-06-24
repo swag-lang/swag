@@ -1,4 +1,5 @@
-#global namespace Serialization.Write
+#global namespace Serialization
+#global namespace Write
 #global public
 using Swag
 
@@ -43,14 +44,10 @@ impl JSon
     }
 
     #[Warning("Wrn0006", WarningLevel.Disable)]
-    mtd beginRoot()
-    {
-    }
+    mtd beginRoot() {}
 
     #[Warning("Wrn0006", WarningLevel.Disable)]
-    mtd endRoot()
-    {
-    }
+    mtd endRoot() {}
 
     mtd beginSequence(_typeElem: typeinfo, _data: const *void, _countElem: u64)->bool
     {

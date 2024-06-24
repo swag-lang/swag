@@ -61,7 +61,7 @@ func removeValueStructArray(arrayPtr: *void, valueType: typeinfo, index: u64)
     // Move all elements at the remove position
     if index != arr.count - 1
     {
-        let countMove = arr.count - index - 1;
+        let countMove = arr.count - index - 1
         Memory.copy(arr.buffer + (index * sizeValue), arr.buffer + (index + 1) * sizeValue, countMove * sizeValue)
         if valueTypeStruct and Reflection.hasPostMove(valueTypeStruct)
         {

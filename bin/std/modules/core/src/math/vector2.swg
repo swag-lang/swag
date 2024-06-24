@@ -329,12 +329,11 @@ impl Vector2
     mtd const angle0To2Pi(other: Self)->f32
     {
         var angle = Math.acos(cosAngle(other))
-        let sign = (x * other.y) - (y * other.x)
+        let sign  = (x * other.y) - (y * other.x)
         if sign > 0 do
             angle = ConstF32.TwoPi - angle
         return angle
     }
-
 
     // Lerp one vector with another
     func lerp(src, dst: Vector2, factor: f32)->Vector2

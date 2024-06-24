@@ -30,18 +30,18 @@ public impl IImageEncoder for Encoder
         case RGB8:
             for var i = 0; i < image.pixels.count; i += 3
             {
-                result.addNative(image.pixels.buffer[i+2])
-                result.addNative(image.pixels.buffer[i+1])
-                result.addNative(image.pixels.buffer[i+0])
+                result.addNative(image.pixels.buffer[i + 2])
+                result.addNative(image.pixels.buffer[i + 1])
+                result.addNative(image.pixels.buffer[i + 0])
             }
 
         case RGBA8:
             for var i = 0; i < image.pixels.count; i += 4
             {
-                result.addNative(image.pixels.buffer[i+2])
-                result.addNative(image.pixels.buffer[i+1])
-                result.addNative(image.pixels.buffer[i+0])
-                result.addNative(image.pixels.buffer[i+3])
+                result.addNative(image.pixels.buffer[i + 2])
+                result.addNative(image.pixels.buffer[i + 1])
+                result.addNative(image.pixels.buffer[i + 0])
+                result.addNative(image.pixels.buffer[i + 3])
             }
 
         default:

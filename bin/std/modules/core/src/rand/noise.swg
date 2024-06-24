@@ -118,7 +118,7 @@ func valCoord(seed: s32, xPrimed, yPrimed: s32)->f32
 #[Swag.Overload]
 func valCoord(seed: s32, xPrimed, yPrimed, zPrimed: s32)->f32
 {
-    var hash = hash(seed, xPrimed, yPrimed, zPrimed);
+    var hash = hash(seed, xPrimed, yPrimed, zPrimed)
     hash *= hash
     hash ^= hash << 19
     return hash * (1 / 2147483648.0)
