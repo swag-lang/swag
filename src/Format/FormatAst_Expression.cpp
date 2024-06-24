@@ -11,9 +11,9 @@ bool FormatAst::outputArrayPointerSlicing(FormatContext& context, AstNode* node)
     concat->addChar('[');
     SWAG_CHECK(outputNode(context, arrayNode->lowerBound));
     if (arrayNode->hasSpecFlag(AstArrayPointerSlicing::SPEC_FLAG_EXCLUDE_UP))
-        concat->addStringView("..<");
+        concat->addString("..<");
     else
-        concat->addStringView("..");
+        concat->addString("..");
     SWAG_CHECK(outputNode(context, arrayNode->upperBound));
     concat->addChar(']');
     return true;
@@ -27,7 +27,7 @@ bool FormatAst::outputArrayPointerIndex(FormatContext& context, AstNode* node)
     {
         if (arrayNode->parent->hasAstFlag(AST_EXPR_IN_PARENTS))
             concat->addChar('(');
-        concat->addStringView("dref");
+        concat->addString("dref");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, arrayNode->array));
         if (arrayNode->parent->hasAstFlag(AST_EXPR_IN_PARENTS))
@@ -100,9 +100,9 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
     concat->addString(node->token.text);
 
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
-        concat->addStringView(",over");
+        concat->addString(",over");
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
-        concat->addStringView(",up");
+        concat->addString(",up");
 
     addBlank(node->secondChild());
     SWAG_CHECK(outputNode(context, node->secondChild()));
@@ -123,9 +123,9 @@ bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
     concat->addBlank();
     concat->addString(node->token.text);
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
-        concat->addStringView(",over");
+        concat->addString(",over");
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
-        concat->addStringView(",up");
+        concat->addString(",up");
     concat->addBlank();
 
     if (const auto parse = getTokenParse(node->secondChild()))
@@ -185,7 +185,7 @@ bool FormatAst::outputNullConditionalExpression(FormatContext& context, const As
 
     SWAG_CHECK(outputNode(context, node->firstChild()));
     concat->addBlank();
-    concat->addStringView("orelse");
+    concat->addString("orelse");
     concat->addBlank();
     SWAG_CHECK(outputNode(context, node->secondChild()));
 
@@ -216,13 +216,13 @@ bool FormatAst::outputConditionalExpression(FormatContext& context, AstNode* nod
 
 bool FormatAst::outputCast(FormatContext& context, const AstNode* node)
 {
-    concat->addStringView("cast");
+    concat->addString("cast");
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_OVERFLOW))
-        concat->addStringView(",over");
+        concat->addString(",over");
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_BIT))
-        concat->addStringView(",bit");
+        concat->addString(",bit");
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
-        concat->addStringView(",unconst");
+        concat->addString(",unconst");
 
     concat->addChar('(');
     SWAG_CHECK(outputNode(context, node->firstChild()));

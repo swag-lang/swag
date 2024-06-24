@@ -82,6 +82,7 @@ struct Utf8
 
     // ReSharper disable once CppNonExplicitConversionOperator
     operator const char*() const;
+    operator std::string_view() const;
     char        operator[](uint32_t index) const;
     Utf8&       operator=(const char* txt);
     Utf8&       operator=(const Utf8& other);

@@ -13,9 +13,8 @@ struct FormatConcat : Concat
     void addBlankLine();
     void addEol();
     void addU32Str(uint32_t value);
-    void addStringView(const std::string_view& view);
+    void addString(const std::string_view& view);
     void addString(const char* v, uint32_t len);
-    void addString(const Utf8& v);
     void addStringFormat(const char* format, ...);
     void addChar(char c);
     bool removeLastChar(char c);

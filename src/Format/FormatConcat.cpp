@@ -98,7 +98,7 @@ void FormatConcat::addIndent(uint32_t num)
     }
 }
 
-void FormatConcat::addStringView(const std::string_view& view)
+void FormatConcat::addString(const std::string_view& view)
 {
     addString(view.data(), static_cast<uint32_t>(view.length()));
 }
@@ -112,11 +112,6 @@ void FormatConcat::addString(const char* v, uint32_t len)
     blank = 0;
     column += len;
     indent = 0;
-}
-
-void FormatConcat::addString(const Utf8& v)
-{
-    addString(v.c_str(), v.length());
 }
 
 void FormatConcat::addStringFormat(const char* format, ...)
@@ -135,7 +130,7 @@ void FormatConcat::addU32Str(uint32_t value)
     if (value < 10)
         addChar(static_cast<char>(value + '0'));
     else
-        addStringView(std::to_string(value));
+        addString(std::to_string(value));
 }
 
 void FormatConcat::clear()

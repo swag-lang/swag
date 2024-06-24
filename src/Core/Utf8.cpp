@@ -293,6 +293,11 @@ Utf8::operator const char*() const
     return c_str();
 }
 
+Utf8::operator std::string_view() const
+{
+    return {buffer, count};
+}
+
 char Utf8::operator[](uint32_t index) const
 {
     SWAG_ASSERT(index <= count);

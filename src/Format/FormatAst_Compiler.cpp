@@ -10,9 +10,9 @@ bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, AstNo
 
     if (ifNode->hasAstFlag(AST_GLOBAL_NODE))
     {
-        concat->addStringView("#global");
+        concat->addString("#global");
         concat->addBlank();
-        concat->addStringView("#if");
+        concat->addString("#if");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, ifNode->boolExpression));
         concat->addEol();
@@ -34,7 +34,7 @@ bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, AstNo
              ifNode->ifBlock->firstChild()->isNot(AstNodeKind::Statement))
     {
         concat->addBlank();
-        concat->addStringView("#do");
+        concat->addString("#do");
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
@@ -66,12 +66,12 @@ bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, AstNo
     else
     {
         concat->addIndent(context.indent);
-        concat->addStringView("#else");
+        concat->addString("#else");
         if ((ifNode->elseBlock->firstChild()->is(AstNodeKind::Statement) && !ifNode->elseBlock->firstChild()->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY)) ||
             ifNode->elseBlock->firstChild()->isNot(AstNodeKind::Statement))
         {
             concat->addBlank();
-            concat->addStringView("#do");
+            concat->addString("#do");
             concat->addEol();
             context.indent++;
             concat->addIndent(context.indent);
@@ -95,34 +95,34 @@ bool FormatAst::outputCompilerSpecialValue(FormatContext&, AstNode* node) const
     switch (node->token.id)
     {
         case TokenId::CompilerSelf:
-            concat->addStringView("#self");
+            concat->addString("#self");
             break;
         case TokenId::CompilerCallerFunction:
-            concat->addStringView("#callerfunction");
+            concat->addString("#callerfunction");
             break;
         case TokenId::CompilerCallerLocation:
-            concat->addStringView("#callerlocation");
+            concat->addString("#callerlocation");
             break;
         case TokenId::CompilerLocation:
-            concat->addStringView("#location");
+            concat->addString("#location");
             break;
         case TokenId::CompilerOs:
-            concat->addStringView("#os");
+            concat->addString("#os");
             break;
         case TokenId::CompilerSwagOs:
-            concat->addStringView("#swagos");
+            concat->addString("#swagos");
             break;
         case TokenId::CompilerArch:
-            concat->addStringView("#arch");
+            concat->addString("#arch");
             break;
         case TokenId::CompilerCpu:
-            concat->addStringView("#cpu");
+            concat->addString("#cpu");
             break;
         case TokenId::CompilerBackend:
-            concat->addStringView("#backend");
+            concat->addString("#backend");
             break;
         case TokenId::CompilerBuildCfg:
-            concat->addStringView("#cfg");
+            concat->addString("#cfg");
             break;
         default:
             Report::internalError(node, "FormatAst::outputNode, unknown compiler function");
@@ -134,7 +134,7 @@ bool FormatAst::outputCompilerSpecialValue(FormatContext&, AstNode* node) const
 bool FormatAst::outputCompilerMixin(FormatContext& context, AstNode* node)
 {
     const auto compilerMixin = castAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
-    concat->addStringView("#mixin");
+    concat->addString("#mixin");
     concat->addBlank();
     SWAG_CHECK(outputNode(context, node->firstChild()));
     if (!compilerMixin->replaceTokens.empty())
@@ -147,10 +147,10 @@ bool FormatAst::outputCompilerMixin(FormatContext& context, AstNode* node)
             switch (m.first)
             {
                 case TokenId::KwdBreak:
-                    concat->addStringView("break");
+                    concat->addString("break");
                     break;
                 case TokenId::KwdContinue:
-                    concat->addStringView("continue");
+                    concat->addString("continue");
                     break;
                 default:
                     SWAG_ASSERT(false);
@@ -173,13 +173,13 @@ bool FormatAst::outputCompilerMixin(FormatContext& context, AstNode* node)
 bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
 {
     if (node->is(AstNodeKind::CompilerRun) || node->is(AstNodeKind::CompilerRunExpression))
-        concat->addStringView("#run");
+        concat->addString("#run");
     else if (node->is(AstNodeKind::CompilerAst))
-        concat->addStringView("#ast");
+        concat->addString("#ast");
     else if (node->is(AstNodeKind::CompilerValidIf))
-        concat->addStringView("#validif");
+        concat->addString("#validif");
     else if (node->is(AstNodeKind::CompilerValidIfx))
-        concat->addStringView("#validifx");
+        concat->addString("#validifx");
     concat->addBlank();
 
     const auto front = node->firstChild();
@@ -202,7 +202,7 @@ bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
 bool FormatAst::outputCompilerExport(FormatContext&, AstNode* node) const
 {
     const auto decl = castAst<AstCompilerImport>(node, AstNodeKind::CompilerImport);
-    concat->addStringView("#import");
+    concat->addString("#import");
     concat->addBlank();
     concat->addChar('"');
     concat->addString(node->token.text);
@@ -211,7 +211,7 @@ bool FormatAst::outputCompilerExport(FormatContext&, AstNode* node) const
     if (!decl->tokenLocation.text.empty())
     {
         concat->addBlank();
-        concat->addStringView("location");
+        concat->addString("location");
         concat->addChar('=');
         concat->addChar('"');
         concat->addString(decl->tokenLocation.text);
@@ -221,7 +221,7 @@ bool FormatAst::outputCompilerExport(FormatContext&, AstNode* node) const
     if (!decl->tokenVersion.text.empty())
     {
         concat->addBlank();
-        concat->addStringView("version");
+        concat->addString("version");
         concat->addChar('=');
         concat->addChar('"');
         concat->addString(decl->tokenVersion.text);
@@ -254,7 +254,7 @@ bool FormatAst::outputCompilerCode(FormatContext& context, AstNode* node)
     {
         FormatContext cxt{context};
         cxt.canConcatStatement = context.keepSameCodeBlock;
-        concat->addStringView("#code");
+        concat->addString("#code");
         concat->addBlank();
         SWAG_CHECK(outputNode(cxt, node->firstChild()));
         concat->removeLastChar('\n');
@@ -265,7 +265,7 @@ bool FormatAst::outputCompilerCode(FormatContext& context, AstNode* node)
 
 bool FormatAst::outputCompilerGlobal(FormatContext& context, const AstNode* node)
 {
-    concat->addStringView("#global");
+    concat->addString("#global");
     concat->addBlank();
     SWAG_CHECK(outputNode(context, node->firstChild()));
     if (node->secondChild())

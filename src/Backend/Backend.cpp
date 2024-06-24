@@ -292,18 +292,18 @@ JobResult Backend::generateExportFile(Job* ownerJob)
         bufferSwg.init(4 * 1024);
         bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
         bufferSwg.addEol();
-        bufferSwg.addStringView("#global generated");
+        bufferSwg.addString("#global generated");
         bufferSwg.addEol();
 
         for (const auto& dep : module->moduleDependencies)
         {
-            bufferSwg.addStringView("#import \"");
+            bufferSwg.addString("#import \"");
             bufferSwg.addString(dep->name);
             bufferSwg.addChar('"');
             bufferSwg.addEol();
         }
 
-        bufferSwg.addStringView("using Swag");
+        bufferSwg.addString("using Swag");
         bufferSwg.addEol();
         bufferSwg.addEol();
 

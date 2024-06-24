@@ -9,7 +9,7 @@ bool FormatAst::outputFuncDeclParameters(FormatContext& context, AstNode* parame
 {
     if (!parameters)
     {
-        concat->addStringView("()");
+        concat->addString("()");
         return true;
     }
 
@@ -29,7 +29,7 @@ bool FormatAst::outputFuncReturnType(FormatContext& context, const AstFuncDecl* 
 
     if (funcNode->returnType && funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
     {
-        concat->addStringView("->");
+        concat->addString("->");
         SWAG_CHECK(outputNode(context, returnNode));
     }
 
@@ -42,15 +42,15 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
 
     if (node->is(AstNodeKind::AttrDecl))
     {
-        concat->addStringView("attr");
+        concat->addString("attr");
     }
     else if (node->is(AstNodeKind::FuncDecl) && node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
     {
         isMethod = true;
-        concat->addStringView("mtd");
+        concat->addString("mtd");
     }
     else
-        concat->addStringView("func");
+        concat->addString("func");
 
     if (genericParameters)
     {
@@ -69,14 +69,14 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
             const auto typeDecl = castAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
             if (typeDecl->typeFlags.has(TYPEFLAG_IS_CONST))
             {
-                concat->addStringView("const");
+                concat->addString("const");
                 concat->addBlank();
             }
         }
 
         if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
         {
-            concat->addStringView("impl");
+            concat->addString("impl");
             concat->addBlank();
         }
     }
@@ -98,12 +98,12 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
     if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
     {
         concat->addBlank();
-        concat->addStringView("throw");
+        concat->addString("throw");
     }
     else if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
     {
         concat->addBlank();
-        concat->addStringView("assume");
+        concat->addString("assume");
     }
 
     // #validif must be exported
@@ -130,22 +130,22 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
         inheritLastFormatAfter(nullptr, funcDecl);
 
     if (funcDecl->hasAttribute(ATTRIBUTE_AST_FUNC))
-        concat->addStringView("#ast");
+        concat->addString("#ast");
     else if (funcDecl->hasAttribute(ATTRIBUTE_RUN_FUNC))
-        concat->addStringView("#run");
+        concat->addString("#run");
     else if (funcDecl->hasAttribute(ATTRIBUTE_TEST_FUNC))
-        concat->addStringView("#test");
+        concat->addString("#test");
     else if (funcDecl->hasAttribute(ATTRIBUTE_MAIN_FUNC))
-        concat->addStringView("#main");
+        concat->addString("#main");
     else if (funcDecl->hasAttribute(ATTRIBUTE_INIT_FUNC))
-        concat->addStringView("#init");
+        concat->addString("#init");
     else if (funcDecl->hasAttribute(ATTRIBUTE_DROP_FUNC))
-        concat->addStringView("#drop");
+        concat->addString("#drop");
     else if (funcDecl->hasAttribute(ATTRIBUTE_PREMAIN_FUNC))
-        concat->addStringView("#premain");
+        concat->addString("#premain");
     else if (funcDecl->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
     {
-        concat->addStringView("#message");
+        concat->addString("#message");
         concat->addChar('(');
         SWAG_CHECK(outputNode(context, funcDecl->parameters));
         concat->addChar(')');
@@ -158,7 +158,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
     {
         concat->alignToColumn(startColumn + maxLenSignature);
         concat->addBlank();
-        concat->addStringView("=>");
+        concat->addString("=>");
         concat->addBlank();
         if (funcDecl->content->is(AstNodeKind::Return))
             SWAG_CHECK(outputNode(context, funcDecl->content->firstChild()));
@@ -306,12 +306,12 @@ bool FormatAst::outputLambdaExpression(FormatContext& context, AstNode* node)
     // Closure capture parameters
     if (funcDecl->captureParameters)
     {
-        concat->addStringView("closure");
+        concat->addString("closure");
         SWAG_CHECK(outputClosureArguments(context, funcDecl));
     }
     else
     {
-        concat->addStringView("func");
+        concat->addString("func");
     }
 
     SWAG_CHECK(outputFuncDeclParameters(context, funcDecl->parameters, false));
@@ -320,7 +320,7 @@ bool FormatAst::outputLambdaExpression(FormatContext& context, AstNode* node)
     if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
     {
         concat->addBlank();
-        concat->addStringView("=>");
+        concat->addString("=>");
         concat->addBlank();
         SWAG_ASSERT(funcDecl->content->is(AstNodeKind::Return));
         SWAG_CHECK(outputNode(context, funcDecl->content->firstChild()));
@@ -328,7 +328,7 @@ bool FormatAst::outputLambdaExpression(FormatContext& context, AstNode* node)
     else if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM))
     {
         concat->addBlank();
-        concat->addStringView("=");
+        concat->addString("=");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, funcDecl->content->firstChild()));
     }
@@ -381,14 +381,14 @@ bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
 
     if (typeNode->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
     {
-        concat->addStringView("#type");
+        concat->addString("#type");
         concat->addBlank();
     }
 
     if (node->is(AstNodeKind::TypeLambda))
-        concat->addStringView("func");
+        concat->addString("func");
     else
-        concat->addStringView("closure");
+        concat->addString("closure");
 
     FormatContext cxt{context};
     cxt.alignVarDecl = false;
@@ -396,19 +396,19 @@ bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
 
     if (typeNode->returnType)
     {
-        concat->addStringView("->");
+        concat->addString("->");
         SWAG_CHECK(outputNode(context, typeNode->returnType));
     }
 
     if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
     {
         concat->addBlank();
-        concat->addStringView("throw");
+        concat->addString("throw");
     }
     else if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
     {
         concat->addBlank();
-        concat->addStringView("assume");
+        concat->addString("assume");
     }
 
     return true;
@@ -417,7 +417,7 @@ bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
 bool FormatAst::outputInit(FormatContext& context, AstNode* node)
 {
     const auto init = castAst<AstInit>(node, AstNodeKind::Init);
-    concat->addStringView("@init");
+    concat->addString("@init");
 
     concat->addChar('(');
     SWAG_CHECK(outputNode(context, init->expression));
@@ -446,13 +446,13 @@ bool FormatAst::outputDropCopyMove(FormatContext& context, AstNode* node)
     switch (drop->kind)
     {
         case AstNodeKind::Drop:
-            concat->addStringView("@drop");
+            concat->addString("@drop");
             break;
         case AstNodeKind::PostCopy:
-            concat->addStringView("@postcopy");
+            concat->addString("@postcopy");
             break;
         case AstNodeKind::PostMove:
-            concat->addStringView("@postmove");
+            concat->addString("@postmove");
             break;
     }
 

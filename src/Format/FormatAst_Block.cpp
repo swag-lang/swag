@@ -119,7 +119,7 @@ bool FormatAst::outputDoStatement(FormatContext& context, AstNode* node)
     else if (node->is(AstNodeKind::Statement) && !node->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY))
     {
         concat->addBlank();
-        concat->addStringView("do");
+        concat->addString("do");
         beautifyAfter(context, node);
         concat->addEol();
         context.indent++;
@@ -148,9 +148,9 @@ bool FormatAst::outputNamespace(FormatContext& context, AstNode* node)
 
     if (npName->hasAstFlag(AST_GLOBAL_NODE))
     {
-        concat->addStringView("#global");
+        concat->addString("#global");
         concat->addBlank();
-        concat->addStringView("namespace");
+        concat->addString("namespace");
         concat->addBlank();
         concat->addString(npName->token.text);
         concat->addEol();
@@ -164,11 +164,11 @@ bool FormatAst::outputNamespace(FormatContext& context, AstNode* node)
 
         if (npName->hasSpecFlag(AstNameSpace::SPEC_FLAG_USING))
         {
-            concat->addStringView("using");
+            concat->addString("using");
             concat->addBlank();
         }
 
-        concat->addStringView("namespace");
+        concat->addString("namespace");
         concat->addBlank();
         concat->addString(npName->token.text);
         for (auto& n : npName->multiNames)
@@ -203,17 +203,17 @@ bool FormatAst::outputDefer(FormatContext& context, AstNode* node)
 {
     const auto deferNode = castAst<AstDefer>(node, AstNodeKind::Defer);
 
-    concat->addStringView("defer");
+    concat->addString("defer");
     switch (deferNode->deferKind)
     {
         case DeferKind::Error:
             concat->addChar('(');
-            concat->addStringView("err");
+            concat->addString("err");
             concat->addChar(')');
             break;
         case DeferKind::NoError:
             concat->addChar('(');
-            concat->addStringView("noerr");
+            concat->addString("noerr");
             concat->addChar(')');
             break;
     }
@@ -236,7 +236,7 @@ bool FormatAst::outputTryAssume(FormatContext& context, const AstNode* node)
 
     if (node->hasAstFlag(AST_DISCARD))
     {
-        concat->addStringView("discard");
+        concat->addString("discard");
         concat->addBlank();
     }
 
@@ -250,7 +250,7 @@ bool FormatAst::outputCatch(FormatContext& context, const AstNode* node)
 {
     if (node->hasAstFlag(AST_DISCARD))
     {
-        concat->addStringView("discard");
+        concat->addString("discard");
         concat->addBlank();
     }
 

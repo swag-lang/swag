@@ -9,7 +9,7 @@ bool FormatAst::outputTypeExpression(FormatContext& context, AstNode* node)
 {
     if (node->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
     {
-        concat->addStringView("#type");
+        concat->addString("#type");
         concat->addBlank();
     }
 
@@ -21,7 +21,7 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 {
     if (node->typeFlags.has(TYPEFLAG_IS_CODE))
     {
-        concat->addStringView("code");
+        concat->addString("code");
         return true;
     }
 
@@ -30,19 +30,19 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
         if (node->firstChild())
             SWAG_CHECK(outputNode(context, node->firstChild()));
         else
-            concat->addStringView("retval");
+            concat->addString("retval");
         return true;
     }
 
     if (node->typeFlags.has(TYPEFLAG_IS_CONST))
     {
-        concat->addStringView("const");
+        concat->addString("const");
         concat->addBlank();
     }
 
     if (node->arrayDim == UINT8_MAX)
     {
-        concat->addStringView("[]");
+        concat->addString("[]");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, node->firstChild()));
         return true;
@@ -50,7 +50,7 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 
     if (node->arrayDim)
     {
-        concat->addStringView("[");
+        concat->addString("[");
         uint32_t i = 0;
         for (; i < node->arrayDim; i++)
         {
@@ -71,7 +71,7 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 
     if (node->typeFlags.has(TYPEFLAG_IS_SLICE))
     {
-        concat->addStringView("[..]");
+        concat->addString("[..]");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, node->firstChild()));
         return true;
@@ -93,7 +93,7 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 
     if (node->typeFlags.has(TYPEFLAG_IS_REF) && node->typeFlags.has(TYPEFLAG_IS_MOVE_REF))
     {
-        concat->addStringView("&&");
+        concat->addString("&&");
         SWAG_CHECK(outputNode(context, node->firstChild()));
         return true;
     }
@@ -111,18 +111,18 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
     }
     else if (node->literalType == LiteralType::TypeType)
     {
-        concat->addStringView("typeinfo");
+        concat->addString("typeinfo");
         if (node->childCount())
             SWAG_CHECK(outputNode(context, node->firstChild()));
     }
     else if (node->typeFromLiteral && node->typeFromLiteral->isTypedVariadic())
     {
         SWAG_CHECK(outputNode(context, node->firstChild()));
-        concat->addStringView("...");
+        concat->addString("...");
     }
     else if (node->typeFromLiteral && node->typeFromLiteral->isVariadic())
     {
-        concat->addStringView("...");
+        concat->addString("...");
     }
     else
     {
@@ -159,12 +159,12 @@ bool FormatAst::outputGenericParameters(FormatContext& context, AstNode* node)
         const auto varDecl = castAst<AstVarDecl>(child, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
         if (varDecl->hasSpecFlag(AstVarDecl::SPEC_FLAG_FORCE_VAR))
         {
-            concat->addStringView("var");
+            concat->addString("var");
             concat->addBlank();
         }
         else if (varDecl->hasSpecFlag(AstVarDecl::SPEC_FLAG_FORCE_CONST))
         {
-            concat->addStringView("const");
+            concat->addString("const");
             concat->addBlank();
         }
 
@@ -232,7 +232,7 @@ bool FormatAst::outputTypeAlias(FormatContext& context, AstNode* node, uint32_t 
 {
     beautifyBefore(context, node);
 
-    concat->addStringView("typealias");
+    concat->addString("typealias");
     concat->addBlank();
     const auto startColumn = concat->column;
     concat->addString(node->token.text);

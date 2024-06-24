@@ -36,22 +36,22 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::ExplicitNoInit:
-            concat->addStringView("undefined");
+            concat->addString("undefined");
             break;
         case AstNodeKind::Index:
-            concat->addStringView("#index");
+            concat->addString("#index");
             break;
         case AstNodeKind::GetErr:
-            concat->addStringView("@err");
+            concat->addString("@err");
             break;
 
         case AstNodeKind::CompilerLoad:
-            concat->addStringView("#load");
+            concat->addString("#load");
             concat->addBlank();
             SWAG_CHECK(outputChildrenBlank(context, node));
             break;
         case AstNodeKind::CompilerInclude:
-            concat->addStringView("#include");
+            concat->addString("#include");
             concat->addBlank();
             SWAG_CHECK(outputChildrenBlank(context, node));
             break;
@@ -60,7 +60,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::MoveRef:
-            concat->addStringView("moveref");
+            concat->addString("moveref");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
@@ -72,16 +72,16 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::FallThrough:
-            concat->addStringView("fallthrough");
+            concat->addString("fallthrough");
             forceEOL = true;
             break;
         case AstNodeKind::Unreachable:
-            concat->addStringView("unreachable");
+            concat->addString("unreachable");
             forceEOL = true;
             break;
 
         case AstNodeKind::CompilerPlaceHolder:
-            concat->addStringView("#placeholder");
+            concat->addString("#placeholder");
             concat->addBlank();
             concat->addString(node->token.text);
             concat->addBlank();
@@ -89,7 +89,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             forceEOL = true;
             break;
         case AstNodeKind::CompilerForeignLib:
-            concat->addStringView("#foreignlib");
+            concat->addString("#foreignlib");
             concat->addBlank();
             SWAG_CHECK(outputChildrenBlank(context, node));
             forceEOL = true;
@@ -104,7 +104,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::With:
-            concat->addStringView("with");
+            concat->addString("with");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->firstChild()));
             concat->addEol();
@@ -142,7 +142,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::AttrDecl:
         {
             const auto attrDecl = castAst<AstAttrDecl>(node, AstNodeKind::AttrDecl);
-            concat->addStringView("attr");
+            concat->addString("attr");
             concat->addBlank();
             concat->addString(node->token.text);
             concat->addChar('(');
@@ -195,7 +195,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::Break:
         {
             const auto breakNode = castAst<AstBreakContinue>(node, AstNodeKind::Break);
-            concat->addStringView("break");
+            concat->addString("break");
             if (!breakNode->label.text.empty())
             {
                 concat->addBlank();
@@ -207,7 +207,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::Continue:
         {
             const auto continueNode = castAst<AstBreakContinue>(node, AstNodeKind::Continue);
-            concat->addStringView("continue");
+            concat->addString("continue");
             if (!continueNode->label.text.empty())
             {
                 concat->addBlank();
@@ -256,7 +256,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::CompilerMacro:
-            concat->addStringView("#macro");
+            concat->addString("#macro");
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
 
@@ -265,25 +265,25 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::CompilerPrint:
-            concat->addStringView("#print");
+            concat->addString("#print");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
 
         case AstNodeKind::CompilerError:
-            concat->addStringView("#error");
+            concat->addString("#error");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
 
         case AstNodeKind::CompilerWarning:
-            concat->addStringView("#warning");
+            concat->addString("#warning");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
 
         case AstNodeKind::CompilerAssert:
-            concat->addStringView("#assert");
+            concat->addString("#assert");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->firstChild()));
             if (node->childCount() > 1)
@@ -319,7 +319,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::NameAlias:
-            concat->addStringView("namealias");
+            concat->addString("namealias");
             concat->addBlank();
             concat->addString(node->token.text);
             concat->addBlank();
@@ -340,17 +340,17 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::Using:
             if (node->hasAstFlag(AST_GLOBAL_NODE))
             {
-                concat->addStringView("#global");
+                concat->addString("#global");
                 concat->addBlank();
             }
 
-            concat->addStringView("using");
+            concat->addString("using");
             concat->addBlank();
             SWAG_CHECK(outputChildrenChar(context, node, ',', 0, 0));
             break;
 
         case AstNodeKind::Return:
-            concat->addStringView("return");
+            concat->addString("return");
             if (!node->children.empty())
             {
                 concat->addBlank();
@@ -404,15 +404,15 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
 
         case AstNodeKind::KeepRef:
             if (node->hasAstFlag(AST_CONST))
-                concat->addStringView(",constref");
+                concat->addString(",constref");
             else
-                concat->addStringView(",ref");
+                concat->addString(",ref");
             addBlank(node->firstChild());
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
 
         case AstNodeKind::NoDrop:
-            concat->addStringView(",nodrop");
+            concat->addString(",nodrop");
             addBlank(node->firstChild());
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
@@ -420,13 +420,13 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::Move:
             if (node->firstChild()->is(AstNodeKind::NoDrop))
             {
-                concat->addStringView(",moveraw");
+                concat->addString(",moveraw");
                 addBlank(node->firstChild()->firstChild());
                 SWAG_CHECK(outputNode(context, node->firstChild()->firstChild()));
             }
             else
             {
-                concat->addStringView(",move");
+                concat->addString(",move");
                 addBlank(node->firstChild());
                 SWAG_CHECK(outputNode(context, node->firstChild()));
             }
@@ -445,7 +445,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::AutoCast:
-            concat->addStringView("acast");
+            concat->addString("acast");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
@@ -465,7 +465,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::ScopeBreakable:
         {
             const auto scopeDecl = castAst<AstScopeBreakable>(node, AstNodeKind::ScopeBreakable);
-            concat->addStringView("#scope");
+            concat->addString("#scope");
             if (scopeDecl->hasSpecFlag(AstScopeBreakable::SPEC_FLAG_NAMED))
             {
                 concat->addBlank();
@@ -482,9 +482,9 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             SWAG_CHECK(outputNode(context, node->firstChild()));
             concat->addBlank();
             if (node->hasSpecFlag(AstRange::SPEC_FLAG_EXCLUDE_UP))
-                concat->addStringView("until");
+                concat->addString("until");
             else
-                concat->addStringView("to");
+                concat->addString("to");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->secondChild()));
             break;
@@ -495,7 +495,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::CompilerDependencies:
-            concat->addStringView("#dependencies");
+            concat->addString("#dependencies");
             concat->addEol();
             SWAG_CHECK(outputChildrenEol(context, node));
             forceEOL = true;

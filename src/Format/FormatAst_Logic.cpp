@@ -14,11 +14,11 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
     {
         const auto varNode = castAst<AstVarDecl>(ifNode->firstChild(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         if (varNode->is(AstNodeKind::ConstDecl))
-            concat->addStringView("const");
+            concat->addString("const");
         else if (varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET))
-            concat->addStringView("let");
+            concat->addString("let");
         else
-            concat->addStringView("var");
+            concat->addString("var");
         concat->addBlank();
         SWAG_CHECK(outputVarContent(context, varNode));
     }
@@ -38,7 +38,7 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
         {
             beautifyBefore(context, ifNode->elseBlock);
             concat->addIndent(context.indent);
-            concat->addStringView("else");
+            concat->addString("else");
             SWAG_CHECK(outputDoStatement(context, ifNode->elseBlock));
         }
     }
@@ -49,7 +49,7 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
 bool FormatAst::outputWhile(FormatContext& context, AstNode* node)
 {
     const auto whileNode = castAst<AstWhile>(node, AstNodeKind::While);
-    concat->addStringView("while");
+    concat->addString("while");
     concat->addBlank();
     SWAG_CHECK(outputNode(context, whileNode->boolExpression));
     SWAG_CHECK(outputDoStatement(context, whileNode->block));
@@ -59,9 +59,9 @@ bool FormatAst::outputWhile(FormatContext& context, AstNode* node)
 bool FormatAst::outputLoop(FormatContext& context, AstNode* node)
 {
     const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
-    concat->addStringView("loop");
+    concat->addString("loop");
     if (loopNode->hasSpecFlag(AstLoop::SPEC_FLAG_BACK))
-        concat->addStringView(",back");
+        concat->addString(",back");
 
     if (loopNode->specificName)
     {
@@ -83,7 +83,7 @@ bool FormatAst::outputLoop(FormatContext& context, AstNode* node)
 bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
 {
     const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
-    concat->addStringView("visit");
+    concat->addString("visit");
     if (!visitNode->extraNameToken.text.empty())
     {
         concat->addChar(':');
@@ -91,7 +91,7 @@ bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
     }
 
     if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
-        concat->addStringView(",back");
+        concat->addString(",back");
 
     concat->addBlank();
     if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
@@ -124,7 +124,7 @@ bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
 bool FormatAst::outputFor(FormatContext& context, AstNode* node)
 {
     const auto forNode = castAst<AstFor>(node, AstNodeKind::For);
-    concat->addStringView("for");
+    concat->addString("for");
 
     if (forNode->preExpression && forNode->preExpression->is(AstNodeKind::Statement))
     {
@@ -162,7 +162,7 @@ bool FormatAst::outputFor(FormatContext& context, AstNode* node)
 bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
 {
     const auto nodeSwitch = castAst<AstSwitch>(node, AstNodeKind::Switch);
-    concat->addStringView("switch");
+    concat->addString("switch");
     concat->addBlank();
     SWAG_CHECK(outputNode(context, nodeSwitch->expression));
     concat->addEol();
@@ -176,12 +176,12 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
         if (c->expressions.empty())
         {
             beautifyBefore(context, c);
-            concat->addStringView("default");
+            concat->addString("default");
         }
         else
         {
             beautifyBefore(context, c);
-            concat->addStringView("case");
+            concat->addString("case");
             concat->addBlank();
             bool first = true;
             for (const auto it : c->expressions)

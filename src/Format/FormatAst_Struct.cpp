@@ -50,7 +50,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         if (typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
             concat->addIndent(context.indent);
-            concat->addStringView("#[ExportType(\"nozero\")]");
+            concat->addString("#[ExportType(\"nozero\")]");
             concat->addEol();
         }
     }
@@ -61,7 +61,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
     if (node->is(AstNodeKind::InterfaceDecl))
     {
         concat->addIndent(context.indent);
-        concat->addStringView("interface");
+        concat->addString("interface");
     }
     else
     {
@@ -76,9 +76,9 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         if (node->hasSpecFlag(AstStruct::SPEC_FLAG_SPECIFIED_TYPE) || !node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))
         {
             if (const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl); structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
-                concat->addStringView("union");
+                concat->addString("union");
             else
-                concat->addStringView("struct");
+                concat->addString("struct");
         }
     }
 
@@ -164,12 +164,12 @@ bool FormatAst::outputImpl(FormatContext& context, AstNode* node)
     const auto nodeImpl = castAst<AstImpl>(node, AstNodeKind::Impl);
 
     concat->addIndent(context.indent);
-    concat->addStringView("impl");
+    concat->addString("impl");
     concat->addBlank();
 
     if (nodeImpl->hasSpecFlag(AstImpl::SPEC_FLAG_ENUM))
     {
-        concat->addStringView("enum");
+        concat->addString("enum");
         concat->addBlank();
     }
 
@@ -178,7 +178,7 @@ bool FormatAst::outputImpl(FormatContext& context, AstNode* node)
     if (nodeImpl->identifierFor)
     {
         concat->addBlank();
-        concat->addStringView("for");
+        concat->addString("for");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, nodeImpl->identifierFor));
     }

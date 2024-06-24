@@ -10,24 +10,24 @@ bool FormatAst::outputLiteral(FormatContext& context, AstNode* node)
 {
     const auto literalNode = castAst<AstLiteral>(node, AstNodeKind::Literal);
     if (literalNode->literalType == LiteralType::TypeStringRaw)
-        concat->addStringView("#\"");
+        concat->addString("#\"");
     else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
-        concat->addStringView("\"");
+        concat->addString("\"");
     else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
-        concat->addStringView("\"\"\"");
+        concat->addString("\"\"\"");
     else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
-        concat->addStringView("`");
+        concat->addString("`");
 
     concat->addString(node->token.text);
 
     if (literalNode->literalType == LiteralType::TypeStringRaw)
-        concat->addStringView("\"#");
+        concat->addString("\"#");
     else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
-        concat->addStringView("\"");
+        concat->addString("\"");
     else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
-        concat->addStringView("\"\"\"");
+        concat->addString("\"\"\"");
     else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
-        concat->addStringView("`");
+        concat->addString("`");
 
     if (!node->children.empty())
     {
@@ -42,7 +42,7 @@ bool FormatAst::outputLiteral(FormatContext& context, AstNode* node, TypeInfo* t
 {
     if (typeInfo->isPointerNull())
     {
-        concat->addStringView("null");
+        concat->addString("null");
         return true;
     }
 

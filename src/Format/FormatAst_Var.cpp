@@ -222,28 +222,28 @@ bool FormatAst::outputVarHeader(FormatContext& context, AstNode* node)
 
     if (varNode->hasAstFlag(AST_DECL_USING))
     {
-        concat->addStringView("using");
+        concat->addString("using");
         concat->addBlank();
     }
 
     if (varNode->is(AstNodeKind::ConstDecl))
     {
-        concat->addStringView("const");
+        concat->addString("const");
         concat->addBlank();
     }
     else if (varNode->isNot(AstNodeKind::FuncDeclParam) && !varNode->hasAstFlag(AST_STRUCT_MEMBER))
     {
         if (varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET))
-            concat->addStringView("let");
+            concat->addString("let");
         else
-            concat->addStringView("var");
+            concat->addString("var");
         concat->addBlank();
     }
 
     const bool isSelf = varNode->token.text == g_LangSpec->name_self;
     if (isSelf && varNode->type && castAst<AstTypeExpression>(varNode->type)->typeFlags.has(TYPEFLAG_IS_CONST))
     {
-        concat->addStringView("const");
+        concat->addString("const");
         concat->addBlank();
     }
 
