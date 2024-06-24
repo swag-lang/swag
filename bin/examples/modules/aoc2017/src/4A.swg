@@ -22,7 +22,7 @@ func day4A()
     var total = 0
     visit l: lines
     {
-        let s = Tokenize.split(l, " ")
+        let s    = Tokenize.split(l, " ")
         var set: HashSet'string = s[..]
         total += cast(s32) (set.count == s.count)
     }

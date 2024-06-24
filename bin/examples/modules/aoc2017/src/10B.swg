@@ -35,7 +35,8 @@ func day10B() assume
     nums += [17, 31, 73, 47, 23]
 
     var arr, tmp: Array's32
-    loop i: 256 do arr.add(i)
+    loop i: 256 do
+        arr.add(i)
 
     var cur, skip = 0
     loop 64
@@ -68,7 +69,7 @@ func day10B() assume
     res.clear()
     loop i: 16
     {
-        let v = arr[i*16 .. (i*16)+15]
+        let v = arr[i * 16..(i * 16) + 15]
         res += Format.toString("%{X}", Slice.reduce(v, func(x, y) => x ^ y))
     }
 

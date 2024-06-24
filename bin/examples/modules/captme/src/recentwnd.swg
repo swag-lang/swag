@@ -213,8 +213,7 @@ impl RecentWnd
         res.sort(func(a, b)
         {
             return b.lastWriteTime <=> a.lastWriteTime
-        }
-)
+        })
 
         var cptRecent = 0
         visit r, idx: res

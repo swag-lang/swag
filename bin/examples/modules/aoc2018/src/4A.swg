@@ -62,8 +62,7 @@ func day4A()
         let val0 = assume Time.DateTime.parse(x[1..16])
         let val1 = assume Time.DateTime.parse(y[1..16])
         return val0.value <=> val1.value
-    }
-)
+    })
 
     var when    = assume RegExp.create("(\\d+)-(\\d+)-(\\d+) (\\d+):(\\d+)")
     var start   = assume RegExp.create("Guard #(\\d+) begins shift")

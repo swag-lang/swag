@@ -113,7 +113,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         let painter  = paintEvt.bc.painter
 
         let leftPressed = wnd.getApp().mouse.isButtonPressed(.Left) or Env.hasArg("swag.test")
-        var mousePos = wnd.getApp().mouse.getPosition()
+        var mousePos    = wnd.getApp().mouse.getPosition()
         mousePos = wnd.screenToSurface(mousePos)
         mousePos = wnd.surfaceToLocal(mousePos)
 

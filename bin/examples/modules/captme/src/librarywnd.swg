@@ -177,8 +177,7 @@ impl LibraryView
         res.sort(func(a, b)
         {
             return b.lastWriteTime <=> a.lastWriteTime
-        }
-)
+        })
 
         let renderer = getApp().getRenderer()
         visit &it: items do
@@ -217,8 +216,7 @@ impl LibraryView
                     if th.requestEnd do
                         break
                 }
-            }
-)
+            })
             thread.start()
         }
 
@@ -249,8 +247,7 @@ impl LibraryWnd
         g_Library.files.sort(func(a, b)
         {
             return b.lastWriteTime <=> a.lastWriteTime
-        }
-)
+        })
 
         var lastDateTime:  const *DateTime
         var lastLine:      *ListLine

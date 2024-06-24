@@ -131,10 +131,10 @@ var g_TimeStamp = -1
 
 var g_PacMan: Pacman
 var g_Ghosts: [4] Ghost = [
-{13.5, 19, GhostColor.RED},
-{13.5, 16, GhostColor.PINK},
-{11.5, 16, GhostColor.BLUE},
-{15.5, 16, GhostColor.YELLOW}]
+    {13.5, 19, GhostColor.RED},
+    {13.5, 16, GhostColor.PINK},
+    {11.5, 16, GhostColor.BLUE},
+    {15.5, 16, GhostColor.YELLOW}]
 
 struct Dest
 {
@@ -254,34 +254,34 @@ enum Tile
 
 // Big map. Each element is a 'Tile'
 var g_Map: [28, 31] Tile = [
-[W, W, W, W, W, W, W, W, W, W, W, W, n, n, n, W, P, W, n, n, n, W, W, W, W, W, W, W, W, W, W],
-[W, o, o, o, o, W, W, O, o, o, o, W, n, n, n, W, n, W, n, n, n, W, o, o, o, o, O, o, o, o, W],
-[W, o, W, W, o, W, W, o, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, o, o, o, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, W, W, W, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, W, W, W, W, W, o, W, W, W, W, W, n, W, W, W, W, W, o, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, W],
-[W, o, W, W, W, W, W, o, W, W, o, W, W, W, W, W, n, W, W, W, W, W, W, W, W, o, W, W, W, o, W],
-[W, o, W, W, W, W, W, o, W, W, o, W, W, W, W, W, n, W, W, W, W, W, W, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, o, o, o, W, W, o, n, n, n, n, n, n, n, n, n, W, W, o, o, o, o, W, W, W, o, W],
-[W, o, W, W, o, W, W, o, W, W, o, W, W, n, W, W, W, W, W, n, W, W, o, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, W, W, o, W, W, o, W, W, n, W, W, n, n, W, n, W, W, o, W, W, o, W, W, W, o, W],
-[W, o, o, o, o, W, W, o, o, o, o, W, W, n, W, W, n, n, W, n, n, n, o, W, W, o, o, o, o, o, W],
-[W, o, W, W, W, W, W, n, W, W, W, W, W, n, W, W, n, n, G, n, W, W, W, W, W, o, W, W, W, W, W],
-[W, o, W, W, W, W, W, n, W, W, W, W, W, n, W, W, n, n, G, n, W, W, W, W, W, o, W, W, W, W, W],
-[W, o, o, o, o, W, W, o, o, o, o, W, W, n, W, W, n, n, W, n, n, n, o, W, W, o, o, o, o, o, W],
-[W, o, W, W, o, W, W, o, W, W, o, W, W, n, W, W, n, n, W, n, W, W, o, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, W, W, o, W, W, o, W, W, n, W, W, W, W, W, n, W, W, o, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, o, o, o, W, W, o, n, n, n, n, n, n, n, n, n, W, W, o, o, o, o, W, W, W, o, W],
-[W, o, W, W, W, W, W, o, W, W, o, W, W, W, W, W, n, W, W, W, W, W, W, W, W, o, W, W, W, o, W],
-[W, o, W, W, W, W, W, o, W, W, o, W, W, W, W, W, n, W, W, W, W, W, W, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, W],
-[W, o, W, W, o, W, W, W, W, W, o, W, W, W, W, W, n, W, W, W, W, W, o, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, W, W, W, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, o, o, o, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
-[W, o, W, W, o, W, W, o, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
-[W, o, o, o, o, W, W, O, o, o, o, W, n, n, n, W, n, W, n, n, n, W, o, o, o, o, O, o, o, o, W],
-[W, W, W, W, W, W, W, W, W, W, W, W, n, n, n, W, P, W, n, n, n, W, W, W, W, W, W, W, W, W, W]]
+    [W, W, W, W, W, W, W, W, W, W, W, W, n, n, n, W, P, W, n, n, n, W, W, W, W, W, W, W, W, W, W],
+    [W, o, o, o, o, W, W, O, o, o, o, W, n, n, n, W, n, W, n, n, n, W, o, o, o, o, O, o, o, o, W],
+    [W, o, W, W, o, W, W, o, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, o, o, o, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, W, W, W, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, W, W, W, W, W, o, W, W, W, W, W, n, W, W, W, W, W, o, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, W],
+    [W, o, W, W, W, W, W, o, W, W, o, W, W, W, W, W, n, W, W, W, W, W, W, W, W, o, W, W, W, o, W],
+    [W, o, W, W, W, W, W, o, W, W, o, W, W, W, W, W, n, W, W, W, W, W, W, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, o, o, o, W, W, o, n, n, n, n, n, n, n, n, n, W, W, o, o, o, o, W, W, W, o, W],
+    [W, o, W, W, o, W, W, o, W, W, o, W, W, n, W, W, W, W, W, n, W, W, o, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, W, W, o, W, W, o, W, W, n, W, W, n, n, W, n, W, W, o, W, W, o, W, W, W, o, W],
+    [W, o, o, o, o, W, W, o, o, o, o, W, W, n, W, W, n, n, W, n, n, n, o, W, W, o, o, o, o, o, W],
+    [W, o, W, W, W, W, W, n, W, W, W, W, W, n, W, W, n, n, G, n, W, W, W, W, W, o, W, W, W, W, W],
+    [W, o, W, W, W, W, W, n, W, W, W, W, W, n, W, W, n, n, G, n, W, W, W, W, W, o, W, W, W, W, W],
+    [W, o, o, o, o, W, W, o, o, o, o, W, W, n, W, W, n, n, W, n, n, n, o, W, W, o, o, o, o, o, W],
+    [W, o, W, W, o, W, W, o, W, W, o, W, W, n, W, W, n, n, W, n, W, W, o, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, W, W, o, W, W, o, W, W, n, W, W, W, W, W, n, W, W, o, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, o, o, o, W, W, o, n, n, n, n, n, n, n, n, n, W, W, o, o, o, o, W, W, W, o, W],
+    [W, o, W, W, W, W, W, o, W, W, o, W, W, W, W, W, n, W, W, W, W, W, W, W, W, o, W, W, W, o, W],
+    [W, o, W, W, W, W, W, o, W, W, o, W, W, W, W, W, n, W, W, W, W, W, W, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, W],
+    [W, o, W, W, o, W, W, W, W, W, o, W, W, W, W, W, n, W, W, W, W, W, o, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, W, W, W, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, o, o, o, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
+    [W, o, W, W, o, W, W, o, W, W, o, W, n, n, n, W, n, W, n, n, n, W, o, W, W, o, W, W, W, o, W],
+    [W, o, o, o, o, W, W, O, o, o, o, W, n, n, n, W, n, W, n, n, n, W, o, o, o, o, O, o, o, o, W],
+    [W, W, W, W, W, W, W, W, W, W, W, W, n, n, n, W, P, W, n, n, n, W, W, W, W, W, W, W, W, W, W]]
 
 impl Ghost
 {

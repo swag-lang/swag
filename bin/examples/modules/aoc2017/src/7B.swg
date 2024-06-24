@@ -20,8 +20,8 @@ using Core
 
 private struct Pile
 {
-    val:    s32
-    childs: Array'string
+    val:        s32
+    childs:     Array'string
 }
 
 private var set: HashTable'(string, Pile)
@@ -56,7 +56,7 @@ func day7B() assume
             return 0
 
         var total: u64
-        var sums: Array'{rank: u64, total: s64}
+        var sums:  Array'{ rank: u64, total: s64 }
 
         visit v, i: w.childs
         {
@@ -70,8 +70,8 @@ func day7B() assume
             sums.sort(func(x, y) => x.total <=> y.total)
             if sums[sums.count - 2].total != sums[sums.count - 1].total
             {
-                let v = set.find(w.childs[sums[sums.count-1].rank])
-                result = sums[sums.count-2].total - sums[sums.count-1].total + v.value.val
+                let v = set.find(w.childs[sums[sums.count - 1].rank])
+                result = sums[sums.count - 2].total - sums[sums.count - 1].total + v.value.val
             }
         }
 

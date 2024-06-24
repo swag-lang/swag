@@ -45,7 +45,8 @@ func day10A() assume
     let nums     = Slice.map(slice[..], func(x) => assume StrConv.toS32(x))
 
     var arr, tmp: Array's32
-    loop i: 256 do arr.add(i)
+    loop i: 256 do
+        arr.add(i)
 
     var cur, skip = 0
     visit n: nums

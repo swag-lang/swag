@@ -118,7 +118,7 @@ func day10A()
         let v0 = arr[i]
         loop j: i + 1 until arr.count
         {
-            let v1 = arr[j]
+            let v1  = arr[j]
             var hit = false
             loop k: arr
             {

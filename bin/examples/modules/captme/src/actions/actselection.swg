@@ -47,7 +47,7 @@ impl IActionUI for ActionSelection
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.disabled = !hasSel
             evt.name     = "Delete"
-            evt.icon = main.getTheme().getIcon24(.Remove)
+            evt.icon     = main.getTheme().getIcon24(.Remove)
 
         case CmdIdSnap:
             evt.setFlags |= .Name | .Checked

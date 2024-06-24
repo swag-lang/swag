@@ -27,12 +27,11 @@ struct SubStruct
 
 struct AA
 {
-    v4b:    Array'String
-    v4c:    Array'String
+    v4b:     Array'String
+    v4c:     Array'String
 
-    tt:     string = "static string"
-    v4a:    [4] Math.Vector2
-
+    tt:      string = "static string"
+    v4a:     [4] Math.Vector2
 
     #[Category("Category"), Name("This is a name: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has do be done, and this is it.")]
     xu8: u8 = 30

@@ -26,7 +26,7 @@ func day9A() assume
 
     var decode: String
 
-    var r = Parser.RegExp.create(#"\((\d+)x(\d+)\)"#)
+    var r     = Parser.RegExp.create(#"\((\d+)x(\d+)\)"#)
     var start = 0'u64
     while start != @countof(line)
     {
@@ -39,7 +39,7 @@ func day9A() assume
 
             while x
             {
-                let sub = line[start..<start+n]
+                let sub = line[start..<start + n]
                 decode += sub
                 x -= 1
             }

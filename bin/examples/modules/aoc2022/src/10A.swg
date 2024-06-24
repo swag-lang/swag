@@ -203,7 +203,8 @@ func day10A() assume
             total += cycle * x
     }
 
-    var cycle, x = 1, total = 0
+    var cycle, x = 1
+    var total = 0
     visit l: lines
     {
         check()

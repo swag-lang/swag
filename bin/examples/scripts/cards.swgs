@@ -393,8 +393,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
             dc.setColorMaskFull()
             dc.clear(Argb.White)
             paintOne(app, dc, 0, 0, g_File)
-        }
-)
+        })
 
         page.mix(img, x, y)
 

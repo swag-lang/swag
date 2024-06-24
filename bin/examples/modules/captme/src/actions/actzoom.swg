@@ -40,13 +40,13 @@ impl IActionUI for ActionZoom
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Zoom In"
             evt.disabled = !capture or !main.editWnd.editView.canZoomIn()
-            evt.icon = main.getTheme().getIcon24(.ZoomIn)
+            evt.icon     = main.getTheme().getIcon24(.ZoomIn)
 
         case CmdIdZoomOut:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Zoom Out"
             evt.disabled = !capture or !main.editWnd.editView.canZoomOut()
-            evt.icon = main.getTheme().getIcon24(.ZoomOut)
+            evt.icon     = main.getTheme().getIcon24(.ZoomOut)
         }
 
         return true

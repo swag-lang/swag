@@ -93,7 +93,7 @@ func day3A1()
     visit l: lines
     {
         var r = assume Parser.RegExp.grepAll("\\d+", l)
-        var v = Slice.map(r[..], func(x   ) => assume StrConv.toS32(x))
+        var v = Slice.map(r[..], func(x) => assume StrConv.toS32(x))
 
         loop x: v[1] until v[1] + v[3] do
             loop y: v[2] until v[2] + v[4] do

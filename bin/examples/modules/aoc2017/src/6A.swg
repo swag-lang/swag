@@ -29,7 +29,7 @@ func day6A()
     let slice  = Tokenize.split(line, " ")
     var blocks = Slice.map(slice[..], func(x) => assume StrConv.toS32(x))
 
-    var set: HashSet'String
+    var set:  HashSet'String
     var total = 0
     loop
     {
@@ -38,7 +38,7 @@ func day6A()
         {
             if v > best
             {
-                best = v
+                best  = v
                 besti = i
             }
         }

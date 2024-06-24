@@ -15,26 +15,21 @@ const UX = 300
 struct NoiseParams
 {
     #[RecalcLayout]
-    kind           = Noise.FastNoiseKind.Perlin
+    kind = Noise.FastNoiseKind.Perlin
 
-    seed           = 1337
+    seed = 1337
 
-    #[SliderMinMax(0.01, 1)]
-    #[Description("The period in which we sample the noise. A higher frequency results in more frequent noise change")]
-    frequency      = 0.01
+    #[SliderMinMax(0.01, 1), Description("The period in which we sample the noise. A higher frequency results in more frequent noise change")]
+    frequency = 0.01
 
-    #[Description("The number of layers of noise. More octaves create a more varied look but are also more resource-intensive to calculate")]
-    #[MinMax(1, 10)]
-    #[RecalcLayout]
-    octaves        = 3
+    #[Description("The number of layers of noise. More octaves create a more varied look but are also more resource-intensive to calculate"), MinMax(1, 10), RecalcLayout]
+    octaves = 3
 
-    #[SliderMinMax(1.0, 3.0)]
-    #[Description("The rate of change of the frequency for each successive octave. A 'lacunarity' value of 1 results in each octave having the same frequency")]
-    lacunarity     = 2.0
+    #[SliderMinMax(1.0, 3.0), Description("The rate of change of the frequency for each successive octave. A 'lacunarity' value of 1 results in each octave having the same frequency")]
+    lacunarity = 2.0
 
-    #[SliderMinMax(0.01, 0.5)]
-    #[Description("The scaling factor applied to each octave. 'gain' is only used when 'octaves' is set to a value higher than 1.")]
-    gain           = 0.5
+    #[SliderMinMax(0.01, 0.5), Description("The scaling factor applied to each octave. 'gain' is only used when 'octaves' is set to a value higher than 1.")]
+    gain = 0.5
 }
 
 impl IPropertyNotify for NoiseParams
@@ -77,9 +72,9 @@ func compute()
 
 func createUI(wnd: *Wnd)
 {
-    with let prop = PropertiesCtrl.create(wnd, {0, 0, UX, H-70}, .Grid)
+    with let prop = PropertiesCtrl.create(wnd, {0, 0, UX, H - 70}, .Grid)
     {
-        .padding = 10
+        .padding         = 10
         .backgroundStyle = .Window
         .splitter.showPane(0, false)
         .prop.sizeEditValue = 260

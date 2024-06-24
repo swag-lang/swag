@@ -82,8 +82,7 @@ private func sort()
         }
 
         return 0
-    }
-)
+    })
 }
 
 func day7A()

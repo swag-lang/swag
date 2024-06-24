@@ -25,7 +25,7 @@ func day8B() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
     let values   = Tokenize.split(File.readAllText(dataPath), ` `'u8)
-    let nums     = Slice.map(values.toSlice(), func(v   ) => assume StrConv.toS32(v))
+    let nums     = Slice.map(values.toSlice(), func(v) => assume StrConv.toS32(v))
 
     func read(n: Array's32, s: u32)->{ nStart, sum: u32 }
     {
