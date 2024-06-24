@@ -10,24 +10,24 @@ bool FormatAst::outputLiteral(FormatContext& context, AstNode* node)
 {
     const auto literalNode = castAst<AstLiteral>(node, AstNodeKind::Literal);
     if (literalNode->literalType == LiteralType::TypeStringRaw)
-        CONCAT_FIXED_STR(concat, "#\"");
+        concat->addStringView("#\"");
     else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
-        CONCAT_FIXED_STR(concat, "\"");
+        concat->addStringView("\"");
     else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
-        CONCAT_FIXED_STR(concat, "\"\"\"");
+        concat->addStringView("\"\"\"");
     else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
-        CONCAT_FIXED_STR(concat, "`");
+        concat->addStringView("`");
 
     concat->addString(node->token.text);
 
     if (literalNode->literalType == LiteralType::TypeStringRaw)
-        CONCAT_FIXED_STR(concat, "\"#");
+        concat->addStringView("\"#");
     else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
-        CONCAT_FIXED_STR(concat, "\"");
+        concat->addStringView("\"");
     else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
-        CONCAT_FIXED_STR(concat, "\"\"\"");
+        concat->addStringView("\"\"\"");
     else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
-        CONCAT_FIXED_STR(concat, "`");
+        concat->addStringView("`");
 
     if (!node->children.empty())
     {
@@ -42,7 +42,7 @@ bool FormatAst::outputLiteral(FormatContext& context, AstNode* node, TypeInfo* t
 {
     if (typeInfo->isPointerNull())
     {
-        CONCAT_FIXED_STR(concat, "null");
+        concat->addStringView("null");
         return true;
     }
 

@@ -14,11 +14,11 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
     {
         const auto varNode = castAst<AstVarDecl>(ifNode->firstChild(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         if (varNode->is(AstNodeKind::ConstDecl))
-            CONCAT_FIXED_STR(concat, "const");
+            concat->addStringView("const");
         else if (varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET))
-            CONCAT_FIXED_STR(concat, "let");
+            concat->addStringView("let");
         else
-            CONCAT_FIXED_STR(concat, "var");
+            concat->addStringView("var");
         concat->addBlank();
         SWAG_CHECK(outputVarContent(context, varNode));
     }
@@ -38,7 +38,7 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
         {
             beautifyBefore(context, ifNode->elseBlock);
             concat->addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "else");
+            concat->addStringView("else");
             SWAG_CHECK(outputDoStatement(context, ifNode->elseBlock));
         }
     }
@@ -49,7 +49,7 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
 bool FormatAst::outputWhile(FormatContext& context, AstNode* node)
 {
     const auto whileNode = castAst<AstWhile>(node, AstNodeKind::While);
-    CONCAT_FIXED_STR(concat, "while");
+    concat->addStringView("while");
     concat->addBlank();
     SWAG_CHECK(outputNode(context, whileNode->boolExpression));
     SWAG_CHECK(outputDoStatement(context, whileNode->block));
@@ -59,9 +59,9 @@ bool FormatAst::outputWhile(FormatContext& context, AstNode* node)
 bool FormatAst::outputLoop(FormatContext& context, AstNode* node)
 {
     const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
-    CONCAT_FIXED_STR(concat, "loop");
+    concat->addStringView("loop");
     if (loopNode->hasSpecFlag(AstLoop::SPEC_FLAG_BACK))
-        CONCAT_FIXED_STR(concat, ",back");
+        concat->addStringView(",back");
 
     if (loopNode->specificName)
     {
@@ -83,7 +83,7 @@ bool FormatAst::outputLoop(FormatContext& context, AstNode* node)
 bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
 {
     const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
-    CONCAT_FIXED_STR(concat, "visit");
+    concat->addStringView("visit");
     if (!visitNode->extraNameToken.text.empty())
     {
         concat->addChar(':');
@@ -91,7 +91,7 @@ bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
     }
 
     if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
-        CONCAT_FIXED_STR(concat, ",back");
+        concat->addStringView(",back");
 
     concat->addBlank();
     if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
@@ -124,7 +124,7 @@ bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
 bool FormatAst::outputFor(FormatContext& context, AstNode* node)
 {
     const auto forNode = castAst<AstFor>(node, AstNodeKind::For);
-    CONCAT_FIXED_STR(concat, "for");
+    concat->addStringView("for");
 
     if (forNode->preExpression && forNode->preExpression->is(AstNodeKind::Statement))
     {
@@ -162,7 +162,7 @@ bool FormatAst::outputFor(FormatContext& context, AstNode* node)
 bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
 {
     const auto nodeSwitch = castAst<AstSwitch>(node, AstNodeKind::Switch);
-    CONCAT_FIXED_STR(concat, "switch");
+    concat->addStringView("switch");
     concat->addBlank();
     SWAG_CHECK(outputNode(context, nodeSwitch->expression));
     concat->addEol();
@@ -176,12 +176,12 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
         if (c->expressions.empty())
         {
             beautifyBefore(context, c);
-            CONCAT_FIXED_STR(concat, "default");
+            concat->addStringView("default");
         }
         else
         {
             beautifyBefore(context, c);
-            CONCAT_FIXED_STR(concat, "case");
+            concat->addStringView("case");
             concat->addBlank();
             bool first = true;
             for (const auto it : c->expressions)

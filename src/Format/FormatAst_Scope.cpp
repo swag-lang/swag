@@ -45,22 +45,22 @@ bool FormatAst::outputScopeContent(FormatContext& context, Module* module, const
             concat->addIndent(context.indent);
             if (funcNode->token.text == g_LangSpec->name_opInitGenerated)
             {
-                CONCAT_FIXED_STR(concat, "mtd opInit();");
+                concat->addStringView("mtd opInit();");
                 concat->addEol();
             }
             else if (funcNode->token.text == g_LangSpec->name_opDropGenerated)
             {
-                CONCAT_FIXED_STR(concat, "mtd opDrop();");
+                concat->addStringView("mtd opDrop();");
                 concat->addEol();
             }
             else if (funcNode->token.text == g_LangSpec->name_opPostCopyGenerated)
             {
-                CONCAT_FIXED_STR(concat, "mtd opPostCopy();");
+                concat->addStringView("mtd opPostCopy();");
                 concat->addEol();
             }
             else if (funcNode->token.text == g_LangSpec->name_opPostMoveGenerated)
             {
-                CONCAT_FIXED_STR(concat, "mtd opPostMove();");
+                concat->addStringView("mtd opPostMove();");
                 concat->addEol();
             }
             else
@@ -140,7 +140,7 @@ bool FormatAst::outputScope(FormatContext& context, Module* module, Scope* scope
         {
             concat->addBlankLine();
             concat->addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "namespace");
+            concat->addStringView("namespace");
             concat->addBlank();
             concat->addString(scope->name);
             concat->addEol();
@@ -162,27 +162,27 @@ bool FormatAst::outputScope(FormatContext& context, Module* module, Scope* scope
         {
             const auto nodeImpl = castAst<AstImpl>(scope->owner, AstNodeKind::Impl);
             const auto symbol   = nodeImpl->identifier->resolvedSymbolOverload();
-            CONCAT_FIXED_STR(concat, "impl");
+            concat->addStringView("impl");
             concat->addBlank();
             concat->addString(symbol->node->getScopedName());
             concat->addBlank();
-            CONCAT_FIXED_STR(concat, "for");
+            concat->addStringView("for");
             concat->addBlank();
             concat->addString(scope->parentScope->getFullName());
             concat->addEol();
         }
         else if (scope->is(ScopeKind::Enum))
         {
-            CONCAT_FIXED_STR(concat, "impl");
+            concat->addStringView("impl");
             concat->addBlank();
-            CONCAT_FIXED_STR(concat, "enum");
+            concat->addStringView("enum");
             concat->addBlank();
             concat->addString(scope->name);
             concat->addEol();
         }
         else
         {
-            CONCAT_FIXED_STR(concat, "impl");
+            concat->addStringView("impl");
             concat->addBlank();
             concat->addString(scope->name);
             concat->addEol();

@@ -10,7 +10,7 @@ bool FormatAst::outputIdentifier(const FormatContext& context, AstNode* node)
 
     if (identifier->identifierExtension && identifier->identifierExtension->scopeUpMode != IdentifierScopeUpMode::None)
     {
-        CONCAT_FIXED_STR(concat, "#up");
+        concat->addStringView("#up");
         if (identifier->identifierExtension->scopeUpMode == IdentifierScopeUpMode::Count &&
             identifier->identifierExtension->scopeUpValue.literalValue.u8 > 1)
         {
@@ -23,7 +23,7 @@ bool FormatAst::outputIdentifier(const FormatContext& context, AstNode* node)
     }
 
     if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_SELF))
-        CONCAT_FIXED_STR(concat, "Self");
+        concat->addStringView("Self");
     else
         concat->addString(node->token.text);
 
@@ -80,7 +80,7 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
 {
     if (node->hasAstFlag(AST_DISCARD))
     {
-        CONCAT_FIXED_STR(concat, "discard");
+        concat->addStringView("discard");
         concat->addBlank();
     }
 

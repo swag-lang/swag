@@ -57,7 +57,7 @@ bool FormatAst::outputEnumValue(FormatContext& context, AstNode* node, uint32_t 
     if (enumNode->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
     {
         beautifyBefore(context, node);
-        CONCAT_FIXED_STR(concat, "using");
+        concat->addStringView("using");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, node->firstChild()));
         return true;
@@ -92,7 +92,7 @@ bool FormatAst::outputEnum(FormatContext& context, AstEnum* node)
         sameLine = !hasEOLInside(node);
 
     concat->addIndent(context.indent);
-    CONCAT_FIXED_STR(concat, "enum");
+    concat->addStringView("enum");
     concat->addBlank();
     concat->addString(node->token.text);
 

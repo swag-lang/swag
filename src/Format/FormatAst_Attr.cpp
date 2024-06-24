@@ -46,7 +46,7 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstNode* node, bool& hasSo
 
         if (first)
         {
-            CONCAT_FIXED_STR(concat, "#[");
+            concat->addStringView("#[");
             first = false;
         }
         else
@@ -70,16 +70,16 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
     {
         if (node->hasAstFlag(AST_GLOBAL_NODE))
         {
-            CONCAT_FIXED_STR(concat, "#global");
+            concat->addStringView("#global");
             concat->addBlank();
-            CONCAT_FIXED_STR(concat, "public");
+            concat->addStringView("public");
             concat->addEol();
             concat->addIndent(context.indent);
             SWAG_CHECK(outputChildrenEol(context, node->content));
         }
         else
         {
-            CONCAT_FIXED_STR(concat, "public");
+            concat->addStringView("public");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->content));
         }
@@ -90,16 +90,16 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
     {
         if (node->hasAstFlag(AST_GLOBAL_NODE))
         {
-            CONCAT_FIXED_STR(concat, "#global");
+            concat->addStringView("#global");
             concat->addBlank();
-            CONCAT_FIXED_STR(concat, "private");
+            concat->addStringView("private");
             concat->addEol();
             concat->addIndent(context.indent);
             SWAG_CHECK(outputChildrenEol(context, node->content));
         }
         else
         {
-            CONCAT_FIXED_STR(concat, "private");
+            concat->addStringView("private");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->content));
         }
@@ -110,16 +110,16 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
     {
         if (node->hasAstFlag(AST_GLOBAL_NODE))
         {
-            CONCAT_FIXED_STR(concat, "#global");
+            concat->addStringView("#global");
             concat->addBlank();
-            CONCAT_FIXED_STR(concat, "internal");
+            concat->addStringView("internal");
             concat->addEol();
             concat->addIndent(context.indent);
             SWAG_CHECK(outputChildrenEol(context, node->content));
         }
         else
         {
-            CONCAT_FIXED_STR(concat, "internal");
+            concat->addStringView("internal");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->content));
         }
@@ -128,7 +128,7 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
 
     if (node->hasAstFlag(AST_GLOBAL_NODE))
     {
-        CONCAT_FIXED_STR(concat, "#global");
+        concat->addStringView("#global");
         concat->addBlank();
         bool hasSomething = true;
         SWAG_CHECK(outputAttrUse(context, node, hasSomething));
@@ -153,7 +153,7 @@ bool FormatAst::outputAttributesUsage(const FormatContext& context, const TypeIn
 {
     bool first = true;
     concat->addIndent(context.indent);
-    concat->addString("#[AttrUsage(");
+    concat->addStringView("#[AttrUsage(");
 
 #define ADD_ATTR_USAGE(__f, __n)                         \
     do                                                   \
@@ -163,8 +163,8 @@ bool FormatAst::outputAttributesUsage(const FormatContext& context, const TypeIn
             if (!first)                                  \
                 concat->addChar('|');                    \
             first = false;                               \
-            CONCAT_FIXED_STR(concat, "AttributeUsage."); \
-            CONCAT_FIXED_STR(concat, __n);               \
+            concat->addStringView("AttributeUsage."); \
+            concat->addStringView(__n);               \
         }                                                \
     } while (0)
 
@@ -182,7 +182,7 @@ bool FormatAst::outputAttributesUsage(const FormatContext& context, const TypeIn
     ADD_ATTR_USAGE(ATTR_USAGE_GEN, "Gen");
     ADD_ATTR_USAGE(ATTR_USAGE_ALL, "All");
 
-    concat->addString(")]");
+    concat->addStringView(")]");
     concat->addEol();
     return true;
 }
@@ -229,7 +229,7 @@ bool FormatAst::outputAttributes(FormatContext& context, const TypeInfo* typeInf
         {
             first = false;
             concat->addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "#[");
+            concat->addStringView("#[");
         }
 
         concat->addString(one.name);
@@ -255,7 +255,7 @@ bool FormatAst::outputAttributes(FormatContext& context, const TypeInfo* typeInf
 
     if (!first)
     {
-        CONCAT_FIXED_STR(concat, "]");
+        concat->addStringView("]");
         concat->addEol();
     }
 
@@ -278,7 +278,7 @@ bool FormatAst::outputAttributesGlobalUsing(const FormatContext& context, const 
             if (!one)
             {
                 concat->addIndent(context.indent);
-                CONCAT_FIXED_STR(concat, "#[Using(");
+                concat->addStringView("#[Using(");
                 one = true;
             }
             else
@@ -292,7 +292,7 @@ bool FormatAst::outputAttributesGlobalUsing(const FormatContext& context, const 
 
         if (one)
         {
-            CONCAT_FIXED_STR(concat, ")]");
+            concat->addStringView(")]");
             concat->addEol();
         }
     }

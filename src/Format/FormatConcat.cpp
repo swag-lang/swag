@@ -24,17 +24,6 @@ void FormatConcat::addChar(char c)
         blank++;
 }
 
-void FormatConcat::addString(const char* v, uint32_t len)
-{
-    ensureSpace(len);
-    std::copy_n(v, len, currentSP);
-    currentSP += len;
-    eol   = 0;
-    blank = 0;
-    column += len;
-    indent = 0;
-}
-
 void FormatConcat::addBlank()
 {
     addChar(' ');
@@ -88,7 +77,7 @@ bool FormatConcat::removeLastChar(char c)
 
 void FormatConcat::addIndent(uint32_t num)
 {
-    if(!eol)
+    if (!eol)
         return;
     if (indent == num)
         return;
@@ -107,6 +96,22 @@ void FormatConcat::addIndent(uint32_t num)
         alignToColumn(num * 4);
         indent = num;
     }
+}
+
+void FormatConcat::addStringView(const std::string_view& view)
+{
+    addString(view.data(), static_cast<uint32_t>(view.length()));
+}
+
+void FormatConcat::addString(const char* v, uint32_t len)
+{
+    ensureSpace(len);
+    std::copy_n(v, len, currentSP);
+    currentSP += len;
+    eol   = 0;
+    blank = 0;
+    column += len;
+    indent = 0;
 }
 
 void FormatConcat::addString(const Utf8& v)
@@ -130,7 +135,7 @@ void FormatConcat::addU32Str(uint32_t value)
     if (value < 10)
         addChar(static_cast<char>(value + '0'));
     else
-        addString(std::to_string(value));
+        addStringView(std::to_string(value));
 }
 
 void FormatConcat::clear()

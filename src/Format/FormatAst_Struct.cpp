@@ -50,7 +50,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         if (typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
             concat->addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "#[ExportType(\"nozero\")]");
+            concat->addStringView("#[ExportType(\"nozero\")]");
             concat->addEol();
         }
     }
@@ -61,7 +61,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
     if (node->is(AstNodeKind::InterfaceDecl))
     {
         concat->addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "interface");
+        concat->addStringView("interface");
     }
     else
     {
@@ -76,9 +76,9 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         if (node->hasSpecFlag(AstStruct::SPEC_FLAG_SPECIFIED_TYPE) || !node->hasSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS))
         {
             if (const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl); structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
-                CONCAT_FIXED_STR(concat, "union");
+                concat->addStringView("union");
             else
-                CONCAT_FIXED_STR(concat, "struct");
+                concat->addStringView("struct");
         }
     }
 
@@ -164,12 +164,12 @@ bool FormatAst::outputImpl(FormatContext& context, AstNode* node)
     const auto nodeImpl = castAst<AstImpl>(node, AstNodeKind::Impl);
 
     concat->addIndent(context.indent);
-    CONCAT_FIXED_STR(concat, "impl");
+    concat->addStringView("impl");
     concat->addBlank();
 
     if (nodeImpl->hasSpecFlag(AstImpl::SPEC_FLAG_ENUM))
     {
-        CONCAT_FIXED_STR(concat, "enum");
+        concat->addStringView("enum");
         concat->addBlank();
     }
 
@@ -178,7 +178,7 @@ bool FormatAst::outputImpl(FormatContext& context, AstNode* node)
     if (nodeImpl->identifierFor)
     {
         concat->addBlank();
-        CONCAT_FIXED_STR(concat, "for");
+        concat->addStringView("for");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, nodeImpl->identifierFor));
     }
