@@ -202,7 +202,7 @@ bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t
     }
 
     // Align comment only if the type didn't output some eol
-    if (concat->totalEol == totalEol && context.alignVarDecl)
+    if (concat->totalEol == totalEol && context.alignVarDecl && maxLenName && maxLenType)
         concat->alignToColumn(startColumn + maxLenName + maxLenType + context.addBlanksBeforeAlignedLastLineComments);
 
     beautifyAfter(context, varNode);
