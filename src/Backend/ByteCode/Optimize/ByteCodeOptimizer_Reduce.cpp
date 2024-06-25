@@ -854,7 +854,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 ip[2].op == ByteCodeOp::End)
             {
                 setNop(context, ip);
-                context->bc->stackSize = 0;
+                context->bc->stackSize    = 0;
                 context->bc->dynStackSize = 0;
                 break;
             }
@@ -1028,7 +1028,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 setNop(context, ip);
-                context->bc->stackSize = 0;
+                context->bc->stackSize    = 0;
                 context->bc->dynStackSize = 0;
                 break;
             }
@@ -3039,10 +3039,20 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
 {
     switch (ip->op)
     {
+        case ByteCodeOp::ClearMaskU32:
+            if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
+                ip[1].a.u32 == ip[0].a.u32 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                ip[1].b.u64 = min(ip[0].b.u64, ip[1].b.u64);
+                setNop(context, ip);
+                break;
+            }
+            break;
+
         case ByteCodeOp::ClearMaskU64:
             if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
                 ip[1].a.u32 == ip[0].a.u32 &&
-                ip[1].b.u32 == ip[0].b.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 ip[0].b.u64 = min(ip[0].b.u64, ip[1].b.u64);
