@@ -122,9 +122,7 @@ void GenDoc::outputStyles()
     helpOutput += form("    .%s { color: #%x; }\n", SYN_NUMBER, getSyntaxColorRgb(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxNumber, lum));
     helpOutput += form("    .%s { color: #%x; }\n", SYN_STRING, getSyntaxColorRgb(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxString, lum));
     helpOutput += form("    .%s { color: #%x; }\n", SYN_ATTRIBUTE, getSyntaxColorRgb(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxAttribute, lum));
-    helpOutput += form("    .%s { color: #%x; }\n", SYN_BC_REGISTER, getSyntaxColorRgb(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxBcRegister, lum));
-    helpOutput += form("    .%s { color: #%x; }\n", SYN_BC_KEYWORD, getSyntaxColorRgb(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxBcKeyword, lum));
-    helpOutput += form("    .%s { color: #%x; }\n", SYN_BC_KEYWORD, getSyntaxColorRgb(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxBcConstant, lum));
+    helpOutput += form("    .%s { color: #%x; }\n", SYN_REGISTER, getSyntaxColorRgb(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxRegister, lum));
     helpOutput += form("    .%s { color: #%x; }\n", SYN_INVALID, getSyntaxColorRgb(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxInvalid, lum));
 
     helpOutput += "</style>\n";

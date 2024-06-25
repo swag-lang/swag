@@ -136,14 +136,8 @@ Utf8 syntaxColorToVTS(SyntaxColor color, SyntaxColorMode mode)
                 case SyntaxColor::SyntaxNumber:
                     colorName = SYN_NUMBER;
                     break;
-                case SyntaxColor::SyntaxBcRegister:
-                    colorName = SYN_BC_REGISTER;
-                    break;
-                case SyntaxColor::SyntaxBcKeyword:
-                    colorName = SYN_BC_KEYWORD;
-                    break;
-                case SyntaxColor::SyntaxBcConstant:
-                    colorName = SYN_BC_CONSTANT;
+                case SyntaxColor::SyntaxRegister:
+                    colorName = SYN_REGISTER;
                     break;
                 case SyntaxColor::SyntaxString:
                     colorName = SYN_STRING;
@@ -207,15 +201,8 @@ uint32_t getSyntaxColorRgb(SyntaxColorMode /*mode*/, SyntaxColor color, float lu
         case SyntaxColor::SyntaxAttribute:
             rgb = {0xaa, 0xaa, 0xaa};
             break;
-
-        case SyntaxColor::SyntaxBcKeyword:
-            rgb = {0x76, 0xBc, 0xF6};
-            break;
-        case SyntaxColor::SyntaxBcConstant:
-            rgb = {0x76, 0xF6, 0xBc};
-            break;
-        case SyntaxColor::SyntaxBcRegister:
-            rgb = {0xAF, 0xAF, 0x00};
+        case SyntaxColor::SyntaxRegister:
+            rgb = {0xBC, 0xB6, 0x58};
             break;
 
         case SyntaxColor::SyntaxInvalid:
@@ -463,16 +450,36 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
         }
 
         // Bytecode register
-        if (context.forByteCode && c == '$' && SWAG_IS_ALPHA(pz[0]))
+        if (context.forByteCode)
         {
-            result += syntaxColorToVTS(SyntaxColor::SyntaxBcRegister, mode);
-            result += c;
+            Utf8 word;
+            word += c;
+            auto pz1 = pz;
 
-            while (*pz && SWAG_IS_AL_NUM(*pz))
-                result += *pz++;
-            pz = Utf8::decodeUtf8(pz, c, offset);
-            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-            continue;
+            bool ok = false;
+            if (c == 'r' && SWAG_IS_DIGIT(pz[0]))
+            {
+                while (SWAG_IS_DIGIT(*pz1))
+                    word += *pz1++;
+                if (!SWAG_IS_ALPHA(*pz1))
+                    ok = true;
+            }
+            else if (SWAG_IS_ALPHA(c))
+            {
+                while (SWAG_IS_ALPHA(*pz1))
+                    word += *pz1++;
+                if (word == "sp" || word == "cmp" || word == "bss" || word == "dat" || word == "cst")
+                    ok = true;
+            }
+
+            if (ok)
+            {
+                result += syntaxColorToVTS(SyntaxColor::SyntaxRegister, mode);
+                result += word;
+                pz = Utf8::decodeUtf8(pz1, c, offset);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                continue;
+            }
         }
 
         // Modifier
@@ -520,7 +527,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                 auto it = g_LangSpec->bckeywords.find(identifier);
                 if (it != g_LangSpec->bckeywords.end())
                 {
-                    result += syntaxColorToVTS(SyntaxColor::SyntaxBcKeyword, mode);
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxKeyword, mode);
                     result += identifier;
                     result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                     continue;
@@ -533,7 +540,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                 auto it = g_LangSpec->bcconstants.find(identifier);
                 if (it != g_LangSpec->bcconstants.end())
                 {
-                    result += syntaxColorToVTS(SyntaxColor::SyntaxBcConstant, mode);
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxConstant, mode);
                     result += identifier;
                     result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                     continue;

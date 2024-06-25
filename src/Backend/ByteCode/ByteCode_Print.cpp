@@ -189,7 +189,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags.has(OPFLAG_READ_A | OPFLAG_WRITE_A))
     {
-        const auto ra = form("$r%u", ip->a.u32);
+        const auto ra = form("r%u", ip->a.u32);
         str.replace("_ra_", ra);
         str.replace("_rau8_", ra);
         str.replace("_rau16_", ra);
@@ -205,7 +205,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags.has(OPFLAG_READ_B | OPFLAG_WRITE_B))
     {
-        const auto rb = form("$r%u", ip->b.u32);
+        const auto rb = form("r%u", ip->b.u32);
         str.replace("_rb_", rb);
         str.replace("_rbu8_", rb);
         str.replace("_rbu16_", rb);
@@ -221,7 +221,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags.has(OPFLAG_READ_C | OPFLAG_WRITE_C))
     {
-        const auto rc = form("$r%u", ip->c.u32);
+        const auto rc = form("r%u", ip->c.u32);
         str.replace("_rc_", rc);
         str.replace("_rcu8_", rc);
         str.replace("_rcu16_", rc);
@@ -237,7 +237,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags.has(OPFLAG_READ_D | OPFLAG_WRITE_D))
     {
-        const auto rd = form("$r%u", ip->d.u32);
+        const auto rd = form("r%u", ip->d.u32);
         str.replace("_rd_", rd);
         str.replace("_rdu8_", rd);
         str.replace("_rdu16_", rd);
@@ -386,6 +386,8 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
         {
             const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->b.pointer);
             SWAG_ASSERT(funcNode);
+            
+            line.pretty += "// ";
             line.pretty += Utf8::truncateDisplay(funcNode->token.sourceFile->name, 30);
             line.pretty += "/";
             line.pretty += funcNode->token.text;
@@ -397,6 +399,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
         case ByteCodeOp::ForeignCallPop:
         {
             const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
+            line.pretty += "// ";
             line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
             line.pretty += "()";
             line.pretty += " ";
@@ -410,6 +413,8 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
         {
             const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
             SWAG_ASSERT(bc);
+            
+            line.pretty += "// ";
             line.pretty += bc->name;
             line.pretty += "()";
 
