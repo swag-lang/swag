@@ -3039,6 +3039,66 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
 {
     switch (ip->op)
     {
+        case ByteCodeOp::GetParam8:
+            if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+                ip[1].a.u32 == ip[0].a.u32 &&
+                (ip[1].b.u32 & 0xFF) == 0xFF &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                setNop(context, ip + 1);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
+                ip[1].a.u32 == ip[0].a.u32 &&
+                (ip[1].b.u64 & 0xFF) == 0xFF &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                setNop(context, ip + 1);
+                break;
+            }
+            break;
+
+        case ByteCodeOp::GetParam16:
+            if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+                ip[1].a.u32 == ip[0].a.u32 &&
+                (ip[1].b.u32 & 0xFFFF) == 0xFFFF &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                setNop(context, ip + 1);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
+                ip[1].a.u32 == ip[0].a.u32 &&
+                (ip[1].b.u64 & 0xFFFF) == 0xFFFF &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                setNop(context, ip + 1);
+                break;
+            }
+            break;
+
+        case ByteCodeOp::GetParam32:
+            if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+                ip[1].a.u32 == ip[0].a.u32 &&
+                (ip[1].b.u32 & 0xFFFFFFFF) == 0xFFFFFFFF &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                setNop(context, ip + 1);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
+                ip[1].a.u32 == ip[0].a.u32 &&
+                (ip[1].b.u64 & 0xFFFFFFFF) == 0xFFFFFFFF &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                setNop(context, ip + 1);
+                break;
+            }
+            break;
+
         case ByteCodeOp::ClearMaskU32:
             if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
                 ip[1].a.u32 == ip[0].a.u32 &&
