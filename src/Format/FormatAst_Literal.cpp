@@ -10,28 +10,28 @@ bool FormatAst::outputLiteral(FormatContext& context, AstNode* node)
 {
     const auto literalNode = castAst<AstLiteral>(node, AstNodeKind::Literal);
     if (literalNode->literalType == LiteralType::TypeStringRaw)
-        concat->addString("#\"");
+        concat->addString(R"(#")");
     else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
-        concat->addString("\"");
+        concat->addString(R"(")");
     else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
-        concat->addString("\"\"\"");
+        concat->addString(R"(""")");
     else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
         concat->addString("`");
 
     concat->addString(node->token.text);
 
     if (literalNode->literalType == LiteralType::TypeStringRaw)
-        concat->addString("\"#");
+        concat->addString(R"("#)");
     else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
-        concat->addString("\"");
+        concat->addString(R"(")");
     else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
-        concat->addString("\"\"\"");
+        concat->addString(R"(""")");
     else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
         concat->addString("`");
 
     if (!node->children.empty())
     {
-        concat->addChar('\'');
+        concat->addString(R"(')");
         SWAG_CHECK(outputNode(context, node->firstChild()));
     }
 

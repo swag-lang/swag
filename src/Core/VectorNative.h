@@ -296,13 +296,13 @@ struct VectorNative
 
     VectorNative& operator=(const VectorNative& other)
     {
-        if (this != &other)
-        {
-            count = other.size();
-            if (allocated < count)
-                reserve(count, false);
-            std::copy_n(other.buffer, count, buffer);
-        }
+        if (this == &other)
+            return *this;
+
+        count = other.size();
+        if (allocated < count)
+            reserve(count, false);
+        std::copy_n(other.buffer, count, buffer);
 
         return *this;
     }

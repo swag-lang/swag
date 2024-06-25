@@ -65,7 +65,7 @@ namespace OS
         g_WinSdkFolder = str.c_str();
         g_WinSdkFolder.append("Lib");
 
-        int  bestVersion[4] = {0};
+        int  bestVersion[4] = {};
         Utf8 bestName;
         visitFolders(g_WinSdkFolder, [&](const char* cFileName) {
             int        i0, i1, i2, i3;
@@ -1129,7 +1129,7 @@ namespace OS
         fill.Attributes       = csbi.wAttributes;
 
         // Do the scroll
-        ScrollConsoleScreenBuffer(g_ConsoleHandle, &scrollRect, NULL, scrollTarget, &fill);
+        ScrollConsoleScreenBuffer(g_ConsoleHandle, &scrollRect, nullptr, scrollTarget, &fill);
 
         // Move the cursor to the top left corner too.
         csbi.dwCursorPosition.X = 0;

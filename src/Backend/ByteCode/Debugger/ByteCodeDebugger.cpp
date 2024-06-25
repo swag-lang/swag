@@ -8,7 +8,6 @@
 #include "Semantic/SemanticJob.h"
 #include "Syntax/AstFlags.h"
 #include "Wmf/Module.h"
-#include "Wmf/Workspace.h"
 
 ByteCodeDebugger g_ByteCodeDebugger;
 

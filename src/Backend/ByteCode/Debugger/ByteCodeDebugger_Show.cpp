@@ -268,7 +268,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowArguments(ByteCodeRunContext* contex
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdShowScopes(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowScopes(ByteCodeRunContext*, const BcDbgCommandArg& arg)
 {
     if (arg.help)
         return BcDbgCommandResult::Continue;
@@ -480,7 +480,7 @@ namespace
     }
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdShowSegments(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdShowSegments(ByteCodeRunContext*, const BcDbgCommandArg& arg)
 {
     if (arg.help)
     {

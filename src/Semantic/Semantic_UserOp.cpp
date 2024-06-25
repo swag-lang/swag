@@ -566,7 +566,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
     if (!symbol)
     {
-        Diagnostic* note = nullptr;
+        const Diagnostic* note = nullptr;
         if (leftType->declNode)
             note = Diagnostic::hereIs(leftType->declNode);
 
@@ -586,7 +586,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         return context->report(err);
     }
 
-    auto node = context->node;
+    const auto node = context->node;
 
     SymbolMatchContext symMatchContext;
     symMatchContext.matchFlags |= SymbolMatchContext::MATCH_UN_CONST; // Do not test const
@@ -623,8 +623,8 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
     if (leftType->isGeneric())
     {
-        PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [&] { return formNte(Nte0143, name.c_str(), leftType->getDisplayNameC()); }, true);
-        Diagnostic     err(left, formErr(Err0556, name.c_str()));
+        PushErrCxtStep   ec(context, left->parent, ErrCxtStepKind::Note, [&] { return formNte(Nte0143, name.c_str(), leftType->getDisplayNameC()); }, true);
+        const Diagnostic     err(left, formErr(Err0556, name.c_str()));
         return context->report(err);
     }
 
@@ -635,7 +635,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
         {
             SharedLock lk(symbol->mutex);
-            for (auto overload : symbol->overloads)
+            for (const auto overload : symbol->overloads)
             {
                 auto t               = context->getTryMatch();
                 t->symMatchContext   = symMatchContext;
@@ -665,19 +665,19 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     if (context->cacheMatches.empty())
         return true;
 
-    auto oneMatch = context->cacheMatches[0];
+    const auto oneMatch = context->cacheMatches[0];
     for (uint32_t i = 0; i < params.size(); i++)
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
         {
-            auto      toType    = oneMatch->solvedParameters[i]->typeInfo;
+            const auto      toType    = oneMatch->solvedParameters[i]->typeInfo;
             CastFlags castFlags = CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_UFCS | CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_PARAMS;
             if (!oneMatch->solvedParameters[i]->flags.has(TYPEINFOPARAM_FROM_GENERIC))
                 castFlags.add(CAST_FLAG_TRY_COERCE);
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, params[i], castFlags));
             YIELD();
 
-            auto makePtrL = params[i];
+            const auto makePtrL = params[i];
 
             // :ConcreteRef
             if (makePtrL->typeInfo->isPointerRef() && !toType->isPointerRef())
@@ -695,7 +695,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
             // :FctCallParamClosure
             if (!(ropFlags & ROP_SIMPLE_CAST))
             {
-                auto toTypeRef = toType->getConcreteAlias();
+                const auto toTypeRef = toType->getConcreteAlias();
                 if (makePtrL && toTypeRef && toTypeRef->isClosure())
                 {
                     bool convert = false;
@@ -708,17 +708,17 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                     if (convert)
                     {
                         // Create a function call param node, and move the node inside it
-                        auto oldParent = makePtrL->parent;
-                        auto oldIdx    = makePtrL->childParentIdx();
+                        const auto oldParent = makePtrL->parent;
+                        const auto oldIdx    = makePtrL->childParentIdx();
                         Ast::removeFromParent(makePtrL);
 
-                        auto nodeCall = Ast::newFuncCallParam(nullptr, oldParent);
+                        const auto nodeCall = Ast::newFuncCallParam(nullptr, oldParent);
                         nodeCall->addAstFlag(AST_REVERSE_SEMANTIC);
                         Ast::removeFromParent(nodeCall);
                         Ast::insertChild(oldParent, nodeCall, oldIdx);
                         Ast::addChildBack(nodeCall, makePtrL);
 
-                        auto varNode = Ast::newVarDecl(form("__ctmp_%d", g_UniqueID.fetch_add(1)), nullptr, nodeCall);
+                        const auto varNode = Ast::newVarDecl(form("__ctmp_%d", g_UniqueID.fetch_add(1)), nullptr, nodeCall);
 
                         if (makePtrL->typeInfo->isLambda())
                         {
@@ -747,7 +747,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                         varNode->type->typeInfo = toType;
                         varNode->type->addAstFlag(AST_NO_SEMANTIC);
 
-                        auto idRef = Ast::newIdentifierRef(varNode->token.text, nullptr, nodeCall);
+                        const auto idRef = Ast::newIdentifierRef(varNode->token.text, nullptr, nodeCall);
                         idRef->addExtraPointer(ExtraPointerKind::ExportNode, makePtrL);
 
                         // Put child front, because emitFuncCallParam wants the parameter to be the first
@@ -766,14 +766,14 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     }
 
     // Result
-    auto overload  = oneMatch->symbolOverload;
+    const auto overload  = oneMatch->symbolOverload;
     node->typeInfo = overload->typeInfo;
     node->addExtraPointer(ExtraPointerKind::UserOp, overload);
     SWAG_ASSERT(symbol && symbol->is(SymbolKind::Function));
     SWAG_ASSERT(overload);
 
     // Allocate room on the stack to store the result of the function call
-    auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
     if (CallConv::returnNeedsStack(typeFunc))
         allocateOnStack(node, typeFunc->concreteReturnType());
 

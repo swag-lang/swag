@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Backend/Backend.h"
-#include "Backend/Context.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Backend/Context.h"
 #include "Jobs/FileJob.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
@@ -90,8 +90,8 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
     if (node->hasFlagComputedValue())
         return true;
 
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
+    const auto sourceFile = context->sourceFile;
+    const auto module     = sourceFile->module;
 
     // Request to generate the corresponding bytecode
     {
@@ -106,12 +106,12 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
     if (!node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
     {
-        auto realType = TypeManager::concreteType(node->typeInfo);
+        const auto realType = TypeManager::concreteType(node->typeInfo);
         if (realType && realType->isStruct() && !realType->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
         {
             if (realType->isTuple())
             {
-                Diagnostic err{node, toErr(Err0043)};
+                const Diagnostic err{node, toErr(Err0043)};
                 return context->report(err);
             }
 
@@ -130,7 +130,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
             SymbolName* symCount   = nullptr;
             SymbolName* symSlice   = nullptr;
-            auto        typeStruct = castTypeInfo<TypeInfoStruct>(realType, TypeInfoKind::Struct);
+            const auto        typeStruct = castTypeInfo<TypeInfoStruct>(realType, TypeInfoKind::Struct);
             SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opCount, typeStruct, &symCount));
             SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, typeStruct, &symSlice));
 
@@ -151,7 +151,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
             else
             {
                 SWAG_ASSERT(!context->node->hasExtraPointer(ExtraPointerKind::UserOp));
-                auto saveTypeStruct = node->typeInfo;
+                const auto saveTypeStruct = node->typeInfo;
 
                 // opCount
                 VectorNative<AstNode*> params;
@@ -187,14 +187,12 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 YIELD();
 
                 // Is the type of the slice supported ?
-                bool ok           = false;
-                auto concreteType = TypeManager::concreteType(execParams.specReturnOpSlice->typeInfo);
-                if (concreteType->isString())
-                    ok = true;
-                else if (concreteType->isSlice())
+                const auto concreteType = TypeManager::concreteType(execParams.specReturnOpSlice->typeInfo);
+                if (concreteType->isSlice())
                 {
-                    auto typeSlice        = castTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
-                    auto typeSliceContent = TypeManager::concreteType(typeSlice->pointedType);
+                    bool       ok               = false;
+                    const auto typeSlice        = castTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
+                    const auto typeSliceContent = TypeManager::concreteType(typeSlice->pointedType);
                     if (typeSliceContent->isString() ||
                         typeSliceContent->isBool() ||
                         typeSliceContent->isNativeIntegerOrRune() ||
@@ -204,13 +202,13 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                         ok = true;
                     if (!ok)
                     {
-                        Diagnostic err{node, formErr(Err0032, typeSliceContent->getDisplayNameC())};
+                        const Diagnostic err{node, formErr(Err0032, typeSliceContent->getDisplayNameC())};
                         return context->report(err);
                     }
                 }
-                else
+                else if (!concreteType->isString())
                 {
-                    Diagnostic err{node, formErr(Err0029, concreteType->getDisplayNameC())};
+                    const Diagnostic err{node, formErr(Err0029, concreteType->getDisplayNameC())};
                     return context->report(err);
                 }
 
@@ -281,7 +279,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
     SWAG_CHECK(collectAttributes(context, node, nullptr));
     if (node->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
     {
-        ByteCodePrintOptions opt;
+        const ByteCodePrintOptions opt;
         node->extByteCode()->bc->print(opt);
     }
 

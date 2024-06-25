@@ -14,9 +14,9 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 {
     emitDebugNop(context);
 
-    auto node         = castAst<AstInline>(context->node, AstNodeKind::Inline);
-    auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(node->func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-    auto returnType   = typeInfoFunc->concreteReturnType();
+    const auto node         = castAst<AstInline>(context->node, AstNodeKind::Inline);
+    const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(node->func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+    const auto returnType   = typeInfoFunc->concreteReturnType();
 
     // Missing try/catch...
     auto parent = node->parent;
@@ -35,7 +35,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     // not the top for speed, but anyway there's room for improvement for inline in all cases.
     if (CallConv::returnByStackAddress(typeInfoFunc))
     {
-        auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
+        const auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
         inst->b.u64 = node->computedValue()->storageOffset;
         node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->computedValue()->storageOffset);
     }
@@ -61,7 +61,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     }
     else if (parent->is(AstNodeKind::Identifier))
     {
-        auto identifier                               = castAst<AstIdentifier>(parent, AstNodeKind::Identifier);
+        const auto identifier                               = castAst<AstIdentifier>(parent, AstNodeKind::Identifier);
         identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;
         allParams                                     = identifier->callParameters;
         numCallParams                                 = allParams ? allParams->childCount() : 0;
@@ -75,8 +75,8 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     else if (parent->is(AstNodeKind::AutoSlicingUp))
     {
         SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opCount));
-        auto slicing   = castAst<AstArrayPointerSlicing>(parent->parent, AstNodeKind::ArrayPointerSlicing);
-        auto arrayNode = slicing->array;
+        const auto slicing   = castAst<AstArrayPointerSlicing>(parent->parent, AstNodeKind::ArrayPointerSlicing);
+        const auto arrayNode = slicing->array;
         parameters.children.push_back(arrayNode);
         allParams        = &parameters;
         numCallParams    = parameters.childCount();
@@ -85,8 +85,8 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     else if (parent->is(AstNodeKind::SwitchCase))
     {
         SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opEquals));
-        auto caseNode   = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
-        auto switchNode = castAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
+        const auto caseNode   = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
+        const auto switchNode = castAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
         parameters.children.push_back(switchNode->expression);
         parameters.children.push_back(caseNode->firstChild());
         allParams     = &parameters;
@@ -95,7 +95,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     else if (parent->is(AstNodeKind::AffectOp) && (parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAffect) || parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAssign)))
     {
         SWAG_ASSERT(parent->firstChild()->is(AstNodeKind::IdentifierRef));
-        auto ptIdx = castAst<AstArrayPointerIndex>(parent->firstChild()->lastChild(), AstNodeKind::ArrayPointerIndex);
+        const auto ptIdx = castAst<AstArrayPointerIndex>(parent->firstChild()->lastChild(), AstNodeKind::ArrayPointerIndex);
         auto arr   = ptIdx->array;
 
         auto ptIdx1 = ptIdx;
@@ -136,10 +136,10 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     }
 
     // Need to Map all call parameters to function arguments
-    auto func = node->func;
+    const auto func = node->func;
     if (func->parameters)
     {
-        auto numFuncParams = func->parameters->childCount();
+        const auto numFuncParams = func->parameters->childCount();
 
         // Sort children by parameter index
         Semantic::sortParameters(allParams);
@@ -153,11 +153,11 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         {
             for (uint32_t i = 0; i < numCallParams; i++)
             {
-                auto funcParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
-                auto callParam = allParams->children[i];
-                auto symbol    = node->parametersScope->symTable.find(funcParam->token.text);
+                const auto funcParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
+                const auto callParam = allParams->children[i];
+                const auto symbol    = node->parametersScope->symTable.find(funcParam->token.text);
                 SWAG_ASSERT(symbol);
-                for (auto overload : symbol->overloads)
+                for (const auto overload : symbol->overloads)
                 {
                     if (overload->hasFlag(OVERLOAD_VAR_INLINE))
                     {
@@ -180,11 +180,11 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
             // Determine if this parameter has been covered by the call
             for (uint32_t i = 0; i < numFuncParams; i++)
             {
-                auto funcParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
+                const auto funcParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
                 bool covered   = false;
                 for (uint32_t j = 0; j < numCallParams; j++)
                 {
-                    auto callParam = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);
+                    const auto callParam = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);
                     if (callParam->indexParam == i)
                     {
                         if (callParam->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
@@ -193,9 +193,9 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                             break;
                         }
 
-                        auto symbol = node->parametersScope->symTable.find(funcParam->token.text);
+                        const auto symbol = node->parametersScope->symTable.find(funcParam->token.text);
                         SWAG_ASSERT(symbol);
-                        for (auto overload : symbol->overloads)
+                        for (const auto overload : symbol->overloads)
                         {
                             if (overload->hasFlag(OVERLOAD_VAR_INLINE))
                             {
@@ -220,12 +220,12 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                 // If not covered, then this is a default value
                 if (!covered)
                 {
-                    auto defaultParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
+                    const auto defaultParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
                     SWAG_ASSERT(defaultParam->assignment);
 
-                    auto symbol = node->parametersScope->symTable.find(defaultParam->token.text);
+                    const auto symbol = node->parametersScope->symTable.find(defaultParam->token.text);
                     SWAG_ASSERT(symbol);
-                    for (auto overload : symbol->overloads)
+                    for (const auto overload : symbol->overloads)
                     {
                         if (overload->hasFlag(OVERLOAD_VAR_INLINE))
                         {

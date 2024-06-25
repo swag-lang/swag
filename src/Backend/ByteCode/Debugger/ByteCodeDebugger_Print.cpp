@@ -4,7 +4,6 @@
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Report/Log.h"
 #include "Semantic/Type/TypeInfo.h"
-#include "Syntax/Ast.h"
 #include "Wmf/Workspace.h"
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef

@@ -434,7 +434,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
             });
 
             uint32_t idx = 0;
-            for (auto j : g_ThreadMgr.waitingJobs)
+            for (const auto j : g_ThreadMgr.waitingJobs)
                 j->waitingJobIndex = idx++;
 
             const auto note = errorPendingJob(pendingJob, nullptr);

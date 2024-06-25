@@ -222,7 +222,7 @@ struct TypeInfo
     uint32_t       sizeOf     = 0;
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;
-    uint8_t        padding[2] = {0};
+    uint8_t        padding[2] = {};
 
     SWAG_RACE_CONDITION_INSTANCE(raceName);
 };

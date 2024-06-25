@@ -22,7 +22,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         context->vecInst.clear();
         context->vecInstCopy.clear();
         context->vecReg.clear();
-        uint32_t countReg[RegisterList::MAX_REGISTERS] = {0};
+        uint32_t countReg[RegisterList::MAX_REGISTERS] = {};
 
         while (ipScan != ip)
         {

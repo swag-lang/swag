@@ -37,7 +37,7 @@ struct RegisterList
     static constexpr int MAX_STATIC    = 2;
     static constexpr int MAX_REGISTERS = 256;
 
-    uint8_t oneResult[MAX_STATIC] = {0};
+    uint8_t oneResult[MAX_STATIC] = {};
     uint8_t countResults          = 0;
     bool    cannotFree            = false;
 

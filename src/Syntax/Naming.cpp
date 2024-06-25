@@ -1,10 +1,10 @@
 #include "pch.h"
+#include "Syntax/Naming.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/AstNode.h"
-#include "Syntax/Naming.h"
 
 Utf8 Naming::kindName(const SymbolName* symbol, const AstNode* node, const TypeInfo* typeInfo, OverloadFlags overFlags, Utf8& article)
 {
@@ -465,9 +465,9 @@ Utf8 Naming::niceArgumentRank(uint32_t idx)
             return "second argument";
         case 3:
             return "third argument";
+        default:
+            return form("argument [[%d]]", idx);
     }
-
-    return form("argument [[%d]]", idx);
 }
 
 Utf8 Naming::niceParameterRank(uint32_t idx)
@@ -480,8 +480,9 @@ Utf8 Naming::niceParameterRank(uint32_t idx)
             return "second parameter";
         case 3:
             return "third parameter";
+        default:
+            return form("parameter [[%d]]", idx);
     }
-    return form("parameter [[%d]]", idx);
 }
 
 Utf8 Naming::tokenToName(TokenId id)
