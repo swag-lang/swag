@@ -69,9 +69,9 @@ void initErrors()
     SWAG_ERROR(Saf0002, "safety failed [[any]] $ invalid dynamic cast of a null value to [[%s]]");
     SWAG_ERROR(Saf0003, "safety failed [[bool]] $ invalid boolean value");
     SWAG_ERROR(Saf0004, "safety failed [[boundcheck]] $ index out of bounds");
-    SWAG_ERROR(Saf0005, "safety failed [[boundcheck]] $ range error, lower > upper");
-    SWAG_ERROR(Saf0006, "safety failed [[boundcheck]] $ slice error, lower > upper");
-    SWAG_ERROR(Saf0007, "safety failed [[boundcheck]] $ slice error, upper out of bounds");
+    SWAG_ERROR(Saf0005, "safety failed [[boundcheck]] $ range error, lower bound exceeds upper bound");
+    SWAG_ERROR(Saf0006, "safety failed [[boundcheck]] $ slice error, lower bound exceeds upper bound");
+    SWAG_ERROR(Saf0007, "safety failed [[boundcheck]] $ slice error, upper bound out of bounds");
     SWAG_ERROR(Saf0008, "safety failed [[math]] $ [[@abs]] overflow (type is [[%s]])");
     SWAG_ERROR(Saf0009, "safety failed [[math]] $ [[@acos]] invalid argument (type is [[%s]])");
     SWAG_ERROR(Saf0010, "safety failed [[math]] $ [[@asin]] invalid argument (type is [[%s]])");
