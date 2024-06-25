@@ -269,8 +269,19 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         case ByteCodeOp::IntrinsicU64x2:
         case ByteCodeOp::IntrinsicF32x2:
         case ByteCodeOp::IntrinsicF64x2:
-            str.replace("_w0_", g_TokenNames[ip->d.u32]);
+        {
+            Utf8 name = g_TokenNames[ip->d.u32];
+            if (name.startsWith("Intrinsic"))
+            {
+                name.remove(0, 9);
+                SWAG_ASSERT(name.length() > 1);
+                name.buffer[0] = (char) tolower(name[0]);
+                name.insert(0, "@");
+            }
+
+            str.replace("_w0_", name);
             break;
+        }
     }
 
     str.trim();
@@ -386,7 +397,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
         {
             const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->b.pointer);
             SWAG_ASSERT(funcNode);
-            
+
             line.pretty += "// ";
             line.pretty += Utf8::truncateDisplay(funcNode->token.sourceFile->name, 30);
             line.pretty += "/";
@@ -413,7 +424,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
         {
             const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
             SWAG_ASSERT(bc);
-            
+
             line.pretty += "// ";
             line.pretty += bc->name;
             line.pretty += "()";
