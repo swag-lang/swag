@@ -96,6 +96,9 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
+    .SBcR { color: #ffff00; }
+    .SBcK { color: #f89ef; }
+    .SBcK { color: #fef89; }
     .SInv { color: #ff0000; }
 </style>
 
@@ -178,7 +181,7 @@ Hello world!
 <p>And as this is a normal Swag workspace, you could also build and test it with <span class="code-inline">swag test -w:swag/reference</span>. </p>
 <p>You will also find some small examples (mostly written for tests) in <span class="code-inline">swag/bin/examples/modules</span>. To build and run one of them from the console, go to the workspace folder (<span class="code-inline">/examples</span>) and type for example <span class="code-inline">swag run -m:wnd</span>. </p>
 <div class="swag-watermark">
-Generated on 23-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 25-06-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.35.0</div>
 </div>
 </div>
 </div>

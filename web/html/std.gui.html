@@ -98,6 +98,9 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
+    .SBcR { color: #ffff00; }
+    .SBcK { color: #f89ef; }
+    .SBcK { color: #fef89; }
     .SInv { color: #ff0000; }
 </style>
 <?php include('common/end-head.php'); ?>
@@ -357,8 +360,8 @@
 <h3>Type Aliases</h3>
 <h4></h4>
 <ul>
-<li><a href="#Gui_Clipboard_Format">Format</a></li>
 <li><a href="#Gui_FrameCallback">FrameCallback</a></li>
+<li><a href="#Gui_Clipboard_ValueFormat">ValueFormat</a></li>
 </ul>
 <h4>richedit</h4>
 <ul>
@@ -402,6 +405,7 @@
 <li><a href="#Gui_Application_getWndAtMouse">Application.getWndAtMouse</a></li>
 <li><a href="#Gui_Application_invalidate">Application.invalidate</a></li>
 <li><a href="#Gui_Application_loadState">Application.loadState</a></li>
+<li><a href="#Gui_Application_opDrop">Application.opDrop</a></li>
 <li><a href="#Gui_Application_popCursor">Application.popCursor</a></li>
 <li><a href="#Gui_Application_postEvent">Application.postEvent</a></li>
 <li><a href="#Gui_Application_postQuitEvent">Application.postQuitEvent</a></li>
@@ -419,15 +423,19 @@
 <li><a href="#Gui_Application_setConfigPath">Application.setConfigPath</a></li>
 <li><a href="#Gui_Application_unregisterFrameEvent">Application.unregisterFrameEvent</a></li>
 <li><a href="#Gui_Application_unregisterHookEvents">Application.unregisterHookEvents</a></li>
-<li><a href="#Gui_Clipboard_addData">Clipboard.addData</a></li>
 <li><a href="#Gui_Clipboard_addImage">Clipboard.addImage</a></li>
 <li><a href="#Gui_Clipboard_addString">Clipboard.addString</a></li>
-<li><a href="#Gui_Clipboard_getData">Clipboard.getData</a></li>
+<li><a href="#Gui_Clipboard_addTypedData">Clipboard.addTypedData</a></li>
+<li><a href="#Gui_Clipboard_addTypedValue">Clipboard.addTypedValue</a></li>
 <li><a href="#Gui_Clipboard_getImage">Clipboard.getImage</a></li>
 <li><a href="#Gui_Clipboard_getString">Clipboard.getString</a></li>
+<li><a href="#Gui_Clipboard_getTypedData">Clipboard.getTypedData</a></li>
+<li><a href="#Gui_Clipboard_getTypedValue">Clipboard.getTypedValue</a></li>
 <li><a href="#Gui_Clipboard_hasFormat">Clipboard.hasFormat</a></li>
 <li><a href="#Gui_Clipboard_hasImage">Clipboard.hasImage</a></li>
 <li><a href="#Gui_Clipboard_hasString">Clipboard.hasString</a></li>
+<li><a href="#Gui_Clipboard_hasTypedData">Clipboard.hasTypedData</a></li>
+<li><a href="#Gui_Clipboard_hasTypedValue">Clipboard.hasTypedValue</a></li>
 <li><a href="#Gui_Clipboard_registerFormat">Clipboard.registerFormat</a></li>
 <li><a href="#Gui_Event_create">Event.create</a></li>
 <li><a href="#Gui_DwmExtendFrameIntoClientArea">Gui.DwmExtendFrameIntoClientArea</a></li>
@@ -623,6 +631,7 @@
 <li><a href="#Gui_ImageList_set">ImageList.set</a></li>
 <li><a href="#Gui_PaintImage_draw">PaintImage.draw</a></li>
 <li><a href="#Gui_PaintImage_init">PaintImage.init</a></li>
+<li><a href="#Gui_PaintImage_opDrop">PaintImage.opDrop</a></li>
 <li><a href="#Gui_Theme_createDefaultFont">Theme.createDefaultFont</a></li>
 <li><a href="#Gui_Theme_createDefaultFontFS">Theme.createDefaultFontFS</a></li>
 <li><a href="#Gui_Theme_createDefaultFontfamily">Theme.createDefaultFontfamily</a></li>
@@ -637,6 +646,7 @@
 <li><a href="#Gui_ThemeStyle_clearStyleSheetColors">ThemeStyle.clearStyleSheetColors</a></li>
 <li><a href="#Gui_ThemeStyle_create">ThemeStyle.create</a></li>
 <li><a href="#Gui_ThemeStyle_getFont">ThemeStyle.getFont</a></li>
+<li><a href="#Gui_ThemeStyle_opDrop">ThemeStyle.opDrop</a></li>
 <li><a href="#Gui_ThemeStyle_setFont">ThemeStyle.setFont</a></li>
 <li><a href="#Gui_ThemeStyle_setStyleSheetColors">ThemeStyle.setStyleSheetColors</a></li>
 <li><a href="#Gui_ThemeStyle_setStyleSheetMetrics">ThemeStyle.setStyleSheetMetrics</a></li>
@@ -645,13 +655,15 @@
 <ul>
 <li><a href="#Gui_Properties_IWnd_onPaintEvent">IWnd.onPaintEvent</a></li>
 <li><a href="#Gui_Properties_addStruct">Properties.addStruct</a></li>
+<li><a href="#Gui_Properties_canChangeItem">Properties.canChangeItem</a></li>
 <li><a href="#Gui_Properties_create">Properties.create</a></li>
 <li><a href="#Gui_Properties_hasChanged">Properties.hasChanged</a></li>
 <li><a href="#Gui_Properties_refresh">Properties.refresh</a></li>
 <li><a href="#Gui_Properties_setColumnSize">Properties.setColumnSize</a></li>
 <li><a href="#Gui_Properties_setCurrentSection">Properties.setCurrentSection</a></li>
 <li><a href="#Gui_Properties_setStringFilter">Properties.setStringFilter</a></li>
-<li><a href="#Gui_Properties_updateState">Properties.updateState</a></li>
+<li><a href="#Gui_Properties_updateItemState">Properties.updateItemState</a></li>
+<li><a href="#Gui_Properties_updateStates">Properties.updateStates</a></li>
 <li><a href="#Gui_PropertiesCtrl_addStruct">PropertiesCtrl.addStruct</a></li>
 <li><a href="#Gui_PropertiesCtrl_create">PropertiesCtrl.create</a></li>
 </ul>
@@ -936,7 +948,10 @@
 <li><a href="#Gui_Wnd_hide">Wnd.hide</a></li>
 <li><a href="#Gui_Wnd_invalidate">Wnd.invalidate</a></li>
 <li><a href="#Gui_Wnd_invalidateRect">Wnd.invalidateRect</a></li>
+<li><a href="#Gui_Wnd_isDisabled">Wnd.isDisabled</a></li>
 <li><a href="#Gui_Wnd_isEnabled">Wnd.isEnabled</a></li>
+<li><a href="#Gui_Wnd_isEnabledState">Wnd.isEnabledState</a></li>
+<li><a href="#Gui_Wnd_isHidden">Wnd.isHidden</a></li>
 <li><a href="#Gui_Wnd_isOwnerOf">Wnd.isOwnerOf</a></li>
 <li><a href="#Gui_Wnd_isParentOf">Wnd.isParentOf</a></li>
 <li><a href="#Gui_Wnd_isVisible">Wnd.isVisible</a></li>
@@ -985,7 +1000,7 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Gui_Clipboard_Format"><span class="api-item-title-kind">type alias</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">Type Aliases</span></span>
+<span id="Gui_Clipboard_ValueFormat"><span class="api-item-title-kind">type alias</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">Type Aliases</span></span>
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L6" class="src">[src]</a></td>
@@ -994,8 +1009,8 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td id="Gui_Clipboard_Format">Format</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span></span></td>
+<td id="Gui_Clipboard_ValueFormat">ValueFormat</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_ValueFormat">ValueFormat</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -1157,7 +1172,7 @@
 <span id="Gui_AddItemFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Gui.</span><span class="api-item-title-strong">AddItemFlags</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L62" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L67" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1549,6 +1564,13 @@
 <td>Unregister a window to receive hook events. </td>
 </tr>
 </table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_opDrop">opDrop</a></span></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -1776,6 +1798,18 @@
 </p>
 <p>Load the application state. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_Application_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Application.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\application.swg#L517" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2388,10 +2422,6 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_addData">addData</a></span></td>
-<td>Add data of a given format to the clipboard. </td>
-</tr>
-<tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_addImage">addImage</a></span></td>
 <td>Add an image. </td>
 </tr>
@@ -2400,8 +2430,12 @@
 <td>Add string to clipboard. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_getData">getData</a></span></td>
-<td>Get data of the given format. </td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_addTypedData">addTypedData</a></span></td>
+<td>Add data of a given format of the given <span class="code-inline">type</span> to the clipboard <span class="code-inline">type</span> can be null to just check for the given clipboard format. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_addTypedValue">addTypedValue</a></span></td>
+<td>Add whatever value with a given <span class="code-inline">type</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_getImage">getImage</a></span></td>
@@ -2410,6 +2444,14 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_getString">getString</a></span></td>
 <td>Get utf8 string from clipboard. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_getTypedData">getTypedData</a></span></td>
+<td>Get data of the given format and <span class="code-inline">type</span> <span class="code-inline">type</span> can be null to just check for the given clipboard format. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_getTypedValue">getTypedValue</a></span></td>
+<td>Get whatever value with a given <span class="code-inline">type</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_hasFormat">hasFormat</a></span></td>
@@ -2424,6 +2466,14 @@
 <td>Returns true if the clipboard contains a string. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_hasTypedData">hasTypedData</a></span></td>
+<td>Returns true if the clipboard contains the given format of the given <span class="code-inline">type</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_hasTypedValue">hasTypedValue</a></span></td>
+<td>Get whatever value with a given <span class="code-inline">type</span>. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_registerFormat">registerFormat</a></span></td>
 <td>Register a new format. </td>
 </tr>
@@ -2432,23 +2482,10 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Gui_Clipboard_addData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">addData</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L27" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Add data of a given format to the clipboard. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addData</span>(fmt: <span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
 <span id="Gui_Clipboard_addImage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">addImage</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L85" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2461,7 +2498,7 @@
 <span id="Gui_Clipboard_addString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">addString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L200" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L240" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2471,15 +2508,28 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Gui_Clipboard_getData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">getData</span></span>
+<span id="Gui_Clipboard_addTypedData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">addTypedData</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Get data of the given format. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getData</span>(fmt: <span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></div>
+<p>Add data of a given format of the given <span class="code-inline">type</span> to the clipboard <span class="code-inline">type</span> can be null to just check for the given clipboard format. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addTypedData</span>(fmt: <span class="SCst"><a href="#Gui_Clipboard_ValueFormat">ValueFormat</a></span>, type: <span class="STpe">typeinfo</span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_Clipboard_addTypedValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">addTypedValue</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.swg#L7" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Add whatever value with a given <span class="code-inline">type</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addTypedValue</span>(value: *<span class="STpe">void</span>, type: <span class="STpe">typeinfo</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2487,7 +2537,7 @@
 <span id="Gui_Clipboard_getImage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">getImage</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L142" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L182" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2500,12 +2550,38 @@
 <span id="Gui_Clipboard_getString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">getString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L229" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L269" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Get utf8 string from clipboard. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getString</span>()-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_Clipboard_getTypedData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">getTypedData</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L74" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get data of the given format and <span class="code-inline">type</span> <span class="code-inline">type</span> can be null to just check for the given clipboard format. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTypedData</span>(fmt: <span class="SCst"><a href="#Gui_Clipboard_ValueFormat">ValueFormat</a></span>, type: <span class="STpe">typeinfo</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_Clipboard_getTypedValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">getTypedValue</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.swg#L48" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get whatever value with a given <span class="code-inline">type</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTypedValue</span>(value: *<span class="STpe">void</span>, type: <span class="STpe">typeinfo</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2518,7 +2594,7 @@
 </table>
 </p>
 <p>Returns true if the clipboard contains the given format. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasFormat</span>(fmt: <span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasFormat</span>(fmt: <span class="SCst"><a href="#Gui_Clipboard_ValueFormat">ValueFormat</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2526,7 +2602,7 @@
 <span id="Gui_Clipboard_hasImage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">hasImage</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L70" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2539,12 +2615,39 @@
 <span id="Gui_Clipboard_hasString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">hasString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L185" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L225" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns true if the clipboard contains a string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasString</span>()-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_Clipboard_hasTypedData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">hasTypedData</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.win32.swg#L28" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if the clipboard contains the given format of the given <span class="code-inline">type</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasTypedData</span>(fmt: <span class="SCst"><a href="#Gui_Clipboard_ValueFormat">ValueFormat</a></span>, type: <span class="STpe">typeinfo</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p><span class="code-inline">type</span> can be null to just check for the given clipboard format. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_Clipboard_hasTypedValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">hasTypedValue</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\clipboard.swg#L34" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get whatever value with a given <span class="code-inline">type</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasTypedValue</span>(type: <span class="STpe">typeinfo</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2557,7 +2660,7 @@
 </table>
 </p>
 <p>Register a new format. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerFormat</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerFormat</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_ValueFormat">ValueFormat</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6275,7 +6378,7 @@
 <span id="Gui_IPropertyNotify"><span class="api-item-title-kind">interface</span> <span class="api-item-title-light">Gui.</span><span class="api-item-title-strong">IPropertyNotify</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L11" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L12" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6289,6 +6392,11 @@
 <tr>
 <td>isItemEnabled</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IPropertyNotify">IPropertyNotify</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_Properties">Properties</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_PropertiesItem">PropertiesItem</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td></td>
+</tr>
+<tr>
+<td>fillPopupMenu</td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_IPropertyNotify">IPropertyNotify</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_Properties">Properties</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_PropertiesItem">PropertiesItem</a></span>, *<span class="SCst"></span><span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -7400,7 +7508,7 @@
 <span id="Gui_ItemFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Gui.</span><span class="api-item-title-strong">ItemFlags</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L70" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L75" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7414,7 +7522,19 @@
 <td></td>
 </tr>
 <tr>
-<td>CategoryBk</td>
+<td>NoFocus</td>
+<td></td>
+</tr>
+<tr>
+<td>Section</td>
+<td></td>
+</tr>
+<tr>
+<td>Category</td>
+<td></td>
+</tr>
+<tr>
+<td>Expanded</td>
 <td></td>
 </tr>
 </table>
@@ -7595,7 +7715,7 @@
 <span id="Gui_Label_IWnd_onPaintEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IWnd.</span><span class="api-item-title-strong">onPaintEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\label.swg#L78" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\label.swg#L80" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7607,7 +7727,7 @@
 <span id="Gui_Label_autoHeight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Label.</span><span class="api-item-title-strong">autoHeight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\label.swg#L199" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\label.swg#L201" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7621,7 +7741,7 @@
 <span id="Gui_Label_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Label.</span><span class="api-item-title-strong">create</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\label.swg#L171" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\label.swg#L173" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7633,7 +7753,7 @@
 <span id="Gui_Label_getText"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Label.</span><span class="api-item-title-strong">getText</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\label.swg#L192" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\label.swg#L194" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7646,7 +7766,7 @@
 <span id="Gui_Label_setText"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Label.</span><span class="api-item-title-strong">setText</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\label.swg#L184" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\label.swg#L186" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8838,7 +8958,7 @@
 <span id="Gui_MenuCtrl_IWnd_onMouseEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IWnd.</span><span class="api-item-title-strong">onMouseEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L267" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L265" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8850,7 +8970,7 @@
 <span id="Gui_MenuCtrl_IWnd_onPaintEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IWnd.</span><span class="api-item-title-strong">onPaintEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L251" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L249" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8862,7 +8982,7 @@
 <span id="Gui_MenuCtrl_IWnd_onTimerEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IWnd.</span><span class="api-item-title-strong">onTimerEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L260" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L258" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8874,7 +8994,7 @@
 <span id="Gui_MenuCtrl_addItem"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">MenuCtrl.</span><span class="api-item-title-strong">addItem</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L679" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L677" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8888,7 +9008,7 @@
 <span id="Gui_MenuCtrl_addPopup"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">MenuCtrl.</span><span class="api-item-title-strong">addPopup</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L704" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L702" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8902,7 +9022,7 @@
 <span id="Gui_MenuCtrl_addSeparator"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">MenuCtrl.</span><span class="api-item-title-strong">addSeparator</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L727" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L725" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8915,7 +9035,7 @@
 <span id="Gui_MenuCtrl_computeLayoutPopup"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">MenuCtrl.</span><span class="api-item-title-strong">computeLayoutPopup</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L578" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L576" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8927,7 +9047,7 @@
 <span id="Gui_MenuCtrl_createBar"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">MenuCtrl.</span><span class="api-item-title-strong">createBar</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L662" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L660" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8939,7 +9059,7 @@
 <span id="Gui_MenuCtrl_createPopup"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">MenuCtrl.</span><span class="api-item-title-strong">createPopup</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L649" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L647" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8951,7 +9071,7 @@
 <span id="Gui_MenuCtrl_doModal"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">MenuCtrl.</span><span class="api-item-title-strong">doModal</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L737" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L735" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8964,7 +9084,7 @@
 <span id="Gui_MenuCtrl_updateState"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">MenuCtrl.</span><span class="api-item-title-strong">updateState</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L406" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\menuctrl.swg#L404" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9622,6 +9742,13 @@
 <td>First init the PaintImage instance. </td>
 </tr>
 </table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_PaintImage_opDrop">opDrop</a></span></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -9650,6 +9777,18 @@
 </p>
 <p>First init the PaintImage instance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w, h: <span class="STpe">s32</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_PaintImage_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">PaintImage.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\paintimage.swg#L43" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10252,7 +10391,7 @@
 <span id="Gui_Properties"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Gui.</span><span class="api-item-title-strong">Properties</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L24" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10268,18 +10407,13 @@
 <td></td>
 </tr>
 <tr>
-<td>leftMargin</td>
-<td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
-</tr>
-<tr>
-<td>rightMargin</td>
-<td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
-</tr>
-<tr>
 <td>sizeEditValue</td>
 <td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>gridLineHeight</td>
+<td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -10294,11 +10428,6 @@
 </tr>
 <tr>
 <td>gridMarginColumn</td>
-<td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
-</tr>
-<tr>
-<td>listNameHeight</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -10323,12 +10452,27 @@
 <td></td>
 </tr>
 <tr>
+<td>leftMargin</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>rightMargin</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
 <td>fontSection</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>fontCategory</td>
+<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></td>
+<td></td>
+</tr>
+<tr>
+<td>fontName</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></td>
 <td></td>
 </tr>
@@ -10349,6 +10493,11 @@
 </tr>
 <tr>
 <td>hotItem</td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_PropertiesItem">PropertiesItem</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td>selItem</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_PropertiesItem">PropertiesItem</a></span></span></td>
 <td></td>
 </tr>
@@ -10377,12 +10526,21 @@
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
+<tr>
+<td>editPopup</td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
+<td></td>
+</tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Properties_addStruct">addStruct</a></span></td>
 <td>Add a new struct to display. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Properties_canChangeItem">canChangeItem</a></span></td>
+<td>Returns true if the given item can be changed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Properties_create">create</a></span></td>
@@ -10409,7 +10567,11 @@
 <td>Show hidden content depending on the input <span class="code-inline">filter</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Properties_updateState">updateState</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Properties_updateItemState">updateItemState</a></span></td>
+<td>Update the state of the given item. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Properties_updateStates">updateStates</a></span></td>
 <td>Update the show/hide state of all content. </td>
 </tr>
 </table>
@@ -10465,7 +10627,7 @@
 <span id="Gui_Properties_IWnd_onPaintEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IWnd.</span><span class="api-item-title-strong">onPaintEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10552,7 +10714,7 @@
 <span id="Gui_Properties_addStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Properties.</span><span class="api-item-title-strong">addStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L592" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L777" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10562,10 +10724,23 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Gui_Properties_canChangeItem"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Properties.</span><span class="api-item-title-strong">canChangeItem</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L858" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if the given item can be changed. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canChangeItem</span>(item: *<span class="SCst"><a href="#Gui_PropertiesItem">PropertiesItem</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Gui_Properties_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Properties.</span><span class="api-item-title-strong">create</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L548" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L724" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10578,7 +10753,7 @@
 <span id="Gui_Properties_hasChanged"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Properties.</span><span class="api-item-title-strong">hasChanged</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L633" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L822" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10591,7 +10766,7 @@
 <span id="Gui_Properties_refresh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Properties.</span><span class="api-item-title-strong">refresh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L626" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L815" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10604,7 +10779,7 @@
 <span id="Gui_Properties_setColumnSize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Properties.</span><span class="api-item-title-strong">setColumnSize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L708" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L920" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10617,7 +10792,7 @@
 <span id="Gui_Properties_setCurrentSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Properties.</span><span class="api-item-title-strong">setCurrentSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L662" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L851" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10631,7 +10806,7 @@
 <span id="Gui_Properties_setStringFilter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Properties.</span><span class="api-item-title-strong">setStringFilter</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L652" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L841" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10641,15 +10816,28 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Gui_Properties_updateState"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Properties.</span><span class="api-item-title-strong">updateState</span></span>
+<span id="Gui_Properties_updateItemState"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Properties.</span><span class="api-item-title-strong">updateItemState</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L669" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L878" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Update the state of the given item. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">updateItemState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, item: *<span class="SCst"><a href="#Gui_PropertiesItem">PropertiesItem</a></span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_Properties_updateStates"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Properties.</span><span class="api-item-title-strong">updateStates</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L911" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Update the show/hide state of all content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">updateState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">updateStates</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10762,7 +10950,7 @@
 <span id="Gui_PropertiesItem"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Gui.</span><span class="api-item-title-strong">PropertiesItem</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L77" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L85" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10800,6 +10988,16 @@
 <tr>
 <td>flags</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_ItemFlags">ItemFlags</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td>userData0</td>
+<td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
+<td></td>
+</tr>
+<tr>
+<td>userData1</td>
+<td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10868,6 +11066,11 @@
 <td></td>
 </tr>
 <tr>
+<td>numChilds</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
 <td>section</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
@@ -10885,7 +11088,7 @@
 <span id="Gui_PropertiesKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Gui.</span><span class="api-item-title-strong">PropertiesKind</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\property\properties.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11577,7 +11780,7 @@
 </tr>
 <tr>
 <td>clipFormat</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_ValueFormat">ValueFormat</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -15941,7 +16144,7 @@
 <span id="Gui_Theme_getIcon24"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Theme.</span><span class="api-item-title-strong">getIcon24</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L58" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15953,7 +16156,7 @@
 <span id="Gui_Theme_getIcon64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Theme.</span><span class="api-item-title-strong">getIcon64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L52" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L68" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17488,42 +17691,47 @@
 <td></td>
 </tr>
 <tr>
-<td>propList_FocusBk</td>
+<td>prop_FocusBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td>propList_FocusBorder</td>
+<td>prop_FocusBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td>propList_HotBk</td>
+<td>prop_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td>propList_HotBorder</td>
+<td>prop_HotBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td>propList_GridBorder</td>
+<td>prop_GridBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td>propList_GridColumn</td>
+<td>prop_GridColumn</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td>propList_CategBk</td>
+<td>prop_SectionBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td>propList_Bk1</td>
+<td>prop_CategBk</td>
+<td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
+<td></td>
+</tr>
+<tr>
+<td>prop_Bk1</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
@@ -17636,6 +17844,70 @@
 <td>Cut</td>
 <td></td>
 </tr>
+<tr>
+<td>Expanded</td>
+<td></td>
+</tr>
+<tr>
+<td>Collapsed</td>
+<td></td>
+</tr>
+<tr>
+<td>RemoveAll</td>
+<td></td>
+</tr>
+<tr>
+<td>Remove</td>
+<td></td>
+</tr>
+<tr>
+<td>Options</td>
+<td></td>
+</tr>
+<tr>
+<td>About</td>
+<td></td>
+</tr>
+<tr>
+<td>ZoomIn</td>
+<td></td>
+</tr>
+<tr>
+<td>ZoomOut</td>
+<td></td>
+</tr>
+<tr>
+<td>Save</td>
+<td></td>
+</tr>
+<tr>
+<td>SaveAs</td>
+<td></td>
+</tr>
+<tr>
+<td>Export</td>
+<td></td>
+</tr>
+<tr>
+<td>Download</td>
+<td></td>
+</tr>
+<tr>
+<td>OpenFile</td>
+<td></td>
+</tr>
+<tr>
+<td>Update</td>
+<td></td>
+</tr>
+<tr>
+<td>Duplicate</td>
+<td></td>
+</tr>
+<tr>
+<td>Quit</td>
+<td></td>
+</tr>
 </table>
 <p>
 <table class="api-item">
@@ -17644,7 +17916,7 @@
 <span id="Gui_ThemeIcons64"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Gui.</span><span class="api-item-title-strong">ThemeIcons64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18843,6 +19115,13 @@
 <td></td>
 </tr>
 </table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_opDrop">opDrop</a></span></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -18916,6 +19195,18 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_ThemeStyle_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ThemeStyle.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themestyle.swg#L21" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19510,8 +19801,20 @@
 <td>Force o local position to be repainted. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isDisabled">isDisabled</a></span></td>
+<td>Returns true if window, or one of its parent, is disabled. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isEnabled">isEnabled</a></span></td>
 <td>Returns true if window, and all its parents, are enabled. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isEnabledState">isEnabledState</a></span></td>
+<td>Returns true if the window has the enabled state. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isHidden">isHidden</a></span></td>
+<td>Returns true if window, or one of its parent, is hidden. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isOwnerOf">isOwnerOf</a></span></td>
@@ -19523,11 +19826,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isVisible">isVisible</a></span></td>
-<td>Returns true if window, and all its parents, are visible. </td>
+<td>Returns true if window and all its parents are visible. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isVisibleState">isVisibleState</a></span></td>
-<td></td>
+<td>Returns true if the window has the visible state. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_localToSurface">localToSurface</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
@@ -19949,7 +20252,7 @@
 <span id="Gui_Wnd_applyLayout"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">applyLayout</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L796" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L812" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19963,7 +20266,7 @@
 <span id="Gui_Wnd_bringToFront"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">bringToFront</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L700" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L716" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19976,7 +20279,7 @@
 <span id="Gui_Wnd_bringToTop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">bringToTop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L714" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L730" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19989,7 +20292,7 @@
 <span id="Gui_Wnd_captureMouse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">captureMouse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1021" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1037" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20001,7 +20304,7 @@
 <span id="Gui_Wnd_computeStyle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">computeStyle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L436" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L452" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20027,7 +20330,7 @@
 <span id="Gui_Wnd_destroy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">destroy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L274" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L276" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20053,7 +20356,7 @@
 <span id="Gui_Wnd_disable"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">disable</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L395" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L397" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20066,7 +20369,7 @@
 <span id="Gui_Wnd_enable"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">enable</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L372" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L374" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20079,7 +20382,7 @@
 <span id="Gui_Wnd_fitPosInParent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">fitPosInParent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L552" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L568" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20104,7 +20407,7 @@
 <span id="Gui_Wnd_getChildById"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getChildById</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L989" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1005" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20117,7 +20420,7 @@
 <span id="Gui_Wnd_getClientRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getClientRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L605" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L621" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20130,7 +20433,7 @@
 <span id="Gui_Wnd_getClientRectPadding"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getClientRectPadding</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L611" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L627" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20143,7 +20446,7 @@
 <span id="Gui_Wnd_getFocus"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getFocus</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1087" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1103" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20168,7 +20471,7 @@
 <span id="Gui_Wnd_getKeyShortcut"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getKeyShortcut</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1111" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1127" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20181,7 +20484,7 @@
 <span id="Gui_Wnd_getKeyShortcutNameFor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getKeyShortcutNameFor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1126" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1142" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20194,7 +20497,7 @@
 <span id="Gui_Wnd_getMouseCapture"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getMouseCapture</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1031" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1047" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20206,7 +20509,7 @@
 <span id="Gui_Wnd_getOwner"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getOwner</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L337" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L339" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20219,7 +20522,7 @@
 <span id="Gui_Wnd_getParentById"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getParentById</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1004" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1020" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20232,7 +20535,7 @@
 <span id="Gui_Wnd_getRectIn"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getRectIn</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L636" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L652" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20245,7 +20548,7 @@
 <span id="Gui_Wnd_getSurfaceRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getSurfaceRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L619" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L635" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20342,7 +20645,7 @@
 <span id="Gui_Wnd_getWndAt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">getWndAt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L929" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L945" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20355,7 +20658,7 @@
 <span id="Gui_Wnd_hasFocus"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">hasFocus</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1093" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20368,7 +20671,7 @@
 <span id="Gui_Wnd_hide"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">hide</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L362" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L364" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20381,7 +20684,7 @@
 <span id="Gui_Wnd_invalidate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">invalidate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L532" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L548" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20394,7 +20697,7 @@
 <span id="Gui_Wnd_invalidateRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">invalidateRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L542" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L558" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20404,15 +20707,55 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Gui_Wnd_isDisabled"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">isDisabled</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L442" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if window, or one of its parent, is disabled. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isDisabled</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Gui_Wnd_isEnabled"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">isEnabled</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L426" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if window, and all its parents, are enabled. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEnabled</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, onlyMe = <span class="SKwd">false</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_Wnd_isEnabledState"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">isEnabledState</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L446" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if the window has the enabled state. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEnabledState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Will return true even if one of the parent is hidden. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_Wnd_isHidden"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">isHidden</span></span>
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L419" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if window, and all its parents, are enabled. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEnabled</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Returns true if window, or one of its parent, is hidden. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isHidden</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20420,7 +20763,7 @@
 <span id="Gui_Wnd_isOwnerOf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">isOwnerOf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L973" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L989" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20433,7 +20776,7 @@
 <span id="Gui_Wnd_isParentOf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">isParentOf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L957" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L973" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20446,11 +20789,11 @@
 <span id="Gui_Wnd_isVisible"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">isVisible</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L401" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L403" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if window, and all its parents, are visible. </p>
+<p>Returns true if window and all its parents are visible. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isVisible</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, onlyMe = <span class="SKwd">false</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -20459,11 +20802,13 @@
 <span id="Gui_Wnd_isVisibleState"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">isVisibleState</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L416" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L423" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns true if the window has the visible state. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isVisibleState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Will return true even if one of the parent is hidden. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -20471,7 +20816,7 @@
 <span id="Gui_Wnd_localToSurface"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">localToSurface</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L590" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L606" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20485,7 +20830,7 @@
 <span id="Gui_Wnd_move"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">move</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L753" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L769" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20498,7 +20843,7 @@
 <span id="Gui_Wnd_notifyEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">notifyEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1223" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1239" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20511,7 +20856,7 @@
 <span id="Gui_Wnd_ownerNotifyEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">ownerNotifyEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1231" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1247" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20524,7 +20869,7 @@
 <span id="Gui_Wnd_paint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">paint</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L442" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L458" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20536,7 +20881,7 @@
 <span id="Gui_Wnd_postCommandEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">postCommandEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1203" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1219" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20548,7 +20893,7 @@
 <span id="Gui_Wnd_postEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">postEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1153" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1169" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20560,7 +20905,7 @@
 <span id="Gui_Wnd_postInvalidateEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">postInvalidateEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1159" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1175" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20572,7 +20917,7 @@
 <span id="Gui_Wnd_postQuitEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">postQuitEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1148" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1164" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20584,7 +20929,7 @@
 <span id="Gui_Wnd_postResizeEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">postResizeEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1186" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1202" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20596,7 +20941,7 @@
 <span id="Gui_Wnd_processEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">processEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1213" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1229" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20608,7 +20953,7 @@
 <span id="Gui_Wnd_registerAction"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">registerAction</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1314" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1330" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20621,7 +20966,7 @@
 <span id="Gui_Wnd_registerKeyShortcut"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">registerKeyShortcut</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1096" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1112" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20634,7 +20979,7 @@
 <span id="Gui_Wnd_releaseMouse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">releaseMouse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1026" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1042" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20646,7 +20991,7 @@
 <span id="Gui_Wnd_resize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">resize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L777" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L793" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20659,7 +21004,7 @@
 <span id="Gui_Wnd_screenToSurface"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">screenToSurface</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L576" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L592" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20672,7 +21017,7 @@
 <span id="Gui_Wnd_sendCommandEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">sendCommandEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1289" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1305" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20686,7 +21031,7 @@
 <span id="Gui_Wnd_sendComputeCommandStateEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">sendComputeCommandStateEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1261" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1277" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20700,7 +21045,7 @@
 <span id="Gui_Wnd_sendCreateEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">sendCreateEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1194" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1210" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20712,7 +21057,7 @@
 <span id="Gui_Wnd_sendEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">sendEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1166" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1182" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20724,7 +21069,7 @@
 <span id="Gui_Wnd_sendResizeEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">sendResizeEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1178" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1194" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20736,7 +21081,7 @@
 <span id="Gui_Wnd_sendStateEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">sendStateEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1172" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1188" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20748,7 +21093,7 @@
 <span id="Gui_Wnd_serializeState"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">serializeState</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1362" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1378" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20760,7 +21105,7 @@
 <span id="Gui_Wnd_setAllMargins"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">setAllMargins</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L673" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L689" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20773,7 +21118,7 @@
 <span id="Gui_Wnd_setAllPaddings"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">setAllPaddings</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L697" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L713" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20786,7 +21131,7 @@
 <span id="Gui_Wnd_setFocus"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">setFocus</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1041" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1057" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20799,7 +21144,7 @@
 <span id="Gui_Wnd_setMargin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">setMargin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L652" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L668" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20812,7 +21157,7 @@
 <span id="Gui_Wnd_setPadding"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">setPadding</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L677" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L693" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20825,7 +21170,7 @@
 <span id="Gui_Wnd_setParent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">setParent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L301" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L303" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20838,7 +21183,7 @@
 <span id="Gui_Wnd_setPosition"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">setPosition</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L738" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L754" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20852,7 +21197,7 @@
 <span id="Gui_Wnd_show"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">show</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L347" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L349" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20865,7 +21210,7 @@
 <span id="Gui_Wnd_surfaceToLocal"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">surfaceToLocal</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L582" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L598" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20878,7 +21223,7 @@
 <span id="Gui_Wnd_updateCommandState"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wnd.</span><span class="api-item-title-strong">updateCommandState</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1245" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\wnd\wnd.swg#L1261" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21018,7 +21363,7 @@
 <p>Create a layout control. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
-Generated on 23-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 25-06-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.35.0</div>
 </div>
 </div>
 </div>

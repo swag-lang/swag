@@ -99,6 +99,9 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
+    .SBcR { color: #ffff00; }
+    .SBcK { color: #f89ef; }
+    .SBcK { color: #fef89; }
     .SInv { color: #ff0000; }
 </style>
 <?php include('common/end-head.php'); ?>
@@ -4390,18 +4393,18 @@ ref
 <span class="SKwd">impl</span> <span class="SCst">ITest</span> <span class="SLgc">for</span> <span class="SCst">Point3</span>
 {
 }</span></div>
-<p>So for <span class="code-inline">Point3</span>, <span class="code-inline">isImplemented</span> will return <span class="code-inline">false</span> because this is the default implementation. </p>
+<p>So for <span class="code-inline">Point3</span>, <span class="code-inline">isImplemented()</span> will return <span class="code-inline">false</span> because this is the default implementation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> v2: <span class="SCst">Point2</span>
     <span class="SKwd">var</span> v3: <span class="SCst">Point3</span>
 
     <span class="SCmt">// 'isImplemented' has been redefined, and will return 'true' for Point2</span>
-    <span class="SKwd">var</span> i2 = <span class="SKwd">cast</span>(<span class="SCst">ITest</span>) v2
+    <span class="SKwd">let</span> i2 = <span class="SKwd">cast</span>(<span class="SCst">ITest</span>) v2
     <span class="SItr">@assert</span>(i2.<span class="SFct">isImplemented</span>())
 
     <span class="SCmt">// 'isImplemented' is not redefined, it will return false for Point3</span>
-    <span class="SKwd">var</span> i3 = <span class="SKwd">cast</span>(<span class="SCst">ITest</span>) v3
+    <span class="SKwd">let</span> i3 = <span class="SKwd">cast</span>(<span class="SCst">ITest</span>) v3
     <span class="SItr">@assert</span>(!i3.<span class="SFct">isImplemented</span>())
 }</span></div>
 
@@ -7516,7 +7519,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation_md__231_003_Pages_md">Pages.md</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 23-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 25-06-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.35.0</div>
 </div>
 </div>
 </div>

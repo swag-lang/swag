@@ -98,6 +98,9 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
+    .SBcR { color: #ffff00; }
+    .SBcK { color: #f89ef; }
+    .SBcK { color: #fef89; }
     .SInv { color: #ff0000; }
 </style>
 <?php include('common/end-head.php'); ?>
@@ -167,6 +170,7 @@
 <li><a href="#Audio_Voice_destroy">Voice.destroy</a></li>
 <li><a href="#Audio_Voice_getVolumeDB">Voice.getVolumeDB</a></li>
 <li><a href="#Audio_Voice_isPlaying">Voice.isPlaying</a></li>
+<li><a href="#Audio_Voice_opDrop">Voice.opDrop</a></li>
 <li><a href="#Audio_Voice_pause">Voice.pause</a></li>
 <li><a href="#Audio_Voice_play">Voice.play</a></li>
 <li><a href="#Audio_Voice_setVolumeDB">Voice.setVolumeDB</a></li>
@@ -672,6 +676,13 @@
 <td>Stop the playing voice. </td>
 </tr>
 </table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_opDrop">opDrop</a></span></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -738,6 +749,18 @@
 </p>
 <p>Returns true if the voice is currently playing. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isPlaying</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Audio_Voice_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L85" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1045,7 +1068,7 @@
 <p>Set the general output volume. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setOutputVolume</span>(volume: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 23-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 25-06-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.35.0</div>
 </div>
 </div>
 </div>

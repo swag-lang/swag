@@ -98,6 +98,9 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
+    .SBcR { color: #ffff00; }
+    .SBcK { color: #f89ef; }
+    .SBcK { color: #fef89; }
     .SInv { color: #ff0000; }
 </style>
 <?php include('common/end-head.php'); ?>
@@ -317,6 +320,8 @@
 <li><a href="#Pixel_Image_getPixelColor">Image.getPixelColor</a></li>
 <li><a href="#Pixel_Image_init">Image.init</a></li>
 <li><a href="#Pixel_Image_isValid">Image.isValid</a></li>
+<li><a href="#Pixel_Image_opDrop">Image.opDrop</a></li>
+<li><a href="#Pixel_Image_opPostCopy">Image.opPostCopy</a></li>
 <li><a href="#Pixel_Image_opVisit">Image.opVisit</a></li>
 <li><a href="#Pixel_Image_release">Image.release</a></li>
 <li><a href="#Pixel_Image_setPixelRGBA8">Image.setPixelRGBA8</a></li>
@@ -495,8 +500,10 @@
 <li><a href="#Pixel_Poly2Tri_Tessellate_clear">Tessellate.clear</a></li>
 <li><a href="#Pixel_Poly2Tri_Tessellate_endPolyLine">Tessellate.endPolyLine</a></li>
 <li><a href="#Pixel_Poly2Tri_Tessellate_getResult">Tessellate.getResult</a></li>
+<li><a href="#Pixel_Poly2Tri_Tessellate_opDrop">Tessellate.opDrop</a></li>
 <li><a href="#Pixel_Poly2Tri_Tessellate_startPolyLine">Tessellate.startPolyLine</a></li>
 <li><a href="#Pixel_Poly2Tri_Tessellate_triangulate">Tessellate.triangulate</a></li>
+<li><a href="#Pixel_Clipper_Transform_opDrop">Transform.opDrop</a></li>
 </ul>
 <h4>render/ogl</h4>
 <ul>
@@ -518,6 +525,7 @@
 <li><a href="#Pixel_RenderOgl_getTargetSize">RenderOgl.getTargetSize</a></li>
 <li><a href="#Pixel_RenderOgl_getTexturePixels">RenderOgl.getTexturePixels</a></li>
 <li><a href="#Pixel_RenderOgl_init">RenderOgl.init</a></li>
+<li><a href="#Pixel_RenderOgl_opDrop">RenderOgl.opDrop</a></li>
 <li><a href="#Pixel_RenderOgl_pixelFormatToNative">RenderOgl.pixelFormatToNative</a></li>
 <li><a href="#Pixel_RenderOgl_releaseRenderTarget">RenderOgl.releaseRenderTarget</a></li>
 <li><a href="#Pixel_RenderOgl_removeTexture">RenderOgl.removeTexture</a></li>
@@ -537,6 +545,7 @@
 <ul>
 <li><a href="#Pixel_Font_create">Font.create</a></li>
 <li><a href="#Pixel_Font_getGlyphDesc">Font.getGlyphDesc</a></li>
+<li><a href="#Pixel_Font_opDrop">Font.opDrop</a></li>
 <li><a href="#Pixel_Font_release">Font.release</a></li>
 <li><a href="#Pixel_FontFamily_createTypeFace">FontFamily.createTypeFace</a></li>
 <li><a href="#Pixel_FontFamily_enumerateFromOs">FontFamily.enumerateFromOs</a></li>
@@ -551,6 +560,7 @@
 <li><a href="#Pixel_RichString_opAffect">RichString.opAffect</a></li>
 <li><a href="#Pixel_RichString_opCount">RichString.opCount</a></li>
 <li><a href="#Pixel_RichString_opEquals">RichString.opEquals</a></li>
+<li><a href="#Pixel_RichString_opPostCopy">RichString.opPostCopy</a></li>
 <li><a href="#Pixel_RichString_set">RichString.set</a></li>
 <li><a href="#Pixel_TypeFace_create">TypeFace.create</a></li>
 <li><a href="#Pixel_TypeFace_createFromHFONT">TypeFace.createFromHFONT</a></li>
@@ -602,6 +612,8 @@
 <li><a href="#Pixel_LinePath_curveTo">LinePath.curveTo</a></li>
 <li><a href="#Pixel_LinePath_flatten">LinePath.flatten</a></li>
 <li><a href="#Pixel_LinePath_lineTo">LinePath.lineTo</a></li>
+<li><a href="#Pixel_LinePath_opDrop">LinePath.opDrop</a></li>
+<li><a href="#Pixel_LinePath_opPostCopy">LinePath.opPostCopy</a></li>
 <li><a href="#Pixel_LinePath_setArc">LinePath.setArc</a></li>
 <li><a href="#Pixel_LinePath_setCircle">LinePath.setCircle</a></li>
 <li><a href="#Pixel_LinePath_setEllipse">LinePath.setEllipse</a></li>
@@ -614,6 +626,8 @@
 <li><a href="#Pixel_LinePathList_flatten">LinePathList.flatten</a></li>
 <li><a href="#Pixel_LinePathList_newPath">LinePathList.newPath</a></li>
 <li><a href="#Pixel_LinePathList_offset">LinePathList.offset</a></li>
+<li><a href="#Pixel_LinePathList_opDrop">LinePathList.opDrop</a></li>
+<li><a href="#Pixel_LinePathList_opPostCopy">LinePathList.opPostCopy</a></li>
 <li><a href="#Pixel_Pen_createDash">Pen.createDash</a></li>
 <li><a href="#Pixel_Pen_createHatch">Pen.createHatch</a></li>
 <li><a href="#Pixel_Pen_createSolid">Pen.createSolid</a></li>
@@ -1894,6 +1908,25 @@
 </tr>
 </table>
 </p>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Clipper_Transform_opDrop">opDrop</a></span></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Clipper_Transform_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L193" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2879,6 +2912,13 @@
 <td>Release the given font. </td>
 </tr>
 </table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Font_opDrop">opDrop</a></span></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -2907,6 +2947,18 @@
 </p>
 <p>Returns the glyph descriptor of a given rune. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphDesc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, c: <span class="STpe">rune</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Font_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Font.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\font.swg#L60" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2983,7 +3035,7 @@
 <span id="Pixel_FontFamily_createTypeFace"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FontFamily.</span><span class="api-item-title-strong">createTypeFace</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\fontfamily.win32.swg#L111" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\fontfamily.win32.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3023,7 +3075,7 @@
 <span id="Pixel_FontFamily_getFromOs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FontFamily.</span><span class="api-item-title-strong">getFromOs</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\fontfamily.win32.swg#L98" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\fontfamily.win32.swg#L97" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3869,6 +3921,14 @@
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_opDrop">opDrop</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_opPostCopy">opPostCopy</a></span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_opVisit">opVisit</a></span></td>
 <td></td>
 </tr>
@@ -4668,6 +4728,30 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Image_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L39" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Image_opPostCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">opPostCopy</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L44" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Image_opVisit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">opVisit</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -5284,6 +5368,17 @@
 <td>Reset the path. </td>
 </tr>
 </table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_opDrop">opDrop</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_opPostCopy">opPostCopy</a></span></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -5376,6 +5471,30 @@
 </p>
 <p>Add a line from the previous point to <span class="code-inline">pt</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lineTo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_LinePath_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">LinePath.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\linepath.swg#L41" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_LinePath_opPostCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">LinePath.</span><span class="api-item-title-strong">opPostCopy</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\linepath.swg#L46" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5513,6 +5632,17 @@
 <td>Call quality offset on all paths They must before be flattened. </td>
 </tr>
 </table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_opDrop">opDrop</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_opPostCopy">opPostCopy</a></span></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -5592,6 +5722,30 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Call quality offset on all paths They must before be flattened. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>, joinStyle: <span class="SCst"><a href="#Pixel_JoinStyle">JoinStyle</a></span>, toler: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_LinePathList_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">LinePathList.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\linepathlist.swg#L13" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_LinePathList_opPostCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">LinePathList.</span><span class="api-item-title-strong">opPostCopy</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\linepathlist.swg#L18" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7764,6 +7918,13 @@
 <td>Triangulate. </td>
 </tr>
 </table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tessellate_opDrop">opDrop</a></span></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -7830,6 +7991,18 @@
 </p>
 <p>Get the triangulation result. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getResult</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Result">Result</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Poly2Tri_Tessellate_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Tessellate.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L578" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8347,6 +8520,13 @@
 <td>Update content of texture. </td>
 </tr>
 </table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_opDrop">opDrop</a></span></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -8530,6 +8710,18 @@
 </p>
 <p>First init. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_RenderOgl_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L214" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8949,6 +9141,10 @@
 <td class="code-type"><span class="SFct"><a href="#Pixel_RichString_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_opPostCopy">opPostCopy</a></span></td>
+<td>We need to recompute chunks, as they contains slices. </td>
+</tr>
 </table>
 <p>
 <table class="api-item">
@@ -9054,6 +9250,19 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_RichString_opPostCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RichString.</span><span class="api-item-title-strong">opPostCopy</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\richstring.swg#L51" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>We need to recompute chunks, as they contains slices. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9993,7 +10202,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 23-05-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.32.0</div>
+Generated on 25-06-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.35.0</div>
 </div>
 </div>
 </div>
