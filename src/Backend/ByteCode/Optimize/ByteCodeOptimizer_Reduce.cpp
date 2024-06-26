@@ -3126,6 +3126,8 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
         // have a ClearMask after
         case ByteCodeOp::GetFromStack8:
         case ByteCodeOp::GetIncFromStack64DeRef8:
+        case ByteCodeOp::GetParam64DeRef8:
+        case ByteCodeOp::GetIncParam64DeRef8:
             if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
                 ip[0].a.u32 == ip[1].a.u32 &&
                 (ip[1].b.u64 & 0xFF) == 0xFF &&
@@ -3147,6 +3149,8 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
 
         case ByteCodeOp::GetFromStack16:
         case ByteCodeOp::GetIncFromStack64DeRef16:
+        case ByteCodeOp::GetParam64DeRef16:
+        case ByteCodeOp::GetIncParam64DeRef16:
             if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
                 ip[0].a.u32 == ip[1].a.u32 &&
                 (ip[1].b.u64 & 0xFFFF) == 0xFFFF &&
@@ -3168,6 +3172,8 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
 
         case ByteCodeOp::GetFromStack32:
         case ByteCodeOp::GetIncFromStack64DeRef32:
+        case ByteCodeOp::GetParam64DeRef32:
+        case ByteCodeOp::GetIncParam64DeRef32:
             if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
                 ip[0].a.u32 == ip[1].a.u32 &&
                 (ip[1].b.u64 & 0xFFFFFFFF) == 0xFFFFFFFF &&

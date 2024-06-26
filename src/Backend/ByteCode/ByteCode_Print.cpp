@@ -251,6 +251,11 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rdf64_", rd);
     }
 
+    str += " ";
+    str.replace(" + 0 ", " ");
+    str.replace(" + 0,", ",");
+    str.replace(" + 0]", "]");
+
     switch (ip->op)
     {
         case ByteCodeOp::IntrinsicS8x1:
