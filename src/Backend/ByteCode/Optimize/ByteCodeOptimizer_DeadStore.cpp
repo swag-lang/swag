@@ -1,12 +1,14 @@
 #include "pch.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
+#include "Wmf/SourceFile.h"
 
 // If two instructions write in the same register in the same block (between jumps), and there's no
 // read of that register between them, then the first write is useless and can be removed
+#pragma optimize("", off)
 bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, const ByteCodeOptTreeParseContext& parseCxt) {
-        const auto ip    = parseCxt.curIp;
+        auto       ip    = parseCxt.curIp;
         const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
 
         uint32_t regScan = UINT32_MAX;
@@ -21,10 +23,38 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
         if (regScan == UINT32_MAX)
             return;
 
-        const bool hasRead = hasReadRefToReg(context, regScan, parseCxt.curNode, parseCxt.curIp);
-        if (hasRead)
+        bool forCpy = false;
+        if (ip[1].b.u32 == regScan &&
+            !ip[1].flags.has(BCI_START_STMT) &&
+            !ip[1].flags.has(BCI_NOT_PURE))
+        {
+            if (ip[1].op == ByteCodeOp::CopyRBtoRA8 ||
+                ip[1].op == ByteCodeOp::CopyRBtoRA16 ||
+                ip[1].op == ByteCodeOp::CopyRBtoRA32 ||
+                ip[1].op == ByteCodeOp::CopyRBtoRA64)
+            {
+                forCpy = true;
+                ip++;
+            }
+        }
+
+        if (hasReadRefToReg(context, regScan, parseCxt.curNode, ip))
             return;
-        setNop(context, ip);
+
+        if (forCpy)
+        {
+            if (ByteCode::hasWriteRegInA(ip - 1))
+                ip[-1].a.u32 = ip->a.u32;
+            else if (ByteCode::hasWriteRegInB(ip - 1))
+                ip[-1].b.u32 = ip->a.u32;
+            else if (ByteCode::hasWriteRegInC(ip - 1))
+                ip[-1].c.u32 = ip->a.u32;
+            else if (ByteCode::hasWriteRegInD(ip - 1))
+                ip[-1].d.u32 = ip->a.u32;
+            setNop(context, ip);
+        }
+        else
+            setNop(context, ip);
     });
 
     return true;
