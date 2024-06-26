@@ -274,14 +274,10 @@ void LanguageSpec::setupBcKeywords()
     bckeywords.insert("pop");
     bckeywords.insert("stacksize");
     bckeywords.insert("popstack");
-    bckeywords.insert("call");
-    bckeywords.insert("param");
-    bckeywords.insert("clear");
 
     bcconstants.insert("my_result");
     bcconstants.insert("result_ptr");
     bcconstants.insert("last_call_result");
-    bcconstants.insert("intern");
 }
 
 void LanguageSpec::setupKeywords()
