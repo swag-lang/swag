@@ -1,7 +1,7 @@
 #pragma once
-#include "ByteCodeOptContext.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCodeOp.h"
+#include "ByteCodeOptContext.h"
 struct ByteCode;
 struct ByteCodeGenContext;
 struct ByteCodeInstruction;
@@ -10,6 +10,8 @@ struct Job;
 
 struct ByteCodeOptimizer
 {
+    static bool hasReadRefToReg(ByteCodeOptContext* context, uint32_t regScan, uint32_t curNode, ByteCodeInstruction* curIp);
+
     static uint32_t newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here);
     static void     genTree(ByteCodeOptContext* context, uint32_t nodeIdx, bool computeCrc);
     static void     genTree(ByteCodeOptContext* context, bool computeCrc);

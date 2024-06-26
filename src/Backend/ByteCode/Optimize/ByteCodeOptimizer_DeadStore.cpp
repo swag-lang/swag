@@ -18,98 +18,12 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
             regScan = ip->c.u32;
         if (flags.has(OPFLAG_WRITE_D) && !flags.has(OPFLAG_READ_D | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C))
             regScan = ip->d.u32;
-
         if (regScan == UINT32_MAX)
             return;
 
-        bool hasRead = false;
-
-        parseTree(context, parseCxt.curNode, parseCxt.curIp, BCOTN_USER2, [&](ByteCodeOptContext*, ByteCodeOptTreeParseContext& parseCxt1) {
-            const auto ip1 = parseCxt1.curIp;
-            if (ip1 == ip)
-                return;
-
-            const auto flags1 = g_ByteCodeOpDesc[static_cast<int>(ip1->op)].flags;
-            if (flags1.has(OPFLAG_READ_A) && !ip1->hasFlag(BCI_IMM_A))
-            {
-                if (ip1->a.u32 == regScan)
-                {
-                    hasRead               = true;
-                    parseCxt1.mustStopAll = true;
-                    return;
-                }
-            }
-
-            if (flags1.has(OPFLAG_READ_B) && !ip1->hasFlag(BCI_IMM_B))
-            {
-                if (ip1->b.u32 == regScan)
-                {
-                    hasRead               = true;
-                    parseCxt1.mustStopAll = true;
-                    return;
-                }
-            }
-
-            if (flags1.has(OPFLAG_READ_C) && !ip1->hasFlag(BCI_IMM_C))
-            {
-                if (ip1->c.u32 == regScan)
-                {
-                    hasRead               = true;
-                    parseCxt1.mustStopAll = true;
-                    return;
-                }
-            }
-
-            if (flags1.has(OPFLAG_READ_D) && !ip1->hasFlag(BCI_IMM_D))
-            {
-                if (ip1->d.u32 == regScan)
-                {
-                    hasRead               = true;
-                    parseCxt1.mustStopAll = true;
-                    return;
-                }
-            }
-
-            if (flags1.has(OPFLAG_WRITE_A))
-            {
-                if (ip1->a.u32 == regScan)
-                {
-                    parseCxt1.mustStopBlock = true;
-                    return;
-                }
-            }
-
-            if (flags1.has(OPFLAG_WRITE_B))
-            {
-                if (ip1->b.u32 == regScan)
-                {
-                    parseCxt1.mustStopBlock = true;
-                    return;
-                }
-            }
-
-            if (flags1.has(OPFLAG_WRITE_C))
-            {
-                if (ip1->c.u32 == regScan)
-                {
-                    parseCxt1.mustStopBlock = true;
-                    return;
-                }
-            }
-
-            if (flags1.has(OPFLAG_WRITE_D))
-            {
-                if (ip1->d.u32 == regScan)
-                {
-                    parseCxt1.mustStopBlock = true;
-                    return;
-                }
-            }
-        });
-
+        const bool hasRead = hasReadRefToReg(context, regScan, parseCxt.curNode, parseCxt.curIp);
         if (hasRead)
             return;
-
         setNop(context, ip);
     });
 

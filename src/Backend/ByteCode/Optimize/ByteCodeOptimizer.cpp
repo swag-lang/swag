@@ -1,10 +1,100 @@
 #include "pch.h"
-#include "ByteCodeOptimizerJob.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
+#include "ByteCodeOptimizerJob.h"
 #include "Main/Statistics.h"
 #include "Syntax/AstNode.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
+
+bool ByteCodeOptimizer::hasReadRefToReg(ByteCodeOptContext* context, uint32_t regScan, uint32_t curNode, ByteCodeInstruction* curIp)
+{
+    bool hasRead = false;
+
+    parseTree(context, curNode, curIp, BCOTN_USER2, [&](ByteCodeOptContext*, ByteCodeOptTreeParseContext& parseCxt1) {
+        const auto ip1 = parseCxt1.curIp;
+        if (ip1 == curIp)
+            return;
+
+        const auto flags1 = g_ByteCodeOpDesc[static_cast<int>(ip1->op)].flags;
+        if (flags1.has(OPFLAG_READ_A) && !ip1->hasFlag(BCI_IMM_A))
+        {
+            if (ip1->a.u32 == regScan)
+            {
+                hasRead               = true;
+                parseCxt1.mustStopAll = true;
+                return;
+            }
+        }
+
+        if (flags1.has(OPFLAG_READ_B) && !ip1->hasFlag(BCI_IMM_B))
+        {
+            if (ip1->b.u32 == regScan)
+            {
+                hasRead               = true;
+                parseCxt1.mustStopAll = true;
+                return;
+            }
+        }
+
+        if (flags1.has(OPFLAG_READ_C) && !ip1->hasFlag(BCI_IMM_C))
+        {
+            if (ip1->c.u32 == regScan)
+            {
+                hasRead               = true;
+                parseCxt1.mustStopAll = true;
+                return;
+            }
+        }
+
+        if (flags1.has(OPFLAG_READ_D) && !ip1->hasFlag(BCI_IMM_D))
+        {
+            if (ip1->d.u32 == regScan)
+            {
+                hasRead               = true;
+                parseCxt1.mustStopAll = true;
+                return;
+            }
+        }
+
+        if (flags1.has(OPFLAG_WRITE_A))
+        {
+            if (ip1->a.u32 == regScan)
+            {
+                parseCxt1.mustStopBlock = true;
+                return;
+            }
+        }
+
+        if (flags1.has(OPFLAG_WRITE_B))
+        {
+            if (ip1->b.u32 == regScan)
+            {
+                parseCxt1.mustStopBlock = true;
+                return;
+            }
+        }
+
+        if (flags1.has(OPFLAG_WRITE_C))
+        {
+            if (ip1->c.u32 == regScan)
+            {
+                parseCxt1.mustStopBlock = true;
+                return;
+            }
+        }
+
+        if (flags1.has(OPFLAG_WRITE_D))
+        {
+            if (ip1->d.u32 == regScan)
+            {
+                parseCxt1.mustStopBlock = true;
+                return;
+            }
+        }
+    });
+
+    return hasRead;
+}
 
 uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here)
 {
