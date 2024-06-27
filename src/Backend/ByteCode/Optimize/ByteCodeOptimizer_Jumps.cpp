@@ -1567,11 +1567,25 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                     {
                         setNop(context, ip);
                         setNop(context, ip - 1);
+                        break;
                     }
                 }
                 break;
 
             case ByteCodeOp::JumpIfNotZero64:
+                if (ip[-1].op == ByteCodeOp::MakeConstantSegPointer ||
+                    ip[-1].op == ByteCodeOp::MakeBssSegPointer ||
+                    ip[-1].op == ByteCodeOp::MakeCompilerSegPointer ||
+                    ip[-1].op == ByteCodeOp::MakeMutableSegPointer ||
+                    ip[-1].op == ByteCodeOp::MakeStackPointer)
+                {
+                    if (ip[-1].a.u32 == ip->a.u32)
+                    {
+                        SET_OP(ip, ByteCodeOp::Jump);
+                        break;
+                    }
+                }
+
                 if (ip->b.s32 == -2)
                 {
                     if (ip[-1].op == ByteCodeOp::DecrementRA64 && ip[-1].a.u32 == ip->a.u32)
