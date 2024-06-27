@@ -503,14 +503,14 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     if (forDbg && ip == options.curIp)
     {
         g_Log.setColor(LogColor::CurInstruction);
-        g_Log.print(line.pretty);
+        g_Log.print(line.pretty, true);
     }
     else
     {
         g_Log.setColor(LogColor::White);
         SyntaxColorContext synCxt;
         synCxt.forByteCode = true;
-        g_Log.print(doSyntaxColor(line.pretty, synCxt));
+        g_Log.print(doSyntaxColor(line.pretty, synCxt), true);
     }
 
 #ifdef SWAG_DEV_MODE
