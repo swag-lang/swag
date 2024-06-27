@@ -1,9 +1,9 @@
 #include "pch.h"
+#include "Backend/ByteCode/Run/ByteCodeRun.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCode_Math.h"
 #include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
-#include "Backend/ByteCode/Run/ByteCodeRun.h"
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Backend/CompilerItf.h"
 #include "Backend/Context.h"
@@ -83,7 +83,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
     context->pushAlt<uint32_t>(popParamsOnRet * sizeof(void*) + incSPPostCall);
 }
 
-SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, [[maybe_unused]] ByteCode* bc)
+SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, [[maybe_unused]] ByteCode* bc, bool& leave)
 {
     if (--context->curRC != UINT32_MAX)
     {
@@ -93,6 +93,37 @@ SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, [
     else
     {
         context->registersRC.count = 0;
+    }
+
+    g_ByteCodeStackTrace->pop();
+
+    context->ip = context->pop<ByteCodeInstruction*>();
+    context->bc = context->pop<ByteCode*>();
+    context->bp = context->pop<uint8_t*>();
+
+    leave = false;
+    if (context->curRC == context->firstRC)
+    {
+        context->popAlt<uint32_t>();
+        const auto popR = context->popAlt<uint32_t>();
+        if (popR != UINT32_MAX)
+            context->popAlt<uint64_t>();
+        leave = true;
+        return;
+    }
+
+    // Need to pop some parameters, by increasing the stack pointer
+    const auto popP = context->popAlt<uint32_t>();
+    context->incSP(popP);
+
+    // A register needs to be initialized with the result register
+    const auto popR = context->popAlt<uint32_t>();
+    if (popR != UINT32_MAX)
+    {
+        context->getRegBuffer(context->curRC)[popR].u64 = context->registersRR[0].u64;
+
+        // Restore RR register to its previous value
+        context->registersRR[0].u64 = context->popAlt<uint64_t>();
     }
 
 #ifdef SWAG_STATS
@@ -549,35 +580,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->incSP(context->bc->stackSize);
             if (context->sp == context->stack + g_CommandLine.limitStackBC)
                 return false;
-            leaveByteCode(context, context->bc);
-            g_ByteCodeStackTrace->pop();
 
-            context->ip = context->pop<ByteCodeInstruction*>();
-            context->bc = context->pop<ByteCode*>();
-            context->bp = context->pop<uint8_t*>();
-            if (context->curRC == context->firstRC)
-            {
-                context->popAlt<uint32_t>();
-                auto popR = context->popAlt<uint32_t>();
-                if (popR != UINT32_MAX)
-                    context->popAlt<uint64_t>();
+            bool leave = false;
+            leaveByteCode(context, context->bc, leave);
+            if (leave)
                 return false;
-            }
-
-            // Need to pop some parameters, by increasing the stack pointer
-            auto popP = context->popAlt<uint32_t>();
-            context->incSP(popP);
-
-            // A register needs to be initialized with the result register
-            auto popR = context->popAlt<uint32_t>();
-            if (popR != UINT32_MAX)
-            {
-                context->getRegBuffer(context->curRC)[popR].u64 = context->registersRR[0].u64;
-
-                // Restore RR register to its previous value
-                context->registersRR[0].u64 = context->popAlt<uint64_t>();
-            }
-
             break;
         }
 
