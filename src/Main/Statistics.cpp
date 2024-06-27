@@ -12,10 +12,11 @@ Stats g_Stats;
 
 void Stats::printFreq()
 {
-    if (!g_CommandLine.statsFreq)
+    if (!g_CommandLine.statsFreq && g_CommandLine.statsFreqOp0.empty() && g_CommandLine.statsFreqOp1.empty())
         return;
 
     g_Log.writeEol();
+
     Utf8 str0 = g_CommandLine.statsFreqOp0;
     str0.makeLower();
     Utf8 str1 = g_CommandLine.statsFreqOp1;
@@ -38,6 +39,13 @@ void Stats::printFreq()
                 if (str2.find(str0) == -1)
                     continue;
             }
+            else if (!str1.empty())
+            {
+                Utf8 str2 = g_ByteCodeOpDesc[i].name;
+                str2.makeLower();
+                if (str2.find(str1) == -1)
+                    continue;
+            }
 
             if (countOpFreq[i][endOp] > best)
             {
@@ -48,15 +56,21 @@ void Stats::printFreq()
 
         if (bestI != UINT32_MAX && countOpFreq[bestI][endOp].load())
         {
-            g_Log.setColor(LogColor::Index);
-            g_Log.print(form("%5d ", countOpFreq[bestI][endOp].load()));
-            g_Log.setColor(LogColor::Name);
-            g_Log.print(form("%s\n", g_ByteCodeOpDesc[bestI].name));
+            if (g_CommandLine.statsFreq)
+            {
+                g_Log.setColor(LogColor::Index);
+                g_Log.print(form("%5d ", countOpFreq[bestI][endOp].load()));
+                g_Log.setColor(LogColor::Name);
+                g_Log.print(form("%s", g_ByteCodeOpDesc[bestI].name));
+                g_Log.writeEol();
+            }
+
             countOpFreq[bestI][endOp] = 0;
         }
     }
 
-    g_Log.write("\n");
+    if (g_CommandLine.statsFreq)
+        g_Log.writeEol();
 
     for (uint32_t cpt = 0; cpt < g_CommandLine.statsFreqCount; cpt++)
     {
@@ -101,7 +115,8 @@ void Stats::printFreq()
             g_Log.setColor(LogColor::Name);
             g_Log.print(form("%s ", g_ByteCodeOpDesc[bestI].name));
             g_Log.setColor(LogColor::Location);
-            g_Log.print(form("%s\n", g_ByteCodeOpDesc[bestJ].name));
+            g_Log.print(form("%s", g_ByteCodeOpDesc[bestJ].name));
+            g_Log.writeEol();
             countOpFreq[bestI][bestJ] = 0;
         }
     }

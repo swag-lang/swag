@@ -703,7 +703,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
             continue;
 
 #ifdef SWAG_STATS
-        if (g_CommandLine.statsFreq)
+        if (g_CommandLine.statsFreq || !g_CommandLine.statsFreqOp0.empty() || !g_CommandLine.statsFreqOp1.empty())
         {
             for (uint32_t i = 0; i < optContext.bc->numInstructions - 1; i++)
             {
