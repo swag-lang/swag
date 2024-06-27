@@ -922,7 +922,18 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 setNop(context, ip + 1);
                 break;
             }
+
+            if (ip[1].op == ByteCodeOp::CopyRT2toRARB &&
+                ip[2].op == ByteCodeOp::IncSPPostCall &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::LocalCallPop);
+                ip->c.u32 = ip[2].a.u32;
+                setNop(context, ip + 2);
+                break;
+            }
             break;
+
         case ByteCodeOp::ForeignCall:
             if (ip[1].op == ByteCodeOp::IncSPPostCall &&
                 !ip[1].hasFlag(BCI_START_STMT))
@@ -933,6 +944,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 break;
             }
             break;
+
         case ByteCodeOp::LambdaCall:
             if (ip[1].op == ByteCodeOp::IncSPPostCall &&
                 !ip[1].hasFlag(BCI_START_STMT))
