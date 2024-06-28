@@ -1429,6 +1429,50 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
                 break;
             }
 
+            if (ip[2].op == ByteCodeOp::SetAtPointer8 &&
+                ip[0].a.u32 == ip[2].a.u32 &&
+                !ip[1].hasFlag(BCI_START_STMT) &&
+                !ip[2].hasFlag(BCI_START_STMT) &&
+                !ByteCode::hasWriteRefToReg(ip + 1, ip[0].a.u32))
+            {
+                SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer8);
+                ip[2].a.u32 = ip[0].b.u32 + ip[2].c.u32;
+                break;
+            }
+        
+            if (ip[2].op == ByteCodeOp::SetAtPointer16 &&
+                ip[0].a.u32 == ip[2].a.u32 &&
+                !ip[1].hasFlag(BCI_START_STMT) &&
+                !ip[2].hasFlag(BCI_START_STMT) &&
+                !ByteCode::hasWriteRefToReg(ip + 1, ip[0].a.u32))
+            {
+                SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer16);
+                ip[2].a.u32 = ip[0].b.u32 + ip[2].c.u32;
+                break;
+            }
+
+            if (ip[2].op == ByteCodeOp::SetAtPointer32 &&
+                ip[0].a.u32 == ip[2].a.u32 &&
+                !ip[1].hasFlag(BCI_START_STMT) &&
+                !ip[2].hasFlag(BCI_START_STMT) &&
+                !ByteCode::hasWriteRefToReg(ip + 1, ip[0].a.u32))
+            {
+                SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer32);
+                ip[2].a.u32 = ip[0].b.u32 + ip[2].c.u32;
+                break;
+            }
+
+            if (ip[2].op == ByteCodeOp::SetAtPointer64 &&
+                ip[0].a.u32 == ip[2].a.u32 &&
+                !ip[1].hasFlag(BCI_START_STMT) &&
+                !ip[2].hasFlag(BCI_START_STMT) &&
+                !ByteCode::hasWriteRefToReg(ip + 1, ip[0].a.u32))
+            {
+                SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer64);
+                ip[2].a.u32 = ip[0].b.u32 + ip[2].c.u32;
+                break;
+            }
+
             if (ip[1].op == ByteCodeOp::DeRef8 &&
                 ip[0].a.u32 == ip[1].b.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT))
