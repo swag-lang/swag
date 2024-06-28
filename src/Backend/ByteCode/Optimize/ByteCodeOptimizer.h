@@ -56,6 +56,7 @@ struct ByteCodeOptimizer
     static bool optimizePassDupBlocks(ByteCodeOptContext* context);
 
     static void reduceMath(ByteCodeOptContext* context, ByteCodeInstruction* ip);
+    static void reduceAffectOp(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceFactor(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceErr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceCallEmptyFct(ByteCodeOptContext* context, ByteCodeInstruction* ip);

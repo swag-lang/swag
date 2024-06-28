@@ -530,7 +530,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::SetZeroAtPointer8:
             {
@@ -577,7 +577,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::ClearRR8:
             {
@@ -620,7 +620,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::MakeMutableSegPointer:
             {
@@ -666,7 +666,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8:
             {
@@ -700,7 +700,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8x2:
             {
@@ -753,7 +753,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetIncFromStack64:
             {
@@ -804,7 +804,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CopyStack8:
             {
@@ -835,7 +835,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicDbgAlloc:
             {
@@ -1791,7 +1791,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMinusEqS8:
             case ByteCodeOp::AffectOpMinusEqS8_Safe:
@@ -1965,12 +1965,17 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
-            case ByteCodeOp::AffectOpPlusEqS8_Safe:
             {
                 MK_BINOP_EQ8_CAB();
+                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8), true);
+                break;
+            }                
+            case ByteCodeOp::AffectOpPlusEqS8_Safe:
+            {
+                MK_BINOP_EQ8_CAB_OFF(); // CCTV
                 OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8), true);
                 break;
             }
@@ -1992,9 +1997,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::AffectOpPlusEqS16:
-            case ByteCodeOp::AffectOpPlusEqS16_Safe:
             {
                 MK_BINOP_EQ16_CAB();
+                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16), true);
+                break;
+            }
+            case ByteCodeOp::AffectOpPlusEqS16_Safe:
+            {
+                MK_BINOP_EQ16_CAB_OFF(); // CCTV
                 OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16), true);
                 break;
             }
@@ -2016,9 +2026,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::AffectOpPlusEqS32:
-            case ByteCodeOp::AffectOpPlusEqS32_Safe:
             {
                 MK_BINOP_EQ32_CAB();
+                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32), true);
+                break;
+            }
+            case ByteCodeOp::AffectOpPlusEqS32_Safe:
+            {
+                MK_BINOP_EQ32_CAB_OFF(); // CCTV
                 OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32), true);
                 break;
             }
@@ -2040,9 +2055,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::AffectOpPlusEqS64:
-            case ByteCodeOp::AffectOpPlusEqS64_Safe:
             {
                 MK_BINOP_EQ64_CAB();
+                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64), true);
+                break;
+            }
+            case ByteCodeOp::AffectOpPlusEqS64_Safe:
+            {
+                MK_BINOP_EQ64_CAB_OFF(); // CCTV
                 OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64), true);
                 break;
             }
@@ -2064,33 +2084,53 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::AffectOpPlusEqU8:
-            case ByteCodeOp::AffectOpPlusEqU8_Safe:
             {
                 MK_BINOP_EQ8_CAB();
                 OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8), false);
                 break;
             }
+            case ByteCodeOp::AffectOpPlusEqU8_Safe:
+            {
+                MK_BINOP_EQ8_CAB_OFF(); // CCTV
+                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8), false);
+                break;
+            }
 
             case ByteCodeOp::AffectOpPlusEqU16:
-            case ByteCodeOp::AffectOpPlusEqU16_Safe:
             {
                 MK_BINOP_EQ16_CAB();
                 OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16), false);
                 break;
             }
+            case ByteCodeOp::AffectOpPlusEqU16_Safe:
+            {
+                MK_BINOP_EQ16_CAB_OFF(); // CCTV
+                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16), false);
+                break;
+            }
 
             case ByteCodeOp::AffectOpPlusEqU32:
-            case ByteCodeOp::AffectOpPlusEqU32_Safe:
             {
                 MK_BINOP_EQ32_CAB();
                 OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32), false);
                 break;
             }
+            case ByteCodeOp::AffectOpPlusEqU32_Safe:
+            {
+                MK_BINOP_EQ32_CAB_OFF(); // CCTV
+                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32), false);
+                break;
+            }
 
             case ByteCodeOp::AffectOpPlusEqU64:
-            case ByteCodeOp::AffectOpPlusEqU64_Safe:
             {
                 MK_BINOP_EQ64_CAB();
+                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64), false);
+                break;
+            }
+            case ByteCodeOp::AffectOpPlusEqU64_Safe:
+            {
+                MK_BINOP_EQ64_CAB_OFF(); // CCTV
                 OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64), false);
                 break;
             }
@@ -2139,7 +2179,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMulEqS8:
             case ByteCodeOp::AffectOpMulEqS8_Safe:
@@ -2313,7 +2353,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpDivEqS8:
             {
@@ -2535,7 +2575,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpModuloEqS8:
             {
@@ -2713,7 +2753,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpAndEqU8:
             {
@@ -2747,7 +2787,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpOrEqU8:
             {
@@ -2778,7 +2818,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftLeftEqS8:
                 emitShiftEqLogical(context, builder, allocR, ip, 8, true);
@@ -2805,7 +2845,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitShiftEqLogical(context, builder, allocR, ip, 64, true);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftRightEqU8:
                 emitShiftEqLogical(context, builder, allocR, ip, 8, false);
@@ -2833,7 +2873,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitShiftRightEqArithmetic(context, builder, allocR, ip, 64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpXorEqU8:
             {
@@ -2867,7 +2907,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CompareOpGreaterS8:
             {
@@ -3193,7 +3233,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CompareOp3Way8:
             {
@@ -3272,7 +3312,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CompareOpEqual8:
             {
@@ -3372,7 +3412,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::TestNotZero8:
             {
@@ -3403,7 +3443,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::JumpDyn8:
             case ByteCodeOp::JumpDyn16:
@@ -3483,7 +3523,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::Jump:
             {
@@ -4187,7 +4227,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRRRet:
                 getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
@@ -4206,7 +4246,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicCompilerError:
             {
@@ -4366,7 +4406,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::InternalFailedAssume:
                 emitCall(buildParameters, g_LangSpec->name_priv_failedAssume, allocR, allocT, {ip->a.u32}, {});
@@ -4444,7 +4484,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitCall(buildParameters, g_LangSpec->name_priv_stackTrace, allocR, allocT, {ip->a.u32}, {});
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::NegBool:
             {
@@ -4535,7 +4575,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CastBool8:
             {
@@ -4786,7 +4826,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRR:
                 getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
@@ -4840,7 +4880,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocRR);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetParam8:
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 1));
@@ -4862,7 +4902,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64));
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetParam64DeRef8:
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, 0, 1));
@@ -4877,7 +4917,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, 0, 8));
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetIncParam64DeRef8:
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64, 1));
@@ -4892,7 +4932,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64, 8));
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::ZeroToTrue:
             {
@@ -4935,7 +4975,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::PushRVParam:
                 pushRVParams.push_back({ip->a.u32, ip->b.u32});
@@ -5282,7 +5322,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pushRVParams.clear();
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicMulAddF32:
             {

@@ -2,6 +2,29 @@
 #include "Backend/ByteCode/ByteCode_Math.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 
+void ByteCodeOptimizer::reduceAffectOp(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    if (ip->op != ByteCodeOp::IncPointer64 || ip[1].a.u32 != ip->a.u32)
+        return;
+    if (!ip->flags.has(BCI_IMM_B) || ip[0].a.u32 != ip[0].c.u32)
+        return;
+
+    switch (ip[1].op)
+    {
+        case ByteCodeOp::AffectOpPlusEqS8_Safe:  // CCTV
+        case ByteCodeOp::AffectOpPlusEqS16_Safe: // CCTV
+        case ByteCodeOp::AffectOpPlusEqS32_Safe: // CCTV
+        case ByteCodeOp::AffectOpPlusEqS64_Safe: // CCTV
+        case ByteCodeOp::AffectOpPlusEqU8_Safe:  // CCTV
+        case ByteCodeOp::AffectOpPlusEqU16_Safe: // CCTV
+        case ByteCodeOp::AffectOpPlusEqU32_Safe: // CCTV
+        case ByteCodeOp::AffectOpPlusEqU64_Safe: // CCTV
+            ip[1].c.u32 += ip[0].b.u32;
+            setNop(context, ip);
+            break;
+    }
+}
+
 void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (ip->hasFlag(BCI_IMM_A))
@@ -1439,7 +1462,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
                 ip[2].a.u32 = ip[0].b.u32 + ip[2].c.u32;
                 break;
             }
-        
+
             if (ip[2].op == ByteCodeOp::SetAtPointer16 &&
                 ip[0].a.u32 == ip[2].a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT) &&
@@ -5977,35 +6000,35 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 switch (ip[1].op)
                 {
                     case ByteCodeOp::AffectOpPlusEqS8_Safe:
-                        ip[1].a.u32 = ip->b.u32;
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
                         SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqS8_SSafe);
                         break;
                     case ByteCodeOp::AffectOpPlusEqS16_Safe:
-                        ip[1].a.u32 = ip->b.u32;
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
                         SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqS16_SSafe);
                         break;
                     case ByteCodeOp::AffectOpPlusEqS32_Safe:
-                        ip[1].a.u32 = ip->b.u32;
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
                         SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqS32_SSafe);
                         break;
                     case ByteCodeOp::AffectOpPlusEqS64_Safe:
-                        ip[1].a.u32 = ip->b.u32;
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
                         SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqS64_SSafe);
                         break;
                     case ByteCodeOp::AffectOpPlusEqU8_Safe:
-                        ip[1].a.u32 = ip->b.u32;
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
                         SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU8_SSafe);
                         break;
                     case ByteCodeOp::AffectOpPlusEqU16_Safe:
-                        ip[1].a.u32 = ip->b.u32;
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
                         SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU16_SSafe);
                         break;
                     case ByteCodeOp::AffectOpPlusEqU32_Safe:
-                        ip[1].a.u32 = ip->b.u32;
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
                         SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU32_SSafe);
                         break;
                     case ByteCodeOp::AffectOpPlusEqU64_Safe:
-                        ip[1].a.u32 = ip->b.u32;
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
                         SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU64_SSafe);
                         break;
                     case ByteCodeOp::AffectOpPlusEqF32:
@@ -6760,6 +6783,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceLateStack(context, ip);
         reduceFactor(context, ip);
         reduceMath(context, ip);
+        reduceAffectOp(context, ip);
         reduceDupInstr(context, ip);
         reduceCopy(context, ip);
     }

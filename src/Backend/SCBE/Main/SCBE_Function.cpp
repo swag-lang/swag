@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "SCBE_Macros.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/SCBE/Main/SCBE.h"
@@ -7,6 +6,7 @@
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
+#include "SCBE_Macros.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
@@ -1567,8 +1567,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
-            case ByteCodeOp::AffectOpPlusEqS8_Safe:
                 MK_BINOP_EQ8_CAB(CPUOp::ADD);
+                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8));
+                break;
+            case ByteCodeOp::AffectOpPlusEqS8_Safe:
+                MK_BINOP_EQ8_CAB_OFF(CPUOp::ADD); // CCTV
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8));
                 break;
             case ByteCodeOp::AffectOpPlusEqS8_SSafe:
@@ -1584,8 +1587,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS16:
-            case ByteCodeOp::AffectOpPlusEqS16_Safe:
                 MK_BINOP_EQ16_CAB(CPUOp::ADD);
+                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16));
+                break;
+            case ByteCodeOp::AffectOpPlusEqS16_Safe:
+                MK_BINOP_EQ16_CAB_OFF(CPUOp::ADD); // CCTV
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16));
                 break;
             case ByteCodeOp::AffectOpPlusEqS16_SSafe:
@@ -1601,8 +1607,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS32:
-            case ByteCodeOp::AffectOpPlusEqS32_Safe:
                 MK_BINOP_EQ32_CAB(CPUOp::ADD);
+                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32));
+                break;
+            case ByteCodeOp::AffectOpPlusEqS32_Safe:
+                MK_BINOP_EQ32_CAB_OFF(CPUOp::ADD); // CCTV
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32));
                 break;
             case ByteCodeOp::AffectOpPlusEqS32_SSafe:
@@ -1618,8 +1627,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS64:
-            case ByteCodeOp::AffectOpPlusEqS64_Safe:
                 MK_BINOP_EQ64_CAB(CPUOp::ADD);
+                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64));
+                break;
+            case ByteCodeOp::AffectOpPlusEqS64_Safe:
+                MK_BINOP_EQ64_CAB_OFF(CPUOp::ADD); // CCTV
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64));
                 break;
             case ByteCodeOp::AffectOpPlusEqS64_SSafe:
@@ -1635,26 +1647,38 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU8:
-            case ByteCodeOp::AffectOpPlusEqU8_Safe:
                 MK_BINOP_EQ8_CAB(CPUOp::ADD);
+                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8));
+                break;
+            case ByteCodeOp::AffectOpPlusEqU8_Safe:
+                MK_BINOP_EQ8_CAB_OFF(CPUOp::ADD); // CCTV
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8));
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU16:
-            case ByteCodeOp::AffectOpPlusEqU16_Safe:
                 MK_BINOP_EQ16_CAB(CPUOp::ADD);
+                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16));
+                break;
+            case ByteCodeOp::AffectOpPlusEqU16_Safe:
+                MK_BINOP_EQ16_CAB_OFF(CPUOp::ADD); // CCTV
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16));
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU32:
-            case ByteCodeOp::AffectOpPlusEqU32_Safe:
                 MK_BINOP_EQ32_CAB(CPUOp::ADD);
+                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32));
+                break;
+            case ByteCodeOp::AffectOpPlusEqU32_Safe:
+                MK_BINOP_EQ32_CAB_OFF(CPUOp::ADD); // CCTV
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32));
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU64:
-            case ByteCodeOp::AffectOpPlusEqU64_Safe:
                 MK_BINOP_EQ64_CAB(CPUOp::ADD);
+                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64));
+                break;
+            case ByteCodeOp::AffectOpPlusEqU64_Safe:
+                MK_BINOP_EQ64_CAB_OFF(CPUOp::ADD); // CCTV
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64));
                 break;
 

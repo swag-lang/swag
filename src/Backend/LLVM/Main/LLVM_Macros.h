@@ -150,6 +150,13 @@
     auto         r0 = GEP64(allocR, ip->a.u32);            \
     auto         r1 = builder.CreateLoad(PTR_I8_TY(), r0); \
     llvm::Value* r2 = MK_IMMB_8()
+
+/* CCTV */ #define MK_BINOP_EQ8_CAB_OFF()                  \
+    auto         r0 = GEP64(allocR, ip->a.u32);            \
+    auto         rt = builder.CreateLoad(PTR_I8_TY(), r0); \
+    auto         r1 = GEP8(rt, ip->c.u32);                 \
+    llvm::Value* r2 = MK_IMMB_8()
+
 #define MK_BINOP_EQ8_SCAB()                        \
     auto         r0 = GEP8(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_8()
@@ -161,6 +168,13 @@
     auto         r0 = GEP64(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(PTR_I16_TY(), r0); \
     llvm::Value* r2 = MK_IMMB_16()
+
+/* CCTV */ #define MK_BINOP_EQ16_CAB_OFF()                             \
+    auto         r0 = GEP64(allocR, ip->a.u32);             \
+    auto         rt = builder.CreateLoad(PTR_I16_TY(), r0); \
+    auto         r1 = GEP8_PTR_I16(rt, ip->c.u32);          \
+    llvm::Value* r2 = MK_IMMB_16()
+
 #define MK_BINOP_EQ16_SCAB()                               \
     auto         r0 = GEP8_PTR_I16(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_16()
@@ -172,6 +186,13 @@
     auto         r0 = GEP64(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(PTR_I32_TY(), r0); \
     llvm::Value* r2 = MK_IMMB_32()
+
+/* CCTV */ #define MK_BINOP_EQ32_CAB_OFF()                             \
+    auto         r0 = GEP64(allocR, ip->a.u32);             \
+    auto         rt = builder.CreateLoad(PTR_I32_TY(), r0); \
+    auto         r1 = GEP8_PTR_I32(rt, ip->c.u32);          \
+    llvm::Value* r2 = MK_IMMB_32()
+
 #define MK_BINOP_EQ32_SCAB()                               \
     auto         r0 = GEP8_PTR_I32(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_32()
@@ -183,6 +204,13 @@
     auto         r0 = GEP64(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(PTR_I64_TY(), r0); \
     llvm::Value* r2 = MK_IMMB_64()
+
+/* CCTV */ #define MK_BINOP_EQ64_CAB_OFF()                             \
+    auto         r0 = GEP64(allocR, ip->a.u32);             \
+    auto         rt = builder.CreateLoad(PTR_I64_TY(), r0); \
+    auto         r1 = GEP8_PTR_I64(rt, ip->c.u32);          \
+    llvm::Value* r2 = MK_IMMB_64()
+
 #define MK_BINOP_EQ64_SCAB()                               \
     auto         r0 = GEP8_PTR_I64(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_64()
