@@ -142,21 +142,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
 
             while (ip + 1 != ipn)
             {
-                std::swap(ip[0].op, ip[1].op);
-                std::swap(ip[0].flags, ip[1].flags);
-                std::swap(ip[0].a, ip[1].a);
-                std::swap(ip[0].b, ip[1].b);
-                std::swap(ip[0].c, ip[1].c);
-                std::swap(ip[0].d, ip[1].d);
-                std::swap(ip[0].node, ip[1].node);
-                std::swap(ip[0].location, ip[1].location);
-
-                if (ip[1].hasFlag(BCI_START_STMT))
-                {
-                    ip[0].inheritFlag(ip + 1, BCI_START_STMT);
-                    ip[1].removeFlag(BCI_START_STMT);
-                }
-
+                ByteCode::swapInstructions(ip, ip + 1);
                 ip++;
             }
 

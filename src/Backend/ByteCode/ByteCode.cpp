@@ -333,6 +333,24 @@ uint32_t ByteCode::computeCrc(const ByteCodeInstruction* ip, uint32_t oldCrc, bo
     return oldCrc;
 }
 
+void ByteCode::swapInstructions(ByteCodeInstruction* ip0, ByteCodeInstruction* ip1)
+{
+    std::swap(ip0->op, ip1->op);
+    std::swap(ip0->flags, ip1->flags);
+    std::swap(ip0->a, ip1->a);
+    std::swap(ip0->b, ip1->b);
+    std::swap(ip0->c, ip1->c);
+    std::swap(ip0->d, ip1->d);
+    std::swap(ip0->node, ip1->node);
+    std::swap(ip0->location, ip1->location);
+
+    if (ip1->hasFlag(BCI_START_STMT))
+    {
+        ip0->inheritFlag(ip1, BCI_START_STMT);
+        ip1->removeFlag(BCI_START_STMT);
+    }
+}
+
 void ByteCode::makeRoomForInstructions(uint32_t room)
 {
     SWAG_RACE_CONDITION_WRITE(raceCond);

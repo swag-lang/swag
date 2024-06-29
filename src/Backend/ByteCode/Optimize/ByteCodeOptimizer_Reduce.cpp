@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/ByteCode_Math.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 
+#pragma optimize("", off)
 void ByteCodeOptimizer::reduceAffectOp(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (ip->op != ByteCodeOp::IncPointer64 || ip[1].a.u32 != ip->a.u32)
@@ -45,7 +46,7 @@ void ByteCodeOptimizer::reduceAffectOp(ByteCodeOptContext* context, ByteCodeInst
         case ByteCodeOp::AffectOpPlusEqF64:
 
             ip[1].c.u32 += ip[0].b.u32;
-            setNop(context, ip);
+            ByteCode::swapInstructions(ip, ip + 1);
             break;
     }
 }
@@ -6097,10 +6098,12 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                         break;
                     case ByteCodeOp::AffectOpPlusEqF32:
                         ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
+                        ip[1].c.u32 = 0;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqF32_S);
                         break;
                     case ByteCodeOp::AffectOpPlusEqF64:
                         ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
+                        ip[1].c.u32 = 0;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqF64_S);
                         break;
 
@@ -6138,10 +6141,12 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                         break;
                     case ByteCodeOp::AffectOpMinusEqF32:
                         ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
+                        ip[1].c.u32 = 0;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMinusEqF32_S);
                         break;
                     case ByteCodeOp::AffectOpMinusEqF64:
                         ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
+                        ip[1].c.u32 = 0;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMinusEqF64_S);
                         break;
 
@@ -6847,7 +6852,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceLateStack(context, ip);
         reduceFactor(context, ip);
         reduceMath(context, ip);
-        //reduceAffectOp(context, ip);
+        reduceAffectOp(context, ip);
         reduceDupInstr(context, ip);
         reduceCopy(context, ip);
     }

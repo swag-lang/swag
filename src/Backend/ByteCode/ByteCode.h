@@ -110,6 +110,7 @@ struct ByteCode
     void              markLabels() const;
     bool              isDoingNothing() const;
     void              makeRoomForInstructions(uint32_t room = 1);
+    static void       swapInstructions(ByteCodeInstruction* ip0, ByteCodeInstruction* ip1);
 
     static bool areSame(const ByteCodeInstruction* start0, const ByteCodeInstruction* end0, const ByteCodeInstruction* start1, const ByteCodeInstruction* end1, bool specialJump, bool specialCall);
     uint32_t    computeCrc(const ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const;
