@@ -2391,7 +2391,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::AffectOpMulEqF32:
             {
-                MK_BINOP_EQF32_CAB();
+                MK_BINOP_EQF32_CAB_OFF();
                 auto v0 = builder.CreateFMul(builder.CreateLoad(F32_TY(), r1), r2);
                 builder.CreateStore(v0, r1);
                 break;
@@ -2413,7 +2413,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::AffectOpMulEqF64:
             {
-                MK_BINOP_EQF64_CAB();
+                MK_BINOP_EQF64_CAB_OFF();
                 auto v0 = builder.CreateFMul(builder.CreateLoad(F64_TY(), r1), r2);
                 builder.CreateStore(v0, r1);
                 break;

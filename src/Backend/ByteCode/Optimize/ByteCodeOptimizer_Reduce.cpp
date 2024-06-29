@@ -11,20 +11,16 @@ void ByteCodeOptimizer::reduceAffectOp(ByteCodeOptContext* context, ByteCodeInst
 
     switch (ip[1].op)
     {
-        case ByteCodeOp::AffectOpPlusEqF32:
-        case ByteCodeOp::AffectOpPlusEqF64:
-        case ByteCodeOp::AffectOpMinusEqF32:
-        case ByteCodeOp::AffectOpMinusEqF64:        
-            printf("X");
-        
-        case ByteCodeOp::AffectOpMulEqS8_Safe: 
-        case ByteCodeOp::AffectOpMulEqS16_Safe: 
-        case ByteCodeOp::AffectOpMulEqS32_Safe: 
-        case ByteCodeOp::AffectOpMulEqS64_Safe: 
-        case ByteCodeOp::AffectOpMulEqU8_Safe: 
-        case ByteCodeOp::AffectOpMulEqU16_Safe: 
-        case ByteCodeOp::AffectOpMulEqU32_Safe: 
-        case ByteCodeOp::AffectOpMulEqU64_Safe: 
+        case ByteCodeOp::AffectOpMulEqS8_Safe:
+        case ByteCodeOp::AffectOpMulEqS16_Safe:
+        case ByteCodeOp::AffectOpMulEqS32_Safe:
+        case ByteCodeOp::AffectOpMulEqS64_Safe:
+        case ByteCodeOp::AffectOpMulEqU8_Safe:
+        case ByteCodeOp::AffectOpMulEqU16_Safe:
+        case ByteCodeOp::AffectOpMulEqU32_Safe:
+        case ByteCodeOp::AffectOpMulEqU64_Safe:
+        case ByteCodeOp::AffectOpMulEqF32:
+        case ByteCodeOp::AffectOpMulEqF64:
 
         case ByteCodeOp::AffectOpMinusEqS8_Safe:
         case ByteCodeOp::AffectOpMinusEqS16_Safe:
@@ -34,6 +30,8 @@ void ByteCodeOptimizer::reduceAffectOp(ByteCodeOptContext* context, ByteCodeInst
         case ByteCodeOp::AffectOpMinusEqU16_Safe:
         case ByteCodeOp::AffectOpMinusEqU32_Safe:
         case ByteCodeOp::AffectOpMinusEqU64_Safe:
+        case ByteCodeOp::AffectOpMinusEqF32:
+        case ByteCodeOp::AffectOpMinusEqF64:
 
         case ByteCodeOp::AffectOpPlusEqS8_Safe:
         case ByteCodeOp::AffectOpPlusEqS16_Safe:
@@ -43,6 +41,9 @@ void ByteCodeOptimizer::reduceAffectOp(ByteCodeOptContext* context, ByteCodeInst
         case ByteCodeOp::AffectOpPlusEqU16_Safe:
         case ByteCodeOp::AffectOpPlusEqU32_Safe:
         case ByteCodeOp::AffectOpPlusEqU64_Safe:
+        case ByteCodeOp::AffectOpPlusEqF32:
+        case ByteCodeOp::AffectOpPlusEqF64:
+
             ip[1].c.u32 += ip[0].b.u32;
             setNop(context, ip);
             break;
@@ -6138,11 +6139,11 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMulEqU64_SSafe);
                         break;
                     case ByteCodeOp::AffectOpMulEqF32:
-                        ip[1].a.u32 = ip->b.u32;
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMulEqF32_S);
                         break;
                     case ByteCodeOp::AffectOpMulEqF64:
-                        ip[1].a.u32 = ip->b.u32;
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMulEqF64_S);
                         break;
 

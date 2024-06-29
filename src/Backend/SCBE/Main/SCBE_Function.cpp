@@ -1129,9 +1129,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMulEqF32:
                 MK_IMMB_F32(XMM1);
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
-                pp.emitLoadF32Indirect(0, XMM0, RAX);
+                pp.emitLoadF32Indirect(ip->c.u32, XMM0, RAX);
                 pp.emitOpF32(XMM0, XMM1, CPUOp::FMUL);
-                pp.emitStoreF32Indirect(0, XMM0, RAX);
+                pp.emitStoreF32Indirect(ip->c.u32, XMM0, RAX);
                 break;
             case ByteCodeOp::AffectOpMulEqF32_S:
                 pp.emitLoadF32Indirect(offsetStack + ip->a.u32, XMM0, RDI);
@@ -1151,9 +1151,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMulEqF64:
                 MK_IMMB_F64(XMM1);
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
-                pp.emitLoadF64Indirect(0, XMM0, RAX);
+                pp.emitLoadF64Indirect(ip->c.u32, XMM0, RAX);
                 pp.emitOpF64(XMM0, XMM1, CPUOp::FMUL);
-                pp.emitStoreF64Indirect(0, XMM0, RAX);
+                pp.emitStoreF64Indirect(ip->c.u32, XMM0, RAX);
                 break;
             case ByteCodeOp::AffectOpMulEqF64_S:
                 pp.emitLoadF64Indirect(offsetStack + ip->a.u32, XMM0, RDI);
