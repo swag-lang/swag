@@ -873,12 +873,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpMulEqS8_Safe:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
-                pp.emitLoad8Indirect(ip->c.u32, RAX, RAX); // CCTV
+                pp.emitLoad8Indirect(ip->c.u32, RAX, RAX); 
                 MK_IMMB_8(RCX);
                 pp.emitOpN(RAX, RCX, CPUOp::IMUL, CPUBits::B8);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8));
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
-                pp.emitStore8Indirect(ip->c.u32, RAX, RCX); // CCTV
+                pp.emitStore8Indirect(ip->c.u32, RAX, RCX); 
                 break;
             case ByteCodeOp::AffectOpMulEqS8_SSafe:
                 pp.emitLoad8Indirect(offsetStack + ip->a.u32, RAX, RDI);
@@ -906,12 +906,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpMulEqS16_Safe:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
-                pp.emitLoad16Indirect(ip->c.u32, RAX, RAX); // CCTV
+                pp.emitLoad16Indirect(ip->c.u32, RAX, RAX); 
                 MK_IMMB_16(RCX);
                 pp.emitOpN(RAX, RCX, CPUOp::IMUL, CPUBits::B16);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16));
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
-                pp.emitStore16Indirect(ip->c.u32, RAX, RCX); // CCTV
+                pp.emitStore16Indirect(ip->c.u32, RAX, RCX); 
                 break;
             case ByteCodeOp::AffectOpMulEqS16_SSafe:
                 pp.emitLoad16Indirect(offsetStack + ip->a.u32, RAX, RDI);
@@ -939,12 +939,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpMulEqS32_Safe:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
-                pp.emitLoad32Indirect(ip->c.u32, RAX, RAX); // CCTV
+                pp.emitLoad32Indirect(ip->c.u32, RAX, RAX); 
                 MK_IMMB_32(RCX);
                 pp.emitOpN(RAX, RCX, CPUOp::IMUL, CPUBits::B32);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32));
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
-                pp.emitStore32Indirect(ip->c.u32, RAX, RCX); // CCTV
+                pp.emitStore32Indirect(ip->c.u32, RAX, RCX); 
                 break;
             case ByteCodeOp::AffectOpMulEqS32_SSafe:
                 pp.emitLoad32Indirect(offsetStack + ip->a.u32, RAX, RDI);
@@ -972,12 +972,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpMulEqS64_Safe:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
-                pp.emitLoad64Indirect(ip->c.u32, RAX, RAX); // CCTV
+                pp.emitLoad64Indirect(ip->c.u32, RAX, RAX); 
                 MK_IMMB_64(RCX);
                 pp.emitOpN(RAX, RCX, CPUOp::IMUL, CPUBits::B64);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64));
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
-                pp.emitStore64Indirect(ip->c.u32, RAX, RCX); // CCTV
+                pp.emitStore64Indirect(ip->c.u32, RAX, RCX); 
                 break;
             case ByteCodeOp::AffectOpMulEqS64_SSafe:
                 pp.emitLoad64Indirect(offsetStack + ip->a.u32, RAX, RDI);
@@ -1005,12 +1005,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpMulEqU8_Safe:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
-                pp.emitLoad8Indirect(ip->c.u32, RAX, RAX); // CCTV
+                pp.emitLoad8Indirect(ip->c.u32, RAX, RAX); 
                 MK_IMMB_8(RCX);
                 pp.emitOpN(RAX, RCX, CPUOp::MUL, CPUBits::B8);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8));
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
-                pp.emitStore8Indirect(ip->c.u32, RAX, RCX); // CCTV
+                pp.emitStore8Indirect(ip->c.u32, RAX, RCX); 
                 break;
             case ByteCodeOp::AffectOpMulEqU8_SSafe:
                 pp.emitLoad8Indirect(offsetStack + ip->a.u32, RAX, RDI);
@@ -1038,12 +1038,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpMulEqU16_Safe:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
-                pp.emitLoad16Indirect(ip->c.u32, RAX, RAX); // CCTV
+                pp.emitLoad16Indirect(ip->c.u32, RAX, RAX); 
                 MK_IMMB_16(RCX);
                 pp.emitOpN(RAX, RCX, CPUOp::MUL, CPUBits::B16);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16));
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
-                pp.emitStore16Indirect(ip->c.u32, RAX, RCX); // CCTV
+                pp.emitStore16Indirect(ip->c.u32, RAX, RCX); 
                 break;
             case ByteCodeOp::AffectOpMulEqU16_SSafe:
                 pp.emitLoad16Indirect(offsetStack + ip->a.u32, RAX, RDI);
@@ -1071,12 +1071,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpMulEqU32_Safe:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
-                pp.emitLoad32Indirect(ip->c.u32, RAX, RAX); // CCTV
+                pp.emitLoad32Indirect(ip->c.u32, RAX, RAX); 
                 MK_IMMB_32(RCX);
                 pp.emitOpN(RAX, RCX, CPUOp::MUL, CPUBits::B32);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32));
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
-                pp.emitStore32Indirect(ip->c.u32, RAX, RCX); // CCTV
+                pp.emitStore32Indirect(ip->c.u32, RAX, RCX); 
                 break;
             case ByteCodeOp::AffectOpMulEqU32_SSafe:
                 pp.emitLoad32Indirect(offsetStack + ip->a.u32, RAX, RDI);
@@ -1104,12 +1104,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpMulEqU64_Safe:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
-                pp.emitLoad64Indirect(ip->c.u32, RAX, RAX); // CCTV
+                pp.emitLoad64Indirect(ip->c.u32, RAX, RAX); 
                 MK_IMMB_64(RCX);
                 pp.emitOpN(RAX, RCX, CPUOp::MUL, CPUBits::B64);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64));
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
-                pp.emitStore64Indirect(ip->c.u32, RAX, RCX); // CCTV
+                pp.emitStore64Indirect(ip->c.u32, RAX, RCX); 
                 break;
             case ByteCodeOp::AffectOpMulEqU64_SSafe:
                 pp.emitLoad64Indirect(offsetStack + ip->a.u32, RAX, RDI);
@@ -1747,7 +1747,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqF32:
-                MK_BINOP_EQF32_CAB(CPUOp::FADD);
+                MK_BINOP_EQF32_CAB_OFF(CPUOp::FADD);
                 break;
             case ByteCodeOp::AffectOpPlusEqF32_S:
                 MK_BINOP_EQF32_SCAB(CPUOp::FADD);
@@ -1757,7 +1757,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqF64:
-                MK_BINOP_EQF64_CAB(CPUOp::FADD);
+                MK_BINOP_EQF64_CAB_OFF(CPUOp::FADD);
                 break;
             case ByteCodeOp::AffectOpPlusEqF64_S:
                 MK_BINOP_EQF64_SCAB(CPUOp::FADD);
@@ -1885,7 +1885,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqF32:
-                MK_BINOP_EQF32_CAB(CPUOp::FSUB);
+                MK_BINOP_EQF32_CAB_OFF(CPUOp::FSUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqF32_S:
                 MK_BINOP_EQF32_SCAB(CPUOp::FSUB);
@@ -1895,7 +1895,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqF64:
-                MK_BINOP_EQF64_CAB(CPUOp::FSUB);
+                MK_BINOP_EQF64_CAB_OFF(CPUOp::FSUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqF64_S:
                 MK_BINOP_EQF64_SCAB(CPUOp::FSUB);

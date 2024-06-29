@@ -1091,28 +1091,28 @@ void SCBE_X64::emitOpNIndirect(uint32_t offsetStack, CPURegister reg, CPURegiste
     }
 }
 
-void SCBE_X64::emitOpF32Indirect([[maybe_unused]] CPURegister reg, CPURegister memReg, CPUOp op)
+void SCBE_X64::emitOpF32Indirect(uint32_t offsetStack, [[maybe_unused]] CPURegister reg, CPURegister memReg, CPUOp op)
 {
     SWAG_ASSERT(reg == XMM1);
     SWAG_ASSERT(memReg < R8);
-    emitLoadF32Indirect(0, XMM0, memReg);
+    emitLoadF32Indirect(offsetStack, XMM0, memReg);
     concat.addU8(0xF3);
     concat.addU8(0x0F);
     concat.addU8(static_cast<uint8_t>(op));
     concat.addU8(0xC1);
-    emitStoreF32Indirect(0, XMM0, memReg);
+    emitStoreF32Indirect(offsetStack, XMM0, memReg);
 }
 
-void SCBE_X64::emitOpF64Indirect([[maybe_unused]] CPURegister reg, CPURegister memReg, CPUOp op)
+void SCBE_X64::emitOpF64Indirect(uint32_t offsetStack, [[maybe_unused]] CPURegister reg, CPURegister memReg, CPUOp op)
 {
     SWAG_ASSERT(reg == XMM1);
     SWAG_ASSERT(memReg < R8);
-    emitLoadF64Indirect(0, XMM0, memReg);
+    emitLoadF64Indirect(offsetStack, XMM0, memReg);
     concat.addU8(0xF2);
     concat.addU8(0x0F);
     concat.addU8(static_cast<uint8_t>(op));
     concat.addU8(0xC1);
-    emitStoreF64Indirect(0, XMM0, memReg);
+    emitStoreF64Indirect(offsetStack, XMM0, memReg);
 }
 
 void SCBE_X64::emitOpNIndirectDst(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits numBits)

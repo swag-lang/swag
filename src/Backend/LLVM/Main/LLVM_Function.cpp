@@ -1963,7 +1963,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::AffectOpMinusEqF32:
             {
-                MK_BINOP_EQF32_CAB();
+                MK_BINOP_EQF32_CAB_OFF();
                 auto v0 = builder.CreateFSub(builder.CreateLoad(F32_TY(), r1), r2);
                 builder.CreateStore(v0, r1);
                 break;
@@ -1985,7 +1985,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::AffectOpMinusEqF64:
             {
-                MK_BINOP_EQF64_CAB();
+                MK_BINOP_EQF64_CAB_OFF();
                 auto v0 = builder.CreateFSub(builder.CreateLoad(F64_TY(), r1), r2);
                 builder.CreateStore(v0, r1);
                 break;
@@ -2177,7 +2177,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::AffectOpPlusEqF32:
             {
-                MK_BINOP_EQF32_CAB();
+                MK_BINOP_EQF32_CAB_OFF();
                 auto v0 = builder.CreateFAdd(builder.CreateLoad(F32_TY(), r1), r2);
                 builder.CreateStore(v0, r1);
                 break;
@@ -2199,7 +2199,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::AffectOpPlusEqF64:
             {
-                MK_BINOP_EQF64_CAB();
+                MK_BINOP_EQF64_CAB_OFF();
                 auto v0 = builder.CreateFAdd(builder.CreateLoad(F64_TY(), r1), r2);
                 builder.CreateStore(v0, r1);
                 break;
@@ -2229,7 +2229,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }                
             case ByteCodeOp::AffectOpMulEqS8_Safe:
             {
-                MK_BINOP_EQ8_CAB_OFF(); // CCTV
+                MK_BINOP_EQ8_CAB_OFF(); 
                 OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8), true);
                 break;
             }
@@ -2258,7 +2258,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }                
             case ByteCodeOp::AffectOpMulEqS16_Safe:
             {
-                MK_BINOP_EQ16_CAB_OFF(); // CCTV
+                MK_BINOP_EQ16_CAB_OFF(); 
                 OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16), true);
                 break;
             }
@@ -2287,7 +2287,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }                
             case ByteCodeOp::AffectOpMulEqS32_Safe:
             {
-                MK_BINOP_EQ32_CAB_OFF(); // CCTV
+                MK_BINOP_EQ32_CAB_OFF(); 
                 OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32), true);
                 break;
             }
@@ -2316,7 +2316,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }                
             case ByteCodeOp::AffectOpMulEqS64_Safe:
             {
-                MK_BINOP_EQ64_CAB_OFF(); // CCTV
+                MK_BINOP_EQ64_CAB_OFF(); 
                 OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64), true);
                 break;
             }
@@ -2345,7 +2345,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }                
             case ByteCodeOp::AffectOpMulEqU8_Safe:
             {
-                MK_BINOP_EQ8_CAB_OFF(); // CCTV
+                MK_BINOP_EQ8_CAB_OFF(); 
                 OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8), false);
                 break;
             }
@@ -2358,7 +2358,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }                
             case ByteCodeOp::AffectOpMulEqU16_Safe:
             {
-                MK_BINOP_EQ16_CAB_OFF(); // CCTV
+                MK_BINOP_EQ16_CAB_OFF(); 
                 OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16), false);
                 break;
             }
@@ -2371,7 +2371,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }                
             case ByteCodeOp::AffectOpMulEqU32_Safe:
             {
-                MK_BINOP_EQ32_CAB_OFF(); // CCTV
+                MK_BINOP_EQ32_CAB_OFF(); 
                 OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32), false);
                 break;
             }
@@ -2384,7 +2384,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }                
             case ByteCodeOp::AffectOpMulEqU64_Safe:
             {
-                MK_BINOP_EQ64_CAB_OFF(); // CCTV
+                MK_BINOP_EQ64_CAB_OFF(); 
                 OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64), false);
                 break;
             }
