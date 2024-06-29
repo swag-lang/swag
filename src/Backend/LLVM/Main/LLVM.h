@@ -95,6 +95,7 @@ struct LLVM final : Backend
     explicit LLVM(Module* mdl);
 
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
+    void      doCall(const BuildParameters& buildParameters, llvm::LLVMContext& context, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>> &pushRVParams, VectorNative<uint32_t> &pushRAParams, llvm::Value*& resultFuncCall);
     bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
 
     void                createRuntime(const BuildParameters& buildParameters) const;
