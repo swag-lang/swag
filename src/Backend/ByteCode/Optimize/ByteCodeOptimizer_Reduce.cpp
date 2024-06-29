@@ -11,15 +11,23 @@ void ByteCodeOptimizer::reduceAffectOp(ByteCodeOptContext* context, ByteCodeInst
 
     switch (ip[1].op)
     {
-        case ByteCodeOp::AffectOpMinusEqS8_Safe:  // CCTV
-        case ByteCodeOp::AffectOpMinusEqS16_Safe: // CCTV
-        case ByteCodeOp::AffectOpMinusEqS32_Safe: // CCTV
-        case ByteCodeOp::AffectOpMinusEqS64_Safe: // CCTV
-        case ByteCodeOp::AffectOpMinusEqU8_Safe:  // CCTV
-        case ByteCodeOp::AffectOpMinusEqU16_Safe: // CCTV
-        case ByteCodeOp::AffectOpMinusEqU32_Safe: // CCTV
-        case ByteCodeOp::AffectOpMinusEqU64_Safe: // CCTV
-            printf("x");
+        case ByteCodeOp::AffectOpMulEqS8_Safe: // CCTV
+        case ByteCodeOp::AffectOpMulEqS16_Safe: // CCTV
+        case ByteCodeOp::AffectOpMulEqS32_Safe: // CCTV
+        case ByteCodeOp::AffectOpMulEqS64_Safe: // CCTV
+        case ByteCodeOp::AffectOpMulEqU8_Safe: // CCTV
+        case ByteCodeOp::AffectOpMulEqU16_Safe: // CCTV
+        case ByteCodeOp::AffectOpMulEqU32_Safe: // CCTV
+        case ByteCodeOp::AffectOpMulEqU64_Safe: // CCTV
+
+        case ByteCodeOp::AffectOpMinusEqS8_Safe:
+        case ByteCodeOp::AffectOpMinusEqS16_Safe:
+        case ByteCodeOp::AffectOpMinusEqS32_Safe:
+        case ByteCodeOp::AffectOpMinusEqS64_Safe:
+        case ByteCodeOp::AffectOpMinusEqU8_Safe:
+        case ByteCodeOp::AffectOpMinusEqU16_Safe:
+        case ByteCodeOp::AffectOpMinusEqU32_Safe:
+        case ByteCodeOp::AffectOpMinusEqU64_Safe:
 
         case ByteCodeOp::AffectOpPlusEqS8_Safe:
         case ByteCodeOp::AffectOpPlusEqS16_Safe:
@@ -6051,35 +6059,35 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                         break;
 
                     case ByteCodeOp::AffectOpMinusEqS8_Safe:
-                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMinusEqS8_SSafe);
                         break;
                     case ByteCodeOp::AffectOpMinusEqS16_Safe:
-                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMinusEqS16_SSafe);
                         break;
                     case ByteCodeOp::AffectOpMinusEqS32_Safe:
-                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMinusEqS32_SSafe);
                         break;
                     case ByteCodeOp::AffectOpMinusEqS64_Safe:
-                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMinusEqS64_SSafe);
                         break;
                     case ByteCodeOp::AffectOpMinusEqU8_Safe:
-                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMinusEqU8_SSafe);
                         break;
                     case ByteCodeOp::AffectOpMinusEqU16_Safe:
-                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMinusEqU16_SSafe);
                         break;
                     case ByteCodeOp::AffectOpMinusEqU32_Safe:
-                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMinusEqU32_SSafe);
                         break;
                     case ByteCodeOp::AffectOpMinusEqU64_Safe:
-                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32; // CCTV
+                        ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                         SET_OP(ip + 1, ByteCodeOp::AffectOpMinusEqU64_SSafe);
                         break;
                     case ByteCodeOp::AffectOpMinusEqF32:
