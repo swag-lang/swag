@@ -481,8 +481,11 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                         ipScan[0].op == ByteCodeOp::LambdaCallPop ||
                         ipScan[0].op == ByteCodeOp::LocalCall ||
                         ipScan[0].op == ByteCodeOp::LocalCallPop ||
+                        ipScan[0].op == ByteCodeOp::LocalCallPop8 ||
                         ipScan[0].op == ByteCodeOp::LocalCallPopParam ||
+                        ipScan[0].op == ByteCodeOp::LocalCallPop8Param ||
                         ipScan[0].op == ByteCodeOp::LocalCallPopRC ||
+                        ipScan[0].op == ByteCodeOp::LocalCallPop8RC ||
                         ipScan[0].op == ByteCodeOp::ForeignCall ||
                         ipScan[0].op == ByteCodeOp::ForeignCallPop)
                     {
@@ -566,8 +569,11 @@ void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCode
 {
     if (ip->op == ByteCodeOp::LocalCall ||
         ip->op == ByteCodeOp::LocalCallPop ||
+        ip->op == ByteCodeOp::LocalCallPop8 ||
         ip->op == ByteCodeOp::LocalCallPopParam ||
-        ip->op == ByteCodeOp::LocalCallPopRC)
+        ip->op == ByteCodeOp::LocalCallPop8Param ||
+        ip->op == ByteCodeOp::LocalCallPopRC ||
+        ip->op == ByteCodeOp::LocalCallPop8RC)
     {
         const auto destBC = reinterpret_cast<ByteCode*>(ip->a.pointer);
         if (destBC->isEmpty.load() != true)
@@ -589,8 +595,11 @@ void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCode
             while (backIp != context->bc->out &&
                    backIp->op != ByteCodeOp::LocalCall &&
                    backIp->op != ByteCodeOp::LocalCallPop &&
+                   backIp->op != ByteCodeOp::LocalCallPop8 &&
                    backIp->op != ByteCodeOp::LocalCallPopParam &&
+                   backIp->op != ByteCodeOp::LocalCallPop8Param &&
                    backIp->op != ByteCodeOp::LocalCallPopRC &&
+                   backIp->op != ByteCodeOp::LocalCallPop8RC &&
                    backIp->op != ByteCodeOp::ForeignCall &&
                    backIp->op != ByteCodeOp::ForeignCallPop &&
                    backIp->op != ByteCodeOp::LambdaCall &&
@@ -951,7 +960,19 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             }
             break;
 
+        case ByteCodeOp::LocalCallPop8:
+            if (ip[1].op == ByteCodeOp::CopyRTtoRA &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::LocalCallPop8RC);
+                ip->d.u32 = ip[1].a.u32;
+                setNop(context, ip + 1);
+                break;
+            }
+            break;
+
         case ByteCodeOp::LocalCallPopRC:
+        case ByteCodeOp::LocalCallPop8RC:
             if (ip[1].op == ByteCodeOp::CopyRTtoRA &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
@@ -962,6 +983,15 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             break;
 
         case ByteCodeOp::LocalCall:
+            if (ip[1].op == ByteCodeOp::IncSPPostCall &&
+                ip[1].a.u32 == 8 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::LocalCallPop8);
+                setNop(context, ip + 1);
+                break;
+            }
+
             if (ip[1].op == ByteCodeOp::IncSPPostCall &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
@@ -1040,6 +1070,15 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             {
                 SET_OP(ip + 1, ByteCodeOp::LocalCallPopParam);
                 ip[1].d.u32 = ip[0].a.u32;
+                setNop(context, ip);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::LocalCallPop8 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::LocalCallPop8Param);
+                ip[1].c.u32 = ip[0].a.u32;
                 setNop(context, ip);
                 break;
             }
@@ -6808,7 +6847,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceLateStack(context, ip);
         reduceFactor(context, ip);
         reduceMath(context, ip);
-        reduceAffectOp(context, ip);
+        //reduceAffectOp(context, ip);
         reduceDupInstr(context, ip);
         reduceCopy(context, ip);
     }

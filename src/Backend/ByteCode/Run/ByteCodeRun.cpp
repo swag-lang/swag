@@ -602,14 +602,24 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->push(registersRC[ip->d.u32].u64);
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, ip->c.u32);
             break;
+        case ByteCodeOp::LocalCallPop8Param:
+            context->push(registersRC[ip->c.u32].u64);
+            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 8);
+            break;
         case ByteCodeOp::LocalCall:
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer));
             break;
         case ByteCodeOp::LocalCallPop:
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, ip->c.u32);
             break;
+        case ByteCodeOp::LocalCallPop8:
+            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 8);
+            break;
         case ByteCodeOp::LocalCallPopRC:
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, ip->d.u32, ip->c.u32);
+            break;
+        case ByteCodeOp::LocalCallPop8RC:
+            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, ip->d.u32, 8);
             break;
         case ByteCodeOp::ForeignCall:
             g_ByteCodeStackTrace->push(context);
@@ -3585,7 +3595,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS8_Safe:
-            *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S8(ip); 
+            *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS8_SSafe:
             *reinterpret_cast<int8_t*>(context->bp + ip->a.u32) *= IMMB_S8(ip);
@@ -3600,7 +3610,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS16_Safe:
-            *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S16(ip); 
+            *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS16_SSafe:
             *reinterpret_cast<int16_t*>(context->bp + ip->a.u32) *= IMMB_S16(ip);
@@ -3615,7 +3625,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S32(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS32_Safe:
-            *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S32(ip); 
+            *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S32(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS32_SSafe:
             *reinterpret_cast<int32_t*>(context->bp + ip->a.u32) *= IMMB_S32(ip);
@@ -3630,7 +3640,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S64(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS64_Safe:
-            *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S64(ip); 
+            *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S64(ip);
             break;
         case ByteCodeOp::AffectOpMulEqS64_SSafe:
             *reinterpret_cast<int64_t*>(context->bp + ip->a.u32) *= IMMB_S64(ip);
@@ -3645,7 +3655,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpMulEqU8_Safe:
-            *(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S8(ip); 
+            *(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S8(ip);
             break;
         case ByteCodeOp::AffectOpMulEqU8_SSafe:
             *(context->bp + ip->a.u32) *= IMMB_S8(ip);
@@ -3660,7 +3670,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpMulEqU16_Safe:
-            *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S16(ip); 
+            *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S16(ip);
             break;
         case ByteCodeOp::AffectOpMulEqU16_SSafe:
             *reinterpret_cast<uint16_t*>(context->bp + ip->a.u32) *= IMMB_S16(ip);
@@ -3675,7 +3685,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S32(ip);
             break;
         case ByteCodeOp::AffectOpMulEqU32_Safe:
-            *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S32(ip); 
+            *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S32(ip);
             break;
         case ByteCodeOp::AffectOpMulEqU32_SSafe:
             *reinterpret_cast<uint32_t*>(context->bp + ip->a.u32) *= IMMB_S32(ip);
@@ -3690,7 +3700,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S64(ip);
             break;
         case ByteCodeOp::AffectOpMulEqU64_Safe:
-            *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S64(ip); 
+            *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer + ip->c.u32) *= IMMB_S64(ip);
             break;
         case ByteCodeOp::AffectOpMulEqU64_SSafe:
             *reinterpret_cast<uint64_t*>(context->bp + ip->a.u32) *= IMMB_S64(ip);

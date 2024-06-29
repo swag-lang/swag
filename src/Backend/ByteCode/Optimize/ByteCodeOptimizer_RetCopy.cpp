@@ -27,7 +27,9 @@ namespace
                     }
                 }
                 else if (ipe[1].op == ByteCodeOp::PushRAParam &&
-                         (ipe[2].op == ByteCodeOp::LocalCallPop || ipe[2].op == ByteCodeOp::ForeignCallPop))
+                         (ipe[2].op == ByteCodeOp::LocalCallPop ||
+                          ipe[2].op == ByteCodeOp::LocalCallPop8 ||
+                          ipe[2].op == ByteCodeOp::ForeignCallPop))
                 {
                     if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
                     {
@@ -36,7 +38,8 @@ namespace
                         ByteCodeOptimizer::setNop(context, ipe + 2);
                     }
                 }
-                else if (ipe[1].op == ByteCodeOp::LocalCallPopParam)
+                else if (ipe[1].op == ByteCodeOp::LocalCallPopParam ||
+                         ipe[1].op == ByteCodeOp::LocalCallPop8Param)
                 {
                     if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
                     {
@@ -170,8 +173,11 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
             while (ip->op != ByteCodeOp::End &&
                    ip->op != ByteCodeOp::LocalCall &&
                    ip->op != ByteCodeOp::LocalCallPop &&
+                   ip->op != ByteCodeOp::LocalCallPop8 &&
                    ip->op != ByteCodeOp::LocalCallPopParam &&
+                   ip->op != ByteCodeOp::LocalCallPop8Param &&
                    ip->op != ByteCodeOp::LocalCallPopRC &&
+                   ip->op != ByteCodeOp::LocalCallPop8RC &&
                    ip->op != ByteCodeOp::ForeignCall &&
                    ip->op != ByteCodeOp::ForeignCallPop &&
                    ip->op != ByteCodeOp::LambdaCall &&
@@ -283,8 +289,11 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
             while (ip->op != ByteCodeOp::End &&
                    ip->op != ByteCodeOp::LocalCall &&
                    ip->op != ByteCodeOp::LocalCallPop &&
+                   ip->op != ByteCodeOp::LocalCallPop8 &&
                    ip->op != ByteCodeOp::LocalCallPopParam &&
+                   ip->op != ByteCodeOp::LocalCallPop8Param &&
                    ip->op != ByteCodeOp::LocalCallPopRC &&
+                   ip->op != ByteCodeOp::LocalCallPop8RC &&
                    ip->op != ByteCodeOp::ForeignCall &&
                    ip->op != ByteCodeOp::ForeignCallPop &&
                    ip->op != ByteCodeOp::LambdaCall &&

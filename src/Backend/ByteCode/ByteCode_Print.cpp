@@ -424,8 +424,11 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
 
         case ByteCodeOp::LocalCall:
         case ByteCodeOp::LocalCallPop:
+        case ByteCodeOp::LocalCallPop8:
         case ByteCodeOp::LocalCallPopParam:
+        case ByteCodeOp::LocalCallPop8Param:
         case ByteCodeOp::LocalCallPopRC:
+        case ByteCodeOp::LocalCallPop8RC:
         {
             const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
             SWAG_ASSERT(bc);

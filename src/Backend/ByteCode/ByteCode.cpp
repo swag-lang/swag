@@ -11,6 +11,7 @@
 #define BYTECODE_OP(__op, __flags, __dis) {__flags, static_cast<uint32_t>(strlen(#__op)), #__op, __dis},
 ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 #include "ByteCodeOpList.h"
+
 };
 
 void ByteCode::release()
@@ -42,8 +43,8 @@ ByteCode::Location ByteCode::getLocation(const ByteCode* bc, const ByteCodeInstr
         auto n = ip->node;
         while (n->hasOwnerInline() && !n->hasAstFlag(AST_IN_MIXIN) && n->ownerInline()->ownerFct == n->ownerFct)
             n = n->ownerInline();
-        loc.node = n;
-        loc.file = n->token.sourceFile;
+        loc.node     = n;
+        loc.file     = n->token.sourceFile;
         loc.location = &n->token.startLocation;
     }
 
@@ -254,8 +255,11 @@ bool ByteCode::areSame(const ByteCodeInstruction* start0,
         // Compare if the 2 bytes codes or their alias are the same
         if (specialCall && (ip0->op == ByteCodeOp::LocalCall ||
                             ip0->op == ByteCodeOp::LocalCallPop ||
+                            ip0->op == ByteCodeOp::LocalCallPop8 ||
                             ip0->op == ByteCodeOp::LocalCallPopParam ||
-                            ip0->op == ByteCodeOp::LocalCallPopRC))
+                            ip0->op == ByteCodeOp::LocalCallPop8Param ||
+                            ip0->op == ByteCodeOp::LocalCallPopRC ||
+                            ip0->op == ByteCodeOp::LocalCallPop8RC))
         {
             const ByteCode* bc0 = reinterpret_cast<ByteCode*>(ip0->a.pointer);
             const ByteCode* bc1 = reinterpret_cast<ByteCode*>(ip1->a.pointer);
@@ -303,8 +307,11 @@ uint32_t ByteCode::computeCrc(const ByteCodeInstruction* ip, uint32_t oldCrc, bo
     // Special call. We add the alias if it exists instead of the called bytecode
     if (specialCall && (ip->op == ByteCodeOp::LocalCall ||
                         ip->op == ByteCodeOp::LocalCallPop ||
+                        ip->op == ByteCodeOp::LocalCallPop8 ||
                         ip->op == ByteCodeOp::LocalCallPopParam ||
-                        ip->op == ByteCodeOp::LocalCallPopRC))
+                        ip->op == ByteCodeOp::LocalCallPop8Param ||
+                        ip->op == ByteCodeOp::LocalCallPopRC ||
+                        ip->op == ByteCodeOp::LocalCallPop8RC))
     {
         const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
         oldCrc        = Crc32::compute8(reinterpret_cast<const uint8_t*>(&bc), oldCrc);

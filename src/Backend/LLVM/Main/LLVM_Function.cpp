@@ -12,14 +12,17 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-void LLVM::doCall(const BuildParameters& buildParameters, llvm::LLVMContext& context, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>> &pushRVParams, VectorNative<uint32_t> &pushRAParams, llvm::Value*& resultFuncCall)
+void LLVM::doCall(const BuildParameters& buildParameters, llvm::LLVMContext& context, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall)
 {
     const auto callBc       = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
     resultFuncCall          = emitCall(buildParameters, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
 
-    if (ip->op == ByteCodeOp::LocalCallPopRC)
+    if (ip->op == ByteCodeOp::LocalCallPopRC ||
+        ip->op == ByteCodeOp::LocalCallPop8RC)
+    {
         storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->d.u32, allocR);
+    }
 
     pushRAParams.clear();
     pushRVParams.clear();
@@ -5259,9 +5262,15 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pushRAParams.push_back(ip->d.u32);
                 doCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
+            case ByteCodeOp::LocalCallPop8Param:
+                pushRAParams.push_back(ip->c.u32);
+                doCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                break;
             case ByteCodeOp::LocalCall:
             case ByteCodeOp::LocalCallPop:
+            case ByteCodeOp::LocalCallPop8:
             case ByteCodeOp::LocalCallPopRC:
+            case ByteCodeOp::LocalCallPop8RC:
                 doCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
 

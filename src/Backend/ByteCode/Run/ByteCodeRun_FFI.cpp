@@ -77,7 +77,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
     return fn;
 }
 
-void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction* ip)
 {
     const auto nodeFunc = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
 
