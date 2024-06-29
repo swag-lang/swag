@@ -286,18 +286,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
 
             // Find the following call
             context->vecReg.clear();
-            while (ip->op != ByteCodeOp::End &&
-                   ip->op != ByteCodeOp::LocalCall &&
-                   ip->op != ByteCodeOp::LocalCallPop &&
-                   ip->op != ByteCodeOp::LocalCallPop8 &&
-                   ip->op != ByteCodeOp::LocalCallPopParam &&
-                   ip->op != ByteCodeOp::LocalCallPop8Param &&
-                   ip->op != ByteCodeOp::LocalCallPopRC &&
-                   ip->op != ByteCodeOp::LocalCallPop8RC &&
-                   ip->op != ByteCodeOp::ForeignCall &&
-                   ip->op != ByteCodeOp::ForeignCallPop &&
-                   ip->op != ByteCodeOp::LambdaCall &&
-                   ip->op != ByteCodeOp::LambdaCallPop)
+            while (ip->op != ByteCodeOp::End && !ByteCode::isCall(ip))
             {
                 registerParamsReg(context, ip);
                 ip++;

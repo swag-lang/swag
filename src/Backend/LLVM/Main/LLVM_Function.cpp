@@ -18,8 +18,7 @@ void LLVM::doCall(const BuildParameters& buildParameters, llvm::LLVMContext& con
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
     resultFuncCall          = emitCall(buildParameters, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
 
-    if (ip->op == ByteCodeOp::LocalCallPopRC ||
-        ip->op == ByteCodeOp::LocalCallPop8RC)
+    if (ip->op == ByteCodeOp::LocalCallPopRC || ip->op == ByteCodeOp::LocalCallPop8RC)
     {
         storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->d.u32, allocR);
     }

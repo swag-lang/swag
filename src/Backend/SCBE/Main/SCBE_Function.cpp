@@ -39,8 +39,7 @@ void SCBE::doCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruction* ip
     pushRAParams.clear();
     pushRVParams.clear();
 
-    if (ip->op == ByteCodeOp::LocalCallPopRC ||
-        ip->op == ByteCodeOp::LocalCallPop8RC)
+    if (ip->op == ByteCodeOp::LocalCallPopRC || ip->op == ByteCodeOp::LocalCallPop8RC)
     {
         pp.emitLoad64Indirect(offsetRT + REG_OFFSET(0), RAX, RDI);
         pp.emitStore64Indirect(REG_OFFSET(ip->d.u32), RAX);

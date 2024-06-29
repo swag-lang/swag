@@ -478,17 +478,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
 
                     if (ipScan[0].op == ByteCodeOp::End ||
                         ipScan[0].op == ByteCodeOp::InternalSetErr ||
-                        ipScan[0].op == ByteCodeOp::LambdaCall ||
-                        ipScan[0].op == ByteCodeOp::LambdaCallPop ||
-                        ipScan[0].op == ByteCodeOp::LocalCall ||
-                        ipScan[0].op == ByteCodeOp::LocalCallPop ||
-                        ipScan[0].op == ByteCodeOp::LocalCallPop8 ||
-                        ipScan[0].op == ByteCodeOp::LocalCallPopParam ||
-                        ipScan[0].op == ByteCodeOp::LocalCallPop8Param ||
-                        ipScan[0].op == ByteCodeOp::LocalCallPopRC ||
-                        ipScan[0].op == ByteCodeOp::LocalCallPop8RC ||
-                        ipScan[0].op == ByteCodeOp::ForeignCall ||
-                        ipScan[0].op == ByteCodeOp::ForeignCallPop)
+                        ByteCode::isCall(ipScan))
                     {
                         hasSetErr = true;
                         break;
@@ -568,13 +558,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
 
 void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ip->op == ByteCodeOp::LocalCall ||
-        ip->op == ByteCodeOp::LocalCallPop ||
-        ip->op == ByteCodeOp::LocalCallPop8 ||
-        ip->op == ByteCodeOp::LocalCallPopParam ||
-        ip->op == ByteCodeOp::LocalCallPop8Param ||
-        ip->op == ByteCodeOp::LocalCallPopRC ||
-        ip->op == ByteCodeOp::LocalCallPop8RC)
+    if (ByteCode::isLocalCall(ip))
     {
         const auto destBC = reinterpret_cast<ByteCode*>(ip->a.pointer);
         if (destBC->isEmpty.load() != true)
@@ -593,18 +577,7 @@ void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCode
         auto backIp = ip;
         if (!backIp->hasFlag(BCI_START_STMT))
         {
-            while (backIp != context->bc->out &&
-                   backIp->op != ByteCodeOp::LocalCall &&
-                   backIp->op != ByteCodeOp::LocalCallPop &&
-                   backIp->op != ByteCodeOp::LocalCallPop8 &&
-                   backIp->op != ByteCodeOp::LocalCallPopParam &&
-                   backIp->op != ByteCodeOp::LocalCallPop8Param &&
-                   backIp->op != ByteCodeOp::LocalCallPopRC &&
-                   backIp->op != ByteCodeOp::LocalCallPop8RC &&
-                   backIp->op != ByteCodeOp::ForeignCall &&
-                   backIp->op != ByteCodeOp::ForeignCallPop &&
-                   backIp->op != ByteCodeOp::LambdaCall &&
-                   backIp->op != ByteCodeOp::LambdaCallPop)
+            while (backIp != context->bc->out && !ByteCode::isCall(backIp))
             {
                 if (backIp->op == ByteCodeOp::PushRVParam ||
                     backIp->op == ByteCodeOp::PushRAParam ||

@@ -421,34 +421,27 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
             line.pretty += " ";
             break;
         }
-
-        case ByteCodeOp::LocalCall:
-        case ByteCodeOp::LocalCallPop:
-        case ByteCodeOp::LocalCallPop8:
-        case ByteCodeOp::LocalCallPopParam:
-        case ByteCodeOp::LocalCallPop8Param:
-        case ByteCodeOp::LocalCallPopRC:
-        case ByteCodeOp::LocalCallPop8RC:
-        {
-            const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
-            SWAG_ASSERT(bc);
-
-            line.pretty += "// ";
-            line.pretty += bc->name;
-            line.pretty += "()";
-
-            if (bc->node && bc->node->typeInfo)
-            {
-                line.pretty += " ";
-                line.pretty += bc->node->typeInfo->name;
-            }
-
-            line.pretty += " ";
-            break;
-        }
     }
 
-        // DevMode
+    if (isLocalCall(ip))
+    {
+        const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
+        SWAG_ASSERT(bc);
+
+        line.pretty += "// ";
+        line.pretty += bc->name;
+        line.pretty += "()";
+
+        if (bc->node && bc->node->typeInfo)
+        {
+            line.pretty += " ";
+            line.pretty += bc->node->typeInfo->name;
+        }
+
+        line.pretty += " ";
+    }
+
+    // DevMode
 #ifdef SWAG_DEV_MODE
     if (!forDbg && g_CommandLine.dbgPrintBcExt)
     {
