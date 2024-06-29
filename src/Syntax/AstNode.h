@@ -683,6 +683,7 @@ struct AstFuncDecl : AstNode
     Job*            pendingLambdaJob;
     AstMakePointer* makePointerLambda;
     TypeInfoParam*  fromItfSymbol;
+    void*           ffiAddress;
 
     uint32_t aliasMask;
     uint32_t stackSize;

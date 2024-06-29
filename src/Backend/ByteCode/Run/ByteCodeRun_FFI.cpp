@@ -9,12 +9,6 @@
 #include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
 
-void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, const ByteCodeInstruction* ip)
-{
-    const auto nodeFunc = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
-    return ffiGetFuncAddress(context, nodeFunc);
-}
-
 void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 {
     SWAG_ASSERT(nodeFunc->resolvedSymbolOverload());
@@ -85,15 +79,17 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
+    const auto nodeFunc = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
+
+    if (OS::atomicTestNull(&nodeFunc->ffiAddress))
     {
-        OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), ffiGetFuncAddress(&context->jc, ip));
-        if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
+        OS::atomicSetIfNotNull(&nodeFunc->ffiAddress, ffiGetFuncAddress(&context->jc, nodeFunc));
+        if (OS::atomicTestNull(&nodeFunc->ffiAddress))
             return;
     }
 
     const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->b.pointer), TypeInfoKind::FuncAttr);
-    ffiCall(context, ip, ip->d.pointer, typeInfoFunc, ip->numVariadicParams);
+    ffiCall(context, ip, nodeFunc->ffiAddress, typeInfoFunc, ip->numVariadicParams);
 }
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const ByteCodeInstruction* ip, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams)
