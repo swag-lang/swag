@@ -28,7 +28,7 @@ namespace
                 }
                 else if (ipe[1].op == ByteCodeOp::PushRAParam &&
                          (ipe[2].op == ByteCodeOp::LocalCallPop ||
-                          ipe[2].op == ByteCodeOp::LocalCallPop8 ||
+                          ipe[2].op == ByteCodeOp::LocalCallPop16 ||
                           ipe[2].op == ByteCodeOp::ForeignCallPop))
                 {
                     if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
@@ -39,7 +39,7 @@ namespace
                     }
                 }
                 else if (ipe[1].op == ByteCodeOp::LocalCallPopParam ||
-                         ipe[1].op == ByteCodeOp::LocalCallPop8Param)
+                         ipe[1].op == ByteCodeOp::LocalCallPop16Param2)
                 {
                     if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
                     {
@@ -170,18 +170,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 
             // Find the following call
             context->vecReg.clear();
-            while (ip->op != ByteCodeOp::End &&
-                   ip->op != ByteCodeOp::LocalCall &&
-                   ip->op != ByteCodeOp::LocalCallPop &&
-                   ip->op != ByteCodeOp::LocalCallPop8 &&
-                   ip->op != ByteCodeOp::LocalCallPopParam &&
-                   ip->op != ByteCodeOp::LocalCallPop8Param &&
-                   ip->op != ByteCodeOp::LocalCallPopRC &&
-                   ip->op != ByteCodeOp::LocalCallPop8RC &&
-                   ip->op != ByteCodeOp::ForeignCall &&
-                   ip->op != ByteCodeOp::ForeignCallPop &&
-                   ip->op != ByteCodeOp::LambdaCall &&
-                   ip->op != ByteCodeOp::LambdaCallPop)
+            while (ip->op != ByteCodeOp::End && !ByteCode::isCall(ip))
                 ip++;
 
             if (ip->op != ByteCodeOp::End)

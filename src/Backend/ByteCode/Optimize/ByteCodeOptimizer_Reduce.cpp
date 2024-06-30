@@ -934,11 +934,11 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             }
             break;
 
-        case ByteCodeOp::LocalCallPop8:
+        case ByteCodeOp::LocalCallPop16:
             if (ip[1].op == ByteCodeOp::CopyRTtoRA &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
-                SET_OP(ip, ByteCodeOp::LocalCallPop8RC);
+                SET_OP(ip, ByteCodeOp::LocalCallPop16RC);
                 ip->d.u32 = ip[1].a.u32;
                 setNop(context, ip + 1);
                 break;
@@ -946,7 +946,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             break;
 
         case ByteCodeOp::LocalCallPopRC:
-        case ByteCodeOp::LocalCallPop8RC:
+        case ByteCodeOp::LocalCallPop16RC:
             if (ip[1].op == ByteCodeOp::CopyRTtoRA &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
@@ -958,10 +958,10 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
 
         case ByteCodeOp::LocalCall:
             if (ip[1].op == ByteCodeOp::IncSPPostCall &&
-                ip[1].a.u32 == 8 &&
+                ip[1].a.u32 == 16 &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
-                SET_OP(ip, ByteCodeOp::LocalCallPop8);
+                SET_OP(ip, ByteCodeOp::LocalCallPop16);
                 setNop(context, ip + 1);
                 break;
             }
@@ -1047,15 +1047,6 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 setNop(context, ip);
                 break;
             }
-
-            if (ip[1].op == ByteCodeOp::LocalCallPop8 &&
-                !ip[1].hasFlag(BCI_START_STMT))
-            {
-                SET_OP(ip + 1, ByteCodeOp::LocalCallPop8Param);
-                ip[1].c.u32 = ip[0].a.u32;
-                setNop(context, ip);
-                break;
-            }
             break;
 
         case ByteCodeOp::PushRAParam2:
@@ -1075,6 +1066,16 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 ip->c.u32 = ip[1].a.u32;
                 ip->d.u32 = ip[1].b.u32;
                 setNop(context, ip + 1);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::LocalCallPop16 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::LocalCallPop16Param2);
+                ip[1].c.u32 = ip[0].a.u32;
+                ip[1].d.u32 = ip[0].b.u32;
+                setNop(context, ip);
                 break;
             }
             break;

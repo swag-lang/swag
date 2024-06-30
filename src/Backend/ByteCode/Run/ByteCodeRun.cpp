@@ -602,9 +602,10 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->push(registersRC[ip->d.u32].u64);
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, ip->c.u32);
             break;
-        case ByteCodeOp::LocalCallPop8Param:
+        case ByteCodeOp::LocalCallPop16Param2:
             context->push(registersRC[ip->c.u32].u64);
-            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 8);
+            context->push(registersRC[ip->d.u32].u64);
+            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 16);
             break;
         case ByteCodeOp::LocalCall:
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer));
@@ -612,14 +613,14 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         case ByteCodeOp::LocalCallPop:
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, ip->c.u32);
             break;
-        case ByteCodeOp::LocalCallPop8:
-            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 8);
+        case ByteCodeOp::LocalCallPop16:
+            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 16);
             break;
         case ByteCodeOp::LocalCallPopRC:
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, ip->d.u32, ip->c.u32);
             break;
-        case ByteCodeOp::LocalCallPop8RC:
-            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, ip->d.u32, 8);
+        case ByteCodeOp::LocalCallPop16RC:
+            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, ip->d.u32, 16);
             break;
         case ByteCodeOp::ForeignCall:
             g_ByteCodeStackTrace->push(context);

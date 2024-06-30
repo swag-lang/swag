@@ -18,7 +18,7 @@ void LLVM::doCall(const BuildParameters& buildParameters, llvm::LLVMContext& con
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
     resultFuncCall          = emitCall(buildParameters, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
 
-    if (ip->op == ByteCodeOp::LocalCallPopRC || ip->op == ByteCodeOp::LocalCallPop8RC)
+    if (ip->op == ByteCodeOp::LocalCallPopRC || ip->op == ByteCodeOp::LocalCallPop16RC)
     {
         storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->d.u32, allocR);
     }
@@ -5261,15 +5261,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pushRAParams.push_back(ip->d.u32);
                 doCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
-            case ByteCodeOp::LocalCallPop8Param:
+            case ByteCodeOp::LocalCallPop16Param2:
                 pushRAParams.push_back(ip->c.u32);
+                pushRAParams.push_back(ip->d.u32);
                 doCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
             case ByteCodeOp::LocalCall:
             case ByteCodeOp::LocalCallPop:
-            case ByteCodeOp::LocalCallPop8:
+            case ByteCodeOp::LocalCallPop16:
             case ByteCodeOp::LocalCallPopRC:
-            case ByteCodeOp::LocalCallPop8RC:
+            case ByteCodeOp::LocalCallPop16RC:
                 doCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
 
