@@ -5266,6 +5266,13 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
+            case ByteCodeOp::LocalCall:
+            case ByteCodeOp::LocalCallPop:
+            case ByteCodeOp::LocalCallPop16:
+            case ByteCodeOp::LocalCallPopRC:
+            case ByteCodeOp::LocalCallPop16RC:
+                doLocalCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                break;
             case ByteCodeOp::LocalCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
                 doLocalCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
@@ -5275,20 +5282,18 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pushRAParams.push_back(ip->d.u32);
                 doLocalCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
-            case ByteCodeOp::LocalCall:
-            case ByteCodeOp::LocalCallPop:
-            case ByteCodeOp::LocalCallPop16:
-            case ByteCodeOp::LocalCallPopRC:
-            case ByteCodeOp::LocalCallPop16RC:
-                doLocalCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
-                break;
 
+            case ByteCodeOp::ForeignCall:
+            case ByteCodeOp::ForeignCallPop:
+                doForeignCall(buildParameters, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                break;
             case ByteCodeOp::ForeignCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
                 doForeignCall(buildParameters, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
-            case ByteCodeOp::ForeignCall:
-            case ByteCodeOp::ForeignCallPop:
+            case ByteCodeOp::ForeignCallPop16Param2:
+                pushRAParams.push_back(ip->c.u32);
+                pushRAParams.push_back(ip->d.u32);
                 doForeignCall(buildParameters, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
 

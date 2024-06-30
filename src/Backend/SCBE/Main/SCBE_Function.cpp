@@ -3855,6 +3855,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 /////////////////////////////////////
 
+            case ByteCodeOp::LocalCall:
+            case ByteCodeOp::LocalCallPop:
+            case ByteCodeOp::LocalCallPop16:
+            case ByteCodeOp::LocalCallPopRC:
+            case ByteCodeOp::LocalCallPop16RC:
+                doLocalCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
+                break;
             case ByteCodeOp::LocalCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
                 doLocalCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
@@ -3864,20 +3871,18 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pushRAParams.push_back(ip->d.u32);
                 doLocalCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
                 break;
-            case ByteCodeOp::LocalCall:
-            case ByteCodeOp::LocalCallPop:
-            case ByteCodeOp::LocalCallPop16:
-            case ByteCodeOp::LocalCallPopRC:
-            case ByteCodeOp::LocalCallPop16RC:
-                doLocalCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
-                break;
 
+            case ByteCodeOp::ForeignCall:
+            case ByteCodeOp::ForeignCallPop:
+                doForeignCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
+                break;
             case ByteCodeOp::ForeignCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
                 doForeignCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
                 break;
-            case ByteCodeOp::ForeignCall:
-            case ByteCodeOp::ForeignCallPop:
+            case ByteCodeOp::ForeignCallPop16Param2:
+                pushRAParams.push_back(ip->c.u32);
+                pushRAParams.push_back(ip->d.u32);
                 doForeignCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
                 break;
 

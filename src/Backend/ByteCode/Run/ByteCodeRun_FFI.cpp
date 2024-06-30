@@ -1,5 +1,7 @@
 #include "pch.h"
+
 #include "Backend/ByteCode/ByteCode.h"
+#include "ByteCodeStack.h"
 #include "Os/Os.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
@@ -75,6 +77,13 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
     }
 
     return fn;
+}
+
+void ByteCodeRun::ffiCallTrace(ByteCodeRunContext* context, const ByteCodeInstruction* ip)
+{
+    g_ByteCodeStackTrace->push(context);
+    ffiCall(context, ip);
+    g_ByteCodeStackTrace->pop();    
 }
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction* ip)

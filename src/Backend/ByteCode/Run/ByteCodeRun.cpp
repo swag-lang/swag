@@ -598,15 +598,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
         }
 
-        case ByteCodeOp::LocalCallPopParam:
-            context->push(registersRC[ip->d.u32].u64);
-            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, ip->c.u32);
-            break;
-        case ByteCodeOp::LocalCallPop16Param2:
-            context->push(registersRC[ip->c.u32].u64);
-            context->push(registersRC[ip->d.u32].u64);
-            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 16);
-            break;
         case ByteCodeOp::LocalCall:
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer));
             break;
@@ -622,23 +613,37 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         case ByteCodeOp::LocalCallPop16RC:
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, ip->d.u32, 16);
             break;
+        case ByteCodeOp::LocalCallPopParam:
+            context->push(registersRC[ip->d.u32].u64);
+            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, ip->c.u32);
+            break;
+        case ByteCodeOp::LocalCallPop16Param2:
+            context->push(registersRC[ip->c.u32].u64);
+            context->push(registersRC[ip->d.u32].u64);
+            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 16);
+            break;
+
         case ByteCodeOp::ForeignCall:
-            g_ByteCodeStackTrace->push(context);
-            ffiCall(context, ip);
-            g_ByteCodeStackTrace->pop();
+            ffiCallTrace(context, ip);
             break;
         case ByteCodeOp::ForeignCallPop:
-            g_ByteCodeStackTrace->push(context);
-            ffiCall(context, ip);
-            g_ByteCodeStackTrace->pop();
+            ffiCallTrace(context, ip);
             context->incSP(ip->c.u32);
+            break;
+        case ByteCodeOp::ForeignCallPop16:
+            ffiCallTrace(context, ip);
+            context->incSP(16);
             break;
         case ByteCodeOp::ForeignCallPopParam:
             context->push(registersRC[ip->d.u32].u64);
-            g_ByteCodeStackTrace->push(context);
-            ffiCall(context, ip);
-            g_ByteCodeStackTrace->pop();
+            ffiCallTrace(context, ip);
             context->incSP(ip->c.u32);
+            break;
+        case ByteCodeOp::ForeignCallPop16Param2:
+            context->push(registersRC[ip->c.u32].u64);
+            context->push(registersRC[ip->d.u32].u64);
+            ffiCallTrace(context, ip);
+            context->incSP(16);
             break;
 
         case ByteCodeOp::LambdaCall:

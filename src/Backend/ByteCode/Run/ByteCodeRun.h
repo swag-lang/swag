@@ -12,6 +12,7 @@ union Register;
 struct ByteCodeRun
 {
     static void* ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc);
+    static void  ffiCallTrace(ByteCodeRunContext* context, const ByteCodeInstruction* ip);
     static void  ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction* ip);
     static void  ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction* ip, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams = 0);
 

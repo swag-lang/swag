@@ -988,6 +988,15 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
 
         case ByteCodeOp::ForeignCall:
             if (ip[1].op == ByteCodeOp::IncSPPostCall &&
+                ip[1].a.u32 == 16 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::ForeignCallPop16);
+                setNop(context, ip + 1);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::IncSPPostCall &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::ForeignCallPop);
@@ -1082,6 +1091,16 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip + 1, ByteCodeOp::LocalCallPop16Param2);
+                ip[1].c.u32 = ip[0].a.u32;
+                ip[1].d.u32 = ip[0].b.u32;
+                setNop(context, ip);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::ForeignCallPop16 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::ForeignCallPop16Param2);
                 ip[1].c.u32 = ip[0].a.u32;
                 ip[1].d.u32 = ip[0].b.u32;
                 setNop(context, ip);
