@@ -18,7 +18,7 @@ void LLVM::doLocalCall(const BuildParameters& buildParameters, llvm::LLVMContext
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
     resultFuncCall          = emitCall(buildParameters, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
 
-    if (ip->op == ByteCodeOp::LocalCallPopRC || ip->op == ByteCodeOp::LocalCallPop16RC)
+    if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
         storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->d.u32, allocR);
     }
@@ -5269,8 +5269,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::LocalCall:
             case ByteCodeOp::LocalCallPop:
             case ByteCodeOp::LocalCallPop16:
+            case ByteCodeOp::LocalCallPop48:
             case ByteCodeOp::LocalCallPopRC:
-            case ByteCodeOp::LocalCallPop16RC:
                 doLocalCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
             case ByteCodeOp::LocalCallPopParam:
@@ -5278,6 +5278,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 doLocalCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
             case ByteCodeOp::LocalCallPop16Param2:
+            case ByteCodeOp::LocalCallPop48Param2:
                 pushRAParams.push_back(ip->c.u32);
                 pushRAParams.push_back(ip->d.u32);
                 doLocalCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
@@ -5292,6 +5293,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 doForeignCall(buildParameters, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
             case ByteCodeOp::ForeignCallPop16Param2:
+            case ByteCodeOp::ForeignCallPop48Param2:
                 pushRAParams.push_back(ip->c.u32);
                 pushRAParams.push_back(ip->d.u32);
                 doForeignCall(buildParameters, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);

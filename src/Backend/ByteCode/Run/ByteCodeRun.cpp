@@ -607,11 +607,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         case ByteCodeOp::LocalCallPop16:
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 16);
             break;
+        case ByteCodeOp::LocalCallPop48:
+            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 48);
+            break;
         case ByteCodeOp::LocalCallPopRC:
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, ip->d.u32, ip->c.u32);
-            break;
-        case ByteCodeOp::LocalCallPop16RC:
-            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, ip->d.u32, 16);
             break;
         case ByteCodeOp::LocalCallPopParam:
             context->push(registersRC[ip->d.u32].u64);
@@ -621,6 +621,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->push(registersRC[ip->c.u32].u64);
             context->push(registersRC[ip->d.u32].u64);
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 16);
+            break;
+        case ByteCodeOp::LocalCallPop48Param2:
+            context->push(registersRC[ip->c.u32].u64);
+            context->push(registersRC[ip->d.u32].u64);
+            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 48);
             break;
 
         case ByteCodeOp::ForeignCall:
@@ -634,6 +639,10 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             ffiCallTrace(context, ip);
             context->incSP(16);
             break;
+        case ByteCodeOp::ForeignCallPop48:
+            ffiCallTrace(context, ip);
+            context->incSP(48);
+            break;
         case ByteCodeOp::ForeignCallPopParam:
             context->push(registersRC[ip->d.u32].u64);
             ffiCallTrace(context, ip);
@@ -644,6 +653,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->push(registersRC[ip->d.u32].u64);
             ffiCallTrace(context, ip);
             context->incSP(16);
+            break;
+        case ByteCodeOp::ForeignCallPop48Param2:
+            context->push(registersRC[ip->c.u32].u64);
+            context->push(registersRC[ip->d.u32].u64);
+            ffiCallTrace(context, ip);
+            context->incSP(48);
             break;
 
         case ByteCodeOp::LambdaCall:

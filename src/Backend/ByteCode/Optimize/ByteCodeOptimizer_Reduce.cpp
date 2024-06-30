@@ -934,19 +934,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             }
             break;
 
-        case ByteCodeOp::LocalCallPop16:
-            if (ip[1].op == ByteCodeOp::CopyRTtoRA &&
-                !ip[1].hasFlag(BCI_START_STMT))
-            {
-                SET_OP(ip, ByteCodeOp::LocalCallPop16RC);
-                ip->d.u32 = ip[1].a.u32;
-                setNop(context, ip + 1);
-                break;
-            }
-            break;
-
         case ByteCodeOp::LocalCallPopRC:
-        case ByteCodeOp::LocalCallPop16RC:
             if (ip[1].op == ByteCodeOp::CopyRTtoRA &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
@@ -962,6 +950,15 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::LocalCallPop16);
+                setNop(context, ip + 1);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::IncSPPostCall &&
+                ip[1].a.u32 == 48 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::LocalCallPop48);
                 setNop(context, ip + 1);
                 break;
             }
@@ -992,6 +989,15 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::ForeignCallPop16);
+                setNop(context, ip + 1);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::IncSPPostCall &&
+                ip[1].a.u32 == 48 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::ForeignCallPop48);
                 setNop(context, ip + 1);
                 break;
             }
@@ -1097,10 +1103,30 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 break;
             }
 
+            if (ip[1].op == ByteCodeOp::LocalCallPop48 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::LocalCallPop48Param2);
+                ip[1].c.u32 = ip[0].a.u32;
+                ip[1].d.u32 = ip[0].b.u32;
+                setNop(context, ip);
+                break;
+            }
+
             if (ip[1].op == ByteCodeOp::ForeignCallPop16 &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip + 1, ByteCodeOp::ForeignCallPop16Param2);
+                ip[1].c.u32 = ip[0].a.u32;
+                ip[1].d.u32 = ip[0].b.u32;
+                setNop(context, ip);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::ForeignCallPop48 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::ForeignCallPop48Param2);
                 ip[1].c.u32 = ip[0].a.u32;
                 ip[1].d.u32 = ip[0].b.u32;
                 setNop(context, ip);

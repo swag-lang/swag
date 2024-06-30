@@ -28,7 +28,6 @@ namespace
                 }
                 else if (ipe[1].op == ByteCodeOp::PushRAParam &&
                          (ipe[2].op == ByteCodeOp::LocalCallPop ||
-                          ipe[2].op == ByteCodeOp::LocalCallPop16 ||
                           ipe[2].op == ByteCodeOp::ForeignCallPop))
                 {
                     if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
