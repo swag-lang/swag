@@ -32,6 +32,7 @@ struct ByteCodeRun
     static void  localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0);
     static void  callInternalCompilerError(ByteCodeRunContext* context, const ByteCodeInstruction* ip, const char* msg);
     static void  callInternalPanic(ByteCodeRunContext* context, const ByteCodeInstruction* ip, const char* msg);
+    static void  lambdaCall(ByteCodeRunContext* context, const ByteCodeInstruction* ip, void *ptr, uint32_t decSP = 0);
     static void* makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCode* bc);
     static void  executeLeftShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t numBits, bool isSigned);
     static void  executeRightShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t numBits, bool isSigned);

@@ -200,6 +200,36 @@ void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCo
     return ByteCode::doByteCodeLambda(bc);
 }
 
+void ByteCodeRun::lambdaCall(ByteCodeRunContext* context, const ByteCodeInstruction* ip, void* ptr, uint32_t decSP)
+{
+    SWAG_ASSERT(ptr);
+
+    // Bytecode lambda
+    if (ByteCode::isByteCodeLambda(ptr))
+    {
+        g_ByteCodeStackTrace->push(context);
+        context->push(context->bp);
+        context->push(context->bc);
+        context->push(context->ip);
+
+        context->oldBc = context->bc;
+        context->bc    = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(ptr));
+        SWAG_ASSERT(context->bc);
+        context->ip = context->bc->out;
+        SWAG_ASSERT(context->ip);
+        context->bp = context->sp;
+        enterByteCode(context, context->bc, 0, UINT32_MAX, decSP);
+    }
+
+    // Native lambda
+    else
+    {
+        const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->b.pointer), TypeInfoKind::LambdaClosure);
+        ffiCall(context, ip, ptr, typeInfoFunc);
+        context->incSP(decSP);
+    }
+}
+
 SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto registersRC = context->curRegistersRC;
@@ -662,42 +692,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::LambdaCall:
-        case ByteCodeOp::LambdaCallPop:
-        {
-            auto ptr = registersRC[ip->a.u32].pointer;
-            SWAG_ASSERT(ptr);
-
-            // Bytecode lambda
-            if (ByteCode::isByteCodeLambda(ptr))
-            {
-                g_ByteCodeStackTrace->push(context);
-                context->push(context->bp);
-                context->push(context->bc);
-                context->push(context->ip);
-
-                context->oldBc = context->bc;
-                context->bc    = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(ptr));
-                SWAG_ASSERT(context->bc);
-                context->ip = context->bc->out;
-                SWAG_ASSERT(context->ip);
-                context->bp = context->sp;
-                if (ip->op == ByteCodeOp::LambdaCallPop)
-                    enterByteCode(context, context->bc, 0, UINT32_MAX, ip->c.u32);
-                else
-                    enterByteCode(context, context->bc);
-            }
-
-            // Native lambda
-            else
-            {
-                auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->b.pointer), TypeInfoKind::LambdaClosure);
-                ffiCall(context, ip, ptr, typeInfoFunc);
-                if (ip->op == ByteCodeOp::LambdaCallPop)
-                    context->incSP(ip->c.u32);
-            }
-
+            lambdaCall(context, ip, registersRC[ip->a.u32].pointer);
             break;
-        }
+        case ByteCodeOp::LambdaCallPop:
+            lambdaCall(context, ip, registersRC[ip->a.u32].pointer, ip->c.u32);
+            break;
+
         case ByteCodeOp::MakeLambda:
         {
             auto funcNode                  = reinterpret_cast<AstFuncDecl*>(ip->b.pointer);
