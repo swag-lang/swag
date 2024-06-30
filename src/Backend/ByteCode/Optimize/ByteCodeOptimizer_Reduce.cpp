@@ -974,6 +974,16 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
 
             if (ip[1].op == ByteCodeOp::CopyRT2toRARB &&
                 ip[2].op == ByteCodeOp::IncSPPostCall &&
+                ip[2].a.u32 == 16 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::LocalCallPop16);
+                setNop(context, ip + 2);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::CopyRT2toRARB &&
+                ip[2].op == ByteCodeOp::IncSPPostCall &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::LocalCallPop);
