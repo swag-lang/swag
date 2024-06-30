@@ -12,7 +12,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-void LLVM::doCall(const BuildParameters& buildParameters, llvm::LLVMContext& context, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall)
+void LLVM::doLocalCall(const BuildParameters& buildParameters, llvm::LLVMContext& context, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall)
 {
     const auto callBc       = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
@@ -23,6 +23,15 @@ void LLVM::doCall(const BuildParameters& buildParameters, llvm::LLVMContext& con
         storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->d.u32, allocR);
     }
 
+    pushRAParams.clear();
+    pushRVParams.clear();
+}
+
+void LLVM::doForeignCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall)
+{
+    const auto funcNode     = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
+    const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+    resultFuncCall          = emitCall(buildParameters, funcNode->getFullNameForeignImport(), typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
     pushRAParams.clear();
     pushRVParams.clear();
 }
@@ -5259,31 +5268,29 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::LocalCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                doCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                doLocalCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
             case ByteCodeOp::LocalCallPop16Param2:
                 pushRAParams.push_back(ip->c.u32);
                 pushRAParams.push_back(ip->d.u32);
-                doCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                doLocalCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
             case ByteCodeOp::LocalCall:
             case ByteCodeOp::LocalCallPop:
             case ByteCodeOp::LocalCallPop16:
             case ByteCodeOp::LocalCallPopRC:
             case ByteCodeOp::LocalCallPop16RC:
-                doCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                doLocalCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
 
+            case ByteCodeOp::ForeignCallPopParam:
+                pushRAParams.push_back(ip->d.u32);
+                doForeignCall(buildParameters, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                break;
             case ByteCodeOp::ForeignCall:
             case ByteCodeOp::ForeignCallPop:
-            {
-                auto funcNode     = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
-                auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-                resultFuncCall    = emitCall(buildParameters, funcNode->getFullNameForeignImport(), typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
-                pushRAParams.clear();
-                pushRVParams.clear();
+                doForeignCall(buildParameters, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
-            }
 
             case ByteCodeOp::LambdaCall:
             case ByteCodeOp::LambdaCallPop:

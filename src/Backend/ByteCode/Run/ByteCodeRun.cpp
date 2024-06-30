@@ -633,6 +633,13 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             g_ByteCodeStackTrace->pop();
             context->incSP(ip->c.u32);
             break;
+        case ByteCodeOp::ForeignCallPopParam:
+            context->push(registersRC[ip->d.u32].u64);
+            g_ByteCodeStackTrace->push(context);
+            ffiCall(context, ip);
+            g_ByteCodeStackTrace->pop();
+            context->incSP(ip->c.u32);
+            break;
 
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LambdaCallPop:

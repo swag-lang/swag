@@ -39,7 +39,7 @@ namespace
                     }
                 }
                 else if (ipe[1].op == ByteCodeOp::LocalCallPopParam ||
-                         ipe[1].op == ByteCodeOp::LocalCallPop16Param2)
+                         ipe[1].op == ByteCodeOp::ForeignCallPopParam)
                 {
                     if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
                     {

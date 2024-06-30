@@ -410,20 +410,17 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
             line.pretty += " ";
             break;
         }
-
-        case ByteCodeOp::ForeignCall:
-        case ByteCodeOp::ForeignCallPop:
-        {
-            const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
-            line.pretty += "// ";
-            line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
-            line.pretty += "()";
-            line.pretty += " ";
-            break;
-        }
     }
 
-    if (isLocalCall(ip))
+    if (isForeignCall(ip))
+    {
+        const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
+        line.pretty += "// ";
+        line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
+        line.pretty += "()";
+        line.pretty += " ";
+    }
+    else if (isLocalCall(ip))
     {
         const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
         SWAG_ASSERT(bc);

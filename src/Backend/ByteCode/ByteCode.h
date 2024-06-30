@@ -46,6 +46,8 @@ struct ByteCode
     static bool isPushParam(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_PUSH_PARAM); }
     static bool isCall(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_CALL); }
     static bool isLocalCall(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_LOCAL_CALL); }
+    static bool isLambdaCall(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_LAMBDA_CALL); }
+    static bool isForeignCall(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_FOREIGN_CALL); }
     static bool isJump(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_JUMP); }
     static bool isJumpDyn(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_JUMP_DYN); }
     static bool isJumpOrDyn(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_JUMP | OPFLAG_IS_JUMP_DYN); }

@@ -31,7 +31,7 @@ void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
     }
 }
 
-void SCBE::doCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+void SCBE::doLocalCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
 {
     const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
@@ -44,6 +44,22 @@ void SCBE::doCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruction* ip
         pp.emitLoad64Indirect(offsetRT + REG_OFFSET(0), RAX, RDI);
         pp.emitStore64Indirect(REG_OFFSET(ip->d.u32), RAX);
     }
+}
+
+void SCBE::doForeignCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+{
+    const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
+    const auto typeFct  = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+
+    auto moduleName = ModuleManager::getForeignModuleName(funcNode);
+
+    // Dll imported function name will have "__imp_" before (imported mangled name)
+    auto callFuncName = funcNode->getFullNameForeignImport();
+    callFuncName      = "__imp_" + callFuncName;
+
+    emitCall(pp, typeFct, callFuncName, pushRAParams, offsetRT, false);
+    pushRAParams.clear();
+    pushRVParams.clear();
 }
 
 bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
@@ -3841,38 +3857,29 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::LocalCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                doCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
+                doLocalCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
                 break;
             case ByteCodeOp::LocalCallPop16Param2:
                 pushRAParams.push_back(ip->c.u32);
                 pushRAParams.push_back(ip->d.u32);
-                doCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
+                doLocalCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
                 break;
             case ByteCodeOp::LocalCall:
             case ByteCodeOp::LocalCallPop:
             case ByteCodeOp::LocalCallPop16:
             case ByteCodeOp::LocalCallPopRC:
             case ByteCodeOp::LocalCallPop16RC:
-                doCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
+                doLocalCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
                 break;
 
+            case ByteCodeOp::ForeignCallPopParam:
+                pushRAParams.push_back(ip->d.u32);
+                doForeignCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
+                break;
             case ByteCodeOp::ForeignCall:
             case ByteCodeOp::ForeignCallPop:
-            {
-                auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
-                auto typeFct  = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-
-                auto moduleName = ModuleManager::getForeignModuleName(funcNode);
-
-                // Dll imported function name will have "__imp_" before (imported mangled name)
-                auto callFuncName = funcNode->getFullNameForeignImport();
-                callFuncName      = "__imp_" + callFuncName;
-
-                emitCall(pp, typeFct, callFuncName, pushRAParams, offsetRT, false);
-                pushRAParams.clear();
-                pushRVParams.clear();
+                doForeignCall(pp, offsetRT, ip, pushRAParams, pushRVParams);
                 break;
-            }
 
             case ByteCodeOp::LambdaCall:
             case ByteCodeOp::LambdaCallPop:
