@@ -1064,6 +1064,15 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 break;
             }
 
+            if (ip[1].op == ByteCodeOp::LambdaCallPop &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::LambdaCallPopParam);
+                ip[1].d.u32 = ip[0].a.u32;
+                setNop(context, ip);
+                break;
+            }
+
             if (ip[1].op == ByteCodeOp::LocalCallPop &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {

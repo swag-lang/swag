@@ -697,6 +697,10 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         case ByteCodeOp::LambdaCallPop:
             lambdaCall(context, ip, registersRC[ip->a.u32].pointer, ip->c.u32);
             break;
+        case ByteCodeOp::LambdaCallPopParam:
+            context->push(registersRC[ip->d.u32].u64);
+            lambdaCall(context, ip, registersRC[ip->a.u32].pointer, ip->c.u32);
+            break;
 
         case ByteCodeOp::MakeLambda:
         {

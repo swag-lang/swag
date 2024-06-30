@@ -62,6 +62,43 @@ void SCBE::doForeignCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruct
     pushRVParams.clear();
 }
 
+void SCBE::doLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+{
+    const auto typeFuncBC = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+
+    // Test if it's a bytecode lambda
+    pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), R10);
+    pp.emitOpNImmediate(R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, CPUBits::B64);
+    const auto jumpToBCAddr   = pp.emitLongJumpOp(JB);
+    const auto jumpToBCOffset = concat.totalCount();
+
+    // Native lambda
+    //////////////////
+    pp.emitCallParameters(typeFuncBC, pushRAParams, offsetRT);
+    pp.emitCallIndirect(R10);
+    pp.emitCallResult(typeFuncBC, offsetRT);
+
+    const auto jumpBCToAfterAddr   = pp.emitLongJumpOp(JUMP);
+    const auto jumpBCToAfterOffset = concat.totalCount();
+
+    // ByteCode lambda
+    //////////////////
+    *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
+
+    pp.emitCopyN(RCX, R10, CPUBits::B64);
+    emitByteCodeCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
+    pp.emitSymbolRelocationAddr(RAX, pp.symPI_byteCodeRun, 0);
+    pp.emitLoad64Indirect(0, RAX, RAX);
+    pp.emitCallIndirect(RAX);
+
+    // End
+    //////////////////
+    *jumpBCToAfterAddr = concat.totalCount() - jumpBCToAfterOffset;
+
+    pushRAParams.clear();
+    pushRVParams.clear();
+}
+
 bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
@@ -3890,42 +3927,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::LambdaCall:
             case ByteCodeOp::LambdaCallPop:
-            {
-                auto typeFuncBC = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-
-                // Test if it's a bytecode lambda
-                pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), R10);
-                pp.emitOpNImmediate(R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, CPUBits::B64);
-                auto jumpToBCAddr   = pp.emitLongJumpOp(JB);
-                auto jumpToBCOffset = concat.totalCount();
-
-                // Native lambda
-                //////////////////
-                pp.emitCallParameters(typeFuncBC, pushRAParams, offsetRT);
-                pp.emitCallIndirect(R10);
-                pp.emitCallResult(typeFuncBC, offsetRT);
-
-                auto jumpBCToAfterAddr   = pp.emitLongJumpOp(JUMP);
-                auto jumpBCToAfterOffset = concat.totalCount();
-
-                // ByteCode lambda
-                //////////////////
-                *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
-
-                pp.emitCopyN(RCX, R10, CPUBits::B64);
-                emitByteCodeCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
-                pp.emitSymbolRelocationAddr(RAX, pp.symPI_byteCodeRun, 0);
-                pp.emitLoad64Indirect(0, RAX, RAX);
-                pp.emitCallIndirect(RAX);
-
-                // End
-                //////////////////
-                *jumpBCToAfterAddr = concat.totalCount() - jumpBCToAfterOffset;
-
-                pushRAParams.clear();
-                pushRVParams.clear();
+                doLambdaCall(pp, concat, offsetRT, ip, pushRAParams, pushRVParams);
                 break;
-            }
+            case ByteCodeOp::LambdaCallPopParam:
+                pushRAParams.push_back(ip->d.u32);
+                doLambdaCall(pp, concat, offsetRT, ip, pushRAParams, pushRVParams);
+                break;
 
                 /////////////////////////////////////
 
