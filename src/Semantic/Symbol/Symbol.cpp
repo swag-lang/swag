@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Semantic/Scope.h"
 #include "Semantic/Symbol/Symbol.h"
+#include "Semantic/Scope.h"
 #include "Semantic/Type/TypeManager.h"
 
 void SymbolOverload::from(const SymbolOverload* other)

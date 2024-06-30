@@ -430,7 +430,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         // :ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
-        const auto ptrSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        const auto    ptrSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         TypeInfoFlags ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
         if (ptrSlice->isConst())
             ptrFlags.add(TYPEINFO_CONST);
@@ -461,7 +461,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         // :ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
-        const auto ptrArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto    ptrArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         TypeInfoFlags ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
         if (ptrArray->isConst())
             ptrFlags.add(TYPEINFO_CONST);

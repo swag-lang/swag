@@ -130,7 +130,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
             SymbolName* symCount   = nullptr;
             SymbolName* symSlice   = nullptr;
-            const auto        typeStruct = castTypeInfo<TypeInfoStruct>(realType, TypeInfoKind::Struct);
+            const auto  typeStruct = castTypeInfo<TypeInfoStruct>(realType, TypeInfoKind::Struct);
             SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opCount, typeStruct, &symCount));
             SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, typeStruct, &symSlice));
 

@@ -93,7 +93,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         return true;
     }
 
-    if(!execute)
+    if (!execute)
         return true;
 
     // Gen bytecode for expression

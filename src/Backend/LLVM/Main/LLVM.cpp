@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/LLVM/Debug/LLVMDebug.h"
 #include "Backend/LLVM/Main/LLVM.h"
+#include "Backend/LLVM/Debug/LLVMDebug.h"
 #include "Backend/LLVM/Main/LLVM_Macros.h"
 #include "Os/Os.h"
 #include "Report/Log.h"
@@ -10,7 +10,7 @@
 #include "Wmf/Workspace.h"
 
 LLVM::LLVM(Module* mdl) :
-                        Backend{mdl}
+    Backend{mdl}
 {
 }
 

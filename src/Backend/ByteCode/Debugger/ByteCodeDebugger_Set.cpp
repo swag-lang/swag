@@ -121,7 +121,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
             return setOnOff("print array content", arg, g_ByteCodeDebugger.printArray);
         if (arg.split[2] == "eval")
             return setOnOff("print eval expression bytecode", arg, g_ByteCodeDebugger.printEvalBc);
-        
+
         printCmdError(form("invalid [[set print]] argument [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Error;
     }
@@ -153,7 +153,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         printCmdError(form("invalid [[set backtrace]] argument [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Error;
     }
-    
+
     if (arg.split[1] == "register" || arg.split[1] == "reg")
         return cmdSetRegister(context, arg);
 

@@ -217,7 +217,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     auto&      scopeHierarchyVars = context->cacheScopeHierarchyVars;
     const auto identifierCrc      = identifier->token.text.hash();
 
-        // First, we search in the specified scope, if defined
+    // First, we search in the specified scope, if defined
     const auto startScope = identifierRef->startScope;
     if (startScope)
     {
@@ -257,8 +257,8 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
 
         for (const auto& sv : scopeHierarchyVars)
         {
-            if (sv.scope->owner->typeInfo && 
-                sv.scope->owner->typeInfo->isStruct() && 
+            if (sv.scope->owner->typeInfo &&
+                sv.scope->owner->typeInfo->isStruct() &&
                 sv.scope->owner->hasSpecFlag(AstStruct::SPEC_FLAG_HAS_USING))
             {
                 waitTypeCompleted(job, sv.scope->owner->typeInfo);

@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "BackendFunctionBodyJob.h"
 #include "Backend/Backend.h"
 #include "Backend/BackendLinker.h"
-#include "Backend/CallConv.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/CallConv.h"
 #include "Backend/LLVM/LLVM_Setup.h"
+#include "Backend/BackendFunctionBodyJob.h"
 #include "Format/FormatAst.h"
 #include "Jobs/ModuleSaveExportJob.h"
 #include "Main/Version.h"
@@ -13,7 +13,7 @@
 #include "Wmf/Workspace.h"
 
 Backend::Backend(Module* mdl) :
-                              module{mdl}
+    module{mdl}
 {
     memset(perThread, 0, sizeof(perThread));
 }

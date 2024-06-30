@@ -35,8 +35,8 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     // not the top for speed, but anyway there's room for improvement for inline in all cases.
     if (CallConv::returnByStackAddress(typeInfoFunc))
     {
-        const auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
-        inst->b.u64 = node->computedValue()->storageOffset;
+        const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
+        inst->b.u64     = node->computedValue()->storageOffset;
         node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->computedValue()->storageOffset);
     }
 
@@ -61,7 +61,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     }
     else if (parent->is(AstNodeKind::Identifier))
     {
-        const auto identifier                               = castAst<AstIdentifier>(parent, AstNodeKind::Identifier);
+        const auto identifier                         = castAst<AstIdentifier>(parent, AstNodeKind::Identifier);
         identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;
         allParams                                     = identifier->callParameters;
         numCallParams                                 = allParams ? allParams->childCount() : 0;
@@ -96,7 +96,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     {
         SWAG_ASSERT(parent->firstChild()->is(AstNodeKind::IdentifierRef));
         const auto ptIdx = castAst<AstArrayPointerIndex>(parent->firstChild()->lastChild(), AstNodeKind::ArrayPointerIndex);
-        auto arr   = ptIdx->array;
+        auto       arr   = ptIdx->array;
 
         auto ptIdx1 = ptIdx;
         while (ptIdx1->array->is(AstNodeKind::ArrayPointerIndex))
@@ -181,7 +181,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
             for (uint32_t i = 0; i < numFuncParams; i++)
             {
                 const auto funcParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
-                bool covered   = false;
+                bool       covered   = false;
                 for (uint32_t j = 0; j < numCallParams; j++)
                 {
                     const auto callParam = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);

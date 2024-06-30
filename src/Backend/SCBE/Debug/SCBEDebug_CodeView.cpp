@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Debug/SCBEDebug_CodeView.h"
+#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Main/Version.h"
@@ -496,7 +496,7 @@ namespace
 
     void emitLocalVars(SCBE_CPU& pp, const CPUFunction& f, const Scope* scope, Concat& concat, TypeInfoFuncAttr* const typeFunc)
     {
-        for(const auto localVar: f.node->extByteCode()->bc->localVars)
+        for (const auto localVar : f.node->extByteCode()->bc->localVars)
         {
             if (localVar->ownerScope != scope)
                 continue;

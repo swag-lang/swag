@@ -83,7 +83,7 @@ void ByteCodeRun::ffiCallTrace(ByteCodeRunContext* context, const ByteCodeInstru
 {
     g_ByteCodeStackTrace->push(context);
     ffiCall(context, ip);
-    g_ByteCodeStackTrace->pop();    
+    g_ByteCodeStackTrace->pop();
 }
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction* ip)

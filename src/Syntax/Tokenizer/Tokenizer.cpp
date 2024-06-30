@@ -1,9 +1,9 @@
 #include "pch.h"
+#include "Syntax/Tokenizer/Tokenizer.h"
 #include "Main/Statistics.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorContext.h"
 #include "Report/ErrorIds.h"
-#include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
 #ifdef SWAG_STATS
 #include "Core/Timer.h"
@@ -14,6 +14,7 @@ const char* g_TokenNames[] =
 #undef DEFINE_TOKEN_ID
 #define DEFINE_TOKEN_ID(__id, __flags) #__id,
 #include "TokenIds.h"
+
 };
 
 const TokenFlags g_TokenFlags[] =
@@ -21,6 +22,7 @@ const TokenFlags g_TokenFlags[] =
 #undef DEFINE_TOKEN_ID
 #define DEFINE_TOKEN_ID(__id, __flags) __flags,
 #include "TokenIds.h"
+
 };
 
 bool Tokenizer::error(TokenParse& tokenParse, const Utf8& msg, const Utf8& hint) const

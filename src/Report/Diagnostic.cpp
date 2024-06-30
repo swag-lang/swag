@@ -787,7 +787,7 @@ void Diagnostic::tokenizeError(const Utf8& err, Vector<Utf8>& tokens)
         }
 
         result.trim();
-        if(!result.empty())
+        if (!result.empty())
             tokens.push_back(result);
         if (*pz)
             pz += 3;

@@ -1121,8 +1121,8 @@ bool ByteCodeGen::generateStructOpPostMove(ByteCodeGenContext* context, TypeInfo
 
 bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
 {
-    const AstStruct*      node           = castAst<AstStruct>(context->node, AstNodeKind::StructDecl);
-    TypeInfoStruct* typeInfoStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    const AstStruct* node           = castAst<AstStruct>(context->node, AstNodeKind::StructDecl);
+    TypeInfoStruct*  typeInfoStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
     generateStructAlloc(context, typeInfoStruct);
     YIELD();

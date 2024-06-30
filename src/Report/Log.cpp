@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
-#include "Main/CommandLine.h"
 #include "Report/Log.h"
+#include "Main/CommandLine.h"
 
 Log g_Log;
 
@@ -218,7 +218,7 @@ Utf8 Log::format(const char* message)
             else if (curColor == colorToVTS(LogColor::White))
                 m += colorToVTS(LogColor::Gray);
             else if (curColor == colorToVTS(LogColor::Red))
-                m += "'";            
+                m += "'";
             else
                 m += colorToVTS(LogColor::Bold);
             pz += 2;

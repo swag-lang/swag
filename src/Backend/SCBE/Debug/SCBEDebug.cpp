@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Debug/SCBEDebug.h"
+#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Debug/SCBEDebug_CodeView.h"
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
 #include "Semantic/Scope.h"

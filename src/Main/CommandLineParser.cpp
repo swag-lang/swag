@@ -68,7 +68,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("bu sc doc fmt", "--syntax-color", "-es", CommandLineType::Bool, &cmdLine->syntaxColor, nullptr, "syntax color code");
     addArg("bu sc doc fmt", "--syntax-color-lum", nullptr, CommandLineType::Bool, &cmdLine->syntaxColorLum, nullptr, "syntax color luminosity factor [0..1]");
-    
+
     addArg("bu ne cl li ge doc", "--workspace", "-w", CommandLineType::StringPath, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne doc", "--module", "-m", CommandLineType::String, &cmdLine->moduleName, nullptr, "module name");
     addArg("ne sc fmt", "--file", "-f", CommandLineType::String, &cmdLine->fileName, nullptr, "the script file name|format:the source file to reformat");

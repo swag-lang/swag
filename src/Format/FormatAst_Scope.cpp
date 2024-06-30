@@ -98,7 +98,7 @@ bool FormatAst::outputScopeContent(FormatContext& context, Module* module, const
         {
             outputScope(context, module, one);
         }
-    }    
+    }
 
     return true;
 }

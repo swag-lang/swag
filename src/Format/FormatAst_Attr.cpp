@@ -155,17 +155,17 @@ bool FormatAst::outputAttributesUsage(const FormatContext& context, const TypeIn
     concat->addIndent(context.indent);
     concat->addString("#[AttrUsage(");
 
-#define ADD_ATTR_USAGE(__f, __n)                         \
-    do                                                   \
-    {                                                    \
-        if (typeFunc->attributeUsage.has(__f))           \
-        {                                                \
-            if (!first)                                  \
-                concat->addChar('|');                    \
-            first = false;                               \
+#define ADD_ATTR_USAGE(__f, __n)                  \
+    do                                            \
+    {                                             \
+        if (typeFunc->attributeUsage.has(__f))    \
+        {                                         \
+            if (!first)                           \
+                concat->addChar('|');             \
+            first = false;                        \
             concat->addString("AttributeUsage."); \
             concat->addString(__n);               \
-        }                                                \
+        }                                         \
     } while (0)
 
     ADD_ATTR_USAGE(ATTR_USAGE_ENUM, "Enum");
@@ -311,7 +311,7 @@ bool FormatAst::outputAttributes(FormatContext& context, const AstNode* node, Ty
 
     SWAG_CHECK(outputAttributesGlobalUsing(context, node));
 
-    if(!typeInfo)
+    if (!typeInfo)
         return true;
 
     const AttributeList* attr = nullptr;

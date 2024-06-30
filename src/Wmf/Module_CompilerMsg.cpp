@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/Context.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/Context.h"
 #include "Jobs/PrepCompilerMsgJob.h"
 #include "Semantic/Semantic.h"
 #include "Threading/ThreadManager.h"

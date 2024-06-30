@@ -26,7 +26,7 @@ struct AtomicFlags
     {
         flags.store(other.flags);
         return *this;
-    }    
+    }
 
     bool operator==(const AtomicFlags& other) const
     {

@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Backend/SCBE/Debug/SCBEDebug_CodeView.h"
 #include "Backend/SCBE/Main/SCBE.h"
-#include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Wmf/Module.h"
 
 namespace

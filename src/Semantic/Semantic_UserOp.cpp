@@ -624,7 +624,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     if (leftType->isGeneric())
     {
         PushErrCxtStep   ec(context, left->parent, ErrCxtStepKind::Note, [&] { return formNte(Nte0143, name.c_str(), leftType->getDisplayNameC()); }, true);
-        const Diagnostic     err(left, formErr(Err0556, name.c_str()));
+        const Diagnostic err(left, formErr(Err0556, name.c_str()));
         return context->report(err);
     }
 
@@ -670,8 +670,8 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
         {
-            const auto      toType    = oneMatch->solvedParameters[i]->typeInfo;
-            CastFlags castFlags = CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_UFCS | CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_PARAMS;
+            const auto toType    = oneMatch->solvedParameters[i]->typeInfo;
+            CastFlags  castFlags = CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_UFCS | CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_PARAMS;
             if (!oneMatch->solvedParameters[i]->flags.has(TYPEINFOPARAM_FROM_GENERIC))
                 castFlags.add(CAST_FLAG_TRY_COERCE);
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, params[i], castFlags));
@@ -766,8 +766,8 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     }
 
     // Result
-    const auto overload  = oneMatch->symbolOverload;
-    node->typeInfo = overload->typeInfo;
+    const auto overload = oneMatch->symbolOverload;
+    node->typeInfo      = overload->typeInfo;
     node->addExtraPointer(ExtraPointerKind::UserOp, overload);
     SWAG_ASSERT(symbol && symbol->is(SymbolKind::Function));
     SWAG_ASSERT(overload);

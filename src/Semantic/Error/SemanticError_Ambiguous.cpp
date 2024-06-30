@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Semantic/Semantic.h"
 #include "Semantic/Error/SemanticError.h"
+#include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Naming.h"
 

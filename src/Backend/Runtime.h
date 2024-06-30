@@ -85,7 +85,7 @@ struct SwagSourceCodeLocation
 {
     SwagSlice fileName;
     uint32_t  lineStart, colStart;
-    uint32_t  lineEnd,   colEnd;
+    uint32_t  lineEnd, colEnd;
 };
 
 struct SwagCVaList
@@ -149,10 +149,10 @@ using SwagContext = struct SwagContext
     uint32_t                hasError;
 };
 
-using FuncCB = void* (*)(void*, void*, void*, void*, void*, void*, void*, void*, void*, void*);
+using FuncCB = void* (*) (void*, void*, void*, void*, void*, void*, void*, void*, void*, void*);
 
-using SwagBytecodeRun  = void (*)(void*, ...);
-using SwagThreadRun    = void (*)(void*);
+using SwagBytecodeRun  = void    (*)(void*, ...);
+using SwagThreadRun    = void      (*)(void*);
 using SwagMakeCallback = FuncCB (*)(void*);
 
 enum class SwagBackendGenType : uint32_t

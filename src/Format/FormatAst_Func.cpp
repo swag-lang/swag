@@ -223,7 +223,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
         SWAG_CHECK(outputChildrenChar(cxt, inside, ';', ';', 0));
         if (inside->childCount())
             concat->addBlank();
-        
+
         concat->addChar('}');
         concat->noEol--;
         concat->addEol();

@@ -1,8 +1,8 @@
 #include "pch.h"
+#include "Semantic/Generic/Generic.h"
 #include "Main/CommandLine.h"
 #include "Semantic/Scope.h"
 #include "Semantic/SemanticJob.h"
-#include "Semantic/Generic/Generic.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 

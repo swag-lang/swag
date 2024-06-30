@@ -2,9 +2,9 @@
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Semantic.h"
-#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -2853,12 +2853,12 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
 bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags)
 {
     const auto toTypePointer = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
-    
+
     if (fromType->isPointer())
     {
-        if(fromType->isPointerNull())
+        if (fromType->isPointerNull())
             return castError(context, toType, fromType, fromNode, castFlags);
-        
+
         // Convert from pointer to ref : only if authorized
         if (!fromType->isPointerRef() && !castFlags.has(CAST_FLAG_EXPLICIT) && !castFlags.has(CAST_FLAG_PTR_REF))
             return castError(context, toType, fromType, fromNode, castFlags);
