@@ -8,6 +8,7 @@
 #include "Wmf/Workspace.h"
 
 #ifdef SWAG_DEV_MODE
+// ReSharper disable once CppUseAuto
 void* g_SwagPatchMarker = reinterpret_cast<void*>(0xAABBCCDD00112233);
 #endif
 

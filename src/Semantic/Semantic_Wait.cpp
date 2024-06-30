@@ -316,7 +316,7 @@ bool Semantic::waitForStructUserOps(SemanticContext* context, const AstNode* nod
     return true;
 }
 
-auto Semantic::needToCompleteSymbolNoLock(SemanticContext*, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads) -> bool
+bool Semantic::needToCompleteSymbolNoLock(SemanticContext*, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads)
 {
     if (symbol->isNot(SymbolKind::Struct) && symbol->isNot(SymbolKind::Interface))
         return true;
