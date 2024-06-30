@@ -1,7 +1,10 @@
 #include "pch.h"
+#include "Backend/ByteCode/ByteCode.h"
+#include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
+#include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
 
 void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
@@ -246,4 +249,72 @@ void SCBE::emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* type
     {
         emitByteCodeCall(pp, typeFuncBC, offsetRT, pushRAParams);
     }
+}
+
+void SCBE::emitLocalCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+{
+    const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
+    const auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+    emitCall(pp, typeFct, callBc->getCallNameFromDecl(), pushRAParams, offsetRT, true);
+    pushRAParams.clear();
+    pushRVParams.clear();
+
+    if (ip->op == ByteCodeOp::LocalCallPopRC)
+    {
+        pp.emitLoad64Indirect(offsetRT + REG_OFFSET(0), RAX, RDI);
+        pp.emitStore64Indirect(REG_OFFSET(ip->d.u32), RAX);
+    }
+}
+
+void SCBE::emitForeignCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+{
+    const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
+    const auto typeFct  = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+
+    auto moduleName = ModuleManager::getForeignModuleName(funcNode);
+
+    // Dll imported function name will have "__imp_" before (imported mangled name)
+    auto callFuncName = funcNode->getFullNameForeignImport();
+    callFuncName      = "__imp_" + callFuncName;
+
+    emitCall(pp, typeFct, callFuncName, pushRAParams, offsetRT, false);
+    pushRAParams.clear();
+    pushRVParams.clear();
+}
+
+void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+{
+    const auto typeFuncBC = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+
+    // Test if it's a bytecode lambda
+    pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), R10);
+    pp.emitOpNImmediate(R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, CPUBits::B64);
+    const auto jumpToBCAddr   = pp.emitLongJumpOp(JB);
+    const auto jumpToBCOffset = concat.totalCount();
+
+    // Native lambda
+    //////////////////
+    pp.emitCallParameters(typeFuncBC, pushRAParams, offsetRT);
+    pp.emitCallIndirect(R10);
+    pp.emitCallResult(typeFuncBC, offsetRT);
+
+    const auto jumpBCToAfterAddr   = pp.emitLongJumpOp(JUMP);
+    const auto jumpBCToAfterOffset = concat.totalCount();
+
+    // ByteCode lambda
+    //////////////////
+    *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
+
+    pp.emitCopyN(RCX, R10, CPUBits::B64);
+    emitByteCodeCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
+    pp.emitSymbolRelocationAddr(RAX, pp.symPI_byteCodeRun, 0);
+    pp.emitLoad64Indirect(0, RAX, RAX);
+    pp.emitCallIndirect(RAX);
+
+    // End
+    //////////////////
+    *jumpBCToAfterAddr = concat.totalCount() - jumpBCToAfterOffset;
+
+    pushRAParams.clear();
+    pushRVParams.clear();
 }

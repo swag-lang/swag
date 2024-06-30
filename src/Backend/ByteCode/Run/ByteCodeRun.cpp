@@ -787,7 +787,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 context->incSP(ip->b.u32);
             break;
         case ByteCodeOp::IncSPPostCall:
-
             context->incSP(ip->a.u32);
             break;
 
