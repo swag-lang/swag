@@ -2210,15 +2210,24 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
         SWAG_IF_ASSERT(storageIndex += 2);
     }
 
-    const auto childSize = node->childCount();
-    for (uint32_t i = 0; i < childSize; i++)
+    // Preallocate 32 registers, so that we can assign registers to the function parameters which
+    // have more chanced to be reused.
+    for (uint32_t i = 0; i < 32; i++)
+        freeRegisterRC(context, context->bc->maxReservedRegisterRC++);
+
+    const auto childCount = node->childCount();
+    for (uint32_t i = 0; i < childCount; i++)
     {
-        if (i == childSize - 1 && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+        if (i == childCount - 1 && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
             break;
+
         const auto param                      = node->children[i];
         const auto resolved                   = param->resolvedSymbolOverload();
         resolved->computedValue.storageOffset = offset;
         SWAG_ASSERT(resolved->storageIndex == storageIndex);
+
+        resolved->setRegisters(context->bc->maxReservedRegisterRC++, OVERLOAD_HINT_REG);
+        freeRegisterRC(context, context->bc->maxReservedRegisterRC - 1);
 
         const auto     typeInfo     = TypeManager::concreteType(resolved->typeInfo);
         const uint32_t numRegisters = typeInfo->numRegisters();
