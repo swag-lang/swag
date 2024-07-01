@@ -99,6 +99,16 @@ void ByteCodeGen::transformResultToLinear2(const ByteCodeGenContext* context, Re
     {
         SWAG_ASSERT(!resultRegisterRC.cannotFree);
         onlyOne = true;
+
+        sortRegistersRC(context);
+        const auto it = context->bc->availableRegistersRC.find(resultRegisterRC[0] + 1);
+        if (it != -1)
+        {
+            context->bc->availableRegistersRC.erase_unordered(it);
+            resultRegisterRC += resultRegisterRC[0] + 1;
+            return;
+        }
+        
         resultRegisterRC += reserveRegisterRC(context);
     }
 

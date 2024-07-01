@@ -216,7 +216,6 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
     {
         node->resultRegisterRc = reserveRegisterRC(context, resolved);
-        resolved->setRegisters(node->resultRegisterRc, OVERLOAD_HINT_REG);
 
         // Get a parameter from a #validif block... this is special
         if (node->isValidIfParam(resolved))
@@ -224,7 +223,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             ByteCodeInstruction* inst;
             if (typeInfo->numRegisters() == 2)
             {
-                reserveLinearRegisterRC2(context, node->resultRegisterRc);
+                transformResultToLinear2(context, node->resultRegisterRc);
                 inst = EMIT_INST2(context, ByteCodeOp::GetParam64SI, node->resultRegisterRc[0], node->resultRegisterRc[1]);
             }
             else
@@ -270,7 +269,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             }
             else if (typeInfo->isSlice())
             {
-                reserveLinearRegisterRC2(context, node->resultRegisterRc);
+                transformResultToLinear2(context, node->resultRegisterRc);
 
                 auto inst                = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc[0]);
                 inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset;
@@ -321,7 +320,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->numRegisters() == 2)
         {
-            reserveLinearRegisterRC2(context, node->resultRegisterRc);
+            transformResultToLinear2(context, node->resultRegisterRc);
             auto inst                = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc[0]);
             inst->b.mergeU64U32.low  = resolved->computedValue.storageOffset;
             inst->b.mergeU64U32.high = resolved->storageIndex;

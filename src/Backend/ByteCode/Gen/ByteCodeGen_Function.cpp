@@ -2226,8 +2226,12 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
         resolved->computedValue.storageOffset = offset;
         SWAG_ASSERT(resolved->storageIndex == storageIndex);
 
-        resolved->setRegisters(context->bc->maxReservedRegisterRC++, OVERLOAD_HINT_REG);
-        freeRegisterRC(context, context->bc->maxReservedRegisterRC - 1);
+        RegisterList rc;
+        rc += context->bc->maxReservedRegisterRC++;
+        if (resolved->typeInfo->numRegisters() == 2)
+            rc += context->bc->maxReservedRegisterRC++;
+        resolved->setRegisters(rc, OVERLOAD_HINT_REG);
+        freeRegisterRC(context, rc);
 
         const auto     typeInfo     = TypeManager::concreteType(resolved->typeInfo);
         const uint32_t numRegisters = typeInfo->numRegisters();
