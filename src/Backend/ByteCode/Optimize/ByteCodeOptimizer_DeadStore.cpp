@@ -4,7 +4,6 @@
 
 // If two instructions write in the same register in the same block (between jumps), and there's no
 // read of that register between them, then the first write is useless and can be removed
-#pragma optimize("", off)
 bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, const ByteCodeOptTreeParseContext& parseCxt) {

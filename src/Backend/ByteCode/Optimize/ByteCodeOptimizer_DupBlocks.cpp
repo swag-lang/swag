@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 
-#pragma optimize("", off)
 bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
 {
     context->map32Node.clear();

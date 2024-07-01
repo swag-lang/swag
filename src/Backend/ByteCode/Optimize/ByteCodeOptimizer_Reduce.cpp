@@ -2,7 +2,6 @@
 #include "Backend/ByteCode/ByteCode_Math.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 
-#pragma optimize("", off)
 void ByteCodeOptimizer::reduceAffectOp(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (ip->op != ByteCodeOp::IncPointer64 || ip[1].a.u32 != ip->a.u32)
