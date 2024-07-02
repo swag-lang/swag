@@ -84,63 +84,19 @@ namespace
 
                 if (ipScan->op == ip->op)
                 {
-                    switch (ip->op)
+                    bool same = true;
+                    if (ByteCode::hasSomethingInA(ipScan) && ipScan->a.u64 != ip->a.u64)
+                        same = false;
+                    if (ByteCode::hasSomethingInB(ipScan) && ipScan->b.u64 != ip->b.u64)
+                        same = false;
+                    if (ByteCode::hasSomethingInC(ipScan) && ipScan->c.u64 != ip->c.u64)
+                        same = false;
+                    if (ByteCode::hasSomethingInD(ipScan) && ipScan->d.u64 != ip->d.u64)
+                        same = false;
+                    if (same)
                     {
-                        case ByteCodeOp::ClearRA:
-                            if (ipScan->a.u32 == ip->a.u32)
-                            {
-                                canRemove = true;
-                                return true;
-                            }
-                            break;
-
-                        case ByteCodeOp::SetImmediate32:
-                            if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
-                            {
-                                canRemove = true;
-                                return true;
-                            }
-                            break;
-                        case ByteCodeOp::SetImmediate64:
-                            if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
-                            {
-                                canRemove = true;
-                                return true;
-                            }
-                            break;
-
-                        case ByteCodeOp::MakeStackPointer:
-                        case ByteCodeOp::MakeConstantSegPointer:
-                        case ByteCodeOp::MakeCompilerSegPointer:
-                        case ByteCodeOp::MakeBssSegPointer:
-                        case ByteCodeOp::MakeMutableSegPointer:
-                            if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
-                            {
-                                canRemove = true;
-                                return true;
-                            }
-                            break;
-
-                        case ByteCodeOp::GetParam8:
-                        case ByteCodeOp::GetParam16:
-                        case ByteCodeOp::GetParam32:
-                        case ByteCodeOp::GetParam64:
-                            if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
-                            {
-                                canRemove = true;
-                                return true;
-                            }
-                            break;
-
-                        case ByteCodeOp::GetIncParam64:
-                            if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64 && ipScan->d.u64 == ip->d.u64)
-                            {
-                                canRemove = true;
-                                return true;
-                            }
-                            break;
-                        default:
-                            break;
+                        canRemove = true;
+                        return true;
                     }
                 }
 
@@ -177,6 +133,7 @@ namespace
     }
 }
 
+// Remove some duplicated instructions
 bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
 {
     context->mark = 0;
@@ -207,15 +164,14 @@ bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
         if (node->parent.empty())
             return;
 
-        bool canRemove = false;
         context->mark++;
+
+        bool canRemove = false;
         if (!optimizePassDeadStoreDupScan(context, parseCxt.curNode, node, ip, ip - 1, canRemove))
             return;
 
         if (canRemove)
-        {
             setNop(context, ip);
-        }
     });
 
     return true;
