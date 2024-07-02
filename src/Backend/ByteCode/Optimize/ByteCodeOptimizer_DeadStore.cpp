@@ -80,7 +80,7 @@ namespace
             while (true)
             {
                 if (ipScan == ip)
-                    return false;
+                    return true;
 
                 if (ipScan->op == ip->op)
                 {
