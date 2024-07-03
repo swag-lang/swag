@@ -289,9 +289,7 @@ bool ByteCode::areSame(const ByteCodeInstruction* start0,
 
 uint32_t ByteCode::computeCrc(const ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const
 {
-    const InstructionFlags flags = ip->flags.mask(BCI_JUMP_DEST | BCI_START_STMT);
-    oldCrc                       = Crc32::compute2(reinterpret_cast<const uint8_t*>(&ip->op), oldCrc);
-    oldCrc                       = Crc32::compute2(reinterpret_cast<const uint8_t*>(&flags), oldCrc);
+    oldCrc = Crc32::compute2(reinterpret_cast<const uint8_t*>(&ip->op), oldCrc);
 
     if (hasSomethingInC(ip))
         oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->c.pointer), oldCrc);

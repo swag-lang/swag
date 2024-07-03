@@ -22,7 +22,7 @@ struct ByteCodeOptTreeNode
 
     uint32_t mark  = 0;
     uint32_t flags = 0;
-    uint32_t crc   = 0;
+    uint32_t crcBlock   = 0;
 };
 
 struct ByteCodeOptContext;

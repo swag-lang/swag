@@ -116,7 +116,7 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
         tn->parent.clear();
         tn->mark  = 0;
         tn->flags = 0;
-        tn->crc   = 0;
+        tn->crcBlock   = 0;
 
         context->mapInstNode[ip] = context->nextTreeNode;
         return context->nextTreeNode++;
@@ -206,7 +206,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
     {
         setContextFlags(context, treeNode->end);
         if (computeCrc)
-            treeNode->crc = context->bc->computeCrc(treeNode->end, treeNode->crc, true, false);
+            treeNode->crcBlock = context->bc->computeCrc(treeNode->end, treeNode->crcBlock, true, false);
 #ifdef SWAG_DEV_MODE
         treeNode->end->treeNode = nodeIdx + 1;
 #endif
@@ -215,14 +215,14 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
 
     setContextFlags(context, treeNode->end);
     if (computeCrc)
-        treeNode->crc = context->bc->computeCrc(treeNode->end, treeNode->crc, true, false);
+        treeNode->crcBlock = context->bc->computeCrc(treeNode->end, treeNode->crcBlock, true, false);
 
 #ifdef SWAG_DEV_MODE
     treeNode->end->treeNode = nodeIdx + 1;
     auto ip                 = treeNode->start;
     while (ip != treeNode->end + 1)
     {
-        ip->crc = treeNode->crc;
+        ip->crc = treeNode->crcBlock;
         ip++;
     }
 #endif
