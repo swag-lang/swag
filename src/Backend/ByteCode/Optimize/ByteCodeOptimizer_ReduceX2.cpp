@@ -28,9 +28,11 @@ void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeIn
     {
         case ByteCodeOp::GetFromStack32:
             OPT_J(ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfStackEqual32);
+            OPT_J(ByteCodeOp::JumpIfZero32, ByteCodeOp::JumpIfStackZero32);
             break;
         case ByteCodeOp::GetFromStack64:
             OPT_J(ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfStackEqual64);
+            OPT_J(ByteCodeOp::JumpIfZero64, ByteCodeOp::JumpIfStackZero64);
             break;
     }
 }
