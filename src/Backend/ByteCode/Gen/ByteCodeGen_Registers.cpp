@@ -116,9 +116,9 @@ void ByteCodeGen::transformResultToLinear2(const ByteCodeGenContext* context, Re
     {
         RegisterList r0;
         reserveLinearRegisterRC2(context, r0);
-        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[0], resultRegisterRC[0])->addFlag(BCI_NOT_PURE);
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[0], resultRegisterRC[0]);
         if (!onlyOne)
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[1], resultRegisterRC[1])->addFlag(BCI_NOT_PURE);
+            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[1], resultRegisterRC[1]);
         freeRegisterRC(context, resultRegisterRC);
         resultRegisterRC = r0;
     }
