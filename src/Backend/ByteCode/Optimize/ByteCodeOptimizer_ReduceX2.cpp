@@ -1,6 +1,40 @@
 #include "pch.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 
+void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+#define OPT_J(__t1, __t2)                 \
+    if (ip[1].op == __t1 &&               \
+        ip[1].a.u32 == ip[0].a.u32 &&     \
+        !ip[1].flags.has(BCI_IMM_A) &&    \
+        !ip[1].hasFlag(BCI_START_STMT))   \
+    {                                     \
+        SET_OP(ip + 1, __t2);             \
+        ip[1].a.u64 = ip[0].b.u64;        \
+        break;                            \
+    }                                     \
+    if (ip[2].op == __t1 &&               \
+        ip[2].a.u32 == ip[0].a.u32 &&     \
+        !ip[2].flags.has(BCI_IMM_A) &&    \
+        !ip[1].hasFlag(BCI_START_STMT) && \
+        !ip[2].hasFlag(BCI_START_STMT))   \
+    {                                     \
+        SET_OP(ip + 2, __t2);             \
+        ip[2].a.u64 = ip[0].b.u64;        \
+        break;                            \
+    }
+
+    switch (ip->op)
+    {
+        case ByteCodeOp::GetFromStack32:
+            OPT_J(ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfStackEqual32);
+            break;
+        case ByteCodeOp::GetFromStack64:
+            OPT_J(ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfStackEqual64);
+            break;
+    }
+}
+
 void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     switch (ip->op)
@@ -213,6 +247,7 @@ bool ByteCodeOptimizer::optimizePassReduceX2(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        reduceStackJumps(context, ip);
         reduceX2(context, ip);
         reduceInvCopy(context, ip);
     }

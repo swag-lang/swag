@@ -3863,6 +3863,33 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
+                /////////////////////////////////////
+
+            case ByteCodeOp::JumpIfStackEqual32:
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto r0         = builder.CreateLoad(I32_TY(), GEP8(allocStack, ip->a.u32));
+                auto r1         = MK_IMMC_32();
+                auto b0         = builder.CreateICmpEQ(r0, r1);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
+            case ByteCodeOp::JumpIfStackEqual64:
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto r0         = builder.CreateLoad(I64_TY(), GEP8(allocStack, ip->a.u32));
+                auto r1         = MK_IMMC_64();
+                auto b0         = builder.CreateICmpEQ(r0, r1);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
+
+                /////////////////////////////////////
+
             case ByteCodeOp::JumpIfLowerS8:
             {
                 auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);

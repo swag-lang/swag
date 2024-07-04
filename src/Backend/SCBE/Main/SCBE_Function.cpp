@@ -2560,6 +2560,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 /////////////////////////////////////
 
+            case ByteCodeOp::JumpIfStackEqual32:
+                MK_JMPCMP_STACK_32(JZ);
+                break;
+            case ByteCodeOp::JumpIfStackEqual64:
+                MK_JMPCMP_STACK_64(JZ);
+                break;
+
+                /////////////////////////////////////
+
             case ByteCodeOp::JumpIfLowerS8:
                 MK_JMPCMP_8(JL);
                 break;
