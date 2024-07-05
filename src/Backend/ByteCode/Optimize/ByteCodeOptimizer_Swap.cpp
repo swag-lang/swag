@@ -20,8 +20,6 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 case ByteCodeOp::GetIncParam64:
                 case ByteCodeOp::MakeStackPointer:
                 case ByteCodeOp::MakeLambda:
-                case ByteCodeOp::SetImmediate32:
-                case ByteCodeOp::SetImmediate64:
                     break;
 
                 case ByteCodeOp::IncPointer64:
