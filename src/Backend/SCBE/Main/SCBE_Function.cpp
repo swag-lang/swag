@@ -2592,6 +2592,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitTestN(RAX, RAX, CPUBits::B64);
                 pp.emitJump(JNZ, i, ip->b.s32);
                 break;
+            case ByteCodeOp::JumpIfStackFalse:
+                pp.emitLoad32Indirect(offsetStack + ip->a.u32, RAX, RDI);
+                pp.emitTestN(RAX, RAX, CPUBits::B8);
+                pp.emitJump(JZ, i, ip->b.s32);
+                break;
+            case ByteCodeOp::JumpIfStackTrue:
+                pp.emitLoad32Indirect(offsetStack + ip->a.u32, RAX, RDI);
+                pp.emitTestN(RAX, RAX, CPUBits::B8);
+                pp.emitJump(JNZ, i, ip->b.s32);
+                break;
 
                 /////////////////////////////////////
 
