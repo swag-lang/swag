@@ -3,6 +3,7 @@
 #include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"

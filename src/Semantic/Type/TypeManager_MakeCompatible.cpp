@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"

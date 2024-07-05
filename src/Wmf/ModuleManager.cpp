@@ -3,6 +3,7 @@
 #include "Backend/Backend.h"
 #include "Backend/Context.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Syntax/Ast.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"

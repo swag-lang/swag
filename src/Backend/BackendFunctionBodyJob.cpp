@@ -2,8 +2,10 @@
 #include "BackendFunctionBodyJob.h"
 #include "Backend/Backend.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Syntax/AstNode.h"
 #ifdef SWAG_STATS
 #include "Core/Timer.h"
+#include "Main/Statistics.h"
 #endif
 
 JobResult BackendFunctionBodyJob::execute()

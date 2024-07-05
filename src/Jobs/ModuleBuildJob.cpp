@@ -16,6 +16,9 @@
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
+#ifdef SWAG_STATS
+#include "Main/Statistics.h"
+#endif
 
 void ModuleBuildJob::publishFilesToPublic(const Module* moduleToPublish)
 {

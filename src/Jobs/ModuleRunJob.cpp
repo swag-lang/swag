@@ -4,6 +4,9 @@
 #include "Core/Timer.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
+#ifdef SWAG_STATS
+#include "Main/Statistics.h"
+#endif
 
 JobResult ModuleRunJob::execute()
 {

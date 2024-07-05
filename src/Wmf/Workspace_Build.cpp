@@ -18,6 +18,9 @@
 #include "Wmf/DepManager/ModuleDepManager.h"
 #include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
+#ifdef SWAG_STATS
+#include "Main/Statistics.h"
+#endif
 
 void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)
 {

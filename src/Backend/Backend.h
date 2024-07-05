@@ -1,7 +1,6 @@
 #pragma once
 #include "Backend/BackendParameters.h"
 #include "Format/FormatConcat.h"
-#include "Syntax/Ast.h"
 
 struct AstFuncDecl;
 struct AstNode;
@@ -10,6 +9,7 @@ struct AstVarDecl;
 struct BackendFunctionBodyJob;
 struct BackendTarget;
 struct BuildParameters;
+struct ByteCode;
 struct Job;
 struct Module;
 struct Scope;

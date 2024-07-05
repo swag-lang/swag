@@ -3,6 +3,9 @@
 #include "Backend/SCBE/Debug/SCBEDebug_CodeView.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Wmf/Module.h"
+#ifdef SWAG_STATS
+#include "Main/Statistics.h"
+#endif
 
 namespace
 {

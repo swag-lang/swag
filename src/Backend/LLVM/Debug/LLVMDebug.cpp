@@ -6,7 +6,9 @@
 #include "Main/Version.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 

@@ -9,6 +9,7 @@ struct DataSegment;
 struct Job;
 struct LLVMDebug;
 struct Module;
+union Register;
 struct TypeInfo;
 enum class SegmentKind;
 

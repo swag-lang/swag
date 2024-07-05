@@ -5,6 +5,7 @@
 #include "Wmf/Module.h"
 #ifdef SWAG_STATS
 #include "Core/Timer.h"
+#include "Main/Statistics.h"
 #endif
 
 JobResult SCBE_SaveObjJob::execute()

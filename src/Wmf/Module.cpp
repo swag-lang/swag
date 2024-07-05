@@ -11,6 +11,7 @@
 #include "Report/Report.h"
 #include "Semantic/Error/SemanticError.h"
 #include "Semantic/SemanticJob.h"
+#include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Parser/Parser.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"

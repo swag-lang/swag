@@ -1,10 +1,12 @@
 #pragma once
 #include "Backend/Backend.h"
+#include "Syntax/ComputedValue.h"
 
 struct ByteCodeInstruction;
 struct CPUFunction;
 struct SCBE_CPU;
 struct SCBE;
+struct SourceFile;
 
 using SCBEDebugTypeIndex = uint32_t;
 
