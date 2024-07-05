@@ -10,18 +10,27 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
         context->mapInstInst.clear();
         for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
         {
-            if (!ByteCode::isConstant(ip))
+            switch (ip->op)
             {
-                switch (ip->op)
-                {
-                    case ByteCodeOp::IncPointer64:
-                    case ByteCodeOp::DecPointer64:
-                        if (!ip->hasFlag(BCI_IMM_B))
-                            continue;
-                        break;
-                    default:
+                case ByteCodeOp::GetParam8:
+                case ByteCodeOp::GetParam16:
+                case ByteCodeOp::GetParam32:
+                case ByteCodeOp::GetParam64:
+                case ByteCodeOp::GetParam64x2:
+                case ByteCodeOp::GetIncParam64:
+                case ByteCodeOp::MakeStackPointer:
+                case ByteCodeOp::MakeLambda:
+                case ByteCodeOp::SetImmediate32:
+                case ByteCodeOp::SetImmediate64:
+                    break;
+
+                case ByteCodeOp::IncPointer64:
+                case ByteCodeOp::DecPointer64:
+                    if (!ip->hasFlag(BCI_IMM_B))
                         continue;
-                }
+                    break;
+                default:
+                    continue;
             }
 
             auto                 ipn             = ip + 1;
