@@ -149,7 +149,6 @@ public impl Xml
     // VALUES
     /////////////////////////////////
 
-#[Swag.PrintBc]
     mtd(NT) readNative()->NT throw
     {
         zapBlanks()
