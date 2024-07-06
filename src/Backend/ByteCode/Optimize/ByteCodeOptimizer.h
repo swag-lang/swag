@@ -69,6 +69,7 @@ struct ByteCodeOptimizer
     static void reduceCast(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruction* ip);
+    static void reduceCall(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceStackJumps(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceX2(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstruction* ip);

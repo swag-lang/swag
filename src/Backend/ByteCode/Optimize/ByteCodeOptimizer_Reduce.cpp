@@ -349,7 +349,7 @@ void ByteCodeOptimizer::reduceFactor(ByteCodeOptContext* context, ByteCodeInstru
                 setNop(context, ip + 1);
                 break;
             }
-        
+
             if (ip[1].op == ByteCodeOp::Add64byVB64 &&
                 ip[1].a.u32 == ip[0].a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT))
@@ -1102,6 +1102,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 setNop(context, ip);
                 break;
             }
+
             break;
 
         case ByteCodeOp::PushRAParam2:

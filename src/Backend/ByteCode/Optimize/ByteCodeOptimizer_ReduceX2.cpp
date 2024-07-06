@@ -1,6 +1,62 @@
 #include "pch.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 
+void ByteCodeOptimizer::reduceCall(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    switch (ip->op)
+    {
+        case ByteCodeOp::PushRAParam:
+            if (ip[1].op == ByteCodeOp::ForeignCall &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::ForeignCallPopParam);
+                ip[1].c.u32 = 0;
+                ip[1].d.u32 = ip[0].a.u32;
+                setNop(context, ip);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::LocalCall &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::LocalCallPopParam);
+                ip[1].c.u32 = 0;
+                ip[1].d.u32 = ip[0].a.u32;
+                setNop(context, ip);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::LambdaCall &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::LambdaCallPopParam);
+                ip[1].c.u32 = 0;
+                ip[1].d.u32 = ip[0].a.u32;
+                setNop(context, ip);
+                break;
+            }
+            break;
+
+        case ByteCodeOp::PushRAParam2:
+
+            if (ip[1].op == ByteCodeOp::ForeignCall &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                //printf("X");
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::LocalCall &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                //printf("O");
+                break;
+            }
+
+            break;
+    }
+}
+
 void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
 #define OPT_J(__t1, __t2)                     \
@@ -256,10 +312,12 @@ void ByteCodeOptimizer::reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstr
     }
 }
 
+#pragma optimize("", false)
 bool ByteCodeOptimizer::optimizePassReduceX2(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        reduceCall(context, ip);
         reduceStackJumps(context, ip);
         reduceX2(context, ip);
         reduceInvCopy(context, ip);
