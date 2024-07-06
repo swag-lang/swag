@@ -3623,7 +3623,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
-            case ByteCodeOp::JumpIfResultFalse:
+            case ByteCodeOp::JumpIfRTFalse:
             {
                 auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
                 auto labelFalse = getOrCreateLabel(pp, func, i + 1);
@@ -3643,7 +3643,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
-            case ByteCodeOp::JumpIfResultTrue:
+            case ByteCodeOp::JumpIfRTTrue:
             {
                 auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
                 auto labelFalse = getOrCreateLabel(pp, func, i + 1);

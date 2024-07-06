@@ -938,7 +938,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 ip[1].a.u32 == ip->a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
-                SET_OP(ip + 1, ByteCodeOp::JumpIfResultTrue);
+                SET_OP(ip + 1, ByteCodeOp::JumpIfRTTrue);
                 break;
             }
 
@@ -946,7 +946,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 ip[1].a.u32 == ip->a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
-                SET_OP(ip + 1, ByteCodeOp::JumpIfResultFalse);
+                SET_OP(ip + 1, ByteCodeOp::JumpIfRTFalse);
                 break;
             }
 

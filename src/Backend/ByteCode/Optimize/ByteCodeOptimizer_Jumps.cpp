@@ -962,12 +962,12 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 break;
 
             //
-            case ByteCodeOp::JumpIfResultFalse:
+            case ByteCodeOp::JumpIfRTFalse:
                 if (ip[1].op == ByteCodeOp::Jump &&
                     ip[0].b.s32 == 1 &&
                     !ip[1].hasFlag(BCI_START_STMT))
                 {
-                    SET_OP(ip, ByteCodeOp::JumpIfResultTrue);
+                    SET_OP(ip, ByteCodeOp::JumpIfRTTrue);
                     ip->b.s32 = ip[1].b.s32 + 1;
                     setNop(context, ip + 1);
                     break;
@@ -978,7 +978,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                     ip[0].b.s32 == 1 &&
                     !ip[1].hasFlag(BCI_START_STMT))
                 {
-                    SET_OP(ip, ByteCodeOp::JumpIfResultTrue);
+                    SET_OP(ip, ByteCodeOp::JumpIfRTTrue);
                     ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                     setNop(context, ip + 1);
                     break;
@@ -1008,12 +1008,12 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 }
                 break;
 
-            case ByteCodeOp::JumpIfResultTrue:
+            case ByteCodeOp::JumpIfRTTrue:
                 if (ip[1].op == ByteCodeOp::Jump &&
                     ip[0].b.s32 == 1 &&
                     !ip[1].hasFlag(BCI_START_STMT))
                 {
-                    SET_OP(ip, ByteCodeOp::JumpIfResultFalse);
+                    SET_OP(ip, ByteCodeOp::JumpIfRTFalse);
                     ip->b.s32 = ip[1].b.s32 + 1;
                     setNop(context, ip + 1);
                     break;
@@ -1024,7 +1024,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                     ip[0].b.s32 == 1 &&
                     !ip[1].hasFlag(BCI_START_STMT))
                 {
-                    SET_OP(ip, ByteCodeOp::JumpIfResultFalse);
+                    SET_OP(ip, ByteCodeOp::JumpIfRTFalse);
                     ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                     setNop(context, ip + 1);
                     break;

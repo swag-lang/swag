@@ -380,11 +380,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             if (registersRC[ip->a.u32].b)
                 context->ip += ip->b.s32;
             break;
-        case ByteCodeOp::JumpIfResultFalse:
+        case ByteCodeOp::JumpIfRTFalse:
             if (!context->registersRR[0].b)
                 context->ip += ip->b.s32;
             break;
-        case ByteCodeOp::JumpIfResultTrue:
+        case ByteCodeOp::JumpIfRTTrue:
             if (context->registersRR[0].b)
                 context->ip += ip->b.s32;
             break;
