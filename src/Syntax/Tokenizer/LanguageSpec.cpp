@@ -274,6 +274,7 @@ void LanguageSpec::setupBcKeywords()
     bckeywords.insert("pop");
     bckeywords.insert("stacksize");
     bckeywords.insert("popstack");
+    bckeywords.insert("call");
 
     bcconstants.insert("my_result");
     bcconstants.insert("result_ptr");
