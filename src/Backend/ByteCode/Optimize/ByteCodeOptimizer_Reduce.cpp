@@ -923,9 +923,9 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             }
             break;
 
-        // Swap CopyRTtoRA and IncSPPostCall to put IncSPPostCall right next to the call, which
-        // give the opportunity to optimize the call pop
         case ByteCodeOp::CopyRTtoRA:
+            // Swap CopyRTtoRA and IncSPPostCall to put IncSPPostCall right next to the call, which
+            // give the opportunity to optimize the call pop
             if (ip[1].op == ByteCodeOp::IncSPPostCall &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
@@ -933,6 +933,23 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
                 context->setDirtyPass();
                 break;
             }
+
+            if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+                ip[1].a.u32 == ip->a.u32 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfResultTrue);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+                ip[1].a.u32 == ip->a.u32 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfResultFalse);
+                break;
+            }
+
             break;
 
         case ByteCodeOp::LocalCallPop:

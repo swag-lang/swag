@@ -2463,8 +2463,18 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitTestN(RAX, RAX, CPUBits::B8);
                 pp.emitJump(JNZ, i, ip->b.s32);
                 break;
+            case ByteCodeOp::JumpIfResultTrue:
+                pp.emitLoad8Indirect(offsetRT + REG_OFFSET(0), RAX);
+                pp.emitTestN(RAX, RAX, CPUBits::B8);
+                pp.emitJump(JNZ, i, ip->b.s32);
+                break;
             case ByteCodeOp::JumpIfFalse:
                 pp.emitLoad8Indirect(REG_OFFSET(ip->a.u32), RAX);
+                pp.emitTestN(RAX, RAX, CPUBits::B8);
+                pp.emitJump(JZ, i, ip->b.s32);
+                break;
+            case ByteCodeOp::JumpIfResultFalse:
+                pp.emitLoad8Indirect(offsetRT + REG_OFFSET(0), RAX);
                 pp.emitTestN(RAX, RAX, CPUBits::B8);
                 pp.emitJump(JZ, i, ip->b.s32);
                 break;

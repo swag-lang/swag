@@ -380,6 +380,14 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             if (registersRC[ip->a.u32].b)
                 context->ip += ip->b.s32;
             break;
+        case ByteCodeOp::JumpIfResultFalse:
+            if (!context->registersRR[0].b)
+                context->ip += ip->b.s32;
+            break;
+        case ByteCodeOp::JumpIfResultTrue:
+            if (context->registersRR[0].b)
+                context->ip += ip->b.s32;
+            break;
 
         case ByteCodeOp::JumpIfNotEqual8:
             if (IMMA_U8(ip) != IMMC_U8(ip))

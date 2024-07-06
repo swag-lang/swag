@@ -3623,6 +3623,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
+            case ByteCodeOp::JumpIfResultFalse:
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto v0         = resultFuncCall ? resultFuncCall : builder.CreateLoad(I8_TY(), GEP8(allocRR, 0));
+                auto b0         = builder.CreateIsNull(v0);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
             case ByteCodeOp::JumpIfTrue:
             {
                 auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
@@ -3633,6 +3643,17 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
+            case ByteCodeOp::JumpIfResultTrue:
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto v0         = resultFuncCall ? resultFuncCall : builder.CreateLoad(I8_TY(), GEP8(allocRR, 0));
+                auto b0         = builder.CreateIsNotNull(v0);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
+
             case ByteCodeOp::JumpIfZero8:
             {
                 auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
