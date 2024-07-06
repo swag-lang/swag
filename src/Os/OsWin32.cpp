@@ -609,8 +609,10 @@ namespace OS
                     str += ptrSymbol->Name;
                     if (hasLine)
                     {
+                        str += Log::colorToVTS(LogColor::White);
+                        str += " at ";
                         str += Log::colorToVTS(LogColor::Location);
-                        str += form(" %s:%d", line.FileName, line.LineNumber);
+                        str += form("%s:%d", line.FileName, line.LineNumber);
                     }
 
                     str += "\n";
