@@ -6,9 +6,6 @@
 // For example a GetParam64 does not need to be done at each iteration, it could be done once before the loop.
 bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
-    // if(!context->bc->getPrintName().containsNoCase("day9B"))
-    //     return true;
-
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (!ByteCode::isJump(ip) || ip->b.s32 > 0)
