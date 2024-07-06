@@ -708,6 +708,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->push(registersRC[ip->d.u32].u64);
             localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, ip->c.u32);
             break;
+        case ByteCodeOp::LocalCallPop0Param2:
+            context->push(registersRC[ip->c.u32].u64);
+            context->push(registersRC[ip->d.u32].u64);
+            localCall(context, reinterpret_cast<ByteCode*>(ip->a.pointer), 0, UINT32_MAX, 0);
+            break;
         case ByteCodeOp::LocalCallPop16Param2:
             context->push(registersRC[ip->c.u32].u64);
             context->push(registersRC[ip->d.u32].u64);
@@ -738,6 +743,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->push(registersRC[ip->d.u32].u64);
             ffiCallTrace(context, ip);
             context->incSP(ip->c.u32);
+            break;
+        case ByteCodeOp::ForeignCallPop0Param2:
+            context->push(registersRC[ip->c.u32].u64);
+            context->push(registersRC[ip->d.u32].u64);
+            ffiCallTrace(context, ip);
             break;
         case ByteCodeOp::ForeignCallPop16Param2:
             context->push(registersRC[ip->c.u32].u64);

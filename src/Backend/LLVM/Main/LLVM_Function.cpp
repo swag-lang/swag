@@ -5363,6 +5363,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pushRAParams.push_back(ip->d.u32);
                 emitLocalCall(buildParameters, context, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
+            case ByteCodeOp::LocalCallPop0Param2:
             case ByteCodeOp::LocalCallPop16Param2:
             case ByteCodeOp::LocalCallPop48Param2:
                 pushRAParams.push_back(ip->c.u32);
@@ -5378,6 +5379,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pushRAParams.push_back(ip->d.u32);
                 emitForeignCall(buildParameters, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
                 break;
+            case ByteCodeOp::ForeignCallPop0Param2:
             case ByteCodeOp::ForeignCallPop16Param2:
             case ByteCodeOp::ForeignCallPop48Param2:
                 pushRAParams.push_back(ip->c.u32);

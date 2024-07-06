@@ -42,14 +42,20 @@ void ByteCodeOptimizer::reduceCall(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip[1].op == ByteCodeOp::ForeignCall &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
-                //printf("X");
+                SET_OP(ip + 1, ByteCodeOp::ForeignCallPop0Param2);
+                ip[1].c.u32 = ip[0].a.u32;
+                ip[1].d.u32 = ip[0].b.u32;
+                setNop(context, ip);
                 break;
             }
 
             if (ip[1].op == ByteCodeOp::LocalCall &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
-                //printf("O");
+                SET_OP(ip + 1, ByteCodeOp::LocalCallPop0Param2);
+                ip[1].c.u32 = ip[0].a.u32;
+                ip[1].d.u32 = ip[0].b.u32;
+                setNop(context, ip);
                 break;
             }
 
@@ -312,7 +318,6 @@ void ByteCodeOptimizer::reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstr
     }
 }
 
-#pragma optimize("", false)
 bool ByteCodeOptimizer::optimizePassReduceX2(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
