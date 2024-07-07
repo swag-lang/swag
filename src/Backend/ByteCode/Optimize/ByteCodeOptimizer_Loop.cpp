@@ -8,24 +8,39 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        // Find a negative jump
         if (!ByteCode::isJump(ip) || ip->b.s32 > 0)
             continue;
 
         const auto ipStart = ip + ip->b.s32 + 1;
         auto       ipScan  = ipStart;
-        if (ipScan->op == ByteCodeOp::IncJumpIfEqual64)
+
+        // Zap non jump instructions
+        while (!ByteCode::isJump(ipScan))
             ipScan++;
+        if (ipScan == ip)
+            continue;
+
+        // We should have a jump to the instruction right after the original negative jump, or
+        // this is not a loop
+        const auto ipEnd = ipScan + ipScan->b.s32 + 1;
+        if (ipEnd != ip + 1)
+            continue;
+
+        const auto ipExitJump = ipScan;
+        ipScan                = ipStart;
 
         context->vecInst.clear();
         context->vecInstCopy.clear();
-        context->vecReg.clear();
         uint32_t countReg[RegisterList::MAX_REGISTERS] = {};
 
+        bool hasJumps = false;
         while (ipScan != ip)
         {
             // Test an inside jump that will escape the loop
-            if (ByteCode::isJump(ipScan))
+            if (ByteCode::isJump(ipScan) && ipScan != ipExitJump && ipScan != ip)
             {
+                hasJumps = true;
                 const auto test = ipScan + ipScan->b.s32 + 1;
                 if (test < ipStart || test > ip)
                     break;
@@ -42,7 +57,6 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 case ByteCodeOp::GetParam16:
                 case ByteCodeOp::GetParam32:
                 case ByteCodeOp::GetParam64:
-                case ByteCodeOp::GetParam64x2:
                 case ByteCodeOp::GetIncParam64:
                 case ByteCodeOp::MakeStackPointer:
                 case ByteCodeOp::MakeCompilerSegPointer:
@@ -121,58 +135,55 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         {
             auto cstOp = it + shift;
 
-            if (ByteCode::hasWriteRegInB(cstOp) && countReg[cstOp->b.u32] > 1)
-                break;
-            if (ByteCode::hasWriteRegInC(cstOp) && countReg[cstOp->c.u32] > 1)
-                break;
-            if (ByteCode::hasWriteRegInD(cstOp) && countReg[cstOp->d.u32] > 1)
-                break;
+            SWAG_ASSERT(ByteCode::hasWriteRegInA(cstOp));
+            SWAG_ASSERT(!ByteCode::hasWriteRegInB(cstOp));
+            SWAG_ASSERT(!ByteCode::hasWriteRegInC(cstOp));
+            SWAG_ASSERT(!ByteCode::hasWriteRegInD(cstOp));
+
+            uint32_t newReg = 0;
+            for (const auto& it1 : context->vecInstCopy)
+            {
+                if (it1.op == cstOp->op &&
+                    (it1.b.u64 == cstOp->b.u64 || !ByteCode::hasSomethingInB(cstOp)) &&
+                    (it1.c.u64 == cstOp->c.u64 || !ByteCode::hasSomethingInC(cstOp)) &&
+                    (it1.d.u64 == cstOp->d.u64 || !ByteCode::hasSomethingInD(cstOp)))
+                {
+                    newReg = it1.a.u32;
+                    break;
+                }
+            }
+
+            if (newReg)
+            {
+                SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
+                cstOp->b.u32 = newReg;
+                continue;
+            }
 
             // If the register is used more than once, then we allocate a new one and make a copy at the previous place.
-            // The copy will have a change to be removed, and if not, the loop will just have one copy instead of the original instruction.
-            if (ByteCode::hasWriteRegInA(cstOp) && countReg[cstOp->a.u32] > 1)
+            // The copy will have a chance to be removed, and if not, the loop will just have one copy instead of the original instruction.
+            if (countReg[cstOp->a.u32] > 1 || hasJumps)
             {
                 if (context->bc->maxReservedRegisterRC == RegisterList::MAX_REGISTERS)
                     break;
-
-                uint32_t newReg = 0;
-                for (uint32_t i = 0; i < context->vecInstCopy.count; i++)
-                {
-                    const auto& it1 = context->vecInstCopy[i];
-                    if (it1.op == cstOp->op &&
-                        it1.b.u64 == cstOp->b.u64 &&
-                        it1.c.u64 == cstOp->c.u64 &&
-                        it1.d.u64 == cstOp->d.u64 &&
-                        it1.flags == cstOp->flags)
-                    {
-                        newReg = context->vecReg[i];
-                        break;
-                    }
-                }
-
-                if (newReg)
-                {
-                    SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
-                    cstOp->b.u32 = newReg;
-                    continue;
-                }
-
                 if (!insertNopBefore(context, ipStart))
                     break;
-                shift += 1;
 
+                shift += 1;
                 newReg = context->bc->maxReservedRegisterRC;
                 context->bc->maxReservedRegisterRC++;
 
-                cstOp    = it + shift;
-                *ipStart = *cstOp;
-                context->vecInstCopy.push_back(*cstOp);
-                context->vecReg.push_back(newReg);
+                cstOp          = it + shift;
+                ipStart->op    = cstOp->op;
+                ipStart->a.u32 = newReg;
+                ipStart->b     = cstOp->b;
+                ipStart->c     = cstOp->c;
+                ipStart->d     = cstOp->d;
+
+                context->vecInstCopy.push_back(*ipStart);
 
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
                 cstOp->b.u32 = newReg;
-
-                ipStart->a.u32 = newReg;
             }
 
             // If the register is written only once in the loop, then we can just move the instruction outside of the loop.
@@ -182,8 +193,15 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                     break;
 
                 shift += 1;
-                cstOp    = it + shift;
-                *ipStart = *cstOp;
+                cstOp       = it + shift;
+                ipStart->op = cstOp->op;
+                ipStart->a  = cstOp->a;
+                ipStart->b  = cstOp->b;
+                ipStart->c  = cstOp->c;
+                ipStart->d  = cstOp->d;
+
+                context->vecInstCopy.push_back(*ipStart);
+
                 setNop(context, cstOp);
             }
         }
