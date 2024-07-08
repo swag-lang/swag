@@ -158,7 +158,7 @@ bool AstFuncDecl::mustAutoInline() const
 {
     if (!content)
         return false;
-    if (token.sourceFile->module->buildCfg.byteCodeAutoInline == false)
+    if (!token.sourceFile->module->buildCfg.byteCodeAutoInline)
         return false;
     if (hasAttribute(ATTRIBUTE_NO_INLINE))
         return false;
@@ -176,7 +176,7 @@ bool AstFuncDecl::mustUserInline(bool forExport) const
         return false;
     if (hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
         return true;
-    if (token.sourceFile->module->buildCfg.byteCodeInline == false && !forExport)
+    if (!token.sourceFile->module->buildCfg.byteCodeInline && !forExport)
         return false;
     if (hasAttribute(ATTRIBUTE_INLINE))
         return true;
