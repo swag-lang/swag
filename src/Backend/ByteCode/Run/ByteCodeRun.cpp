@@ -96,12 +96,10 @@ SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, [
     }
 
     g_ByteCodeStackTrace->pop();
-
     context->ip = context->pop<ByteCodeInstruction*>();
     context->bc = context->pop<ByteCode*>();
     context->bp = context->pop<uint8_t*>();
 
-    leave = false;
     if (context->curRC == context->firstRC)
     {
         context->popAlt<uint32_t>();
@@ -111,6 +109,8 @@ SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, [
         leave = true;
         return;
     }
+
+    leave = false;
 
     // Need to pop some parameters, by increasing the stack pointer
     const auto popP = context->popAlt<uint32_t>();
@@ -128,25 +128,25 @@ SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, [
 
 #ifdef SWAG_STATS
     if (g_CommandLine.profile)
-    {
         bc->profileCumTime += OS::timerNow() - bc->profileStart;
-    }
 #endif
 }
 
 SWAG_FORCE_INLINE void ByteCodeRun::localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {
+    SWAG_ASSERT(bc && bc->out);
     SWAG_ASSERT(!bc->node || bc->node->hasSemFlag(SEMFLAG_BYTECODE_GENERATED));
 
-    context->push(context->bp);
-    context->push(context->bc);
-    context->push(context->ip);
+    context->checkStack(3 * sizeof(void*));
+    context->pushSafe(context->bp);
+    context->pushSafe(context->bc);
+    context->pushSafe(context->ip);
+
     context->oldBc = context->bc;
     context->bc    = bc;
-    SWAG_ASSERT(context->bc);
-    SWAG_ASSERT(context->bc->out);
-    context->ip = context->bc->out;
-    context->bp = context->sp;
+    context->ip    = context->bc->out;
+    context->bp    = context->sp;
+
     enterByteCode(context, context->bc, popParamsOnRet, returnRegOnRet, incSPPostCall);
 }
 

@@ -30,6 +30,12 @@ struct ByteCodeRunContext
     static void stackOverflow();
     uint32_t    getRegCount(uint32_t cur);
 
+    void checkStack(size_t size) const
+    {
+        if (sp - size < spAlt)
+            stackOverflow();
+    }
+    
     template<typename T>
     T pop()
     {
@@ -48,12 +54,14 @@ struct ByteCodeRunContext
     template<typename T>
     void push(const T& value)
     {
-        if (sp - sizeof(T) < spAlt)
-        {
-            stackOverflow();
-            return;
-        }
+        checkStack(sizeof(T));
+        sp -= sizeof(T);
+        *reinterpret_cast<T*>(sp) = value;
+    }
 
+    template<typename T>
+    void pushSafe(const T& value)
+    {
         sp -= sizeof(T);
         *reinterpret_cast<T*>(sp) = value;
     }
