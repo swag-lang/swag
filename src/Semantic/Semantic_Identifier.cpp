@@ -340,12 +340,16 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
     result.clear();
     has.clear();
 
+    const auto findParent = node->findParent(AstNodeKind::Return, AstNodeKind::FuncCallParam);
+
     // If this is a parameter of a function call, we will try to deduce the type with a function signature
-    const auto fctCallParam = node->findParent(AstNodeKind::FuncCallParam);
-    if (fctCallParam &&
-        fctCallParam->parent->is(AstNodeKind::FuncCallParams) &&
-        fctCallParam->parent->parent->is(AstNodeKind::Identifier))
+    if (findParent &&
+        findParent->is(AstNodeKind::FuncCallParam) &&
+        findParent->parent->is(AstNodeKind::FuncCallParams) &&
+        findParent->parent->parent->is(AstNodeKind::Identifier))
     {
+        const auto fctCallParam = castAst<AstFuncCallParam>(findParent);
+
         VectorNative<OneSymbolMatch> symbolMatch;
 
         const auto idref = castAst<AstIdentifierRef>(fctCallParam->parent->parent->parent, AstNodeKind::IdentifierRef);
@@ -448,24 +452,21 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
             }
         }
     }
-    else
+    else if (findParent && findParent->is(AstNodeKind::Return))
     {
-        const auto fctReturn = node->findParent(AstNodeKind::Return);
-        if (fctReturn)
+        const auto fctReturn = castAst<AstReturn>(findParent);
+        const auto funcNode  = getFunctionForReturn(fctReturn);
+        if (funcNode->returnType)
         {
-            const auto funcNode = getFunctionForReturn(fctReturn);
-            if (funcNode->returnType)
+            const auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC | CONCRETE_FORCE_ALIAS);
+            if (typeInfo->isEnum())
             {
-                const auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC | CONCRETE_FORCE_ALIAS);
-                if (typeInfo->isEnum())
+                auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+                has.push_back_once({nullptr, typeEnum});
+                if (typeEnum->contains(node->token.text))
                 {
-                    auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-                    has.push_back_once({nullptr, typeEnum});
-                    if (typeEnum->contains(node->token.text))
-                    {
-                        result.push_back(typeEnum);
-                        return true;
-                    }
+                    result.push_back(typeEnum);
+                    return true;
                 }
             }
         }
