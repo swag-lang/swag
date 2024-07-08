@@ -3293,6 +3293,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
     }
 }
 
+#pragma optimize("", off)
 void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     switch (ip->op)
@@ -3375,6 +3376,17 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
             {
                 ip[0].b.u64 = min(ip[0].b.u64, ip[1].b.u64);
                 setNop(context, ip + 1);
+                break;
+            }
+
+            if (ip->b.u64 == 0xFFFFFFFF &&
+                ip[1].op == ByteCodeOp::CastS32S64 &&
+                ip[1].b.u32 == ip[0].a.u32 &&
+                ip[1].b.u32 != ip[1].a.u32 &&
+                !ip[1].hasFlag(BCI_START_STMT))
+            {
+                ByteCode::swapInstructions(ip, ip + 1);
+                context->setDirtyPass();
                 break;
             }
 

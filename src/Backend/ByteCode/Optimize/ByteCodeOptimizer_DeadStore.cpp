@@ -6,53 +6,39 @@
 bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, const ByteCodeOptTreeParseContext& parseCxt) {
-        auto       ip    = parseCxt.curIp;
+        const auto ip    = parseCxt.curIp;
         const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
 
         uint32_t regScan = UINT32_MAX;
-        if (flags.has(OPFLAG_WRITE_A) && !flags.has(OPFLAG_READ_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
-            regScan = ip->a.u32;
-        if (flags.has(OPFLAG_WRITE_B) && !flags.has(OPFLAG_READ_B | OPFLAG_WRITE_A | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
-            regScan = ip->b.u32;
-        if (flags.has(OPFLAG_WRITE_C) && !flags.has(OPFLAG_READ_C | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_D))
-            regScan = ip->c.u32;
-        if (flags.has(OPFLAG_WRITE_D) && !flags.has(OPFLAG_READ_D | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C))
-            regScan = ip->d.u32;
-        if (regScan == UINT32_MAX)
-            return;
 
-        bool forCpy = false;
-        if (ip[1].b.u32 == regScan &&
-            !ip[1].flags.has(BCI_START_STMT) &&
-            !ip[1].flags.has(BCI_NOT_PURE))
+        if (flags.has(OPFLAG_WRITE_A) && !flags.has(OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
         {
-            if (ip[1].op == ByteCodeOp::CopyRBtoRA8 ||
-                ip[1].op == ByteCodeOp::CopyRBtoRA16 ||
-                ip[1].op == ByteCodeOp::CopyRBtoRA32 ||
-                ip[1].op == ByteCodeOp::CopyRBtoRA64)
+            switch (ip->op)
             {
-                forCpy = true;
-                ip++;
+                case ByteCodeOp::ClearMaskU32:
+                case ByteCodeOp::ClearMaskU64:
+                    regScan = ip->a.u32;
+                    break;
+                default:
+                    if (!flags.has(OPFLAG_READ_A))
+                        regScan = ip->a.u32;
+                    break;
             }
         }
+        else if (flags.has(OPFLAG_WRITE_B) && !flags.has(OPFLAG_READ_B | OPFLAG_WRITE_A | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
+            regScan = ip->b.u32;
+        else if (flags.has(OPFLAG_WRITE_C) && !flags.has(OPFLAG_READ_C | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_D))
+            regScan = ip->c.u32;
+        else if (flags.has(OPFLAG_WRITE_D) && !flags.has(OPFLAG_READ_D | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C))
+            regScan = ip->d.u32;
+
+        if (regScan == UINT32_MAX)
+            return;
 
         if (hasReadRefToReg(context, regScan, parseCxt.curNode, ip))
             return;
 
-        if (forCpy)
-        {
-            if (ByteCode::hasWriteRegInA(ip - 1))
-                ip[-1].a.u32 = ip->a.u32;
-            else if (ByteCode::hasWriteRegInB(ip - 1))
-                ip[-1].b.u32 = ip->a.u32;
-            else if (ByteCode::hasWriteRegInC(ip - 1))
-                ip[-1].c.u32 = ip->a.u32;
-            else if (ByteCode::hasWriteRegInD(ip - 1))
-                ip[-1].d.u32 = ip->a.u32;
-            setNop(context, ip);
-        }
-        else
-            setNop(context, ip);
+        setNop(context, ip);
     });
 
     return true;
