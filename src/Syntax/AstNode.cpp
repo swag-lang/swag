@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -244,6 +245,22 @@ ExportedTypeInfo* AstNode::getConstantGenTypeInfo() const
 {
     SWAG_ASSERT(isConstantGenTypeInfo());
     return static_cast<ExportedTypeInfo*>(computedValue()->getStorageAddr());
+}
+
+bool AstNode::addAnyType(SemanticContext* context, TypeInfo* typeinfo)
+{
+    const auto module = context->sourceFile->module;
+
+    const auto anyTypeSegment = Semantic::getConstantSegFromContext(this);
+    addExtraPointer(ExtraPointerKind::AnyTypeSegment, anyTypeSegment);
+
+    uint32_t          offset;
+    ExportedTypeInfo* type;
+    SWAG_CHECK(module->typeGen.genExportedTypeInfo(context, typeinfo, anyTypeSegment, &offset, 0, nullptr, &type));
+
+    addExtraValue(ExtraPointerKind::AnyTypeOffset, offset);
+    addExtraPointer(ExtraPointerKind::AnyTypeValue, type);
+    return true;
 }
 
 bool AstNode::isConstantTrue() const

@@ -53,14 +53,11 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
         if (leftTypeInfo->isAny())
         {
-            ExportedTypeInfo* anyType = nullptr;
-
-            if (left->resolvedSymbolOverload() && 
-                left->resolvedSymbolOverload()->fromInlineParam && 
-                left->resolvedSymbolOverload()->fromInlineParam->hasExtraPointer(ExtraPointerKind::AnyTypeSegment))
+            ExportedTypeInfo* anyType;
+            const auto        leftParam = left->resolvedSymbolOverload() ? left->resolvedSymbolOverload()->fromInlineParam : nullptr;
+            if (leftParam && leftParam->hasExtraPointer(ExtraPointerKind::AnyTypeValue))
             {
-                const auto anyTypeSegment = left->resolvedSymbolOverload()->fromInlineParam->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
-                anyType                   = reinterpret_cast<ExportedTypeInfo*>(anyTypeSegment->address(left->resolvedSymbolOverload()->fromInlineParam->extMisc()->anyTypeOffset));
+                anyType = leftParam->extraPointer<ExportedTypeInfo>(ExtraPointerKind::AnyTypeValue);
             }
             else
                 anyType = static_cast<SwagAny*>(left->computedValue()->getStorageAddr())->type;

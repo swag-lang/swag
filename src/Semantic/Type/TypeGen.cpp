@@ -10,11 +10,11 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, GenExportFlags genFlags, TypeInfo** ptrTypeInfo)
+bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, GenExportFlags genFlags, TypeInfo** ptrTypeInfo, ExportedTypeInfo** result)
 {
     auto&      mapPerSeg = getMapPerSeg(storageSegment);
     ScopedLock lk(mapPerSeg.mutex);
-    return genExportedTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, genFlags, ptrTypeInfo);
+    return genExportedTypeInfoNoLock(context, result, typeInfo, storageSegment, storage, genFlags, ptrTypeInfo);
 }
 
 bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,

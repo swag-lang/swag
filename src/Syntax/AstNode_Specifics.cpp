@@ -160,12 +160,28 @@ bool AstFuncDecl::mustAutoInline() const
         return false;
     if (!token.sourceFile->module->buildCfg.byteCodeAutoInline)
         return false;
-    if (hasAttribute(ATTRIBUTE_NO_INLINE))
+    if (hasAttribute(ATTRIBUTE_NO_INLINE | ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN | ATTRIBUTE_COMPILER))
         return false;
+    if (hasSpecFlag(SPEC_FLAG_IMPL))
+        return false;    
 
     // All short functions
     if (hasSpecFlag(SPEC_FLAG_SHORT_FORM))
         return true;
+
+#if 0
+    if (content->is(AstNodeKind::Return))
+    {
+        printf("A: %s\n", token.text.c_str());
+        return true;
+    }
+
+    if (content->firstChild() && content->firstChild()->is(AstNodeKind::Return))
+    {
+        printf("B: %s\n", token.text.c_str());
+        return true;
+    }
+#endif
 
     return false;
 }

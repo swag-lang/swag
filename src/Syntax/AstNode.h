@@ -276,6 +276,8 @@ enum class ExtraPointerKind
 {
     CastItf,
     AnyTypeSegment,
+    AnyTypeOffset,
+    AnyTypeValue,
     ExportNode,
     CollectTypeInfo,
     AlternativeNode,
@@ -321,6 +323,7 @@ struct AstNode
     ComputedValue* computedValue() const { return extSemantic()->computedValue; }
     bool           hasComputedValue() const { return safeComputedValue() != nullptr; }
 
+    bool              addAnyType(SemanticContext* context, TypeInfo* typeinfo);
     bool              isConstantGenTypeInfo() const;
     ExportedTypeInfo* getConstantGenTypeInfo() const;
     bool              isConstantTrue() const;
@@ -425,7 +428,6 @@ struct AstNode
         RegisterList additionalRegisterRC;
         uint32_t     castOffset    = 0;
         uint32_t     stackOffset   = 0;
-        uint32_t     anyTypeOffset = 0;
     };
 
     struct NodeExtension
@@ -474,21 +476,37 @@ struct AstNode
     }
 
     template<typename T>
-    const T* extraPointer(ExtraPointerKind extraPtrKind) const
+    T* extraPointer(ExtraPointerKind extraPtrKind) const
     {
         if (!hasExtMisc())
             return nullptr;
         const auto it = extMisc()->extraPointers.find(extraPtrKind);
         if (it != extMisc()->extraPointers.end())
-            return static_cast<const T*>(it->second);
+            return static_cast<T*>(it->second);
         return nullptr;
     }
+
+    uint64_t extraValue(ExtraPointerKind extraPtrKind) const
+    {
+        if (!hasExtMisc())
+            return 0;
+        const auto it = extMisc()->extraPointers.find(extraPtrKind);
+        if (it != extMisc()->extraPointers.end())
+            return reinterpret_cast<uint64_t>(it->second);
+        return 0;
+    }    
 
     void addExtraPointer(ExtraPointerKind extraPtrKind, void* value)
     {
         allocateExtension(ExtensionKind::Misc);
         extMisc()->extraPointers[extraPtrKind] = value;
     }
+
+    void addExtraValue(ExtraPointerKind extraPtrKind, uint64_t value)
+    {
+        allocateExtension(ExtensionKind::Misc);
+        extMisc()->extraPointers[extraPtrKind] = reinterpret_cast<void*>(value);
+    }    
 
     bool hasExtraPointer(ExtraPointerKind extraPtrKind) const
     {

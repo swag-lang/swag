@@ -95,7 +95,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extMisc()->extraPointers     = from->extMisc()->extraPointers;
         extMisc()->castOffset        = from->extMisc()->castOffset;
         extMisc()->stackOffset       = from->extMisc()->stackOffset;
-        extMisc()->anyTypeOffset     = from->extMisc()->anyTypeOffset;
         extMisc()->alternativeScopes = from->extMisc()->alternativeScopes;
     }
 

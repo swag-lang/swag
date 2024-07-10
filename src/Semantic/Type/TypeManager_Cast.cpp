@@ -2474,13 +2474,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
                 toNode->castedTypeInfo = toType;
                 toNode->typeInfo       = fromType;
-                const auto module      = context->sourceFile->module;
-                auto&      typeGen     = module->typeGen;
-
-                // :AnyTypeSegment
-                const auto anyTypeSegment = Semantic::getConstantSegFromContext(toNode);
-                toNode->addExtraPointer(ExtraPointerKind::AnyTypeSegment, anyTypeSegment);
-                SWAG_CHECK(typeGen.genExportedTypeInfo(context, fromType, anyTypeSegment, &toNode->extMisc()->anyTypeOffset));
+                SWAG_CHECK(toNode->addAnyType(context, fromType));
             }
 
             return true;
@@ -2501,13 +2495,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
-            const auto module        = context->sourceFile->module;
-            auto&      typeGen       = module->typeGen;
-
-            // :AnyTypeSegment
-            const auto anyTypeSegment = Semantic::getConstantSegFromContext(fromNode);
-            fromNode->addExtraPointer(ExtraPointerKind::AnyTypeSegment, anyTypeSegment);
-            SWAG_CHECK(typeGen.genExportedTypeInfo(context, fromNode->castedTypeInfo, anyTypeSegment, &fromNode->extMisc()->anyTypeOffset));
+            SWAG_CHECK(fromNode->addAnyType(context, fromNode->castedTypeInfo));
         }
     }
     else if (fromType->isAny())
@@ -2580,13 +2568,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
-            const auto module        = context->sourceFile->module;
-            auto&      typeGen       = module->typeGen;
-
-            // :AnyTypeSegment
-            const auto anyTypeSegment = Semantic::getConstantSegFromContext(fromNode);
-            fromNode->addExtraPointer(ExtraPointerKind::AnyTypeSegment, anyTypeSegment);
-            SWAG_CHECK(typeGen.genExportedTypeInfo(context, toType, anyTypeSegment, &fromNode->extMisc()->anyTypeOffset));
+            SWAG_CHECK(fromNode->addAnyType(context, toType));
         }
     }
 

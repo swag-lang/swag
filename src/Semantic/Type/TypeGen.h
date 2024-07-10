@@ -40,7 +40,7 @@ struct TypeGen
 
     void         setup(const Utf8& moduleName);
     void         release();
-    bool         genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, GenExportFlags genFlags = 0, TypeInfo** ptrTypeInfo = nullptr);
+    bool         genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, GenExportFlags genFlags = 0, TypeInfo** ptrTypeInfo = nullptr, ExportedTypeInfo** result = nullptr);
     bool         genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** result, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, GenExportFlags genFlags = 0, TypeInfo** ptrTypeInfo = nullptr);
     bool         genExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* param, GenExportFlags genFlags);
     bool         genExportedSubTypeInfo(JobContext* context, ExportedTypeInfo** result, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, GenExportFlags genFlags);

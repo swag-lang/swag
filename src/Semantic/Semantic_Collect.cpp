@@ -53,8 +53,8 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         else if (assignment)
         {
             // Store value in constant storageSegment
-            auto     constSegment = getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
-            uint32_t storageOffsetValue;
+            const auto constSegment = getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
+            uint32_t   storageOffsetValue;
             SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignment->castedTypeInfo, assignment));
 
             // Then reference that value and the concrete type info
@@ -65,9 +65,10 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
 
             // :AnyTypeSegment
             SWAG_ASSERT(assignment->hasExtraPointer(ExtraPointerKind::AnyTypeSegment));
-            constSegment = assignment->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
-            ptrAny->type = reinterpret_cast<ExportedTypeInfo*>(constSegment->address(assignment->extMisc()->anyTypeOffset));
-            storageSegment->addInitPtr(storageOffset + 8, assignment->extMisc()->anyTypeOffset, constSegment->kind);
+            const auto anyTypeSegment = assignment->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
+            const auto anyTypeOffset  = assignment->extraValue(ExtraPointerKind::AnyTypeOffset);
+            ptrAny->type              = assignment->extraPointer<ExportedTypeInfo>(ExtraPointerKind::AnyTypeValue);
+            storageSegment->addInitPtr(storageOffset + 8, static_cast<uint32_t>(anyTypeOffset), anyTypeSegment->kind);
         }
 
         return true;
