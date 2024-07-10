@@ -1,5 +1,7 @@
 #include "pch.h"
+
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "DataSegment.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
@@ -51,17 +53,28 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
         if (leftTypeInfo->isAny())
         {
+            ExportedTypeInfo* anyType = nullptr;
+
+            if (left->resolvedSymbolOverload() && 
+                left->resolvedSymbolOverload()->fromInlineParam && 
+                left->resolvedSymbolOverload()->fromInlineParam->hasExtraPointer(ExtraPointerKind::AnyTypeSegment))
+            {
+                const auto anyTypeSegment = left->resolvedSymbolOverload()->fromInlineParam->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
+                anyType                   = reinterpret_cast<ExportedTypeInfo*>(anyTypeSegment->address(left->resolvedSymbolOverload()->fromInlineParam->extMisc()->anyTypeOffset));
+            }
+            else
+                anyType = static_cast<SwagAny*>(left->computedValue()->getStorageAddr())->type;
+
             // Can only be compared to null
-            const auto any = static_cast<SwagAny*>(left->computedValue()->getStorageAddr());
             if (right->castedTypeInfo)
             {
                 // :ComparedToNull
                 SWAG_ASSERT(right->castedTypeInfo->isPointerNull());
-                node->computedValue()->reg.b = !any->type;
+                node->computedValue()->reg.b = !anyType;
             }
             else
             {
-                const auto ptr1              = any->type;
+                const auto ptr1              = anyType;
                 const auto ptr2              = right->getConstantGenTypeInfo();
                 node->computedValue()->reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
             }
