@@ -99,7 +99,10 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         const auto block        = castAst<AstSwitchCaseBlock>(caseNode->secondChild(), AstNodeKind::SwitchCaseBlock);
         block->resultRegisterRc = caseNode->resultRegisterRc;
         parameters.children.push_back(switchNode->expression);
-        parameters.children.push_back(caseNode->hasSemFlag(SEMFLAG_TRY_1) ? rangeNode->expressionUp : rangeNode->expressionLow);
+        if (caseNode->hasSemFlag(SEMFLAG_TRY_1))
+            parameters.children.push_back(!caseNode->hasSemFlag(SEMFLAG_TRY_2) ? rangeNode->expressionUp : rangeNode->expressionLow);
+        else
+            parameters.children.push_back(!caseNode->hasSemFlag(SEMFLAG_TRY_2) ? rangeNode->expressionLow : rangeNode->expressionUp);
         allParams     = &parameters;
         numCallParams = parameters.childCount();
     }

@@ -74,6 +74,7 @@ bool ByteCodeGen::emitSwitchCaseRange(ByteCodeGenContext* context, AstSwitchCase
 
         if (swap)
         {
+            caseNode->addSemFlag(SEMFLAG_TRY_2);
             std::swap(low, up);
             std::swap(excludeLow, excludeUp);
         }
@@ -90,7 +91,7 @@ bool ByteCodeGen::emitSwitchCaseRange(ByteCodeGenContext* context, AstSwitchCase
     // Lower bound
     if (caseNode->hasSpecialFuncCall())
     {
-        if(!caseNode->hasSemFlag(SEMFLAG_TRY_1))
+        if (!caseNode->hasSemFlag(SEMFLAG_TRY_1))
         {
             SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, low, excludeLow ? TokenId::SymGreater : TokenId::SymGreaterEqual, ra));
             YIELD();
