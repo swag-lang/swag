@@ -5,22 +5,23 @@ struct AA
 
 impl AA
 {
-    //#[Swag.Inline]
+    #[Swag.Inline]
     func opCmp(using self, x: s32)->s32
     {
         return vv <=> x
     }
 }
 
+//#[Swag.PrintBc]
 #test
 {
     var x: AA
     var a = 0
     switch x
     {
-    case 10 to 5:  a = 1; break
+    case 5 to 10:  a = 1; break
     default:       @assert(false)
     }
 
-    @print(a)
+    @assert(a == 1)
 }

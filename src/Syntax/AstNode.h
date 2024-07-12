@@ -426,8 +426,8 @@ struct AstNode
         VectorMap<ExtraPointerKind, void*> extraPointers;
 
         RegisterList additionalRegisterRC;
-        uint32_t     castOffset    = 0;
-        uint32_t     stackOffset   = 0;
+        uint32_t     castOffset  = 0;
+        uint32_t     stackOffset = 0;
     };
 
     struct NodeExtension
@@ -494,7 +494,7 @@ struct AstNode
         if (it != extMisc()->extraPointers.end())
             return reinterpret_cast<uint64_t>(it->second);
         return 0;
-    }    
+    }
 
     void addExtraPointer(ExtraPointerKind extraPtrKind, void* value)
     {
@@ -506,7 +506,7 @@ struct AstNode
     {
         allocateExtension(ExtensionKind::Misc);
         extMisc()->extraPointers[extraPtrKind] = reinterpret_cast<void*>(value);
-    }    
+    }
 
     bool hasExtraPointer(ExtraPointerKind extraPtrKind) const
     {
@@ -1178,8 +1178,9 @@ struct AstRange : AstNode
 
     AstNode* clone(CloneContext& context);
 
-    AstNode* expressionLow;
-    AstNode* expressionUp;
+    AstNode*     expressionLow;
+    AstNode*     expressionUp;
+    RegisterList leftRegister;
 };
 
 struct AstMakePointer : AstNode

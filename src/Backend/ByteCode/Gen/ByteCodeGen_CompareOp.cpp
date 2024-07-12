@@ -43,7 +43,7 @@ bool ByteCodeGen::emitSwitchCaseSpecialFunc(ByteCodeGenContext* context, AstSwit
     return true;
 }
 
-bool ByteCodeGen::emitSwitchCaseRange(ByteCodeGenContext* context, AstSwitchCase* caseNode, const AstRange* rangeNode, RegisterList& result)
+bool ByteCodeGen::emitSwitchCaseRange(ByteCodeGenContext* context, AstSwitchCase* caseNode, AstRange* rangeNode, RegisterList& result)
 {
     auto low        = rangeNode->expressionLow;
     auto up         = rangeNode->expressionUp;
@@ -90,8 +90,17 @@ bool ByteCodeGen::emitSwitchCaseRange(ByteCodeGenContext* context, AstSwitchCase
     // Lower bound
     if (caseNode->hasSpecialFuncCall())
     {
-        SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, low, excludeLow ? TokenId::SymGreater : TokenId::SymGreaterEqual, ra));
-        YIELD();
+        if(!caseNode->hasSemFlag(SEMFLAG_TRY_1))
+        {
+            SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, low, excludeLow ? TokenId::SymGreater : TokenId::SymGreaterEqual, ra));
+            YIELD();
+            caseNode->removeAstFlag(AST_INLINED);
+            caseNode->removeSemFlag(SEMFLAG_RESOLVE_INLINED);
+            caseNode->addSemFlag(SEMFLAG_TRY_1);
+            rangeNode->leftRegister = ra;
+        }
+        else
+            ra = rangeNode->leftRegister;
     }
     else if (excludeLow)
     {
