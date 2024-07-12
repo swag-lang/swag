@@ -119,7 +119,7 @@ namespace ByteCodeGen
     bool emitBinaryOpMul(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitBinaryOpDiv(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitCompareOpPostSpecialFunc(const ByteCodeGenContext* context, TokenId op);
-    bool emitSwitchCaseSpecialFunc(ByteCodeGenContext* context, AstSwitchCase* left, AstNode* right, TokenId op);
+    bool emitSwitchCaseSpecialFunc(ByteCodeGenContext* context, AstSwitchCase* caseNode, AstNode* expr, TokenId op, RegisterList& result);
     bool emitSwitchCaseRange(ByteCodeGenContext* context, AstSwitchCase* left, AstNode* right, const RegisterList& r2);
     bool emitBinaryOpModulo(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitLogicalAndAfterLeft(ByteCodeGenContext* context);

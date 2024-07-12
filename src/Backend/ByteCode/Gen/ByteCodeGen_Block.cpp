@@ -856,24 +856,8 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                 }
                 else if (caseNode->hasSpecialFuncCall())
                 {
-                    // This registers are shared and must be kept.
-                    // We need to do that because the special function could be inlined, and in that case will want to release
-                    // the parameters, which are our registers. And we do not want them to be released except by us...
-                    caseNode->ownerSwitch->resultRegisterRc.cannotFree             = true;
-                    caseNode->ownerSwitch->expression->resultRegisterRc.cannotFree = true;
-                    expr->resultRegisterRc.cannotFree                              = true;
-
-                    SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, expr, TokenId::SymEqualEqual));
+                    SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, expr, TokenId::SymEqualEqual, r0));
                     YIELD();
-
-                    caseNode->ownerSwitch->resultRegisterRc.cannotFree             = false;
-                    caseNode->ownerSwitch->expression->resultRegisterRc.cannotFree = false;
-                    expr->resultRegisterRc.cannotFree                              = false;
-
-                    if (caseNode->lastChild()->is(AstNodeKind::Inline))
-                        r0 = caseNode->lastChild()->resultRegisterRc;
-                    else
-                        r0 = node->resultRegisterRc;
                 }
                 else if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE))
                 {
