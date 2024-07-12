@@ -93,9 +93,11 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     }
     else if (parent->is(AstNodeKind::SwitchCase))
     {
-        const auto caseNode   = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
-        const auto switchNode = castAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
-        const auto rangeNode  = castAst<AstRange>(caseNode->firstChild(), AstNodeKind::Range);
+        const auto caseNode     = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
+        const auto switchNode   = castAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
+        const auto rangeNode    = castAst<AstRange>(caseNode->firstChild(), AstNodeKind::Range);
+        const auto block        = castAst<AstSwitchCaseBlock>(caseNode->secondChild(), AstNodeKind::SwitchCaseBlock);
+        block->resultRegisterRc = caseNode->resultRegisterRc;
         parameters.children.push_back(switchNode->expression);
         parameters.children.push_back(rangeNode->expressionLow);
         allParams     = &parameters;
@@ -846,13 +848,9 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                 RegisterList r0;
                 if (expr->is(AstNodeKind::Range))
                 {
-                    r0 = reserveRegisterRC(context);
-                    SWAG_CHECK(emitSwitchCaseRange(context, caseNode, expr, r0));
-                    if (context->result != ContextResult::Done)
-                    {
-                        freeRegisterRC(context, r0);
-                        return true;
-                    }
+                    const auto rangeNode = castAst<AstRange>(expr, AstNodeKind::Range);
+                    SWAG_CHECK(emitSwitchCaseRange(context, caseNode, rangeNode, r0));
+                    YIELD();
                 }
                 else if (caseNode->hasSpecialFuncCall())
                 {

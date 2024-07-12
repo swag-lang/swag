@@ -7,13 +7,48 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 
-bool ByteCodeGen::emitSwitchCaseRange(ByteCodeGenContext* context, AstSwitchCase* left, AstNode* right, const RegisterList& r2)
+bool ByteCodeGen::emitSwitchCaseSpecialFunc(ByteCodeGenContext* context, AstSwitchCase* caseNode, AstNode* expr, TokenId op, RegisterList& result)
 {
-    const auto rangeNode  = castAst<AstRange>(right, AstNodeKind::Range);
-    auto       low        = rangeNode->expressionLow;
-    auto       up         = rangeNode->expressionUp;
-    bool       excludeLow = false;
-    bool       excludeUp  = rangeNode->hasSpecFlag(AstRange::SPEC_FLAG_EXCLUDE_UP);
+    SWAG_ASSERT(caseNode->hasSpecialFuncCall());
+
+    // This registers are shared and must be kept.
+    // We need to do that because the special function could be inlined, and in that case will want to release
+    // the parameters, which are our registers. And we do not want them to be released except by us...
+    caseNode->ownerSwitch->resultRegisterRc.cannotFree             = true;
+    caseNode->ownerSwitch->expression->resultRegisterRc.cannotFree = true;
+    expr->resultRegisterRc.cannotFree                              = true;
+
+    const auto r0 = caseNode->ownerSwitch->resultRegisterRc;
+    const auto r1 = expr->resultRegisterRc;
+
+    context->allocateTempCallParams();
+    context->allParamsTmp->children.push_back(caseNode);
+    context->allParamsTmp->children.push_back(expr);
+    caseNode->resultRegisterRc = r0;
+    expr->resultRegisterRc     = r1;
+    SWAG_CHECK(emitUserOp(context, context->allParamsTmp, caseNode, false));
+    YIELD();
+    SWAG_CHECK(emitCompareOpPostSpecialFunc(context, op));
+    YIELD();
+
+    caseNode->ownerSwitch->resultRegisterRc.cannotFree             = false;
+    caseNode->ownerSwitch->expression->resultRegisterRc.cannotFree = false;
+    expr->resultRegisterRc.cannotFree                              = false;
+
+    if (caseNode->lastChild()->is(AstNodeKind::Inline))
+        result = caseNode->lastChild()->resultRegisterRc;
+    else
+        result = context->node->resultRegisterRc;
+
+    return true;
+}
+
+bool ByteCodeGen::emitSwitchCaseRange(ByteCodeGenContext* context, AstSwitchCase* caseNode, const AstRange* rangeNode, RegisterList& result)
+{
+    auto low        = rangeNode->expressionLow;
+    auto up         = rangeNode->expressionUp;
+    bool excludeLow = false;
+    bool excludeUp  = rangeNode->hasSpecFlag(AstRange::SPEC_FLAG_EXCLUDE_UP);
 
     const auto typeInfo = TypeManager::concretePtrRefType(low->typeInfo);
     if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
@@ -50,84 +85,49 @@ bool ByteCodeGen::emitSwitchCaseRange(ByteCodeGenContext* context, AstSwitchCase
     }
 
     RegisterList ra, rb;
-    const auto&  r0 = left->ownerSwitch->resultRegisterRc;
+    const auto&  r0 = caseNode->ownerSwitch->resultRegisterRc;
 
     // Lower bound
-    if (left->hasSpecialFuncCall())
+    if (caseNode->hasSpecialFuncCall())
     {
-        SWAG_CHECK(emitSwitchCaseSpecialFunc(context, left, low, excludeLow ? TokenId::SymGreater : TokenId::SymGreaterEqual, ra));
+        SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, low, excludeLow ? TokenId::SymGreater : TokenId::SymGreaterEqual, ra));
         YIELD();
     }
     else if (excludeLow)
     {
         ra = reserveRegisterRC(context);
-        SWAG_CHECK(emitCompareOpGreater(context, left, low, r0, low->resultRegisterRc, ra));
+        SWAG_CHECK(emitCompareOpGreater(context, caseNode, low, r0, low->resultRegisterRc, ra));
     }
     else
     {
         ra = reserveRegisterRC(context);
-        SWAG_CHECK(emitCompareOpGreaterEq(context, left, low, r0, low->resultRegisterRc, ra));
+        SWAG_CHECK(emitCompareOpGreaterEq(context, caseNode, low, r0, low->resultRegisterRc, ra));
     }
 
     // Upper bound
-    if (left->hasSpecialFuncCall())
+    if (caseNode->hasSpecialFuncCall())
     {
-        SWAG_CHECK(emitSwitchCaseSpecialFunc(context, left, up, excludeUp ? TokenId::SymLower : TokenId::SymLowerEqual, rb));
+        SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, up, excludeUp ? TokenId::SymLower : TokenId::SymLowerEqual, rb));
         YIELD();
     }
     else if (excludeUp)
     {
         rb = reserveRegisterRC(context);
-        SWAG_CHECK(emitCompareOpLower(context, left, up, r0, up->resultRegisterRc, rb));
+        SWAG_CHECK(emitCompareOpLower(context, caseNode, up, r0, up->resultRegisterRc, rb));
     }
     else
     {
         rb = reserveRegisterRC(context);
-        SWAG_CHECK(emitCompareOpLowerEq(context, left, up, r0, up->resultRegisterRc, rb));
+        SWAG_CHECK(emitCompareOpLowerEq(context, caseNode, up, r0, up->resultRegisterRc, rb));
     }
 
-    EMIT_INST3(context, ByteCodeOp::CompareOpEqual8, ra, rb, r2);
+    result = reserveRegisterRC(context);
+    EMIT_INST3(context, ByteCodeOp::CompareOpEqual8, ra, rb, result);
 
     freeRegisterRC(context, ra);
     freeRegisterRC(context, rb);
     freeRegisterRC(context, rangeNode->expressionLow);
     freeRegisterRC(context, rangeNode->expressionUp);
-    return true;
-}
-
-bool ByteCodeGen::emitSwitchCaseSpecialFunc(ByteCodeGenContext* context, AstSwitchCase* caseNode, AstNode* expr, TokenId op, RegisterList& result)
-{
-    SWAG_ASSERT(caseNode->hasSpecialFuncCall());
-
-    // This registers are shared and must be kept.
-    // We need to do that because the special function could be inlined, and in that case will want to release
-    // the parameters, which are our registers. And we do not want them to be released except by us...
-    caseNode->ownerSwitch->resultRegisterRc.cannotFree             = true;
-    caseNode->ownerSwitch->expression->resultRegisterRc.cannotFree = true;
-    expr->resultRegisterRc.cannotFree                              = true;
-
-    const auto r0 = caseNode->ownerSwitch->resultRegisterRc;
-    const auto r1 = expr->resultRegisterRc;
-
-    context->allocateTempCallParams();
-    context->allParamsTmp->children.push_back(caseNode);
-    context->allParamsTmp->children.push_back(expr);
-    caseNode->resultRegisterRc = r0;
-    expr->resultRegisterRc     = r1;
-    SWAG_CHECK(emitUserOp(context, context->allParamsTmp, caseNode, false));
-    YIELD();
-    SWAG_CHECK(emitCompareOpPostSpecialFunc(context, op));
-    YIELD();
-
-    caseNode->ownerSwitch->resultRegisterRc.cannotFree             = false;
-    caseNode->ownerSwitch->expression->resultRegisterRc.cannotFree = false;
-    expr->resultRegisterRc.cannotFree                              = false;
-
-    if (caseNode->lastChild()->is(AstNodeKind::Inline))
-        result = caseNode->lastChild()->resultRegisterRc;
-    else
-        result = context->node->resultRegisterRc;
-
     return true;
 }
 
