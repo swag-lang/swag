@@ -5,6 +5,7 @@ struct AstFuncCallParam;
 struct AstFuncDecl;
 struct AstNode;
 struct AstRange;
+struct AstSwitchCase;
 struct AstVarDecl;
 struct ByteCode;
 struct ByteCodeInstruction;
@@ -118,8 +119,8 @@ namespace ByteCodeGen
     bool emitBinaryOpMul(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitBinaryOpDiv(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitCompareOpPostSpecialFunc(const ByteCodeGenContext* context, TokenId op);
-    bool emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode* left, AstNode* right, const RegisterList& r0, const RegisterList& r1, TokenId op);
-    bool emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, const RegisterList& r0, const RegisterList& r2);
+    bool emitSwitchCaseSpecialFunc(ByteCodeGenContext* context, AstSwitchCase* left, AstNode* right, TokenId op);
+    bool emitSwitchCaseRange(ByteCodeGenContext* context, AstSwitchCase* left, AstNode* right, const RegisterList& r2);
     bool emitBinaryOpModulo(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitLogicalAndAfterLeft(ByteCodeGenContext* context);
     bool emitLogicalAnd(const ByteCodeGenContext* context, uint32_t r1, uint32_t r2);

@@ -82,13 +82,22 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         numCallParams    = parameters.childCount();
         canFreeRegParams = false;
     }
-    else if (parent->is(AstNodeKind::SwitchCase))
+    else if (parent->is(AstNodeKind::SwitchCase) && parent->hasSpecialFuncCall(g_LangSpec->name_opEquals))
     {
-        SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opEquals));
         const auto caseNode   = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
         const auto switchNode = castAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
         parameters.children.push_back(switchNode->expression);
         parameters.children.push_back(caseNode->firstChild());
+        allParams     = &parameters;
+        numCallParams = parameters.childCount();
+    }
+    else if (parent->is(AstNodeKind::SwitchCase))
+    {
+        const auto caseNode   = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
+        const auto switchNode = castAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
+        const auto rangeNode  = castAst<AstRange>(caseNode->firstChild(), AstNodeKind::Range);
+        parameters.children.push_back(switchNode->expression);
+        parameters.children.push_back(rangeNode->expressionLow);
         allParams     = &parameters;
         numCallParams = parameters.childCount();
     }
@@ -838,7 +847,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                 if (expr->is(AstNodeKind::Range))
                 {
                     r0 = reserveRegisterRC(context);
-                    SWAG_CHECK(emitInRange(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, r0));
+                    SWAG_CHECK(emitSwitchCaseRange(context, caseNode, expr, r0));
                     if (context->result != ContextResult::Done)
                     {
                         freeRegisterRC(context, r0);
@@ -854,7 +863,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                     caseNode->ownerSwitch->expression->resultRegisterRc.cannotFree = true;
                     expr->resultRegisterRc.cannotFree                              = true;
 
-                    SWAG_CHECK(emitCompareOpSpecialFunc(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, TokenId::SymEqualEqual));
+                    SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, expr, TokenId::SymEqualEqual));
                     YIELD();
 
                     caseNode->ownerSwitch->resultRegisterRc.cannotFree             = false;

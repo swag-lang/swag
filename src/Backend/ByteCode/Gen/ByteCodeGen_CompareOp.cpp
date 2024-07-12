@@ -7,7 +7,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 
-bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, const RegisterList& r0, const RegisterList& r2)
+bool ByteCodeGen::emitSwitchCaseRange(ByteCodeGenContext* context, AstSwitchCase* left, AstNode* right, const RegisterList& r2)
 {
     const auto rangeNode  = castAst<AstRange>(right, AstNodeKind::Range);
     auto       low        = rangeNode->expressionLow;
@@ -50,11 +50,12 @@ bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNod
     }
 
     RegisterList ra, rb;
+    const auto&  r0 = left->ownerSwitch->resultRegisterRc;
 
     // Lower bound
     if (left->hasSpecialFuncCall())
     {
-        SWAG_CHECK(emitCompareOpSpecialFunc(context, left, low, r0, low->resultRegisterRc, excludeLow ? TokenId::SymGreater : TokenId::SymGreaterEqual));
+        SWAG_CHECK(emitSwitchCaseSpecialFunc(context, left, low, excludeLow ? TokenId::SymGreater : TokenId::SymGreaterEqual));
         YIELD();
         ra = context->node->resultRegisterRc;
     }
@@ -72,7 +73,7 @@ bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNod
     // Upper bound
     if (left->hasSpecialFuncCall())
     {
-        SWAG_CHECK(emitCompareOpSpecialFunc(context, left, up, r0, up->resultRegisterRc, excludeUp ? TokenId::SymLower : TokenId::SymLowerEqual));
+        SWAG_CHECK(emitSwitchCaseSpecialFunc(context, left, up, excludeUp ? TokenId::SymLower : TokenId::SymLowerEqual));
         YIELD();
         rb = context->node->resultRegisterRc;
     }
@@ -96,9 +97,12 @@ bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNod
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode* left, AstNode* right, const RegisterList& r0, const RegisterList& r1, TokenId op)
+bool ByteCodeGen::emitSwitchCaseSpecialFunc(ByteCodeGenContext* context, AstSwitchCase* left, AstNode* right, TokenId op)
 {
     SWAG_ASSERT(left->hasSpecialFuncCall());
+
+    const auto r0 = left->ownerSwitch->resultRegisterRc;
+    const auto r1 = right->resultRegisterRc;
 
     context->allocateTempCallParams();
     context->allParamsTmp->children.push_back(left);
