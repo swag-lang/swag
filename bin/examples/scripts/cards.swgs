@@ -378,6 +378,9 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     func flushPage()
     {
         var fileN = Format.toString("%.jpg", pageNum)
+        let pOut = Path.combine(dataPath, "out")
+        if !Directory.exists(pOut) do
+            assume Directory.create(pOut)
         assume page.save(Path.combine(dataPath, "out", cast(string) fileN))
     }
 
