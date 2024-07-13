@@ -39,6 +39,8 @@ void DataSegment::getNames(const char** name, const char** shortName, SegmentKin
             *name      = "string segment";
             *shortName = "str";
             break;
+        case SegmentKind::Me:
+            break;
     }
 }
 
@@ -63,7 +65,7 @@ void DataSegment::initFrom(DataSegment* other)
     if (other->totalCount)
     {
         // :DefaultSizeBuckets
-        // If this assert, then we must increase the default granularity size in setup()
+        // If this asserts, then we must increase the default granularity size in setup()
         SWAG_ASSERT(other->buckets.size() == 1);
         reserve(other->totalCount);
         std::copy_n(other->buckets[0].buffer, other->totalCount, buckets[0].buffer);
@@ -77,7 +79,7 @@ void DataSegment::initFrom(DataSegment* other)
     // :BackPtrOffset
     for (const auto& it : other->initPtr)
     {
-        // If this asserts, then this means that the bootstrap/runtime makes cross references between
+        // If this asserts, then this means that the bootstrap/runtime makes cross-references between
         // segments. The update will have to be changed in that case, because here we will have to
         // get the address from another segment.
         SWAG_ASSERT(it.fromSegment == SegmentKind::Me || it.fromSegment == kind);
@@ -260,48 +262,36 @@ uint32_t DataSegment::addComputedValue(const TypeInfo* typeInfo, ComputedValue& 
     switch (typeInfo->sizeOf)
     {
         case 1:
-        {
-            const auto it = storedValues8.find(computedValue.reg.u8);
-            if (it != storedValues8.end())
+            if (const auto it = storedValues8.find(computedValue.reg.u8); it != storedValues8.end())
             {
                 *resultPtr = it->second.addr;
                 return it->second.offset;
             }
             break;
-        }
 
         case 2:
-        {
-            const auto it = storedValues16.find(computedValue.reg.u16);
-            if (it != storedValues16.end())
+            if (const auto it = storedValues16.find(computedValue.reg.u16); it != storedValues16.end())
             {
                 *resultPtr = it->second.addr;
                 return it->second.offset;
             }
             break;
-        }
 
         case 4:
-        {
-            const auto it = storedValues32.find(computedValue.reg.u32);
-            if (it != storedValues32.end())
+            if (const auto it = storedValues32.find(computedValue.reg.u32); it != storedValues32.end())
             {
                 *resultPtr = it->second.addr;
                 return it->second.offset;
             }
             break;
-        }
 
         case 8:
-        {
-            const auto it = storedValues64.find(computedValue.reg.u64);
-            if (it != storedValues64.end())
+            if (const auto it = storedValues64.find(computedValue.reg.u64); it != storedValues64.end())
             {
                 *resultPtr = it->second.addr;
                 return it->second.offset;
             }
             break;
-        }
     }
 
     uint8_t*   addr;
@@ -393,7 +383,6 @@ void DataSegment::doPatchMethods(JobContext* context)
     {
         const auto funcNode  = it.first;
         void*      lambdaPtr = nullptr;
-        ByteCode*  bc        = nullptr;
         if (funcNode->isForeign())
         {
             lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, nullptr);
@@ -401,7 +390,7 @@ void DataSegment::doPatchMethods(JobContext* context)
         }
         else if (funcNode->hasExtByteCode() && funcNode->extByteCode()->bc)
         {
-            bc                  = funcNode->extByteCode()->bc;
+            const auto bc       = funcNode->extByteCode()->bc;
             bc->isInDataSegment = true;
             bc->isUsed          = true;
             lambdaPtr           = ByteCodeRun::makeLambda(context, funcNode, bc);

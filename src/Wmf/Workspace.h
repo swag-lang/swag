@@ -42,7 +42,6 @@ struct PendingJob
 };
 
 struct Workspace
-
 {
     static Diagnostic* errorPendingJob(Job* prevJob, const Job* depJob);
     static void        errorPendingJobs(const Vector<PendingJob>& pendingJobs);
