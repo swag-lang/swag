@@ -29,8 +29,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     ErrorCxtStep expNode;
     expNode.node          = context->node;
     expNode.replaceTypes  = replaceTypes;
-    const auto exportNode = expNode.node->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
-    if (exportNode)
+    if (const auto exportNode = expNode.node->extraPointer<AstNode>(ExtraPointerKind::ExportNode))
         expNode.node = exportNode;
     expNode.type = ErrCxtStepKind::Generic;
     destCxt->errCxtSteps.push_back(expNode);
@@ -293,6 +292,7 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
     }
 }
 
+#include "Wmf/SourceFile.h"
 void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const SymbolOverload* symOverload, MatchIdParamsFlags flags)
 {
     const auto node = context->node;
@@ -303,12 +303,11 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
 
     auto& toCheck = context->tmpNodes;
     toCheck.clear();
-
+    
     // From inline
-    if (node->hasOwnerInline() && !node->hasAstFlag(AST_IN_MIXIN) && symOverload->typeInfo->isTuple())
+    if (node->hasOwnerInline() && !node->hasAstFlag(AST_IN_MIXIN) && !symOverload->typeInfo->isFuncAttr())
     {
-        auto inlineNode = node->ownerInline();
-        if (inlineNode->func->genericParameters)
+        if (const auto inlineNode = node->ownerInline(); inlineNode->func->genericParameters)
             toCheck.push_back(inlineNode->func);
     }
 
