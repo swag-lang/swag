@@ -32,6 +32,7 @@ namespace Generic
     void         deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo*& callTypeInfo, VectorNative<TypeInfo*>& wantedTypeInfos, VectorNative<TypeInfo*>& callTypeInfos, AstNode* callParameter);
     void         deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, AstNode* callParameter, uint32_t idxParam, CastFlags castFlags);
     void         deduceGenericTypes(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, uint32_t idxParam, CastFlags castFlags);
+    void         setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const VectorNative<AstNode*>& toCheck);
     void         setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const SymbolOverload* symOverload, MatchIdParamsFlags flags);
     void         setUserGenericTypeReplacement(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters);
     void         checkCanInstantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch);

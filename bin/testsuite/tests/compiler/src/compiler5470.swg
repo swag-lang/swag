@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 #[Swag.Inline]
 func(X: s32) toto()->{v: s32}
 {

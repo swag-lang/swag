@@ -260,6 +260,39 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
     }
 }
 
+void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const VectorNative<AstNode*>& toCheck)
+{
+    for (const auto one : toCheck)
+    {
+        if (one->is(AstNodeKind::FuncDecl))
+        {
+            const auto nodeFunc = castAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
+            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
+
+            oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeFunc->replaceTypes.size());
+            for (const auto& oneReplace : typeFunc->replaceTypes)
+                oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
+
+            oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeFunc->replaceValues.size());
+            for (const auto& oneReplace : typeFunc->replaceValues)
+                oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
+        }
+        else if (one->is(AstNodeKind::StructDecl))
+        {
+            const auto nodeStruct = castAst<AstStruct>(one, AstNodeKind::StructDecl);
+            const auto typeStruct = castTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
+
+            oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeStruct->replaceTypes.size());
+            for (const auto& oneReplace : typeStruct->replaceTypes)
+                oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
+
+            oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeStruct->replaceValues.size());
+            for (const auto& oneReplace : typeStruct->replaceValues)
+                oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
+        }
+    }
+}
+
 void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const SymbolOverload* symOverload, MatchIdParamsFlags flags)
 {
     const auto node = context->node;
@@ -270,6 +303,14 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
 
     auto& toCheck = context->tmpNodes;
     toCheck.clear();
+
+    // From inline
+    if (node->hasOwnerInline() && !node->hasAstFlag(AST_IN_MIXIN) && symOverload->typeInfo->isTuple())
+    {
+        auto inlineNode = node->ownerInline();
+        if (inlineNode->func->genericParameters)
+            toCheck.push_back(inlineNode->func);
+    }
 
     // If we are inside a struct, then we can inherit the generic concrete types of that struct
     if (node->ownerStructScope)
@@ -309,36 +350,7 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
         }
     }
 
-    // Collect all
-    for (const auto one : toCheck)
-    {
-        if (one->is(AstNodeKind::FuncDecl))
-        {
-            const auto nodeFunc = castAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
-            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
-
-            oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeFunc->replaceTypes.size());
-            for (const auto& oneReplace : typeFunc->replaceTypes)
-                oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
-
-            oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeFunc->replaceValues.size());
-            for (const auto& oneReplace : typeFunc->replaceValues)
-                oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
-        }
-        else if (one->is(AstNodeKind::StructDecl))
-        {
-            const auto nodeStruct = castAst<AstStruct>(one, AstNodeKind::StructDecl);
-            const auto typeStruct = castTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
-
-            oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeStruct->replaceTypes.size());
-            for (const auto& oneReplace : typeStruct->replaceTypes)
-                oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
-
-            oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeStruct->replaceValues.size());
-            for (const auto& oneReplace : typeStruct->replaceValues)
-                oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
-        }
-    }
+    setContextualGenericTypeReplacement(context, oneTryMatch, toCheck);
 }
 
 Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, GenericReplaceType>& replace)
