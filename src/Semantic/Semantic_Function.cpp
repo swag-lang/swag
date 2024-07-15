@@ -1603,8 +1603,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     }
 
     // :opAffectParam
-    const auto userOp = child->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-    if (userOp)
+    if (const auto userOp = child->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp))
     {
         if (userOp->symbol->name == g_LangSpec->name_opAffect || userOp->symbol->name == g_LangSpec->name_opAffectLiteral)
         {
@@ -1637,6 +1636,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 
             context->baseJob->nodes.push_back(node->firstChild());
             context->baseJob->nodes.push_back(varNode);
+            node->addAstFlag(AST_REVERSE_SEMANTIC);
             varNode->addSemFlag(SEMFLAG_ONCE);
             context->result = ContextResult::NewChildren;
             return true;

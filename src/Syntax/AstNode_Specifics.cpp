@@ -30,8 +30,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
         newNode->typeConstraint->removeAstFlag(AST_NO_SEMANTIC);
 
     // Is there an alias ?
-    const auto it = context.replaceNames.find(newNode->token.text);
-    if (it != context.replaceNames.end())
+    if (const auto it = context.replaceNames.find(newNode->token.text); it != context.replaceNames.end())
     {
         context.usedReplaceNames.insert(it->second);
         newNode->token.text = it->second;
@@ -163,7 +162,7 @@ bool AstFuncDecl::mustAutoInline() const
     if (hasAttribute(ATTRIBUTE_NO_INLINE | ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN | ATTRIBUTE_COMPILER))
         return false;
     if (hasSpecFlag(SPEC_FLAG_IMPL))
-        return false;    
+        return false;
 
     // All short functions
     if (hasSpecFlag(SPEC_FLAG_SHORT_FORM))
@@ -1260,9 +1259,8 @@ AstNode* AstAlias::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstAlias>();
     newNode->copyFrom(context, this);
-    newNode->kwdLoc    = kwdLoc;
-    const auto symName = resolvedSymbolName();
-    if (symName)
+    newNode->kwdLoc = kwdLoc;
+    if (const auto symName = resolvedSymbolName())
         newNode->setResolvedSymbolName(newNode->ownerScope->symTable.registerSymbolName(nullptr, newNode, symName->kind));
     return newNode;
 }
