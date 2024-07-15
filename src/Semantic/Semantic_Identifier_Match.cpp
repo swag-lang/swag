@@ -920,6 +920,10 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
                 }
 
                 identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
+
+                if (CallConv::returnNeedsStack(typeFunc))
+                    identifier->addAstFlag(AST_TRANSIENT);
+
                 return true;
             }
         }
