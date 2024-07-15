@@ -292,7 +292,6 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
     }
 }
 
-#include "Wmf/SourceFile.h"
 void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const SymbolOverload* symOverload, MatchIdParamsFlags flags)
 {
     const auto node = context->node;
