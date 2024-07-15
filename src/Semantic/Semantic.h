@@ -34,11 +34,12 @@ constexpr CollectFlags COLLECT_ALL              = 0x00000000;
 constexpr CollectFlags COLLECT_NO_STRUCT        = 0x00000001;
 constexpr CollectFlags COLLECT_NO_INLINE_PARAMS = 0x00000002;
 
-using MatchIdParamsFlags                            = Flags<uint32_t>;
-constexpr MatchIdParamsFlags MIP_JUST_CHECK         = 0x00000001;
-constexpr MatchIdParamsFlags MIP_FOR_GHOSTING       = 0x00000002;
-constexpr MatchIdParamsFlags MIP_FOR_ZERO_GHOSTING  = 0x00000004;
-constexpr MatchIdParamsFlags MIP_SECOND_GENERIC_TRY = 0x00000008;
+using MatchIdParamsFlags                               = Flags<uint32_t>;
+constexpr MatchIdParamsFlags MIP_JUST_CHECK            = 0x00000001;
+constexpr MatchIdParamsFlags MIP_FOR_GHOSTING          = 0x00000002;
+constexpr MatchIdParamsFlags MIP_FOR_ZERO_GHOSTING     = 0x00000004;
+constexpr MatchIdParamsFlags MIP_SECOND_GENERIC_TRY    = 0x00000008;
+constexpr MatchIdParamsFlags MIP_SECOND_GENERIC_DEDUCE = 0x00000010;
 
 constexpr uint32_t ROP_SIMPLE_CAST = 0x00000001;
 

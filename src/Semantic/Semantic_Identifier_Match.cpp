@@ -1902,6 +1902,12 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         SWAG_CHECK(tryOneMatch(context, oneOverload, overload, rawTypeInfo, flags));
         YIELD();
 
+        if(oneOverload.symMatchContext.result == MatchResult::NotEnoughGenericArguments)
+        {
+            SWAG_CHECK(tryOneMatch(context, oneOverload, overload, rawTypeInfo, flags | MIP_SECOND_GENERIC_DEDUCE));
+            YIELD();
+        }
+
         // For a function, sometime, we do not want call parameters
         bool forcedFine = false;
 

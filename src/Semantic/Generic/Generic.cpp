@@ -304,10 +304,13 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
     toCheck.clear();
     
     // From inline
-    if (node->hasOwnerInline() && !node->hasAstFlag(AST_IN_MIXIN) && !symOverload->typeInfo->isFuncAttr())
+    if(flags.has(MIP_SECOND_GENERIC_DEDUCE))
     {
-        if (const auto inlineNode = node->ownerInline(); inlineNode->func->genericParameters)
-            toCheck.push_back(inlineNode->func);
+        if (node->hasOwnerInline() && !node->hasAstFlag(AST_IN_MIXIN) && !symOverload->typeInfo->isFuncAttr())
+        {
+            if (const auto inlineNode = node->ownerInline(); inlineNode->func->genericParameters)
+                toCheck.push_back(inlineNode->func);
+        }
     }
 
     // If we are inside a struct, then we can inherit the generic concrete types of that struct
