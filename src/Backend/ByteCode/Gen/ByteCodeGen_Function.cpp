@@ -124,7 +124,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->addAstFlag(AST_NO_LEFT_DROP);
-                SWAG_CHECK(emitCopyStruct(context, node->ownerInline()->resultRegisterRc, returnExpression->resultRegisterRc, exprType, returnExpression));
+                SWAG_CHECK(emitCopyStruct(context, node->ownerInline()->resultRegisterRc, returnExpression->resultRegisterRc, returnType, returnExpression));
                 freeRegisterRC(context, returnExpression);
             }
             else if (returnType->isArray())
