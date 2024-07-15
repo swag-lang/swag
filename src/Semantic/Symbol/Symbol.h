@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/Register.h"
 #include "Jobs/DependentJobs.h"
 #include "Syntax/ComputedValue.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Threading/Mutex.h"
 
 struct AstNode;
@@ -97,6 +98,9 @@ struct SymbolName
     bool is(SymbolKind what) const { return kind == what; }
     bool isNot(SymbolKind what) const { return kind != what; }
     bool hasFlag(SymbolFlags fl) const { return flags.has(fl); }
+
+    bool isOpAffect() const { return name == g_LangSpec->name_opAffect; }
+    bool isOpAffectLiteral() const { return name == g_LangSpec->name_opAffectLiteral; }
 
     SharedMutex                   mutex;
     VectorNative<SymbolOverload*> overloads;

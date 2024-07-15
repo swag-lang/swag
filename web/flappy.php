@@ -96,9 +96,7 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
-    .SBcR { color: #ffff00; }
-    .SBcK { color: #f89ef; }
-    .SBcK { color: #fef89; }
+    .SBcR { color: #b5af49; }
     .SInv { color: #ff0000; }
 </style>
 
@@ -552,7 +550,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 25-06-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.35.0</div>
+Generated on 15-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.36.0</div>
 </div>
 </div>
 </div>

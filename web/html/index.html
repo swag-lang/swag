@@ -96,9 +96,7 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
-    .SBcR { color: #ffff00; }
-    .SBcK { color: #f89ef; }
-    .SBcK { color: #fef89; }
+    .SBcR { color: #b5af49; }
     .SInv { color: #ff0000; }
 </style>
 
@@ -200,7 +198,7 @@
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> The pages of this web site and all the related documentations have been generated with Swag, as the compiler can also produce HTML based on markdown files and source code. </p>
 </div>
 <div class="swag-watermark">
-Generated on 25-06-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.35.0</div>
+Generated on 15-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.36.0</div>
 </div>
 </div>
 </div>

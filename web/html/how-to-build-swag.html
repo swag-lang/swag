@@ -96,9 +96,7 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
-    .SBcR { color: #ffff00; }
-    .SBcK { color: #f89ef; }
-    .SBcK { color: #fef89; }
+    .SBcR { color: #b5af49; }
     .SInv { color: #ff0000; }
 </style>
 
@@ -123,7 +121,7 @@
 </ul>
 <p>If LLVM has been compiled once, you can also use the <span class="code-inline">Swag.sln</span> workspace in the <span class="code-inline">build</span> subfolder. </p>
 <div class="swag-watermark">
-Generated on 25-06-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.35.0</div>
+Generated on 15-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.36.0</div>
 </div>
 </div>
 </div>

@@ -96,9 +96,7 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
-    .SBcR { color: #ffff00; }
-    .SBcK { color: #f89ef; }
-    .SBcK { color: #fef89; }
+    .SBcR { color: #b5af49; }
     .SInv { color: #ff0000; }
 </style>
 
@@ -125,7 +123,8 @@
 <h4 id="">Windows Defender </h4>
 <p>The Windows Defender realtime protection is activated by default, and runs each time you launch an executable. This can increase the compile time of your project, so consider excluding your Swag folder from it ! </p>
 <p><a href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a> </p>
-<p>Under Windows 11, there's also something called the <i>Smart App Control</i>, which can also have a great impact on compile time. </p>
+<p>Under Windows 11, there's also something called the <i>Smart App Control</i>, which can also have a great impact on execution time if it is activated (or in evaluation mode). </p>
+<p><a href="https://support.microsoft.com/en-us/topic/what-is-smart-app-control-285ea03d-fa88-4d56-882e-6698afdb7003">Reference</a> </p>
 <h1 id="">Your first project </h1>
 <p>The compile unit of swag is a <b>workspace</b> which contains a variable number of <b>modules</b>. A module will compile to a dynamic library or an executable. </p>
 <p>To create a fresh new workspace named <i>first</i> : </p>
@@ -181,7 +180,7 @@ Hello world!
 <p>And as this is a normal Swag workspace, you could also build and test it with <span class="code-inline">swag test -w:swag/reference</span>. </p>
 <p>You will also find some small examples (mostly written for tests) in <span class="code-inline">swag/bin/examples/modules</span>. To build and run one of them from the console, go to the workspace folder (<span class="code-inline">/examples</span>) and type for example <span class="code-inline">swag run -m:wnd</span>. </p>
 <div class="swag-watermark">
-Generated on 25-06-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.35.0</div>
+Generated on 15-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.36.0</div>
 </div>
 </div>
 </div>

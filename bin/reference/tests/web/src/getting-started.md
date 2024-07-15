@@ -30,7 +30,9 @@ This can increase the compile time of your project, so consider excluding your S
 
 [Reference](https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process)
 
-Under Windows 11, there's also something called the *Smart App Control*, which can also have a great impact on compile time.
+Under Windows 11, there's also something called the *Smart App Control*, which can also have a great impact on execution time if it is activated (or in evaluation mode).
+
+[Reference](https://support.microsoft.com/en-us/topic/what-is-smart-app-control-285ea03d-fa88-4d56-882e-6698afdb7003)
 
 # Your first project
 
