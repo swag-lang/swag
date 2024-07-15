@@ -4,6 +4,7 @@ struct(T) A {}
 
 impl A
 {
+    //#[Swag.Inline]
     mtd toto()->A => {}
 }
 

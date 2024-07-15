@@ -27,8 +27,8 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
 
     // New context
     ErrorCxtStep expNode;
-    expNode.node          = context->node;
-    expNode.replaceTypes  = replaceTypes;
+    expNode.node         = context->node;
+    expNode.replaceTypes = replaceTypes;
     if (const auto exportNode = expNode.node->extraPointer<AstNode>(ExtraPointerKind::ExportNode))
         expNode.node = exportNode;
     expNode.type = ErrCxtStepKind::Generic;
@@ -302,14 +302,14 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
 
     auto& toCheck = context->tmpNodes;
     toCheck.clear();
-    
+
     // From inline
-    if(flags.has(MIP_SECOND_GENERIC_DEDUCE))
+    if (flags.has(MIP_SECOND_GENERIC_DEDUCE))
     {
         if (node->hasOwnerInline() && !node->hasAstFlag(AST_IN_MIXIN) && !symOverload->typeInfo->isFuncAttr())
         {
-            if (const auto inlineNode = node->ownerInline(); inlineNode->func->genericParameters)
-                toCheck.push_back(inlineNode->func);
+            const auto inlineNode = node->ownerInline();
+            toCheck.push_back(inlineNode->func);
         }
     }
 
