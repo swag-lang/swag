@@ -20,6 +20,7 @@ impl Thing
         G += 1
     }
 
+#[Swag.NoInline]
     mtd(op: string) opBinary(other: Self)->Self
     {
         return {number + other.number}
