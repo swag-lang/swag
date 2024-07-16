@@ -203,11 +203,14 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         if (parentReturn)
         {
             if (node->hasOwnerInline())
-                EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->ownerInline()->resultRegisterRc);
+            {
+                freeRegisterRC(context, node->resultRegisterRc);
+                node->resultRegisterRc            = node->ownerInline()->resultRegisterRc;
+                node->resultRegisterRc.cannotFree = true;
+            }
             else
             {
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->resultRegisterRc);
-                EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
             }
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
