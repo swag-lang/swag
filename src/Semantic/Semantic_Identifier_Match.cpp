@@ -921,6 +921,9 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
                 identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
 
+                if (returnType->isStruct())
+                    identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
+                
                 if (CallConv::returnNeedsStack(typeFunc))
                     identifier->addAstFlag(AST_TRANSIENT);
 
