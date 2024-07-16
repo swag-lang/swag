@@ -8,6 +8,7 @@ var G = 0
 impl Thing
 {
     //#[Swag.PrintBc]
+    #[Swag.NoInline]
     func initxxx(number: s32)->Thing
     {
         //@print("Thing", number, "\n")
