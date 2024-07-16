@@ -1553,16 +1553,19 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     {
         const auto varNode  = castAst<AstVarDecl>(testReturn->parent->parent->parent->parent->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         const auto resolved = varNode->resolvedSymbolOverload();
-        const auto param    = castAst<AstFuncCallParam>(testReturn->parent, AstNodeKind::FuncCallParam);
-        SWAG_ASSERT(param->resolvedParameter);
-        const auto typeParam = param->resolvedParameter;
+        if (resolved->computedValue.storageOffset != UINT32_MAX)
+        {
+            const auto param = castAst<AstFuncCallParam>(testReturn->parent, AstNodeKind::FuncCallParam);
+            SWAG_ASSERT(param->resolvedParameter);
+            const auto typeParam = param->resolvedParameter;
 
-        emitRetValRef(context, resolved, node->resultRegisterRc, false, resolved->computedValue.storageOffset + typeParam->offset);
-        EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
-        context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+            emitRetValRef(context, resolved, node->resultRegisterRc, false, resolved->computedValue.storageOffset + typeParam->offset);
+            EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
+            context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
-        testReturn->parent->addSemFlag(SEMFLAG_FIELD_STRUCT);
-        return true;
+            testReturn->parent->addSemFlag(SEMFLAG_FIELD_STRUCT);
+            return true;
+        }
     }
 
     // Store in RR0 the address of the stack to store the result

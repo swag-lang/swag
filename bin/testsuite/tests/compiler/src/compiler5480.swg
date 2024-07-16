@@ -23,7 +23,7 @@ impl AA
 }
 
 //#[Swag.PrintBc]//, Swag.Optim("", false)]
-//#[Swag.Inline]
+#[Swag.Inline]
 func toto()->{x: AA}
 {
     return {AA.from()}
