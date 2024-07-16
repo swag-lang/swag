@@ -749,9 +749,9 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             exprNode->resultRegisterRc = back->resultRegisterRc;
             exprNode->allocateExtension(ExtensionKind::Owner);
             exprNode->extOwner()->nodesToFree.push_back(back);
+            context->node->resultRegisterRc = exprNode->resultRegisterRc;
         }
-
-        if (context->node->resultRegisterRc.size())
+        else if (context->node->resultRegisterRc.size())
             exprNode->resultRegisterRc = context->node->resultRegisterRc;
         else
             context->node->resultRegisterRc = exprNode->resultRegisterRc;
