@@ -3,12 +3,14 @@ struct C
     c: s32
 }
 
+var gc: C
+
 struct A {}
 impl A
 {
     mtd opIndex(x: u64)->*C
     {
-        return null
+        return &gc
     }
 }
 
