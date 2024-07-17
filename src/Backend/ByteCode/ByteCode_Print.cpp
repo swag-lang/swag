@@ -642,10 +642,16 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
     {
         if (ip->op == ByteCodeOp::End)
             break;
+
         PrintInstructionLine line;
         fillPrintInstruction(options, ip++, line);
         lines.push_back(line);
     }
+
+    // End
+    PrintInstructionLine line;
+    fillPrintInstruction(options, ip++, line);
+    lines.push_back(line);
 
     alignPrintInstructions(options, lines);
 
@@ -662,6 +668,9 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
             printSourceCode(options, ip, &lastLine, &lastFile, &lastInline);
         printInstruction(options, ip++, lines[i]);
     }
+
+    // End
+    printInstruction(options, ip, lines.back());
 }
 
 void ByteCode::printName() const
