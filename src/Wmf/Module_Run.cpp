@@ -333,15 +333,9 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     {
         if (!params || !params->inheritSp)
         {
-            auto decSP = Semantic::getMaxStackSize(node);
-            g_RunContext->decSP(decSP);
-            bc->dynStackSize += decSP;
-
-            // :opAffectConstExpr
-            // Reserve room on the stack to store the result
-            if (node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
-                g_RunContext->decSP(node->typeInfo->sizeOf);
-
+            bc->dynStackSize += Semantic::getMaxStackSize(node);
+            bc->dynStackSize += node->typeInfo->sizeOf;
+            g_RunContext->decSP(bc->dynStackSize);
             g_RunContext->bp = g_RunContext->sp;
         }
     }
@@ -355,6 +349,11 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     }
 
     bool result = true;
+
+#ifdef SWAG_DEV_MODE
+    if (sourceFile->astAttrUse && sourceFile->astAttrUse->hasAttribute(ATTRIBUTE_PRINT_BC))
+        g_RunContext->bc->print({});
+#endif
 
     if (foreignCall)
         ByteCodeRun::ffiCall(g_RunContext, &bc->out[0]);

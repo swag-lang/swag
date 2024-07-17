@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 //#global #[Swag.PrintBc]
 
 #[Swag.ConstExpr]
@@ -6,7 +6,7 @@ struct String {}
 
 impl String
 {
-    #[Swag.Implicit]
+    #[Swag.Implicit, Swag.Inline]
     mtd opCast()->string
     {
         return "toto"
@@ -18,7 +18,6 @@ impl String
     }
 }
 
-#[Swag.PrintBc]
 #[Swag.ConstExpr, Swag.Inline]
 func get()->String
 {
