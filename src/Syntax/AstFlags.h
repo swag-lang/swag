@@ -61,13 +61,12 @@ constexpr AstNodeFlagsV AST_STRUCT_MEMBER              = 0x00080000'00000000;
 constexpr AstNodeFlagsV AST_NO_LEFT_DROP               = 0x00100000'00000000;
 constexpr AstNodeFlagsV AST_NO_RIGHT_DROP              = 0x00200000'00000000;
 constexpr AstNodeFlagsV AST_SILENT_CHECK               = 0x00400000'00000000;
-constexpr AstNodeFlagsV AST_SPEC_STACK_SIZE            = 0x00800000'00000000;
+constexpr AstNodeFlagsV AST_DEBUG_NODE                 = 0x00800000'00000000;
 constexpr AstNodeFlagsV AST_SPEC_SEMANTIC1             = 0x01000000'00000000;
 constexpr AstNodeFlagsV AST_SPEC_SEMANTIC2             = 0x02000000'00000000;
 constexpr AstNodeFlagsV AST_SPEC_SEMANTIC3             = 0x04000000'00000000;
 constexpr AstNodeFlagsV AST_FUNC_CALL                  = 0x08000000'00000000;
 constexpr AstNodeFlagsV AST_GENERATED_EXCEPT_EXPORT    = 0x10000000'00000000;
-constexpr AstNodeFlagsV AST_DEBUG_NODE                 = 0x20000000'00000000;
 
 constexpr AstSemFlagsV SEMFLAG_VAR_DECL_STRUCT_PARAMETERS = 0x00000000'00000001;
 constexpr AstSemFlagsV SEMFLAG_VAR_DECL_REF_CALL          = 0x00000000'00000002;

@@ -2,7 +2,10 @@
 //#global #[Swag.PrintBc]
 
 #[Swag.ConstExpr]
-struct String {}
+struct String 
+{
+    x: u64
+}
 
 impl String
 {

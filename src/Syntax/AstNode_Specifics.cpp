@@ -456,7 +456,6 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 {
     const auto newNode      = Ast::newNode<AstFuncDecl>();
     auto       cloneContext = context;
-    cloneContext.forceFlags.remove(AST_SPEC_STACK_SIZE);
 
     newNode->copyFrom(context, this, false);
     newNode->aliasMask   = aliasMask;
@@ -1185,7 +1184,6 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
     const auto newNode = Ast::newNode<AstCompilerSpecFunc>();
 
     auto cloneContext = context;
-    cloneContext.forceFlags.remove(AST_SPEC_STACK_SIZE);
 
     newNode->copyFrom(cloneContext, this, false);
 
@@ -1405,7 +1403,7 @@ AstNode* AstFile::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstFile>();
     newNode->copyFrom(context, this);
-    newNode->stackSize = stackSize;
+    newNode->setStackSize(getStackSize());
     return newNode;
 }
 

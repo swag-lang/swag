@@ -1675,17 +1675,13 @@ uint32_t Semantic::getMaxStackSize(AstNode* node)
 {
     auto decSP = node->ownerScope->startStackSize;
 
-    if (node->hasAstFlag(AST_SPEC_STACK_SIZE))
+    if (!node->ownerFct)
     {
         const auto p = castAst<AstFile>(node->findParentOrMe(AstNodeKind::File), AstNodeKind::File);
-        ScopedLock mk(p->mutex);
-        decSP = max(decSP, p->stackSize);
-        return decSP;
+        return max(decSP, p->getStackSize());
     }
 
-    if (node->ownerFct)
-        decSP = max(decSP, node->ownerFct->stackSize);
-    return decSP;
+    return max(decSP, node->ownerFct->stackSize);
 }
 
 void Semantic::setOwnerMaxStackSize(AstNode* node, uint32_t size)
@@ -1693,13 +1689,12 @@ void Semantic::setOwnerMaxStackSize(AstNode* node, uint32_t size)
     size = max(size, 1);
     size = static_cast<uint32_t>(TypeManager::align(size, sizeof(void*)));
 
-    if (node->hasAstFlag(AST_SPEC_STACK_SIZE))
+    if (!node->ownerFct)
     {
         const auto p = castAst<AstFile>(node->findParentOrMe(AstNodeKind::File), AstNodeKind::File);
-        ScopedLock mk(p->mutex);
-        p->stackSize = max(p->stackSize, size);
+        p->setStackSize(max(p->getStackSize(), size));
     }
-    else if (node->ownerFct)
+    else
     {
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, size);
     }
@@ -1844,17 +1839,6 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_DEFER));
     cloneContext.removeFlags.add(AST_R_VALUE);
     cloneContext.cloneFlags.add(CLONE_FORCE_OWNER_FCT);
-
-    // Here we inline a call in a global declaration, like a variable/constant initialization
-    // We do not want the function to be the original one, in case of local variables, because we
-    // do not want to change the stackSize of the original function because of local variables.
-    if (!cloneContext.ownerFct)
-    {
-        identifier->addAstFlag(AST_SPEC_STACK_SIZE);
-        if (identifier->is(AstNodeKind::Identifier))
-            identifier->parent->addAstFlag(AST_SPEC_STACK_SIZE);
-        cloneContext.forceFlags.add(AST_SPEC_STACK_SIZE);
-    }
 
     // Register all aliases
     if (identifier->is(AstNodeKind::Identifier))
