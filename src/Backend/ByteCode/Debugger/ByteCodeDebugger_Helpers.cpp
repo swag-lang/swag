@@ -36,12 +36,15 @@ void ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, Vector<std::
     {
         const auto n    = nodes[i];
         const auto over = n->resolvedSymbolOverload();
-        if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
+
+        // Generated
+        if (!g_ByteCodeDebugger.printCompilerSymbols && over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
             continue;
 
         Utf8 value = getPrintValue(over->symbol->getFullName(), over->typeInfo);
 
-        if (over->typeInfo->isNative() || (over->typeInfo->isPointer() && !over->typeInfo->isPointerRef()))
+        if ((over->typeInfo->isNative() && !over->typeInfo->isAny()) ||
+            (over->typeInfo->isPointer() && !over->typeInfo->isPointerRef()))
         {
             value += " = ";
 

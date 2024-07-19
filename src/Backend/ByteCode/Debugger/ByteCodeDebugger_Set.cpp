@@ -39,6 +39,7 @@ void ByteCodeDebugger::printSet(ByteCodeRunContext*)
     g_Log.messageHeaderDot("print struct content", g_ByteCodeDebugger.printStruct ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("print array content", g_ByteCodeDebugger.printArray ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("print eval bytecode", g_ByteCodeDebugger.printEvalBc ? "on" : "off", LogColor::Name, LogColor::White, " ");
+    g_Log.messageHeaderDot("print compiler symbols", g_ByteCodeDebugger.printCompilerSymbols ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("bytecode source code", g_ByteCodeDebugger.printBcCode ? "on" : "off", LogColor::Name, LogColor::White, " ");
     g_Log.messageHeaderDot("backtrace source code", g_ByteCodeDebugger.printBtCode ? "on" : "off", LogColor::Name, LogColor::White, " ");
 }
@@ -121,6 +122,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
             return setOnOff("print array content", arg, g_ByteCodeDebugger.printArray);
         if (arg.split[2] == "eval")
             return setOnOff("print eval expression bytecode", arg, g_ByteCodeDebugger.printEvalBc);
+        if (arg.split[2] == "compsym")
+            return setOnOff("print compiler symbols", arg, g_ByteCodeDebugger.printCompilerSymbols);
 
         printCmdError(form("invalid [[set print]] argument [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Error;

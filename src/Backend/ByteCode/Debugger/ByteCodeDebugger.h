@@ -248,14 +248,15 @@ struct ByteCodeDebugger
     uint32_t      bcMode    = false;
 
     ValueFormat examineFormat;
-    bool        forcePrintContext = false;
-    bool        printStruct       = true;
-    bool        printArray        = true;
-    bool        printBcCode       = false;
-    bool        printBtCode       = false;
-    bool        printEvalBc       = false;
-    int         printListNum      = 3;
-    int         printInstrNum     = 3;
+    bool        forcePrintContext    = false;
+    bool        printStruct          = true;
+    bool        printArray           = true;
+    bool        printBcCode          = false;
+    bool        printBtCode          = false;
+    bool        printEvalBc          = false;
+    bool        printCompilerSymbols = true;
+    int         printListNum         = 3;
+    int         printInstrNum        = 3;
 };
 
 extern ByteCodeDebugger g_ByteCodeDebugger;

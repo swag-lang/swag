@@ -77,6 +77,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"modifying state", "set", "", "print", "struct [on|off]", "Display the content of structs when printing values", cmdSet});
     commands.push_back({"modifying state", "set", "", "print", "array [on|off]", "Display the content of arrays when printing values", cmdSet});
     commands.push_back({"modifying state", "set", "", "print", "eval [on|off]", "Display the bytecode content of a debugger expression to evaluate", cmdSet});
+    commands.push_back({"modifying state", "set", "", "print", "compsym [on|off]", "Display compiler symbols when listing symbols", cmdSet});
     commands.push_back({"modifying state", "set", "", "bytecode", "source [on|off]", "Display source code when printing bytecode", cmdSet});
     commands.push_back({"modifying state", "set", "", "backtrace", "source [on|off]", "Display source code when printing stack frames", cmdSet});
     commands.push_back({"modifying state", "set", "", "register", "<$reg> <expr>", "Modify the given register <$reg> with the result of <expr>", cmdSet});
