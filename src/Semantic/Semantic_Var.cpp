@@ -800,15 +800,31 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
         }
         else
         {
-            const auto alignOf = Semantic::alignOf(node);
+            const auto mySize = typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
 
             // Because of 'visit' (at least), it can happen that this is not up to date because of order of evaluation.
             // So update it just in case (5294)
             node->ownerScope->startStackSize = max(node->ownerScope->startStackSize, node->ownerScope->parentScope->startStackSize);
+            node->ownerScope->startStackSize = static_cast<uint32_t>(TypeManager::align(node->ownerScope->startStackSize, Semantic::alignOf(node)));
 
-            node->ownerScope->startStackSize = static_cast<uint32_t>(TypeManager::align(node->ownerScope->startStackSize, alignOf));
-            storageOffset                    = node->ownerScope->startStackSize;
-            node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
+            storageOffset = node->ownerScope->startStackSize;
+            node->ownerScope->startStackSize += mySize;
+
+            // Can happen that a generated inline variable (like returning a complex thing that needs to be constructed/converted with opAffect)
+            // will be evaluated before adding other generated variables to the parent scope.
+            // Ex: 5483.
+            // We need to be sure that the newly generated variable in the parent scope does not share the same address (stack off) as the inline
+            // var.
+            if (node->hasAstFlag(AST_GENERATED))
+            {
+                auto parentScope = node->ownerScope;
+                while (parentScope->is(ScopeKind::Inline))
+                {
+                    parentScope->parentScope->startStackSize = max(parentScope->startStackSize, parentScope->parentScope->startStackSize);
+                    parentScope                              = parentScope->parentScope;
+                }
+            }
+
             setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
         }
     }

@@ -18,7 +18,7 @@ impl String
     }
 }
 
-//#[Swag.Inline]
+#[Swag.Inline]
 func tmpPath1(name: string)->String
 {
     return name

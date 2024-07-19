@@ -301,6 +301,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             if (convert)
             {
                 const auto varNode = Ast::newVarDecl(form(R"(__ctmp_%d)", g_UniqueID.fetch_add(1)), nullptr, identifier);
+                varNode->addAstFlag(AST_GENERATED);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -366,6 +367,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
 
                 const auto varNode = Ast::newVarDecl(form(R"(__10tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, identifier);
                 varNode->inheritTokenLocation(nodeCall->token);
+                varNode->addAstFlag(AST_GENERATED);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -489,6 +491,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             if (!covered)
             {
                 const auto varNode = Ast::newVarDecl(form(R"(__3tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, identifier);
+                varNode->addAstFlag(AST_GENERATED);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -923,7 +926,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
                 if (returnType->isStruct())
                     identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
-                
+
                 if (CallConv::returnNeedsStack(typeFunc))
                     identifier->addAstFlag(AST_TRANSIENT);
 
@@ -1909,7 +1912,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         SWAG_CHECK(tryOneMatch(context, oneOverload, overload, rawTypeInfo, flags));
         YIELD();
 
-        if(oneOverload.symMatchContext.result == MatchResult::NotEnoughGenericArguments)
+        if (oneOverload.symMatchContext.result == MatchResult::NotEnoughGenericArguments)
         {
             SWAG_CHECK(tryOneMatch(context, oneOverload, overload, rawTypeInfo, flags | MIP_SECOND_GENERIC_DEDUCE));
             YIELD();

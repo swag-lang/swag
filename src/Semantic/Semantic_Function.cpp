@@ -1613,6 +1613,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             child->castedTypeInfo = nullptr;
 
             const auto varNode = Ast::newVarDecl(form("__2tmp_%d", g_UniqueID.fetch_add(1)), nullptr, node);
+            varNode->addAstFlag(AST_GENERATED);
             varNode->inheritTokenLocation(child->token);
 
             const auto typeExpr = Ast::newTypeExpression(nullptr, varNode);
