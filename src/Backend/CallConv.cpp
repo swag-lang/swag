@@ -47,26 +47,6 @@ bool CallConv::returnByAddress(const TypeInfoFuncAttr* typeFunc)
     return returnByStackAddress(typeFunc);
 }
 
-bool CallConv::returnByStackAddress(const TypeInfoFuncAttr* typeFunc)
-{
-    if (!typeFunc->returnType || typeFunc->returnType->isVoid())
-        return false;
-
-    const auto type = typeFunc->concreteReturnType();
-    if (type->isArray() ||
-        type->isClosure())
-    {
-        return true;
-    }
-
-    if (returnStructByValue(typeFunc))
-        return false;
-    if (type->isStruct())
-        return true;
-
-    return false;
-}
-
 bool CallConv::returnNeedsStack(const TypeInfoFuncAttr* typeFunc)
 {
     if (!typeFunc->returnType || typeFunc->returnType->isVoid())
@@ -94,13 +74,6 @@ bool CallConv::returnStructByValue(const TypeInfoFuncAttr* typeFunc)
     if (typeFunc->hasFlag(TYPEINFO_CAN_THROW))
         return false;
 
-    if (typeFunc->declNode->is(AstNodeKind::FuncDecl))
-    {
-        const auto fctNode = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
-        if (fctNode->mustInline())
-            return false;
-    }
-
     const auto type = typeFunc->concreteReturnType();
     if (!type->isStruct())
         return false;
@@ -114,4 +87,21 @@ bool CallConv::returnStructByValue(const TypeInfoFuncAttr* typeFunc)
         return true;
 
     return false;
+}
+
+bool CallConv::returnByStackAddress(const TypeInfoFuncAttr* typeFunc)
+{
+    if (!typeFunc->returnType || typeFunc->returnType->isVoid())
+        return false;
+
+    const auto type = typeFunc->concreteReturnType();
+    if (type->isArray() || type->isClosure())
+        return true;
+
+    if (!type->isStruct())
+        return false;
+    if (returnStructByValue(typeFunc))
+        return false;
+
+    return true;
 }
