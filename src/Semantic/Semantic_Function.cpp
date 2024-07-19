@@ -1234,7 +1234,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     if (node->hasAstFlag(AST_COMPUTED_VALUE | AST_OP_AFFECT_CAST))
         node->castedTypeInfo = child->castedTypeInfo;
 
-    if (checkForConcrete & !node->hasAstFlag(AST_OP_AFFECT_CAST))
+    if (checkForConcrete && !node->hasAstFlag(AST_OP_AFFECT_CAST))
     {
         SWAG_CHECK(evaluateConstExpression(context, node));
         YIELD();
@@ -1502,6 +1502,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     }
 
     auto returnType = funcNode->returnType->typeInfo;
+    SWAG_ASSERT(returnType);
 
     // Check types
     auto child = node->firstChild();
@@ -1539,7 +1540,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     }
 
     // :WaitForPOD
-    if (returnType && returnType->isStruct())
+    if (returnType->isStruct())
     {
         waitAllStructSpecialMethods(context->baseJob, returnType);
         YIELD();

@@ -364,7 +364,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 nodeCall->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                 nodeCall->castedTypeInfo = nullptr;
 
-                const auto varNode = Ast::newVarDecl(form(R"(__2tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, identifier);
+                const auto varNode = Ast::newVarDecl(form(R"(__10tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, identifier);
                 varNode->inheritTokenLocation(nodeCall->token);
 
                 // Put child front, because emitCall wants the parameters to be the last
