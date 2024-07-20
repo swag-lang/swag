@@ -14,7 +14,7 @@
 
 bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
 {
-    // Automatic convert to 'kindOf'
+    // Automatic convert to 'kindof'
     // This has no sens to do a switch on an 'any'. So instead of raising an error,
     // we imply the usage of '@kindof'. That way we have a switch on the underlying type.
     const auto typeInfo = TypeManager::concretePtrRefType(node->typeInfo);
@@ -124,7 +124,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     if (!node->resolvedSymbolName())
         return true;
 
-    // If this is an identifier ref, then we need to be check concrete from left to right,
+    // If this is an identifier ref, then we need to check concrete from left to right,
     // to raise an error on the first problem, and not only the result
     if (node->is(AstNodeKind::IdentifierRef))
     {
@@ -747,15 +747,14 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     node->inheritComputedValue(exprNode);
     node->setResolvedSymbol(exprNode->resolvedSymbolName(), exprNode->resolvedSymbolOverload());
 
-    // In case case has triggered a special function call, need to get it
-    // (usage of opAffect)
+    // In case has triggered a special function call, need to get it (usage of opAffect)
     const auto userOp = exprNode->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
     if (userOp)
         node->addExtraPointer(ExtraPointerKind::UserOp, userOp);
 
     // Revert the implicit cast information
     // Requested type will be stored in typeInfo of node, and previous type will be stored in typeInfo of exprNode
-    // (we cannot use castedTypeInfo from node, because an explicit cast result could be casted itself with an implicit cast)
+    // (we cannot use castedTypeInfo from node, because an explicit cast result could be cast itself with an implicit cast)
     if (exprNode->castedTypeInfo)
     {
         if (!node->hasAstFlag(AST_COMPUTED_VALUE | AST_OP_AFFECT_CAST))
