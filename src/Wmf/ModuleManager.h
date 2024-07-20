@@ -8,15 +8,15 @@ struct DataSegment;
 
 struct ModuleManager
 {
-    bool  loadModule(const Utf8& name, bool canBeSystem = true);
-    bool  isModuleLoaded(const Utf8& moduleName);
-    bool  isModuleFailedLoaded(const Utf8& moduleName);
-    void  resetFailedModule(const Utf8& moduleName);
-    void* getFnPointer(const Utf8& moduleName, const Utf8& funcName);
-    void  addPatchFuncAddress(DataSegment* seg, void** patchAddress, AstFuncDecl* func);
-    bool  applyPatches(const Utf8& moduleName, void* moduleHandle);
+    void                resetFailedModule(const Utf8& moduleName);
+    void                addPatchFuncAddress(DataSegment* seg, void** patchAddress, AstFuncDecl* func);
+    [[nodiscard]] bool  loadModule(const Utf8& name, bool canBeSystem = true);
+    [[nodiscard]] bool  isModuleLoaded(const Utf8& moduleName);
+    [[nodiscard]] bool  isModuleFailedLoaded(const Utf8& moduleName);
+    [[nodiscard]] void* getFnPointer(const Utf8& moduleName, const Utf8& funcName);
+    [[nodiscard]] bool  applyPatches(const Utf8& moduleName, void* moduleHandle);
 
-    static const Utf8& getForeignModuleName(const AstFuncDecl* func);
+    [[nodiscard]] static const Utf8& getForeignModuleName(const AstFuncDecl* func);
 
     SharedMutex    mutex;
     SharedMutex    mutexLoaded;

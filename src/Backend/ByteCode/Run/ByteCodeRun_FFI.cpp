@@ -27,7 +27,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
         SWAG_ASSERT(context->sourceFile);
         const auto module = context->sourceFile->module;
         for (const auto& dep : module->moduleDependencies)
-            g_ModuleMgr->loadModule(dep->name);
+            static_cast<void>(g_ModuleMgr->loadModule(dep->name));
 
         // Then try again
         g_ModuleMgr->resetFailedModule(moduleName);
