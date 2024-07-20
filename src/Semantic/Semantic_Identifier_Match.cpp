@@ -492,6 +492,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             {
                 const auto varNode = Ast::newVarDecl(form(R"(__3tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, identifier);
                 varNode->addAstFlag(AST_GENERATED);
+                varNode->addSpecFlag(AstVarDecl::SPEC_FLAG_POST_STACK);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);

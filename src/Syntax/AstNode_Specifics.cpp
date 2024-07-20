@@ -164,28 +164,13 @@ bool AstFuncDecl::mustAutoInline() const
 
     if (hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN | ATTRIBUTE_COMPILER))
         return false;
-    if (hasSpecFlag(SPEC_FLAG_IMPL))
-        return false;
+
+    if (content->is(AstNodeKind::Return) ||
+        content->firstChild() && content->firstChild()->is(AstNodeKind::Return))
+        return true;
 
     if (hasSpecFlag(SPEC_FLAG_SHORT_FORM))
         return true;
-
-#if 0
-    if (returnType && returnType->typeInfo && returnType->typeInfo->isStruct())
-        return false;
-
-    if (content->is(AstNodeKind::Return))
-    {
-        printf("A: %s\n", token.text.c_str());
-        return true;
-    }
-
-    if (content->firstChild() && content->firstChild()->is(AstNodeKind::Return))
-    {
-        printf("B: %s\n", token.text.c_str());
-        return true;
-    }
-#endif
 
     return false;
 }

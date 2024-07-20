@@ -802,30 +802,32 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
         {
             const auto mySize = typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
 
-            // Because of 'visit' (at least), it can happen that this is not up to date because of order of evaluation.
-            // So update it just in case (5294)
-            node->ownerScope->startStackSize = max(node->ownerScope->startStackSize, node->ownerScope->parentScope->startStackSize);
-            node->ownerScope->startStackSize = static_cast<uint32_t>(TypeManager::align(node->ownerScope->startStackSize, Semantic::alignOf(node)));
-
-            storageOffset = node->ownerScope->startStackSize;
-            node->ownerScope->startStackSize += mySize;
-
-            // Can happen that a generated inline variable (like returning a complex thing that needs to be constructed/converted with opAffect)
-            // will be evaluated before adding other generated variables to the parent scope.
-            // Ex: 5483.
-            // We need to be sure that the newly generated variable in the parent scope does not share the same address (stack off) as the inline
-            // var.
-            if (node->hasAstFlag(AST_GENERATED))
+            if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_POST_STACK))
             {
+                storageOffset = node->ownerFct->stackSize;
+                node->ownerFct->stackSize += mySize;
+                node->ownerFct->stackSize = static_cast<uint32_t>(TypeManager::align(node->ownerFct->stackSize, sizeof(void*)));
+
                 auto parentScope = node->ownerScope;
-                while (parentScope->is(ScopeKind::Inline))
+                while (parentScope != node->ownerFct->scope)
                 {
-                    parentScope->parentScope->startStackSize = max(parentScope->startStackSize, parentScope->parentScope->startStackSize);
-                    parentScope                              = parentScope->parentScope;
+                    parentScope->startStackSize = max(parentScope->startStackSize, node->ownerFct->stackSize);
+                    parentScope->startStackSize = static_cast<uint32_t>(TypeManager::align(parentScope->startStackSize, Semantic::alignOf(node)));
+                    parentScope                 = parentScope->parentScope;
                 }
             }
+            else
+            {
+                // Because of 'visit' (at least), it can happen that this is not up to date because of order of evaluation.
+                // So update it just in case (5294)
+                node->ownerScope->startStackSize = max(node->ownerScope->startStackSize, node->ownerScope->parentScope->startStackSize);
+                node->ownerScope->startStackSize = static_cast<uint32_t>(TypeManager::align(node->ownerScope->startStackSize, Semantic::alignOf(node)));
 
-            setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+                storageOffset = node->ownerScope->startStackSize;
+                node->ownerScope->startStackSize += mySize;
+
+                setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+            }
         }
     }
 
