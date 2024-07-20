@@ -114,9 +114,9 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
         tn->end       = nullptr;
         tn->next.clear();
         tn->parent.clear();
-        tn->mark  = 0;
-        tn->flags = 0;
-        tn->crcBlock   = 0;
+        tn->mark     = 0;
+        tn->flags    = 0;
+        tn->crcBlock = 0;
 
         context->mapInstNode[ip] = context->nextTreeNode;
         return context->nextTreeNode++;

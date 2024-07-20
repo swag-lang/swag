@@ -108,7 +108,7 @@ void ByteCodeGen::transformResultToLinear2(const ByteCodeGenContext* context, Re
             resultRegisterRC += resultRegisterRC[0] + 1;
             return;
         }
-        
+
         resultRegisterRC += reserveRegisterRC(context);
     }
 

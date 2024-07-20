@@ -40,7 +40,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             // Test an inside jump that will escape the loop
             if (ByteCode::isJump(ipScan) && ipScan != ipExitJump && ipScan != ip)
             {
-                hasJumps = true;
+                hasJumps        = true;
                 const auto test = ipScan + ipScan->b.s32 + 1;
                 if (test < ipStart || test > ip)
                     break;

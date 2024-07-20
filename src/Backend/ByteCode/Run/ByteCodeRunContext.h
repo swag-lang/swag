@@ -35,7 +35,7 @@ struct ByteCodeRunContext
         if (sp - size < spAlt)
             stackOverflow();
     }
-    
+
     template<typename T>
     T pop()
     {
