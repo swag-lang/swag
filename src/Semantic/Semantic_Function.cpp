@@ -12,7 +12,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool Semantic::mustInline(const AstFuncDecl* funcDecl, AstNode* forCall)
+bool Semantic::mustInline(const AstFuncDecl* funcDecl, AstNode* /*forCall*/)
 {
     if (funcDecl->mustUserInline())
         return true;
@@ -1699,7 +1699,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 
 uint32_t Semantic::getMaxStackSize(AstNode* node)
 {
-    auto decSP = node->ownerScope->startStackSize;
+    const auto decSP = node->ownerScope->startStackSize;
 
     if (!node->ownerFct)
     {

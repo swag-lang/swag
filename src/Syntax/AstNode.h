@@ -1247,7 +1247,7 @@ struct AstFile : AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    uint32_t getStackSize()
+    uint32_t getStackSize() const
     {
         SharedLock lk(mutex);
         return stackSize;

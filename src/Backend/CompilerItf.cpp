@@ -4,7 +4,7 @@
 
 void* getMessage(Module* /*module*/)
 {
-    return (void*) g_RunContext->currentCompilerMessage;
+    return const_cast<void*>(static_cast<const void*>(g_RunContext->currentCompilerMessage));
 }
 
 void* getBuildCfg(Module* module)

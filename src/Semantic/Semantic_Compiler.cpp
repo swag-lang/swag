@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Backend/Backend.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/Context.h"
@@ -280,7 +279,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
     SWAG_CHECK(collectAttributes(context, node, nullptr));
     if (node->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
     {
-        const ByteCodePrintOptions opt;
+        constexpr ByteCodePrintOptions opt;
         node->extByteCode()->bc->print(opt);
     }
 

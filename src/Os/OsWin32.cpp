@@ -1124,7 +1124,7 @@ namespace OS
 
         // Scroll it upwards off the top of the buffer with a magnitude of the entire height.
         scrollTarget.X = 0;
-        scrollTarget.Y = (SHORT) (0 - csbi.dwSize.Y);
+        scrollTarget.Y = static_cast<SHORT>(0 - csbi.dwSize.Y);
 
         // Fill with empty spaces with the buffer's default text attribute.
         fill.Char.UnicodeChar = TEXT(' ');

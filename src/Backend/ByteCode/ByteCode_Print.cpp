@@ -280,7 +280,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
             {
                 name.remove(0, 9);
                 SWAG_ASSERT(name.length() > 1);
-                name.buffer[0] = (char) tolower(name[0]);
+                name.buffer[0] = static_cast<char>(tolower(name[0]));
                 name.insert(0, "@");
             }
 

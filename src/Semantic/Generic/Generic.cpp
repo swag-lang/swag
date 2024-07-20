@@ -259,7 +259,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
     }
 }
 
-void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const VectorNative<AstNode*>& toCheck)
+void Generic::setContextualGenericTypeReplacement(SemanticContext*, OneTryMatch& oneTryMatch, const VectorNative<AstNode*>& toCheck)
 {
     for (const auto one : toCheck)
     {

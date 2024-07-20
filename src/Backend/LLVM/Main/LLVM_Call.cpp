@@ -843,7 +843,14 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
     }
 }
 
-void LLVM::emitLocalCall(const BuildParameters& buildParameters, llvm::LLVMContext& context, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall)
+void LLVM::emitLocalCall(const BuildParameters&                       buildParameters,
+                         llvm::LLVMContext&                           context,
+                         llvm::AllocaInst*                            allocR,
+                         llvm::AllocaInst*                            allocRR,
+                         const ByteCodeInstruction*                   ip,
+                         VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams,
+                         VectorNative<uint32_t>&                      pushRAParams,
+                         llvm::Value*&                                resultFuncCall)
 {
     const auto callBc       = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
@@ -858,7 +865,13 @@ void LLVM::emitLocalCall(const BuildParameters& buildParameters, llvm::LLVMConte
     pushRVParams.clear();
 }
 
-void LLVM::emitForeignCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall)
+void LLVM::emitForeignCall(const BuildParameters&                       buildParameters,
+                           llvm::AllocaInst*                            allocR,
+                           llvm::AllocaInst*                            allocRR,
+                           const ByteCodeInstruction*                   ip,
+                           VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams,
+                           VectorNative<uint32_t>&                      pushRAParams,
+                           llvm::Value*&                                resultFuncCall)
 {
     const auto funcNode     = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
@@ -867,7 +880,18 @@ void LLVM::emitForeignCall(const BuildParameters& buildParameters, llvm::AllocaI
     pushRVParams.clear();
 }
 
-bool LLVM::emitLambdaCall(const BuildParameters& buildParameters, LLVMEncoder& pp, llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, llvm::AllocaInst* allocT, ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall)
+bool LLVM::emitLambdaCall(const BuildParameters&                       buildParameters,
+                          LLVMEncoder&                                 pp,
+                          llvm::LLVMContext&                           context,
+                          llvm::IRBuilder<>&                           builder,
+                          llvm::Function*                              func,
+                          llvm::AllocaInst*                            allocR,
+                          llvm::AllocaInst*                            allocRR,
+                          const llvm::AllocaInst*                      allocT,
+                          const ByteCodeInstruction*                   ip,
+                          VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams,
+                          VectorNative<uint32_t>&                      pushRAParams,
+                          llvm::Value*&                                resultFuncCall)
 {
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 

@@ -16,14 +16,14 @@ namespace
             switch (count)
             {
                 case 1:
-                    return *(uint8_t*) addr;
+                    return *static_cast<uint8_t*>(addr);
                 case 2:
-                    return *(uint16_t*) addr;
+                    return *static_cast<uint16_t*>(addr);
                 case 4:
                 default:
-                    return *(uint32_t*) addr;
+                    return *static_cast<uint32_t*>(addr);
                 case 8:
-                    return *(uint64_t*) addr;
+                    return *static_cast<uint64_t*>(addr);
             }
         }
         SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)

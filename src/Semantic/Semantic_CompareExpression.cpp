@@ -1,7 +1,5 @@
 #include "pch.h"
-
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
-#include "DataSegment.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
