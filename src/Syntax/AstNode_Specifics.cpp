@@ -153,28 +153,6 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     return newNode;
 }
 
-bool AstFuncDecl::mustAutoInline() const
-{
-    if (!content)
-        return false;
-    if (!token.sourceFile->module->buildCfg.byteCodeAutoInline)
-        return false;
-    if (hasAttribute(ATTRIBUTE_NO_INLINE))
-        return false;
-
-    if (hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN | ATTRIBUTE_COMPILER))
-        return false;
-
-    if (content->is(AstNodeKind::Return) ||
-        content->firstChild() && content->firstChild()->is(AstNodeKind::Return))
-        return true;
-
-    if (hasSpecFlag(SPEC_FLAG_SHORT_FORM))
-        return true;
-
-    return false;
-}
-
 bool AstFuncDecl::mustUserInline(bool forExport) const
 {
     if (!content)
@@ -186,11 +164,6 @@ bool AstFuncDecl::mustUserInline(bool forExport) const
     if (hasAttribute(ATTRIBUTE_INLINE))
         return true;
     return false;
-}
-
-bool AstFuncDecl::mustInline() const
-{
-    return mustUserInline() || mustAutoInline();
 }
 
 Utf8 AstFuncDecl::getCallName()

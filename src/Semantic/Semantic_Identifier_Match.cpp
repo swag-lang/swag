@@ -893,7 +893,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         return context->report(err, Diagnostic::hereIs(overload));
     }
 
-    if (funcDecl->mustInline() && !isFunctionButNotACall(context, identifier, overload->symbol))
+    if (mustInline(funcDecl, identifier) && !isFunctionButNotACall(context, identifier, overload->symbol))
     {
         // Mixin and macros must be inlined here, because no call is possible
         bool forceInline = false;
@@ -904,7 +904,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         {
             // Expand inline function. Do not expand an inline call inside a function marked as inline.
             // The expansion will be done at the lowest level possible
-            if (!identifier->ownerFct || !identifier->ownerFct->mustInline() || forceInline)
+            if (!identifier->ownerFct || !mustInline(identifier->ownerFct, nullptr) || forceInline)
             {
                 // Need to wait for function full semantic resolve
                 waitFuncDeclFullResolve(context->baseJob, funcDecl);

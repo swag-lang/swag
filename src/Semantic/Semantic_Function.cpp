@@ -12,6 +12,30 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
+bool Semantic::mustInline(const AstFuncDecl* funcDecl, AstNode* forCall)
+{
+    if (funcDecl->mustUserInline())
+        return true;
+
+    if (!funcDecl->token.sourceFile->module->buildCfg.byteCodeAutoInline)
+        return false;
+    if (funcDecl->hasAttribute(ATTRIBUTE_NO_INLINE))
+        return false;
+    if (funcDecl->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN | ATTRIBUTE_COMPILER))
+        return false;
+    if (!funcDecl->content)
+        return false;
+
+    if (funcDecl->content->is(AstNodeKind::Return) ||
+        funcDecl->content->firstChild() && funcDecl->content->firstChild()->is(AstNodeKind::Return))
+        return true;
+
+    if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM))
+        return true;
+
+    return false;
+}
+
 void Semantic::allocateOnStack(AstNode* node, const TypeInfo* typeInfo)
 {
     node->allocateComputedValue();
