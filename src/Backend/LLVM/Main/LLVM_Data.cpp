@@ -136,9 +136,9 @@ bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* data
             break;
     }
 
-    llvm::Function*   fct = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, name, modu);
-    llvm::BasicBlock* BB  = llvm::BasicBlock::Create(context, "entry", fct);
-    builder.SetInsertPoint(BB);
+    llvm::Function*   fct   = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, name, modu);
+    llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", fct);
+    builder.SetInsertPoint(block);
 
     for (const auto& k : dataSegment->initPtr)
     {

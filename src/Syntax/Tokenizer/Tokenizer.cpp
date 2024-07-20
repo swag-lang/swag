@@ -92,7 +92,7 @@ uint32_t Tokenizer::peekChar(unsigned& offset) const
     }
 
     uint32_t wc;
-    Utf8::decodeUtf8(curBuffer, wc, offset);
+    (void) Utf8::decodeUtf8(curBuffer, wc, offset);
     return wc;
 }
 

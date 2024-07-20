@@ -119,7 +119,7 @@ void FormatConcat::addStringFormat(const char* format, ...)
     char    buf[4096];
     va_list args;
     va_start(args, format);
-    const auto len = vsnprintf(buf, 4096, format, args);
+    const auto len = vsnprintf(buf, 4096, format, args);  // NOLINT(clang-diagnostic-format-nonliteral)
     SWAG_ASSERT(len < 4095);
     va_end(args);
     addString(buf, len);

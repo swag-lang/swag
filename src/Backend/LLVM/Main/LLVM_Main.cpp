@@ -431,8 +431,8 @@ void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
-    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
-    builder.SetInsertPoint(BB);
+    llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", fct);
+    builder.SetInsertPoint(block);
 
     // Call to #drop functions
     for (const auto bc : module->byteCodeDropFunc)

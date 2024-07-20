@@ -650,7 +650,7 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
 
     // End
     PrintInstructionLine line;
-    fillPrintInstruction(options, ip++, line);
+    fillPrintInstruction(options, ip, line);
     lines.push_back(line);
 
     alignPrintInstructions(options, lines);
