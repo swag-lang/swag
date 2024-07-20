@@ -14,22 +14,22 @@ struct JobQueue
 
 struct ThreadManager
 {
-    void init();
-    void addJob(Job* job);
-    void addJobNoLock(Job* job);
-    Job* getJob();
-    Job* getJob(JobQueue& queue);
-    void eatJob(Job* job);
-    Job* getJob(JobThread* thread);
-    bool doneWithJobs() const;
-    void clearOptionalJobs();
-    void executeOneJob(Job* job);
-    void wakeUpThreads();
-    void wakeUpThreadsNoLock();
-    void jobHasEnded(Job* job, JobResult result);
-    void waitEndJobsSync();
-    void waitEndJobs();
-    bool tryExecuteJob();
+    void               init();
+    void               addJob(Job* job);
+    void               addJobNoLock(Job* job);
+    void               eatJob(Job* job);
+    [[nodiscard]] Job* getJob();
+    [[nodiscard]] Job* getJob(JobQueue& queue);
+    [[nodiscard]] Job* getJob(JobThread* thread);
+    [[nodiscard]] bool doneWithJobs() const;
+    void               clearOptionalJobs();
+    void               executeOneJob(Job* job);
+    void               wakeUpThreads();
+    void               wakeUpThreadsNoLock();
+    void               jobHasEnded(Job* job, JobResult result);
+    void               waitEndJobsSync();
+    void               waitEndJobs();
+    [[nodiscard]] bool tryExecuteJob();
 
     JobQueue queueJobsIO;
     JobQueue queueJobs;

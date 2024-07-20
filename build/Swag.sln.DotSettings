@@ -25,4 +25,8 @@
 	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=DBG/@EntryIndexedValue">DBG</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=Fct/@EntryIndexedValue">Fct</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=VTS/@EntryIndexedValue">VTS</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=retval/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=semflag/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=typeinfo/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=ufcs/@EntryIndexedValue">True</s:Boolean>
 </wpf:ResourceDictionary>

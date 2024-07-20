@@ -147,7 +147,7 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
     static Mutex oo;
     while (!oo.try_lock())
     {
-        g_ThreadMgr.tryExecuteJob();
+        (void) g_ThreadMgr.tryExecuteJob();
         std::this_thread::yield();
     }
 

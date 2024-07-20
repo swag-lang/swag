@@ -703,7 +703,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto varDecl = Ast::newVarDecl(form("__tmp%u", id), nullptr, node);
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_LET);
         varDecl->assignment = Ast::newIntrinsicProp(TokenId::IntrinsicDataOf, nullptr, varDecl);
-        Ast::clone(node->expression, varDecl->assignment);
+        (void) Ast::clone(node->expression, varDecl->assignment);
         varDecl->assignment->firstChild()->addAstFlag(AST_NO_SEMANTIC);
         newVar = varDecl;
 
@@ -744,7 +744,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto varDecl        = Ast::newVarDecl(form("__addr%u", id), nullptr, node);
         varDecl->assignment = Ast::newIntrinsicProp(TokenId::IntrinsicDataOf, nullptr, varDecl);
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_LET);
-        Ast::clone(node->expression, varDecl->assignment);
+        (void) Ast::clone(node->expression, varDecl->assignment);
         varDecl->assignment->firstChild()->addAstFlag(AST_NO_SEMANTIC);
         newVar = varDecl;
 
@@ -954,6 +954,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     Ast::removeFromParent(node->block);
     Ast::addChildBack(loopNode->block, node->block);
     SWAG_ASSERT(node->block);
+    
     Ast::visit(context, node->block, [&](ErrorContext*, AstNode* x) {
         if (!x->hasOwnerBreakable())
             x->setOwnerBreakable(loopNode);

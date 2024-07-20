@@ -503,7 +503,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         {
             const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
             FormatAst::inheritFormatBefore(this, globalDecl, &savedToken);
-            Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+            (void) Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(eatSemiCol("[[#global public/internal]]"));
         }

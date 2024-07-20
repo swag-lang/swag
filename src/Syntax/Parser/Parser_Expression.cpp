@@ -1512,7 +1512,7 @@ bool Parser::doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode*
         // In case of an affectation, create 'otherVar = firstVar'
         else
         {
-            Ast::clone(cloneFront, affectNode);
+            (void) Ast::clone(cloneFront, affectNode);
         }
     }
 

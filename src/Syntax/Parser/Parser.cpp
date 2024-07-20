@@ -227,7 +227,7 @@ bool Parser::eatFormat(AstNode* parent)
         tokenParse.comments.justBefore.empty() &&
         tokenParse.comments.after.empty())
         return true;
-    Ast::newNode<AstNode>(AstNodeKind::EmptyNode, this, parent);
+    (void) Ast::newNode<AstNode>(AstNodeKind::EmptyNode, this, parent);
     return true;
 }
 

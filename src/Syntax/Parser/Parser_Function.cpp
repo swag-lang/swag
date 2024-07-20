@@ -1281,7 +1281,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         Semantic::setVarDeclResolve(block);
 
         for (const auto c : lambdaDecl->captureParameters->children)
-            Ast::clone(c, exprList);
+            (void) Ast::clone(c, exprList);
 
         // Reference to the captured block
         identifierRef = Ast::newIdentifierRef(nameCaptureBlock, this, exprNode);

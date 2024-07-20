@@ -839,7 +839,7 @@ bool Module::waitForDependenciesDone(Job* job, const SetUtf8& modules)
             return false;
         }
 
-        static_cast<void>(g_ModuleMgr->loadModule(depModule->name));
+        (void) g_ModuleMgr->loadModule(depModule->name);
     }
 
     return true;
@@ -866,7 +866,7 @@ bool Module::waitForDependenciesDone(Job* job)
             return false;
         }
 
-        static_cast<void>(g_ModuleMgr->loadModule(depModule->name));
+        (void) g_ModuleMgr->loadModule(depModule->name);
     }
 
     dependenciesDone = true;

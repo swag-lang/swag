@@ -403,11 +403,11 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                     const auto mkPtrNode     = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, nullptr, moveRefNode);
                     mkPtrNode->addAstFlag(AST_GENERATED);
                     mkPtrNode->semanticFct = resolveMakePointer;
-                    Ast::newIdentifierRef(varNode->token.text, nullptr, mkPtrNode);
+                    (void) Ast::newIdentifierRef(varNode->token.text, nullptr, mkPtrNode);
                 }
                 else
                 {
-                    Ast::newIdentifierRef(varNode->token.text, nullptr, newParam);
+                    (void) Ast::newIdentifierRef(varNode->token.text, nullptr, newParam);
                 }
 
                 // We want to export the original parameter, not the temporary variable reference
@@ -533,7 +533,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
 
                 newParam->indexParam = i;
                 newParam->addAstFlag(AST_GENERATED);
-                Ast::newIdentifierRef(varNode->token.text, nullptr, newParam);
+                (void) Ast::newIdentifierRef(varNode->token.text, nullptr, newParam);
 
                 // Add the 2 nodes to the semantic
                 context->baseJob->nodes.push_back(newParam);
