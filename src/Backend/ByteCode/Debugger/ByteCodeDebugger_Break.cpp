@@ -444,7 +444,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     bkp.line       = arg.split[2].toInt();
     bkp.autoRemove = oneShot;
 
-    loc.file->getLine(0);
+    static_cast<void>(loc.file->getLine(0));
     if (bkp.line == 0 || bkp.line >= loc.file->allLines.size() + 1)
     {
         printCmdError(form("out of range line number [[%s]]", arg.split[2].c_str()));
@@ -537,7 +537,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     bkp.line       = arg.split[3].toInt();
     bkp.autoRemove = oneShot;
 
-    curFile->getLine(0);
+    static_cast<void>(curFile->getLine(0));
     if (bkp.line == 0 || bkp.line >= curFile->allLines.size() + 1)
     {
         printCmdError(form("out of range line number [[%s]]", arg.split[3].c_str()));

@@ -14,6 +14,6 @@ void LoadSourceFileJob::release()
 
 JobResult LoadSourceFileJob::execute()
 {
-    sourceFile->load();
+    static_cast<void>(sourceFile->load());
     return JobResult::ReleaseJob;
 }

@@ -33,18 +33,18 @@ constexpr FileFlags FILE_NO_FORMAT           = 0x00004000;
 
 struct SourceFile
 {
-    void release() const;
-    bool checkFormat();
-    bool load();
-    Utf8 getLine(uint32_t lineNo, bool* eof = nullptr);
-    void setExternalBuffer(const Utf8& content);
-    void addGlobalUsing(Scope* scope);
+    void               release() const;
+    void               setExternalBuffer(const Utf8& content);
+    void               addGlobalUsing(Scope* scope);
+    [[nodiscard]] bool load();
+    [[nodiscard]] bool checkFormat();
+    [[nodiscard]] Utf8 getLine(uint32_t lineNo, bool* eof = nullptr);
 
-    bool hasFlag(FileFlags fl) const { return flags.has(fl); }
-    void addFlag(FileFlags fl) { flags.add(fl); }
-    void removeFlag(FileFlags fl) { flags.remove(fl); }
+    [[nodiscard]] bool hasFlag(FileFlags fl) const { return flags.has(fl); }
+    void               addFlag(FileFlags fl) { flags.add(fl); }
+    void               removeFlag(FileFlags fl) { flags.remove(fl); }
 
-    bool acceptsInternalStuff() const;
+    [[nodiscard]] bool acceptsInternalStuff() const;
 
     SharedMutex            mutex;
     Vector<Utf8>           allLines;

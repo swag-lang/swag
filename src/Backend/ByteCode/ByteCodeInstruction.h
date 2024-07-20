@@ -32,10 +32,10 @@ constexpr InstructionDynFlags BCID_SAFETY_OF = 0x04;
 
 struct ByteCodeInstruction
 {
-    SWAG_FORCE_INLINE bool hasFlag(InstructionFlags fl) const { return flags.has(fl); }
-    void                   addFlag(InstructionFlags fl) { flags.add(fl); }
-    void                   removeFlag(InstructionFlags fl) { flags.remove(fl); }
-    void                   inheritFlag(const ByteCodeInstruction* ip, InstructionFlags fl) { flags.add(ip->flags.mask(fl)); }
+    SWAG_FORCE_INLINE [[nodiscard]] bool hasFlag(InstructionFlags fl) const { return flags.has(fl); }
+    void                                 addFlag(InstructionFlags fl) { flags.add(fl); }
+    void                                 removeFlag(InstructionFlags fl) { flags.remove(fl); }
+    void                                 inheritFlag(const ByteCodeInstruction* ip, InstructionFlags fl) { flags.add(ip->flags.mask(fl)); }
 
     // Keep 'op' first to dereference it in the runner without an offset
     ByteCodeOp          op;
