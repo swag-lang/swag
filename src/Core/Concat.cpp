@@ -17,7 +17,7 @@ void Concat::init(int size)
 
     bucketSize            = size;
     firstBucket           = Allocator::alloc<ConcatBucket>();
-    firstBucket->data     = bucketSize ? Allocator::alloc_n<uint8_t>(bucketSize) : nullptr;
+    firstBucket->data     = bucketSize ? Allocator::allocN<uint8_t>(bucketSize) : nullptr;
     firstBucket->capacity = size;
 
 #ifdef SWAG_STATS
@@ -94,7 +94,7 @@ void Concat::ensureSpace(uint32_t numBytes)
 
     lastBucket->capacity = max(numBytes, bucketSize);
     lastBucket->capacity = Allocator::alignSize(lastBucket->capacity);
-    lastBucket->data     = Allocator::alloc_n<uint8_t>(lastBucket->capacity);
+    lastBucket->data     = Allocator::allocN<uint8_t>(lastBucket->capacity);
 
 #ifdef SWAG_STATS
     g_Stats.memConcat += sizeof(ConcatBucket);

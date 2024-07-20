@@ -125,7 +125,7 @@ void Utf8::reserve(uint32_t newSize)
     const auto lastAllocated = allocated;
     allocated *= 2;
     allocated            = max(allocated, newSize);
-    const auto newBuffer = Allocator::alloc_n<char>(allocated);
+    const auto newBuffer = Allocator::allocN<char>(allocated);
     if (count)
         std::copy_n(buffer, count + 1, newBuffer);
 
@@ -172,7 +172,7 @@ const char* Utf8::c_str() const
     // Big huge leak... not so huge in fact
     // Should limit the call to c_str() as much as possible in a normal run (no errors)
     const auto size = count + 1;
-    const auto buf  = Allocator::alloc_n<char>(size);
+    const auto buf  = Allocator::allocN<char>(size);
     std::copy_n(buffer, count, buf);
     buf[count] = 0;
 
@@ -573,7 +573,7 @@ void Utf8::makeLocal()
         return;
 
     allocated      = count + 1;
-    const auto buf = Allocator::alloc_n<char>(allocated);
+    const auto buf = Allocator::allocN<char>(allocated);
     std::copy_n(buffer, count, buf);
     buffer        = buf;
     buffer[count] = 0;

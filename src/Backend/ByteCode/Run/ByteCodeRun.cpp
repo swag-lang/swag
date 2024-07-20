@@ -2969,7 +2969,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             if (!count)
                 break;
             auto size                      = Allocator::alignSize(count + 1);
-            registersRC[ip->a.u32].pointer = Allocator::alloc_n<uint8_t>(size);
+            registersRC[ip->a.u32].pointer = Allocator::allocN<uint8_t>(size);
             context->bc->autoFree.push_back({static_cast<void*>(registersRC[ip->a.u32].pointer), size});
             std::copy_n(ptr, count + 1, registersRC[ip->a.u32].pointer);
             registersRC[ip->a.u32].pointer[count] = 0;

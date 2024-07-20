@@ -27,19 +27,19 @@ struct Allocator
     }
 
     template<typename T>
-    static T* alloc_n(uint32_t n)
+    static T* allocN(uint32_t n)
     {
         return static_cast<T*>(alloc(n * sizeof(T)));
     }
 
     template<typename T>
-    static T* alloc_n_aligned(uint32_t n)
+    static T* allocAlignedN(uint32_t n)
     {
         return static_cast<T*>(alloc(alignSize(n * sizeof(T))));
     }
 
     template<typename T>
-    static void free_n_aligned(T* ptr, uint32_t n)
+    static void freeAlignedN(T* ptr, uint32_t n)
     {
         return free(ptr, alignSize(n * sizeof(T)));
     }

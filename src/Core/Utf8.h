@@ -82,6 +82,7 @@ struct Utf8
 
     // ReSharper disable once CppNonExplicitConversionOperator
     operator const char*() const;
+    // ReSharper disable once CppNonExplicitConversionOperator
     operator std::string_view() const;
     char        operator[](uint32_t index) const;
     Utf8&       operator=(const char* txt);
@@ -100,20 +101,20 @@ struct Utf8
     void        operator+=(uint32_t c);
     void        operator+=(char c);
 
-    void toUni16(VectorNative<uint16_t>& uni, int maxChars = -1) const;
-    void toUni32(VectorNative<uint32_t>& uni, int maxChars = -1) const;
-    bool toChar32(uint32_t& ch) const;
-    void replace(const char* src, const char* dst);
+    void               toUni16(VectorNative<uint16_t>& uni, int maxChars = -1) const;
+    void               toUni32(VectorNative<uint32_t>& uni, int maxChars = -1) const;
+    void               replace(const char* src, const char* dst);
+    [[nodiscard]] bool toChar32(uint32_t& ch) const;
 
-    static const char* decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset);
-    static void        tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty = false, bool trim = false);
-    static void        wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength);
-    static void        tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens);
-    static Utf8        toStringF64(double v);
-    static Utf8        toNiceSize(size_t size);
-    static uint32_t    fuzzyCompare(const Utf8& str1, const Utf8& str2);
-    static Utf8        truncateDisplay(const char* str, int maxLen);
-    static bool        isNumber(const char* pz);
+    static void                      tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty = false, bool trim = false);
+    static void                      wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength);
+    static void                      tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens);
+    [[nodiscard]] static const char* decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset);
+    [[nodiscard]] static Utf8        toStringF64(double v);
+    [[nodiscard]] static Utf8        toNiceSize(size_t size);
+    [[nodiscard]] static uint32_t    fuzzyCompare(const Utf8& str1, const Utf8& str2);
+    [[nodiscard]] static Utf8        truncateDisplay(const char* str, int maxLen);
+    [[nodiscard]] static bool        isNumber(const char* pz);
 
     char*    buffer    = nullptr;
     uint32_t count     = 0;

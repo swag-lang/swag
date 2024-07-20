@@ -161,7 +161,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
         bucket.size = max(size, granularity);
         granularity *= 2;
         bucket.size   = Allocator::alignSize(bucket.size);
-        bucket.buffer = Allocator::alloc_n<uint8_t>(bucket.size);
+        bucket.buffer = Allocator::allocN<uint8_t>(bucket.size);
 #ifdef SWAG_STATS
         g_Stats.memSeg += bucket.size;
 #endif
@@ -528,7 +528,7 @@ void DataSegment::saveValue(uint8_t* address, uint32_t size, bool zero)
             sv.value.u64 = *reinterpret_cast<uint64_t*>(address);
             break;
         default:
-            sv.value.pointer = Allocator::alloc_n<uint8_t>(size);
+            sv.value.pointer = Allocator::allocN<uint8_t>(size);
             std::copy_n(address, size, sv.value.pointer);
             break;
     }
@@ -587,7 +587,7 @@ void DataSegment::makeLinear()
     Bucket h;
     h.count  = Allocator::alignSize(totalCount);
     h.size   = h.count;
-    h.buffer = Allocator::alloc_n<uint8_t>(h.count);
+    h.buffer = Allocator::allocN<uint8_t>(h.count);
 
     auto ptr = h.buffer;
     for (const auto& b : buckets)

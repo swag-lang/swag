@@ -358,7 +358,7 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     }
 
     maxInstructions            = max(maxInstructions, 8);
-    const auto newInstructions = Allocator::alloc_n<ByteCodeInstruction>(maxInstructions);
+    const auto newInstructions = Allocator::allocN<ByteCodeInstruction>(maxInstructions);
     std::copy_n(out, numInstructions, newInstructions);
     Allocator::free(out, oldSize);
 

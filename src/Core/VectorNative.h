@@ -46,7 +46,7 @@ struct VectorNative
     {
         if (!buffer)
             return;
-        Allocator::free_n_aligned(buffer, allocated);
+        Allocator::freeAlignedN(buffer, allocated);
         buffer    = nullptr;
         count     = 0;
         allocated = 0;
@@ -60,15 +60,15 @@ struct VectorNative
         const auto oldAllocated = allocated;
         allocated               = max(allocated * 2, 4);
         allocated               = max(allocated, newCapacity);
-        auto newPtr             = Allocator::alloc_n_aligned<T>(allocated);
+        auto newPtr             = Allocator::allocAlignedN<T>(allocated);
         if (copy && count)
             std::copy_n(buffer, count, newPtr);
         if (buffer)
-            Allocator::free_n_aligned(buffer, oldAllocated);
+            Allocator::freeAlignedN(buffer, oldAllocated);
         buffer = newPtr;
     }
 
-    T* reserve_back()
+    [[nodiscard]] T* reserve_back()
     {
         if (count + 1 > allocated)
             reserve(count + 1);
@@ -127,7 +127,7 @@ struct VectorNative
         count--;
     }
 
-    T get_pop_back()
+    [[nodiscard]] T get_pop_back()
     {
         SWAG_ASSERT(count);
         count--;
@@ -162,12 +162,12 @@ struct VectorNative
         count = 0;
     }
 
-    T* begin()
+    [[nodiscard]] T* begin()
     {
         return buffer;
     }
 
-    T* end()
+    [[nodiscard]] T* end()
     {
         return buffer + count;
     }
@@ -187,7 +187,7 @@ struct VectorNative
         return count == 0;
     }
 
-    T& back()
+    [[nodiscard]] T& back()
     {
         SWAG_ASSERT(count);
         return buffer[count - 1];
@@ -251,7 +251,7 @@ struct VectorNative
         count += other.count;
     }
 
-    int find(const T& value)
+    [[nodiscard]] int find(const T& value)
     {
         int idx = 0;
         for (auto& it : *this)
@@ -264,7 +264,7 @@ struct VectorNative
         return -1;
     }
 
-    bool contains(const T& val)
+    [[nodiscard]] bool contains(const T& val)
     {
         for (uint32_t i = 0; i < count; i++)
         {

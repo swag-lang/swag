@@ -741,18 +741,18 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
             }
         }
 
-        struct stat stat_buf;
-        const int   rc = stat(fullFileName, &stat_buf);
+        struct stat statBuf;
+        const int   rc = stat(fullFileName, &statBuf);
         SWAG_VERIFY(rc == 0, context->report({back, formErr(Err0097, back->computedValue()->text.c_str())}));
-        SWAG_CHECK(context->checkSizeOverflow("[[#load]]", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
+        SWAG_CHECK(context->checkSizeOverflow("[[#load]]", statBuf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         const auto newJob         = Allocator::alloc<LoadFileJob>();
         const auto storageSegment = getConstantSegFromContext(node);
         uint8_t*   addrDst;
-        node->computedValue()->storageOffset  = storageSegment->reserve(stat_buf.st_size, &addrDst);
+        node->computedValue()->storageOffset  = storageSegment->reserve(statBuf.st_size, &addrDst);
         node->computedValue()->storageSegment = storageSegment;
         newJob->destBuffer                    = addrDst;
-        newJob->sizeBuffer                    = stat_buf.st_size;
+        newJob->sizeBuffer                    = statBuf.st_size;
 
         newJob->module       = module;
         newJob->sourcePath   = fullFileName;
@@ -763,11 +763,11 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
 
         // Creates return type
         const auto ptrArray   = makeType<TypeInfoArray>();
-        ptrArray->count       = stat_buf.st_size;
+        ptrArray->count       = statBuf.st_size;
         ptrArray->pointedType = g_TypeMgr->typeInfoU8;
         ptrArray->finalType   = g_TypeMgr->typeInfoU8;
         ptrArray->sizeOf      = ptrArray->count;
-        ptrArray->totalCount  = stat_buf.st_size;
+        ptrArray->totalCount  = statBuf.st_size;
         ptrArray->computeName();
         node->typeInfo = ptrArray;
 

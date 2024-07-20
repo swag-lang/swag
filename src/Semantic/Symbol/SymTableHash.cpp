@@ -11,7 +11,7 @@ void SymTableHash::clone(const SymTableHash* from)
     allocated  = from->allocated;
     count      = from->count;
     maxLength  = from->maxLength;
-    buffer     = Allocator::alloc_n<Entry>(from->allocated);
+    buffer     = Allocator::allocN<Entry>(from->allocated);
     std::copy_n(from->buffer, from->allocated, buffer);
 }
 
@@ -69,7 +69,7 @@ void SymTableHash::add(SymbolName* data)
     {
         count     = 0;
         allocated = 4;
-        buffer    = Allocator::alloc_n<Entry>(allocated);
+        buffer    = Allocator::allocN<Entry>(allocated);
         memset(buffer, 0, allocated * sizeof(Entry));
 #ifdef SWAG_STATS
         g_Stats.memSymTable += allocated * sizeof(Entry);
@@ -84,7 +84,7 @@ void SymTableHash::add(SymbolName* data)
         auto       oldCount     = count;
 
         allocated *= 2;
-        buffer = Allocator::alloc_n<Entry>(allocated);
+        buffer = Allocator::allocN<Entry>(allocated);
         memset(buffer, 0, allocated * sizeof(Entry));
 
         count = 0;

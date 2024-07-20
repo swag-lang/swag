@@ -91,7 +91,7 @@ bool SourceFile::load()
 
     // Read content
     allocBufferSize = Allocator::alignSize(bufferSize + 4);
-    buffer          = Allocator::alloc_n<char>(allocBufferSize);
+    buffer          = Allocator::allocN<char>(allocBufferSize);
 
 #ifdef SWAG_STATS
     g_Stats.memFileBuffer += allocBufferSize;
