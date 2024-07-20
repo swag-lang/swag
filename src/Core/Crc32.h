@@ -57,7 +57,7 @@ namespace Crc32
         0x5D681B02U, 0x2A6F2B94U, 0xB40BBE37U, 0xC30C8EA1U, 0x5A05DF1BU,
         0x2D02EF8DU};
 
-    constexpr uint32_t compute(const uint8_t* data, uint32_t len, uint32_t crc = 0)
+    [[nodiscard]] constexpr uint32_t compute(const uint8_t* data, uint32_t len, uint32_t crc = 0)
     {
         crc = crc ^ 0xFFFFFFFFU;
         for (uint32_t i = 0; i < len; i++)
@@ -69,7 +69,7 @@ namespace Crc32
         return crc;
     }
 
-    constexpr uint32_t compute2(const uint8_t* data, uint32_t crc = 0)
+    [[nodiscard]] constexpr uint32_t compute2(const uint8_t* data, uint32_t crc = 0)
     {
         crc = crc ^ 0xFFFFFFFFU;
         crc = TABLE[data[0] ^ (crc & 0xFF)] ^ (crc >> 8);
@@ -78,7 +78,7 @@ namespace Crc32
         return crc;
     }
 
-    constexpr uint32_t compute8(const uint8_t* data, uint32_t crc = 0)
+    [[nodiscard]] constexpr uint32_t compute8(const uint8_t* data, uint32_t crc = 0)
     {
         crc = crc ^ 0xFFFFFFFFU;
         crc = TABLE[data[0] ^ (crc & 0xFF)] ^ (crc >> 8);

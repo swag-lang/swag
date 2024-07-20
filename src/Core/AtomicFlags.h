@@ -33,27 +33,27 @@ struct AtomicFlags
         return flags == other.flags;
     }
 
-    constexpr AtomicFlags friend operator|(AtomicFlags a, AtomicFlags b)
+    [[nodiscard]] constexpr AtomicFlags friend operator|(AtomicFlags a, AtomicFlags b)
     {
         return a.flags | b.flags;
     }
 
-    constexpr bool has(const AtomicFlags& fl) const
+    [[nodiscard]] constexpr bool has(const AtomicFlags& fl) const
     {
         return flags & fl.flags;
     }
 
-    AtomicFlags with(const AtomicFlags& fl) const
+    [[nodiscard]] AtomicFlags with(const AtomicFlags& fl) const
     {
         return flags | fl.flags;
     }
 
-    AtomicFlags mask(const AtomicFlags& fl) const
+    [[nodiscard]] AtomicFlags mask(const AtomicFlags& fl) const
     {
         return flags & fl.flags;
     }
 
-    AtomicFlags maskInvert(const AtomicFlags& fl) const
+    [[nodiscard]] AtomicFlags maskInvert(const AtomicFlags& fl) const
     {
         return flags & ~fl.flags;
     }

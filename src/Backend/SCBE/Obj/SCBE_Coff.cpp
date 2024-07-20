@@ -326,7 +326,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         concat.addU32(0);                        // .PointerToLineNumbers
         concat.addU16(0);                        // .NumberOfRelocations
         concat.addU16(0);                        // .NumberOfLineNumbers
-        concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
+        (void) concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
 
         // mutable section
         /////////////////////////////////////////////

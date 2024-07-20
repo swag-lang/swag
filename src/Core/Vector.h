@@ -13,7 +13,10 @@ struct Vector : std::vector<T, StdAllocator<T>>
     {
     }
 
-    [[nodiscard]] uint32_t size() const { return static_cast<uint32_t>(std::vector<T, StdAllocator<T>>::size()); }
+    [[nodiscard]] uint32_t size() const
+    {
+        return static_cast<uint32_t>(std::vector<T, StdAllocator<T>>::size());
+    }
 
     [[nodiscard]] bool contains(const T& value) const
     {
@@ -68,7 +71,7 @@ struct VectorMap : Vector<std::pair<K, V>>
         return this->end();
     }
 
-    It find(const K& key)
+    [[nodiscard]] It find(const K& key)
     {
         for (auto it = this->begin(); it != this->end(); ++it)
         {

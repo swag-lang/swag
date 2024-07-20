@@ -57,7 +57,7 @@ struct Path : Utf8
         return p.filename().string().c_str();
     }
 
-    Path replace_extension(const char* ext = nullptr) const
+    [[nodiscard]] Path replace_extension(const char* ext = nullptr) const
     {
         std::filesystem::path p = c_str();
         if (!ext)

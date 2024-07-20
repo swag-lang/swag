@@ -58,7 +58,7 @@ void Allocator::free(void* ptr, size_t size, [[maybe_unused]] AllocFlags flags)
 
 #ifdef SWAG_CHECK_MEMORY
     ptr = checkUserBlock(static_cast<uint8_t*>(ptr), size, MAGIC_ALLOC);
-    markDebugBlock(static_cast<uint8_t*>(ptr), size, MAGIC_FREE);
+    (void) markDebugBlock(static_cast<uint8_t*>(ptr), size, MAGIC_FREE);
 #endif
 
 #ifdef SWAG_STATS
