@@ -1,4 +1,4 @@
 #pragma once
 struct Module;
 
-void* getCompilerItf(Module* module);
+[[nodiscard]] void* getCompilerItf(Module* module);

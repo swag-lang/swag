@@ -403,7 +403,7 @@ void Module::buildTypesSlice()
     int i = 1;
     for (const auto& dep : moduleDependencies)
     {
-        auto       callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
+        auto       callTable = dep->module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
         const auto ptr       = g_ModuleMgr->getFnPointer(dep->module->name, callTable);
         if (!ptr)
         {
@@ -1167,7 +1167,7 @@ void Module::callPreMain()
     {
         if (!dep->module->isSwag)
             continue;
-        auto       nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+        auto       nameFct = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
         const auto ptr     = g_ModuleMgr->getFnPointer(dep->name, nameFct);
         if (!ptr)
             continue;
@@ -1176,7 +1176,7 @@ void Module::callPreMain()
     }
 }
 
-Utf8 Module::getGlobalPrivFct(const Utf8& nameFct) const
+Utf8 Module::getGlobalPrivateFct(const Utf8& nameFct) const
 {
     return form(nameFct.c_str(), nameNormalized.c_str());
 }

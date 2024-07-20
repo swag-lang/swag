@@ -81,7 +81,7 @@ struct FormatAst
     }
 
     void clear() const;
-    Utf8 getUtf8() const;
+    [[nodiscard]] Utf8 getUtf8() const;
 
     static void              inheritLastFormatAfter(const Parser* parser, AstNode* node);
     static void              inheritFormatBefore(const Parser* parser, AstNode* node, AstNode* other);

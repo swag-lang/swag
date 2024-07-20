@@ -79,8 +79,8 @@ struct TokenComments
 
 struct TokenParse
 {
-    bool is(TokenId what) const { return token.id == what; }
-    bool isNot(TokenId what) const { return token.id != what; }
+    [[nodiscard]] bool is(TokenId what) const { return token.id == what; }
+    [[nodiscard]] bool isNot(TokenId what) const { return token.id != what; }
 
     Token           token;
     TokenComments   comments;

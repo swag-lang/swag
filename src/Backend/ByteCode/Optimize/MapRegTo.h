@@ -21,7 +21,7 @@ struct MapRegTo
         memset(here, 0, sizeof(here));
     }
 
-    bool contains(uint32_t reg) const
+    [[nodiscard]] bool contains(uint32_t reg) const
     {
         SWAG_ASSERT(reg < RegisterList::MAX_REGISTERS);
         return here[reg];

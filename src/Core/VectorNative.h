@@ -172,17 +172,17 @@ struct VectorNative
         return buffer + count;
     }
 
-    const T* begin() const
+    [[nodiscard]] const T* begin() const
     {
         return buffer;
     }
 
-    const T* end() const
+    [[nodiscard]] const T* end() const
     {
         return buffer + count;
     }
 
-    bool empty() const
+    [[nodiscard]] bool empty() const
     {
         return count == 0;
     }
@@ -193,13 +193,13 @@ struct VectorNative
         return buffer[count - 1];
     }
 
-    const T& back() const
+    [[nodiscard]] const T& back() const
     {
         SWAG_ASSERT(count);
         return buffer[count - 1];
     }
 
-    const T& front() const
+    [[nodiscard]] const T& front() const
     {
         return buffer[0];
     }
@@ -275,12 +275,12 @@ struct VectorNative
         return false;
     }
 
-    uint32_t capacity() const
+    [[nodiscard]] uint32_t capacity() const
     {
         return allocated;
     }
 
-    uint32_t size() const
+    [[nodiscard]] uint32_t size() const
     {
         return count;
     }

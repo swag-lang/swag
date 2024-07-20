@@ -4,8 +4,8 @@
 struct FormatConcat : Concat
 {
     void     clear();
-    Utf8     getUtf8() const;
-    uint32_t length() const;
+    [[nodiscard]] Utf8     getUtf8() const;
+    [[nodiscard]] uint32_t length() const;
 
     void addBlank();
     void alignToColumn(uint32_t destCol);

@@ -200,14 +200,14 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     {
         if (!dep->module->isSwag)
             continue;
-        auto       nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+        auto       nameFct  = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
         const auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
     // Call to global init of this module
     {
-        const auto nameFct  = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+        const auto nameFct  = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
         const auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
@@ -217,14 +217,14 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     {
         if (!dep->module->isSwag)
             continue;
-        auto       nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+        auto       nameFct  = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
         const auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
     // Call to global premain of this module
     {
-        const auto nameFct  = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+        const auto nameFct  = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
         const auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
@@ -253,7 +253,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global drop of this module
-    auto nameFct  = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+    auto nameFct  = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
     auto funcDrop = modu.getOrInsertFunction(nameFct.c_str(), funcTypeVoid);
     builder.CreateCall(funcDrop);
 
@@ -263,7 +263,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
         const auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
             continue;
-        nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+        nameFct  = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
         funcDrop = modu.getOrInsertFunction(nameFct.c_str(), funcTypeVoid);
         builder.CreateCall(funcDrop);
     }
@@ -285,7 +285,7 @@ void LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
     auto&       modu    = *pp.llvmModule;
 
     const auto      fctType  = llvm::FunctionType::get(PTR_I8_TY(), {}, false);
-    const auto      funcName = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
+    const auto      funcName = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
     llvm::Function* fct      = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, funcName.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
@@ -308,7 +308,7 @@ void LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
     auto&       modu    = *pp.llvmModule;
 
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
-    const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+    const auto      nameFct = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
@@ -348,7 +348,7 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     auto& modu    = *pp.llvmModule;
 
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
-    const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+    const auto      nameFct = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
@@ -385,7 +385,7 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
             continue;
         }
 
-        auto       callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
+        auto       callTable = dep->module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
         const auto callType  = llvm::FunctionType::get(PTR_I8_TY(), {}, false);
         const auto func      = modu.getOrInsertFunction(callTable.c_str(), callType);
         const auto r0        = builder.CreateCall(func);
@@ -426,7 +426,7 @@ void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     auto&       modu    = *pp.llvmModule;
 
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), false);
-    const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+    const auto      nameFct = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);

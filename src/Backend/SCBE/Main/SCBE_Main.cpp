@@ -170,12 +170,12 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)
             continue;
-        auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+        auto nameFct = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
         emitInternalCallExt(pp, nameFct, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
     }
 
     // Call to global init of this module
-    auto thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+    auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
     emitInternalCallExt(pp, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to global premain of all dependencies
@@ -185,12 +185,12 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
         if (!dep->module->isSwag)
             continue;
 
-        auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+        auto nameFct = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
         emitInternalCallExt(pp, nameFct, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
     }
 
     // Call to global premain of this module
-    thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+    thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
     emitInternalCallExt(pp, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to test functions
@@ -213,7 +213,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     }
 
     // Call to global drop of this module
-    const auto thisDrop = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+    const auto thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
     pp.emitCall(thisDrop);
 
     // Call to global drop of all dependencies
@@ -222,7 +222,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
         const auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
             continue;
-        auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+        auto nameFct = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
         pp.emitCall(nameFct);
     }
 
@@ -250,7 +250,7 @@ void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
     concat.align(16);
     const auto startAddress = concat.totalCount();
 
-    const auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
+    const auto thisInit        = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
@@ -282,7 +282,7 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
     concat.align(16);
     const auto startAddress = concat.totalCount();
 
-    const auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+    const auto thisInit        = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
@@ -336,7 +336,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     concat.align(16);
     const auto startAddress = concat.totalCount();
 
-    const auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+    const auto thisInit        = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
@@ -376,7 +376,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
             continue;
         }
 
-        auto callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
+        auto callTable = dep->module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
         pp.emitCall(callTable);
 
         // Count types is stored as a uint64_t at the start of the address
@@ -415,7 +415,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
     concat.align(16);
     const auto startAddress = concat.totalCount();
 
-    const auto thisDrop        = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+    const auto thisDrop        = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisDrop, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 

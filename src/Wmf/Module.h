@@ -135,40 +135,40 @@ constexpr uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER | BUI
 
 struct Module
 {
-    static bool  isValidName(const Utf8& name, Utf8& errorStr);
-    void         setup(const Utf8& moduleName, const Path& modulePath);
-    void         release();
-    void         allocateBackend();
-    void         initFrom(Module* other);
-    void         computePublicPath();
-    void         buildModulesSlice();
-    void         buildGlobalVarsToDropSlice();
-    void         buildTypesSlice();
-    void         initProcessInfos();
-    void         callPreMain();
-    Utf8         getGlobalPrivFct(const Utf8& nameFct) const;
-    void         inheritCfgFrom(const Module* from);
-    DataSegment* getSegment(SegmentKind segKind);
+    void                       setup(const Utf8& moduleName, const Path& modulePath);
+    void                       release();
+    void                       allocateBackend();
+    void                       initFrom(Module* other);
+    void                       computePublicPath();
+    void                       buildModulesSlice();
+    void                       buildGlobalVarsToDropSlice();
+    void                       buildTypesSlice();
+    void                       initProcessInfos();
+    void                       callPreMain();
+    void                       inheritCfgFrom(const Module* from);
+    [[nodiscard]] static bool  isValidName(const Utf8& name, Utf8& errorStr);
+    [[nodiscard]] Utf8         getGlobalPrivateFct(const Utf8& nameFct) const;
+    [[nodiscard]] DataSegment* getSegment(SegmentKind segKind);
 
-    void        addExportSourceFile(SourceFile* file);
-    void        addFile(SourceFile* file);
-    void        addFileNoLock(SourceFile* file);
-    void        addErrorModule(Module* module);
-    void        removeFile(SourceFile* file);
-    SourceFile* findFile(const Utf8& fileName);
+    void                      addExportSourceFile(SourceFile* file);
+    void                      addFile(SourceFile* file);
+    void                      addFileNoLock(SourceFile* file);
+    void                      addErrorModule(Module* module);
+    void                      removeFile(SourceFile* file);
+    [[nodiscard]] SourceFile* findFile(const Utf8& fileName);
 
     void startBuilding() const;
     void printBC();
 
-    bool computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, const ExecuteNodeParams* params);
-    bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params = nullptr);
-    bool compileString(const Utf8& text);
-    bool hasBytecodeToRun() const;
+    bool               executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params = nullptr);
+    bool               compileString(const Utf8& text);
+    [[nodiscard]] bool computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, const ExecuteNodeParams* params);
+    [[nodiscard]] bool hasBytecodeToRun() const;
 
-    bool mustOptimizeBytecode(const AstNode* node) const;
-    bool mustOptimizeBackend(const AstNode* node) const;
-    bool mustEmitSafetyOverflow(const AstNode* node, bool compileTime = false) const;
-    bool mustEmitSafety(const AstNode* node, SafetyFlags what, bool compileTime = false) const;
+    [[nodiscard]] bool mustOptimizeBytecode(const AstNode* node) const;
+    [[nodiscard]] bool mustOptimizeBackend(const AstNode* node) const;
+    [[nodiscard]] bool mustEmitSafetyOverflow(const AstNode* node, bool compileTime = false) const;
+    [[nodiscard]] bool mustEmitSafety(const AstNode* node, SafetyFlags what, bool compileTime = false) const;
 
     void setBuildPass(BuildPass buildP);
 
@@ -178,40 +178,41 @@ struct Module
     bool prepareCompilerMessages(const JobContext* context, uint32_t pass);
     bool flushCompilerMessages(JobContext* context, uint32_t pass, Job* job);
 
-    void              addCompilerFunc(ByteCode* bc);
-    void              addByteCodeFunc(ByteCode* bc);
-    void              addGlobalVar(AstNode* node, GlobalVarKind varKind);
-    void              addGlobalVarToDrop(const AstNode* node, uint32_t storageOffset, DataSegment* storageSegment);
-    void              addForeignLib(const Utf8& text);
-    TypeInfoFuncAttr* getRuntimeTypeFct(const Utf8& fctName);
-    ByteCode*         getRuntimeFct(const Utf8& fctName);
+    void addCompilerFunc(ByteCode* bc);
+    void addByteCodeFunc(ByteCode* bc);
+    void addGlobalVar(AstNode* node, GlobalVarKind varKind);
+    void addGlobalVarToDrop(const AstNode* node, uint32_t storageOffset, DataSegment* storageSegment);
+    void addForeignLib(const Utf8& text);
 
-    bool addFileToLoad(AstNode* includeNode);
-    bool removeFileToLoad(AstNode* includeNode);
-    bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
-    bool removeDependency(const AstNode* importNode);
-    bool hasDependencyTo(Module* module);
-    void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result) const;
-    bool waitForDependenciesDone(Job* job, const SetUtf8& modules);
-    bool waitForDependenciesDone(Job* job);
-    bool filterFunctionsToEmit();
+    [[nodiscard]] TypeInfoFuncAttr* getRuntimeTypeFct(const Utf8& fctName);
+    [[nodiscard]] ByteCode*         getRuntimeFct(const Utf8& fctName);
 
-    bool     mustOutputSomething() const;
-    bool     mustGenerateTestExe() const;
-    bool     mustGenerateLegit() const;
-    void     setHasBeenBuilt(uint32_t buildResult);
-    uint32_t getHasBeenBuilt();
-    void     flushGenFiles();
+    bool               removeFileToLoad(AstNode* includeNode);
+    bool               removeDependency(const AstNode* importNode);
+    void               sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result) const;
+    [[nodiscard]] bool filterFunctionsToEmit();
+    [[nodiscard]] bool addFileToLoad(AstNode* includeNode);
+    [[nodiscard]] bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
+    [[nodiscard]] bool hasDependencyTo(Module* module);
+    [[nodiscard]] bool waitForDependenciesDone(Job* job, const SetUtf8& modules);
+    [[nodiscard]] bool waitForDependenciesDone(Job* job);
 
-    void addImplForToSolve(const Utf8& structName, uint32_t count = 1);
-    bool waitImplForToSolve(Job* job, const TypeInfoStruct* typeStruct);
-    void decImplForToSolve(const TypeInfoStruct* typeStruct);
+    void                   setHasBeenBuilt(uint32_t buildResult);
+    void                   flushGenFiles();
+    [[nodiscard]] bool     mustOutputSomething() const;
+    [[nodiscard]] bool     mustGenerateTestExe() const;
+    [[nodiscard]] bool     mustGenerateLegit() const;
+    [[nodiscard]] uint32_t getHasBeenBuilt();
+
+    void               addImplForToSolve(const Utf8& structName, uint32_t count = 1);
+    void               decImplForToSolve(const TypeInfoStruct* typeStruct);
+    [[nodiscard]] bool waitImplForToSolve(Job* job, const TypeInfoStruct* typeStruct);
 
     void logStage(const char* msg) const;
     void logPass(ModuleBuildPass pass);
 
-    bool is(ModuleKind what) const { return kind == what; }
-    bool isNot(ModuleKind what) const { return kind != what; }
+    [[nodiscard]] bool is(ModuleKind what) const { return kind == what; }
+    [[nodiscard]] bool isNot(ModuleKind what) const { return kind != what; }
 
     struct ForToSolve
     {

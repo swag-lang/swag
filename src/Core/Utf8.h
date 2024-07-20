@@ -41,23 +41,23 @@ struct Utf8
     void reserve(uint32_t newSize);
     void resize(uint32_t newSize);
 
-    const char* c_str() const;
-    char*       data() const { return buffer; }
+    [[nodiscard]] const char* c_str() const;
+    [[nodiscard]] char*       data() const { return buffer; }
 
-    uint32_t    hash() const;
-    bool        empty() const;
-    uint32_t    length() const;
-    Utf8        toZeroTerminated() const;
-    uint32_t    capacity() const;
-    const char* begin() const;
-    const char* end() const;
-    char        back() const;
-    bool        containsNoCase(const Utf8& str) const;
-    int         find(const Utf8& str, uint32_t startPos = 0) const;
-    bool        compareNoCase(const Utf8& txt1) const;
-    bool        startsWith(const char* pz) const;
-    int         countOf(char c) const;
-    int         toInt(uint32_t offset = 0) const;
+    [[nodiscard]] uint32_t    hash() const;
+    [[nodiscard]] bool        empty() const;
+    [[nodiscard]] uint32_t    length() const;
+    [[nodiscard]] Utf8        toZeroTerminated() const;
+    [[nodiscard]] uint32_t    capacity() const;
+    [[nodiscard]] const char* begin() const;
+    [[nodiscard]] const char* end() const;
+    [[nodiscard]] char        back() const;
+    [[nodiscard]] bool        containsNoCase(const Utf8& str) const;
+    [[nodiscard]] int         find(const Utf8& str, uint32_t startPos = 0) const;
+    [[nodiscard]] bool        compareNoCase(const Utf8& txt1) const;
+    [[nodiscard]] bool        startsWith(const char* pz) const;
+    [[nodiscard]] int         countOf(char c) const;
+    [[nodiscard]] int         toInt(uint32_t offset = 0) const;
 
     void clear();
     void makeLocal();

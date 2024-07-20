@@ -19,10 +19,10 @@ struct SourceLocation
 #pragma pack(push, 2)
 struct Token
 {
-    const char* c_str() const { return text.c_str(); }
+    [[nodiscard]] const char* c_str() const { return text.c_str(); }
 
-    bool is(TokenId what) const { return id == what; }
-    bool isNot(TokenId what) const { return id != what; }
+    [[nodiscard]] bool is(TokenId what) const { return id == what; }
+    [[nodiscard]] bool isNot(TokenId what) const { return id != what; }
 
     SourceFile*    sourceFile = nullptr;
     Utf8           text;

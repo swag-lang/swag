@@ -142,7 +142,7 @@ struct Diagnostic
     void addNote(const Diagnostic* note);
     void addNote(SourceFile* file, const Token& token, const Utf8& msg);
     void addNote(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg);
-    bool hasNotes() const { return !notes.empty(); }
+    [[nodiscard]] bool hasNotes() const { return !notes.empty(); }
 
     void setupColors();
     void collectSourceCode();

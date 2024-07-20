@@ -604,8 +604,7 @@ bool Workspace::buildRTModule(Module* module)
         return false;
     }
 
-    module->filterFunctionsToEmit();
-    return true;
+    return module->filterFunctionsToEmit();
 }
 
 bool Workspace::buildTarget()
