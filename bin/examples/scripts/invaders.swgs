@@ -233,7 +233,6 @@ func gameLoop()
     checkCollisions()
 }
 
-#[Swag.PrintBc]
 func addAliens()
 {
     const DIST = 50
