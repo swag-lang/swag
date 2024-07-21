@@ -20,9 +20,9 @@ class TaskProvider
 {
     provideTasks()
     {
-        registerTask("swag build -w:${workspaceFolder}",             "build",        vscode.TaskGroup.Build);
-        registerTask("swag build -w:${workspaceFolder} --rebuild",   "rebuild",      vscode.TaskGroup.Rebuild);
-        registerTask("swag format -f:${file}",                       "swag format",  vscode.TaskGroup.Clean);
+        registerTask("swag build -w:${workspaceFolder}",             "build",    vscode.TaskGroup.Build);
+        registerTask("swag build -w:${workspaceFolder} --rebuild",   "rebuild",  vscode.TaskGroup.Rebuild);
+        registerTask("swag format -f:${file}",                       "format",   vscode.TaskGroup.Clean);
         return buildTasks;
     }
 

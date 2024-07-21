@@ -2127,10 +2127,12 @@ func loadBindTextures()
     g_PillTex       = loadAndBindTexture("map/pill.png")
     g_BigPillTex[0] = loadAndBindTexture("map/big-0.png")
     g_BigPillTex[1] = loadAndBindTexture("map/big-1.png")
+
     // Bind Pac-Man textures
     g_Pac0Tex = loadAndBindTexture("pacman/0.png")
     g_Pac1Tex = loadAndBindTexture("pacman/1.png")
     g_Pac2Tex = loadAndBindTexture("pacman/2.png")
+
     // Bind Pac-Man Death textures
     g_DeadTex[0]  = loadAndBindTexture("pacman/d-0.png")
     g_DeadTex[1]  = loadAndBindTexture("pacman/d-1.png")
@@ -2143,6 +2145,7 @@ func loadBindTextures()
     g_DeadTex[8]  = loadAndBindTexture("pacman/d-8.png")
     g_DeadTex[9]  = loadAndBindTexture("pacman/d-9.png")
     g_DeadTex[10] = loadAndBindTexture("pacman/d-10.png")
+
     // Bind ghost textures
     g_GhostTexR[0] = loadAndBindTexture("ghosts/r-0.png")
     g_GhostTexR[1] = loadAndBindTexture("ghosts/r-1.png")
@@ -2156,11 +2159,13 @@ func loadBindTextures()
     g_GhostTexF[1] = loadAndBindTexture("ghosts/f-1.png")
     g_GhostTexF[2] = loadAndBindTexture("ghosts/f-2.png")
     g_GhostTexF[3] = loadAndBindTexture("ghosts/f-3.png")
+
     // Bind ghost eye textures
     g_EyeTexU = loadAndBindTexture("eyes/u.png")
     g_EyeTexR = loadAndBindTexture("eyes/r.png")
     g_EyeTexD = loadAndBindTexture("eyes/d.png")
     g_EyeTexL = loadAndBindTexture("eyes/l.png")
+
     // Bind fruit textures
     g_FruitsTex[0] = loadAndBindTexture("fruits/cherry.png")
     g_FruitsTex[1] = loadAndBindTexture("fruits/strawberry.png")
@@ -2178,6 +2183,7 @@ func loadBindTextures()
     g_FScoreTex[5] = loadAndBindTexture("ui/2000.png")
     g_FScoreTex[6] = loadAndBindTexture("ui/3000.png")
     g_FScoreTex[7] = loadAndBindTexture("ui/5000.png")
+
     // Bind UI textures
     g_Num0Tex      = loadAndBindTexture("ui/0.png")
     g_Num1Tex      = loadAndBindTexture("ui/1.png")
