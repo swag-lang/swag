@@ -3,7 +3,7 @@ struct SymbolName;
 
 struct SymTableHash
 {
-    [[nodiscard]] SymbolName* find(const Utf8& str, uint32_t crc = 0) const;
+    SymbolName* find(const Utf8& str, uint32_t crc = 0) const;
     void        clone(const SymTableHash* from);
     void        addElem(SymbolName* data, uint32_t crc = 0);
     void        add(SymbolName* data);

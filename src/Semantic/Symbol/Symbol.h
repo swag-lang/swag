@@ -69,7 +69,7 @@ struct SymbolOverload
     void from(const SymbolOverload* other);
     void setRegisters(const RegisterList& reg, OverloadFlags fl);
 
-    [[nodiscard]] bool hasFlag(OverloadFlags fl) const { return flags.has(fl); }
+    bool hasFlag(OverloadFlags fl) const { return flags.has(fl); }
 
     ComputedValue computedValue;
     RegisterList  symRegisters;
@@ -86,7 +86,7 @@ struct SymbolOverload
 struct SymbolName
 {
     SymbolOverload* findOverload(const TypeInfo* typeInfo);
-    [[nodiscard]] Utf8            getFullName() const;
+    Utf8            getFullName() const;
 
     SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, const ComputedValue* computedValue);
     void            decreaseOverloadNoLock();
@@ -94,9 +94,9 @@ struct SymbolName
     void            addDependentJobNoLock(Job* job);
     void            unregisterNode(const AstNode* node);
 
-    [[nodiscard]] bool is(SymbolKind what) const { return kind == what; }
-    [[nodiscard]] bool isNot(SymbolKind what) const { return kind != what; }
-    [[nodiscard]] bool hasFlag(SymbolFlags fl) const { return flags.has(fl); }
+    bool is(SymbolKind what) const { return kind == what; }
+    bool isNot(SymbolKind what) const { return kind != what; }
+    bool hasFlag(SymbolFlags fl) const { return flags.has(fl); }
 
     SharedMutex                   mutex;
     VectorNative<SymbolOverload*> overloads;

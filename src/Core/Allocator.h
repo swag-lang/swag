@@ -13,13 +13,13 @@ constexpr AllocFlags ALLOC_NEW = 0x00000002;
 struct Allocator
 {
     template<typename T>
-    [[nodiscard]] static T* allocRaw()
+    static T* allocRaw()
     {
         return static_cast<T*>(alloc(alignSize(sizeof(T))));
     }
 
     template<typename T>
-    [[nodiscard]] static T* alloc()
+    static T* alloc()
     {
         auto returnData = allocRaw<T>();
         ::new (returnData) T;
@@ -27,13 +27,13 @@ struct Allocator
     }
 
     template<typename T>
-    [[nodiscard]] static T* allocN(uint32_t n)
+    static T* allocN(uint32_t n)
     {
         return static_cast<T*>(alloc(n * sizeof(T)));
     }
 
     template<typename T>
-    [[nodiscard]] static T* allocAlignedN(uint32_t n)
+    static T* allocAlignedN(uint32_t n)
     {
         return static_cast<T*>(alloc(alignSize(n * sizeof(T))));
     }
@@ -51,15 +51,15 @@ struct Allocator
         free(ptr, alignSize(sizeof(T)));
     }
 
-    static void  free(void*, size_t size, AllocFlags flags = 0);
+    static void free(void*, size_t size, AllocFlags flags = 0);
 
-    [[nodiscard]] static void* alloc(size_t size, size_t align = sizeof(void*), AllocFlags flags = 0);
-    [[nodiscard]] static size_t   alignSize(size_t size) { return size + 7 & ~7; }
-    [[nodiscard]] static uint32_t alignSize(uint32_t size) { return size + 7 & ~7; }
+    static void*    alloc(size_t size, size_t align = sizeof(void*), AllocFlags flags = 0);
+    static size_t   alignSize(size_t size) { return size + 7 & ~7; }
+    static uint32_t alignSize(uint32_t size) { return size + 7 & ~7; }
 
 #ifdef SWAG_CHECK_MEMORY
-    [[nodiscard]] static uint8_t* markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64_t marker);
-    [[nodiscard]] static uint8_t* checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_t marker);
+    static uint8_t* markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64_t marker);
+    static uint8_t* checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_t marker);
 #endif
 };
 
@@ -75,6 +75,6 @@ struct StdAllocator
 
     StdAllocator() = default;
 
-    [[nodiscard]] static T*   allocate(size_t n) { return static_cast<T*>(Allocator::alloc(Allocator::alignSize(n * sizeof(T)), sizeof(void*), ALLOC_STD)); }
-    [[nodiscard]] static void deallocate(T* p, size_t n) { Allocator::free(p, Allocator::alignSize(n * sizeof(T)), ALLOC_STD); }
+    static T*   allocate(size_t n) { return static_cast<T*>(Allocator::alloc(Allocator::alignSize(n * sizeof(T)), sizeof(void*), ALLOC_STD)); }
+    static void deallocate(T* p, size_t n) { Allocator::free(p, Allocator::alignSize(n * sizeof(T)), ALLOC_STD); }
 };

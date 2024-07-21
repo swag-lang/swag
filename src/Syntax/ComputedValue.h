@@ -5,8 +5,8 @@ struct DataSegment;
 
 struct ComputedValue
 {
-    [[nodiscard]] bool  operator==(const ComputedValue& from) const;
-    [[nodiscard]] void* getStorageAddr() const;
+    bool  operator==(const ComputedValue& from) const;
+    void* getStorageAddr() const;
 
     Utf8         text;
     Register     reg;

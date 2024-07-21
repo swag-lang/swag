@@ -99,7 +99,7 @@ struct Job
     void setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait = nullptr, AstNode* node = nullptr, TypeInfo* typeInfo = nullptr);
     void setPending(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* node, TypeInfo* typeInfo);
 
-    [[nodiscard]] bool hasFlag(JobFlags fl) const { return flags.has(fl); }
+    bool hasFlag(JobFlags fl) const { return flags.has(fl); }
     void addFlag(JobFlags fl) { flags.add(fl); }
     void removeFlag(JobFlags fl) { flags.remove(fl); }
 

@@ -39,25 +39,25 @@ struct Path : Utf8
         append(other.c_str());
     }
 
-    [[nodiscard]] Utf8 extension() const
+    Utf8 extension() const
     {
         const std::filesystem::path p = c_str();
         return p.extension().string();
     }
 
-    [[nodiscard]] Path parent_path() const
+    Path parent_path() const
     {
         const std::filesystem::path p = c_str();
         return p.parent_path().string().c_str();
     }
 
-    [[nodiscard]] Path filename() const
+    Path filename() const
     {
         const std::filesystem::path p = c_str();
         return p.filename().string().c_str();
     }
 
-    [[nodiscard]] Path replace_extension(const char* ext = nullptr) const
+    Path replace_extension(const char* ext = nullptr) const
     {
         std::filesystem::path p = c_str();
         if (!ext)

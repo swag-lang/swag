@@ -56,7 +56,7 @@ struct Backend
     JobResult   generateExportFile(Job* ownerJob);
     bool        saveExportFile();
     bool        setupExportFile(bool force = false);
-    [[nodiscard]] bool        generateOutput(const BuildParameters& buildParameters) const;
+    bool        generateOutput(const BuildParameters& buildParameters) const;
 
     static void           setup();
     static Path           getCacheFolder();

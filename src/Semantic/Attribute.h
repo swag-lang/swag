@@ -80,8 +80,8 @@ struct AttributeParameter
 
 struct OneAttribute
 {
-    [[nodiscard]] const AttributeParameter* getParam(const Utf8& paramName) const;
-    [[nodiscard]] const ComputedValue*      getValue(const Utf8& paramName) const;
+    const AttributeParameter* getParam(const Utf8& paramName) const;
+    const ComputedValue*      getValue(const Utf8& paramName) const;
 
     Utf8                       name;
     Vector<AttributeParameter> parameters;

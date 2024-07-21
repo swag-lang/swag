@@ -18,20 +18,20 @@ enum class CompareVersionResult
 
 struct ModuleDepManager
 {
-    [[nodiscard]] static Path getAliasPath(const Path& srcPath);
-    [[nodiscard]] static bool fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName);
-    [[nodiscard]] static bool fetchModuleCfgSwag(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch);
-    [[nodiscard]] static bool fetchModuleCfgDisk(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch);
-    [[nodiscard]] static bool fetchModuleCfg(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch);
+    static Path getAliasPath(const Path& srcPath);
+    static bool fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName);
+    static bool fetchModuleCfgSwag(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch);
+    static bool fetchModuleCfgDisk(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch);
+    static bool fetchModuleCfg(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch);
 
-    void                                      registerCfgFile(SourceFile* file);
-    void                                      newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName);
-    void                                      enumerateCfgFiles(const Path& path);
-    static void                               parseCfgFile(Module* cfgModule);
-    [[nodiscard]] bool                        resolveModuleDependency(const Module* srcModule, ModuleDependency* dep);
-    [[nodiscard]] static CompareVersionResult compareVersions(uint32_t depVer, uint32_t depRev, uint32_t devBuildNum, uint32_t modVer, uint32_t modRev, uint32_t modBuildNum);
-    [[nodiscard]] bool                        execute();
-    [[nodiscard]] Module*                     getCfgModule(const Utf8& name);
+    void                        registerCfgFile(SourceFile* file);
+    void                        newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName);
+    void                        enumerateCfgFiles(const Path& path);
+    static void                 parseCfgFile(Module* cfgModule);
+    bool                        resolveModuleDependency(const Module* srcModule, ModuleDependency* dep);
+    static CompareVersionResult compareVersions(uint32_t depVer, uint32_t depRev, uint32_t devBuildNum, uint32_t modVer, uint32_t modRev, uint32_t modBuildNum);
+    bool                        execute();
+    Module*                     getCfgModule(const Utf8& name);
 
     MapUtf8<Module*> allModules;
     Set<Module*>     pendingCfgModules;

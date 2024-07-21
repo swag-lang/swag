@@ -13,12 +13,12 @@ struct Vector : std::vector<T, StdAllocator<T>>
     {
     }
 
-    [[nodiscard]] uint32_t size() const
+    uint32_t size() const
     {
         return static_cast<uint32_t>(std::vector<T, StdAllocator<T>>::size());
     }
 
-    [[nodiscard]] bool contains(const T& value) const
+    bool contains(const T& value) const
     {
         for (auto& it : *this)
         {
@@ -29,7 +29,7 @@ struct Vector : std::vector<T, StdAllocator<T>>
         return false;
     }
 
-    [[nodiscard]] int find(const T& value) const
+    int find(const T& value) const
     {
         int idx = 0;
         for (auto& it : *this)
@@ -60,7 +60,7 @@ struct VectorMap : Vector<std::pair<K, V>>
     using It      = typename Vector<std::pair<K, V>>::iterator;
     using ConstIt = typename Vector<std::pair<K, V>>::const_iterator;
 
-    [[nodiscard]] ConstIt find(const K& key) const
+    ConstIt find(const K& key) const
     {
         for (auto it = this->begin(); it != this->end(); ++it)
         {
@@ -71,7 +71,7 @@ struct VectorMap : Vector<std::pair<K, V>>
         return this->end();
     }
 
-    [[nodiscard]] It find(const K& key)
+    It find(const K& key)
     {
         for (auto it = this->begin(); it != this->end(); ++it)
         {
@@ -82,7 +82,7 @@ struct VectorMap : Vector<std::pair<K, V>>
         return this->end();
     }
 
-    [[nodiscard]] bool contains(const K& key) const
+    bool contains(const K& key) const
     {
         return find(key) != this->end();
     }

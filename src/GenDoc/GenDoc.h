@@ -46,7 +46,7 @@ struct GenDoc
         Vector<UserBlock*> subBlocks;
         Vector<Utf8>       lines;
 
-        [[nodiscard]] bool empty() const { return subBlocks.empty() && lines.empty(); }
+        bool empty() const { return subBlocks.empty() && lines.empty(); }
     };
 
     struct UserComment
@@ -57,7 +57,7 @@ struct GenDoc
 
     void               constructPage();
     static Utf8        toRef(Utf8 str);
-    [[nodiscard]] Utf8               getTocTitleRef() const;
+    Utf8               getTocTitleRef() const;
     void               addTocTitle(const Utf8& name, const Utf8& title, uint32_t titleLevel);
     static Utf8        getFileExtension(const Module* module);
     bool               constructAndSave();

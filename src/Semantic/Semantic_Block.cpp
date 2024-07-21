@@ -954,7 +954,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     Ast::removeFromParent(node->block);
     Ast::addChildBack(loopNode->block, node->block);
     SWAG_ASSERT(node->block);
-    
+
     Ast::visit(context, node->block, [&](ErrorContext*, AstNode* x) {
         if (!x->hasOwnerBreakable())
             x->setOwnerBreakable(loopNode);

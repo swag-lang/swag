@@ -36,12 +36,12 @@ enum CPURegister : uint8_t
 
 struct CallConv
 {
-    [[nodiscard]] static bool structParamByValue(const TypeInfoFuncAttr* typeFunc, const TypeInfo* typeParam);
-    [[nodiscard]] static bool returnByAddress(const TypeInfoFuncAttr* typeFunc);
-    [[nodiscard]] static bool returnByStackAddress(const TypeInfoFuncAttr* typeFunc);
-    [[nodiscard]] static bool returnNeedsStack(const TypeInfoFuncAttr* typeFunc);
-    [[nodiscard]] static bool returnByValue(const TypeInfoFuncAttr* typeFunc);
-    [[nodiscard]] static bool returnStructByValue(const TypeInfoFuncAttr* typeFunc);
+    static bool structParamByValue(const TypeInfoFuncAttr* typeFunc, const TypeInfo* typeParam);
+    static bool returnByAddress(const TypeInfoFuncAttr* typeFunc);
+    static bool returnByStackAddress(const TypeInfoFuncAttr* typeFunc);
+    static bool returnNeedsStack(const TypeInfoFuncAttr* typeFunc);
+    static bool returnByValue(const TypeInfoFuncAttr* typeFunc);
+    static bool returnStructByValue(const TypeInfoFuncAttr* typeFunc);
 
     // The number of parameters to pass by register
     uint32_t paramByRegisterCount = 4;

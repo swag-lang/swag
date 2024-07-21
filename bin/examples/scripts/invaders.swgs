@@ -233,6 +233,7 @@ func gameLoop()
     checkCollisions()
 }
 
+#[Swag.PrintBc]
 func addAliens()
 {
     const DIST = 50
@@ -240,7 +241,7 @@ func addAliens()
     {
         loop yc: 6
         {
-            let x = 40 + xc * DIST
+            let x = (xc * DIST) + 40
             let y = 140 + yc * DIST
 
             var type = &g_RedImg

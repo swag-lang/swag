@@ -83,7 +83,7 @@ public:
         pos += len;
     }
 
-    [[nodiscard]] uint64_t current_pos() const override { return pos; }
+    uint64_t current_pos() const override { return pos; }
 
     Utf8     errMsg;
     size_t   pos;

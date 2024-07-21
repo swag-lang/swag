@@ -75,7 +75,7 @@ struct BuildParameters
     uint32_t               precompileIndex = 0;
     BackendCompileType     compileType     = Normal;
 
-    [[nodiscard]] bool isDebug() const
+    bool isDebug() const
     {
         return buildCfg->backendOptimize == BuildCfgBackendOptim::O0;
     }

@@ -4,21 +4,21 @@ struct Mutex
 {
     std::mutex mt;
 
-    void               lock() { mt.lock(); }
-    void               unlock() { mt.unlock(); }
-    [[nodiscard]] bool try_lock() { return mt.try_lock(); }
+    void lock() { mt.lock(); }
+    void unlock() { mt.unlock(); }
+    bool try_lock() { return mt.try_lock(); }
 };
 
 struct SharedMutex
 {
     std::shared_mutex mt;
 
-    void               lock() { mt.lock(); }
-    void               unlock() { mt.unlock(); }
-    void               lock_shared() { mt.lock_shared(); }
-    void               unlock_shared() { mt.unlock_shared(); }
-    [[nodiscard]] bool try_lock() { return mt.try_lock(); }
-    [[nodiscard]] bool try_lock_shared() { return mt.try_lock_shared(); }
+    void lock() { mt.lock(); }
+    void unlock() { mt.unlock(); }
+    void lock_shared() { mt.lock_shared(); }
+    void unlock_shared() { mt.unlock_shared(); }
+    bool try_lock() { return mt.try_lock(); }
+    bool try_lock_shared() { return mt.try_lock_shared(); }
 };
 
 template<typename T>

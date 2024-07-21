@@ -313,83 +313,83 @@ struct AstNode
     void inheritOwners(const AstNode* from);
     void inheritOwnersAndFlags(const Parser* parser);
 
-    void               allocateComputedValue();
-    void               releaseComputedValue();
-    void               setFlagsValueIsComputed();
-    void               inheritComputedValue(const AstNode* from);
-    [[nodiscard]] bool hasFlagComputedValue() const;
+    void allocateComputedValue();
+    void releaseComputedValue();
+    void setFlagsValueIsComputed();
+    void inheritComputedValue(const AstNode* from);
+    bool hasFlagComputedValue() const;
 
-    [[nodiscard]] ComputedValue* safeComputedValue() const { return hasExtSemantic() ? extSemantic()->computedValue : nullptr; }
-    [[nodiscard]] ComputedValue* computedValue() const { return extSemantic()->computedValue; }
-    [[nodiscard]] bool           hasComputedValue() const { return safeComputedValue() != nullptr; }
+    ComputedValue* safeComputedValue() const { return hasExtSemantic() ? extSemantic()->computedValue : nullptr; }
+    ComputedValue* computedValue() const { return extSemantic()->computedValue; }
+    bool           hasComputedValue() const { return safeComputedValue() != nullptr; }
 
-    [[nodiscard]] bool              addAnyType(SemanticContext* context, TypeInfo* typeinfo);
-    [[nodiscard]] bool              isConstantGenTypeInfo() const;
-    [[nodiscard]] ExportedTypeInfo* getConstantGenTypeInfo() const;
-    [[nodiscard]] bool              isConstantTrue() const;
-    [[nodiscard]] bool              isConstantFalse() const;
-    [[nodiscard]] bool              isConstant0() const;
-    [[nodiscard]] bool              isConstant1() const;
+    bool              addAnyType(SemanticContext* context, TypeInfo* typeinfo);
+    bool              isConstantGenTypeInfo() const;
+    ExportedTypeInfo* getConstantGenTypeInfo() const;
+    bool              isConstantTrue() const;
+    bool              isConstantFalse() const;
+    bool              isConstant0() const;
+    bool              isConstant1() const;
 
-    [[nodiscard]] bool isParentOf(const AstNode* child) const;
-    [[nodiscard]] bool isValidIfParam(const SymbolOverload* overload) const;
-    [[nodiscard]] bool isSameStackFrame(const SymbolOverload* overload) const;
-    [[nodiscard]] bool isSpecialFunctionName() const;
-    [[nodiscard]] bool isSpecialFunctionGenerated() const;
-    [[nodiscard]] bool isGeneratedSelf() const;
-    [[nodiscard]] bool isEmptyFct();
-    [[nodiscard]] bool isForeign() const;
-    [[nodiscard]] bool isSilentCall() const;
-    [[nodiscard]] bool isPublic() const;
-    [[nodiscard]] bool isForceTakeAddress() const;
+    bool isParentOf(const AstNode* child) const;
+    bool isValidIfParam(const SymbolOverload* overload) const;
+    bool isSameStackFrame(const SymbolOverload* overload) const;
+    bool isSpecialFunctionName() const;
+    bool isSpecialFunctionGenerated() const;
+    bool isGeneratedSelf() const;
+    bool isEmptyFct();
+    bool isForeign() const;
+    bool isSilentCall() const;
+    bool isPublic() const;
+    bool isForceTakeAddress() const;
 
-    [[nodiscard]] const Token& getTokenName() const;
-    [[nodiscard]] Utf8         getScopedName() const;
-    void                       setPassThrough();
-    [[nodiscard]] bool         hasSpecialFuncCall() const;
-    [[nodiscard]] bool         hasSpecialFuncCall(const Utf8& name) const;
-    [[nodiscard]] AstNode*     inSimpleReturn() const;
-    [[nodiscard]] bool         hasIntrinsicName() const;
-    void                       computeLocation(SourceLocation& start, SourceLocation& end);
-    void                       addAlternativeScope(Scope* scope, CollectedScopeFlags altFlags = 0);
-    void                       addAlternativeScopeVar(Scope* scope, AstNode* varNode, CollectedScopeFlags altFlags = 0);
-    void                       printLoc() const;
+    const Token& getTokenName() const;
+    Utf8         getScopedName() const;
+    void         setPassThrough();
+    bool         hasSpecialFuncCall() const;
+    bool         hasSpecialFuncCall(const Utf8& name) const;
+    AstNode*     inSimpleReturn() const;
+    bool         hasIntrinsicName() const;
+    void         computeLocation(SourceLocation& start, SourceLocation& end);
+    void         addAlternativeScope(Scope* scope, CollectedScopeFlags altFlags = 0);
+    void         addAlternativeScopeVar(Scope* scope, AstNode* varNode, CollectedScopeFlags altFlags = 0);
+    void         printLoc() const;
 
-    [[nodiscard]] bool is(AstNodeKind what) const { return kind == what; }
-    [[nodiscard]] bool isNot(AstNodeKind what) const { return kind != what; }
+    bool is(AstNodeKind what) const { return kind == what; }
+    bool isNot(AstNodeKind what) const { return kind != what; }
 
-    [[nodiscard]] AstNode* findChildRef(const AstNode* ref, AstNode* fromChild) const;
-    [[nodiscard]] AstNode* findChildRefRec(AstNode* ref, AstNode* fromChild) const;
-    [[nodiscard]] AstNode* findParent(AstNodeKind parentKind) const;
-    [[nodiscard]] AstNode* findParent(AstNodeKind parentKind1, AstNodeKind parentKind2) const;
-    [[nodiscard]] AstNode* findParentOrMe(AstNodeKind parentKind);
-    [[nodiscard]] AstNode* findChild(AstNodeKind childKind) const;
-    [[nodiscard]] AstNode* findParentAttrUse(const Utf8& name) const;
-    [[nodiscard]] AstNode* findParent(TokenId tkn) const;
-    [[nodiscard]] uint32_t childParentIdx() const;
-    void                   swap2Children();
+    AstNode* findChildRef(const AstNode* ref, AstNode* fromChild) const;
+    AstNode* findChildRefRec(AstNode* ref, AstNode* fromChild) const;
+    AstNode* findParent(AstNodeKind parentKind) const;
+    AstNode* findParent(AstNodeKind parentKind1, AstNodeKind parentKind2) const;
+    AstNode* findParentOrMe(AstNodeKind parentKind);
+    AstNode* findChild(AstNodeKind childKind) const;
+    AstNode* findParentAttrUse(const Utf8& name) const;
+    AstNode* findParent(TokenId tkn) const;
+    uint32_t childParentIdx() const;
+    void     swap2Children();
 
-    [[nodiscard]] AstNode* firstChild() const { return children.empty() ? nullptr : children.front(); }
-    [[nodiscard]] AstNode* secondChild() const { return children.size() < 2 ? nullptr : children[1]; }
-    [[nodiscard]] AstNode* lastChild() const { return children.empty() ? nullptr : children.back(); }
-    [[nodiscard]] uint32_t childCount() const { return children.size(); }
+    AstNode* firstChild() const { return children.empty() ? nullptr : children.front(); }
+    AstNode* secondChild() const { return children.size() < 2 ? nullptr : children[1]; }
+    AstNode* lastChild() const { return children.empty() ? nullptr : children.back(); }
+    uint32_t childCount() const { return children.size(); }
 
-    [[nodiscard]] bool hasAstFlag(const AstNodeFlags& fl) const { return flags.has(fl); }
-    void               addAstFlag(const AstNodeFlags& fl) { flags.add(fl); }
-    void               removeAstFlag(const AstNodeFlags& fl) { flags.remove(fl); }
+    bool hasAstFlag(const AstNodeFlags& fl) const { return flags.has(fl); }
+    void addAstFlag(const AstNodeFlags& fl) { flags.add(fl); }
+    void removeAstFlag(const AstNodeFlags& fl) { flags.remove(fl); }
 
-    [[nodiscard]] bool hasSemFlag(const AstSemFlags& fl) const { return semFlags.has(fl); }
-    void               addSemFlag(const AstSemFlags& fl) { semFlags.add(fl); }
-    void               removeSemFlag(const AstSemFlags& fl) { semFlags.remove(fl); }
+    bool hasSemFlag(const AstSemFlags& fl) const { return semFlags.has(fl); }
+    void addSemFlag(const AstSemFlags& fl) { semFlags.add(fl); }
+    void removeSemFlag(const AstSemFlags& fl) { semFlags.remove(fl); }
 
-    [[nodiscard]] bool hasAttribute(const AttributeFlags& attr) const { return attributeFlags.has(attr); }
-    void               addAttribute(const AttributeFlags& attr) { attributeFlags.add(attr); }
-    void               removeAttribute(const AttributeFlags& attr) { attributeFlags.remove(attr); }
-    void               inheritAttribute(const AstNode* from, const AttributeFlags& w) { attributeFlags.add(from->attributeFlags.mask(w)); }
+    bool hasAttribute(const AttributeFlags& attr) const { return attributeFlags.has(attr); }
+    void addAttribute(const AttributeFlags& attr) { attributeFlags.add(attr); }
+    void removeAttribute(const AttributeFlags& attr) { attributeFlags.remove(attr); }
+    void inheritAttribute(const AstNode* from, const AttributeFlags& w) { attributeFlags.add(from->attributeFlags.mask(w)); }
 
-    [[nodiscard]] bool hasSpecFlag(SpecFlags fl) const { return specFlags.has(fl); }
-    void               addSpecFlag(SpecFlags fl) { specFlags.add(fl); }
-    void               removeSpecFlag(SpecFlags fl) { specFlags.remove(fl); }
+    bool hasSpecFlag(SpecFlags fl) const { return specFlags.has(fl); }
+    void addSpecFlag(SpecFlags fl) { specFlags.add(fl); }
+    void removeSpecFlag(SpecFlags fl) { specFlags.remove(fl); }
 
     struct NodeExtensionByteCode
     {

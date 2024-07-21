@@ -43,23 +43,23 @@ struct PendingJob
 
 struct Workspace
 {
-    static void                      errorPendingJobs(const Vector<PendingJob>& pendingJobs);
-    static void                      computeWaitingJobs();
-    static void                      checkPendingJobs();
-    bool                             build();
-    [[nodiscard]] static Diagnostic* errorPendingJob(Job* prevJob, const Job* depJob);
-    [[nodiscard]] static bool        buildRTModule(Module* module);
-    [[nodiscard]] bool               buildTarget();
-    [[nodiscard]] Module*            createModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule = false);
+    static void        errorPendingJobs(const Vector<PendingJob>& pendingJobs);
+    static void        computeWaitingJobs();
+    static void        checkPendingJobs();
+    bool               build();
+    static Diagnostic* errorPendingJob(Job* prevJob, const Job* depJob);
+    static bool        buildRTModule(Module* module);
+    bool               buildTarget();
+    Module*            createModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule = false);
 
-    [[nodiscard]] Module*     getModuleByName(const Utf8& moduleName);
-    [[nodiscard]] SourceFile* getFileByName(const char* fileName) const;
+    Module*     getModuleByName(const Utf8& moduleName);
+    SourceFile* getFileByName(const char* fileName) const;
 
     void getAllByteCodes(VectorNative<ByteCode*>& result) const;
 
-    [[nodiscard]] OneTag*     hasTag(const Utf8& name);
-    [[nodiscard]] Path        getTargetPath() const;
-    [[nodiscard]] static Utf8 getTargetFullName(const Utf8& buildCfg, const BackendTarget& target);
+    OneTag*     hasTag(const Utf8& name);
+    Path        getTargetPath() const;
+    static Utf8 getTargetFullName(const Utf8& buildCfg, const BackendTarget& target);
 
     static void cleanFolderContent(const Path& path);
     static void computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind);

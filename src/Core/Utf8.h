@@ -41,23 +41,23 @@ struct Utf8
     void reserve(uint32_t newSize);
     void resize(uint32_t newSize);
 
-    [[nodiscard]] const char* c_str() const;
-    [[nodiscard]] char*       data() const { return buffer; }
+    const char* c_str() const;
+    char*       data() const { return buffer; }
 
-    [[nodiscard]] uint32_t    hash() const;
-    [[nodiscard]] bool        empty() const;
-    [[nodiscard]] uint32_t    length() const;
-    [[nodiscard]] Utf8        toZeroTerminated() const;
-    [[nodiscard]] uint32_t    capacity() const;
-    [[nodiscard]] const char* begin() const;
-    [[nodiscard]] const char* end() const;
-    [[nodiscard]] char        back() const;
-    [[nodiscard]] bool        containsNoCase(const Utf8& str) const;
-    [[nodiscard]] int         find(const Utf8& str, uint32_t startPos = 0) const;
-    [[nodiscard]] bool        compareNoCase(const Utf8& txt1) const;
-    [[nodiscard]] bool        startsWith(const char* pz) const;
-    [[nodiscard]] int         countOf(char c) const;
-    [[nodiscard]] int         toInt(uint32_t offset = 0) const;
+    uint32_t    hash() const;
+    bool        empty() const;
+    uint32_t    length() const;
+    Utf8        toZeroTerminated() const;
+    uint32_t    capacity() const;
+    const char* begin() const;
+    const char* end() const;
+    char        back() const;
+    bool        containsNoCase(const Utf8& str) const;
+    int         find(const Utf8& str, uint32_t startPos = 0) const;
+    bool        compareNoCase(const Utf8& txt1) const;
+    bool        startsWith(const char* pz) const;
+    int         countOf(char c) const;
+    int         toInt(uint32_t offset = 0) const;
 
     void clear();
     void makeLocal();
@@ -101,20 +101,20 @@ struct Utf8
     void        operator+=(uint32_t c);
     void        operator+=(char c);
 
-    void               toUni16(VectorNative<uint16_t>& uni, int maxChars = -1) const;
-    void               toUni32(VectorNative<uint32_t>& uni, int maxChars = -1) const;
-    void               replace(const char* src, const char* dst);
-    [[nodiscard]] bool toChar32(uint32_t& ch) const;
+    void toUni16(VectorNative<uint16_t>& uni, int maxChars = -1) const;
+    void toUni32(VectorNative<uint32_t>& uni, int maxChars = -1) const;
+    void replace(const char* src, const char* dst);
+    bool toChar32(uint32_t& ch) const;
 
-    static void                      tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty = false, bool trim = false);
-    static void                      wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength);
-    static void                      tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens);
-    [[nodiscard]] static const char* decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset);
-    [[nodiscard]] static Utf8        toStringF64(double v);
-    [[nodiscard]] static Utf8        toNiceSize(size_t size);
-    [[nodiscard]] static uint32_t    fuzzyCompare(const Utf8& str1, const Utf8& str2);
-    [[nodiscard]] static Utf8        truncateDisplay(const char* str, int maxLen);
-    [[nodiscard]] static bool        isNumber(const char* pz);
+    static void        tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty = false, bool trim = false);
+    static void        wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength);
+    static void        tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens);
+    static const char* decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset);
+    static Utf8        toStringF64(double v);
+    static Utf8        toNiceSize(size_t size);
+    static uint32_t    fuzzyCompare(const Utf8& str1, const Utf8& str2);
+    static Utf8        truncateDisplay(const char* str, int maxLen);
+    static bool        isNumber(const char* pz);
 
     char*    buffer    = nullptr;
     uint32_t count     = 0;

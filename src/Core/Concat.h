@@ -12,20 +12,20 @@ struct ConcatBucket
 
 struct Concat
 {
-    void                   init(int size = 32 * 1024);
-    void                   clear();
-    void                   release();
-    void                   ensureSpace(uint32_t numBytes);
-    void                   align(uint32_t align);
-    [[nodiscard]] uint8_t* getSeekPtr() const;
-    [[nodiscard]] uint32_t totalCount() const;
-    [[nodiscard]] uint8_t* getPtr(uint32_t seek) const;
-    [[nodiscard]] uint32_t bucketCount(const ConcatBucket* b) const;
-    [[nodiscard]] bool     hasEnoughSpace(uint32_t numBytes) const;
-    bool                   flushToFile(const Path& path);
+    void     init(int size = 32 * 1024);
+    void     clear();
+    void     release();
+    void     ensureSpace(uint32_t numBytes);
+    void     align(uint32_t align);
+    uint8_t* getSeekPtr() const;
+    uint32_t totalCount() const;
+    uint8_t* getPtr(uint32_t seek) const;
+    uint32_t bucketCount(const ConcatBucket* b) const;
+    bool     hasEnoughSpace(uint32_t numBytes) const;
+    bool     flushToFile(const Path& path);
 
-    [[nodiscard]] uint32_t* addU32Addr(uint32_t v);
-    [[nodiscard]] uint16_t* addU16Addr(uint16_t v);
+    uint32_t* addU32Addr(uint32_t v);
+    uint16_t* addU16Addr(uint16_t v);
 
     void addU8(uint8_t v);
     void addU16(uint16_t v);
@@ -48,7 +48,7 @@ struct Concat
     void addStringN(const char* v, uint32_t len);
 
     template<typename T>
-    [[nodiscard]] T* addObj()
+    T* addObj()
     {
         ensureSpace(sizeof(T));
         ::new (currentSP) T;

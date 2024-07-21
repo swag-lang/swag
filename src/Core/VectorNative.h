@@ -68,7 +68,7 @@ struct VectorNative
         buffer = newPtr;
     }
 
-    [[nodiscard]] T* reserve_back()
+    T* reserve_back()
     {
         if (count + 1 > allocated)
             reserve(count + 1);
@@ -127,7 +127,7 @@ struct VectorNative
         count--;
     }
 
-    [[nodiscard]] T get_pop_back()
+    T get_pop_back()
     {
         SWAG_ASSERT(count);
         count--;
@@ -162,44 +162,44 @@ struct VectorNative
         count = 0;
     }
 
-    [[nodiscard]] T* begin()
+    T* begin()
     {
         return buffer;
     }
 
-    [[nodiscard]] T* end()
+    T* end()
     {
         return buffer + count;
     }
 
-    [[nodiscard]] const T* begin() const
+    const T* begin() const
     {
         return buffer;
     }
 
-    [[nodiscard]] const T* end() const
+    const T* end() const
     {
         return buffer + count;
     }
 
-    [[nodiscard]] bool empty() const
+    bool empty() const
     {
         return count == 0;
     }
 
-    [[nodiscard]] T& back()
+    T& back()
     {
         SWAG_ASSERT(count);
         return buffer[count - 1];
     }
 
-    [[nodiscard]] const T& back() const
+    const T& back() const
     {
         SWAG_ASSERT(count);
         return buffer[count - 1];
     }
 
-    [[nodiscard]] const T& front() const
+    const T& front() const
     {
         return buffer[0];
     }
@@ -251,7 +251,7 @@ struct VectorNative
         count += other.count;
     }
 
-    [[nodiscard]] int find(const T& value)
+    int find(const T& value)
     {
         int idx = 0;
         for (auto& it : *this)
@@ -264,7 +264,7 @@ struct VectorNative
         return -1;
     }
 
-    [[nodiscard]] bool contains(const T& val)
+    bool contains(const T& val)
     {
         for (uint32_t i = 0; i < count; i++)
         {
@@ -275,12 +275,12 @@ struct VectorNative
         return false;
     }
 
-    [[nodiscard]] uint32_t capacity() const
+    uint32_t capacity() const
     {
         return allocated;
     }
 
-    [[nodiscard]] uint32_t size() const
+    uint32_t size() const
     {
         return count;
     }

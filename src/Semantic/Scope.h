@@ -53,22 +53,22 @@ struct Scope
     void addPublicNode(AstNode* node);
     void allocPublicSet();
 
-    static void                 makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
-    [[nodiscard]] const Utf8&   getFullName();
-    [[nodiscard]] Utf8          getDisplayFullName();
-    static void                 collectScopeFromToExcluded(Scope* src, const Scope* to, VectorNative<Scope*>& result);
-    [[nodiscard]] static Scope* allocScope(Scope* parentScope, AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind);
-    [[nodiscard]] Scope*        getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
-    void                        addChildNoLock(Scope* child);
-    void                        removeChildNoLock(Scope* child);
-    [[nodiscard]] bool          isParentOf(const Scope* child);
-    [[nodiscard]] bool          isSameOrParentOf(const Scope* child) const;
-    [[nodiscard]] bool          isGlobal() const;
-    [[nodiscard]] bool          isTopLevel() const;
-    [[nodiscard]] bool          isGlobalOrImpl() const;
+    static void   makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
+    const Utf8&   getFullName();
+    Utf8          getDisplayFullName();
+    static void   collectScopeFromToExcluded(Scope* src, const Scope* to, VectorNative<Scope*>& result);
+    static Scope* allocScope(Scope* parentScope, AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind);
+    Scope*        getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
+    void          addChildNoLock(Scope* child);
+    void          removeChildNoLock(Scope* child);
+    bool          isParentOf(const Scope* child);
+    bool          isSameOrParentOf(const Scope* child) const;
+    bool          isGlobal() const;
+    bool          isTopLevel() const;
+    bool          isGlobalOrImpl() const;
 
-    [[nodiscard]] bool is(ScopeKind what) const { return kind == what; }
-    [[nodiscard]] bool isNot(ScopeKind what) const { return kind != what; }
+    bool is(ScopeKind what) const { return kind == what; }
+    bool isNot(ScopeKind what) const { return kind != what; }
 
     SharedMutex             mutex;
     SymTable                symTable;
