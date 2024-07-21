@@ -1,0 +1,416 @@
+/*
+    :LICENCE
+    This was inspired by Clear Code, video is https://www.youtube.com/watch?v=o-6pADy5Mdg.
+    Ressources (images/sounds) come from the corresponding https://github.com/clear-code-projects/Space-invaders.
+*/
+
+#dependencies
+{
+    #import "gui" location="swag@std"
+    #import "audio" location="swag@std"
+}
+
+using Gui, Core, Pixel
+const W, H = 900
+
+const PLAY_SOUND         = true
+const OBS_SIZE           = 10.0
+const PLAYER_SPEED       = 400
+const LASER_SPEED_PLAYER = 400
+const LASER_SPEED_ALIEN  = 300
+const LASER_LENGTH       = 25
+const SPEED_ALIEN_X      = 60
+const SPEED_ALIEN_Y      = 20
+
+var g_Wnd:      *Wnd
+var g_DataPath: String
+var g_Painter:  *Painter
+
+var g_MoveAlienDirection: f32 = 1
+var g_NumAlienLasers      = 0
+var g_Score = 0
+
+var g_ExtraImg:  Texture
+var g_GreenImg:  Texture
+var g_RedImg:    Texture
+var g_YellowImg: Texture
+var g_PlayerImg: Texture
+var g_TvImg:     Texture
+
+var g_SoundMusic:     Audio.SoundFile
+var g_SoundLaser:     Audio.SoundFile
+var g_SoundExplosion: Audio.SoundFile
+
+var g_Font: *Font
+
+struct Alien
+{
+    x, y:     f32
+    type:     *Texture
+    dead:     bool
+}
+
+struct Player
+{
+    x, y: f32
+}
+
+struct Laser
+{
+    x, y:       f32
+    dead:       bool
+    player:     bool
+}
+
+struct Obstacle
+{
+    x, y:     f32
+    dead:     bool
+}
+
+var g_Aliens:    Array'Alien
+var g_Lasers:    Array'Laser
+var g_Player:    Player
+var g_Dt:        f32
+var g_Rect:      Math.Rectangle
+var g_Obstacles: Array'Obstacle
+
+func updatePlayer()
+{
+    let kb = g_Wnd.getApp().getKeyboard()
+
+    // Move
+    if kb.isKeyPressed(.Left) do
+        g_Player.x -= PLAYER_SPEED * g_Dt
+    elif kb.isKeyPressed(.Right) do
+        g_Player.x += PLAYER_SPEED * g_Dt
+    g_Player.x = Math.clamp(g_Player.x, 40, g_Rect.width - 40.0 - g_PlayerImg.width)
+
+    // Laser
+    if kb.isKeyJustPressed(.Space)
+    {
+        g_Lasers.add({g_Player.x + g_PlayerImg.width / 2, g_Player.y, player: true})
+        if PLAY_SOUND do
+            catch Audio.Voice.play(&g_SoundLaser)
+    }
+}
+
+func updateLasers()
+{
+    visit laser: g_Lasers
+    {
+        if laser.dead do
+            continue
+
+        // Laser shot by the player
+        if laser.player
+        {
+            laser.y -= LASER_SPEED_PLAYER * g_Dt
+            if laser.y - LASER_LENGTH < 0 do
+                laser.dead = true
+        }
+
+        // Laser shot by an alien
+        else
+        {
+            laser.y += LASER_SPEED_ALIEN * g_Dt
+            if laser.y - LASER_LENGTH > g_Rect.height
+            {
+                laser.dead = true
+                g_NumAlienLasers -= 1
+            }
+        }
+    }
+}
+
+func udpateAliens()
+{
+    var moveY: f32
+
+    // Change of direction
+    visit alien: g_Aliens
+    {
+        if alien.dead do
+            continue
+
+        if g_MoveAlienDirection > 0 and alien.x + alien.type.width > g_Rect.width - 40
+        {
+            g_MoveAlienDirection = -1
+            moveY                = SPEED_ALIEN_Y
+        }
+        elif g_MoveAlienDirection < 0 and alien.x < 40
+        {
+            g_MoveAlienDirection = 1
+            moveY                = SPEED_ALIEN_Y
+        }
+    }
+
+    // Move all aliens
+    visit alien: g_Aliens
+    {
+        if alien.dead do
+            continue
+
+        alien.x += SPEED_ALIEN_X * g_Dt * g_MoveAlienDirection
+        alien.y += moveY
+
+        // Once in a while, an alien can shoot a laser
+        if g_NumAlienLasers <= 1 and Random.shared().nextS32(0, 100) <= 1
+        {
+            g_NumAlienLasers += 1
+            g_Lasers.add({alien.x + alien.type.width / 2, alien.y + alien.type.height})
+        }
+    }
+}
+
+func checkCollisions()
+{
+    visit laser: g_Lasers
+    {
+        if laser.dead do
+            continue
+
+        // Against obstacles
+        visit obs: g_Obstacles
+        {
+            if obs.dead do
+                continue
+
+            let r = Math.Rectangle{obs.x, obs.y, OBS_SIZE, OBS_SIZE}
+            if r.contains(Math.Point{laser.x, laser.y})
+            {
+                laser.dead = true
+                obs.dead   = true
+                if !laser.player do
+                    g_NumAlienLasers -= 1
+                if PLAY_SOUND do
+                    catch Audio.Voice.play(&g_SoundExplosion)
+                continue
+            }
+        }
+
+        // Player laser against aliens
+        if laser.player
+        {
+            visit alien: g_Aliens
+            {
+                if alien.dead do
+                    continue
+
+                let r = Math.Rectangle{alien.x, alien.y, alien.type.width, alien.type.height}
+                if r.contains(Math.Point{laser.x, laser.y})
+                {
+                    laser.dead = true
+                    alien.dead = true
+                    g_Score += 1
+
+                    if PLAY_SOUND do
+                        catch Audio.Voice.play(&g_SoundExplosion)
+                }
+            }
+        }
+
+        // Alien laser against player
+        else
+        {
+            let r = Math.Rectangle{g_Player.x, g_Player.y, g_PlayerImg.width, g_PlayerImg.height}
+            if r.contains(Math.Point{laser.x, laser.y})
+            {
+                g_NumAlienLasers -= 1
+                laser.dead = true
+                if PLAY_SOUND do
+                    catch Audio.Voice.play(&g_SoundExplosion)
+            }
+        }
+    }
+}
+
+func gameLoop()
+{
+    updatePlayer()
+    updateLasers()
+    udpateAliens()
+    checkCollisions()
+}
+
+func addAliens()
+{
+    const DIST = 50
+    loop xc: 10
+    {
+        loop yc: 6
+        {
+            let x = 40 + xc * DIST
+            let y = 140 + yc * DIST
+
+            var type = &g_RedImg
+            if yc == 0 do
+                type = &g_YellowImg
+            elif yc >= 1 and yc <= 2 do
+                type = &g_GreenImg
+            g_Aliens.add({x, y, type})
+        }
+    }
+}
+
+func addObstacle(xi, yi: f32)
+{
+    let shape = [
+        "  xxxxxxx",
+        " xxxxxxxxx",
+        "xxxxxxxxxxx",
+        "xxxxxxxxxxx",
+        "xxxxxxxxxxx",
+        "xxx     xxx",
+        "xx       xx"]
+
+    var y = yi
+    visit line: shape
+    {
+        var x = xi
+        visit c: line
+        {
+            if c == `x`
+            {
+                g_Obstacles.add({x, y})
+            }
+
+            x += OBS_SIZE
+        }
+        y += OBS_SIZE
+    }
+}
+
+func addObstacles()
+{
+    addObstacle((g_Rect.width * 0.25) - OBS_SIZE * 5, g_Rect.height - 200)
+    addObstacle((g_Rect.width * 0.5)  - OBS_SIZE * 5, g_Rect.height - 200)
+    addObstacle((g_Rect.width * 0.75) - OBS_SIZE * 5, g_Rect.height - 200)
+}
+
+func startGame()
+{
+    addAliens()
+    addObstacles()
+
+    g_Player.x = (g_Rect.width / 2) - g_PlayerImg.width / 2
+    g_Player.y = g_Rect.height - g_PlayerImg.height - 100
+}
+
+func display()
+{
+    // Aliens
+    visit alien: g_Aliens
+    {
+        if alien.dead do
+            continue
+
+        g_Painter.drawTexture(alien.x, alien.y, dref alien.type)
+    }
+
+    // Player
+    g_Painter.drawTexture(g_Player.x, g_Player.y, g_PlayerImg)
+
+    // Obstacles
+    visit obs: g_Obstacles
+    {
+        if obs.dead do
+            continue
+
+        g_Painter.fillRect(obs.x, obs.y, OBS_SIZE, OBS_SIZE, Argb.White)
+    }
+
+    // Lasers
+    visit laser: g_Lasers
+    {
+        if laser.dead do
+            continue
+
+        let color = laser.player ? Argb.Green : Argb.Red
+        g_Painter.drawLine(laser.x, laser.y, laser.x, laser.y + LASER_LENGTH, color, 2)
+    }
+
+    // Score
+    g_Painter.drawString(40, 0, Format.toString("score: %", g_Score), g_Font, Argb.White)
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    g_Dt = wnd.getApp().getDt()
+
+    switch evt.kind
+    {
+    case Create:
+        g_Wnd  = wnd
+        g_Rect = wnd.getClientRect()
+        startGame()
+        loadBindTextures()
+
+    case Resize:
+        g_Rect = wnd.getClientRect()
+
+    case Paint:
+        let paintEvt = cast(*PaintEvent) evt
+        g_Painter = paintEvt.bc.painter
+        gameLoop()
+        display()
+        wnd.invalidate()
+    }
+
+    return false
+}
+
+/**
+ * Load all assets
+ */
+func loadBindTextures()
+{
+    func loadAndBindTexture(name: string)->Texture
+    {
+        return assume g_Wnd.getApp().getRenderer().addImage(Path.combine(g_DataPath, name))
+    }
+
+    func loadSound(name: string)->Audio.SoundFile
+    {
+        return assume Audio.SoundFile.load(Path.combine(g_DataPath, name), true)
+    }
+
+    // Assets are located in the 'datas/pacman' sub folder
+    g_DataPath = Path.getDirectoryName(#location.fileName)
+    g_DataPath = Path.combine(g_DataPath, "datas")
+    g_DataPath = Path.combine(g_DataPath, "invaders")
+
+    // Bind map textures
+    g_ExtraImg  = loadAndBindTexture("extra.png")
+    g_RedImg    = loadAndBindTexture("red.png")
+    g_GreenImg  = loadAndBindTexture("green.png")
+    g_YellowImg = loadAndBindTexture("yellow.png")
+    g_PlayerImg = loadAndBindTexture("player.png")
+    g_TvImg     = loadAndBindTexture("tv.png")
+
+    g_SoundExplosion = loadSound("explosion.wav")
+    g_SoundLaser     = loadSound("laser.wav")
+    g_SoundMusic     = loadSound("music.wav")
+
+    if PLAY_SOUND do
+        catch Audio.Voice.play(&g_SoundMusic, playFlags: .Loop)
+
+    g_Font = assume Font.create(Path.combine(g_DataPath, "pixeled.ttf"), 40)
+}
+
+#main
+{
+    assume Audio.createEngine()
+    defer Audio.destroyEngine()
+
+    func test(app: *Application)
+    {
+        if Env.hasArg("swag.test")
+        {
+            app.maxRunFrame = 100
+            assume Audio.setOutputVolume(0)
+        }
+    }
+
+    Application.runSurface(100, 100, W, H, title: "Space-invaders", hook: &onEvent, init: &test)
+}

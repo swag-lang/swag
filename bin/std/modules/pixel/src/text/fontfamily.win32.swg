@@ -103,6 +103,8 @@ impl FontFamily
         let v    = Utf16.toZeroTerminated(fontFamily)
         EnumFontFamiliesW(hdc, v.buffer, @mkcallback(&enumFamily), cast(LPARAM) cast(u64) &arr)
 
+        if arr.isEmpty() do
+            return {}
         return arr[0]
     }
 
