@@ -273,7 +273,7 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
     parent->addAstFlag(AST_HAS_SELECT_IF);
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
-    // Not for the 3 special special functions
+    // Not for the 3 special functions
     if (parent->token.text == g_LangSpec->name_opDrop ||
         parent->token.text == g_LangSpec->name_opPostCopy ||
         parent->token.text == g_LangSpec->name_opPostMove)
