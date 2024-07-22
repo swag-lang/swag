@@ -3974,17 +3974,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_IMMB_F32(XMM0);
                 MK_IMMC_F32(XMM1);
                 MK_IMMD_F32(XMM2);
-
-                pp.concat.addU8(0xF3);
-                pp.concat.addU8(0x0F);
-                pp.concat.addU8(static_cast<uint8_t>(CPUOp::FMUL));
-                pp.concat.addU8(0xC1);
-
-                pp.concat.addU8(0xF3);
-                pp.concat.addU8(0x0F);
-                pp.concat.addU8(static_cast<uint8_t>(CPUOp::FADD));
-                pp.concat.addU8(0xC2);
-
+                pp.emitMulAddF32(XMM0, XMM1, XMM2);
                 pp.emitStoreF32Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
             }
@@ -3993,17 +3983,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_IMMB_F64(XMM0);
                 MK_IMMC_F64(XMM1);
                 MK_IMMD_F64(XMM2);
-
-                pp.concat.addU8(0xF2);
-                pp.concat.addU8(0x0F);
-                pp.concat.addU8(static_cast<uint8_t>(CPUOp::FMUL));
-                pp.concat.addU8(0xC1);
-
-                pp.concat.addU8(0xF2);
-                pp.concat.addU8(0x0F);
-                pp.concat.addU8(static_cast<uint8_t>(CPUOp::FADD));
-                pp.concat.addU8(0xC2);
-
+                pp.emitMulAddF64(XMM0, XMM1, XMM2);
                 pp.emitStoreF64Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
             }

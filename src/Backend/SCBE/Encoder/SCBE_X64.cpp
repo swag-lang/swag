@@ -2357,3 +2357,38 @@ void SCBE_X64::emitCastU64F64([[maybe_unused]] CPURegister regDst, [[maybe_unuse
     concat.addString4("\x66\x0F\x15\xC1");     // unpckhpd xmm0, xmm1
     concat.addString4("\xF2\x0F\x58\xC1");     // addsd xmm0, xmm1
 }
+
+// a*b+c
+void SCBE_X64::emitMulAddF32(CPURegister a, CPURegister b, CPURegister c)
+{
+    SWAG_ASSERT(a == XMM0);
+    SWAG_ASSERT(b == XMM1);
+    SWAG_ASSERT(c == XMM2);
+
+    concat.addU8(0xF3);
+    concat.addU8(0x0F);
+    concat.addU8(static_cast<uint8_t>(CPUOp::FMUL));
+    concat.addU8(0xC1);
+
+    concat.addU8(0xF3);
+    concat.addU8(0x0F);
+    concat.addU8(static_cast<uint8_t>(CPUOp::FADD));
+    concat.addU8(0xC2);
+}
+
+void SCBE_X64::emitMulAddF64(CPURegister a, CPURegister b, CPURegister c)
+{
+    SWAG_ASSERT(a == XMM0);
+    SWAG_ASSERT(b == XMM1);
+    SWAG_ASSERT(c == XMM2);
+
+    concat.addU8(0xF2);
+    concat.addU8(0x0F);
+    concat.addU8(static_cast<uint8_t>(CPUOp::FMUL));
+    concat.addU8(0xC1);
+
+    concat.addU8(0xF2);
+    concat.addU8(0x0F);
+    concat.addU8(static_cast<uint8_t>(CPUOp::FADD));
+    concat.addU8(0xC2);
+}

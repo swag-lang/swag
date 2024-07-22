@@ -146,4 +146,6 @@ struct SCBE_X64 : SCBE_CPU
     void emitRotateN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits);
     void emitNop();
     void emitCastU64F64(CPURegister regDst, CPURegister regSrc);
+    void emitMulAddF32(CPURegister a, CPURegister b, CPURegister c);
+    void emitMulAddF64(CPURegister a, CPURegister b, CPURegister c);
 };
