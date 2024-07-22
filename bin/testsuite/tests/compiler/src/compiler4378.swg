@@ -4,7 +4,7 @@
     #[Swag.ConstExpr]
     func isF32(t: typeinfo) => t == f32
 
-    struct(var T: isF32(T) = f32) Point
+    struct(var T where isF32(T) = f32) Point
     {
         x, y: T
     }

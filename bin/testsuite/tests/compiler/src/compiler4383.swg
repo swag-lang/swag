@@ -8,7 +8,7 @@ func isF32(t: typeinfo)->bool
 //#global testerror
 #test
 {
-    struct(var T: isF32(T)) Point
+    struct(var T where isF32(T)) Point
     {
         x, y: T
     }

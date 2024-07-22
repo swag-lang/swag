@@ -178,7 +178,8 @@ bool FormatAst::outputGenericParameters(FormatContext& context, AstNode* node)
         }
         else if (varDecl->typeConstraint)
         {
-            concat->addChar(':');
+            concat->addBlank();
+            concat->addString("where");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, varDecl->typeConstraint));
         }

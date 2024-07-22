@@ -518,6 +518,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
     {
         bool isConstant = false;
         bool isType     = false;
+
         if (tokenParse.is(TokenId::KwdConst))
         {
             isConstant = true;
@@ -542,19 +543,22 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 
         if (tokenParse.is(TokenId::SymColon))
         {
+            SWAG_VERIFY(!isType, error(tokenParse.token, toErr(Err0753)));
+            isConstant = true;
+
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse.token, toErr(Err0741)));
+            SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->type));
+        }
+        else if (tokenParse.is(TokenId::KwdWhere))
+        {
+            SWAG_VERIFY(!isConstant, error(tokenParse.token, toErr(Err0752)));
+            isType = true;
 
-            if (isType)
-            {
-                SWAG_CHECK(doExpression(oneParam, EXPR_FLAG_STOP_AFFECT, &oneParam->typeConstraint));
-                oneParam->typeConstraint->addAstFlag(AST_NO_SEMANTIC);
-            }
-            else
-            {
-                isConstant = true;
-                SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->type));
-            }
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse.token, toErr(Err0741)));
+            SWAG_CHECK(doExpression(oneParam, EXPR_FLAG_STOP_AFFECT, &oneParam->typeConstraint));
+            oneParam->typeConstraint->addAstFlag(AST_NO_SEMANTIC);
         }
 
         if (tokenParse.is(TokenId::SymEqual))

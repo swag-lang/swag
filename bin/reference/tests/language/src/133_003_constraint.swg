@@ -1,6 +1,6 @@
 /**
 Swag provides also a simple way of checking generic parameters, without the need of `#validif`.
-A type constraint can be added when declaring a generic type. If a function or a struct is instantiated with a type that does not conform to the constraint, then an error will be raised.
+A type constraint can be added with 'where' when declaring a generic type. If a function or a struct is instantiated with a type that does not conform to the constraint, then an error will be raised.
 */
 
 #test
@@ -10,7 +10,7 @@ A type constraint can be added when declaring a generic type. If a function or a
     func isS32(t: typeinfo) => t == s32
 
     // Here we check that the function generic type is 's32' by calling 'isS32'.
-    func(var T: isS32(T)) sum(x: T...)->T
+    func(var T where isS32(T)) sum(x: T...)->T
     {
         var total = 0'T
         visit it: x do
@@ -38,7 +38,7 @@ So you could do something like this.
     func isBool(t: typeinfo) => t == bool
 
     // Here we check that the function generic type is 's32' or 'bool'.
-    func(var T: isS32(T) or isBool(T)) myFunc(x: T) => x
+    func(var T where isS32(T) or isBool(T)) myFunc(x: T) => x
 
     // This is ok.
     @assert(myFunc(5's32) == 5)
@@ -54,7 +54,7 @@ Works also for structs.
     #[Swag.ConstExpr]
     func isFloat(t: typeinfo) => t == f32 or t == f64
 
-    struct(var T: isFloat(T)) Point
+    struct(var T where isFloat(T)) Point
     {
         x, y: T
     }
