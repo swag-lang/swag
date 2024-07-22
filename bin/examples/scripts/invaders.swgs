@@ -133,14 +133,10 @@ func udpateAliens()
         if alien.dead do
             continue
 
-        if g_MoveAlienDirection > 0 and alien.x + alien.type.width > g_Rect.width - 40
+        if (g_MoveAlienDirection > 0 and alien.x + alien.type.width > g_Rect.width - 40) or
+           (g_MoveAlienDirection < 0 and alien.x < 40)
         {
-            g_MoveAlienDirection = -1
-            moveY                = SPEED_ALIEN_Y
-        }
-        elif g_MoveAlienDirection < 0 and alien.x < 40
-        {
-            g_MoveAlienDirection = 1
+            g_MoveAlienDirection *= -1
             moveY                = SPEED_ALIEN_Y
         }
     }
