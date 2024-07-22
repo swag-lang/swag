@@ -167,7 +167,7 @@ void initErrors()
     SWAG_ERROR(Err0041, "compile-time evaluation required                  $ the initialization expression can't be evaluated at compile-time");
     SWAG_ERROR(Err0042, "compile-time evaluation required                  $ the operation on struct [[%s]] can't be done compile-time $ in order to make that kind of compile-time evaluation, the struct should be [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Err0043, "compile-time evaluation required                  $ the operation on the tuple can't be done compile-time $ in order to make that kind of compile-time evaluation, the tuple should be [[#[Swag.ConstExpr]]]");
-    SWAG_ERROR(Err0044, "compile-time evaluation required                  $ the type constraint can't be evaluated at compile-time");
+    SWAG_ERROR(Err0044, nullptr);
     SWAG_ERROR(Err0045, "compiler assertion failed                         $ the [[#assert]] expression was evaluated to false");
     SWAG_ERROR(Err0046, "compiler limit reached                            $ the size of the %s is too big (maximum size is [[0x%I64x]] bytes)");
     SWAG_ERROR(Err0047, "compiler limit reached                            $ the size of the data segment [[%s]] is too big (maximum size is [[0x%I64x]] bytes)");
@@ -211,7 +211,7 @@ void initErrors()
     SWAG_ERROR(Err0085, "failed [[%s]]                                     $ the function [[%s]] can't be used because of a failed [[%s]]");
     SWAG_ERROR(Err0086, "failed generic instantiation                      $ the variable creation failed due to the generic type [[%s]]");
     SWAG_ERROR(Err0087, "failed semantic                                   $ can't resolve this");
-    SWAG_ERROR(Err0088, "failed type constraint                            $ the type constraint has failed for type [[%s]]");
+    SWAG_ERROR(Err0088, nullptr);
     SWAG_ERROR(Err0089, "fetch error                                       $ can't fetch file [[%s]] for module dependency [[%s]]");
     SWAG_ERROR(Err0090, "file delete error                                 $ failed to delete file [[%s]]");
     SWAG_ERROR(Err0091, "file format error                                 $ the file format must be ASCII, UTF-8, or UTF-8-BOM");
@@ -521,7 +521,7 @@ void initErrors()
     SWAG_ERROR(Err0395, "invalid type                                      $ the type [[%s]] does not accept a [[const]] version");
     SWAG_ERROR(Err0396, "invalid type                                      $ the type is generic and can't be evaluated in this context");
     SWAG_ERROR(Err0397, "invalid type                                      $ unexpected first parameter type for special function [[%s]] ([[%s]] expected, [[%s]] provided)");
-    SWAG_ERROR(Err0398, "invalid type constraint                           $ a type constraint should be a boolean expression, got type [[%s]] instead");
+    SWAG_ERROR(Err0398, nullptr);
     SWAG_ERROR(Err0399, "invalid type declaration                          $ expected a type but [[%s]] is %s");
     SWAG_ERROR(Err0400, "invalid type declaration                          $ expected a type declaration, found [[%s]] instead");
     SWAG_ERROR(Err0401, "invalid type declaration                          $ expected a type in the tuple definition, found [[%s]] instead");
@@ -875,7 +875,7 @@ void initErrors()
     SWAG_ERROR(Err0749, "unused return value                               $ the return value of the lambda [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err0750, "missing return type                               $ a [[public]] function must always define its return type");
     SWAG_ERROR(Err0751, "misplaced [[moveref]]                             $ [[moveref]] can only be used before a function argument");
-    SWAG_ERROR(Err0752, "invalid type constraint                           $ a type constraint declared with [[where]] can only be applied to a type, not a generic constant");
+    SWAG_ERROR(Err0752, nullptr);
     SWAG_ERROR(Err0753, "invalid generic type                              $ a generic type does not accept a specific type starting with [[:]]");
     SWAG_ERROR(Err0754, nullptr);
     SWAG_ERROR(Err0755, nullptr);

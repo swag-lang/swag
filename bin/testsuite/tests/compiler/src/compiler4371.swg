@@ -3,7 +3,7 @@
 //#[Swag.ConstExpr]
 func isInteger(type: typeinfo) => true
 
-func(var A where #run isInteger(A)) add()
+func(var A) add() #validif #run isInteger(A)
 {
 }
 

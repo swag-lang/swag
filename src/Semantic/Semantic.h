@@ -149,7 +149,6 @@ namespace Semantic
     bool           computeExpressionListTupleType(SemanticContext* context, AstNode* node);
     bool           convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, OverloadFlags overFlags, CastFlags castFlags = 0);
     bool           deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType);
-    bool           resolveTypeConstraint(SemanticContext* context, const AstVarDecl* node);
     bool           derefConstant(SemanticContext* context, uint8_t* ptr, const SymbolOverload* overload, DataSegment* storageSegment);
     bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);
     bool           doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);

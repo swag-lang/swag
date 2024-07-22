@@ -1,9 +1,9 @@
-#global testerror "Err0088"
+#global testerror "Err0085"
 
 #[Swag.ConstExpr]
 func isInteger(type: typeinfo) => false
 
-func(var A where isInteger(A)) add(x: A)
+func(var A) add(x: A) #validif isInteger(A)
 {
 }
 

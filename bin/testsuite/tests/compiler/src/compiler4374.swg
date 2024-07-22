@@ -5,7 +5,7 @@ func isInteger(type: typeinfo) => false
 #[Swag.ConstExpr]
 func isFloat(type: typeinfo) => true
 
-func(var A where isInteger(A) or isFloat(A)) add()
+func(var A) add() #validif isInteger(A) or isFloat(A)
 {
 }
 

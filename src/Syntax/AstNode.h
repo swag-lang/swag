@@ -600,7 +600,6 @@ struct AstVarDecl : AstNode
     Token         assignToken;
     AstNode*      type;
     AstNode*      assignment;
-    AstNode*      typeConstraint;
     AstAttrUse*   attrUse;
     AstNode*      genTypeComesFrom;
 };

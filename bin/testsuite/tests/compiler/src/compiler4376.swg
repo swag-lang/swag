@@ -1,10 +1,10 @@
-#global testerror "Err0088"
+#global testerror "Err0084"
 #test
 {
     #[Swag.ConstExpr]
     func isFloat(t: typeinfo) => t == f32 or t == f64
 
-    struct(var T where isFloat(T)) Point
+    struct(var T) Point #validif isFloat(T)
     {
         x, y: T
     }

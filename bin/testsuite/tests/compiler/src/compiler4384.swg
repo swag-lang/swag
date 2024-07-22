@@ -9,7 +9,7 @@ func isF32(t: typeinfo)->bool
 
 #test
 {
-    struct(var T where isF32(T)) Point
+    struct(var T) Point #validif isF32(T)
     {
         x, y: T
     }

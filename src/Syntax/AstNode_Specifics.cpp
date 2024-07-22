@@ -25,10 +25,6 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     newNode->assignment       = findChildRef(assignment, newNode);
     newNode->genTypeComesFrom = genTypeComesFrom;
 
-    newNode->typeConstraint = findChildRef(typeConstraint, newNode);
-    if (newNode->typeConstraint)
-        newNode->typeConstraint->removeAstFlag(AST_NO_SEMANTIC);
-
     // Is there an alias ?
     if (const auto it = context.replaceNames.find(newNode->token.text); it != context.replaceNames.end())
     {

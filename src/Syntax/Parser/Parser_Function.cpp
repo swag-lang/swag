@@ -550,16 +550,6 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse.token, toErr(Err0741)));
             SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->type));
         }
-        else if (tokenParse.is(TokenId::KwdWhere))
-        {
-            SWAG_VERIFY(!isConstant, error(tokenParse.token, toErr(Err0752)));
-            isType = true;
-
-            SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse.token, toErr(Err0741)));
-            SWAG_CHECK(doExpression(oneParam, EXPR_FLAG_STOP_AFFECT, &oneParam->typeConstraint));
-            oneParam->typeConstraint->addAstFlag(AST_NO_SEMANTIC);
-        }
 
         if (tokenParse.is(TokenId::SymEqual))
         {

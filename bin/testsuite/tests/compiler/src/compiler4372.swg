@@ -1,9 +1,9 @@
-#global testerror "Err0044"
+//#global testerror "Err0044"
 
 //#[Swag.ConstExpr]
 func isInteger(type: typeinfo) => true
 
-func(var A where isInteger(A)) add()
+func(var A) add() #validif isInteger(A)
 {
 }
 
