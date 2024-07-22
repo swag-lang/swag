@@ -296,15 +296,15 @@ func __panicBox(msg, title: string)
     }
 }
 
-func __captureStack(skip: u32, where: [..] *void)->u32
+func __captureStack(skip: u32, wh: [..] *void)->u32
 {
     using __Win32RT
-    let nb = RtlCaptureStackBackTrace(skip + 1, acast @countof(where), acast @dataof(where), null)
+    let nb = RtlCaptureStackBackTrace(skip + 1, acast @countof(wh), acast @dataof(wh), null)
     return nb
 }
 
 var __logStackTraceInitDone = false
-func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = null, printNoLine = true)
+func __logStackTrace(wh: [..] *void, startAfter: *Swag.SourceCodeLocation = null, printNoLine = true)
 {
     using __Win32RT
 
@@ -328,10 +328,10 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
 
     var hasStarted = false
 
-    loop i: where
+    loop i: wh
     {
-        let hasSymbol = SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], &displacement, psym)
-        let hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], acast &displacement, &line)
+        let hasSymbol = SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(u64) wh[i], &displacement, psym)
+        let hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) wh[i], acast &displacement, &line)
         let fileName  = hasLine ? @mkstring(line.FileName, @strlen(line.FileName)) : null
         if !hasLine and !printNoLine do
             continue

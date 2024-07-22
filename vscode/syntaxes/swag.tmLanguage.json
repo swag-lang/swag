@@ -110,7 +110,7 @@
       "patterns": [
         {
           "name": "keyword.control",
-          "match": "\\b(if|else|elif|for|while|switch|defer|loop|visit|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until|do)\\b"
+          "match": "\\b(if|else|elif|for|while|switch|defer|loop|visit|where|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until|do)\\b"
         }
       ]
     },

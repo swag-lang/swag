@@ -395,6 +395,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("to", TokenId::KwdTo);
     keywords.add("until", TokenId::KwdUntil);
     keywords.add("do", TokenId::KwdDo);
+    keywords.add("where", TokenId::KwdWhere);
 
     keywords.add("is", TokenId::KwdReserved);
     keywords.add("in", TokenId::KwdReserved);
