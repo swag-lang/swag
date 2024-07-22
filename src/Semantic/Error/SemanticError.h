@@ -1,6 +1,11 @@
 #pragma once
 #include "Semantic/Symbol/Symbol.h"
 
+struct AstStruct;
+struct AstAttrDecl;
+struct AstTypeLambda;
+struct AstFuncDecl;
+struct AstFuncCallParam;
 struct CollectedScope;
 struct AstIdentifier;
 struct AstIdentifierRef;
@@ -31,6 +36,35 @@ enum class IdentifierSearchFor
     Struct,
 };
 
+struct ErrorParam
+{
+    OneTryMatch*               oneTry;
+    Vector<const Diagnostic*>* diagError;
+    Vector<const Diagnostic*>* diagNote;
+
+    AstNode*          errorNode      = nullptr;
+    AstFuncCallParam* failedParam    = nullptr;
+    uint32_t          badParamIdx    = 0;
+    AstFuncDecl*      destFuncDecl   = nullptr;
+    AstTypeLambda*    destLambdaDecl = nullptr;
+    AstAttrDecl*      destAttrDecl   = nullptr;
+    AstStruct*        destStructDecl = nullptr;
+    AstNode*          destParameters = nullptr;
+    Utf8              explicitCastMsg;
+
+    void addError(const Diagnostic* note) const
+    {
+        SWAG_ASSERT(note);
+        diagError->push_back(note);
+    }
+
+    void addNote(const Diagnostic* note) const
+    {
+        if (note)
+            diagNote->push_back(note);
+    }
+};
+
 namespace SemanticError
 {
     Utf8 findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best);
@@ -52,6 +86,7 @@ namespace SemanticError
 
     bool unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node);
 
+    void errorValidIfFailed(SemanticContext*, const ErrorParam& errorParam);
     void commonErrorNotes(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes);
     bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
     bool duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, const Token& token, SymbolKind thisKind, const Utf8& thisName, SymbolKind otherKind, AstNode* otherSymbolDecl);

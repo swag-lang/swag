@@ -803,12 +803,12 @@ void Semantic::flattenStructChildren(SemanticContext* context, AstNode* parent, 
     }
 }
 
-bool Semantic::solveValidIf(SemanticContext* context, const AstStruct* structDecl)
+bool Semantic::solveValidIf(SemanticContext* context, AstStruct* structDecl)
 {
     ScopedLock lk1(structDecl->mutex);
 
     // Execute #validif/#validifx block
-    const auto expr = structDecl->validif->lastChild();
+    const auto expr = structDecl->validIf->lastChild();
 
     if (!expr->hasFlagComputedValue())
     {
@@ -827,8 +827,18 @@ bool Semantic::solveValidIf(SemanticContext* context, const AstStruct* structDec
     SWAG_ASSERT(expr->computedValue());
     if (!expr->computedValue()->reg.b)
     {
-        const Diagnostic err{structDecl->validif, structDecl->validif->token, formErr(Err0084, structDecl->typeInfo->getDisplayNameC())};
-        return context->report(err);
+        ErrorParam                errorParam;
+        Vector<const Diagnostic*> diagError;
+        Vector<const Diagnostic*> diagNote;
+
+        errorParam.destStructDecl = structDecl;
+        errorParam.diagError      = &diagError;
+        errorParam.diagNote       = &diagNote;
+        errorParam.errorNode      = context->node;
+
+        SemanticError::errorValidIfFailed(context, errorParam);
+
+        return context->report(*diagError[0], diagNote);
     }
 
     return true;
@@ -844,7 +854,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     SWAG_ASSERT(typeInfo->declNode);
 
     // #validif
-    if (node->validif && !typeInfo->isGeneric())
+    if (node->validIf && !typeInfo->isGeneric())
     {
         SWAG_CHECK(solveValidIf(context, node));
         YIELD();

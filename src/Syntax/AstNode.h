@@ -1002,7 +1002,7 @@ struct AstStruct : AstNode
     Scope*        scope;
     AstNode*      originalGeneric;
     AstNode*      originalParent;
-    AstNode*      validif;
+    AstNode*      validIf;
     uint32_t      packing = sizeof(uint64_t);
 };
 

@@ -8,46 +8,8 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Naming.h"
 
-struct ErrorParam
-{
-    OneTryMatch*               oneTry;
-    Vector<const Diagnostic*>* diagError;
-    Vector<const Diagnostic*>* diagNote;
-
-    AstNode*          errorNode      = nullptr;
-    AstFuncCallParam* failedParam    = nullptr;
-    uint32_t          badParamIdx    = 0;
-    AstFuncDecl*      destFuncDecl   = nullptr;
-    AstTypeLambda*    destLambdaDecl = nullptr;
-    AstAttrDecl*      destAttrDecl   = nullptr;
-    AstStruct*        destStructDecl = nullptr;
-    AstNode*          destParameters = nullptr;
-    Utf8              explicitCastMsg;
-
-    void addError(const Diagnostic* note) const
-    {
-        SWAG_ASSERT(note);
-        diagError->push_back(note);
-    }
-
-    void addNote(const Diagnostic* note) const
-    {
-        if (note)
-            diagNote->push_back(note);
-    }
-};
-
 namespace
 {
-    void errorValidIfFailed(SemanticContext*, const ErrorParam& errorParam)
-    {
-        const auto destFuncDecl = errorParam.destFuncDecl;
-        const auto msg          = formErr(Err0085, destFuncDecl->validIf->token.c_str(), destFuncDecl->token.c_str(), destFuncDecl->validIf->token.c_str());
-        const auto err          = new Diagnostic{errorParam.errorNode, errorParam.errorNode->token, msg};
-        errorParam.addError(err);
-        errorParam.addNote(Diagnostic::hereIs(destFuncDecl->validIf));
-    }
-
     void errorMissingNamedParameter(SemanticContext*, const ErrorParam& errorParam)
     {
         SWAG_ASSERT(errorParam.failedParam);

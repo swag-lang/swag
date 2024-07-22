@@ -11,6 +11,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
@@ -1477,7 +1478,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
         const Diagnostic err{callNode->token.sourceFile, callNode->token, formErr(Err0544, funcNode->token.c_str())};
-        return context->report(err, Diagnostic::hereIs(srcNode, toNte(Nte0130)));
+        return context->report(err, Diagnostic::hereIs(srcNode, form(toNte(Nte0130), Naming::kindName(srcNode).c_str(), srcNode->token.c_str())));
     }
 
     if (!raiseErrors)

@@ -207,8 +207,8 @@ void initErrors()
     SWAG_ERROR(Err0081, "escaping stack frame                              $ you can't reference the %s [[%s]] because it's in a different stack frame");
     SWAG_ERROR(Err0082, "exception!                                        $ compile-time execution exception");
     SWAG_ERROR(Err0083, "expected [[%s]]                                   $ expected [[%s]] %s, found [[%s]] instead");
-    SWAG_ERROR(Err0084, "failed [[#validif]]                               $ the [[#validif]] validation has failed for [[%s]]");
-    SWAG_ERROR(Err0085, "failed [[%s]]                                     $ the function [[%s]] can't be used because of a failed [[%s]]");
+    SWAG_ERROR(Err0084, nullptr);
+    SWAG_ERROR(Err0085, "failed [[%s]] constraint                          $ the %s [[%s]] can't be used because of a failed [[%s]] constraint");
     SWAG_ERROR(Err0086, "failed generic instantiation                      $ the variable creation failed due to the generic type [[%s]]");
     SWAG_ERROR(Err0087, "failed semantic                                   $ can't resolve this");
     SWAG_ERROR(Err0088, nullptr);
@@ -962,7 +962,7 @@ void initErrors()
     SWAG_ERROR(Nte0072, "here is the other return statement");
     SWAG_ERROR(Nte0073, "here is the previous definition");
     SWAG_ERROR(Nte0074, "here is the prior declaration");
-    SWAG_ERROR(Nte0075, nullptr);
+    SWAG_ERROR(Nte0075, "here is the failed [[%s]] constraint");
     SWAG_ERROR(Nte0076, "here is the reference to the immutable value");
     SWAG_ERROR(Nte0077, "here is the runtime argument corresponding to [[%s]]");
     SWAG_ERROR(Nte0078, "here is the tuple definition");

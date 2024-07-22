@@ -68,7 +68,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         SWAG_ASSERT(node->is(AstNodeKind::StructDecl));
 
         if (context.keepSameLineStruct)
-            sameLine = !node->validif && !node->hasAttribute(ATTRIBUTE_OPAQUE) && !hasEOLInside(node->content);
+            sameLine = !node->validIf && !node->hasAttribute(ATTRIBUTE_OPAQUE) && !hasEOLInside(node->content);
 
         if (!sameLine)
             concat->addIndent(context.indent);
@@ -100,12 +100,12 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
     }
 
     // #validif must be exported
-    if (node->validif)
+    if (node->validIf)
     {
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputNode(context, node->validif));
+        SWAG_CHECK(outputNode(context, node->validIf));
         context.indent--;
     }
 

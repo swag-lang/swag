@@ -7,6 +7,28 @@
 #include "Syntax/Ast.h"
 #include "Syntax/Naming.h"
 
+void SemanticError::errorValidIfFailed(SemanticContext*, const ErrorParam& errorParam)
+{
+    AstNode* node;
+    AstNode* validIf;
+
+    if (errorParam.destFuncDecl)
+    {
+        node    = errorParam.destFuncDecl;
+        validIf = errorParam.destFuncDecl->validIf;
+    }
+    else
+    {
+        node    = errorParam.destStructDecl;
+        validIf = errorParam.destStructDecl->validIf;
+    }
+
+    const auto msg = formErr(Err0085, validIf->token.c_str(), Naming::kindName(node).c_str(), node->token.c_str(), validIf->token.c_str());
+    const auto err = new Diagnostic{errorParam.errorNode, errorParam.errorNode->getTokenName(), msg};
+    errorParam.addError(err);
+    errorParam.addNote(Diagnostic::hereIs(validIf, form(toNte(Nte0075), validIf->token.c_str())));
+}
+
 void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes)
 {
     if (!node)

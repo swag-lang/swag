@@ -331,7 +331,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
     {
         ParserPushScope       scoped(this, newScope);
         ParserPushStructScope scopedStruct(this, newScope);
-        SWAG_CHECK(doCompilerValidIf(structNode, &structNode->validif));
+        SWAG_CHECK(doCompilerValidIf(structNode, &structNode->validIf));
     }
 
     // Content of struct

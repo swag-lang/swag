@@ -735,7 +735,14 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, const char* msg)
         node->token.isNot(TokenId::KwdPublic))
         return nullptr;
 
-    const Utf8 txt  = msg ? Utf8{msg} : toNte(Nte0062);
+    if (msg)
+    {
+        const auto txt  = msg;
+        const Utf8 txt1 = form(txt, Naming::kindName(node).c_str(), node->token.c_str());
+        return note(node, node->getTokenName(), txt1);
+    }
+
+    const auto txt  = toNte(Nte0062);
     const Utf8 txt1 = form(txt, Naming::kindName(node).c_str(), node->token.c_str());
     return note(node, node->getTokenName(), txt1);
 }
