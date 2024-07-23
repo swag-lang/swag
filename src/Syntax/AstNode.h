@@ -153,8 +153,8 @@ enum class AstNodeKind : uint8_t
     CompilerRun,
     CompilerRunExpression,
     CompilerSpecialValue,
-    CompilerValidIf,
-    CompilerValidIfx,
+    CompilerWhere,
+    CompilerWhereEach,
     CompilerWarning,
     ConditionalExpression,
     ConstDecl,
@@ -332,7 +332,7 @@ struct AstNode
     bool              isConstant1() const;
 
     bool isParentOf(const AstNode* child) const;
-    bool isValidIfParam(const SymbolOverload* overload) const;
+    bool isWhereParam(const SymbolOverload* overload) const;
     bool isSameStackFrame(const SymbolOverload* overload) const;
     bool isSpecialFunctionName() const;
     bool isSpecialFunctionGenerated() const;
@@ -690,7 +690,7 @@ struct AstFuncDecl : AstNode
     AstNode*        genericParameters;
     AstNode*        returnType;
     AstNode*        content;
-    AstNode*        validIf;
+    AstNode*        whereExpression;
     AstNode*        returnTypeDeducedNode;
     AstNode*        originalGeneric;
     AstNode*        requestedGeneric;
@@ -1002,7 +1002,7 @@ struct AstStruct : AstNode
     Scope*        scope;
     AstNode*      originalGeneric;
     AstNode*      originalParent;
-    AstNode*      validIf;
+    AstNode*      whereExpression;
     uint32_t      packing = sizeof(uint64_t);
 };
 

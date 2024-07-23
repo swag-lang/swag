@@ -41,7 +41,7 @@ namespace Generic
 
     void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** specialFct);
     bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool& alias);
-    bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool validif = false);
+    bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool whereExpr = false);
     bool instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl* node);
     bool instantiateDefaultGenericFunc(SemanticContext* context);
 }

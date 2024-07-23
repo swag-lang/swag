@@ -15,8 +15,8 @@ enum class ErrCxtStepKind
     Generic,
     Inline,
     CompileTime,
-    ValidIf,
-    ValidIfx,
+    Where,
+    WhereEach,
     HereIs,
 };
 

@@ -1,5 +1,5 @@
 func print(s, s1: string, f: ...)
-    check
+    where(each)
     {
         //@print(cast(s64) @countof(f))
         @assert(s == "toto")

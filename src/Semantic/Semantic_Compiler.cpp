@@ -318,9 +318,9 @@ bool Semantic::resolveCompilerRun(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveCompilerValidIfExpression(SemanticContext* context)
+bool Semantic::resolveCompilerWhereExpression(SemanticContext* context)
 {
-    const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerValidIf, AstNodeKind::CompilerValidIfx);
+    const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerWhere, AstNodeKind::CompilerWhereEach);
     if (node->hasAstFlag(AST_GENERIC))
         return true;
 
@@ -783,7 +783,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
     auto       locNode = node->firstChild();
     node->typeInfo     = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
 
-    if (locNode->isValidIfParam(locNode->resolvedSymbolOverload()))
+    if (locNode->isWhereParam(locNode->resolvedSymbolOverload()))
     {
         node->removeAstFlag(AST_NO_BYTECODE);
         locNode->addAstFlag(AST_NO_BYTECODE);
@@ -813,7 +813,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
             }
         }
 
-        // :ForLocationInValidIf
+        // :ForLocationInWhere
         if (locNode->is(AstNodeKind::IdentifierRef))
         {
             const auto id = castAst<AstIdentifier>(locNode->lastChild(), AstNodeKind::Identifier);

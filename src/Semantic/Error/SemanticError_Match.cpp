@@ -51,7 +51,7 @@ namespace
 
         switch (result)
         {
-            case MatchResult::ValidIfFailed:
+            case MatchResult::WhereFailed:
                 note = Diagnostic::note(node, node->token, "all [[where]] have failed");
                 break;
             case MatchResult::TooManyArguments:
@@ -194,7 +194,7 @@ namespace
         SemanticError::commonErrorNotes(context, tryMatches, node, &err, notes);
 
         int overloadIndex = 1;
-        cannotMatchIdentifier(context, MatchResult::ValidIfFailed, 0, tryMatches, node, notes, overloadIndex);
+        cannotMatchIdentifier(context, MatchResult::WhereFailed, 0, tryMatches, node, notes, overloadIndex);
         cannotMatchIdentifier(context, MatchResult::NotEnoughArguments, 0, tryMatches, node, notes, overloadIndex);
         cannotMatchIdentifier(context, MatchResult::TooManyArguments, 0, tryMatches, node, notes, overloadIndex);
         cannotMatchIdentifier(context, MatchResult::NotEnoughGenericArguments, 0, tryMatches, node, notes, overloadIndex);
@@ -250,7 +250,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
                 case MatchResult::MissingParameters:
                 case MatchResult::NotEnoughArguments:
                 case MatchResult::TooManyArguments:
-                case MatchResult::ValidIfFailed:
+                case MatchResult::WhereFailed:
                 case MatchResult::NotEnoughGenericArguments:
                 case MatchResult::CannotDeduceGenericType:
                     n.push_back(oneMatch);
@@ -336,13 +336,13 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
             tryMatches = n;
     }
 
-    // Take validif if failed in priority
+    // Take where if failed in priority
     {
         Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
             const auto& one = *oneMatch;
-            if (one.symMatchContext.result == MatchResult::ValidIfFailed)
+            if (one.symMatchContext.result == MatchResult::WhereFailed)
                 n.push_back(oneMatch);
         }
         if (!n.empty())

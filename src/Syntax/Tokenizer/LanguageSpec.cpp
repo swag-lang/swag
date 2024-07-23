@@ -167,6 +167,7 @@ void LanguageSpec::setupNames()
 
     name_err   = "err";
     name_noerr = "noerr";
+    name_each  = "each";
 
     name_boundcheck  = "boundcheck";
     name_overflow    = "overflow";
@@ -309,8 +310,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#if", TokenId::CompilerIf);
     keywords.add("#else", TokenId::CompilerElse);
     keywords.add("#elif", TokenId::CompilerElseIf);
-    keywords.add("where", TokenId::CompilerValidIf);
-    keywords.add("check", TokenId::CompilerValidIfx);
+    keywords.add("where", TokenId::CompilerWhere);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
     keywords.add("#os", TokenId::CompilerOs);

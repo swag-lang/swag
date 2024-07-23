@@ -861,8 +861,8 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             node->typeInfo  = g_TypeMgr->typeInfoBool;
             expr->addAstFlag(AST_NO_BYTECODE);
 
-            // Special case for a function parameter in a validif block, should be done at runtime
-            if (expr->isValidIfParam(expr->resolvedSymbolOverload()))
+            // Special case for a function parameter in a where block, should be done at runtime
+            if (expr->isWhereParam(expr->resolvedSymbolOverload()))
             {
                 node->byteCodeFct = ByteCodeGen::emitIntrinsicIsConstExprSI;
                 break;

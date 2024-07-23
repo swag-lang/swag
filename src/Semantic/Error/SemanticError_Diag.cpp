@@ -499,8 +499,8 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
 
     switch (oneTry.symMatchContext.result)
     {
-        case MatchResult::ValidIfFailed:
-            errorValidIfFailed(context, errorParam);
+        case MatchResult::WhereFailed:
+            errorWhereFailed(context, errorParam);
             break;
 
         case MatchResult::MissingNamedParameter:

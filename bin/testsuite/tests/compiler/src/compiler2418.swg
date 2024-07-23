@@ -7,11 +7,11 @@ func toCheck(T: typeinfo, N: u32)->bool
 }
 
 func(T, N: u32) toto()
-where
-{
-    #if !toCheck(T, N) #do #error "N is out of range"
-    return true
-}
+    where
+    {
+        #if !toCheck(T, N) #do #error "N is out of range"
+        return true
+    }
 {
 }
 

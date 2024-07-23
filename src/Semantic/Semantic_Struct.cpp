@@ -803,21 +803,21 @@ void Semantic::flattenStructChildren(SemanticContext* context, AstNode* parent, 
     }
 }
 
-bool Semantic::solveValidIf(SemanticContext* context, AstStruct* structDecl)
+bool Semantic::solveWhereExpr(SemanticContext* context, AstStruct* structDecl)
 {
     ScopedLock lk1(structDecl->mutex);
 
     // Execute where/check block
-    const auto expr = structDecl->validIf->lastChild();
+    const auto expr = structDecl->whereExpression->lastChild();
 
     if (!expr->hasFlagComputedValue())
     {
         const auto node            = context->node;
-        context->validIfParameters = structDecl->genericParameters;
+        context->whereParameters = structDecl->genericParameters;
 
-        PushErrCxtStep ec(context, node, ErrCxtStepKind::ValidIf, nullptr);
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::Where, nullptr);
         const auto     result      = executeCompilerNode(context, expr, false);
-        context->validIfParameters = nullptr;
+        context->whereParameters = nullptr;
         if (!result)
             return false;
         YIELD();
@@ -836,7 +836,7 @@ bool Semantic::solveValidIf(SemanticContext* context, AstStruct* structDecl)
         errorParam.diagNote       = &diagNote;
         errorParam.errorNode      = context->node;
 
-        SemanticError::errorValidIfFailed(context, errorParam);
+        SemanticError::errorWhereFailed(context, errorParam);
 
         return context->report(*diagError[0], diagNote);
     }
@@ -854,9 +854,9 @@ bool Semantic::resolveStruct(SemanticContext* context)
     SWAG_ASSERT(typeInfo->declNode);
 
     // where
-    if (node->validIf && !typeInfo->isGeneric())
+    if (node->whereExpression && !typeInfo->isGeneric())
     {
-        SWAG_CHECK(solveValidIf(context, node));
+        SWAG_CHECK(solveWhereExpr(context, node));
         YIELD();
     }
 

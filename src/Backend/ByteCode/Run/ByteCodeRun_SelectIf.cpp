@@ -10,7 +10,7 @@
 bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
 {
     const auto paramIdx   = ip->c.u32;
-    const auto callParams = context->callerContext->validIfParameters;
+    const auto callParams = context->callerContext->whereParameters;
 
     // Nothing
     if (!callParams)
@@ -65,7 +65,7 @@ bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCod
 void* ByteCodeRun::executeLocationSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip)
 {
     const uint32_t paramIdx   = ip->c.u32;
-    const auto     callParams = context->callerContext->validIfParameters;
+    const auto     callParams = context->callerContext->whereParameters;
     if (!callParams)
         return nullptr;
     if (paramIdx >= callParams->childCount())
@@ -88,7 +88,7 @@ bool ByteCodeRun::executeIsConstExprSI(const ByteCodeRunContext* context, const 
         return getVariadicSI(context, ip, nullptr, nullptr);
 
     const uint32_t paramIdx   = ip->c.u32;
-    const auto     callParams = context->callerContext->validIfParameters;
+    const auto     callParams = context->callerContext->whereParameters;
     if (!callParams)
         return true;
     if (paramIdx >= callParams->childCount())
@@ -125,7 +125,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, const ByteC
     }
 
     const auto paramIdx    = ip->c.u32;
-    const auto callParams  = context->callerContext->validIfParameters;
+    const auto callParams  = context->callerContext->whereParameters;
     const auto registersRC = context->curRegistersRC;
 
     if (!callParams || paramIdx >= callParams->childCount())

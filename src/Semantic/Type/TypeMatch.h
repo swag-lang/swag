@@ -26,7 +26,7 @@ enum class MatchResult
     MissingNamedParameter,
     DuplicatedNamedParameter,
     MismatchGenericValue,
-    ValidIfFailed,
+    WhereFailed,
     MismatchThrow,
     NoReturnType,
     MissingReturnType,

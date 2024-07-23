@@ -1,5 +1,5 @@
 public func append2430(buf: *void, fmt: string, values: ...)
-    check
+    where(each)
     {
         if !@isconstexpr(fmt) do return true
         return true

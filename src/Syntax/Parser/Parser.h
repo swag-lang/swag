@@ -133,7 +133,7 @@ struct Parser
     bool doCompilerError(AstNode* parent, AstNode** result);
     bool doCompilerWarning(AstNode* parent, AstNode** result);
     bool doCompilerAst(AstNode* parent, AstNode** result);
-    bool doCompilerValidIf(AstNode* parent, AstNode** result);
+    bool doCompilerWhere(AstNode* parent, AstNode** result);
     bool doCompilerRunTopLevel(AstNode* parent, AstNode** result);
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result);
     bool doCompilerForeignLib(AstNode* parent, AstNode** result);

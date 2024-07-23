@@ -65,7 +65,7 @@ bool FormatAst::outputScopeContent(FormatContext& context, Module* module, const
             }
             else
             {
-                SWAG_CHECK(outputFuncSignature(context, funcNode, nullptr, funcNode->parameters, funcNode->validIf));
+                SWAG_CHECK(outputFuncSignature(context, funcNode, nullptr, funcNode->parameters, funcNode->whereExpression));
                 concat->removeLastChar('\n');
                 concat->addChar(';');
                 concat->addEol();

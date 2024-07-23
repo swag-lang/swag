@@ -121,14 +121,14 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     msg            = formNte(Nte0091, name.c_str());
                     exp.locIsToken = true;
                     break;
-                case ErrCxtStepKind::ValidIf:
+                case ErrCxtStepKind::Where:
                     if (exp.node->is(AstNodeKind::StructDecl))
                         msg = formNte(Nte0092, name.c_str());
                     else
                         msg = formNte(Nte0093, name.c_str());
                     exp.locIsToken = true;
                     break;
-                case ErrCxtStepKind::ValidIfx:
+                case ErrCxtStepKind::WhereEach:
                     msg            = formNte(Nte0094, name.c_str());
                     exp.locIsToken = true;
                     break;

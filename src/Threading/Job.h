@@ -39,13 +39,13 @@ struct JobContext : ErrorContext
     void reset()
     {
         baseJob           = nullptr;
-        validIfParameters = nullptr;
+        whereParameters = nullptr;
         result            = ContextResult::Done;
         ErrorContext::reset();
     }
 
     Job*     baseJob           = nullptr;
-    AstNode* validIfParameters = nullptr;
+    AstNode* whereParameters = nullptr;
 
     ContextResult result = ContextResult::Done;
 };

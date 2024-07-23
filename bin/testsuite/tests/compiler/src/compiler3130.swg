@@ -2,14 +2,14 @@ var G = 0
 
 #[Swag.Overload]
 func whatever(x: s32)
-    check @isconstexpr(x)
+    where(each) @isconstexpr(x)
 {
     G += 1
 }
 
 #[Swag.Overload]
 func whatever(x: s32)
-    check !@isconstexpr(x)
+    where(each) !@isconstexpr(x)
 {
     G += 2
 }

@@ -80,13 +80,13 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
 
         // Take care of where/check
         if (overSym->is(SymbolKind::Function) &&
-            !context->node->hasAstFlag(AST_IN_VALIDIF) &&
+            !context->node->hasAstFlag(AST_IN_WHERE) &&
             !context->node->hasAttribute(ATTRIBUTE_MATCH_WHERE_OFF))
         {
             const auto funcDecl = castAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
-            if (funcDecl->validIf)
+            if (funcDecl->whereExpression)
             {
-                SWAG_CHECK(solveValidIf(context, curMatch, funcDecl));
+                SWAG_CHECK(solveWhereExpr(context, curMatch, funcDecl));
                 YIELD();
                 if (curMatch->remove)
                     continue;

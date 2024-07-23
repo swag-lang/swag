@@ -129,7 +129,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     const auto it = context.replaceTypes.find(newNode->token.text);
     if (it != context.replaceTypes.end())
     {
-        // :ForLocationInValidIf
+        // :ForLocationInWhere
         if (it->second.fromNode)
         {
             newNode->allocateIdentifierExtension();
@@ -438,7 +438,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
-    newNode->validIf           = validIf ? validIf->clone(cloneContext) : nullptr;
+    newNode->whereExpression           = whereExpression ? whereExpression->clone(cloneContext) : nullptr;
     newNode->nodeCounts        = nodeCounts;
     newNode->makePointerLambda = makePointerLambda;
 
@@ -856,7 +856,7 @@ AstNode* AstStruct::clone(CloneContext& context)
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->tokenName         = tokenName;
     newNode->content           = content ? content->clone(cloneContext) : nullptr;
-    newNode->validIf           = validIf ? validIf->clone(cloneContext) : nullptr;
+    newNode->whereExpression           = whereExpression ? whereExpression->clone(cloneContext) : nullptr;
     newNode->addAstFlag(AST_FROM_GENERIC);
     newNode->content->removeAstFlag(AST_NO_SEMANTIC);
 

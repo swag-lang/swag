@@ -36,7 +36,7 @@ bool FormatAst::outputFuncReturnType(FormatContext& context, const AstFuncDecl* 
     return true;
 }
 
-bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const AstNode* validIf)
+bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const AstNode* whereExpr)
 {
     bool isMethod = false;
 
@@ -107,12 +107,12 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
     }
 
     // where must be exported
-    if (validIf)
+    if (whereExpr)
     {
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputCompilerExpr(context, validIf));
+        SWAG_CHECK(outputCompilerExpr(context, whereExpr));
         context.indent--;
     }
 
@@ -183,12 +183,12 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
     }
 
     // check block
-    if (funcDecl->validIf)
+    if (funcDecl->whereExpression)
     {
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputCompilerExpr(context, funcDecl->validIf));
+        SWAG_CHECK(outputCompilerExpr(context, funcDecl->whereExpression));
         context.indent--;
     }
 

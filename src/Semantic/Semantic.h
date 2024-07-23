@@ -181,8 +181,8 @@ namespace Semantic
     bool           setUnRef(AstNode* node);
     bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcNode, AstNode* parameters, bool forGenerics);
     bool           setupIdentifierRef(SemanticContext* context, AstNode* node);
-    bool           solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
-    bool           solveValidIf(SemanticContext* context, AstStruct* structDecl);
+    bool           solveWhereExpr(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
+    bool           solveWhereExpr(SemanticContext* context, AstStruct* structDecl);
     bool           storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     bool           waitForStructUserOps(SemanticContext* context, const AstNode* node);
     bool           waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job);
@@ -294,7 +294,7 @@ namespace Semantic
     bool resolveCompilerPrint(SemanticContext* context);
     bool resolveCompilerRun(SemanticContext* context);
     bool resolveCompilerSpecialValue(SemanticContext* context);
-    bool resolveCompilerValidIfExpression(SemanticContext* context);
+    bool resolveCompilerWhereExpression(SemanticContext* context);
     bool resolveCompilerWarning(SemanticContext* context);
     bool resolveConditionalOp(SemanticContext* context);
     bool resolveContinue(SemanticContext* context);

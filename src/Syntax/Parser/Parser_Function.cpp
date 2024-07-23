@@ -685,17 +685,11 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 funcNode->addAstFlag(AST_GENERATED);
                 funcNode->addAttribute(ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
-            case TokenId::CompilerValidIf:
+            case TokenId::CompilerWhere:
                 funcNode->token.text = "__where" + std::to_string(id);
                 funcNode->tokenName  = funcNode->token;
                 funcNode->addAstFlag(AST_GENERATED);
                 funcNode->addAttribute(ATTRIBUTE_MATCH_WHERE_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
-                break;
-            case TokenId::CompilerValidIfx:
-                funcNode->token.text = "__check" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
-                funcNode->addAstFlag(AST_GENERATED);
-                funcNode->addAttribute(ATTRIBUTE_MATCH_CHECK_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             default:
                 break;
@@ -846,7 +840,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         auto            typeExpression  = Ast::newTypeExpression(this, typeNode);
         typeExpression->typeFromLiteral = g_TypeMgr->typeInfoString;
     }
-    else if (typeFuncId == TokenId::CompilerValidIf || typeFuncId == TokenId::CompilerValidIfx)
+    else if (typeFuncId == TokenId::CompilerWhere)
     {
         typeNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED);
         ParserPushScope scoped(this, newScope);
@@ -858,11 +852,11 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     funcNode->typeInfo->computeName();
 
     // 'where' block
-    if (tokenParse.is(TokenId::CompilerValidIf) || tokenParse.is(TokenId::CompilerValidIfx))
+    if (tokenParse.is(TokenId::CompilerWhere))
     {
         ParserPushScope scoped(this, newScope);
         ParserPushFct   scopedFct(this, funcNode);
-        SWAG_CHECK(doCompilerValidIf(funcNode, &funcNode->validIf));
+        SWAG_CHECK(doCompilerWhere(funcNode, &funcNode->whereExpression));
     }
 
     // If we have now a semicolon, then this is an empty function, like a forward decl in c++

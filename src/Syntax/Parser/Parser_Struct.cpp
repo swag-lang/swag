@@ -325,13 +325,12 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
     SWAG_CHECK(eatToken());
 
     // 'where' block
-    if (tokenParse.is(TokenId::CompilerValidIfx))
-        return error(tokenParse.token, toErr(Err0659));
-    if (tokenParse.is(TokenId::CompilerValidIf))
+    if (tokenParse.is(TokenId::CompilerWhere))
     {
         ParserPushScope       scoped(this, newScope);
         ParserPushStructScope scopedStruct(this, newScope);
-        SWAG_CHECK(doCompilerValidIf(structNode, &structNode->validIf));
+        SWAG_CHECK(doCompilerWhere(structNode, &structNode->whereExpression));
+        SWAG_VERIFY(structNode->whereExpression->isNot(AstNodeKind::CompilerWhereEach), error(tokenParse.token, toErr(Err0659)));
     }
 
     // Content of struct

@@ -1063,8 +1063,8 @@ bool Semantic::isMethod(const AstFuncDecl* funcNode)
         funcNode->parent->isNot(AstNodeKind::CompilerAst) &&
         funcNode->parent->isNot(AstNodeKind::CompilerRun) &&
         funcNode->parent->isNot(AstNodeKind::CompilerRunExpression) &&
-        funcNode->parent->isNot(AstNodeKind::CompilerValidIf) &&
-        funcNode->parent->isNot(AstNodeKind::CompilerValidIfx) &&
+        funcNode->parent->isNot(AstNodeKind::CompilerWhere) &&
+        funcNode->parent->isNot(AstNodeKind::CompilerWhereEach) &&
         !funcNode->hasAstFlag(AST_FROM_GENERIC) &&
         !funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
         funcNode->ownerScope->is(ScopeKind::Struct) &&

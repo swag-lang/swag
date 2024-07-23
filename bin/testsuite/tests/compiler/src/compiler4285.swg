@@ -5,7 +5,7 @@ var G = 0
 #[Macro]
 #[Swag.Overload]
 func toto(x: string)
-    check @isconstexpr(x)
+    where(each) @isconstexpr(x)
 {
     G += 1
 
@@ -15,7 +15,7 @@ func toto(x: string)
 
 #[Swag.Overload]
 func toto(x: string)
-    check !@isconstexpr(x)
+    where(each) !@isconstexpr(x)
 {
     G += 2
 }

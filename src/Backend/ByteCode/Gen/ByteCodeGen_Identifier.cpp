@@ -218,7 +218,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRc = reserveRegisterRC(context, resolved);
 
         // Get a parameter from a where block... this is special
-        if (node->isValidIfParam(resolved))
+        if (node->isWhereParam(resolved))
         {
             ByteCodeInstruction* inst;
             if (typeInfo->numRegisters() == 2)

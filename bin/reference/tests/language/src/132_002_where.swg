@@ -125,7 +125,7 @@ Instead of `where`, you can use `check`.
 {
     {
         func div(x, y: s32)->s32
-            check
+            where(each)
             {
                 // Here we use '@isconstexpr'.
                 // If 'y' cannot be evaluated at compile time, then we can do nothing about it.
@@ -151,7 +151,7 @@ Instead of `where`, you can use `check`.
         // A version of 'first' where 'x' is known at compile time.
         #[Swag.Overload]
         func first(x: s32)->s32
-            check @isconstexpr(x)
+            where(each) @isconstexpr(x)
         {
             return 555
         }
@@ -159,7 +159,7 @@ Instead of `where`, you can use `check`.
         // A version of 'first' where 'x' is **not** known at compile time.
         #[Swag.Overload]
         func first(x: s32)->s32
-            check !@isconstexpr(x)
+            where(each) !@isconstexpr(x)
         {
             return 666
         }

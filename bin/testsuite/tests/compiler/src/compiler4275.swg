@@ -4,7 +4,7 @@ var G = 0
 
 //#[Swag.PrintBc]
 func toto(str: string)
-    check
+    where(each)
     {
         if !@isconstexpr(str) do
             return true

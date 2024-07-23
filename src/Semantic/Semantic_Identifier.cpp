@@ -890,7 +890,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
     return true;
 }
 
-bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
+bool Semantic::solveWhereExpr(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
 {
     ScopedLock lk0(funcDecl->funcMutex);
     ScopedLock lk1(funcDecl->mutex);
@@ -904,27 +904,27 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     }
 
     // Execute where/check block
-    const auto expr = funcDecl->validIf->lastChild();
+    const auto expr = funcDecl->whereExpression->lastChild();
 
     // check is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
     // where is evaluated once, so keep it.
-    if (funcDecl->validIf->is(AstNodeKind::CompilerValidIfx))
+    if (funcDecl->whereExpression->is(AstNodeKind::CompilerWhereEach))
         expr->removeAstFlag(AST_COMPUTED_VALUE);
 
     if (!expr->hasFlagComputedValue())
     {
         const auto node            = context->node;
-        context->validIfParameters = oneMatch->oneOverload->callParameters;
+        context->whereParameters = oneMatch->oneOverload->callParameters;
 
         ErrCxtStepKind type;
-        if (funcDecl->validIf->is(AstNodeKind::CompilerValidIfx))
-            type = ErrCxtStepKind::ValidIfx;
+        if (funcDecl->whereExpression->is(AstNodeKind::CompilerWhereEach))
+            type = ErrCxtStepKind::WhereEach;
         else
-            type = ErrCxtStepKind::ValidIf;
+            type = ErrCxtStepKind::Where;
 
         PushErrCxtStep ec(context, node, type, nullptr);
         const auto     result      = executeCompilerNode(context, expr, false);
-        context->validIfParameters = nullptr;
+        context->whereParameters = nullptr;
         if (!result)
             return false;
         YIELD();
@@ -934,7 +934,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     if (!expr->computedValue()->reg.b)
     {
         oneMatch->remove                              = true;
-        oneMatch->oneOverload->symMatchContext.result = MatchResult::ValidIfFailed;
+        oneMatch->oneOverload->symMatchContext.result = MatchResult::WhereFailed;
         return true;
     }
 

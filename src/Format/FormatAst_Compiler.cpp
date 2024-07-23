@@ -176,10 +176,10 @@ bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
         concat->addString("#run");
     else if (node->is(AstNodeKind::CompilerAst))
         concat->addString("#ast");
-    else if (node->is(AstNodeKind::CompilerValidIf))
+    else if (node->is(AstNodeKind::CompilerWhere))
         concat->addString("where");
-    else if (node->is(AstNodeKind::CompilerValidIfx))
-        concat->addString("check");
+    else if (node->is(AstNodeKind::CompilerWhereEach))
+        concat->addString("where(each)");
     concat->addBlank();
 
     const auto front = node->firstChild();

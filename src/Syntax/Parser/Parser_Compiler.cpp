@@ -259,19 +259,28 @@ bool Parser::doCompilerWarning(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
+bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
 {
-    const auto node    = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerValidIf, this, parent);
-    *result            = node;
-    const auto tokenId = tokenParse.token.id;
-    if (tokenId == TokenId::CompilerValidIfx)
-        node->kind = AstNodeKind::CompilerValidIfx;
+    const auto node = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerWhere, this, parent);
+    *result         = node;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
-    node->semanticFct                      = Semantic::resolveCompilerValidIfExpression;
-    SWAG_CHECK(eatToken());
+    node->semanticFct                      = Semantic::resolveCompilerWhereExpression;
     parent->addAstFlag(AST_HAS_SELECT_IF);
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+
+    SWAG_CHECK(eatToken());
+    if (tokenParse.token.is(TokenId::SymLeftParen))
+    {
+        const auto startLoc = tokenParse.token.startLocation;
+        SWAG_CHECK(eatToken());
+        if (tokenParse.token.text == g_LangSpec->name_each)
+            node->kind = AstNodeKind::CompilerWhereEach;
+        else
+            return error(tokenParse.token, formErr(Err0088, tokenParse.token.c_str()));
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[where]] argument"));
+    }
 
     // Not for the 3 special functions
     if (parent->token.text == g_LangSpec->name_opDrop ||
@@ -281,11 +290,11 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
         return error(node, formErr(Err0658, parent->token.c_str()));
     }
 
-    ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_VALIDIF);
+    ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_WHERE);
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
         AstNode* funcNode;
-        SWAG_CHECK(doFuncDecl(node, &funcNode, tokenId));
+        SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerWhere));
 
         const auto idRef           = Ast::newIdentifierRef(funcNode->token.text, this, node);
         const auto identifier      = castAst<AstIdentifier>(idRef->lastChild(), AstNodeKind::Identifier);

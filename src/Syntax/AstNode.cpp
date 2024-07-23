@@ -584,9 +584,9 @@ bool AstNode::isParentOf(const AstNode* child) const
     return false;
 }
 
-bool AstNode::isValidIfParam(const SymbolOverload* overload) const
+bool AstNode::isWhereParam(const SymbolOverload* overload) const
 {
-    if (!hasAstFlag(AST_IN_VALIDIF))
+    if (!hasAstFlag(AST_IN_WHERE))
         return false;
     if (!overload)
         return false;
