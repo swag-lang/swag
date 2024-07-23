@@ -203,7 +203,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)(global|load|include|assert|error|warning|print|import|mixin|macro|placeholder|foreignlib|if|else|elif|do|validif|validifx|scope)\\b"
+          "match": "(#)(global|load|include|assert|error|warning|print|import|mixin|macro|placeholder|foreignlib|if|else|elif|do|scope)\\b"
         }
       ]
     },
@@ -453,7 +453,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "\\,(up|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
+          "match": "\\,(each|up|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
         }
       ]
     }

@@ -1,7 +1,7 @@
 //var G = 0
 
 func append(buf: *void, fmt: string, values: ...)
-    where(each)
+    where,each
     {
         if !@isconstexpr(fmt) do return true
 

@@ -211,7 +211,7 @@ void initErrors()
     SWAG_ERROR(Err0085, "failed [[%s]] constraint                          $ the %s [[%s]] can't be used because of a failed [[%s]] constraint");
     SWAG_ERROR(Err0086, "failed generic instantiation                      $ the variable creation failed due to the generic type [[%s]]");
     SWAG_ERROR(Err0087, "failed semantic                                   $ can't resolve this");
-    SWAG_ERROR(Err0088, "invalid [[where]] mode                            $ [[%s]] is not a valid [[where]] mode $ the only valid mode is [[where(each)]]");
+    SWAG_ERROR(Err0088, nullptr);
     SWAG_ERROR(Err0089, "fetch error                                       $ can't fetch file [[%s]] for module dependency [[%s]]");
     SWAG_ERROR(Err0090, "file delete error                                 $ failed to delete file [[%s]]");
     SWAG_ERROR(Err0091, "file format error                                 $ the file format must be ASCII, UTF-8, or UTF-8-BOM");
@@ -782,7 +782,7 @@ void initErrors()
     SWAG_ERROR(Err0656, "unexpected [[#elif]]                              $ [[#elif]] found without a preceding [[#if]] directive");
     SWAG_ERROR(Err0657, "unexpected [[#else]]                              $ [[#else]] found without a preceding [[#if]] or [[#elif]] directive");
     SWAG_ERROR(Err0658, "unexpected [[where/check]]                        $ a [[where/check]] directive is not allowed on special function [[%s]] $ [[where]] and [[check]] are not valid for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
-    SWAG_ERROR(Err0659, "unexpected [[where(each)]] for struct             $ [[where(each)]] is not allowed for a struct, this is only valid for functions $ consider using a single [[where]] instead");
+    SWAG_ERROR(Err0659, "unexpected [[where,each)]] for struct             $ [[where,each)]] is not allowed for a struct, this is only valid for functions $ consider using a single [[where]] instead");
     SWAG_ERROR(Err0660, "unexpected [[)]]                                  $ symbol [[)]] found without a preceding [[(]]");
     SWAG_ERROR(Err0661, "unexpected [[]]]                                  $ symbol [[]]] found without a preceding [[[]]");
     SWAG_ERROR(Err0662, "unexpected [[const]]                              $ unexpected [[const]] before a lambda parameter name");
@@ -817,7 +817,7 @@ void initErrors()
     SWAG_ERROR(Err0691, "unexpected lambda parameter type                  $ unexpected type $ when declaring lambda parameters, you should not combined inferred and explicit types");
     SWAG_ERROR(Err0692, "unexpected line break in array type declaration   $ the type of the array should be placed on the same line as the array dimensions");
     SWAG_ERROR(Err0693, "unexpected name                                   $ too many [[visit]] alias names (maximum is [[2]], but [[%u]] are provided)");
-    SWAG_ERROR(Err0694, "unexpected operator modifier                      $ the operator modifier [[%s]] can't be applied to [[%s]]");
+    SWAG_ERROR(Err0694, "unexpected instruction modifier                   $ the instruction modifier [[%s]] can't be applied to [[%s]]");
     SWAG_ERROR(Err0695, "unexpected parameters                             $ expected [[{]] here because a compiler %s should not have parameters");
     SWAG_ERROR(Err0696, "unexpected return value                           $ a %s can't return something");
     SWAG_ERROR(Err0697, "unexpected return value                           $ a function with the [[#[Swag.CalleeReturn]]] attribute must not declare a return value");

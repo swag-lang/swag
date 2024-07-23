@@ -272,12 +272,10 @@
 <li><a href="#_130_generic_swg">Generic.swg</a></li>
 <ul>
 <li><a href="#_130_generic_swg__131_001_declaration_swg">Declaration.swg</a></li>
-<li><a href="#_130_generic_swg__132_002_validif_swg">Validif.swg</a></li>
+<li><a href="#_130_generic_swg__132_002_where_swg">Where.swg</a></li>
 <ul>
-<li><a href="#_130_generic_swg__132_002_validif_swg_One_time_evaluation">One time evaluation</a></li>
-<li><a href="#_130_generic_swg__132_002_validif_swg_Multiple_evaluations">Multiple evaluations</a></li>
+<li><a href="#_130_generic_swg__132_002_where_swg_Multiple_evaluations">Multiple evaluations</a></li>
 </ul>
-<li><a href="#_130_generic_swg__133_003_constraint_swg">Constraint.swg</a></li>
 </ul>
 <li><a href="#_140_attributes_swg">Attributes.swg</a></li>
 <ul>
@@ -646,8 +644,8 @@ ref
 <span class="SCmp">#mixin</span>
 <span class="SCmp">#placeholder</span>
 <span class="SCmp">#print</span>
-<span class="SCmp">#validifx</span>
-<span class="SCmp">#validif</span>
+check
+where
 <span class="SCmp">#warning</span>
 <span class="SCmp">#scope</span>
 
@@ -5667,15 +5665,14 @@ ref
     }
 }</span></div>
 
-<h3 id="_130_generic_swg__132_002_validif_swg">Validif.swg</h3><h4 id="_130_generic_swg__132_002_validif_swg_One_time_evaluation">One time evaluation </h4>
-<p>On a function, you can use <span class="code-inline">#validif</span> to check if the usage of the function is correct. </p>
-<p>If the <span class="code-inline">#validif</span> expression returns false, then the function will not be considered for the call. If there's no other overload to match, then the compiler will raise an error. </p>
-<p>The <span class="code-inline">#validif</span> expression is evaluated <b>only once</b>, whatever the call, so it is typically used to check generic parameters. </p>
+<h3 id="_130_generic_swg__132_002_where_swg">Where.swg</h3><p>#Single evaluation On a function, you can use <span class="code-inline">where</span> to check if the usage of the function is correct. </p>
+<p>If the <span class="code-inline">where</span> expression returns false, then the function will not be considered for the call. If there's no other overload to match, then the compiler will raise an error. </p>
+<p>The <span class="code-inline">where</span> expression is evaluated <b>only once</b>, whatever the call, so it is typically used to apply a <b>constraint</b> on generic parameters. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Here we validate the function only if the generic type is `s32` or `s64`.</span>
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x: <span class="SCst">T</span>...)-&gt;<span class="SCst">T</span>
-        <span class="SCmp">#validif</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span>
+        where <span class="SCst">T</span> == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">s64</span>
     {
         <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>
         <span class="SLgc">visit</span> it: x <span class="SLgc">do</span>
@@ -5692,15 +5689,15 @@ ref
     <span class="SCmt">// But the following would generate an error because the type is `f32`.</span>
     <span class="SCmt">// So there's no match possible for that type.</span>
 
-    <span class="SCmt">// var res1 = sum'f32(1, 2)</span>
+    <span class="SCmt">//var res1 = sum'f32(1, 2)</span>
 }</span></div>
-<p>You can use <span class="code-inline">#validif</span> to make a kind of a generic specialisation. </p>
+<p>You can use <span class="code-inline">where</span> to make a kind of a generic specialisation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// s32 version</span>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">isNull</span>(x: <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>
-        <span class="SCmp">#validif</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span>
+        where <span class="SCst">T</span> == <span class="STpe">s32</span>
     {
         <span class="SLgc">return</span> x == <span class="SNum">0</span>
     }
@@ -5708,7 +5705,7 @@ ref
     <span class="SCmt">// f32/f64 version</span>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">isNull</span>(x: <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>
-        <span class="SCmp">#validif</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">f32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">f64</span>
+        where <span class="SCst">T</span> == <span class="STpe">f32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">f64</span>
     {
         <span class="SLgc">return</span> <span class="SItr">@abs</span>(x) &lt; <span class="SNum">0.01</span>
     }
@@ -5716,11 +5713,11 @@ ref
     <span class="SItr">@assert</span>(<span class="SFct">isNull</span>(<span class="SNum">0</span>'<span class="STpe">s32</span>))
     <span class="SItr">@assert</span>(<span class="SFct">isNull</span>(<span class="SNum">0.001</span>'<span class="STpe">f32</span>))
 }</span></div>
-<p>Instead of a single expression, <span class="code-inline">#validif</span> can be followed by a block that returns a <span class="code-inline">bool</span>. </p>
+<p>Instead of a single expression, <span class="code-inline">where</span> can be followed by a block that needs to return a <span class="code-inline">bool</span> value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x: <span class="SCst">T</span>...)-&gt;<span class="SCst">T</span>
-        <span class="SCmp">#validif</span>
+        where
         {
             <span class="SLgc">if</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span> <span class="SLgc">do</span>
                 <span class="SLgc">return</span> <span class="SKwd">true</span>
@@ -5737,7 +5734,7 @@ ref
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x, y: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>
-        <span class="SCmp">#validif</span>
+        where
         {
             <span class="SLgc">if</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span> <span class="SLgc">do</span>
                 <span class="SLgc">return</span> <span class="SKwd">true</span>
@@ -5752,11 +5749,11 @@ ref
 
     <span class="SCmt">// var x = sum'f32(1, 2)</span>
 }</span></div>
-<p><span class="code-inline">#validif</span> can also be used on a generic struct. Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures. </p>
+<p><span class="code-inline">where</span> can also be used on a generic struct. Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span>(<span class="SCst">T</span>) <span class="SCst">Point</span>
-        <span class="SCmp">#validif</span> <span class="SCst">T</span> == <span class="STpe">f32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">f64</span>
+        where <span class="SCst">T</span> == <span class="STpe">f32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">f64</span>
     {
         x, y: <span class="SCst">T</span>
     }
@@ -5767,13 +5764,13 @@ ref
     <span class="SCmt">// Error.</span>
     <span class="SCmt">//var v: Point's32</span>
 }</span></div>
-<h4 id="_130_generic_swg__132_002_validif_swg_Multiple_evaluations">Multiple evaluations </h4>
-<p>Instead of <span class="code-inline">#validif</span>, you can use <span class="code-inline">#validifx</span>. <span class="code-inline">#validifx</span> is evaluated for <b>each</b> call, so it can be used to check parameters, as long as they can be <b>evaluated at compile time</b>. </p>
+<h4 id="_130_generic_swg__132_002_where_swg_Multiple_evaluations">Multiple evaluations </h4>
+<p>You can add the specific modifier <span class="code-inline">each</span> to <span class="code-inline">where</span>.  The expression will then not only be called once per instance, but will be evaluated for <b>each</b> call. So it can be used to check call parameters, as long as they can be <b>evaluated at compile time</b>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     {
         <span class="SKwd">func</span> <span class="SFct">div</span>(x, y: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-            <span class="SCmp">#validifx</span>
+            where,each
             {
                 <span class="SCmt">// Here we use '@isconstexpr'.</span>
                 <span class="SCmt">// If 'y' cannot be evaluated at compile time, then we can do nothing about it.</span>
@@ -5799,7 +5796,7 @@ ref
         <span class="SCmt">// A version of 'first' where 'x' is known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-            <span class="SCmp">#validifx</span> <span class="SItr">@isconstexpr</span>(x)
+            where,each <span class="SItr">@isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">555</span>
         }
@@ -5807,7 +5804,7 @@ ref
         <span class="SCmt">// A version of 'first' where 'x' is **not** known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-            <span class="SCmp">#validifx</span> !<span class="SItr">@isconstexpr</span>(x)
+            where,each !<span class="SItr">@isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">666</span>
         }
@@ -5819,63 +5816,6 @@ ref
         <span class="SKwd">var</span> a: <span class="STpe">s32</span>
         <span class="SItr">@assert</span>(<span class="SFct">first</span>(a) == <span class="SNum">666</span>)
     }
-}</span></div>
-
-<h3 id="_130_generic_swg__133_003_constraint_swg">Constraint.swg</h3><p>Swag provides also a simple way of checking generic parameters, without the need of <span class="code-inline">#validif</span>. A type constraint can be added when declaring a generic type. If a function or a struct is instantiated with a type that does not conform to the constraint, then an error will be raised. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SCmt">// The type constraint is a compile time function (with #[Swag.ConstExpr]) that should return a bool.</span>
-    <span class="SAtr">#[Swag.ConstExpr]</span>
-    <span class="SKwd">func</span> <span class="SFct">isS32</span>(t: <span class="STpe">typeinfo</span>) =&gt; t == <span class="STpe">s32</span>
-
-    <span class="SCmt">// Here we check that the function generic type is 's32' by calling 'isS32'.</span>
-    <span class="SKwd">func</span>(<span class="SKwd">var</span> <span class="SCst">T</span>: <span class="SFct">isS32</span>(<span class="SCst">T</span>)) <span class="SFct">sum</span>(x: <span class="SCst">T</span>...)-&gt;<span class="SCst">T</span>
-    {
-        <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>
-        <span class="SLgc">visit</span> it: x <span class="SLgc">do</span>
-            total += it
-        <span class="SLgc">return</span> total
-    }
-
-    <span class="SCmt">// This is ok.</span>
-    <span class="SKwd">let</span> res1 = <span class="SFct">sum</span>'<span class="STpe">s32</span>(<span class="SNum">1</span>, <span class="SNum">2</span>)
-    <span class="SItr">@assert</span>(res1 == <span class="SNum">3</span>)
-
-    <span class="SCmt">// But the following would generate an error because the type is 'f32'.</span>
-    <span class="SCmt">// let res1 = sum'f32(1, 2)</span>
-}</span></div>
-<p>The type constraint can be any compile time expression, as long as the resulting type is <span class="code-inline">bool</span>. So you could do something like this. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SAtr">#[Swag.ConstExpr]</span>
-    <span class="SKwd">func</span> <span class="SFct">isS32</span>(t: <span class="STpe">typeinfo</span>) =&gt; t == <span class="STpe">s32</span>
-    <span class="SAtr">#[Swag.ConstExpr]</span>
-    <span class="SKwd">func</span> <span class="SFct">isBool</span>(t: <span class="STpe">typeinfo</span>) =&gt; t == <span class="STpe">bool</span>
-
-    <span class="SCmt">// Here we check that the function generic type is 's32' or 'bool'.</span>
-    <span class="SKwd">func</span>(<span class="SKwd">var</span> <span class="SCst">T</span>: <span class="SFct">isS32</span>(<span class="SCst">T</span>) <span class="SLgc">or</span> <span class="SFct">isBool</span>(<span class="SCst">T</span>)) <span class="SFct">myFunc</span>(x: <span class="SCst">T</span>) =&gt; x
-
-    <span class="SCmt">// This is ok.</span>
-    <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">5</span>'<span class="STpe">s32</span>) == <span class="SNum">5</span>)
-    <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SKwd">true</span>) == <span class="SKwd">true</span>)
-    <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SKwd">false</span>) == <span class="SKwd">false</span>)
-}</span></div>
-<p>Works also for structs. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SAtr">#[Swag.ConstExpr]</span>
-    <span class="SKwd">func</span> <span class="SFct">isFloat</span>(t: <span class="STpe">typeinfo</span>) =&gt; t == <span class="STpe">f32</span> <span class="SLgc">or</span> t == <span class="STpe">f64</span>
-
-    <span class="SKwd">struct</span>(<span class="SKwd">var</span> <span class="SCst">T</span>: <span class="SFct">isFloat</span>(<span class="SCst">T</span>)) <span class="SCst">Point</span>
-    {
-        x, y: <span class="SCst">T</span>
-    }
-
-    <span class="SKwd">var</span> pt:  <span class="SCst">Point</span>'<span class="STpe">f32</span>
-    <span class="SKwd">var</span> pt1: <span class="SCst">Point</span>'<span class="STpe">f64</span>
-
-    <span class="SCmt">// This will generate a type constraint error.</span>
-    <span class="SCmt">//var pt: Point's32</span>
 }</span></div>
 
 <h2 id="_140_attributes_swg">Attributes.swg</h2><p>Attributes are tags associated with functions, structures etc... </p>
@@ -7517,7 +7457,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation_md__231_003_Pages_md">Pages.md</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 15-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.36.0</div>
+Generated on 23-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.37.0</div>
 </div>
 </div>
 </div>

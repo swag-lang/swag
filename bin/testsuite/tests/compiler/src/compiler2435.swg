@@ -1,5 +1,5 @@
 func append(v: ...)
-    where(each)
+    where,each
     {
         @assert(@countof(v) == 3)
         return true

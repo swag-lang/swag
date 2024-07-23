@@ -16961,7 +16961,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wglShareLists</span>(hRc0, hRc1: <span class="SCst"><a href="#Ogl_HGLRC">HGLRC</a></span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 15-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.36.0</div>
+Generated on 23-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.37.0</div>
 </div>
 </div>
 </div>

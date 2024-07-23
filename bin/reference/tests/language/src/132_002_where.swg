@@ -118,14 +118,14 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
 
 /**
 # Multiple evaluations
-Instead of `where`, you can use `check`. 
-`check` is not called once per instance, but is evaluated for **each** call, so it can be used to check parameters, as long as they can be **evaluated at compile time**.
+You can add the specific modifier `each` to `where`. 
+The expression will then not only be called once per instance, but will be evaluated for **each** call. So it can be used to check call parameters, as long as they can be **evaluated at compile time**.
 */
 #test
 {
     {
         func div(x, y: s32)->s32
-            where(each)
+            where,each
             {
                 // Here we use '@isconstexpr'.
                 // If 'y' cannot be evaluated at compile time, then we can do nothing about it.
@@ -151,7 +151,7 @@ Instead of `where`, you can use `check`.
         // A version of 'first' where 'x' is known at compile time.
         #[Swag.Overload]
         func first(x: s32)->s32
-            where(each) @isconstexpr(x)
+            where,each @isconstexpr(x)
         {
             return 555
         }
@@ -159,7 +159,7 @@ Instead of `where`, you can use `check`.
         // A version of 'first' where 'x' is **not** known at compile time.
         #[Swag.Overload]
         func first(x: s32)->s32
-            where(each) !@isconstexpr(x)
+            where,each !@isconstexpr(x)
         {
             return 666
         }

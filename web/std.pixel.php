@@ -3033,7 +3033,7 @@
 <span id="Pixel_FontFamily_createTypeFace"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FontFamily.</span><span class="api-item-title-strong">createTypeFace</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\fontfamily.win32.swg#L110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\text\fontfamily.win32.swg#L112" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10200,7 +10200,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 15-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.36.0</div>
+Generated on 23-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.37.0</div>
 </div>
 </div>
 </div>

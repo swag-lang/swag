@@ -1,5 +1,5 @@
 func print(f: f32)
-    where(each)
+    where,each
     {
         @assert(@isconstexpr(f))
         return true

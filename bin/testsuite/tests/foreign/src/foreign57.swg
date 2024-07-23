@@ -1,6 +1,6 @@
 #[Swag.Macro]
 public func toto57(x: string)
-    where(each)
+    where,each
     {
         if !@isconstexpr(x) do
             @compilererror("toto", #location)

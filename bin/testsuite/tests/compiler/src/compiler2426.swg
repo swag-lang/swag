@@ -1,7 +1,7 @@
 var G = 0's64
 
 func print(f: string)
-    where(each)
+    where,each
     {
         @assert(@isconstexpr(f))
         @assert(f == "tt()" or f == "tt1()")

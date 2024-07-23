@@ -270,17 +270,12 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
     SWAG_CHECK(eatToken());
-    if (tokenParse.token.is(TokenId::SymLeftParen))
-    {
-        const auto startLoc = tokenParse.token.startLocation;
-        SWAG_CHECK(eatToken());
-        if (tokenParse.token.text == g_LangSpec->name_each)
-            node->kind = AstNodeKind::CompilerWhereEach;
-        else
-            return error(tokenParse.token, formErr(Err0088, tokenParse.token.c_str()));
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[where]] argument"));
-    }
+
+    // Each mode
+    ModifierFlags mdfFlags = 0;
+    SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags, node));
+    if (mdfFlags.has(MODIFIER_EACH))
+        node->kind = AstNodeKind::CompilerWhereEach;
 
     // Not for the 3 special functions
     if (parent->token.text == g_LangSpec->name_opDrop ||

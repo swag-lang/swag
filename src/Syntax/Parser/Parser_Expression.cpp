@@ -573,6 +573,22 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
     {
         SWAG_CHECK(eatToken());
 
+        if (tokenParse.token.text == g_LangSpec->name_each)
+        {
+            switch (opId)
+            {
+                case TokenId::CompilerWhere:
+                    break;
+                default:
+                    return error(tokenParse.token, formErr(Err0694, tokenParse.token.c_str(), forNode.c_str()));
+            }
+
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_EACH), error(tokenParse.token, formErr(Err0070, tokenParse.token.c_str())));
+            mdfFlags.add(MODIFIER_EACH);
+            SWAG_CHECK(eatToken());
+            continue;            
+        }
+
         if (tokenParse.token.text == g_LangSpec->name_up)
         {
             switch (opId)
