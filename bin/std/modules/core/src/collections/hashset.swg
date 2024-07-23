@@ -208,7 +208,7 @@ impl HashSet
     // Add a new element.
     #[Discardable, Overload]
     mtd add(key: K)->*HashSetEntry
-        #validif Reflection.canCopy(@typeof(K))
+        where Reflection.canCopy(@typeof(K))
     {
         grow()
 
@@ -267,7 +267,7 @@ impl HashSet
     // Add a new element.
     #[Discardable]
     mtd emplaceInternal(hashVal: u32, key: &K)->*HashSetEntry
-        #validif Reflection.canCopy(@typeof(K))
+        where Reflection.canCopy(@typeof(K))
     {
         grow()
 

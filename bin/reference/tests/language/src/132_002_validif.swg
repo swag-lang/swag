@@ -1,17 +1,17 @@
 /**
 # One time evaluation
-On a function, you can use `#validif` to check if the usage of the function is correct.
+On a function, you can use `where` to check if the usage of the function is correct.
 
-If the `#validif` expression returns false, then the function will not be considered for the call. If there's no other overload to match, then the compiler will raise an error.
+If the `where` expression returns false, then the function will not be considered for the call. If there's no other overload to match, then the compiler will raise an error.
 
-The `#validif` expression is evaluated **only once**, whatever the call, so it is typically used to check generic parameters.
+The `where` expression is evaluated **only once**, whatever the call, so it is typically used to apply a **constraint** on generic parameters.
 */
 
 #test
 {
     // Here we validate the function only if the generic type is `s32` or `s64`.
     func(T) sum(x: T...)->T
-        #validif @typeof(T) == s32 or @typeof(T) == s64
+        where T == s32 or T == s64
     {
         var total = 0'T
         visit it: x do
@@ -28,18 +28,18 @@ The `#validif` expression is evaluated **only once**, whatever the call, so it i
     // But the following would generate an error because the type is `f32`.
     // So there's no match possible for that type.
 
-    // var res1 = sum'f32(1, 2)
+    //var res1 = sum'f32(1, 2)
 }
 
 /**
-You can use `#validif` to make a kind of a generic specialisation.
+You can use `where` to make a kind of a generic specialisation.
 */
 #test
 {
     // s32 version
     #[Swag.Overload]
     func(T) isNull(x: T)->bool
-        #validif @typeof(T) == s32
+        where T == s32
     {
         return x == 0
     }
@@ -47,7 +47,7 @@ You can use `#validif` to make a kind of a generic specialisation.
     // f32/f64 version
     #[Swag.Overload]
     func(T) isNull(x: T)->bool
-        #validif @typeof(T) == f32 or @typeof(T) == f64
+        where T == f32 or T == f64
     {
         return @abs(x) < 0.01
     }
@@ -57,12 +57,12 @@ You can use `#validif` to make a kind of a generic specialisation.
 }
 
 /**
-Instead of a single expression, `#validif` can be followed by a block that returns a `bool`.
+Instead of a single expression, `where` can be followed by a block that needs to return a `bool` value.
 */
 #test
 {
     func(T) sum(x: T...)->T
-        #validif
+        where
         {
             if @typeof(T) == s32 or @typeof(T) == s64 do
                 return true
@@ -82,7 +82,7 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
 #test
 {
     func(T) sum(x, y: T)->T
-        #validif
+        where
         {
             if @typeof(T) == s32 or @typeof(T) == s64 do
                 return true
@@ -99,12 +99,12 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
 }
 
 /**
-`#validif` can also be used on a generic struct. Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures.
+`where` can also be used on a generic struct. Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures.
 */
 #test
 {
     struct(T) Point
-        #validif T == f32 or T == f64
+        where T == f32 or T == f64
     {
         x, y: T
     }
@@ -118,7 +118,7 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
 
 /**
 # Multiple evaluations
-Instead of `#validif`, you can use `#validifx`. `#validifx` is evaluated for **each** call, so it can be used to check parameters, as long as they can be **evaluated at compile time**.
+Instead of `where`, you can use `#validifx`. `#validifx` is evaluated for **each** call, so it can be used to check parameters, as long as they can be **evaluated at compile time**.
 */
 #test
 {

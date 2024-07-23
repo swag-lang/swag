@@ -1,5 +1,5 @@
 func toto(f: f32)
-#validif
+where
 {
     return true
 }

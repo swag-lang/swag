@@ -807,7 +807,7 @@ bool Semantic::solveValidIf(SemanticContext* context, AstStruct* structDecl)
 {
     ScopedLock lk1(structDecl->mutex);
 
-    // Execute #validif/#validifx block
+    // Execute where/#validifx block
     const auto expr = structDecl->validIf->lastChild();
 
     if (!expr->hasFlagComputedValue())
@@ -853,7 +853,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
     SWAG_ASSERT(typeInfo->declNode);
 
-    // #validif
+    // where
     if (node->validIf && !typeInfo->isGeneric())
     {
         SWAG_CHECK(solveValidIf(context, node));

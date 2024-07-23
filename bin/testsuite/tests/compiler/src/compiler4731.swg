@@ -6,6 +6,6 @@ func titi4731()->bool
 }
 
 public func toto4731()
-    #validif titi4731()
+    where titi4731()
 {
 }

@@ -99,7 +99,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         return true;
     }
 
-    // #validif must be exported
+    // where must be exported
     if (node->validIf)
     {
         concat->addEol();

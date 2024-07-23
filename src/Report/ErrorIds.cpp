@@ -781,8 +781,8 @@ void initErrors()
     SWAG_ERROR(Err0655, "unauthorized function overload                    $ a function with the same name [[%s]] has already been declared $ if you want to declare an overload, mark all functions with [[#[Swag.Overload]]]");
     SWAG_ERROR(Err0656, "unexpected [[#elif]]                              $ [[#elif]] found without a preceding [[#if]] directive");
     SWAG_ERROR(Err0657, "unexpected [[#else]]                              $ [[#else]] found without a preceding [[#if]] or [[#elif]] directive");
-    SWAG_ERROR(Err0658, "unexpected [[#validif/#validifx]]                 $ the [[#validif/#validifx]] directive is not allowed on special function [[%s]] $ [[#validif]] and [[#validifx]] are not valid for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
-    SWAG_ERROR(Err0659, "unexpected [[#validifx]] in struct                $ [[#validifx]] is not allowed for a struct, this is only valid for functions $ consider using [[#validif]] instead");
+    SWAG_ERROR(Err0658, "unexpected [[where/#validifx]]                 $ the [[where/#validifx]] directive is not allowed on special function [[%s]] $ [[where]] and [[#validifx]] are not valid for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
+    SWAG_ERROR(Err0659, "unexpected [[#validifx]] in struct                $ [[#validifx]] is not allowed for a struct, this is only valid for functions $ consider using [[where]] instead");
     SWAG_ERROR(Err0660, "unexpected [[)]]                                  $ symbol [[)]] found without a preceding [[(]]");
     SWAG_ERROR(Err0661, "unexpected [[]]]                                  $ symbol [[]]] found without a preceding [[[]]");
     SWAG_ERROR(Err0662, "unexpected [[const]]                              $ unexpected [[const]] before a lambda parameter name");
@@ -979,8 +979,8 @@ void initErrors()
     SWAG_ERROR(Nte0089, "missing %s of type [[%s]]");
     SWAG_ERROR(Nte0090, "missing parameter [[%s]] of type [[%s]]");
     SWAG_ERROR(Nte0091, "occurred during compile-time evaluation");
-    SWAG_ERROR(Nte0092, "occurred during the [[#validif]] check of struct [[%s]]");
-    SWAG_ERROR(Nte0093, "occurred during the [[#validif]] check of the call to [[%s]]");
+    SWAG_ERROR(Nte0092, "occurred during the [[where]] check of struct [[%s]]");
+    SWAG_ERROR(Nte0093, "occurred during the [[where]] check of the call to [[%s]]");
     SWAG_ERROR(Nte0094, "occurred during the [[#validifx]] check of the call to [[%s]]");
     SWAG_ERROR(Nte0095, "occurred during the generic instantiation of [[%s]]");
     SWAG_ERROR(Nte0096, "occurred during the inline expansion of [[%s]]");

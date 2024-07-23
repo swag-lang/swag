@@ -1,6 +1,6 @@
 #global testerror "Err0085"
 
-func toto() #validif false
+func toto() where false
 {
     @assert(false)
 }

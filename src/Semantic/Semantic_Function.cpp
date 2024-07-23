@@ -385,7 +385,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         }
     }
 
-    // Content semantic can have been disabled (#validif). In that case, we're not done yet, so
+    // Content semantic can have been disabled (where). In that case, we're not done yet, so
     // do not set the FULL_RESOLVE flag and do not generate bytecode
     if (funcNode->content && funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
     {

@@ -1,7 +1,7 @@
 #global testerror "toto"
 
 struct(T) Point
-    #validif
+    where
     {
         if T != bool do
             @compilererror("toto", #location)

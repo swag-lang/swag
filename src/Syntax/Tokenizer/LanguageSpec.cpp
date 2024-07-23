@@ -309,7 +309,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#if", TokenId::CompilerIf);
     keywords.add("#else", TokenId::CompilerElse);
     keywords.add("#elif", TokenId::CompilerElseIf);
-    keywords.add("#validif", TokenId::CompilerValidIf);
+    keywords.add("where", TokenId::CompilerValidIf);
     keywords.add("#validifx", TokenId::CompilerValidIfx);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);

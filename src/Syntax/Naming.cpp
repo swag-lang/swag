@@ -529,7 +529,7 @@ Utf8 Naming::funcToName(const AstFuncDecl* node)
     if (node->hasAttribute(ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC))
         return "[[#run]] block";
     if (node->hasAttribute(ATTRIBUTE_MATCH_VALIDIF_FUNC))
-        return "[[#validif]] block";
+        return "[[where]] block";
     if (node->hasAttribute(ATTRIBUTE_MATCH_VALIDIFX_FUNC))
         return "[[#validifx]] block";
 

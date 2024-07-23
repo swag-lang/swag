@@ -4,7 +4,7 @@ struct V {}
 
 //#[Swag.Macro]
 func toto(x: V)
-    #validif
+    where
     {
         var y = x
         @print(y)

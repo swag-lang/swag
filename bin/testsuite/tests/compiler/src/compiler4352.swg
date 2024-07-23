@@ -1,7 +1,7 @@
 //#global testerror "Err0017"
 
 func(T) add(x, y: T)->T
-    //#validif cast(bool) (@typeof(T).flags & .Integer)
+    //where cast(bool) (@typeof(T).flags & .Integer)
 {
     return x + y
 }

@@ -78,7 +78,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
         const auto over     = curMatch->symbolOverload;
         const auto overSym  = over->symbol;
 
-        // Take care of #validif/#validifx
+        // Take care of where/#validifx
         if (overSym->is(SymbolKind::Function) &&
             !context->node->hasAstFlag(AST_IN_VALIDIF) &&
             !context->node->hasAttribute(ATTRIBUTE_MATCH_VALIDIF_OFF))

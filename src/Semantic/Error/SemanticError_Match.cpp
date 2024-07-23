@@ -52,7 +52,7 @@ namespace
         switch (result)
         {
             case MatchResult::ValidIfFailed:
-                note = Diagnostic::note(node, node->token, "all [[#validif]] have failed");
+                note = Diagnostic::note(node, node->token, "all [[where]] have failed");
                 break;
             case MatchResult::TooManyArguments:
                 note = Diagnostic::note(node, node->token, "too many arguments");

@@ -1,7 +1,7 @@
 #global testerror "Err0550"
 
 func(T, N: u32) toto()
-#validif
+where
 {
     #assert N > 0 and N <= 4, "N is out of range"
     return true

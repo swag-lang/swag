@@ -13,7 +13,7 @@ impl BB
 {
     //#[Swag.compileif(@typeof(T) != AA)]
     func opIndexAffect(using self, index: u64, value: T)
-        #validif @typeof(T) != AA
+        where @typeof(T) != AA
     {
         var x: T
         x = value

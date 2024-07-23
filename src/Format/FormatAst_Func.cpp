@@ -106,7 +106,7 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
         concat->addString("assume");
     }
 
-    // #validif must be exported
+    // where must be exported
     if (validIf)
     {
         concat->addEol();

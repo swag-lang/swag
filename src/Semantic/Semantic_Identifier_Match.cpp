@@ -1698,7 +1698,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
         matches.clear();
     }
 
-    // All choices were removed because of #validif
+    // All choices were removed because of where
     /////////////////////////////////////////////////////////////////////
     if (genericMatches.empty() && !genericMatchesSI.empty() && matches.empty() && prevMatchesCount)
     {
@@ -1707,7 +1707,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
         return SemanticError::cannotMatchIdentifierError(context, tryMatches, node);
     }
 
-    // Multi instantiation in case of #validif
+    // Multi instantiation in case of where
     /////////////////////////////////////////////////////////////////////
     if (!genericMatchesSI.empty() && matches.empty() && !prevMatchesCount)
     {

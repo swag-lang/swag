@@ -1,12 +1,12 @@
 #[Swag.Inline]
 #[Swag.Overload]
-func(T) toto() #validif true
+func(T) toto() where true
 {
 }
 
 #[Swag.Inline]
 #[Swag.Overload]
-func(T) toto() #validif false
+func(T) toto() where false
 {
 }
 

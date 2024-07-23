@@ -903,11 +903,11 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         return true;
     }
 
-    // Execute #validif/#validifx block
+    // Execute where/#validifx block
     const auto expr = funcDecl->validIf->lastChild();
 
     // #validifx is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
-    // #validif is evaluated once, so keep it.
+    // where is evaluated once, so keep it.
     if (funcDecl->validIf->is(AstNodeKind::CompilerValidIfx))
         expr->removeAstFlag(AST_COMPUTED_VALUE);
 
@@ -943,7 +943,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         funcDecl->content->removeAstFlag(AST_NO_SEMANTIC);
 
         // Need to restart semantic on instantiated function and on its content,
-        // because the #validif has passed
+        // because the where has passed
         // It's safe to create a job with the content as it has been fully evaluated.
         // It's NOT safe for the function itself as the job that deals with it can be
         // still running

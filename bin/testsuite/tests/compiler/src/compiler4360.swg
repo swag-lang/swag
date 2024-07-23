@@ -1,7 +1,7 @@
 #global testerror "Err0085"
 
 struct(T) Point
-    #validif T == bool
+    where T == bool
 {
 }
 

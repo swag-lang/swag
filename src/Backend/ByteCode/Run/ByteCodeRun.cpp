@@ -4471,7 +4471,7 @@ namespace
         // Get the correct source file to raise the error in the correct context
         //
         // If we have an expansion, and the first expansion requests test error, then raise
-        // in its context to dismiss the error (like an error during a #validif for example)
+        // in its context to dismiss the error (like an error during a where for example)
         if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->token.sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
             err->contextFile = runContext->callerContext->errCxtSteps[0].node->token.sourceFile;
         else if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->token.sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING))

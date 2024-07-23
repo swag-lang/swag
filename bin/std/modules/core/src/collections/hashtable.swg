@@ -253,7 +253,7 @@ impl HashTable
     // If the key already exists, then the value will be replaced if 'updateValue' is true.
     #[Discardable, Overload]
     mtd add(key: K, value: V, updateValue = true)->*HashTableEntry
-        #validif Reflection.canCopy(@typeof(K)) and Reflection.canCopy(@typeof(V))
+        where Reflection.canCopy(@typeof(K)) and Reflection.canCopy(@typeof(V))
     {
         grow()
 
@@ -290,7 +290,7 @@ impl HashTable
     // If the key already exists, then the value will be replaced if 'updateValue' is true.
     #[Discardable, Overload]
     mtd add(key: K, value: &&V, updateValue = true)->*HashTableEntry
-        #validif Reflection.canCopy(@typeof(K))
+        where Reflection.canCopy(@typeof(K))
     {
         grow()
 
@@ -326,7 +326,7 @@ impl HashTable
     // Use with care !
     #[Discardable]
     mtd emplaceInternal(hashVal: u32, key: &K, value: &V)->*HashTableEntry
-        #validif Reflection.canCopy(@typeof(K)) and Reflection.canCopy(@typeof(V))
+        where Reflection.canCopy(@typeof(K)) and Reflection.canCopy(@typeof(V))
     {
         grow()
 

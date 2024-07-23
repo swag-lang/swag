@@ -5,7 +5,7 @@ struct(T) AA
 
 impl AA
 {
-    func toto() #validif @typeof(T) == @typeof(s32)
+    func toto() where @typeof(T) == @typeof(s32)
     {
         #assert @typeof(T) == s32
     }

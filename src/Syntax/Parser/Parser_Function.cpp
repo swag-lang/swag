@@ -857,7 +857,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
     funcNode->typeInfo->computeName();
 
-    // '#validif' block
+    // 'where' block
     if (tokenParse.is(TokenId::CompilerValidIf) || tokenParse.is(TokenId::CompilerValidIfx))
     {
         ParserPushScope scoped(this, newScope);

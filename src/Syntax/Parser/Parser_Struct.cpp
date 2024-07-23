@@ -324,7 +324,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
     SWAG_CHECK(eatToken());
 
-    // '#validif' block
+    // 'where' block
     if (tokenParse.is(TokenId::CompilerValidIfx))
         return error(tokenParse.token, toErr(Err0659));
     if (tokenParse.is(TokenId::CompilerValidIf))

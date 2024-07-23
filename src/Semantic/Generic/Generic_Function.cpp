@@ -157,8 +157,8 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     newFunc->originalGeneric  = funcNode;
     newFunc->requestedGeneric = node;
 
-    // If this is for testing a #validif match, we must not evaluate the function content until the
-    // #validif has passed
+    // If this is for testing a where match, we must not evaluate the function content until the
+    // where has passed
     if (validif)
         newFunc->content->addAstFlag(AST_NO_SEMANTIC);
     else

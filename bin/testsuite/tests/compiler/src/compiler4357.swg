@@ -1,4 +1,4 @@
 struct(T) Point
-    #validif T == s32
+    where T == s32
 {
 }

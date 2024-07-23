@@ -552,7 +552,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
     // Need to wait for user function full semantic resolve
     if (typeInfoStruct->opUserInitFct)
     {
-        // Content must have been solved ! #validif pb
+        // Content must have been solved ! where pb
         SWAG_ASSERT(!typeInfoStruct->opUserInitFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         askForByteCode(context->baseJob, typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
@@ -831,7 +831,7 @@ bool ByteCodeGen::generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStru
     bool needDrop = false;
     if (typeInfoStruct->opUserDropFct)
     {
-        // Content must have been solved ! #validif pb
+        // Content must have been solved ! where pb
         SWAG_ASSERT(!typeInfoStruct->opUserDropFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needDrop = true;
@@ -943,7 +943,7 @@ bool ByteCodeGen::generateStructOpPostCopy(ByteCodeGenContext* context, TypeInfo
     bool needPostCopy = false;
     if (typeInfoStruct->opUserPostCopyFct)
     {
-        // Content must have been solved ! #validif pb
+        // Content must have been solved ! where pb
         SWAG_ASSERT(!typeInfoStruct->opUserPostCopyFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needPostCopy = true;
@@ -1053,7 +1053,7 @@ bool ByteCodeGen::generateStructOpPostMove(ByteCodeGenContext* context, TypeInfo
     bool needPostMove = false;
     if (typeInfoStruct->opUserPostMoveFct)
     {
-        // Content must have been solved ! #validif pb
+        // Content must have been solved ! where pb
         SWAG_ASSERT(!typeInfoStruct->opUserPostMoveFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needPostMove = true;

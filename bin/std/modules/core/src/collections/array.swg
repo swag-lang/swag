@@ -86,7 +86,7 @@ impl Array
 
     #[Inline]
     mtd opIndexAffect(index: u64, value: T)
-        #validif Reflection.canCopy(T)
+        where Reflection.canCopy(T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
         buffer[index] = value
@@ -101,7 +101,7 @@ impl Array
 
     // Initializes an Array that contains values copied from the specified array
     mtd opAffect(arr: const [..] T)
-        #validif Reflection.canCopy(T)
+        where Reflection.canCopy(T)
     {
         clear()
         var countof = @countof(arr)
@@ -336,7 +336,7 @@ impl Array
 
     // Add a copy of one element at the end of the array
     mtd addOnce(value: T)
-        #validif Reflection.canCopy(T)
+        where Reflection.canCopy(T)
     {
         if contains(value) do
             return
@@ -348,7 +348,7 @@ impl Array
     // Add a copy of one element at the end of the array
     #[Overload]
     mtd add(value: T)
-        #validif Reflection.canCopy(T)
+        where Reflection.canCopy(T)
     {
         grow(count + 1)
         buffer[count] =,nodrop value
@@ -389,7 +389,7 @@ impl Array
     // Order is preserved.
     #[Overload]
     mtd insertAt(index: u64, value: T)
-        #validif Reflection.canCopy(T)
+        where Reflection.canCopy(T)
     {
         Debug.safetyBoundCheck(index <= count, "index out of range")
         if index == count do
@@ -440,7 +440,7 @@ impl Array
     // Order is preserved.
     #[Overload]
     mtd insertAt(index: u64, values: const [..] T)
-        #validif Reflection.canCopy(T)
+        where Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
         if !sliceCount do
@@ -477,7 +477,7 @@ impl Array
     // the values are moved at the end of the array.
     // Order is preserved.
     mtd emplaceAt(index: u64, values: [..] T)
-        #validif Reflection.canCopy(T)
+        where Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
         if !sliceCount do
@@ -513,7 +513,7 @@ impl Array
     // Append a slice to the end of this instance
     #[Overload]
     mtd add(values: const [..] T)
-        #validif Reflection.canCopy(T)
+        where Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
         if !sliceCount do

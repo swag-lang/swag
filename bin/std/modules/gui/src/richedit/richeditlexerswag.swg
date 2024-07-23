@@ -363,7 +363,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#if", State.CompilerStatement)
         mapWords.add("#else", State.CompilerStatement)
         mapWords.add("#elif", State.CompilerStatement)
-        mapWords.add("#validif", State.CompilerStatement)
+        mapWords.add("where", State.CompilerStatement)
         mapWords.add("#validifx", State.CompilerStatement)
         mapWords.add("#scope", State.CompilerStatement)
 

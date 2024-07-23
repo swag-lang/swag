@@ -177,7 +177,7 @@ bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
     else if (node->is(AstNodeKind::CompilerAst))
         concat->addString("#ast");
     else if (node->is(AstNodeKind::CompilerValidIf))
-        concat->addString("#validif");
+        concat->addString("where");
     else if (node->is(AstNodeKind::CompilerValidIfx))
         concat->addString("#validifx");
     concat->addBlank();

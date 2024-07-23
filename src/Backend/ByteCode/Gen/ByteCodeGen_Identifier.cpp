@@ -217,7 +217,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     {
         node->resultRegisterRc = reserveRegisterRC(context, resolved);
 
-        // Get a parameter from a #validif block... this is special
+        // Get a parameter from a where block... this is special
         if (node->isValidIfParam(resolved))
         {
             ByteCodeInstruction* inst;

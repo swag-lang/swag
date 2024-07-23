@@ -1,7 +1,7 @@
 #global testerror "Err0085"
 
 func toto(f: f32)
-#validif
+where
 {
     return false
 }

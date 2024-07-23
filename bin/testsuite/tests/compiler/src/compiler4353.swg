@@ -1,6 +1,6 @@
 #global testerror "type string is not supported"
 func(T) add(x, y: T)->T
-    #validif
+    where
     {
         if cast(bool) (@typeof(T).flags & .Integer) do
             return true

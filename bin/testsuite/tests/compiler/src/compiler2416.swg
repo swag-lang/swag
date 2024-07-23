@@ -1,5 +1,5 @@
 func(T, N: u32) toto()
-#validif
+where
 {
     #assert(N > 0 and N <= 4)
     return true
