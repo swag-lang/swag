@@ -219,7 +219,7 @@ void Semantic::inheritAttributesFrom(AstNode* child, const AttributeFlags& attri
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF);
-    INHERIT_ATTR(child, ATTRIBUTE_MATCH_VALIDIF_OFF | ATTRIBUTE_MATCH_SELF_OFF);
+    INHERIT_ATTR(child, ATTRIBUTE_MATCH_WHERE_OFF | ATTRIBUTE_MATCH_SELF_OFF);
 
     if (!child->hasAstFlag(AST_INTERNAL))
         INHERIT_ATTR(child, ATTRIBUTE_PUBLIC | ATTRIBUTE_INTERNAL | ATTRIBUTE_PRIVATE);
@@ -542,18 +542,18 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     {
                         flags.remove(ATTRIBUTE_MATCH_MASK);
                         if (!attrValue->reg.b)
-                            flags.add(ATTRIBUTE_MATCH_VALIDIF_OFF | ATTRIBUTE_MATCH_SELF_OFF);
+                            flags.add(ATTRIBUTE_MATCH_WHERE_OFF | ATTRIBUTE_MATCH_SELF_OFF);
                     }
 
                     for (auto& w : what)
                     {
                         w.trim();
-                        if (w == g_LangSpec->name_validif)
+                        if (w == g_LangSpec->name_where)
                         {
                             if (!attrValue->reg.b)
-                                flags.add(ATTRIBUTE_MATCH_VALIDIF_OFF);
+                                flags.add(ATTRIBUTE_MATCH_WHERE_OFF);
                             else
-                                flags.remove(ATTRIBUTE_MATCH_VALIDIF_OFF);
+                                flags.remove(ATTRIBUTE_MATCH_WHERE_OFF);
                         }
                         else if (w == g_LangSpec->name_self)
                         {

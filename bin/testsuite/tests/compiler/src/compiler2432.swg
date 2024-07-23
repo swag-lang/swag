@@ -1,7 +1,7 @@
 //var G = 0
 
 func append(buf: *void, fmt: string, values: ...)
-    #validifx
+    check
     {
         if !@isconstexpr(fmt) do return true
         var cpt = @countof(values)

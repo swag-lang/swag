@@ -1,5 +1,5 @@
 func print(s: string, f: ...)
-    #validifx
+    check
     {
         @assert(@countof(f) == 3)
         return true

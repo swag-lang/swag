@@ -528,10 +528,10 @@ Utf8 Naming::funcToName(const AstFuncDecl* node)
         return "[[#ast]] block";
     if (node->hasAttribute(ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC))
         return "[[#run]] block";
-    if (node->hasAttribute(ATTRIBUTE_MATCH_VALIDIF_FUNC))
+    if (node->hasAttribute(ATTRIBUTE_MATCH_WHERE_FUNC))
         return "[[where]] block";
-    if (node->hasAttribute(ATTRIBUTE_MATCH_VALIDIFX_FUNC))
-        return "[[#validifx]] block";
+    if (node->hasAttribute(ATTRIBUTE_MATCH_CHECK_FUNC))
+        return "[[check]] block";
 
     if (node->hasAttribute(ATTRIBUTE_TEST_FUNC) && node->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         return "[[#test]] block";

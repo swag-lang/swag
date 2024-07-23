@@ -686,16 +686,16 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 funcNode->addAttribute(ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::CompilerValidIf:
-                funcNode->token.text = "__validif" + std::to_string(id);
+                funcNode->token.text = "__where" + std::to_string(id);
                 funcNode->tokenName  = funcNode->token;
                 funcNode->addAstFlag(AST_GENERATED);
-                funcNode->addAttribute(ATTRIBUTE_MATCH_VALIDIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
+                funcNode->addAttribute(ATTRIBUTE_MATCH_WHERE_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::CompilerValidIfx:
-                funcNode->token.text = "__validifx" + std::to_string(id);
+                funcNode->token.text = "__check" + std::to_string(id);
                 funcNode->tokenName  = funcNode->token;
                 funcNode->addAstFlag(AST_GENERATED);
-                funcNode->addAttribute(ATTRIBUTE_MATCH_VALIDIFX_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
+                funcNode->addAttribute(ATTRIBUTE_MATCH_CHECK_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             default:
                 break;

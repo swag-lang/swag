@@ -196,7 +196,7 @@ func day10A() assume
     let lines    = assume File.readAllLines(dataPath)
 
     #[Swag.Mixin]
-    func check()
+    func toCheck()
     {
         cycle += 1
         if cycle <= 220 and (cycle - 20) % 40 == 0 do
@@ -207,11 +207,11 @@ func day10A() assume
     var total = 0
     visit l: lines
     {
-        check()
+        toCheck()
         if l != "noop"
         {
             x += StrConv.toS32(l[5..])
-            check()
+            toCheck()
         }
     }
 

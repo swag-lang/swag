@@ -8,7 +8,7 @@ func checkFormat(fct: string, fmt: string, values: ...)
     let cptPercent = countPercent(fmt)
     if cptPercent != @countof(values)
     {
-        #[Match("validif", false)]
+        #[Match("where", false)]
         var str = toString("bad number of arguments to [[%]] ([[%]] requested, [[%]] provided)", fct, cptPercent, @countof(values))
         @compilererror(str, @location(values))
     }
@@ -37,7 +37,7 @@ func countPercent(fmt: string)->u32
 // Format a string in 'dest'.
 // Can be a lot faster than the convenient version which returns a String.
 func replaceString(dest: *String, fmt: string, values: ...)
-    #validifx
+    check
     {
         if !@isconstexpr(fmt) or !@isconstexpr(values) do
             return true
@@ -50,7 +50,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
     buf.allocator = dest.allocator
     buf.setFirstBucket(@mkslice(dest.buffer, dest.capacity))
 
-    #[Match("validif", false)]
+    #[Match("where", false)]
     append(&buf, fmt, values)
 
     buf.makeLinear()
@@ -73,7 +73,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
 // * See [[ConvertFormatInt.setFormat]] for some valid format options
 // * See [[ConvertFormatFloat.setFormat]] for some valid format options
 func toString(fmt: string, values: ...)->String
-    #validifx
+    check
     {
         if !@isconstexpr(fmt) or !@isconstexpr(values) do
             return true
@@ -83,7 +83,7 @@ func toString(fmt: string, values: ...)->String
 {
     var buf: ConcatBuffer
 
-    #[Match("validif", false)]
+    #[Match("where", false)]
     append(&buf, fmt, values)
 
     return buf.toString()
@@ -91,7 +91,7 @@ func toString(fmt: string, values: ...)->String
 
 // Returns a formatted string stored in the temporary allocator.
 func toStringTemp(fmt: string, values: ...)->string
-    #validifx
+    check
     {
         if !@isconstexpr(fmt) or !@isconstexpr(values) do
             return true
@@ -101,7 +101,7 @@ func toStringTemp(fmt: string, values: ...)->string
 {
     var buf: ConcatBuffer
 
-    #[Match("validif", false)]
+    #[Match("where", false)]
     append(&buf, fmt, values)
 
     let str = buf.toString(@getcontext().tempAllocator)
@@ -110,7 +110,7 @@ func toStringTemp(fmt: string, values: ...)->string
 
 // Format a string and put the result in a ConcatBuffer.
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
-    #validifx
+    check
     {
         if !@isconstexpr(fmt) or !@isconstexpr(values) do
             return true
@@ -185,7 +185,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 // Format is `{<value to interpolate>:format}`
 #[Macro, Overload]
 func toInterp(buf: *ConcatBuffer, exp: string)
-    #validifx
+    check
     {
         if !@isconstexpr(exp) do
             @compilererror("expression should be constant", @location(exp))
@@ -245,7 +245,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
 // String interpolation.
 #[Mixin, Overload]
 func toInterp(exp: string)->String
-    #validifx
+    check
     {
         if !@isconstexpr(exp) do
             @compilererror("expression should be constant", @location(exp))

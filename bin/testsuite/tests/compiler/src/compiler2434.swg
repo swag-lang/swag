@@ -1,5 +1,5 @@
 func append(v: ...)
-    #validifx
+    check
     {
         @assert(@countof(v) == 2)
         return true

@@ -5,17 +5,17 @@ var G = 0
 #[Macro]
 #[Swag.Overload]
 func toto(x: string)
-    #validifx @isconstexpr(x)
+    check @isconstexpr(x)
 {
     G += 1
 
-    #[Match("self|validif", false)]
+    #[Match("self|where", false)]
     toto(x)
 }
 
 #[Swag.Overload]
 func toto(x: string)
-    #validifx !@isconstexpr(x)
+    check !@isconstexpr(x)
 {
     G += 2
 }

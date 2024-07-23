@@ -447,7 +447,7 @@ void initErrors()
     SWAG_ERROR(Err0321, "invalid literal suffix                            $ the type [[%s]] can't be used as suffix for a float literal $ only [[f32]] and [[f64]] are accepted");
     SWAG_ERROR(Err0322, "invalid location argument                         $ invalid [[location]] mode [[%s]] $ the acceptable values are [[swag]] and [[disk]]");
     SWAG_ERROR(Err0323, "invalid logical operator                          $ expected [[%s]] for the logical test, found [[%s]] instead");
-    SWAG_ERROR(Err0324, "invalid match argument                            $ invalid argument [[%s]] for the attribute [[#[Swag.Match]]] $ the acceptable values for [[#[Swag.Match]]] are [[validif]] and [[self]]");
+    SWAG_ERROR(Err0324, "invalid match argument                            $ invalid argument [[%s]] for the attribute [[#[Swag.Match]]] $ the acceptable values for [[#[Swag.Match]]] are [[where]] and [[self]]");
     SWAG_ERROR(Err0325, "invalid module name                               $ the [[#[Swag.Foreign]]] module name can't be empty");
     SWAG_ERROR(Err0326, "invalid module name                               $ unexpected symbol [[.]] in the [[#[Swag.Foreign]]] module name $ a [[#[Swag.Foreign]]] module name can't have an extension, consider removing it");
     SWAG_ERROR(Err0327, "invalid move                                      $ [[move]] is not applicable on an immutable expression (type is [[%s]])");
@@ -781,8 +781,8 @@ void initErrors()
     SWAG_ERROR(Err0655, "unauthorized function overload                    $ a function with the same name [[%s]] has already been declared $ if you want to declare an overload, mark all functions with [[#[Swag.Overload]]]");
     SWAG_ERROR(Err0656, "unexpected [[#elif]]                              $ [[#elif]] found without a preceding [[#if]] directive");
     SWAG_ERROR(Err0657, "unexpected [[#else]]                              $ [[#else]] found without a preceding [[#if]] or [[#elif]] directive");
-    SWAG_ERROR(Err0658, "unexpected [[where/#validifx]]                 $ the [[where/#validifx]] directive is not allowed on special function [[%s]] $ [[where]] and [[#validifx]] are not valid for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
-    SWAG_ERROR(Err0659, "unexpected [[#validifx]] in struct                $ [[#validifx]] is not allowed for a struct, this is only valid for functions $ consider using [[where]] instead");
+    SWAG_ERROR(Err0658, "unexpected [[where/check]]                        $ a [[where/check]] directive is not allowed on special function [[%s]] $ [[where]] and [[check]] are not valid for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
+    SWAG_ERROR(Err0659, "unexpected [[check]] in struct                    $ [[check]] is not allowed for a struct, this is only valid for functions $ consider using [[where]] instead");
     SWAG_ERROR(Err0660, "unexpected [[)]]                                  $ symbol [[)]] found without a preceding [[(]]");
     SWAG_ERROR(Err0661, "unexpected [[]]]                                  $ symbol [[]]] found without a preceding [[[]]");
     SWAG_ERROR(Err0662, "unexpected [[const]]                              $ unexpected [[const]] before a lambda parameter name");
@@ -981,7 +981,7 @@ void initErrors()
     SWAG_ERROR(Nte0091, "occurred during compile-time evaluation");
     SWAG_ERROR(Nte0092, "occurred during the [[where]] check of struct [[%s]]");
     SWAG_ERROR(Nte0093, "occurred during the [[where]] check of the call to [[%s]]");
-    SWAG_ERROR(Nte0094, "occurred during the [[#validifx]] check of the call to [[%s]]");
+    SWAG_ERROR(Nte0094, "occurred during the [[check]] check of the call to [[%s]]");
     SWAG_ERROR(Nte0095, "occurred during the generic instantiation of [[%s]]");
     SWAG_ERROR(Nte0096, "occurred during the inline expansion of [[%s]]");
     SWAG_ERROR(Nte0097, "[[%s]] is a mutable UFCS argument, so taking the address is implicit");

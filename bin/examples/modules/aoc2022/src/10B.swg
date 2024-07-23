@@ -129,7 +129,7 @@ func day10B() assume
     let lines    = assume File.readAllLines(dataPath)
 
     #[Swag.Mixin]
-    func check()
+    func toCheck()
     {
         {
             let tt = cycle % 40
@@ -147,11 +147,11 @@ func day10B() assume
 
     visit l: lines
     {
-        check()
+        toCheck()
         if l != "noop"
         {
             x += StrConv.toS32(l[5..])
-            check()
+            toCheck()
         }
     }
 

@@ -75,7 +75,7 @@ public func resetColor()
 
 // Write a formatted message to the console
 public func printf(message: string, params: ...)
-    #validifx
+    check
     {
         if !@isconstexpr(message) or !@isconstexpr(params) do
             return true

@@ -171,6 +171,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("to", State.Control)
         mapWords.add("until", State.Control)
         mapWords.add("where", State.Control)
+        mapWords.add("check", State.Control)
 
         mapWords.add("@defined", State.Intrinsic)
         mapWords.add("@location", State.Intrinsic)
@@ -363,8 +364,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#if", State.CompilerStatement)
         mapWords.add("#else", State.CompilerStatement)
         mapWords.add("#elif", State.CompilerStatement)
-        mapWords.add("where", State.CompilerStatement)
-        mapWords.add("#validifx", State.CompilerStatement)
         mapWords.add("#scope", State.CompilerStatement)
 
         mapWords.add("#cfg", State.Compiler)

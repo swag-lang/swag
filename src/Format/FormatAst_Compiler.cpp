@@ -179,7 +179,7 @@ bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
     else if (node->is(AstNodeKind::CompilerValidIf))
         concat->addString("where");
     else if (node->is(AstNodeKind::CompilerValidIfx))
-        concat->addString("#validifx");
+        concat->addString("check");
     concat->addBlank();
 
     const auto front = node->firstChild();

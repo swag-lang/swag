@@ -1,7 +1,7 @@
 //#global testerror
 
 #[Swag.Compiler, Swag.ConstExpr]
-func check(T: typeinfo, N: u32)->bool
+func toCheck(T: typeinfo, N: u32)->bool
 {
     return N > 0 and N <= 4 and T == f32
 }
@@ -9,7 +9,7 @@ func check(T: typeinfo, N: u32)->bool
 func(T, N: u32) toto()
 where
 {
-    #if !check(T, N) #do #error "N is out of range"
+    #if !toCheck(T, N) #do #error "N is out of range"
     return true
 }
 {

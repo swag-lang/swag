@@ -2,14 +2,14 @@ var G = 0
 
 #[Swag.Overload]
 func whatever(x: s32)
-    #validifx @isconstexpr(x)
+    check @isconstexpr(x)
 {
     G += 1
 }
 
 #[Swag.Overload]
 func whatever(x: s32)
-    #validifx !@isconstexpr(x)
+    check !@isconstexpr(x)
 {
     G += 2
 }

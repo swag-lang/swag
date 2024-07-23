@@ -1,5 +1,5 @@
 func print(f: f32)
-    #validifx
+    check
     {
         if f != 3.14  do @compilererror("'f' should be 3.14", #location)
         return true

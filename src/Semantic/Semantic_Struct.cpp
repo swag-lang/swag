@@ -807,7 +807,7 @@ bool Semantic::solveValidIf(SemanticContext* context, AstStruct* structDecl)
 {
     ScopedLock lk1(structDecl->mutex);
 
-    // Execute where/#validifx block
+    // Execute where/check block
     const auto expr = structDecl->validIf->lastChild();
 
     if (!expr->hasFlagComputedValue())

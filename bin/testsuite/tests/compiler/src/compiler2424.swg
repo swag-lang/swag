@@ -1,5 +1,5 @@
 func print(f: f32)
-    #validifx
+    check
     {
         @assert(@isconstexpr(f))
         return true

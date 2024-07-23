@@ -127,7 +127,7 @@ Compiler keywords always start with '#'. As user identifiers cannot start the sa
 #mixin
 #placeholder
 #print
-#validifx
+check
 where
 #warning
 #scope

@@ -5,12 +5,12 @@ struct Base
 
 interface IBase
 {
-    func check(self)->s32;
+    func toCheck(self)->s32;
 }
 
 impl IBase for Base
 {
-    mtd impl check()->s32
+    mtd impl toCheck()->s32
     {
         return 1
     }
@@ -21,7 +21,7 @@ impl Base
     //#[Swag.PrintBc, Swag.Safety("", false)]
     mtd toto()->s32
     {
-        return itf.check()
+        return itf.toCheck()
     }
 }
 
@@ -32,7 +32,7 @@ struct Child
 
 impl IBase for Child
 {
-    mtd impl check()->s32
+    mtd impl toCheck()->s32
     {
         return 2
     }

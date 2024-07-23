@@ -182,7 +182,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
         return true;
     }
 
-    // #validifx block
+    // check block
     if (funcDecl->validIf)
     {
         concat->addEol();

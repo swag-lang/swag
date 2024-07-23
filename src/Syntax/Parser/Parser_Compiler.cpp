@@ -296,7 +296,7 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-        SWAG_CHECK(eatSemiCol("[[#validifx]] expression"));
+        SWAG_CHECK(eatSemiCol("[[check]] expression"));
     }
 
     return true;

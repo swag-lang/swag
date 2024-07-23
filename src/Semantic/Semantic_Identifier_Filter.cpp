@@ -78,10 +78,10 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
         const auto over     = curMatch->symbolOverload;
         const auto overSym  = over->symbol;
 
-        // Take care of where/#validifx
+        // Take care of where/check
         if (overSym->is(SymbolKind::Function) &&
             !context->node->hasAstFlag(AST_IN_VALIDIF) &&
-            !context->node->hasAttribute(ATTRIBUTE_MATCH_VALIDIF_OFF))
+            !context->node->hasAttribute(ATTRIBUTE_MATCH_WHERE_OFF))
         {
             const auto funcDecl = castAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
             if (funcDecl->validIf)
