@@ -6,7 +6,7 @@ func toto() throw
 {
     try
     {
-        defer(noerr) throw ErrToto{}
+        defer,noerr throw ErrToto{}
         throw ErrTiti{}
     }
 }

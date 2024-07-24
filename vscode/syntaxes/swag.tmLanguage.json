@@ -8,11 +8,10 @@
     { "include": "#visit-call" },
     { "include": "#keywords" },
     { "include": "#keywords-decl" },
-    { "include": "#operator-modifier" },
+    { "include": "#instruction-modifier" },
     { "include": "#op" },
     { "include": "#op-invalid" },
     { "include": "#keywords-invalid" },
-    { "include": "#keywords-defer" },
     { "include": "#keywords-control" },
     { "include": "#function-call" },
     { "include": "#function-call1" },
@@ -80,21 +79,6 @@
         {
           "name": "keyword",
           "match": "\\b(using|with|cast|acast|dref|moveref|retval|try|catch|trycatch|assume|throw|discard)\\b"
-        }
-      ]
-    },
-    "keywords-defer": {
-      "patterns": [
-        {
-          "match": "\\b(defer)\\b\\((err|noerr)\\)",
-          "captures": {
-            "1": {
-              "name": "keyword.control"
-            },
-            "2": {
-              "name": "constant.character.escape"
-            }
-          }
         }
       ]
     },
@@ -449,11 +433,11 @@
         }
       ]
     },
-    "operator-modifier": {
+    "instruction-modifier": {
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "\\,(call|up|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
+          "match": "\\,(err|noerr|call|up|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
         }
       ]
     }

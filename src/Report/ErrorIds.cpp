@@ -280,7 +280,7 @@ void initErrors()
     SWAG_ERROR(Err0154, "invalid [[@sizeof]]                               $ can't compute the size of a generic expression");
     SWAG_ERROR(Err0155, "invalid [[break]] scope name                      $ expected a scope name or a end of line after [[break]], found [[%s]] instead");
     SWAG_ERROR(Err0156, "invalid [[code]] append                           $ the %s [[%s]] wants to interpret the next statement as a [[code]] parameter but this is not possible inside a [[%s]] expression");
-    SWAG_ERROR(Err0157, "invalid [[defer]] mode                            $ [[%s]] is not a valid [[defer]] mode $ the valid defer modes are [[defer(err)]] and [[defer(noerr)]]");
+    SWAG_ERROR(Err0157, nullptr);
     SWAG_ERROR(Err0158, "invalid [[discard]] call                          $ a function returning nothing can't be discarded");
     SWAG_ERROR(Err0159, "invalid [[discard]] call                          $ expected a discard-able call after [[discard]], found [[%s]] instead");
     SWAG_ERROR(Err0160, "invalid [[impl]]                                  $ expected a struct name after [[for]] but [[%s]] is %s");

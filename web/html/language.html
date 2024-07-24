@@ -5770,7 +5770,7 @@ where
 {
     {
         <span class="SKwd">func</span> <span class="SFct">div</span>(x, y: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-            where,each
+            where,call
             {
                 <span class="SCmt">// Here we use '@isconstexpr'.</span>
                 <span class="SCmt">// If 'y' cannot be evaluated at compile time, then we can do nothing about it.</span>
@@ -5796,7 +5796,7 @@ where
         <span class="SCmt">// A version of 'first' where 'x' is known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-            where,each <span class="SItr">@isconstexpr</span>(x)
+            where,call <span class="SItr">@isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">555</span>
         }
@@ -5804,7 +5804,7 @@ where
         <span class="SCmt">// A version of 'first' where 'x' is **not** known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-            where,each !<span class="SItr">@isconstexpr</span>(x)
+            where,call !<span class="SItr">@isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">666</span>
         }
@@ -6394,10 +6394,10 @@ where
 <p>But be aware that a reference to an external value (like a <span class="code-inline">string</span>, an <span class="code-inline">any</span> etc.) must remain valid all the time. The runtime will drop complexe types when needed, so you could store complex things in the heap, or in a dedicated allocator in the current context. </p>
 <h3 id="_170_error_management_swg_defer">defer </h3>
 <p>Throwing an error is equivalent to returning from the function. So a <span class="code-inline">defer</span> expression works also in that case. </p>
-<p>But <span class="code-inline">defer</span> can have specific parameters like <span class="code-inline">defer(err)</span> or <span class="code-inline">defer(noerr)</span> to control if it should be executed depending on the error status. </p>
+<p>But <span class="code-inline">defer</span> can have specific parameters like <span class="code-inline">defer,err</span> or <span class="code-inline">defer,noerr</span> to control if it should be executed depending on the error status. </p>
 <table class="table-markdown">
-<tr><td> <span class="code-inline">defer(err)</span>   </td><td> will be called for each <span class="code-inline">throw</span>, so only when an error is raised</td></tr>
-<tr><td> <span class="code-inline">defer(noerr)</span> </td><td> will be called only when the function returns in a normal way</td></tr>
+<tr><td> <span class="code-inline">defer,err</span>   </td><td> will be called for each <span class="code-inline">throw</span>, so only when an error is raised</td></tr>
+<tr><td> <span class="code-inline">defer,noerr</span> </td><td> will be called only when the function returns in a normal way</td></tr>
 <tr><td> <span class="code-inline">defer</span>        </td><td> will always be called whatever the reason is (normal way or error)</td></tr>
 </table>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Defer = <span class="SNum">0</span>
@@ -6420,11 +6420,11 @@ where
 {
     g_Defer = <span class="SNum">0</span>
     <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">true</span>)
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>) <span class="SCmt">// Will call only defer(err) and the normal defer</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>) <span class="SCmt">// Will call only defer,err and the normal defer</span>
 
     g_Defer = <span class="SNum">0</span>
     <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">false</span>)
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>) <span class="SCmt">// Will call only defer(noerr) and the normal defer</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>) <span class="SCmt">// Will call only defer,noerr and the normal defer</span>
 }</span></div>
 
 <h2 id="_175_safety_swg">Safety.swg</h2><p>Swag comes with a bunch of safety checks which can be activated by module, function or even instruction with the <span class="code-inline">#[Swag.Safety]</span> attribute. </p>
