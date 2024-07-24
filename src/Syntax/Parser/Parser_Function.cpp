@@ -623,7 +623,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
     bool isConstMethod   = false;
     bool isIntrinsic     = false;
-    auto funcForCompiler = g_TokenFlags[static_cast<int>(typeFuncId)].has(TOKEN_COMPILER_FUNC);
+    auto funcForCompiler = g_TokenFlags[static_cast<int>(typeFuncId)].has(TOKEN_COMPILER_FUNC) || typeFuncId == TokenId::KwdWhere;
 
     // Name
     if (funcForCompiler)
@@ -685,7 +685,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 funcNode->addAstFlag(AST_GENERATED);
                 funcNode->addAttribute(ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
-            case TokenId::CompilerWhere:
+            case TokenId::KwdWhere:
                 funcNode->token.text = "__where" + std::to_string(id);
                 funcNode->tokenName  = funcNode->token;
                 funcNode->addAstFlag(AST_GENERATED);
@@ -840,7 +840,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         auto            typeExpression  = Ast::newTypeExpression(this, typeNode);
         typeExpression->typeFromLiteral = g_TypeMgr->typeInfoString;
     }
-    else if (typeFuncId == TokenId::CompilerWhere)
+    else if (typeFuncId == TokenId::KwdWhere)
     {
         typeNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED);
         ParserPushScope scoped(this, newScope);
@@ -852,7 +852,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     funcNode->typeInfo->computeName();
 
     // 'where' block
-    if (tokenParse.is(TokenId::CompilerWhere))
+    if (tokenParse.is(TokenId::KwdWhere))
     {
         ParserPushScope scoped(this, newScope);
         ParserPushFct   scopedFct(this, funcNode);

@@ -289,7 +289,7 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
         AstNode* funcNode;
-        SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerWhere));
+        SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::KwdWhere));
 
         const auto idRef           = Ast::newIdentifierRef(funcNode->token.text, this, node);
         const auto identifier      = castAst<AstIdentifier>(idRef->lastChild(), AstNodeKind::Identifier);

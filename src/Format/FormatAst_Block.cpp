@@ -119,14 +119,22 @@ bool FormatAst::outputDoStatement(FormatContext& context, AstNode* node)
     else if (node->is(AstNodeKind::Statement) && !node->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY))
     {
         concat->addBlank();
-        concat->addString("do");
-        beautifyAfter(context, node);
-        concat->addEol();
-        context.indent++;
-        concat->addIndent(context.indent);
-        SWAG_CHECK(outputNode(context, node->firstChild()));
-        context.indent--;
-        concat->addEol();
+        if (node->hasSpecFlag(AstStatement::SPEC_FLAG_WHERE))
+        {
+            SWAG_CHECK(outputIf(context, "where", node->firstChild()));
+            concat->addEol();
+        }
+        else
+        {
+            concat->addString("do");
+            beautifyAfter(context, node);
+            concat->addEol();
+            context.indent++;
+            concat->addIndent(context.indent);
+            SWAG_CHECK(outputNode(context, node->firstChild()));
+            context.indent--;
+            concat->addEol();
+        }
     }
     else
     {

@@ -577,7 +577,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
         {
             switch (opId)
             {
-                case TokenId::CompilerWhere:
+                case TokenId::KwdWhere:
                     break;
                 default:
                     return error(tokenParse.token, formErr(Err0694, tokenParse.token.c_str(), forNode.c_str()));

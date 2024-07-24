@@ -291,8 +291,21 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
         Ast::addChildBack(node, node->expression);
     }
 
-    // Visit statement code block
-    SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
+    if (tokenParse.is(TokenId::KwdWhere))
+    {
+        const auto      newScope = Ast::newScope(node, "", ScopeKind::Statement, currentScope);
+        ParserPushScope scoped(this, newScope);
+        AstNode*        statement = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, node);
+        statement->allocateExtension(ExtensionKind::Semantic);
+        statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
+        statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
+        statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE | AstStatement::SPEC_FLAG_WHERE);
+        node->block     = statement;
+        newScope->owner = statement;
+        SWAG_CHECK(doIf(statement, &dummyResult));
+    }
+    else
+        SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
 
     // We do not want semantic on the block part, as this has to be solved when the block
     // is inlined

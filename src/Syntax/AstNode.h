@@ -1237,6 +1237,7 @@ struct AstStatement : AstNode
     static constexpr SpecFlags SPEC_FLAG_CURLY           = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_MULTI_AFFECT    = 0x0004;
     static constexpr SpecFlags SPEC_FLAG_TUPLE_UNPACKING = 0x0008;
+    static constexpr SpecFlags SPEC_FLAG_WHERE           = 0x0010;
 
     ~        AstStatement();
     AstNode* clone(CloneContext& context);

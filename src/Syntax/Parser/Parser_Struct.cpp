@@ -325,7 +325,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
     SWAG_CHECK(eatToken());
 
     // 'where' block
-    if (tokenParse.is(TokenId::CompilerWhere))
+    if (tokenParse.is(TokenId::KwdWhere))
     {
         ParserPushScope       scoped(this, newScope);
         ParserPushStructScope scopedStruct(this, newScope);
