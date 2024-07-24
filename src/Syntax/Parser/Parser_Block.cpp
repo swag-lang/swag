@@ -230,6 +230,21 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool Parser::doWhere(AstNode* node, AstNode** result)
+{
+    const auto      newScope = Ast::newScope(node, "", ScopeKind::Statement, currentScope);
+    ParserPushScope scoped(this, newScope);
+    AstNode*        statement = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, node);
+    statement->allocateExtension(ExtensionKind::Semantic);
+    statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
+    statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
+    statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE | AstStatement::SPEC_FLAG_WHERE);
+    *result         = statement;
+    newScope->owner = statement;
+    SWAG_CHECK(doIf(statement, &dummyResult));
+    return true;
+}
+
 bool Parser::doVisit(AstNode* parent, AstNode** result)
 {
     const auto node   = Ast::newNode<AstVisit>(AstNodeKind::Visit, this, parent);
@@ -292,18 +307,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     }
 
     if (tokenParse.is(TokenId::KwdWhere))
-    {
-        const auto      newScope = Ast::newScope(node, "", ScopeKind::Statement, currentScope);
-        ParserPushScope scoped(this, newScope);
-        AstNode*        statement = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, node);
-        statement->allocateExtension(ExtensionKind::Semantic);
-        statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
-        statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
-        statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE | AstStatement::SPEC_FLAG_WHERE);
-        node->block     = statement;
-        newScope->owner = statement;
-        SWAG_CHECK(doIf(statement, &dummyResult));
-    }
+        SWAG_CHECK(doWhere(node, &node->block));
     else
         SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
 
@@ -400,7 +404,11 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
         var->assignment = identifer;
     }
 
-    SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
+    if (tokenParse.is(TokenId::KwdWhere))
+        SWAG_CHECK(doWhere(node, &node->block));
+    else
+        SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
+    
     return true;
 }
 

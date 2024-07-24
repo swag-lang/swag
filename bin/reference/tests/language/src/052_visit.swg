@@ -139,3 +139,36 @@ You can visit with a pointer to the value, and not the value itself, by adding `
     @assert(array[1, 0] == 555)
     @assert(array[1, 1] == 555)
 }
+
+/**
+# where
+You can add a 'where" instruction after the 'visit', to apply a filter on the elements you want to visit.
+*/
+#test
+{
+    var array: [] s32 = [1, 2, 3, 4]
+    var result = 0
+
+    // Just get even values
+    visit value: array where value & 1 == 0 do
+        result += value
+
+    @assert(result == 6)
+
+    // This is equivalent of:
+    result = 0
+    visit value: array do 
+        if value & 1 == 0 do
+            result += value  
+    @assert(result == 6) 
+
+    // This is equivalent of:  
+    result = 0
+    visit value: array
+    {
+        if (value & 1) != 0 do
+            continue
+        result += value        
+    }
+    @assert(result == 6)
+}

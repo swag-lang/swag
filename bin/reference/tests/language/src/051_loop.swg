@@ -201,3 +201,19 @@ A loop without an expression but with a block is infinite. This is equivalent to
             break
     }
 }
+
+/**
+# where
+You can add a 'where" instruction after the 'loop', to apply a filter on the indexes you want to visit.
+*/
+#test
+{
+    var result = 0
+
+    loop i: 10 where i % 2 == 0
+    {
+        result += i
+    }
+
+    @assert(result == 0 + 2 + 4 + 6 + 8)
+}
