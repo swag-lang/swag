@@ -274,7 +274,7 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
     // Each mode
     ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags, node));
-    if (mdfFlags.has(MODIFIER_EACH))
+    if (mdfFlags.has(MODIFIER_CALL))
         node->kind = AstNodeKind::CompilerWhereEach;
 
     // Not for the 3 special functions

@@ -167,7 +167,7 @@ void LanguageSpec::setupNames()
 
     name_err   = "err";
     name_noerr = "noerr";
-    name_each  = "each";
+    name_call  = "call";
 
     name_boundcheck  = "boundcheck";
     name_overflow    = "overflow";
