@@ -1,7 +1,7 @@
 #global testerror "invalid number of arguments"
 
 func print(s: string, f: ...)
-    where,each
+    where,call
     {
         if @countof(f) != 3 do
             @compilererror("invalid number of arguments", @location(f))
