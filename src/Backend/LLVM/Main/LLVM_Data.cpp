@@ -171,8 +171,8 @@ bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* data
     for (auto& k : dataSegment->initFuncPtr)
     {
         const auto dest = GEP8_PTR_I64(gVar, k.first);
-        auto       F    = modu.getOrInsertFunction(k.second.c_str(), fctType);
-        const auto src  = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, F.getCallee(), I64_TY());
+        auto       func = modu.getOrInsertFunction(k.second.c_str(), fctType);
+        const auto src  = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func.getCallee(), I64_TY());
         builder.CreateStore(src, dest);
     }
 

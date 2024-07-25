@@ -2359,7 +2359,7 @@ void SCBE_X64::emitCastU64F64([[maybe_unused]] CPURegister regDst, [[maybe_unuse
 }
 
 // a*b+c
-void SCBE_X64::emitMulAddF32(CPURegister a, CPURegister b, CPURegister c)
+void SCBE_X64::emitMulAddF32([[maybe_unused]] CPURegister a, [[maybe_unused]] CPURegister b, [[maybe_unused]] CPURegister c)
 {
     SWAG_ASSERT(a == XMM0);
     SWAG_ASSERT(b == XMM1);
@@ -2376,7 +2376,7 @@ void SCBE_X64::emitMulAddF32(CPURegister a, CPURegister b, CPURegister c)
     concat.addU8(0xC2);
 }
 
-void SCBE_X64::emitMulAddF64(CPURegister a, CPURegister b, CPURegister c)
+void SCBE_X64::emitMulAddF64([[maybe_unused]] CPURegister a, [[maybe_unused]] CPURegister b, [[maybe_unused]] CPURegister c)
 {
     SWAG_ASSERT(a == XMM0);
     SWAG_ASSERT(b == XMM1);

@@ -104,9 +104,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowTypes(ByteCodeRunContext* /*context*
     for (const auto m : g_Workspace->modules)
     {
         const auto& map = m->typeGen.getMapPerSeg(&m->constantSegment);
-        for (const auto& exp : map.exportedTypes)
+        for (const auto& val : map.exportedTypes | std::views::values)
         {
-            const auto typeInfo = exp.second.realType->getStructOrPointedStruct();
+            const auto typeInfo = val.realType->getStructOrPointedStruct();
             if (!typeInfo)
                 continue;
             Utf8 value;
@@ -453,8 +453,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowRegisters(ByteCodeRunContext* contex
 
     g_Log.print(form("%s$sp%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->sp));
     g_Log.print(form("%s$bp%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->bp));
-    g_Log.print(form("%s$rr0%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->registersRR[0]));
-    g_Log.print(form("%s$rr1%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->registersRR[1]));
+    g_Log.print(form("%s$rr0%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->registersRR[0].u64));
+    g_Log.print(form("%s$rr1%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->registersRR[1].u64));
 
     return BcDbgCommandResult::Continue;
 }

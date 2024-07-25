@@ -64,11 +64,11 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     allocResult->setAlignment(llvm::Align{16});
 
     // To store variadic
-    llvm::AllocaInst* allocVA = nullptr;
+    llvm::AllocaInst* allocVa = nullptr;
     if (bc->maxSpVaargs)
     {
-        allocVA = builder.CreateAlloca(I64_TY(), builder.getInt64(bc->maxSpVaargs));
-        allocVA->setAlignment(llvm::Align{16});
+        allocVa = builder.CreateAlloca(I64_TY(), builder.getInt64(bc->maxSpVaargs));
+        allocVa->setAlignment(llvm::Align{16});
     }
 
     // Stack
@@ -80,8 +80,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     }
 
     // Reserve room to pass parameters to embedded intrinsics
-    constexpr int ALLOCT_NUM = 5;
-    auto          allocT     = builder.CreateAlloca(I64_TY(), builder.getInt64(ALLOCT_NUM));
+    constexpr int ALLOC_T_NUM = 5;
+    auto          allocT      = builder.CreateAlloca(I64_TY(), builder.getInt64(ALLOC_T_NUM));
     allocT->setAlignment(llvm::Align{16});
 
     // Debug infos
@@ -5235,21 +5235,21 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         case 1:
                         {
                             auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
-                            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocVA, pp.cst0_i32);
+                            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocVa, pp.cst0_i32);
                             builder.CreateStore(r1, r0);
                             break;
                         }
                         case 2:
                         {
                             auto r0 = GEP64_PTR_PTR_I16(allocR, ip->a.u32);
-                            auto r1 = builder.CreateInBoundsGEP(I16_TY(), allocVA, pp.cst0_i32);
+                            auto r1 = builder.CreateInBoundsGEP(I16_TY(), allocVa, pp.cst0_i32);
                             builder.CreateStore(r1, r0);
                             break;
                         }
                         case 4:
                         {
                             auto r0 = GEP64_PTR_PTR_I32(allocR, ip->a.u32);
-                            auto r1 = builder.CreateInBoundsGEP(I32_TY(), allocVA, pp.cst0_i32);
+                            auto r1 = builder.CreateInBoundsGEP(I32_TY(), allocVa, pp.cst0_i32);
                             builder.CreateStore(r1, r0);
                             break;
                         }
@@ -5266,21 +5266,21 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         {
                             case 1:
                             {
-                                auto r0 = GEP(I8_TY(), allocVA, idx);
+                                auto r0 = GEP(I8_TY(), allocVa, idx);
                                 auto r1 = GEP64(allocR, reg);
                                 builder.CreateStore(builder.CreateLoad(I8_TY(), r1), r0);
                                 break;
                             }
                             case 2:
                             {
-                                auto r0 = GEP(I16_TY(), allocVA, idx);
+                                auto r0 = GEP(I16_TY(), allocVa, idx);
                                 auto r1 = GEP64(allocR, reg);
                                 builder.CreateStore(builder.CreateLoad(I16_TY(), r1), r0);
                                 break;
                             }
                             case 4:
                             {
-                                auto r0 = GEP(I32_TY(), allocVA, idx);
+                                auto r0 = GEP(I32_TY(), allocVa, idx);
                                 auto r1 = GEP64(allocR, reg);
                                 builder.CreateStore(builder.CreateLoad(I32_TY(), r1), r0);
                                 break;
@@ -5313,7 +5313,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     while (idxParam != UINT32_MAX)
                     {
                         SWAG_ASSERT(idx < bc->maxSpVaargs);
-                        auto r0 = GEP64(allocVA, idx);
+                        auto r0 = GEP64(allocVa, idx);
                         auto r1 = GEP64(allocR, pushRAParams[idxParam]);
                         builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
                         idx++;
@@ -5321,7 +5321,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     }
 
                     auto r0 = GEP64_PTR_PTR_I64(allocR, ip->a.u32);
-                    auto r1 = builder.CreateInBoundsGEP(I64_TY(), allocVA, pp.cst0_i32);
+                    auto r1 = builder.CreateInBoundsGEP(I64_TY(), allocVa, pp.cst0_i32);
                     builder.CreateStore(r1, r0);
                 }
                 break;

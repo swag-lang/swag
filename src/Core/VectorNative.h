@@ -294,7 +294,7 @@ struct VectorNative
         return *this;
     }
 
-    VectorNative& operator=(const VectorNative& other)
+    VectorNative& operator=(const VectorNative& other)  // NOLINT(bugprone-unhandled-self-assignment)
     {
         if (this == &other)
             return *this;

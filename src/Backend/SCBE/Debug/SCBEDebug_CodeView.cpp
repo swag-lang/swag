@@ -170,62 +170,62 @@ namespace
             switch (f->kind)
             {
                 case LF_ARGLIST:
-                    concat.addU32(f->LF_ArgList.count);
-                    for (const unsigned int arg : f->LF_ArgList.args)
+                    concat.addU32(f->lfArgList.count);
+                    for (const unsigned int arg : f->lfArgList.args)
                         concat.addU32(arg);
                     break;
 
                 // lfProc
                 case LF_PROCEDURE:
-                    concat.addU32(f->LF_Procedure.returnType);
+                    concat.addU32(f->lfProcedure.returnType);
                     concat.addU8(0); // calling convention
                     concat.addU8(0); // attributes
-                    concat.addU16(f->LF_Procedure.numArgs);
-                    concat.addU32(f->LF_Procedure.argsType);
+                    concat.addU16(f->lfProcedure.numArgs);
+                    concat.addU32(f->lfProcedure.argsType);
                     break;
 
                 // lfMFunc
                 case LF_MFUNCTION:
-                    concat.addU32(f->LF_MFunction.returnType);
-                    concat.addU32(f->LF_MFunction.structType);
-                    concat.addU32(f->LF_MFunction.thisType);
+                    concat.addU32(f->lfMFunction.returnType);
+                    concat.addU32(f->lfMFunction.structType);
+                    concat.addU32(f->lfMFunction.thisType);
                     concat.addU8(0); // calling convention
                     concat.addU8(0); // attributes
-                    concat.addU16(f->LF_MFunction.numArgs);
-                    concat.addU32(f->LF_MFunction.argsType);
+                    concat.addU16(f->lfMFunction.numArgs);
+                    concat.addU32(f->lfMFunction.argsType);
                     concat.addU32(0); // thisAdjust
                     break;
 
                 // lfFuncId
                 case LF_FUNC_ID:
-                    concat.addU32(0);                 // ParentScope
-                    concat.addU32(f->LF_FuncId.type); // @type
+                    concat.addU32(0);                // ParentScope
+                    concat.addU32(f->lfFuncId.type); // @type
                     emitTruncatedString(pp, f->node->token.text);
                     break;
 
                 // lfMFuncId
                 case LF_MFUNC_ID:
-                    concat.addU32(f->LF_MFuncId.parentType);
-                    concat.addU32(f->LF_MFuncId.type);
+                    concat.addU32(f->lfMFuncId.parentType);
+                    concat.addU32(f->lfMFuncId.type);
                     emitTruncatedString(pp, f->node->token.text);
                     break;
 
                 case LF_ARRAY:
-                    concat.addU32(f->LF_Array.elementType);
-                    concat.addU32(f->LF_Array.indexType);
+                    concat.addU32(f->lfArray.elementType);
+                    concat.addU32(f->lfArray.indexType);
                     concat.addU16(LF_ULONG);
-                    concat.addU32(f->LF_Array.sizeOf);
+                    concat.addU32(f->lfArray.sizeOf);
                     emitTruncatedString(pp, "");
                     break;
 
                 case LF_DERIVED:
-                    concat.addU32(static_cast<uint16_t>(f->LF_DerivedList.derived.size()));
-                    for (const auto& p : f->LF_DerivedList.derived)
+                    concat.addU32(static_cast<uint16_t>(f->lfDerivedList.derived.size()));
+                    for (const auto& p : f->lfDerivedList.derived)
                         concat.addU32(p);
                     break;
 
                 case LF_FIELDLIST:
-                    for (auto& p : f->LF_FieldList.fields)
+                    for (auto& p : f->lfFieldList.fields)
                     {
                         concat.addU16(p.kind);
                         concat.addU16(0x03); // private = 1, protected = 2, public = 3
@@ -252,9 +252,9 @@ namespace
                 // https://llvm.org/docs/PDB/CodeViewTypes.html#lf-pointer-0x1002
                 case LF_POINTER:
                 {
-                    concat.addU32(f->LF_Pointer.pointeeType);
+                    concat.addU32(f->lfPointer.pointeeType);
                     constexpr uint32_t kind      = 0x0C; // Near64
-                    const uint32_t     mode      = f->LF_Pointer.asRef ? CV_PTR_MODE_LVREF : 0;
+                    const uint32_t     mode      = f->lfPointer.asRef ? CV_PTR_MODE_LVREF : 0;
                     constexpr uint32_t modifiers = 0;
                     constexpr uint32_t size      = 8; // 64 bits
                     constexpr uint32_t flags     = 0;
@@ -264,21 +264,21 @@ namespace
                 }
 
                 case LF_ENUM:
-                    concat.addU16(f->LF_Enum.count);
+                    concat.addU16(f->lfEnum.count);
                     concat.addU16(0); // properties
-                    concat.addU32(f->LF_Enum.underlyingType);
-                    concat.addU32(f->LF_Enum.fieldList);
+                    concat.addU32(f->lfEnum.underlyingType);
+                    concat.addU32(f->lfEnum.fieldList);
                     emitTruncatedString(pp, f->name);
                     break;
 
                 case LF_STRUCTURE:
-                    concat.addU16(f->LF_Structure.memberCount);
-                    concat.addU16(f->LF_Structure.forward ? 0x80 : 0); // properties
-                    concat.addU32(f->LF_Structure.fieldList);          // field
-                    concat.addU32(f->LF_Structure.derivedList);        // derivedFrom
-                    concat.addU32(0);                                  // vTableShape
-                    concat.addU16(LF_ULONG);                           // LF_ULONG
-                    concat.addU32(f->LF_Structure.sizeOf);
+                    concat.addU16(f->lfStructure.memberCount);
+                    concat.addU16(f->lfStructure.forward ? 0x80 : 0); // properties
+                    concat.addU32(f->lfStructure.fieldList);          // field
+                    concat.addU32(f->lfStructure.derivedList);        // derivedFrom
+                    concat.addU32(0);                                 // vTableShape
+                    concat.addU16(LF_ULONG);                          // LF_ULONG
+                    concat.addU32(f->lfStructure.sizeOf);
                     emitTruncatedString(pp, f->name);
                     break;
                 default:
@@ -603,7 +603,7 @@ namespace
             const auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
             const auto patchLTOffset = concat.totalCount();
 
-            constexpr uint32_t CV_INLINEE_SOURCE_LINE_SIGNATURE = 0;
+            static constexpr uint32_t CV_INLINEE_SOURCE_LINE_SIGNATURE = 0;
             concat.addU32(CV_INLINEE_SOURCE_LINE_SIGNATURE);
 
             const auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);
@@ -816,15 +816,15 @@ namespace
             tr->node      = f.node;
             if (typeFunc->isMethod())
             {
-                tr->kind                  = LF_MFUNC_ID;
-                const auto typeThis       = castTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
-                tr->LF_MFuncId.parentType = SCBEDebug::getOrCreateType(pp, typeThis->pointedType);
-                tr->LF_MFuncId.type       = SCBEDebug::getOrCreateType(pp, typeFunc);
+                tr->kind                 = LF_MFUNC_ID;
+                const auto typeThis      = castTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
+                tr->lfMFuncId.parentType = SCBEDebug::getOrCreateType(pp, typeThis->pointedType);
+                tr->lfMFuncId.type       = SCBEDebug::getOrCreateType(pp, typeFunc);
             }
             else
             {
-                tr->kind           = LF_FUNC_ID;
-                tr->LF_FuncId.type = SCBEDebug::getOrCreateType(pp, typeFunc);
+                tr->kind          = LF_FUNC_ID;
+                tr->lfFuncId.type = SCBEDebug::getOrCreateType(pp, typeFunc);
             }
 
             // Symbol

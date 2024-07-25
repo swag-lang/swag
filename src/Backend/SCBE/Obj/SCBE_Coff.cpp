@@ -344,6 +344,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
 
         // tls section
         /////////////////////////////////////////////
+        // ReSharper disable once CppAssignedValueIsNeverUsed
         pp.sectionIndexTLS = secIndex++;
         concat.addStringN(".data\0\0\0", 8);                       // .Name
         concat.addU32(0);                                          // .VirtualSize

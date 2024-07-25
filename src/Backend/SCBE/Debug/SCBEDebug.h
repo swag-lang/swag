@@ -96,17 +96,17 @@ struct SCBEDebugTypeRecord
 {
     Utf8                           name;
     AstNode*                       node = nullptr;
-    SCBEDebugTypeRecordArgList     LF_ArgList;
-    SCBEDebugTypeRecordProcedure   LF_Procedure;
-    SCBEDebugTypeRecordMFunction   LF_MFunction;
-    SCBEDebugTypeRecordFuncId      LF_FuncId;
-    SCBEDebugTypeRecordMFuncId     LF_MFuncId;
-    SCBEDebugTypeRecordFieldList   LF_FieldList;
-    SCBEDebugTypeRecordDerivedList LF_DerivedList;
-    SCBEDebugTypeRecordStructure   LF_Structure;
-    SCBEDebugTypeRecordArray       LF_Array;
-    SCBEDebugTypeRecordPointer     LF_Pointer;
-    SCBEDebugTypeRecordEnum        LF_Enum;
+    SCBEDebugTypeRecordArgList     lfArgList;
+    SCBEDebugTypeRecordProcedure   lfProcedure;
+    SCBEDebugTypeRecordMFunction   lfMFunction;
+    SCBEDebugTypeRecordFuncId      lfFuncId;
+    SCBEDebugTypeRecordMFuncId     lfMFuncId;
+    SCBEDebugTypeRecordFieldList   lfFieldList;
+    SCBEDebugTypeRecordDerivedList lfDerivedList;
+    SCBEDebugTypeRecordStructure   lfStructure;
+    SCBEDebugTypeRecordArray       lfArray;
+    SCBEDebugTypeRecordPointer     lfPointer;
+    SCBEDebugTypeRecordEnum        lfEnum;
     SCBEDebugTypeIndex             index = 0;
     uint16_t                       kind  = 0;
 };

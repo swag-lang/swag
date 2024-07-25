@@ -679,11 +679,11 @@ llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
     // Make the call
     const auto typeF = getOrCreateFuncType(buildParameters, typeFuncBC);
     auto       func  = modu.getOrInsertFunction(funcName.c_str(), typeF);
-    const auto F     = llvm::dyn_cast<llvm::Function>(func.getCallee());
+    const auto func1 = llvm::dyn_cast<llvm::Function>(func.getCallee());
 
     // Why this can be null ????
-    if (F && !localCall)
-        F->setDLLStorageClass(llvm::GlobalValue::DLLImportStorageClass);
+    if (func1 && !localCall)
+        func1->setDLLStorageClass(llvm::GlobalValue::DLLImportStorageClass);
 
     return builder.CreateCall(func, {params.begin(), params.end()});
 }
@@ -945,8 +945,8 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
             // Closure call. Normal call, as the type contains the first parameter.
             builder.SetInsertPoint(blockClosure);
             ft                 = getOrCreateFuncType(buildParameters, typeFuncCall);
-            const auto cPT     = llvm::PointerType::getUnqual(ft);
-            const auto cR1     = builder.CreateIntToPtr(v1, cPT);
+            const auto cPt     = llvm::PointerType::getUnqual(ft);
+            const auto cR1     = builder.CreateIntToPtr(v1, cPt);
             const auto cResult = builder.CreateCall(ft, cR1, {fctParams.begin(), fctParams.end()});
             SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, cResult));
             builder.CreateBr(blockNext);
@@ -954,8 +954,8 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
         else
         {
             ft                      = getOrCreateFuncType(buildParameters, typeFuncCall);
-            const auto PT           = llvm::PointerType::getUnqual(ft);
-            const auto r1           = builder.CreateIntToPtr(v1, PT);
+            const auto pt           = llvm::PointerType::getUnqual(ft);
+            const auto r1           = builder.CreateIntToPtr(v1, pt);
             const auto returnResult = builder.CreateCall(ft, r1, {fctParams.begin(), fctParams.end()});
             SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, returnResult));
             builder.CreateBr(blockNext);

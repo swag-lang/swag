@@ -19,21 +19,21 @@ enum class SyntaxColor
     SyntaxInvalid,
 };
 
-static auto SYN_CODE      = "SCde";
-static auto SYN_COMMENT   = "SCmt";
-static auto SYN_COMPILER  = "SCmp";
-static auto SYN_FUNCTION  = "SFct";
-static auto SYN_CONSTANT  = "SCst";
-static auto SYN_INTRINSIC = "SItr";
-static auto SYN_TYPE      = "STpe";
-static auto SYN_KEYWORD   = "SKwd";
-static auto SYN_LOGIC     = "SLgc";
-static auto SYN_NUMBER    = "SNum";
-static auto SYN_STRING    = "SStr";
-static auto SYN_ATTRIBUTE = "SAtr";
-static auto SYN_DEFAULT   = "SDft";
-static auto SYN_INVALID   = "SInv";
-static auto SYN_REGISTER  = "SBcR";
+static constexpr auto SYN_CODE      = "SCde";
+static constexpr auto SYN_COMMENT   = "SCmt";
+static constexpr auto SYN_COMPILER  = "SCmp";
+static constexpr auto SYN_FUNCTION  = "SFct";
+static constexpr auto SYN_CONSTANT  = "SCst";
+static constexpr auto SYN_INTRINSIC = "SItr";
+static constexpr auto SYN_TYPE      = "STpe";
+static constexpr auto SYN_KEYWORD   = "SKwd";
+static constexpr auto SYN_LOGIC     = "SLgc";
+static constexpr auto SYN_NUMBER    = "SNum";
+static constexpr auto SYN_STRING    = "SStr";
+static constexpr auto SYN_ATTRIBUTE = "SAtr";
+static constexpr auto SYN_DEFAULT   = "SDft";
+static constexpr auto SYN_INVALID   = "SInv";
+static constexpr auto SYN_REGISTER  = "SBcR";
 
 enum class SyntaxColorMode
 {

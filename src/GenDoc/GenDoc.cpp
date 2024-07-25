@@ -7,14 +7,11 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-namespace
-{
-    auto START_NOTE      = "> NOTE:";
-    auto START_TIP       = "> TIP:";
-    auto START_WARNING   = "> WARNING:";
-    auto START_ATTENTION = "> ATTENTION:";
-    auto START_EXAMPLE   = "> EXAMPLE:";
-}
+static constexpr auto START_NOTE      = "> NOTE:";
+static constexpr auto START_TIP       = "> TIP:";
+static constexpr auto START_WARNING   = "> WARNING:";
+static constexpr auto START_ATTENTION = "> ATTENTION:";
+static constexpr auto START_EXAMPLE   = "> EXAMPLE:";
 
 void GenDoc::outputStyles()
 {
