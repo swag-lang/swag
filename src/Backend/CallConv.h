@@ -9,6 +9,7 @@ enum CallConvKind
     Max
 };
 
+// ReSharper disable CppInconsistentNaming
 enum CPURegister : uint8_t
 {
     RAX  = 0b0000,
@@ -33,6 +34,7 @@ enum CPURegister : uint8_t
     XMM3 = 0b0011,
     RIP  = 0b10000,
 };
+// ReSharper restore CppInconsistentNaming
 
 struct CallConv
 {
