@@ -913,7 +913,7 @@ bool Semantic::solveWhereExpr(SemanticContext* context, OneMatch* oneMatch, AstF
 
     if (!expr->hasFlagComputedValue())
     {
-        const auto node            = context->node;
+        const auto node          = context->node;
         context->whereParameters = oneMatch->oneOverload->callParameters;
 
         ErrCxtStepKind type;
@@ -923,7 +923,7 @@ bool Semantic::solveWhereExpr(SemanticContext* context, OneMatch* oneMatch, AstF
             type = ErrCxtStepKind::Where;
 
         PushErrCxtStep ec(context, node, type, nullptr);
-        const auto     result      = executeCompilerNode(context, expr, false);
+        const auto     result    = executeCompilerNode(context, expr, false);
         context->whereParameters = nullptr;
         if (!result)
             return false;

@@ -408,7 +408,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
         SWAG_CHECK(doWhere(node, &node->block));
     else
         SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
-    
+
     return true;
 }
 

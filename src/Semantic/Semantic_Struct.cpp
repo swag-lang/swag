@@ -812,11 +812,11 @@ bool Semantic::solveWhereExpr(SemanticContext* context, AstStruct* structDecl)
 
     if (!expr->hasFlagComputedValue())
     {
-        const auto node            = context->node;
+        const auto node          = context->node;
         context->whereParameters = structDecl->genericParameters;
 
         PushErrCxtStep ec(context, node, ErrCxtStepKind::Where, nullptr);
-        const auto     result      = executeCompilerNode(context, expr, false);
+        const auto     result    = executeCompilerNode(context, expr, false);
         context->whereParameters = nullptr;
         if (!result)
             return false;
