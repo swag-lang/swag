@@ -9,7 +9,7 @@
 }
 
 /**
-Unlike the C function `main()`, there's no argument, but you can use the intrinsic `@args` to get a slice of all the parameters.
+Unlike the C function `main()`, there's no argument, but you can use the intrinsic `@args` to get a slice of all the specified program arguments.
 */
 #main
 {

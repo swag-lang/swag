@@ -72,7 +72,7 @@ It works with generics too, and can be mixed with static declarations.
 }
 
 /**
-`#ast` needs to return a *string like* value, which can of course be dynamically constructed.
+`#ast` needs to return a *string like* value, which can of course be dynamically constructed. In real life we should use the Core.String struct here. But instead we do it by hand, for the purpose of the example.
 */
 #test
 {

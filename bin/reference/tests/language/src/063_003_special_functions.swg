@@ -1,5 +1,7 @@
 /**
-A struct can have special operations in the `impl` block. This operations are predefined, and known by the compiler.This is the way to go to **overload operators** for example.
+A struct can have special operations in the `impl` block. This operations are predefined, and known by the compiler.
+
+This is the way to go to **overload operators** for example.
 */
 
 struct Struct

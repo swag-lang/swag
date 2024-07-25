@@ -3,7 +3,7 @@ Swag can interop with external "modules" (dlls under windows), which contain exp
 
 Put a special attribute `Swag.Foreign` before the function prototype, and specify the module name where the function is located.
 
-The module name can be a swag compiled module, or an external system module (where the location depends on the OS).
+The module name can be a Swag compiled module, or an external system module (where the location depends on the OS).
 */
 
 /**

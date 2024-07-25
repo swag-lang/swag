@@ -13,7 +13,7 @@ You can visit a struct variable if a macro `opVisit` has been defined. This is t
 `opVisit` is a macro, so it should be marked with the `#[Swag.Macro]` attribute.
 `opVisit` is also a generic function which takes two compile time generic parameters of type `bool`.
 * if 'ptr' is 'true', indicates that we should visit by address
-* if 'back' is 'true", indicated that we want to visit in reverse order (from back to front)
+* if 'back' is 'true', indicates that we want to visit in reverse order (from back to front)
 */
 impl MyStruct
 {
@@ -39,7 +39,7 @@ impl MyStruct
                 // #alias0 will be the value
                 var #alias0: s32 = undefined
 
-                // As this code is in the caller scope, with need to add a '#up' before 'idx' to
+                // As this code is in the caller scope, we need to add a '#up' before 'idx' to
                 // reference the variable of this function (and not a potential variable in
                 // the caller scope)
                 switch #up idx
@@ -63,7 +63,7 @@ impl MyStruct
 }
 
 /**
-So now that the `opVisit` has been defined, we can `visit` it.
+So now that the `opVisit` has been defined, we can `visit` a variable of type 'MyStruct'.
 */
 #test
 {

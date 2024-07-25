@@ -77,7 +77,7 @@ All functions in an `impl` block can be retrieved by reflection, as long as the 
     var fnZ: Lambda
 
     // The 'typeinfo' of a struct contains a field 'methods' which is a slice
-    let t = @typeof(MyStruct)
+    let t = MyStruct
     visit p: t.methods
     {
         // When visiting 'methods', the 'value' field contains the function pointer,

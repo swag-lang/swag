@@ -14,7 +14,7 @@ The loop expression value is evaluated **once**, and must be a **positive value*
 }
 
 /**
-The intrinsic `#index` returns the current index of the loop, starting at 0.
+The compiler keyword `#index` returns the current index of the loop, starting at 0.
 */
 #test
 {
@@ -204,12 +204,13 @@ A loop without an expression but with a block is infinite. This is equivalent to
 
 /**
 # where
-You can add a 'where" instruction after the 'loop', to apply a filter on the indexes you want to visit.
+You can add a 'where' instruction after the 'loop', to apply a filter on the indexes you want to visit.
 */
 #test
 {
     var result = 0
 
+    // Will only visit 'even' indexes.
     loop i: 10 where i % 2 == 0
     {
         result += i

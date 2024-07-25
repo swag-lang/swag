@@ -30,8 +30,8 @@ You can use a lambda as a function parameter type.
 */
 #test
 {
-    typealias callback = func(s32)->s32
-    func toDo(value: s32, ptr: callback)->s32 => ptr(value)
+    typealias Callback = func(s32)->s32
+    func toDo(value: s32, ptr: Callback)->s32 => ptr(value)
 
     func square(x: s32) => x * x
     @assert(toDo(4, &square) == 16)
@@ -54,8 +54,8 @@ Anonymous functions can be passed as parameters to another function.
 */
 #test
 {
-    typealias callback = func(s32)->s32
-    func toDo(value: s32, ptr: callback)->s32 => ptr(value)
+    typealias Callback = func(s32)->s32
+    func toDo(value: s32, ptr: Callback)->s32 => ptr(value)
 
     @assert(toDo(4, func(x: s32) => x * x) == 16)
     @assert(toDo(4, func(x: s32) => x + x) == 8)
@@ -67,8 +67,8 @@ The types of the parameters can be deduced.
 */
 #test
 {
-    typealias callback = func(s32)->s32
-    func toDo(value: s32, ptr: callback)->s32 => ptr(value)
+    typealias Callback = func(s32)->s32
+    func toDo(value: s32, ptr: Callback)->s32 => ptr(value)
 
     @assert(toDo(4, func(x) => x * x) == 16)
     @assert(toDo(4, func(x) => x + x) == 8)

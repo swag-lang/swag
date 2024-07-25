@@ -214,7 +214,7 @@ But be aware that a reference to an external value (like a 'string', an 'any' et
 # defer
 Throwing an error is equivalent to returning from the function. So a 'defer' expression works also in that case.
 
-But `defer` can have specific parameters like `defer,err` or `defer,noerr` to control if it should be executed depending on the error status.
+But `defer` can have specific modifiers like `err` or `noerr` to control if it should be executed depending on the error status.
 
 | `defer,err`   | will be called for each 'throw', so only when an error is raised
 | `defer,noerr` | will be called only when the function returns in a normal way

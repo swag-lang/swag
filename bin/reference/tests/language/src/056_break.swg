@@ -72,7 +72,7 @@ When used with a scope, a continue is a way to go back to the start of the scope
 }
 
 /**
-You are not obliged to name the scope, so this can also be used (for example) as an alternative of a bunch of if/else.
+It's not mandatory to name the scope, so this can also be used (for example) as an alternative of a bunch of if/else.
 */
 #test
 {

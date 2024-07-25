@@ -59,7 +59,13 @@ When called on a struct, the struct will be restored to the values defined in it
     struct RGB { r = 1, g = 2, b = 3 }
 
     var rgb: RGB{10, 20, 30}
+
+    @assert(rgb.r == 10)
+    @assert(rgb.g == 20)
+    @assert(rgb.b == 30)
+
     @init(rgb)
+
     @assert(rgb.r == 1)
     @assert(rgb.g == 2)
     @assert(rgb.b == 3)
@@ -73,7 +79,13 @@ But you can also specified the values.
     struct RGB { r = 1, g = 2, b = 3 }
 
     var rgb: RGB{10, 20, 30}
+
+    @assert(rgb.r == 10)
+    @assert(rgb.g == 20)
+    @assert(rgb.b == 30)
+
     @init(rgb)(5, 6, 7)
+
     @assert(rgb.r == 5)
     @assert(rgb.g == 6)
     @assert(rgb.b == 7)
@@ -102,7 +114,7 @@ And this works also for array.
 # @drop
 For a struct, `@init` will **not** call `opDrop`, so this is mostly useful to initialize a plain old data.
 
-But there is also `@drop` intrinsic, which works the same, except that it will `drop` all the content by calling `opDrop` if it is defined.
+But there is also a `@drop` intrinsic, which works the same, except that it will `drop` all the content by calling `opDrop` if it is defined.
 */
 #test
 {

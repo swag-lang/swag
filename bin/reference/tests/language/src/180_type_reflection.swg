@@ -76,7 +76,7 @@ The `TypeInfo` structure contains a different enum value for each type.
 }
 
 /**
-`@decltype` can evaluate a constexpr expression that returns a `typeinfo` to determine the real type.
+`@decltype` can evaluate a *constexpr* expression that returns a `typeinfo` to determine the real type.
 */
 #test
 {

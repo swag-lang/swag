@@ -128,7 +128,7 @@ A `case` expression doesn't need to be constant.
 }
 
 /**
-# The complete attribute
+# The Swag.Complete attribute
 `switch` can be marked with `Swag.Complete` to force all the cases to be covered. If one or more values are missing, an error will be raised by the compiler.
 */
 #test

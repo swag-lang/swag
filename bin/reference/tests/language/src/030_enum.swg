@@ -418,23 +418,21 @@ By type reflection, you can loop/visit all values of an enum.
 */
 #test
 {
+    enum RGB { R, G, B }
+
+    var cpt = 0
+    loop idx: RGB do
+        cpt += 1
+    @assert(cpt == 3)
+
+    visit val: RGB
     {
-        enum RGB { R, G, B }
-
-        var cpt = 0
-        loop idx: RGB do
-            cpt += 1
-        @assert(cpt == 3)
-
-        visit val: RGB
+        switch val
         {
-            switch val
-            {
-            case R:     break
-            case G:     break
-            case B:     break
-            default:    @assert(false)
-            }
+        case R:     break
+        case G:     break
+        case B:     break
+        default:    @assert(false)
         }
     }
 }

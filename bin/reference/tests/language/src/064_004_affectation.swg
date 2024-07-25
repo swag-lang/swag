@@ -62,6 +62,9 @@ Here the variable `v` will not be initialized prior to the affectation. This is 
     @assert(v.z == 2)
 }
 
+/**
+By default, there's no automatic conversion ('opAffect' call) for a function argument, so you must cast.
+*/
 #test
 {
     func toto(v: Struct)
@@ -76,8 +79,7 @@ Here the variable `v` will not be initialized prior to the affectation. This is 
         @assert(v.y == 666)
     }
 
-    // By default, there's no automatic conversion for a function argument, so you must cast.
-    // Here, this will create a 'Struct' on the stack, initialized with a call to 'opAffect(s32)'
+    // This will create a 'Struct' on the stack, initialized with a call to 'opAffect(s32)'
     toto(cast(Struct) 5's32)
 
     // But if opAffect is marked with #[Swag.Implicit], automatic conversion can occur.

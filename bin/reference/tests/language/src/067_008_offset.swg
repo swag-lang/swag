@@ -12,7 +12,7 @@ You can force the layout of a field with the `Swag.Offset` attribute.
         y: s32
     }
 
-    // They are 2 fields in the struct but stored in only one s32, so the total size is 4 bytes.
+    // There are 2 fields in the struct but stored in only one s32, so the total size is 4 bytes.
     #assert @sizeof(MyStruct) == 4
 
     var v = MyStruct{}

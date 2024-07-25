@@ -59,7 +59,8 @@ Most of the time, you have to take the address of a variable to make a reference
 
 #test
 {
-    // We can pass a literal because the parameter 'x' of 'toto' is 'const ref' and not just 'ref'.
+    // We can pass a literal because the parameter 'x' of 'toto' is a const reference, 
+    // and not just a reference.
     toto(4)
 }
 

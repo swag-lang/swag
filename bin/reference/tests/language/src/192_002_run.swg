@@ -32,7 +32,7 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
 
 /**
 # #run block
-`#run` is also a special function that will be called by the compiler. You can have as many '#run' block as you want, but be aware that the execution order in that case is random.
+`#run` is also a special function that will be called by the compiler. You can have as many '#run' block as you want, but be aware that the execution order in that case is undefined.
 */
 
 /**
@@ -146,5 +146,5 @@ Can also be used to initialize a plain old data struct. Note that you can also f
 
 /**
 > NOTE:
-> You can also convert a complex struct (which uses the heap for example), as long the struct implements 'opCount' and 'opSlice'. In that case, the resulting type will be a static array. The compiler will call 'opcount' to get the size of the array, and 'opSlice' to initialize its content. If the struct implements 'opDrop', then it will be called after the conversion to an array has been done.
+> You can also convert a complex struct (which uses the heap for example), as long the struct implements 'opCount' and 'opSlice'. In that case, the resulting type will be a static array. The compiler will call 'opCount' to get the size of the array, and 'opSlice' to initialize its content. If the struct implements 'opDrop', then it will be called after the conversion to an array has been done.
 */

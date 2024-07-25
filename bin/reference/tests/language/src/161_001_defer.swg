@@ -10,7 +10,7 @@
 }
 
 /**
-`defer` can also be used with a block.
+`defer` can also be used within a block.
 */
 #test
 {

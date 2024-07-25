@@ -1,5 +1,5 @@
 /**
-#Single evaluation
+# Single evaluation
 On a function, you can use `where` to check if the usage of the function is correct.
 
 If the `where` expression returns false, then the function will not be considered for the call. If there's no other overload to match, then the compiler will raise an error.
@@ -84,7 +84,7 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
     func(T) sum(x, y: T)->T
         where
         {
-            if @typeof(T) == s32 or @typeof(T) == s64 do
+            if T == s32 or T == s64 do
                 return true
             @compilererror("invalid type " ++ @stringof(T), @location(T))
             return false
@@ -113,12 +113,12 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
     var v: Point'f32
 
     // Error.
-    //var v: Point's32
+    // var v: Point's32
 }
 
 /**
 # Multiple evaluations
-You can add the specific modifier `each` to `where`. 
+You can add the specific modifier `call` just after the `where`. 
 The expression will then not only be called once per instance, but will be evaluated for **each** call. So it can be used to check call parameters, as long as they can be **evaluated at compile time**.
 */
 #test

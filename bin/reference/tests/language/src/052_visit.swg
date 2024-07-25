@@ -142,7 +142,7 @@ You can visit with a pointer to the value, and not the value itself, by adding `
 
 /**
 # where
-You can add a 'where" instruction after the 'visit', to apply a filter on the elements you want to visit.
+You can add a 'where' instruction after the 'visit', to apply a filter on the elements you want to visit.
 */
 #test
 {
