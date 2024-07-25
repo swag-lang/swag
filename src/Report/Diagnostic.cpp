@@ -343,7 +343,7 @@ void Diagnostic::collectRanges()
         {
             int decal = r.startLocation.column;
 
-            // If this is a word, than take the whole word
+            // If this is a word, then take the whole word
             if ((lineCode[decal] & 0x80) == 0)
             {
                 const bool isCWord = isalpha(lineCode[decal]) || lineCode[decal] == '_' || lineCode[decal] == '#' || lineCode[decal] == '@';

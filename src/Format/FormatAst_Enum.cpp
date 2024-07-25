@@ -12,10 +12,10 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
         return true;
 
     VectorNative<AstNode*> nodes;
-    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE, node, start, nodes, processed, [](const AstNode* node) {
-            if (node->kind != AstNodeKind::EnumValue)
+    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE, node, start, nodes, processed, [](const AstNode* inNode) {
+            if (inNode->kind != AstNodeKind::EnumValue)
                 return true;
-            if (node->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
+            if (inNode->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
                 return true;
             return false;
         }))

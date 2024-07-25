@@ -37,15 +37,15 @@ void Workspace::cleanPublic(const Path& basePath)
             auto path = basePath;
             path.append(folder);
             path.append(SWAG_PUBLIC_FOLDER);
-            std::error_code err;
-            if (std::filesystem::exists(path, err))
+            std::error_code inErr;
+            if (std::filesystem::exists(path, inErr))
             {
                 // Clean all targets
-                OS::visitFolders(path.c_str(), [&path](const char* folder) {
+                OS::visitFolders(path.c_str(), [&path](const char* inFolder) {
                     auto cfgpath = path;
-                    cfgpath.append(folder);
-                    std::error_code err;
-                    if (std::filesystem::exists(path, err))
+                    cfgpath.append(inFolder);
+                    std::error_code inErr1;
+                    if (std::filesystem::exists(path, inErr1))
                     {
                         g_Log.messageHeaderCentered("Cleaning", cfgpath);
                         cleanFolderContent(cfgpath);

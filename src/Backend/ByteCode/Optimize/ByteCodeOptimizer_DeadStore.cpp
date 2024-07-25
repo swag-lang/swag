@@ -5,7 +5,7 @@
 // read of that register between them, then the first write is useless and can be removed
 bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
-    parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, const ByteCodeOptTreeParseContext& parseCxt) {
+    parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* inContext, const ByteCodeOptTreeParseContext& parseCxt) {
         const auto ip    = parseCxt.curIp;
         const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
 
@@ -35,10 +35,10 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
         if (regScan == UINT32_MAX)
             return;
 
-        if (hasReadRefToReg(context, regScan, parseCxt.curNode, ip))
+        if (hasReadRefToReg(inContext, regScan, parseCxt.curNode, ip))
             return;
 
-        setNop(context, ip);
+        setNop(inContext, ip);
     });
 
     return true;
@@ -122,7 +122,7 @@ namespace
 bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
 {
     context->mark = 0;
-    parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, const ByteCodeOptTreeParseContext& parseCxt) {
+    parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* inContext, const ByteCodeOptTreeParseContext& parseCxt) {
         const auto ip = parseCxt.curIp;
         switch (ip->op)
         {
@@ -145,18 +145,18 @@ bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
                 return;
         }
 
-        ByteCodeOptTreeNode* node = &context->tree[parseCxt.curNode];
+        ByteCodeOptTreeNode* node = &inContext->tree[parseCxt.curNode];
         if (node->parent.empty())
             return;
 
-        context->mark++;
+        inContext->mark++;
 
         bool canRemove = false;
-        if (!optimizePassDeadStoreDupScan(context, parseCxt.curNode, node, ip, ip - 1, canRemove))
+        if (!optimizePassDeadStoreDupScan(inContext, parseCxt.curNode, node, ip, ip - 1, canRemove))
             return;
 
         if (canRemove)
-            setNop(context, ip);
+            setNop(inContext, ip);
     });
 
     return true;

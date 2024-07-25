@@ -476,10 +476,10 @@ bool FormatAst::outputChildrenFuncDecl(FormatContext& context, AstNode* node, ui
         return true;
 
     VectorNative<AstNode*> nodes;
-    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* node) {
-            if (node->kind != AstNodeKind::FuncDecl)
+    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* inNode) {
+            if (inNode->kind != AstNodeKind::FuncDecl)
                 return true;
-            if (!node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM | AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
+            if (!inNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM | AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
                 return true;
             return false;
         }))

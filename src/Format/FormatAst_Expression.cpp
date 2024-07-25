@@ -61,8 +61,8 @@ bool FormatAst::outputChildrenAffectEqual(FormatContext& context, AstNode* node,
         return true;
 
     VectorNative<AstNode*> nodes;
-    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* node) {
-            if (node->kind != AstNodeKind::AffectOp || node->token.text != "=")
+    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* inNode) {
+            if (inNode->kind != AstNodeKind::AffectOp || inNode->token.text != "=")
                 return true;
             return false;
         }))

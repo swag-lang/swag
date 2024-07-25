@@ -4646,10 +4646,10 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 auto v0     = GEP8(ra, offsetof(SwagContext, hasError));
                 auto hasErr = builder.CreateLoad(I32_TY(), v0);
 
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelTrue  = getOrCreateLabel(pp, func, i + 1);
                 auto b0         = builder.CreateIsNull(hasErr);
-                builder.CreateCondBr(b0, labelFalse, labelTrue);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
@@ -5220,7 +5220,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CopySPVaargs:
             {
-                SWAG_ASSERT(allocVA);
+                SWAG_ASSERT(allocVa);
 
                 // We need to make all variadic parameters contiguous in stack, and point to that address
                 // Two cases here :

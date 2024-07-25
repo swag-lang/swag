@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 
-bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* inContext)
 {
-    context->map32Node.clear();
-    parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt) {
+    inContext->map32Node.clear();
+    parseTree(inContext, 0, inContext->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt) {
         ByteCodeOptTreeNode* node = &context->tree[parseCxt.curNode];
         parseCxt.curIp            = node->end;
 
