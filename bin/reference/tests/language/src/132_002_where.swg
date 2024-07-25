@@ -118,7 +118,7 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
 
 /**
 # Multiple evaluations
-You can add the specific modifier `call` just after the `where`. 
+You can add the specific mode `call` just after `where`. 
 The expression will then not only be called once per instance, but will be evaluated for **each** call. So it can be used to check call parameters, as long as they can be **evaluated at compile time**.
 */
 #test
