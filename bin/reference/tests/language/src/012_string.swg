@@ -213,7 +213,7 @@ A raw string can spawn on multiple lines because the line feed is now part of th
 }
 
 /**
-Every blanks **before** the ending mark `"@` will be removed from every other lines, so the string before is equivalent to :
+Every blanks **before** the ending mark `"#` will be removed from every other lines, so the string before is equivalent to :
 */
 #test
 {

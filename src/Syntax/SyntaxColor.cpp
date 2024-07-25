@@ -653,6 +653,12 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                         result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                         break;
 
+                    case TokenId::IntrinsicIndex:
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
+                        result += identifier;
+                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                        break;
+
                     default:
                         if (identifier[0] == '@')
                         {
@@ -674,9 +680,21 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                         break;
                 }
             }
+            else if (identifier.startsWith("#alias") || identifier.startsWith("#mixin"))
+            {
+                result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
+                result += identifier;
+                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+            }
             else if (identifier[0] == '@')
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
+                result += identifier;
+                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+            }
+            else if (identifier[0] == '#')
+            {
+                result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
                 result += identifier;
                 result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
             }

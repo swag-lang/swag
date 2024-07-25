@@ -203,8 +203,12 @@
 <li><a href="#_051_loop_swg_break,_continue">break, continue</a></li>
 <li><a href="#_051_loop_swg_Ranges">Ranges</a></li>
 <li><a href="#_051_loop_swg_Infinite_loop">Infinite loop</a></li>
+<li><a href="#_051_loop_swg_where">where</a></li>
 </ul>
 <li><a href="#_052_visit_swg">Visit</a></li>
+<ul>
+<li><a href="#_052_visit_swg_where">where</a></li>
+</ul>
 <li><a href="#_053_for_swg">For</a></li>
 <li><a href="#_054_while_swg">While</a></li>
 <li><a href="#_055_switch_swg">Switch</a></li>
@@ -530,60 +534,65 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SLgc">if</span>
 <span class="SLgc">else</span>
 <span class="SLgc">elif</span>
-<span class="SLgc">switch</span>
-<span class="SLgc">case</span>
-<span class="SLgc">default</span>
-<span class="SLgc">break</span>
-<span class="SLgc">continue</span>
-<span class="SLgc">fallthrough</span>
-<span class="SLgc">unreachable</span>
 <span class="SLgc">for</span>
-<span class="SLgc">loop</span>
 <span class="SLgc">while</span>
-<span class="SLgc">visit</span>
-<span class="SLgc">return</span>
+<span class="SLgc">switch</span>
 <span class="SLgc">defer</span>
+<span class="SLgc">loop</span>
+<span class="SLgc">visit</span>
+<span class="SLgc">break</span>
+<span class="SLgc">fallthrough</span>
+<span class="SLgc">return</span>
+<span class="SLgc">case</span>
+<span class="SLgc">continue</span>
+<span class="SLgc">default</span>
 <span class="SLgc">and</span>
 <span class="SLgc">or</span>
 <span class="SLgc">orelse</span>
+<span class="SLgc">unreachable</span>
 <span class="SLgc">to</span>
 <span class="SLgc">until</span>
+<span class="SLgc">do</span>
+<span class="SLgc">where</span>
 
-<span class="SKwd">false</span>
 <span class="SKwd">true</span>
+<span class="SKwd">false</span>
 <span class="SKwd">null</span>
 <span class="SKwd">undefined</span>
-<span class="SKwd">retval</span>
 
-<span class="SKwd">const</span>
-<span class="SKwd">var</span>
-<span class="SKwd">let</span>
-ref
-<span class="SKwd">moveref</span>
-<span class="SKwd">acast</span>
+<span class="SKwd">using</span>
+<span class="SKwd">with</span>
 <span class="SKwd">cast</span>
-<span class="SKwd">assume</span>
+<span class="SKwd">acast</span>
+<span class="SKwd">dref</span>
+<span class="SKwd">retval</span>
 <span class="SKwd">try</span>
+<span class="SKwd">trycatch</span>
 <span class="SKwd">catch</span>
+<span class="SKwd">assume</span>
 <span class="SKwd">throw</span>
-<span class="SKwd">closure</span>
-<span class="SKwd">func</span>
-<span class="SKwd">mtd</span>
-<span class="SKwd">attr</span>
-<span class="SKwd">enum</span>
-<span class="SKwd">struct</span>
-<span class="SKwd">union</span>
-<span class="SKwd">namespace</span>
-<span class="SKwd">impl</span>
+<span class="SKwd">discard</span>
+
 <span class="SKwd">public</span>
 <span class="SKwd">internal</span>
 <span class="SKwd">private</span>
+
+<span class="SKwd">enum</span>
+<span class="SKwd">struct</span>
+<span class="SKwd">union</span>
+<span class="SKwd">impl</span>
 <span class="SKwd">interface</span>
-<span class="SKwd">using</span>
+<span class="SKwd">func</span>
+<span class="SKwd">closure</span>
+<span class="SKwd">mtd</span>
+<span class="SKwd">namespace</span>
 <span class="SKwd">typealias</span>
 <span class="SKwd">namealias</span>
-<span class="SKwd">discard</span>
-<span class="SKwd">dref</span></span></div>
+<span class="SKwd">attr</span>
+<span class="SKwd">var</span>
+<span class="SKwd">let</span>
+<span class="SKwd">const</span>
+<span class="SKwd">moveref</span></span></div>
 <h3 id="_005_keywords_swg_Reserved_keywords">Reserved keywords </h3>
 <p>These keywords are reserved by the language, just in case... </p>
 <div class="code-block"><span class="SCde"><span class="SInv">is</span>
@@ -612,59 +621,65 @@ ref
 <span class="STpe">cvarargs</span></span></div>
 <h3 id="_005_keywords_swg_Compiler_keywords">Compiler keywords </h3>
 <p>Compiler keywords always start with <span class="code-inline">#</span>. As user identifiers cannot start the same way, compiler keywords will never collide with user identifiers. </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#arch</span>
-<span class="SCmp">#backend</span>
-<span class="SCmp">#callerfunction</span>
-<span class="SCmp">#callerlocation</span>
-<span class="SCmp">#cfg</span>
-<span class="SCmp">#code</span>
-<span class="SCmp">#do</span>
-<span class="SCmp">#file</span>
-<span class="SCmp">#line</span>
-<span class="SCmp">#location</span>
-<span class="SCmp">#module</span>
-<span class="SCmp">#os</span>
-<span class="SCmp">#self</span>
-<span class="SCmp">#swagbuildnum</span>
-<span class="SCmp">#swagos</span>
-<span class="SCmp">#swagrevision</span>
-<span class="SCmp">#swagversion</span>
-<span class="SCmp">#up</span>
-
-<span class="SCmp">#assert</span>
-<span class="SCmp">#elif</span>
-<span class="SCmp">#else</span>
-<span class="SCmp">#error</span>
-<span class="SCmp">#global</span>
-<span class="SCmp">#if</span>
-<span class="SCmp">#import</span>
-<span class="SCmp">#include</span>
-<span class="SCmp">#load</span>
-<span class="SCmp">#macro</span>
-<span class="SCmp">#mixin</span>
-<span class="SCmp">#placeholder</span>
-<span class="SCmp">#print</span>
-check
-<span class="SLgc">where</span>
-<span class="SCmp">#warning</span>
-<span class="SCmp">#scope</span>
-
+<div class="code-block"><span class="SCde"><span class="SCmp">#global</span>
 <span class="STpe">#type</span>
 
+<span class="SFct">#run</span>
 <span class="SFct">#ast</span>
-<span class="SFct">#drop</span>
+<span class="SFct">#test</span>
 <span class="SFct">#init</span>
+<span class="SFct">#drop</span>
 <span class="SFct">#main</span>
-<span class="SFct">#message</span>
 <span class="SFct">#premain</span>
-<span class="SFct">#run</span></span></div>
+<span class="SFct">#message</span>
+<span class="SFct">#dependencies</span>
+
+<span class="SCmp">#include</span>
+<span class="SCmp">#load</span>
+<span class="SCmp">#assert</span>
+<span class="SCmp">#print</span>
+<span class="SCmp">#error</span>
+<span class="SCmp">#warning</span>
+<span class="SCmp">#foreignlib</span>
+<span class="SCmp">#import</span>
+<span class="SCmp">#mixin</span>
+<span class="SCmp">#macro</span>
+<span class="SCmp">#placeholder</span>
+<span class="SCmp">#if</span>
+<span class="SCmp">#else</span>
+<span class="SCmp">#elif</span>
+<span class="SCmp">#code</span>
+<span class="SCmp">#scope</span>
+<span class="SCmp">#up</span>
+<span class="SCmp">#do</span>
+
+<span class="SCmp">#cfg</span>
+<span class="SCmp">#os</span>
+<span class="SCmp">#arch</span>
+<span class="SCmp">#cpu</span>
+<span class="SCmp">#backend</span>
+<span class="SCmp">#module</span>
+<span class="SCmp">#file</span>
+<span class="SCmp">#line</span>
+<span class="SCmp">#self</span>
+<span class="SCmp">#location</span>
+<span class="SCmp">#callerlocation</span>
+<span class="SCmp">#callerfunction</span>
+<span class="SCmp">#swagversion</span>
+<span class="SCmp">#swagrevision</span>
+<span class="SCmp">#swagbuildnum</span>
+<span class="SCmp">#swagos</span>
+
+<span class="SItr">#index</span>
+<span class="SItr">#alias0</span>
+<span class="SItr">#alias1</span>
+<span class="SItr">#alias2</span> <span class="SCmt">// and more generally #aliasN</span>
+<span class="SItr">#mixin0</span>
+<span class="SItr">#mixin1</span>
+<span class="SItr">#mixin2</span> <span class="SCmt">// and more generally #mixinN</span></span></div>
 <h3 id="_005_keywords_swg_Misc_intrinsics">Misc intrinsics </h3>
 <p>Intrisic keywords always start with <span class="code-inline">@</span>. As user identifiers cannot start the same way, intrinsics keywords will never collide with user identifiers. </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#index</span>
-<span class="SItr">@err</span>
-#alias0
-#alias1
-#alias2 <span class="SCmt">// and more generally #aliasN</span>
+<div class="code-block"><span class="SCde"><span class="SItr">@err</span>
 <span class="SItr">@alignof</span>
 <span class="SItr">@args</span>
 <span class="SItr">@assert</span>
@@ -687,9 +702,6 @@ check
 <span class="SItr">@itftableof</span>
 <span class="SItr">@kindof</span>
 <span class="SItr">@location</span>
-#mixin0
-#mixin1
-#mixin2 <span class="SCmt">// and more generally @mixinN</span>
 <span class="SItr">@mkany</span>
 <span class="SItr">@mkcallback</span>
 <span class="SItr">@mkinterface</span>
@@ -771,7 +783,10 @@ check
 <span class="SItr">,moveraw</span>
 <span class="SItr">,bit</span>
 <span class="SItr">,unconst</span>
-<span class="SItr">,back</span></span></div>
+<span class="SItr">,back</span>
+<span class="SItr">,err</span>
+<span class="SItr">,noerr</span>
+<span class="SItr">,call</span></span></div>
 
 <h2 id="_006_semicolon_swg">Semicolon</h2><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skipfmt</span></div>
 <p>In Swag, there's no need to end a statement with <span class="code-inline">;</span> like in C/C++. Most of the time a <span class="code-inline">end of line</span> is enough. </p>
@@ -1200,7 +1215,7 @@ check
                 string
                 "#</span>
 }</span></div>
-<p>Every blanks <b>before</b> the ending mark <span class="code-inline">"@</span> will be removed from every other lines, so the string before is equivalent to : </p>
+<p>Every blanks <b>before</b> the ending mark <span class="code-inline">"#</span> will be removed from every other lines, so the string before is equivalent to : </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// this is</span>
@@ -1685,11 +1700,9 @@ check
 <p>A static array is declared with <span class="code-inline">[N]</span> followed by the type, where <span class="code-inline">N</span> is the dimension. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    {
-        <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span> <span class="SCmt">// Static array of two s32</span>
-        array[<span class="SNum">0</span>] = <span class="SNum">1</span>
-        array[<span class="SNum">1</span>] = <span class="SNum">2</span>
-    }
+    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span> <span class="SCmt">// Static array of two s32</span>
+    array[<span class="SNum">0</span>] = <span class="SNum">1</span>
+    array[<span class="SNum">1</span>] = <span class="SNum">2</span>
 }</span></div>
 <p>You can get the number of elements of an array with <span class="code-inline">@countof</span>, and the size in bytes with <span class="code-inline">@sizeof</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -1722,7 +1735,8 @@ check
 <p>The size of the array can be deduced from the initialisation expression. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Here the dimension is not specified, but as the array is initialized with 2 elements, it can be deduced.</span>
+    <span class="SCmt">// Here the dimension is not specified, but as the array is initialized with 2 elements, it can </span>
+    <span class="SCmt">// be deduced.</span>
     <span class="SKwd">var</span> array: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>]
     <span class="SItr">@assert</span>(array[<span class="SNum">0</span>] == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>] == <span class="SNum">2</span>)
@@ -2773,7 +2787,7 @@ check
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>'<span class="STpe">u64</span>
     <span class="SLgc">loop</span> <span class="SNum">5</span>
     {
-        cpt += <span class="SCmp">#index</span>
+        cpt += <span class="SItr">#index</span>
     }
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
@@ -2787,7 +2801,7 @@ check
     <span class="SLgc">loop</span> i: <span class="SNum">5</span> <span class="SCmt">// index is named 'i'</span>
     {
         cpt += i
-        cpt1 += <span class="SCmp">#index</span> <span class="SCmt">// #index is always available, even when named</span>
+        cpt1 += <span class="SItr">#index</span> <span class="SCmt">// #index is always available, even when named</span>
     }
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
@@ -2801,7 +2815,7 @@ check
 
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
     <span class="SLgc">loop</span> arr <span class="SLgc">do</span> <span class="SCmt">// The array contains 4 elements, so the loop count is 4</span>
-        cpt += arr[<span class="SCmp">#index</span>]
+        cpt += arr[<span class="SItr">#index</span>]
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>)
 }</span></div>
 <div class="blockquote blockquote-warning">
@@ -2825,11 +2839,11 @@ check
     <span class="SLgc">loop</span><span class="SItr">,back</span> <span class="SNum">3</span>
     {
         <span class="SLgc">if</span> cpt == <span class="SNum">0</span> <span class="SLgc">do</span>
-            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">2</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">2</span>)
         <span class="SLgc">elif</span> cpt == <span class="SNum">1</span> <span class="SLgc">do</span>
-            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">1</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">1</span>)
         <span class="SLgc">elif</span> cpt == <span class="SNum">2</span> <span class="SLgc">do</span>
-            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">0</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">0</span>)
 
         cpt += <span class="SNum">1</span>
     }
@@ -2914,9 +2928,22 @@ check
 {
     <span class="SLgc">loop</span>
     {
-        <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">4</span> <span class="SLgc">do</span> <span class="SCmt">// #index is still valid in that case (but cannot be renamed)</span>
+        <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">4</span> <span class="SLgc">do</span> <span class="SCmt">// #index is still valid in that case (but cannot be renamed)</span>
             <span class="SLgc">break</span>
     }
+}</span></div>
+<h3 id="_051_loop_swg_where">where </h3>
+<p>You can add a 'where" instruction after the <span class="code-inline">loop</span>, to apply a filter on the indexes you want to visit. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> result = <span class="SNum">0</span>
+
+    <span class="SLgc">loop</span> i: <span class="SNum">10</span> <span class="SLgc">where</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
+    {
+        result += i
+    }
+
+    <span class="SItr">@assert</span>(result == <span class="SNum">0</span> + <span class="SNum">2</span> + <span class="SNum">4</span> + <span class="SNum">6</span> + <span class="SNum">8</span>)
 }</span></div>
 
 <h2 id="_052_visit_swg">Visit</h2><p><span class="code-inline">visit</span> is used to visit all the elements of a collection. </p>
@@ -2927,7 +2954,7 @@ check
     <span class="SLgc">visit</span> value: <span class="SStr">"ABC"</span>
     {
         <span class="SCmt">// '#index' is also available. It stores the loop index.</span>
-        <span class="SKwd">let</span> a = <span class="SCmp">#index</span>
+        <span class="SKwd">let</span> a = <span class="SItr">#index</span>
         <span class="SLgc">switch</span> a
         {
         <span class="SLgc">case</span> <span class="SNum">0</span>:
@@ -2961,16 +2988,16 @@ check
 {
     <span class="SLgc">visit</span> <span class="SStr">"ABC"</span>
     {
-        <span class="SKwd">let</span> a = #alias1 <span class="SCmt">// This is the index</span>
-        <span class="SItr">@assert</span>(a == <span class="SCmp">#index</span>)
+        <span class="SKwd">let</span> a = <span class="SItr">#alias1</span> <span class="SCmt">// This is the index</span>
+        <span class="SItr">@assert</span>(a == <span class="SItr">#index</span>)
         <span class="SLgc">switch</span> a
         {
         <span class="SLgc">case</span> <span class="SNum">0</span>:
-            <span class="SItr">@assert</span>(#alias0 == <span class="SStr">`A`</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SStr">`A`</span>)
         <span class="SLgc">case</span> <span class="SNum">1</span>:
-            <span class="SItr">@assert</span>(#alias0 == <span class="SStr">`B`</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SStr">`B`</span>)
         <span class="SLgc">case</span> <span class="SNum">2</span>:
-            <span class="SItr">@assert</span>(#alias0 == <span class="SStr">`C`</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SStr">`C`</span>)
         }
     }
 }</span></div>
@@ -2987,13 +3014,13 @@ check
         {
         <span class="SLgc">case</span> <span class="SNum">0</span>:
             <span class="SItr">@assert</span>(value == <span class="SStr">`C`</span>)
-            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">2</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">2</span>)
         <span class="SLgc">case</span> <span class="SNum">1</span>:
             <span class="SItr">@assert</span>(value == <span class="SStr">`B`</span>)
-            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">1</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">1</span>)
         <span class="SLgc">case</span> <span class="SNum">2</span>:
             <span class="SItr">@assert</span>(value == <span class="SStr">`A`</span>)
-            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">0</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">0</span>)
         }
 
         cpt += <span class="SNum">1</span>
@@ -3040,6 +3067,36 @@ check
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>, <span class="SNum">0</span>] == <span class="SNum">555</span>)
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>, <span class="SNum">1</span>] == <span class="SNum">555</span>)
 }</span></div>
+<h3 id="_052_visit_swg_where">where </h3>
+<p>You can add a 'where" instruction after the <span class="code-inline">visit</span>, to apply a filter on the elements you want to visit. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> array: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]
+    <span class="SKwd">var</span> result = <span class="SNum">0</span>
+
+    <span class="SCmt">// Just get even values</span>
+    <span class="SLgc">visit</span> value: array <span class="SLgc">where</span> value & <span class="SNum">1</span> == <span class="SNum">0</span> <span class="SLgc">do</span>
+        result += value
+
+    <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)
+
+    <span class="SCmt">// This is equivalent of:</span>
+    result = <span class="SNum">0</span>
+    <span class="SLgc">visit</span> value: array <span class="SLgc">do</span> 
+        <span class="SLgc">if</span> value & <span class="SNum">1</span> == <span class="SNum">0</span> <span class="SLgc">do</span>
+            result += value  
+    <span class="SItr">@assert</span>(result == <span class="SNum">6</span>) 
+
+    <span class="SCmt">// This is equivalent of:  </span>
+    result = <span class="SNum">0</span>
+    <span class="SLgc">visit</span> value: array
+    {
+        <span class="SLgc">if</span> (value & <span class="SNum">1</span>) != <span class="SNum">0</span> <span class="SLgc">do</span>
+            <span class="SLgc">continue</span>
+        result += value        
+    }
+    <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)
+}</span></div>
 
 <h2 id="_053_for_swg">For</h2><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skipfmt</span></div>
 <p><span class="code-inline">for</span> accepts a <i>start statement</i>, an <i>expression to test</i>, and an <i>ending statement</i>. This is in fact the same as the C/C++ <span class="code-inline">for</span>. </p>
@@ -3081,12 +3138,12 @@ check
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>'<span class="STpe">u64</span>
     <span class="SLgc">for</span> <span class="SKwd">var</span> i: <span class="STpe">u32</span> = <span class="SNum">10</span>; i &lt; <span class="SNum">15</span>; i += <span class="SNum">1</span>; <span class="SLgc">do</span>
-        cpt += <span class="SCmp">#index</span>
+        cpt += <span class="SItr">#index</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)
 
     <span class="SKwd">var</span> cpt1 = <span class="SNum">0</span>'<span class="STpe">u64</span>
     <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">10</span>; i &lt; <span class="SNum">15</span>; i += <span class="SNum">1</span>; <span class="SLgc">do</span>
-        cpt1 += <span class="SCmp">#index</span>
+        cpt1 += <span class="SItr">#index</span>
     <span class="SItr">@assert</span>(cpt1 == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)
 }</span></div>
 
@@ -3386,7 +3443,7 @@ check
     {
         <span class="SLgc">loop</span> <span class="SNum">10</span>
         {
-            <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">5</span> <span class="SLgc">do</span>
+            <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">5</span> <span class="SLgc">do</span>
                 <span class="SLgc">break</span> <span class="SCst">Up</span>
         }
 
@@ -3992,7 +4049,7 @@ check
             <span class="SCmp">#macro</span>
             {
                 <span class="SCmt">// #alias0 will be the value</span>
-                <span class="SKwd">var</span> #alias0: <span class="STpe">s32</span> = <span class="SKwd">undefined</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias0</span>: <span class="STpe">s32</span> = <span class="SKwd">undefined</span>
 
                 <span class="SCmt">// As this code is in the caller scope, with need to add a '#up' before 'idx' to</span>
                 <span class="SCmt">// reference the variable of this function (and not a potential variable in</span>
@@ -4000,15 +4057,15 @@ check
                 <span class="SLgc">switch</span> <span class="SCmp">#up</span> idx
                 {
                 <span class="SLgc">case</span> <span class="SNum">0</span>:
-                    #alias0 = <span class="SCmp">#up</span> <span class="SKwd">self</span>.x <span class="SCmt">// Same for function parameter 'self'</span>
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.x <span class="SCmt">// Same for function parameter 'self'</span>
                 <span class="SLgc">case</span> <span class="SNum">1</span>:
-                    #alias0 = <span class="SCmp">#up</span> <span class="SKwd">self</span>.y
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.y
                 <span class="SLgc">case</span> <span class="SNum">2</span>:
-                    #alias0 = <span class="SCmp">#up</span> <span class="SKwd">self</span>.z
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.z
                 }
 
                 <span class="SCmt">// #alias1 will be the index</span>
-                <span class="SKwd">var</span> #alias1 = <span class="SCmp">#index</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
 
                 <span class="SCmt">// include user code</span>
                 <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
@@ -4056,18 +4113,18 @@ check
         {
             <span class="SCmp">#macro</span>
             {
-                <span class="SKwd">var</span> #alias0: <span class="STpe">s32</span> = <span class="SKwd">undefined</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias0</span>: <span class="STpe">s32</span> = <span class="SKwd">undefined</span>
                 <span class="SLgc">switch</span> <span class="SCmp">#up</span> idx
                 {
                 <span class="SLgc">case</span> <span class="SNum">0</span>:
-                    #alias0 = <span class="SCmp">#up</span> <span class="SKwd">self</span>.z
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.z
                 <span class="SLgc">case</span> <span class="SNum">1</span>:
-                    #alias0 = <span class="SCmp">#up</span> <span class="SKwd">self</span>.y
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.y
                 <span class="SLgc">case</span> <span class="SNum">2</span>:
-                    #alias0 = <span class="SCmp">#up</span> <span class="SKwd">self</span>.x
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.x
                 }
 
-                <span class="SKwd">var</span> #alias1 = <span class="SCmp">#index</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
                 <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
             }
         }
@@ -4778,7 +4835,7 @@ check
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">inc10</span>()
     {
-        #alias0 += <span class="SNum">10</span>
+        <span class="SItr">#alias0</span> += <span class="SNum">10</span>
     }
 
     <span class="SKwd">var</span> a, b = <span class="SNum">0</span>
@@ -4792,7 +4849,7 @@ check
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">setVar</span>(value: <span class="STpe">s32</span>)
     {
-        <span class="SKwd">let</span> #alias0 = value
+        <span class="SKwd">let</span> <span class="SItr">#alias0</span> = value
     }
 
     <span class="SFct">setVar</span>(|a| <span class="SNum">10</span>) <span class="SCmt">// Passing alias name 'a'</span>
@@ -4800,7 +4857,7 @@ check
     <span class="SItr">@assert</span>(a == <span class="SNum">10</span>)
     <span class="SItr">@assert</span>(b == <span class="SNum">20</span>)
     <span class="SFct">setVar</span>(<span class="SNum">30</span>) <span class="SCmt">// No typealias, so name is #alias0</span>
-    <span class="SItr">@assert</span>(#alias0 == <span class="SNum">30</span>)
+    <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SNum">30</span>)
 }</span></div>
 <p>You can declare special variables named <span class="code-inline">@mixin?</span>. Those variables will have a unique name each time the mixin is used. So the same mixin, even if it declares local variables, can be used multiple time in the same scope. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -4810,8 +4867,8 @@ check
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">toScope</span>()
     {
-        <span class="SKwd">var</span> #mixin0: <span class="STpe">s32</span> = <span class="SNum">1</span>
-        total += #mixin0
+        <span class="SKwd">var</span> <span class="SItr">#mixin0</span>: <span class="STpe">s32</span> = <span class="SNum">1</span>
+        total += <span class="SItr">#mixin0</span>
     }
 
     <span class="SFct">toScope</span>()
@@ -4970,15 +5027,15 @@ check
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">call</span>(v: <span class="STpe">s32</span>, stmt: <span class="STpe">code</span>)
     {
-        <span class="SKwd">let</span> #alias0 = v
-        <span class="SKwd">let</span> #alias1 = v * <span class="SNum">2</span>
+        <span class="SKwd">let</span> <span class="SItr">#alias0</span> = v
+        <span class="SKwd">let</span> <span class="SItr">#alias1</span> = v * <span class="SNum">2</span>
         <span class="SCmp">#mixin</span> stmt
     }
 
     <span class="SFct">call</span>(<span class="SNum">20</span>)
     {
-        <span class="SItr">@assert</span>(#alias0 == <span class="SNum">20</span>)
-        <span class="SItr">@assert</span>(#alias1 == <span class="SNum">40</span>)
+        <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SNum">20</span>)
+        <span class="SItr">@assert</span>(<span class="SItr">#alias1</span> == <span class="SNum">40</span>)
     }
 
     <span class="SCmt">// The caller can then name those special variables</span>
@@ -4986,7 +5043,7 @@ check
     <span class="SFct">call</span>(|x| <span class="SNum">20</span>)
     {
         <span class="SItr">@assert</span>(x == <span class="SNum">20</span>) <span class="SCmt">// x is #alias0</span>
-        <span class="SItr">@assert</span>(#alias1 == <span class="SNum">40</span>) <span class="SCmt">// #alias1 is not renamed</span>
+        <span class="SItr">@assert</span>(<span class="SItr">#alias1</span> == <span class="SNum">40</span>) <span class="SCmt">// #alias1 is not renamed</span>
     }
 
     <span class="SFct">call</span>(|x, y| <span class="SNum">20</span>)
@@ -5273,7 +5330,7 @@ check
 <span class="SItr">@isconstexpr</span>()
 <span class="SItr">@itftableof</span>()
 
-<span class="SCmp">#index</span></span></div>
+<span class="SItr">#index</span></span></div>
 <h3 id="_120_intrinsics_swg_Memory_related">Memory related </h3>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@alloc</span>(size: <span class="STpe">u64</span>)-&gt;*<span class="STpe">void</span>;
 <span class="SKwd">func</span> <span class="SItr">@realloc</span>(ptr: *<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;*<span class="STpe">void</span>;
@@ -5770,7 +5827,7 @@ check
 {
     {
         <span class="SKwd">func</span> <span class="SFct">div</span>(x, y: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-            <span class="SLgc">where</span>,call
+            <span class="SLgc">where</span><span class="SItr">,call</span>
             {
                 <span class="SCmt">// Here we use '@isconstexpr'.</span>
                 <span class="SCmt">// If 'y' cannot be evaluated at compile time, then we can do nothing about it.</span>
@@ -5796,7 +5853,7 @@ check
         <span class="SCmt">// A version of 'first' where 'x' is known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-            <span class="SLgc">where</span>,call <span class="SItr">@isconstexpr</span>(x)
+            <span class="SLgc">where</span><span class="SItr">,call</span> <span class="SItr">@isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">555</span>
         }
@@ -5804,7 +5861,7 @@ check
         <span class="SCmt">// A version of 'first' where 'x' is **not** known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-            <span class="SLgc">where</span>,call !<span class="SItr">@isconstexpr</span>(x)
+            <span class="SLgc">where</span><span class="SItr">,call</span> !<span class="SItr">@isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">666</span>
         }
@@ -5991,7 +6048,7 @@ check
             <span class="SFct">releaseResource</span>(&resource)
         }
 
-        <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">2</span> <span class="SLgc">do</span>
+        <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">2</span> <span class="SLgc">do</span>
             <span class="SLgc">break</span>
     }
 
@@ -6409,8 +6466,8 @@ check
 
 <span class="SKwd">func</span> <span class="SFct">testDefer</span>(err: <span class="STpe">bool</span>) <span class="SKwd">throw</span>
 {
-    <span class="SLgc">defer</span>,err g_Defer += <span class="SNum">1</span> <span class="SCmt">// This will be called in case an error is raised, before exiting</span>
-    <span class="SLgc">defer</span>,noerr g_Defer += <span class="SNum">2</span> <span class="SCmt">// This will only be called in case an error is not raised</span>
+    <span class="SLgc">defer</span><span class="SItr">,err</span> g_Defer += <span class="SNum">1</span> <span class="SCmt">// This will be called in case an error is raised, before exiting</span>
+    <span class="SLgc">defer</span><span class="SItr">,noerr</span> g_Defer += <span class="SNum">2</span> <span class="SCmt">// This will only be called in case an error is not raised</span>
     <span class="SLgc">defer</span> g_Defer += <span class="SNum">3</span> <span class="SCmt">// This will be called in both cases</span>
     <span class="SLgc">if</span> err <span class="SLgc">do</span>
         <span class="SFct">raiseError</span>()
@@ -7457,7 +7514,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation_md__231_003_Pages_md">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 24-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.37.0</div>
+Generated on 25-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.37.0</div>
 </div>
 </div>
 </div>

@@ -284,6 +284,7 @@ void LanguageSpec::setupBcKeywords()
 void LanguageSpec::setupKeywords()
 {
     keywords.add("#global", TokenId::CompilerGlobal);
+    keywords.add("#type", TokenId::CompilerType);
 
     keywords.add("#run", TokenId::CompilerRun);
     keywords.add("#ast", TokenId::CompilerAst);
@@ -309,7 +310,10 @@ void LanguageSpec::setupKeywords()
     keywords.add("#if", TokenId::CompilerIf);
     keywords.add("#else", TokenId::CompilerElse);
     keywords.add("#elif", TokenId::CompilerElseIf);
-    keywords.add("where", TokenId::KwdWhere);
+    keywords.add("#code", TokenId::CompilerCode);
+    keywords.add("#scope", TokenId::CompilerScope);
+    keywords.add("#up", TokenId::CompilerUp);
+    keywords.add("#do", TokenId::CompilerDo);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
     keywords.add("#os", TokenId::CompilerOs);
@@ -327,11 +331,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("#swagrevision", TokenId::CompilerBuildRevision);
     keywords.add("#swagbuildnum", TokenId::CompilerBuildNum);
     keywords.add("#swagos", TokenId::CompilerSwagOs);
-    keywords.add("#code", TokenId::CompilerCode);
-    keywords.add("#type", TokenId::CompilerType);
-    keywords.add("#scope", TokenId::CompilerScope);
-    keywords.add("#up", TokenId::CompilerUp);
-    keywords.add("#do", TokenId::CompilerDo);
+
+    keywords.add("#index", TokenId::IntrinsicIndex);
 
     keywords.add("true", TokenId::KwdTrue);
     keywords.add("false", TokenId::KwdFalse);
@@ -394,6 +395,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("to", TokenId::KwdTo);
     keywords.add("until", TokenId::KwdUntil);
     keywords.add("do", TokenId::KwdDo);
+    keywords.add("where", TokenId::KwdWhere);
 
     keywords.add("is", TokenId::KwdReserved);
     keywords.add("in", TokenId::KwdReserved);
@@ -439,7 +441,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("@mkany", TokenId::IntrinsicMakeAny);
     keywords.add("@mkinterface", TokenId::IntrinsicMakeInterface);
     keywords.add("@mkcallback", TokenId::IntrinsicMakeCallback);
-    keywords.add("#index", TokenId::IntrinsicIndex);
     keywords.add("@isconstexpr", TokenId::IntrinsicIsConstExpr);
     keywords.add("@itftableof", TokenId::IntrinsicItfTableOf);
     keywords.add("@dbgalloc", TokenId::IntrinsicDbgAlloc);
@@ -582,6 +583,9 @@ void LanguageSpec::setupModifiers()
     modifiers.add(name_bit, MODIFIER_BIT);
     modifiers.add(name_unconst, MODIFIER_UN_CONST);
     modifiers.add(name_back, MODIFIER_BACK);
+    modifiers.add(name_err, MODIFIER_ERR);
+    modifiers.add(name_noerr, MODIFIER_NO_ERR);
+    modifiers.add(name_call, MODIFIER_CALL);
 }
 
 void LanguageSpec::setup()

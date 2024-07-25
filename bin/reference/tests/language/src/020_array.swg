@@ -7,11 +7,9 @@ A static array is declared with `[N]` followed by the type, where `N` is the dim
 */
 #test
 {
-    {
-        var array: [2] s32 // Static array of two s32
-        array[0] = 1
-        array[1] = 2
-    }
+    var array: [2] s32 // Static array of two s32
+    array[0] = 1
+    array[1] = 2
 }
 
 /**
@@ -56,7 +54,8 @@ The size of the array can be deduced from the initialisation expression.
 */
 #test
 {
-    // Here the dimension is not specified, but as the array is initialized with 2 elements, it can be deduced.
+    // Here the dimension is not specified, but as the array is initialized with 2 elements, it can 
+    // be deduced.
     var array: [] s32 = [1, 2]
     @assert(array[0] == 1)
     @assert(array[1] == 2)
