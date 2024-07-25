@@ -333,9 +333,15 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     {
         if (!params || !params->inheritSp)
         {
-            bc->dynStackSize += Semantic::getMaxStackSize(node);
-            bc->dynStackSize += node->typeInfo->sizeOf;
-            g_RunContext->decSP(bc->dynStackSize);
+            auto decSP = Semantic::getMaxStackSize(node);
+            g_RunContext->decSP(decSP);
+            bc->dynStackSize += decSP;
+
+            // :opAffectConstExpr
+            // Reserve room on the stack to store the result
+            if (node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
+                g_RunContext->decSP(node->typeInfo->sizeOf);
+
             g_RunContext->bp = g_RunContext->sp;
         }
     }

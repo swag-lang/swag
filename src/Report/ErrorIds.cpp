@@ -181,7 +181,7 @@ void initErrors()
     SWAG_ERROR(Err0055, "const mismatch                                    $ the UFCS argument should be mutable but is not (type is [[%s]])");
     SWAG_ERROR(Err0056, "const mismatch                                    $ the intrinsic [[%s]] requires a mutable pointer as a first argument, got [[%s]] instead");
     SWAG_ERROR(Err0057, "const mismatch                                    $ the intrinsic [[%s]] requires a mutable variable as a first argument, got [[%s]] instead");
-    SWAG_ERROR(Err0058, "defer escape throw                                $ an error can't escape a [[defer]] or [[defer(err)]] block");
+    SWAG_ERROR(Err0058, "defer escape throw                                $ an error can't escape a [[defer]] or [[defer,err]] block");
     SWAG_ERROR(Err0059, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because of a version mismatched");
     SWAG_ERROR(Err0060, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because version [[%s]] was not found at [[%s]]");
     SWAG_ERROR(Err0061, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because version [[%s]] was not found");

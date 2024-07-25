@@ -215,14 +215,12 @@ bool FormatAst::outputDefer(FormatContext& context, AstNode* node)
     switch (deferNode->deferKind)
     {
         case DeferKind::Error:
-            concat->addChar('(');
+            concat->addChar(',');
             concat->addString("err");
-            concat->addChar(')');
             break;
         case DeferKind::NoError:
-            concat->addChar('(');
+            concat->addChar(',');
             concat->addString("noerr");
-            concat->addChar(')');
             break;
     }
 
