@@ -16,11 +16,11 @@ func toto() throw
 {
     try
     {
-        defer,err G1 += 1
+        defer:err G1 += 1
         tata()
-        defer,err G1 += 1
+        defer:err G1 += 1
         tata()
-        defer,err G1 += 1
+        defer:err G1 += 1
         tata()
     }
 }

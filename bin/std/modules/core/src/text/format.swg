@@ -37,7 +37,7 @@ func countPercent(fmt: string)->u32
 // Format a string in 'dest'.
 // Can be a lot faster than the convenient version which returns a String.
 func replaceString(dest: *String, fmt: string, values: ...)
-    where,call
+    where:call
     {
         if !@isconstexpr(fmt) or !@isconstexpr(values) do
             return true
@@ -73,7 +73,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
 // * See [[ConvertFormatInt.setFormat]] for some valid format options
 // * See [[ConvertFormatFloat.setFormat]] for some valid format options
 func toString(fmt: string, values: ...)->String
-    where,call
+    where:call
     {
         if !@isconstexpr(fmt) or !@isconstexpr(values) do
             return true
@@ -91,7 +91,7 @@ func toString(fmt: string, values: ...)->String
 
 // Returns a formatted string stored in the temporary allocator.
 func toStringTemp(fmt: string, values: ...)->string
-    where,call
+    where:call
     {
         if !@isconstexpr(fmt) or !@isconstexpr(values) do
             return true
@@ -110,7 +110,7 @@ func toStringTemp(fmt: string, values: ...)->string
 
 // Format a string and put the result in a ConcatBuffer.
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
-    where,call
+    where:call
     {
         if !@isconstexpr(fmt) or !@isconstexpr(values) do
             return true
@@ -185,7 +185,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 // Format is `{<value to interpolate>:format}`
 #[Macro, Overload]
 func toInterp(buf: *ConcatBuffer, exp: string)
-    where,call
+    where:call
     {
         if !@isconstexpr(exp) do
             @compilererror("expression should be constant", @location(exp))
@@ -245,7 +245,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
 // String interpolation.
 #[Mixin, Overload]
 func toInterp(exp: string)->String
-    where,call
+    where:call
     {
         if !@isconstexpr(exp) do
             @compilererror("expression should be constant", @location(exp))

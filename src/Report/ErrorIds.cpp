@@ -211,7 +211,7 @@ void initErrors()
     SWAG_ERROR(Err0085, "failed [[%s]] constraint                          $ the %s [[%s]] can't be used because of a failed [[%s]] constraint");
     SWAG_ERROR(Err0086, "failed generic instantiation                      $ the variable creation failed due to the generic type [[%s]]");
     SWAG_ERROR(Err0087, "failed semantic                                   $ can't resolve this");
-    SWAG_ERROR(Err0088, nullptr);
+    SWAG_ERROR(Err0088, "invalid [[where]] mode                            $ [[%s]] is not a valid [[where]] mode $ the only valid mode is [[call]]");
     SWAG_ERROR(Err0089, "fetch error                                       $ can't fetch file [[%s]] for module dependency [[%s]]");
     SWAG_ERROR(Err0090, "file delete error                                 $ failed to delete file [[%s]]");
     SWAG_ERROR(Err0091, "file format error                                 $ the file format must be ASCII, UTF-8, or UTF-8-BOM");
@@ -280,7 +280,7 @@ void initErrors()
     SWAG_ERROR(Err0154, "invalid [[@sizeof]]                               $ can't compute the size of a generic expression");
     SWAG_ERROR(Err0155, "invalid [[break]] scope name                      $ expected a scope name or a end of line after [[break]], found [[%s]] instead");
     SWAG_ERROR(Err0156, "invalid [[code]] append                           $ the %s [[%s]] wants to interpret the next statement as a [[code]] parameter but this is not possible inside a [[%s]] expression");
-    SWAG_ERROR(Err0157, nullptr);
+    SWAG_ERROR(Err0157, "invalid [[defer]] mode                            $ [[%s]] is not a valid [[defer]] special mode $ the only valid special modes are [[err]] and [[noerr]]");
     SWAG_ERROR(Err0158, "invalid [[discard]] call                          $ a function returning nothing can't be discarded");
     SWAG_ERROR(Err0159, "invalid [[discard]] call                          $ expected a discard-able call after [[discard]], found [[%s]] instead");
     SWAG_ERROR(Err0160, "invalid [[impl]]                                  $ expected a struct name after [[for]] but [[%s]] is %s");
@@ -781,7 +781,7 @@ void initErrors()
     SWAG_ERROR(Err0655, "unauthorized function overload                    $ a function with the same name [[%s]] has already been declared $ if you want to declare an overload, mark all functions with [[#[Swag.Overload]]]");
     SWAG_ERROR(Err0656, "unexpected [[#elif]]                              $ [[#elif]] found without a preceding [[#if]] directive");
     SWAG_ERROR(Err0657, "unexpected [[#else]]                              $ [[#else]] found without a preceding [[#if]] or [[#elif]] directive");
-    SWAG_ERROR(Err0658, "unexpected [[where/check]]                        $ a [[where/check]] directive is not allowed on special function [[%s]] $ [[where]] and [[check]] are not valid for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
+    SWAG_ERROR(Err0658, "unexpected [[where]]                              $ a [[where]] directive is not allowed on special function [[%s]] $ [[where]] and [[check]] are not valid for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
     SWAG_ERROR(Err0659, "unexpected [[where,call)]] for struct             $ [[where,call)]] is not allowed for a struct, but is only valid for functions $ consider using a single [[where]] instead");
     SWAG_ERROR(Err0660, "unexpected [[)]]                                  $ symbol [[)]] found without a preceding [[(]]");
     SWAG_ERROR(Err0661, "unexpected [[]]]                                  $ symbol [[]]] found without a preceding [[[]]");

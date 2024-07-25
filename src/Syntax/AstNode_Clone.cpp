@@ -241,7 +241,7 @@ AstNode* AstNode::clone(CloneContext& context)
         case AstNodeKind::CompilerRun:
         case AstNodeKind::CompilerRunExpression:
         case AstNodeKind::CompilerWhere:
-        case AstNodeKind::CompilerWhereEach:
+        case AstNodeKind::CompilerWhereCall:
         case AstNodeKind::CompilerAst:
             return clone<AstCompilerSpecFunc>(this, context);
         case AstNodeKind::Namespace:

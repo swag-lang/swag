@@ -573,54 +573,6 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
     {
         SWAG_CHECK(eatToken());
 
-        if (tokenParse.token.text == g_LangSpec->name_call)
-        {
-            switch (opId)
-            {
-                case TokenId::KwdWhere:
-                    break;
-                default:
-                    return error(tokenParse.token, formErr(Err0694, tokenParse.token.c_str(), forNode.c_str()));
-            }
-
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_CALL), error(tokenParse.token, formErr(Err0070, tokenParse.token.c_str())));
-            mdfFlags.add(MODIFIER_CALL);
-            SWAG_CHECK(eatToken());
-            continue;
-        }
-
-        if (tokenParse.token.text == g_LangSpec->name_err)
-        {
-            switch (opId)
-            {
-                case TokenId::KwdDefer:
-                    break;
-                default:
-                    return error(tokenParse.token, formErr(Err0694, tokenParse.token.c_str(), forNode.c_str()));
-            }
-
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_ERR), error(tokenParse.token, formErr(Err0070, tokenParse.token.c_str())));
-            mdfFlags.add(MODIFIER_ERR);
-            SWAG_CHECK(eatToken());
-            continue;
-        }
-
-        if (tokenParse.token.text == g_LangSpec->name_noerr)
-        {
-            switch (opId)
-            {
-                case TokenId::KwdDefer:
-                    break;
-                default:
-                    return error(tokenParse.token, formErr(Err0694, tokenParse.token.c_str(), forNode.c_str()));
-            }
-
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_NO_ERR), error(tokenParse.token, formErr(Err0070, tokenParse.token.c_str())));
-            mdfFlags.add(MODIFIER_NO_ERR);
-            SWAG_CHECK(eatToken());
-            continue;
-        }
-
         if (tokenParse.token.text == g_LangSpec->name_up)
         {
             switch (opId)

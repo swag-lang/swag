@@ -17,7 +17,7 @@ func tata()->A
 
 func toto(b: bool) throw
 {
-    defer,err discard tata()
+    defer:err discard tata()
     if b do
         throw Err{}
 }

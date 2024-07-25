@@ -270,7 +270,7 @@
     "visit-call": {
       "patterns": [
         {
-          "match": "\\b(visit)(,\\w*)",
+          "match": "\\b(visit|defer|where)(:\\w*)",
           "captures": {
             "1": {
               "name": "keyword.control"
@@ -437,7 +437,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "\\,(err|noerr|call|up|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
+          "match": "\\,(up|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
         }
       ]
     }

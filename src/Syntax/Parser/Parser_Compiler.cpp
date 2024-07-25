@@ -271,11 +271,20 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
 
-    // Each mode
-    ModifierFlags mdfFlags = 0;
-    SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags, node));
-    if (mdfFlags.has(MODIFIER_CALL))
-        node->kind = AstNodeKind::CompilerWhereEach;
+    // 'Call' mode
+    if (tokenParse.is(TokenId::SymColon))
+    {
+        SWAG_CHECK(eatToken());
+        if (tokenParse.token.text == g_LangSpec->name_call)
+        {
+            SWAG_CHECK(eatToken());
+            node->kind = AstNodeKind::CompilerWhereCall;
+        }
+        else
+        {
+            return error(node, formErr(Err0088, tokenParse.token.c_str()));
+        }
+    }
 
     // Not for the 3 special functions
     if (parent->token.text == g_LangSpec->name_opDrop ||

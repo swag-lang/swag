@@ -125,7 +125,7 @@ The expression will then not only be called once per instance, but will be evalu
 {
     {
         func div(x, y: s32)->s32
-            where,call
+            where:call
             {
                 // Here we use '@isconstexpr'.
                 // If 'y' cannot be evaluated at compile time, then we can do nothing about it.
@@ -151,7 +151,7 @@ The expression will then not only be called once per instance, but will be evalu
         // A version of 'first' where 'x' is known at compile time.
         #[Swag.Overload]
         func first(x: s32)->s32
-            where,call @isconstexpr(x)
+            where:call @isconstexpr(x)
         {
             return 555
         }
@@ -159,7 +159,7 @@ The expression will then not only be called once per instance, but will be evalu
         // A version of 'first' where 'x' is **not** known at compile time.
         #[Swag.Overload]
         func first(x: s32)->s32
-            where,call !@isconstexpr(x)
+            where:call !@isconstexpr(x)
         {
             return 666
         }

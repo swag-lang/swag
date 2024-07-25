@@ -320,7 +320,7 @@ bool Semantic::resolveCompilerRun(SemanticContext* context)
 
 bool Semantic::resolveCompilerWhereExpression(SemanticContext* context)
 {
-    const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerWhere, AstNodeKind::CompilerWhereEach);
+    const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerWhere, AstNodeKind::CompilerWhereCall);
     if (node->hasAstFlag(AST_GENERIC))
         return true;
 

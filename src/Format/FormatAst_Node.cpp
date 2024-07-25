@@ -243,7 +243,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::CompilerRunExpression:
         case AstNodeKind::CompilerAst:
         case AstNodeKind::CompilerWhere:
-        case AstNodeKind::CompilerWhereEach:
+        case AstNodeKind::CompilerWhereCall:
             SWAG_CHECK(outputCompilerExpr(context, node));
             break;
 
