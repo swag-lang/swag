@@ -1,7 +1,6 @@
-
-#global testerror "Err0293"
+#global testerror "Err0754"
 
 interface TOTO
 {
-    print: func()
+    func print()
 }

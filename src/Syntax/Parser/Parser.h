@@ -34,6 +34,7 @@ using ModifierFlags   = Flags<uint32_t>;
 using IdentifierFlags = Flags<uint32_t>;
 using ExprFlags       = Flags<uint32_t>;
 using ParserFlags     = Flags<uint32_t>;
+using FuncDeclFlags   = Flags<uint32_t>;
 
 enum class InvalidTokenError
 {
@@ -83,6 +84,9 @@ constexpr ExprFlags EXPR_FLAG_IN_GENERIC_PARAMS     = 0x00000400;
 constexpr ParserFlags PARSER_DEFAULT             = 0x00000000;
 constexpr ParserFlags PARSER_TRACK_DOCUMENTATION = 0x00000001;
 constexpr ParserFlags PARSER_TRACK_FORMAT        = 0x00000002;
+
+constexpr FuncDeclFlags FUNC_DECL_ZERO      = 0x00000000;
+constexpr FuncDeclFlags FUNC_DECL_INTERFACE = 0x00000001;
 
 constexpr uint32_t CONTEXT_FLAG_EXPRESSION = 0x00000001;
 
@@ -203,7 +207,7 @@ struct Parser
     bool doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* parent, ExprFlags exprFlags, AstNode** result);
     bool doGenericDeclParameters(AstNode* parent, AstNode** result);
     bool doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr);
-    bool doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId = TokenId::Invalid);
+    bool doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId = TokenId::Invalid, FuncDeclFlags flags = FUNC_DECL_ZERO);
     bool doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false, bool* hasMissingType = nullptr);
     bool doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr, bool isMethod = false, bool isConstMethod = false, bool isItfMethod = false);
     bool doAttrDecl(AstNode* parent, AstNode** result);
@@ -215,6 +219,7 @@ struct Parser
     bool doGlobalCurlyStatement(AstNode* parent, AstNode** result);
     bool doCurlyStatement(AstNode* parent, AstNode** result);
     bool doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind = ScopeKind::Statement);
+    bool doFuncDeclBody(AstNode* node, AstNode** result, FuncDeclFlags flags);
     bool doReturn(AstNode* parent, AstNode** result);
     bool doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams* capture);
     bool doWith(AstNode* parent, AstNode** result);

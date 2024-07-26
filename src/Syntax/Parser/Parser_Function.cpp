@@ -592,7 +592,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
+bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, FuncDeclFlags flags)
 {
     ParserPushTryCatchAssume sct(this, nullptr);
 
@@ -976,7 +976,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 node->semanticFct = Semantic::resolveTryBlock;
                 node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
                 ParserPushTryCatchAssume sc(this, node);
-                SWAG_CHECK(doCurlyStatement(node, &resStmt));
+                SWAG_CHECK(doFuncDeclBody(node, &resStmt, flags));
                 node->token.endLocation = resStmt->token.endLocation;
             }
             else if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
@@ -986,12 +986,12 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 node->semanticFct = Semantic::resolveAssumeBlock;
                 node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
                 ParserPushTryCatchAssume sc(this, node);
-                SWAG_CHECK(doCurlyStatement(node, &resStmt));
+                SWAG_CHECK(doFuncDeclBody(node, &resStmt, flags));
                 node->token.endLocation = resStmt->token.endLocation;
             }
             else
             {
-                SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
+                SWAG_CHECK(doFuncDeclBody(funcNode, &funcNode->content, flags));
                 resStmt = funcNode->content;
             }
         }
@@ -1002,6 +1002,26 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         resStmt->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);
     }
 
+    return true;
+}
+
+bool Parser::doFuncDeclBody(AstNode* node, AstNode** result, FuncDeclFlags flags)
+{
+    if (tokenParse.isNot(TokenId::SymLeftCurly))
+    {
+        if(flags.has(FUNC_DECL_INTERFACE))
+        {
+            Diagnostic err{sourceFile, tokenParse.token, toErr(Err0754)};
+            prepareExpectTokenError(err);
+            return context->report(err);
+        }
+        
+        Diagnostic err{sourceFile, tokenParse.token, toErr(Err0752)};
+        prepareExpectTokenError(err);
+        return context->report(err);
+    }
+
+    SWAG_CHECK(doCurlyStatement(node, result));
     return true;
 }
 
