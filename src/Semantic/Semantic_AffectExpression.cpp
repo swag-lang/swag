@@ -121,7 +121,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
                 }
             }
 
-            if (child->hasAstFlag(AST_FUNC_CALL) && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
+            if (child->hasAstFlag(AST_FUNC_CALL | AST_FUNC_INLINE_CALL) && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
             {
                 left = child;
                 hint = formNte(Nte0119, left->typeInfo->getDisplayNameC());

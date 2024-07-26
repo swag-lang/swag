@@ -931,6 +931,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
                 if (CallConv::returnNeedsStack(typeFunc))
                     identifier->addAstFlag(AST_TRANSIENT);
 
+                identifier->addAstFlag(AST_FUNC_INLINE_CALL);
                 return true;
             }
         }
