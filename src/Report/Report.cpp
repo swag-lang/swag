@@ -12,8 +12,9 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-thread_local int  g_SilentError = 0;
-thread_local Utf8 g_SilentErrorMsg;
+thread_local int     g_SilentError = 0;
+thread_local Utf8    g_SilentErrorMsg;
+Vector<Vector<Utf8>> g_ReportErrors;
 
 namespace
 {
@@ -248,13 +249,13 @@ namespace
             note->lineCodeMaxDigits = lineCodeMaxDigits;
     }
 
-    void reportInternal(const Diagnostic& err, const Vector<const Diagnostic*>& inNotes)
+    void reportInternal(Log* log, const Diagnostic& err, const Vector<const Diagnostic*>& inNotes)
     {
         if (g_CommandLine.errorOneLine)
         {
             const auto c = new Diagnostic{err};
-            c->reportCompact();
-            g_Log.setDefaultColor();
+            c->reportCompact(log);
+            log->setDefaultColor();
             return;
         }
 
@@ -269,7 +270,7 @@ namespace
         }
 
         cleanNotes(notes);
-        g_Log.writeEol();
+        log->writeEol();
 
         bool marginBefore = true;
         for (const auto n : notes)
@@ -283,18 +284,18 @@ namespace
                 marginBefore = true;
             if (n->errorLevel == DiagnosticLevel::Note && marginBefore)
             {
-                n->printMarginLineNo(0);
-                g_Log.setColor(n->marginBorderColor);
-                g_Log.print(LogSymbol::VerticalLineDot);
-                g_Log.writeEol();
+                n->printMarginLineNo(log, 0);
+                log->setColor(n->marginBorderColor);
+                log->print(LogSymbol::VerticalLineDot);
+                log->writeEol();
             }
 
-            n->report();
+            n->report(log);
             marginBefore = n->hasContent;
         }
 
-        g_Log.setDefaultColor();
-        g_Log.writeEol();
+        log->setDefaultColor();
+        log->writeEol();
     }
 
     bool dealWithWarning(const AstAttrUse* attrUse, const Utf8& warnMsg, Diagnostic& err, bool& retResult)
@@ -542,7 +543,12 @@ namespace
                         if (g_CommandLine.verboseErrors)
                         {
                             if (g_CommandLine.verboseErrorsFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorsFilter))
-                                reportInternal(err, notes);
+                            {
+                                Log log1;
+                                log1.setStoreMode(true);
+                                reportInternal(&log1, err, notes);
+                                g_ReportErrors.push_back(log1.store);
+                            }
                         }
 
                         return false;
@@ -582,7 +588,12 @@ namespace
                         if (g_CommandLine.verboseErrors)
                         {
                             if (g_CommandLine.verboseErrorsFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorsFilter))
-                                reportInternal(err, notes);
+                            {
+                                Log log1;
+                                log1.setStoreMode(true);
+                                reportInternal(&log1, err, notes);
+                                g_ReportErrors.push_back(log1.store);
+                            }
                         }
 
                         return true;
@@ -597,7 +608,7 @@ namespace
         }
 
         // Print error/warning
-        reportInternal(err, notes);
+        reportInternal(&g_Log, err, notes);
 
         if (runContext)
         {
@@ -770,4 +781,46 @@ bool Report::internalError(Module* module, const char* msg)
     ++module->numErrors;
     g_Log.unlock();
     return false;
+}
+
+void Report::reportLogErrors()
+{
+    if (!g_CommandLine.verboseErrors)
+        return;
+
+    std::ranges::sort(g_ReportErrors, [](const Vector<Utf8>& a, const Vector<Utf8>& b) {
+        Utf8 aa0 = a[0];
+        aa0.trim();
+        if (aa0.empty())
+            aa0 = a[1];
+
+        Utf8 bb0 = b[0];
+        bb0.trim();
+        if (bb0.empty())
+            bb0 = b[1];
+
+        auto a0 = aa0;
+        auto b0 = bb0;
+
+        a0.remove(0, a0.find(" ["));
+        b0.remove(0, b0.find(" ["));
+        a0.remove(0, 2);
+        b0.remove(0, 2);
+
+        a0.remove(7, a0.length() - 7);
+        b0.remove(7, b0.length() - 7);
+
+        if (a0 == b0)
+            return _strcmpi(aa0.buffer, bb0.buffer) < 0;
+        return _strcmpi(a0.buffer, b0.buffer) < 0;
+    });
+
+    for (const auto& err : g_ReportErrors)
+    {
+        for (const auto& l : err)
+        {
+            g_Log.print(l);
+            g_Log.writeEol();
+        }
+    }
 }

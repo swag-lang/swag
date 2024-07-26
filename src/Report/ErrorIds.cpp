@@ -969,7 +969,7 @@ void initErrors()
     SWAG_ERROR(Nte0079, "if needed, you can prefix with [[#run]] to force a compile-time call");
     SWAG_ERROR(Nte0080, "if this is intended, consider adding [[impl]] before this");
     SWAG_ERROR(Nte0081, "if this is intended, consider initializing the global variable with [[undefined]] instead of zero");
-    SWAG_ERROR(Nte0082, "if this is intended, consider renaming it to [[_%s]] to indicate it's unused");
+    SWAG_ERROR(Nte0082, "if this is intended, consider renaming it to [[_%s]]");
     SWAG_ERROR(Nte0083, "if you want to declare a generic constant, consider adding [[const]] before [[%s]]");
     SWAG_ERROR(Nte0084, "if you want to declare a lambda type, use [[func(]] or [[closure(]]");
     SWAG_ERROR(Nte0085, "if you want to retrieve the type of an expression, consider using [[@decltype]] instead");
@@ -981,7 +981,7 @@ void initErrors()
     SWAG_ERROR(Nte0091, "occurred during compile-time evaluation");
     SWAG_ERROR(Nte0092, "occurred during the [[where]] check of struct [[%s]]");
     SWAG_ERROR(Nte0093, "occurred during the [[where]] check of the call to [[%s]]");
-    SWAG_ERROR(Nte0094, "occurred during the [[check]] check of the call to [[%s]]");
+    SWAG_ERROR(Nte0094, "occurred during the [[where:call]] check of the call to [[%s]]");
     SWAG_ERROR(Nte0095, "occurred during the generic instantiation of [[%s]]");
     SWAG_ERROR(Nte0096, "occurred during the inline expansion of [[%s]]");
     SWAG_ERROR(Nte0097, "[[%s]] is a mutable UFCS argument, so taking the address is implicit");

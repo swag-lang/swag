@@ -95,7 +95,7 @@ void Diagnostic::addNote(AstNode* node, const Utf8& h)
     notes.push_back(note(node->token.sourceFile, start, end, h));
 }
 
-void Diagnostic::printSourceLine() const
+void Diagnostic::printSourceLine(Log* log) const
 {
     SWAG_ASSERT(sourceFile);
     auto checkFile = sourceFile;
@@ -107,46 +107,46 @@ void Diagnostic::printSourceLine() const
         path = path.filename();
 
     if (!g_CommandLine.errorOneLine)
-        g_Log.setColor(sourceFileColor);
-    g_Log.print(path);
+        log->setColor(sourceFileColor);
+    log->print(path);
     if (hasLocation)
-        g_Log.print(form(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
+        log->print(form(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
     else
-        g_Log.write(": ");
+        log->write(": ");
 }
 
-void Diagnostic::printMarginLineNo(int lineNo) const
+void Diagnostic::printMarginLineNo(Log* log, int lineNo) const
 {
-    g_Log.setColor(codeLineNoColor);
+    log->setColor(codeLineNoColor);
 
     int m = lineNo ? lineCodeNumDigits : 0;
     while (m++ < lineCodeMaxDigits + 1)
-        g_Log.write(" ");
+        log->write(" ");
     if (lineNo)
-        g_Log.print(form("%d", lineNo));
-    g_Log.write(" ");
+        log->print(form("%d", lineNo));
+    log->write(" ");
 }
 
-void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo) const
+void Diagnostic::printMargin(Log* log, bool eol, bool printLineNo, int lineNo) const
 {
     if (!printLineNo)
     {
         if (eol)
-            g_Log.writeEol();
+            log->writeEol();
         return;
     }
 
-    printMarginLineNo(lineNo);
+    printMarginLineNo(log, lineNo);
 
-    g_Log.setColor(marginBorderColor);
-    g_Log.print(LogSymbol::VerticalLine);
-    g_Log.write(" ");
+    log->setColor(marginBorderColor);
+    log->print(LogSymbol::VerticalLine);
+    log->write(" ");
 
     if (eol)
-        g_Log.writeEol();
+        log->writeEol();
 }
 
-void Diagnostic::printErrorLevel()
+void Diagnostic::printErrorLevel(Log* log)
 {
     // Put the error ID right after the error level, instead at the beginning of the message
     Utf8 id;
@@ -159,35 +159,35 @@ void Diagnostic::printErrorLevel()
     switch (errorLevel)
     {
         case DiagnosticLevel::Error:
-            g_Log.setColor(errorColor);
-            g_Log.write("error: ");
+            log->setColor(errorColor);
+            log->write("error: ");
             break;
 
         case DiagnosticLevel::Panic:
-            g_Log.setColor(errorColor);
-            g_Log.write("panic: ");
+            log->setColor(errorColor);
+            log->write("panic: ");
             break;
 
         case DiagnosticLevel::Warning:
-            g_Log.setColor(warningColor);
-            g_Log.write("warning: ");
+            log->setColor(warningColor);
+            log->write("warning: ");
             break;
 
         case DiagnosticLevel::Note:
-            g_Log.setColor(noteTitleColor);
-            g_Log.write("note: ");
-            g_Log.setColor(noteColor);
+            log->setColor(noteTitleColor);
+            log->write("note: ");
+            log->setColor(noteColor);
             break;
     }
 
     if (!id.empty())
     {
-        g_Log.print(id);
-        g_Log.write(": ");
+        log->print(id);
+        log->write(": ");
     }
 }
 
-void Diagnostic::printPreRemarks() const
+void Diagnostic::printPreRemarks(Log* log) const
 {
     if (!preRemarks.empty())
     {
@@ -195,26 +195,26 @@ void Diagnostic::printPreRemarks() const
         {
             if (r.empty())
                 continue;
-            printMargin(false, true, 0);
+            printMargin(log, false, true, 0);
             if (r.empty() || r[0] == ' ')
             {
-                g_Log.setColor(remarkColor);
-                g_Log.write(" ");
+                log->setColor(remarkColor);
+                log->write(" ");
             }
             else
             {
-                g_Log.setColor(preRemarkColor);
-                g_Log.print(LogSymbol::DotList);
+                log->setColor(preRemarkColor);
+                log->print(LogSymbol::DotList);
             }
 
-            g_Log.write(" ");
-            g_Log.print(r);
-            g_Log.writeEol();
+            log->write(" ");
+            log->print(r);
+            log->writeEol();
         }
     }
 }
 
-void Diagnostic::printRemarks() const
+void Diagnostic::printRemarks(Log* log) const
 {
     if (!autoRemarks.empty())
     {
@@ -222,12 +222,12 @@ void Diagnostic::printRemarks() const
         {
             if (r.empty())
                 continue;
-            printMargin(false, true, 0);
-            g_Log.setColor(autoRemarkColor);
-            g_Log.print(LogSymbol::DotList);
-            g_Log.write(" ");
-            g_Log.print(r);
-            g_Log.writeEol();
+            printMargin(log, false, true, 0);
+            log->setColor(autoRemarkColor);
+            log->print(LogSymbol::DotList);
+            log->write(" ");
+            log->print(r);
+            log->writeEol();
         }
     }
 
@@ -237,12 +237,12 @@ void Diagnostic::printRemarks() const
         {
             if (r.empty())
                 continue;
-            printMargin(false, true, 0);
-            g_Log.setColor(remarkColor);
-            g_Log.print(LogSymbol::DotList);
-            g_Log.write(" ");
-            g_Log.print(r);
-            g_Log.writeEol();
+            printMargin(log, false, true, 0);
+            log->setColor(remarkColor);
+            log->print(LogSymbol::DotList);
+            log->write(" ");
+            log->print(r);
+            log->writeEol();
         }
     }
 }
@@ -375,13 +375,13 @@ void Diagnostic::collectRanges()
     }
 }
 
-void Diagnostic::reportCompact()
+void Diagnostic::reportCompact(Log* log)
 {
     setupColors();
-    printErrorLevel();
-    printSourceLine();
-    g_Log.print(oneLiner(textMsg));
-    g_Log.writeEol();
+    printErrorLevel(log);
+    printSourceLine(log);
+    log->print(oneLiner(textMsg));
+    log->writeEol();
 }
 
 void Diagnostic::collectSourceCode()
@@ -409,13 +409,13 @@ void Diagnostic::collectSourceCode()
     }
 }
 
-void Diagnostic::printSourceCode() const
+void Diagnostic::printSourceCode(Log* log) const
 {
     if (lineCode.empty())
         return;
 
     if (showErrorLevel || showFileName)
-        printMargin(true);
+        printMargin(log, true);
 
     // Print all lines except the one that really contains the relevant stuff (and ranges)
     SyntaxColorContext cxt;
@@ -424,63 +424,63 @@ void Diagnostic::printSourceCode() const
     const auto pz = lineCode.c_str();
     if (*pz == 0 || SWAG_IS_WIN_EOL(*pz) || SWAG_IS_EOL(*pz))
         return;
-    printMargin(false, true, lineCodeNum);
+    printMargin(log, false, true, lineCodeNum);
 
-    g_Log.setColor(LogColor::White);
+    log->setColor(LogColor::White);
 
     const auto colored = doSyntaxColor(lineCode.c_str() + minBlanks, cxt);
-    g_Log.print(colored, true);
-    g_Log.writeEol();
+    log->print(colored, true);
+    log->writeEol();
 }
 
-void Diagnostic::setColorRanges(DiagnosticLevel level) const
+void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level) const
 {
     switch (level)
     {
         case DiagnosticLevel::Error:
         case DiagnosticLevel::Panic:
-            g_Log.setColor(errorColor);
+            log->setColor(errorColor);
             break;
         case DiagnosticLevel::Warning:
-            g_Log.setColor(warningColor);
+            log->setColor(warningColor);
             break;
         case DiagnosticLevel::Note:
-            g_Log.setColor(rangeNoteColor);
+            log->setColor(rangeNoteColor);
             break;
     }
 }
 
-void Diagnostic::alignRangeColumn(int& curColumn, int where, bool withCode) const
+void Diagnostic::alignRangeColumn(Log* log, int& curColumn, int where, bool withCode) const
 {
     while (curColumn < where)
     {
         if (withCode && curColumn < static_cast<int>(lineCode.count) && lineCode[curColumn] == '\t')
-            g_Log.write("\t");
+            log->write("\t");
         else
-            g_Log.write(" ");
+            log->write(" ");
         curColumn++;
     }
 }
 
-int Diagnostic::printRangesVerticalBars(size_t maxMarks)
+int Diagnostic::printRangesVerticalBars(Log* log, size_t maxMarks)
 {
-    g_Log.writeEol();
-    printMargin(false, true);
+    log->writeEol();
+    printMargin(log, false, true);
     int curColumn = minBlanks;
     for (uint32_t ii = 0; ii < maxMarks; ii++)
     {
         auto& rr  = ranges[ii];
         rr.hasBar = true;
-        g_Log.setColor(rangeNoteColor);
-        alignRangeColumn(curColumn, rr.mid);
-        g_Log.print(LogSymbol::VerticalLine);
+        log->setColor(rangeNoteColor);
+        alignRangeColumn(log, curColumn, rr.mid);
+        log->print(LogSymbol::VerticalLine);
         curColumn++;
     }
 
     return curColumn;
 }
 
-void Diagnostic::printLastRangeHint(int curColumn)
+void Diagnostic::printLastRangeHint(Log* log, int curColumn)
 {
     const auto& r = ranges.back();
 
@@ -492,38 +492,38 @@ void Diagnostic::printLastRangeHint(int curColumn)
 
     for (uint32_t i = 0; i < tokens.size(); i++)
     {
-        g_Log.setColor(rangeNoteColor);
-        g_Log.print(tokens[i]);
+        log->setColor(rangeNoteColor);
+        log->print(tokens[i]);
         if (i != tokens.size() - 1)
         {
-            curColumn = printRangesVerticalBars(ranges.size() - 1);
-            alignRangeColumn(curColumn, leftColumn, false);
+            curColumn = printRangesVerticalBars(log, ranges.size() - 1);
+            alignRangeColumn(log, curColumn, leftColumn, false);
         }
     }
 }
 
-void Diagnostic::printRanges()
+void Diagnostic::printRanges(Log* log)
 {
     if (ranges.empty())
         return;
 
-    printMargin(false, true);
+    printMargin(log, false, true);
 
     // Print all underlines
     int curColumn = minBlanks;
     for (uint32_t i = 0; i < ranges.size(); i++)
     {
         const auto& r = ranges[i];
-        setColorRanges(r.errorLevel);
-        alignRangeColumn(curColumn, r.startLocation.column);
+        setColorRanges(log, r.errorLevel);
+        alignRangeColumn(log, curColumn, r.startLocation.column);
 
         if (i != ranges.size() - 1 && r.mergeNext)
-            setColorRanges(ranges[i + 1].errorLevel);
+            setColorRanges(log, ranges[i + 1].errorLevel);
 
         while (curColumn < static_cast<int>(r.startLocation.column) + r.width && curColumn <= static_cast<int>(lineCode.length()) + 1)
         {
             curColumn++;
-            g_Log.print(LogSymbol::HorizontalLine);
+            log->print(LogSymbol::HorizontalLine);
         }
     }
 
@@ -546,8 +546,8 @@ void Diagnostic::printRanges()
         const auto  unformat = Log::removeFormat(r.hint.c_str());
         if (curColumn + 1 + unformat.length() < g_CommandLine.errorRightColumn)
         {
-            g_Log.write(" ");
-            printLastRangeHint(curColumn + 1);
+            log->write(" ");
+            printLastRangeHint(log, curColumn + 1);
             ranges.pop_back();
         }
     }
@@ -558,8 +558,8 @@ void Diagnostic::printRanges()
         auto       unformat = Log::removeFormat(r.hint.c_str());
         const auto mid      = r.mid - minBlanks;
 
-        curColumn = printRangesVerticalBars(ranges.size() - 1);
-        g_Log.setColor(rangeNoteColor);
+        curColumn = printRangesVerticalBars(log, ranges.size() - 1);
+        log->setColor(rangeNoteColor);
 
         const bool notEnoughRoomRight = mid + 3 + static_cast<int>(unformat.length()) > static_cast<int>(g_CommandLine.errorRightColumn) || orgNumRanges >= 2;
         const bool enoughRoomLeft     = mid - 2 - static_cast<int>(unformat.length()) >= 0;
@@ -567,11 +567,11 @@ void Diagnostic::printRanges()
         // Can we stick the hint before the line reference ? (must be the last one)
         if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft)
         {
-            alignRangeColumn(curColumn, r.mid - 2 - static_cast<int>(unformat.length()));
-            g_Log.print(r.hint);
-            g_Log.write(" ");
-            g_Log.print(LogSymbol::HorizontalLine);
-            g_Log.print(LogSymbol::DownLeft);
+            alignRangeColumn(log, curColumn, r.mid - 2 - static_cast<int>(unformat.length()));
+            log->print(r.hint);
+            log->write(" ");
+            log->print(LogSymbol::HorizontalLine);
+            log->print(LogSymbol::DownLeft);
         }
 
         // The hint is the last one, and is too big to be on the right
@@ -580,70 +580,70 @@ void Diagnostic::printRanges()
         {
             if (!ranges.back().hasBar)
             {
-                alignRangeColumn(curColumn, r.mid);
-                g_Log.print(LogSymbol::VerticalLineUp);
-                g_Log.writeEol();
-                printMargin(false, true);
+                alignRangeColumn(log, curColumn, r.mid);
+                log->print(LogSymbol::VerticalLineUp);
+                log->writeEol();
+                printMargin(log, false, true);
                 curColumn = minBlanks;
             }
 
             if (mid - 2 - static_cast<int>(unformat.length()) > -4)
-                alignRangeColumn(curColumn, curColumn + 4);
+                alignRangeColumn(log, curColumn, curColumn + 4);
 
-            printLastRangeHint(curColumn);
+            printLastRangeHint(log, curColumn);
         }
         else
         {
-            alignRangeColumn(curColumn, r.mid);
-            g_Log.print(LogSymbol::DownRight);
-            g_Log.print(LogSymbol::HorizontalLine);
-            g_Log.write(" ");
+            alignRangeColumn(log, curColumn, r.mid);
+            log->print(LogSymbol::DownRight);
+            log->print(LogSymbol::HorizontalLine);
+            log->write(" ");
             curColumn += 3;
-            printLastRangeHint(curColumn);
+            printLastRangeHint(log, curColumn);
         }
 
         ranges.pop_back();
     }
 
-    g_Log.writeEol();
+    log->writeEol();
 }
 
-void Diagnostic::report()
+void Diagnostic::report(Log* log)
 {
     // Message level
     if (showErrorLevel)
     {
         if (errorLevel == DiagnosticLevel::Note)
         {
-            printMargin(false, true);
-            printErrorLevel();
+            printMargin(log, false, true);
+            printErrorLevel(log);
 
             Vector<Utf8> tokens;
             Utf8::wordWrap(textMsg, tokens, g_CommandLine.errorRightColumn);
             for (uint32_t i = 0; i < tokens.size(); i++)
             {
-                g_Log.setColor(rangeNoteColor);
-                g_Log.print(tokens[i]);
+                log->setColor(rangeNoteColor);
+                log->print(tokens[i]);
                 if (i != tokens.size() - 1)
                 {
-                    g_Log.writeEol();
-                    printMargin(false, true);
+                    log->writeEol();
+                    printMargin(log, false, true);
                 }
             }
 
             showErrorLevel = false;
-            g_Log.writeEol();
+            log->writeEol();
             if (hasContent)
             {
-                printMargin(false, true);
-                g_Log.writeEol();
+                printMargin(log, false, true);
+                log->writeEol();
             }
         }
         else
         {
-            printErrorLevel();
-            g_Log.print(textMsg);
-            g_Log.writeEol();
+            printErrorLevel(log);
+            log->print(textMsg);
+            log->writeEol();
         }
     }
 
@@ -651,39 +651,39 @@ void Diagnostic::report()
     if (showFileName)
     {
         if (showErrorLevel)
-            g_Log.writeEol();
-        printMarginLineNo(0);
-        g_Log.setColor(marginBorderColor);
-        g_Log.print(LogSymbol::VerticalLine);
-        g_Log.write(" ");
-        g_Log.setColor(sourceFileColor);
-        printSourceLine();
-        g_Log.writeEol();
-        printMargin(false, true);
+            log->writeEol();
+        printMarginLineNo(log, 0);
+        log->setColor(marginBorderColor);
+        log->print(LogSymbol::VerticalLine);
+        log->write(" ");
+        log->setColor(sourceFileColor);
+        printSourceLine(log);
+        log->writeEol();
+        printMargin(log, false, true);
     }
 
     // Code pre remarks
     if (!preRemarks.empty())
     {
-        printPreRemarks();
-        printMargin(true, true);
+        printPreRemarks(log);
+        printMargin(log, true, true);
     }
 
     // Source code
     if (showSourceCode)
     {
-        printSourceCode();
-        printRanges();
+        printSourceCode(log);
+        printRanges(log);
     }
 
     // Code remarks
     if (!autoRemarks.empty() || !remarks.empty())
     {
-        printMargin(true, true);
-        printRemarks();
+        printMargin(log, true, true);
+        printRemarks(log);
     }
 
-    g_Log.setDefaultColor();
+    log->setDefaultColor();
 }
 
 Utf8 Diagnostic::isType(TypeInfo* typeInfo)

@@ -2,7 +2,7 @@
 func(T) AA()
 {
     #if @typeof(T) != f32 #do
-        #error "invalid type " ++ @typeof(T).fullname ++ "$ hint"
+        #error "invalid type " ++ @typeof(T).fullname ++ " $ hint"
 }
 
 #test

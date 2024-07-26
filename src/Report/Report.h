@@ -4,6 +4,7 @@ struct Module;
 struct Diagnostic;
 struct SourceFile;
 struct ByteCodeRunContext;
+struct Log;
 
 namespace Report
 {
@@ -18,6 +19,8 @@ namespace Report
 
     bool internalError(AstNode* node, const char* msg);
     bool internalError(Module* module, const char* msg);
+
+    void reportLogErrors();
 }
 
 extern thread_local int  g_SilentError;

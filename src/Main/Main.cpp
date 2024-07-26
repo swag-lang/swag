@@ -138,6 +138,8 @@ int main(int argc, const char* argv[])
         g_Log.messageInfo(form("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     }
 
+    Report::reportLogErrors();
+
     // Prints stats, then exit
 #ifdef SWAG_STATS
     g_Stats.print();

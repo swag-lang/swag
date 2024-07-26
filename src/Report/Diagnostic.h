@@ -5,6 +5,7 @@
 struct SourceFile;
 struct TypeInfo;
 struct SyntaxColorContext;
+struct Log;
 enum class LogColor;
 
 enum class DiagnosticLevel
@@ -148,21 +149,21 @@ struct Diagnostic
     void collectSourceCode();
     void sortRanges();
     void collectRanges();
-    void printSourceCode() const;
-    void printSourceLine() const;
-    void printErrorLevel();
-    void printMarginLineNo(int lineNo) const;
-    void printMargin(bool eol = false, bool printLineNo = false, int lineNo = 0) const;
-    void printPreRemarks() const;
-    void printRemarks() const;
-    void setColorRanges(DiagnosticLevel level) const;
-    void alignRangeColumn(int& curColumn, int where, bool withCode = true) const;
-    int  printRangesVerticalBars(size_t maxMarks);
-    void printLastRangeHint(int curColumn);
-    void printRanges();
+    void printSourceCode(Log* log) const;
+    void printSourceLine(Log* log) const;
+    void printErrorLevel(Log* log);
+    void printMarginLineNo(Log* log, int lineNo) const;
+    void printMargin(Log* log, bool eol = false, bool printLineNo = false, int lineNo = 0) const;
+    void printPreRemarks(Log* log) const;
+    void printRemarks(Log* log) const;
+    void setColorRanges(Log* log, DiagnosticLevel level) const;
+    void alignRangeColumn(Log* log, int& curColumn, int where, bool withCode = true) const;
+    int  printRangesVerticalBars(Log* log, size_t maxMarks);
+    void printLastRangeHint(Log* log, int curColumn);
+    void printRanges(Log* log);
 
-    void reportCompact();
-    void report();
+    void reportCompact(Log* log);
+    void report(Log* log);
 
     static void        removeErrorId(Utf8& err);
     static void        tokenizeError(const Utf8& err, Vector<Utf8>& tokens);
