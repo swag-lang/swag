@@ -103,7 +103,7 @@ struct Parser
     bool eatToken();
     bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");
     bool eatToken(TokenId id, const char* msg);
-    void prepareExpectTokenError();
+    void prepareExpectTokenError(Diagnostic& diag) const;
     bool eatTokenError(TokenId id, const Utf8& msg);
     bool eatFormat(AstNode* parent);
     bool eatSemiCol(const char* msg);

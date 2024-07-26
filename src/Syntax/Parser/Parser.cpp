@@ -181,14 +181,15 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     return true;
 }
 
-void Parser::prepareExpectTokenError()
+void Parser::prepareExpectTokenError(Diagnostic& diag) const
 {
     // If we expect a token, and the bad token is the first of the line, then
     // it's better to display the requested token at the end of the previous line
     if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
     {
-        tokenParse.token.startLocation = prevTokenParse.token.endLocation;
-        tokenParse.token.endLocation   = tokenParse.token.startLocation;
+        diag.addNote(diag.startLocation, diag.endLocation, toNte(Nte0201));
+        diag.startLocation = prevTokenParse.token.endLocation;
+        diag.endLocation   = tokenParse.token.startLocation;
     }
 }
 
@@ -196,8 +197,8 @@ bool Parser::eatTokenError(TokenId id, const Utf8& msg)
 {
     if (tokenParse.token.isNot(id))
     {
-        prepareExpectTokenError();
-        const Diagnostic err{sourceFile, tokenParse.token, form(msg.c_str(), tokenParse.token.c_str())};
+        Diagnostic err{sourceFile, tokenParse.token, form(msg.c_str(), tokenParse.token.c_str())};
+        prepareExpectTokenError(err);
         return context->report(err);
     }
 
@@ -210,8 +211,8 @@ bool Parser::eatToken(TokenId id, const char* msg)
     SWAG_ASSERT(msg);
     if (tokenParse.token.isNot(id))
     {
-        prepareExpectTokenError();
-        const Diagnostic err{sourceFile, tokenParse.token, formErr(Err0083, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str())};
+        Diagnostic err{sourceFile, tokenParse.token, formErr(Err0083, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str())};
+        prepareExpectTokenError(err);
         return context->report(err);
     }
 

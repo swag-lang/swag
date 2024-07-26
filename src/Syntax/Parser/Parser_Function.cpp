@@ -390,8 +390,8 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         {
             if (!acceptMissingType)
             {
-                prepareExpectTokenError();
                 Diagnostic err{sourceFile, tokenParse.token, formErr(Err0571, tokenParse.token.c_str())};
+                prepareExpectTokenError(err);
                 if (otherVariables.empty())
                     err.addNote(paramNode, toNte(Nte0169));
                 else
