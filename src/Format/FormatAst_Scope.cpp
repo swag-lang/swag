@@ -43,22 +43,22 @@ bool FormatAst::outputScopeContent(FormatContext& context, Module* module, const
             SWAG_CHECK(outputAttributes(context, funcNode, funcNode->typeInfo));
 
             concat->addIndent(context.indent);
-            if (funcNode->token.text == g_LangSpec->name_opInitGenerated)
+            if (funcNode->token.is(g_LangSpec->name_opInitGenerated))
             {
                 concat->addString("mtd opInit();");
                 concat->addEol();
             }
-            else if (funcNode->token.text == g_LangSpec->name_opDropGenerated)
+            else if (funcNode->token.is(g_LangSpec->name_opDropGenerated))
             {
                 concat->addString("mtd opDrop();");
                 concat->addEol();
             }
-            else if (funcNode->token.text == g_LangSpec->name_opPostCopyGenerated)
+            else if (funcNode->token.is(g_LangSpec->name_opPostCopyGenerated))
             {
                 concat->addString("mtd opPostCopy();");
                 concat->addEol();
             }
-            else if (funcNode->token.text == g_LangSpec->name_opPostMoveGenerated)
+            else if (funcNode->token.is(g_LangSpec->name_opPostMoveGenerated))
             {
                 concat->addString("mtd opPostMove();");
                 concat->addEol();

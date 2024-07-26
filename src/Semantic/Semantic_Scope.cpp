@@ -199,14 +199,14 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
 {
     // When this is "retval" type, no need to do fancy things, we take the corresponding function
     // return symbol. This will avoid some ambiguous resolutions with multiple tuples/structs.
-    if (identifier->token.text == g_LangSpec->name_retval)
+    if (identifier->token.is(g_LangSpec->name_retval))
     {
         SWAG_CHECK(matchRetval(context, symbolsMatch, identifier));
         return true;
     }
 
     // #self
-    if (identifier->token.text == g_LangSpec->name_sharpself)
+    if (identifier->token.is(g_LangSpec->name_sharpself))
     {
         SWAG_CHECK(matchSharpSelf(context, symbolsMatch, identifierRef, identifier));
         return true;

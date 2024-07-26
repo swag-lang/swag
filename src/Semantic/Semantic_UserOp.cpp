@@ -23,39 +23,39 @@ Utf8 Semantic::getSpecialOpSignature(const AstFuncDecl* node)
 {
     Utf8 result = "the signature should be ";
 
-    if (node->token.text == g_LangSpec->name_opDrop)
+    if (node->token.is(g_LangSpec->name_opDrop))
         result += "[[func opDrop(self)]]";
-    else if (node->token.text == g_LangSpec->name_opPostCopy)
+    else if (node->token.is( g_LangSpec->name_opPostCopy))
         result += "[[func opPostCopy(self)]]";
-    else if (node->token.text == g_LangSpec->name_opPostMove)
+    else if (node->token.is(g_LangSpec->name_opPostMove))
         result += "[[func opPostMove(self)]]";
-    else if (node->token.text == g_LangSpec->name_opSlice)
+    else if (node->token.is(g_LangSpec->name_opSlice))
         result += "[[func opSlice(self, low, up: u64) -> <string or slice>]]";
-    else if (node->token.text == g_LangSpec->name_opIndex)
+    else if (node->token.is(g_LangSpec->name_opIndex))
         result += "[[func opIndex(self, index: WhateverType) -> WhateverType]]";
-    else if (node->token.text == g_LangSpec->name_opCount)
+    else if (node->token.is(g_LangSpec->name_opCount))
         result += "[[func opCount(self) -> u64]]";
-    else if (node->token.text == g_LangSpec->name_opData)
+    else if (node->token.is(g_LangSpec->name_opData))
         result += "[[func opData(self) -> *WhateverType]]";
-    else if (node->token.text == g_LangSpec->name_opCast)
+    else if (node->token.is( g_LangSpec->name_opCast))
         result += "[[func opCast(self) -> WhateverType]]";
-    else if (node->token.text == g_LangSpec->name_opEquals)
+    else if (node->token.is( g_LangSpec->name_opEquals))
         result += "[[func opEquals(self, value: WhateverType) -> bool]]";
-    else if (node->token.text == g_LangSpec->name_opCmp)
+    else if (node->token.is( g_LangSpec->name_opCmp))
         result += "[[func opCmp(self, value: WhateverType) -> s32]]";
-    else if (node->token.text == g_LangSpec->name_opAffect)
+    else if (node->token.is( g_LangSpec->name_opAffect))
         result += "[[func opAffect(self, value: WhateverType)]]";
-    else if (node->token.text == g_LangSpec->name_opAffectLiteral)
+    else if (node->token.is( g_LangSpec->name_opAffectLiteral))
         result += "[[func(suffix: string) opAffectLiteral(self, value: WhateverType)]]";
-    else if (node->token.text == g_LangSpec->name_opIndexAffect)
+    else if (node->token.is( g_LangSpec->name_opIndexAffect))
         result += "[[func opIndexAffect(self, index: WhateverType, value: WhateverType)]]";
-    else if (node->token.text == g_LangSpec->name_opBinary)
+    else if (node->token.is( g_LangSpec->name_opBinary))
         result += "[[func(op: string) opBinary(self, other: WhateverType) -> Self]]";
-    else if (node->token.text == g_LangSpec->name_opUnary)
+    else if (node->token.is( g_LangSpec->name_opUnary))
         result += "[[func(op: string) opUnary(self) -> Self]]";
-    else if (node->token.text == g_LangSpec->name_opAssign)
+    else if (node->token.is( g_LangSpec->name_opAssign))
         result += "[[func(op: string) opAssign(self, value: WhateverType)]]";
-    else if (node->token.text == g_LangSpec->name_opIndexAssign)
+    else if (node->token.is( g_LangSpec->name_opIndexAssign))
         result += "[[func(op: string) opIndexAssign(self, index: WhateverType, value: WhateverType)]]";
     else if (node->token.text.startsWith(g_LangSpec->name_opVisit))
         result += "[[func(ptr: bool, back: bool) opVisit(self, stmt: code)]]";

@@ -185,7 +185,7 @@ bool Parser::doFuncDeclParameterSelf(AstVarDecl* paramNode)
         const auto constToken = tokenParse;
         isConst               = true;
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(tokenParse.is(TokenId::Identifier) && tokenParse.token.text == g_LangSpec->name_self, error(constToken.token, formErr(Err0457, tokenParse.token.c_str())));
+        SWAG_VERIFY(tokenParse.is(TokenId::Identifier) && tokenParse.token.is(g_LangSpec->name_self), error(constToken.token, formErr(Err0457, tokenParse.token.c_str())));
         paramNode->token.text = g_LangSpec->name_self;
     }
 
@@ -263,7 +263,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
     paramNode->token.text = tokenParse.token.text;
 
     // 'self'
-    if (tokenParse.is(TokenId::KwdConst) || paramNode->token.text == g_LangSpec->name_self)
+    if (tokenParse.is(TokenId::KwdConst) || paramNode->token.is(g_LangSpec->name_self))
     {
         SWAG_CHECK(doFuncDeclParameterSelf(paramNode));
     }
@@ -740,11 +740,11 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     funcNode->setResolvedSymbolName(symbolName);
 
     // Store specific symbols for fast retrieve
-    if (funcNode->token.text == g_LangSpec->name_opAffect)
+    if (funcNode->token.is(g_LangSpec->name_opAffect))
         currentScope->symbolOpAffect = symbolName;
-    else if (funcNode->token.text == g_LangSpec->name_opAffectLiteral)
+    else if (funcNode->token.is(g_LangSpec->name_opAffectLiteral))
         currentScope->symbolOpAffectSuffix = symbolName;
-    else if (funcNode->token.text == g_LangSpec->name_opCast)
+    else if (funcNode->token.is(g_LangSpec->name_opCast))
         currentScope->symbolOpCast = symbolName;
 
     // Count number of methods to resolve

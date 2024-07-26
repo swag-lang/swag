@@ -573,7 +573,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
     {
         SWAG_CHECK(eatToken());
 
-        if (tokenParse.token.text == g_LangSpec->name_up)
+        if (tokenParse.token.is(g_LangSpec->name_up))
         {
             switch (opId)
             {
@@ -593,7 +593,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.text == g_LangSpec->name_over)
+        if (tokenParse.token.is(g_LangSpec->name_over))
         {
             switch (opId)
             {
@@ -615,7 +615,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.text == g_LangSpec->name_nodrop)
+        if (tokenParse.token.is(g_LangSpec->name_nodrop))
         {
             switch (opId)
             {
@@ -631,7 +631,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.text == g_LangSpec->name_ref)
+        if (tokenParse.token.is(g_LangSpec->name_ref))
         {
             switch (opId)
             {
@@ -648,7 +648,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.text == g_LangSpec->name_constref)
+        if (tokenParse.token.is(g_LangSpec->name_constref))
         {
             switch (opId)
             {
@@ -665,7 +665,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.text == g_LangSpec->name_back)
+        if (tokenParse.token.is(g_LangSpec->name_back))
         {
             switch (opId)
             {
@@ -682,7 +682,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.text == g_LangSpec->name_bit)
+        if (tokenParse.token.is(g_LangSpec->name_bit))
         {
             switch (opId)
             {
@@ -698,7 +698,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.text == g_LangSpec->name_unconst)
+        if (tokenParse.token.is(g_LangSpec->name_unconst))
         {
             switch (opId)
             {
@@ -714,7 +714,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.text == g_LangSpec->name_move)
+        if (tokenParse.token.is(g_LangSpec->name_move))
         {
             switch (opId)
             {
@@ -730,7 +730,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.text == g_LangSpec->name_moveraw)
+        if (tokenParse.token.is(g_LangSpec->name_moveraw))
         {
             switch (opId)
             {
@@ -1557,7 +1557,7 @@ bool Parser::doTupleUnpacking(AstNode* parent, AstNode** result, AstNode* leftNo
         const auto child = leftNode->firstChild();
 
         // Ignore field if '?', otherwise check that this is a valid variable name
-        if (child->firstChild()->token.text == '?')
+        if (child->firstChild()->token.is("?"))
         {
             idx++;
             Ast::removeFromParent(child);

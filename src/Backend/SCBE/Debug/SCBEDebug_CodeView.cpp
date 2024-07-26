@@ -726,7 +726,7 @@ namespace
 
             // codeview seems to need this pointer to be named "this"...
             // So add it
-            if (typeFunc->isMethod() && child->token.text == g_LangSpec->name_self)
+            if (typeFunc->isMethod() && child->token.is(g_LangSpec->name_self))
             {
                 //////////
                 emitStartRecord(pp, S_LOCAL);

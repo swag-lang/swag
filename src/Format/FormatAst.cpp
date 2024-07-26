@@ -241,7 +241,7 @@ bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_
             }
         }
 
-        if (child->kind == AstNodeKind::AffectOp && child->token.text == "=")
+        if (child->is(AstNodeKind::AffectOp) && child->token.is("="))
         {
             FormatContext cxt{context};
             cxt.alignAffectEqual = true;

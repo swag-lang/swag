@@ -275,7 +275,7 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
     if (tokenParse.is(TokenId::SymColon))
     {
         SWAG_CHECK(eatToken());
-        if (tokenParse.token.text == g_LangSpec->name_call)
+        if (tokenParse.token.is(g_LangSpec->name_call))
         {
             SWAG_CHECK(eatToken());
             node->kind = AstNodeKind::CompilerWhereCall;
@@ -287,9 +287,9 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
     }
 
     // Not for the 3 special functions
-    if (parent->token.text == g_LangSpec->name_opDrop ||
-        parent->token.text == g_LangSpec->name_opPostCopy ||
-        parent->token.text == g_LangSpec->name_opPostMove)
+    if (parent->token.is(g_LangSpec->name_opDrop) ||
+        parent->token.is(g_LangSpec->name_opPostCopy) ||
+        parent->token.is(g_LangSpec->name_opPostMove))
     {
         return error(node, formErr(Err0658, parent->token.c_str()));
     }
@@ -442,7 +442,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     /////////////////////////////////
-    if (tokenParse.token.text == g_LangSpec->name_export)
+    if (tokenParse.token.is(g_LangSpec->name_export))
     {
         const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
         FormatAst::inheritFormatBefore(this, globalDecl, &savedToken);
@@ -461,7 +461,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (tokenParse.token.text == g_LangSpec->name_generated)
+    else if (tokenParse.token.is(g_LangSpec->name_generated))
     {
         const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
         FormatAst::inheritFormatBefore(this, globalDecl, &savedToken);
@@ -527,7 +527,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (tokenParse.token.text == g_LangSpec->name_skip)
+    else if (tokenParse.token.is(g_LangSpec->name_skip))
     {
         const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
         FormatAst::inheritFormatBefore(this, globalDecl, &savedToken);
@@ -538,7 +538,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (tokenParse.token.text == g_LangSpec->name_skipfmt)
+    else if (tokenParse.token.is(g_LangSpec->name_skipfmt))
     {
         sourceFile->addFlag(FILE_NO_FORMAT);
         SWAG_CHECK(eatToken());
@@ -546,7 +546,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (tokenParse.token.text == g_LangSpec->name_testpass)
+    else if (tokenParse.token.is(g_LangSpec->name_testpass))
     {
         const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
         FormatAst::inheritFormatBefore(this, globalDecl, &savedToken);
@@ -554,28 +554,28 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         idRef->addAstFlag(AST_NO_SEMANTIC);
 
         SWAG_CHECK(eatToken());
-        if (tokenParse.token.text == g_LangSpec->name_lexer)
+        if (tokenParse.token.is(g_LangSpec->name_lexer))
         {
             idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
             idRef->addAstFlag(AST_NO_SEMANTIC);
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Lexer;
         }
-        else if (tokenParse.token.text == g_LangSpec->name_syntax)
+        else if (tokenParse.token.is(g_LangSpec->name_syntax))
         {
             idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
             idRef->addAstFlag(AST_NO_SEMANTIC);
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Syntax;
         }
-        else if (tokenParse.token.text == g_LangSpec->name_semantic)
+        else if (tokenParse.token.is(g_LangSpec->name_semantic))
         {
             idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
             idRef->addAstFlag(AST_NO_SEMANTIC);
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Semantic;
         }
-        else if (tokenParse.token.text == g_LangSpec->name_backend)
+        else if (tokenParse.token.is(g_LangSpec->name_backend))
         {
             idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
             idRef->addAstFlag(AST_NO_SEMANTIC);
@@ -593,7 +593,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (tokenParse.token.text == g_LangSpec->name_testerror || tokenParse.token.text == g_LangSpec->name_testwarning)
+    else if (tokenParse.token.is(g_LangSpec->name_testerror) || tokenParse.token.is(g_LangSpec->name_testwarning))
     {
         // Put the file in its own module, because of errors/warnings
         if (!sourceFile->module->isErrorModule && !parserFlags.has(PARSER_TRACK_FORMAT))
@@ -623,7 +623,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         const auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
         idRef->addAstFlag(AST_NO_SEMANTIC);
 
-        if (tokenParse.token.text == g_LangSpec->name_testerror)
+        if (tokenParse.token.is(g_LangSpec->name_testerror))
         {
             SWAG_VERIFY(sourceFile->module->is(ModuleKind::Test) || sourceFile->hasFlag(FILE_FOR_FORMAT), context->report({sourceFile, tokenParse.token, toErr(Err0435)}));
             SWAG_CHECK(eatToken());
@@ -867,7 +867,7 @@ bool Parser::doCompilerImport(AstNode* parent)
     {
         while (true)
         {
-            if (tokenParse.token.text == g_LangSpec->name_location)
+            if (tokenParse.token.is(g_LangSpec->name_location))
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the location"));
@@ -878,7 +878,7 @@ bool Parser::doCompilerImport(AstNode* parent)
                 continue;
             }
 
-            if (tokenParse.token.text == g_LangSpec->name_version)
+            if (tokenParse.token.is(g_LangSpec->name_version))
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the version"));

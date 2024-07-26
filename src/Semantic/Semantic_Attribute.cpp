@@ -86,39 +86,39 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     SWAG_ASSERT(oneAttribute->typeInfo->declNode);
     if (oneAttribute->typeInfo->declNode->token.sourceFile->hasFlag(FILE_BOOTSTRAP))
     {
-        if (oneAttribute->token.text == g_LangSpec->name_Complete)
+        if (oneAttribute->token.is(g_LangSpec->name_Complete))
         {
             if (kind == AstNodeKind::Switch)
                 return true;
         }
-        else if (oneAttribute->token.text == g_LangSpec->name_AttrUsage)
+        else if (oneAttribute->token.is(g_LangSpec->name_AttrUsage))
         {
             if (kind == AstNodeKind::AttrDecl)
                 return true;
         }
-        else if (oneAttribute->token.text == g_LangSpec->name_AttrMulti)
+        else if (oneAttribute->token.is(g_LangSpec->name_AttrMulti))
         {
             if (kind == AstNodeKind::AttrDecl)
                 return true;
         }
-        else if (oneAttribute->token.text == g_LangSpec->name_PrintBc)
+        else if (oneAttribute->token.is(g_LangSpec->name_PrintBc))
         {
             if (kind == AstNodeKind::CompilerAst)
                 return true;
         }
-        else if (oneAttribute->token.text == g_LangSpec->name_Global)
+        else if (oneAttribute->token.is(g_LangSpec->name_Global))
         {
             if (isLocalVar)
                 return true;
             specificMsg = "a local variable";
         }
-        else if (oneAttribute->token.text == g_LangSpec->name_Align)
+        else if (oneAttribute->token.is(g_LangSpec->name_Align))
         {
             if (kind == AstNodeKind::VarDecl || kind == AstNodeKind::StructDecl)
                 return true;
             specificMsg = "a variable or a struct";
         }
-        else if (oneAttribute->token.text == g_LangSpec->name_Strict)
+        else if (oneAttribute->token.is(g_LangSpec->name_Strict))
         {
             if (kind == AstNodeKind::TypeAlias)
                 return true;
@@ -356,7 +356,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             //////
-            else if (child->token.text == g_LangSpec->name_Using)
+            else if (child->token.is(g_LangSpec->name_Using))
             {
                 auto id = castAst<AstIdentifier>(child->lastChild(), AstNodeKind::Identifier);
                 id->addAstFlag(AST_NO_SEMANTIC);
@@ -397,7 +397,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             //////
-            else if (child->token.text == g_LangSpec->name_ExportType)
+            else if (child->token.is(g_LangSpec->name_ExportType))
             {
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_ExportType, g_LangSpec->name_what);
                 SWAG_ASSERT(attrParam);
@@ -422,7 +422,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             //////
-            else if (child->token.text == g_LangSpec->name_Safety)
+            else if (child->token.is(g_LangSpec->name_Safety))
             {
                 VectorNative<const OneAttribute*> allAttrs;
                 Vector<Utf8>                      what;
@@ -473,7 +473,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             //////
-            else if (child->token.text == g_LangSpec->name_Optim)
+            else if (child->token.is(g_LangSpec->name_Optim))
             {
                 VectorNative<const OneAttribute*> allAttrs;
                 Vector<Utf8>                      what;
@@ -520,7 +520,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             //////
-            else if (child->token.text == g_LangSpec->name_Match)
+            else if (child->token.is(g_LangSpec->name_Match))
             {
                 VectorNative<const OneAttribute*> allAttrs;
                 Vector<Utf8>                      what;
@@ -571,7 +571,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             //////
-            else if (child->token.text == g_LangSpec->name_Pack)
+            else if (child->token.is(g_LangSpec->name_Pack))
             {
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
                 SWAG_ASSERT(attrParam);
@@ -580,7 +580,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             //////
-            else if (child->token.text == g_LangSpec->name_Align)
+            else if (child->token.is(g_LangSpec->name_Align))
             {
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
                 SWAG_ASSERT(attrParam);
@@ -589,7 +589,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             //////
-            else if (child->token.text == g_LangSpec->name_Overflow)
+            else if (child->token.is(g_LangSpec->name_Overflow))
             {
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Overflow, g_LangSpec->name_value);
                 SWAG_ASSERT(attrParam);

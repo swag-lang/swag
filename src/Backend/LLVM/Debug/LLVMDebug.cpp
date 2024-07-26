@@ -9,6 +9,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/AstNode.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
@@ -594,7 +595,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
                 }
 
                 llvm::DINode::DIFlags flags = llvm::DINode::FlagZero;
-                if (typeParam->isSelf() && child->token.text == "self")
+                if (typeParam->isSelf() && child->token.is(g_LangSpec->name_self))
                     flags |= llvm::DINode::FlagObjectPointer;
 
                 llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(scope, child->token.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);

@@ -200,7 +200,7 @@ namespace
                     {
                         const auto checkParam = context.parameters[k];
                         isNamed               = checkParam->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
-                        if (isNamed && isNamed->token.text == parameters[j]->name)
+                        if (isNamed && isNamed->token.is(parameters[j]->name))
                         {
                             context.badSignatureInfos.badSignatureNum1 = k;
                             break;

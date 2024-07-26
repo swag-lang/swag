@@ -682,9 +682,9 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->hasAttribute(ATTRIBUTE_IMPLICIT) && funcNode->hasAstFlag(AST_GENERIC | AST_FROM_GENERIC))
     {
         bool ok = false;
-        if (funcNode->token.text == g_LangSpec->name_opAffectLiteral && funcNode->genericParameters->childCount() <= 1)
+        if (funcNode->token.is(g_LangSpec->name_opAffectLiteral) && funcNode->genericParameters->childCount() <= 1)
             ok = true;
-        if (funcNode->token.text == g_LangSpec->name_opAffect && !funcNode->genericParameters)
+        if (funcNode->token.is(g_LangSpec->name_opAffect) && !funcNode->genericParameters)
             ok = true;
         if (!ok)
         {
@@ -810,7 +810,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // Special functions registration
     if (funcNode->parameters && funcNode->parameters->childCount() == 1)
     {
-        if (funcNode->token.text == g_LangSpec->name_opInit)
+        if (funcNode->token.is(g_LangSpec->name_opInit))
         {
             const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->firstChild()->typeInfo, TypeInfoKind::Pointer);
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
@@ -818,7 +818,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             typeStruct->opUserInitFct = funcNode;
             funcNode->addSemFlag(SEMFLAG_NO_PUBLIC);
         }
-        else if (funcNode->token.text == g_LangSpec->name_opDrop)
+        else if (funcNode->token.is(g_LangSpec->name_opDrop))
         {
             const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->firstChild()->typeInfo, TypeInfoKind::Pointer);
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
@@ -827,7 +827,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             funcNode->addSemFlag(SEMFLAG_NO_PUBLIC);
             SWAG_VERIFY(!typeStruct->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->tokenName, formErr(Err0102, typeStruct->getDisplayNameC())}));
         }
-        else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
+        else if (funcNode->token.is(g_LangSpec->name_opPostCopy))
         {
             const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->firstChild()->typeInfo, TypeInfoKind::Pointer);
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
@@ -836,7 +836,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             funcNode->addSemFlag(SEMFLAG_NO_PUBLIC);
             SWAG_VERIFY(!typeStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->tokenName, formErr(Err0103, typeStruct->name.c_str())}));
         }
-        else if (funcNode->token.text == g_LangSpec->name_opPostMove)
+        else if (funcNode->token.is(g_LangSpec->name_opPostMove))
         {
             const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->firstChild()->typeInfo, TypeInfoKind::Pointer);
             const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
@@ -877,7 +877,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
                     if (!sc->resolvedSymbolOverload())
                         continue;
 
-                    if (c->resolvedSymbolOverload()->node->token.text == sc->resolvedSymbolOverload()->node->token.text)
+                    if (c->resolvedSymbolOverload()->node->token.is(sc->resolvedSymbolOverload()->node->token.text))
                     {
                         Diagnostic err{c, formErr(Err0114, c->resolvedSymbolOverload()->node->token.c_str())};
                         err.addNote(sc->resolvedSymbolOverload()->node, toNte(Nte0073));

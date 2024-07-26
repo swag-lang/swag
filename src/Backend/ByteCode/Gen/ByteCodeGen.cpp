@@ -18,7 +18,7 @@
 bool ByteCodeGen::setupRuntime(const ByteCodeGenContext* context, const AstNode* node)
 {
     // Register allocator interface to the default bytecode context
-    if (node->token.text == g_LangSpec->name_SystemAllocator)
+    if (node->token.is(g_LangSpec->name_SystemAllocator))
     {
         const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         Semantic::waitAllStructInterfaces(context->baseJob, typeStruct);
@@ -30,7 +30,7 @@ bool ByteCodeGen::setupRuntime(const ByteCodeGenContext* context, const AstNode*
         g_SystemAllocatorTable = table;
     }
 
-    if (node->token.text == g_LangSpec->name_DebugAllocator)
+    if (node->token.is(g_LangSpec->name_DebugAllocator))
     {
         const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         Semantic::waitAllStructInterfaces(context->baseJob, typeStruct);

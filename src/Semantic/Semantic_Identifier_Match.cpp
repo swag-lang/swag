@@ -780,13 +780,13 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     waitOverloadCompleted(context->baseJob, overload);
     YIELD();
 
-    if (identifier->token.text == g_LangSpec->name_opInit)
+    if (identifier->token.is(g_LangSpec->name_opInit))
         return context->report({identifier, identifier->token, toErr(Err0109)});
-    if (identifier->token.text == g_LangSpec->name_opDrop)
+    if (identifier->token.is(g_LangSpec->name_opDrop))
         return context->report({identifier, identifier->token, toErr(Err0108)});
-    if (identifier->token.text == g_LangSpec->name_opPostCopy)
+    if (identifier->token.is(g_LangSpec->name_opPostCopy))
         return context->report({identifier, identifier->token, toErr(Err0110)});
-    if (identifier->token.text == g_LangSpec->name_opPostMove)
+    if (identifier->token.is(g_LangSpec->name_opPostMove))
         return context->report({identifier, identifier->token, toErr(Err0111)});
 
     // Be sure this is not a 'forward' decl

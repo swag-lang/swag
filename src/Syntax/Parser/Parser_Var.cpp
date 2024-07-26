@@ -31,7 +31,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
         // #alias must be of the form #aliasNUM
         if (node->token.text.find(g_LangSpec->name_atmixin) == 0)
         {
-            if (node->token.text == g_LangSpec->name_atmixin)
+            if (node->token.is(g_LangSpec->name_atmixin))
                 return error(node->token, toErr(Err0525));
 
             const char* pz    = node->token.text.buffer + 6;
@@ -57,7 +57,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
         // #alias must be of the form #aliasNUM
         if (node->token.text.find(g_LangSpec->name_atalias) == 0)
         {
-            if (node->token.text == g_LangSpec->name_atalias)
+            if (node->token.is(g_LangSpec->name_atalias))
                 return error(node->token, toErr(Err0515));
 
             const char* pz    = node->token.text.buffer + 6;
@@ -200,7 +200,7 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
 
         // Ignore field if '?', otherwise check that this is a valid variable name
         SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
-        if (child->firstChild()->token.text == '?')
+        if (child->firstChild()->token.is("?"))
         {
             orgVarNode->multiNames.push_back("?");
             child->addAstFlag(AST_GENERATED);

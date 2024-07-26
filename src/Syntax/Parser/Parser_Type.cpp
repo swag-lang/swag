@@ -77,7 +77,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             {
                 tokenizer.restoreState(tokenParse);
             }
-            else if (tokenName.token.text == g_LangSpec->name_self)
+            else if (tokenName.token.is(g_LangSpec->name_self))
             {
                 Diagnostic err(sourceFile, tokenParse.token, toErr(Err0701));
                 return context->report(err);
@@ -105,7 +105,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
         AstTypeExpression* typeExpr = nullptr;
 
         // self
-        if (tokenParse.token.text == g_LangSpec->name_self)
+        if (tokenParse.token.is(g_LangSpec->name_self))
         {
             curIsAlone = false;
             SWAG_VERIFY(currentStructScope, error(tokenParse.token, toErr(Err0470)));

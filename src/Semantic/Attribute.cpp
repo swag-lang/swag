@@ -29,7 +29,7 @@ const AttributeParameter* OneAttribute::getParam(const Utf8& paramName) const
 {
     for (auto& param : parameters)
     {
-        if (param.token.text == paramName)
+        if (param.token.is(paramName))
         {
             return &param;
         }
@@ -42,7 +42,7 @@ const ComputedValue* OneAttribute::getValue(const Utf8& paramName) const
 {
     for (auto& param : parameters)
     {
-        if (param.token.text == paramName)
+        if (param.token.is(paramName))
         {
             return &param.value;
         }
@@ -60,7 +60,7 @@ const AttributeParameter* AttributeList::getParam(const Utf8& fullName, const Ut
         {
             for (auto& param : it.parameters)
             {
-                if (param.token.text == parameter)
+                if (param.token.is(parameter))
                 {
                     return &param;
                 }
@@ -82,7 +82,7 @@ const ComputedValue* AttributeList::getValue(const Utf8& fullName, const Utf8& p
         {
             for (auto& param : it.parameters)
             {
-                if (param.token.text == parameter)
+                if (param.token.is(parameter))
                 {
                     return &param.value;
                 }

@@ -139,7 +139,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     SWAG_CHECK(checkIsValidUserName(identifier));
 
     // Replace "Self" with the corresponding struct name
-    if (identifier->token.text == g_LangSpec->name_Self)
+    if (identifier->token.is(g_LangSpec->name_Self))
     {
         SWAG_VERIFY(parent->ownerStructScope, context->report({identifier, toErr(Err0454)}));
         if (currentSelfStructScope)
@@ -481,7 +481,7 @@ bool Parser::errorTopLevelIdentifier()
 
     if (tokenParse.is(TokenId::Identifier))
     {
-        if (tokenIdentifier.text == "function" || tokenIdentifier.text == "fn" || tokenIdentifier.text == "def")
+        if (tokenIdentifier.is("function") || tokenIdentifier.is("fn") || tokenIdentifier.is("def"))
             err.addNote(toNte(Nte0040));
     }
     else if (tokenParse.is(TokenId::SymEqual) || tokenParse.is(TokenId::SymColon))

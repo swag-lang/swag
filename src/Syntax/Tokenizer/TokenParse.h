@@ -81,6 +81,7 @@ struct TokenParse
 {
     bool is(TokenId what) const { return token.id == what; }
     bool isNot(TokenId what) const { return token.id != what; }
+    bool is(const Utf8& name) const { return token.text == name; }
 
     Token           token;
     TokenComments   comments;

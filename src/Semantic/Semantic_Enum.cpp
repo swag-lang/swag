@@ -127,7 +127,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     // Hardcoded swag enums
     if (context->sourceFile->hasFlag(FILE_BOOTSTRAP))
     {
-        if (enumNode->token.text == g_LangSpec->name_AttributeUsage)
+        if (enumNode->token.is(g_LangSpec->name_AttributeUsage))
             enumNode->addAttribute(ATTRIBUTE_ENUM_FLAGS);
     }
 

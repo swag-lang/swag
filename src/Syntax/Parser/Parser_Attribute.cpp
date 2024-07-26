@@ -50,11 +50,11 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     //////
     if (sourceFile->hasFlag(FILE_BOOTSTRAP) || sourceFile->hasFlag(FILE_RUNTIME))
     {
-        if (attrNode->token.text == g_LangSpec->name_Align)
+        if (attrNode->token.is(g_LangSpec->name_Align))
             typeInfo->attributeUsage = 0;
-        else if (attrNode->token.text == g_LangSpec->name_Strict)
+        else if (attrNode->token.is(g_LangSpec->name_Strict))
             typeInfo->attributeUsage = 0;
-        else if (attrNode->token.text == g_LangSpec->name_Global)
+        else if (attrNode->token.is(g_LangSpec->name_Global))
             typeInfo->attributeUsage = 0;
     }
 

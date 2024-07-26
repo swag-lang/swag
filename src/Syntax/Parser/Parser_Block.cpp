@@ -397,11 +397,11 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
         var->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_LET);
         node->specificName = var;
 
-        const auto identifer   = Ast::newNode<AstNode>(AstNodeKind::Index, this, var);
-        identifer->semanticFct = Semantic::resolveIndex;
-        identifer->inheritTokenLocation(var->token);
+        const auto identifier   = Ast::newNode<AstNode>(AstNodeKind::Index, this, var);
+        identifier->semanticFct = Semantic::resolveIndex;
+        identifier->inheritTokenLocation(var->token);
 
-        var->assignment = identifer;
+        var->assignment = identifier;
     }
 
     if (tokenParse.is(TokenId::KwdWhere))
@@ -496,12 +496,12 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     if (tokenParse.is(TokenId::SymColon))
     {
         SWAG_CHECK(eatToken());
-        if (tokenParse.token.text == g_LangSpec->name_err)
+        if (tokenParse.is(g_LangSpec->name_err))
         {
             SWAG_CHECK(eatToken());
             node->deferKind = DeferKind::Error;
         }
-        else if (tokenParse.token.text == g_LangSpec->name_noerr)
+        else if (tokenParse.is(g_LangSpec->name_noerr))
         {
             SWAG_CHECK(eatToken());
             node->deferKind = DeferKind::NoError;

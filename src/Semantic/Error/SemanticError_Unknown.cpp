@@ -66,21 +66,21 @@ namespace
         {
             err = new Diagnostic{node, node->token, formErr(Err0713, node->token.c_str(), whereScopeName.c_str(), displayName.c_str())};
         }
-        else if (typeWhere->kind == TypeInfoKind::Enum)
+        else if (typeWhere->isEnum())
         {
             err = new Diagnostic{node, node->token, formErr(Err0708, node->token.c_str(), typeWhere->getDisplayNameC())};
         }
-        else if (typeWhere->kind == TypeInfoKind::Struct && node->token.text == g_LangSpec->name_opVisit)
+        else if (typeWhere->isStruct() && node->token.is(g_LangSpec->name_opVisit))
         {
             err = new Diagnostic{node, node->token, formErr(Err0420, typeWhere->getDisplayNameC())};
         }
-        else if (typeWhere->kind == TypeInfoKind::Struct && node->token.text.startsWith(g_LangSpec->name_opVisit))
+        else if (typeWhere->isStruct() && node->token.text.startsWith(g_LangSpec->name_opVisit))
         {
             const auto visitNode = castAst<AstVisit>(node->findParent(AstNodeKind::Visit), AstNodeKind::Visit);
             const Utf8 variant{node->token.text.buffer + g_LangSpec->name_opVisit.length()};
             err = new Diagnostic{visitNode, visitNode->extraNameToken, formErr(Err0419, variant.c_str(), typeWhere->getDisplayNameC())};
         }
-        else if (typeWhere->kind == TypeInfoKind::Struct && node->callParameters)
+        else if (typeWhere->isStruct() && node->callParameters)
         {
             err = new Diagnostic{node, node->token, formErr(Err0723, node->token.c_str(), typeWhere->getDisplayNameC())};
         }

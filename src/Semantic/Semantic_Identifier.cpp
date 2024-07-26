@@ -1042,7 +1042,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
     // Current file scope
     const auto identifierRef = identifier->identifierRef();
-    if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.text == context->sourceFile->scopeFile->name)
+    if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.is(context->sourceFile->scopeFile->name))
     {
         SWAG_VERIFY(identifier == identifierRef->firstChild(), context->report({identifier, toErr(Err0366)}));
         identifierRef->startScope = context->sourceFile->scopeFile;
