@@ -1,9 +1,9 @@
-#global testerror "Err0293"
+#global testerror "Err0749"
 
 interface AA
 {
     //#[Swag.Discardable]
-    fb: func(self)->s32
+    func fb(self)->s32;
 }
 
 struct BB
@@ -13,7 +13,7 @@ struct BB
 
 impl AA for BB
 {
-    func fb(self)->s32
+    func impl fb(self)->s32
     {
         return 666
     }

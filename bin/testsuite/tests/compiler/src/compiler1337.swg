@@ -1,9 +1,9 @@
-#global testerror "Err0293"
+#global testerror "Err0129"
 
 interface TOTO
 {
 	func print(self);
-    print1: func(self,s32);
+    func print1(self, x: s32);
 }
 
 struct TITI
@@ -12,7 +12,7 @@ struct TITI
 
 impl TOTO for TITI
 {
-	func print(using self)
+	func impl print(using self)
 	{
 	}
 }

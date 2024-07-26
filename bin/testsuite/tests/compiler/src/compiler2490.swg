@@ -1,4 +1,4 @@
-#global testerror "Err0293"
+#global testerror "Err0643"
 
 struct AA
 {
@@ -6,7 +6,7 @@ struct AA
 
 interface BB
 {
-    fct: func(self)
+    func fct(self);
 }
 
 #test

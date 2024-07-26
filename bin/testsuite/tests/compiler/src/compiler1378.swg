@@ -1,4 +1,3 @@
-
 #global testerror "Err0293"
 
 interface TOTO
