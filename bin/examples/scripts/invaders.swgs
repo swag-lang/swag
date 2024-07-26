@@ -13,7 +13,6 @@
 using Gui, Core, Pixel
 const W, H = 900
 
-const PLAY_SOUND         = true
 const OBS_SIZE           = 10.0
 const PLAYER_SPEED       = 400
 const LASER_SPEED_PLAYER = 400
@@ -90,8 +89,7 @@ func updatePlayer()
     if kb.isKeyJustPressed(.Space)
     {
         g_Lasers.add({g_Player.x + g_PlayerImg.width / 2, g_Player.y, player: true})
-        if PLAY_SOUND do
-            catch Audio.Voice.play(&g_SoundLaser)
+        catch Audio.Voice.play(&g_SoundLaser)
     }
 }
 
@@ -164,8 +162,7 @@ func checkCollisions()
                 obs.dead   = true
                 if !laser.player do
                     g_NumAlienLasers -= 1
-                if PLAY_SOUND do
-                    catch Audio.Voice.play(&g_SoundExplosion)
+                catch Audio.Voice.play(&g_SoundExplosion)
                 continue
             }
         }
@@ -181,9 +178,7 @@ func checkCollisions()
                     laser.dead = true
                     alien.dead = true
                     g_Score += 1
-
-                    if PLAY_SOUND do
-                        catch Audio.Voice.play(&g_SoundExplosion)
+                    catch Audio.Voice.play(&g_SoundExplosion)
                 }
             }
         }
@@ -196,8 +191,7 @@ func checkCollisions()
             {
                 g_NumAlienLasers -= 1
                 laser.dead = true
-                if PLAY_SOUND do
-                    catch Audio.Voice.play(&g_SoundExplosion)
+                catch Audio.Voice.play(&g_SoundExplosion)
             }
         }
     }
@@ -248,13 +242,11 @@ func addObstacle(xi, yi: f32)
         var x = xi
         visit c: line
         {
-            if c == `x`
-            {
+            if c == `x` do
                 g_Obstacles.add({x, y})
-            }
-
             x += OBS_SIZE
         }
+        
         y += OBS_SIZE
     }
 }
@@ -273,6 +265,8 @@ func startGame()
 
     g_Player.x = (g_Rect.width / 2) - g_PlayerImg.width / 2
     g_Player.y = g_Rect.height - g_PlayerImg.height - 100
+
+    catch Audio.Voice.play(&g_SoundMusic, playFlags: .Loop)
 }
 
 func display()
@@ -308,8 +302,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     case Create:
         g_Wnd  = wnd
         g_Rect = wnd.getClientRect()
-        startGame()
         loadBindTextures()
+        startGame()
 
     case Resize:
         g_Rect = wnd.getClientRect()
@@ -325,27 +319,15 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     return false
 }
 
-/**
- * Load all assets
- */
-func loadBindTextures()
+func loadBindTextures() assume
 {
-    func loadAndBindTexture(name: string)->Texture
-    {
-        return assume g_Wnd.getApp().getRenderer().addImage(Path.combine(g_DataPath, name))
-    }
+    func loadAndBindTexture(name: string)->Texture throw => g_Wnd.getApp().getRenderer().addImage(Path.combine(g_DataPath, name))
+    func loadSound(name: string)->Audio.SoundFile  throw => Audio.SoundFile.load(Path.combine(g_DataPath, name), true)
 
-    func loadSound(name: string)->Audio.SoundFile
-    {
-        return assume Audio.SoundFile.load(Path.combine(g_DataPath, name), true)
-    }
-
-    // Assets are located in the 'datas/pacman' sub folder
     g_DataPath = Path.getDirectoryName(#location.fileName)
     g_DataPath = Path.combine(g_DataPath, "datas")
     g_DataPath = Path.combine(g_DataPath, "invaders")
 
-    // Bind map textures
     g_ExtraImg  = loadAndBindTexture("extra.png")
     g_RedImg    = loadAndBindTexture("red.png")
     g_GreenImg  = loadAndBindTexture("green.png")
@@ -357,10 +339,7 @@ func loadBindTextures()
     g_SoundLaser     = loadSound("laser.wav")
     g_SoundMusic     = loadSound("music.wav")
 
-    if PLAY_SOUND do
-        catch Audio.Voice.play(&g_SoundMusic, playFlags: .Loop)
-
-    g_Font = assume Font.create(Path.combine(g_DataPath, "pixeled.ttf"), 40)
+    g_Font = Font.create(Path.combine(g_DataPath, "pixeled.ttf"), 40)
 }
 
 #main
