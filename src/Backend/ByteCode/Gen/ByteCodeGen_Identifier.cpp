@@ -281,8 +281,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             }
             else
             {
-                const Diagnostic err{node, node->token, formErr(Err0181, typeInfo->getDisplayNameC())};
-                return context->report(err);
+                return Report::internalError(context->node, "unsupported take address of function parameter");
             }
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && node->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) && !node->hasAstFlag(AST_UFCS_FCT))

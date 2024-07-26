@@ -187,19 +187,24 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             // Mark the symbol with OVERLOAD_HAS_MAKE_POINTER because it will avoid warning of non usage.
             if (context->castFlagsResult.has(CAST_RESULT_FORCE_REF))
             {
-                const auto idRef  = identifier->identifierRef();
-                const auto id     = idRef->children[idRef->childCount() - 2];
-                const auto solved = id->resolvedSymbolOverload();
-                if (solved)
+                const auto idRef    = identifier->identifierRef();
+                const auto id       = idRef->children[idRef->childCount() - 2];
+                const auto overload = id->resolvedSymbolOverload();
+                if (overload)
                 {
-                    if (solved->hasFlag(OVERLOAD_IS_LET))
+                    const auto     declParam = oneMatch.solvedParameters[i]->declNode;
+                    PushErrCxtStep ec0(context, oneMatch.solvedParameters[i]->declNode, ErrCxtStepKind::Note, [id, declParam] { return formNte(Nte0202, id->token.c_str(), declParam->typeInfo->getDisplayNameC()); });
+
+                    if (overload && overload->hasFlag(OVERLOAD_IS_LET))
                     {
                         Diagnostic err{id, id->token, toErr(Err0185)};
                         err.addNote(formNte(Nte0097, id->token.c_str()));
-                        return context->report(err, Diagnostic::hereIs(oneMatch.solvedParameters[i]->declNode));
+                        return context->report(err);
                     }
 
-                    solved->flags.add(OVERLOAD_HAS_MAKE_POINTER);
+                    SWAG_CHECK(checkCanTakeAddress(context, id));
+
+                    overload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
                 }
             }
 

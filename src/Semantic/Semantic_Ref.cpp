@@ -73,12 +73,39 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
 
 bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
 {
-    SWAG_ASSERT(node->is(AstNodeKind::IdentifierRef) || node->is(AstNodeKind::ArrayPointerIndex));
+    const auto overload = node->resolvedSymbolOverload();
+    if (overload && overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
+    {
+        if (!overload->typeInfo->isPointerRef() &&
+            !overload->typeInfo->isSlice())
+        {
+            if (node->isNot(AstNodeKind::IdentifierRef) || node->lastChild()->isNot(AstNodeKind::ArrayPointerIndex))
+            {
+                const Diagnostic err{node, node->token, formErr(Err0181, overload->typeInfo->getDisplayNameC())};
+                return context->report(err);
+            }
+        }
+    }
+
+    if (overload && overload->hasFlag(OVERLOAD_CONSTANT))
+    {
+        if (!overload->typeInfo->isPointerRef() &&
+            !overload->typeInfo->isSlice())
+        {
+            if (node->isNot(AstNodeKind::IdentifierRef) || node->lastChild()->isNot(AstNodeKind::ArrayPointerIndex))
+            {
+                const Diagnostic err{node, formErr(Err0180, node->typeInfo->getDisplayNameC())};
+                return context->report(err);
+            }
+        }
+    }
+
     if (!node->hasAstFlag(AST_L_VALUE))
     {
-        if (node->resolvedSymbolName()->isNot(SymbolKind::Variable))
+        const auto symbol = node->resolvedSymbolName();
+        if (symbol && symbol->isNot(SymbolKind::Variable))
         {
-            const Diagnostic err{node, formErr(Err0179, Naming::aKindName(node->resolvedSymbolName()->kind).c_str())};
+            const Diagnostic err{node, formErr(Err0179, Naming::aKindName(symbol->kind).c_str())};
             return context->report(err);
         }
 
@@ -135,29 +162,31 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     const auto child    = node->firstChild();
     auto       typeInfo = child->typeInfo;
 
-    if (!child->resolvedSymbolName())
+    const auto symbol = child->resolvedSymbolName();
+    if (!symbol)
     {
         Diagnostic err{node, node->token, toErr(Err0187)};
         err.addNote(child, Diagnostic::isType(typeInfo));
         return context->report(err);
     }
 
-    if (child->resolvedSymbolOverload())
+    const auto overload = child->resolvedSymbolOverload();
+    if (overload)
     {
-        ScopedLock lk(child->resolvedSymbolName()->mutex);
-        child->resolvedSymbolOverload()->flags.add(OVERLOAD_HAS_MAKE_POINTER);
+        ScopedLock lk(symbol->mutex);
+        overload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
     }
 
-    if (child->resolvedSymbolOverload() && child->resolvedSymbolOverload()->hasFlag(OVERLOAD_IS_LET))
+    if (overload && overload->hasFlag(OVERLOAD_IS_LET))
     {
         if (child->isNot(AstNodeKind::IdentifierRef) || child->lastChild()->isNot(AstNodeKind::ArrayPointerIndex))
         {
             const Diagnostic err{node, node->token, toErr(Err0185)};
-            return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload()->node));
+            return context->report(err, Diagnostic::hereIs(overload->node));
         }
     }
 
-    if (child->resolvedSymbolName()->is(SymbolKind::Function))
+    if (symbol->is(SymbolKind::Function))
     {
         // For a function, if no parameters, then this is for a lambda
         const auto back = child->lastChild();
@@ -179,19 +208,19 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
             if (typeInfo->isVoid())
             {
                 const Diagnostic err{node, node->token, formErr(Err0178, typeInfo->getDisplayNameC())};
-                return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload()));
+                return context->report(err, Diagnostic::hereIs(overload));
             }
 
             Diagnostic err{node, node->token, formErr(Err0182, typeInfo->getDisplayNameC())};
             err.addNote(formNte(Nte0100, Naming::aKindName(typeInfo).c_str()));
-            return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload()));
+            return context->report(err, Diagnostic::hereIs(overload));
         }
     }
 
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
     node->addAstFlag(AST_R_VALUE);
-    node->setResolvedSymbol(child->resolvedSymbolName(), child->resolvedSymbolOverload());
+    node->setResolvedSymbol(symbol, overload);
     node->byteCodeFct = ByteCodeGen::emitMakePointer;
     node->inheritComputedValue(child);
 
@@ -238,11 +267,11 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     }
 
     // Type is constant if we take address of a readonly variable
-    else if (child->resolvedSymbolOverload() && !child->typeInfo->isPointerRef())
+    else if (overload && !child->typeInfo->isPointerRef())
     {
-        const auto typeResolved = child->resolvedSymbolOverload()->typeInfo->getConcreteAlias();
+        const auto typeResolved = overload->typeInfo->getConcreteAlias();
 
-        if (child->resolvedSymbolOverload()->hasFlag(OVERLOAD_CONST_ASSIGN) &&
+        if (overload->hasFlag(OVERLOAD_CONST_ASSIGN) &&
             !typeResolved->isPointerArithmetic() &&
             !typeResolved->isArray() &&
             !typeResolved->isSlice())
@@ -666,7 +695,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
                     err.addNote(arrayNode->array, Diagnostic::isType(arrayNode->array));
                     return context->report(err);
                 }
-                    
+
                 arrayNode->typeInfo    = g_TypeMgr->typeInfoU8;
                 arrayNode->byteCodeFct = ByteCodeGen::emitStringRef;
                 arrayNode->addAstFlag(AST_CONST);
