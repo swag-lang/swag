@@ -74,41 +74,28 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
 bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
 {
     const auto overload = node->resolvedSymbolOverload();
-    if (overload && overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
+    if (overload &&
+        !overload->typeInfo->isPointerRef() &&
+        !overload->typeInfo->isSlice())
     {
-        if (!overload->typeInfo->isPointerRef() &&
-            !overload->typeInfo->isSlice())
+        if (node->isNot(AstNodeKind::IdentifierRef) || node->lastChild()->isNot(AstNodeKind::ArrayPointerIndex))
         {
-            if (node->isNot(AstNodeKind::IdentifierRef) || node->lastChild()->isNot(AstNodeKind::ArrayPointerIndex))
-            {
-                const Diagnostic err{node, node->token, formErr(Err0181, overload->typeInfo->getDisplayNameC())};
-                return context->report(err);
-            }
-        }
-    }
-
-    if (overload && overload->hasFlag(OVERLOAD_IS_LET))
-    {
-        if (!overload->typeInfo->isPointerRef() &&
-            !overload->typeInfo->isSlice())
-        {
-            if (node->isNot(AstNodeKind::IdentifierRef) || node->lastChild()->isNot(AstNodeKind::ArrayPointerIndex))
+            if (overload->hasFlag(OVERLOAD_IS_LET))
             {
                 Diagnostic err{node, node->token, toErr(Err0185)};
                 err.addNote(formNte(Nte0097, node->token.c_str()));
                 return context->report(err);
             }
-        }
-    }
 
-    if (overload && overload->hasFlag(OVERLOAD_CONSTANT))
-    {
-        if (!overload->typeInfo->isPointerRef() &&
-            !overload->typeInfo->isSlice())
-        {
-            if (node->isNot(AstNodeKind::IdentifierRef) || node->lastChild()->isNot(AstNodeKind::ArrayPointerIndex))
+            if (overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
             {
-                const Diagnostic err{node, formErr(Err0180, node->typeInfo->getDisplayNameC())};
+                const Diagnostic err{node, node->token, formErr(Err0181, overload->typeInfo->getDisplayNameC())};
+                return context->report(err);
+            }
+
+            if (overload->hasFlag(OVERLOAD_CONSTANT))
+            {
+                const Diagnostic err{node, node->token, formErr(Err0180, overload->typeInfo->getDisplayNameC())};
                 return context->report(err);
             }
         }
