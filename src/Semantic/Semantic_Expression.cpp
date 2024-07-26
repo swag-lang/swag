@@ -41,7 +41,9 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
         Vector<Utf8> parts;
         Diagnostic::tokenizeError(err.textMsg, parts);
         err.textMsg = parts[0];
+        err.textMsg += " ";
         err.textMsg += Diagnostic::ERROR_MESSAGE_SEPARATOR;
+        err.textMsg += " ";
         err.textMsg += note->textMsg;
         note = nullptr;
     }
