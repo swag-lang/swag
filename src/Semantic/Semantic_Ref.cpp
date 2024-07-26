@@ -87,6 +87,20 @@ bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
         }
     }
 
+    if (overload && overload->hasFlag(OVERLOAD_IS_LET))
+    {
+        if (!overload->typeInfo->isPointerRef() &&
+            !overload->typeInfo->isSlice())
+        {
+            if (node->isNot(AstNodeKind::IdentifierRef) || node->lastChild()->isNot(AstNodeKind::ArrayPointerIndex))
+            {
+                Diagnostic err{node, node->token, toErr(Err0185)};
+                err.addNote(formNte(Nte0097, node->token.c_str()));
+                return context->report(err);
+            }
+        }
+    }
+
     if (overload && overload->hasFlag(OVERLOAD_CONSTANT))
     {
         if (!overload->typeInfo->isPointerRef() &&

@@ -194,16 +194,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 {
                     const auto     declParam = oneMatch.solvedParameters[i]->declNode;
                     PushErrCxtStep ec0(context, oneMatch.solvedParameters[i]->declNode, ErrCxtStepKind::Note, [id, declParam] { return formNte(Nte0202, id->token.c_str(), declParam->typeInfo->getDisplayNameC()); });
-
-                    if (overload && overload->hasFlag(OVERLOAD_IS_LET))
-                    {
-                        Diagnostic err{id, id->token, toErr(Err0185)};
-                        err.addNote(formNte(Nte0097, id->token.c_str()));
-                        return context->report(err);
-                    }
-
                     SWAG_CHECK(checkCanTakeAddress(context, id));
-
                     overload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
                 }
             }
