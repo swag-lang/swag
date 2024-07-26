@@ -521,7 +521,7 @@ void initErrors()
     SWAG_ERROR(Err0395, "invalid type                                      $ the type [[%s]] does not accept a [[const]] version");
     SWAG_ERROR(Err0396, "invalid type                                      $ the type is generic and can't be evaluated in this context");
     SWAG_ERROR(Err0397, "invalid type                                      $ unexpected first parameter type for special function [[%s]] ([[%s]] expected, [[%s]] provided)");
-    SWAG_ERROR(Err0398, nullptr);
+    SWAG_ERROR(Err0398, "invalid address                                   $ can't take the address of a character of a string constant $ a string literal does not have an associated memory storage");
     SWAG_ERROR(Err0399, "invalid type declaration                          $ expected a type but [[%s]] is %s");
     SWAG_ERROR(Err0400, "invalid type declaration                          $ expected a type declaration, found [[%s]] instead");
     SWAG_ERROR(Err0401, "invalid type declaration                          $ expected a type in the tuple definition, found [[%s]] instead");

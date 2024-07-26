@@ -660,6 +660,13 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
             if (arrayType->nativeType == NativeTypeKind::String)
             {
+                if (arrayNode->array->hasComputedValue() && arrayNode->parent->parent->is(AstNodeKind::MakePointer))
+                {
+                    Diagnostic err{arrayNode->parent->parent, arrayNode->parent->parent->token, formErr(Err0398, arrayType->getDisplayNameC())};
+                    err.addNote(arrayNode->array, Diagnostic::isType(arrayNode->array));
+                    return context->report(err);
+                }
+                    
                 arrayNode->typeInfo    = g_TypeMgr->typeInfoU8;
                 arrayNode->byteCodeFct = ByteCodeGen::emitStringRef;
                 arrayNode->addAstFlag(AST_CONST);
