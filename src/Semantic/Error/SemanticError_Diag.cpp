@@ -219,13 +219,11 @@ namespace
         Diagnostic* err;
         if (match.matchFlags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
         {
-            const auto msg = form(toErr(Err0304));
-            err            = new Diagnostic{errorNode, msg};
+            err = new Diagnostic{errorNode, toErr(Err0304)};
         }
         else if (match.matchFlags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
         {
-            const auto msg = form(toErr(Err0305));
-            err            = new Diagnostic{errorNode, msg};
+            err = new Diagnostic{errorNode, toErr(Err0305)};
         }
         else
         {

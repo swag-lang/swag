@@ -1088,7 +1088,7 @@ void initErrors()
     SWAG_ERROR(Nte0198, "this suffix wants the literal to be converted to [[%s]]");
     SWAG_ERROR(Nte0199, "the identifier [[%s]] is %s and not a function or a struct");
     SWAG_ERROR(Nte0200, "expected an integer, a rune or a float value");
-    SWAG_ERROR(Nte0201, "unexpected");
+    SWAG_ERROR(Nte0201, "unexpected [[%s]]");
     SWAG_ERROR(Nte0202, "occurred while trying to convert [[%s]] to a function call argument of type [[%s]]");
 }
 

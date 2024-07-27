@@ -4,7 +4,8 @@
 {
 	var res = T()
 	var b = 1
-	@print(res.2)
+	@print(res.
+	2)
 }
 
 //#[Swag.PrintBc]

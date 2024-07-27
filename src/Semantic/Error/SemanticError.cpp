@@ -26,7 +26,7 @@ void SemanticError::errorWhereFailed(SemanticContext*, const ErrorParam& errorPa
     const auto msg = formErr(Err0085, whereExpr->token.c_str(), Naming::kindName(node).c_str(), node->token.c_str(), whereExpr->token.c_str());
     const auto err = new Diagnostic{errorParam.errorNode, errorParam.errorNode->getTokenName(), msg};
     errorParam.addError(err);
-    errorParam.addNote(Diagnostic::hereIs(whereExpr, form(toNte(Nte0075), whereExpr->token.c_str())));
+    errorParam.addNote(Diagnostic::hereIs(whereExpr, formNte(Nte0075, whereExpr->token.c_str())));
 }
 
 void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes)

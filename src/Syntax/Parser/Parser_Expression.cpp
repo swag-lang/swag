@@ -1274,7 +1274,7 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     if (tokenParse.is(TokenId::SymRightSquare))
-        return error(tokenParse.token, form(toErr(Err0077)));
+        return error(tokenParse.token, toErr(Err0077));
 
     while (tokenParse.isNot(TokenId::SymRightSquare))
     {
