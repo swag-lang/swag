@@ -55,12 +55,12 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
 
     if (!leftTypeInfo->isNative())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0351, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0346, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
 
-    Diagnostic err{node->token.sourceFile, node->token, formErr(Err0351, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+    Diagnostic err{node->token.sourceFile, node->token, formErr(Err0347, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
     err.addNote(right, Diagnostic::isType(rightTypeInfo));
     return context->report(err);
 }

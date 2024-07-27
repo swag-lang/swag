@@ -602,7 +602,7 @@ bool Semantic::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, As
         {
             if (rightTypeInfo->isNativeFloat())
             {
-                Diagnostic err{node, node->token, formErr(Err0346, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+                Diagnostic err{node, node->token, formErr(Err0347, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
                 err.addNote(right, Diagnostic::isType(rightTypeInfo));
                 return context->report(err);
             }

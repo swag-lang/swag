@@ -465,7 +465,7 @@ void initErrors()
     SWAG_ERROR(Err0339, "invalid opaque struct                             $ a struct marked with [[#[Swag.Opaque]]] requires a [[public]] access");
     SWAG_ERROR(Err0340, "invalid opaque struct                             $ the struct can't be marked with [[#[Swag.Opaque]]] because the whole file is exported with [[#global export]]");
     SWAG_ERROR(Err0341, "invalid struct operation                          $ can't affect by index a type [[%s]] to [[%s]] because no corresponding [[opIndexAffect]] can be found");
-    SWAG_ERROR(Err0342, "invalid struct operation                          $ can't initialize a type [[%s]] with [[%s]] because no corresponding [[opAffectLiteral]] can be found");
+    SWAG_ERROR(Err0342, "invalid literal to struct conversion              $ can't initialize a type [[%s]] with [[%s]] because no corresponding [[opAffectLiteral]] can be found");
     SWAG_ERROR(Err0343, "invalid struct operation                          $ the special function [[%s]] is missing in [[%s]] to solve operator [[%s]]");
     SWAG_ERROR(Err0344, "invalid struct operation                          $ the special function [[%s]] is missing in [[%s]]");
     SWAG_ERROR(Err0345, "invalid operation                                 $ the bit inversion operation [[~]] is not allowed on type [[%s]]");
