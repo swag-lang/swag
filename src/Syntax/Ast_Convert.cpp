@@ -381,6 +381,7 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
     // This peace of code is necessary to solve something like :
     // let s = [{1, 2}, {3, 4}]
     const auto structDecl        = newStructDecl(nullptr, nullptr);
+    structDecl->originalParent   = typeStruct->declNode;
     structDecl->token.sourceFile = context->sourceFile;
     structDecl->addExtraPointer(ExtraPointerKind::ExportNode, typeStruct->declNode);
     structDecl->addSpecFlag(AstStruct::SPEC_FLAG_NO_OVERLOAD);
