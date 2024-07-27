@@ -79,7 +79,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 
     if (numUnpack > typeStruct->fields.size())
     {
-        Diagnostic err{varDecl, varDecl->token, formErr(Err0729, typeStruct->fields.size(), numUnpack)};
+        Diagnostic err{varDecl, varDecl->token, formErr(Err0729, numUnpack, typeStruct->fields.size())};
         err.addNote(varDecl->assignment, formNte(Nte0175, typeStruct->fields.size()));
         return context->report(err);
     }
