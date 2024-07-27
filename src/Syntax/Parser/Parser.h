@@ -121,6 +121,7 @@ struct Parser
     bool        doCheckPublicInternalPrivate(const Token& tokenAttr) const;
     void        registerSubDecl(AstNode* subDecl);
     static void setForceTakeAddress(AstNode* node);
+    static bool isGeneratedName(const Utf8& name);
 
     bool doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags exprFlags, bool typeSpecified, bool isUnion);
     bool doCompilerScopeBreakable(AstNode* parent, AstNode** result);

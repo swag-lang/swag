@@ -211,7 +211,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
         error  = true;
         reason = "name is empty";
     }
-    else if (name.length() > 1 && name[0] == '_' && name[1] == '_')
+    else if (Parser::isGeneratedName(name))
     {
         error  = true;
         reason = "name cannot start with '__'";

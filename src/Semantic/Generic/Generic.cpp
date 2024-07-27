@@ -5,6 +5,7 @@
 #include "Semantic/SemanticJob.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Parser/Parser.h"
 
 Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, const VectorMap<Utf8, GenericReplaceType>& replaceTypes)
 {
@@ -366,7 +367,7 @@ Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, 
         // Can occur in case of constants (like string for example)
         if (p.first == p.second.typeInfoReplace->getDisplayName())
             continue;
-        if (p.first.length() > 2 && p.first[0] == '_' && p.first[1] == '_') // Generated name
+        if (Parser::isGeneratedName(p.first))
             continue;
 
         Utf8 rem = "with ";

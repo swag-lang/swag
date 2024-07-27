@@ -66,7 +66,7 @@ bool Semantic::executeCompilerNode(SemanticContext* context, AstNode* node, bool
 
     // In case of error, it's not always relevant to show the context
     bool showContext = true;
-    if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
+    if (Parser::isGeneratedName(node->token.text))
         showContext = false;
     if (node->token.text[0] == '@')
         showContext = false;

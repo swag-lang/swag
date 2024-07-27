@@ -4,7 +4,7 @@
 #include "Backend/ByteCode/Run/ByteCodeStack.h"
 #include "Report/Log.h"
 #include "Semantic/Type/TypeInfo.h"
-#include "Syntax/Ast.h"
+#include "Syntax/Parser/Parser.h"
 #include "Syntax/SyntaxColor.h"
 #include "Wmf/Workspace.h"
 
@@ -38,7 +38,7 @@ void ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, Vector<std::
         const auto over = n->resolvedSymbolOverload();
 
         // Generated
-        if (!g_ByteCodeDebugger.printCompilerSymbols && over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
+        if (!g_ByteCodeDebugger.printCompilerSymbols && Parser::isGeneratedName(over->symbol->name))
             continue;
 
         Utf8 value = getPrintValue(over->symbol->getFullName(), over->typeInfo);

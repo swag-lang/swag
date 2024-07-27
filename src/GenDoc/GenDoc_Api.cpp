@@ -4,6 +4,7 @@
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Parser/Parser.h"
 #include "Syntax/SyntaxColor.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
@@ -40,7 +41,7 @@ namespace
 
     bool canCollectNode(const AstNode* node)
     {
-        if (node->token.text.length() > 2 && node->token.text[0] == '_' && node->token.text[1] == '_')
+        if (Parser::isGeneratedName(node->token.text))
             return false;
         if (node->hasAstFlag(AST_FROM_GENERIC))
             return false;
@@ -371,7 +372,7 @@ void GenDoc::collectScopes(Scope* root)
 {
     if (root->flags.has(SCOPE_IMPORTED))
         return;
-    if (root->name.length() > 2 && root->name[0] == '_' && root->name[1] == '_')
+    if (Parser::isGeneratedName(root->name))
         return;
 
     if (!root->owner)

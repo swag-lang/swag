@@ -244,11 +244,8 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
     // If name starts with "__", then this is generated, as a user identifier cannot start with those
     // two characters
-    if (!sourceFile->hasFlag(FILE_FOR_FORMAT))
-    {
-        if (structNode->token.text.length() > 2 && structNode->token.text[0] == '_' && structNode->token.text[1] == '_')
-            structNode->addAstFlag(AST_GENERATED);
-    }
+    if (!sourceFile->hasFlag(FILE_FOR_FORMAT) && isGeneratedName(structNode->token.text))
+        structNode->addAstFlag(AST_GENERATED);
 
     // Add struct type and scope
     Scope* newScope = nullptr;

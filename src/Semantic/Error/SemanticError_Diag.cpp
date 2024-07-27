@@ -7,6 +7,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Naming.h"
+#include "Syntax/Parser/Parser.h"
 
 namespace
 {
@@ -105,13 +106,13 @@ namespace
             if (!errorParam.destParameters)
                 continue;
 
-            if (errorParam.destParameters->children[si]->hasSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED))
-                err->remarks.push_back(formNte(Nte0089, Naming::niceParameterRank(si + 1).c_str(), errorParam.destParameters->children[si]->typeInfo->getDisplayNameC()));
+            const auto destParam = errorParam.destParameters->children[si];
+            if (destParam->hasSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED) || Parser::isGeneratedName(destParam->token.text))
+                err->remarks.push_back(formNte(Nte0089, Naming::niceParameterRank(si + 1).c_str(), destParam->typeInfo->getDisplayNameC()));
             else
-                err->remarks.push_back(formNte(Nte0090, errorParam.destParameters->children[si]->token.c_str(),
-                                               errorParam.destParameters->children[si]->typeInfo->getDisplayNameC()));
-            if (note && !errorParam.destParameters->children[si]->isGeneratedSelf())
-                note->addNote(errorParam.destParameters->children[si], "missing");
+                err->remarks.push_back(formNte(Nte0090, destParam->token.c_str(), destParam->typeInfo->getDisplayNameC()));
+            if (note && !destParam->isGeneratedSelf())
+                note->addNote(destParam, "missing");
         }
     }
 
