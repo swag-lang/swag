@@ -484,7 +484,7 @@ bool Semantic::resolveType(SemanticContext* context)
         if (typeNode->typeFlags.has(TYPEFLAG_IS_MOVE_REF))
         {
             const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0512, "&&")}));
+            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, toErr(Err0755)}));
             ptrFlags.add(TYPEINFO_POINTER_MOVE_REF);
         }
 

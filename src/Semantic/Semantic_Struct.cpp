@@ -294,7 +294,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 {
                     Diagnostic err{child, child->getTokenName(), formErr(Err0430, child->token.c_str(), typeBaseInterface->name.c_str())};
                     err.hint          = toNte(Nte0099);
-                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, toNte(Nte0163));
+                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), toNte(Nte0163));
                     note->canBeMerged = false;
                     err.addNote(note);
                     return context->report(err);
@@ -303,7 +303,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 default:
                 {
                     Diagnostic err{child, child->getTokenName(), formErr(Err0430, child->token.c_str(), typeBaseInterface->name.c_str())};
-                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, toNte(Nte0163));
+                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), toNte(Nte0163));
                     note->canBeMerged = false;
                     err.addNote(note);
                     return context->report(err);

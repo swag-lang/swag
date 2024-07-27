@@ -547,7 +547,7 @@ void initErrors()
     SWAG_ERROR(Err0421, "invalid void dereference                          $ dereferencing a pointer to [[void]] is not valid $ [[void]] does not have a valid size");
     SWAG_ERROR(Err0422, "invalid multiple variable                         $ [[using]] does not support multiple variable declarations");
     SWAG_ERROR(Err0423, "literal overflow                                  $ can't negate number [[%I64d]] because [[%I64u]] is too large for type [[s64]]");
-    SWAG_ERROR(Err0424, "literal overflow                                  $ can't negate number [[%d]] because [[%u]] is too large for type [[s8]]");
+    SWAG_ERROR(Err0424, "literal overflow                                  $ can't negate number [[%d]] because [[%u]] is too large for type [[%s]]");
     SWAG_ERROR(Err0425, "literal overflow                                  $ the number [[%I64u]] is too large for type [[%s]]");
     SWAG_ERROR(Err0426, "mismatch access                                   $ %s [[%s]] can't be public because %s [[%s]] has [[%s]] access");
     SWAG_ERROR(Err0427, "mismatch access                                   $ the special function [[%s]] can't be internal because the corresponding struct has [[public]] access");
@@ -587,7 +587,7 @@ void initErrors()
     SWAG_ERROR(Err0461, "misplaced [[fallthrough]]                         $ [[fallthrough]] is invalid in the last [[case]] of a [[switch]]");
     SWAG_ERROR(Err0462, "misplaced [[fallthrough]]                         $ [[fallthrough]] is only valid within a [[case]] block");
     SWAG_ERROR(Err0463, "misplaced [[fallthrough]]                         $ [[fallthrough]] is only valid within a [[switch]]");
-    SWAG_ERROR(Err0464, "misplaced [[moveref]]                             $ unexpected [[moveref]] on a computed value $ [[moveref]] should be used on a pointer or a reference");
+    SWAG_ERROR(Err0464, "misplaced [[moveref]]                             $ unexpected [[moveref]] on a compile-time value $ [[moveref]] should be used on a pointer or a reference");
     SWAG_ERROR(Err0465, "misplaced [[moveref]]                             $ unexpected [[moveref]] on an immutable expression");
     SWAG_ERROR(Err0466, "misplaced [[moveref]]                             $ unexpected [[moveref]] on type [[%s]] $ [[moveref]] should be used on a pointer or a reference");
     SWAG_ERROR(Err0467, "misplaced [[mtd]]                                 $ [[mtd]] is only valid within a struct implementation block $ you could replace [[mtd]] with [[func]]");
@@ -878,7 +878,7 @@ void initErrors()
     SWAG_ERROR(Err0752, "expected function body                            $ the function body starting with [[{]], [[=]] or [[=>]] is expected");
     SWAG_ERROR(Err0753, "invalid generic type                              $ a generic type does not accept a specific type starting with [[:]]");
     SWAG_ERROR(Err0754, "expected closing [[;]]                            $ the interface member definition should be closed with [[;]] $ you can instead define a function body if you want to declare a default implementation");
-    SWAG_ERROR(Err0755, nullptr);
+    SWAG_ERROR(Err0755, "misplaced move reference                          $ a move reference type [[&&]] is only valid when declaring a function parameter");
     SWAG_ERROR(Err0756, nullptr);
     SWAG_ERROR(Err0757, nullptr);
     SWAG_ERROR(Err0758, nullptr);

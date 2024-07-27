@@ -1412,6 +1412,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
         default:
         {
             Diagnostic err{sourceFile, tokenParse.token, formErr(Err0408, tokenParse.token.c_str())};
+            prepareExpectTokenError(err);
             if (Tokenizer::isKeyword(tokenParse.token.id))
                 err.addNote(formNte(Nte0125, tokenParse.token.c_str()));
             return context->report(err);

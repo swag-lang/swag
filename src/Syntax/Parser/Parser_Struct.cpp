@@ -407,7 +407,7 @@ bool Parser::doInterfaceMtdDecl(AstNode* parent, AstNode** result)
     ParserPushFreezeFormat ff{this};
     ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
     const auto             varNode = Ast::newVarDecl(funcNode->token.text, this, parent);
-    varNode->inheritTokenLocation(funcNode->token);
+    varNode->inheritTokenLocation(funcNode->tokenName);
     Semantic::setVarDeclResolve(varNode);
     varNode->addAstFlag(AST_R_VALUE);
 
