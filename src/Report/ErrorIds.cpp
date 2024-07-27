@@ -879,8 +879,8 @@ void initErrors()
     SWAG_ERROR(Err0753, "invalid generic type                              $ a generic type does not accept a specific type starting with [[:]]");
     SWAG_ERROR(Err0754, "expected closing [[;]]                            $ the interface member definition should be closed with [[;]] $ you can instead define a function body if you want to declare a default implementation");
     SWAG_ERROR(Err0755, "misplaced move reference                          $ a move reference type [[&&]] is only valid when declaring a function parameter");
-    SWAG_ERROR(Err0756, nullptr);
-    SWAG_ERROR(Err0757, nullptr);
+    SWAG_ERROR(Err0756, "invalid compiler instruction scope                $ compiler instructions do not belong to a specific scope");
+    SWAG_ERROR(Err0757, "invalid instrinsic scope                          $ intrinsics do not belong to a specific scope");
     SWAG_ERROR(Err0758, nullptr);
     SWAG_ERROR(Err0759, nullptr);
 
@@ -1090,6 +1090,7 @@ void initErrors()
     SWAG_ERROR(Nte0200, "expected an integer, a rune or a float value");
     SWAG_ERROR(Nte0201, "unexpected [[%s]]");
     SWAG_ERROR(Nte0202, "occurred while trying to convert [[%s]] to a function call argument of type [[%s]]");
+    SWAG_ERROR(Nte0203, "unexpected scope");
 }
 
 Utf8 formErr(ErrorID idx, ...)

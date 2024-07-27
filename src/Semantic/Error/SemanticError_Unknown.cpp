@@ -159,17 +159,17 @@ namespace
     }
 }
 
-bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node)
+bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     // What kind of thing to we search for ?
     auto searchFor = IdentifierSearchFor::Whatever;
-    if (node->parent->parent && node->parent->parent->is(AstNodeKind::TypeExpression) && node->parent->lastChild() == node)
+    if (identifier->parent->parent && identifier->parent->parent->is(AstNodeKind::TypeExpression) && identifier->parent->lastChild() == identifier)
         searchFor = IdentifierSearchFor::Type;
-    else if (node->parent->parent && node->parent->parent->is(AstNodeKind::AttrUse) && node->parent->lastChild() == node)
+    else if (identifier->parent->parent && identifier->parent->parent->is(AstNodeKind::AttrUse) && identifier->parent->lastChild() == identifier)
         searchFor = IdentifierSearchFor::Attribute;
-    else if (node->callParameters && node->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
+    else if (identifier->callParameters && identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         searchFor = IdentifierSearchFor::Struct;
-    else if (node->callParameters)
+    else if (identifier->callParameters)
         searchFor = IdentifierSearchFor::Function;
 
     // Default message
@@ -177,31 +177,47 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     switch (searchFor)
     {
         case IdentifierSearchFor::Function:
-            if (node->token.text[0] == '#')
-                err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0706, node->token.c_str())};
-            else if (node->token.text[0] == '@')
-                err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0721, node->token.c_str())};
+            if (identifier->token.text[0] == '#')
+                err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0706, identifier->token.c_str())};
+            else if (identifier->token.text[0] == '@')
+                err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0721, identifier->token.c_str())};
             else
-                err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0712, node->token.c_str())};
+                err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0712, identifier->token.c_str())};
             break;
         case IdentifierSearchFor::Attribute:
-            err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0705, node->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0705, identifier->token.c_str())};
             break;
         case IdentifierSearchFor::Type:
-            err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0727, node->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0727, identifier->token.c_str())};
             break;
         case IdentifierSearchFor::Struct:
-            err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0726, node->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0726, identifier->token.c_str())};
             break;
         default:
-            err = new Diagnostic{node->token.sourceFile, node->token, formErr(Err0717, node->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0717, identifier->token.c_str())};
             break;
     }
 
     Vector<const Diagnostic*> notes;
 
+    if (identifierRef->startScope && identifier->token.text[0] == '@')
+    {
+        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0757, identifier->token.c_str())};
+        if (identifier->childParentIdx())
+            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0203)));
+        return context->report(*err, notes);
+    }
+
+    if (identifierRef->startScope && identifier->token.text[0] == '#')
+    {
+        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0756, identifier->token.c_str())};
+        if (identifier->childParentIdx())
+            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0203)));
+        return context->report(*err, notes);
+    }    
+
     // Find best matches
-    if (!badParentScope(node, notes))
+    if (!badParentScope(identifier, notes))
     {
         auto& scopeHierarchy     = context->cacheScopeHierarchy;
         auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
@@ -209,19 +225,19 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
         if (identifierRef->startScope)
             Semantic::addCollectedScopeOnce(scopeHierarchy, identifierRef->startScope);
         else
-            Semantic::collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, COLLECT_ALL);
-        const Utf8 appendMsg = findClosestMatchesMsg(node->token.text, scopeHierarchy, searchFor);
+            Semantic::collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifier, COLLECT_ALL);
+        const Utf8 appendMsg = findClosestMatchesMsg(identifier->token.text, scopeHierarchy, searchFor);
         notes.push_back(Diagnostic::note(appendMsg));
     }
 
     // Error in scope context
     if (identifierRef->startScope)
     {
-        const auto specDiag = unknownIdentifierInScope(identifierRef, node, notes);
+        const auto specDiag = unknownIdentifierInScope(identifierRef, identifier, notes);
         if (specDiag)
             err = specDiag;
     }
 
-    commonErrorNotes(context, {}, node, err, notes);
+    commonErrorNotes(context, {}, identifier, err, notes);
     return context->report(*err, notes);
 }
