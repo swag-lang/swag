@@ -377,7 +377,9 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     // Get result
     SWAG_CHECK(computeExecuteResult(g_RunContext, sourceFile, node, callerContext, params));
-    g_RunContext->releaseStack();
+
+    // We are done we the stack. Keep it allocated, but indicates that we should restore it.
+    g_RunContext->resetStack = true;
 
     // Be sure there's no pending error
     SWAG_ASSERT(cxt->hasError == 0);

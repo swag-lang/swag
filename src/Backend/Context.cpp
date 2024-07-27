@@ -56,6 +56,10 @@ namespace
             g_RunContext->setup(node->token.sourceFile, node, node->extByteCode()->bc);
             stackAllocated = true;
         }
+        else if (g_RunContext->resetStack)
+        {
+            g_RunContext->setup(node->token.sourceFile, node, node->extByteCode()->bc);
+        }
         else
         {
             g_RunContext->jc.sourceFile = node->token.sourceFile;

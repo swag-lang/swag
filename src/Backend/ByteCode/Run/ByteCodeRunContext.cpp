@@ -72,6 +72,8 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodeBC)
 
     curRC   = UINT32_MAX;
     firstRC = UINT32_MAX;
+
+    resetStack = false;
 }
 
 void ByteCodeRunContext::stackOverflow()
