@@ -185,10 +185,14 @@ Utf8 Log::removeFormat(const char* message)
         else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
         {
             pz += 2;
+            if(!g_CommandLine.logColor)
+                m += "'";
         }
         else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
         {
             pz += 2;
+            if(!g_CommandLine.logColor)
+                m += "'";
         }
         else
             m += *pz++;
@@ -213,26 +217,20 @@ Utf8 Log::format(const char* message)
         }
         else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
         {
-            if (g_CommandLine.logColor == false)
+            if(!g_CommandLine.logColor)
                 m += "'";
-            else if (curColor == colorToVTS(LogColor::White))
+            if (curColor == colorToVTS(LogColor::White))
                 m += colorToVTS(LogColor::Gray);
-            else if (curColor == colorToVTS(LogColor::Red))
-                m += "'";
-            else
-                m += colorToVTS(LogColor::Bold);
+            m += colorToVTS(LogColor::Underline);
             pz += 2;
         }
         else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
         {
             m += curColor;
-            if (g_CommandLine.logColor == false)
-                m += "'";
-            else if (curColor == colorToVTS(LogColor::Red))
-                m += "'";
-            else
-                m += colorToVTS(LogColor::UnBold);
+            m += colorToVTS(LogColor::UnUnderline);
             pz += 2;
+            if(!g_CommandLine.logColor)
+                m += "'";
         }
         else
             m += *pz++;

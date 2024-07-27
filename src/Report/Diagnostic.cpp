@@ -543,8 +543,8 @@ void Diagnostic::printRanges(Log* log)
     if (!ranges.empty())
     {
         const auto& r        = ranges.back();
-        const auto  unformat = Log::removeFormat(r.hint.c_str());
-        if (curColumn + 1 + unformat.length() < g_CommandLine.errorRightColumn)
+        const auto  unFormat = Log::removeFormat(r.hint.c_str());
+        if (curColumn + 1 + unFormat.length() < g_CommandLine.errorRightColumn)
         {
             log->write(" ");
             printLastRangeHint(log, curColumn + 1);
@@ -555,19 +555,19 @@ void Diagnostic::printRanges(Log* log)
     while (!ranges.empty())
     {
         auto&      r        = ranges.back();
-        auto       unformat = Log::removeFormat(r.hint.c_str());
+        auto       unFormat = Log::removeFormat(r.hint.c_str());
         const auto mid      = r.mid - minBlanks;
 
         curColumn = printRangesVerticalBars(log, ranges.size() - 1);
         log->setColor(rangeNoteColor);
 
-        const bool notEnoughRoomRight = mid + 3 + static_cast<int>(unformat.length()) > static_cast<int>(g_CommandLine.errorRightColumn) || orgNumRanges >= 2;
-        const bool enoughRoomLeft     = mid - 2 - static_cast<int>(unformat.length()) >= 0;
+        const bool notEnoughRoomRight = mid + 3 + static_cast<int>(unFormat.length()) > static_cast<int>(g_CommandLine.errorRightColumn) || orgNumRanges >= 2;
+        const bool enoughRoomLeft     = mid - 2 - static_cast<int>(unFormat.length()) >= 0;
 
         // Can we stick the hint before the line reference ? (must be the last one)
         if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft)
         {
-            alignRangeColumn(log, curColumn, r.mid - 2 - static_cast<int>(unformat.length()));
+            alignRangeColumn(log, curColumn, r.mid - 2 - static_cast<int>(unFormat.length()));
             log->print(r.hint);
             log->write(" ");
             log->print(LogSymbol::HorizontalLine);
@@ -587,7 +587,7 @@ void Diagnostic::printRanges(Log* log)
                 curColumn = minBlanks;
             }
 
-            if (mid - 2 - static_cast<int>(unformat.length()) > -4)
+            if (mid - 2 - static_cast<int>(unFormat.length()) > -4)
                 alignRangeColumn(log, curColumn, curColumn + 4);
 
             printLastRangeHint(log, curColumn);
