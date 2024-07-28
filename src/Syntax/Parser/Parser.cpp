@@ -14,184 +14,41 @@
 #include "Core/Timer.h"
 #endif
 
-bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint) const
-{
-    Diagnostic err{node, msg};
-    if (hint)
-        err.hint = hint;
-    if (help)
-        err.addNote(help);
-    return context->report(err);
-}
-
-bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const char* hint) const
-{
-    Diagnostic err{sourceFile, tk, msg};
-    if (hint)
-        err.hint = hint;
-    if (help)
-        err.addNote(help);
-    return context->report(err);
-}
-
-bool Parser::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help) const
-{
-    Diagnostic err{sourceFile, startLocation, endLocation, msg};
-    if (help)
-        err.addNote(help);
-    return context->report(err);
-}
-
-bool Parser::unexpectedTokenError(const Token& tk, const Utf8& msg, const char* help, const char* hint) const
-{
-    Diagnostic err{sourceFile, tk, msg};
-    prepareExpectTokenError(err);
-    if (hint)
-        err.hint = hint;
-    if (help)
-        err.addNote(help);
-    return context->report(err);
-}
-
-bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
-{
-    switch (tokenParse.token.id)
-    {
-        case TokenId::SymAmpersandAmpersand:
-            if (kind == InvalidTokenError::EmbeddedInstruction)
-                return error(tokenParse.token, formErr(Err0323, "and", "&&"));
-            break;
-        case TokenId::SymVerticalVertical:
-            if (kind == InvalidTokenError::EmbeddedInstruction)
-                return error(tokenParse.token, formErr(Err0323, "or", "||"));
-            break;
-        case TokenId::KwdElse:
-            if (kind == InvalidTokenError::EmbeddedInstruction)
-                return error(tokenParse.token, toErr(Err0665));
-            break;
-        case TokenId::KwdElif:
-            if (kind == InvalidTokenError::EmbeddedInstruction)
-                return error(tokenParse.token, toErr(Err0664));
-            break;
-        case TokenId::CompilerElse:
-            if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-                return error(tokenParse.token, toErr(Err0657));
-            break;
-        case TokenId::CompilerElseIf:
-            if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-                return error(tokenParse.token, toErr(Err0656));
-            break;
-        case TokenId::SymRightParen:
-            if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-                return error(tokenParse.token, toErr(Err0660));
-            break;
-        case TokenId::SymRightCurly:
-            if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-                return error(tokenParse.token, toErr(Err0673));
-            break;
-        case TokenId::SymRightSquare:
-            if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-                return error(tokenParse.token, toErr(Err0661));
-            break;
-    }
-
-    Utf8 msg, note;
-
-    switch (kind)
-    {
-        case InvalidTokenError::TopLevelInstruction:
-
-            // Identifier at global scope
-            if (tokenParse.is(TokenId::Identifier))
-            {
-                const auto tokenIdentifier = tokenParse.token;
-                eatToken();
-
-                Diagnostic err{sourceFile, tokenIdentifier, formErr(Err0689, tokenIdentifier.c_str())};
-                if (tokenParse.is(TokenId::Identifier))
-                {
-                    if (tokenIdentifier.is("function") || tokenIdentifier.is("fn") || tokenIdentifier.is("def"))
-                        err.addNote(toNte(Nte0040));
-                }
-                else if (tokenParse.is(TokenId::SymEqual) || tokenParse.is(TokenId::SymColon))
-                {
-                    err.addNote(toNte(Nte0053));
-                }
-
-                if (!err.hasNotes())
-                {
-                    const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
-                    if (!appendMsg.empty())
-                        err.addNote(appendMsg);
-                }
-
-                return context->report(err);
-            }
-
-            msg = formErr(Err0381, tokenParse.token.c_str());
-            if (tokenParse.is(TokenId::KwdLet))
-                note = toNte(Nte0205);
-            else
-                note = toNte(Nte0167);
-            break;
-
-        case InvalidTokenError::EmbeddedInstruction:
-            msg = formErr(Err0262, tokenParse.token.c_str());
-            break;
-
-        case InvalidTokenError::LeftExpression:
-            msg = formErr(Err0283, tokenParse.token.c_str());
-            break;
-
-        case InvalidTokenError::PrimaryExpression:
-
-            // Bad character syntax as an expression
-            if (tokenParse.is(TokenId::SymQuote))
-            {
-                tokenizer.saveState(tokenParse);
-                const auto startToken = tokenParse;
-                eatToken();
-                const auto inToken = tokenParse;
-                eatToken();
-                if (tokenParse.is(TokenId::SymQuote))
-                {
-                    const Diagnostic err{sourceFile, startToken.token.startLocation, tokenParse.token.endLocation, formErr(Err0237, inToken.token.c_str())};
-                    return context->report(err);
-                }
-
-                tokenizer.restoreState(tokenParse);
-            }
-
-            if (parent && Tokenizer::isKeyword(parent->token.id))
-                msg = formErr(Err0281, form("[[%s]]", parent->token.c_str()).c_str(), tokenParse.token.c_str());
-            else if (parent && Tokenizer::isCompiler(parent->token.id))
-                msg = formErr(Err0281, form("the compiler directive [[%s]]", parent->token.c_str()).c_str(), tokenParse.token.c_str());
-            else if (parent && Tokenizer::isSymbol(parent->token.id))
-                msg = formErr(Err0281, form("the symbol [[%s]]", parent->token.c_str()).c_str(), tokenParse.token.c_str());
-            else
-                msg = formErr(Err0283, tokenParse.token.c_str());
-
-            break;
-    }
-
-    return error(tokenParse.token, msg, note.empty() ? nullptr : note.c_str());
-}
-
-bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) const
-{
-    Diagnostic err{sourceFile, myToken.token, msg ? msg : formErr(Err0310, myToken.token.c_str()).c_str()};
-    prepareExpectTokenError(err);
-    if (Tokenizer::isKeyword(myToken.token.id))
-        err.addNote(formNte(Nte0125, myToken.token.c_str()));
-    return context->report(err);
-}
-
 bool Parser::eatToken()
 {
     prevTokenParse = tokenParse;
     SWAG_CHECK(tokenizer.nextToken(tokenParse));
     return true;
 }
+
+
+bool Parser::eatToken(TokenId id, const char* msg)
+{
+    SWAG_ASSERT(msg);
+    if (tokenParse.token.isNot(id))
+    {
+        Diagnostic err{sourceFile, tokenParse.token, formErr(Err0083, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str())};
+        prepareExpectTokenError(err);
+        return context->report(err);
+    }
+
+    SWAG_CHECK(eatToken());
+    return true;
+}
+
+bool Parser::eatTokenError(TokenId id, const Utf8& msg)
+{
+    if (tokenParse.token.isNot(id))
+    {
+        Diagnostic err{sourceFile, tokenParse.token, form(msg.c_str(), tokenParse.token.c_str())};
+        prepareExpectTokenError(err);
+        return context->report(err);
+    }
+
+    SWAG_CHECK(eatToken());
+    return true;
+}
+
 
 bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* msg)
 {
@@ -210,45 +67,6 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 
         Diagnostic err{sourceFile, tokenParse.token, diagMsg};
         err.addNote(sourceFile, start, start, formNte(Nte0180, related.c_str()));
-        return context->report(err);
-    }
-
-    SWAG_CHECK(eatToken());
-    return true;
-}
-
-void Parser::prepareExpectTokenError(Diagnostic& diag) const
-{
-    // If we expect a token, and the bad token is the first of the line, then
-    // it's better to display the requested token at the end of the previous line
-    if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
-    {
-        diag.addNote(diag.startLocation, diag.endLocation, formNte(Nte0201, tokenParse.token.c_str()));
-        diag.startLocation = prevTokenParse.token.endLocation;
-        diag.endLocation   = tokenParse.token.startLocation;
-    }
-}
-
-bool Parser::eatTokenError(TokenId id, const Utf8& msg)
-{
-    if (tokenParse.token.isNot(id))
-    {
-        Diagnostic err{sourceFile, tokenParse.token, form(msg.c_str(), tokenParse.token.c_str())};
-        prepareExpectTokenError(err);
-        return context->report(err);
-    }
-
-    SWAG_CHECK(eatToken());
-    return true;
-}
-
-bool Parser::eatToken(TokenId id, const char* msg)
-{
-    SWAG_ASSERT(msg);
-    if (tokenParse.token.isNot(id))
-    {
-        Diagnostic err{sourceFile, tokenParse.token, formErr(Err0083, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str())};
-        prepareExpectTokenError(err);
         return context->report(err);
     }
 

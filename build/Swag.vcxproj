@@ -570,6 +570,7 @@
         <ClCompile Include="..\src\Syntax\Parser\Parser_Compiler.cpp"/>
         <ClCompile Include="..\src\Syntax\Parser\Parser_Declaration.cpp"/>
         <ClCompile Include="..\src\Syntax\Parser\Parser_Enum.cpp"/>
+        <ClCompile Include="..\src\Syntax\Parser\Parser_Error.cpp" />
         <ClCompile Include="..\src\Syntax\Parser\Parser_Expression.cpp"/>
         <ClCompile Include="..\src\Syntax\Parser\Parser_Function.cpp"/>
         <ClCompile Include="..\src\Syntax\Parser\Parser_Identifier.cpp"/>
