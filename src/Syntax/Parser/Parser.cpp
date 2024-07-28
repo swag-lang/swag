@@ -2,6 +2,7 @@
 #include "Syntax/Parser/Parser.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -94,26 +95,60 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             break;
     }
 
-    Utf8 msg;
-    Utf8 note;
+    Utf8 msg, note;
 
     switch (kind)
     {
         case InvalidTokenError::TopLevelInstruction:
-            msg  = formErr(Err0381, tokenParse.token.c_str());
-            note = toNte(Nte0167);
+
+            // Identifier at global scope
+            if (tokenParse.is(TokenId::Identifier))
+            {
+                const auto tokenIdentifier = tokenParse.token;
+                eatToken();
+
+                Diagnostic err{sourceFile, tokenIdentifier, formErr(Err0689, tokenIdentifier.c_str())};
+                if (tokenParse.is(TokenId::Identifier))
+                {
+                    if (tokenIdentifier.is("function") || tokenIdentifier.is("fn") || tokenIdentifier.is("def"))
+                        err.addNote(toNte(Nte0040));
+                }
+                else if (tokenParse.is(TokenId::SymEqual) || tokenParse.is(TokenId::SymColon))
+                {
+                    err.addNote(toNte(Nte0053));
+                }
+
+                if (!err.hasNotes())
+                {
+                    const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
+                    if (!appendMsg.empty())
+                        err.addNote(appendMsg);
+                }
+
+                return context->report(err);
+            }
+
+            msg = formErr(Err0381, tokenParse.token.c_str());
+            if (tokenParse.is(TokenId::KwdLet))
+                note = toNte(Nte0205);
+            else
+                note = toNte(Nte0167);
             break;
+
         case InvalidTokenError::EmbeddedInstruction:
             msg = formErr(Err0262, tokenParse.token.c_str());
             break;
+
         case InvalidTokenError::LeftExpression:
             msg = formErr(Err0283, tokenParse.token.c_str());
             break;
+
         case InvalidTokenError::PrimaryExpression:
 
             // Bad character syntax as an expression
             if (tokenParse.is(TokenId::SymQuote))
             {
+                tokenizer.saveState(tokenParse);
                 const auto startToken = tokenParse;
                 eatToken();
                 const auto inToken = tokenParse;
@@ -124,28 +159,17 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
                     return context->report(err);
                 }
 
-                tokenParse = startToken;
+                tokenizer.restoreState(tokenParse);
             }
 
-            msg = formErr(Err0283, tokenParse.token.c_str());
-            if (parent)
-            {
-                if (Tokenizer::isKeyword(parent->token.id))
-                {
-                    const Utf8 forWhat = form("[[%s]]", parent->token.c_str());
-                    msg                = formErr(Err0281, forWhat.c_str(), tokenParse.token.c_str());
-                }
-                else if (Tokenizer::isCompiler(parent->token.id))
-                {
-                    const Utf8 forWhat = form("the compiler directive [[%s]]", parent->token.c_str());
-                    msg                = formErr(Err0281, forWhat.c_str(), tokenParse.token.c_str());
-                }
-                else if (Tokenizer::isSymbol(parent->token.id))
-                {
-                    const Utf8 forWhat = form("the symbol [[%s]]", parent->token.c_str());
-                    msg                = formErr(Err0281, forWhat.c_str(), tokenParse.token.c_str());
-                }
-            }
+            if (parent && Tokenizer::isKeyword(parent->token.id))
+                msg = formErr(Err0281, form("[[%s]]", parent->token.c_str()).c_str(), tokenParse.token.c_str());
+            else if (parent && Tokenizer::isCompiler(parent->token.id))
+                msg = formErr(Err0281, form("the compiler directive [[%s]]", parent->token.c_str()).c_str(), tokenParse.token.c_str());
+            else if (parent && Tokenizer::isSymbol(parent->token.id))
+                msg = formErr(Err0281, form("the symbol [[%s]]", parent->token.c_str()).c_str(), tokenParse.token.c_str());
+            else
+                msg = formErr(Err0283, tokenParse.token.c_str());
 
             break;
     }

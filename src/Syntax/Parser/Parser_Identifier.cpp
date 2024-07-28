@@ -468,30 +468,3 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     node->setResolvedSymbolName(currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias));
     return true;
 }
-
-bool Parser::errorTopLevelIdentifier()
-{
-    const auto tokenIdentifier = tokenParse.token;
-    eatToken();
-
-    Diagnostic err{sourceFile, tokenIdentifier, formErr(Err0689, tokenIdentifier.c_str())};
-
-    if (tokenParse.is(TokenId::Identifier))
-    {
-        if (tokenIdentifier.is("function") || tokenIdentifier.is("fn") || tokenIdentifier.is("def"))
-            err.addNote(toNte(Nte0040));
-    }
-    else if (tokenParse.is(TokenId::SymEqual) || tokenParse.is(TokenId::SymColon))
-    {
-        err.addNote(toNte(Nte0053));
-    }
-
-    if (!err.hasNotes())
-    {
-        const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
-        if (!appendMsg.empty())
-            err.addNote(appendMsg);
-    }
-
-    return context->report(err);
-}

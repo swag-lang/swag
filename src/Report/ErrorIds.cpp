@@ -1092,7 +1092,7 @@ void initErrors()
     SWAG_ERROR(Nte0202, "occurred while trying to convert [[%s]] to a function call argument of type [[%s]]");
     SWAG_ERROR(Nte0203, "unexpected scope");
     SWAG_ERROR(Nte0204, "perhaps you intended to use this type: [[%s]]");
-    SWAG_ERROR(Nte0205, nullptr);
+    SWAG_ERROR(Nte0205, "consider using [[var]] or [[const]] instead of [[let]] to declare a global variable or a constant");
 }
 
 Utf8 formErr(ErrorID idx, ...)
