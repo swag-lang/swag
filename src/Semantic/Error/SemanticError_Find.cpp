@@ -31,6 +31,13 @@ Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const Vector<U
     return appendMsg;
 }
 
+Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const VectorNative<CollectedScope>& scopeHierarchy, IdentifierSearchFor searchFor)
+{
+    Vector<Utf8> best;
+    findClosestMatches(searchName, scopeHierarchy, best, searchFor);
+    return findClosestMatchesMsg(searchName, best);
+}
+
 void SemanticError::findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result)
 {
     uint32_t bestScore = UINT32_MAX;
@@ -152,11 +159,4 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
     }
 
     findClosestMatches(searchName, searchList, best);
-}
-
-Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const VectorNative<CollectedScope>& scopeHierarchy, IdentifierSearchFor searchFor)
-{
-    Vector<Utf8> best;
-    findClosestMatches(searchName, scopeHierarchy, best, searchFor);
-    return findClosestMatchesMsg(searchName, best);
 }

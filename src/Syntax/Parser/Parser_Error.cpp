@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Syntax/Parser/Parser.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Error/SemanticError.h"
 #include "Syntax/Ast.h"
+#include "Syntax/Parser/Parser.h"
 #include "Wmf/Module.h"
 
 bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint) const
@@ -61,22 +61,12 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
                 eatToken();
 
                 Diagnostic err{sourceFile, tokenIdentifier, formErr(Err0689, tokenIdentifier.c_str())};
-                if (tokenParse.is(TokenId::Identifier))
-                {
-                    if (tokenIdentifier.is("function") || tokenIdentifier.is("fn") || tokenIdentifier.is("def"))
-                        err.addNote(toNte(Nte0040));
-                }
+                if (tokenParse.is(TokenId::Identifier) && (tokenIdentifier.is("function") || tokenIdentifier.is("fn") || tokenIdentifier.is("def")))
+                    err.addNote(toNte(Nte0040));
                 else if (tokenParse.is(TokenId::SymEqual) || tokenParse.is(TokenId::SymColon))
-                {
                     err.addNote(toNte(Nte0053));
-                }
-
-                if (!err.hasNotes())
-                {
-                    const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
-                    if (!appendMsg.empty())
-                        err.addNote(appendMsg);
-                }
+                else
+                    err.addNote(SemanticError::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction));
 
                 return context->report(err);
             }

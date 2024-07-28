@@ -65,6 +65,8 @@ void Diagnostic::addNote(AstNode* node, const Token& token, const Utf8& msg)
 
 void Diagnostic::addNote(const Utf8& msg)
 {
+    if(msg.empty())
+        return;
     notes.push_back(note(msg));
 }
 
