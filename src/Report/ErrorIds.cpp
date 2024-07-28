@@ -703,7 +703,7 @@ void initErrors()
     SWAG_ERROR(Err0577, "missing return value                              $ expected an expression of type [[%s]] after [[return]]");
     SWAG_ERROR(Err0578, "missing return value                              $ not all control paths of %s returns a value");
     SWAG_ERROR(Err0579, "missing return value                              $ the %s returns a type [[%s]] but lacks a [[return]] in its body");
-    SWAG_ERROR(Err0580, "missing slicing upper bound                       $ expected an upper bound expression after [[..<]] $ if you want to slice to the end, consider using [[..]] instead of [[..>]]");
+    SWAG_ERROR(Err0580, "missing slicing upper bound                       $ expected an upper bound expression after [[..<]] $ if you want to slice to the end, consider using [[..]] instead of [[..<]]");
     SWAG_ERROR(Err0581, "missing struct name                               $ expected the struct name before the start of the body [[{]]");
     SWAG_ERROR(Err0582, "missing test error                                $ expected at least one error, but none was raised");
     SWAG_ERROR(Err0583, "missing test warning                              $ expected at least one warning, but none was raised");

@@ -291,7 +291,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                     unnamedTokens.push_back(tokenParse.token);
                 }
 
-                SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse.token, formErr(Err0131, tokenParse.token.c_str())));
+                SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), unexpectedTokenError(tokenParse.token, formErr(Err0131, tokenParse.token.c_str())));
                 SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0356, tokenParse.token.c_str())));
                 SWAG_CHECK(eatToken());
                 otherVariables.push_back(otherVarNode);

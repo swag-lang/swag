@@ -337,6 +337,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 msg = formErr(Err0584, tokenParse.token.c_str());
 
             Diagnostic err{sourceFile, tokenParse.token, msg};
+            prepareExpectTokenError(err);
             if (tokenParse.is(TokenId::SymEqualEqual))
                 err.addNote(toNte(Nte0010));
             return context->report(err);
