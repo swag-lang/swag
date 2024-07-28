@@ -42,14 +42,15 @@ struct ErrorParam
     Vector<const Diagnostic*>* diagError;
     Vector<const Diagnostic*>* diagNote;
 
-    AstNode*          errorNode      = nullptr;
-    AstFuncCallParam* failedParam    = nullptr;
-    uint32_t          badParamIdx    = 0;
-    AstFuncDecl*      destFuncDecl   = nullptr;
-    AstTypeLambda*    destLambdaDecl = nullptr;
-    AstAttrDecl*      destAttrDecl   = nullptr;
-    AstStruct*        destStructDecl = nullptr;
-    AstNode*          destParameters = nullptr;
+    AstNode*          errorNode             = nullptr;
+    AstFuncCallParam* failedParam           = nullptr;
+    uint32_t          badParamIdx           = 0;
+    AstFuncDecl*      destFuncDecl          = nullptr;
+    AstTypeLambda*    destLambdaDecl        = nullptr;
+    AstAttrDecl*      destAttrDecl          = nullptr;
+    AstStruct*        destStructDecl        = nullptr;
+    AstNode*          destParameters        = nullptr;
+    AstNode*          destGenericParameters = nullptr;
     Utf8              explicitCastMsg;
 
     void addError(const Diagnostic* note) const

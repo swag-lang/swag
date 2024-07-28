@@ -207,7 +207,7 @@ namespace
                         }
                     }
                     context.badSignatureInfos.badSignatureParameterIdx = parameterIndex;
-                    context.result                                     = MatchResult::DuplicatedNamedParameter;
+                    context.result                                     = MatchResult::DuplicatedNamedArgument;
                     return;
                 }
 
@@ -314,12 +314,12 @@ namespace
             if (!param->hasExtraPointer(ExtraPointerKind::IsNamed))
             {
                 context.badSignatureInfos.badSignatureParameterIdx = i;
-                context.result                                     = MatchResult::MissingNamedParameter;
+                context.result                                     = MatchResult::MissingNamedArgument;
                 return;
             }
 
             matchNamedParameter(context, param, i, parameters, forceCastFlags);
-            if (context.result != MatchResult::DuplicatedNamedParameter)
+            if (context.result != MatchResult::DuplicatedNamedArgument)
             {
                 if (!param->resolvedParameter)
                 {

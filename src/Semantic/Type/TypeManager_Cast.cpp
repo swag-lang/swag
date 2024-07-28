@@ -2275,8 +2275,8 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
 
     switch (symContext.result)
     {
-        case MatchResult::MissingNamedParameter:
-        case MatchResult::DuplicatedNamedParameter:
+        case MatchResult::MissingNamedArgument:
+        case MatchResult::DuplicatedNamedArgument:
         case MatchResult::InvalidNamedArgument:
         {
             Vector<const Diagnostic*> result0;

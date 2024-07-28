@@ -244,10 +244,10 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
             switch (one.symMatchContext.result)
             {
                 case MatchResult::BadSignature:
-                case MatchResult::DuplicatedNamedParameter:
+                case MatchResult::DuplicatedNamedArgument:
                 case MatchResult::InvalidNamedArgument:
-                case MatchResult::MissingNamedParameter:
-                case MatchResult::MissingParameters:
+                case MatchResult::MissingNamedArgument:
+                case MatchResult::MissingArguments:
                 case MatchResult::NotEnoughArguments:
                 case MatchResult::TooManyArguments:
                 case MatchResult::WhereFailed:

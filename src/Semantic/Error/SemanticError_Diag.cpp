@@ -11,7 +11,7 @@
 
 namespace
 {
-    void errorMissingNamedParameter(SemanticContext*, const ErrorParam& errorParam)
+    void errorMissingNamedArgument(SemanticContext*, const ErrorParam& errorParam)
     {
         SWAG_ASSERT(errorParam.failedParam);
         SWAG_ASSERT(errorParam.badParamIdx >= 2);
@@ -51,7 +51,7 @@ namespace
         }
     }
 
-    void errorDuplicatedNamedParameter(SemanticContext*, const ErrorParam& errorParam)
+    void errorDuplicatedNamedArgument(SemanticContext*, const ErrorParam& errorParam)
     {
         SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtraPointer(ExtraPointerKind::IsNamed));
         const auto isNamed = errorParam.failedParam->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
@@ -136,7 +136,8 @@ namespace
         else
             err = new Diagnostic{errNode, errNode->token, formErr(Err0555, niceName.c_str())};
         errorParam.addError(err);
-        errorParam.addNote(Diagnostic::hereIs(overload));
+        const auto note = Diagnostic::hereIs(overload);
+        errorParam.addNote(note);
     }
 
     void errorTooManyParameters(SemanticContext*, const ErrorParam& errorParam)
@@ -457,8 +458,9 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     SWAG_ASSERT(declNode);
     if (declNode->is(AstNodeKind::FuncDecl))
     {
-        errorParam.destFuncDecl   = castAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
-        errorParam.destParameters = errorParam.destFuncDecl->parameters;
+        errorParam.destFuncDecl          = castAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
+        errorParam.destParameters        = errorParam.destFuncDecl->parameters;
+        errorParam.destGenericParameters = errorParam.destFuncDecl->genericParameters;
     }
     else if (declNode->is(AstNodeKind::AttrDecl))
     {
@@ -473,10 +475,11 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     }
     else if (declNode->is(AstNodeKind::StructDecl))
     {
-        errorParam.destStructDecl = castAst<AstStruct>(declNode, AstNodeKind::StructDecl);
+        errorParam.destStructDecl        = castAst<AstStruct>(declNode, AstNodeKind::StructDecl);
+        errorParam.destGenericParameters = errorParam.destStructDecl->genericParameters;
     }
 
-    // See if it would have worked with an explicit cast, to give a hint in the error message
+    // See if it had worked with an explicit cast, to give a hint in the error message
     switch (oneTry.symMatchContext.result)
     {
         case MatchResult::BadSignature:
@@ -502,19 +505,19 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
             errorWhereFailed(context, errorParam);
             break;
 
-        case MatchResult::MissingNamedParameter:
-            errorMissingNamedParameter(context, errorParam);
+        case MatchResult::MissingNamedArgument:
+            errorMissingNamedArgument(context, errorParam);
             break;
 
         case MatchResult::InvalidNamedArgument:
             errorInvalidNamedParameter(context, errorParam);
             break;
 
-        case MatchResult::DuplicatedNamedParameter:
-            errorDuplicatedNamedParameter(context, errorParam);
+        case MatchResult::DuplicatedNamedArgument:
+            errorDuplicatedNamedArgument(context, errorParam);
             break;
 
-        case MatchResult::MissingParameters:
+        case MatchResult::MissingArguments:
             errorMissingParameters(context, errorParam);
             break;
 

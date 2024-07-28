@@ -1935,7 +1935,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         const bool emptyParams = oneOverload.symMatchContext.parameters.empty() && !oneOverload.callParameters;
         if (!forcedFine && emptyParams && oneOverload.symMatchContext.result == MatchResult::Ok && symbol->is(SymbolKind::Function))
         {
-            oneOverload.symMatchContext.result = MatchResult::MissingParameters;
+            oneOverload.symMatchContext.result = MatchResult::MissingArguments;
         }
 
         // Function type without call parameters
