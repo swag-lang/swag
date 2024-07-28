@@ -708,8 +708,8 @@ void initErrors()
     SWAG_ERROR(Err0582, "missing test error                                $ expected at least one error, but none was raised");
     SWAG_ERROR(Err0583, "missing test warning                              $ expected at least one warning, but none was raised");
     SWAG_ERROR(Err0584, "missing variable type                             $ expected the type with [[:]] or an assignment with [[=]], found [[%s]] instead");
-    SWAG_ERROR(Err0585, "misused UFCS                                      $ the %s [[%s]] is not used as the first argument when calling [[%s]]");
-    SWAG_ERROR(Err0586, "misused UFCS                                      $ the hidden [[with]] variable [[%s]] is not used as the first argument when calling [[%s]]");
+    SWAG_ERROR(Err0585, "misused UFCS                                      $ the %s [[%s]] can't be used as the first argument when calling [[%s]]");
+    SWAG_ERROR(Err0586, "misused UFCS                                      $ the hidden [[with]] variable [[%s]] can't be used as the first argument when calling [[%s]]");
     SWAG_ERROR(Err0587, "non-contiguous [[#alias]]                         $ non-contiguous [[#alias]] in function [[%s]], missing [[#alias%u]]");
     SWAG_ERROR(Err0588, "non-transferable [[cvarargs]] type                $ a parameter with the type [[cvarargs]] can't be passed to another function");
     SWAG_ERROR(Err0589, "not a value                                       $ %s [[%s]] is not a valid value in this context");
@@ -1041,7 +1041,7 @@ void initErrors()
     SWAG_ERROR(Nte0151, "this argument has been named");
     SWAG_ERROR(Nte0152, "this can be converted too");
     SWAG_ERROR(Nte0153, "this function call can't be evaluated at compile-time");
-    SWAG_ERROR(Nte0154, "this function does not support UFCS of type [[%s]]");
+    SWAG_ERROR(Nte0154, "this function does not support being called with UFCS using a value of type [[%s]]");
     SWAG_ERROR(Nte0155, "this function does not support aliased names");
     SWAG_ERROR(Nte0156, "this function has the [[#[Swag.Compiler]]] attribute, which makes it compile-time only");
     SWAG_ERROR(Nte0157, "this has [[%s]] access (type is [[%s]])");

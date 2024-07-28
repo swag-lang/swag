@@ -117,6 +117,11 @@ Utf8 Naming::kindName(const SymbolOverload* overload)
     return kindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
 }
 
+Utf8 Naming::kindName(const SymbolOverload* overload, Utf8 &article)
+{
+    return kindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
+}
+
 Utf8 Naming::aKindName(const SymbolOverload* overload)
 {
     Utf8       article;
@@ -372,6 +377,9 @@ Utf8 Naming::kindName(const AstNode* node, Utf8& article)
             article = "an";
             return "instruction";
     }
+
+    if (node->resolvedSymbolOverload())
+        return kindName(node->resolvedSymbolOverload(), article);
 
     article = "a";
     return "node";
