@@ -238,7 +238,7 @@ void initErrors()
     SWAG_ERROR(Err0112, "forbidden call                                    $ the [[compileString]] function is not accessible in this context $ this compiler stage does not allow meta-programmation");
     SWAG_ERROR(Err0113, "forbidden copy                                    $ the copy of [[%s]] is disabled because the struct is marked with [[#[Swag.NoCopy]]]");
     SWAG_ERROR(Err0114, "generic symbol already defined                    $ the generic symbol [[%s]] has already been defined in a parent scope");
-    SWAG_ERROR(Err0115, "generic type mismatch                             $ expected [[%s]] for the generic %s, got [[%s]] instead");
+    SWAG_ERROR(Err0115, "generic type mismatch                             $ expected type [[%s]] for the generic %s, got [[%s]] instead");
     SWAG_ERROR(Err0116, "identifier expected                               $ expected a function call after [[%s]], found [[%s]] instead");
     SWAG_ERROR(Err0117, "immutable global variable                         $ the global variable [[%s]] is immutable at compile-time because it's initialized to 0");
     SWAG_ERROR(Err0118, "incomplete [[case]] expression list               $ expected another expression after [[,]] and before [[:]] $ [[,]] indicates a list of [[case]] expressions; provide the next expression or consider removing the [[,]]");
@@ -668,7 +668,7 @@ void initErrors()
     SWAG_ERROR(Err0542, "missing attribute                                 $ [[opVisit]] functions must have the [[#[Swag.Macro]]] attribute");
     SWAG_ERROR(Err0543, "missing attribute name                            $ expected an attribute name before [[(]]");
     SWAG_ERROR(Err0544, "missing catch error                               $ expected [[try]], [[catch]] or [[assume]] to deal with the errors of [[%s]]");
-    SWAG_ERROR(Err0545, "missing closing [[%s]]                            $ expected [[%s]] %s, found [[%s]] instead");
+    SWAG_ERROR(Err0545, "missing closing [[%s]]                            $ expected [[%s]] %s, got [[%s]] instead");
     SWAG_ERROR(Err0546, "missing constant type                             $ expected a type with [[:]] or an assignment with [[=]], found [[%s]] instead");
     SWAG_ERROR(Err0547, "missing default value                             $ the %s needs a default value as a preceding parameter has one");
     SWAG_ERROR(Err0548, "missing dereference index                         $ an index is missing to dereference the array [[%s]] of type [[%s]] $ consider adding the index between brackets");
@@ -771,7 +771,7 @@ void initErrors()
     SWAG_ERROR(Err0645, "type mismatch                                     $ casting from a type value ([[typeinfo]]) to a compile type ([[%s]]) is not allowed");
     SWAG_ERROR(Err0646, "type mismatch                                     $ casting from a value pointer [[%s]] to a block pointer [[%s]] is not allowed");
     SWAG_ERROR(Err0647, "type mismatch                                     $ casting from closure to lambda is not allowed");
-    SWAG_ERROR(Err0648, "type mismatch                                     $ expected [[%s]] for the UFCS argument, got [[%s]] instead");
+    SWAG_ERROR(Err0648, "type mismatch                                     $ expected type [[%s]] for the UFCS argument, got [[%s]] instead");
     SWAG_ERROR(Err0649, "type mismatch                                     $ expected type [[%s]], got [[%s]] instead");
     SWAG_ERROR(Err0650, "type mismatch                                     $ expected type [[*Swag.CVaList]], got [[%s]] instead");
     SWAG_ERROR(Err0651, "type mismatch                                     $ the [[%s]] assignment requires an expression of type [[%s]], got [[%s]] instead");

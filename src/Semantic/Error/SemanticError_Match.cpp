@@ -12,7 +12,7 @@
 namespace
 {
     bool cannotMatchIdentifier(SemanticContext*            context,
-                               const MatchResult           result,
+                               MatchResult                 result,
                                uint32_t                    paramIdx,
                                VectorNative<OneTryMatch*>& tryMatches,
                                AstNode*                    node,
@@ -70,14 +70,20 @@ namespace
                 note = Diagnostic::note(node, node->token, "invalid named argument");
                 break;
             case MatchResult::BadSignature:
+            {
+                const auto badType = tryResult[0]->symMatchContext.badSignatureInfos.badSignatureGivenType->getDisplayName();
                 if (tryResult[0]->ufcs && paramIdx == 0)
-                    note = Diagnostic::note(node, node->token, "the UFCS argument does not match");
+                    note = Diagnostic::note(node, node->token, form("the UFCS argument does not match (type is [[%s]])", badType.c_str()));
                 else
-                    note = Diagnostic::note(node, node->token, form("the %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
+                    note = Diagnostic::note(node, node->token, form("the %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).c_str(), badType.c_str()));
                 break;
+            }
             case MatchResult::BadGenericSignature:
-                note = Diagnostic::note(node, node->token, form("the generic %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
+            {
+                const auto badType = tryResult[0]->symMatchContext.badSignatureInfos.badSignatureGivenType->getDisplayName();
+                note = Diagnostic::note(node, node->token, form("the generic %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).c_str(), badType.c_str()));
                 break;
+            }
             default:
                 SWAG_ASSERT(false);
                 break;
