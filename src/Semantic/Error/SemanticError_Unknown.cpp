@@ -200,6 +200,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
 
     Vector<const Diagnostic*> notes;
 
+    // Special case with an intrinsic or a compiler function inside a scope
     if (identifierRef->startScope && identifier->token.text[0] == '@')
     {
         err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0757, identifier->token.c_str())};
@@ -239,5 +240,10 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     }
 
     commonErrorNotes(context, {}, identifier, err, notes);
+
+    // Additional notes
+    if(searchFor == IdentifierSearchFor::Type && identifier->token.text == "int")
+        notes.push_back(Diagnostic::note(formNte(Nte0204, "s32")));
+    
     return context->report(*err, notes);
 }

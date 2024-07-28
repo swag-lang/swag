@@ -14,7 +14,7 @@ Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const Vector<U
             Utf8 a1 = best[0];
             a0.makeLower();
             a1.makeLower();
-            if (a0 == a1)
+            if (a0 == a1 && searchName != best[0])
                 appendMsg = form("do you mean [[%s]]? (notice the capitalization)", best[0].c_str());
             else
                 appendMsg = form("do you mean [[%s]]?", best[0].c_str());
