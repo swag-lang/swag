@@ -290,9 +290,9 @@ namespace
         {
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             typeStruct->flattenUsingFields();
-            const auto msg = formErr(Err0653, bi.badSignatureRequestedType->getDisplayNameC(), typeStruct->flattenFields[errorParam.badParamIdx - 1]->name.c_str(),
-                                     bi.badSignatureGivenType->getDisplayNameC());
-            err            = new Diagnostic{callParamNode, msg};
+            const auto fieldName = typeStruct->flattenFields[errorParam.badParamIdx - 1]->name;
+            const auto msg       = formErr(Err0653, bi.badSignatureRequestedType->getDisplayNameC(), fieldName.c_str(), bi.badSignatureGivenType->getDisplayNameC());
+            err                  = new Diagnostic{callParamNode, msg};
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0 && bi.castErrorType == CastErrorType::Const)
         {

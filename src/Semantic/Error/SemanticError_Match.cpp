@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "Format/FormatAst.h"
+#include "Main/CommandLine.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Report/Log.h"
 #include "Semantic/Error/SemanticError.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Semantic.h"
@@ -81,7 +83,7 @@ namespace
             case MatchResult::BadGenericSignature:
             {
                 const auto badType = tryResult[0]->symMatchContext.badSignatureInfos.badSignatureGivenType->getDisplayName();
-                note = Diagnostic::note(node, node->token, form("the generic %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).c_str(), badType.c_str()));
+                note               = Diagnostic::note(node, node->token, form("the generic %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).c_str(), badType.c_str()));
                 break;
             }
             default:
@@ -101,15 +103,21 @@ namespace
             SemanticError::getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
             Diagnostic::tokenizeError(errs0[0]->textMsg, parts);
             SWAG_ASSERT(parts.size() > 1);
-            addMsg.push_back(parts[1]);
+
+            Vector<Utf8> split;
+            Utf8::tokenize(parts[1], ',', split);
+            addMsg.push_back(split[0]);
         }
 
-        // Determine if all "per function" errors are the same
+        // Determine if all "per overload" errors are the same
         bool allAddMsgAreEquals = true;
         for (uint32_t i = 1; i < maxOverloads; i++)
         {
             if (addMsg[i] != addMsg[0])
+            {
                 allAddMsgAreEquals = false;
+                break;
+            }
         }
 
         // Replace the generic error message with the most specific one, if all specifics are equals
@@ -150,7 +158,13 @@ namespace
             SyntaxColorContext cxt;
             n = doSyntaxColor(n, cxt);
 
-            note->preRemarks.push_back(form("overload %d: %s", overloadIndex++, n.c_str()));
+            Utf8 overTxt;
+            overTxt += Log::colorToVTS(LogColor::DarkYellow);
+            overTxt += form("overload %d", overloadIndex++);
+            overTxt += Log::colorToVTS(LogColor::White);
+            overTxt += ": ";
+            overTxt += n;
+            note->preRemarks.push_back(overTxt);
 
             // Additional (more precise) information in case of bad signature
             if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)

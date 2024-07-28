@@ -65,7 +65,7 @@ void Diagnostic::addNote(AstNode* node, const Token& token, const Utf8& msg)
 
 void Diagnostic::addNote(const Utf8& msg)
 {
-    if(msg.empty())
+    if (msg.empty())
         return;
     notes.push_back(note(msg));
 }
@@ -484,9 +484,8 @@ int Diagnostic::printRangesVerticalBars(Log* log, size_t maxMarks)
 
 void Diagnostic::printLastRangeHint(Log* log, int curColumn)
 {
-    const auto& r = ranges.back();
-
-    const auto leftColumn = curColumn;
+    const auto& r          = ranges.back();
+    const auto  leftColumn = curColumn;
 
     Vector<Utf8> tokens;
     const int    maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
@@ -495,6 +494,8 @@ void Diagnostic::printLastRangeHint(Log* log, int curColumn)
     for (uint32_t i = 0; i < tokens.size(); i++)
     {
         log->setColor(rangeNoteColor);
+        //setColorRanges(log, r.errorLevel);
+
         log->print(tokens[i]);
         if (i != tokens.size() - 1)
         {
