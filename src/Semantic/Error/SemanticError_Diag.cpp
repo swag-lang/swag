@@ -23,7 +23,7 @@ namespace
         errorParam.addNote(note);
     }
 
-    void errorInvalidNamedParameter(SemanticContext*, const ErrorParam& errorParam)
+    void errorInvalidNamedArgument(SemanticContext*, const ErrorParam& errorParam)
     {
         SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtraPointer(ExtraPointerKind::IsNamed));
 
@@ -65,7 +65,7 @@ namespace
         errorParam.addNote(note);
     }
 
-    void errorMissingParameters(SemanticContext*, const ErrorParam& errorParam)
+    void errorMissingArguments(SemanticContext*, const ErrorParam& errorParam)
     {
         auto node = errorParam.oneTry->callParameters;
         if (!node)
@@ -77,7 +77,7 @@ namespace
         errorParam.addNote(Diagnostic::hereIs(overload));
     }
 
-    void errorNotEnoughParameters(SemanticContext*, const ErrorParam& errorParam)
+    void errorNotEnoughArguments(SemanticContext*, const ErrorParam& errorParam)
     {
         const auto  node           = errorParam.errorNode;
         const auto  overload       = errorParam.oneTry->overload;
@@ -116,7 +116,7 @@ namespace
         }
     }
 
-    void errorNotEnoughGenericParameters(const SemanticContext* context, const ErrorParam& errorParam)
+    void errorNotEnoughGenericArguments(const SemanticContext* context, const ErrorParam& errorParam)
     {
         const auto overload          = errorParam.oneTry->overload;
         const Utf8 niceName          = "the " + Naming::kindName(overload);
@@ -140,7 +140,7 @@ namespace
         errorParam.addNote(note);
     }
 
-    void errorTooManyParameters(SemanticContext*, const ErrorParam& errorParam)
+    void errorTooManyArguments(SemanticContext*, const ErrorParam& errorParam)
     {
         const auto  overload = errorParam.oneTry->overload;
         const auto& match    = errorParam.oneTry->symMatchContext;
@@ -156,7 +156,7 @@ namespace
         errorParam.addNote(Diagnostic::hereIs(overload));
     }
 
-    void errorTooManyGenericParameters(const SemanticContext* context, const ErrorParam& errorParam)
+    void errorTooManyGenericArguments(const SemanticContext* context, const ErrorParam& errorParam)
     {
         const auto  overload          = errorParam.oneTry->overload;
         const auto  symbol            = errorParam.oneTry->overload->symbol;
@@ -180,8 +180,7 @@ namespace
         {
             if (genericParameters)
                 errNode = genericParameters->children[match.badSignatureInfos.badSignatureNum2];
-            const auto msg = formErr(Err0631, match.badSignatureInfos.badSignatureNum2, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str(),
-                                     match.badSignatureInfos.badSignatureNum1);
+            const auto msg = formErr(Err0631, match.badSignatureInfos.badSignatureNum2, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str(), match.badSignatureInfos.badSignatureNum1);
             err            = new Diagnostic{errNode, msg};
         }
 
@@ -510,7 +509,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
             break;
 
         case MatchResult::InvalidNamedArgument:
-            errorInvalidNamedParameter(context, errorParam);
+            errorInvalidNamedArgument(context, errorParam);
             break;
 
         case MatchResult::DuplicatedNamedArgument:
@@ -518,23 +517,23 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
             break;
 
         case MatchResult::MissingArguments:
-            errorMissingParameters(context, errorParam);
+            errorMissingArguments(context, errorParam);
             break;
 
         case MatchResult::NotEnoughArguments:
-            errorNotEnoughParameters(context, errorParam);
+            errorNotEnoughArguments(context, errorParam);
             break;
 
         case MatchResult::NotEnoughGenericArguments:
-            errorNotEnoughGenericParameters(context, errorParam);
+            errorNotEnoughGenericArguments(context, errorParam);
             break;
 
         case MatchResult::TooManyArguments:
-            errorTooManyParameters(context, errorParam);
+            errorTooManyArguments(context, errorParam);
             break;
 
         case MatchResult::TooManyGenericArguments:
-            errorTooManyGenericParameters(context, errorParam);
+            errorTooManyGenericArguments(context, errorParam);
             break;
 
         case MatchResult::MismatchGenericValue:
