@@ -52,7 +52,7 @@ namespace
         switch (result)
         {
             case MatchResult::WhereFailed:
-                note = Diagnostic::note(node, node->token, "all [[where]] have failed");
+                note = Diagnostic::note(node, node->token, "all [[where]] constraints have failed");
                 break;
             case MatchResult::TooManyArguments:
                 note = Diagnostic::note(node, node->token, "too many arguments");
