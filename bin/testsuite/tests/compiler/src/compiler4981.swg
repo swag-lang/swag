@@ -3,5 +3,5 @@
 
 #test
 {
-	@compilerwarning("toto$titi$tata", #location)
+	@compilerwarning("toto $ titi $ tata", #location)
 }

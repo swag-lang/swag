@@ -497,7 +497,7 @@ void initErrors()
     SWAG_ERROR(Err0371, "invalid return value assignment                   $ the call does not return a value");
     SWAG_ERROR(Err0372, "invalid runtime typeinfo                          $ failed to convert [[%s]] to a runtime typeinfo");
     SWAG_ERROR(Err0373, "invalid safety argument                           $ invalid safety value [[%s]] $ the acceptable safety values are [[boundcheck|overflow|math|switch|unreachable|any|bool|nan|sanity|null]]");
-    SWAG_ERROR(Err0374, "invalid slicing                                   $ can't slice [[%s]] because [[opSlice]] was not found in type [[%s]]");
+    SWAG_ERROR(Err0374, "invalid slicing                                   $ can't slice [[%s]] because [[opSlice]] can't be found in type [[%s]]");
     SWAG_ERROR(Err0375, "invalid slicing                                   $ slicing is invalid for type [[%s]]");
     SWAG_ERROR(Err0376, "invalid slicing                                   $ slicing is invalid on a multi-dimensional array");
     SWAG_ERROR(Err0377, "invalid struct initialization                     $ expected [[{}]] to initialize a struct, and not [[()]] which is reserved for function calls");
@@ -833,8 +833,8 @@ void initErrors()
     SWAG_ERROR(Err0707, "unknown dependency                                $ use of an unknown module dependency [[%s]]");
     SWAG_ERROR(Err0708, "unknown enum value                                $ the enumeration value [[%s]] can't be found in [[%s]]");
     SWAG_ERROR(Err0709, "unknown file                                      $ the [[#load]] file [[%s]] can't be located or accessed");
-    SWAG_ERROR(Err0710, "unknown file                                      $ the file named [[%s]] can't be located or accessed");
-    SWAG_ERROR(Err0711, "unknown foreign function                          $ the foreign function [[%s]] was not found");
+    SWAG_ERROR(Err0710, "unknown file                                      $ the file [[%s]] can't be found");
+    SWAG_ERROR(Err0711, "unknown foreign function                          $ the foreign function [[%s]] can't be found");
     SWAG_ERROR(Err0712, "unknown function                                  $ the function [[%s]] can't be found");
     SWAG_ERROR(Err0713, "unknown identifier                                $ the identifier [[%s]] can't be found in %s [[%s]]");
     SWAG_ERROR(Err0714, "unknown identifier                                $ the identifier [[%s]] can't be found in [[%s]] or in %s [[%s]]");
