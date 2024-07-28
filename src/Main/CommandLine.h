@@ -86,7 +86,7 @@ struct CommandLine
 
     bool     errorOneLine     = false;
     bool     errorAbsolute    = false;
-    uint32_t errorRightColumn = 80;
+    uint32_t errorRightColumn = 100;
     float    syntaxColorLum   = -1.0f;
 
     // Output

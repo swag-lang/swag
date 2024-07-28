@@ -1093,6 +1093,10 @@ void initErrors()
     SWAG_ERROR(Nte0203, "unexpected scope");
     SWAG_ERROR(Nte0204, "perhaps you intended to use this type: [[%s]]");
     SWAG_ERROR(Nte0205, "consider using [[var]] or [[const]] instead of [[let]] to declare a global variable or a constant");
+    SWAG_ERROR(Nte0206, "missing generic parameter [[%s]]");
+    SWAG_ERROR(Nte0207, nullptr);
+    SWAG_ERROR(Nte0208, nullptr);
+    SWAG_ERROR(Nte0209, nullptr);
 }
 
 Utf8 formErr(ErrorID idx, ...)

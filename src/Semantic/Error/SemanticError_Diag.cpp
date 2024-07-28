@@ -138,6 +138,15 @@ namespace
         errorParam.addError(err);
         const auto note = Diagnostic::hereIs(overload);
         errorParam.addNote(note);
+
+        if (genericParameters && errorParam.destGenericParameters && genericParameters->childCount() < errorParam.destGenericParameters->childCount())
+        {
+            for (uint32_t si = genericParameters->childCount(); si < errorParam.destGenericParameters->childCount(); si++)
+            {
+                const auto destParam = errorParam.destGenericParameters->children[si];
+                err->remarks.push_back(formNte(Nte0206, destParam->token.c_str()));
+            }
+        }
     }
 
     void errorTooManyArguments(SemanticContext*, const ErrorParam& errorParam)
