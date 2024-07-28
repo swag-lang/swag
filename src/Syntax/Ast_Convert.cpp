@@ -48,6 +48,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     varNode->type = typeNode;
 
     SWAG_ASSERT(typeStruct->declNode);
+    auto destStruct = castAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
     varNode->addAlternativeScope(typeStruct->declNode->ownerScope);
     typeNode->identifier = newIdentifierRef(typeStruct->declNode->token.text, nullptr, typeNode);
 
@@ -102,13 +103,17 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         const uint32_t maxCount = typeStruct->fields.size();
         if (countParams > maxCount)
         {
-            const Diagnostic err{fromNode->children[maxCount], formErr(Err0636, maxCount, countParams)};
+            Diagnostic err{fromNode->children[maxCount], formErr(Err0636, maxCount, countParams)};
+            const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
+            err.addNote(Diagnostic::note(errNode, toNte(Nte0078)));
             return context->report(err);
         }
 
         if (countParams < maxCount)
         {
-            const Diagnostic err{fromNode->lastChild(), formErr(Err0596, maxCount, countParams)};
+            Diagnostic err{fromNode->lastChild(), formErr(Err0596, maxCount, countParams)};
+            const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
+            err.addNote(Diagnostic::note(errNode, toNte(Nte0078)));
             return context->report(err);
         }
     }
@@ -191,10 +196,21 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 
     const auto countParams = typeList->subTypes.size();
     const auto maxCount    = toType->fields.size();
+    const auto destStruct  = castAst<AstStruct>(toType->declNode, AstNodeKind::StructDecl);
     if (countParams > maxCount)
-        return context->report({fromNode->firstChild()->children[maxCount], formErr(Err0636, maxCount, countParams)});
+    {
+        Diagnostic err{fromNode->firstChild()->children[maxCount], formErr(Err0636, maxCount, countParams)};
+        const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
+        err.addNote(Diagnostic::note(errNode, toNte(Nte0078)));
+        return context->report(err);
+    }
     if (countParams < maxCount)
-        return context->report({fromNode->firstChild()->lastChild(), formErr(Err0596, maxCount, countParams)});
+    {
+        Diagnostic err{fromNode->firstChild()->lastChild(), formErr(Err0596, maxCount, countParams)};
+        const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
+        err.addNote(Diagnostic::note(errNode, toNte(Nte0078)));
+        return context->report(err);
+    }
 
     // Each field of the toType struct must have a type given by the tuple.
     // But as that tuple can have named parameters, we need to find the correct type depending
