@@ -1113,6 +1113,8 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     // Closure capture arguments
     if (tokenParse.is(TokenId::KwdClosure))
     {
+        SWAG_CHECK(eatToken());
+        
         // captureParameters will be solved with capture block, that's why we do NOT put it as a child
         // of the function.
         const auto capture = Ast::newFuncCallParams(this, funcNode);
@@ -1121,7 +1123,6 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         capture->semanticFct        = Semantic::resolveCaptureFuncCallParams;
         funcNode->captureParameters = capture;
 
-        SWAG_CHECK(eatToken());
         SWAG_CHECK(doClosureCaptureBlock(typeInfo, capture));
     }
     else
