@@ -206,7 +206,7 @@ void initErrors()
     SWAG_ERROR(Err0080, "enum already defined                              $ the enum [[%s]] has already been defined");
     SWAG_ERROR(Err0081, "escaping stack frame                              $ you can't reference the %s [[%s]] because it's in a different stack frame");
     SWAG_ERROR(Err0082, "exception!                                        $ compile-time execution exception");
-    SWAG_ERROR(Err0083, "expected [[%s]]                                   $ expected [[%s]] %s, found [[%s]] instead");
+    SWAG_ERROR(Err0083, "expected [[%s]]                                   $ expected [[%s]] %s, got [[%s]] instead");
     SWAG_ERROR(Err0084, nullptr);
     SWAG_ERROR(Err0085, "failed [[%s]] constraint                          $ the %s [[%s]] can't be used because of a failed [[%s]] constraint");
     SWAG_ERROR(Err0086, "failed generic instantiation                      $ the variable creation failed due to the generic type [[%s]]");
@@ -228,9 +228,9 @@ void initErrors()
     SWAG_ERROR(Err0102, "forbidden [[opDrop]]                              $ unexpected [[opDrop]] special function for [[%s]] because the struct is marked with [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Err0103, "forbidden [[opPostCopy]]                          $ unexpected [[opPostCopy]] special function for struct [[%s]] because the struct is marked with [[#[Swag.NoCopy]]]");
     SWAG_ERROR(Err0104, "forbidden assign                                  $ can't assign because the left expression is immutable");
-    SWAG_ERROR(Err0105, "forbidden assign                                  $ can't assign from [[%s]] with type %s");
+    SWAG_ERROR(Err0105, "forbidden assign                                  $ can't assign from [[%s]] with type [[%s]]");
     SWAG_ERROR(Err0106, "forbidden assign                                  $ can't assign to [[%s]] because it's immutable");
-    SWAG_ERROR(Err0107, "forbidden assign                                  $ can't assign to [[%s]] with type %s");
+    SWAG_ERROR(Err0107, "forbidden assign                                  $ can't assign to [[%s]] with type [[%s]]");
     SWAG_ERROR(Err0108, "forbidden call                                    $ a direct call to [[opDrop]] is forbidden $ consider using [[@drop]] instead]]");
     SWAG_ERROR(Err0109, "forbidden call                                    $ a direct call to [[opInit]] is forbidden $ consider using [[@init]] instead]]");
     SWAG_ERROR(Err0110, "forbidden call                                    $ a direct call to [[opPostCopy]] is forbidden $ consider using [[@postcopy]] instead]]");
@@ -320,13 +320,13 @@ void initErrors()
     SWAG_ERROR(Err0194, "invalid argument                                  $ the [[%s]] count must be an integer, got [[%s]] instead");
     SWAG_ERROR(Err0195, "invalid argument                                  $ the intrinsic [[%s]] requires a block pointer as a first argument, got [[%s]] instead");
     SWAG_ERROR(Err0196, "invalid argument                                  $ the intrinsic [[%s]] requires a pointer as a first argument, got [[%s]] instead");
-    SWAG_ERROR(Err0197, "invalid argument                                  $ the intrinsic [[%s]] requires a block pointer as a first argument if the [[count]] is greater than one (type is [[%s]])");
-    SWAG_ERROR(Err0198, "invalid argument                                  $ the intrinsic [[%s]] requires a block pointer as a first argument if the [[count]] is variable (type is [[%s]])");
+    SWAG_ERROR(Err0197, "invalid argument                                  $ the intrinsic [[%s]] requires a block pointer as a first argument if the number of values is greater than one (type is [[%s]])");
+    SWAG_ERROR(Err0198, "invalid argument                                  $ the intrinsic [[%s]] requires a block pointer as a first argument if the number of values is variable (type is [[%s]])");
     SWAG_ERROR(Err0199, "invalid argument                                  $ the intrinsic [[%s]] requires a variable name as a first argument if the second argument is not specified");
     SWAG_ERROR(Err0200, "invalid argument                                  $ the intrinsic [[%s]] requires an argument of type [[string]], got [[%s]] instead");
     SWAG_ERROR(Err0201, "invalid argument                                  $ the intrinsic [[@gettag]] expects a default value of type [[%s]] as the last argument");
     SWAG_ERROR(Err0202, "invalid argument                                  $ the intrinsic [[@mkany]] can't have [[null]] as a first argument");
-    SWAG_ERROR(Err0203, "invalid argument                                  $ the intrinsic [[@mkany]] expects a type as a second argument, got [[%s]] instead");
+    SWAG_ERROR(Err0203, "invalid argument                                  $ the intrinsic [[@mkany]] expects a [[typeinfo]] as a second argument, got a value of type [[%s]] instead");
     SWAG_ERROR(Err0204, "invalid argument                                  $ the intrinsic [[@mkcallback]] requires a pointer to function as a first argument, got [[%s]] instead");
     SWAG_ERROR(Err0205, "invalid argument                                  $ the intrinsic [[@mkinterface]] requires a pointer or a struct as a first argument, got [[%s]] instead");
     SWAG_ERROR(Err0206, "invalid argument                                  $ the intrinsic [[@mkinterface]] requires a type as a second argument, got [[%s]] instead");
@@ -363,7 +363,7 @@ void initErrors()
     SWAG_ERROR(Err0237, "invalid character syntax                          $ characters should be delimited with back-ticks [[`]] and not quotes $ consider using the syntax [[`%s`]] instead");
     SWAG_ERROR(Err0238, "invalid comparison                                $ unexpected comparison of a slice and [[%s]] $ a slice comparison is only allowed with [[null]]");
     SWAG_ERROR(Err0239, "invalid comparison                                $ unexpected comparison of type [[any]] and [[%s]] $ an [[any]] comparison is only allowed with [[null]] or with a type");
-    SWAG_ERROR(Err0240, "invalid comparison                                $ unexpected comparison of an interface and [[%s]] $ an interface comparison is only allowed with [[null]], another interface or with a type");
+    SWAG_ERROR(Err0240, "invalid comparison                                $ unexpected comparison of an interface and [[%s]] $ an interface comparison is only allowed with [[null]], another interface or with a [[typeinfo]]");
     SWAG_ERROR(Err0241, "invalid comparison                                $ comparison operations on tuples are not supported");
     SWAG_ERROR(Err0242, "invalid comparison                                $ the comparison operation [[%s]] does not accept the type [[%s]] as the left argument");
     SWAG_ERROR(Err0243, "invalid comparison                                $ the comparison operation [[%s]] does not accept the type [[%s]] as the right argument");

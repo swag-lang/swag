@@ -200,6 +200,7 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node)
     }
 
     YIELD();
+
     if (!second->typeInfo->isPointerToTypeInfo())
         return context->report({second, formErr(Err0203, second->typeInfo->getDisplayNameC())});
 

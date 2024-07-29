@@ -97,7 +97,7 @@ bool Semantic::resolveWith(SemanticContext* context)
     {
         case TypeInfoKind::Pointer:
             if (!typeResolved->isPointerTo(TypeInfoKind::Struct))
-                return context->report({node, formErr(Err0173, typeResolved->getDisplayNameC())});
+                return context->report({context->node, formErr(Err0173, typeResolved->getDisplayNameC())});
             break;
 
         case TypeInfoKind::Namespace:
@@ -106,11 +106,11 @@ bool Semantic::resolveWith(SemanticContext* context)
 
         case TypeInfoKind::Enum:
             if (fromVar)
-                return context->report({node, formErr(Err0172, typeResolved->getDisplayNameC())});
+                return context->report({context->node, formErr(Err0172, typeResolved->getDisplayNameC())});
             break;
 
         default:
-            return context->report({node, formErr(Err0173, typeResolved->getDisplayNameC())});
+            return context->report({context->node, formErr(Err0173, typeResolved->getDisplayNameC())});
     }
 
     return true;
