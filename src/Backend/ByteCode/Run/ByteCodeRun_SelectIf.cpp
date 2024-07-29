@@ -120,7 +120,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, const ByteC
     const auto solved = reinterpret_cast<SymbolOverload*>(ip->d.pointer);
     if (!executeIsConstExprSI(context, ip))
     {
-        callInternalCompilerError(context, ip, formErr(Err0031, solved->symbol->name.c_str()));
+        callInternalCompilerError(context, ip, formErr(Err0039, solved->symbol->name.c_str()));
         return;
     }
 

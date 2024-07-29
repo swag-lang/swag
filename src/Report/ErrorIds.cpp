@@ -154,7 +154,7 @@ void initErrors()
     SWAG_ERROR(Err0028, "compile-time evaluation required                  $ can't transform the function return value (type is [[%s]]) to a constant array because [[opSlice]] returns an empty slice");
     SWAG_ERROR(Err0029, "compile-time evaluation required                  $ the type [[%s]] can't be converted to constant expression");
     SWAG_ERROR(Err0030, "compile-time evaluation required                  $ [[#include]] requited its filename argument to be evaluated at compile-time");
-    SWAG_ERROR(Err0031, "compile-time evaluation required                  $ [[%s]] can't be evaluated at compile-time");
+    SWAG_ERROR(Err0031, nullptr);
     SWAG_ERROR(Err0032, "compile-time evaluation required                  $ can't transform the function return slice (a slice of type [[%s]]) to a compile-time value");
     SWAG_ERROR(Err0033, "compile-time evaluation required                  $ the [[%s]] argument can't be evaluated at compile-time");
     SWAG_ERROR(Err0034, "compile-time evaluation required                  $ the [[%s]] message can't be evaluated at compile-time");
