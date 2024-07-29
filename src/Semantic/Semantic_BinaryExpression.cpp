@@ -600,13 +600,6 @@ bool Semantic::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, As
             break;
         default:
         {
-            if (rightTypeInfo->isNativeFloat())
-            {
-                Diagnostic err{node, node->token, formErr(Err0347, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
-                err.addNote(right, Diagnostic::isType(rightTypeInfo));
-                return context->report(err);
-            }
-
             Diagnostic err{node, node->token, formErr(Err0346, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
@@ -1030,6 +1023,13 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     if (rightTypeInfo->isTuple() || rightTypeInfo->isListTuple())
     {
         Diagnostic err{node, node->token, formErr(Err0350, node->token.c_str())};
+        err.addNote(right, Diagnostic::isType(rightTypeInfo));
+        return context->report(err);
+    }
+
+    if (node->token.is(TokenId::SymPercent) && rightTypeInfo->isNativeFloat())
+    {
+        Diagnostic err{node, node->token, formErr(Err0347, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
         err.addNote(right, Diagnostic::isType(rightTypeInfo));
         return context->report(err);
     }
