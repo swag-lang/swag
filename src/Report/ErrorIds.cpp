@@ -444,7 +444,7 @@ void initErrors()
     SWAG_ERROR(Err0318, "invalid literal                                   $ invalid number conversion for literal [[%I64u]]");
     SWAG_ERROR(Err0319, "invalid literal suffix                            $ the symbol [[%s]] is %s and can't be used as a literal type suffix");
     SWAG_ERROR(Err0320, "invalid literal suffix                            $ the type [[%s]] can't be used as a literal type suffix");
-    SWAG_ERROR(Err0321, "invalid literal suffix                            $ the type [[%s]] can't be used as suffix for a float literal $ only [[f32]] and [[f64]] are accepted");
+    SWAG_ERROR(Err0321, "invalid literal suffix                            $ the type [[%s]] can't be used as a suffix for a float literal $ only [[f32]] and [[f64]] are accepted");
     SWAG_ERROR(Err0322, "invalid location argument                         $ invalid [[location]] mode [[%s]] $ the acceptable values are [[swag]] and [[disk]]");
     SWAG_ERROR(Err0323, "invalid logical operator                          $ expected [[%s]] for the logical test, got [[%s]] instead");
     SWAG_ERROR(Err0324, "invalid match argument                            $ invalid argument [[%s]] for the attribute [[#[Swag.Match]]] $ the acceptable values for [[#[Swag.Match]]] are [[where]] and [[self]]");
@@ -1085,7 +1085,7 @@ void initErrors()
     SWAG_ERROR(Nte0195, "you might want to get the address of [[%s]] using [[&]]");
     SWAG_ERROR(Nte0196, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte0197, "the value could come from [[%s]]");
-    SWAG_ERROR(Nte0198, "this suffix wants the literal to be converted to [[%s]]");
+    SWAG_ERROR(Nte0198, "this suffix forces the literal to be converted to [[%s]]");
     SWAG_ERROR(Nte0199, "the identifier [[%s]] is %s and not a function or a struct");
     SWAG_ERROR(Nte0200, "expected an integer, a rune or a float value");
     SWAG_ERROR(Nte0201, "unexpected [[%s]]");
