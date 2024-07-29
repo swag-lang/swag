@@ -324,7 +324,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = valText.find(expr->computedValue()->text);
                     if (idx != -1)
                     {
-                        Diagnostic err{expr, formErr(Err0011, expr->computedValue()->text.c_str())};
+                        Diagnostic err{expr, formErr(Err0015, expr->computedValue()->text.c_str())};
                         err.addNote(valDef[idx], toNte(Nte0071));
                         return context->report(err);
                     }

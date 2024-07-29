@@ -27,12 +27,19 @@ bool CommandLine::check()
         return false;
     }
 
+    // Implicit
     if (rebuildAll)
         rebuild = true;
-
-    // Force verbose
     if (verboseCmdLine || verbosePath || verboseLink || verboseErrors || verboseConcreteTypes || verboseStages)
         verbose = true;
+    if (!verboseErrorsFilter.empty())
+        verboseErrors = true;
+#ifdef SWAG_STATS
+    if(!statsFreqOp0.empty() || !statsFreqOp1.empty())
+        statsFreq = true;
+    if(!profileFilter.empty())
+        profile = true;
+#endif
 
     // Check special backend SCBE
     if (backendGenType == BackendGenType::SCBE)

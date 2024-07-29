@@ -337,22 +337,29 @@ namespace OS
         // Get the error message, if any.
         const DWORD errorMessageID = GetLastError();
         if (errorMessageID == 0)
-            return std::string(); // No error message has been recorded
+            return Utf8{};
 
-        LPSTR        messageBuffer = nullptr;
-        const size_t size          = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                                                    nullptr,
-                                                    errorMessageID,
-                                                    MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
-                                                    reinterpret_cast<LPSTR>(&messageBuffer),
-                                                    0,
-                                                    nullptr);
+        DWORD langId = 0;
+        GetLocaleInfoEx(LOCALE_NAME_SYSTEM_DEFAULT, LOCALE_ILANGUAGE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPWSTR>(&langId), sizeof(langId) / sizeof(wchar_t));
+
+        LPSTR messageBuffer = nullptr;
+
+        const size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                                           nullptr,
+                                           errorMessageID,
+                                           langId,
+                                           reinterpret_cast<LPSTR>(&messageBuffer),
+                                           0,
+                                           nullptr);
+        if (!size)
+            return Utf8{};
 
         // Remove unwanted characters
-        char* pz = messageBuffer;
+        const auto pz = messageBuffer;
         for (uint32_t i = 0; i < size; i++)
         {
-            if (pz[i] < 32)
+            const uint8_t c = static_cast<uint8_t>(pz[i]);
+            if (c < 32)
                 pz[i] = 32;
         }
 
@@ -567,8 +574,7 @@ namespace OS
         DebugBreak();
     }
 
-    [[noreturn]]
-    void exit(int code)
+    [[noreturn]] void exit(int code)
     {
         ExitProcess(code);
     }

@@ -138,8 +138,8 @@ void initErrors()
     SWAG_ERROR(Err0012, "access modifier already defined                   $ invalid use of a [[%s]] access modifier after [[%s]]");
     SWAG_ERROR(Err0013, "ambiguous [[using]]                               $ unexpected [[using]] on two variables with the same type ([[%s]])");
     SWAG_ERROR(Err0014, "ambiguous cast                                    $ there are multiple [[using]] fields of type [[%s]] in [[%s]]");
-    SWAG_ERROR(Err0015, nullptr);
-    SWAG_ERROR(Err0016, "ambiguous symbol                                  $ ambiguous conversion of struct [[%s]] to interface [[%s]]");
+    SWAG_ERROR(Err0015, "[[switch]] value already defined                  $ the [[switch]] value [[\"%s\"]] has already been defined");
+    SWAG_ERROR(Err0016, "ambiguous interface conversion                    $ ambiguous conversion of struct [[%s]] to interface [[%s]]");
     SWAG_ERROR(Err0017, "ambiguous symbol                                  $ ambiguous resolution of the %s [[%s]]");
     SWAG_ERROR(Err0018, "ambiguous symbol                                  $ ambiguous resolution of the enum value [[%s]]");
     SWAG_ERROR(Err0019, "ambiguous symbol                                  $ ambiguous resolution of the generic %s [[%s]]");
@@ -148,7 +148,7 @@ void initErrors()
     SWAG_ERROR(Err0022, "ambiguous syntax                                  $ ambiguous declaration within lambda type parameters");
     SWAG_ERROR(Err0023, "argument already defined                          $ the argument [[%s]] has already been defined");
     SWAG_ERROR(Err0024, "bytecode stack overflow                           $ the required size exceeds the limit [[%s]] given by [[--stack-size]]");
-    SWAG_ERROR(Err0025, "can't resolve foreign call                        $ failed to load the module [[%s]] while resolving the foreign function [[%s]]: %s");
+    SWAG_ERROR(Err0025, "can't resolve foreign call                        $ failed to load the module [[%s]] while resolving the foreign function [[%s]]");
     SWAG_ERROR(Err0026, "capture size overflow                             $ the total requested size is [[%u]] bytes but the maximum authorized size is [[%u]]");
     SWAG_ERROR(Err0027, "compile-time evaluation failed                    $ can't transform the type [[%s]] to a constant array because [[opCount]] returns [[0]]");
     SWAG_ERROR(Err0028, "compile-time evaluation failed                    $ can't transform the type [[%s]] to a constant array because [[opSlice]] returns an empty slice");
