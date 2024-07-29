@@ -150,12 +150,12 @@ void initErrors()
     SWAG_ERROR(Err0024, "bytecode stack overflow                           $ the required size exceeds the limit [[%s]] given by [[--stack-size]]");
     SWAG_ERROR(Err0025, "can't resolve foreign call                        $ failed to load the module [[%s]] while resolving the foreign function [[%s]]");
     SWAG_ERROR(Err0026, "capture size overflow                             $ the total requested size is [[%u]] bytes but the maximum authorized size is [[%u]]");
-    SWAG_ERROR(Err0027, "compile-time evaluation failed                    $ can't transform the type [[%s]] to a constant array because [[opCount]] returns [[0]]");
-    SWAG_ERROR(Err0028, "compile-time evaluation failed                    $ can't transform the type [[%s]] to a constant array because [[opSlice]] returns an empty slice");
+    SWAG_ERROR(Err0027, "compile-time evaluation required                  $ can't transform the function return value (type is [[%s]]) to a constant array because [[opCount]] returns [[0]]");
+    SWAG_ERROR(Err0028, "compile-time evaluation required                  $ can't transform the function return value (type is [[%s]]) to a constant array because [[opSlice]] returns an empty slice");
     SWAG_ERROR(Err0029, "compile-time evaluation required                  $ the type [[%s]] can't be converted to constant expression");
     SWAG_ERROR(Err0030, "compile-time evaluation required                  $ [[#include]] requited its filename argument to be evaluated at compile-time");
     SWAG_ERROR(Err0031, "compile-time evaluation required                  $ [[%s]] can't be evaluated at compile-time");
-    SWAG_ERROR(Err0032, "compile-time evaluation required                  $ a slice of type [[%s]] can't be converted to a compile-time value");
+    SWAG_ERROR(Err0032, "compile-time evaluation required                  $ can't transform the function return slice (a slice of type [[%s]]) to a compile-time value");
     SWAG_ERROR(Err0033, "compile-time evaluation required                  $ the [[%s]] argument can't be evaluated at compile-time");
     SWAG_ERROR(Err0034, "compile-time evaluation required                  $ the [[%s]] message can't be evaluated at compile-time");
     SWAG_ERROR(Err0035, "compile-time evaluation required                  $ the [[case]] expression can't be evaluated at compile-time $ the [[switch]] is marked as [[#[Swag.Complete]]], so the expression must be constant");
