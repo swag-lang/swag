@@ -88,6 +88,8 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 
             if (startToken.is(TokenId::KwdLet))
                 note = toNte(Nte0205);
+            else if (startToken.is(TokenId::CompilerInclude))
+                note = toNte(Nte0207);
             else
                 note = toNte(Nte0167);
             break;
