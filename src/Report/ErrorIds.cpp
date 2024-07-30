@@ -743,7 +743,7 @@ void initErrors()
     SWAG_ERROR(Err0617, "reserved identifier                               $ the identifier [[%s]] starts with [[__]] $ identifiers starting with [[__]] are typically reserved for compiler-internal or system use");
     SWAG_ERROR(Err0618, "reserved namespace name                           $ the namespace [[%s]] is reserved by the compiler");
     SWAG_ERROR(Err0619, "reserved struct member name                       $ the struct member name [[%s]] is reserved by the compiler $ struct member names beginning with [[item]] are reserved by the language");
-    SWAG_ERROR(Err0620, "return type mismatch                              $ an [[#ast]] block must return a string, got [[%s]]");
+    SWAG_ERROR(Err0620, "return type mismatch                              $ an [[#ast]] block must return a string, got [[%s]] instead");
     SWAG_ERROR(Err0621, "return type mismatch                              $ the return type has already been deduced to be [[%s]], and here it's [[%s]]");
     SWAG_ERROR(Err0622, "return type mismatch                              $ the return type has already been deduced to be nothing, and here it's [[%s]]");
     SWAG_ERROR(Err0623, "return type mismatch                              $ unexpected return type [[%s]] for function [[%s]] $ consider adding a return type [[->%s]]");
