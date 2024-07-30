@@ -173,6 +173,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
+        hint = toNte(Nte0191);
         msg = toErr(Err0647);
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
