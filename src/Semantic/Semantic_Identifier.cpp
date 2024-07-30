@@ -805,6 +805,13 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
             const Diagnostic err{identifier, identifier->token, formErr(Err0289, identifier->token.c_str(), Naming::aKindName(symbol->kind).c_str())};
             return context->report(err, Diagnostic::hereIs(symbol->overloads[0]));
         }
+
+        if (symbolKind == SymbolKind::TypeAlias &&
+            !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_FORCE_ALIAS)->isStruct())
+        {
+            const Diagnostic err{identifier, identifier->token, formErr(Err0289, identifier->token.c_str(), Naming::aKindName(symbol->kind).c_str())};
+            return context->report(err, Diagnostic::hereIs(symbol->overloads[0]));
+        }
     }
 
     if (callParameters)
