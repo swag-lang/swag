@@ -122,20 +122,17 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         // Not everything is possible for types for attributes
         if (param->ownerScope->is(ScopeKind::Attribute))
         {
-            SWAG_VERIFY(!funcParam->typeInfo->isAny(), context->report({nodeParam, formErr(Err0393, funcParam->typeInfo->getDisplayNameC())}));
+            auto toTest = paramType;
+            if (paramType->isTypedVariadic())
+                toTest = castTypeInfo<TypeInfoVariadic>(paramType, TypeInfoKind::TypedVariadic)->rawType;
 
-            if (!funcParam->typeInfo->isNative() &&
-                !funcParam->typeInfo->isEnum() &&
-                !funcParam->typeInfo->isPointerToTypeInfo() &&
-                !funcParam->typeInfo->isTypedVariadic())
+            if ((!toTest->isNative() || toTest->isAny()) &&
+                !toTest->isEnum() &&
+                !toTest->isPointerToTypeInfo())
             {
-                return context->report({nodeParam, formErr(Err0393, funcParam->typeInfo->getDisplayNameC())});
-            }
-
-            if (funcParam->typeInfo->isTypedVariadic())
-            {
-                const auto typeVar = castTypeInfo<TypeInfoVariadic>(funcParam->typeInfo, TypeInfoKind::TypedVariadic);
-                SWAG_VERIFY(!typeVar->isAny(), context->report({paramNodeType, formErr(Err0393, funcParam->typeInfo->getDisplayNameC())}));
+                Diagnostic err{nodeParam->type ? nodeParam->type : nodeParam, formErr(Err0393, toTest->getDisplayNameC())};
+                err.addNote(toNte(Nte0208));
+                return context->report(err);
             }
         }
 

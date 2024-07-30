@@ -1,3 +1,3 @@
 #global testerror "Err0393"
 
-attr toto(x: *s32);
+attr toto(x: any...);

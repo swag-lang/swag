@@ -1095,7 +1095,7 @@ void initErrors()
     SWAG_ERROR(Nte0205, "consider using [[var]] or [[const]] instead of [[let]] to declare a global variable or a constant");
     SWAG_ERROR(Nte0206, "missing generic parameter [[%s]]");
     SWAG_ERROR(Nte0207, "the syntax in Swag is [[const Value = #include \"path\"]] to embed an external file in a constant byte array");
-    SWAG_ERROR(Nte0208, nullptr);
+    SWAG_ERROR(Nte0208, "only basic types, [[enum]] and [[typeinfo]] are accepted for attribute parameters");
     SWAG_ERROR(Nte0209, nullptr);
 }
 
