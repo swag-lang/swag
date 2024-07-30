@@ -746,7 +746,7 @@ void initErrors()
     SWAG_ERROR(Err0620, "return type mismatch                              $ an [[#ast]] block must return a string, got [[%s]] instead");
     SWAG_ERROR(Err0621, "return type mismatch                              $ the return type has already been deduced to be [[%s]], and here it's [[%s]]");
     SWAG_ERROR(Err0622, "return type mismatch                              $ the return type has already been deduced to be nothing, and here it's [[%s]]");
-    SWAG_ERROR(Err0623, "return type mismatch                              $ unexpected return type [[%s]] for function [[%s]] $ consider adding a return type [[->%s]]");
+    SWAG_ERROR(Err0623, "unexpected return value                           $ unexpected return value of type [[%s]] for function [[%s]]");
     SWAG_ERROR(Err0624, "semantic cycle                                    $ a cycle has been detected during the resolution of %s [[%s]]");
     SWAG_ERROR(Err0625, "standalone expression                             $ an expression value should be used $ consider removing it");
     SWAG_ERROR(Err0626, "symbol already defined                            $ the %s [[%s]] has already been defined %s");
@@ -881,7 +881,7 @@ void initErrors()
     SWAG_ERROR(Err0755, "misplaced move reference                          $ a move reference type [[&&]] is only valid when declaring a function parameter");
     SWAG_ERROR(Err0756, "invalid compiler instruction scope                $ compiler instructions do not belong to a specific scope");
     SWAG_ERROR(Err0757, "invalid instrinsic scope                          $ intrinsics do not belong to a specific scope");
-    SWAG_ERROR(Err0758, nullptr);
+    SWAG_ERROR(Err0758, "unexpected return value                           $ unexpected return value of type [[%s]]");
     SWAG_ERROR(Err0759, nullptr);
 
     /////////////////////////////////////////////////////////////////////
@@ -1096,7 +1096,7 @@ void initErrors()
     SWAG_ERROR(Nte0206, "missing generic parameter [[%s]]");
     SWAG_ERROR(Nte0207, "the syntax in Swag is [[const Value = #include \"path\"]] to embed an external file in a constant byte array");
     SWAG_ERROR(Nte0208, "only basic types, [[enum]] and [[typeinfo]] are accepted for attribute parameters");
-    SWAG_ERROR(Nte0209, nullptr);
+    SWAG_ERROR(Nte0209, "consider adding a return type [[->%s]] to the declaration");
 }
 
 Utf8 formErr(ErrorID idx, ...)

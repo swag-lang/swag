@@ -1009,13 +1009,13 @@ bool Parser::doFuncDeclBody(AstNode* node, AstNode** result, FuncDeclFlags flags
 {
     if (tokenParse.isNot(TokenId::SymLeftCurly))
     {
-        if(flags.has(FUNC_DECL_INTERFACE))
+        if (flags.has(FUNC_DECL_INTERFACE))
         {
             Diagnostic err{sourceFile, tokenParse.token, toErr(Err0754)};
             prepareExpectTokenError(err);
             return context->report(err);
         }
-        
+
         Diagnostic err{sourceFile, tokenParse.token, toErr(Err0752)};
         prepareExpectTokenError(err);
         return context->report(err);
@@ -1101,6 +1101,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
 
     const uint32_t id    = g_UniqueID.fetch_add(1);
     funcNode->token.text = "__lambda" + std::to_string(id);
+    funcNode->tokenName  = tokenParse.token;
 
     const auto typeInfo = makeType<TypeInfoFuncAttr>();
     typeInfo->declNode  = funcNode;
@@ -1114,7 +1115,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     if (tokenParse.is(TokenId::KwdClosure))
     {
         SWAG_CHECK(eatToken());
-        
+
         // captureParameters will be solved with capture block, that's why we do NOT put it as a child
         // of the function.
         const auto capture = Ast::newFuncCallParams(this, funcNode);

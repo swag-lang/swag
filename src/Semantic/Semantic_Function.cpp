@@ -1552,11 +1552,18 @@ bool Semantic::resolveReturn(SemanticContext* context)
     // (better error message than just letting the makeCompatibles do its job)
     if (returnType->isVoid() && !concreteType->isVoid())
     {
-        Diagnostic err{child, formErr(Err0623, concreteType->getDisplayNameC(), funcNode->token.c_str(), concreteType->name.c_str())};
+        Utf8 msg;
+        if (Parser::isGeneratedName(funcNode->token.text))
+            msg = formErr(Err0758, concreteType->getDisplayNameC());
+        else
+            msg = formErr(Err0623, concreteType->getDisplayNameC(), funcNode->token.c_str());
+
+        Diagnostic err{child, msg};
 
         if (node->hasOwnerInline() && !node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
             err.addNote(funcNode, funcNode->getTokenName(), formNte(Nte0118, node->ownerInline()->func->token.c_str(), funcNode->token.c_str()));
 
+        err.addNote(funcNode, funcNode->getTokenName(), formNte(Nte0209, concreteType->name.c_str()));
         return context->report(err);
     }
 
