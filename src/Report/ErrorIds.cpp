@@ -975,7 +975,7 @@ void initErrors()
     SWAG_ERROR(Nte0085, "if you want to retrieve the type of an expression, consider using [[@decltype]] instead");
     SWAG_ERROR(Nte0086, "if you were trying to compare values, you should use [[==]] instead");
     SWAG_ERROR(Nte0087, "structs with an [[internal]] access should not export their special functions");
-    SWAG_ERROR(Nte0088, "it seems like you're trying to access a nested property of [[%s]], but [[%s]] itself isn't a value");
+    SWAG_ERROR(Nte0088, "it seems like you're trying to access a nested member of [[%s]], but [[%s]] itself isn't a value");
     SWAG_ERROR(Nte0089, "missing %s of type [[%s]]");
     SWAG_ERROR(Nte0090, "missing parameter [[%s]] of type [[%s]]");
     SWAG_ERROR(Nte0091, "occurred during compile-time evaluation");
