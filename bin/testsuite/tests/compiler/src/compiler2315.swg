@@ -2,9 +2,9 @@
 #global testerror "Err0649"
 
 #[Swag.Strict]
-typealias T = s32
+typealias Alias = s32
 
-func toto(x: T)
+func toto(x: Alias)
 {
 }
 

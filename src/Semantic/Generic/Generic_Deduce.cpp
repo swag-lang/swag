@@ -4,6 +4,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Wmf/SourceFile.h"
 
 void Generic::deduceSubType(SymbolMatchContext&      context,
                             TypeInfo*                wantedTypeInfo,
@@ -322,6 +323,8 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
         canReg = false;
     else if (wantedTypeInfo->isPointer())
         canReg = false;
+    else if(wantedTypeInfo->hasFlag(TYPEINFO_GENERIC_COUNT))
+        canReg = false;
     else if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
         canReg = wantedTypeInfo->isSame(callTypeInfo, CAST_FLAG_CAST);
 
@@ -382,6 +385,9 @@ void Generic::deduceGenericTypes(SymbolMatchContext& context,
     wantedTypeInfos.push_back(wantedTypeInfo);
     callTypeInfos.push_back(callTypeInfo);
 
+    const auto orgWanted = wantedTypeInfo;
+    const auto orgCall   = callTypeInfo;
+
     while (!wantedTypeInfos.empty())
     {
         // When we have a reference, we match with the real type, as we do not want a generic function/struct to have a
@@ -395,5 +401,11 @@ void Generic::deduceGenericTypes(SymbolMatchContext& context,
         deduceSubType(context, wantedTypeInfo, callTypeInfo, wantedTypeInfos, callTypeInfos, callParameter);
         if (context.semContext->result != ContextResult::Done)
             return;
+    }
+
+    if (context.result == MatchResult::BadSignature)
+    {
+        context.badSignatureInfos.badSignatureGivenType     = orgCall;
+        context.badSignatureInfos.badSignatureRequestedType = orgWanted;
     }
 }
