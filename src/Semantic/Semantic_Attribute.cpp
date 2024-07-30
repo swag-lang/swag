@@ -174,7 +174,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     {
         const auto nakedName = Naming::kindName(checkNode);
         Diagnostic err{oneAttribute, formErr(Err0491, oneAttribute->token.c_str(), specificMsg)};
-        err.addNote(checkNode, checkNode->token, formNte(Nte0024, nakedName.c_str()));
+        err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0024, nakedName.c_str()));
         err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
         return context->report(err);
     }
@@ -188,7 +188,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     }
 
     Diagnostic err{oneAttribute, formErr(Err0492, oneAttribute->token.c_str(), nakedName.c_str())};
-    err.addNote(checkNode, checkNode->token, formNte(Nte0063, Naming::kindName(checkNode).c_str()));
+    err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0063, Naming::kindName(checkNode).c_str()));
     err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
     return context->report(err);
 }

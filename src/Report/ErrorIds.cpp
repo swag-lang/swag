@@ -528,7 +528,7 @@ void initErrors()
     SWAG_ERROR(Err0402, "invalid type declaration                          $ expected the array type after its dimensions, got [[%s]] instead");
     SWAG_ERROR(Err0403, "invalid type suffix                               $ a literal with a suffix (in that case [[%s]]) should only be used for a struct conversion");
     SWAG_ERROR(Err0404, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix, got [[%s]] instead");
-    SWAG_ERROR(Err0405, "invalid unicode value                             $ value [[0x%x is not a valid unicode code point, and can't be converted to UTF8");
+    SWAG_ERROR(Err0405, "invalid unicode value                             $ value [[0x%x]] is not a valid unicode code point, and can't be converted to UTF8");
     SWAG_ERROR(Err0406, "invalid variable list                             $ [[if]] does not support multiples variable declarations");
     SWAG_ERROR(Err0407, "invalid variable name                             $ a variable name ([[%s]]) can't start with [[@]], this is reserved for intrinsics $ only [[#mixin]] and [[#alias]] are possible in that case");
     SWAG_ERROR(Err0408, "invalid variable name                             $ expected a variable name, got [[%s]] instead");
@@ -550,7 +550,7 @@ void initErrors()
     SWAG_ERROR(Err0424, "literal overflow                                  $ can't negate number [[%d]] because [[%u]] is too large for type [[%s]]");
     SWAG_ERROR(Err0425, "literal overflow                                  $ the number [[%I64u]] is too large for type [[%s]]");
     SWAG_ERROR(Err0426, "mismatch access                                   $ %s [[%s]] can't be public because %s [[%s]] has [[%s]] access");
-    SWAG_ERROR(Err0427, "mismatch access                                   $ the special function [[%s]] can't be internal because the corresponding struct has [[public]] access");
+    SWAG_ERROR(Err0427, "mismatch access                                   $ the special function [[%s]] can't be [[internal]] because the corresponding struct has [[public]] access");
     SWAG_ERROR(Err0428, "mismatch access                                   $ the special function [[%s]] can't be public because the corresponding struct has [[internal]] access");
     SWAG_ERROR(Err0429, "mismatch enum types                               $ expected an enum of type [[%s]], got [[%s]] instead");
     SWAG_ERROR(Err0430, "mismatch function signature                       $ function [[%s]] has an incorrect signature for interface [[%s]]");
@@ -613,7 +613,7 @@ void initErrors()
     SWAG_ERROR(Err0487, "misplaced attribute                               $ the [[#[Swag.CalleeReturn]]] attribute can't be applied to function [[%s]] $ [[#[Swag.CalledReturn]]] can only be applied to a macro ([[#[Swag.Macro]]]) or a mixin ([[#[Swag.Mixin]]])");
     SWAG_ERROR(Err0488, "misplaced attribute                               $ the [[#[Swag.Complete]]] attribute can't be applied to function [[%s]] $ #[Swag.Complete] can only be applied to [[opAffect]] and [[opAffectLiteral]]");
     SWAG_ERROR(Err0489, "misplaced attribute                               $ the [[#[Swag.Discardable]]] attribute can only be applied to lambda variables, got [[%s]]");
-    SWAG_ERROR(Err0490, "misplaced attribute                               $ the [[#[Swag.Implicit]]] attribute can't be applied to function [[%s]] $ #[Swag.Implicit] can only be applied to [[opAffect]], [[opAffectLiteral]] and [[opCast]]");
+    SWAG_ERROR(Err0490, "misplaced attribute                               $ the [[#[Swag.Implicit]]] attribute can't be applied to function [[%s]] $ [[#[Swag.Implicit]]] can only be applied to [[opAffect]], [[opAffectLiteral]] and [[opCast]]");
     SWAG_ERROR(Err0491, "misplaced attribute                               $ the attribute [[%s]] can only be applied to %s");
     SWAG_ERROR(Err0492, "misplaced attribute                               $ the attribute [[%s]] can't be associated with %s");
     SWAG_ERROR(Err0493, "misplaced attribute                               $ the attribute [[%s]] can't be used in a [[#global]] statement $ the attribute does not have the [[Swag.AttributeUsage.File]] usage");
@@ -974,7 +974,7 @@ void initErrors()
     SWAG_ERROR(Nte0084, "if you want to declare a lambda type, use [[func(]] or [[closure(]]");
     SWAG_ERROR(Nte0085, "if you want to retrieve the type of an expression, consider using [[@decltype]] instead");
     SWAG_ERROR(Nte0086, "if you were trying to compare values, you should use [[==]] instead");
-    SWAG_ERROR(Nte0087, "internal structs should not export their special functions");
+    SWAG_ERROR(Nte0087, "structs with an [[internal]] access should not export their special functions");
     SWAG_ERROR(Nte0088, "it seems like you're trying to access a nested property of [[%s]], but [[%s]] itself isn't a value");
     SWAG_ERROR(Nte0089, "missing %s of type [[%s]]");
     SWAG_ERROR(Nte0090, "missing parameter [[%s]] of type [[%s]]");
