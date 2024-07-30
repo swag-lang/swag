@@ -90,6 +90,8 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
                 note = toNte(Nte0205);
             else if (startToken.is(TokenId::CompilerInclude))
                 note = toNte(Nte0207);
+            else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
+                note = toNte(Nte0040);
             else
                 note = toNte(Nte0167);
             break;
