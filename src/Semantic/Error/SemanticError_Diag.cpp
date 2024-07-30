@@ -373,7 +373,7 @@ namespace
             // Is there an explicit cast possible ?
             if (!bi.castErrorFlags.has(CAST_FLAG_EXPLICIT) || bi.castErrorFlags.has(CAST_FLAG_COERCE))
             {
-                if (bi.castErrorToType && bi.castErrorFromType)
+                if (bi.castErrorToType && bi.castErrorFromType && !bi.castErrorToType->isGeneric())
                 {
                     if (TypeManager::makeCompatibles(context, bi.castErrorToType, bi.castErrorFromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
                         errorParam.addNote(Diagnostic::note(callParamNode, formNte(Nte0030, bi.castErrorToType->getDisplayNameC())));
