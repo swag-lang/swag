@@ -767,7 +767,7 @@ void initErrors()
     SWAG_ERROR(Err0641, "type mismatch                                     $ a closure can't be assigned to a lambda type");
     SWAG_ERROR(Err0642, "type mismatch                                     $ can't initialize type [[%s]] from type [[%s]]");
     SWAG_ERROR(Err0643, "type mismatch                                     $ casting from [[%s]] to [[%s]] is not allowed");
-    SWAG_ERROR(Err0644, "type mismatch                                     $ casting from [[%s]] to pointer type is not allowed $ only conversion from type [[u64]] is accepted");
+    SWAG_ERROR(Err0644, "type mismatch                                     $ casting from [[%s]] to a pointer type is not allowed");
     SWAG_ERROR(Err0645, "type mismatch                                     $ casting from a type value ([[typeinfo]]) to a compile type ([[%s]]) is not allowed");
     SWAG_ERROR(Err0646, "type mismatch                                     $ casting from a value pointer [[%s]] to a block pointer [[%s]] is not allowed");
     SWAG_ERROR(Err0647, "type mismatch                                     $ casting from closure to lambda is not allowed");
@@ -1097,6 +1097,7 @@ void initErrors()
     SWAG_ERROR(Nte0207, "the syntax in Swag is [[const Value = #include \"path\"]] to embed an external file in a constant byte array");
     SWAG_ERROR(Nte0208, "only basic types, [[enum]] and [[typeinfo]] are accepted for attribute parameters");
     SWAG_ERROR(Nte0209, "consider adding a return type [[->%s]] to the declaration");
+    SWAG_ERROR(Nte0210, "the only type accepted for an integer to pointer conversion is [[u64]]");
 }
 
 Utf8 formErr(ErrorID idx, ...)

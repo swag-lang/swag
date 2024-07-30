@@ -163,6 +163,8 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
         msg = formErr(Err0644, fromType->getDisplayNameC());
+        if (!fromType->isNative(NativeTypeKind::U64))
+            hint = toNte(Nte0210);
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
