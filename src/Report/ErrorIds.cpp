@@ -576,7 +576,7 @@ void initErrors()
     SWAG_ERROR(Err0450, "misplaced [[%s]]                                  $ [[%s]] can only be used inside a function marked with [[throw]], but [[%s]] isn't");
     SWAG_ERROR(Err0451, "misplaced [[%s]]                                  $ [[%s]] can't be used in a struct special function ([[%s]])");
     SWAG_ERROR(Err0452, "misplaced [[@cvastart]]                           $ the intrinsic [[@cvastart]] can only be used in a function with a final parameter of type [[cvarargs]]");
-    SWAG_ERROR(Err0453, "misplaced [[@spread]]                             $ the intrinsic [[@spread]] can only be used as a function argument");
+    SWAG_ERROR(Err0453, "misplaced [[@spread]]                             $ the intrinsic [[@spread]] can only be used as a direct function argument");
     SWAG_ERROR(Err0454, "misplaced [[Self]] type                           $ the [[Self]] type is only valid within an [[impl]], [[struct]], or [[interface]] block");
     SWAG_ERROR(Err0455, "misplaced [[break]]                               $ [[break]] is only valid within a breakable block such as [[loop]], [[visit]], [[for]], etc.");
     SWAG_ERROR(Err0456, "misplaced [[code]]                                $ [[code]] is only valid within a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function");
@@ -882,7 +882,7 @@ void initErrors()
     SWAG_ERROR(Err0756, "invalid compiler instruction scope                $ compiler instructions do not belong to a specific scope");
     SWAG_ERROR(Err0757, "invalid instrinsic scope                          $ intrinsics do not belong to a specific scope");
     SWAG_ERROR(Err0758, "unexpected return value                           $ unexpected return value of type [[%s]]");
-    SWAG_ERROR(Err0759, nullptr);
+    SWAG_ERROR(Err0759, "misplaced cast                                    $ you can't cast a [[@spread]] result");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

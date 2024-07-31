@@ -659,7 +659,17 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
     const auto typeInfo = TypeManager::concreteType(expr->typeInfo);
     node->byteCodeFct   = ByteCodeGen::emitIntrinsicSpread;
 
-    SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->is(AstNodeKind::FuncCallParam), context->report({node, node->token, toErr(Err0453)}));
+    if (!node->parent || !node->parent->parent || node->parent->parent->isNot(AstNodeKind::FuncCallParam))
+    {
+        if (node->parent->parent->is(AstNodeKind::Cast) || node->parent->parent->is(AstNodeKind::AutoCast))
+        {
+            const Diagnostic err{node->parent->parent, node->parent->parent->token, toErr(Err0759)};
+            return context->report(err);
+        }
+
+        const Diagnostic err{node, node->token, toErr(Err0453)};
+        return context->report(err);
+    }
 
     if (typeInfo->isArray())
     {
