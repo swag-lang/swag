@@ -1,4 +1,4 @@
-#global testerror "Err0054"
+#global testerror "Err0052"
 
 func toString() -> [..] u8
 {

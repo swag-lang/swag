@@ -17,7 +17,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
 
     if (expression->hasSpecialFuncCall())
     {
-        Diagnostic err{expression, expression->token, formErr(Err0042, expression->typeInfo->getDisplayNameC())};
+        Diagnostic err{expression, expression->token, formErr(Err0040, expression->typeInfo->getDisplayNameC())};
         const auto userOp = expression->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
         err.hint          = formNte(Nte0144, userOp->symbol->name.c_str());
         err.addNote(note);
@@ -30,7 +30,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     else if (errMsg.length())
         message = errMsg;
     else
-        message = toErr(Err0038);
+        message = toErr(Err0036);
 
     Diagnostic err{expression, message};
 
@@ -312,7 +312,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 
     if (typeInfo->isStruct())
     {
-        Diagnostic err{node->token.sourceFile, node->token, toErr(Err0166)};
+        Diagnostic err{node->token.sourceFile, node->token, toErr(Err0162)};
         err.addNote(expression, Diagnostic::isType(typeInfo));
         return context->report(err);
     }
@@ -325,7 +325,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
         !typeInfo->isNativeFloat() &&
         !typeInfo->isLambdaClosure())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0165, typeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0163, typeInfo->getDisplayNameC())};
         err.addNote(expression, Diagnostic::isType(typeInfo));
         return context->report(err);
     }

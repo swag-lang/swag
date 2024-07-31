@@ -208,7 +208,7 @@ bool ByteCodeGen::checkEscapedThrow(ByteCodeGenContext* context)
         }
     }
 
-    const Diagnostic err{node, toErr(Err0058)};
+    const Diagnostic err{node, toErr(Err0056)};
     return context->report(err, Diagnostic::hereIs(defer));
 }
 

@@ -68,7 +68,7 @@ func addFiles(folder: string, extension: string)
 
     var ids: HashTable'(string, s32)
 
-    let lines = assume File.readAllLines("../src/errorids.cpp")
+    let lines = assume File.readAllLines("../src/report/errorids.cpp")
     visit l: lines
     {
         l = Latin1.trim(l)

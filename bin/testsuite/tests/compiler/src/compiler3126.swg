@@ -1,4 +1,4 @@
-#global testerror "Err0426"
+#global testerror "Err0427"
 const AA = 0
 
 public enum AA3126

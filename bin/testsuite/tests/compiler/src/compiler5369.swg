@@ -1,4 +1,4 @@
-//#global testerror "Err0735"
+//#global testerror "Err0716"
 struct Arr
 {
     x: [8] s32

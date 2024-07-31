@@ -1,7 +1,7 @@
 
 
 
-#global testerror "Err0717"
+#global testerror "Err0725"
 impl toto
 {
 }

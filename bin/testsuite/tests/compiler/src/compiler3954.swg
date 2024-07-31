@@ -1,4 +1,4 @@
-#global testerror "Err0566"
+#global testerror "Err0570"
 
 enum OT: const [..] s32
 {

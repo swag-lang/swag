@@ -1,4 +1,4 @@
-#global testerror "Err0188"
+#global testerror "Err0187"
 
 typealias A = [2] s32
 var x: A

@@ -1,4 +1,4 @@
-#global testerror "Err0400"
+#global testerror "Err0402"
 
 struct(A, B) Foozle
 {

@@ -1,4 +1,4 @@
-#global testerror "Err0058"
+#global testerror "Err0056"
 
 struct ErrToto{}
 struct ErrTata{}

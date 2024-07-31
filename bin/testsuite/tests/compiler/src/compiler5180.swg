@@ -1,4 +1,4 @@
-#global testerror "Err0069"
+#global testerror "Err0067"
 
 #[Swag.EnumFlags]
 enum BasicErrors0: u32

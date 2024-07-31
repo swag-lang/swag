@@ -2262,7 +2262,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
     // Too many fields
     else if (toTypeStruct->fields.size() < child->childCount())
     {
-        const auto       msg = formErr(Err0634, toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childCount());
+        const auto       msg = formErr(Err0639, toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childCount());
         const Diagnostic err{child->children[toTypeStruct->fields.count], msg};
         return context->report(err);
     }
@@ -2670,7 +2670,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
                     {
                         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                         {
-                            Diagnostic err{fromNode, formErr(Err0014, fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
+                            Diagnostic err{fromNode, formErr(Err0015, fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
                             err.addNote(foundField->declNode, toNte(Nte0061));
                             err.addNote(field->declNode, toNte(Nte0060));
                             return context->report(err);
@@ -3179,9 +3179,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!castFlags.has(CAST_FLAG_JUST_CHECK))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, formErr(Err0595, toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, formErr(Err0601, toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report({fromNode, formErr(Err0635, toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, formErr(Err0640, toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;

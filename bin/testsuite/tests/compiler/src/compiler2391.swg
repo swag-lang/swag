@@ -1,2 +1,2 @@
-#global testerror "Err0727"
+#global testerror "Err0735"
 var b: A

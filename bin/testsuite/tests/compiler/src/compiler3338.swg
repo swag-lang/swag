@@ -1,4 +1,4 @@
-#global testerror "Err0717"
+#global testerror "Err0725"
 
 var GlobalVar = 0
 

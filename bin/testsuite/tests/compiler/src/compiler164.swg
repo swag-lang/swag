@@ -1,7 +1,7 @@
 
 #global testpass syntax;
 
-#global testerror "Err0079";
+#global testerror "Err0575";
 namespace A.
 {
 }

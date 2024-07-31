@@ -1,4 +1,4 @@
-#global testerror "Err0293"
+#global testerror "Err0294"
 using Core
 
 interface I

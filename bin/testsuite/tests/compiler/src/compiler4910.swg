@@ -1,3 +1,3 @@
-#global testerror "Err0526"
+#global testerror "Err0530"
 
 #placeholder 0

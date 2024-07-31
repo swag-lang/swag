@@ -1,5 +1,5 @@
 //#global skip
-#global testerror "Err0399"
+#global testerror "Err0401"
 
 typealias A = [2] s32
 var x: A = [5, 10]

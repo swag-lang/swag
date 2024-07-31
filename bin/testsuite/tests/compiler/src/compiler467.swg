@@ -2,7 +2,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror "Err0643"
+#global testerror "Err0648"
 #test
 {
 	var a: func() = &F;

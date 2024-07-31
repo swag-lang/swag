@@ -1,4 +1,4 @@
-#global testerror "Err0034"
+#global testerror "Err0032"
 
 func titi()->string => "tata"
 

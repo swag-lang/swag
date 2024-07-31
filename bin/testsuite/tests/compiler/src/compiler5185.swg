@@ -1,4 +1,4 @@
-#global testerror "Err0069"
+#global testerror "Err0067"
 
 #[Swag.NoDuplicate]
 enum BasicErrors2

@@ -1,4 +1,4 @@
-#global testerror "Err0028"
+#global testerror "Err0030"
 struct AA
 {
     vv: s32 = 666

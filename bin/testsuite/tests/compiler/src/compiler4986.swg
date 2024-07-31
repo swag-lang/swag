@@ -1,4 +1,4 @@
-#global testerror "Err0128"
+#global testerror "Err0125"
 #test
 {
     a = a[x, ]

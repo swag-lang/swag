@@ -1,4 +1,4 @@
-#global testerror "Err0057"
+#global testerror "Err0055"
 #test
 {
     //const R = 100

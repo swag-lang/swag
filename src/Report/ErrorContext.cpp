@@ -197,5 +197,5 @@ bool ErrorContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, u
 {
     if (value <= maxValue)
         return true;
-    return report({node, formErr(Err0046, typeOverflow, maxValue)});
+    return report({node, formErr(Err0044, typeOverflow, maxValue)});
 }

@@ -23,7 +23,7 @@ void SemanticError::errorWhereFailed(SemanticContext*, const ErrorParam& errorPa
         whereExpr = errorParam.destStructDecl->whereExpression;
     }
 
-    const auto msg = formErr(Err0085, whereExpr->token.c_str(), Naming::kindName(node).c_str(), node->token.c_str(), whereExpr->token.c_str());
+    const auto msg = formErr(Err0083, whereExpr->token.c_str(), Naming::kindName(node).c_str(), node->token.c_str(), whereExpr->token.c_str());
     const auto err = new Diagnostic{errorParam.errorNode, errorParam.errorNode->getTokenName(), msg};
     errorParam.addError(err);
     errorParam.addNote(Diagnostic::hereIs(whereExpr, formNte(Nte0075, whereExpr->token.c_str())));
@@ -83,7 +83,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
 
 bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
 {
-    Utf8 text = formErr(Err0351, node->token.c_str(), typeInfo->getDisplayNameC());
+    Utf8 text = formErr(Err0352, node->token.c_str(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";
@@ -108,7 +108,7 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
     if (thisKind != otherKind)
         as = form("as %s", Naming::aKindName(otherKind).c_str());
 
-    Diagnostic err{sourceFile, token, formErr(Err0626, Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
+    Diagnostic err{sourceFile, token, formErr(Err0631, Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
     err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0071));
     return context->report(err);
 }

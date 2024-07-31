@@ -1,4 +1,4 @@
-#global testerror "Err0340"
+#global testerror "Err0345"
 #global export
 
 #[Swag.Opaque]

@@ -1,4 +1,4 @@
-#global testerror "Err0512"
+#global testerror "Err0516"
 /*func toto(x: cvarargs)
 {
 }*/

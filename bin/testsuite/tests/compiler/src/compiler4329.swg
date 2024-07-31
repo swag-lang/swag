@@ -1,4 +1,4 @@
-#global testerror "Err0527"
+#global testerror "Err0531"
 
 typealias A = s32
 #test
