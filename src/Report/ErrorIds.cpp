@@ -809,7 +809,7 @@ void initErrors()
     SWAG_ERROR(Err0683, "unexpected generic arguments                      $ unexpected generic arguments after %s");
     SWAG_ERROR(Err0684, "unexpected generic function                       $ the function [[%s]] appears to be generic despite the [[#[Swag.NotGeneric]]] attribute");
     SWAG_ERROR(Err0685, "unexpected generic parameters                     $ a function interface can't have generic parameters");
-    SWAG_ERROR(Err0686, "unexpected generic arguments                      $ expected an non-generic name without generic parameters");
+    SWAG_ERROR(Err0686, "unexpected generic arguments                      $ expected a name without generic arguments");
     SWAG_ERROR(Err0687, "unexpected generic parameters                     $ the function [[%s]] can't have generic parameters because of the [[#[Swag.NotGeneric]]] attribute");
     SWAG_ERROR(Err0688, "unexpected generic parameters                     $ the special function [[%s]] can't have generic parameters");
     SWAG_ERROR(Err0689, "unexpected identifier                             $ a global identifier like [[%s]] can't be used at the file level");
@@ -1099,7 +1099,7 @@ void initErrors()
     SWAG_ERROR(Nte0209, "consider adding a return type [[->%s]] to the declaration");
     SWAG_ERROR(Nte0210, "the only type accepted for an integer to pointer conversion is [[u64]]");
     SWAG_ERROR(Nte0211, "here is the start of the body");
-    SWAG_ERROR(Nte0212, nullptr);
+    SWAG_ERROR(Nte0212, "the function is supposed to be part of the interface because of [[impl]]");
     SWAG_ERROR(Nte0213, nullptr);
     SWAG_ERROR(Nte0214, nullptr);
     SWAG_ERROR(Nte0215, nullptr);
