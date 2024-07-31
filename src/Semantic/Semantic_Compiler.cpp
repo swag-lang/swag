@@ -226,11 +226,8 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     execParams.specReturnOpPostMove = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
                     context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                     SWAG_ASSERT(execParams.specReturnOpPostMove);
-
-                    {
-                        ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpPostMove->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
-                        YIELD();
-                    }
+                    ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpPostMove->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                    YIELD();
                 }
 
                 // opDrop
@@ -247,7 +244,6 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     execParams.specReturnOpDrop = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
                     context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                     SWAG_ASSERT(execParams.specReturnOpDrop);
-
                     ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                     YIELD();
                 }
