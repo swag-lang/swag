@@ -205,7 +205,7 @@ void initErrors()
     SWAG_ERROR(Err0079, "exception!                                        $ compile-time execution exception");
     SWAG_ERROR(Err0080, "expected [[%s]]                                   $ expected [[%s]] %s, got [[%s]] instead");
     SWAG_ERROR(Err0081, "expected closing [[;]]                            $ the interface member definition should be closed with [[;]] $ you can instead define a function body if you want to declare a default implementation");
-    SWAG_ERROR(Err0082, "expected function body                            $ the function body starting with [[{]], [[=]] or [[=>]] is expected");
+    SWAG_ERROR(Err0082, "expected function body                            $ a function body starting with [[{]], [[=]] or [[=>]] is expected");
     SWAG_ERROR(Err0083, "failed [[%s]] constraint                          $ the %s [[%s]] can't be used because of a failed [[%s]] constraint");
     SWAG_ERROR(Err0084, "failed generic instantiation                      $ the variable creation failed due to the generic type [[%s]]");
     SWAG_ERROR(Err0085, "failed semantic                                   $ can't resolve this");
