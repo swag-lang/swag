@@ -139,12 +139,7 @@ bool Tokenizer::doFloatLiteral(TokenParse& token, uint32_t c)
         // Digit separator
         if (SWAG_IS_NUM_SEP(c))
         {
-            if (!acceptSep)
-            {
-                SWAG_CHECK(rank != 0 || error(token, toErr(Err0339)));
-                SWAG_CHECK(rank == 0 || error(token, toErr(Err0340)));
-            }
-
+            SWAG_CHECK(acceptSep || rank == 0 || error(token, toErr(Err0340)));
             acceptSep = false;
             c         = peekChar(offset);
             continue;
@@ -183,12 +178,7 @@ bool Tokenizer::doIntLiteral(TokenParse& token, uint32_t c)
         // Digit separator
         if (SWAG_IS_NUM_SEP(c))
         {
-            if (!acceptSep)
-            {
-                SWAG_CHECK(rank != 0 || error(token, toErr(Err0339)));
-                SWAG_CHECK(rank == 0 || error(token, toErr(Err0340)));
-            }
-
+            SWAG_CHECK(acceptSep || rank == 0 || error(token, toErr(Err0340)));
             acceptSep = false;
             c         = peekChar(offset);
             continue;

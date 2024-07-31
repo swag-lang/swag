@@ -462,7 +462,7 @@ void initErrors()
     SWAG_ERROR(Err0336, "invalid negation                                  $ can't negate an unsigned type [[%s]]");
     SWAG_ERROR(Err0337, "invalid negation                                  $ can't negate type [[%s]]");
     SWAG_ERROR(Err0338, "invalid number format                             $ a number should not end with a digit separator [[_]]");
-    SWAG_ERROR(Err0339, "invalid number format                             $ a number should not start with a digit separator [[_]]");
+    SWAG_ERROR(Err0339, nullptr);
     SWAG_ERROR(Err0340, "invalid number format                             $ consecutive digit separators [[_]] are not allowed");
     SWAG_ERROR(Err0341, "invalid number format                             $ this binary number has too many digits to fit within a 64-bit representation");
     SWAG_ERROR(Err0342, "invalid number format                             $ this hexadecimal number has too many digits to fit within a 64-bit representation");
