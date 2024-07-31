@@ -776,8 +776,6 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     waitOverloadCompleted(context->baseJob, overload);
     YIELD();
 
-    if (identifier->token.is(g_LangSpec->name_opInit))
-        return context->report({identifier, identifier->token, toErr(Err0106)});
     if (identifier->token.is(g_LangSpec->name_opDrop))
         return context->report({identifier, identifier->token, toErr(Err0105)});
     if (identifier->token.is(g_LangSpec->name_opPostCopy))

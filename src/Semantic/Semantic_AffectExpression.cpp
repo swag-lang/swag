@@ -349,30 +349,6 @@ bool Semantic::resolveAffect(SemanticContext* context)
     {
         case TokenId::SymEqual:
         {
-            if (!leftTypeInfo->isNative() &&
-                !leftTypeInfo->isPointer() &&
-                !leftTypeInfo->isSlice() &&
-                !leftTypeInfo->isLambdaClosure() &&
-                !leftTypeInfo->isListTuple() &&
-                !leftTypeInfo->isListArray() &&
-                !leftTypeInfo->isStruct() &&
-                !leftTypeInfo->isInterface() &&
-                !leftTypeInfo->isArray() &&
-                !leftTypeInfo->isAlias() &&
-                !leftTypeInfo->isEnum())
-                return context->report({left, formErr(Err0102, Naming::kindName(leftTypeInfo).c_str(), leftTypeInfo->getDisplayNameC())});
-            if (!rightTypeInfo->isNative() &&
-                !rightTypeInfo->isPointer() &&
-                !rightTypeInfo->isSlice() &&
-                !rightTypeInfo->isLambdaClosure() &&
-                !rightTypeInfo->isListTuple() &&
-                !rightTypeInfo->isListArray() &&
-                !rightTypeInfo->isStruct() &&
-                !rightTypeInfo->isInterface() &&
-                !rightTypeInfo->isArray() &&
-                !rightTypeInfo->isAlias())
-                return context->report({right, formErr(Err0104, Naming::aKindName(rightTypeInfo).c_str(), rightTypeInfo->getDisplayNameC())});
-
             if (forStruct)
             {
                 if (arrayNode)

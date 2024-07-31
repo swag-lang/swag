@@ -225,11 +225,11 @@ void initErrors()
     SWAG_ERROR(Err0099, "forbidden [[opDrop]]                              $ unexpected [[opDrop]] special function for [[%s]] because the struct is marked with [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Err0100, "forbidden [[opPostCopy]]                          $ unexpected [[opPostCopy]] special function for struct [[%s]] because the struct is marked with [[#[Swag.NoCopy]]]");
     SWAG_ERROR(Err0101, "forbidden assign                                  $ can't assign because the left expression is immutable");
-    SWAG_ERROR(Err0102, "forbidden assign                                  $ can't assign from [[%s]] with type [[%s]]");
+    SWAG_ERROR(Err0102, nullptr);
     SWAG_ERROR(Err0103, "forbidden assign                                  $ can't assign to [[%s]] because it's immutable");
-    SWAG_ERROR(Err0104, "forbidden assign                                  $ can't assign to [[%s]] with type [[%s]]");
+    SWAG_ERROR(Err0104, nullptr);
     SWAG_ERROR(Err0105, "forbidden call                                    $ a direct call to [[opDrop]] is forbidden $ consider using [[@drop]] instead]]");
-    SWAG_ERROR(Err0106, "forbidden call                                    $ a direct call to [[opInit]] is forbidden $ consider using [[@init]] instead]]");
+    SWAG_ERROR(Err0106, nullptr);
     SWAG_ERROR(Err0107, "forbidden call                                    $ a direct call to [[opPostCopy]] is forbidden $ consider using [[@postcopy]] instead]]");
     SWAG_ERROR(Err0108, "forbidden call                                    $ a direct call to [[opPostMove]] is forbidden $ consider using [[@postmove]] instead]]");
     SWAG_ERROR(Err0109, "forbidden call                                    $ the [[compileString]] function is not accessible in this context $ this compiler stage does not allow meta-programmation");
@@ -295,7 +295,7 @@ void initErrors()
     SWAG_ERROR(Err0169, "invalid [[where]] mode                            $ [[%s]] is not a valid [[where]] mode $ the only valid mode is [[call]]");
     SWAG_ERROR(Err0170, "invalid [[with]]                                  $ [[with]] is invalid on an enum variable (type is [[%s]])");
     SWAG_ERROR(Err0171, "invalid [[with]]                                  $ [[with]] is invalid on type [[%s]] $ expected a namespace, an enum, a struct or a pointer to struct");
-    SWAG_ERROR(Err0172, "invalid [[with]] expression                       $ expected a [[with]] valid expression");
+    SWAG_ERROR(Err0172, "invalid [[with]] expression                       $ expected a [[with]] valid expression $ expected an identifier or a variable declaration");
     SWAG_ERROR(Err0173, "invalid access from runtime                       $ the compile-time %s [[%s]] can't be accessed from runtime function [[%s]]");
     SWAG_ERROR(Err0174, "invalid access from runtime                       $ the compile-time function [[%s]] can't be accessed from runtime function [[%s]]");
     SWAG_ERROR(Err0175, "invalid access from runtime                       $ this compile-time constant can't be accessed from runtime");

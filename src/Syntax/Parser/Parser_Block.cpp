@@ -5,6 +5,7 @@
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Naming.h"
 #include "Syntax/Parser/Parser_Push.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
@@ -448,7 +449,10 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         if (id->isNot(AstNodeKind::IdentifierRef) &&
             id->isNot(AstNodeKind::VarDecl) &&
             id->isNot(AstNodeKind::AffectOp))
-            return error(node->token, toErr(Err0172));
+        {
+            Diagnostic err{id, formErr(Err0172, Naming::aKindName(id).c_str())};
+            return context->report(err);
+        }
 
         id->allocateExtension(ExtensionKind::Semantic);
         if (id->is(AstNodeKind::IdentifierRef))
