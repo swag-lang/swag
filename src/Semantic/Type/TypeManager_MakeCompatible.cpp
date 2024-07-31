@@ -190,7 +190,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         return castToFromAny(context, toType, fromType, toNode, fromNode, castFlags);
 
     // Variadic
-    if (fromType->isTypedVariadic())
+    if (fromType->isTypedVariadic() && toType->isTypedVariadic())
         fromType = castTypeInfo<TypeInfoVariadic>(fromType)->rawType;
     if (toType->isTypedVariadic())
         toType = castTypeInfo<TypeInfoVariadic>(toType)->rawType;

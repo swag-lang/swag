@@ -781,7 +781,7 @@ void initErrors()
     SWAG_ERROR(Err0655, "unauthorized function overload                    $ a function with the same name [[%s]] has already been declared $ if you want to declare an overload, mark all functions with [[#[Swag.Overload]]]");
     SWAG_ERROR(Err0656, "unexpected [[#elif]]                              $ [[#elif]] found without a preceding [[#if]] directive");
     SWAG_ERROR(Err0657, "unexpected [[#else]]                              $ [[#else]] found without a preceding [[#if]] or [[#elif]] directive");
-    SWAG_ERROR(Err0658, "unexpected [[where]]                              $ a [[where]] directive is not allowed on special function [[%s]] $ [[where]] and [[check]] are not valid for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
+    SWAG_ERROR(Err0658, "unexpected [[where]]                              $ a [[where]] constraint is not allowed on special function [[%s]] $ [[where]] constraints are not supported for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
     SWAG_ERROR(Err0659, "unexpected [[where,call)]] for struct             $ [[where,call)]] is not allowed for a struct, but is only valid for functions $ consider using a single [[where]] instead");
     SWAG_ERROR(Err0660, "unexpected [[)]]                                  $ symbol [[)]] found without a preceding [[(]]");
     SWAG_ERROR(Err0661, "unexpected [[]]]                                  $ symbol [[]]] found without a preceding [[[]]");
