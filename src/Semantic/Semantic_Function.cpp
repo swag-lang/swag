@@ -604,18 +604,18 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         {
-            if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
-            {
-                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0224, funcNode->getDisplayNameC())};
-                const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Macro);
-                err.addNote(attr, formNte(Nte0063, "attribute"));
-                return context->report(err);
-            }
-
             if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
             {
                 Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0225, funcNode->getDisplayNameC())};
                 const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Mixin);
+                err.addNote(attr, formNte(Nte0063, "attribute"));
+                return context->report(err);
+            }
+
+            if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
+            {
+                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0224, funcNode->getDisplayNameC())};
+                const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Macro);
                 err.addNote(attr, formNte(Nte0063, "attribute"));
                 return context->report(err);
             }
