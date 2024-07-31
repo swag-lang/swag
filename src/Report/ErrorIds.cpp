@@ -403,7 +403,7 @@ void initErrors()
     SWAG_ERROR(Err0277, "invalid escape format                             $ the [[\\U]] escape code requires 8 hexadecimal digits");
     SWAG_ERROR(Err0278, "invalid escape format                             $ the [[\\u]] escape code requires 4 hexadecimal digits");
     SWAG_ERROR(Err0279, "invalid escape format                             $ the [[\\x]] escape code requires 2 hexadecimal digits");
-    SWAG_ERROR(Err0280, "invalid expand                                    $ can't expand [[%s]] in global scope");
+    SWAG_ERROR(Err0280, nullptr);
     SWAG_ERROR(Err0281, "invalid export argument                           $ invalid argument [[%s]] for the attribute [[#[Swag.ExportType]]] $ the acceptable values for [[#[Swag.ExportType]]] are [[methods]] and [[nozero]]");
     SWAG_ERROR(Err0282, "invalid expression                                $ expected an expression after %s, got [[%s]] instead");
     SWAG_ERROR(Err0283, "invalid expression                                $ expected an expression after operator [[%s]], got [[%s]] instead $ consider adding [[(]] after [[%s]] to start an expression");
