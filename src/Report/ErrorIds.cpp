@@ -782,7 +782,7 @@ void initErrors()
     SWAG_ERROR(Err0656, "unexpected [[#elif]]                              $ [[#elif]] found without a preceding [[#if]] directive");
     SWAG_ERROR(Err0657, "unexpected [[#else]]                              $ [[#else]] found without a preceding [[#if]] or [[#elif]] directive");
     SWAG_ERROR(Err0658, "unexpected [[where]]                              $ a [[where]] constraint is not allowed on special function [[%s]] $ [[where]] constraints are not supported for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
-    SWAG_ERROR(Err0659, "unexpected [[where,call)]] for struct             $ [[where,call)]] is not allowed for a struct, but is only valid for functions $ consider using a single [[where]] instead");
+    SWAG_ERROR(Err0659, "unexpected [[where,call)]] for struct             $ [[where:call]] is not allowed for a struct, but is only valid for functions $ consider using a single [[where]] instead");
     SWAG_ERROR(Err0660, "unexpected [[)]]                                  $ symbol [[)]] found without a preceding [[(]]");
     SWAG_ERROR(Err0661, "unexpected [[]]]                                  $ symbol [[]]] found without a preceding [[[]]");
     SWAG_ERROR(Err0662, "unexpected [[const]]                              $ unexpected [[const]] before a lambda parameter name");
@@ -803,7 +803,7 @@ void initErrors()
     SWAG_ERROR(Err0677, "unexpected comparison                             $ expected an affectation with [[=]] but found the comparison operator [[==]] instead");
     SWAG_ERROR(Err0678, "unexpected default value                          $ default value for variadic parameters are not allowed");
     SWAG_ERROR(Err0679, "unexpected empty expression                       $ the expression [[()]] is empty and not allowed here");
-    SWAG_ERROR(Err0680, "unexpected end of comment                         $ unexpected end of multi-line comment [[*/]] after %s $ beginning [[/*]] of multi-line comment is missing");
+    SWAG_ERROR(Err0680, "unexpected end of comment                         $ unexpected end of multi-line comment [[*/]] after %s $ the beginning [[/*]] of the multi-line comment is missing");
     SWAG_ERROR(Err0681, "unexpected end of file within comment             $ this multi-line comment is missing its closing [[*/]]");
     SWAG_ERROR(Err0682, "unexpected function body                          $ a function tagged with the [[#[Swag.Foreign]]] attribute can't have a body");
     SWAG_ERROR(Err0683, "unexpected generic arguments                      $ unexpected generic arguments after %s");
@@ -939,7 +939,7 @@ void initErrors()
     SWAG_ERROR(Nte0049, "could be an instance of the generic function [[%s]]");
     SWAG_ERROR(Nte0050, "could be the struct [[%s]]");
     SWAG_ERROR(Nte0051, "could be");
-    SWAG_ERROR(Nte0052, "detected an enum implementation block");
+    SWAG_ERROR(Nte0052, "this is an enum implementation block");
     SWAG_ERROR(Nte0053, "did you forget [[var]] or [[const]] to declare a global variable or a constant?");
     SWAG_ERROR(Nte0054, "use [[{}]] for an intentional empty statement");
     SWAG_ERROR(Nte0055, "entity %s [[%s]] awaits the generation of type [[%s]]");
@@ -1098,6 +1098,11 @@ void initErrors()
     SWAG_ERROR(Nte0208, "only basic types, [[enum]] and [[typeinfo]] are accepted for attribute parameters");
     SWAG_ERROR(Nte0209, "consider adding a return type [[->%s]] to the declaration");
     SWAG_ERROR(Nte0210, "the only type accepted for an integer to pointer conversion is [[u64]]");
+    SWAG_ERROR(Nte0211, "here is the start of the body");
+    SWAG_ERROR(Nte0212, nullptr);
+    SWAG_ERROR(Nte0213, nullptr);
+    SWAG_ERROR(Nte0214, nullptr);
+    SWAG_ERROR(Nte0215, nullptr);
 }
 
 Utf8 formErr(ErrorID idx, ...)

@@ -351,6 +351,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     if (funcNode->isForeign() && funcNode->content)
     {
         Diagnostic err{funcNode, funcNode->getTokenName(), toErr(Err0682)};
+        err.addNote(funcNode->content, funcNode->content->token, toNte(Nte0211));
         const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Foreign);
         err.addNote(attr, formNte(Nte0063, "attribute"));
         return context->report(err);
