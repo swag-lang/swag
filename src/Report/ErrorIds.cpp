@@ -298,7 +298,7 @@ void initErrors()
     SWAG_ERROR(Err0172, "invalid [[with]] expression                       $ expected a [[with]] valid expression $ expected an identifier or a variable declaration");
     SWAG_ERROR(Err0173, "invalid access from runtime                       $ the compile-time %s [[%s]] can't be accessed from runtime function [[%s]]");
     SWAG_ERROR(Err0174, "invalid access from runtime                       $ the compile-time function [[%s]] can't be accessed from runtime function [[%s]]");
-    SWAG_ERROR(Err0175, "invalid access from runtime                       $ this compile-time constant can't be accessed from runtime");
+    SWAG_ERROR(Err0175, nullptr);
     SWAG_ERROR(Err0176, "invalid address                                   $ can't take the address because the function returns nothing");
     SWAG_ERROR(Err0177, "invalid address                                   $ can't take the address of %s $ this is not a variable");
     SWAG_ERROR(Err0178, "invalid address                                   $ can't take the address of a character of a string constant $ a string literal does not have an associated memory storage");
