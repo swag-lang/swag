@@ -170,26 +170,6 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
                 typeInfo->firstDefaultValueIdx = index - 1;
                 firstParamWithDef              = nodeParam;
             }
-
-            if (nodeParam->assignment->is(AstNodeKind::CompilerSpecialValue))
-            {
-                switch (nodeParam->assignment->token.id)
-                {
-                    case TokenId::CompilerCallerLocation:
-                    case TokenId::CompilerCallerFunction:
-                    case TokenId::CompilerBuildCfg:
-                    case TokenId::CompilerOs:
-                    case TokenId::CompilerArch:
-                    case TokenId::CompilerCpu:
-                    case TokenId::CompilerSwagOs:
-                    case TokenId::CompilerBackend:
-                        break;
-
-                    default:
-                        context->report({nodeParam->assignment, formErr(Err0251, nodeParam->assignment->token.c_str())});
-                        break;
-                }
-            }
         }
         else if (!nodeParam->typeInfo->isCode())
         {

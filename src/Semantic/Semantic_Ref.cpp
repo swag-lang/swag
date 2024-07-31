@@ -1078,15 +1078,6 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             if (!symbol)
             {
                 YIELD();
-
-                if (arrayNode->array->token.text.empty())
-                {
-                    Diagnostic err{arrayNode->access, formErr(Err0260, arrayType->getDisplayNameC())};
-                    err.hint = formNte(Nte0144, g_LangSpec->name_opIndex.c_str());
-                    err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
-                    return context->report(err);
-                }
-
                 Diagnostic err{arrayNode->access, formErr(Err0259, arrayNode->array->token.c_str(), arrayType->getDisplayNameC())};
                 err.hint = formNte(Nte0144, g_LangSpec->name_opIndex.c_str());
                 err.addNote(arrayNode->array, Diagnostic::isType(arrayType));

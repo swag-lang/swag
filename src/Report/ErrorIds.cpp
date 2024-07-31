@@ -374,7 +374,7 @@ void initErrors()
     SWAG_ERROR(Err0248, "invalid const [[&&]]                              $ the move reference type [[&&]] can't be combined with an immutable expression");
     SWAG_ERROR(Err0249, "invalid constant                                  $ the constant creation failed due to the generic type [[%s]]");
     SWAG_ERROR(Err0250, "invalid constant name                             $ expected the constant name after [[const]], got [[%s]] instead");
-    SWAG_ERROR(Err0251, "invalid default parameter                         $ [[%s]] can't be used as a default parameter");
+    SWAG_ERROR(Err0251, nullptr);
     SWAG_ERROR(Err0252, "invalid default parameters                        $ the default parameters of a lambda or a closure can't be redefined");
     SWAG_ERROR(Err0253, "invalid default value                             $ [[self]] can't have a default value");
     SWAG_ERROR(Err0254, "invalid default value                             $ lambda parameters can't have a default value");
@@ -383,7 +383,7 @@ void initErrors()
     SWAG_ERROR(Err0257, "invalid dereference                               $ [[%s]] has type [[%s]] and can't be dereferenced by index because pointer arithmetic is not allowed");
     SWAG_ERROR(Err0258, "invalid dereference                               $ [[%s]] has type [[%s]] and can't be dereferenced like a struct or a pointer to struct");
     SWAG_ERROR(Err0259, "invalid dereference                               $ can't dereference [[%s]] by index because the special function [[opIndex]] can't be found in [[%s]]");
-    SWAG_ERROR(Err0260, "invalid dereference                               $ can't dereference by index because the special function [[opIndex]] can't be found in [[%s]]");
+    SWAG_ERROR(Err0260, nullptr);
     SWAG_ERROR(Err0261, "invalid dereference                               $ dereferencing type [[%s]] is not valid");
     SWAG_ERROR(Err0262, "invalid embedded enum                             $ expected an enum type, got [[%s]] instead");
     SWAG_ERROR(Err0263, "invalid embedded instruction                      $ expected an embedded instruction or a curly block, got [[%s]] instead");
