@@ -62,10 +62,6 @@ namespace
             if (note)
                 notes.push_back(note);
         }
-        else if (!typeWhere)
-        {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0721, identifier->token.c_str(), whereScopeName.c_str(), displayName.c_str())};
-        }
         else if (typeWhere->isEnum())
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0715, identifier->token.c_str(), typeWhere->getDisplayNameC())};
@@ -185,12 +181,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     switch (searchFor)
     {
         case IdentifierSearchFor::Function:
-            if (identifier->token.text[0] == '#')
-                err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0713, identifier->token.c_str())};
-            else if (identifier->token.text[0] == '@')
-                err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0729, identifier->token.c_str())};
-            else
-                err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0720, identifier->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0720, identifier->token.c_str())};
             break;
         case IdentifierSearchFor::Attribute:
             err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0712, identifier->token.c_str())};

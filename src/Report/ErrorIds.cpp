@@ -820,7 +820,7 @@ void initErrors()
     SWAG_ERROR(Err0694, "unexpected identifier                             $ a global identifier like [[%s]] can't be used at the file level");
     SWAG_ERROR(Err0695, "unexpected instruction modifier                   $ the instruction modifier [[%s]] can't be applied to [[%s]]");
     SWAG_ERROR(Err0696, "unexpected lambda parameter name                  $ unexpected name when declaring a lambda type $ consider removing the name");
-    SWAG_ERROR(Err0697, "unexpected lambda parameter type                  $ unexpected type $ when declaring lambda parameters, you should not combined inferred and explicit types");
+    SWAG_ERROR(Err0697, nullptr);
     SWAG_ERROR(Err0698, "unexpected line break in array type declaration   $ the type of the array should be placed on the same line as the array dimensions");
     SWAG_ERROR(Err0699, "unexpected name                                   $ too many [[visit]] alias names (maximum is [[2]], but [[%u]] are provided)");
     SWAG_ERROR(Err0700, "unexpected parameters                             $ expected [[{]] here because a compiler %s should not have parameters");
@@ -836,7 +836,7 @@ void initErrors()
     SWAG_ERROR(Err0710, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Err0711, "unexpected visit name                             $ a special visit name is only valid to visit a struct, got [[%s]] instead");
     SWAG_ERROR(Err0712, "unknown attribute                                 $ the attribute [[%s]] can't be found");
-    SWAG_ERROR(Err0713, "unknown compiler instruction                      $ the compiler instruction [[%s]] can't be found");
+    SWAG_ERROR(Err0713, nullptr);
     SWAG_ERROR(Err0714, "unknown dependency                                $ use of an unknown module dependency [[%s]]");
     SWAG_ERROR(Err0715, "unknown enum value                                $ the enumeration value [[%s]] can't be found in [[%s]]");
     SWAG_ERROR(Err0716, "unknown field name                                $ the field name [[%s]] can't be found in [[%s]]");
@@ -844,7 +844,7 @@ void initErrors()
     SWAG_ERROR(Err0718, "unknown file                                      $ the file [[%s]] can't be found");
     SWAG_ERROR(Err0719, "unknown foreign function                          $ the foreign function [[%s]] can't be found");
     SWAG_ERROR(Err0720, "unknown function                                  $ the function [[%s]] can't be found");
-    SWAG_ERROR(Err0721, "unknown identifier                                $ the identifier [[%s]] can't be found in %s [[%s]]");
+    SWAG_ERROR(Err0721, nullptr);
     SWAG_ERROR(Err0722, "unknown identifier                                $ the identifier [[%s]] can't be found in [[%s]] or in %s [[%s]]");
     SWAG_ERROR(Err0723, "unknown identifier                                $ the identifier [[%s]] can't be found in [[%s]]");
     SWAG_ERROR(Err0724, "unknown identifier                                $ the identifier [[%s]] can't be found in the tuple");
@@ -852,7 +852,7 @@ void initErrors()
     SWAG_ERROR(Err0726, "unknown identifier                                $ the identifier [[%s]] is preceded with [[.]] but no corresponding [[enum]] or [[with]] can be deduced");
     SWAG_ERROR(Err0727, "unknown identifier                                $ the variable [[%s]] from the struct [[%s]] has no corresponding member");
     SWAG_ERROR(Err0728, "unknown interface function                        $ the function [[%s]] is not part of the interface [[%s]]");
-    SWAG_ERROR(Err0729, "unknown intrinsic                                 $ the intrinsic [[%s]] can't be found");
+    SWAG_ERROR(Err0729, nullptr);
     SWAG_ERROR(Err0730, "unknown label                                     $ the scope label [[%s]] can't be found");
     SWAG_ERROR(Err0731, "unknown method                                    $ the method [[%s]] can't be found in [[%s]]");
     SWAG_ERROR(Err0732, "unknown parameter                                 $ the named parameter [[%s]] can't be found");

@@ -480,8 +480,6 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             if (acceptMissingType)
             {
                 SWAG_ASSERT(hasMissingType);
-                if (!missingTypes && *hasMissingType)
-                    return error(allParams->lastChild(), toErr(Err0697));
                 if (oneParamDone && !*hasMissingType && missingTypes)
                     return error(allParams->lastChild(), toErr(Err0573));
                 *hasMissingType = *hasMissingType || missingTypes;
