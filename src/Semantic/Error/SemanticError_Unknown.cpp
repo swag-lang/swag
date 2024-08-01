@@ -47,13 +47,7 @@ namespace
         Diagnostic* err;
         const auto  typeWhere = identifierRef->startScope->owner->typeInfo;
 
-        const auto varDecl = identifier->findParent(AstNodeKind::VarDecl);
-        const auto idRef   = identifier->identifierRef();
-        if (idRef && varDecl && idRef->hasAstFlag(AST_TUPLE_UNPACK))
-        {
-            err = new Diagnostic{identifier, formErr(Err0727, varDecl->token.c_str(), displayName.c_str())};
-        }
-        else if (prevIdentifier && prevIdentifier->identifierExtension && prevIdentifier->identifierExtension->alternateEnum)
+        if (prevIdentifier && prevIdentifier->identifierExtension && prevIdentifier->identifierExtension->alternateEnum)
         {
             const auto altEnum = prevIdentifier->identifierExtension->alternateEnum;
             const auto msg     = formErr(Err0722, identifier->token.c_str(), altEnum->getDisplayNameC(), whereScopeName.c_str(), displayName.c_str());
@@ -80,7 +74,7 @@ namespace
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0731, identifier->token.c_str(), typeWhere->getDisplayNameC())};
         }
-        else if(identifierRef->parent && identifierRef->parent->is(AstNodeKind::AttrUse))
+        else if (identifierRef->parent && identifierRef->parent->is(AstNodeKind::AttrUse))
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0712, identifier->token.c_str(), typeWhere->getDisplayNameC())};
         }

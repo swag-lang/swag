@@ -850,7 +850,7 @@ void initErrors()
     SWAG_ERROR(Err0724, "unknown identifier                                $ the identifier [[%s]] can't be found in the tuple");
     SWAG_ERROR(Err0725, "unknown identifier                                $ the identifier [[%s]] can't be found");
     SWAG_ERROR(Err0726, "unknown identifier                                $ the identifier [[%s]] is preceded with [[.]] but no corresponding [[enum]] or [[with]] can be deduced");
-    SWAG_ERROR(Err0727, "unknown identifier                                $ the variable [[%s]] from the struct [[%s]] has no corresponding member");
+    SWAG_ERROR(Err0727, nullptr);
     SWAG_ERROR(Err0728, "unknown interface function                        $ the function [[%s]] is not part of the interface [[%s]]");
     SWAG_ERROR(Err0729, nullptr);
     SWAG_ERROR(Err0730, "unknown label                                     $ the scope label [[%s]] can't be found");
