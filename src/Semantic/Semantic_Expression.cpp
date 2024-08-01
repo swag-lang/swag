@@ -418,6 +418,18 @@ bool Semantic::resolveRange(SemanticContext* context)
         return context->report(err);
     }
 
+    const bool downSigned   = node->expressionLow->typeInfo->isNativeIntegerSigned() && !node->expressionLow->typeInfo->isUntypedInteger();
+    const bool upSigned     = node->expressionUp->typeInfo->isNativeIntegerSigned() && !node->expressionUp->typeInfo->isUntypedInteger();
+    const bool downUnSigned = node->expressionLow->typeInfo->isNativeIntegerUnsigned();
+    const bool upUnSigned   = node->expressionUp->typeInfo->isNativeIntegerUnsigned();
+    if ((downSigned && upUnSigned) || (downUnSigned && upSigned))
+    {
+        Diagnostic err{node, node->token, toErr(Err0757)};
+        err.addNote(node->expressionLow, Diagnostic::isType(node->expressionLow));
+        err.addNote(node->expressionUp, Diagnostic::isType(node->expressionUp));
+        return context->report(err);
+    }
+
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CAST_FLAG_COMMUTATIVE));
 
     node->typeInfo = node->expressionLow->typeInfo;

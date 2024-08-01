@@ -880,7 +880,7 @@ void initErrors()
     SWAG_ERROR(Err0754, "unused return value                               $ the return value of the function [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err0755, "unused return value                               $ the return value of the intrinsic [[%s]] should be used");
     SWAG_ERROR(Err0756, "unused return value                               $ the return value of the lambda [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
-    SWAG_ERROR(Err0757, nullptr);
+    SWAG_ERROR(Err0757, "type mismatch                                     $ mix of signed and unsigned type in a range expression $ lower bound and upper bound should be the same");
     SWAG_ERROR(Err0758, nullptr);
     SWAG_ERROR(Err0759, nullptr);
 
