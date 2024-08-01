@@ -1,4 +1,4 @@
-#global skip
+#global testerror "err0644"
 
 func toto(x: ...)
 {

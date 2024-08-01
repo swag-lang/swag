@@ -77,7 +77,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             continue;
         }
 
-        if (!mapCopyRA.count && !mapCopyRB.count)
+        if (!mapCopyRA.count() && !mapCopyRB.count())
             continue;
 
         // If we use a register that comes from a CopyRBRA, then use the initial register instead.
@@ -304,7 +304,7 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
 
             mapRA.set(ip->a.u32, ip);
         }
-        else if (mapRA.count)
+        else if (mapRA.count())
         {
             if (ByteCode::hasWriteRegInA(ip))
                 mapRA.remove(ip->a.u32);

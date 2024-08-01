@@ -80,7 +80,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             default:
                 if (ip->hasFlag(BCI_START_STMT))
                     regs.clear();
-                if (!regs.count)
+                if (!regs.count())
                     break;
 
                 optPostWrite = true;
@@ -135,7 +135,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 break;
         }
 
-        if (!regs.count)
+        if (!regs.count())
             continue;
 
         if (!ip->hasFlag(BCI_IMM_A) && flags.has(OPFLAG_READ_A) && regs.contains(ip->a.u32))

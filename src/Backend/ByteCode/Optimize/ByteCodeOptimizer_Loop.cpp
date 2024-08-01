@@ -32,7 +32,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
         context->vecInst.clear();
         context->vecInstCopy.clear();
-        uint32_t countReg[RegisterList::MAX_REGISTERS] = {};
+        VectorNative<uint32_t> countReg;
 
         bool hasJumps = false;
         while (ipScan != ip)
@@ -71,13 +71,25 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             }
 
             if (ByteCode::hasWriteRegInA(ipScan))
+            {
+                countReg.expand_clear(ipScan->a.u32 + 1);
                 countReg[ipScan->a.u32]++;
+            }
             if (ByteCode::hasWriteRegInB(ipScan))
+            {
+                countReg.expand_clear(ipScan->b.u32 + 1);
                 countReg[ipScan->b.u32]++;
+            }
             if (ByteCode::hasWriteRegInC(ipScan))
+            {
+                countReg.expand_clear(ipScan->c.u32 + 1);
                 countReg[ipScan->c.u32]++;
+            }
             if (ByteCode::hasWriteRegInD(ipScan))
+            {
+                countReg.expand_clear(ipScan->d.u32 + 1);
                 countReg[ipScan->d.u32]++;
+            }
 
             ipScan++;
         }
@@ -162,10 +174,8 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
             // If the register is used more than once, then we allocate a new one and make a copy at the previous place.
             // The copy will have a chance to be removed, and if not, the loop will just have one copy instead of the original instruction.
-            if (countReg[cstOp->a.u32] > 1 || hasJumps)
+            if ((cstOp->a.u32 < countReg.size() && countReg[cstOp->a.u32] > 1) || hasJumps)
             {
-                if (context->bc->maxReservedRegisterRC == RegisterList::MAX_REGISTERS)
-                    break;
                 if (!insertNopBefore(context, ipStart))
                     break;
 

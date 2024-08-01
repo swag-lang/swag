@@ -4,58 +4,81 @@
 template<typename T>
 struct MapRegTo
 {
-    bool     here[RegisterList::MAX_REGISTERS];
-    T        val[RegisterList::MAX_REGISTERS];
-    uint32_t count = 0;
+    static constexpr int CACHE = 64;
+    bool                 here[CACHE];
+    T                    val[CACHE];
+    uint32_t             countCache = 0;
+    Map<uint32_t, T>     map;
 
     MapRegTo()
     {
         memset(here, 0, sizeof(here));
     }
 
+    uint32_t count() const
+    {
+        return countCache + static_cast<uint32_t>(map.size());
+    }
+
     void clear()
     {
-        if (!count)
-            return;
-        count = 0;
-        memset(here, 0, sizeof(here));
+        if (countCache)
+        {
+            memset(here, 0, sizeof(here));
+            countCache = 0;
+        }
+
+        map.clear();
     }
 
     bool contains(uint32_t reg) const
     {
-        SWAG_ASSERT(reg < RegisterList::MAX_REGISTERS);
-        return here[reg];
+        if (reg < CACHE)
+            return here[reg];
+        return map.contains(reg);
     }
 
     void remove(uint32_t reg)
     {
-        SWAG_ASSERT(reg < RegisterList::MAX_REGISTERS);
-        if (here[reg])
+        if (reg < CACHE)
         {
-            SWAG_ASSERT(count);
-            here[reg] = false;
-            count--;
+            if(here[reg])
+            {
+                SWAG_ASSERT(countCache);
+                countCache--;
+                here[reg] = false;
+            }
         }
+        else
+            map.erase(reg);
     }
 
-    void set(uint32_t reg, const T& value)
+    void set(uint32_t reg, const T &value)
     {
-        SWAG_ASSERT(reg < RegisterList::MAX_REGISTERS);
-        if (!here[reg])
+        if (reg < CACHE)
         {
-            here[reg] = true;
-            count++;
+            if(!here[reg])
+            {
+                here[reg] = true;
+                countCache++;
+            }
+            
+            val[reg]  = value;
         }
-
-        val[reg] = value;
+        else
+        {
+            map.emplace(reg, value);
+        }
     }
 
     T* find(uint32_t reg)
     {
-        if (reg >= RegisterList::MAX_REGISTERS)
+        if (reg < CACHE)
+            return here[reg] ? &val[reg] : nullptr;
+
+        auto it = map.find(reg);
+        if (it == map.end())
             return nullptr;
-        if (!here[reg])
-            return nullptr;
-        return &val[reg];
+        return &it->second;
     }
 };

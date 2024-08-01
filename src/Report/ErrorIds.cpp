@@ -767,7 +767,7 @@ void initErrors()
     SWAG_ERROR(Err0641, "too many initializers                             $ expected [[%d]] value(s) to initialize the tuple, got [[%d]] instead");
     SWAG_ERROR(Err0642, "too many initializers                             $ too many initializers for type [[%s]]");
     SWAG_ERROR(Err0643, "too many parameters                               $ too many parameters for [[%s]] ([[%d]] expected, [[%d]] provided)");
-    SWAG_ERROR(Err0644, "too many variadic parameters                      $ the maximum number of variadic parameters is [[%s]], got [[%d]] instead");
+    SWAG_ERROR(Err0644, "too many variadic arguments                       $ the maximum number of variadic arguments is [[%d]], got [[%d]] instead");
     SWAG_ERROR(Err0645, "tuple type mismatch                               $ the source and the requested tuples are not compatible");
     SWAG_ERROR(Err0646, "type mismatch                                     $ a closure can't be assigned to a lambda type");
     SWAG_ERROR(Err0647, "type mismatch                                     $ can't initialize type [[%s]] from type [[%s]]");

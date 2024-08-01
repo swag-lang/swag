@@ -34,20 +34,19 @@ union Register
 
 struct RegisterList
 {
-    static constexpr int MAX_STATIC    = 2;
-    static constexpr int MAX_REGISTERS = 256;
+    static constexpr int MAX_STATIC = 2;
 
-    uint8_t oneResult[MAX_STATIC] = {};
-    uint8_t countResults          = 0;
-    bool    cannotFree            = false;
+    uint32_t oneResult[MAX_STATIC] = {};
+    uint8_t  countResults          = 0;
+    bool     cannotFree            = false;
+    uint8_t  padding               = 0;
 
     RegisterList() = default;
 
     // ReSharper disable once CppNonExplicitConvertingConstructor
     RegisterList(uint32_t r)
     {
-        SWAG_ASSERT(r < MAX_REGISTERS);
-        oneResult[0] = static_cast<uint8_t>(r);
+        oneResult[0] = r;
         countResults = 1;
     }
 
@@ -64,8 +63,7 @@ struct RegisterList
 
     RegisterList& operator=(uint32_t r)
     {
-        SWAG_ASSERT(r < MAX_REGISTERS);
-        oneResult[0] = static_cast<uint8_t>(r);
+        oneResult[0] = r;
         countResults = 1;
         cannotFree   = false;
         return *this;
@@ -81,9 +79,8 @@ struct RegisterList
     void operator+=(uint32_t r)
     {
         SWAG_ASSERT(!cannotFree);
-        SWAG_ASSERT(r < MAX_REGISTERS);
         SWAG_ASSERT(countResults < MAX_STATIC);
-        oneResult[countResults++] = static_cast<uint8_t>(r);
+        oneResult[countResults++] = r;
     }
 
     void clear()

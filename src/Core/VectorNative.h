@@ -143,7 +143,7 @@ struct VectorNative
                 memset(buffer + count, 0, (num - count) * sizeof(T));
         }
 
-        count = static_cast<uint32_t>(num);
+        count = max(count, static_cast<uint32_t>(num));
     }
 
     void set_size_clear(size_t num)

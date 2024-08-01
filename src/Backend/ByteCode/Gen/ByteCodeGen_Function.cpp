@@ -1962,7 +1962,10 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // Pass a variadic parameter to another function
     auto numVariadic = (numCallParams - numTypeParams) + 1;
     if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
-        SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, formErr(Err0644, SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
+    {
+        if(numVariadic > SWAG_LIMIT_MAX_VARIADIC_PARAMS)
+            return context->report({allParams, formErr(Err0644, SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)});
+    }
 
     auto lastParam = allParams && !allParams->children.empty() ? allParams->lastChild() : nullptr;
 
