@@ -138,7 +138,7 @@ struct VectorNative
     {
         if (num)
         {
-            reserve(static_cast<uint32_t>(num), false);
+            reserve(static_cast<uint32_t>(num), true);
             if (count < num)
                 memset(buffer + count, 0, (num - count) * sizeof(T));
         }
