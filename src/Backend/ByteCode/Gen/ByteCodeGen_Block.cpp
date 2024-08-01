@@ -527,16 +527,9 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
     const auto rangeNode = castAst<AstRange>(loopNode->expression, AstNodeKind::Range);
     if (rangeNode->expressionLow->hasFlagComputedValue() && rangeNode->expressionUp->hasFlagComputedValue())
     {
-        if (rangeNode->expressionLow->typeInfo->isNativeIntegerSigned() && rangeNode->expressionLow->computedValue()->reg.s64 > rangeNode->expressionUp->computedValue()->reg.s64)
+        if (rangeNode->expressionLow->computedValue()->reg.s64 > rangeNode->expressionUp->computedValue()->reg.s64)
         {
             Diagnostic err{rangeNode->expressionLow, formErr(Err0363, rangeNode->expressionLow->computedValue()->reg.s64, rangeNode->expressionUp->computedValue()->reg.s64)};
-            err.addNote(rangeNode->expressionUp, toNte(Nte0172));
-            return context->report(err);
-        }
-
-        if (rangeNode->expressionLow->typeInfo->isNativeIntegerUnsigned() && rangeNode->expressionLow->computedValue()->reg.u64 > rangeNode->expressionUp->computedValue()->reg.u64)
-        {
-            Diagnostic err{rangeNode->expressionLow, formErr(Err0362, rangeNode->expressionLow->computedValue()->reg.u64, rangeNode->expressionUp->computedValue()->reg.u64)};
             err.addNote(rangeNode->expressionUp, toNte(Nte0172));
             return context->report(err);
         }
