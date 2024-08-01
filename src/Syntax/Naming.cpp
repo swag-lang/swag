@@ -324,11 +324,11 @@ Utf8 Naming::kindName(const AstNode* node, Utf8& article)
 
         case AstNodeKind::TypeAlias:
             article = "a";
-            return "type alias";
+            return "typealias";
 
         case AstNodeKind::NameAlias:
             article = "a";
-            return "name alias";
+            return "namealias";
 
         case AstNodeKind::FuncDeclParam:
             article = "a";

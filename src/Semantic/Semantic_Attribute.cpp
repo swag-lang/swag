@@ -122,7 +122,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         {
             if (kind == AstNodeKind::TypeAlias)
                 return true;
-            specificMsg = "a type alias";
+            specificMsg = "a [[typealias]]";
         }
     }
 
@@ -170,25 +170,23 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     else if (mask == ATTR_USAGE_CONSTANT)
         specificMsg = "a constant";
 
+    auto nakedName = Naming::kindName(checkNode);
+
     if (specificMsg)
     {
-        const auto nakedName = Naming::kindName(checkNode);
+        if (nakedName == "node")
+            nakedName.clear();
         Diagnostic err{oneAttribute, formErr(Err0493, oneAttribute->token.c_str(), specificMsg)};
         err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0024, nakedName.c_str()));
         err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
         return context->report(err);
     }
 
-    const auto nakedName = Naming::aKindName(checkNode);
-    if (nakedName == "<node>")
-    {
-        Diagnostic err{oneAttribute, formErr(Err0497, oneAttribute->token.c_str())};
-        err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
-        return context->report(err);
-    }
-
+    if (nakedName == "node")
+        nakedName = "this";
+    else
+        nakedName = Naming::aKindName(checkNode);
     Diagnostic err{oneAttribute, formErr(Err0494, oneAttribute->token.c_str(), nakedName.c_str())};
-    err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0063, Naming::kindName(checkNode).c_str()));
     err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
     return context->report(err);
 }

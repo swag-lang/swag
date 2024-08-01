@@ -186,9 +186,6 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     // Array index
     if (tokenParse.is(TokenId::SymLeftSquare) && !identifierFlags.has(IDENTIFIER_NO_PARAMS))
     {
-        if (identifierFlags.has(IDENTIFIER_TYPE_DECL))
-            return context->report({identifier, tokenParse.token, toErr(Err0484)});
-
         SpecFlags serial = 0;
         while (true)
         {

@@ -607,7 +607,7 @@ void initErrors()
     SWAG_ERROR(Err0481, "misplaced access modifier                         $ a global variable can't be [[public]]");
     SWAG_ERROR(Err0482, "misplaced access modifier                         $ misuse of [[%s]] before [[%s]] $ [[%s]] can't be prefixed with an access modifier");
     SWAG_ERROR(Err0483, "misplaced access modifier                         $ the [[%s]] access modifier can only be used at the global scope");
-    SWAG_ERROR(Err0484, "misplaced array size                              $ the size of the array must be placed before the type name");
+    SWAG_ERROR(Err0484, nullptr);
     SWAG_ERROR(Err0485, "misplaced attribute                               $ a [[switch]] without an expression can't be [[#[Swag.Complete]]]");
     SWAG_ERROR(Err0486, "misplaced attribute                               $ an interface member relocation with [[#[Swag.Offset]]] is not allowed");
     SWAG_ERROR(Err0487, "misplaced attribute                               $ incorrect attribute usage");
@@ -620,7 +620,7 @@ void initErrors()
     SWAG_ERROR(Err0494, "misplaced attribute                               $ the attribute [[%s]] can't be associated with %s");
     SWAG_ERROR(Err0495, "misplaced attribute                               $ the attribute [[%s]] can't be used in a [[#global]] statement $ the attribute does not have the [[Swag.AttributeUsage.File]] usage");
     SWAG_ERROR(Err0496, "misplaced attribute                               $ unexpected start of an attribute after [[%s]] $ attributes should be placed before access modifiers; consider moving the attribute before [[%s]]");
-    SWAG_ERROR(Err0497, "misplaced attribute                               $ unexpected usage of the attribute [[%s]] in this context");
+    SWAG_ERROR(Err0497, nullptr);
     SWAG_ERROR(Err0498, "misplaced cast                                    $ you can't cast a [[@spread]] result");
     SWAG_ERROR(Err0499, "misplaced closure                                 $ a closure definition is not valid at the global level $ closures can only be defined within functions");
     SWAG_ERROR(Err0500, "misplaced compiler directive                      $ [[#callerfunction]] can only be used when declaring a function parameter");
