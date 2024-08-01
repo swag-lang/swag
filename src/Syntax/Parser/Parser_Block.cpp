@@ -283,7 +283,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 
     if (tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::SymComma))
     {
-        SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));
+        SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a [[visit]] variable name"));
         SWAG_CHECK(checkIsValidVarName(node->expression->lastChild()));
         node->aliasNames.push_back(node->expression->lastChild()->token);
         node->expression->release();
@@ -292,13 +292,13 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken(TokenId::SymComma, "to define another alias name or ':' to specify the visit variable"));
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(prevTokenParse.token, toErr(Err0542)));
             SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
-            SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));
+            SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a [[visit]] variable name"));
             SWAG_CHECK(checkIsValidVarName(node->expression->lastChild()));
             node->aliasNames.push_back(node->expression->lastChild()->token);
             node->expression->release();
         }
 
-        SWAG_CHECK(eatToken(TokenId::SymColon, "to define the 'visit' variable"));
+        SWAG_CHECK(eatToken(TokenId::SymColon, "to define the [[visit]] variable"));
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse.token, toErr(Err0541)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
     }
@@ -361,7 +361,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
         tokenName = node->expression->token;
         if (tokenParse.is(TokenId::SymColon))
         {
-            SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'loop' variable name"));
+            SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a [[loop]] variable name"));
             SWAG_CHECK(checkIsValidVarName(node->expression->lastChild()));
             name = node->expression->lastChild()->token.text;
             node->expression->release();

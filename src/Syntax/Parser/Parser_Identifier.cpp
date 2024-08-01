@@ -56,9 +56,13 @@ bool Parser::checkIsValidUserName(AstNode* node, const Token* loc) const
 
 bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg) const
 {
-    if (!testIsSingleIdentifier(node))
+    if (testIsSingleIdentifier(node))
+        return true;
+
+    if(node->is(AstNodeKind::IdentifierRef))
         return error(node, formErr(Err0247, msg));
-    return true;
+
+    return error(node, formErr(Err0339, msg, node->token.c_str()));
 }
 
 bool Parser::checkIsIdentifier(const TokenParse& myToken, const char* msg) const

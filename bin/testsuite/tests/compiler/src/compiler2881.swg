@@ -1,3 +1,3 @@
-#global testerror "Err0356"
+#global testerror "Err0410"
 
 var #alias0 = 0

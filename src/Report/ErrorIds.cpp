@@ -462,7 +462,7 @@ void initErrors()
     SWAG_ERROR(Err0336, "invalid negation                                  $ can't negate an unsigned type [[%s]]");
     SWAG_ERROR(Err0337, "invalid negation                                  $ can't negate type [[%s]]");
     SWAG_ERROR(Err0338, "invalid number format                             $ a number should not end with a digit separator [[_]]");
-    SWAG_ERROR(Err0339, nullptr);
+    SWAG_ERROR(Err0339, "invalid identifier                                $ expected an identifier %s, got [[%s]] instead");
     SWAG_ERROR(Err0340, "invalid number format                             $ consecutive digit separators [[_]] are not allowed");
     SWAG_ERROR(Err0341, "invalid number format                             $ this binary number has too many digits to fit within a 64-bit representation");
     SWAG_ERROR(Err0342, "invalid number format                             $ this hexadecimal number has too many digits to fit within a 64-bit representation");
@@ -511,7 +511,7 @@ void initErrors()
     SWAG_ERROR(Err0385, "invalid tuple dereference                         $ tuples can't be dereferenced like pointers");
     SWAG_ERROR(Err0386, "invalid tuple unpacking                           $ can't unpack an empty tuple");
     SWAG_ERROR(Err0387, "invalid tuple unpacking                           $ can't unpack type [[%s]] $ a struct or a tuple is expected");
-    SWAG_ERROR(Err0388, "invalid type                                      $ the affect expression has type [[void]]");
+    SWAG_ERROR(Err0388, nullptr);
     SWAG_ERROR(Err0389, "invalid type                                      $ the initialization expression has type [[void]]");
     SWAG_ERROR(Err0390, "invalid type                                      $ the intrinsic [[@spread]] can't be used with type [[%s]] $ this kind of type can't be spreaded");
     SWAG_ERROR(Err0391, "invalid type                                      $ the operator [[<<]] requires an integer, got [[%s]] instead");
@@ -526,7 +526,7 @@ void initErrors()
     SWAG_ERROR(Err0400, "invalid type                                      $ unexpected first parameter type for special function [[%s]] ([[%s]] expected, [[%s]] provided)");
     SWAG_ERROR(Err0401, "invalid type declaration                          $ expected a type but [[%s]] is %s");
     SWAG_ERROR(Err0402, "invalid type declaration                          $ expected a type declaration, got [[%s]] instead");
-    SWAG_ERROR(Err0403, "invalid type declaration                          $ expected a type in the tuple definition, got [[%s]] instead");
+    SWAG_ERROR(Err0403, nullptr);
     SWAG_ERROR(Err0404, "invalid type declaration                          $ expected the array type after its dimensions, got [[%s]] instead");
     SWAG_ERROR(Err0405, "invalid type suffix                               $ a literal with a suffix (in that case [[%s]]) should only be used for a struct conversion");
     SWAG_ERROR(Err0406, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix, got [[%s]] instead");
@@ -535,8 +535,8 @@ void initErrors()
     SWAG_ERROR(Err0409, "invalid variable name                             $ a variable name ([[%s]]) can't start with [[@]], this is reserved for intrinsics $ only [[#mixin]] and [[#alias]] are possible in that case");
     SWAG_ERROR(Err0410, "invalid variable name                             $ expected a variable name, got [[%s]] instead");
     SWAG_ERROR(Err0411, "invalid variable name                             $ expected the variable name after [[%s]], got [[%s]] instead");
-    SWAG_ERROR(Err0412, "invalid variable name                             $ unexpected generic parameters after variable name [[%s]]");
-    SWAG_ERROR(Err0413, "invalid variable name                             $ unexpected parameters after variable name [[%s]]");
+    SWAG_ERROR(Err0412, "invalid variable name                             $ unexpected generic arguments after variable name [[%s]]");
+    SWAG_ERROR(Err0413, "invalid variable name                             $ unexpected call arguments after variable name [[%s]]");
     SWAG_ERROR(Err0414, "invalid variable type                             $ a variable can't be declared with a [[void]] type");
     SWAG_ERROR(Err0415, "invalid variable type                             $ failed to deduce the type of %s [[%s]]");
     SWAG_ERROR(Err0416, "invalid variable type                             $ failed to deduce the type of the variable because the expression is [[null]]");

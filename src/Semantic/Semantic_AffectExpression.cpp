@@ -224,7 +224,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 bool Semantic::resolveAffect(SemanticContext* context)
 {
     auto       node    = castAst<AstOp>(context->node, AstNodeKind::AffectOp);
-    auto       left    = node->firstChild();
+    const auto left    = node->firstChild();
     auto       right   = node->secondChild();
     const auto tokenId = node->token.id;
 
@@ -266,8 +266,6 @@ bool Semantic::resolveAffect(SemanticContext* context)
     }
 
     rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
-
-    SWAG_VERIFY(!rightTypeInfo->isVoid(), context->report({right, toErr(Err0388)}));
 
     // Be sure modifiers are relevant
     if (right->is(AstNodeKind::NoDrop) || right->is(AstNodeKind::Move))

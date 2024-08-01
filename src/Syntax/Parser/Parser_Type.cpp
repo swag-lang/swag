@@ -459,13 +459,6 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
             return true;
     }
 
-    // Specific error messages
-    if (node->parent && node->parent->is(AstNodeKind::TupleContent))
-    {
-        const Diagnostic err{sourceFile, tokenParse.token, formErr(Err0403, tokenParse.token.c_str())};
-        return context->report(err);
-    }
-
     Diagnostic err{sourceFile, tokenParse.token, formErr(Err0402, tokenParse.token.c_str())};
 
     if (tokenParse.is(TokenId::SymLeftParen))
