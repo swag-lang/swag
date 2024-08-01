@@ -28,7 +28,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
 
     if (node->token.text.length() >= 6)
     {
-        // #alias must be of the form #aliasNUM
+        // #mixin must be of the form #mixinNUM
         if (node->token.text.find(g_LangSpec->name_atmixin) == 0)
         {
             if (node->token.is(g_LangSpec->name_atmixin))

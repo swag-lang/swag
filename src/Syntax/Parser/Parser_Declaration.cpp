@@ -914,6 +914,7 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
     if (sourceFile->buildPass < BuildPass::Syntax)
         return eatToken();
 
+    *result = nullptr;
     switch (tokenParse.token.id)
     {
         case TokenId::SymLeftCurly:

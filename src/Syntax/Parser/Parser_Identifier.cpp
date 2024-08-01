@@ -59,7 +59,7 @@ bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg) const
     if (testIsSingleIdentifier(node))
         return true;
 
-    if(node->is(AstNodeKind::IdentifierRef))
+    if (node->is(AstNodeKind::IdentifierRef))
         return error(node, formErr(Err0247, msg));
 
     return error(node, formErr(Err0339, msg, node->token.c_str()));
@@ -394,9 +394,8 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
 
 bool Parser::doThrow(AstNode* parent, AstNode** result)
 {
-    const auto node = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Throw, this, parent);
-    *result         = node;
-    SWAG_VERIFY(node->ownerFct, error(node, toErr(Err0473)));
+    const auto node   = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Throw, this, parent);
+    *result           = node;
     node->semanticFct = Semantic::resolveThrow;
     SWAG_CHECK(eatToken());
 

@@ -931,12 +931,6 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
             auto varDecl = castAst<AstVarDecl>(child, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
-            // Using can only be used on a structure
-            if (child->hasAstFlag(AST_DECL_USING) && child->is(AstNodeKind::ConstDecl))
-                return context->report({child, toErr(Err0475)});
-            if (child->hasAstFlag(AST_DECL_USING) && !child->typeInfo->isStruct() && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
-                return context->report({child, formErr(Err0477, child->typeInfo->getDisplayNameC())});
-
             TypeInfoParam* typeParam = nullptr;
             if (!node->hasAstFlag(AST_FROM_GENERIC) || !child->hasAstFlag(AST_REGISTERED_IN_STRUCT))
             {
