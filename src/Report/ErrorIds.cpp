@@ -632,7 +632,7 @@ void initErrors()
     SWAG_ERROR(Err0506, "misplaced function declaration                    $ functions can't be directly declared inside structs $ functions associated with structs should be declared inside [[impl]] blocks");
     SWAG_ERROR(Err0507, "misplaced generic arguments                       $ unexpected generic arguments for %s [[%s]]");
     SWAG_ERROR(Err0508, "misplaced move reference                          $ a move reference type [[&&]] is only valid when declaring a function parameter");
-    SWAG_ERROR(Err0509, "misplaced namespace                               $ a namespace should be defined in the top-level scope or within another namespace");
+    SWAG_ERROR(Err0509, nullptr);
     SWAG_ERROR(Err0510, "misplaced range                                   $ can't use a range in a switch without an expression");
     SWAG_ERROR(Err0511, "misplaced reference to [[with]] block             $ statements starting with the [[.]] operator are only valid within a [[with]] block");
     SWAG_ERROR(Err0512, "misplaced special function                        $ the struct special function [[%s]] should be declared within the corresponding [[impl]] block $ an [[impl for]] block can only be used to implement interfaces");

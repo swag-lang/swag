@@ -216,7 +216,6 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
 
 bool Parser::doNamespace(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobal(), error(tokenParse.token, toErr(Err0509)));
     SWAG_CHECK(doNamespace(parent, result, false, false));
     return true;
 }

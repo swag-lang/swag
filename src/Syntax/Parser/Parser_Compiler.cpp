@@ -49,7 +49,7 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
     {
         ParserPushAstNodeFlags scopedFlags(this, AST_NO_BACKEND);
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse.token, formErr(Err0524, tokenParse.token.c_str())));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), unexpectedTokenError(tokenParse.token, formErr(Err0524, tokenParse.token.c_str())));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         node->allocateExtension(ExtensionKind::Semantic);
         node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
