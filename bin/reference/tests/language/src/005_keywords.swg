@@ -153,9 +153,9 @@ Compiler keywords always start with '#'. As user identifiers cannot start the sa
 #alias0
 #alias1
 #alias2 // and more generally #aliasN
-#mixin0
-#mixin1
-#mixin2 // and more generally #mixinN
+#mix0
+#mix1
+#mix2 // and more generally #mixinN
 ```
 # Misc intrinsics
 Intrisic keywords always start with '@'. As user identifiers cannot start the same way, intrinsics keywords will never collide with user identifiers.

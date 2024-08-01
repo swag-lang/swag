@@ -132,8 +132,8 @@ You can declare special variables named `#mixin?`. Those variables will have a u
     #[Swag.Mixin]
     func toScope()
     {
-        var #mixin0: s32 = 1
-        total += #mixin0
+        var #mix0: s32 = 1
+        total += #mix0
     }
 
     toScope()

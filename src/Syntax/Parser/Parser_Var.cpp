@@ -26,21 +26,21 @@ bool Parser::checkIsValidVarName(AstNode* node) const
     if (node->token.text[0] != '#')
         return true;
 
-    if (node->token.text.length() >= 6)
+    if (node->token.text.length() >= 4)
     {
-        // #mixin must be of the form #mixinNUM
-        if (node->token.text.find(g_LangSpec->name_atmixin) == 0)
+        // #mix must be of the form #mixNUM
+        if (node->token.text.find(g_LangSpec->name_sharpmix) == 0)
         {
-            if (node->token.is(g_LangSpec->name_atmixin))
+            if (node->token.is(g_LangSpec->name_sharpmix))
                 return error(node->token, toErr(Err0529));
 
-            const char* pz    = node->token.text.buffer + 6;
-            const auto  endpz = node->token.text.buffer + node->token.text.count;
-            int         num   = 0;
-            while (pz != endpz)
+            const char* pz  = node->token.text.buffer + 4;
+            const auto  end = node->token.text.buffer + node->token.text.count;
+            int         num = 0;
+            while (pz != end)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, formErr(Err0139, node->token.c_str() + 6));
+                    return error(node->token, formErr(Err0139, node->token.c_str() + 4));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
@@ -55,15 +55,15 @@ bool Parser::checkIsValidVarName(AstNode* node) const
         }
 
         // #alias must be of the form #aliasNUM
-        if (node->token.text.find(g_LangSpec->name_atalias) == 0)
+        if (node->token.text.find(g_LangSpec->name_sharpalias) == 0)
         {
-            if (node->token.is(g_LangSpec->name_atalias))
+            if (node->token.is(g_LangSpec->name_sharpalias))
                 return error(node->token, toErr(Err0519));
 
-            const char* pz    = node->token.text.buffer + 6;
-            const auto  endpz = node->token.text.buffer + node->token.text.count;
-            int         num   = 0;
-            while (pz != endpz)
+            const char* pz  = node->token.text.buffer + 6;
+            const auto  end = node->token.text.buffer + node->token.text.count;
+            int         num = 0;
+            while (pz != end)
             {
                 if (!SWAG_IS_DIGIT(*pz))
                     return error(node->token, formErr(Err0135, node->token.c_str() + 6));

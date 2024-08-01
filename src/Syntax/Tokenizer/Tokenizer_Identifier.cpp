@@ -27,11 +27,11 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
     }
     else if (tokenParse.token.text[0] == '#')
     {
-        if (tokenParse.token.text.startsWith(g_LangSpec->name_atalias))
+        if (tokenParse.token.text.startsWith(g_LangSpec->name_sharpalias))
         {
             tokenParse.token.id = TokenId::Identifier;
         }
-        else if (tokenParse.token.text.startsWith(g_LangSpec->name_atmixin))
+        else if (tokenParse.token.text.startsWith(g_LangSpec->name_sharpmix))
         {
             tokenParse.token.id = TokenId::Identifier;
         }

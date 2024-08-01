@@ -1869,12 +1869,12 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         for (const auto& alias : id->callParameters->aliasNames)
             cloneContext.replaceNames[form("#alias%d", idx++)] = alias.text;
 
-        // Replace user #mixin
+        // Replace user #mix
         if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SPEC_MIXIN))
         {
             for (int i = 0; i < 10; i++)
             {
-                cloneContext.replaceNames[form("#mixin%d", i)] = form("__mixin%d", g_UniqueID.fetch_add(1));
+                cloneContext.replaceNames[form("#mix%d", i)] = form("__mix%d", g_UniqueID.fetch_add(1));
             }
         }
 

@@ -680,7 +680,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                         break;
                 }
             }
-            else if (identifier.startsWith("#alias") || identifier.startsWith("#mixin"))
+            else if (identifier.startsWith("#alias") || identifier.startsWith("#mix"))
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
                 result += identifier;

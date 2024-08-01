@@ -456,11 +456,11 @@ impl RegExp
         #[Swag.Mixin]
         func checkTr(c: rune, length: s32)
         {
-            let #mixin1 = curState.node.transitions.find(c)
-            if #mixin1
+            let #mix1 = curState.node.transitions.find(c)
+            if #mix1
             {
                 var st = dref curState
-                st.node = #mixin1.value
+                st.node = #mix1.value
                 if st.node.group != st.lastGroup do
                     closeGroup(&st)
                 st.parseIdx += length

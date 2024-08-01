@@ -626,10 +626,10 @@ bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDec
     return true;
 }
 
-bool Semantic::checkMixinAlias(SemanticContext* context, AstVarDecl* node)
+bool Semantic::checkMixAlias(SemanticContext* context, AstVarDecl* node)
 {
-    // Check #mixin
-    if (!node->hasAstFlag(AST_GENERATED) && !node->hasOwnerInline() && node->token.text.find(g_LangSpec->name_atmixin) == 0)
+    // Check #mix
+    if (!node->hasAstFlag(AST_GENERATED) && !node->hasOwnerInline() && node->token.text.find(g_LangSpec->name_sharpmix) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)
@@ -648,7 +648,7 @@ bool Semantic::checkMixinAlias(SemanticContext* context, AstVarDecl* node)
     }
 
     // Check #alias
-    if (!node->hasAstFlag(AST_GENERATED) && !node->hasOwnerInline() && node->token.text.find(g_LangSpec->name_atalias) == 0)
+    if (!node->hasAstFlag(AST_GENERATED) && !node->hasOwnerInline() && node->token.text.find(g_LangSpec->name_sharpalias) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)
@@ -919,7 +919,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 {
     auto node = castAst<AstVarDecl>(context->node);
 
-    SWAG_CHECK(checkMixinAlias(context, node));
+    SWAG_CHECK(checkMixAlias(context, node));
     SWAG_CHECK(checkTypeSuffix(context, node));
 
     const auto    sourceFile         = context->sourceFile;

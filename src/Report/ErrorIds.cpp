@@ -262,7 +262,7 @@ void initErrors()
     SWAG_ERROR(Err0136, "invalid [[#global]] instruction                   $ [[%s]] is not recognized as a valid [[#global]] instruction");
     SWAG_ERROR(Err0137, "invalid [[#import]] location                      $ expected a [[#import]] location path, found [[%]] instead");
     SWAG_ERROR(Err0138, "invalid [[#import]] location                      $ expected a [[#import]] version as a string, found [[%]] instead");
-    SWAG_ERROR(Err0139, "invalid [[#mixin]] number                         $ a [[#mixin]] variable name should end with a number, got [[%s]] instead");
+    SWAG_ERROR(Err0139, "invalid [[#mix]] number                           $ a [[#mix]] variable name should end with a number, got [[%s]] instead");
     SWAG_ERROR(Err0140, "invalid [[#mixin]] replacement keyword            $ a [[#mixin]] block accepts only [[break]] and [[continue]] as replacements, got [[%s]] instead");
     SWAG_ERROR(Err0141, "invalid [[#scope]] identifier                     $ expected the [[#scope]] identifier, got [[%s]] instead");
     SWAG_ERROR(Err0142, "invalid [[#up]] count                             $ expected an integer literal for the [[#up]] count, got [[%s]] instead");
@@ -532,7 +532,7 @@ void initErrors()
     SWAG_ERROR(Err0406, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix, got [[%s]] instead");
     SWAG_ERROR(Err0407, "invalid unicode value                             $ value [[0x%x]] is not a valid unicode code point, and can't be converted to UTF8");
     SWAG_ERROR(Err0408, "invalid variable list                             $ [[if]] does not support multiples variable declarations");
-    SWAG_ERROR(Err0409, "invalid variable name                             $ a variable name ([[%s]]) can't start with [[#]] $ only [[#mixin]] and [[#alias]] are possible in that case");
+    SWAG_ERROR(Err0409, "invalid variable name                             $ a variable name ([[%s]]) can't start with [[#]] $ only [[#mix]] and [[#alias]] are possible in that case");
     SWAG_ERROR(Err0410, "invalid variable name                             $ expected a variable name, got [[%s]] instead");
     SWAG_ERROR(Err0411, "invalid variable name                             $ expected the variable name after [[%s]], got [[%s]] instead");
     SWAG_ERROR(Err0412, "invalid variable name                             $ unexpected generic arguments after variable name [[%s]]");
@@ -652,7 +652,7 @@ void initErrors()
     SWAG_ERROR(Err0526, "missing [[#include]] string argument              $ expected the file name to include after [[#include]], got [[%s]] instead");
     SWAG_ERROR(Err0527, "missing [[#main]]                                 $ the program entry point [[#main]] is missing");
     SWAG_ERROR(Err0528, "missing [[#message]] parameter                    $ [[#message]] requests a parameter of type [[Swag.CompilerMsgMask]]");
-    SWAG_ERROR(Err0529, "missing [[#mixin]] number                         $ [[#mixin]] variable names should end with a number such as [[#mixin0]], [[#mixin1]], etc.");
+    SWAG_ERROR(Err0529, "missing [[#mix]] number                           $ [[#mix]] variable names should end with a number such as [[#mix0]], [[#mix1]], etc.");
     SWAG_ERROR(Err0530, "missing [[#placeholder]] identifier               $ expected an identifier after [[#placeholder]], got [[%s]] instead");
     SWAG_ERROR(Err0531, "missing [[#type]] type                            $ expected a valid type after [[#type]], got [[%s]] instead");
     SWAG_ERROR(Err0532, "missing [[(]] before arguments                    $ expected [[(]] to start the list of arguments, got [[%s]] instead");
@@ -730,7 +730,7 @@ void initErrors()
     SWAG_ERROR(Err0604, "not enough parameters                             $ too few parameters for special function [[%s]] (at least [[%d]] expected, only [[%d]] provided)");
     SWAG_ERROR(Err0605, "null dereference                                  $ attempt to dereference a null pointer");
     SWAG_ERROR(Err0606, "out of range [[#alias]] number                    $ an [[#alias]] number should be in the range [0, 31], got [[%u]] instead");
-    SWAG_ERROR(Err0607, "out of range [[#mixin]] number                    $ a [[#mixin]] number should be in the range [0, 31], got [[%u]] instead");
+    SWAG_ERROR(Err0607, "out of range [[#mix]] number                      $ a [[#mix]] number should be in the range [0, 31], got [[%u]] instead");
     SWAG_ERROR(Err0608, "out of range [[#up]] count                        $ an [[#up]] count should be in the range [1, 255], got [[%u]] instead");
     SWAG_ERROR(Err0609, "out of range array dimensions                     $ array dimensions can't exceed [[254]]");
     SWAG_ERROR(Err0610, "out of range call level                           $ the limit defined with [[--limit-recurse-bc:%d]] has been reached");
@@ -889,7 +889,7 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Nte0001, "[[#alias]] is only valid within a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function");
-    SWAG_ERROR(Nte0002, "[[#mixin]] is only valid within a [[#[Swag.Mixin]]] function");
+    SWAG_ERROR(Nte0002, "[[#mix]] is only valid within a [[#[Swag.Mixin]]] function");
     SWAG_ERROR(Nte0003, "[[%s]] is %s and does not have a sub-scope");
     SWAG_ERROR(Nte0004, "[[%s]] is %s of type [[%s]] and does not have a sub-scope");
     SWAG_ERROR(Nte0005, "[[%s]] is a variable and variables within expressions can't be evaluated at compile-time");
