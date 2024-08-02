@@ -54,7 +54,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             thisIsAType = true;
             curIsAlone  = false;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0531, tokenParse.token.c_str())));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0531)));
         }
 
         Token constToken;

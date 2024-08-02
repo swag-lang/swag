@@ -109,7 +109,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
         SWAG_CHECK(eatToken());
         while (tokenParse.isNot(TokenId::SymVertical))
         {
-            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0311, tokenParse.token.c_str())));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0311)));
             callParams->aliasNames.push_back(tokenParse.token);
             SWAG_CHECK(eatToken());
             if (tokenParse.is(TokenId::SymVertical))
@@ -262,7 +262,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
     }
 
     if (tokenParse.isNot(TokenId::KwdConst))
-        SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0356, tokenParse.token.c_str())));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0356)));
     paramNode->token.text = tokenParse.token.text;
 
     // 'self'
@@ -295,7 +295,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                 }
 
                 SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse.token, formErr(Err0128, tokenParse.token.c_str())));
-                SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0356, tokenParse.token.c_str())));
+                SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0356)));
                 SWAG_CHECK(eatToken());
                 otherVariables.push_back(otherVarNode);
                 paramNode->multiNames.push_back(otherVarNode->token.text);
@@ -529,7 +529,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0308, tokenParse.token.c_str())));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0308)));
 
         auto oneParam = Ast::newVarDecl(tokenParse.token.text, this, allParams, AstNodeKind::FuncDeclParam);
         oneParam->addAstFlag(AST_GENERIC);
@@ -720,7 +720,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         if (isIntrinsic)
             SWAG_VERIFY(sourceFile->acceptsInternalStuff(), error(tokenParse.token, formErr(Err0295, tokenParse.token.c_str())));
         else
-            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0296, tokenParse.token.c_str())));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0296)));
 
         funcNode->tokenName = tokenParse.token;
         funcNode->inheritTokenName(tokenParse.token);

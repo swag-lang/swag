@@ -8,6 +8,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Naming.h"
 #include "Syntax/SyntaxColor.h"
+#include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
 
 void Diagnostic::setupColors()
@@ -34,6 +35,27 @@ void Diagnostic::setup()
     if (!sourceFile || sourceFile->path.empty() || !hasLocation)
         showSourceCode = false;
     hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
+}
+
+void Diagnostic::doReplace(const TokenParse* tokenParse)
+{
+    if (!tokenParse)
+        return;
+
+    if (Tokenizer::isKeyword(tokenParse->token.id))
+        textMsg.replace("$$TKN$$", form("keyword [[%s]]", tokenParse->token.c_str()));
+    else if (Tokenizer::isSymbol(tokenParse->token.id))
+        textMsg.replace("$$TKN$$", form("symbol [[%s]]", tokenParse->token.c_str()));
+    else if (Tokenizer::isLiteral(tokenParse->token.id) && tokenParse->literalType == LiteralType::TypeString)
+        textMsg.replace("$$TKN$$", form("literal [[\"%s\"]]", tokenParse->token.c_str()));    
+    else if (Tokenizer::isLiteral(tokenParse->token.id) && tokenParse->literalType == LiteralType::TypeCharacter)
+        textMsg.replace("$$TKN$$", form("literal [[`%s`]]", tokenParse->token.c_str()));    
+    else if (Tokenizer::isLiteral(tokenParse->token.id))
+        textMsg.replace("$$TKN$$", form("literal [[%s]]", tokenParse->token.c_str()));
+    else if(tokenParse->token.is(TokenId::NativeType))
+        textMsg.replace("$$TKN$$", form("type [[%s]]", tokenParse->token.c_str()));
+    else
+        textMsg.replace("$$TKN$$", form("[[%s]]", tokenParse->token.c_str()));
 }
 
 void Diagnostic::addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h)
@@ -441,7 +463,7 @@ void Diagnostic::printSourceCode(Log* log) const
 {
     if (showErrorLevel || showFileName)
         printMargin(log, true);
-    
+
     printSourceCode(log, lineCodeNum - 1, lineCodePrev);
     printSourceCode(log, lineCodeNum, lineCode);
 }

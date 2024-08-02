@@ -259,7 +259,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     if (tokenParse.is(TokenId::SymColon))
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0167, tokenParse.token.c_str())));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0167)));
         node->extraNameToken = tokenParse.token;
         SWAG_CHECK(eatToken());
     }
@@ -559,7 +559,7 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
 
     if (tokenParse.isNot(TokenId::SymSemiColon))
     {
-        SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0152, tokenParse.token.c_str())));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0152)));
         node->label = tokenParse.token;
         FormatAst::inheritFormatAfter(this, node, &tokenParse);
         SWAG_CHECK(eatToken());

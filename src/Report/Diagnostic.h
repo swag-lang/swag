@@ -56,6 +56,19 @@ struct Diagnostic
         setup();
     }
 
+    Diagnostic(SourceFile* file, const TokenParse& tokenParse, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
+        textMsg{std::move(msg)},
+        errorLevel{level},
+        startLocation{tokenParse.token.startLocation},
+        endLocation{tokenParse.token.endLocation},
+        sourceFile{file},
+        showSourceCode{true},
+        hasLocation{true}
+    {
+        doReplace(&tokenParse);
+        setup();
+    }    
+
     Diagnostic(AstNode* node, const Token& token, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
         textMsg{std::move(msg)},
         errorLevel{level},
@@ -135,6 +148,7 @@ struct Diagnostic
     static Diagnostic* note(AstNode* node, const Utf8& msg) { return node ? new Diagnostic{node, msg, DiagnosticLevel::Note} : nullptr; }
 
     void setup();
+    void doReplace(const TokenParse* tokenParse);
     void addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
     void addNote(AstNode* node, const Token& token, const Utf8& msg);
     void addNote(AstNode* node, const Utf8& h);

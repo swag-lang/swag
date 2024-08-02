@@ -148,9 +148,9 @@ bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) 
     if (msg)
         message = msg;
     else
-        message = formErr(Err0311, myToken.token.c_str());
+        message = toErr(Err0311);
 
-    Diagnostic err{sourceFile, myToken.token, message};
+    Diagnostic err{sourceFile, myToken, message};
     if (Tokenizer::isKeyword(myToken.token.id))
         err.addNote(formNte(Nte0125, myToken.token.c_str()));
     return context->report(err);

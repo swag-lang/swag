@@ -114,7 +114,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
 
     if (tokenParse.is(TokenId::LiteralNumber))
     {
-        Diagnostic err{sourceFile, tokenParse.token, formErr(Err0311, tokenParse.token.c_str()).c_str()};
+        Diagnostic err{sourceFile, tokenParse, toErr(Err0311)};
         if (tokenParse.literalType == LiteralType::TypeUntypedInt)
         {
             if (parent && parent->is(AstNodeKind::IdentifierRef) && parent->lastChild() && parent->lastChild()->is(AstNodeKind::Identifier))
@@ -407,7 +407,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
         SWAG_VERIFY(tokenParse.isNot(TokenId::KwdCatch), error(tokenParse.token, formErr(Err0503, tokenParse.token.c_str(), node->token.c_str())));
         SWAG_VERIFY(tokenParse.isNot(TokenId::KwdAssume), error(tokenParse.token, formErr(Err0503, tokenParse.token.c_str(), node->token.c_str())));
         SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse.token, formErr(Err0503, tokenParse.token.c_str(), node->token.c_str())));
-        SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0113, node->token.c_str(), tokenParse.token.c_str())));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0113, node->token.c_str())));
         SWAG_CHECK(doIdentifierRef(node, &dummyResult));
     }
 
@@ -445,7 +445,7 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
     *result = node;
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0188, node->token.c_str(), tokenParse.token.c_str())));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0188, node->token.c_str())));
     node->inheritTokenName(tokenParse.token);
     node->inheritTokenLocation(tokenParse.token);
     SWAG_CHECK(checkIsValidUserName(node));
@@ -474,14 +474,14 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     *result = node;
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0188, node->token.c_str(), tokenParse.token.c_str())));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0188, node->token.c_str())));
     node->inheritTokenName(tokenParse.token);
     node->inheritTokenLocation(tokenParse.token);
     SWAG_CHECK(checkIsValidUserName(node));
 
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the aliased name"));
-    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0187, tokenParse.token.c_str())));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0187)));
 
     AstNode* expr;
     SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_ARRAY));

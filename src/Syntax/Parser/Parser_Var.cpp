@@ -299,7 +299,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         kind = AstNodeKind::ConstDecl;
         SWAG_CHECK(eatToken());
         if (tokenParse.isNot(TokenId::SymLeftParen))
-            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0250, tokenParse.token.c_str())));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0250)));
     }
     else
     {

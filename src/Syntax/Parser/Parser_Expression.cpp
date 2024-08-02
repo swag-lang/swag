@@ -1226,13 +1226,20 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
             SWAG_CHECK(doExpressionListArray(node, &dummyResult));
         else
         {
+            const auto tokenExpr = tokenParse;
+
             AstNode* paramExpression;
             SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NAMED_PARAM, &paramExpression));
 
             // Name
             if (tokenParse.is(TokenId::SymColon))
             {
-                SWAG_VERIFY(paramExpression->is(AstNodeKind::IdentifierRef), error(paramExpression, formErr(Err0311, paramExpression->token.c_str())));
+                if (paramExpression->isNot(AstNodeKind::IdentifierRef))
+                {
+                    const Diagnostic err{sourceFile, tokenExpr, toErr(Err0311)};
+                    return context->report(err);
+                }
+
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->lastChild()));
                 auto       namedToFree     = paramExpression;
