@@ -108,8 +108,6 @@ void Diagnostic::printSourceLine(Log* log) const
     if (!g_CommandLine.errorAbsolute)
         path = path.filename();
 
-    if (!g_CommandLine.errorOneLine)
-        log->setColor(sourceFileColor);
     log->print(path);
     if (hasLocation)
         log->print(form(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
@@ -381,9 +379,12 @@ void Diagnostic::reportCompact(Log* log)
 {
     setupColors();
     printErrorLevel(log);
+    log->setColor(sourceFileColor);
     printSourceLine(log);
+    log->setColor(LogColor::White);
     log->print(oneLiner(textMsg));
     log->writeEol();
+    log->setDefaultColor();
 }
 
 void Diagnostic::collectSourceCode()
