@@ -225,7 +225,7 @@ void initErrors()
     SWAG_ERROR(Err0099, "forbidden [[opDrop]]                              $ unexpected [[opDrop]] special function for [[%s]] because the struct is marked with [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Err0100, "forbidden [[opPostCopy]]                          $ unexpected [[opPostCopy]] special function for struct [[%s]] because the struct is marked with [[#[Swag.NoCopy]]]");
     SWAG_ERROR(Err0101, "forbidden assign                                  $ can't assign because the left expression is immutable");
-    SWAG_ERROR(Err0102, nullptr);
+    SWAG_ERROR(Err0102, "missing parameters                                $ the intrinsic [[%s]] is a function and should be followed by [[(]]");
     SWAG_ERROR(Err0103, "forbidden assign                                  $ can't assign to [[%s]] because it's immutable");
     SWAG_ERROR(Err0104, nullptr);
     SWAG_ERROR(Err0105, "forbidden call                                    $ a direct call to [[opDrop]] is forbidden $ consider using [[@drop]] instead]]");
@@ -1088,7 +1088,7 @@ void initErrors()
     SWAG_ERROR(Nte0198, "this suffix forces the literal to be converted to [[%s]]");
     SWAG_ERROR(Nte0199, "the identifier [[%s]] is %s and not a function or a struct");
     SWAG_ERROR(Nte0200, "expected an integer, a rune or a float value");
-    SWAG_ERROR(Nte0201, nullptr);
+    SWAG_ERROR(Nte0201, "got [[%s]] instead");
     SWAG_ERROR(Nte0202, "occurred while trying to convert [[%s]] to a function call argument of type [[%s]]");
     SWAG_ERROR(Nte0203, "unexpected scope");
     SWAG_ERROR(Nte0204, "perhaps you intended to use this type: [[%s]]");

@@ -1,8 +1,5 @@
-
-;
-
-#global testerror "Err0630";
+#global testerror "Err0315";
 #run
 {
-	Swag.@print;
+	Swag.@print();
 }

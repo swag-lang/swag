@@ -136,8 +136,17 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     if (identifier->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))
         identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE);
 
+    bool isIntrinsic = tokenParse.token.text[0] == '@';
+
     SWAG_CHECK(eatToken());
     SWAG_CHECK(checkIsValidUserName(identifier));
+
+    if (isIntrinsic && tokenParse.isNot(TokenId::SymLeftParen))
+    {
+        Diagnostic err{identifier, formErr(Err0102, identifier->token.c_str())};
+        err.addNote(sourceFile, tokenParse.token, formNte(Nte0201, tokenParse.token.c_str()));
+        return context->report(err);
+    }
 
     // Replace "Self" with the corresponding struct name
     if (identifier->token.is(g_LangSpec->name_Self))
