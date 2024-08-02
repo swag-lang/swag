@@ -46,7 +46,7 @@ void initErrors()
     SWAG_ERROR(Fat0022, "[fatal] failed to delete directory [[%s]]");
     SWAG_ERROR(Fat0023, "[fatal] failed to delete file [[%s]]");
     SWAG_ERROR(Fat0024, "[fatal] invalid [[--tag:%s]] value (%s)");
-    SWAG_ERROR(Fat0025, "[fatal] invalid script file extension; expected [[.swgs]] found [[%s]]");
+    SWAG_ERROR(Fat0025, "[fatal] invalid script file extension; expected [[.swgs]], got [[%s]] instead");
     SWAG_ERROR(Fat0026, "[fatal] invalid [[Swag]] command [[%s]]");
     SWAG_ERROR(Fat0027, "[fatal] invalid workspace [[%s]]; missing [[modules/]] or [[tests/]] sub-folder");
     SWAG_ERROR(Fat0028, "[fatal] module [[%s]] already exists in [[/modules]]");
