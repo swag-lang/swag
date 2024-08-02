@@ -1,5 +1,5 @@
 
-#global testerror "Err0631"
+#global testerror "Err0619"
 
 var str = "あああ"
 var str = "あああ"

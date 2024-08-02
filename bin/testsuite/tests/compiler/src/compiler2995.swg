@@ -1,4 +1,4 @@
-#global testerror "Err0402"
+#global testerror "Err0393"
 #if @gettag(string, "toto", string) == "yes"
 {
 }

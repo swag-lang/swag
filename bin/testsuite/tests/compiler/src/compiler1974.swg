@@ -1,5 +1,5 @@
 
-#global testerror "Err0560"
+#global testerror "Err0545"
 
 struct(K, V) HashTableEntry
 {

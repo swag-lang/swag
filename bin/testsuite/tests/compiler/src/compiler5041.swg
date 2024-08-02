@@ -1,4 +1,4 @@
-#global testerror "Err0170"
+#global testerror "Err0167"
 
 enum A {R, G, B}
 

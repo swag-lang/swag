@@ -59,13 +59,13 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 
         if (tokenParse.is(TokenId::EndOfFile))
         {
-            auto diagMsg = formErr(Err0713, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
+            auto diagMsg = formErr(Err0533, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
             diagMsg.replace("$$$ ", "");
             const Diagnostic err{sourceFile, start, start, diagMsg};
             return context->report(err);
         }
 
-        auto diagMsg = formErr(Err0549, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
+        auto diagMsg = formErr(Err0534, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
         diagMsg.replace("$$$ ", "");
         Diagnostic err{sourceFile, tokenParse, diagMsg};
         err.addNote(sourceFile, start, start, formNte(Nte0180, related.c_str()));
@@ -101,13 +101,13 @@ bool Parser::eatSemiCol(const char* msg)
             if (tokenParse.is(TokenId::SymSlash))
             {
                 tokenParse.token.startLocation = st.token.startLocation;
-                return error(tokenParse, formErr(Err0685, msg));
+                return error(tokenParse, formErr(Err0674, msg));
             }
 
             tokenParse = st;
         }
 
-        return error(tokenParse, formErr(Err0554, msg));
+        return error(tokenParse, formErr(Err0539, msg));
     }
 
     if (tokenParse.is(TokenId::SymSemiColon))

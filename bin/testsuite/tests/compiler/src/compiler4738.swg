@@ -1,4 +1,4 @@
-#global testerror "Err0598"
+#global testerror "Err0586"
 func toto(x: s32, y: f32) {}
 
 struct A

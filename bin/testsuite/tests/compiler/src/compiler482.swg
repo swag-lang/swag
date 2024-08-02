@@ -1,4 +1,4 @@
-#global testerror "Err0311"
+#global testerror "Err0305"
 #test
 {
 	var res = T()

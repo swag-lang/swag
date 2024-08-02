@@ -18,15 +18,15 @@ bool Tokenizer::doBinLiteral(TokenParse& tokenParse)
         if (SWAG_IS_NUM_SEP(c))
         {
             if (!acceptSep)
-                return error(tokenParse, toErr(Err0340));
+                return error(tokenParse, toErr(Err0333));
             acceptSep = false;
             c         = peekChar(offset);
             continue;
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0x80000000'00000000), error(tokenParse, toErr(Err0615)));
-        SWAG_VERIFY(rank != 64, error(tokenParse, toErr(Err0341)));
+        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0x80000000'00000000), error(tokenParse, toErr(Err0603)));
+        SWAG_VERIFY(rank != 64, error(tokenParse, toErr(Err0334)));
         tokenParse.literalValue.u64 <<= 1;
         rank++;
 
@@ -40,15 +40,15 @@ bool Tokenizer::doBinLiteral(TokenParse& tokenParse)
     {
         tokenParse.token.startLocation = location;
         tokenParse.token.text          = c;
-        return error(tokenParse, toErr(Err0227));
+        return error(tokenParse, toErr(Err0223));
     }
 
     // Be sure we don't have 0x without nothing
     if (rank == 0)
-        return error(tokenParse, toErr(Err0120));
+        return error(tokenParse, toErr(Err0117));
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        return error(tokenParse, toErr(Err0338));
+        return error(tokenParse, toErr(Err0332));
 
     // Type
     tokenParse.token.id = TokenId::LiteralNumber;
@@ -76,15 +76,15 @@ bool Tokenizer::doHexLiteral(TokenParse& tokenParse)
         if (SWAG_IS_NUM_SEP(c))
         {
             if (!acceptSep)
-                return error(tokenParse, toErr(Err0340));
+                return error(tokenParse, toErr(Err0333));
             acceptSep = false;
             c         = peekChar(offset);
             continue;
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0xF0000000'00000000), error(tokenParse, toErr(Err0615)));
-        SWAG_VERIFY(rank != 16, error(tokenParse, toErr(Err0342)));
+        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0xF0000000'00000000), error(tokenParse, toErr(Err0603)));
+        SWAG_VERIFY(rank != 16, error(tokenParse, toErr(Err0335)));
         tokenParse.literalValue.u64 <<= 4;
         rank++;
 
@@ -103,15 +103,15 @@ bool Tokenizer::doHexLiteral(TokenParse& tokenParse)
     {
         tokenParse.token.startLocation = location;
         tokenParse.token.text          = c;
-        return error(tokenParse, formErr(Err0310, tokenParse.token.c_str()));
+        return error(tokenParse, formErr(Err0303, tokenParse.token.c_str()));
     }
 
     // Be sure we don't have 0x without nothing
     if (rank == 0)
-        return error(tokenParse, toErr(Err0122));
+        return error(tokenParse, toErr(Err0119));
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        return error(tokenParse, toErr(Err0338));
+        return error(tokenParse, toErr(Err0332));
 
     // Type
     tokenParse.token.id = TokenId::LiteralNumber;
@@ -139,7 +139,7 @@ bool Tokenizer::doFloatLiteral(TokenParse& token, uint32_t c)
         // Digit separator
         if (SWAG_IS_NUM_SEP(c))
         {
-            SWAG_CHECK(acceptSep || rank == 0 || error(token, toErr(Err0340)));
+            SWAG_CHECK(acceptSep || rank == 0 || error(token, toErr(Err0333)));
             acceptSep = false;
             c         = peekChar(offset);
             continue;
@@ -149,7 +149,7 @@ bool Tokenizer::doFloatLiteral(TokenParse& token, uint32_t c)
         rank++;
 
         const auto val = c - '0';
-        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0615)));
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0603)));
         token.literalValue.f64 += val * fractPart;
         fractPart *= 0.1;
 
@@ -158,7 +158,7 @@ bool Tokenizer::doFloatLiteral(TokenParse& token, uint32_t c)
 
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        return error(token, toErr(Err0338));
+        return error(token, toErr(Err0332));
 
     return true;
 }
@@ -178,7 +178,7 @@ bool Tokenizer::doIntLiteral(TokenParse& token, uint32_t c)
         // Digit separator
         if (SWAG_IS_NUM_SEP(c))
         {
-            SWAG_CHECK(acceptSep || rank == 0 || error(token, toErr(Err0340)));
+            SWAG_CHECK(acceptSep || rank == 0 || error(token, toErr(Err0333)));
             acceptSep = false;
             c         = peekChar(offset);
             continue;
@@ -189,7 +189,7 @@ bool Tokenizer::doIntLiteral(TokenParse& token, uint32_t c)
         rank++;
 
         const auto val = c - '0';
-        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0615)));
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0603)));
         token.literalValue.u64 += val;
 
         c = peekChar(offset);
@@ -197,7 +197,7 @@ bool Tokenizer::doIntLiteral(TokenParse& token, uint32_t c)
 
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        return error(token, toErr(Err0338));
+        return error(token, toErr(Err0332));
 
     return true;
 }
@@ -230,7 +230,7 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& tokenParse, uint32_t c)
         // Fraction part
         tokenFrac.token.startLocation = location;
         c                             = peekChar(offset);
-        SWAG_VERIFY(SWAG_IS_NOT_NUM_SEP(c), error(tokenFrac, toErr(Err0289)));
+        SWAG_VERIFY(SWAG_IS_NOT_NUM_SEP(c), error(tokenFrac, toErr(Err0282)));
         if (SWAG_IS_DIGIT(c))
         {
             eatChar(c, offset);
@@ -263,8 +263,8 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& tokenParse, uint32_t c)
         }
 
         tokenExponent.token.startLocation = location;
-        SWAG_VERIFY(SWAG_IS_NOT_NUM_SEP(c), error(tokenExponent, toErr(Err0288)));
-        SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, toErr(Err0287)));
+        SWAG_VERIFY(SWAG_IS_NOT_NUM_SEP(c), error(tokenExponent, toErr(Err0281)));
+        SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, toErr(Err0280)));
         eatChar(c, offset);
         SWAG_CHECK(doIntLiteral(tokenExponent, c));
         c = peekChar(offset);
@@ -333,7 +333,7 @@ bool Tokenizer::doNumberLiteral(TokenParse& tokenParse, uint32_t c)
             eatChar(c, offset);
             tokenParse.token.text          = c;
             tokenParse.token.startLocation = startLoc;
-            return error(tokenParse, formErr(Err0343, tokenParse.token.c_str()));
+            return error(tokenParse, formErr(Err0336, tokenParse.token.c_str()));
         }
     }
 

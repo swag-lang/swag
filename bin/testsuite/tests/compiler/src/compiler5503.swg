@@ -1,4 +1,4 @@
-#global testerror "Err0225"
+#global testerror "Err0221"
 
 #[Swag.Mixin]
 #test

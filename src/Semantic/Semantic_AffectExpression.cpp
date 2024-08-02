@@ -26,7 +26,7 @@ bool Semantic::resolveMove(SemanticContext* context)
     {
         if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
         {
-            Diagnostic err{right, formErr(Err0330, right->typeInfo->getDisplayNameC())};
+            Diagnostic err{right, formErr(Err0324, right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload() && right->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
                 err.addNote(toNte(Nte0059));
             return context->report(err);
@@ -56,7 +56,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     // Cannot cast from closure to lambda
     if (node->typeInfo->getConcreteAlias()->isLambda() && mpl->lambda->typeInfo->getConcreteAlias()->isClosure())
     {
-        Diagnostic err{mpl, toErr(Err0646)};
+        Diagnostic err{mpl, toErr(Err0634)};
         err.addNote(node, Diagnostic::isType(node->typeInfo));
         err.addNote(toNte(Nte0191));
         return context->report(err);
@@ -164,7 +164,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     {
         if (left == left->parent->lastChild())
         {
-            Diagnostic err{node, node->token, formErr(Err0103, left->resolvedSymbolName()->name.c_str())};
+            Diagnostic err{node, node->token, formErr(Err0102, left->resolvedSymbolName()->name.c_str())};
             err.addNote(left, Diagnostic::isType(left->typeInfo));
             err.addNote(note);
             err.addNote(toNte(Nte0059));
@@ -173,13 +173,13 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
         if (left->typeInfo->isConstPointerRef())
         {
-            Diagnostic err{node, node->token, formErr(Err0103, left->resolvedSymbolName()->name.c_str())};
+            Diagnostic err{node, node->token, formErr(Err0102, left->resolvedSymbolName()->name.c_str())};
             err.addNote(left, Diagnostic::isType(left->typeInfo));
             err.addNote(note);
             return context->report(err);
         }
 
-        Diagnostic err{node, node->token, formErr(Err0103, left->resolvedSymbolName()->name.c_str())};
+        Diagnostic err{node, node->token, formErr(Err0102, left->resolvedSymbolName()->name.c_str())};
         err.addNote(left, Diagnostic::isType(left->typeInfo));
         err.addNote(note);
         return context->report(err);
@@ -214,7 +214,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         return context->report(err);
     }
 
-    Diagnostic err{node, node->token, toErr(Err0215)};
+    Diagnostic err{node, node->token, toErr(Err0211)};
     if (hint.empty())
         hint = Diagnostic::isType(left);
     err.addNote(left, hint);
@@ -275,19 +275,19 @@ bool Semantic::resolveAffect(SemanticContext* context)
         const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->hasAstFlag(AST_NO_LEFT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0658, g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0647, g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_NO_RIGHT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0658, g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0647, g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_FORCE_MOVE))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0658, g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0647, g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isAny() && node->token.isNot(TokenId::SymEqual))
     {
-        Diagnostic err{node, node->token, formErr(Err0352, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0345, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
@@ -338,7 +338,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // For tuples, we can only affect
     else if (forTuple)
     {
-        Diagnostic err{node, node->token, formErr(Err0351, node->token.c_str())};
+        Diagnostic err{node, node->token, formErr(Err0344, node->token.c_str())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
@@ -358,7 +358,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     }
                     else if (forTuple)
                     {
-                        return context->report({node, node->token, formErr(Err0351, node->token.c_str())});
+                        return context->report({node, node->token, formErr(Err0344, node->token.c_str())});
                     }
                     else
                     {
@@ -368,7 +368,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                         {
                             YIELD();
 
-                            Diagnostic err{right, formErr(Err0379, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+                            Diagnostic err{right, formErr(Err0371, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
                             err.hint = Diagnostic::isType(rightTypeInfo);
                             err.addNote(left, Diagnostic::isType(leftTypeInfo));
                             err.addNote(node, node->token, formNte(Nte0143, "opIndexAffect", rightTypeInfo->getDisplayNameC()));
@@ -394,7 +394,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     {
                         if (leftTypeInfo->isTuple())
                         {
-                            Diagnostic err{node, node->token, toErr(Err0216)};
+                            Diagnostic err{node, node->token, toErr(Err0212)};
                             err.addNote(right, Diagnostic::isType(rightTypeInfo));
                             return context->report(err);
                         }
@@ -495,7 +495,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             {
                 if (!leftTypeInfo->isPointerArithmetic())
                 {
-                    Diagnostic err{node, node->token, toErr(Err0359)};
+                    Diagnostic err{node, node->token, toErr(Err0352)};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
                     err.addNote(toNte(Nte0103));
                     return context->report(err);
@@ -503,13 +503,13 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
                 if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
                 {
-                    Diagnostic err{node, node->token, toErr(Err0358)};
+                    Diagnostic err{node, node->token, toErr(Err0351)};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
                     return context->report(err);
                 }
 
                 rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-                SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0360, rightTypeInfo->getDisplayNameC())}));
+                SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0353, rightTypeInfo->getDisplayNameC())}));
                 SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CAST_FLAG_TRY_COERCE));
                 break;
             }

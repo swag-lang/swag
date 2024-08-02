@@ -1,4 +1,4 @@
-#global testerror "Err0754"
+#global testerror "Err0738"
 func ReleaseDC()->s32 => 0
 
 func createContext(hWnd: *void)

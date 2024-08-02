@@ -1,4 +1,4 @@
-#global testerror "Err0631"
+#global testerror "Err0619"
 
 typealias point = string
 func toto(x: point)

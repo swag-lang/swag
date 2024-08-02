@@ -1,4 +1,4 @@
-#global testerror "Err0220"
+#global testerror "Err0217"
 
 #[Swag.publ ic]
 func other()

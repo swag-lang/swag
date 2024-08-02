@@ -206,7 +206,7 @@ bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Path& cfgFilePa
     if (!err)
         remotePath = remotePath1;
     if (!std::filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, formErr(Err0256, remotePath.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, formErr(Err0251, remotePath.c_str())});
     if (!fetch)
         return true;
     dep->resolvedLocation = remotePath;
@@ -225,7 +225,7 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Path& cfgFilePa
     if (!err)
         remotePath = remotePath1;
     if (!std::filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, formErr(Err0256, remotePath.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, formErr(Err0251, remotePath.c_str())});
     if (!fetch)
         return true;
 
@@ -236,20 +236,20 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Path& cfgFilePa
 bool ModuleDepManager::fetchModuleCfg(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     if (dep->location.empty())
-        return Report::report({dep->node, formErr(Err0255, dep->name.c_str())});
+        return Report::report({dep->node, formErr(Err0250, dep->name.c_str())});
 
     Vector<Utf8> tokens;
     Utf8::tokenize(dep->location, '@', tokens);
     if (tokens.size() != 2)
     {
         if (dep->isLocalToWorkspace)
-            return Report::report({dep->node, toErr(Err0132)});
-        return Report::report({dep->node, dep->tokenLocation, toErr(Err0132)});
+            return Report::report({dep->node, toErr(Err0129)});
+        return Report::report({dep->node, dep->tokenLocation, toErr(Err0129)});
     }
 
     // Check mode
     if (tokens[0] != g_LangSpec->name_swag && tokens[0] != g_LangSpec->name_disk)
-        return Report::report({dep->node, dep->tokenLocation, formErr(Err0325, tokens[0].c_str())});
+        return Report::report({dep->node, dep->tokenLocation, formErr(Err0319, tokens[0].c_str())});
     dep->locationParam = tokens[1];
 
     cfgFilePath.clear();

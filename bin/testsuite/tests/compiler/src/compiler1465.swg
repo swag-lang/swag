@@ -1,2 +1,2 @@
-#global testerror "Err0135"
+#global testerror "Err0132"
 var #alias45AA = 0

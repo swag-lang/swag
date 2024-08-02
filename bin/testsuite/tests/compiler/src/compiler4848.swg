@@ -1,4 +1,4 @@
-//#global testerror "Err0648"
+//#global testerror "Err0636"
 struct RGB{a, b, c: s32}
 
 #test

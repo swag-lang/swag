@@ -1,4 +1,4 @@
-#global testerror "Err0656"
+#global testerror "Err0644"
 
 func toto(fct: func(s32, s32)->bool)
 {

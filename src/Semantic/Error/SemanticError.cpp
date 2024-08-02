@@ -83,7 +83,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
 
 bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
 {
-    Utf8 text = formErr(Err0352, node->token.c_str(), typeInfo->getDisplayNameC());
+    Utf8 text = formErr(Err0345, node->token.c_str(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";
@@ -108,7 +108,7 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
     if (thisKind != otherKind)
         as = form("as %s", Naming::aKindName(otherKind).c_str());
 
-    Diagnostic err{sourceFile, token, formErr(Err0631, Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
+    Diagnostic err{sourceFile, token, formErr(Err0619, Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
     err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0071));
     return context->report(err);
 }

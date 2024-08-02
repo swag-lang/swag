@@ -1,4 +1,4 @@
-#global testerror "Err0252"
+#global testerror "Err0247"
 #test
 {
     var x: func(x: s32, y: s32)

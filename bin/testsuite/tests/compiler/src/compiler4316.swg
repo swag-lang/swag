@@ -1,4 +1,4 @@
-#global testerror "Err0683"
+#global testerror "Err0672"
 //#global skip
 #test
 {

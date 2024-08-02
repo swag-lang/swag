@@ -1,4 +1,4 @@
-#global testerror "Err0365"
+#global testerror "Err0357"
 func largest(list: [..] u8)
 {
     var largest =,ref list[0]

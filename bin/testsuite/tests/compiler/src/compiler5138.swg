@@ -1,4 +1,4 @@
-#global testerror "Err0232"
+#global testerror "Err0228"
 
 namespace A {}
 

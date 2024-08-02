@@ -1,3 +1,3 @@
-#global testerror "Err0310"
+#global testerror "Err0303"
 0xAG
  co

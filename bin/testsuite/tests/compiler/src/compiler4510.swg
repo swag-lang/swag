@@ -1,4 +1,4 @@
-#global testerror "Err0656"
+#global testerror "Err0644"
 
 #[Swag.Safety("", true)]
 func(T) toto(v: T)->T

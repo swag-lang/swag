@@ -466,7 +466,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
     DataSegment* storageSegment = nullptr;
     uint32_t     storageOffset  = UINT32_MAX;
 
-    SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, formErr(Err0249, node->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, formErr(Err0245, node->typeInfo->getDisplayNameC())}));
 
     // A constant array cannot be initialized with just one value (this is for variables)
     if (node->assignment && typeInfo->isArray())
@@ -474,7 +474,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         const auto typeAssign = TypeManager::concreteType(node->assignment->typeInfo);
         if (!typeAssign->isArray() && !typeAssign->isListArray())
         {
-            Diagnostic err{node->assignment, formErr(Err0314, typeInfo->getDisplayNameC())};
+            Diagnostic err{node->assignment, formErr(Err0308, typeInfo->getDisplayNameC())};
             err.addNote(toNte(Nte0101));
             return context->report(err);
         }

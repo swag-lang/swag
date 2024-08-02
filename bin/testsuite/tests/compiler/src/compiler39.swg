@@ -1,5 +1,5 @@
 #global testpass syntax;
-#global testerror "Err0713";
+#global testerror "Err0533";
 namespace toto
 {
 	var a: s32;

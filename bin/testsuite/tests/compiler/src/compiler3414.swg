@@ -1,2 +1,2 @@
-#global testerror "Err0499"
+#global testerror "Err0485"
 var v: closure(s32) = closure||(x: s32) { }
