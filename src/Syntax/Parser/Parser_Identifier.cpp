@@ -112,6 +112,22 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
         }
     }
 
+    if (tokenParse.is(TokenId::LiteralNumber))
+    {
+        Diagnostic err{sourceFile, tokenParse.token, formErr(Err0311, tokenParse.token.c_str()).c_str()};
+        if (tokenParse.literalType == LiteralType::TypeUntypedInt)
+        {
+            if (parent && parent->is(AstNodeKind::IdentifierRef) && parent->lastChild() && parent->lastChild()->is(AstNodeKind::Identifier))
+            {
+                err.addNote(formNte(Nte0213, parent->lastChild()->token.c_str(), tokenParse.token.c_str()));
+                if (tokenParse.literalValue.u64 < 32)
+                    err.addNote(formNte(Nte0214, parent->lastChild()->token.c_str(), tokenParse.token.c_str()));
+            }
+        }
+
+        return context->report(err);
+    }
+
     if (tokenParse.isNot(TokenId::Identifier) &&
         tokenParse.isNot(TokenId::NativeType) &&
         tokenParse.isNot(TokenId::SymQuestion) &&

@@ -1100,8 +1100,8 @@ void initErrors()
     SWAG_ERROR(Nte0210, "the only type accepted for an integer to pointer conversion is [[u64]]");
     SWAG_ERROR(Nte0211, "here is the start of the body");
     SWAG_ERROR(Nte0212, "the function is supposed to be part of the interface because of [[impl]]");
-    SWAG_ERROR(Nte0213, nullptr);
-    SWAG_ERROR(Nte0214, nullptr);
+    SWAG_ERROR(Nte0213, "if you are trying to access an element by index, use square brackets, such as [[%s[%s]]]");
+    SWAG_ERROR(Nte0214, "if you are trying to access a struct or a tuple element, you could try [[%s.item%s]]");
     SWAG_ERROR(Nte0215, nullptr);
 }
 
