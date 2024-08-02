@@ -37,33 +37,36 @@ void Diagnostic::setup()
     hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
 }
 
-void Diagnostic::doReplace(const TokenParse* tokenParse)
+void Diagnostic::doReplace(const Token& token)
 {
-    if (!tokenParse)
-        return;
-
-    if (Tokenizer::isKeyword(tokenParse->token.id))
-        textMsg.replace("$$TKN$$", form("keyword [[%s]]", tokenParse->token.c_str()));
-    else if (Tokenizer::isSymbol(tokenParse->token.id))
-        textMsg.replace("$$TKN$$", form("symbol [[%s]]", tokenParse->token.c_str()));
-    else if (Tokenizer::isLiteral(tokenParse->token.id) && tokenParse->literalType == LiteralType::TypeString)
-        textMsg.replace("$$TKN$$", form("literal [[\"%s\"]]", tokenParse->token.c_str()));    
-    else if (Tokenizer::isLiteral(tokenParse->token.id) && tokenParse->literalType == LiteralType::TypeCharacter)
-        textMsg.replace("$$TKN$$", form("literal [[`%s`]]", tokenParse->token.c_str()));    
-    else if (Tokenizer::isLiteral(tokenParse->token.id))
-        textMsg.replace("$$TKN$$", form("literal [[%s]]", tokenParse->token.c_str()));
-    else if(tokenParse->token.is(TokenId::NativeType))
-        textMsg.replace("$$TKN$$", form("type [[%s]]", tokenParse->token.c_str()));
-    else if(tokenParse->token.is(TokenId::Identifier))
-        textMsg.replace("$$TKN$$", form("identifier [[%s]]", tokenParse->token.c_str()));
-    else if (Tokenizer::isCompiler(tokenParse->token.id))
-        textMsg.replace("$$TKN$$", form("compiler keyword [[%s]]", tokenParse->token.c_str()));
-    else if (Tokenizer::isIntrinsicReturn(tokenParse->token.id))
-        textMsg.replace("$$TKN$$", form("intrinsic [[%s]]", tokenParse->token.c_str()));    
-    else if (Tokenizer::isIntrinsicNoReturn(tokenParse->token.id))
-        textMsg.replace("$$TKN$$", form("intrinsic [[%s]]", tokenParse->token.c_str()));    
+    if (Tokenizer::isKeyword(token.id))
+        textMsg.replace("$$TKN$$", form("keyword [[%s]]", token.c_str()));
+    else if (Tokenizer::isCompiler(token.id) || token.text.startsWith("#mix") || token.text.startsWith("#alias"))
+        textMsg.replace("$$TKN$$", form("compiler keyword [[%s]]", token.c_str()));
+    else if (Tokenizer::isIntrinsicReturn(token.id))
+        textMsg.replace("$$TKN$$", form("intrinsic [[%s]]", token.c_str()));
+    else if (Tokenizer::isSymbol(token.id))
+        textMsg.replace("$$TKN$$", form("symbol [[%s]]", token.c_str()));
+    else if (Tokenizer::isLiteral(token.id))
+        textMsg.replace("$$TKN$$", form("literal [[%s]]", token.c_str()));
+    else if (token.is(TokenId::NativeType))
+        textMsg.replace("$$TKN$$", form("type [[%s]]", token.c_str()));
+    else if (token.is(TokenId::Identifier))
+        textMsg.replace("$$TKN$$", form("identifier [[%s]]", token.c_str()));
+    else if (Tokenizer::isIntrinsicNoReturn(token.id))
+        textMsg.replace("$$TKN$$", form("intrinsic [[%s]]", token.c_str()));
     else
-        textMsg.replace("$$TKN$$", form("[[%s]]", tokenParse->token.c_str()));
+        textMsg.replace("$$TKN$$", form("[[%s]]", token.c_str()));
+}
+
+void Diagnostic::doReplace(const TokenParse& tokenParse)
+{
+    if (Tokenizer::isLiteral(tokenParse.token.id) && tokenParse.literalType == LiteralType::TypeString)
+        textMsg.replace("$$TKN$$", form("literal [[\"%s\"]]", tokenParse.token.c_str()));
+    else if (Tokenizer::isLiteral(tokenParse.token.id) && tokenParse.literalType == LiteralType::TypeCharacter)
+        textMsg.replace("$$TKN$$", form("literal [[`%s`]]", tokenParse.token.c_str()));
+    else
+        doReplace(tokenParse.token);
 }
 
 void Diagnostic::addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h)

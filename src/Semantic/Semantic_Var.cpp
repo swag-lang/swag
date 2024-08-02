@@ -641,7 +641,7 @@ bool Semantic::checkMixAlias(SemanticContext* context, AstVarDecl* node)
 
         if (!ownerFct)
         {
-            Diagnostic err{node, formErr(Err0401, node->token.c_str())};
+            Diagnostic err{node, toErr(Err0400)};
             err.addNote(toNte(Nte0002));
             return context->report(err);
         }
@@ -660,7 +660,7 @@ bool Semantic::checkMixAlias(SemanticContext* context, AstVarDecl* node)
 
         if (!ownerFct)
         {
-            Diagnostic err{node, node->token, formErr(Err0401, node->token.c_str())};
+            Diagnostic err{node, node->token, toErr(Err0400)};
             err.addNote(toNte(Nte0001));
             return context->report(err);
         }

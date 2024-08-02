@@ -53,6 +53,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
+        doReplace(token);
         setup();
     }
 
@@ -65,7 +66,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
-        doReplace(&tokenParse);
+        doReplace(tokenParse);
         setup();
     }    
 
@@ -79,6 +80,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
+        doReplace(token);
         setup();
     }
 
@@ -93,6 +95,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
+        doReplace(token);
         setup();
     }
 
@@ -104,6 +107,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
+        doReplace(node->token);
         node->computeLocation(startLocation, endLocation);
         setup();
     }
@@ -117,6 +121,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
+        doReplace(node->token);
         node->computeLocation(startLocation, endLocation);
         setup();
     }
@@ -148,7 +153,8 @@ struct Diagnostic
     static Diagnostic* note(AstNode* node, const Utf8& msg) { return node ? new Diagnostic{node, msg, DiagnosticLevel::Note} : nullptr; }
 
     void setup();
-    void doReplace(const TokenParse* tokenParse);
+    void doReplace(const Token& token);
+    void doReplace(const TokenParse& tokenParse);
     void addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
     void addNote(AstNode* node, const Token& token, const Utf8& msg);
     void addNote(AstNode* node, const Utf8& h);
