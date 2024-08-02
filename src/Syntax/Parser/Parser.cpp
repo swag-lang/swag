@@ -107,7 +107,7 @@ bool Parser::eatSemiCol(const char* msg)
             tokenParse = st;
         }
 
-        return error(tokenParse, formErr(Err0554, msg, tokenParse.token.c_str()));
+        return error(tokenParse, formErr(Err0554, msg));
     }
 
     if (tokenParse.is(TokenId::SymSemiColon))

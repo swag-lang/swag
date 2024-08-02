@@ -677,7 +677,7 @@ void initErrors()
     SWAG_ERROR(Err0551, "missing default value                             $ the %s needs a default value as a preceding parameter has one");
     SWAG_ERROR(Err0552, "missing dereference index                         $ an index is missing to dereference the array [[%s]] of type [[%s]] $ consider adding the index between brackets");
     SWAG_ERROR(Err0553, "missing dereference index                         $ an index is missing to dereference the slice [[%s]] of type [[%s]] $ consider adding the index between brackets");
-    SWAG_ERROR(Err0554, "missing end of line                               $ expected a line break or a [[;]] to close the %s, got [[%s]] instead $ consider adding a line break or separating the previous statement with a [[;]]");
+    SWAG_ERROR(Err0554, "missing end of line                               $ expected a line break or a [[;]] to close the %s, got $$TKN$$ instead $ consider adding a line break or separating the previous statement with a [[;]]");
     SWAG_ERROR(Err0555, "missing enum flag value                           $ can't deduce the value of flag [[%s]] as the previous value isn't a power of two");
     SWAG_ERROR(Err0556, "missing enum name                                 $ expected the enum name before the start of the body [[{]]");
     SWAG_ERROR(Err0557, "missing enum name                                 $ expected the enum name before the start of the type definition [[:]]");
@@ -699,7 +699,7 @@ void initErrors()
     SWAG_ERROR(Err0573, "missing lambda parameter type                     $ expected the type with [[:]] or an assignment with [[=]] $ when declaring lambda parameters, you should not combined inferred and explicit types");
     SWAG_ERROR(Err0574, "missing named argument                            $ the %s should be named because some arguments before are named");
     SWAG_ERROR(Err0575, "missing namespace name                            $ expected the namespace name before [[%s]]");
-    SWAG_ERROR(Err0576, "missing parameter type                            $ expected the type with [[:]] or an assignment with [[=]], got [[%s]] instead");
+    SWAG_ERROR(Err0576, "missing parameter type                            $ expected the type with [[:]] or an assignment with [[=]], got $$TKN$$ instead");
     SWAG_ERROR(Err0577, "missing parameters                                $ the special function [[%s]] requires some parameters");
     SWAG_ERROR(Err0578, "missing return type                               $ a [[public]] function must always define its return type");
     SWAG_ERROR(Err0579, "missing return type                               $ the function [[%s]] has the [[#[Swag.Discardable]]] attribute and should return something");
