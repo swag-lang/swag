@@ -29,7 +29,7 @@ bool Tokenizer::error(TokenParse& tokenParse, const Utf8& msg, const Utf8& hint)
 {
     tokenParse.token.endLocation = location;
 
-    Diagnostic err{sourceFile, tokenParse.token, msg};
+    Diagnostic err{sourceFile, tokenParse, msg};
     err.hint = hint;
     return errorContext->report(err);
 }

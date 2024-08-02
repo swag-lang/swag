@@ -350,7 +350,7 @@ void initErrors()
     SWAG_ERROR(Err0224, "invalid attribute use                             $ a %s can't have the [[#[Swag.Macro]]] attribute");
     SWAG_ERROR(Err0225, "invalid attribute use                             $ a %s can't have the [[#[Swag.Mixin]]] attribute");
     SWAG_ERROR(Err0226, "invalid attribute use                             $ a %s can't have the [[#[Swag.NotGeneric]]] attribute");
-    SWAG_ERROR(Err0227, "invalid binary number format                      $ binary literals should only contain [[0]] or [[1]], got [[%s]] instead");
+    SWAG_ERROR(Err0227, "invalid binary number format                      $ binary literals should only contain [[0]] or [[1]], got $$TKN$$ instead");
     SWAG_ERROR(Err0228, "invalid bit-cast                                  $ bit-cast from type [[%s]] is not allowed $ expected an integer, a rune, a float or a pointer");
     SWAG_ERROR(Err0229, "invalid bit-cast                                  $ bit-cast to a larger type is not allowed ([[%s]] to [[%s]])");
     SWAG_ERROR(Err0230, "invalid bit-cast                                  $ bit-cast to type [[%s]] is not allowed $ expected integer, rune, or float");

@@ -40,7 +40,7 @@ bool Tokenizer::doBinLiteral(TokenParse& tokenParse)
     {
         tokenParse.token.startLocation = location;
         tokenParse.token.text          = c;
-        return error(tokenParse, formErr(Err0227, tokenParse.token.c_str()));
+        return error(tokenParse, toErr(Err0227));
     }
 
     // Be sure we don't have 0x without nothing
