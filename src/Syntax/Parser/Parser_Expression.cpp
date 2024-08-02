@@ -1232,7 +1232,7 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
             // Name
             if (tokenParse.is(TokenId::SymColon))
             {
-                SWAG_VERIFY(paramExpression->is(AstNodeKind::IdentifierRef), error(paramExpression, formErr(Err0311, tokenParse.token.c_str())));
+                SWAG_VERIFY(paramExpression->is(AstNodeKind::IdentifierRef), error(paramExpression, formErr(Err0311, paramExpression->token.c_str())));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->lastChild()));
                 auto       namedToFree     = paramExpression;
