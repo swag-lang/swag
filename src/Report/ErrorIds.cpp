@@ -673,7 +673,7 @@ void initErrors()
     SWAG_ERROR(Err0547, "missing attribute name                            $ expected an attribute name before [[(]]");
     SWAG_ERROR(Err0548, "missing catch error                               $ expected [[try]], [[catch]] or [[assume]] to deal with the errors of [[%s]]");
     SWAG_ERROR(Err0549, "missing closing [[%s]]                            $ expected [[%s]], got [[%s]] instead");
-    SWAG_ERROR(Err0550, "missing constant type                             $ expected a type with [[:]] or an assignment with [[=]], got [[%s]] instead");
+    SWAG_ERROR(Err0550, "missing constant type                             $ expected a type with [[:]] or an assignment with [[=]], got $$TKN$$ instead");
     SWAG_ERROR(Err0551, "missing default value                             $ the %s needs a default value as a preceding parameter has one");
     SWAG_ERROR(Err0552, "missing dereference index                         $ an index is missing to dereference the array [[%s]] of type [[%s]] $ consider adding the index between brackets");
     SWAG_ERROR(Err0553, "missing dereference index                         $ an index is missing to dereference the slice [[%s]] of type [[%s]] $ consider adding the index between brackets");
@@ -713,7 +713,7 @@ void initErrors()
     SWAG_ERROR(Err0587, "missing struct name                               $ expected the struct name before the start of the body [[{]]");
     SWAG_ERROR(Err0588, "missing test error                                $ expected at least one error, but none was raised");
     SWAG_ERROR(Err0589, "missing test warning                              $ expected at least one warning, but none was raised");
-    SWAG_ERROR(Err0590, "missing variable type                             $ expected the type with [[:]] or an assignment with [[=]], got [[%s]] instead");
+    SWAG_ERROR(Err0590, "missing variable type                             $ expected the type with [[:]] or an assignment with [[=]], got $$TKN$$ instead");
     SWAG_ERROR(Err0591, "misused UFCS                                      $ the %s [[%s]] can't be used as the first argument when calling [[%s]]");
     SWAG_ERROR(Err0592, "misused UFCS                                      $ the hidden [[with]] variable [[%s]] can't be used as the first argument when calling [[%s]]");
     SWAG_ERROR(Err0593, "non-contiguous [[#alias]]                         $ non-contiguous [[#alias]] in function [[%s]], missing [[#alias%u]]");
@@ -828,7 +828,7 @@ void initErrors()
     SWAG_ERROR(Err0702, "unexpected return value                           $ a function with the [[#[Swag.CalleeReturn]]] attribute must not declare a return value");
     SWAG_ERROR(Err0703, "unexpected return value                           $ unexpected return value of type [[%s]] for function [[%s]]");
     SWAG_ERROR(Err0704, "unexpected return value                           $ unexpected return value of type [[%s]]");
-    SWAG_ERROR(Err0705, "unexpected tuple unpacking name                   $ expected a variable name or [[?]] when unpacking a tuple, got [[%s]] instead");
+    SWAG_ERROR(Err0705, "unexpected tuple unpacking name                   $ expected a variable name or [[?]] when unpacking a tuple, got $$TKN$$ instead");
     SWAG_ERROR(Err0706, "unexpected type                                   $ can't start a declaration with a type");
     SWAG_ERROR(Err0707, "unexpected type alias                             $ expected a direct type as an [[impl]] block name, got a type alias instead");
     SWAG_ERROR(Err0708, "unexpected type declaration                       $ unexpected type declaration after [[self]] $ [[self]] is implicitly typed; consider removing the redundant type");

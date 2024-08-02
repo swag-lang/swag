@@ -332,11 +332,11 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         {
             Utf8 msg;
             if (kind == AstNodeKind::ConstDecl)
-                msg = formErr(Err0550, tokenParse.token.c_str());
+                msg = toErr(Err0550);
             else
-                msg = formErr(Err0590, tokenParse.token.c_str());
+                msg = toErr(Err0590);
 
-            Diagnostic err{sourceFile, tokenParse.token, msg};
+            Diagnostic err{sourceFile, tokenParse, msg};
             if (tokenParse.is(TokenId::SymEqualEqual))
                 err.addNote(toNte(Nte0010));
             return context->report(err);
