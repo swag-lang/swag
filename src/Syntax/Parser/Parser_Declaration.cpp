@@ -266,10 +266,10 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
                 break;
             case TokenId::SymLeftCurly:
                 if (!forPrivate)
-                    return unexpectedTokenError(tokenParse.token, formErr(Err0575, "{"));
+                    return error(tokenParse.token, formErr(Err0575, "{"));
                 break;
             case TokenId::SymSemiColon:
-                return unexpectedTokenError(tokenParse.token, formErr(Err0575, ";"));
+                return error(tokenParse.token, formErr(Err0575, ";"));
             default:
                 if (!forPrivate)
                     return error(tokenParse.token, formErr(Err0335, tokenParse.token.c_str()));

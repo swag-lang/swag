@@ -49,7 +49,7 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
     {
         ParserPushAstNodeFlags scopedFlags(this, AST_NO_BACKEND);
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), unexpectedTokenError(tokenParse.token, formErr(Err0524, tokenParse.token.c_str())));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse.token, formErr(Err0524, tokenParse.token.c_str())));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         node->allocateExtension(ExtensionKind::Semantic);
         node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
@@ -427,7 +427,7 @@ bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
     node->semanticFct = Semantic::resolveCompilerForeignLib;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), unexpectedTokenError(tokenParse.token, formErr(Err0521, tokenParse.token.c_str())));
+    SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse.token, formErr(Err0521, tokenParse.token.c_str())));
 
     AstNode* literal;
     SWAG_CHECK(doLiteral(node, &literal));
@@ -627,7 +627,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         {
             SWAG_VERIFY(sourceFile->module->is(ModuleKind::Test) || sourceFile->hasFlag(FILE_FOR_FORMAT), context->report({sourceFile, tokenParse.token, toErr(Err0436)}));
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), unexpectedTokenError(tokenParse.token, formErr(Err0522, tokenParse.token.c_str())));
+            SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse.token, formErr(Err0522, tokenParse.token.c_str())));
             sourceFile->tokenHasError = tokenParse.token;
             sourceFile->addFlag(FILE_SHOULD_HAVE_ERROR);
             module->shouldHaveError = true;
@@ -642,7 +642,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         {
             SWAG_VERIFY(sourceFile->module->is(ModuleKind::Test) || sourceFile->hasFlag(FILE_FOR_FORMAT), context->report({sourceFile, tokenParse.token, toErr(Err0437)}));
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), unexpectedTokenError(tokenParse.token, formErr(Err0523, tokenParse.token.c_str())));
+            SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse.token, formErr(Err0523, tokenParse.token.c_str())));
             sourceFile->tokenHasWarning = tokenParse.token;
             sourceFile->addFlag(FILE_SHOULD_HAVE_WARNING);
             module->shouldHaveWarning = true;
@@ -872,7 +872,7 @@ bool Parser::doCompilerImport(AstNode* parent)
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the location"));
                 SWAG_VERIFY(node->tokenLocation.text.empty(), error(tokenParse.token, toErr(Err0064)));
-                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), unexpectedTokenError(tokenParse.token, formErr(Err0137, tokenParse.token.c_str())));
+                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse.token, formErr(Err0137, tokenParse.token.c_str())));
                 node->tokenLocation = tokenParse.token;
                 SWAG_CHECK(eatToken());
                 continue;
@@ -883,7 +883,7 @@ bool Parser::doCompilerImport(AstNode* parent)
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the version"));
                 SWAG_VERIFY(node->tokenVersion.text.empty(), error(tokenParse.token, toErr(Err0065)));
-                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), unexpectedTokenError(tokenParse.token, formErr(Err0138, tokenParse.token.c_str())));
+                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse.token, formErr(Err0138, tokenParse.token.c_str())));
                 node->tokenVersion = tokenParse.token;
                 SWAG_CHECK(eatToken());
                 continue;
@@ -910,7 +910,7 @@ bool Parser::doCompilerPlaceHolder(AstNode* parent)
 
     const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerPlaceHolder, this, parent);
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(tokenParse.is(TokenId::Identifier), unexpectedTokenError(tokenParse.token, formErr(Err0530, tokenParse.token.c_str())));
+    SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse.token, formErr(Err0530, tokenParse.token.c_str())));
     node->inheritTokenName(tokenParse.token);
     node->inheritTokenLocation(tokenParse.token);
     SWAG_CHECK(eatToken());

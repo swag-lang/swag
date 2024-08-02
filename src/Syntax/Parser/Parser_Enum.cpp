@@ -17,8 +17,8 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     *result                                   = enumNode;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), unexpectedTokenError(tokenParse.token, toErr(Err0557)));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), unexpectedTokenError(tokenParse.token, toErr(Err0556)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse.token, toErr(Err0557)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse.token, toErr(Err0556)));
     SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0267, tokenParse.token.c_str())));
     enumNode->inheritTokenName(tokenParse.token);
     enumNode->tokenName = tokenParse.token;

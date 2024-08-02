@@ -101,10 +101,8 @@ struct Parser
     bool error(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr) const;
     bool error(AstNode* node, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr) const;
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help = nullptr) const;
-    bool unexpectedTokenError(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr) const;
     bool invalidTokenError(InvalidTokenError kind, const AstNode* parent = nullptr);
     bool invalidIdentifierError(const TokenParse& myToken, const char* msg = nullptr) const;
-    void prepareExpectTokenError(Diagnostic& diag) const;
 
     bool eatToken();
     bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");

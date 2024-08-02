@@ -34,17 +34,6 @@ bool Parser::error(const SourceLocation& startLocation, const SourceLocation& en
     return context->report(err);
 }
 
-bool Parser::unexpectedTokenError(const Token& tk, const Utf8& msg, const char* help, const char* hint) const
-{
-    Diagnostic err{sourceFile, tk, msg};
-    prepareExpectTokenError(err);
-    if (hint)
-        err.hint = hint;
-    if (help)
-        err.addNote(help);
-    return context->report(err);
-}
-
 bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 {
     Utf8 msg, note;
@@ -155,20 +144,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) const
 {
     Diagnostic err{sourceFile, myToken.token, msg ? msg : formErr(Err0311, myToken.token.c_str()).c_str()};
-    prepareExpectTokenError(err);
     if (Tokenizer::isKeyword(myToken.token.id))
         err.addNote(formNte(Nte0125, myToken.token.c_str()));
     return context->report(err);
-}
-
-void Parser::prepareExpectTokenError(Diagnostic& diag) const
-{
-    // If we expect a token, and the bad token is the first of the line, then
-    // it's better to display the requested token at the end of the previous line
-    if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
-    {
-        diag.addNote(diag.startLocation, diag.endLocation, formNte(Nte0201, tokenParse.token.c_str()));
-        diag.startLocation = prevTokenParse.token.endLocation;
-        diag.endLocation   = tokenParse.token.startLocation;
-    }
 }

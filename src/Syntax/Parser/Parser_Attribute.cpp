@@ -80,7 +80,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
             if (tokenParse.isNot(TokenId::SymRightSquare))
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma, "to use another attribute, or ']' to end"));
-                SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), unexpectedTokenError(tokenParse.token, toErr(Err0547)));
+                SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse.token, toErr(Err0547)));
                 SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0219, tokenParse.token.c_str())));
             }
         }

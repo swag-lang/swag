@@ -26,8 +26,7 @@ bool Parser::eatToken(TokenId id, const char* msg)
     SWAG_ASSERT(msg);
     if (tokenParse.token.isNot(id))
     {
-        Diagnostic err{sourceFile, tokenParse.token, formErr(Err0080, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str())};
-        prepareExpectTokenError(err);
+        const Diagnostic err{sourceFile, tokenParse.token, formErr(Err0080, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str())};
         return context->report(err);
     }
 
@@ -39,8 +38,7 @@ bool Parser::eatTokenError(TokenId id, const Utf8& msg)
 {
     if (tokenParse.token.isNot(id))
     {
-        Diagnostic err{sourceFile, tokenParse.token, form(msg.c_str(), tokenParse.token.c_str())};
-        prepareExpectTokenError(err);
+        const Diagnostic err{sourceFile, tokenParse.token, form(msg.c_str(), tokenParse.token.c_str())};
         return context->report(err);
     }
 

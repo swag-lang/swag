@@ -409,31 +409,41 @@ void Diagnostic::collectSourceCode()
 
         if (countBlanks > MAX_INDENT_BLANKS)
             minBlanks = countBlanks - MAX_INDENT_BLANKS;
+
+        // Is error at the start of the line ?
+        if (location0.line && location0.column - countBlanks == 0)
+            lineCodePrev = sourceFile->getLine(location0.line - 1);
     }
 }
 
-void Diagnostic::printSourceCode(Log* log) const
+void Diagnostic::printSourceCode(Log* log, int num, const Utf8& line) const
 {
-    if (lineCode.empty())
+    if (line.empty())
         return;
-
-    if (showErrorLevel || showFileName)
-        printMargin(log, true);
 
     // Print all lines except the one that really contains the relevant stuff (and ranges)
     SyntaxColorContext cxt;
     cxt.mode = SyntaxColorMode::ForLog;
 
-    const auto pz = lineCode.c_str();
+    const auto pz = line.c_str();
     if (*pz == 0 || SWAG_IS_WIN_EOL(*pz) || SWAG_IS_EOL(*pz))
         return;
-    printMargin(log, false, true, lineCodeNum);
+    printMargin(log, false, true, num);
 
     log->setColor(LogColor::White);
 
-    const auto colored = doSyntaxColor(lineCode.c_str() + minBlanks, cxt);
+    const auto colored = doSyntaxColor(line.c_str() + minBlanks, cxt);
     log->print(colored, true);
     log->writeEol();
+}
+
+void Diagnostic::printSourceCode(Log* log) const
+{
+    if (showErrorLevel || showFileName)
+        printMargin(log, true);
+    
+    printSourceCode(log, lineCodeNum - 1, lineCodePrev);
+    printSourceCode(log, lineCodeNum, lineCode);
 }
 
 void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level) const
@@ -495,7 +505,7 @@ void Diagnostic::printLastRangeHint(Log* log, int curColumn)
     for (uint32_t i = 0; i < tokens.size(); i++)
     {
         log->setColor(rangeNoteColor);
-        //setColorRanges(log, r.errorLevel);
+        // setColorRanges(log, r.errorLevel);
 
         log->print(tokens[i]);
         if (i != tokens.size() - 1)

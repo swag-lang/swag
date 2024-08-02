@@ -642,12 +642,12 @@ void initErrors()
     SWAG_ERROR(Err0516, "misplaced type                                    $ [[%s]] is only valid when declaring a function parameter");
     SWAG_ERROR(Err0517, "misplaced variadic argument                       $ a variadic argument must be the last one");
     SWAG_ERROR(Err0518, "misplaced variadic parameter                      $ a variadic parameter must be the last one");
-    SWAG_ERROR(Err0519, "missing [[#alias]] number                         $ [[#alias]] variable names should end with a number such as [[#alias0]], [[#alias1]], etc.");
+    SWAG_ERROR(Err0519, "missing [[#alias]] number                         $ an [[#alias]] variable name must end with a number such as [[#alias0]], [[#alias1]], etc.");
     SWAG_ERROR(Err0520, "missing [[#do]]                                   $ missing either [[#do]] or [[{]] before [[%s]]");
     SWAG_ERROR(Err0521, "missing [[#foreignlib]] string argument           $ expected the library name after [[#foreignlib]], got [[%s]] instead $ use [[#foreignlib \"path/to/library\"]] to specify the library to import");
     SWAG_ERROR(Err0522, "missing [[#global testerror]] string argument     $ expected the error string to check after [[#global testerror]], got [[%s]] instead");
     SWAG_ERROR(Err0523, "missing [[#global testwarning]] string argument   $ expected the warning string to check after [[#global testwarning]], got [[%s]] instead");
-    SWAG_ERROR(Err0524, "missing [[#if]] boolean expression                $ expected a boolean expression before [[%s]]");
+    SWAG_ERROR(Err0524, "missing [[#if]] boolean expression                $ expected the boolean expression after [[#if]], got [[%s]] instead");
     SWAG_ERROR(Err0525, "missing [[#import]] string argument               $ expected the module name to import after [[#import]], got [[%s]] instead");
     SWAG_ERROR(Err0526, "missing [[#include]] string argument              $ expected the file name to include after [[#include]], got [[%s]] instead");
     SWAG_ERROR(Err0527, "missing [[#main]]                                 $ the program entry point [[#main]] is missing");
@@ -661,7 +661,7 @@ void initErrors()
     SWAG_ERROR(Err0535, "missing [[case]] expression                       $ expected the [[case]] expression before [[%s]]");
     SWAG_ERROR(Err0536, "missing [[closure]] capture variable              $ expected another capture variable between [[,]] and [[|]] $ add another variable or consider removing the trailing comma");
     SWAG_ERROR(Err0537, "missing [[do]]                                    $ missing either [[do]] or [[{]] before [[%s]]");
-    SWAG_ERROR(Err0538, "missing [[if]] boolean expression                 $ expected a boolean expression before [[%s]]");
+    SWAG_ERROR(Err0538, "missing [[if]] boolean expression                 $ expected a boolean expression after [[if]], got [[%s]] instead");
     SWAG_ERROR(Err0539, "missing [[impl]]                                  $ the function [[%s]] is part of the interface [[%s]] but lacks an [[impl]] marker");
     SWAG_ERROR(Err0540, "missing [[loop]] count                            $ expected the [[loop]] count expression before [[%s]]");
     SWAG_ERROR(Err0541, "missing [[visit]] expression                      $ expected the element to visit before [[%s]]");
@@ -1088,7 +1088,7 @@ void initErrors()
     SWAG_ERROR(Nte0198, "this suffix forces the literal to be converted to [[%s]]");
     SWAG_ERROR(Nte0199, "the identifier [[%s]] is %s and not a function or a struct");
     SWAG_ERROR(Nte0200, "expected an integer, a rune or a float value");
-    SWAG_ERROR(Nte0201, "unexpected [[%s]]");
+    SWAG_ERROR(Nte0201, nullptr);
     SWAG_ERROR(Nte0202, "occurred while trying to convert [[%s]] to a function call argument of type [[%s]]");
     SWAG_ERROR(Nte0203, "unexpected scope");
     SWAG_ERROR(Nte0204, "perhaps you intended to use this type: [[%s]]");

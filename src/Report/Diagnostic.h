@@ -149,6 +149,7 @@ struct Diagnostic
     void collectSourceCode();
     void sortRanges();
     void collectRanges();
+    void printSourceCode(Log* log, int num, const Utf8& line) const;
     void printSourceCode(Log* log) const;
     void printSourceLine(Log* log) const;
     void printErrorLevel(Log* log);
@@ -196,6 +197,7 @@ struct Diagnostic
     Vector<const Diagnostic*> notes;
     Vector<RangeHint>         ranges;
     Utf8                      lineCode;
+    Utf8                      lineCodePrev;
     int                       lineCodeNum       = 0;
     int                       lineCodeNumDigits = 0;
     int                       lineCodeMaxDigits = 0;

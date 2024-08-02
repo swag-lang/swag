@@ -294,7 +294,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                     unnamedTokens.push_back(tokenParse.token);
                 }
 
-                SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), unexpectedTokenError(tokenParse.token, formErr(Err0128, tokenParse.token.c_str())));
+                SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse.token, formErr(Err0128, tokenParse.token.c_str())));
                 SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0356, tokenParse.token.c_str())));
                 SWAG_CHECK(eatToken());
                 otherVariables.push_back(otherVarNode);
@@ -394,7 +394,6 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (!acceptMissingType)
             {
                 Diagnostic err{sourceFile, tokenParse.token, formErr(Err0576, tokenParse.token.c_str())};
-                prepareExpectTokenError(err);
                 if (otherVariables.empty())
                     err.addNote(paramNode, toNte(Nte0169));
                 else
@@ -438,7 +437,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
 
 bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType, bool isMethod, bool isConstMethod, bool isItfMethod)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), unexpectedTokenError(tokenParse.token, toErr(Err0558)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse.token, toErr(Err0558)));
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     const auto startLoc = tokenParse.token.startLocation;
@@ -1012,12 +1011,10 @@ bool Parser::doFuncDeclBody(AstNode* node, AstNode** result, FuncDeclFlags flags
         if (flags.has(FUNC_DECL_INTERFACE))
         {
             Diagnostic err{sourceFile, tokenParse.token, toErr(Err0081)};
-            prepareExpectTokenError(err);
             return context->report(err);
         }
 
         Diagnostic err{sourceFile, tokenParse.token, toErr(Err0082)};
-        prepareExpectTokenError(err);
         return context->report(err);
     }
 
