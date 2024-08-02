@@ -137,7 +137,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
             if (tokenParse.is(TokenId::SymColon))
             {
                 if (paramExpression->isNot(AstNodeKind::IdentifierRef) || paramExpression->childCount() != 1)
-                    return context->report({paramExpression, formErr(Err0327, paramExpression->token.c_str())});
+                    return context->report({paramExpression, toErr(Err0327)});
                 param->addExtraPointer(ExtraPointerKind::IsNamed, paramExpression->firstChild());
                 param->allocateExtension(ExtensionKind::Owner);
                 param->extOwner()->nodesToFree.push_back(paramExpression);
