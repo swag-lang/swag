@@ -40,23 +40,23 @@ void Diagnostic::setup()
 void Diagnostic::doReplace(const Token& token)
 {
     if (Tokenizer::isKeyword(token.id))
-        textMsg.replace("$$TKN$$", form("keyword [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("keyword [[%s]]", token.c_str()));
     else if (Tokenizer::isCompiler(token.id) || token.text.startsWith("#mix") || token.text.startsWith("#alias"))
-        textMsg.replace("$$TKN$$", form("compiler keyword [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("compiler keyword [[%s]]", token.c_str()));
     else if (Tokenizer::isIntrinsicReturn(token.id))
-        textMsg.replace("$$TKN$$", form("intrinsic [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("intrinsic [[%s]]", token.c_str()));
     else if (Tokenizer::isSymbol(token.id))
-        textMsg.replace("$$TKN$$", form("symbol [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("symbol [[%s]]", token.c_str()));
     else if (Tokenizer::isLiteral(token.id))
-        textMsg.replace("$$TKN$$", form("literal [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("literal [[%s]]", token.c_str()));
     else if (token.is(TokenId::NativeType))
-        textMsg.replace("$$TKN$$", form("type [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("type [[%s]]", token.c_str()));
     else if (token.is(TokenId::Identifier))
-        textMsg.replace("$$TKN$$", form("identifier [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("identifier [[%s]]", token.c_str()));
     else if (Tokenizer::isIntrinsicNoReturn(token.id))
-        textMsg.replace("$$TKN$$", form("intrinsic [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("intrinsic [[%s]]", token.c_str()));
     else
-        textMsg.replace("$$TKN$$", form("[[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("[[%s]]", token.c_str()));
 }
 
 void Diagnostic::doReplace(const TokenParse& tokenParse)

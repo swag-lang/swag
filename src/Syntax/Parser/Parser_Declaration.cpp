@@ -42,7 +42,11 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
         case TokenId::KwdInternal:
             return error(tokenParse, formErr(Err0013, tokenParse.token.c_str(), tokenAttr.c_str()));
         default:
-            return error(tokenParse, formErr(Err0470, tokenAttr.c_str(), tokenParse.token.c_str(), tokenParse.token.c_str()));
+        {
+            Diagnostic err{sourceFile, tokenAttr, formErr(Err0470, tokenAttr.c_str(), tokenParse.token.c_str())};
+            err.addNote(tokenParse.token, toNte(Nte0215));
+            return context->report(err);
+        }
     }
 
     return true;

@@ -593,7 +593,7 @@ void initErrors()
     SWAG_ERROR(Err0467, "misplaced [[using]]                               $ [[using]] on a variable is not allowed in [[%s]] scope");
     SWAG_ERROR(Err0468, "misplaced [[using]] in interface                  $ [[using]] can't be associated with an interface member");
     SWAG_ERROR(Err0469, "misplaced access modifier                         $ a global variable can't be [[public]]");
-    SWAG_ERROR(Err0470, "misplaced access modifier                         $ misuse of [[%s]] before [[%s]] $ [[%s]] can't be prefixed with an access modifier");
+    SWAG_ERROR(Err0470, "misplaced access modifier                         $ misuse of [[%s]] before [[%s]]");
     SWAG_ERROR(Err0471, "misplaced access modifier                         $ the [[%s]] access modifier can only be used at the global scope");
     SWAG_ERROR(Err0472, "misplaced attribute                               $ a [[switch]] without an expression can't be [[#[Swag.Complete]]]");
     SWAG_ERROR(Err0473, "misplaced attribute                               $ an interface member relocation with [[#[Swag.Offset]]] is not allowed");
@@ -1102,7 +1102,7 @@ void initErrors()
     SWAG_ERROR(Nte0212, "the function is supposed to be part of the interface because of [[impl]]");
     SWAG_ERROR(Nte0213, "if you are trying to access an element by index, use square brackets, such as [[%s[%s]]]");
     SWAG_ERROR(Nte0214, "if you are trying to access a struct or a tuple element, you could try [[%s.item%s]]");
-    SWAG_ERROR(Nte0215, nullptr);
+    SWAG_ERROR(Nte0215, "this can't be prefixed with an access modifier");
 }
 
 Utf8 formErr(ErrorID idx, ...)
