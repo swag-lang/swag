@@ -26,6 +26,16 @@ bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const cha
     return context->report(err);
 }
 
+bool Parser::error(const TokenParse& tk, const Utf8& msg, const char* help, const char* hint) const
+{
+    Diagnostic err{sourceFile, tk, msg};
+    if (hint)
+        err.hint = hint;
+    if (help)
+        err.addNote(help);
+    return context->report(err);
+}
+
 bool Parser::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help) const
 {
     Diagnostic err{sourceFile, startLocation, endLocation, msg};

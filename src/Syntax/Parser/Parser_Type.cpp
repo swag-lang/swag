@@ -108,7 +108,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
         if (tokenParse.token.is(g_LangSpec->name_self))
         {
             curIsAlone = false;
-            SWAG_VERIFY(currentStructScope, error(tokenParse.token, toErr(Err0472)));
+            SWAG_VERIFY(currentStructScope, error(tokenParse, toErr(Err0472)));
             typeExpr = Ast::newTypeExpression(nullptr, params);
             typeExpr->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
             typeExpr->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
@@ -116,7 +116,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             SWAG_CHECK(eatToken());
             typeExpr->identifier = Ast::newIdentifierRef(currentStructScope->name, this, typeExpr);
             if (tokenParse.is(TokenId::SymEqual))
-                return error(tokenParse.token, toErr(Err0253));
+                return error(tokenParse, toErr(Err0253));
         }
         // ...
         else if (tokenParse.is(TokenId::SymDotDotDot))
@@ -127,7 +127,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             typeExpr->token.endLocation = tokenParse.token.endLocation;
             SWAG_CHECK(eatToken());
             if (tokenParse.is(TokenId::SymEqual))
-                return error(tokenParse.token, toErr(Err0683));
+                return error(tokenParse, toErr(Err0683));
         }
         // cvarargs
         else if (tokenParse.is(TokenId::KwdCVarArgs))
@@ -138,7 +138,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             typeExpr->token.endLocation = tokenParse.token.endLocation;
             SWAG_CHECK(eatToken());
             if (tokenParse.is(TokenId::SymEqual))
-                return error(tokenParse.token, toErr(Err0683));
+                return error(tokenParse, toErr(Err0683));
         }
         else
         {
@@ -156,7 +156,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
                 SWAG_CHECK(eatToken());
                 Ast::addChildBack(newTypeExpression, typeExpr);
                 if (tokenParse.is(TokenId::SymEqual))
-                    return error(tokenParse.token, toErr(Err0683));
+                    return error(tokenParse, toErr(Err0683));
                 typeExpr = newTypeExpression;
             }
             else if (typeExpr->identifier && !testIsSingleIdentifier(typeExpr->identifier))
@@ -166,7 +166,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             }
         }
 
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) || inTypeVarDecl, error(tokenParse.token, toErr(Err0254)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) || inTypeVarDecl, error(tokenParse, toErr(Err0254)));
 
         // If we are in a type declaration, generate a variable and not just a type
         if (inTypeVarDecl)
@@ -240,7 +240,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             break;
 
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse.token, toErr(Err0128)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0128)));
     }
 
     FormatAst::inheritFormatAfter(this, params, &tokenParse);
@@ -542,13 +542,13 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
             }
 
             if (node->arrayDim == 254)
-                return error(tokenParse.token, toErr(Err0609));
+                return error(tokenParse, toErr(Err0609));
             node->arrayDim++;
             SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
             if (tokenParse.isNot(TokenId::SymComma))
                 break;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse.token, toErr(Err0119)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0119)));
         }
 
         auto rightSquareToken = tokenParse;

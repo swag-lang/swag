@@ -54,6 +54,8 @@ void Diagnostic::doReplace(const TokenParse* tokenParse)
         textMsg.replace("$$TKN$$", form("literal [[%s]]", tokenParse->token.c_str()));
     else if(tokenParse->token.is(TokenId::NativeType))
         textMsg.replace("$$TKN$$", form("type [[%s]]", tokenParse->token.c_str()));
+    else if(tokenParse->token.is(TokenId::Identifier))
+        textMsg.replace("$$TKN$$", form("identifier [[%s]]", tokenParse->token.c_str()));    
     else
         textMsg.replace("$$TKN$$", form("[[%s]]", tokenParse->token.c_str()));
 }

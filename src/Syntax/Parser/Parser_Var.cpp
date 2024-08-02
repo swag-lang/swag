@@ -423,7 +423,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
     {
         if (!parent || parent->isNot(AstNodeKind::If))
         {
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqualEqual), error(tokenParse.token, toErr(Err0682)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqualEqual), error(tokenParse, toErr(Err0682)));
             SWAG_CHECK(eatSemiCol("variable declaration"));
         }
     }

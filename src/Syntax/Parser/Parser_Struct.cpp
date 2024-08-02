@@ -236,7 +236,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
 
 bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse.token, toErr(Err0587)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0587)));
     SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0378)));
     structNode->inheritTokenName(tokenParse.token);
     structNode->tokenName = tokenParse.token;
@@ -559,14 +559,14 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
         case TokenId::KwdMethod:
         case TokenId::KwdFunc:
-            SWAG_VERIFY(structType == SyntaxStructType::Interface, error(tokenParse.token, toErr(Err0506)));
+            SWAG_VERIFY(structType == SyntaxStructType::Interface, error(tokenParse, toErr(Err0506)));
             SWAG_CHECK(doInterfaceMtdDecl(parent, result));
             break;
 
         // A normal declaration
         default:
         {
-            SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse.token, formErr(Err0294, tokenParse.token.c_str())));
+            SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse, formErr(Err0294, tokenParse.token.c_str())));
             TokenParse             savedToken = tokenParse;
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             auto                   count = parent->children.size();
