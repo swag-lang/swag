@@ -643,7 +643,7 @@ void initErrors()
     SWAG_ERROR(Err0517, "misplaced variadic argument                       $ a variadic argument must be the last one");
     SWAG_ERROR(Err0518, "misplaced variadic parameter                      $ a variadic parameter must be the last one");
     SWAG_ERROR(Err0519, "missing [[#alias]] number                         $ an [[#alias]] variable name must end with a number such as [[#alias0]], [[#alias1]], etc.");
-    SWAG_ERROR(Err0520, "missing [[#do]]                                   $ missing either [[#do]] or [[{]] before [[%s]]");
+    SWAG_ERROR(Err0520, "missing [[#do]]                                   $ missing either [[#do]] or [[{]] before $$TKN$$");
     SWAG_ERROR(Err0521, "missing [[#foreignlib]] string argument           $ expected the library name after [[#foreignlib]], got $$TKN$$ instead $ use [[#foreignlib \"path/to/library\"]] to specify the library to import");
     SWAG_ERROR(Err0522, "missing [[#global testerror]] string argument     $ expected the error string to check after [[#global testerror]], got $$TKN$$ instead");
     SWAG_ERROR(Err0523, "missing [[#global testwarning]] string argument   $ expected the warning string to check after [[#global testwarning]], got $$TKN$$ instead");
@@ -660,7 +660,7 @@ void initErrors()
     SWAG_ERROR(Err0534, "missing [[:]]                                     $ a [[:]] is expected here after the [[loop]] variable name [[%s]] $ syntax is [[loop [variable:] count]]");
     SWAG_ERROR(Err0535, "missing [[case]] expression                       $ expected the [[case]] expression before [[%s]]");
     SWAG_ERROR(Err0536, "missing [[closure]] capture variable              $ expected another capture variable between [[,]] and [[|]] $ add another variable or consider removing the trailing comma");
-    SWAG_ERROR(Err0537, "missing [[do]]                                    $ missing either [[do]] or [[{]] before [[%s]]");
+    SWAG_ERROR(Err0537, "missing [[do]]                                    $ missing either [[do]] or [[{]] before $$TKN$$");
     SWAG_ERROR(Err0538, "missing [[if]] boolean expression                 $ expected a boolean expression after [[if]], got $$TKN$$ instead");
     SWAG_ERROR(Err0539, "missing [[impl]]                                  $ the function [[%s]] is part of the interface [[%s]] but lacks an [[impl]] marker");
     SWAG_ERROR(Err0540, "missing [[loop]] count                            $ expected the [[loop]] count expression before [[%s]]");

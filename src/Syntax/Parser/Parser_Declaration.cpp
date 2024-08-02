@@ -457,7 +457,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
     {
         if (tokenParse.isNot(TokenId::KwdDo))
         {
-            Diagnostic err{sourceFile, tokenParse, formErr(Err0537, tokenParse.token.c_str())};
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0537)};
             err.addNote(parent, forToken, formNte(Nte0016, forToken.c_str()));
             return context->report(err);
         }

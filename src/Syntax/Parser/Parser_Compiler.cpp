@@ -96,13 +96,13 @@ bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNode
         SWAG_CHECK(eatToken());
         if (tokenParse.is(TokenId::SymLeftCurly))
         {
-            const Diagnostic err{sourceFile, tokenParse, formErr(Err0435, tokenParse.token.c_str())};
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0435)};
             return context->report(err);
         }
     }
     else if (tokenParse.isNot(TokenId::SymLeftCurly))
     {
-        Diagnostic err{sourceFile, tokenParse, formErr(Err0520, tokenParse.token.c_str())};
+        Diagnostic err{sourceFile, tokenParse, toErr(Err0520)};
         if (forIf)
             parent = parent->parent;
         err.addNote(parent, parent->token, formNte(Nte0015, parent->token.c_str()));
