@@ -38,7 +38,7 @@ bool Parser::eatTokenError(TokenId id, const Utf8& msg)
 {
     if (tokenParse.token.isNot(id))
     {
-        const Diagnostic err{sourceFile, tokenParse.token, form(msg.c_str(), tokenParse.token.c_str())};
+        const Diagnostic err{sourceFile, tokenParse, msg};
         return context->report(err);
     }
 

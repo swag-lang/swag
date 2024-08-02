@@ -655,7 +655,7 @@ void initErrors()
     SWAG_ERROR(Err0529, "missing [[#mix]] number                           $ [[#mix]] variable names should end with a number such as [[#mix0]], [[#mix1]], etc.");
     SWAG_ERROR(Err0530, "missing [[#placeholder]] identifier               $ expected an identifier after [[#placeholder]], got [[%s]] instead");
     SWAG_ERROR(Err0531, "missing type                                      $ expected a valid type after [[#type]], got $$TKN$$ instead");
-    SWAG_ERROR(Err0532, "missing [[(]] before arguments                    $ expected [[(]] to start the list of arguments, got [[%s]] instead");
+    SWAG_ERROR(Err0532, "missing [[(]] before arguments                    $ expected [[(]] to start the list of arguments, got $$TKN$$ instead");
     SWAG_ERROR(Err0533, "missing [[(]] before parameters                   $ expected [[(]] to start the list of parameters, got [[%s]] instead");
     SWAG_ERROR(Err0534, "missing [[:]]                                     $ a [[:]] is expected here after the [[loop]] variable name [[%s]] $ syntax is [[loop [variable:] count]]");
     SWAG_ERROR(Err0535, "missing [[case]] expression                       $ expected the [[case]] expression before [[%s]]");
