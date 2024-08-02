@@ -658,7 +658,7 @@ void initErrors()
     SWAG_ERROR(Err0532, "missing catch error                               $ expected [[try]], [[catch]] or [[assume]] to deal with the errors of [[%s]]");
     SWAG_ERROR(Err0533, "missing closing [[%s]]                            $ expected [[%s]] %s but none was found after");
     SWAG_ERROR(Err0534, "missing closing [[%s]]                            $ expected symbol [[%s]], got $$TKN$$ instead");
-    SWAG_ERROR(Err0535, "missing constant type                             $ expected a type with [[:]] or an assignment with [[=]], got $$TKN$$ instead");
+    SWAG_ERROR(Err0535, "missing constant type                             $ expected a type declaration with [[:]] or an assignment, got $$TKN$$ instead");
     SWAG_ERROR(Err0536, "missing default value                             $ the %s needs a default value as a preceding parameter has one");
     SWAG_ERROR(Err0537, "missing dereference index                         $ an index is missing to dereference the array [[%s]] of type [[%s]] $ consider adding the index between brackets");
     SWAG_ERROR(Err0538, "missing dereference index                         $ an index is missing to dereference the slice [[%s]] of type [[%s]] $ consider adding the index between brackets");
@@ -701,7 +701,7 @@ void initErrors()
     SWAG_ERROR(Err0575, "missing test error                                $ expected at least one error, but none was raised");
     SWAG_ERROR(Err0576, "missing test warning                              $ expected at least one warning, but none was raised");
     SWAG_ERROR(Err0577, "missing type                                      $ expected a valid type after [[#type]], got $$TKN$$ instead");
-    SWAG_ERROR(Err0578, "missing variable type                             $ expected the type with [[:]] or an assignment with [[=]], got $$TKN$$ instead");
+    SWAG_ERROR(Err0578, "missing variable type                             $ expected a type declaration with [[:]] or an assignment, got $$TKN$$ instead");
     SWAG_ERROR(Err0579, "misused UFCS                                      $ the %s [[%s]] can't be used as the first argument when calling [[%s]]");
     SWAG_ERROR(Err0580, "misused UFCS                                      $ the hidden [[with]] variable [[%s]] can't be used as the first argument when calling [[%s]]");
     SWAG_ERROR(Err0581, "non-contiguous [[#alias]]                         $ non-contiguous [[#alias]] in function [[%s]], missing [[#alias%u]]");
@@ -897,7 +897,7 @@ void initErrors()
     SWAG_ERROR(Nte0007, "[[%s]] is needed because of the function return type");
     SWAG_ERROR(Nte0008, "[[%s]] might represent either a type or a parameter name");
     SWAG_ERROR(Nte0009, "[[%s]] was located within [[%s]] due to a [[using]] field");
-    SWAG_ERROR(Nte0010, "[[==]] is the comparison operator; did you intend to affect something with [[=]] ?");
+    SWAG_ERROR(Nte0010, "[[==]] is the comparison operator; did you intend to affect something with [[=]]?");
     SWAG_ERROR(Nte0011, "[[closure]] should be followed by the capture parameters enclosed in [[|...|]]");
     SWAG_ERROR(Nte0012, "[[discard]] can't be associated with an intrinsic, as an intrinsic result should always be used");
     SWAG_ERROR(Nte0013, "[[namealias]] should be associated with a namespace, a function or a variable instead of a type");
@@ -1103,6 +1103,11 @@ void initErrors()
     SWAG_ERROR(Nte0213, "if you are trying to access an element by index, use square brackets, such as [[%s[%s]]]");
     SWAG_ERROR(Nte0214, "if you are trying to access a struct or a tuple element, you could try [[%s.item%s]]");
     SWAG_ERROR(Nte0215, "this can't be prefixed with an access modifier");
+    SWAG_ERROR(Nte0216, "here is the declaration of the %s [[%s]]");
+    SWAG_ERROR(Nte0217, nullptr);
+    SWAG_ERROR(Nte0218, nullptr);
+    SWAG_ERROR(Nte0219, nullptr);
+    SWAG_ERROR(Nte0220, nullptr);
 }
 
 Utf8 formErr(ErrorID idx, ...)
