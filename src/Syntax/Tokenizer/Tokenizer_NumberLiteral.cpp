@@ -103,7 +103,8 @@ bool Tokenizer::doHexLiteral(TokenParse& tokenParse)
     {
         tokenParse.token.startLocation = location;
         tokenParse.token.text          = c;
-        return error(tokenParse, formErr(Err0303, tokenParse.token.c_str()));
+        tokenParse.token.id            = TokenId::Identifier;
+        return error(tokenParse, toErr(Err0303));
     }
 
     // Be sure we don't have 0x without nothing
@@ -333,7 +334,7 @@ bool Tokenizer::doNumberLiteral(TokenParse& tokenParse, uint32_t c)
             eatChar(c, offset);
             tokenParse.token.text          = c;
             tokenParse.token.startLocation = startLoc;
-            return error(tokenParse, formErr(Err0336, tokenParse.token.c_str()));
+            return error(tokenParse, toErr(Err0336));
         }
     }
 

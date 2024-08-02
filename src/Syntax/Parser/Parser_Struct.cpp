@@ -566,7 +566,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         // A normal declaration
         default:
         {
-            SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse, formErr(Err0287, tokenParse.token.c_str())));
+            SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse, toErr(Err0287)));
             TokenParse             savedToken = tokenParse;
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             auto                   count = parent->children.size();

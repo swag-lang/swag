@@ -401,7 +401,7 @@ void initErrors()
     SWAG_ERROR(Err0275, "invalid expression                                $ expected an expression after %s, got [[%s]] instead");
     SWAG_ERROR(Err0276, "invalid expression                                $ expected an expression after operator [[%s]], got [[%s]] instead $ consider adding [[(]] after [[%s]] to start an expression");
     SWAG_ERROR(Err0277, "invalid expression                                $ expected an expression, found a type instead");
-    SWAG_ERROR(Err0278, "invalid expression                                $ expected an expression, got [[%s]] instead");
+    SWAG_ERROR(Err0278, "invalid expression                                $ expected an expression, got $$TKN$$ instead");
     SWAG_ERROR(Err0279, "invalid expression                                $ the directive [[%s]] can't be used as an expression $ this directive can only be used as a statement");
     SWAG_ERROR(Err0280, "invalid float number format                       $ exponent in the scientific notation must contain at least one digit");
     SWAG_ERROR(Err0281, "invalid float number format                       $ the exponent part should not start with [[_]]");
@@ -410,7 +410,7 @@ void initErrors()
     SWAG_ERROR(Err0284, "invalid function call                             $ [[%s]] has call parameters but the type [[%s]] is not a function");
     SWAG_ERROR(Err0285, "invalid function call                             $ call to function [[%s]] requires arguments between [[()]] and not [[{}]]");
     SWAG_ERROR(Err0286, "invalid function call                             $ can't call [[%s]] because the function is declared but not defined");
-    SWAG_ERROR(Err0287, "invalid function declaration                      $ expected [[func]] or [[mtd]] to declare an interface function, got [[%s]] instead $ to declare a function within an interface, use [[func]] or [[mtd]]");
+    SWAG_ERROR(Err0287, "invalid function declaration                      $ expected [[func]] or [[mtd]] to declare an interface function, got $$TKN$$ instead $ to declare a function within an interface, use [[func]] or [[mtd]]");
     SWAG_ERROR(Err0288, "invalid function name                             $ a function name ([[%s]]) can't start with [[@]], this is reserved for intrinsics");
     SWAG_ERROR(Err0289, "invalid function name                             $ expected a function name, got $$TKN$$ instead");
     SWAG_ERROR(Err0290, "invalid generated [[impl]] block                  $ [[impl]] block generation is permissible only within a [[#message]] with [[Swag.CompilerMsgMask.AttributeGen]]");
@@ -426,8 +426,8 @@ void initErrors()
     SWAG_ERROR(Err0300, "invalid generic parameter                         $ the special function [[%s]] expects a literal as a generic parameter, got type [[%s]] instead");
     SWAG_ERROR(Err0301, "invalid generic parameter name                    $ expected an identifier as the generic name, got $$TKN$$ instead");
     SWAG_ERROR(Err0302, "invalid generic type                              $ a generic type does not accept a specific type starting with [[:]]");
-    SWAG_ERROR(Err0303, "invalid hexadecimal number format                 $ hexadecimal literals can only contain digits [[0-9]], [[A-F]], and [[a-f]], got [[%s]] instead");
-    SWAG_ERROR(Err0304, "invalid identifier                                $ expected an identifier %s, got [[%s]] instead");
+    SWAG_ERROR(Err0303, "invalid hexadecimal number format                 $ hexadecimal literals can only contain digits [[0-9]], [[A-F]], and [[a-f]], got $$TKN$$ instead");
+    SWAG_ERROR(Err0304, "invalid identifier                                $ expected an identifier %s, got $$TKN$$ instead");
     SWAG_ERROR(Err0305, "invalid identifier                                $ expected an identifier, got $$TKN$$ instead");
     SWAG_ERROR(Err0306, "invalid identifier list                           $ [[with]] does not support multiple identifiers");
     SWAG_ERROR(Err0307, "invalid import version                            $ the [[#import]] version format is invalid");
@@ -459,7 +459,7 @@ void initErrors()
     SWAG_ERROR(Err0333, "invalid number format                             $ consecutive digit separators [[_]] are not allowed");
     SWAG_ERROR(Err0334, "invalid number format                             $ this binary number has too many digits to fit within a 64-bit representation");
     SWAG_ERROR(Err0335, "invalid number format                             $ this hexadecimal number has too many digits to fit within a 64-bit representation");
-    SWAG_ERROR(Err0336, "invalid number prefix                             $ expected [[0x]] for hexadecimal or [[0b]] for binary, got [[%s]] instead");
+    SWAG_ERROR(Err0336, "invalid number prefix                             $ expected [[0x]] for hexadecimal or [[0b]] for binary, got $$TKN$$ instead");
     SWAG_ERROR(Err0337, "invalid opaque struct                             $ a struct marked with [[#[Swag.Opaque]]] requires a [[public]] access");
     SWAG_ERROR(Err0338, "invalid opaque struct                             $ the struct can't be marked with [[#[Swag.Opaque]]] because the whole file is exported with [[#global export]]");
     SWAG_ERROR(Err0339, "invalid operation                                 $ the bit inversion operation [[~]] is not allowed on type [[%s]]");
@@ -499,7 +499,7 @@ void initErrors()
     SWAG_ERROR(Err0373, "invalid struct operation                          $ the special function [[%s]] is missing in [[%s]]");
     SWAG_ERROR(Err0374, "invalid throw type                                $ throw needs a struct or [[@err()]] as an expression, but there's nothing here");
     SWAG_ERROR(Err0375, "invalid throw type                                $ throw needs a struct or [[@err()]] as an expression, got [[%s]] instead");
-    SWAG_ERROR(Err0376, "invalid top-level instruction                     $ expected a top-level instruction, got [[%s]] instead");
+    SWAG_ERROR(Err0376, "invalid top-level instruction                     $ expected a top-level instruction, got $$TKN$$ instead");
     SWAG_ERROR(Err0377, "invalid tuple dereference                         $ tuples can't be dereferenced like pointers");
     SWAG_ERROR(Err0378, "invalid tuple unpacking                           $ can't unpack an empty tuple");
     SWAG_ERROR(Err0379, "invalid tuple unpacking                           $ can't unpack type [[%s]] $ a struct or a tuple is expected");

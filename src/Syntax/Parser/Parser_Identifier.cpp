@@ -62,7 +62,7 @@ bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg) const
     if (node->is(AstNodeKind::IdentifierRef))
         return error(node, formErr(Err0243, msg));
 
-    return error(node, formErr(Err0304, msg, node->token.c_str()));
+    return error(node, formErr(Err0304, msg));
 }
 
 bool Parser::checkIsIdentifier(const TokenParse& myToken, const char* msg) const

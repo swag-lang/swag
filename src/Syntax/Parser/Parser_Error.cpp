@@ -85,7 +85,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             else if (startToken.is(TokenId::SymRightSquare))
                 msg = toErr(Err0653);
             else
-                msg = formErr(Err0376, startToken.c_str());
+                msg = toErr(Err0376);
 
             if (startToken.is(TokenId::KwdLet))
                 note = toNte(Nte0205);
@@ -123,7 +123,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 
         ///////////////////////////////////////////
         case InvalidTokenError::LeftExpression:
-            msg = formErr(Err0278, startToken.c_str());
+            msg = toErr(Err0278);
             break;
 
         ///////////////////////////////////////////
@@ -143,7 +143,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             else if (parent && Tokenizer::isSymbol(parent->token.id))
                 msg = formErr(Err0275, form("the symbol [[%s]]", parent->token.c_str()).c_str(), startToken.c_str());
             else
-                msg = formErr(Err0278, startToken.c_str());
+                msg = toErr(Err0278);
 
             break;
     }
