@@ -143,7 +143,19 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 
 bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) const
 {
-    Diagnostic err{sourceFile, myToken.token, msg ? msg : formErr(Err0311, myToken.token.c_str()).c_str()};
+    Utf8 message;
+    if (msg)
+        message = msg;
+    else if (Tokenizer::isKeyword(myToken.token.id))
+        message = formErr(Err0362, "keyword");
+    else if (Tokenizer::isLiteral(myToken.token.id))
+        message = formErr(Err0362, "literal");
+    else if (Tokenizer::isSymbol(myToken.token.id))
+        message = formErr(Err0362, "symbol");
+    else
+        message = formErr(Err0311, myToken.token.c_str());
+
+    Diagnostic err{sourceFile, myToken.token, message};
     if (Tokenizer::isKeyword(myToken.token.id))
         err.addNote(formNte(Nte0125, myToken.token.c_str()));
     return context->report(err);

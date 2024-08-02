@@ -485,7 +485,7 @@ void initErrors()
     SWAG_ERROR(Err0359, "invalid pointer arithmetic                        $ pointer arithmetic is not allowed");
     SWAG_ERROR(Err0360, "invalid pointer arithmetic                        $ pointer arithmetic requires an integer, got [[%s]] instead");
     SWAG_ERROR(Err0361, "invalid pointer arithmetic                        $ pointer slicing is not allowed");
-    SWAG_ERROR(Err0362, nullptr);
+    SWAG_ERROR(Err0362, "invalid identifier                                $ expected an identifier, got a %s instead");
     SWAG_ERROR(Err0363, "invalid range                                     $ the lower bound [[%lld]] is greater than the upper bound [[%lld]]");
     SWAG_ERROR(Err0364, "invalid range type                                $ unexpected type [[%s]] in a range expression");
     SWAG_ERROR(Err0365, "invalid reference                                 $ [[ref]] requires a pointer or a reference as an expression, got [[%s]] instead");
