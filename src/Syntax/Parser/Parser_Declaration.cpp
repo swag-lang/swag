@@ -350,7 +350,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
                 SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
             SWAG_CHECK(eatFormat(namespaceNode));
-            SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the namespace body"));
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[namespace]] body"));
         }
         else if (tokenParse.is(TokenId::SymSemiColon))
         {

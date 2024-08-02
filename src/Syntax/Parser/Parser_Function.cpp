@@ -240,6 +240,9 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
 
     const auto paramNode = Ast::newVarDecl("", this, parent, AstNodeKind::FuncDeclParam);
 
+    if (tokenParse.is(TokenId::SymDotDotDot) || tokenParse.is(TokenId::NativeType))
+        return context->report({sourceFile, tokenParse.token, formErr(Err0697, tokenParse.token.c_str())});
+
     // Using variable
     if (tokenParse.is(TokenId::KwdUsing))
     {
@@ -491,10 +494,9 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             oneParamDone    = true;
             auto tokenComma = tokenParse;
             SWAG_CHECK(eatToken(TokenId::SymComma, "to define another parameter or ')' to end the list"));
+
             if (tokenParse.is(TokenId::SymRightParen))
                 return context->report({allParams, tokenComma.token, toErr(Err0128)});
-
-            SWAG_VERIFY(tokenParse.is(TokenId::Identifier) || tokenParse.is(TokenId::KwdUsing) || tokenParse.is(TokenId::SymAttrStart), error(tokenParse.token, formErr(Err0356, tokenParse.token.c_str())));
         }
     }
 

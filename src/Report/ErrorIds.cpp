@@ -672,7 +672,7 @@ void initErrors()
     SWAG_ERROR(Err0546, "missing attribute                                 $ [[opVisit]] functions must have the [[#[Swag.Macro]]] attribute");
     SWAG_ERROR(Err0547, "missing attribute name                            $ expected an attribute name before [[(]]");
     SWAG_ERROR(Err0548, "missing catch error                               $ expected [[try]], [[catch]] or [[assume]] to deal with the errors of [[%s]]");
-    SWAG_ERROR(Err0549, "missing closing [[%s]]                            $ expected [[%s]] %s, got [[%s]] instead");
+    SWAG_ERROR(Err0549, "missing closing [[%s]]                            $ expected [[%s]], got [[%s]] instead");
     SWAG_ERROR(Err0550, "missing constant type                             $ expected a type with [[:]] or an assignment with [[=]], got [[%s]] instead");
     SWAG_ERROR(Err0551, "missing default value                             $ the %s needs a default value as a preceding parameter has one");
     SWAG_ERROR(Err0552, "missing dereference index                         $ an index is missing to dereference the array [[%s]] of type [[%s]] $ consider adding the index between brackets");
@@ -820,7 +820,7 @@ void initErrors()
     SWAG_ERROR(Err0694, "unexpected identifier                             $ a global identifier like [[%s]] can't be used at the file level");
     SWAG_ERROR(Err0695, "unexpected instruction modifier                   $ the instruction modifier [[%s]] can't be applied to [[%s]]");
     SWAG_ERROR(Err0696, "unexpected lambda parameter name                  $ unexpected name when declaring a lambda type $ consider removing the name");
-    SWAG_ERROR(Err0697, nullptr);
+    SWAG_ERROR(Err0697, "missing parameter name                            $ expected the parameter name and [[:]] before [[%s]]");
     SWAG_ERROR(Err0698, "unexpected line break in array type declaration   $ the type of the array should be placed on the same line as the array dimensions");
     SWAG_ERROR(Err0699, "unexpected name                                   $ too many [[visit]] alias names (maximum is [[2]], but [[%u]] are provided)");
     SWAG_ERROR(Err0700, "unexpected parameters                             $ expected [[{]] here because a compiler %s should not have parameters");
@@ -836,7 +836,7 @@ void initErrors()
     SWAG_ERROR(Err0710, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Err0711, "unexpected visit name                             $ a special visit name is only valid to visit a struct, got [[%s]] instead");
     SWAG_ERROR(Err0712, "unknown attribute                                 $ the attribute [[%s]] can't be found");
-    SWAG_ERROR(Err0713, nullptr);
+    SWAG_ERROR(Err0713, "missing closing [[%s]]                            $ expected [[%s]] %s but none was found after");
     SWAG_ERROR(Err0714, "unknown dependency                                $ use of an unknown module dependency [[%s]]");
     SWAG_ERROR(Err0715, "unknown enum value                                $ the enumeration value [[%s]] can't be found in [[%s]]");
     SWAG_ERROR(Err0716, "unknown field name                                $ the field name [[%s]] can't be found in [[%s]]");

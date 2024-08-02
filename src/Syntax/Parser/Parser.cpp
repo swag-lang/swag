@@ -21,7 +21,6 @@ bool Parser::eatToken()
     return true;
 }
 
-
 bool Parser::eatToken(TokenId id, const char* msg)
 {
     SWAG_ASSERT(msg);
@@ -49,7 +48,6 @@ bool Parser::eatTokenError(TokenId id, const Utf8& msg)
     return true;
 }
 
-
 bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* msg)
 {
     SWAG_ASSERT(msg);
@@ -57,14 +55,20 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     if (tokenParse.token.isNot(id))
     {
         const Utf8 related = Naming::tokenToName(id);
-        const auto diagMsg = formErr(Err0549, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
+
+        if (!msg || msg[0] == 0)
+            msg = "$$$";
 
         if (tokenParse.is(TokenId::EndOfFile))
         {
+            auto diagMsg = formErr(Err0713, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
+            diagMsg.replace("$$$ ", "");
             const Diagnostic err{sourceFile, start, start, diagMsg};
             return context->report(err);
         }
 
+        auto diagMsg = formErr(Err0549, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
+        diagMsg.replace("$$$ ", "");
         Diagnostic err{sourceFile, tokenParse.token, diagMsg};
         err.addNote(sourceFile, start, start, formNte(Nte0180, related.c_str()));
         return context->report(err);

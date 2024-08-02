@@ -453,7 +453,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(stmt, structType, &dummyResult));
         SWAG_CHECK(eatFormat(stmt));
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the struct body"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[struct]] body"));
         parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
         return true;
     }

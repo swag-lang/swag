@@ -66,6 +66,8 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
                 Diagnostic err{sourceFile, startToken, formErr(Err0694, startToken.c_str())};
                 if (nextToken.is(TokenId::Identifier) && (startToken.is("function") || startToken.is("fn") || startToken.is("def")))
                     err.addNote(toNte(Nte0040));
+                else if (nextToken.is(TokenId::SymLeftParen))
+                    err.addNote(toNte(Nte0040));
                 else if (nextToken.is(TokenId::SymEqual) || nextToken.is(TokenId::SymColon))
                     err.addNote(toNte(Nte0053));
                 else
