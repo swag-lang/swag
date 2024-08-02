@@ -452,7 +452,7 @@ void initErrors()
     SWAG_ERROR(Err0326, "invalid name alias                                $ a name alias should not be used on %s");
     SWAG_ERROR(Err0327, "invalid named argument                            $ expected a named argument before [[:]], got [[%s]] instead");
     SWAG_ERROR(Err0328, "invalid namespace body                            $ missing the namespace body or instruction instead of [[;]]");
-    SWAG_ERROR(Err0329, "invalid namespace name                            $ expected the namespace name, got [[%s]] instead");
+    SWAG_ERROR(Err0329, "invalid namespace name                            $ expected the namespace name, got $$TKN$$ instead");
     SWAG_ERROR(Err0330, "invalid negation                                  $ can't negate an unsigned type [[%s]]");
     SWAG_ERROR(Err0331, "invalid negation                                  $ can't negate type [[%s]]");
     SWAG_ERROR(Err0332, "invalid number format                             $ a number should not end with a digit separator [[_]]");

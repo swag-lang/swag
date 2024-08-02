@@ -272,7 +272,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
                 return error(tokenParse, formErr(Err0560, ";"));
             default:
                 if (!forPrivate)
-                    return error(tokenParse, formErr(Err0329, tokenParse.token.c_str()));
+                    return error(tokenParse, toErr(Err0329));
                 break;
         }
 
