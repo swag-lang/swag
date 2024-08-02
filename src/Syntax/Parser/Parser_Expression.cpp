@@ -25,7 +25,7 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
         if (node->token.is(TokenId::LiteralCharacter) || node->token.is(TokenId::LiteralNumber))
         {
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.is(TokenId::Identifier) || tokenParse.is(TokenId::NativeType), error(tokenParse, formErr(Err0406, tokenParse.token.c_str())));
+            SWAG_VERIFY(tokenParse.is(TokenId::Identifier) || tokenParse.is(TokenId::NativeType), error(tokenParse, toErr(Err0406)));
             const auto identifierRef = Ast::newIdentifierRef(this, node);
             SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
             identifierRef->lastChild()->semanticFct = Semantic::resolveLiteralSuffix;
@@ -95,7 +95,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         {
             if (arrayNode->hasSpecFlag(AstArrayPointerSlicing::SPEC_FLAG_EXCLUDE_UP))
             {
-                const Diagnostic err{sourceFile, tokenParse.token, toErr(Err0586)};
+                const Diagnostic err{sourceFile, tokenParse, toErr(Err0586)};
                 return context->report(err);
             }
 
@@ -1423,7 +1423,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
 
         default:
         {
-            Diagnostic err{sourceFile, tokenParse.token, formErr(Err0410, tokenParse.token.c_str())};
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0403)};
             if (Tokenizer::isKeyword(tokenParse.token.id))
                 err.addNote(formNte(Nte0125, tokenParse.token.c_str()));
             return context->report(err);

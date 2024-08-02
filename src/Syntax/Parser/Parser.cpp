@@ -65,9 +65,9 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
             return context->report(err);
         }
 
-        auto diagMsg = formErr(Err0549, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
+        auto diagMsg = formErr(Err0549, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
         diagMsg.replace("$$$ ", "");
-        Diagnostic err{sourceFile, tokenParse.token, diagMsg};
+        Diagnostic err{sourceFile, tokenParse, diagMsg};
         err.addNote(sourceFile, start, start, formNte(Nte0180, related.c_str()));
         return context->report(err);
     }

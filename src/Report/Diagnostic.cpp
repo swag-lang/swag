@@ -55,7 +55,13 @@ void Diagnostic::doReplace(const TokenParse* tokenParse)
     else if(tokenParse->token.is(TokenId::NativeType))
         textMsg.replace("$$TKN$$", form("type [[%s]]", tokenParse->token.c_str()));
     else if(tokenParse->token.is(TokenId::Identifier))
-        textMsg.replace("$$TKN$$", form("identifier [[%s]]", tokenParse->token.c_str()));    
+        textMsg.replace("$$TKN$$", form("identifier [[%s]]", tokenParse->token.c_str()));
+    else if (Tokenizer::isCompiler(tokenParse->token.id))
+        textMsg.replace("$$TKN$$", form("compiler keyword [[%s]]", tokenParse->token.c_str()));
+    else if (Tokenizer::isIntrinsicReturn(tokenParse->token.id))
+        textMsg.replace("$$TKN$$", form("intrinsic [[%s]]", tokenParse->token.c_str()));    
+    else if (Tokenizer::isIntrinsicNoReturn(tokenParse->token.id))
+        textMsg.replace("$$TKN$$", form("intrinsic [[%s]]", tokenParse->token.c_str()));    
     else
         textMsg.replace("$$TKN$$", form("[[%s]]", tokenParse->token.c_str()));
 }

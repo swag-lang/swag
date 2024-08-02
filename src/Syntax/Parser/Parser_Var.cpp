@@ -307,7 +307,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         kind  = AstNodeKind::VarDecl;
         SWAG_CHECK(eatToken());
         if (tokenParse.isNot(TokenId::SymLeftParen))
-            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0411, isLet ? "let" : "var", tokenParse.token.c_str())));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0411, isLet ? "let" : "var")));
     }
 
     const auto count = parent->children.size();
@@ -359,7 +359,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 const auto typeExpr = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
                 if (typeExpr->identifier)
                 {
-                    Diagnostic err{sourceFile, tokenParse.token, formErr(Err0021, typeExpr->identifier->token.c_str())};
+                    Diagnostic err{sourceFile, tokenParse, formErr(Err0021, typeExpr->identifier->token.c_str())};
                     err.addNote(formNte(Nte0183, typeExpr->identifier->token.c_str(), typeExpr->identifier->token.c_str()));
                     err.addNote(toNte(Nte0179));
                     return context->report(err);

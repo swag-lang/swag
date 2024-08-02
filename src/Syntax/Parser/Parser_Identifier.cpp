@@ -322,7 +322,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
         default:
             if (Tokenizer::isIntrinsicReturn(tokenParse.token.id))
             {
-                Diagnostic err{sourceFile, tokenParse.token, formErr(Err0755, tokenParse.token.c_str())};
+                Diagnostic err{sourceFile, tokenParse, formErr(Err0755, tokenParse.token.c_str())};
                 err.addNote(sourceFile, discardToken.token, toNte(Nte0149));
                 err.addNote(toNte(Nte0012));
                 return context->report(err);

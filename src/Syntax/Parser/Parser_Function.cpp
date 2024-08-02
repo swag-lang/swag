@@ -185,7 +185,7 @@ bool Parser::doFuncDeclParameterSelf(AstVarDecl* paramNode)
         const auto constToken = tokenParse;
         isConst               = true;
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(tokenParse.is(TokenId::Identifier) && tokenParse.token.is(g_LangSpec->name_self), error(constToken.token, formErr(Err0458, tokenParse.token.c_str())));
+        SWAG_VERIFY(tokenParse.is(TokenId::Identifier) && tokenParse.token.is(g_LangSpec->name_self), error(constToken, toErr(Err0458)));
         paramNode->token.text = g_LangSpec->name_self;
     }
 
@@ -310,7 +310,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         {
             if (unnamedTokens.size() == parent->childCount())
             {
-                Diagnostic err{sourceFile, tokenParse.token, toErr(Err0709)};
+                Diagnostic err{sourceFile, tokenParse, toErr(Err0709)};
                 err.addNote(unnamedTokens.front(), toNte(Nte0188));
                 for (uint32_t i = 1; i < unnamedTokens.size(); i++)
                     err.addNote(unnamedTokens[i], "");
@@ -368,7 +368,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         {
             if (unnamedTokens.size() == parent->childCount())
             {
-                Diagnostic err{sourceFile, tokenParse.token, toErr(Err0214)};
+                Diagnostic err{sourceFile, tokenParse, toErr(Err0214)};
                 err.addNote(unnamedTokens.front(), toNte(Nte0162));
                 for (uint32_t i = 1; i < unnamedTokens.size(); i++)
                     err.addNote(unnamedTokens[i], "");
@@ -1010,11 +1010,11 @@ bool Parser::doFuncDeclBody(AstNode* node, AstNode** result, FuncDeclFlags flags
     {
         if (flags.has(FUNC_DECL_INTERFACE))
         {
-            Diagnostic err{sourceFile, tokenParse.token, toErr(Err0081)};
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0081)};
             return context->report(err);
         }
 
-        Diagnostic err{sourceFile, tokenParse.token, toErr(Err0082)};
+        Diagnostic err{sourceFile, tokenParse, toErr(Err0082)};
         return context->report(err);
     }
 
@@ -1083,7 +1083,7 @@ bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams
         SWAG_CHECK(eatToken());
     }
 
-    SWAG_VERIFY(tokenParse.is(TokenId::SymLeftParen), error(tokenParse, formErr(Err0533, tokenParse.token.c_str())));
+    SWAG_VERIFY(tokenParse.is(TokenId::SymLeftParen), error(tokenParse, toErr(Err0533)));
     typeInfo->addFlag(TYPEINFO_CLOSURE);
     return true;
 }

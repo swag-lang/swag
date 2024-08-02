@@ -183,7 +183,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
                     [[fallthrough]];
                 default:
                 {
-                    Diagnostic err{sourceFile, tokenParse.token, toErr(Err0514)};
+                    Diagnostic err{sourceFile, tokenParse, toErr(Err0514)};
                     err.addNote(child, child->token, toNte(Nte0074));
                     return context->report(err);
                 }
@@ -457,7 +457,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
     {
         if (tokenParse.isNot(TokenId::KwdDo))
         {
-            Diagnostic err{sourceFile, tokenParse.token, formErr(Err0537, tokenParse.token.c_str())};
+            Diagnostic err{sourceFile, tokenParse, formErr(Err0537, tokenParse.token.c_str())};
             err.addNote(parent, forToken, formNte(Nte0016, forToken.c_str()));
             return context->report(err);
         }
@@ -881,7 +881,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
         case TokenId::NativeType:
         {
-            Diagnostic err{sourceFile, tokenParse.token, toErr(Err0706)};
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0706)};
             eatToken();
             if (tokenParse.is(TokenId::Identifier))
                 err.addNote(toNte(Nte0181));

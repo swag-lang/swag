@@ -459,7 +459,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
             return true;
     }
 
-    Diagnostic err{sourceFile, tokenParse.token, formErr(Err0402, tokenParse.token.c_str())};
+    Diagnostic err{sourceFile, tokenParse, toErr(Err0402)};
 
     if (tokenParse.is(TokenId::SymLeftParen))
         err.addNote(toNte(Nte0084));
@@ -490,7 +490,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
         if (tokenParse.is(TokenId::SymAmpersandAmpersand))
         {
-            const Diagnostic err{sourceFile, tokenParse.token, toErr(Err0248)};
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0248)};
             return context->report(err);
         }
     }
@@ -567,7 +567,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
         if (tokenParse.is(TokenId::SymComma))
         {
-            const Diagnostic err{sourceFile, tokenParse.token, formErr(Err0404, tokenParse.token.c_str())};
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0404)};
             return context->report(err);
         }
 
