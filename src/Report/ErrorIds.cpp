@@ -380,7 +380,7 @@ void initErrors()
     SWAG_ERROR(Err0254, "invalid dereference                               $ can't dereference [[%s]] by index because the special function [[opIndex]] can't be found in [[%s]]");
     SWAG_ERROR(Err0255, "invalid dereference                               $ dereferencing type [[%s]] is not valid");
     SWAG_ERROR(Err0256, "invalid embedded enum                             $ expected an enum type, got [[%s]] instead");
-    SWAG_ERROR(Err0257, "invalid embedded instruction                      $ expected an embedded instruction or a curly block, got [[%s]] instead");
+    SWAG_ERROR(Err0257, "invalid embedded instruction                      $ expected an embedded instruction or a curly block, got $$TKN$$ instead");
     SWAG_ERROR(Err0258, "invalid empty attribute                           $ an attribute should contain at least one value $ you should specify the attribute name");
     SWAG_ERROR(Err0259, "invalid empty statement [[;]]                     $ a semicolon [[;]] can't be used alone to mark an empty statement");
     SWAG_ERROR(Err0260, "invalid enum identifier                           $ expected an enum value identifier, got $$TKN$$ instead");
@@ -398,8 +398,8 @@ void initErrors()
     SWAG_ERROR(Err0272, "invalid escape format                             $ the [[\\u]] escape code requires 4 hexadecimal digits");
     SWAG_ERROR(Err0273, "invalid escape format                             $ the [[\\x]] escape code requires 2 hexadecimal digits");
     SWAG_ERROR(Err0274, "invalid export argument                           $ invalid argument [[%s]] for the attribute [[#[Swag.ExportType]]] $ the acceptable values for [[#[Swag.ExportType]]] are [[methods]] and [[nozero]]");
-    SWAG_ERROR(Err0275, "invalid expression                                $ expected an expression after %s, got [[%s]] instead");
-    SWAG_ERROR(Err0276, "invalid expression                                $ expected an expression after operator [[%s]], got [[%s]] instead $ consider adding [[(]] after [[%s]] to start an expression");
+    SWAG_ERROR(Err0275, "invalid expression                                $ expected an expression after %s, got $$TKN$$ instead");
+    SWAG_ERROR(Err0276, "invalid expression                                $ expected an expression after operator [[%s]], got $$TKN$$ instead $ consider adding [[(]] after [[%s]] to start an expression");
     SWAG_ERROR(Err0277, "invalid expression                                $ expected an expression, found a type instead");
     SWAG_ERROR(Err0278, "invalid expression                                $ expected an expression, got $$TKN$$ instead");
     SWAG_ERROR(Err0279, "invalid expression                                $ the directive [[%s]] can't be used as an expression $ this directive can only be used as a statement");

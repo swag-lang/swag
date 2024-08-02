@@ -556,7 +556,7 @@ bool Parser::doUnaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** r
             node->token       = tokenParse.token;
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(tokenParse.token.isNot(prevTokenParse.token.id), error(tokenParse, formErr(Err0069, tokenParse.token.c_str())));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdDeRef), error(tokenParse, formErr(Err0276, prevTokenParse.token.c_str(), tokenParse.token.c_str(), prevTokenParse.token.c_str())));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdDeRef), error(tokenParse, formErr(Err0276, prevTokenParse.token.c_str(), prevTokenParse.token.c_str())));
             return doSinglePrimaryExpression(node, exprFlags, &dummyResult);
         }
     }

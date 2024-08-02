@@ -118,7 +118,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             else if (startToken.is(TokenId::SymRightSquare))
                 msg = toErr(Err0653);
             else
-                msg = formErr(Err0257, startToken.c_str());
+                msg = toErr(Err0257);
             break;
 
         ///////////////////////////////////////////
@@ -137,11 +137,11 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             }
 
             if (parent && Tokenizer::isKeyword(parent->token.id))
-                msg = formErr(Err0275, form("[[%s]]", parent->token.c_str()).c_str(), startToken.c_str());
+                msg = formErr(Err0275, form("[[%s]]", parent->token.c_str()).c_str());
             else if (parent && Tokenizer::isCompiler(parent->token.id))
-                msg = formErr(Err0275, form("the compiler directive [[%s]]", parent->token.c_str()).c_str(), startToken.c_str());
+                msg = formErr(Err0275, form("the compiler directive [[%s]]", parent->token.c_str()).c_str());
             else if (parent && Tokenizer::isSymbol(parent->token.id))
-                msg = formErr(Err0275, form("the symbol [[%s]]", parent->token.c_str()).c_str(), startToken.c_str());
+                msg = formErr(Err0275, form("the symbol [[%s]]", parent->token.c_str()).c_str());
             else
                 msg = toErr(Err0278);
 
