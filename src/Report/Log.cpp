@@ -225,12 +225,12 @@ Utf8 Log::format(const char* message, const LogWriteContext* logContext)
                 if (logContext && !logContext->colorHighlight.empty())
                 {
                     m += logContext->colorHighlight;
-                    m += colorToVTS(LogColor::Underline);
+                    //m += colorToVTS(LogColor::Underline);
                 }
                 else if (curColor == colorToVTS(LogColor::White))
                 {
                     m += colorToVTS(LogColor::Gray);
-                    m += colorToVTS(LogColor::Underline);
+                    //m += colorToVTS(LogColor::Underline);
                 }
             }
 
@@ -242,6 +242,7 @@ Utf8 Log::format(const char* message, const LogWriteContext* logContext)
             {
                 m += curColor;
                 m += colorToVTS(LogColor::UnUnderline);
+                m += colorToVTS(LogColor::UnBold);
             }
 
             pz += 2;

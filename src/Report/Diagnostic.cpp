@@ -81,13 +81,13 @@ void Diagnostic::doReplaceHighLight()
                     else if (inside == ':')
                         replace += "[[colon]] ':'";
                     else if (inside == '{')
-                        replace += "[[open curly bracket]] '{'";                    
+                        replace += "[[open curly bracket]] '{'";
                     else if (inside == '}')
                         replace += "[[closed curly bracket]] '}'";
                     else if (inside == '[')
-                        replace += "[[open square bracket]] '['";                    
+                        replace += "[[open square bracket]] '['";
                     else if (inside == ']')
-                        replace += "[[closed square bracket]] ']'";                     
+                        replace += "[[closed square bracket]] ']'";
                     else
                     {
                         replace += "symbol [['";
@@ -630,8 +630,13 @@ void Diagnostic::printLastRangeHint(Log* log, int curColumn)
         LogWriteContext logCxt;
         if (COLOR_ERROR)
         {
-            if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Warning)
-                logCxt.colorHighlight = Log::colorToVTS(LogColor::Gray);
+            if (r.errorLevel == DiagnosticLevel::Error ||
+                r.errorLevel == DiagnosticLevel::Panic ||
+                r.errorLevel == DiagnosticLevel::Warning)
+            {
+                logCxt.colorHighlight = Log::colorToVTS(LogColor::DarkRed);
+            }
+
             setColorRanges(log, r.errorLevel);
         }
 
