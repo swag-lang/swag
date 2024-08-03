@@ -1537,20 +1537,19 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
         }
     }
 
-    // A function call used to initialized the field of a struct
+    // A function call used to initialize the field of a struct
     // No need to put the result on the stack and copy the result later, just make a direct reference to
     // the field address
     testReturn = node;
     if (testReturn->is(AstNodeKind::Identifier))
         testReturn = testReturn->parent;
-
-    if (testReturn->parent->is(AstNodeKind::FuncCallParam) &&
-        testReturn->parent->parent->parent->is(AstNodeKind::Identifier) &&
-        testReturn->parent->parent->parent->parent->parent->is(AstNodeKind::TypeExpression) &&
-        testReturn->parent->parent->parent->parent->parent->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS) &&
-        testReturn->parent->parent->parent->parent->parent->parent->is(AstNodeKind::VarDecl) &&
-        testReturn->parent->parent->parent->typeInfo &&
-        testReturn->parent->parent->parent->typeInfo->isStruct())
+    if (testReturn->getParent(1)->is(AstNodeKind::FuncCallParam) &&
+        testReturn->getParent(3)->is(AstNodeKind::Identifier) &&
+        testReturn->getParent(5)->is(AstNodeKind::TypeExpression) &&
+        testReturn->getParent(5)->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS) &&
+        testReturn->getParent(6)->is(AstNodeKind::VarDecl) &&
+        testReturn->getParent(3)->typeInfo &&
+        testReturn->getParent(3)->typeInfo->isStruct())
     {
         const auto varNode  = castAst<AstVarDecl>(testReturn->parent->parent->parent->parent->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         const auto resolved = varNode->resolvedSymbolOverload();
@@ -1654,7 +1653,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
     // Error, check validity.
     if (node->parent->is(AstNodeKind::IdentifierRef))
-        SWAG_CHECK(checkCatchError(context, varNode, node, node, node->parent->parent, typeInfoFunc));
+        SWAG_CHECK(checkCatchError(context, varNode, node, node, node->getParent(2), typeInfoFunc));
     else
         SWAG_CHECK(checkCatchError(context, varNode, node, node, node->parent, typeInfoFunc));
 

@@ -394,8 +394,8 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
         if (res && identifier->typeInfo)
             return true;
 
-        SWAG_ASSERT(node->parent->parent && node->parent->parent->is(AstNodeKind::Literal));
-        node->parent->parent->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
+        SWAG_ASSERT(node->getParent(2)->is(AstNodeKind::Literal));
+        node->getParent(2)->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
         return true;
     }
 

@@ -250,42 +250,45 @@ bool Semantic::isFunctionButNotACall(SemanticContext*, AstNode* node, const Symb
             return false;
     }
 
-    if (node && node->parent && node->parent->parent)
+    if (node)
     {
-        const auto grandParent = node->parent->parent;
-        if (symbol->is(SymbolKind::Attribute))
+        const auto pr2 = node->getParent(2);
+        if (pr2->isNot(AstNodeKind::Invalid))
         {
-            if (grandParent->isNot(AstNodeKind::AttrUse))
-                return true;
-        }
-        else if (symbol->is(SymbolKind::Function))
-        {
-            if (symbol->is(SymbolKind::Function))
+            if (symbol->is(SymbolKind::Attribute))
             {
-                if (grandParent->is(AstNodeKind::MakePointer) && node == node->parent->lastChild())
-                {
-                    if (id && id->callParameters)
-                        return false;
-                    return true;
-                }
-
-                if (grandParent->is(AstNodeKind::MakePointerLambda) && node == node->parent->lastChild())
+                if (pr2->isNot(AstNodeKind::AttrUse))
                     return true;
             }
-
-            if (grandParent->hasAstFlag(AST_DEBUG_NODE) ||
-                grandParent->is(AstNodeKind::TypeAlias) ||
-                grandParent->is(AstNodeKind::NameAlias) ||
-                grandParent->is(AstNodeKind::IntrinsicDefined) ||
-                grandParent->is(AstNodeKind::IntrinsicLocation) ||
-                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicStringOf)) ||
-                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicNameOf)) ||
-                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicRunes)) ||
-                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicTypeOf)) ||
-                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicDeclType)) ||
-                (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicKindOf)))
+            else if (symbol->is(SymbolKind::Function))
             {
-                return true;
+                if (symbol->is(SymbolKind::Function))
+                {
+                    if (pr2->is(AstNodeKind::MakePointer) && node == node->parent->lastChild())
+                    {
+                        if (id && id->callParameters)
+                            return false;
+                        return true;
+                    }
+
+                    if (pr2->is(AstNodeKind::MakePointerLambda) && node == node->parent->lastChild())
+                        return true;
+                }
+
+                if (pr2->hasAstFlag(AST_DEBUG_NODE) ||
+                    pr2->is(AstNodeKind::TypeAlias) ||
+                    pr2->is(AstNodeKind::NameAlias) ||
+                    pr2->is(AstNodeKind::IntrinsicDefined) ||
+                    pr2->is(AstNodeKind::IntrinsicLocation) ||
+                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicStringOf)) ||
+                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicNameOf)) ||
+                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicRunes)) ||
+                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicTypeOf)) ||
+                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicDeclType)) ||
+                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicKindOf)))
+                {
+                    return true;
+                }
             }
         }
     }
@@ -345,15 +348,15 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
     // If this is a parameter of a function call, we will try to deduce the type with a function signature
     if (findParent &&
         findParent->is(AstNodeKind::FuncCallParam) &&
-        findParent->parent->is(AstNodeKind::FuncCallParams) &&
-        findParent->parent->parent->is(AstNodeKind::Identifier))
+        findParent->getParent(1)->is(AstNodeKind::FuncCallParams) &&
+        findParent->getParent(2)->is(AstNodeKind::Identifier))
     {
         const auto fctCallParam = castAst<AstFuncCallParam>(findParent);
 
         VectorNative<OneSymbolMatch> symbolMatch;
 
-        const auto idref = castAst<AstIdentifierRef>(fctCallParam->parent->parent->parent, AstNodeKind::IdentifierRef);
-        const auto id    = castAst<AstIdentifier>(fctCallParam->parent->parent, AstNodeKind::Identifier);
+        const auto idref = castAst<AstIdentifierRef>(fctCallParam->getParent(3), AstNodeKind::IdentifierRef);
+        const auto id    = castAst<AstIdentifier>(fctCallParam->getParent(2), AstNodeKind::Identifier);
 
         g_SilentError++;
         const auto found = findIdentifierInScopes(context, symbolMatch, idref, id);

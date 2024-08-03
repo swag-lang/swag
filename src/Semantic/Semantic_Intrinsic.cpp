@@ -658,16 +658,16 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 {
-    auto       node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto       expr     = node->firstChild();
     const auto typeInfo = TypeManager::concreteType(expr->typeInfo);
     node->byteCodeFct   = ByteCodeGen::emitIntrinsicSpread;
-
-    if (!node->parent || !node->parent->parent || node->parent->parent->isNot(AstNodeKind::FuncCallParam))
+    
+    if (const auto pr2 = node->getParent(2); pr2->isNot(AstNodeKind::FuncCallParam))
     {
-        if (node->parent->parent->is(AstNodeKind::Cast) || node->parent->parent->is(AstNodeKind::AutoCast))
+        if (pr2->is(AstNodeKind::Cast) || pr2->is(AstNodeKind::AutoCast))
         {
-            const Diagnostic err{node->parent->parent, node->parent->parent->token, toErr(Err0484)};
+            const Diagnostic err{pr2, pr2->token, toErr(Err0484)};
             return context->report(err);
         }
 

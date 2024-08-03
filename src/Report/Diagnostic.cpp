@@ -67,30 +67,30 @@ void Diagnostic::doReplaceHighLight()
                         isSymbol = false;
                 }
 
-                if (isSymbol && inside.length() <= 3)
+                if (isSymbol && inside.length() <= 1)
                 {
                     replace += " ";
                     if (inside == ',')
-                        replace += "a [[comma]] ','";
+                        replace += "[[comma]] ','";
                     else if (inside == ';')
-                        replace += "a [[semicolon]] ';'";
+                        replace += "[[semicolon]] ';'";
                     else if (inside == '(')
-                        replace += "an [[open parenthesis]] '('";
+                        replace += "[[open parenthesis]] '('";
                     else if (inside == ')')
-                        replace += "a [[closed parenthesis]] ')'";
+                        replace += "[[closed parenthesis]] ')'";
                     else if (inside == ':')
-                        replace += "a [[colon]] ':'";
+                        replace += "[[colon]] ':'";
                     else if (inside == '{')
-                        replace += "an [[open curly bracket]] '{'";                    
+                        replace += "[[open curly bracket]] '{'";                    
                     else if (inside == '}')
-                        replace += "a [[closed curly bracket]] '}'";
+                        replace += "[[closed curly bracket]] '}'";
                     else if (inside == '[')
-                        replace += "an [[open square bracket]] '['";                    
+                        replace += "[[open square bracket]] '['";                    
                     else if (inside == ']')
-                        replace += "a [[closed square bracket]] ']'";                     
+                        replace += "[[closed square bracket]] ']'";                     
                     else
                     {
-                        replace += "a symbol [['";
+                        replace += "symbol [['";
                         replace += inside;
                         replace += "']]";
                     }

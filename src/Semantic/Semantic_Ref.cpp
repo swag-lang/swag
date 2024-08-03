@@ -632,11 +632,11 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 
     // When we are building a pointer, this is fine to be const, because in fact we do no generate an address to modify the content
     // (or it will be done later on a pointer, and it will be const too)
-    if (arrayNode->parent->parent->isNot(AstNodeKind::MakePointer))
+    if (const auto pr2 = arrayNode->getParent(2); pr2->isNot(AstNodeKind::MakePointer))
     {
         if (baseType->isConst())
         {
-            Diagnostic err{arrayNode->parent->parent, arrayNode->parent->parent->token, formErr(Err0101, baseType->getDisplayNameC())};
+            Diagnostic err{pr2, pr2->token, formErr(Err0101, baseType->getDisplayNameC())};
             err.addNote(arrayNode->array->token, Diagnostic::isType(baseType));
             return context->report(err);
         }
@@ -645,7 +645,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     {
         // If array is const, inform the make pointer that it need to make a const pointer
         if (baseType->isConst())
-            arrayNode->parent->parent->addAstFlag(AST_CONST);
+            arrayNode->getParent(2)->addAstFlag(AST_CONST);
     }
 
     const auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
@@ -690,9 +690,9 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
             if (arrayType->nativeType == NativeTypeKind::String)
             {
-                if (arrayNode->array->hasComputedValue() && arrayNode->parent->parent->is(AstNodeKind::MakePointer))
+                if (arrayNode->array->hasComputedValue() && arrayNode->getParent(2)->is(AstNodeKind::MakePointer))
                 {
-                    Diagnostic err{arrayNode->parent->parent, arrayNode->parent->parent->token, formErr(Err0174, arrayType->getDisplayNameC())};
+                    Diagnostic err{arrayNode->getParent(2), arrayNode->getParent(2)->token, formErr(Err0174, arrayType->getDisplayNameC())};
                     err.addNote(arrayNode->array, Diagnostic::isType(arrayNode->array));
                     return context->report(err);
                 }
@@ -765,7 +765,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             arrayNode->typeInfo = arrayType;
 
             // In fact we are taking the address of an operator [] call result
-            if (arrayNode->parent->parent->is(AstNodeKind::MakePointer))
+            if (arrayNode->getParent(2)->is(AstNodeKind::MakePointer))
             {
                 SWAG_CHECK(resolveArrayPointerDeRef(context));
                 YIELD();

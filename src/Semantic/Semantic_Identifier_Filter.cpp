@@ -61,11 +61,11 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
     const auto countMatches = matches.size();
 
     // Sometimes we don't care about multiple symbols with the same name
-    if (countMatches > 1 && node->parent && node->parent->parent)
+    if (countMatches > 1)
     {
-        const auto grandParent = node->parent->parent;
-        if (grandParent->is(AstNodeKind::IntrinsicDefined) ||
-            (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicNameOf)))
+        const auto pr2 = node->getParent(2);
+        if (pr2->is(AstNodeKind::IntrinsicDefined) ||
+            (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicNameOf)))
         {
             matches.count = 1;
             return true;

@@ -344,15 +344,15 @@ bool Semantic::needToCompleteSymbolNoLock(SemanticContext*, const AstIdentifier*
         return false;
 
     // If identifier is in a pointer type expression, can incomplete resolve
-    if (identifier->parent->parent && identifier->parent->parent->is(AstNodeKind::TypeExpression))
+    if (const auto pr2 = identifier->getParent(2); pr2->is(AstNodeKind::TypeExpression))
     {
-        auto typeExprNode = castAst<AstTypeExpression>(identifier->parent->parent, AstNodeKind::TypeExpression);
+        auto typeExprNode = castAst<AstTypeExpression>(pr2, AstNodeKind::TypeExpression);
         if (typeExprNode->typeFlags.has(TYPEFLAG_IS_PTR))
             return false;
 
-        if (typeExprNode->parent && typeExprNode->parent->is(AstNodeKind::TypeExpression))
+        if (const auto pr1 = typeExprNode->getParent(); pr1->is(AstNodeKind::TypeExpression))
         {
-            typeExprNode = castAst<AstTypeExpression>(typeExprNode->parent, AstNodeKind::TypeExpression);
+            typeExprNode = castAst<AstTypeExpression>(pr1, AstNodeKind::TypeExpression);
             if (typeExprNode->typeFlags.has(TYPEFLAG_IS_PTR))
                 return false;
         }

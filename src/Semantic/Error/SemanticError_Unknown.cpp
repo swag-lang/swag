@@ -160,10 +160,11 @@ namespace
 bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     // What kind of thing to we search for ?
-    auto searchFor = IdentifierSearchFor::Whatever;
-    if (identifier->parent->parent && identifier->parent->parent->is(AstNodeKind::TypeExpression) && identifier->parent->lastChild() == identifier)
+    const auto pr2       = identifier->getParent(2);
+    auto       searchFor = IdentifierSearchFor::Whatever;
+    if (pr2->is(AstNodeKind::TypeExpression) && identifier->parent->lastChild() == identifier)
         searchFor = IdentifierSearchFor::Type;
-    else if (identifier->parent->parent && identifier->parent->parent->is(AstNodeKind::AttrUse) && identifier->parent->lastChild() == identifier)
+    else if (pr2->is(AstNodeKind::AttrUse) && identifier->parent->lastChild() == identifier)
         searchFor = IdentifierSearchFor::Attribute;
     else if (identifier->callParameters && identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         searchFor = IdentifierSearchFor::Struct;

@@ -790,11 +790,12 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         return context->report(err, Diagnostic::hereIs(overload));
     }
 
+    const auto pr2 = identifier->getParent(2);
     if (identifier->callParameters)
         identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
-    else if (identifier->parent->parent->is(AstNodeKind::MakePointerLambda))
+    else if (pr2->is(AstNodeKind::MakePointerLambda))
         identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
-    else if (identifier->parent->parent->is(AstNodeKind::MakePointer))
+    else if (pr2->is(AstNodeKind::MakePointer))
         identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
 
     // Need to make all types compatible, in case a cast is necessary
@@ -822,7 +823,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     if (identifier->isForceTakeAddress())
     {
         // This is for a lambda
-        if (identifier->parent->parent->is(AstNodeKind::MakePointer) || identifier->parent->parent->is(AstNodeKind::MakePointerLambda))
+        if (pr2->is(AstNodeKind::MakePointer) || pr2->is(AstNodeKind::MakePointerLambda))
         {
             if (!identifier->callParameters)
             {
@@ -1011,9 +1012,10 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
         !identifier->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))
     {
         canConvertStructParams = true;
-        if (identifier->parent->parent->is(AstNodeKind::VarDecl) || identifier->parent->parent->is(AstNodeKind::ConstDecl))
+        const auto pr2         = identifier->getParent(2);
+        if (pr2->is(AstNodeKind::VarDecl) || pr2->is(AstNodeKind::ConstDecl))
         {
-            const auto varNode = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+            const auto varNode = castAst<AstVarDecl>(pr2, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
             if (varNode->assignment == identifier->parent && !varNode->type)
             {
                 // Optim if we have var = Struct{}
@@ -1052,7 +1054,7 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
     // of 'var'
     if (canOptimAffect)
     {
-        const auto varNode  = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+        const auto varNode  = castAst<AstVarDecl>(identifier->getParent(2), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         const auto typeNode = Ast::newTypeExpression(nullptr, varNode);
         varNode->type       = typeNode;
         varNode->assignment = nullptr;
@@ -1072,8 +1074,8 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
     // A struct with parameters is in fact the creation of a temporary variable
     if (canConvertStructParams)
     {
-        if (identifier->parent->parent->isNot(AstNodeKind::TypeExpression) ||
-            !identifier->parent->parent->hasSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN))
+        const auto pr2 = identifier->getParent(2);
+        if (pr2->isNot(AstNodeKind::TypeExpression) || !pr2->hasSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN))
         {
             SWAG_CHECK(Ast::convertStructParamsToTmpVar(context, identifier));
             return true;
@@ -1449,30 +1451,32 @@ bool Semantic::registerMatch(SemanticContext*            context,
     {
         // Be sure that we would like to instantiate in case we do not have user generic parameters.
         bool asMatch = false;
-        if (!oneOverload.genericParameters && context->node->parent && context->node->parent->parent)
+        if (!oneOverload.genericParameters)
         {
-            const auto grandParent = context->node->parent->parent;
-
-            bool isLast = false;
-            if (node && node->is(AstNodeKind::Identifier))
+            const auto pr2 = context->node->getParent(2);
+            if (pr2->isNot(AstNodeKind::Invalid))
             {
-                const auto id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
-                if (id == id->identifierRef()->lastChild())
-                    isLast = true;
-            }
+                bool isLast = false;
+                if (node && node->is(AstNodeKind::Identifier))
+                {
+                    const auto id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
+                    if (id == id->identifierRef()->lastChild())
+                        isLast = true;
+                }
 
-            if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicTypeOf))
-                asMatch = true;
-            else if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicKindOf))
-                asMatch = true;
-            else if (grandParent->is(AstNodeKind::IntrinsicProp) && grandParent->token.is(TokenId::IntrinsicNameOf))
-                asMatch = true;
-            else if (isLast && grandParent->is(AstNodeKind::BinaryOp) && grandParent->token.is(TokenId::SymEqualEqual) && overload->symbol->is(SymbolKind::Struct))
-                asMatch = true;
-            else if (isLast && grandParent->is(AstNodeKind::BinaryOp) && grandParent->token.is(TokenId::SymExclamEqual) && overload->symbol->is(SymbolKind::Struct))
-                asMatch = true;
-            else if (grandParent->is(AstNodeKind::IntrinsicDefined))
-                asMatch = true;
+                if (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicTypeOf))
+                    asMatch = true;
+                else if (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicKindOf))
+                    asMatch = true;
+                else if (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicNameOf))
+                    asMatch = true;
+                else if (isLast && pr2->is(AstNodeKind::BinaryOp) && pr2->token.is(TokenId::SymEqualEqual) && overload->symbol->is(SymbolKind::Struct))
+                    asMatch = true;
+                else if (isLast && pr2->is(AstNodeKind::BinaryOp) && pr2->token.is(TokenId::SymExclamEqual) && overload->symbol->is(SymbolKind::Struct))
+                    asMatch = true;
+                else if (pr2->is(AstNodeKind::IntrinsicDefined))
+                    asMatch = true;
+            }
         }
 
         const auto match = context->getOneMatch();

@@ -343,7 +343,7 @@ struct AstNode
     bool isPublic() const;
     bool isForceTakeAddress() const;
 
-    AstNode*     getParent(uint32_t level) const;
+    AstNode*     getParent(uint32_t level = 1) const;
     const Token& getTokenName() const;
     Utf8         getScopedName() const;
     void         setPassThrough();
