@@ -71,6 +71,7 @@ enum class LogPassType
 
 struct Log
 {
+    static Utf8 colorToVTS(int r, int g, int b);
     static Utf8 colorToVTS(LogColor color);
     void        setColor(LogColor color);
     void        setDefaultColor();

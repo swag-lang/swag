@@ -14,6 +14,11 @@ void Log::unlock()
     mutexAccess.unlock();
 }
 
+Utf8 Log::colorToVTS(int r, int g, int b)
+{
+    return form("\x1b[38;2;%d;%d;%dm", r, g, b);
+}
+
 Utf8 Log::colorToVTS(LogColor color)
 {
     if (!g_CommandLine.logColor)
@@ -48,7 +53,7 @@ Utf8 Log::colorToVTS(LogColor color)
         case LogColor::LegitGray:
             return "\x1b[37m";
         case LogColor::Gray:
-            return form("\x1b[38;2;%d;%d;%dm", 0x8F, 0x8F, 0x8F);
+            return colorToVTS(0x8F, 0x8F, 0x8F);
 
         case LogColor::Red:
             return "\x1b[91m";
