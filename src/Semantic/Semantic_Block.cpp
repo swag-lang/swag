@@ -8,6 +8,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Naming.h"
 #include "Syntax/Parser/Parser.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
@@ -661,7 +662,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
     if (!node->extraNameToken.text.empty())
     {
-        Diagnostic err{node, node->extraNameToken, formErr(Err0699, typeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->extraNameToken, formErr(Err0699, Naming::aKindName(typeInfo).c_str())};
         err.addNote(node->expression, Diagnostic::isType(typeInfo));
         return context->report(err);
     }

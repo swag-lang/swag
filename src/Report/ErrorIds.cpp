@@ -822,7 +822,7 @@ void initErrors()
     SWAG_ERROR(Err0696, "unexpected type declaration                       $ unexpected type declaration after [[self]] $ [[self]] is implicitly typed; consider removing the redundant type");
     SWAG_ERROR(Err0697, "unexpected type declaration                       $ unexpected type declaration after unnamed parameters");
     SWAG_ERROR(Err0698, "unexpected type suffix                            $ %s should not be followed by a type suffix");
-    SWAG_ERROR(Err0699, "unexpected visit name                             $ a special visit name is only valid to visit a struct, got [[%s]] instead");
+    SWAG_ERROR(Err0699, "unexpected visit name                             $ a special visit name is only valid to visit a struct, and here we are visiting %s");
     SWAG_ERROR(Err0700, "unknown attribute                                 $ the attribute [[%s]] can't be found");
     SWAG_ERROR(Err0701, "unknown dependency                                $ use of an unknown module dependency [[%s]]");
     SWAG_ERROR(Err0702, "unknown enum value                                $ the enumeration value [[%s]] can't be found in [[%s]]");
