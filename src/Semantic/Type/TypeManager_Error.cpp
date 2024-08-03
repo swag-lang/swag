@@ -242,7 +242,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         err.remarks = remarks;
 
         // Add a note in case we affect to an identifier.
-        if (context->node->is(AstNodeKind::AffectOp))
+        if (context->node->is(AstNodeKind::AffectOp) || context->node->is(AstNodeKind::BinaryOp))
         {
             const auto left = context->node->firstChild();
             if (left->is(AstNodeKind::IdentifierRef))

@@ -872,7 +872,7 @@ bool Parser::doCompilerImport(AstNode* parent)
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the location"));
                 SWAG_VERIFY(node->tokenLocation.text.empty(), error(tokenParse, toErr(Err0064)));
-                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, formErr(Err0134, tokenParse.token.c_str())));
+                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0134)));
                 node->tokenLocation = tokenParse.token;
                 SWAG_CHECK(eatToken());
                 continue;
@@ -883,7 +883,7 @@ bool Parser::doCompilerImport(AstNode* parent)
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the version"));
                 SWAG_VERIFY(node->tokenVersion.text.empty(), error(tokenParse, toErr(Err0065)));
-                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, formErr(Err0135, tokenParse.token.c_str())));
+                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0135)));
                 node->tokenVersion = tokenParse.token;
                 SWAG_CHECK(eatToken());
                 continue;
