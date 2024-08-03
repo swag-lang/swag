@@ -153,13 +153,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 
 bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) const
 {
-    Utf8 message;
-
-    if (msg)
-        message = msg;
-    else
-        message = toErr(Err0305);
-
+    const Utf8 message = msg ? Utf8{msg} : toErr(Err0305);
     Diagnostic err{sourceFile, myToken, message};
     if (Tokenizer::isKeyword(myToken.token.id))
         err.addNote(formNte(Nte0125, myToken.token.c_str()));
