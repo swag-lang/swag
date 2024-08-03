@@ -2852,7 +2852,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
             fromNode->is(AstNodeKind::KeepRef) &&
             toType->isConst() != fromType->isConst())
         {
-            return castError(context, toType, fromType, fromNode, castFlags);
+            return castError(context, toType, fromType, fromNode, castFlags, CastErrorType::Const);
         }
 
         // Compare pointed types
