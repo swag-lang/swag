@@ -4,6 +4,7 @@
 #include "Report/ErrorIds.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Naming.h"
 #include "Wmf/Module.h"
 
 bool TypeManager::isOverflowEnabled(const SemanticContext* context, const AstNode* fromNode, CastFlags castFlags)
@@ -124,7 +125,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
                                   TypeInfo*     toType,
                                   TypeInfo*     fromType,
                                   AstNode* /*fromNode*/,
-                                  CastFlags /*castFlags*/,
+                                  CastFlags     castFlags,
                                   CastErrorType castError)
 {
     msg.clear();
@@ -174,13 +175,45 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     else if (fromType->isClosure() && toType->isLambda())
     {
         hint = toNte(Nte0191);
-        msg = toErr(Err0640);
+        msg  = toErr(Err0640);
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
         const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
             msg = toErr(Err0247);
+        else
+        {
+            msg                   = formErr(Err0741, fromType->getDisplayNameC(), toType->getDisplayNameC());
+            const auto toTypeFunc = castTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
+
+            BadSignatureInfos bi;
+            fromTypeFunc->isSame(toTypeFunc, castFlags | CAST_FLAG_EXACT, bi);
+            switch (bi.matchResult)
+            {
+                case MatchResult::NotEnoughArguments:
+                    remarks.push_back("too many parameters");
+                    break;
+                case MatchResult::TooManyArguments:
+                    remarks.push_back("not enough parameters");
+                    break;
+                case MatchResult::MismatchThrow:
+                    remarks.push_back("mismatch throw");
+                    break;
+                case MatchResult::MissingReturnType:
+                    remarks.push_back("invalid return type");
+                    break;
+                case MatchResult::NoReturnType:
+                    remarks.push_back("missing return type");
+                    break;
+                case MatchResult::MismatchReturnType:
+                    remarks.push_back("mismatch return type");
+                    break;
+                case MatchResult::BadSignature:
+                    remarks.push_back(form("mismatch signature (%s)", Naming::niceParameterRank(bi.badSignatureNum1 + 1).c_str()));
+                    break;
+            }
+        }
     }
     else if (!fromType->isPointer() && toType->isPointerRef())
     {

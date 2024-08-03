@@ -759,11 +759,11 @@ void initErrors()
     SWAG_ERROR(Err0633, "tuple type mismatch                               $ the source and the requested tuples are not compatible");
     SWAG_ERROR(Err0634, "type mismatch                                     $ a closure can't be assigned to a lambda type");
     SWAG_ERROR(Err0635, "type mismatch                                     $ can't initialize type [[%s]] from type [[%s]]");
-    SWAG_ERROR(Err0636, "type mismatch                                     $ casting from type [[%s]] to type [[%s]] is not allowed");
-    SWAG_ERROR(Err0637, "type mismatch                                     $ casting from type [[%s]] to a pointer type is not allowed");
-    SWAG_ERROR(Err0638, "type mismatch                                     $ casting from a type value ([[typeinfo]]) to a compile type ([[%s]]) is not allowed");
-    SWAG_ERROR(Err0639, "type mismatch                                     $ casting from a value pointer type [[%s]] to a block pointer type [[%s]] is not allowed");
-    SWAG_ERROR(Err0640, "type mismatch                                     $ casting from a closure type to a lambda type is not allowed");
+    SWAG_ERROR(Err0636, "type mismatch                                     $ conversion from type [[%s]] to type [[%s]] is not allowed");
+    SWAG_ERROR(Err0637, "type mismatch                                     $ conversion from type [[%s]] to a pointer type is not allowed");
+    SWAG_ERROR(Err0638, "type mismatch                                     $ conversion from a type value ([[typeinfo]]) to a compile type ([[%s]]) is not allowed");
+    SWAG_ERROR(Err0639, "type mismatch                                     $ conversion from a value pointer type [[%s]] to a block pointer type [[%s]] is not allowed");
+    SWAG_ERROR(Err0640, "type mismatch                                     $ conversion from a closure type to a lambda type is not allowed");
     SWAG_ERROR(Err0641, "type mismatch                                     $ expected type [[%s]] for field [[%s]], got type [[%s]] instead");
     SWAG_ERROR(Err0642, "type mismatch                                     $ expected a return of type [[%s]] for the special function [[%s]], got type [[%s]] instead");
     SWAG_ERROR(Err0643, "type mismatch                                     $ expected type [[%s]] for the UFCS argument, got type [[%s]] instead");
@@ -864,7 +864,7 @@ void initErrors()
     SWAG_ERROR(Err0738, "unused return value                               $ the return value of the function [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err0739, "unused return value                               $ the return value of the intrinsic [[%s]] should be used");
     SWAG_ERROR(Err0740, "unused return value                               $ the return value of the lambda [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
-    SWAG_ERROR(Err0741, nullptr);
+    SWAG_ERROR(Err0741, "type mismatch                                     $ conversion from type [[%s]] to type [[%s]] is not allowed");
     SWAG_ERROR(Err0742, nullptr);
     SWAG_ERROR(Err0743, nullptr);
     SWAG_ERROR(Err0744, nullptr);

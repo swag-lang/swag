@@ -199,6 +199,7 @@ Utf8 Naming::kindName(const TypeInfo* typeInfo, Utf8& article)
         case TypeInfoKind::Namespace:
             article = "a";
             return "namespace";
+        
         case TypeInfoKind::Enum:
             article = "an";
             return "enum";
@@ -232,6 +233,7 @@ Utf8 Naming::kindName(const TypeInfo* typeInfo, Utf8& article)
         case TypeInfoKind::TypeListTuple:
             article = "a";
             return "tuple";
+        
         case TypeInfoKind::TypeListArray:
             article = "an";
             return "array";

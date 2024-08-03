@@ -652,24 +652,20 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
 
     // Can convert a lambda to a closure, but do not take care of closure first parameter
     // as it is generated
+    auto countMyParams = parameters.size();
     if (!isClosure() && other->isClosure())
+        countMyParams += 1;
+    
+    if (other->parameters.size() > countMyParams)
     {
-        if (parameters.size() + 1 != other->parameters.size())
-            return false;
+        bi.matchResult = MatchResult::TooManyArguments;
+        return false;
     }
-    else
-    {
-        if (other->parameters.size() > parameters.size())
-        {
-            bi.matchResult = MatchResult::TooManyArguments;
-            return false;
-        }
 
-        if (other->parameters.size() < parameters.size())
-        {
-            bi.matchResult = MatchResult::NotEnoughArguments;
-            return false;
-        }
+    if (other->parameters.size() < countMyParams)
+    {
+        bi.matchResult = MatchResult::NotEnoughArguments;
+        return false;
     }
 
     if (genericParameters.size() != other->genericParameters.size())
@@ -699,6 +695,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
             bi.matchResult = MatchResult::NoReturnType;
             return false;
         }
+        
         if (returnType && !returnType->isVoid() && (!other->returnType || other->returnType->isVoid()))
         {
             bi.matchResult = MatchResult::MissingReturnType;
