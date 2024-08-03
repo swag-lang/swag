@@ -910,7 +910,7 @@ void initErrors()
     SWAG_ERROR(Nte0020, "an attribute is not a function; consider removing it");
     SWAG_ERROR(Nte0021, "an implicit [[@countof]] is present here");
     SWAG_ERROR(Nte0022, "associated command line option: [[%s]]");
-    SWAG_ERROR(Nte0023, "both parts of an [[orelse]] should be of identical type");
+    SWAG_ERROR(Nte0023, "both parts of an [[orelse]] should have the same type");
     SWAG_ERROR(Nte0024, "but it is applied on this %s");
     SWAG_ERROR(Nte0025, "consider [[typealias]] to create an alias for %s");
     SWAG_ERROR(Nte0026, "consider adding [[&]] to get the address of this expression");
