@@ -263,7 +263,7 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
 bool Semantic::resolveEnumValue(SemanticContext* context)
 {
     auto       valNode  = castAst<AstEnumValue>(context->node, AstNodeKind::EnumValue);
-    const auto enumNode = valNode->findParent(AstNodeKind::EnumDecl);
+    const auto enumNode = castAst<AstEnum>(valNode->findParent(AstNodeKind::EnumDecl), AstNodeKind::EnumDecl);
     SWAG_ASSERT(enumNode);
     const auto typeEnum = castTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     if (typeEnum->rawType->isGeneric())
@@ -280,12 +280,16 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, assignNode));
         YIELD();
 
+        PushErrCxtStep ec{context, enumNode->type, ErrCxtStepKind::Note, [rawTypeInfo] {
+                              return formNte(Nte0219, rawTypeInfo->getDisplayNameC());
+                          }};
+
         if (rawTypeInfo->isArray())
         {
             SWAG_CHECK(checkIsConstExpr(context, assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CAST_FLAG_CONCRETE_ENUM));
-            SWAG_ASSERT(!assignNode->hasFlagComputedValue());
 
+            SWAG_ASSERT(!assignNode->hasFlagComputedValue());
             assignNode->setFlagsValueIsComputed();
             storageSegment = getConstantSegFromContext(assignNode);
             SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue(), assignNode->typeInfo, assignNode));
@@ -308,6 +312,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
         {
             SWAG_CHECK(checkIsConstExpr(context, assignNode->hasFlagComputedValue(), assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CAST_FLAG_CONCRETE_ENUM));
+
             enumNode->extSemantic()->computedValue = assignNode->computedValue();
         }
     }

@@ -894,7 +894,7 @@ void initErrors()
     SWAG_ERROR(Nte0004, "[[%s]] is %s of type [[%s]] and does not have a sub-scope");
     SWAG_ERROR(Nte0005, "[[%s]] is a variable and variables within expressions can't be evaluated at compile-time");
     SWAG_ERROR(Nte0006, "[[%s]] is an array of type [[%s]] which does not have a sub-scope");
-    SWAG_ERROR(Nte0007, "type [[%s]] is needed because of the function return type");
+    SWAG_ERROR(Nte0007, "the type [[%s]] is needed because of the function return type");
     SWAG_ERROR(Nte0008, "[[%s]] might represent either a type or a parameter name");
     SWAG_ERROR(Nte0009, "[[%s]] was located within [[%s]] due to a [[using]] field");
     SWAG_ERROR(Nte0010, "[[==]] is the comparison operator; did you intend to affect something with [[=]]?");
@@ -1106,7 +1106,7 @@ void initErrors()
     SWAG_ERROR(Nte0216, "here is the declaration of the %s [[%s]]");
     SWAG_ERROR(Nte0217, "the [[@gettag]] default value should conform to this type");
     SWAG_ERROR(Nte0218, "the [[@init]] initialization value should conform to this pointed type ([[%s]])");
-    SWAG_ERROR(Nte0219, nullptr);
+    SWAG_ERROR(Nte0219, "the type [[%s]] is needed because of the enum specific type");
     SWAG_ERROR(Nte0220, nullptr);
 }
 
