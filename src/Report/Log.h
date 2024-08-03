@@ -3,8 +3,9 @@
 
 struct LogWriteContext
 {
-    bool raw = false;
     Utf8 colorHighlight;
+    bool raw          = false;
+    bool canHighlight = true;
 };
 
 enum class LogColor

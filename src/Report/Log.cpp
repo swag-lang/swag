@@ -185,14 +185,12 @@ Utf8 Log::removeFormat(const char* message)
         else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
         {
             pz += 2;
-            if (!g_CommandLine.logColor)
-                m += "'";
+            m += "'";
         }
         else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
         {
             pz += 2;
-            if (!g_CommandLine.logColor)
-                m += "'";
+            m += "'";
         }
         else
             m += *pz++;
@@ -217,22 +215,31 @@ Utf8 Log::format(const char* message, const LogWriteContext* logContext)
         }
         else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
         {
-            if (!g_CommandLine.logColor)
-                m += "'";
-            if (logContext && !logContext->colorHighlight.empty())
-                m += logContext->colorHighlight;
-            else if (curColor == colorToVTS(LogColor::White))
-                m += colorToVTS(LogColor::Gray);
-            m += colorToVTS(LogColor::Underline);
+            if (!logContext || logContext->canHighlight)
+            {
+                if (logContext && !logContext->colorHighlight.empty())
+                {
+                    m += logContext->colorHighlight;
+                    m += colorToVTS(LogColor::Underline);
+                }
+                else if (curColor == colorToVTS(LogColor::White))
+                {
+                    m += colorToVTS(LogColor::Gray);
+                    m += colorToVTS(LogColor::Underline);
+                }
+            }
+
             pz += 2;
         }
         else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
         {
-            m += curColor;
-            m += colorToVTS(LogColor::UnUnderline);
+            if (!logContext || logContext->canHighlight)
+            {
+                m += curColor;
+                m += colorToVTS(LogColor::UnUnderline);
+            }
+
             pz += 2;
-            if (!g_CommandLine.logColor)
-                m += "'";
         }
         else
             m += *pz++;

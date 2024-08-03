@@ -547,7 +547,7 @@ void Diagnostic::printLastRangeHint(Log* log, int curColumn)
         LogWriteContext logCxt;
         if (COLOR_ERROR)
         {
-            if (r.errorLevel == DiagnosticLevel::Error)
+            if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Warning)
                 logCxt.colorHighlight = Log::colorToVTS(LogColor::Gray);
             setColorRanges(log, r.errorLevel);
         }
