@@ -38,6 +38,89 @@ void Diagnostic::setup()
     if (!sourceFile || sourceFile->path.empty() || !hasLocation)
         showSourceCode = false;
     hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
+    doReplaceHighLight();
+}
+
+void Diagnostic::doReplaceHighLight()
+{
+    textMsg += ' ';
+
+    int idx = textMsg.find(" [[");
+    if (idx != -1)
+    {
+        Utf8 replace{textMsg.buffer, static_cast<uint32_t>(idx)};
+        while (idx != -1)
+        {
+            bool isSymbol = true;
+
+            Utf8 inside;
+            idx += 3;
+
+            int nextIdx = textMsg.find("]] ", idx);
+            if (nextIdx != -1)
+            {
+                while (idx != nextIdx)
+                {
+                    const auto c = textMsg[idx++];
+                    inside += c;
+                    if (SWAG_IS_AL_NUM(c) || c == '_')
+                        isSymbol = false;
+                }
+
+                if (isSymbol && inside.length() <= 3)
+                {
+                    replace += " ";
+                    if (inside == ',')
+                        replace += "a [[comma]] ','";
+                    else if (inside == ';')
+                        replace += "a [[semicolon]] ';'";
+                    else if (inside == '(')
+                        replace += "an [[open parenthesis]] '('";
+                    else if (inside == ')')
+                        replace += "a [[closed parenthesis]] ')'";
+                    else if (inside == ':')
+                        replace += "a [[colon]] ':'";
+                    else if (inside == '{')
+                        replace += "an [[open curly bracket]] '{'";                    
+                    else if (inside == '}')
+                        replace += "a [[closed curly bracket]] '}'";
+                    else if (inside == '[')
+                        replace += "an [[open square bracket]] '['";                    
+                    else if (inside == ']')
+                        replace += "a [[closed square bracket]] ']'";                     
+                    else
+                    {
+                        replace += "a symbol [['";
+                        replace += inside;
+                        replace += "']]";
+                    }
+
+                    replace += " ";
+                }
+                else
+                {
+                    replace += " [[";
+                    replace += inside;
+                    replace += "]] ";
+                }
+
+                idx += 3;
+            }
+            else
+            {
+                replace += " [[";
+            }
+
+            nextIdx = textMsg.find(" [[", idx);
+            if (nextIdx == -1)
+                replace += Utf8{textMsg.buffer + idx, static_cast<uint32_t>(textMsg.length() - idx)};
+            else
+                replace += Utf8{textMsg.buffer + idx, static_cast<uint32_t>(nextIdx - idx)};
+            idx = nextIdx;
+        }
+
+        textMsg = replace;
+    }
 }
 
 void Diagnostic::doReplace(const Token& token)
@@ -49,7 +132,7 @@ void Diagnostic::doReplace(const Token& token)
     else if (Tokenizer::isIntrinsicReturn(token.id))
         textMsg.replaceAll("$$TKN$$", form("intrinsic [[%s]]", token.c_str()));
     else if (Tokenizer::isSymbol(token.id))
-        textMsg.replaceAll("$$TKN$$", form("symbol [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("[[%s]]", token.c_str()));
     else if (Tokenizer::isLiteral(token.id))
         textMsg.replaceAll("$$TKN$$", form("literal [[%s]]", token.c_str()));
     else if (token.is(TokenId::NativeType))

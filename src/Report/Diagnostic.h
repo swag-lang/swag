@@ -153,6 +153,7 @@ struct Diagnostic
     static Diagnostic* note(AstNode* node, const Utf8& msg) { return node ? new Diagnostic{node, msg, DiagnosticLevel::Note} : nullptr; }
 
     void setup();
+    void doReplaceHighLight();
     void doReplace(const Token& token);
     void doReplace(const TokenParse& tokenParse);
     void addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h);

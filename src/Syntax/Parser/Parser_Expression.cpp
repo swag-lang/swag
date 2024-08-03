@@ -1715,7 +1715,7 @@ bool Parser::doInit(AstNode* parent, AstNode** result)
     if (tokenParse.is(TokenId::SymLeftParen))
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doFuncCallParameters(node, &node->parameters, TokenId::SymRightParen));
+        SWAG_CHECK(doFuncCallArguments(node, &node->parameters, TokenId::SymRightParen));
         FormatAst::inheritFormatAfter(this, node, node->parameters);
     }
 

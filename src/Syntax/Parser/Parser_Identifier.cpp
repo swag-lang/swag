@@ -198,12 +198,12 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             }
 
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
+            SWAG_CHECK(doFuncCallArguments(identifier, &identifier->callParameters, TokenId::SymRightParen));
         }
         else if (!tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE) && tokenParse.is(TokenId::SymLeftCurly))
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightCurly));
+            SWAG_CHECK(doFuncCallArguments(identifier, &identifier->callParameters, TokenId::SymRightCurly));
             identifier->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
         }
     }
@@ -238,7 +238,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             identifier->token.text = "";
             identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL);
             identifier->semanticFct = Semantic::resolveIdentifier;
-            SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
+            SWAG_CHECK(doFuncCallArguments(identifier, &identifier->callParameters, TokenId::SymRightParen));
         }
     }
 

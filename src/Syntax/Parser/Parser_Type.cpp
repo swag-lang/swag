@@ -625,7 +625,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
             node->identifier = Ast::newIdentifierRef(g_LangSpec->name_retval, this, node);
             const auto id    = castAst<AstIdentifier>(node->identifier->lastChild(), AstNodeKind::Identifier);
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
+            SWAG_CHECK(doFuncCallArguments(id, &id->callParameters, TokenId::SymRightCurly));
             id->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
             id->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
         }

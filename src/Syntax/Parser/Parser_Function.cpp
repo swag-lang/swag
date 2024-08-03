@@ -98,10 +98,14 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
     return true;
 }
 
-bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken)
+bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, TokenId closeToken)
 {
     auto callParams = Ast::newFuncCallParams(this, parent);
     *result         = callParams;
+
+    bool forAttrUse = false;
+    if (callParams->parent && callParams->parent->parent && callParams->parent->parent->parent && callParams->parent->parent->parent->is(AstNodeKind::AttrUse))
+        forAttrUse = true;
 
     // Capturing
     if (closeToken == TokenId::SymRightParen && tokenParse.is(TokenId::SymVertical))
@@ -155,9 +159,11 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
 
             auto tokenComma = tokenParse;
             if (callParams->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-                SWAG_CHECK(eatToken(TokenId::SymComma, "in [[struct]] initialization parameters"));
+                SWAG_CHECK(eatToken(TokenId::SymComma, "in [[struct]] initialization arguments"));
+            else if (forAttrUse)
+                SWAG_CHECK(eatToken(TokenId::SymComma, "in attribute arguments"));
             else
-                SWAG_CHECK(eatToken(TokenId::SymComma, "in function call parameters"));
+                SWAG_CHECK(eatToken(TokenId::SymComma, "in function call arguments"));
 
             // Accept ending comma in struct initialization
             if (closeToken == TokenId::SymRightCurly && tokenParse.is(closeToken))
@@ -170,9 +176,11 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
 
     FormatAst::inheritFormatAfter(this, callParams, &tokenParse);
     if (callParams->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-        SWAG_CHECK(eatToken(closeToken, "to close struct initialization parameters"));
+        SWAG_CHECK(eatToken(closeToken, "to close struct initialization arguments"));
+    else if (forAttrUse)
+        SWAG_CHECK(eatToken(closeToken, "to close attribute arguments"));
     else
-        SWAG_CHECK(eatToken(closeToken, "to close function call parameters"));
+        SWAG_CHECK(eatToken(closeToken, "to close function call arguments"));
 
     return true;
 }
