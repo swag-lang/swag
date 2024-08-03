@@ -86,7 +86,11 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
             SWAG_CHECK(checkIsConstExpr(context, nameNode->hasFlagComputedValue(), nameNode, toErr(Err0031), node->token.text));
             SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, formErr(Err0196, node->token.c_str(), nameNode->typeInfo->getDisplayNameC())}));
             SWAG_VERIFY(defaultVal->hasComputedValue(), context->report({defaultVal, formErr(Err0197, typeNode->typeInfo->getDisplayNameC())}));
-            SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CAST_FLAG_DEFAULT));
+
+            {
+                PushErrCxtStep ec(context, typeNode, ErrCxtStepKind::Note, [] { return toNte(Nte0217); });
+                SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CAST_FLAG_DEFAULT));
+            }
 
             node->setFlagsValueIsComputed();
             node->typeInfo = typeNode->typeInfo;

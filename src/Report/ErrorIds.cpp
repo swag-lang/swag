@@ -1104,8 +1104,8 @@ void initErrors()
     SWAG_ERROR(Nte0214, "if you are trying to access a struct or a tuple element, you could try [[%s.item%s]]");
     SWAG_ERROR(Nte0215, "this can't be prefixed with an access modifier");
     SWAG_ERROR(Nte0216, "here is the declaration of the %s [[%s]]");
-    SWAG_ERROR(Nte0217, nullptr);
-    SWAG_ERROR(Nte0218, nullptr);
+    SWAG_ERROR(Nte0217, "the [[@gettag]] default value should conform to this type");
+    SWAG_ERROR(Nte0218, "the [[@init]] initialization value should conform to this pointed type ([[%s]])");
     SWAG_ERROR(Nte0219, nullptr);
     SWAG_ERROR(Nte0220, nullptr);
 }

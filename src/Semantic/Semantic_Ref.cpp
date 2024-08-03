@@ -48,7 +48,7 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
     {
         msg  = toErr(Err0179);
         msg1 = toNte(Nte0122);
-    }    
+    }
     else if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
     {
         msg  = toErr(Err0178);
@@ -1170,7 +1170,11 @@ bool Semantic::resolveInit(SemanticContext* context)
         {
             SWAG_VERIFY(node->parameters->childCount() == 1, context->report({node->parameters, formErr(Err0630, pointedType->getDisplayNameC())}));
             const auto child = node->parameters->firstChild();
-            SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
+
+            {
+                PushErrCxtStep ec(context, node->expression, ErrCxtStepKind::Note, [node] { return formNte(Nte0218, node->expression->typeInfo->getDisplayNameC()); });
+                SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
+            }
         }
         else if (pointedType->isStruct())
         {
