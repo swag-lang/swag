@@ -12,9 +12,8 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-thread_local int     g_SilentError = 0;
-thread_local Utf8    g_SilentErrorMsg;
-Vector<Vector<Utf8>> g_ReportErrors;
+thread_local int  g_SilentError = 0;
+thread_local Utf8 g_SilentErrorMsg;
 
 namespace
 {
@@ -544,10 +543,7 @@ namespace
                         {
                             if (g_CommandLine.verboseErrorsFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorsFilter))
                             {
-                                Log log1;
-                                log1.setStoreMode(true);
-                                reportInternal(&log1, err, notes);
-                                g_ReportErrors.push_back(log1.store);
+                                reportInternal(&g_Log, err, notes);
                             }
                         }
 
@@ -589,10 +585,7 @@ namespace
                         {
                             if (g_CommandLine.verboseErrorsFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorsFilter))
                             {
-                                Log log1;
-                                log1.setStoreMode(true);
-                                reportInternal(&log1, err, notes);
-                                g_ReportErrors.push_back(log1.store);
+                                reportInternal(&g_Log, err, notes);
                             }
                         }
 
@@ -781,46 +774,4 @@ bool Report::internalError(Module* module, const char* msg)
     ++module->numErrors;
     g_Log.unlock();
     return false;
-}
-
-void Report::reportLogErrors()
-{
-    if (!g_CommandLine.verboseErrors)
-        return;
-
-    std::ranges::sort(g_ReportErrors, [](const Vector<Utf8>& a, const Vector<Utf8>& b) {
-        Utf8 aa0 = a[0];
-        aa0.trim();
-        if (aa0.empty())
-            aa0 = a[1];
-
-        Utf8 bb0 = b[0];
-        bb0.trim();
-        if (bb0.empty())
-            bb0 = b[1];
-
-        auto a0 = aa0;
-        auto b0 = bb0;
-
-        a0.remove(0, a0.find(" ["));
-        b0.remove(0, b0.find(" ["));
-        a0.remove(0, 2);
-        b0.remove(0, 2);
-
-        a0.remove(7, a0.length() - 7);
-        b0.remove(7, b0.length() - 7);
-
-        if (a0 == b0)
-            return _strcmpi(aa0.buffer, bb0.buffer) < 0;
-        return _strcmpi(a0.buffer, b0.buffer) < 0;
-    });
-
-    for (const auto& err : g_ReportErrors)
-    {
-        for (const auto& l : err)
-        {
-            g_Log.print(l);
-            g_Log.writeEol();
-        }
-    }
 }

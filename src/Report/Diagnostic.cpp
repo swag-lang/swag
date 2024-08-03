@@ -604,7 +604,7 @@ void Diagnostic::printRanges(Log* log)
     {
         const auto& r        = ranges.back();
         const auto  unFormat = Log::removeFormat(r.hint.c_str());
-        if (curColumn + 1 + unFormat.length() < g_CommandLine.errorRightColumn)
+        if (curColumn + 1 + unFormat.length() < g_CommandLine.errorRightColumn && lineCodePrev.empty())
         {
             log->write(" ");
             printLastRangeHint(log, curColumn + 1);
