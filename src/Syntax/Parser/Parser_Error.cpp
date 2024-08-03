@@ -48,11 +48,9 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 {
     Utf8 msg, note;
 
-    const auto startToken = tokenParse.token;
-    eatToken();
-    const auto nextToken = tokenParse.token;
-    eatToken();
-    const auto nextNextToken = tokenParse.token;
+    const auto startToken    = tokenParse.token;
+    const auto nextToken     = getNextToken(1);
+    const auto nextNextToken = getNextToken(2);
 
     switch (kind)
     {
@@ -93,6 +91,8 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
                 note = toNte(Nte0207);
             else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
                 note = toNte(Nte0040);
+            else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymEqual))
+                note = formNte(Nte0220, nextToken.token.c_str(), startToken.c_str());
             else
                 note = toNte(Nte0167);
             break;
@@ -132,7 +132,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             // Bad character syntax as an expression
             if (startToken.is(TokenId::SymQuote) && nextNextToken.is(TokenId::SymQuote))
             {
-                const Diagnostic err{sourceFile, startToken.startLocation, nextNextToken.endLocation, formErr(Err0233, nextToken.c_str())};
+                const Diagnostic err{sourceFile, startToken.startLocation, nextNextToken.token.endLocation, formErr(Err0233, nextToken.token.c_str())};
                 return context->report(err);
             }
 

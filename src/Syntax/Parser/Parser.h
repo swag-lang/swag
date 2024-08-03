@@ -105,12 +105,13 @@ struct Parser
     bool invalidTokenError(InvalidTokenError kind, const AstNode* parent = nullptr);
     bool invalidIdentifierError(const TokenParse& myToken, const char* msg = nullptr) const;
 
-    bool eatToken();
-    bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");
-    bool eatToken(TokenId id, const char* msg);
-    bool eatTokenError(TokenId id, const Utf8& msg);
-    bool eatFormat(AstNode* parent);
-    bool eatSemiCol(const char* msg);
+    TokenParse getNextToken(uint32_t count = 1);
+    bool       eatToken();
+    bool       eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");
+    bool       eatToken(TokenId id, const char* msg);
+    bool       eatTokenError(TokenId id, const Utf8& msg);
+    bool       eatFormat(AstNode* parent);
+    bool       eatSemiCol(const char* msg);
 
     static bool testIsSingleIdentifier(const AstNode* node);
     bool        checkIsSingleIdentifier(AstNode* node, const char* msg) const;

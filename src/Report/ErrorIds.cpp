@@ -356,7 +356,7 @@ void initErrors()
     SWAG_ERROR(Err0230, "invalid character                                 $ the character [[%s]] is not recognized in this context");
     SWAG_ERROR(Err0231, "invalid character literal                         $ can't convert a character literal to type [[%s]]");
     SWAG_ERROR(Err0232, "invalid character literal                         $ the character literal [[%s]] seems to be a string and not a character");
-    SWAG_ERROR(Err0233, "invalid character syntax                          $ characters should be delimited with back-ticks [[`]] and not quotes $ consider using the syntax [[`%s`]] instead");
+    SWAG_ERROR(Err0233, "invalid character syntax                          $ characters should be delimited with back-ticks and not quotes $ consider using the syntax [[`%s`]] instead");
     SWAG_ERROR(Err0234, "invalid comparison                                $ comparison operations on tuples are not supported");
     SWAG_ERROR(Err0235, "invalid comparison                                $ the comparison operation [[%s]] does not accept the type [[%s]] as the left argument");
     SWAG_ERROR(Err0236, "invalid comparison                                $ the comparison operation [[%s]] does not accept the type [[%s]] as the right argument");
@@ -1107,7 +1107,7 @@ void initErrors()
     SWAG_ERROR(Nte0217, "the [[@gettag]] default value should conform to this type");
     SWAG_ERROR(Nte0218, "the [[@init]] initialization value should conform to this pointed type ([[%s]])");
     SWAG_ERROR(Nte0219, "the type [[%s]] is needed because of the enum specific type");
-    SWAG_ERROR(Nte0220, nullptr);
+    SWAG_ERROR(Nte0220, "to declare a global variable, syntax would be [[var %s: %s]]");
 }
 
 Utf8 formErr(ErrorID idx, ...)
