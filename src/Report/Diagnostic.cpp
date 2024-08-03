@@ -11,6 +11,9 @@
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
 
+static constexpr bool BLANK_LINES = true;
+static constexpr bool COLOR_ERROR = true;
+
 void Diagnostic::setupColors()
 {
     errorColor        = LogColor::Red;
@@ -465,8 +468,10 @@ void Diagnostic::printSourceCode(Log* log, int num, const Utf8& line) const
 
     log->setColor(LogColor::White);
 
-    const auto colored = doSyntaxColor(line.c_str() + minBlanks, cxt);
-    log->print(colored, true);
+    const auto      colored = doSyntaxColor(line.c_str() + minBlanks, cxt);
+    LogWriteContext logCxt;
+    logCxt.raw = true;
+    log->print(colored, &logCxt);
     log->writeEol();
 }
 
@@ -538,9 +543,17 @@ void Diagnostic::printLastRangeHint(Log* log, int curColumn)
     for (uint32_t i = 0; i < tokens.size(); i++)
     {
         log->setColor(rangeNoteColor);
-        // setColorRanges(log, r.errorLevel);
 
-        log->print(tokens[i]);
+        LogWriteContext logCxt;
+        if (COLOR_ERROR)
+        {
+            if (r.errorLevel == DiagnosticLevel::Error)
+                logCxt.colorHighlight = Log::colorToVTS(LogColor::Gray);
+            setColorRanges(log, r.errorLevel);
+        }
+
+        log->print(tokens[i], &logCxt);
+
         if (i != tokens.size() - 1)
         {
             curColumn = printRangesVerticalBars(log, ranges.size() - 1);
@@ -596,6 +609,8 @@ void Diagnostic::printRanges(Log* log)
             log->write(" ");
             printLastRangeHint(log, curColumn + 1);
             ranges.pop_back();
+            if (BLANK_LINES && !ranges.empty())
+                printRangesVerticalBars(log, ranges.size());
         }
     }
 
@@ -650,6 +665,9 @@ void Diagnostic::printRanges(Log* log)
         }
 
         ranges.pop_back();
+
+        if (BLANK_LINES && !ranges.empty())
+            printRangesVerticalBars(log, ranges.size());
     }
 
     log->writeEol();

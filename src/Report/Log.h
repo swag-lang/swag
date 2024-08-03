@@ -1,6 +1,12 @@
 #pragma once
 #include "Threading/Mutex.h"
 
+struct LogWriteContext
+{
+    bool raw = false;
+    Utf8 colorHighlight;
+};
+
 enum class LogColor
 {
     Black,
@@ -72,13 +78,13 @@ struct Log
     void unlock();
 
     static Utf8 removeFormat(const char* message);
-    Utf8        format(const char* message);
+    Utf8        format(const char* message, const LogWriteContext* logContext);
 
     void printHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot);
     void printHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor);
-    void write(const char* message, bool raw = false);
+    void write(const char* message, const LogWriteContext* logContext = nullptr);
     void print(const char* message, LogColor color);
-    void print(const Utf8& message, bool raw = false);
+    void print(const Utf8& message, const LogWriteContext* logContext = nullptr);
     void print(LogSymbol symbol);
     void writeEol();
 

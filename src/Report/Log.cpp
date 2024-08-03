@@ -185,13 +185,13 @@ Utf8 Log::removeFormat(const char* message)
         else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
         {
             pz += 2;
-            if(!g_CommandLine.logColor)
+            if (!g_CommandLine.logColor)
                 m += "'";
         }
         else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
         {
             pz += 2;
-            if(!g_CommandLine.logColor)
+            if (!g_CommandLine.logColor)
                 m += "'";
         }
         else
@@ -201,7 +201,7 @@ Utf8 Log::removeFormat(const char* message)
     return m;
 }
 
-Utf8 Log::format(const char* message)
+Utf8 Log::format(const char* message, const LogWriteContext* logContext)
 {
     Utf8 m;
     auto pz = message;
@@ -217,9 +217,11 @@ Utf8 Log::format(const char* message)
         }
         else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
         {
-            if(!g_CommandLine.logColor)
+            if (!g_CommandLine.logColor)
                 m += "'";
-            if (curColor == colorToVTS(LogColor::White))
+            if (logContext && !logContext->colorHighlight.empty())
+                m += logContext->colorHighlight;
+            else if (curColor == colorToVTS(LogColor::White))
                 m += colorToVTS(LogColor::Gray);
             m += colorToVTS(LogColor::Underline);
             pz += 2;
@@ -229,7 +231,7 @@ Utf8 Log::format(const char* message)
             m += curColor;
             m += colorToVTS(LogColor::UnUnderline);
             pz += 2;
-            if(!g_CommandLine.logColor)
+            if (!g_CommandLine.logColor)
                 m += "'";
         }
         else
@@ -253,7 +255,7 @@ void Log::writeEol()
         std::cout << "\n";
 }
 
-void Log::write(const char* message, bool raw)
+void Log::write(const char* message, const LogWriteContext* logContext)
 {
     if (g_CommandLine.silent)
         return;
@@ -266,17 +268,17 @@ void Log::write(const char* message, bool raw)
         return;
     }
 
-    if (raw)
+    if (logContext && logContext->raw)
         std::cout << message;
     else
-        std::cout << format(message).c_str();
+        std::cout << format(message, logContext).c_str();
 }
 
-void Log::print(const Utf8& message, bool raw)
+void Log::print(const Utf8& message, const LogWriteContext* logContext)
 {
     if (message.length() == 0)
         return;
-    write(message.c_str(), raw);
+    write(message.c_str(), logContext);
 }
 
 void Log::print(const char* message, LogColor color)

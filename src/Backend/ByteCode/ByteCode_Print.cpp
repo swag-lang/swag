@@ -496,14 +496,18 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     if (forDbg && ip == options.curIp)
     {
         g_Log.setColor(LogColor::CurInstruction);
-        g_Log.print(line.pretty, true);
+        LogWriteContext logCxt;
+        logCxt.raw = true;
+        g_Log.print(line.pretty, &logCxt);
     }
     else
     {
         g_Log.setColor(LogColor::White);
         SyntaxColorContext synCxt;
         synCxt.forByteCode = true;
-        g_Log.print(doSyntaxColor(line.pretty, synCxt), true);
+        LogWriteContext logCxt;
+        logCxt.raw = true;
+        g_Log.print(doSyntaxColor(line.pretty, synCxt), &logCxt);
     }
 
 #ifdef SWAG_DEV_MODE
