@@ -865,7 +865,7 @@ void initErrors()
     SWAG_ERROR(Err0739, "unused return value                               $ the return value of the intrinsic [[%s]] should be used");
     SWAG_ERROR(Err0740, "unused return value                               $ the return value of the lambda [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err0741, "type mismatch                                     $ conversion from type [[%s]] to type [[%s]] is not allowed");
-    SWAG_ERROR(Err0742, nullptr);
+    SWAG_ERROR(Err0742, "missing [[)]]                                     $ missing [[)]] to end the attribute arguments list");
     SWAG_ERROR(Err0743, nullptr);
     SWAG_ERROR(Err0744, nullptr);
     SWAG_ERROR(Err0745, nullptr);

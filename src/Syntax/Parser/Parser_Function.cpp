@@ -104,7 +104,7 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
     *result         = callParams;
 
     bool forAttrUse = false;
-    if (callParams->parent && callParams->parent->parent && callParams->parent->parent->parent && callParams->parent->parent->parent->is(AstNodeKind::AttrUse))
+    if (callParams->getParent(3)->is(AstNodeKind::AttrUse))
         forAttrUse = true;
 
     // Capturing
@@ -156,6 +156,9 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
             param->token.endLocation = tokenParse.token.startLocation;
             if (tokenParse.is(closeToken))
                 break;
+
+            if(forAttrUse && tokenParse.is(TokenId::SymRightSquare))
+                return error(tokenParse, toErr(Err0742));
 
             auto tokenComma = tokenParse;
             if (callParams->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))

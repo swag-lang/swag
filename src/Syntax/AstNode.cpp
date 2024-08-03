@@ -517,6 +517,26 @@ bool AstNode::isConstant1() const
     return false;
 }
 
+AstNode* AstNode::getParent(uint32_t level) const
+{
+    SWAG_ASSERT(level);
+    auto p = parent;
+    for (uint32_t i = 1; i < level; i++)
+    {
+        if (!p->parent)
+        {
+            static AstNode n;
+            memset(&n, 0, sizeof(n));
+            n.kind = AstNodeKind::Invalid;
+            return &n;
+        }
+
+        p = p->parent;
+    }
+
+    return p;
+}
+
 const Token& AstNode::getTokenName() const
 {
     if (is(AstNodeKind::FuncDecl))
