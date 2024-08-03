@@ -370,6 +370,13 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         {
             tokenParse.token.endLocation = location;
             appendTokenName(tokenParse);
+
+            if (tokenParse.is(TokenId::SymMinusMinus))
+            {
+                tokenParse.token.id = TokenId::Invalid;
+                return error(tokenParse, formErr(Err0401, tokenParse.token.c_str()));
+            }
+
             break;
         }
 

@@ -524,7 +524,7 @@ void initErrors()
     SWAG_ERROR(Err0398, "invalid variable list                             $ [[if]] does not support multiples variable declarations");
     SWAG_ERROR(Err0399, "invalid variable name                             $ a variable name ([[%s]]) can't start with [[#]] $ only [[#mix]] and [[#alias]] are possible in that case");
     SWAG_ERROR(Err0400, "invalid variable name                             $ expected a variable name, got $$TKN$$ instead");
-    SWAG_ERROR(Err0401, nullptr);
+    SWAG_ERROR(Err0401, "invalid symbol                                    $ the symbol [[%s]] is not a valid Swag symbol");
     SWAG_ERROR(Err0402, "invalid variable name                             $ expected the variable name after [[%s]], got $$TKN$$ instead");
     SWAG_ERROR(Err0403, "invalid variable name                             $ unexpected call arguments after variable name [[%s]]");
     SWAG_ERROR(Err0404, "invalid variable name                             $ unexpected generic arguments after variable name [[%s]]");

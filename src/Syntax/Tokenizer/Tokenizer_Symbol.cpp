@@ -64,25 +64,6 @@ bool Tokenizer::doSymbol(TokenParse& tokenParse, uint32_t c)
             }
             return true;
 
-        case '-':
-            if (curBuffer[0] == '=')
-            {
-                tokenParse.token.id = TokenId::SymMinusEqual;
-                curBuffer++;
-                location.column++;
-            }
-            else if (curBuffer[0] == '>')
-            {
-                tokenParse.token.id = TokenId::SymMinusGreat;
-                curBuffer++;
-                location.column++;
-            }
-            else
-            {
-                tokenParse.token.id = TokenId::SymMinus;
-            }
-            return true;
-
         case ':':
             tokenParse.token.id = TokenId::SymColon;
             return true;
@@ -97,6 +78,31 @@ bool Tokenizer::doSymbol(TokenParse& tokenParse, uint32_t c)
             else
             {
                 tokenParse.token.id = TokenId::SymExclam;
+            }
+            return true;
+
+        case '-':
+            if (curBuffer[0] == '=')
+            {
+                tokenParse.token.id = TokenId::SymMinusEqual;
+                curBuffer++;
+                location.column++;
+            }
+            else if (curBuffer[0] == '>')
+            {
+                tokenParse.token.id = TokenId::SymMinusGreat;
+                curBuffer++;
+                location.column++;
+            }
+            else if (curBuffer[0] == '-')
+            {
+                tokenParse.token.id = TokenId::SymMinusMinus;
+                curBuffer++;
+                location.column++;
+            }
+            else
+            {
+                tokenParse.token.id = TokenId::SymMinus;
             }
             return true;
 
