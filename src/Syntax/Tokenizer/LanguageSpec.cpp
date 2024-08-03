@@ -584,6 +584,7 @@ void LanguageSpec::setupModifiers()
     modifiers.add(name_unconst, MODIFIER_UN_CONST);
     modifiers.add(name_back, MODIFIER_BACK);
     modifiers.add(name_ref, MODIFIER_REF);
+    modifiers.add(name_constref, MODIFIER_CONST_REF);
 }
 
 void LanguageSpec::setup()
