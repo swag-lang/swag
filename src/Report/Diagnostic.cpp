@@ -467,7 +467,7 @@ void Diagnostic::collectRanges()
         if (r.endLocation.line == r.startLocation.line)
             r.width = r.endLocation.column - r.startLocation.column;
         else
-            r.width = static_cast<int>(lineCode.length()) - r.startLocation.column;
+            r.width = lineCode.length() - r.startLocation.column;
         r.width = max(1, r.width);
 
         // Special case for a range == 1.
@@ -504,6 +504,8 @@ void Diagnostic::collectRanges()
         fixRange(lineCode, r.startLocation, r.width, '[', ']');
 
         r.mid = r.startLocation.column + r.width / 2;
+        if(r.width == 2)
+            r.mid--;
     }
 }
 

@@ -652,7 +652,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
         {
             PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [name, leftType] { return formNte(Nte0154, name.c_str(), leftType->getDisplayNameC()); }, true);
-            SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr));
+            SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, left->parent));
         }
 
         if (context->result == ContextResult::Pending)

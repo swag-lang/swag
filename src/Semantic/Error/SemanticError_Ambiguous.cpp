@@ -14,12 +14,18 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
 
     Diagnostic err{node, node->token, formErr(Err0019, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
 
+    bool first = true;
     for (const auto match : genericMatches)
     {
-        const auto overload = match->symbolOverload;
-        const auto note     = Diagnostic::note(overload->node, overload->node->getTokenName(), toNte(Nte0052));
-        note->canBeMerged   = false;
+        auto couldBe = toNte(Nte0052);
+        if (!first)
+            couldBe = "or " + couldBe;
+
+        const auto note   = Diagnostic::note(match->symbolOverload->node, match->symbolOverload->node->getTokenName(), couldBe);
+        note->canBeMerged = false;
         err.addNote(note);
+
+        first = false;
     }
 
     return context->report(err);
