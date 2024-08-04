@@ -504,7 +504,7 @@ void Diagnostic::collectRanges()
         fixRange(lineCode, r.startLocation, r.width, '[', ']');
 
         r.mid = r.startLocation.column + r.width / 2;
-        if(r.width == 2)
+        if((r.width & 1) == 0)
             r.mid--;
     }
 }
