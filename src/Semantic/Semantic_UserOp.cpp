@@ -589,7 +589,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     const auto node = context->node;
 
     SymbolMatchContext symMatchContext;
-    symMatchContext.matchFlags |= SymbolMatchContext::MATCH_UN_CONST; // Do not test const
+    symMatchContext.matchFlags.add(SymbolMatchContext::MATCH_UN_CONST); // Do not test const
     for (auto param : params)
         symMatchContext.parameters.push_back(param);
 
@@ -652,7 +652,9 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
         {
             PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [name, leftType] { return formNte(Nte0154, name.c_str(), leftType->getDisplayNameC()); }, true);
-            SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, left->parent));
+            context->node = left->parent;
+            SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr));
+            context->node = node;
         }
 
         if (context->result == ContextResult::Pending)

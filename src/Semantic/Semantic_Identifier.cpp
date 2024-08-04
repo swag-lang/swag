@@ -781,7 +781,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
             context->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
             context->closureFirstParam.typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
             symMatchContext.parameters.push_back(&context->closureFirstParam);
-            symMatchContext.matchFlags |= SymbolMatchContext::MATCH_CLOSURE_PARAM;
+            symMatchContext.matchFlags.add(SymbolMatchContext::MATCH_CLOSURE_PARAM);
         }
     }
 

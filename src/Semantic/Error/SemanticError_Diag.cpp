@@ -226,11 +226,11 @@ namespace
         const auto               errorNode = match.genericParameters[bi.badSignatureParameterIdx];
 
         Diagnostic* err;
-        if (match.matchFlags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
+        if (match.matchFlags.has(SymbolMatchContext::MATCH_ERROR_VALUE_TYPE))
         {
             err = new Diagnostic{errorNode, toErr(Err0297)};
         }
-        else if (match.matchFlags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
+        else if (match.matchFlags.has(SymbolMatchContext::MATCH_ERROR_TYPE_VALUE))
         {
             err = new Diagnostic{errorNode, toErr(Err0298)};
         }
@@ -423,7 +423,7 @@ namespace
             badParamIdx--;
 
         // This is a closure with a generated first parameter
-        if (badParamIdx && oneTry.symMatchContext.matchFlags & SymbolMatchContext::MATCH_CLOSURE_PARAM)
+        if (badParamIdx && oneTry.symMatchContext.matchFlags.has(SymbolMatchContext::MATCH_CLOSURE_PARAM))
             badParamIdx--;
 
         return badParamIdx;

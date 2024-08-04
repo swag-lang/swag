@@ -1628,7 +1628,7 @@ bool Semantic::tryOneMatch(SemanticContext* context, OneTryMatch& oneOverload, c
 {
     // This way, a special cast can be done for the first parameter of a function
     if (oneOverload.ufcs)
-        oneOverload.symMatchContext.matchFlags |= SymbolMatchContext::MATCH_UFCS;
+        oneOverload.symMatchContext.matchFlags.add(SymbolMatchContext::MATCH_UFCS);
 
     // We collect type replacements depending on where the identifier is
     Generic::setContextualGenericTypeReplacement(context, oneOverload, overload, flags);
@@ -1902,7 +1902,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             {
                 const auto typeInfo = castTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
                 if (!typeInfo->isGeneric())
-                    oneOverload.symMatchContext.matchFlags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
+                    oneOverload.symMatchContext.matchFlags.add(SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC);
             }
         }
 
@@ -2059,7 +2059,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
                 auto  tryMatch        = context->getTryMatch();
                 auto& symMatchContext = tryMatch->symMatchContext;
 
-                tryMatch->symMatchContext.matchFlags |= forLambda ? SymbolMatchContext::MATCH_FOR_LAMBDA : 0;
+                tryMatch->symMatchContext.matchFlags.add(forLambda ? SymbolMatchContext::MATCH_FOR_LAMBDA : 0);
 
                 tryMatch->genericParameters = identifier->genericParameters;
                 tryMatch->callParameters    = identifier->callParameters;

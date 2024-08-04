@@ -10,6 +10,7 @@ struct TypeInfoParam;
 struct ComputedValue;
 struct SemanticContext;
 using CastFlagsResult = Flags<uint32_t>;
+using MatchFlags      = Flags<uint32_t>;
 
 enum class MatchResult
 {
@@ -82,14 +83,14 @@ struct BadSignatureInfos
 
 struct SymbolMatchContext
 {
-    static constexpr uint32_t MATCH_ACCEPT_NO_GENERIC = 0x00000001;
-    static constexpr uint32_t MATCH_FOR_LAMBDA        = 0x00000002;
-    static constexpr uint32_t MATCH_GENERIC_AUTO      = 0x00000004;
-    static constexpr uint32_t MATCH_ERROR_VALUE_TYPE  = 0x00000008;
-    static constexpr uint32_t MATCH_ERROR_TYPE_VALUE  = 0x00000010;
-    static constexpr uint32_t MATCH_UN_CONST          = 0x00000020;
-    static constexpr uint32_t MATCH_UFCS              = 0x00000040;
-    static constexpr uint32_t MATCH_CLOSURE_PARAM     = 0x00000080;
+    static constexpr MatchFlags MATCH_ACCEPT_NO_GENERIC = 0x00000001;
+    static constexpr MatchFlags MATCH_FOR_LAMBDA        = 0x00000002;
+    static constexpr MatchFlags MATCH_GENERIC_AUTO      = 0x00000004;
+    static constexpr MatchFlags MATCH_ERROR_VALUE_TYPE  = 0x00000008;
+    static constexpr MatchFlags MATCH_ERROR_TYPE_VALUE  = 0x00000010;
+    static constexpr MatchFlags MATCH_UN_CONST          = 0x00000020;
+    static constexpr MatchFlags MATCH_UFCS              = 0x00000040;
+    static constexpr MatchFlags MATCH_CLOSURE_PARAM     = 0x00000080;
 
     VectorNative<AstNode*>              genericParameters;
     VectorNative<AstNode*>              parameters;
@@ -106,7 +107,7 @@ struct SymbolMatchContext
 
     SemanticContext* semContext = nullptr;
 
-    uint32_t        matchFlags;
+    MatchFlags      matchFlags;
     CastFlagsResult castFlagsResult;
     MatchResult     result;
     uint32_t        cptResolved;

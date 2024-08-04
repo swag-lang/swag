@@ -80,7 +80,7 @@ struct OneMatch
     TypeInfo*       typeWasForced     = nullptr;
     AstNode*        genericParameters = nullptr;
 
-    uint32_t        matchFlags                  = 0;
+    MatchFlags      matchFlags                  = 0;
     CastFlagsResult castFlagsResult             = 0;
     uint32_t        coerceCast                  = 0;
     uint32_t        numOverloadsWhenChecked     = 0;
